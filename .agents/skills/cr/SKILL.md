@@ -174,9 +174,9 @@ launching another lens or cohort.
 
 ## Incorporating The Base
 
-Follow the GitHub rule's mandatory `acceptance-gate` **Base incorporation** procedure for every
-base update in this run, including synchronization performed by the finalization skill. Its independent
-verdict and correction requirements apply before pushing the resolved result.
+Run `merge-conflict` for every base update in this run, including synchronization performed by
+the finalization skill. Its comparison and its `acceptance-gate` verdict apply before pushing the
+resolved result.
 
 Apply required refactors in this pull request and invalidate affected review receipts under
 **Review Continuity**. Say which incoming behavior was reconciled with the change's intent in the
@@ -242,7 +242,7 @@ Before beginning review, submit and verify a test deployment from the exact curr
    - When all affected behavior has passing local coverage, the check gate is satisfied without querying GitHub. When a relevant fallback has no check run or legacy status, inspect active workflow definitions for `pull_request` or `pull_request_target`; if none can supply that coverage, report the local blocker instead of waiting on unrelated checks.
 8. When GitHub reports merge conflicts or the squash-merge endpoint rejects the pull request for conflicts, resolve them before giving up:
    - Fetch the exact current base and head, then rebase the PR branch onto that base or merge the base when rebase is unsafe for the repository workflow.
-   - Resolve the identified conflicts preserving the base's behavior and the authorized PR result, then run **Incorporating The Base**: the base's behavior stays, and its shape stays or goes on the comparison the GitHub rule requires rather than on whose branch it came from. Where the base answered a question this pull request also answered, name which implementation is better before resolving; where the base's is, adopt it and drop this pull request's shape for it. Merge time is no exception — a reversal here is a new reviewed hunk under **Review Continuity**, so rerun the lenses whose receipts it invalidates and repeat the check gate on the new head. Validate the resolved files, commit, and push.
+   - Resolve them through **Incorporating The Base**: `merge-conflict` compares each collision and keeps the better answer rather than either side's. Merge time is no exception — a reversal here is a new reviewed hunk under **Review Continuity**, so rerun the lenses whose receipts it invalidates and repeat the check gate on the new head. Validate the resolved files, commit, and push.
    - Rerun the invalidated lenses when conflict resolution or a base-incorporation refactor changes a reviewed hunk, per **Review Continuity**; otherwise preserve the clean review receipts. Then repeat the exact-head check gate.
    - Report a blocker only when safe resolution requires an unauthorized product or contract decision.
 9. Immediately re-read the pull request and require its current head SHA to equal the exact head that passed final acceptance and the check gate. Squash-merge with that SHA in the REST request so GitHub rejects a concurrent head change. On a mismatch, return to the reviewed-input comparison and exact-head gate rather than merging. Verify the remote state is `MERGED`, then invoke or resume the repository's finalization skill for the post-merge phase against that exact merged commit, or, where none is declared, report the merge as the end of the run. Keep the CR run active while finalization applies migrations, reconciles deployment configuration, and repairs an authorized failed rollout. Report the original pull request and every focused repair pull request as clickable Markdown links after finalization succeeds or reaches a genuine blocker.

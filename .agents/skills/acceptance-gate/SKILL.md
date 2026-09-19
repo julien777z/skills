@@ -76,7 +76,7 @@ Run after every
 incorporation of the base this session performed, whether or not `cr` is active or Git reports
 conflicts. The base advancing remotely without being incorporated does not trigger the check, and
 neither does an incorporation another session performed and pushed: that branch has changed hands
-under the GitHub rules, and its resolved result is theirs to gate.
+under the GitHub rules on branch ownership, and its resolved result is theirs to gate.
 
 1. Record the previous merge-base commit before incorporation and the incorporated base commit.
    Supply both, the originating change with its intent history, and the resolved result. If the
