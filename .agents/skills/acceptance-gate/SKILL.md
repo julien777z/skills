@@ -13,6 +13,11 @@ state and the change's intent, applies the repository's rubric, and answers one 
 
 - `code-simplify` — its `references/rubric.md` defines slop and prices a mechanism. The gate borrows
   that file and never the applying-fixes workflow.
+- `security-audit` — run at its `low` effort, which is defined as a single in-process pass against
+  its `references/rubric.md` and names no delegated agents, because a read-only gate cannot spawn
+  one. The rubric defines what counts as an exploitable finding, what it is worth, and in what order
+  to look for the smallest remedy; the gate takes the verdict into its own and never that skill's
+  approval gate, tracking, or fixes.
 
 ## The Intent Statement
 

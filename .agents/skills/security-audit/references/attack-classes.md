@@ -104,4 +104,4 @@ The other agents are hunting for subtle bugs. This agent checks the dumb stuff t
 
 This agent doesn't need to be creative. It needs to be thorough and literal. Check every item. Report what it finds.
 
-IMPORTANT: For any finding this agent reports, it must verify the full code path, not just surface appearance. If a cookie is missing `HttpOnly`, check whether the cookie contains security-sensitive data and whether JS needs to read it by design. If an error message contains a field name, check whether the field is ever actually populated with sensitive data. A flag is not a finding — trace the impact before reporting.
+IMPORTANT: For any finding this agent reports, it must verify the full code path, not just surface appearance. If a cookie is missing `HttpOnly`, check whether the cookie contains security-sensitive data and whether JS needs to read it by design. If an error message contains a field name, check whether the field is ever actually populated with sensitive data. A flag is not a finding — trace the impact before reporting, against the rubric's **Only Report What You Can Exploit**.

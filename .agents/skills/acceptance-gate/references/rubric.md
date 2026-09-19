@@ -2,7 +2,8 @@
 
 What the gate judges by: why it exists, what the intent statement and a verdict must contain, how
 worth is priced, and the tests behind each question. `SKILL.md` says how the gate is run. The gate
-also borrows the `code-simplify` skill's rubric reference, which defines slop and prices a mechanism.
+also borrows two rubrics it does not own: `code-simplify`'s, which defines slop and prices a
+mechanism, and `security-audit`'s, which defines an exploitable finding and its remedy.
 
 ## Why The Gate Exists
 
@@ -35,7 +36,8 @@ whether a production environment exists. Never infer missing product state or im
 repository. A safeguard is worth what it withholds from somebody who can be on the wrong side of it;
 where the product state puts nobody there, the safeguard protects nothing today, and the fact that
 would change that — a second admin, external users, a production deployment — is the reconsideration
-criterion its record carries.
+criterion its record carries. Product state bounds who can be on that wrong side; it never decides
+whether an exploit counts, which **Exploitable Findings** settles.
 
 Two things never count as product state. The deployment's dimensions — row counts, instance size,
 traffic — are facts about today's environment, and repository guidance must bar them from every
@@ -55,6 +57,48 @@ change introduced. A disposition names the test that decided it and the fact it 
 
 A finding confirmed by a review that refutes everything it can is evidence that the problem is real;
 the gate does not re-validate it.
+
+## Exploitable Findings
+
+Every question that reads a diff — diff, final acceptance, base incorporation — also reads it for
+what an attacker can reach, whenever the diff changes code the repository executes: source, the
+configuration that grants access, a dependency manifest, a workflow. Prose, documentation and agent
+configuration are not that, and a diff confined to them skips this section entirely.
+
+The criteria are `security-audit`'s `references/rubric.md`, and they cut in both directions.
+
+- **Only what can be exploited.** A finding names the attacker, what they send, and what they get.
+  "Theoretically" and "potentially" mark the place where the work stopped, not a finding.
+- **A defense-in-depth gap is not one.** Where a layer the diff leaves in place already prevents the
+  attack, the absence of a second layer is a hardening note under `Also read`, never a flag, and
+  never inflated to carry one.
+- **Severity is likelihood and impact together, and the flag bar is medium.** A targeted exploit with
+  real consequence, a state change an attacker can force, a disclosure of secrets or credentials, a
+  business-logic bypass whose blast radius is real: each is a flag. A finding that defeats an
+  explicit security boundary — an action the system gates behind a role, performed without it — is a
+  flag with the boundary named. Below that bar it is a hardening note. If the concrete damage cannot
+  be described, the severity is lower than it looks.
+- **The remedy is found in `security-audit`'s order, not written for the sink.** A guarantee the code
+  already has and fails to read, then the surface whose deletion closes the finding outright, then a
+  product decision that dissolves it, and only then new enforcement. A flag that names new machinery
+  where a value already in hand would have closed the hole is at the wrong altitude, and naming the
+  smaller option is part of the flag even when it is not the one recommended.
+
+An exploitable finding also reaches triage and admission, which are not diff questions: the fix
+test and the close test each carry the clause that keeps it, and **Product State** carries the bound.
+Having no released users empties the attacker set only where the repository's guidance says the
+deployment is unreachable; where that guidance puts it on a network others can reach, the product
+having no users of its own does not mean it has no attackers.
+
+**A clean read here is not an audit, and never reports as one.** The gate reads a diff with three
+read-only tools and answers one question; it cannot fan out, follow a data flow across a codebase, or
+try to disprove its own finding. A verdict that raises nothing says the diff's added lines carried no
+exploitable finding the gate could see. Only the `security-audit` skill, run at a level that fans
+out, says anything about the codebase.
+
+So a shape the gate can see but cannot chase to an attacker is not dropped: name it under `Also read`
+and recommend a `security-audit` run over the surface it sits on. That is the gate declining to guess,
+not the gate finding nothing.
 
 ## The Tests Behind Each Question
 
@@ -78,10 +122,13 @@ ends the question.
    would rediscover the defect does not soften this: rediscovery excuses the record, never the fix.
    Product state never softens it either: broken is broken for one admin as for a thousand users.
    A missing safeguard is not a defect — the system does what it was built to do, and the question is
-   whether it should do more — so it goes on to the tests below.
+   whether it should do more — so it goes on to the tests below. The exception is a safeguard whose
+   absence is an exploitable finding under **Exploitable Findings**: what the system does includes
+   what an attacker can make it do, so that is a defect here and is fixed in the change in flight.
 2. **close** — the item is real but not worth doing. Either the product state leaves it protecting or
    serving nobody — an access control between the one admin and the data only that admin can see, a
-   hardening against users the product does not have — or something in the repository rediscovers
+   hardening against users the product does not have, neither of which retires a finding an attacker
+   the product does have can still reach — or something in the repository rediscovers
    it on demand, a doctor's lens, a lint or type rule, a structural test, so that running the check is
    the pickup and a record would be a second copy that goes stale. A close names the fact it rests on
    and the reconsideration criterion: the product-state change that would make the work real, or the

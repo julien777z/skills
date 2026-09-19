@@ -1,8 +1,9 @@
 # Phase 1: Understand the Application
 
-### Phase 1: Understand the application
+The effort level in `SKILL.md` sets this phase's cohort at every level; where the table gives it
+no agents, the phase runs in process against the same rubric.
 
-Before looking for bugs, understand what you're auditing. This requires depth, not just a directory listing. Launch **multiple `research` agents in parallel** to map different aspects of the codebase:
+Before looking for bugs, understand what you're auditing. This requires depth, not just a directory listing. The aspects below are mapped by **`research` agents in parallel** where the effort table gives this phase agents, and read in one pass where it does not:
 
 **Agent 1a: Overview, tech stack, and comparable baseline**
 ```
@@ -38,9 +39,10 @@ Explore the codebase at <path>. Produce a complete inventory of where external i
 Return specific file paths. Be exhaustive.
 ```
 
-Collect all three agents' outputs and synthesize them into `<output-dir>/architecture.md`:
+Collect the outputs and synthesize them into an architecture summary held in the
+session — the audit writes no files:
 - 1-2 page structured summary covering application type, tech stack, trust model, input surfaces, and baseline comparable
 - Include the key file paths from all agents — these become the starting points for Phase 2
-- This document is injected verbatim into every Phase 2 agent prompt
+- This summary is injected verbatim into every Phase 2 agent prompt
 
-If Phase 1 agents reveal the codebase is larger or more complex than expected (e.g., plugin system, multi-tenant architecture, complex auth chains, multiple deployment targets), launch additional `research` agents to map those areas before proceeding. The quality of Phase 2 depends entirely on the quality of Phase 1.
+If Phase 1 reveals the codebase is larger or more complex than expected (e.g., plugin system, multi-tenant architecture, complex auth chains, multiple deployment targets), map those areas before proceeding — with additional `research` agents where this phase has them, and in process where it does not. The quality of Phase 2 depends entirely on the quality of Phase 1.

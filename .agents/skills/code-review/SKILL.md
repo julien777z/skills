@@ -13,7 +13,7 @@ Provide a code review for the selected target.
 
 - `code-simplify` — its `references/rubric.md` is the complete simplification rubric for that review lens.
 - `pre-production` — supply the repository's target-contract and staging-data policy.
-- `security-audit` — supply the complete security rubric and attack-class catalogue for that review lens.
+- `security-audit` — its `references/rubric.md` defines an exploitable finding and its remedy, and its attack-class catalogue supplies that lens. The review borrows both and never the audit workflow.
 - `acceptance-gate` — define the intent statement and gate the fixes the change did not itself
   introduce.
 
@@ -155,7 +155,7 @@ A **Rules** lens runs at every effort level.
 | **History** | standard | Check `git log` and blame on the changed hunks for regressions against prior intent, only where the diff plausibly undoes earlier work |
 | **Prior PRs** | standard | Read earlier PRs touching these files and check whether past review comments apply again |
 | **Simplification** | deep | Run the `code-simplify` skill as its rubric over the scope — redundancy, a module named or placed wrong, a file past a healthy size, a value modelled one way here and another way in a sibling |
-| **Security** | deep | Run the `security-audit` skill as its rubric over the changed lines — injection, authentication and authorization defeats, sensitive data reaching a log or response, unsafe deserialization, secrets in source |
+| **Security** | deep | Apply the `security-audit` skill's `references/rubric.md` and its attack-class catalogue over the changed lines — injection, authentication and authorization defeats, sensitive data reaching a log or response, unsafe deserialization, secrets in source |
 
 Effort selects the cohort and the validation depth:
 
