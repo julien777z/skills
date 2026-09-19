@@ -7,6 +7,7 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CANONICAL_SKILLS="$REPO_ROOT/.agents/skills"
 CANONICAL_AGENTS="$REPO_ROOT/.agents/agents"
+GENERATED_ROOT="$REPO_ROOT/.agents/.auto_generated"
 PROVIDERS=(claude codex cursor)
 found_root=0
 
@@ -14,7 +15,7 @@ found_root=0
 # an agent's model); it is preferred when the workflow has produced it.
 link_source() {
   local provider="$1" kind="$2" name="$3"
-  local mirror="$REPO_ROOT/.$provider/$kind/$name"
+  local mirror="$GENERATED_ROOT/.$provider/$kind/$name"
   if [ -e "$mirror" ]; then
     printf '%s\n' "$mirror"
   else

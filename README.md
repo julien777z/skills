@@ -29,7 +29,8 @@ Re-running replaces the links and prunes the ones a removed skill left behind.
 | `.agents/skills/<name>/` | One skill: `SKILL.md`, with `references/`, `scripts/`, `assets/`, or `resources/` beside it. |
 | `.agents/agents/` | Subagent definitions; the tier each runs on is stated by the skill that launches it. |
 | `.agents/external_skills.json` | Third-party skills the workflow installs from [skills.sh](https://skills.sh/). |
-| `.claude/`, `.cursor/`, `.codex/`, `AGENTS.md` | Provider mirrors the workflow generates on `main`; never edited by hand. |
+| `.agents/.auto_generated/` | Provider mirrors the workflow generates on `main`; never edited by hand. |
+| `AGENTS.md` | Repository instructions the workflow generates at the root; never edited by hand. |
 | `bootstrap/install.sh` | Links the skills and agents into the user-level roots. |
 
 ## Repository-Provided Skills

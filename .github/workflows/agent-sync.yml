@@ -27,4 +27,5 @@ jobs:
           fetch-depth: 0
       - uses: julien777z/agent-sync-action@v0
         with:
+          output-dir: .agents/.auto_generated
           refresh-external-skills: ${{ github.event_name == 'schedule' }}
