@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once at the start of every task that changes files, before the first edit, and keep it active until the task's report: it shapes every response, applies the repository's product constraints, fixes what the work encounters, simplifies as the change grows, gates the branch before it is pushed, and delivers each repository independently. Never invoke it from inside a skill it runs."
+description: "Always run this. Invoke once, before the first edit, at the start of every task that changes files — including one that only begins changing files because work turned up a defect — and keep it active until the task's report: it shapes every response, applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, simplifies as the change grows, gates the branch before it is pushed, and delivers each repository independently. Never invoke it from inside a skill it runs."
 ---
 
 # Execute Task
@@ -43,12 +43,25 @@ its project guidance and treat every compatibility question below as one that gu
 Apply `pre-production`'s encountered-issues policy while making the change. The rules below govern
 how those issues are handled.
 
-- Never dismiss an issue solely because it is pre-existing or outside the original task.
+- **A bug the work turns up is fixed in the change in flight, and offering it to the user is not a
+  disposition.** "Want this handled, or shall I leave it?" reads as diligence and is the failure this
+  section exists to prevent: it spends a turn to obtain permission for something already required,
+  and a no leaves a known defect in the tree with the agent's name on the decision. The question that
+  is genuinely the user's is about a **product change** — what a feature does, what a record keeps,
+  who a surface serves, a contract somebody outside the repository speaks — never whether an
+  encountered bug gets fixed.
+- Being found rather than assigned changes nothing about whether a bug is fixed; it changes only
+  where the fix lands, which is the branch in flight. Say in the report what was fixed and why it
+  was in the path of the work, so the reviewer sees a decision rather than a surprise.
+- What puts a **new** issue in that path is an act the work performed: a file it opened, a command
+  it ran, a check it read, a review it received. How far the fix then reaches is a different
+  question, and `pre-production`'s **Scope Follows The Defect, Not The Request** answers it.
 - Never reject a fix solely because it is described as high risk. Assess its expected net effect,
   concrete failure modes, and available validation instead of treating the label as a stop rule.
-- Fix and verify it when the correction can be completed in one focused pass and produces an
-  overall net improvement, including fixing a defect, removing a code smell, simplifying the
-  implementation, or applying the target-contract policy from `pre-production`.
+- Fix and verify a non-defect improvement when the correction can be completed in one focused pass
+  and produces an overall net gain: removing a code smell, simplifying the implementation, or
+  applying the target-contract policy from `pre-production`. A defect is governed above and carries
+  no such condition.
 - Delete every piece of confirmed dead code encountered during implementation, even when it sits
   outside the files or packages already being changed. Confirm that no live application or
   library consumer, public export, or external contract still depends on it; remove tests that
@@ -62,7 +75,8 @@ how those issues are handled.
   expected to require multiple implementation iterations.
 - Ask the user before fixing an issue that requires architectural work, a broad refactor,
   migration, new dependency, substantial investigation, product intent, destructive action,
-  or expanded authority.
+  or expanded authority. For a bug the fix proceeds and is not held for an answer; what goes to the
+  user is scope, sequencing, and where the work lands, never whether it is fixed.
 - When asking, state the trigger, impact, expected work, recommendation, and concrete choices.
 - Continue independent approved work when the unresolved issue does not block it.
 
