@@ -82,7 +82,7 @@ under the GitHub rules on branch ownership, and its resolved result is theirs to
    Supply both, the originating change with its intent history, and the resolved result. If the
    previous base was not recorded, reconstruct it from commit parents or reflog; do not substitute
    the current merge base and silently review an empty range.
-2. Give an independent read-only gate the intent statement, originating diff, and an item containing
+2. Give an independent read-only gate, on the host's largest model tier, the intent statement, originating diff, and an item containing
    the previous-to-incorporated-base diff plus the resolved tree and correction diff. Inspect cleanly
    merged code and relevant surrounding implementations as well as conflict resolutions. Exclude
    landed immutable migration revisions; their repository-owned migration procedure still applies.

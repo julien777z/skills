@@ -6,7 +6,7 @@ Shared agent skills for every repository, in one place.
 
 - One canonical copy of each generic skill under `.agents/skills/`, mirrored to Claude, Cursor, and
   Codex by [Agent Sync](https://github.com/julien777z/agent-sync-action).
-- The subagent definitions those skills run on, under `.agents/agents/` and `.agents/models/`.
+- The subagent definitions those skills run on, under `.agents/agents/`.
 - Third-party skills registered in `.agents/external_skills.json` and vendored by the same workflow.
 - `bootstrap/install.sh` links everything into the user-level roots a machine has, so every
   repository's session sees the same skills.
@@ -27,7 +27,7 @@ Re-running replaces the links and prunes the ones a removed skill left behind.
 | Path | Purpose |
 |---|---|
 | `.agents/skills/<name>/` | One skill: `SKILL.md`, with `references/`, `scripts/`, `assets/`, or `resources/` beside it. |
-| `.agents/agents/`, `.agents/models/` | Subagent definitions and their per-provider model overrides. |
+| `.agents/agents/` | Subagent definitions; the tier each runs on is stated by the skill that launches it. |
 | `.agents/external_skills.json` | Third-party skills the workflow installs from [skills.sh](https://skills.sh/). |
 | `.claude/`, `.cursor/`, `.codex/`, `AGENTS.md` | Provider mirrors the workflow generates on `main`; never edited by hand. |
 | `bootstrap/install.sh` | Links the skills and agents into the user-level roots. |

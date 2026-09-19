@@ -73,7 +73,7 @@ Select subagents by capability, never by model name, so the skill behaves the sa
 
 **Prefer every tier below the model running the review.** A review fans out across many subagents, each reading the same diff, so the cohort rather than any one lens is what a round costs — and a lens reads code and reports what it finds, which a mid-tier model does well. Where the host exposes an ordered model catalogue, resolve `deep` to the strongest model below the orchestrator and resolve `standard` and `fast` to capable lower-cost models. When selection is available but the catalogue has no lower model or exposes no reliable ordering, use the strongest available capable model for `deep` and the cheapest capable model for the other tiers, then record that fallback in the degraded-mode note. Judgement that has to be right the first time stays with the orchestrator: rating, deduplication, deciding what to fix, and writing the fix.
 
-**On a Claude orchestrator, run every tier as Sonnet subagents**, named explicitly — an unset model inherits the orchestrator.
+**Run every reviewer tier as subagents on the host's mid model tier** — Sonnet on a Claude host, the equivalent tier elsewhere — named explicitly, since an unset model inherits the orchestrator's.
 
 Where the host exposes no per-subagent model selection, run the tiers as they stand and say so in the degraded-mode note. Name no other model here or in a subagent prompt — a host that renames or replaces the rest of its lineup must not need this file edited.
 

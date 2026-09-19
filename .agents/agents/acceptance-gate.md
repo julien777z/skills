@@ -22,4 +22,4 @@ Apply the `acceptance-gate` SKILL — its `SKILL.md` is the **complete** protoco
 
 ## Parent orchestration
 
-Assemble and maintain the intent statement under the skill's intent contract, then supply it for every question. Supply the originating diff and the item as text; the gate reads files only to check a claim against the current tree. Invoke this agent with `subagent_type: "acceptance-gate"` and the four labeled sections. A different invocation answers each question about the same item.
+Assemble and maintain the intent statement under the skill's intent contract, then supply it for every question. Supply the originating diff and the item as text; the gate reads files only to check a claim against the current tree. Invoke this agent with `subagent_type: "acceptance-gate"` and the four labeled sections, on the host's largest model tier, named explicitly — Opus on a Claude host, the equivalent tier elsewhere — because a verdict is worth what its reader can see. A different invocation answers each question about the same item.

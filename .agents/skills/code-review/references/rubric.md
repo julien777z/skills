@@ -2,8 +2,8 @@
 
 What a review judges by: what anchors a finding, how a finding is validated, how it is rated, and
 what fix mode owes each confirmed finding. `SKILL.md` says how the review is run. The Simplification
-and Security lenses borrow `../code-simplify/references/rubric.md` and the `security-audit` skill's
-rubric respectively.
+and Security lenses borrow the `code-simplify` skill's rubric reference and the `security-audit`
+skill's rubric respectively.
 
 ## Scope
 

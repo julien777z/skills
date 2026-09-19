@@ -2,7 +2,7 @@
 
 What the gate judges by: why it exists, what the intent statement and a verdict must contain, how
 worth is priced, and the tests behind each question. `SKILL.md` says how the gate is run. The gate
-also borrows `../../code-simplify/references/rubric.md`, which defines slop and prices a mechanism.
+also borrows the `code-simplify` skill's rubric reference, which defines slop and prices a mechanism.
 
 ## Why The Gate Exists
 

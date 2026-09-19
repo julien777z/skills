@@ -40,9 +40,10 @@ Run the complete high-effort fix review before merging the current branch's pull
 - `acceptance-gate` — admit deferrals, gate would-be-deferral fixes and base-incorporation
   refactors, and accept the final diff.
 
-**On a Claude orchestrator, explicitly select Sonnet for every subagent this workflow launches
-unless the current invocation or the delegated dependency explicitly selects another model.** Never
-leave a Claude subagent's model unset, because it inherits the orchestrator's model.
+**Launch every subagent this workflow starts on the host's mid tier — Sonnet on a Claude host, the
+equivalent tier elsewhere — named explicitly, unless the current invocation or the delegated
+dependency selects another tier.** Never leave a subagent's model unset where the host lets it
+inherit the orchestrator's.
 
 ## Pull Request Ownership
 
