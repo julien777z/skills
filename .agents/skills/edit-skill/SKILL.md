@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit a skill, rule, or agent file under `.agents`, implement the concrete issue that prompted it, and deliver it through simplification, the acceptance gate, the smoke test, and the user's approval of an example response before the pull request merges. Applies whenever agent guidance is added or edited, invoked or not.
+description: Add or edit a skill, rule, or agent file under `.agents`, implement the concrete issue that prompted it, and deliver it through simplification, the acceptance gate, the smoke test, and the user's approval of an example response before the pull request merges. Applies whenever agent guidance is added or edited, invoked or not, and whenever a gap in existing guidance is identified — a skill that let a miss through, one whose trigger did not fire, one that says nothing about the case in hand — because noticing the gap is what starts this skill, not being asked to fix it.
 ---
 
 # Edit Skill
@@ -8,6 +8,16 @@ description: Add or edit a skill, rule, or agent file under `.agents`, implement
 Upsert `.agents` source-of-truth files for agents, skills, or rules based on user input, and carry
 every edit through the same delivery whether the user invoked this skill or the edit arose while
 doing other work. An edit that skipped this is unverified, and the report says so.
+
+**A gap you notice yourself starts this skill, exactly as a request does.** Guidance that let a miss
+through, a skill whose trigger did not fire when it should have, one that says nothing about the case
+in hand, a step you found yourself doing that no skill describes: each is this skill's input, and
+noticing it is the whole trigger. Waiting to be told is what leaves the next session to rediscover
+the same gap, and the session that hit it is the only one holding the evidence.
+
+The tell is a sentence you are about to write to the user about your own process — that you skipped
+a step, that a check did not apply, that you should have done something earlier. Write the guidance
+change first, then the sentence; it is a finding about the guidance, not a confession.
 
 ## Dependencies
 
