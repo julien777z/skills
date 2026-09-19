@@ -1,6 +1,6 @@
 ---
 name: docs-doctor
-description: Find and fix documentation that no longer matches the code. It covers paths, commands, symbols, variables, and flags that do not exist, behavior the code no longer has, history narration, repeated explanations, and README structure against the repository's README rules. Invoke as /docs-doctor to audit docs, READMEs, docstrings, or stale references.
+description: Find and fix documentation that no longer matches the code. It covers paths, commands, symbols, variables, and flags that do not exist, behavior the code no longer has, history narration, repeated explanations, and README structure against the repository's README rules. Use to audit docs, READMEs, docstrings, or stale references.
 disable-model-invocation: true
 ---
 

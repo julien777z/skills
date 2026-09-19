@@ -1,6 +1,6 @@
 ---
 name: config-doctor
-description: Reconcile configuration names across every place they are declared, each deployment's own environment included, and remove settings nothing reads or nothing deployed sets. Declarations live in typed settings models, environment example files, test environment blocks, container, CI, and deployment manifests, hosting-platform application specifications, and docs. Invoke as /config-doctor to audit environment variables, settings, configuration drift, or an environment example file.
+description: Reconcile configuration names across every place they are declared, each deployment's own environment included, and remove settings nothing reads or nothing deployed sets. Declarations live in typed settings models, environment example files, test environment blocks, container, CI, and deployment manifests, hosting-platform application specifications, and docs. Use to audit environment variables, settings, configuration drift, or an environment example file.
 disable-model-invocation: true
 ---
 

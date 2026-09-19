@@ -1,6 +1,6 @@
 ---
 name: legacy-doctor
-description: "Find and remove code that tolerates a past the repository no longer has: fallbacks, compatibility branches, kept aliases, silent tolerance, and second implementations of one thing. Every finding is traced to the contract, producer, caller, or check that proves the tolerated past is gone. Invoke as /legacy-doctor to audit backwards compatibility, fallbacks, defaults over a contract, or more than one way of doing one thing."
+description: "Find and remove code that tolerates a past the repository no longer has: fallbacks, compatibility branches, kept aliases, silent tolerance, and second implementations of one thing. Every finding is traced to the contract, producer, caller, or check that proves the tolerated past is gone. Use to audit backwards compatibility, fallbacks, defaults over a contract, or more than one way of doing one thing."
 disable-model-invocation: true
 ---
 

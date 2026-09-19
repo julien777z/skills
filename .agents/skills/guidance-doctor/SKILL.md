@@ -1,6 +1,6 @@
 ---
 name: guidance-doctor
-description: Audit the repository's agent guidance for what to cut, tighten, or add, against what a current model does unprompted and what the vendors' current authoring guidance says. The guidance is every rule, skill, agent definition, hook, settings file, and external-skill registry entry the repository keeps for its agents. Invoke as /guidance-doctor to audit rules or skills for redundancy, staleness, contradiction, budget, or usefulness.
+description: Audit the repository's agent guidance for what to cut, tighten, or add, against what a current model does unprompted and what the vendors' current authoring guidance says. The guidance is every rule, skill, agent definition, hook, settings file, and external-skill registry entry the repository keeps for its agents. Use to audit rules or skills for redundancy, staleness, contradiction, budget, or usefulness.
 disable-model-invocation: true
 ---
 
@@ -121,6 +121,21 @@ registered, a skill the usage measurement shows never invoked. A flagged skill i
 invocation name and, for a doctor, through the doctor listing; the flag alone is never the finding.
 Evidence: the reference counts and usage. Remedy: fix the trigger, or a whole-file cut under
 Dispositions.
+
+### Description Spends Its Budget On Nothing
+
+Every description is read on every turn, for every skill, so a clause that does not help decide
+whether this skill fires is paid for constantly and returns nothing. The shapes: the slash command
+or invocation name, which the listing already carries and the reader deciding already has; a
+paraphrase of the skill's own title; `Use this skill to`; and what the skill does elaborated past
+the point a reader needs to recognise the situation.
+
+Score each by the substitution test `edit-skill` — **Description** states; where the remainder names
+no situation and no file names the skill either, it is a finding under **Unreachable** as well.
+
+Evidence: the description, quoted, with the clause that earns nothing marked and its length. Remedy:
+rewrite to the trigger, keeping any argument the trigger depends on — a target, a scope, a mode —
+and dropping the command that precedes it.
 
 ### Missing
 

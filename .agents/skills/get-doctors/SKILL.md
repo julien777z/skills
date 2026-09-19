@@ -1,6 +1,6 @@
 ---
 name: get-doctors
-description: List every doctor skill the skill listing declares with a one-line summary of what it audits. Use when the user invokes /get-doctors or asks which doctors exist or what each one covers.
+description: List every doctor skill the skill listing declares with a one-line summary of what it audits. Use when asked which doctors exist or what each one covers.
 ---
 
 # Get Doctors

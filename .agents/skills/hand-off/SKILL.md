@@ -1,6 +1,6 @@
 ---
 name: hand-off
-description: Wrap up the current session so its open pull requests can be taken to another session with nothing lost. Records deferrals stated in chat, posts a hand-off comment on each pull request carrying the unapproved plan and every item waiting on the user, brings each pull request body up to date, commits and pushes work in flight, and releases every subscription and timer the session holds. Invoke as /hand-off when a session is too bloated to continue and the work moves elsewhere.
+description: Wrap up the current session so its open pull requests can be taken to another session with nothing lost. Records deferrals stated in chat, posts a hand-off comment on each pull request carrying the unapproved plan and every item waiting on the user, brings each pull request body up to date, commits and pushes work in flight, and releases every subscription and timer the session holds. Use when a session is too bloated to continue and the work moves elsewhere.
 disable-model-invocation: true
 ---
 

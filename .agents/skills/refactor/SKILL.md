@@ -1,6 +1,6 @@
 ---
 name: refactor
-description: Resolve and confirm a repository refactor scope, use multiple independent reviewers to plan structural improvements, then implement an approved plan. Invoke as /refactor to refactor a repository, change request, branch, path, symbol, or concern.
+description: Resolve and confirm a repository refactor scope, use multiple independent reviewers to plan structural improvements, then implement an approved plan. Use to refactor a repository, change request, branch, path, symbol, or concern.
 disable-model-invocation: true
 ---
 

@@ -1,6 +1,7 @@
 ---
 name: cr
-description: Triage and resolve the pull request's open review threads, run multi-subagent code-simplify across the complete pull request and related code, then run the high-effort fix review, repair failed checks, squash-merge, verify, and finalize the pull request.
+description: Triage and resolve the pull request's open review threads, run multi-subagent code-simplify across the complete pull request and related code, then run the high-effort fix review, repair failed checks, squash-merge, verify, and finalize the pull request. Use on the current branch's pull request when it should be taken all the way through review to a merge.
+disable-model-invocation: true
 ---
 
 # CR

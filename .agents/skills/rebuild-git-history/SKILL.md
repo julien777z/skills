@@ -1,6 +1,6 @@
 ---
 name: rebuild-git-history
-description: "Rewrite a branch you own into one commit per material change, or drop one change from it, without losing content: the old head stays under a backup ref, the result is proven against it before anything moves, and the push is leased. Invoke as /rebuild-git-history or $rebuild-git-history, or from a skill that needs a branch's commits to correspond to its changes."
+description: "Rewrite a branch you own into one commit per material change, or drop one change from it, without losing content: the old head stays under a backup ref, the result is proven against it before anything moves, and the push is leased. Use when a branch's commits should correspond to its changes, or from a skill that needs them to."
 ---
 
 # Rebuild Git History

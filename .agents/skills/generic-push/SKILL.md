@@ -1,6 +1,6 @@
 ---
 name: generic-push
-description: Keep repository publishing metadata generic and isolated. Use when a user requests generic delivery metadata, invokes generic-push, or applies generic publishing rules across multiple repositories.
+description: Keep repository publishing metadata generic and isolated. Use when a user requests generic delivery metadata, or applies generic publishing rules across multiple repositories.
 ---
 
 # Generic Publishing Metadata

@@ -1,6 +1,6 @@
 ---
 name: dependency-doctor
-description: Reconcile declared dependencies with what the code imports and the checks invoke, for every language the repository builds. It finds unused declarations, undeclared imports, conflicting constraints across manifests, lockfile drift, and audit tooling declared but never run. Invoke as /dependency-doctor to audit dependencies, package manifests, lockfiles, version constraints, or unused packages.
+description: Reconcile declared dependencies with what the code imports and the checks invoke, for every language the repository builds. It finds unused declarations, undeclared imports, conflicting constraints across manifests, lockfile drift, and audit tooling declared but never run. Use to audit dependencies, package manifests, lockfiles, version constraints, or unused packages.
 disable-model-invocation: true
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: defer-scope
-description: Record deferred repository work in Linear, with the repository ledger and focused record pull request as an availability fallback; with no scope, read active Linear and legacy repository records. Use when work is consciously left undone, when the user invokes /defer-scope or $defer-scope, or when asked what is deferred, outstanding, or still open.
+description: Record deferred repository work in Linear, with the repository ledger and focused record pull request as an availability fallback; with no scope, read active Linear and legacy repository records. Use when work is consciously left undone, or when asked what is deferred, outstanding, or still open.
 ---
 
 # Defer Scope

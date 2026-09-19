@@ -1,6 +1,6 @@
 ---
 name: tests-doctor
-description: Audit and correct a test suite for consistency, redundancy, naming, runtime, coverage by test, and determinism, preferring fewer higher-quality tests. It aligns every suite with its siblings and the source tree, folds same-shape tests into parametrized cases, times every suite against its budget, maps coverage by test with integration and end-to-end outranking unit, and moves construction out of test modules. Invoke as /tests-doctor to review, clean up, speed up, de-duplicate, rebalance, or find gaps in tests.
+description: Audit and correct a test suite for consistency, redundancy, naming, runtime, coverage by test, and determinism, preferring fewer higher-quality tests. It aligns every suite with its siblings and the source tree, folds same-shape tests into parametrized cases, times every suite against its budget, maps coverage by test with integration and end-to-end outranking unit, and moves construction out of test modules. Use to review, clean up, speed up, de-duplicate, rebalance, or find gaps in tests.
 disable-model-invocation: true
 ---
 

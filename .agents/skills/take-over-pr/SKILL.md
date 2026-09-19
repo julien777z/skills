@@ -1,6 +1,6 @@
 ---
 name: take-over-pr
-description: Make a pull request's branch the working checkout so its work continues in this session. Resolves a pull request link or branch name to one repository and branch, switches to it, pulls the latest head, identifies its open pull request, and restates the pull request's state and latest hand-off notes without acting on them. Invoke as /take-over-pr <pull request link or branch name> to switch this session onto another pull request.
+description: Make a pull request's branch the working checkout so its work continues in this session. Resolves a pull request link or branch name to one repository and branch, switches to it, pulls the latest head, identifies its open pull request, and restates the pull request's state and latest hand-off notes without acting on them. Takes a pull request link or branch name. Use to switch this session onto another pull request.
 disable-model-invocation: true
 ---
 

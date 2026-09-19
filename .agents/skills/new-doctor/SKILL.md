@@ -1,6 +1,6 @@
 ---
 name: new-doctor
-description: Create a doctor skill on the shared doctor-protocol for one class of repository hygiene. Invoke as /new-doctor <name> to add a doctor.
+description: Create a doctor skill on the shared doctor-protocol for one class of repository hygiene. Takes the name of the doctor to add.
 disable-model-invocation: true
 ---
 

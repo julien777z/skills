@@ -1,6 +1,6 @@
 ---
 name: list-repos
-description: List the repository web URLs for every repository changed during the entire current session. Use when the user invokes /list-repos or $list-repos, or asks for links to all repositories touched, modified, committed, pushed, or otherwise changed during the session.
+description: List the repository web URLs for every repository changed during the entire current session. Use when asked for links to all repositories touched, modified, committed, pushed, or otherwise changed during the session.
 ---
 
 # List Repositories

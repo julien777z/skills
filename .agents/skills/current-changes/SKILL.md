@@ -1,6 +1,6 @@
 ---
 name: current-changes
-description: Summarize what the current branch changes against the default branch as one paragraph and one sentence per material change, each linked to the code that makes it, with test changes folded into a single line. Invoke as /current-changes or $current-changes, or when the user asks what the branch or its pull request changes.
+description: Summarize what the current branch changes against the default branch as one paragraph and one sentence per material change, each linked to the code that makes it, with test changes folded into a single line. Use when asked what the branch or its pull request changes.
 ---
 
 # Current Changes
