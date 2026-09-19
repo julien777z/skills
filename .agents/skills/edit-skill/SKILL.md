@@ -160,6 +160,23 @@ doing other work. An edit that skipped this is unverified, and the report says s
       run: a dependency replaced by the role phrase that finds it, a path generalized, a rename, a
       frontmatter key, a reference path corrected, wording that says the same thing shorter. The
       report says `not run: mechanical seam edit` for it, and the acceptance gate is its check.
+
+      **A skill that arrives by relocation is not a skill the change adds.** Moving one between
+      repositories, or generalizing local copies into one every repository can adopt, produces a new
+      file and no new guidance, and a smoke run against a miss nobody had proves nothing. What makes
+      it a relocation is that the guidance survives, so establish that rather than asserting it:
+      diff the new file against every original line by line, and account for each line the diff
+      removes as either the same instruction in repository-neutral words or guidance relocated to a
+      named home — the owning repository's `project.md` for what only that repository can state.
+      A line carrying an instruction no original carried is an edit riding along, and the paragraph
+      above decides it on its own terms. The report says `not run: relocation, guidance preserved` and names where each
+      original's specifics went.
+
+      Where the originals disagreed, the disagreement is the thing to get right, and neither answer
+      may be picked for both. Carry the shared guidance and hand the contested question back to each
+      repository, checking that each one already states its answer where the skill now sends its
+      reader; a repository that does not is the flag, because the merge silently gave it the other
+      one's answer.
    6. **Put an example response to the user, one skill at a time, for the skills whose response
       the user uses and whose response this change alters.** A summary they read, a listing they
       act on, a report they take a decision from: for each such skill the change adds, or edits in
@@ -175,7 +192,9 @@ doing other work. An edit that skipped this is unverified, and the report says s
       an agent reads has nothing the user would use and skips this step; so does a rule-only change,
       and so does an edit that changes how a skill works but not what it returns — a reordered step,
       a procedure moved to a reference, a check added on the way — since an unchanged response has
-      nothing new to review. Altered means the user would notice it in the response itself: a new
+      nothing new to review. A relocation under step 5 skips it for that same reason: the skill
+      returns what it returned before the move, so there is no altered response to put to anyone.
+      Altered means the user would notice it in the response itself: a new
       column, a changed shape, a different grouping, a link where there was none. A new value in a
       status line or a reworded label is not that, and asking over it spends the user's attention on
       nothing. The decision is the editor's, from what the skill returns before and after the edit.
@@ -208,7 +227,7 @@ Return this report, filled in; keep every heading and write `None` under one wit
 ```markdown
 Files
 
-- `<repository>/.agents/<path>` — created | updated | renamed from `<old path>`
+- `<repository>/.agents/<path>` — created | updated | deleted | renamed from `<old path>`
 
 Changes
 
