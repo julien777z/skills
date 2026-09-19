@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "skills": [
+    {
+      "name": "agent-browser",
+      "repo": "vercel-labs/agent-browser",
+      "skill": "agent-browser",
+      "update_on_sync": true
+    },
+    {
+      "name": "i-have-adhd",
+      "repo": "ayghri/i-have-adhd",
+      "skill": "i-have-adhd",
+      "update_on_sync": false
+    },
+    {
+      "name": "frontend-design",
+      "repo": "anthropics/skills",
+      "skill": "frontend-design",
+      "update_on_sync": true
+    },
+    {
+      "name": "no-ai-slop",
+      "repo": "petergyang/no-ai-slop",
+      "skill": "no-ai-slop",
+      "update_on_sync": true
+    }
+  ]
+}
