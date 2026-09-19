@@ -40,7 +40,7 @@ skill through the skill listing; the repository's `project.md` says which local 
 
 | Role | What the repository provides |
 |---|---|
-| `pre-production` | Its product state and target-contract policy, under that exact name. |
+| product constraints | `pre-production` is shared, so a repository supplies only the answers it leaves open: its product state, and what a requiredness change owes the rows already stored. |
 | `run-tests` | Its test runner and browser walkthrough, under that exact name. |
 | migrations | The skill that authors and validates its schema migrations. |
 | finalization | The skill that runs before and after a merge: migration preflight, rollout. |
