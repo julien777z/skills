@@ -15,6 +15,19 @@ Run the complete high-effort fix review before merging the current branch's pull
 - A directly invoked skill may invoke CR in the same task only when its own instructions explicitly
   declare `cr` as a dependency and state that invoking the parent skill authorizes that dependency.
   That authorization ends with the parent workflow and does not authorize an independent CR run.
+- **A direct `$cr` invocation authorizes the squash-merge of the pull request under review, and the
+  post-merge finalization after it.** Merging is what this skill is for: the review loops exist to
+  reach a mergeable head, so reaching one and stopping delivers nothing the ordinary validation and
+  handoff would not have. The repository rule requiring user authorization to merge names an
+  explicitly invoked skill as one of its two sources, and this is that skill.
+- **So never ask the user for permission to merge, and never end a run by offering the merge as the
+  remaining step.** That question reads as diligence and is the failure this paragraph exists to
+  prevent: the answer was given when the skill was invoked, the run has already spent its review on
+  a head nobody merges, and the user has to say yes to a thing they already said. When the gates are
+  green and the head is the accepted one, merge it.
+- What stops a merge is a gate, not a missing permission: a flag that is not yet resolved, a check
+  that is not green, a head that no longer matches the accepted SHA, or a conflict still unresolved.
+  Report one of those as the blocker it is. "Awaiting authorization" is never one of them.
 - A direct `$cr` invocation authorizes the declared `code-simplify` and `code-review` dependencies
   for this pull request, plus the repository's finalization skill, when the skill listing declares
   one, for its pre-merge and post-merge phases, including the dependencies that skill explicitly
@@ -150,6 +163,27 @@ A confirmed finding leaves this run in one of two states: fixed, or — only aft
 
 A fix for a finding the change did not introduce goes to `acceptance-gate` before it is committed, as `code-review`'s fix mode states; the change's own findings get no per-fix gate, and final acceptance covers them.
 
+## A Fix Is Not Done Until Its Own Gate Returns
+
+**Every fix a gate's flag produces is itself ungated work, and the gate that judges it is part of
+the fix rather than a step after it.** The flagged shape was written with care too; what a gate
+catches is exactly what care missed, so a fix written the same way earns the same scrutiny. A fix
+round closes when its diff has been put to a fresh gate and that gate has answered.
+
+**Committing and pushing is what makes this easy to skip.** The work feels finished at the push:
+the edit is made, the suite is green, the branch is current, and the next thing in view is the
+merge. None of that is the gate, and a green suite is the weakest evidence here — the fix was
+written to satisfy the flag, so the assertion that passes is the one its author expected to pass.
+
+So the test is mechanical: **for every flag resolved in this run, name the gate that judged its
+fix.** A flag with no such gate is an open flag, whatever its code now looks like and whether or
+not it has been pushed. Run it before the check gate, not after, because a flag it raises changes
+the head the merge requires.
+
+Where the fix is trivially contained — a rename, a deleted comment, a parametrize id — the gate is
+still run and still cheap; deciding a fix is too small to gate is the judgement the flag already
+showed to be unreliable.
+
 ## Deferred Findings
 
 A finding the repository's deferral process has recorded is discharged, not outstanding. Recording it is what makes it durable, so the run carries on: a recorded deferral never holds the review loop open, never holds the check gate, and never holds the merge.
@@ -230,7 +264,7 @@ Before beginning review, submit and verify a test deployment from the exact curr
 3. Invoke `/code-review high fix <PR>` for that PR, whether it is draft or ready for review.
 4. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the run continues; see **Deferred Findings**. Stop and report only a finding that can be neither fixed nor recorded.
 5. Classify each correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean. This is the same authorized CR execution, not a new action-skill invocation. When a fix changes a locked migration closure or its safety evidence, return to the finalization pre-merge phase before continuing review.
-6. Once the review is clean, put the complete pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement. Fix every flag, then put only the fix diff to a fresh gate; a second flag on the change's own work is a blocker to report to the user. The accepted head is the SHA every later gate and the squash merge require; a later commit — a check fix, a conflict resolution — puts its own diff to the diff question before the check gate is repeated on the new head.
+6. Once the review is clean, put the complete pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement. Fix every flag, then put only the fix diff to a fresh gate, as **A Fix Is Not Done Until Its Own Gate Returns** requires; a second flag on the change's own work is a blocker to report to the user. The accepted head is the SHA every later gate and the squash merge require; a later commit — a check fix, a conflict resolution — puts its own diff to the diff question before the check gate is repeated on the new head.
 7. Before merging, make a draft PR ready for review. After review loops are clean, run the relevant tests locally, then gate only coverage that could not be established locally:
    - First classify the complete PR diff. When it is non-runtime — it does not change executable source, package or dependency definitions, tests, runtime configuration, CI workflows, generated runtime artifacts, or another executed-behavior contract — validate only the checks appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests, query check runs, or wait for CI. This is semantic rather than path-based: agent instructions, documentation, policies, static metadata, and non-executable configuration can live anywhere. After structural validation and exact-head mergeability check, the gate is satisfied.
    - For a runtime-affecting PR, first identify which affected behaviors lack a passing local test. Query check runs and legacy statuses only when a relevant GitHub job supplies that missing coverage through unavailable credentials, provider-only behavior, runner-specific behavior, or a dependency the local environment cannot host. Do not query checks merely to repeat passing local coverage.
