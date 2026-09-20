@@ -27,7 +27,7 @@ to make the same mistake and the user to point it out twice.
 
 Both start in the same turn: they are one piece of work, and the guidance change is never offered,
 proposed, or listed as a next step. It then runs the delivery below like any other edit, and the
-only thing that carries it past this turn is a question that delivery puts to the user.
+only thing that carries it past this turn is a question this skill puts to the user.
 
 Two outcomes are reported rather than written into a file. Where the search finds nothing that
 governs the subject, that absence is the finding and step 2's rule on proposing a new file applies.

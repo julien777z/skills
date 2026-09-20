@@ -21,7 +21,9 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 ## One Run Per Task
 
 - Invoke this skill once, at the start of a task, before the first edit. A run stays active until
-  the task's report; nothing in the task re-enters it.
+  the task's report, and past it while that report names outstanding work: **Work You Have Already
+  Named** keeps the run open until every named item is done or has left that state one of the three
+  ways it lists. Nothing in the task re-enters the skill; the run simply has not ended.
 - A skill that lists this one as a dependency — `plan-change` does — invokes it once, and the
   skills this one invokes never invoke it back: `i-have-adhd`, `pre-production`, `code-simplify`,
   `acceptance-gate`, and `generic-push` are leaves of this run. A second invocation while one is
@@ -29,7 +31,8 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 - This skill never invokes `plan-change`. Where a task needs a plan, `plan-change` runs first and
   invokes this skill once the plan is approved.
 - A read-only task — a question answered from the code, a listing, a report with no edit — does
-  not run this skill.
+  not run this skill. It does not close an open run either: a run still holding named work stays
+  active through such a turn, and that turn moves its items.
 
 ## Product Constraints
 
@@ -170,8 +173,9 @@ not one per repository per task.
 ## Work You Have Already Named
 
 **Naming work as next is a commitment, and it stays this run's obligation across every later turn**
-— including a turn whose own request changes no files, where this skill is otherwise not active. The
-run that named the work owns it until it is done.
+— including a turn whose own request changes no files, which would otherwise not run this skill at
+all. The run that named the work owns it until it is done, and naming it is what keeps the run open
+under **One Run Per Task**.
 
 A new request does not cancel it. The two queue together, and the turn that serves the new one also
 moves the old one — the user asking about something else is not the user withdrawing what they asked
