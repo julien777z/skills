@@ -14,12 +14,12 @@ found_root=0
 # The provider mirror carries native metadata the sync workflow generates (a Codex policy file,
 # an agent's model); it is preferred when the workflow has produced it.
 link_source() {
-  local provider="$1" kind="$2" name="$3"
+  local provider="$1" kind="$2" name="$3" canonical="$4"
   local mirror="$GENERATED_ROOT/.$provider/$kind/$name"
   if [ -e "$mirror" ]; then
     printf '%s\n' "$mirror"
   else
-    printf '%s\n' "$REPO_ROOT/.agents/$kind/$name"
+    printf '%s\n' "$canonical"
   fi
 }
 
@@ -50,12 +50,11 @@ install_provider() {
   found_root=1
 
   mkdir -p "$root/skills"
-  for skill in "$CANONICAL_SKILLS"/*/; do
-    [ -f "$skill/SKILL.md" ] || continue
+  while IFS= read -r skill; do
     name="$(basename "$skill")"
-    install_link "$(link_source "$provider" skills "$name")" "$root/skills/$name"
+    install_link "$(link_source "$provider" skills "$name" "$skill")" "$root/skills/$name"
     skills=$((skills + 1))
-  done
+  done < <(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)
   prune_links "$root/skills"
 
   # Only Claude and Cursor hold agent definitions beside their skills.
@@ -64,7 +63,7 @@ install_provider() {
     for agent in "$CANONICAL_AGENTS"/*.md; do
       [ -f "$agent" ] || continue
       name="$(basename "$agent")"
-      install_link "$(link_source "$provider" agents "$name")" "$root/agents/$name"
+      install_link "$(link_source "$provider" agents "$name" "$agent")" "$root/agents/$name"
       agents=$((agents + 1))
     done
     prune_links "$root/agents"

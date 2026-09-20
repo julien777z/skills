@@ -22,6 +22,7 @@ class Skill(NamedTuple):
     """One skill's listing entry, read from its front matter."""
 
     slug: str
+    path: Path
     name: str
     description: str
     user_invoked_only: bool
@@ -63,7 +64,7 @@ def read_skills() -> list[Skill]:
 
     skills: list[Skill] = []
 
-    for skill_file in sorted(SKILLS_DIRECTORY.glob("*/SKILL.md")):
+    for skill_file in sorted(SKILLS_DIRECTORY.glob("**/SKILL.md")):
         front_matter = parse_front_matter(skill_file)
         slug = skill_file.parent.name
 
@@ -74,6 +75,7 @@ def read_skills() -> list[Skill]:
         skills.append(
             Skill(
                 slug=slug,
+                path=skill_file,
                 name=front_matter["name"],
                 description=front_matter["description"],
                 user_invoked_only=front_matter.get("disable-model-invocation") == "true",
@@ -107,7 +109,7 @@ def render_table(skills: list[Skill]) -> str:
         return "_None._"
 
     rows = "\n".join(
-        f"| [`{skill.name}`]({SKILLS_DIRECTORY}/{skill.slug}/SKILL.md) | {summarize(skill.description)} |"
+        f"| [`{skill.name}`]({skill.path}) | {summarize(skill.description)} |"
         for skill in skills
     )
 
