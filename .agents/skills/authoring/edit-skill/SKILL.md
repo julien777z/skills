@@ -19,6 +19,22 @@ The tell is a sentence you are about to write to the user about your own process
 a step, that a check did not apply, that you should have done something earlier. Write the guidance
 change first, then the sentence; it is a finding about the guidance, not a confession.
 
+**The user pointing out how you work is the same trigger, and it is never only the one fix.** "Why
+did you do it that way", "you should have done X", "don't do Y again": each names a gap in the
+guidance that let it through, and each carries two pieces of work — correct the thing in front of
+you, and change the file that would have prevented it. Doing only the first leaves the next session
+to make the same mistake and the user to point it out twice.
+
+Both start in the same turn: they are one piece of work, and the guidance change is never offered,
+proposed, or listed as a next step. It then runs the delivery below like any other edit, and the
+only thing that carries it past this turn is a question that delivery puts to the user.
+
+Two outcomes are reported rather than written into a file. Where the search finds nothing that
+governs the subject, that absence is the finding and step 2's rule on proposing a new file applies.
+Where the governing file already says it correctly, the finding is that the guidance was not
+followed — say so, and do not restate the rule beside itself. Either way the report names the
+outcome, because silence reads as the guidance having been fixed.
+
 ## Dependencies
 
 - `code-simplify` — the pass over the guidance itself before it merges.
@@ -61,7 +77,7 @@ change first, then the sentence; it is a finding about the guidance, not a confe
      when the entry the user-level root holds for it (`~/.claude/skills/<name>`,
      `~/.codex/skills/<name>`, `~/.cursor/skills/<name>`) is a symlink into a checkout of the skills
      repository — read the link — and repository-owned when the current repository holds it under
-     `.agents/skills/<name>`. A new skill goes to the skills repository when it reads generically
+     `.agents/skills/`, at any depth. A new skill goes to the skills repository when it reads generically
      once written and to the current repository when its correctness depends on a local contract.
      An agent definition that a shared skill runs on goes with that skill; every other agent, and
      every rule, is repository-owned.
@@ -70,7 +86,9 @@ change first, then the sentence; it is a finding about the guidance, not a confe
      never through the link's path from another repository's branch.
    - `agent` -> `.agents/agents/<name>.md`
    - `rule` -> `.agents/rules/<name>.md`
-   - `skill` -> `.agents/skills/<name>/SKILL.md`
+   - `skill` -> `.agents/skills/<name>/SKILL.md`, or `.agents/skills/<folder>/<name>/SKILL.md`
+     where the repository sorts its skills into folders; the folders group the source and never
+     change the name a skill installs under.
    - Never read or write `.cursor/*`, `.claude/*`, `.codex/*`, or any other non-`.agents` agent or provider folder.
    - Do not manually create, update, or sync mirrored command/skill/rule files in those folders; repository automation propagates changes from `.agents` to Cursor, Claude, Codex, and similar targets. The one exception is a mirror the same change would leave pointing at a path it renames or deletes — a per-skill symlink into a directory the change moves — which is renamed in the same change so the branch never carries a dangling link.
    - This path restriction applies to the agent-content update, not to source changes required to fix an underlying issue from step 3.

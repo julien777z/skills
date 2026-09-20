@@ -167,6 +167,34 @@ not one per repository per task.
   implementation, or coordination context in those artifacts.
 - Keep cross-repository coordination and combined status reporting in user chat.
 
+## Work You Have Already Named
+
+**Naming work as next is a commitment, and it stays this run's obligation across every later turn**
+— including a turn whose own request changes no files, where this skill is otherwise not active. The
+run that named the work owns it until it is done.
+
+A new request does not cancel it. The two queue together, and the turn that serves the new one also
+moves the old one — the user asking about something else is not the user withdrawing what they asked
+for before.
+
+**The failure is a report, not a refusal.** It reads as diligence: the item appears under "still to
+do", the turn ends, the next message arrives, and the item appears again, unchanged, in the next
+report. Nothing was declined and nothing was done, and each repetition makes the next one easier,
+because the item now looks like a standing note rather than work somebody is waiting for.
+
+So the test is the item's own line. Before a report goes out, compare each outstanding item against
+the line the last report carried for it. **A line that has not changed means the item is finished in
+this turn, before the report is sent** — not moved a little, and not dropped from the list, which
+is the same failure with the evidence removed.
+
+An item may leave that state three ways, and each is stated in its own line:
+
+- it is done;
+- a blocker holds it, named — and a question put to the user and not yet answered is a blocker, as
+  is an authorization this session does not hold;
+- it is no longer work, because the user withdrew it or a later request superseded it, said with
+  that reason.
+
 ## Completion
 
 Before declaring the task done:
