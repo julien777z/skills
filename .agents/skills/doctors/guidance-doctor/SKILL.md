@@ -152,7 +152,7 @@ trigger, or evaluation.
 - Cutting a whole rule file, skill, or registry entry is a user decision, presented with four
   things: the files that name it; the usage measurement over a stated window, or unmeasured with
   the reason; the sentences that survive the Restates and Redundant lenses, which are what it
-  uniquely says; and, when any survive, the result of one bounded task run on the lower-tier model
+  uniquely says; and, when any survive, the result of one bounded task run on the weaker model
   without the file, judged against the file's own stated outcomes. No surviving sentence is the
   recommendation to cut; surviving sentences with no usage is the recommendation to fix the trigger
   first. Age, size, and a reference count on their own never cut a file.

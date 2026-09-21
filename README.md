@@ -96,7 +96,8 @@ An agent reaches for these on its own whenever the work calls for them.
 | [`rebuild-git-history`](.agents/skills/git/rebuild-git-history/SKILL.md) | Rewrite a branch you own into one commit per material change, or drop one change from it, without losing content: the old head stays under a backup ref, the result is proven against it before anything moves, and the push is leased. |
 | [`security-audit`](.agents/skills/review/security-audit/SKILL.md) | Security audit of a codebase — web apps, APIs, services, CLI tools, libraries, daemons, and more. |
 | [`smoke-test`](.agents/skills/authoring/smoke-test/SKILL.md) | Prove a skill edit changes what a reader does: rebuild the miss that prompted it, run reviewers on the edited and the original text, and score both against stated criteria before the pull request merges. |
-| [`test-fixture`](.agents/skills/authoring/test-fixture/SKILL.md) | Organize, add, or change pytest tests using canonical fixtures, factories, shared test utilities, concise cases, parametrization, honest doubles, and regression-proof validation. |
+| [`test-fixture`](.agents/skills/authoring/test-fixture/SKILL.md) | Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. |
+| [`text-highlight`](.agents/skills/git/text-highlight/SKILL.md) | Show changes as diff-shaped code blocks a reader can locate at a glance: an edited line marked + in the form it now takes, a line dropped with nothing in its place marked -, a few unchanged lines around each change, and ... |
 
 <!-- skills:end -->
 

@@ -54,9 +54,9 @@ Run the complete high-effort fix review before merging the current branch's pull
 - `acceptance-gate` — admit deferrals, gate would-be-deferral fixes and base-incorporation
   refactors, and accept the final diff.
 
-**Launch every subagent this workflow starts on the host's mid tier — Sonnet on a Claude host, the
-equivalent tier elsewhere — named explicitly, unless the current invocation or the delegated
-dependency selects another tier.** Never leave a subagent's model unset where the host lets it
+**Launch every subagent this workflow starts on the host's mid-sized model — Sonnet on a Claude
+host, the equivalent elsewhere — named explicitly, unless the current invocation or the delegated
+dependency selects another.** Never leave a subagent's model unset where the host lets it
 inherit the orchestrator's.
 
 ## Pull Request Ownership
@@ -159,7 +159,7 @@ This widens the pull request on purpose, and that is the intended trade. Keep ea
 
 Say plainly in the pull request which fixes review surfaced rather than the original task requiring, so a reviewer can see why the diff is wider than the title suggests.
 
-A confirmed finding leaves this run in one of two states: fixed, or — only after `acceptance-gate` flagged its fix twice — reverted and recorded. The deferral route below is for that case and for work the repository's own rules place outside any single change, never for work that is merely inconvenient, unfamiliar, or larger than expected. A confirmed defect never reaches that route on size or on cost: whatever shape its fix takes, including a schema migration, and however correct its output while it runs too slowly to finish or holds more than anything bounds, it is fixed in this run.
+A confirmed finding leaves this run in one of two states: fixed, or — only after `acceptance-gate` flagged its fix twice — reverted and recorded, unless the pull request is confined to agent configuration, where `acceptance-gate`'s **Bounds** leave the disposition with this run. The deferral route below is for that case and for work the repository's own rules place outside any single change, never for work that is merely inconvenient, unfamiliar, or larger than expected. A confirmed defect never reaches that route on size or on cost: whatever shape its fix takes, including a schema migration, and however correct its output while it runs too slowly to finish or holds more than anything bounds, it is fixed in this run.
 
 A fix for a finding the change did not introduce goes to `acceptance-gate` before it is committed, as `code-review`'s fix mode states; the change's own findings get no per-fix gate, and final acceptance covers them.
 
@@ -236,14 +236,14 @@ GitHub head lag, a queued or running relevant fallback check, a retryable rate l
 
 ## Workflow
 
-Before beginning review, submit and verify a test deployment from the exact current head of any runtime pull request that has a test-deployment path. Record the head, provider deployment, and verified live result; a default-branch or merged artifact is not test evidence.
+Before beginning review, submit and verify a test deployment from the exact current head of any runtime pull request that has a test-deployment path. Record the repository and head together with the exact provider app, component, active deployment ID, deployed source branch, immutable commit or image digest, provider deployment, and verified live result; a default-branch or merged artifact is not test evidence.
 
 1. Resolve the current branch and its pull request. When no PR exists, follow `/code-review`'s branch and commit setup rules, then create the PR through REST with `draft=false`. Review an existing draft PR normally. Resolve the intent statement as `acceptance-gate` defines it and record the current merge-base SHA; pass the statement and **Pull Request Ownership** rule to every subagent in the run and into `/code-review high fix`. Run **Review Thread Triage**, then immediately the complete **Simplification Gate** above; no finalization or code-review phase starts before both are clean.
 2. Invoke the repository's finalization skill for the pre-merge phase; where the skill listing declares none, skip this step and say so in the report. When this CR run was entered by an active finalization whose pre-merge phase already covers the current migration execution closure and safety evidence, reuse that phase instead of repeating it. The dependency phase never invokes CR.
 3. Invoke `/code-review high fix <PR>` for that PR, whether it is draft or ready for review.
 4. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the run continues; see **Deferred Findings**. Stop and report only a finding that can be neither fixed nor recorded.
 5. Classify each correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean. This is the same authorized CR execution, not a new action-skill invocation. When a fix changes a locked migration closure or its safety evidence, return to the finalization pre-merge phase before continuing review.
-6. Once the review is clean, put the complete pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement. Fix every flag, then put only the fix diff to a fresh gate; a second flag on the change's own work is a blocker to report to the user. The accepted head is the SHA every later gate and the squash merge require; a later commit — a check fix, a conflict resolution — puts its own diff to the diff question before the check gate is repeated on the new head.
+6. Once the review is clean, put the complete pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement. Fix every flag, then put only the fix diff to a fresh gate; a second flag on the change's own work is a blocker to report to the user, unless the pull request is confined to agent configuration, where `acceptance-gate`'s **Bounds** leave the disposition with this run. The accepted head is the SHA every later gate and the squash merge require; a later commit — a check fix, a conflict resolution — puts its own diff to the diff question before the check gate is repeated on the new head.
 7. Before merging, make a draft PR ready for review. After review loops are clean, run the relevant tests locally, then gate only coverage that could not be established locally:
    - First classify the complete PR diff. When it is non-runtime — it does not change executable source, package or dependency definitions, tests, runtime configuration, CI workflows, generated runtime artifacts, or another executed-behavior contract — validate only the checks appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests, query check runs, or wait for CI. This is semantic rather than path-based: agent instructions, documentation, policies, static metadata, and non-executable configuration can live anywhere. After structural validation and exact-head mergeability check, the gate is satisfied.
    - For a runtime-affecting PR, first identify which affected behaviors lack a passing local test. Query check runs and legacy statuses only when a relevant GitHub job supplies that missing coverage through unavailable credentials, provider-only behavior, runner-specific behavior, or a dependency the local environment cannot host. Do not query checks merely to repeat passing local coverage.

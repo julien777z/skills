@@ -50,8 +50,8 @@ not a dependency this skill runs, so it is named here and not below.
 A lens is only as good as what a reviewer reading it finds. Before delivery, prove each lens
 against a violation a reviewer has not been told about.
 
-- **Who reviews.** Read-only reviewers on the host's lower-tier general model, selected
-  explicitly — Sonnet on a Claude host, the equivalent tier elsewhere — and never the
+- **Who reviews.** Read-only reviewers on the host's weaker general model, selected
+  explicitly — Sonnet on a Claude host, the equivalent elsewhere — and never the
   orchestrator's model. A doctor that works only when the strongest model reads it fails in the
   hands of the protocol's own reviewers. Record the model each reviewer actually ran on.
 - **What each reviewer gets.** The doctor's `SKILL.md`, the skills it depends on, one target tree,

@@ -53,7 +53,7 @@ evaluation roles independent, and prefer honest retirement over a manufactured i
   verdicts, contestant identities, skill implementations, or sealed artifacts across roles.
 - Anonymize and randomize contestant outputs before judging. Judges evaluate actual deliverables,
   behavior, tool use, and artifacts rather than lead-agent summaries.
-- Verify and record the exact model used for every run. Never guess a model tier, silently
+- Verify and record the exact model used for every run. Never guess a model's capability, silently
   substitute a model, or claim an unavailable model was tested.
 
 ## Delivery

@@ -41,8 +41,8 @@ earlier question about the same item. It receives four things and nothing else:
    record;
 4. exactly one question from the list below.
 
-**Its first act on any diff is two greps.** Before reading the diff for anything else, grep its added lines for two shapes and list every
-hit as a finding ahead of all others, with the remedy the rubric names:
+**Its first act on any diff is four greps.** Before reading the diff for anything else, grep its added lines for four shapes and list
+every hit as a finding ahead of all others, with the remedy the rubric names:
 
 1. **A reader reaching through a table keyed by a model, class or type for a fact about the key**
    — the pattern `[A-Z_]+\[` followed by a model, record, class, `type(` or `cls` expression, as in
@@ -52,8 +52,19 @@ hit as a finding ahead of all others, with the remedy the rubric names:
 2. **A repository-wide fact held as a loose string** — an email address, a street address, a legal
    entity or product name in a string literal outside one typed model in the package every consumer reads. Each hit
    moves onto that model, which every consumer reads.
+3. **A container declared for one member** — `APIRouter(` (or the framework's router constructor)
+   in an added line, followed by a count of the handlers registered on that router in the resulting
+   tree. One handler is a finding whether or not the diff added the router: the handler moves onto
+   the router that already owns its resource, at a path under that resource, and the router and its
+   module go. A prefix ending in a verb or an operation is the same finding read from the URL.
+4. **A data-holding class declared outside model ownership** — every added `BaseModel`, dataclass,
+   named tuple, or equivalent record declared outside a `models.py` file or `models/` package. Move
+   it to a concept-specific model module. Only a Pydantic `BaseSettings` class is configuration and
+   belongs in `config.py` or `config/`; registries, manifests, policies, provider payloads, and
+   response schemas remain models. Never move a model into operational code merely to eliminate a
+   one-symbol declarative module.
 
-A report that lists no hit for either grep says so in those words.
+A report that lists no hit for any of the four greps says so in those words.
 
 It returns the verdict its question defines, shaped as `references/rubric.md` — What A Verdict Names
 requires.
@@ -87,7 +98,7 @@ under the GitHub rules on branch ownership, and its resolved result is theirs to
    Supply both, the originating change with its intent history, and the resolved result. If the
    previous base was not recorded, reconstruct it from commit parents or reflog; do not substitute
    the current merge base and silently review an empty range.
-2. Give an independent read-only gate, on the host's largest model tier, the intent statement, originating diff, and an item containing
+2. Give an independent read-only gate, on the host's largest model, the intent statement, originating diff, and an item containing
    the previous-to-incorporated-base diff plus the resolved tree and correction diff. Inspect cleanly
    merged code and relevant surrounding implementations as well as conflict resolutions. Exclude
    landed immutable migration revisions; their repository-owned migration procedure still applies.

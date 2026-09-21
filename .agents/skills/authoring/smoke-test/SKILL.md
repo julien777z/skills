@@ -45,8 +45,8 @@ a code change is tested: against the case that motivated it, with the change and
    original text would also satisfy measures nothing; drop it. Phrase each as the words the report
    must carry — a symbol's name, a number — so scoring is a search through the report, not a
    reading of it.
-5. **Launch the reviewers** in parallel and in the background: for at least two model tiers below
-   the one running the session — a mid-tier and a small-tier model — one run reading the edited text
+5. **Launch the reviewers** in parallel and in the background: for at least two models weaker than
+   the one running the session — a mid-sized and a small model — one run reading the edited text
    and one reading the original. Identical prompts save for the skill path. Read-only, findings
    only, no edits; the parent applies nothing from a smoke run, because the run judges wording, not
    the code. Never spawn a duplicate while a run is in flight.
@@ -54,30 +54,37 @@ a code change is tested: against the case that motivated it, with the change and
    tabulate: one row per run, one column per criterion.
 7. **Judge the table.** The edit passes when every run reading the edited text meets every criterion
    and at least one control run misses at least one. Both halves matter. A control that also passes
-   means the words changed nothing a reader does; say so, and drop the edit or sharpen it until the
-   control fails. An edited run that misses names the sentence to revise: revise toward what it
-   missed, keep the language broad, and rerun that model once. Controls run in the first round only,
-   since the original text does not change; a revision reruns only the models that missed, all of
-   them together, never one after another. A run that named the shape and then reasoned it away —
+   means one of two things and the tester says which: the words changed nothing a reader does, or
+   the scenario is too easy to separate them. Sharpen the scenario inside the same bound, and when
+   that bound is spent apply the same decision a spent bound gets below. An edited run that misses
+   names the sentence to revise: revise toward what it missed, keep the language broad, and rerun
+   that model once. Controls run in the first round only, since the original text does not change;
+   a revision reruns only the models that missed, all of them together, never one after another.
+   A run that named the shape and then reasoned it away —
    "correctly delegates", "intentional", "not problematic" — is a wording miss of one kind: the check
    left its disposition to judgement, so the revision states the disposition as fixed and names the
    reasons a reader gives for keeping the shape as not reasons. Before a third round, re-read the
    scenario and the criteria as well as the wording: a criterion the scenario cannot satisfy — a
    file the reviewer was never given — is fixed in the scenario, and the controls need no rerun for
-   that. The loop ends when every edited run meets every criterion, and the pull request merges then
-   and not before; a failing row is never merged while a round remains. **The rounds are bounded, and the bound is a
-   judgement made before the first revision**: state how many rounds the miss is worth — three is
-   usual, fewer for a one-line edit, more where each round is cheap and the criterion is central —
+   that.
+8. **Run the bounded loop.** The loop ends when every edited run meets every criterion, and the pull
+   request merges then and not before; a failing row is never merged while a round remains. **The
+   rounds are bounded, and the bound is a judgement made before the first revision**: state how
+   many rounds the miss is worth — three is usual, fewer for a one-line edit, more where each round
+   is cheap and the criterion is central —
    and when the last one still fails, stop revising and decide: let the edit stand with the miss
    when the failing report follows the edit in substance and misses only the words the criterion
    looked for, make a different change to the skill when the rounds tried one shape of wording and
-   another is still untried, or drop the edit when the controls show the words changed nothing. The
-   decision is the tester's and is never put to the user; asking holds every later session on the
-   text the edit replaces. Report the table, the sentence last revised, and the decision with its
-   reason; whether the pull request then merges is the delivery's call, not this skill's. A loop
+   another is still untried, or drop the edit when the controls show the words changed nothing —
+   unless the edit is strictly broader than the text it replaces, a class named where only an
+   instance was, in which case let it stand. The three are the whole set, so the pull request is
+   never left open on this, and the decision is the tester's and is never put to the user; asking
+   holds every later session on the text the edit replaces. Report the table, the sentence last
+   revised, and the decision with its reason; whether the pull request then merges is the
+   delivery's call, not this skill's. A loop
    that will not close within the bound usually means the miss in step 1 was misstated; say so when
    it is.
-8. **Report** the table with its quoted evidence in chat, as `## Output` shapes it, and put one
+9. **Report** the table with its quoted evidence in chat, as `## Output` shapes it, and put one
    sentence in the pull request description naming the miss the edit closes. The table is evidence
    and does not belong in the description.
 
@@ -92,8 +99,8 @@ Miss: <one sentence>
 
 | Run | Text | <criterion 1> | <criterion 2> | ... |
 |---|---|---|---|---|
-| <model tier> | edited | pass: "<quoted line>" | miss | ... |
-| <model tier> | original | miss | pass: "<quoted line>" | ... |
+| <model> | edited | pass: "<quoted line>" | miss | ... |
+| <model> | original | miss | pass: "<quoted line>" | ... |
 
 Verdict: passes | revised and rerun (round <n>) | bound spent: <stands with the miss | edited again | dropped> — <reason> | not run: <reason>
 ```

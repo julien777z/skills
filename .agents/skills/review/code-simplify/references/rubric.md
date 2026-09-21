@@ -129,6 +129,11 @@ Apply the baseline prompt above, plus these explicit review rules:
 2. **A module holding one symbol is a finding before anything else about it is judged.**
    - Count before you read: a module whose public surface is one function, one small class, or one
      constant plus its helper has not earned a file. Say the count in the finding.
+   - A router is a container the same way, and a router carrying one handler is the same finding:
+     count the handlers registered on every router in scope and say the count. One handler moves
+     onto the router that already owns its resource, at a path under that resource, and the router
+     goes with its module; a router earns its place only for a resource no existing router
+     addresses, or a prefix, tag or guard the existing one cannot carry.
    - Look for the same shape everywhere in scope, not only in the same package: a sender beside a
      sender, a handler beside a handler, whatever directory each landed in. Several modules that each
      hold one symbol of one shape are one module wearing several names. Collapse them into one named
@@ -150,6 +155,11 @@ Apply the baseline prompt above, plus these explicit review rules:
      already rewrites every importer, so filing it with the module that owns its concern costs nothing
      the rename did not, and leaving it alone under a new name spends that rewrite on a file that has
      still not earned its name.
+   - **Declarative ownership outranks the count.** Never move a data model into a client, service,
+     route, entrypoint, or utility to eliminate a one-symbol model module. Models stay in a
+     `models.py` file or concept-specific `models/` package; only Pydantic `BaseSettings` classes
+     stay in `config.py` or `config/`. A lone declarative module may be merged only with another
+     declarative module under the same ownership boundary, never into operational code.
    - A concern no sibling shares is not a boundary. It is a symbol with no home yet, and "unique
      concern", "idiomatic for this package", "acceptable", "accepted", "stands", and "earns its file"
      never appear against a count of one: each is the disposition this standard takes out of the
@@ -291,6 +301,15 @@ Apply the baseline prompt above, plus these explicit review rules:
      annotated like any other binding. An untyped module-level name is a finding on its own,
      whatever it holds and however obvious the value looks. Grep the diff for added module-level
      assignments without an annotation rather than hoping to notice them while reading.
+   - Classify every added constant by whether operators, repositories, or releases may reasonably
+     change it. Only true invariants stay module constants: a provider API root fixed by an external
+     protocol may be invariant, while credentials, proposal substitutions, repository identities,
+     workflow references, timeouts, deployment addresses, and other tunable values belong on the
+     owning typed settings model even when they have safe defaults. Capitalization and `Final` do
+     not make a configurable value invariant.
+   - Every data-holding class lives in a model-owned file or package. Only a Pydantic `BaseSettings`
+     class is configuration; registries, manifests, policies, provider payloads, and response
+     schemas remain models.
    - Prefer explicit typed models or shared contracts over loosely-shaped ad-hoc objects.
    - If a branch relies on silent fallback to paper over an unclear invariant, ask whether the boundary should be made explicit instead.
 
@@ -369,7 +388,7 @@ For every meaningful change, ask:
 
 ## What to Flag Aggressively
 
-**Run two greps over the diff's added lines before reading for anything else, and report every hit
+**Run four greps over the diff's added lines before reading for anything else, and report every hit
 as a finding:**
 
 1. A subscript whose key is a model, class or `type(...)` — `FORM_TYPES[record_model]`,
@@ -381,8 +400,19 @@ as a finding:**
    name, anywhere outside one typed model in the package every consumer reads. Each hit is a repository-wide fact
    kept as a loose string inside one consumer; the remedy is the typed model in the shared package
    that every consumer reads.
+3. A router constructor — `APIRouter(` or the framework's equivalent — followed by a count of the
+   handlers registered on that router in the resulting tree. One handler is a container declared for
+   one member, whether or not the diff added the router; the remedy is the handler moved onto the
+   router that already owns its resource, at a path under that resource, and the router and its
+   module deleted. A prefix ending in a verb or an operation is the same finding read from the URL.
+4. A data-holding class declared outside a `models.py` file or `models/` package. Match added
+   `BaseModel`, dataclass, named-tuple, and equivalent record declarations, then move each to a
+   concept-specific model module. Only a Pydantic `BaseSettings` class is configuration and belongs
+   in `config.py` or `config/`; registries, manifests, policies, provider payloads, and response
+   schemas remain models. Never use operational code as the destination merely to avoid a
+   one-symbol declarative module.
 
-A report that declares the diff clean without listing these two greps and their hits has not run
+A report that declares the diff clean without listing these four greps and their hits has not run
 them.
 
 Escalate findings when you see:

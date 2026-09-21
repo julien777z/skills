@@ -33,6 +33,19 @@
       ]
     },
     {
+      "term": "engage",
+      "variants": [
+        "engages",
+        "engaged",
+        "engaging",
+        "engagement",
+        "engagements"
+      ],
+      "applies_to": "repository-owned identifiers, docstrings, comments, test names, interface copy, and the rules and skills agents read, but not a legal document's defined terms, which are a drafting decision rather than a name",
+      "use_instead": "Say what happens. A party \"pays\" another, \"adds\" one, or \"works with\" one; the row linking two parties is named for what it records; a mechanism \"applies\", \"takes effect\", or \"fires\".",
+      "why": "It names no action a reader can picture: the same word covers hiring somebody, paying them, and a mechanism switching on. On a control it reads as a formality rather than the thing the control does, so the reader cannot tell what clicking it will change."
+    },
+    {
       "term": "ensure",
       "applies_to": "any identifier",
       "use_instead": "Say which of the three things it does: a guard that raises is `assert_<condition>`, a create-if-missing is `upsert_<noun>` or `create_<noun>`, a start-if-stopped is `start_<thing>`.",
@@ -101,6 +114,17 @@
       "applies_to": "a subject's current state in some process",
       "use_instead": "Name the thing the model actually carries. A model holding a count and a timestamp is `*Attempts`; one holding an outcome is `*Status` or `*Result`.",
       "why": "\"Standing\" reads as a rank or reputation, which is never what these carry."
+    },
+    {
+      "term": "tier",
+      "variants": [
+        "tiers",
+        "tiered",
+        "tiering"
+      ],
+      "applies_to": "repository-owned identifiers, docstrings, comments, test names, file and directory names, and the rules and skills agents read",
+      "use_instead": "Name the thing the word stood for. A group of tests is a \"suite\", or just \"tests\". An access or verification rank is a \"level\". A model is \"stronger\" or \"weaker\", or has more or less \"capability\". A subscription is a \"plan\", and stacked z-indexes are \"bands\".",
+      "why": "One word covered the test suites, a caller's access level, a model's capability and a billing plan, so a reader met it in four unrelated places and could not tell which one it meant."
     },
     {
       "term": "validate",

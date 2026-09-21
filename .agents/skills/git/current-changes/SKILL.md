@@ -11,8 +11,8 @@ makes it.
 
 ## Dependencies
 
-- `rebuild-git-history` — the branch's commits are made to correspond to its changes before
-  they are linked.
+- `rebuild-git-history` — run only when a commit mixes changes, so the branch's commits
+  correspond to them before they are linked.
 
 ## Workflow
 
@@ -36,9 +36,10 @@ makes it.
 5. **Give each change one link: the commit that makes it.** A reader clicks it and sees how the
    change is made, so the link is one, not a list. The GitHub rules say a commit carries one material
    change, so on a branch that keeps them the bullets and the commits correspond one to one.
-   - When the branch is yours and its commits do not split that way, run `rebuild-git-history`
-     first — one commit per material change, the same final tree, the old head kept under a backup
-     ref — then link the commits. The summary is written after the history is right, not around it.
+   - **Read `git log --oneline <base>..HEAD` before linking anything.** When every commit carries
+     one material change, link them as they stand and rebuild nothing. When some commit mixes
+     changes and the branch is yours, run `rebuild-git-history` first, then link the commits. The
+     summary is written after the history is right, not around it.
    - When the branch is not yours to rewrite, link the diff of the one file that implements the heart
      of the change, through the pull request's files view anchored at that file,
      `<pull request url>/files#diff-<anchor>` where the anchor is the SHA-256 hex digest of the file's

@@ -63,19 +63,19 @@ State these verbatim to every subagent launched:
 - Only call a tool when it is required to complete the task. Every tool call needs a clear purpose.
 - Return findings as data. The final message is the return value, not a message to a human.
 
-## Capability tiers
+## Subagent capability
 
-Select subagents by capability, never by model name, so the skill behaves the same on every host. Where a host exposes only one model, run every tier on it and say so in the degraded-mode note.
+Select subagents by capability, never by model name, so the skill behaves the same on every host. Where a host exposes only one model, run every capability on it and say so in the degraded-mode note.
 
 - **fast** — cheapest capable model. Eligibility checks, file enumeration, mechanical lookups.
 - **standard** — default balanced model. Summarization, rule compliance, validation.
 - **deep** — strongest reasoning model available below the orchestrator. Bug hunting and adversarial refutation.
 
-**Prefer every tier below the model running the review.** A review fans out across many subagents, each reading the same diff, so the cohort rather than any one lens is what a round costs — and a lens reads code and reports what it finds, which a mid-tier model does well. Where the host exposes an ordered model catalogue, resolve `deep` to the strongest model below the orchestrator and resolve `standard` and `fast` to capable lower-cost models. When selection is available but the catalogue has no lower model or exposes no reliable ordering, use the strongest available capable model for `deep` and the cheapest capable model for the other tiers, then record that fallback in the degraded-mode note. Judgement that has to be right the first time stays with the orchestrator: rating, deduplication, deciding what to fix, and writing the fix.
+**Prefer a model below the one running the review for every capability.** A review fans out across many subagents, each reading the same diff, so the cohort rather than any one lens is what a round costs — and a lens reads code and reports what it finds, which a mid-sized model does well. Where the host exposes an ordered model catalogue, resolve `deep` to the strongest model below the orchestrator and resolve `standard` and `fast` to capable lower-cost models. When selection is available but the catalogue has no lower model or exposes no reliable ordering, use the strongest available capable model for `deep` and the cheapest capable model for the other capabilities, then record that fallback in the degraded-mode note. Judgement that has to be right the first time stays with the orchestrator: rating, deduplication, deciding what to fix, and writing the fix.
 
-**Run every reviewer tier as subagents on the host's mid model tier** — Sonnet on a Claude host, the equivalent tier elsewhere — named explicitly, since an unset model inherits the orchestrator's.
+**Run every reviewer capability as a subagent on the host's mid-sized model** — Sonnet on a Claude host, the equivalent elsewhere — named explicitly, since an unset model inherits the orchestrator's.
 
-Where the host exposes no per-subagent model selection, run the tiers as they stand and say so in the degraded-mode note. Name no other model here or in a subagent prompt — a host that renames or replaces the rest of its lineup must not need this file edited.
+Where the host exposes no per-subagent model selection, run the capabilities as they stand and say so in the degraded-mode note. Name no other model here or in a subagent prompt — a host that renames or replaces the rest of its lineup must not need this file edited.
 
 ## Step 1 — Resolve the target
 
@@ -131,8 +131,8 @@ Use a **fast** agent to enumerate the applicable rule file paths, not their cont
 
 ## Step 3 — Run reviewer lenses
 
-**Two greps come first, run by the orchestrator over the target's added lines and handed to every lens as findings already made.** Before reading the diff for anything else, grep its added lines for two shapes and list every
-hit as a finding ahead of all others, with the remedy the rubric names:
+**Three greps come first, run by the orchestrator over the target's added lines and handed to every lens as findings already made.** Before reading the diff for anything else, grep its added lines for three shapes and list
+every hit as a finding ahead of all others, with the remedy the rubric names:
 
 1. **A reader reaching through a table keyed by a model, class or type for a fact about the key**
    — the pattern `[A-Z_]+\[` followed by a model, record, class, `type(` or `cls` expression, as in
@@ -142,12 +142,17 @@ hit as a finding ahead of all others, with the remedy the rubric names:
 2. **A repository-wide fact held as a loose string** — an email address, a street address, a legal
    entity or product name in a string literal outside one typed model in the package every consumer reads. Each hit
    moves onto that model, which every consumer reads.
+3. **A container declared for one member** — `APIRouter(` (or the framework's router constructor)
+   in an added line, followed by a count of the handlers registered on that router in the resulting
+   tree. One handler is a finding whether or not the diff added the router: the handler moves onto
+   the router that already owns its resource, at a path under that resource, and the router and its
+   module go. A prefix ending in a verb or an operation is the same finding read from the URL.
 
-A report that lists no hit for either grep says so in those words.
+A report that lists no hit for any of the three greps says so in those words.
 
 A **Rules** lens runs at every effort level.
 
-| Lens | Tier | What it does |
+| Lens | Capability | What it does |
 |---|---|---|
 | **Rules** | standard | Check every applicable rule against the changed lines and produce a ledger of rule → files checked → violation or clean |
 | **Bugs** | deep | Find correctness, data-loss, security and authz, performance, and user-facing behavior defects, each with a concrete trigger |
@@ -168,7 +173,7 @@ Effort selects the cohort and the validation depth:
 | `max` | 2 | 3 | 2 | 2 | 2 | 2 | 2 | Three **deep** refuters per finding, majority rules |
 | `ultra` | 2 | 3 | 2 | 2 | 2 | 2 | 2 | Three **deep** refuters per finding, majority rules |
 
-At `low` and `medium` the lenses may run inline in a single pass, and depth on the riskiest changed files beats exhaustive coverage of trivial ones. From `high` upward, launch one distinct subagent per lens in parallel; capacity limits force batching, never omission and never an undeclared local skim. When the host has no subagent capability, run the lenses sequentially and report that degraded mode.
+At `low` and `medium` the lenses may run inline in a single pass, and depth on the riskiest changed files beats exhaustive coverage of trivial ones. From `high` upward, launch one distinct subagent per lens in parallel; capacity limits force batching, never omission and never an undeclared local skim. When the host has no subagent dispatch, run the lenses sequentially and report that degraded mode.
 
 `ultra` runs the `max` cohort repeatedly, stopping only after two consecutive rounds surface no new confirmed finding. Every other level runs its cohort once.
 
@@ -178,7 +183,7 @@ A confirmed finding from a lens resets its counter to zero, so a lens that goes 
 
 Name the retired lenses and their round counts in the report, so a reader can tell a lens that found nothing twice from one that never ran. Persist the counters with the logical review's receipts. A new target or an invocation unrelated to the active fix loop starts every lens at zero; a follow-up invocation required by fixes to the same target does not.
 
-The **Security** lens does not carry its own rubric: give it the `security-audit` skill and have it read that skill's complete core principles and attack-class catalogue for the current target, so the two stay one source of truth. Borrow the *rubric*, not the *workflow* — do not run the audit skill's engagement phases, write its findings files or report artifacts, or apply its remediation-approval gate. This lens applies the canonical rubric to the review scope and returns ordinary review findings.
+The **Security** lens does not carry its own rubric: give it the `security-audit` skill and have it read that skill's complete core principles and attack-class catalogue for the current target, so the two stay one source of truth. Borrow the *rubric*, not the *workflow* — do not run the audit skill's own phases, write its findings files or report artifacts, or apply its remediation-approval gate. This lens applies the canonical rubric to the review scope and returns ordinary review findings.
 
 The **Simplification** lens does not carry its own rubric: dispatch it to the `code-simplify` agent, whose `references/rubric.md` is the complete rubric, so the two stay one source of truth rather than two drifting copies. Give it the same target, and one instruction this skill adds — `code-simplify` resolves a scope to the diff *plus* whole files *plus* sibling modules, and it should keep reading all three, but every finding it returns must still anchor to a line this target added or removed. Reading a sibling is how it sees that a new module is misnamed, sits in a package that does not own it, or models a value the codebase already models another way; unrelated sibling debt is not this review's finding. However, related behavior left behind by a newly introduced or promoted owner is an incomplete ownership move: anchor the finding to the new boundary, and include the unchanged implementations and consumers needed to complete it.
 
@@ -280,7 +285,7 @@ Lenses: <completed lens names>. Head: <reviewed SHA>. Rules: <ledger summary>.
 
 The outcome arrow appears only in fix mode. If nothing remains, the list is the single line
 `No findings.` and the two closing lines stay. In degraded mode, add one line stating that no
-subagent capability was available.
+subagent dispatch was available.
 
 ## Constraints
 

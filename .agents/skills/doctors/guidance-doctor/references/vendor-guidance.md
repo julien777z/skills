@@ -61,4 +61,4 @@ resume, clear, compact, and fork.
   the metadata before adding code; keep each skill to one job; prefer instructions over scripts
   unless behaviour must be deterministic.
 - Evaluate before documenting: at least three scenarios and a no-skill baseline, tested on the
-  lower-tier models as well as the strongest.
+  weaker models as well as the strongest.

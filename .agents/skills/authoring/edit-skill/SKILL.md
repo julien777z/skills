@@ -60,6 +60,12 @@ outcome, because silence reads as the guidance having been fixed.
      read what the candidate already says about that subject, and put the change where a reader
      doing that work will meet it, at the breadth step 5 asks for. Never ask which file; the search
      is this skill's job.
+   - **A violated instruction is evidence of an unresolved guidance gap.** Never close the edit as
+     already covered merely because existing guidance forbids the failure. Find why that guidance
+     did not control the run — its trigger, dependency, sequence, enforcement, visibility, or
+     wording — and strengthen the owning guidance or workflow so the same path cannot bypass it.
+     When the owning skill was not invoked, harden its frontmatter description first; body text
+     cannot control a run that never loads the skill.
    - **When no existing rule or skill governs the subject, propose a new one and ask before
      creating it.** State the recommended name and, in at most three sentences, what it would say
      and what it would change, with the question tool; create it only on a yes. An existing file
@@ -103,7 +109,7 @@ outcome, because silence reads as the guidance having been fixed.
    - **Stable guidance:** Write at the broadest scope that remains truthful. Describe reusable roles, boundaries, and decision criteria generically even in repository-focused guidance when the pattern is not repository-specific. Keep concrete repository names only when correctness depends on that local contract, and never turn one local example into an untrue universal rule.
    - **Prefer the broad statement, and let the request be its example.** A request arrives as one symptom, and the rule it needs names the class that symptom belongs to; the symptom stays as one illustration of it. Asked for `Final` on string constants, write `Final` for every module-level constant; asked for a walkthrough rule because a page reloaded in a loop once a back-end change was absent, write that the run is judged against intended behaviour because an API error surfaces as any unintended behaviour, and name the loop only as one instance. A rule written for the symptom is silent on the next one, and the next one is what it will be read for. Broaden to the class the user plainly meant, never to a neighbouring subject.
    - Keep reusable skill names, instructions, scripts, and interfaces model-agnostic. Name a client or model only in a scoped compatibility section where its behavior genuinely differs.
-   - **A model the user names is written as a tier, with that model as one host's example.** "Use Sonnet agents" becomes "the host's mid tier — Sonnet on a Claude host, the equivalent tier elsewhere"; a request for the largest or smallest model is written the same way. The tier a skill's subagent runs on is stated in that skill's text, at the point it launches the subagent, never in a per-agent model override file.
+   - **A model the user names is written as a capability, with that model as one host's example.** "Use Sonnet agents" becomes "the host's mid-sized model — Sonnet on a Claude host, the equivalent elsewhere"; a request for the largest or smallest model is written the same way. The model a skill's subagent runs on is stated in that skill's text, at the point it launches the subagent, never in a per-agent model override file.
    - **Refer to a skill, and to anything inside it, by the skill's name, never by path.** `the `code-simplify` skill's rubric reference` is right; a relative path into another skill's directory is wrong, because the directories move between repositories and user-level roots and the name is the only stable handle.
    - Declare every invoked skill by canonical skill name in a near-top `## Dependencies` section of the owning `SKILL.md`. That section lists skills only, never tools, plugins, scripts, references, assets, executables, or filesystem paths.
    - Invoke dependent skills only from the owning `SKILL.md`. References and other supporting files are passive and must not invoke skills or identify dependencies through relative paths to another `SKILL.md`.
@@ -173,10 +179,13 @@ outcome, because silence reads as the guidance having been fixed.
       files (and a mirror the rename exception in step 4 covers) and open a pull request carrying
       nothing else. None of that waits to be asked: the decision was made when the edit was
       requested, and a pull request left open keeps every later session working from the guidance
-      this change replaced. A source fix required by step 3 is a separate change on its own branch;
-      the two never share a pull request, because one is authorized to merge and the other is not.
-   2. **Run `validate_sources.py`**, which sits under `scripts/` beside this skill, before the pull
-      request opens, and again before it merges when the branch changed since. Nothing on a pull request runs the sync: the workflow
+      this change replaced. A source fix required by step 3 never shares this pull request, because
+      one is authorized to merge and the other is not. It goes where the GitHub rules send any
+      encountered fix — into the change already in flight when one is open, and onto a branch off
+      the freshly fetched default only when nothing is — so carving the configuration out never
+      costs the source fix a third branch of its own.
+   2. **Run `validate_sources.py`**, which sits under `scripts/` beside this skill, before the pull request opens, and again before it
+      merges when the branch changed since. Nothing on a pull request runs the sync: the workflow
       runs on the default branch after the merge, so a file it refuses is refused once every session
       is already reading it. The script installs the sync tool at the revision the workflow pins and
       mirrors the canonical tree into a scratch copy, so what it refuses is exactly what the workflow

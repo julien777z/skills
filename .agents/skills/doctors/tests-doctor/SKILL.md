@@ -21,7 +21,7 @@ this doctor makes and are never restated here.
 
 ## Inventory
 
-Discover at runtime: source roots and test roots; the groupings the runner distinguishes; each suite,
+Discover at runtime: source roots and test roots; the classifications the runner distinguishes; each suite,
 the ownership boundary it belongs to, and the source it mirrors; where each suite keeps fixtures,
 factories, helpers, and shared cases; markers, skip and xfail marks, and commented-out tests; the
 runner's targets and the CI jobs that run tests; every double — each `patch`, `patch.object`, and
@@ -81,12 +81,13 @@ mechanical check that finds every instance rather than the first one noticed:
   keep only definitions outside a class), or a domain fixture defined in `conftest.py`;
 - a test module that mirrors no source module or package. The check is a table and the table is
   the report: one row per `test_<name>.py` with five columns — its path; the source directory it
-  resolves to after the test root, the suite, and the tier are stripped; whether `<name>.py` exists
-  there; whether a package `<name>/` exists there; whether the module's own directory is named for a
-  source module beside it. Three noes make the row a finding, and nothing the module contains
-  overturns that: a module that sweeps every route of a package, drives requests across several
-  modules, or tests a concern rather than a file has still claimed a source module that does not
-  exist. `routes/test_pagination_bounds.py` with no `routes/pagination_bounds.py` is that finding.
+  resolves to after the test root, the suite, and the classification are stripped; whether
+  `<name>.py` exists there; whether a package `<name>/` exists there; whether the module's own
+  directory is named for a source module beside it. Three noes make the row a finding, and nothing
+  the module contains overturns that: a module that sweeps every route of a package, drives
+  requests across several modules, or tests a concern rather than a file has still claimed a
+  source module that does not exist. `routes/test_pagination_bounds.py` with no
+  `routes/pagination_bounds.py` is that finding.
   It moves under the source module it covers, as a behaviour module in a directory named for that
   module, or is named for the package it sweeps beside that package (`test_routes.py` next to
   `routes/`, for the sweep above);
@@ -103,13 +104,14 @@ mechanical check that finds every instance rather than the first one noticed:
   reach its files;
 - shared support at a different depth from the siblings, or a helper module named for a catch-all;
 - a module at a suite root whose subject is one source module inside a subpackage, when a
-  directory in this suite carries that subpackage's name or the tier's sibling suites nest their
-  modules by it (list every suite-root module in a table: its subject — the source module its
-  imports name, or, for a test that drives a request, the route and service module that request
-  reaches, read from the route table — that module's subpackage, whether this suite has a
-  directory of that name, whether a sibling suite of the tier nests modules under it; report every
-  row): a row with either yes is misplaced and belongs in that directory under the source module's
-  own name; a flow that deliberately spans several source modules stays at the shared owner;
+  directory in this suite carries that subpackage's name or the classification's sibling suites
+  nest their modules by it (list every suite-root module in a table: its subject — the source
+  module its imports name, or, for a test that drives a request, the route and service module
+  that request reaches, read from the route table — that module's subpackage, whether this suite
+  has a directory of that name, whether a sibling suite of the classification nests modules under
+  it; report every row): a row with either yes is misplaced and belongs in that directory under
+  the source module's own name; a flow that deliberately spans several source modules stays at the
+  shared owner;
 - a module named for one source file whose imports cover another (for each module, list the
   source modules it imports and compare them with the source file its name claims): it is
   misnamed, or it duplicates the module that already covers that source, and a test class name
@@ -201,7 +203,7 @@ a synonym for the thing — where the concrete thing it provides or lacks would 
 renamed for that thing.
 
 A test class is named for its module and nothing else, so an article, a verb phrase, or a synonym
-inside a class name (`TestEngagingAContractor` in `test_contractors.py`) is a finding renamed to the
+inside a class name (`TestAddingAContractor` in `test_contractors.py`) is a finding renamed to the
 module's name (`TestContractors`). A helper that builds a model in a suite's `utils/` or `fixtures/`
 package is named `create_<shape>` (list every module-level `def` in those packages whose return type
 is a model, with its name; report every row): a bare noun (`flag`), a mechanics prefix

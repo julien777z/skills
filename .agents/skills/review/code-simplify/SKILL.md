@@ -19,7 +19,7 @@ This skill does not stop at review: **apply the simplifications you identify dir
 
 **Use subagents for scopes that benefit from independent review.** Fan out when the scope is large enough to partition into two or more coherent slices, or when relationships across multiple subsystems materially benefit from a separate cross-cutting review. Partition by app, service, or package rather than arbitrary file counts, and give every reviewer the same complete rubric over its slice. When an introduced subsystem, runtime boundary, or independent consumer has analogues whose complete implementations will not fit comfortably in one review context, add one read-only cross-cutting reviewer to compare their ownership and duplication while slice reviewers cover their own areas. Skip that reviewer when one reviewer can hold the complete change and every analogous implementation at once.
 
-**Subagents run on the host's mid tier** — Sonnet on a Claude host, the equivalent tier elsewhere — named explicitly, since an unset model inherits the orchestrator's.
+**Subagents run on the host's mid-sized model** — Sonnet on a Claude host, the equivalent elsewhere — named explicitly, since an unset model inherits the orchestrator's.
 
 **Subagents review; the parent applies.** When subagents are warranted, every subagent returns findings — each anchored to a path and line, with the restructuring it proposes — and edits nothing. Concurrent writers on one tree produce conflicts and half-applied restructurings, and one applier is what keeps the result a single coherent change. The parent resolves the returned findings, drops any that another slice's finding subsumes, applies the survivors itself, and remains answerable for the approval bar.
 
@@ -34,8 +34,8 @@ first thing a reviewer must ignore.
 
 ## Scope
 
-**Two greps come first.** Before reading the diff for anything else, grep its added lines for two shapes and list every
-hit as a finding ahead of all others, with the remedy the rubric names:
+**Four greps come first.** Before reading the diff for anything else, grep its added lines for four shapes and list
+every hit as a finding ahead of all others, with the remedy the rubric names:
 
 1. **A reader reaching through a table keyed by a model, class or type for a fact about the key**
    — the pattern `[A-Z_]+\[` followed by a model, record, class, `type(` or `cls` expression, as in
@@ -45,8 +45,21 @@ hit as a finding ahead of all others, with the remedy the rubric names:
 2. **A repository-wide fact held as a loose string** — an email address, a street address, a legal
    entity or product name in a string literal outside one typed model in the package every consumer reads. Each hit
    moves onto that model, which every consumer reads.
+3. **A container declared for one member** — the pattern `APIRouter(` (or the framework's router
+   constructor) in an added line, followed by a count of the handlers registered on that router in
+   the resulting tree. One handler is a finding whether or not the diff added the router, and it is
+   the rubric's one-symbol module wearing a decorator: the handler moves onto the router that already
+   owns its resource, at a path under that resource, and the router and its module go. A prefix
+   ending in a verb or an operation — `/request`, `/remind`, `/export` — is the same finding read
+   from the URL.
+4. **A data-holding class declared outside model ownership** — every added `BaseModel`, dataclass,
+   named tuple, or equivalent record declared outside a `models.py` file or `models/` package. Move
+   it to a concept-specific model module. Only a Pydantic `BaseSettings` class is configuration and
+   belongs in `config.py` or `config/`; registries, manifests, policies, provider payloads, and
+   response schemas remain models. Never move a model into operational code merely to eliminate a
+   one-symbol declarative module.
 
-A report that lists no hit for either grep says so in those words.
+A report that lists no hit for any of the four greps says so in those words.
 
 **What a scope contains.** A scope is never the diff hunks alone. Resolving any scope — the pre-push merge-base diff or one a caller names — yields three things: the **diff** itself, the **full contents of every file it touches**, and the **sibling modules in those files' packages**. Hunks show what changed; the whole file shows what the change now sits inside; the siblings show where the logic should have lived. A code-judo move is usually only visible in the third, and `references/rubric.md` applies to everything the scope resolves to, not only to lines the diff added.
 
@@ -85,7 +98,8 @@ flattened, or merged. A new module reported without its count is an unreviewed m
 For every new enum, constant set, mapping, alias, or model, report the member names or keys you
 searched the repository for — the members themselves, never the declaration's own name — and every
 existing declaration found holding any of them, or the enum modules and packages searched and found
-without one. For every module-level assignment the diff adds, quote the line and state whether it
+without one. For every new model, also report its model-owned path or flag its placement. For every
+module-level assignment the diff adds, quote the line and state whether it
 carries a type. A declaration reported without that search, or an assignment reported without its
 type, is an unreviewed declaration.
 
