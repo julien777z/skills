@@ -19,6 +19,16 @@ a code change is tested: against the case that motivated it, with the change and
   says so.
 - A new skill has no original to run against. Its control runs carry no skill text at all, which
   shows what the skill adds over the model alone.
+- **An edit that only substitutes a term does not run at all, and its pull request merges on the
+  reading.** Where every changed line is the sentence it replaces with one word swapped for another
+  — a banned term renamed, a spelling standardised — the text asks a reader for exactly what it
+  asked before. There is no behavioural claim to test, and the bar below needs a control run to
+  miss, which no such edit can produce. Running it regardless holds the change behind a result it
+  can never get, which is how a rename that every later session is waiting on sits unmerged.
+- Recognise one from the diff rather than from how it is described: read each changed line against
+  the line it replaces and confirm the instruction is identical but for the term. A line that also
+  gains, loses, sharpens or reorders an instruction is an ordinary edit, and the whole edit is
+  smoke-tested.
 - `skill-gauntlet` asks whether a skill is worth keeping; this skill asks whether one edit does
   what it was made for. Neither replaces the other.
 
@@ -26,8 +36,9 @@ a code change is tested: against the case that motivated it, with the change and
 
 1. **Name the miss.** State in one sentence what a reader did wrong before the edit, from the
    evidence that prompted it: a review that reported a symptom and not the shape behind it, a
-   walkthrough that skipped a check, a plan that stopped a step early. A pure rewording has no
-   miss; say so and still run the scenario, because the rewording may have lost what worked.
+   walkthrough that skipped a check, a plan that stopped a step early. A rewording that keeps every
+   instruction has no miss; say so and still run the scenario, because the rewording may have lost
+   what worked. An edit that only substitutes a term never reaches this step, per **When It Runs**.
 2. **Rebuild the scenario** as something a reviewer can read with none of this conversation: for a
    review skill, a diff plus a checkout at the commit where the miss happened; for a walkthrough
    skill, the page and the change; for a planning skill, the task as it was given. Put it in a
