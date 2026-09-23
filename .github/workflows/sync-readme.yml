@@ -1,0 +1,38 @@
+name: Sync README
+
+on:
+  workflow_run:
+    workflows: ["Agent Sync"]
+    types: [completed]
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - ".agents/skills/**"
+      - "README.md"
+      - ".github/scripts/render_readme_skills.py"
+      - ".github/workflows/sync-readme.yml"
+
+concurrency:
+  group: sync-readme-${{ github.event.workflow_run.head_branch || github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    name: Render the skill listing
+    runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_branch || github.ref }}
+
+      - name: Check the listing matches the skills
+        if: github.event_name == 'pull_request'
+        run: python3 .github/scripts/render_readme_skills.py --check
+
+      - name: Render and commit the listing
+        if: github.event_name != 'pull_request'
+        run: python3 .github/scripts/render_readme_skills.py --commit-to "${{ github.event.workflow_run.head_branch || github.ref_name }}"
