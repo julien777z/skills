@@ -1,0 +1,139 @@
+{
+  "terms": [
+    {
+      "term": "administrator",
+      "variants": [
+        "administrators",
+        "administered",
+        "administration"
+      ],
+      "applies_to": "any identifier, docstring, comment, test name, or route segment",
+      "use_instead": "\"admin\" — `Admins`, `is_admin`, `assert_admin`, `/admin/...`.",
+      "why": "The long form buys no clarity over the word everyone already says, and it drifts: one file spells it out while its neighbour abbreviates, so neither name is searchable."
+    },
+    {
+      "term": "best effort",
+      "applies_to": "identifiers, docstrings, comments, test names",
+      "use_instead": "State the real contract. A function that swallows failures and reports the outcome is `try_<verb>` (for example `try_send_email`), documented as returning whether it succeeded.",
+      "why": "\"Best effort\" names an intention rather than a behavior, so the caller cannot tell whether failure raises, returns, or is silent."
+    },
+    {
+      "term": "currency",
+      "variants": [
+        "currencies"
+      ],
+      "applies_to": "a database, schema, cache, or record being up to date — identifiers, docstrings, comments, and test names. Money keeps the word.",
+      "use_instead": "Say which side you mean. Something lacking what it should have is \"behind\": `database_is_behind`, `services_behind_this_code`, `ServicesBehindReport`. Something that has it is \"current\": `current_revision`, `is_current`.",
+      "why": "A currency is money. Reusing it for freshness makes a payment field and a staleness check read as the same subject, so a reader has to reach the surrounding code before knowing which one a name means.",
+      "rejected_replacements": [
+        {
+          "replacement": "Banning \"current\" along with it",
+          "why": "\"current\" is the adjective the misuse was built from, not a form of the banned noun. It is the right word for the revision a database is actually at, and `get_current_revision` is the migration runner's own vocabulary."
+        }
+      ]
+    },
+    {
+      "term": "engage",
+      "variants": [
+        "engages",
+        "engaged",
+        "engaging",
+        "engagement",
+        "engagements"
+      ],
+      "applies_to": "repository-owned identifiers, docstrings, comments, test names, interface copy, and the rules and skills agents read, but not a legal document's defined terms, which are a drafting decision rather than a name",
+      "use_instead": "Say what happens. A party \"pays\" another, \"adds\" one, or \"works with\" one; the row linking two parties is named for what it records; a mechanism \"applies\", \"takes effect\", or \"fires\".",
+      "why": "It names no action a reader can picture: the same word covers hiring somebody, paying them, and a mechanism switching on. On a control it reads as a formality rather than the thing the control does, so the reader cannot tell what clicking it will change."
+    },
+    {
+      "term": "ensure",
+      "applies_to": "any identifier",
+      "use_instead": "Say which of the three things it does: a guard that raises is `assert_<condition>`, a create-if-missing is `upsert_<noun>` or `create_<noun>`, a start-if-stopped is `start_<thing>`.",
+      "why": "One word reads the same for all three, so the caller cannot tell whether it returns a value, raises, or has a side effect."
+    },
+    {
+      "term": "holder",
+      "applies_to": "a model or object that carries a field",
+      "use_instead": "Name it for the thing it models, such as `ApiCredential`, `StateRecord`, or `AliasSet`.",
+      "why": "Every object holds something, so the word distinguishes nothing."
+    },
+    {
+      "term": "lease",
+      "variants": [
+        "leased"
+      ],
+      "applies_to": "work handed to a worker",
+      "use_instead": "`claim`, `claimed_job`, or `ClaimedJob`. Reserve \"lock\" for lock ownership and expiry.",
+      "why": "\"Lease\" blurs the handoff with the lock that protects it."
+    },
+    {
+      "term": "require",
+      "variants": [
+        "required",
+        "requires",
+        "requirement"
+      ],
+      "applies_to": "a guard that raises when a condition does not hold — identifiers, docstrings, comments, test names",
+      "use_instead": "\"assert\" — `assert_<condition>`, naming the invariant the call site depends on: `assert_membership`, `assert_owner`, `assert_member_has_role`, `assert_access_level`.",
+      "why": "A guard and the thing it guards read the same when both say \"require\", so a call site states a wish rather than a condition. \"assert\" says the check happens here and refusal stops the caller.",
+      "rejected_replacements": [
+        {
+          "replacement": "Renaming an error code's \"_REQUIRED\" suffix to \"_ASSERTED\"",
+          "why": "There the word is an adjective for an unmet precondition, not a guard. Name the state instead: `NOT_A_MEMBER`, `ORGANIZATION_CONTEXT_MISSING`."
+        }
+      ]
+    },
+    {
+      "term": "seed",
+      "variants": [
+        "seeds",
+        "seeding"
+      ],
+      "applies_to": "test data and sample records",
+      "use_instead": "Name the helper for what it builds: a `<noun>_*_factory` fixture, `create_*`, or \"sample data\".",
+      "why": "Setup data is not a seed, and the word hides whether the helper builds, persists, or both."
+    },
+    {
+      "term": "settled",
+      "applies_to": "a status or record that has stopped changing",
+      "use_instead": "\"final\": `is_final`, `final_status`, `finalize_*`.",
+      "why": "Money genuinely settles, so keep the word for payment settlement and nowhere else.",
+      "rejected_replacements": [
+        {
+          "replacement": "terminal",
+          "why": "State-machine jargon a reader has to translate."
+        }
+      ],
+      "variants": [
+        "unsettled",
+        "settle"
+      ]
+    },
+    {
+      "term": "standing",
+      "applies_to": "a subject's current state in some process",
+      "use_instead": "Name the thing the model actually carries. A model holding a count and a timestamp is `*Attempts`; one holding an outcome is `*Status` or `*Result`.",
+      "why": "\"Standing\" reads as a rank or reputation, which is never what these carry."
+    },
+    {
+      "term": "tier",
+      "variants": [
+        "tiers",
+        "tiered",
+        "tiering"
+      ],
+      "applies_to": "repository-owned identifiers, docstrings, comments, test names, file and directory names, and the rules and skills agents read",
+      "use_instead": "Name the thing the word stood for. A group of tests is a \"suite\", or just \"tests\". An access or verification rank is a \"level\". A model is \"stronger\" or \"weaker\", or has more or less \"capability\". A subscription is a \"plan\", and stacked z-indexes are \"bands\".",
+      "why": "One word covered the test suites, a caller's access level, a model's capability and a billing plan, so a reader met it in four unrelated places and could not tell which one it meant."
+    },
+    {
+      "term": "validate",
+      "applies_to": "a permission, authorization, or access guard — never input validation",
+      "use_instead": "`assert_<condition>` for anything gating access: `assert_admin`, `assert_organization_admin`, `assert_revocable_key`. The call site then reads as the condition that must hold, and the weight of the word matches what refusal costs the caller.",
+      "why": "Checking who may do something is not the same act as checking whether a value is well formed, and one word for both makes a permission gate read like a format check. \"validate\" stays correct for input: a pydantic validator, a bounds check on a request field, a payload parsed into a model.",
+      "rejected_replacements": [
+        "Banning \"validate\" outright. It is the right word for input validation, and renaming every field and model validator to assert_ made guards of things that only clean a value."
+      ]
+    }
+  ]
+}
