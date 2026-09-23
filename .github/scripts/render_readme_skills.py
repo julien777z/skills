@@ -29,7 +29,7 @@ class Skill(NamedTuple):
 
 
 def parse_front_matter(path: Path) -> dict[str, str]:
-    """Read a skill's flat front matter into a mapping."""
+    """Read a skill's top-level front-matter keys into a mapping."""
 
     lines = path.read_text(encoding="utf-8").splitlines()
 
@@ -44,6 +44,10 @@ def parse_front_matter(path: Path) -> dict[str, str]:
     front_matter: dict[str, str] = {}
 
     for line in lines[1:closing]:
+        # An indented line belongs to the mapping above it, which the listing never reads.
+        if line[:1].isspace():
+            continue
+
         match = FRONT_MATTER_KEY_PATTERN.match(line)
 
         if match is None:
