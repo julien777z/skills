@@ -13,7 +13,7 @@ Carry a Roblox game request through implementation, visual polish, real playtest
 - First establish the workspace, intended place/experience, signed-in owner, existing source/art, and any explicitly excluded games. For a new game, create a genuinely new place. For an update, work against the verified intended place. Never use a similarly named recent place as proof of identity.
 - Record the place ID, universe ID, owner, local file, source/build paths, and current verification status in the workspace. Preserve this state across long runs.
 - Use authorization already supplied in the task. Publishing, paid assets, account changes, and computer-control fallbacks must remain within that authorization and the active tool policies. Do the reviewable work before any genuinely necessary final approval. Do not add a blanket approval gate for ordinary edits, fixes, imports, or tests.
-- If the Mac locks or a platform action is unavailable, continue useful source, asset, and test work. Identify the concrete remaining dependency; never bypass the lock or describe an attempted publication as completed.
+- A locked host can block its viewer without blocking the VM. Check authorized guest MCP or [direct guest control](references/isolated-testing.md#direct-guest-control) before asking for an unlock. Never bypass either machine's lock; distinguish a failed viewer from unavailable guest access.
 
 Apply [roblox-gameplay](../roblox-gameplay/SKILL.md) whenever actively modifying a game so the affected loop remains understandable, rewarding, and fun within the authorized scope.
 

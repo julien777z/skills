@@ -97,6 +97,41 @@ MCP helpers use `ROBLOX_ALLOW_HOST_STUDIO=1` to enable this deliberate single-wi
 choice; do not set it speculatively to bypass the default isolation guard. Multiplayer
 launches remain in the isolated runner.
 
+## Direct guest control
+
+Host Screen Sharing, guest SSH, and guest input are separate capabilities. When the host viewer
+is unavailable, first check whether the retained VM is running and SSH still reaches its normal
+signed-in desktop. Prefer guest MCP for supported Studio actions. When the active tool policy and
+user authorization permit direct guest input, an existing guest-native helper can operate the
+published Roblox player over SSH without opening a host viewer. Otherwise use the permitted
+hidden viewer or Screen Sharing path; do not infer that the VM needs rebuilding or new Roblox login.
+
+Before relying on direct control, take a fresh capture, click a real visible button, hold and release
+a movement key briefly, then capture the result. Permission checks and screenshots alone do not
+qualify input: include this active test in the plan and execute it before calling control usable.
+Verify the intended application, account, and place. Keep input and
+capture entirely inside the VM, retain the shared desktop lock, and release every held key/button.
+A helper should refuse host execution, target a verified process/window, confirm foreground focus
+before input, and bound key holds. Check existing guest Accessibility and Screen Recording access;
+use normal guest permission/login UI when required, never disable authentication or edit privacy
+databases. SSH access alone does not establish UI permission or an unlocked guest.
+
+For a macOS helper using CoreGraphics input and window capture, capture the target window with
+`screencapture -x -o -l <window-id> <path>`: `-o` removes shadow padding. Map coordinates from the
+actual PNG dimensions to that same window's `CGWindowBounds`, including its origin and Retina
+scale. A shadow-padded capture caused a plausible click to miss in the September 2026 qualification;
+shadow-free capture corrected it. Recapture after resizing, navigation, or process replacement.
+Do not reuse coordinates from a resized image without converting them back to its source dimensions.
+A main-window capture can omit a separate save or permission dialog. If input appears ineffective,
+inspect the guest window inventory or capture the guest desktop before retrying; never substitute
+a host-desktop capture.
+
+The September 2026 retained macOS VM qualification verified published-client launch, button clicks,
+walking, interaction, and captures through SSH with no host viewer. This proves a control path that
+does not use host UI; it does **not** prove behavior during host lock or sleep unless those conditions
+were observed separately. Input qualification also does not establish clean mesh rendering: record
+visible rendering defects separately. Record those limits and current versions in untracked run evidence.
+
 ## Authentication and user handoff
 
 Treat viewer authentication, guest macOS login/unlock, and Roblox account sign-in as separate steps.
