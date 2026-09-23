@@ -1,0 +1,1 @@
+../../../../skills/workspace/manage-mcps/SKILL.md

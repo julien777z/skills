@@ -1,0 +1,1 @@
+../../../../skills/doctors/guidance-doctor/SKILL.md

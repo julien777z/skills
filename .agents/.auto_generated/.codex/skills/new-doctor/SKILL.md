@@ -1,0 +1,1 @@
+../../../../skills/doctors/new-doctor/SKILL.md

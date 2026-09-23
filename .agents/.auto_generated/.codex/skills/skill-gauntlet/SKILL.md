@@ -1,0 +1,1 @@
+../../../../skills/authoring/skill-gauntlet/SKILL.md
