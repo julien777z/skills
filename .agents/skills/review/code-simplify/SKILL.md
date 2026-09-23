@@ -63,8 +63,15 @@ A report that lists no hit for any of the four greps says so in those words.
 
 **What a scope contains.** A scope is never the diff hunks alone. Resolving any scope — the pre-push merge-base diff or one a caller names — yields three things: the **diff** itself, the **full contents of every file it touches**, and the **sibling modules in those files' packages**. Hunks show what changed; the whole file shows what the change now sits inside; the siblings show where the logic should have lived. A code-judo move is usually only visible in the third, and `references/rubric.md` applies to everything the scope resolves to, not only to lines the diff added.
 
+**The scope says what must be read, never what may be reported.** It is a floor on the reading, so a
+reviewer who read less than it resolves to has not finished; it is not a boundary a finding has to
+sit inside. A defect that reading leads to outside those three things — in another package, in a file
+the diff never opened — is a finding like any other, and the reviewer who saw it is the one who fixes
+it.
+
 The rubric's reuse, ownership and deletions section says what to search for across the resolved scope,
-and what holds a finding back.
+and what holds a finding back; its section on dispositions says what may never hold one back, where
+the finding lives among them.
 
 When run as the pre-push pass (for example from the Stop hook), start from the **same diff as code-review's local / pre-push mode**: `git diff $(git merge-base <base> HEAD)` plus any untracked files the branch adds, where `<base>` is the repository's remote default branch (for example `origin/main` — use the actual default branch name; fall back to the local default branch if no remote is configured). This covers branch commits and uncommitted working-tree changes without unrelated upstream commits. Then resolve it into the three things above.
 
@@ -103,11 +110,12 @@ module-level assignment the diff adds, quote the line and state whether it
 carries a type. A declaration reported without that search, or an assignment reported without its
 type, is an unreviewed declaration.
 
-Prioritize findings in this order:
+Prioritize findings by what kind of problem each is, in this order. Where a finding sits does not
+depend on whether the diff introduced it: a pre-existing structural problem is a structural problem.
 
-1. Structural code-quality regressions
+1. Structural code-quality problems
 2. Missed opportunities for dramatic simplification / code-judo restructuring
-3. Spaghetti / branching complexity increases
+3. Spaghetti / branching complexity
 4. Boundary / abstraction / type-contract problems that make the code harder to reason about
 5. File-size and decomposition concerns
 6. Modularity and abstraction issues

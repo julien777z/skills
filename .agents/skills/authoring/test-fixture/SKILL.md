@@ -1,6 +1,6 @@
 ---
 name: test-fixture
-description: Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Enforces source-mirrored placement, canonical fixtures, concise parametrized cases, honest doubles, and regression-proof validation.
+description: Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Rejects hard-coded domain test data when a canonical fixture or factory owns it, and enforces source-mirrored placement, concise parametrized cases, honest doubles, and regression-proof validation.
 ---
 
 # Test Fixture
@@ -31,10 +31,12 @@ tracing a test surface is; without one, fix what the focused pass can finish.
    process cannot cross or faults the real path cannot produce, using the shallowest declared seam.
 6. Before completion, inspect every literal added or changed in tests and test support.
    Replace domain data, sample identities, addresses, names, identifiers, payload fields, and fixture
-   facts with values read from the canonical fixture or factory. Keep a literal only when the rubric
-   admits it. In a review, report the disposition of every changed literal family, including allowed
-   protocol, parametrized-case, and ownerless local-control values. A review is incomplete until each
-   family is listed with one of the rubric's dispositions, even when that disposition permits it.
+   facts with values read from the canonical fixture or factory. A provider request or response body
+   remains domain data even when it is an expected value, so build it from that owner rather than
+   writing it inline. Keep a literal only when the rubric admits it. In a review, report the
+   disposition of every changed literal family, including allowed protocol, parametrized-case, and
+   ownerless local-control values. A review is incomplete until each family is listed with one of the
+   rubric's dispositions, even when that disposition permits it.
 7. Prove every distinct new behavioral guarantee through the mutation workflow below, restore the
    exact baseline, and run the affected repository targets once on the completed tree.
 

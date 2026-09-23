@@ -96,7 +96,7 @@ outcome, because silence reads as the guidance having been fixed.
      where the repository sorts its skills into folders; the folders group the source and never
      change the name a skill installs under.
    - Never read or write `.cursor/*`, `.claude/*`, `.codex/*`, or any other non-`.agents` agent or provider folder.
-   - Do not manually create, update, or sync mirrored command/skill/rule files in those folders; repository automation propagates changes from `.agents` to Cursor, Claude, Codex, and similar targets. The one exception is a mirror the same change would leave pointing at a path it renames or deletes — a per-skill symlink into a directory the change moves — which is renamed in the same change so the branch never carries a dangling link.
+   - Do not manually create, update, or sync mirrored command/skill/rule files in those folders; repository automation propagates changes from `.agents` to Cursor, Claude, Codex, and similar targets. This holds with no exception, including where the change leaves a mirror pointing at a path it renames or deletes: the workflow reconciles those on the default branch, and a branch carrying a stale or broken one meanwhile is expected.
    - This path restriction applies to the agent-content update, not to source changes required to fix an underlying issue from step 3.
 
 5. Upsert behavior.
@@ -109,12 +109,13 @@ outcome, because silence reads as the guidance having been fixed.
    - **Stable guidance:** Write at the broadest scope that remains truthful. Describe reusable roles, boundaries, and decision criteria generically even in repository-focused guidance when the pattern is not repository-specific. Keep concrete repository names only when correctness depends on that local contract, and never turn one local example into an untrue universal rule.
    - **Prefer the broad statement, and let the request be its example.** A request arrives as one symptom, and the rule it needs names the class that symptom belongs to; the symptom stays as one illustration of it. Asked for `Final` on string constants, write `Final` for every module-level constant; asked for a walkthrough rule because a page reloaded in a loop once a back-end change was absent, write that the run is judged against intended behaviour because an API error surfaces as any unintended behaviour, and name the loop only as one instance. A rule written for the symptom is silent on the next one, and the next one is what it will be read for. Broaden to the class the user plainly meant, never to a neighbouring subject.
    - Keep reusable skill names, instructions, scripts, and interfaces model-agnostic. Name a client or model only in a scoped compatibility section where its behavior genuinely differs.
-   - **A model the user names is written as a capability, with that model as one host's example.** "Use Sonnet agents" becomes "the host's mid-sized model — Sonnet on a Claude host, the equivalent elsewhere"; a request for the largest or smallest model is written the same way. The model a skill's subagent runs on is stated in that skill's text, at the point it launches the subagent, never in a per-agent model override file.
+   - Do not add committed tests for skills or their helper scripts, inside or outside the skill directory. Keep any needed execution checks temporary and untracked.
    - **Refer to a skill, and to anything inside it, by the skill's name, never by path.** `the `code-simplify` skill's rubric reference` is right; a relative path into another skill's directory is wrong, because the directories move between repositories and user-level roots and the name is the only stable handle.
    - Declare every invoked skill by canonical skill name in a near-top `## Dependencies` section of the owning `SKILL.md`. That section lists skills only, never tools, plugins, scripts, references, assets, executables, or filesystem paths.
    - Invoke dependent skills only from the owning `SKILL.md`. References and other supporting files are passive and must not invoke skills or identify dependencies through relative paths to another `SKILL.md`.
-   - Do not embed concrete repository file paths or copy code examples from the current codebase into `.agents` files; those go stale when files move or refactors land. Prefer generic placeholders (for example `services/<name>/...`), short pattern descriptions, or minimal invented examples that are not tied to live paths or current line-level code.
+   - Do not embed product-specific file paths or copy current application code into reusable skills; those go stale when files move or refactors land. Prefer generic placeholders (for example `services/<name>/...`), short pattern descriptions, or minimal invented examples that are not tied to live paths or current line-level code.
    - **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract, and where a skill genuinely needs one local fact, take it from the repository's `project.md` or a setting rather than baking it in. Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
+   - **Generic ownership is determined by the skill's name and purpose.** Only a product-named skill that owns that product contract may carry its product facts. Language, platform, framework, and workflow skills — including Luau — must work across products; put their repository commands, identities, hosts, packages, and fixtures in project rules or a domain-specific skill.
    - Retain examples only when they clarify a non-obvious distinction; remove examples that merely repeat the prose.
    - Keep topic-specific restrictions with their topic. Keep an existing `## Guardrails` section at the bottom, and create one only for cross-cutting safety or preservation constraints.
 
@@ -176,7 +177,7 @@ outcome, because silence reads as the guidance having been fixed.
    user.
    1. **Branch and commit.** Put it on the agent-configuration branch already in flight when one is
       open; otherwise branch from the freshly fetched default branch. Commit only the `.agents`
-      files (and a mirror the rename exception in step 4 covers) and open a pull request carrying
+      files, and never a provider mirror, then open a pull request carrying
       nothing else. None of that waits to be asked: the decision was made when the edit was
       requested, and a pull request left open keeps every later session working from the guidance
       this change replaced. A source fix required by step 3 never shares this pull request, because
@@ -199,7 +200,10 @@ outcome, because silence reads as the guidance having been fixed.
       reference. Prose duplicates as readily as code, and nothing else catches it. Every `.agents`
       change gets that pass, a one-line rule edit as much as a new skill: a single bullet added to
       the file that does not own it is exactly the duplication this catches, and it is the change
-      least likely to be looked at twice.
+      least likely to be looked at twice. Run it in process over the branch's own files, never
+      fanned out to subagents: a guidance diff is a scope one reviewer holds whole, and the reviewer
+      who has to compare a new bullet against the section it duplicates is the one already holding
+      both.
    4. **Run `acceptance-gate`** with its diff question over the `.agents` diff, the request as the
       intent statement. It judges whether the guidance answers the request at the breadth step 5
       asks for and whether every mechanism it adds earns its place; a flag gets the one rewrite that
@@ -208,16 +212,17 @@ outcome, because silence reads as the guidance having been fixed.
       the rewrite already answered, or drop the item when neither holds, and state which and why in
       the report, as that skill's **Bounds** leave it to the caller for a change whose merge needs
       no authorization.
-   5. **Run `smoke-test`** for every skill the change adds, and for every edit that changes what a
-      reader does — a step added, removed, or reordered, a decision moved, a criterion changed — to
-      a passing table. The simplification pass settles how the guidance reads; the smoke test
-      settles whether it changes what a reader does, against the miss that prompted it and with the
-      original text as the control. An edit whose smoke run fails is revised and rerun within the
-      rounds that skill bounds, never merged on the strength of reading well; a spent bound is
-      decided as that skill says. A **mechanical seam edit** changes no behaviour and needs no smoke
-      run: a dependency replaced by the role phrase that finds it, a path generalized, a rename, a
-      frontmatter key, a reference path corrected, wording that says the same thing shorter. The
-      report says `not run: mechanical seam edit` for it, and the acceptance gate is its check.
+   5. **Run `smoke-test`** for every skill the change adds or edits, to a passing table or the
+      waiver its **When It Runs** bounds. It runs here rather than before step 3, because a round
+      run against wording the simplification pass then rewrites has tested text nobody will follow.
+      That pass settles how the guidance reads; this one settles whether it changes what a reader
+      does, against the miss that prompted it and with the original text as the control. An edit
+      whose smoke run fails is revised and rerun within the rounds that skill bounds, never merged
+      on the strength of reading well; a spent bound is decided as that skill says.
+      A **mechanical seam edit** changes no behaviour and needs no smoke run: a dependency
+      replaced by the role phrase that finds it, a path generalized, a rename, a frontmatter key, a
+      reference path corrected, wording that says the same thing shorter. The report says
+      `not run: mechanical seam edit` for it, and the acceptance gate is its check.
 
       **A skill that arrives by relocation is not a skill the change adds.** Moving one between
       repositories, or generalizing local copies into one every repository can adopt, produces a new

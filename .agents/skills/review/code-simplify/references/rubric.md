@@ -16,6 +16,24 @@ passed, never that the code earned its shape.
 
 **Preserve observable behavior and external contracts beyond the system boundary — including on the default pre-push pass.** Do not change public routes and their request/response shapes, durable identifiers (handler, event, queue, and state keys), or persisted on-disk and on-the-wire formats (DB columns, migrations, serialized payloads). Internal API shapes, shared DTOs, configuration, and cross-repository callers are simplification scope: trace every consumer and update them in the same coordinated change. Do not leave a worthwhile simplification as a written note merely because it crosses a repository or changes an internal contract, and do not add pass-through or compatibility shims — adjust the real call sites instead.
 
+**Where a defect lives and when it arrived are never dispositions, for any standard in this rubric.**
+Code the diff inherits, exposes, or merely sits beside is code the next reader meets, and stepping
+over it hands them a known problem plus the knowledge that somebody already saw it and moved on. A
+defect in a package the diff never touched is the same problem seen from further away, and the
+reviewer who saw it is the one who fixes it. Every finding the pass makes is fixed in it, at the
+priority its kind earns and never a lower one for having arrived earlier or lived elsewhere.
+
+The phrases this takes out of the reviewer's hands are the ones that sound most reasonable:
+"pre-existing", "not introduced by this diff", "predates this branch", "only lightly brushed", "out
+of scope", "a different package", "informational", "not blocking", "low priority, since the diff did
+not cause it", "worth a follow-up", "worth a separate pass", "left for the author to decide". None of
+them appears against a finding, and a heading that says one of them over a group of findings is the
+same disposition written once instead of six times. Report what is wrong, and fix it.
+
+The pass's priority order ranks findings by **what kind of problem each is** — structural, then
+simplification, then branching, and so on. It does not rank them by who caused them or by which
+directory they sit in.
+
 **Tests are not a contract, and a test seam never vetoes a finding.** Tests describe the application code; the application code is never shaped — or left unshaped — to preserve a test's mock, fixture, or monkeypatch target. When a legitimate simplification moves, renames, or absorbs a symbol that tests patch or import, the tests change with it: rewrite the patch targets and fixtures to the new binding as part of the same change, and rerun the affected suite when a runner is available. Declining a finding because "a test patches that symbol" inverts the dependency and is never a valid disposition; the only test-related grounds for holding back is that the pass genuinely cannot update or run the affected tests, and that is reported as an applied-with-caveat or a written note naming the exact tests, never as a rejection of the finding.
 
 ## Reuse, Ownership And Deletions

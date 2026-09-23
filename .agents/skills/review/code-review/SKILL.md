@@ -11,6 +11,7 @@ Provide a code review for the selected target.
 
 ## Dependencies
 
+- `subagent-selection` — return model tiers for explicit reviewer dispatch.
 - `code-simplify` — its `references/rubric.md` is the complete simplification rubric for that review lens.
 - `pre-production` — supply the repository's target-contract and staging-data policy.
 - `security-audit` — its `references/rubric.md` defines an exploitable finding and its remedy, and its attack-class catalogue supplies that lens. The review borrows both and never the audit workflow.
@@ -63,19 +64,18 @@ State these verbatim to every subagent launched:
 - Only call a tool when it is required to complete the task. Every tool call needs a clear purpose.
 - Return findings as data. The final message is the return value, not a message to a human.
 
-## Subagent capability
+## Subagent selection
 
-Select subagents by capability, never by model name, so the skill behaves the same on every host. Where a host exposes only one model, run every capability on it and say so in the degraded-mode note.
+Invoke `subagent-selection` and choose its **standard** tier for every reviewer, validator, and
+refuter. The `fast`, `standard`, and `deep` labels elsewhere describe assignment depth, not separate
+model tiers: mechanical lookup, contextual review, and adversarial investigation respectively.
+Effort still determines the cohort and validation depth. Rating, deduplication, fix decisions,
+and writing fixes stay with the orchestrator.
 
-- **fast** — cheapest capable model. Eligibility checks, file enumeration, mechanical lookups.
-- **standard** — default balanced model. Summarization, rule compliance, validation.
-- **deep** — strongest reasoning model available below the orchestrator. Bug hunting and adversarial refutation.
-
-**Prefer a model below the one running the review for every capability.** A review fans out across many subagents, each reading the same diff, so the cohort rather than any one lens is what a round costs — and a lens reads code and reports what it finds, which a mid-sized model does well. Where the host exposes an ordered model catalogue, resolve `deep` to the strongest model below the orchestrator and resolve `standard` and `fast` to capable lower-cost models. When selection is available but the catalogue has no lower model or exposes no reliable ordering, use the strongest available capable model for `deep` and the cheapest capable model for the other capabilities, then record that fallback in the degraded-mode note. Judgement that has to be right the first time stays with the orchestrator: rating, deduplication, deciding what to fix, and writing the fix.
-
-**Run every reviewer capability as a subagent on the host's mid-sized model** — Sonnet on a Claude host, the equivalent elsewhere — named explicitly, since an unset model inherits the orchestrator's.
-
-Where the host exposes no per-subagent model selection, run the capabilities as they stand and say so in the degraded-mode note. Name no other model here or in a subagent prompt — a host that renames or replaces the rest of its lineup must not need this file edited.
+Use the dependency's explicit dispatch instructions. If standard is unavailable, report the
+limitation; do not silently substitute cheap or the orchestrator's model. When the host cannot
+launch subagents, use this skill's existing inline/degraded procedure and disclose missing
+independent coverage.
 
 ## Step 1 — Resolve the target
 

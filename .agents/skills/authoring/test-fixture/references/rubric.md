@@ -26,6 +26,10 @@ Literal case values are allowed inside `pytest.mark.parametrize`; keep shared fi
 outside the parameter table. A literal outside parametrization is not a substitute for a fixture
 value that exists or belongs on the canonical fixture.
 
+Provider request and response bodies remain domain data when a test uses them as expected values.
+Build them from the canonical fixture or response model rather than reproducing their names,
+addresses, identifiers, or other field values inline.
+
 A helper has three possible homes, and how many readers it has decides which. A trivial predicate
 or formatter that one module reads may stay in that module. A helper one suite reads goes in that
 suite's `utils` module. A helper more than one suite reads goes in the tests' `utils/` package,
@@ -305,8 +309,19 @@ take the first that fits:
    place of a session factory, a connection, or a transaction is the same four lines wherever it
    appears, and each hand-rolled copy is a chance to get `__aexit__` subtly wrong, so it is built
    once, takes the yielded object as an argument, and is imported;
-4. a patch, at the consuming module's own binding rather than the module that defines the symbol,
-   and at the shallowest seam the consumer actually reads.
+4. a patch, at the consuming module's own binding rather than the module that defines the symbol.
+
+**Depth is a separate question from kind, and every one of the four is answerable at the wrong
+depth.** Reaching for the provider override the application declares settles which seam the test
+uses; it says nothing about what the override is pointed at, so a fake transport installed through
+it is as deep as any patch and reads as compliant because the kind was right.
+
+**The assertion says which depth you chose.** When it reads a representation the library produced —
+a form body, a query string, a URL path, serialized JSON, a wire frame — the double sits below the
+boundary and the test is exercising the library's encoder. Double the collaborator the application
+calls instead, assert the arguments it was called with and the value it answered, and let the
+library's own tests cover the encoding. A test that hand-writes that encoding to read a value back
+is rebuilding the library to check what the caller passed it.
 
 Use `AsyncMock` for async functions. `MagicMock` is acceptable for external boundaries such as SDK
 response containers, subprocess handles, and network wrappers, and never for ORM or domain entities,
@@ -318,6 +333,24 @@ Test the documented and implemented SDK contract, not speculative runtime shapes
 for a surface the integration contract guarantees, and tests of a required SDK method focus on its
 valid responses and real failure modes. Keep names and docstrings about behavior and outcomes rather
 than SDK internals.
+
+## A Missing Credential Leaves The Test Alone
+
+**A credential, endpoint or environment nobody has issued is an external blocker, and an external
+blocker never changes the test.** A test that cannot pass because a real key does not exist is
+already reporting the truth, and its red check is what gets the key issued. Leave it failing, name
+the missing credential where the run reports it, and go on.
+
+**Three moves all remove that pressure, and they are one move.** A fake standing in for the
+provider makes the test pass against something nobody ships; a skip conditioned on whether the
+credential is present makes it pass by not running, in a way nobody sees in a green suite; deleting
+it makes it pass by having no test. Each converts a stated debt into a quiet one, and each is
+reached for while telling yourself the coverage was never real anyway.
+
+**This governs the suite written to cross a boundary for real** — the end-to-end run, the
+integration test against the live dependency — where the credential is the whole point and standing
+one in defeats it. Where the process genuinely cannot cross a boundary, **Choose Test Doubles**
+governs, and its answer there is unaffected by whether a credential exists.
 
 ## Completion Sweep
 

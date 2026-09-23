@@ -76,10 +76,13 @@ how those issues are handled.
   validation and account explicitly for the uncovered behavior.
 - One focused pass means the correction needs no separate research or design phase and is not
   expected to require multiple implementation iterations.
-- Ask the user before fixing an issue that requires architectural work, a broad refactor,
-  migration, new dependency, substantial investigation, product intent, destructive action,
-  or expanded authority. For a bug the fix proceeds and is not held for an answer; what goes to the
-  user is scope, sequencing, and where the work lands, never whether it is fixed.
+- Apply an owned API, protobuf, schema, payload, or stored-shape change selected by
+  `pre-production` without a second approval; update every in-repository consumer, generated
+  artifact, and required migration for the target contract.
+- Ask only when a correction needs user-owned product intent, a security or disclosure decision,
+  destructive action, expanded external authority, or an architectural decision that
+  `pre-production` does not settle. For a bug the fix proceeds and is not held for an answer; what
+  goes to the user is scope, sequencing, and where the work lands, never whether it is fixed.
 - When asking, state the trigger, impact, expected work, recommendation, and concrete choices.
 - Continue independent approved work when the unresolved issue does not block it.
 

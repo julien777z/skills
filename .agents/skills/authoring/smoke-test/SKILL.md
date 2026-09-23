@@ -10,6 +10,7 @@ a code change is tested: against the case that motivated it, with the change and
 
 ## Dependencies
 
+- `subagent-selection` — return model tiers for explicit reviewer dispatch.
 - `code-simplify` — the pass every skill pull request gets before it merges; this skill runs after it.
 
 ## When It Runs
@@ -17,18 +18,19 @@ a code change is tested: against the case that motivated it, with the change and
 - After every skill edit and before its pull request merges, whether the edit came through
   `edit-skill` or was made directly. An edit that skipped this is unverified, and the report
   says so.
+- **An edit that changes no instruction a reader follows does not run at all, and its pull request
+  merges on the reading**. A term swapped for
+  another, a spelling standardised, a typo corrected, a dead link repaired: the text asks a reader
+  for exactly what it asked before. There is no behavioural claim to test, and the bar below needs
+  a control run to miss, which no such edit can produce. Running it regardless holds the change
+  behind a result it can never get, which is how a rename every later session is waiting on sits
+  unmerged.
+- Recognise one from the diff rather than from how it is described, and least of all from how small
+  it looks: read each changed line against the line it replaces and confirm the instruction is
+  identical. A line that gains, loses, sharpens or reorders one is an ordinary edit however few
+  words moved, and the whole edit is smoke-tested.
 - A new skill has no original to run against. Its control runs carry no skill text at all, which
   shows what the skill adds over the model alone.
-- **An edit that only substitutes a term does not run at all, and its pull request merges on the
-  reading.** Where every changed line is the sentence it replaces with one word swapped for another
-  — a banned term renamed, a spelling standardised — the text asks a reader for exactly what it
-  asked before. There is no behavioural claim to test, and the bar below needs a control run to
-  miss, which no such edit can produce. Running it regardless holds the change behind a result it
-  can never get, which is how a rename that every later session is waiting on sits unmerged.
-- Recognise one from the diff rather than from how it is described: read each changed line against
-  the line it replaces and confirm the instruction is identical but for the term. A line that also
-  gains, loses, sharpens or reorders an instruction is an ordinary edit, and the whole edit is
-  smoke-tested.
 - `skill-gauntlet` asks whether a skill is worth keeping; this skill asks whether one edit does
   what it was made for. Neither replaces the other.
 
@@ -38,7 +40,7 @@ a code change is tested: against the case that motivated it, with the change and
    evidence that prompted it: a review that reported a symptom and not the shape behind it, a
    walkthrough that skipped a check, a plan that stopped a step early. A rewording that keeps every
    instruction has no miss; say so and still run the scenario, because the rewording may have lost
-   what worked. An edit that only substitutes a term never reaches this step, per **When It Runs**.
+   what worked. An edit the waiver in **When It Runs** covers never reaches this step.
 2. **Rebuild the scenario** as something a reviewer can read with none of this conversation: for a
    review skill, a diff plus a checkout at the commit where the miss happened; for a walkthrough
    skill, the page and the change; for a planning skill, the task as it was given. Put it in a
@@ -56,11 +58,11 @@ a code change is tested: against the case that motivated it, with the change and
    original text would also satisfy measures nothing; drop it. Phrase each as the words the report
    must carry — a symbol's name, a number — so scoring is a search through the report, not a
    reading of it.
-5. **Launch the reviewers** in parallel and in the background: for at least two models weaker than
-   the one running the session — a mid-sized and a small model — one run reading the edited text
-   and one reading the original. Identical prompts save for the skill path. Read-only, findings
-   only, no edits; the parent applies nothing from a smoke run, because the run judges wording, not
-   the code. Never spawn a duplicate while a run is in flight.
+5. **Launch the reviewers** using **Reviewer selection** below, in parallel when
+   capacity allows. Each selected model gets one run reading the edited text and one reading
+   the original. Identical prompts save for the skill path. Read-only, findings only, no edits;
+   the parent applies nothing from a smoke run, because the run judges wording, not the code.
+   Queue pairs when capacity is limited; never spawn a duplicate while a run is in flight.
 6. **Score every report** against every criterion, quoting the line that satisfies or fails it, and
    tabulate: one row per run, one column per criterion.
 7. **Judge the table.** The edit passes when every run reading the edited text meets every criterion
@@ -99,6 +101,17 @@ a code change is tested: against the case that motivated it, with the change and
    sentence in the pull request description naming the miss the edit closes. The table is evidence
    and does not belong in the description.
 
+## Reviewer selection
+
+Invoke `subagent-selection` and select **both standard and cheap**. Run one edited/control pair
+per available tier: four runs when both tiers are available. Use the same scenario and reading
+list across tiers, with the same resolved model and reasoning effort within each pair. Follow the
+dependency's explicit dispatch instructions and queue pairs when capacity is limited.
+
+If a tier is unavailable, report its pair as `not run`; available pairs may still provide partial
+evidence, but do not claim complete two-tier coverage. If both tiers are unavailable, report the
+smoke pass as `not run`. Never treat two runs on one model as a two-tier comparison.
+
 ## Output
 
 Return this shape, one table per skill under test, and nothing after the last verdict line:
@@ -122,7 +135,7 @@ new skill reads `none` in its Text column.
 ## Guardrails
 
 - Reviewers never see the expected answer, the criteria, or one another's reports.
-- Never conclude from one model. Wording only the largest model follows has not been tested.
+- Follow the shared tier selection. Never omit a control or claim complete coverage when a tier was not run.
 - Never edit the skill under test between launching a pair of runs and scoring them.
 - Keep the scenario while the branch is open; every later edit of that skill reuses it.
 - Never let a failing row stand before the bounded rounds are spent; after them, decide and state
