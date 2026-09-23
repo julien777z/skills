@@ -12,7 +12,7 @@ PROVIDERS=(claude codex cursor)
 found_root=0
 
 check_link() {
-  local target="$1" link="$2" resolved
+  local target="$1" link="$2" resolved old_root old_remote
   [ -e "$link" ] || [ -L "$link" ] || return 0
   if [ ! -L "$link" ]; then
     echo "conflict: $link is a real file or directory" >&2
@@ -21,11 +21,19 @@ check_link() {
   resolved="$(realpath "$link" 2>/dev/null || true)"
   case "$resolved" in
     "$REPO_ROOT"/*) return 0 ;;
-    *)
-      echo "conflict: $link points outside $REPO_ROOT" >&2
-      return 1
-      ;;
   esac
+  # A previous install may point at another checkout of this same repository. Allow that
+  # owned link to move to the dedicated refresh checkout, but never replace a third-party link.
+  old_root="$(git -C "$(dirname "$resolved")" rev-parse --show-toplevel 2>/dev/null || true)"
+  old_remote="$(git -C "$old_root" remote get-url origin 2>/dev/null || true)"
+  case "$old_remote:$resolved" in
+    https://github.com/julien777z/skills.git:"$old_root"/.agents/*|\
+    https://github.com/julien777z/skills:"$old_root"/.agents/*|\
+    git@github.com:julien777z/skills.git:"$old_root"/.agents/*)
+      return 0 ;;
+  esac
+  echo "conflict: $link points outside $REPO_ROOT" >&2
+  return 1
 }
 
 preflight_provider() {
