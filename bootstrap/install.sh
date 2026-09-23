@@ -30,8 +30,11 @@ check_link() {
   old_remote="$(git -C "$old_root" remote get-url origin 2>/dev/null || true)"
   case "$old_remote:$resolved" in
     https://github.com/julien777z/skills.git:"$old_root"/.agents/*|\
+    https://github.com/julien777z/skills.git:"$old_root"/bootstrap/CODEX_AGENTS.md|\
     https://github.com/julien777z/skills:"$old_root"/.agents/*|\
-    git@github.com:julien777z/skills.git:"$old_root"/.agents/*)
+    https://github.com/julien777z/skills:"$old_root"/bootstrap/CODEX_AGENTS.md|\
+    git@github.com:julien777z/skills.git:"$old_root"/.agents/*|\
+    git@github.com:julien777z/skills.git:"$old_root"/bootstrap/CODEX_AGENTS.md)
       return 0 ;;
   esac
   echo "conflict: $link points outside $REPO_ROOT" >&2
