@@ -1,16 +1,18 @@
-schema_version: 1
+schema_version: 2
 mode: audit # create | audit | extend
-status: proposal # selected | implemented
+status: proposal # selected | implemented | playtested; summarize mixed status in implementation entries
 premise: ""
 player_role: ""
 audience_and_tone: ""
 assumptions: []
 source_evidence: [] # {path, observation}; observed facts only
 canon_constraints: []
-characters: [] # {id, name, role, voice, want, need, fear, secret, limitation, arc, relationships: [{character_id, relationship, change}]}
+journey: [] # {phase: first_launch | onboarding | normal_play | climax | aftermath | revisit, beats, pacing, onboarding_steps, context, exit_condition}
+learned_concepts: [] # {id, plain_explanation, first_use_beat, later_uses}
+characters: [] # {id, name, role, appearance: {silhouette, scale, face, clothing, palette, materials, props, movement, emotional_impression, after_reversal, retained_canon, proposed_additions, status: proposed | implemented | playtested | unknown, evidence}, voice, want, need, fear, secret, limitation, arc, relationships: [{character_id, relationship, change}]}
 worlds: [] # {id, name, purpose, geography, local_question, arrival, activities, resolution, revisit_state, required_map_changes}
 arcs: [] # {id, title, dramatic_question, setup, escalation, reversal, climax, ending, aftermath, future_hook}
-beats: [] # {id, arc_id, world_id, characters, prerequisites, player_goal, player_action, revelation, consequence, dialogue_sample, completion, optional}
+beats: [] # {id, arc_id, world_id, characters, prerequisites, player_goal, player_action, revelation, consequence, dialogue_sample, completion, optional, status, evidence}
 story_web:
     edges: [] # {from, to, kind, reason}; kind: causes | requires | reveals | located_in | relationship | sets_up | pays_off
     setups_and_payoffs: [] # {setup_beat, payoff_beat, promise, resolution}
@@ -35,10 +37,13 @@ selection:
     chosen: ""
     rationale: ""
     rejected_elements: []
-implementation: [] # {content_owner, change, dependencies, acceptance}
+implementation: [] # {content_owner, change, dependencies, acceptance, status: proposed | implemented | playtested, evidence}
 risks: []
 verification:
     source_audit: unknown
     reference_integrity: unknown
+    onboarding_observed: unknown
+    character_presentation_observed: unknown
     playable_walkthrough: unknown
     ending_observed: unknown
+    revisits_observed: unknown
