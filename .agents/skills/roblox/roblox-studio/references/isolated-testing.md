@@ -135,7 +135,9 @@ a host-desktop capture.
 The September 2026 retained macOS VM qualification verified published-client launch, button clicks,
 walking, interaction, and captures through SSH with no host viewer. This proves a control path that
 does not use host UI. A later read-only check confirmed the host was locked while guest SSH captures
-and native Studio dialog clicks still worked; host sleep remains untested. Input qualification also does not establish clean mesh rendering: record
+and native Studio dialog clicks still worked. A published-client follow-up under the same observed
+host lock verified a start-button click and held/released movement with changed scene and distance.
+Host sleep remains untested. Input qualification also does not establish clean mesh rendering: record
 visible rendering defects separately. Record those limits and current versions in untracked run evidence.
 
 ## Authentication and user handoff
