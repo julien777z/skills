@@ -293,6 +293,11 @@ outcome, because silence reads as the guidance having been fixed.
       from that text for the rest of the session. A skill invoked while its change is still open
       is read the same way from the branch that carries it, never from a checkout that predates
       it.
+      After the default-branch Agent Sync run completes, refresh the repository's main local
+      checkout, not the task worktree: if that checkout is clean, check out the default branch and
+      pull with `--ff-only`. If it has dirty files, leave them untouched and report the skipped
+      refresh. An instruction to leave the pull request open also leaves this post-merge step for
+      a later session.
 
 ## Output
 
