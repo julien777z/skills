@@ -106,6 +106,10 @@ also not a reason to stop at the first file, and the section below governs how f
   contract in the same change.
 - Do not weaken a compatibility gate to hide an intentional break. Report the exact failure and the
   contract change it detected so a reviewer can distinguish intended from accidental breakage.
+- For disposable development records, follow the repository's stated policy. A one-time conversion
+  of explicitly identified tester data may run outside shipped code when it is more useful than a
+  reset; verify its result and remove the conversion script. Never assume released user data is
+  disposable or carry a tester conversion as a runtime compatibility path.
 
 ## Owned And Third-Party Contracts
 
