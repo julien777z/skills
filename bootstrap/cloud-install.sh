@@ -55,6 +55,8 @@ while IFS= read -r git_marker; do
   fi
 done < <(find "$USER_HOME" -mindepth 2 -maxdepth 4 -name .git \( -type d -o -type f \) -print)
 
-run_as_user mkdir -p "$USER_HOME/.claude"
-run_as_user bash "$source/bootstrap/install.sh"
+# Claude's base image can own ~/.claude/skills as root even though the home belongs to claude.
+# Setup itself runs as root; install the readable links with that authority.
+mkdir -p "$USER_HOME/.claude"
+env HOME="$USER_HOME" bash "$source/bootstrap/install.sh"
 printf 'Installed skills from %s\n' "$source"
