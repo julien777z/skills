@@ -2,13 +2,20 @@
 # Run from Claude cloud setup after cloning this repository to the cache path.
 set -euo pipefail
 
-USER_HOME="${SKILLS_CLOUD_HOME:-/home/user}"
+USER_HOME="${SKILLS_CLOUD_HOME:-/home/claude}"
 CACHE="$USER_HOME/.local/share/agent-skills"
 SKILLS_REMOTE='https://github.com/julien777z/skills.git'
 
 run_as_user() {
   if [ "$(id -u)" -eq 0 ]; then
-    runuser -u user -- env HOME="$USER_HOME" "$@"
+    local owner
+    owner="$(stat -c %U "$USER_HOME")"
+    if [ "$owner" != root ]; then
+      getent passwd "$owner" >/dev/null || { echo "No account owns $USER_HOME: $owner" >&2; return 1; }
+      runuser -u "$owner" -- env HOME="$USER_HOME" "$@"
+      return
+    fi
+    env HOME="$USER_HOME" "$@"
   else
     env HOME="$USER_HOME" "$@"
   fi

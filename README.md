@@ -15,15 +15,15 @@ this at the start of the environment setup script, before project-specific setup
 
 ```bash
 set -e
-install -d -o user -g user /home/user/.local/share
-if [ ! -d /home/user/.local/share/agent-skills/.git ]; then
-  runuser -u user -- git clone https://github.com/julien777z/skills.git /home/user/.local/share/agent-skills
+install -d -o claude -g claude /home/claude/.local/share
+if [ ! -d /home/claude/.local/share/agent-skills/.git ]; then
+  runuser -u claude -- git clone https://github.com/julien777z/skills.git /home/claude/.local/share/agent-skills
 fi
-bash /home/user/.local/share/agent-skills/bootstrap/cloud-install.sh
+bash /home/claude/.local/share/agent-skills/bootstrap/cloud-install.sh
 ```
 
 The cloud installer uses an attached skills checkout when one is present and the setup clone
-otherwise. It installs for `/home/user`, even though Claude runs setup as root, and exits on clone,
+otherwise. It installs for `/home/claude`, even though Claude runs setup as root, and exits on clone,
 update, or installation failure. Cloud environment image caching can skip setup on later sessions;
 the previously installed skills remain available then.
 
