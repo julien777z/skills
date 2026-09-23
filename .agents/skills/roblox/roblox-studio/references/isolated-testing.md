@@ -59,6 +59,12 @@ help. The retained shared pilot uses Tart **2.37.0**, the digest-pinned image
 8 CPU cores, 16384 MB RAM, an 80 GB disk, and a 1920×1080 display. Record actual versions/configuration
 in ignored verification evidence. These are pilot settings, not universal performance requirements.
 
+Some published base images omit the separate system recovery partition. Before an OS-update
+recovery attempt, inspect the guest's disk layout. `Failed to find SFR recovery volume` identifies
+that update prerequisite; repeating the download cannot supply it. The [Tart maintainer's explanation](https://github.com/openai/tart/issues/1232#issuecomment-4449144329)
+distinguishes these images from vanilla images that retain recovery. Preserve the retained runner;
+do not repartition or replace its authenticated disk as a routine retry.
+
 Run with `--no-graphics --no-clipboard --no-audio` so the VM does not create a host window, share the
 clipboard, or play test audio through the user's speakers. Transfer only the project/test files over
 SSH, and invoke the guest's Studio MCP executable through SSH. Keep the guest proxy connection alive
@@ -128,8 +134,8 @@ a host-desktop capture.
 
 The September 2026 retained macOS VM qualification verified published-client launch, button clicks,
 walking, interaction, and captures through SSH with no host viewer. This proves a control path that
-does not use host UI; it does **not** prove behavior during host lock or sleep unless those conditions
-were observed separately. Input qualification also does not establish clean mesh rendering: record
+does not use host UI. A later read-only check confirmed the host was locked while guest SSH captures
+and native Studio dialog clicks still worked; host sleep remains untested. Input qualification also does not establish clean mesh rendering: record
 visible rendering defects separately. Record those limits and current versions in untracked run evidence.
 
 ## Authentication and user handoff
@@ -156,6 +162,9 @@ blocker requires user action. Continue independent work while waiting. After set
 only the task's viewer so unattended guest windows stay out of the user's way.
 
 ## End of session: preserve the machine, stop its resource use
+
+Shut down only after meeting the [completion or blocker criteria](../SKILL.md#work-autonomously-within-the-requested-scope),
+or when the user asks to pause or stop. A progress update does not end the test session.
 
 When the game work is done, save the authorized project artifacts, close Roblox Studio normally,
 and **shut down the guest VM** so it is no longer running locally. Verify that Studio closed and the
