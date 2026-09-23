@@ -13,26 +13,35 @@ on:
       - ".github/workflows/sync-readme.yml"
 
 concurrency:
-  group: sync-readme-${{ github.event.workflow_run.head_branch || github.ref }}
+  group: sync-readme-${{ github.event.workflow_run.head_branch || github.ref_name }}
   cancel-in-progress: false
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
+  check:
+    name: Check the skill listing
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 .github/scripts/render_readme_skills.py --check
+
   render:
     name: Render the skill listing
     runs-on: ubuntu-latest
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
+    permissions:
+      contents: write
+    env:
+      BRANCH: ${{ github.event.workflow_run.head_branch || github.ref_name }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.workflow_run.head_branch || github.ref }}
-
-      - name: Check the listing matches the skills
-        if: github.event_name == 'pull_request'
-        run: python3 .github/scripts/render_readme_skills.py --check
-
-      - name: Render and commit the listing
-        if: github.event_name != 'pull_request'
-        run: python3 .github/scripts/render_readme_skills.py --commit-to "${{ github.event.workflow_run.head_branch || github.ref_name }}"
+          ref: ${{ env.BRANCH }}
+      - run: python3 .github/scripts/render_readme_skills.py --commit-to "$BRANCH"
