@@ -21,6 +21,7 @@ check_link() {
     return 1
   fi
   resolved="$(realpath "$link" 2>/dev/null || true)"
+  [ -n "$resolved" ] || resolved="$(readlink "$link")"
   case "$resolved" in
     "$REPO_ROOT"/*) return 0 ;;
   esac
@@ -88,12 +89,21 @@ install_link() {
 
 # Remove links into this repository whose target no longer exists.
 prune_links() {
-  local dir="$1" link target
+  local dir="$1" link target old_root relative
   for link in "$dir"/*; do
     [ -L "$link" ] || continue
     target="$(readlink "$link")"
     case "$target" in
       "$REPO_ROOT"/*) [ -e "$link" ] || rm -f "$link" ;;
+      *)
+        # A removed source can still exist in an older checkout; compare its relative path
+        # against the checkout being installed before retaining the old owned link.
+        check_link "$target" "$link" >/dev/null 2>&1 || continue
+        old_root="$(git -C "$(dirname "$target")" rev-parse --show-toplevel 2>/dev/null || true)"
+        [ -n "$old_root" ] || continue
+        relative="${target#"$old_root"/}"
+        [ -e "$REPO_ROOT/$relative" ] || rm -f "$link"
+        ;;
     esac
   done
 }
