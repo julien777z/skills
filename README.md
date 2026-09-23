@@ -1,6 +1,6 @@
 # Skills
 
-Shared agent skills for every repository, in one place.
+Shared agent skills, agents, and reusable rules for every repository, in one place.
 
 One canonical copy of each skill lives under `.agents/skills/`. [Agent
 Sync](https://github.com/julien777z/agent-sync-action) mirrors them to Claude, Cursor and Codex,
@@ -28,12 +28,11 @@ and exits on clone,
 update, or installation failure. Cloud environment image caching can skip setup on later sessions;
 the previously installed skills remain available then.
 
-The local installer links each skill into `~/.claude/skills`, `~/.codex/skills`, and
-`~/.cursor/skills` for whichever of those
-roots already exist, and each agent definition into `~/.claude/agents` and `~/.cursor/agents`.
-Re-running refreshes owned links and prunes the ones a removed skill left behind. A real directory
-or foreign link at a skill name is reported before any links change so its contents can be
-reconciled safely.
+The local installer links skills, reusable rules, and applicable agent definitions into existing
+Claude, Codex, and Cursor user roots. Codex also gets a short global `AGENTS.md` that directs it
+to read only the relevant linked rules. Repository-specific rules stay in each repository's
+`project.md`. Re-running refreshes owned links and prunes obsolete ones; real content or foreign
+links at an installed path are reported before any links change.
 
 ## Layout
 
@@ -41,10 +40,12 @@ reconciled safely.
 |---|---|
 | `.agents/skills/<folder>/<name>/` | One skill: `SKILL.md`, with `references/`, `scripts/`, `assets/`, or `resources/` beside it. The folders sort the skills and reach no provider — each one still installs as `<name>`, so a name is unique across the whole tree. |
 | `.agents/agents/` | Subagent definitions; the tier each runs on is stated by the skill that launches it. |
+| `.agents/rules/` | Reconciled reusable rules; technology-specific rules retain their file scopes. |
 | `.agents/external_skills.json` | Third-party skills the workflow installs from [skills.sh](https://skills.sh/). |
 | `.agents/.auto_generated/` | Provider mirrors the workflow generates on `main`; never edited by hand. |
 | `AGENTS.md` | Repository instructions the workflow generates at the root; never edited by hand. |
-| `bootstrap/install.sh` | Links the skills and agents into the user-level roots. |
+| `bootstrap/install.sh` | Links skills, agents, and rules into user-level roots. |
+| `bootstrap/CODEX_AGENTS.md` | Small global Codex index for the linked rules. |
 | `bootstrap/cloud-install.sh` | Selects the attached or cached checkout and installs it for Claude cloud's user. |
 
 ## Skills

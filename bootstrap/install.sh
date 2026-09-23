@@ -7,6 +7,8 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CANONICAL_SKILLS="$REPO_ROOT/.agents/skills"
 CANONICAL_AGENTS="$REPO_ROOT/.agents/agents"
+CANONICAL_RULES="$REPO_ROOT/.agents/rules"
+CODEX_INSTRUCTIONS="$REPO_ROOT/bootstrap/CODEX_AGENTS.md"
 GENERATED_ROOT="$REPO_ROOT/.agents/.auto_generated"
 PROVIDERS=(claude codex cursor)
 found_root=0
@@ -37,7 +39,7 @@ check_link() {
 }
 
 preflight_provider() {
-  local provider="$1" root="$HOME/.$provider" skill agent name failed=0
+  local provider="$1" root="$HOME/.$provider" skill agent rule name failed=0
   [ -d "$root" ] || return 0
   while IFS= read -r skill; do
     name="$(basename "$skill")"
@@ -49,6 +51,17 @@ preflight_provider() {
       name="$(basename "$agent")"
       check_link "$(link_source "$provider" agents "$name" "$agent")" "$root/agents/$name" || failed=1
     done
+  fi
+  if [ -d "$CANONICAL_RULES" ]; then
+    for rule in "$CANONICAL_RULES"/*.md; do
+      [ -f "$rule" ] || continue
+      name="$(basename "$rule")"
+      if [ "$provider" = "cursor" ]; then name="${name%.md}.mdc"; fi
+      check_link "$rule" "$root/rules/$name" || failed=1
+    done
+  fi
+  if [ "$provider" = "codex" ] && { [ -L "$root/AGENTS.md" ] || [ -s "$root/AGENTS.md" ]; }; then
+    check_link "$CODEX_INSTRUCTIONS" "$root/AGENTS.md" || failed=1
   fi
   [ "$failed" -eq 0 ]
 }
@@ -83,7 +96,7 @@ prune_links() {
 }
 
 install_provider() {
-  local provider="$1" root="$HOME/.$provider" skill agent name skills=0 agents=0
+  local provider="$1" root="$HOME/.$provider" skill agent rule name skills=0 agents=0 rules=0
   [ -d "$root" ] || return 0
   found_root=1
 
@@ -107,7 +120,22 @@ install_provider() {
     prune_links "$root/agents"
   fi
 
-  echo "$root: $skills skills, $agents agents linked"
+  if [ -d "$CANONICAL_RULES" ]; then
+    mkdir -p "$root/rules"
+    for rule in "$CANONICAL_RULES"/*.md; do
+      [ -f "$rule" ] || continue
+      name="$(basename "$rule")"
+      if [ "$provider" = "cursor" ]; then name="${name%.md}.mdc"; fi
+      install_link "$rule" "$root/rules/$name"
+      rules=$((rules + 1))
+    done
+    prune_links "$root/rules"
+  fi
+  if [ "$provider" = "codex" ]; then
+    install_link "$CODEX_INSTRUCTIONS" "$root/AGENTS.md"
+  fi
+
+  echo "$root: $skills skills, $agents agents, $rules rules linked"
 }
 
 preflight_ok=1
