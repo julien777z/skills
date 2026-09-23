@@ -23,7 +23,8 @@ bash /home/claude/.local/share/agent-skills/bootstrap/cloud-install.sh
 ```
 
 The cloud installer uses an attached skills checkout when one is present and the setup clone
-otherwise. It installs for `/home/claude`, even though Claude runs setup as root, and exits on clone,
+otherwise. It links skills for `/home/claude` and the root home used by the current cloud runtime,
+and exits on clone,
 update, or installation failure. Cloud environment image caching can skip setup on later sessions;
 the previously installed skills remain available then.
 

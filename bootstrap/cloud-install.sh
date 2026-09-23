@@ -59,4 +59,9 @@ done < <(find "$USER_HOME" -mindepth 2 -maxdepth 4 -name .git \( -type d -o -typ
 # Setup itself runs as root; install the readable links with that authority.
 mkdir -p "$USER_HOME/.claude"
 env HOME="$USER_HOME" bash "$source/bootstrap/install.sh"
+if [ "$(id -u)" -eq 0 ] && [ "$USER_HOME" != /root ]; then
+  # Claude Code currently starts as root even though checkouts live under /home/claude.
+  mkdir -p /root/.claude
+  env HOME=/root bash "$source/bootstrap/install.sh"
+fi
 printf 'Installed skills from %s\n' "$source"
