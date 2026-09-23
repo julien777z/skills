@@ -90,6 +90,17 @@ outcome, because silence reads as the guidance having been fixed.
    - A shared target is edited in the skills repository's checkout — the one the user-level link
      resolves to, or a fresh clone when the session has none — on its own branch and pull request,
      never through the link's path from another repository's branch.
+     A cloud setup clone installed only to provide skills is not the editing checkout. If the
+     skills repository cannot be attached as a writable project in this session, transfer the
+     edit to a separate skills-repository session rather than changing the installed clone.
+     The originating session supplies the observed miss, original task, relevant diff or small
+     file set, repository commit, original skill text, and two to four observable pass criteria.
+     Include a sanitized fixture when the skills session cannot read the originating repository.
+     The skills session tests original and proposed wording against the same case and names the
+     exact proposed pull-request head. For repository-dependent behavior, the originating session
+     then reads that head's `SKILL.md` explicitly and replays the case in its own context before
+     merge; fetch the head when accessible or receive the exact file as a scratch artifact. A new
+     head invalidates that replay. Do not assume a pull request automatically installs its skill.
    - `agent` -> `.agents/agents/<name>.md`
    - `rule` -> `.agents/rules/<name>.md`
    - `skill` -> `.agents/skills/<name>/SKILL.md`, or `.agents/skills/<folder>/<name>/SKILL.md`

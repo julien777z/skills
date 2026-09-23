@@ -1,0 +1,44 @@
+schema_version: 1
+mode: audit # create | audit | extend
+status: proposal # selected | implemented
+premise: ""
+player_role: ""
+audience_and_tone: ""
+assumptions: []
+source_evidence: [] # {path, observation}; observed facts only
+canon_constraints: []
+characters: [] # {id, name, role, voice, want, need, fear, secret, limitation, arc, relationships: [{character_id, relationship, change}]}
+worlds: [] # {id, name, purpose, geography, local_question, arrival, activities, resolution, revisit_state, required_map_changes}
+arcs: [] # {id, title, dramatic_question, setup, escalation, reversal, climax, ending, aftermath, future_hook}
+beats: [] # {id, arc_id, world_id, characters, prerequisites, player_goal, player_action, revelation, consequence, dialogue_sample, completion, optional}
+story_web:
+    edges: [] # {from, to, kind, reason}; kind: causes | requires | reveals | located_in | relationship | sets_up | pays_off
+    setups_and_payoffs: [] # {setup_beat, payoff_beat, promise, resolution}
+ending:
+    resolved_questions: []
+    character_outcomes: []
+    visible_world_changes: []
+    player_achievement: ""
+    unresolved_threads: [] # deliberate optional future hooks only
+extension:
+    preserved_victories: []
+    connective_coda: ""
+    future_scope: []
+    proposed_retcons: []
+audit_findings: [] # {evidence, kind, flaw, player_impact, proposed_change, affected_content}
+scope:
+    essential: [] # {change, reason, dependencies, implementation_cost}
+    optional: []
+    outside_authorization: []
+selection:
+    candidates: [] # {name, scores: {coherence, agency, variety, payoff, clarity, feasibility}, strengths, weaknesses}
+    chosen: ""
+    rationale: ""
+    rejected_elements: []
+implementation: [] # {content_owner, change, dependencies, acceptance}
+risks: []
+verification:
+    source_audit: unknown
+    reference_integrity: unknown
+    playable_walkthrough: unknown
+    ending_observed: unknown
