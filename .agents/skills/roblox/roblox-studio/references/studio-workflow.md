@@ -1,14 +1,14 @@
-# Studio workflow and operational lessons
+# Source, editor, and publication constraints
 
 ## Identity, source, and assets
 
 Record the intended experience (universe), place IDs, owner, local file, and build paths. Verify the active Studio title and place ID before writing or publishing. Create a new experience when requested; never copy an excluded recent project. Updates must preserve existing saved progress and authored artwork.
 
-Use a scripts-only Rojo project during iteration, and a separate complete-place build containing serialized art, rig, map, and terrain archives. Test the complete build in a fresh session. Older Rojo versions can reject meshes/models serialized by newer Studio: a model rejected by Rojo 7.2.1 worked with 7.7.0. Check the installed version and current official release; do not conclude that the asset itself is corrupt.
+Use a scripts-only Rojo project during iteration, and a separate complete-place build containing serialized art, rig, map, and terrain archives. Test the complete build in a fresh session. Check serializer compatibility against the installed versions and current official releases before diagnosing an asset as corrupt.
 
 Terrain is not ordinary geometry. Preserve it with `Terrain:CopyRegion()` and restore with `PasteRegion()` at the recorded voxel corner. Regions use 4-stud voxel coordinates. Archive distant maps separately to avoid serializing the empty space between them. Verify restored cell counts and walk the actual terrain in a rebuilt place. A current Studio viewport can hide a missing terrain export.
 
-After restoring terrain, wait for a simulation step before building patrol/navigation samples with raycasts. In a verified case, sampling immediately after PasteRegion saw existing Parts but missed Terrain; after `RunService.Heartbeat:Wait()`, the same query found the full landscape. Compare initial samples with a later sample to catch this timing issue.
+After restoring terrain, wait for a simulation step before building patrol/navigation samples with raycasts. Verify terrain readiness with representative samples before deriving navigation; part hits alone do not establish terrain readiness.
 
 Studio's `SerializationService:SerializeInstancesAsync()` and `EncodingService:Base64Encode()` can export authored instances when available in the current editor security context. Keep exported binaries separate from generated script content. Do not repeatedly try an API that reports the operation is unavailable in that context.
 
@@ -42,7 +42,7 @@ Opening a local place can launch a separate Studio process. An existing app-cont
 
 Multiple browser processes can have different tabs/accounts. An AppleScript browser query may reach a separate automation instance rather than the signed-in visible browser. Verify the actual page/account through the chosen surface. Do not browse unrelated user tabs to compensate.
 
-If the computer locks, do not bypass it. Continue independent file work and identify the unlock dependency only when necessary.
+A locked desktop affects operations that depend on that desktop. Independent guest access follows the [VM access reference](isolated-testing.md); independent file, build, and API work can continue.
 
 ## Delivery
 
@@ -52,12 +52,19 @@ Save the actual Studio place, compare expected source revisions, and confirm tem
 
 ### Spatial queries in larger maps
 
-Repeated queries with thousands of individual instances in `FilterDescendantsInstances`, plus repeated tree `GetPivot()` calls for every candidate, can turn map startup into a long stall. In a verified large-scene case, use a few scene-root filters with a query collision group, cache static obstacle positions in a spatial grid, and set `RespectCanCollide` when the intent is physical clearance. A query group can ignore foliage without changing its collisions with players. Confirm the entire activity footprint against terrain and safe regions after optimizing, and measure startup again; faster queries must preserve geometry checks. See [RaycastParams](https://create.roblox.com/docs/reference/engine/datatypes/RaycastParams) and [OverlapParams](https://create.roblox.com/docs/reference/engine/datatypes/OverlapParams).
+Repeated queries with thousands of individual instances in `FilterDescendantsInstances`, plus repeated tree `GetPivot()` calls for every candidate, can turn map startup into a long stall. Use a few scene-root filters with a query collision group, cache static obstacle positions where useful, and set `RespectCanCollide` when the intent is physical clearance. A query group can ignore foliage without changing its collisions with players. Confirm the entire activity footprint against terrain and safe regions after optimizing, and measure startup again; faster queries must preserve geometry checks. See [RaycastParams](https://create.roblox.com/docs/reference/engine/datatypes/RaycastParams) and [OverlapParams](https://create.roblox.com/docs/reference/engine/datatypes/OverlapParams).
 
 ## Explicit lighting in generated places
 
-Set modern lighting explicitly in the Rojo place project. A tested fresh build that omitted it loaded as Compatibility and Studio migrated it to Voxel with Retro tone mapping, changing brightness and environment lighting. With Rojo 7.7, `Technology: Future`, `LightingStyle: Realistic`, and `PrioritizeLightingQuality: true` serialized successfully; the reopened Studio place reported Realistic and no migration ColorGradingEffect. Technology is deprecated and cannot be read from an ordinary command context in current Studio; verify the current LightingStyle instead. Keep runtime ambient/exposure settings consistent with the authored scene and visually compare a fresh rebuild. These quality choices are art-direction decisions, not a blanket physical-device performance guarantee. [Roblox Lighting reference](https://create.roblox.com/docs/reference/engine/classes/Lighting).
+Set the intended lighting properties explicitly in generated places using the current serializer
+and Studio API. Inspect the reopened place's active lighting configuration and visually compare
+it with the authored scene; implicit defaults or serialization changes can alter the result.
+Keep ambient/exposure choices consistent with the art direction and test affected device behavior.
+See the [Lighting reference](https://create.roblox.com/docs/reference/engine/classes/Lighting).
 
 ## Bounded binary exports through MCP
 
-Studio 0.737 truncated a large textual `execute_luau` result near 100,000 characters, corrupting a base64 art export. Serialize once, split the encoded bytes into bounded chunks (70,000 characters worked), retrieve each chunk, and validate the complete base64 before replacing the local artifact. A single `StringValue` also rejected a 435,776-character value; use separate bounded temporary values if engine storage is needed. Remove the temporary export container in `finally`. Keep the original binary until validation succeeds.
+Large textual results and instance properties can have size limits. Serialize once, retrieve the
+encoded bytes in chunks below the transport and storage limits, and validate the reassembled length,
+decoding, and checksum before replacing the local artifact. Bound temporary storage and remove it
+even after failure. Keep the original binary until validation succeeds.

@@ -2,7 +2,7 @@
 
 Apply these standards to the game's genre and the requested change. They are not instructions to give every game fantasy scenery, quests, or custom avatars.
 
-For Blender and environmental assets, apply [roblox-building](../../roblox-building/SKILL.md). Its [import reference](../../roblox-building/references/blender-assets.md) owns the reusable pipeline.
+Environmental asset design and the Blender import pipeline belong to the building dependency declared in the entry point; this reference covers Studio character integration.
 
 ## Avatars and animation
 
@@ -20,6 +20,6 @@ For an override, start with an appropriate Roblox body package/HumanoidDescripti
 
 ## Character collision and motion pitfalls
 
-Roblox Humanoids may re-enable torso collisions after spawning even if every NPC part was set noncollidable in the editor; disabling `EvaluateStateMachine` did not solve the observed case. An explicit NPC collision group with the player group's collision disabled kept an anchored dialogue character from blocking movement. Apply it to runtime and serialized NPCs, and verify by walking past them.
+For nonblocking NPCs, use an explicit collision group with player collision disabled; editor part flags alone may be changed by Humanoid behavior. Apply the group to runtime and serialized NPCs, and verify by walking past them.
 
-Anchoring a player and setting `WalkSpeed=0` do not necessarily stop the running animation or clear the last movement input. For a gameplay mode that needs a stationary character, clear movement/velocity, suspend the normal Animate script where appropriate, stop conflicting tracks, and explicitly own the resting joint transforms for that mode. Restore the original Animate state on exit. Current rigs may use AnimationConstraint; transforms are normally overwritten between PreAnimation and PreSimulation. Preserve intentional action animations, verify observer clients, and verify real walking resumes when the mode ends. A normal-input regression confirmed these behaviors; root anchoring alone was not a sufficient assertion. See the official [Animator](https://create.roblox.com/docs/reference/engine/classes/Animator) and [AnimationConstraint](https://create.roblox.com/docs/reference/engine/classes/AnimationConstraint) APIs.
+Anchoring a player and setting `WalkSpeed=0` do not necessarily stop the running animation or clear the last movement input. For a gameplay mode that needs a stationary character, clear movement/velocity, suspend the normal Animate script where appropriate, stop conflicting tracks, and explicitly own the resting joint transforms for that mode. Restore the original Animate state on exit. Current rigs may use AnimationConstraint; transforms are normally overwritten between PreAnimation and PreSimulation. Preserve intentional action animations, verify observer clients, and verify real walking resumes when the mode ends. See the official [Animator](https://create.roblox.com/docs/reference/engine/classes/Animator) and [AnimationConstraint](https://create.roblox.com/docs/reference/engine/classes/AnimationConstraint) APIs.

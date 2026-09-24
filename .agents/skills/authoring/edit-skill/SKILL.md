@@ -111,14 +111,27 @@ outcome, because silence reads as the guidance having been fixed.
    - This path restriction applies to the agent-content update, not to source changes required to fix an underlying issue from step 3.
 
 5. Upsert behavior.
-   - If target file exists, read it completely, then check it against **Skill shape** and **Output** below before making the requested change: a skill whose criteria sit inline gets a `references/` file, and a skill that returns a response with no `## Output` section gets one with its template, in this same edit and whether or not the request mentioned them, and list what they add among the files and sections the change makes. Then update it in place with the requested changes.
+   - Read the [guidance quality criteria](references/guidance-quality.md), then inventory and read the
+     target entry point and its referenced files, scripts, templates, and examples. Follow supporting
+     links within the package; reviewing only `SKILL.md` or the edited hunk is incomplete. Apply the
+     same genericity, ownership, clarity, and evidence standards to every file.
+   - Trace each miss to the instruction that produced or allowed it, including instructions for
+     adding or recording guidance. Name that governing instruction and its replacement in the
+     change. Removing a bad example while retaining a directive that regenerates it is incomplete.
+     Put incident evidence in the project/verification record and state that destination explicitly.
+     Fix the producing instruction and its output together.
+   - Check skill shape and output against those criteria. Move inline criteria to a named reference
+     when required, and add the appropriate output template or delivery report line when absent.
+     Update existing files in place and report any structural changes. Before delivery, follow the
+     entry point's links again and confirm that each route loads its required guidance. References
+     must not hide an essential rule or introduce an unexplained mode or dependency. Check genericity
+     with a materially different instance of the same failure class; state that case and its expected
+     outcome in validation. Renaming the original example or replaying only it does not establish breadth.
    - If target file does not exist, create it with a concise structure matching existing style.
    - Place new guidance under the broadest existing subject section that fits. Use durable topic headings rather than creating a heading for one requirement.
    - Express each independent requirement once, usually as one concise bullet. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
    - Normalize the touched file's nearby structure when needed: combine narrow sections, remove redundant wording, and order foundational guidance before specialized concerns.
    - When adding a **new** restriction or rule, keep the wording **concise**—one clear statement or bullet per idea; do not pad with redundant sentences or multiple bullets that restate the same requirement.
-   - **Stable guidance:** Write at the broadest scope that remains truthful. Describe reusable roles, boundaries, and decision criteria generically even in repository-focused guidance when the pattern is not repository-specific. Keep concrete repository names only when correctness depends on that local contract, and never turn one local example into an untrue universal rule.
-   - **Prefer the broad statement, and let the request be its example.** A request arrives as one symptom, and the rule it needs names the class that symptom belongs to; the symptom stays as one illustration of it. Asked for `Final` on string constants, write `Final` for every module-level constant; asked for a walkthrough rule because a page reloaded in a loop once a back-end change was absent, write that the run is judged against intended behaviour because an API error surfaces as any unintended behaviour, and name the loop only as one instance. A rule written for the symptom is silent on the next one, and the next one is what it will be read for. Broaden to the class the user plainly meant, never to a neighbouring subject.
    - Keep reusable skill names, instructions, scripts, and interfaces model-agnostic. Name a client or model only in a scoped compatibility section where its behavior genuinely differs.
    - Do not add committed tests for skills or their helper scripts, inside or outside the skill directory. Keep any needed execution checks temporary and untracked.
    - **Refer to a skill, and to anything inside it, by the skill's name, never by path.** `the `code-simplify` skill's rubric reference` is right; a relative path into another skill's directory is wrong, because the directories move between repositories and user-level roots and the name is the only stable handle.
@@ -127,50 +140,7 @@ outcome, because silence reads as the guidance having been fixed.
    - Do not embed product-specific file paths or copy current application code into reusable skills; those go stale when files move or refactors land. Prefer generic placeholders (for example `services/<name>/...`), short pattern descriptions, or minimal invented examples that are not tied to live paths or current line-level code.
    - **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract, and where a skill genuinely needs one local fact, take it from the repository's `project.md` or a setting rather than baking it in. Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
    - **Generic ownership is determined by the skill's name and purpose.** Only a product-named skill that owns that product contract may carry its product facts. Language, platform, framework, and workflow skills — including Luau — must work across products; put their repository commands, identities, hosts, packages, and fixtures in project rules or a domain-specific skill.
-   - Retain examples only when they clarify a non-obvious distinction; remove examples that merely repeat the prose.
    - Keep topic-specific restrictions with their topic. Keep an existing `## Guardrails` section at the bottom, and create one only for cross-cutting safety or preservation constraints.
-
-   **Skill shape.** `SKILL.md` holds how the skill runs: its trigger, its dependencies, its
-   workflow, its output, its guardrails. What a reader *applies* rather than *follows* lives in
-   `references/<topic>.md` beside it, named for what it holds — a rubric, a checklist, a catalogue,
-   a protocol — and `SKILL.md` names the file at the point the workflow reads it. A skill with two
-   routes through it (two modes, two kinds of target, two hosts) keeps the shared workflow in
-   `SKILL.md` and gives each route its own reference, so the file a reader loads first stays short
-   enough to be read whole. A reference is passive: it states criteria and never a step, a
-   dependency, or an invocation. Scripts the skill runs go under `scripts/`, assets it serves under
-   `assets/`, and nothing else enters the directory: no provider metadata such as `agents/openai.yaml`,
-   which stays outside repositories and is never propagated.
-
-   **Description.** The front-matter `description` is read on every turn, for every skill, to decide
-   whether this one fires. Its whole job is to state **when** — the situations that should reach it,
-   in the words a task actually arrives in. What it does belongs there only so far as a reader needs
-   it to recognise those situations; the body says the rest.
-
-   So the slash command earns no space. It is the skill's own name, the listing already shows it, and
-   a reader deciding whether to invoke has it in hand — `Invoke as /refactor to refactor a
-   repository` spends its opening clause telling the reader something they used to get here. Keep the
-   trigger and drop the command: `Use to refactor a repository, change request, branch, path, symbol,
-   or concern.` The same goes for a phrase naming the skill, `Use this skill to`, and a restatement of
-   the skill's title.
-
-   Where an invocation carries an argument the trigger depends on, the argument is the thing worth
-   naming — a target, a scope, a mode — not the command that precedes it.
-
-   The opening sentence still says what the skill does, because a generated listing renders it as the
-   skill's summary; the trigger follows it rather than replacing it.
-
-   Judge a description by substitution: read it without knowing which skill it belongs to. If it still says which situations
-   fire the skill, it works. If the remainder names no situation, it was never a trigger.
-
-   **Output.** A skill whose result is a response the user reads — a listing, a report, a summary, a
-   verdict, a draft — carries an `## Output` section as its last section before any `## Guardrails`,
-   holding a hard-coded Markdown template the response is filled into: fixed headings, fixed list
-   shapes, and a stated fallback for the empty case, so two runs on the same input read the same.
-   A skill whose result is edits, a merge, a deployment, or a running system has no template to
-   hold, and carries instead the report line its delivery step owes. The test is whether two
-   correct runs should read the same shape; write the template when they should, and leave it out
-   rather than forcing a shape onto a result that varies. That call is the editor's own, made from
-   what the skill returns, never a question put to the user.
 
 6. Multi-target behavior.
    - Apply multi-target updates for `agents`, `skills`, and `rules`.
@@ -209,7 +179,8 @@ outcome, because silence reads as the guidance having been fixed.
       between peer rules or peer skills, a section grown around a second subject, a heading named for
       a category with one member, a rubric left inline that the skill-shape rule sends to a
       reference. Prose duplicates as readily as code, and nothing else catches it. Every `.agents`
-      change gets that pass, a one-line rule edit as much as a new skill: a single bullet added to
+      change gets that pass over its entry point and supporting files, a one-line rule edit as much as a
+      new skill: a single bullet added to
       the file that does not own it is exactly the duplication this catches, and it is the change
       least likely to be looked at twice. Run it in process over the branch's own files, never
       fanned out to subagents: a guidance diff is a scope one reviewer holds whole, and the reviewer
@@ -227,7 +198,9 @@ outcome, because silence reads as the guidance having been fixed.
       waiver its **When It Runs** bounds. It runs here rather than before step 3, because a round
       run against wording the simplification pass then rewrites has tested text nobody will follow.
       That pass settles how the guidance reads; this one settles whether it changes what a reader
-      does, against the miss that prompted it and with the original text as the control. An edit
+      does, against the miss that prompted it and with the original text as the control. Give both
+      readers the complete relevant package, including the references needed for the scenario; an
+      entry-point-only test cannot prove a reference fix. An edit
       whose smoke run fails is revised and rerun within the rounds that skill bounds, never merged
       on the strength of reading well; a spent bound is decided as that skill says.
       A **mechanical seam edit** changes no behaviour and needs no smoke run: a dependency
