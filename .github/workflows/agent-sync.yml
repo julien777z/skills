@@ -1,6 +1,7 @@
 name: Agent Sync
 
 on:
+  workflow_dispatch:
   push:
     branches: [main, master]
     paths:
@@ -25,7 +26,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: julien777z/agent-sync-action@ff1f952982790d30113e69f5a09abaa9609f1b6f
+      - uses: julien777z/agent-sync-action@852f2253f9dbfb84c78a99f81983f3e23d873554
         with:
           output-dir: .agents/.auto_generated
           refresh-external-skills: ${{ github.event_name == 'schedule' }}

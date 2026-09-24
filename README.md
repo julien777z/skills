@@ -83,6 +83,7 @@ These run only when you ask for them by name, such as `/refactor`.
 | [`refactor`](.agents/skills/execution/refactor/SKILL.md) | Resolve and confirm a repository refactor scope, use multiple independent reviewers to plan structural improvements, then implement an approved plan. |
 | [`schema-doctor`](.agents/skills/doctors/schema-doctor/SKILL.md) | Audit and correct unjustified nullability, model complexity, primary-key design, and index design across repository API contracts, serialized schemas, persisted schemas, and the field flows connecting them. |
 | [`skill-gauntlet`](.agents/skills/authoring/skill-gauntlet/SKILL.md) | Audit installed agent skills across every visible scope, then autonomously benchmark, upgrade, retire, and install user-selected skills through isolated blind evaluations and a resumable local dashboard. |
+| [`study-games`](.agents/skills/roblox/study-games/SKILL.md) | Explicit user-invoked research of the current Roblox desktop US charts. |
 | [`take-over-pr`](.agents/skills/git/take-over-pr/SKILL.md) | Make a pull request's branch the working checkout so its work continues in this session. |
 | [`tests-doctor`](.agents/skills/doctors/tests-doctor/SKILL.md) | Audit and correct a test suite for consistency, redundancy, naming, runtime, coverage by test, and determinism, preferring fewer higher-quality tests. |
 
@@ -145,7 +146,6 @@ An agent reaches for these on its own whenever the work calls for them.
 | [`security-audit`](.agents/skills/review/security-audit/SKILL.md) | Security audit of a codebase — web apps, APIs, services, CLI tools, libraries, daemons, and more. |
 | [`smoke-test`](.agents/skills/authoring/smoke-test/SKILL.md) | Prove a skill edit changes what a reader does: rebuild the miss that prompted it, run reviewers on the edited and the original text, and score both against stated criteria before the pull request merges. |
 | [`storyline`](.agents/skills/roblox/storyline/SKILL.md) | Create, audit, or extend a game's substantial, coherent storyline with independent narrative proposals, motivated characters, playable story beats, a connected story web, and a satisfying ending. |
-| [`study-games`](.agents/skills/roblox/study-games/SKILL.md) | Explicit user-invoked research of the current Roblox desktop US charts. |
 | [`subagent-selection`](.agents/skills/execution/subagent-selection/SKILL.md) | Apply whenever selecting or launching sub-agents, whether directly for a task or through another skill. |
 | [`tailwind-design-system`](.agents/skills/web/tailwind-design-system/SKILL.md) | Build scalable design systems with Tailwind CSS v4, design tokens, component libraries, and responsive patterns. |
 | [`test-fixture`](.agents/skills/authoring/test-fixture/SKILL.md) | Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. |

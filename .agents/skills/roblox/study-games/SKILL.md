@@ -1,6 +1,7 @@
 ---
 name: study-games
 description: Explicit user-invoked research of the current Roblox desktop US charts. Study 25 games by default in passive mode, or play each for up to five minutes when requested. Delegate two games per researcher, collect YAML notes on gameplay, UI and onboarding, and wait for all researchers before synthesizing supported patterns into the Roblox skills.
+disable-model-invocation: true
 ---
 
 # Study Roblox games
@@ -12,7 +13,7 @@ description: Explicit user-invoked research of the current Roblox desktop US cha
 - `roblox-gameplay` — own the resulting gameplay design guidance.
 - `roblox-react` — own the resulting UI guidance.
 
-Run only when explicitly invoked or requested by the user. Do not automatically research charts during ordinary game edits. Invocation policy is in [agents/openai.yaml](agents/openai.yaml).
+Run only when explicitly invoked or requested by the user. Do not automatically research charts during ordinary game edits.
 
 Accept `mode: passive | play` and a game count `N`. Default to **passive** and **25 games** when omitted. An explicit count, genre, audience, or selection overrides that default. Start at the current [Roblox charts for desktop in the US](https://www.roblox.com/charts?device=computer&country=us). Record the observation date, chart category, filters, visible order, and each selected experience's title, creator, and exact URL. Rankings change; never substitute remembered hit games for the requested chart. If ranking content is unavailable, explain the gap and use only identifiable entries actually retrieved, without inventing their rank.
 
