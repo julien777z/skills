@@ -43,9 +43,9 @@ Run every change the same way, whether a plan preceded it or the user asked for 
   for an action-time confirmation a platform actually requires. Make that question specific to the
   new decision or action; never ask the user to reconfirm the task or say "continue" to resume it.
 - An implementation constraint is not a new approval boundary. Exhaust authorized ways to
-  complete a sub-step before handing it to the user. If only the user can complete it, identify
-  the exact required action without asking them to reauthorize the task, continue independent
-  work, and never request a secret through chat.
+  complete a sub-step yourself. Do not mistake an action-time confirmation for a mandatory user
+  hand-off: after the user confirms the specific pending action, perform it yourself. Hand off only
+  when the platform requires the user's own interaction. Never request a secret through chat.
 - After a required confirmation, continue the remaining authorized work without another general
   approval request. A refused or unanswered confirmation blocks only the action it governs; keep
   moving on independent work.
