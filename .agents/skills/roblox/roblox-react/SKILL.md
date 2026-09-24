@@ -1,6 +1,6 @@
 ---
 name: roblox-react
-description: Apply whenever Roblox UI is opened, inspected, designed, created, modified, or playtested, especially React Luau components, hooks, HUDs, menus, modals, tutorials, cards, and viewport previews. Require clean, attractive, readable, easy-to-use, beginner-friendly interfaces, responsive desktop/touch layouts, explicit cleanup, and repeated real-input Play tests.
+description: Apply whenever Roblox UI is opened, inspected, designed, created, modified, or playtested, including React Luau components, HUDs, menus, tutorials, cards, viewport previews, and world-space signs, SurfaceGuis, and BillboardGuis regardless of renderer. Require readable, visually inspected desktop/touch interfaces, explicit cleanup, and repeated real-input Play tests.
 ---
 
 # Roblox React interfaces
@@ -18,6 +18,16 @@ Review the whole screen before individual controls. Identify the focal point and
 Make selected, hovered, focused, disabled, pending, successful, and failed states distinct. Explain why an action is unavailable where useful. Do not rely on color alone. Keep text legible over the world, accommodate wrapping and long content, and avoid tiny targets or decorative motion that delays actions. Respect reduced motion and preserve keyboard/gamepad focus where supported.
 
 Give card artwork, names, costs, slot numbers, and status labels dedicated layout space. Do not place status text over the illustration or squeeze an arbitrary label into a slot-number badge. Check the longest real label at the smallest supported card size, including selected, disabled, and provider-granted cards; inspect rendered text, not only its container bounds.
+
+Treat world-space text as UI, including authored signs and text changed by gameplay.
+Inspect every affected text surface in the rendered scene from normal player height,
+approach distance, and camera angles. Read its complete message without zooming or
+using source text to fill in illegible words. Check the surface's combined layers,
+line spacing, wrapping, contrast, clipping, and scenery or character occlusion.
+Give each message one presentation owner; when content changes, update or replace its
+existing presentation instead of layering new text over old labels, textures, or GUIs.
+Separate simultaneous messages into distinct readable regions. TextScaled and valid
+bounds cannot establish readability. See the component reference for world-space checks.
 
 Share the theme, buttons, cards, modal shell, and preview adapters. Related windows use consistent close behavior, backdrop, focus/input handling, and dimensions appropriate to their content. A second window replaces the first; repeated triggers follow the game's documented toggle behavior. Exclusive start screens and modals must block underlying pointer, keyboard, hover, and movement input, then restore it on exit.
 
@@ -51,6 +61,7 @@ At those checkpoints, cover each affected flow:
 4. For selection/confirmation flows, change selection repeatedly, confirm, and attempt a duplicate confirmation. Verify the visible selected state and authoritative result agree; a timeout advancing the game is not proof a click registered.
 5. Inspect screenshots at supported desktop, narrow, and landscape phone/tablet sizes when UI changes. Apply the whole-screen composition criteria above; read every instruction, inspect all four button edges and rounded corners, and observe a complete pointer bounce at each affected tutorial step. Check its full motion envelope for text overlap and clipping, including while scrolling. A bounding-box assertion, successful click, or clean lint result is not visual acceptance. Record what was visually inspected; do not infer coverage from a different step or screen. Operate touch controls and scrolling in the simulator, including safe areas. Do not claim physical-device coverage from simulation.
 6. Repeat the flow after character replacement, encounter exit, or another relevant lifecycle boundary. Verify camera/input restore, previews remain stable, and connections or animation work do not accumulate.
+7. For world-space text, inspect the initial state and each changed presentation after progression, repeated updates, and rejoin. Confirm obsolete text is absent and the complete current message is readable using the criteria above. Record the surface, state, camera distance, and viewport inspected. An uninspected or illegible surface remains unverified or failed; other UI screenshots and successful gameplay do not cover it.
 
 Fix visible or interaction defects discovered in the affected flow even when lint and builds pass. Keep evidence of actual outcomes. Scale broader gameplay coverage to the change and distinguish Studio, device simulation, persistence, and published-client verification.
 
@@ -59,6 +70,17 @@ Fix visible or interaction defects discovered in the affected flow even when lin
 Record verified reusable UI/React issues and solutions in this skill. Put Studio connection/input orchestration in `roblox-studio`, general Luau lint/type guidance in `luau`, and game-specific UI contracts in the project skill. Keep one canonical owner for each rule and leave generated agent mirrors to Agent Sync.
 
 ## Startup and transient feedback
+
+For loading that can make the player wonder whether the game is stuck, show a visible
+progress bar and a plain-language description of the current stage. Drive determinate
+progress from measured work; use an indeterminate bar while the amount of remaining
+work is unknown. Never invent percentages with a timer or show completion before the
+player can continue. Asset loading alone does not establish that the profile, world,
+character, or destination is ready. Keep feedback responsive through each required
+stage, distinguish slow progress from failure, and provide a bounded timeout with
+actionable recovery instead of an endless loading screen. Verify fast, delayed,
+stalled, and failed loads on desktop and touch layouts, including reduced motion and
+the transition from loading to usable gameplay.
 
 Exercise a fast first interaction as well as the settled screen. A wardrobe preview can
 finish before the live character is ready. If a valid request starts a busy UI state,
