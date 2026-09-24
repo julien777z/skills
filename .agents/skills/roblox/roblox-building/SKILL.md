@@ -19,6 +19,13 @@ Vary terrain shape, sightlines, silhouettes, landmarks, architecture, vegetation
 
 Give every district a useful role and connect it visually to its neighbors. Inspect approached building faces, roof orientation, doorways, signs, supports, interior scale, shoreline transitions, and terrain joins. Detail must support navigation, story, or atmosphere while leaving room for player movement and the gameplay camera. Preserve established safe-zone and encounter rules.
 
+Evaluate every object's placement in the complete scene: why it belongs there, what
+it faces or connects to, how it is approached and used, and whether its neighbors
+support or obstruct that purpose. Reserve the full approach, interaction, and exit
+space before adding decorative props. Apply the functional-placement criteria in
+the map-making reference; isolated asset quality, collision checks, and successful
+interactions do not establish a coherent arrangement.
+
 Read [Map making and surface integration](references/map-making.md) for composition, traversal, terrain joins, collision, and inspection. Use shared map/model frames and named anchors as described in [luau](../luau/SKILL.md); update geometry and its gameplay consumers together.
 
 ## Blender and economical meshes
@@ -37,7 +44,7 @@ Low triangle counts alone do not guarantee smooth play. Also inspect draw calls,
 
 Use [roblox-studio](../roblox-studio/SKILL.md) for imports, preserved terrain, source synchronization, background MCP tests, and authorized delivery. Apply [luau](../luau/SKILL.md) when opening or modifying builders/scripts. UI belongs to [roblox-react](../roblox-react/SKILL.md).
 
-Walk the arrival route, every changed connection, bridges/ramps, doors, and activity boundaries in both directions. Inspect at player height and supported camera zoom/pitch from multiple approaches. Check clipping, floating props, flicker, inaccessible steps, collision snags, misleading paths, bland sightlines, and accidental views of other maps. Fix defects in the canonical builder and saved artwork so rebuilding preserves the repair.
+Trace every affected entrance and activity access route all the way to the established traversal network; a reachable destination or walkable grass does not prove its authored path connects. Apply the route-continuity criteria in the map-making reference. Walk the arrival route, every changed connection, bridges/ramps, doors, and activity boundaries in both directions. Inspect at player height and supported camera zoom/pitch from multiple approaches. Check clipping, floating props, flicker, inaccessible steps, collision snags, misleading paths, bland sightlines, and accidental views of other maps. Fix defects in the canonical builder and saved artwork so rebuilding preserves the repair.
 
 For major maps or streaming changes, test stream-out/re-entry, destination preloading, interiors, missing assets, and appropriate mobile coverage. Verify complete activity footprints avoid protected routes. Reopen a fresh build to check terrain, assets, lighting, source/package closure, and absence of test fixtures. Report code checks, Studio traversal, simulation, performance measurements, and published-client results separately.
 
