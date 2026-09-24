@@ -34,15 +34,24 @@ alwaysApply: true
 ### Merge Authorization
 
 - Agents may create branches and pull requests, commit, and push scoped changes without additional approval.
-- Merging any pull request requires explicit user authorization in the current request or explicit
-  applicable guidance in a rule or invoked skill for that pull request. A fix request, CI-test
-  request, successful check, or review does not itself authorize merging. If neither authorization
-  source applies, do not merge or enable auto-merge.
-- A pull request confined to canonical agent configuration, including skills, rules, and agent definitions, may be merged without a separate request after `code-simplify` has run and its findings are resolved. For substantial guidance changes or changes to executable logic, first run the relevant smoke test against the exact pull-request head. Check that the complete pull request remains confined to agent configuration before using this exception.
-- When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, including one begun by another task. Do not close or leave it open merely because it is draft or conflicts with the base; close only when its change is superseded or no longer wanted.
+- Merging any pull request requires the user to say to merge its target in the current request, or
+  to invoke an action skill whose declared outcome explicitly includes that merge. Plan approval,
+  implementation, CI testing, review, rollout, acceptance testing, finishing the task, and creating
+  a pull request do not authorize merging. This applies to agent-configuration pull requests too.
+- A pull request confined to canonical agent configuration is validated through `code-simplify`
+  and, for a substantial guidance or executable-logic change, the relevant smoke test against its
+  exact head. Validation makes it ready for the user to merge; it does not grant merge authority.
 - An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization.
-- Never enable auto-merge for any other pull request unless the user explicitly authorizes it in the current request or an explicitly invoked skill requires it.
+- Never enable auto-merge unless the user explicitly authorizes it in the current request or an explicitly invoked skill requires it.
 - If an agent mistakenly merges a pull request, it may auto-merge the focused revert pull request that corrects that erroneous merge without separate authorization.
+
+### Test Deployment Order
+
+- When an authorized test deployment is part of accepting a runtime pull request, deploy and
+  verify its exact current head. A default-branch, merge-commit, or post-merge artifact never
+  validates the pull-request branch.
+- When that authorized acceptance needs deployment but the pull-request-head path is missing,
+  add and exercise the path in the pull request. Never merge to create, unlock, or test it.
 
 ### After Agent Sync
 
