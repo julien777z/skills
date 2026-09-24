@@ -48,12 +48,14 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 
 ## Browser Access
 
-- Use connected Chrome for browser work in an isolated, agent-owned tab. Keep it in the background;
-  do not inspect, focus, reuse, or close a tab the user owns. If the user explicitly names a different
-  browser or an existing tab for the task, follow that direction instead.
-- If isolated Chrome control is unavailable, continue through an appropriate API or CLI when one
-  exists. Do not substitute foreground interaction with the user's Chrome session for an isolated
-  tab; report the browser-specific blocker if browser interaction remains necessary.
+- Use the user's `@Chrome` browser for browser work. Open a new, agent-owned tab in that same browser
+  and keep it in the background when the browser supports that; tab isolation does not mean using a
+  different browser, profile, or account. Do not inspect, focus, reuse, or close the user's existing
+  tabs. If the user explicitly names a different browser or an existing tab for the task, follow
+  that direction instead.
+- If `@Chrome` tab control is unavailable, continue through an appropriate API or CLI when one
+  exists. Do not substitute interaction with the user's existing tabs or a different browser;
+  report the browser-specific blocker if browser interaction remains necessary.
 
 ## Product Constraints
 
