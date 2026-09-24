@@ -45,7 +45,7 @@
     },
     {
       "name": "no-ai-slop",
-      "name_override": "no-text-ai-slop",
+      "skill_name_override": "no-text-ai-slop",
       "repo": "petergyang/no-ai-slop",
       "skill": "no-ai-slop",
       "category": "review",
