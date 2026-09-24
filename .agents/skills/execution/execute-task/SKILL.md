@@ -53,9 +53,10 @@ Run every change the same way, whether a plan preceded it or the user asked for 
   different browser, profile, or account. Do not inspect, focus, reuse, or close the user's existing
   tabs. If the user explicitly names a different browser or an existing tab for the task, follow
   that direction instead.
-- If `@Chrome` tab control is unavailable, continue through an appropriate API or CLI when one
-  exists. Do not substitute interaction with the user's existing tabs or a different browser;
-  report the browser-specific blocker if browser interaction remains necessary.
+- If `@Chrome` tab control is unavailable, use regular Chrome as the fallback and open a new
+  agent-owned tab there. It may come to the foreground; keep the user's existing tabs untouched.
+  Continue through an appropriate API or CLI when that is more direct. Report a browser-specific
+  blocker only if neither Chrome path can complete the required interaction.
 
 ## Product Constraints
 
