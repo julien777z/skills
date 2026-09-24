@@ -91,9 +91,6 @@ alwaysApply: true
 - Name things for the shape being exercised, not for whichever caller happened to prompt the work.
   A test needing a table with a secret column names it for that — a record with a secret — rather
   than borrowing the one real table the change was made for.
-- A consumer's needs are a legitimate reason to build something and never a reason to name it after
-  them. Where a consumer's specifics matter to reviewers, they belong in the pull request
-  description, which is read once, rather than in code that outlives the conversation.
 - Sample values follow the same rule: prefer plainly synthetic literals over ones shaped like a
   real identifier from another system's domain.
 
