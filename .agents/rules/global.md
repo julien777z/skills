@@ -5,6 +5,16 @@ alwaysApply: true
 
 # Global Rules
 
+## Agent And Harness Portability
+
+- This guidance is used with multiple models and agent harnesses. Prefer one provider-neutral
+  implementation and one canonical source for skills, rules, and agent prompts.
+- When a shared implementation is not possible, support both Claude and Codex explicitly: account
+  for how each discovers, installs, and uses the guidance, and verify both paths. Include other
+  supported harnesses where the same change reaches them.
+- Read the other shared rules relevant to the current repository and task. If a harness does not
+  load them automatically, open the applicable files from its user-level rules directory.
+
 ## Repository Skills
 
 - Never add `agents/openai.yaml` to a repository skill. Repository skills contain `SKILL.md` and

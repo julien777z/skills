@@ -8,7 +8,6 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CANONICAL_SKILLS="$REPO_ROOT/.agents/skills"
 CANONICAL_AGENTS="$REPO_ROOT/.agents/agents"
 CANONICAL_RULES="$REPO_ROOT/.agents/rules"
-CODEX_INSTRUCTIONS="$REPO_ROOT/bootstrap/CODEX_AGENTS.md"
 GENERATED_ROOT="$REPO_ROOT/.agents/.auto_generated"
 PROVIDERS=(claude codex cursor)
 found_root=0
@@ -31,11 +30,11 @@ check_link() {
   old_remote="$(git -C "$old_root" remote get-url origin 2>/dev/null || true)"
   case "$old_remote:$resolved" in
     https://github.com/julien777z/skills.git:"$old_root"/.agents/*|\
-    https://github.com/julien777z/skills.git:"$old_root"/bootstrap/CODEX_AGENTS.md|\
+    https://github.com/julien777z/skills.git:"$old_root"/bootstrap/*|\
     https://github.com/julien777z/skills:"$old_root"/.agents/*|\
-    https://github.com/julien777z/skills:"$old_root"/bootstrap/CODEX_AGENTS.md|\
+    https://github.com/julien777z/skills:"$old_root"/bootstrap/*|\
     git@github.com:julien777z/skills.git:"$old_root"/.agents/*|\
-    git@github.com:julien777z/skills.git:"$old_root"/bootstrap/CODEX_AGENTS.md)
+    git@github.com:julien777z/skills.git:"$old_root"/bootstrap/*)
       return 0 ;;
   esac
   echo "conflict: $link points outside $REPO_ROOT" >&2
@@ -65,7 +64,7 @@ preflight_provider() {
     done
   fi
   if [ "$provider" = "codex" ] && { [ -L "$root/AGENTS.md" ] || [ -s "$root/AGENTS.md" ]; }; then
-    check_link "$CODEX_INSTRUCTIONS" "$root/AGENTS.md" || failed=1
+    check_link "$CANONICAL_RULES/global.md" "$root/AGENTS.md" || failed=1
   fi
   [ "$failed" -eq 0 ]
 }
@@ -145,7 +144,7 @@ install_provider() {
     prune_links "$root/rules"
   fi
   if [ "$provider" = "codex" ]; then
-    install_link "$CODEX_INSTRUCTIONS" "$root/AGENTS.md"
+    install_link "$CANONICAL_RULES/global.md" "$root/AGENTS.md"
   fi
 
   echo "$root: $skills skills, $agents agents, $rules rules linked"

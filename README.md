@@ -29,8 +29,8 @@ update, or installation failure. Cloud environment image caching can skip setup 
 the previously installed skills remain available then.
 
 The local installer links skills, reusable rules, and applicable agent definitions into existing
-Claude, Codex, and Cursor user roots. Codex also gets a short global `AGENTS.md` that directs it
-to read only the relevant linked rules. Repository-specific rules stay in each repository's
+Claude, Codex, and Cursor user roots. Codex's global `AGENTS.md` links to the same canonical
+`global.md` rule used by the other harnesses. Repository-specific rules stay in each repository's
 `project.md`. Re-running refreshes owned links and prunes obsolete ones; real content or foreign
 links at an installed path are reported before any links change.
 
@@ -45,7 +45,6 @@ links at an installed path are reported before any links change.
 | `.agents/.auto_generated/` | Provider mirrors the workflow generates on `main`; never edited by hand. |
 | `AGENTS.md` | Repository instructions the workflow generates at the root; never edited by hand. |
 | `bootstrap/install.sh` | Links skills, agents, and rules into user-level roots. |
-| `bootstrap/CODEX_AGENTS.md` | Small global Codex index for the linked rules. |
 | `bootstrap/cloud-install.sh` | Selects the attached or cached checkout and installs it for Claude cloud's user. |
 
 The [rule reconciliation notes](docs/rule-reconciliation.md) record which wording was chosen from divergent consumer copies.
