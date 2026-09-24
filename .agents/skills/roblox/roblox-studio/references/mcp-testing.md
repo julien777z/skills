@@ -70,13 +70,18 @@ resuming normal controls.
 
 An empty inventory does not establish that MCP is disabled. The intended process may be waiting
 on sign-in, a recovery dialog, Assistant initialization, or the proxy connection. Inspect that
-editor's current UI and normal MCP setting before changing it. Preserve unrelated preferences;
-undocumented preference-file keys are not a stable setup API.
+editor's current UI. Resolve blocking dialogs, open **Assistant → Manage MCP Servers**, and inspect
+the normal MCP setting before changing it. If remote pointer input cannot open Assistant, use its
+native menu or the installed editor's shortcut configuration; inspect the current binding rather
+than assuming a key. Restore any temporary binding afterward. Keep the proxy alive during bounded
+discovery, then verify the intended editor with a read-only command against its explicit ID before
+orchestration. Preserve unrelated preferences;
+undocumented preference-file keys are not a stable setup API. This uses the normal
+[MCP setup and connection checks](https://create.roblox.com/docs/studio/mcp).
 
 A normal quit can stop at an unsaved-changes dialog. Verify closure before reopening, and avoid
 forced termination or repeated duplicate launches. Multiple processes can show the same file or
 have different authentication states. Preserve the working editor and retained credentials.
-A connected editor must answer a read-only command against its explicit ID before orchestration.
 
 ## Qualify input and capture
 
@@ -131,16 +136,21 @@ and keep screenshots, logs, temporary fixtures, and runner state ignored.
 ## Pending and partial test startup
 
 A pending test call with its fixture installed can remain in Edit before Play begins. Inspect the
-request, fixture, dialogs, and data-model state before choosing supported recovery; do not inject a
-duplicate test or treat a transport timeout as a completed failure. Keep an explicit deadline and
-clean up abandoned fixtures after resolving their test session. Starting solo Play cannot satisfy a
-multiplayer test's requested participant count.
+request, fixture, dialogs, and `get_studio_state` before recovery. For a solo test, when the original
+request is still pending, its fixture is installed in the intended editor, and no dialog blocks it,
+try the supported `start_stop_play(is_start=true)` once against that same `studio_id`. Wait for the
+original request's result within its existing deadline; entering Play alone is not a passed test.
+Do not inject a duplicate fixture, replay an ambiguous timed-out request, or start solo Play for a
+multiplayer test. Clean up abandoned fixtures after resolving their test session.
 
 For multiplayer tests, count actual connected players and inspect each process's data-model state.
 A requested count or open window does not prove that every client joined. Keep startup and gameplay
 deadlines separate; failure results include participants, readiness, positions, and encounter state.
 Investigate the observed failure before a bounded retry, preserve its evidence, and keep every
-client in the isolated runner.
+client in the isolated runner. If a client opened the wrong data model, end the failed test, close
+its task-owned client processes normally, and reopen the intended test editor only if needed.
+Confirm editor identity and fixture cleanup before one fresh launch, then verify the actual joined
+count. A restart is a recovery attempt, not proof of the startup cause or a reason for repeated retries.
 
 ## Roblox Jest through an existing editor
 

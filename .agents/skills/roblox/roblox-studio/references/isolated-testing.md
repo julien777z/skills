@@ -55,8 +55,15 @@ For a Tart runner, use the official [quick start](https://tart.run/quick-start/)
 CLI's help. Keep actual versions, image identity, resource allocation, and qualification results in
 local configuration and verification evidence. Reuse the retained runner before provisioning one.
 
-Resolve a recovery attempt's reported prerequisites before retrying. Preserve the runner's
-authenticated state; destructive repairs require their own applicable authorization.
+Resolve a recovery attempt's reported prerequisites before retrying. For a macOS updater reporting
+a missing recovery volume, inspect the guest's disk layout with `diskutil list`. If the required
+recovery volume is absent, stop repeated installer downloads; downloading again does not supply
+that disk prerequisite. Consult the image provider's recovery requirements: the
+[Tart macOS image template](https://github.com/cirruslabs/macos-image-templates/blob/main/templates/vanilla-tahoe.pkr.hcl)
+retains a recovery partition for software updates. This diagnosis applies to that reported
+condition, not every update failure. Preserve the authenticated disk and use a documented recovery
+path; destructive repairs require their own applicable authorization. Verify the prerequisite
+before retrying the update.
 
 Run with `--no-graphics --no-clipboard --no-audio` so the VM does not create a host window, share the
 clipboard, or play test audio through the user's speakers. Transfer only the project/test files over

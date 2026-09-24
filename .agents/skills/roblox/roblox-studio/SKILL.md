@@ -39,7 +39,9 @@ Read [Asset and avatar standards](references/assets-and-avatars.md) for imported
 
 ## Record operational lessons as they occur
 
-Distill a verified lesson into a reusable decision rule in its owning skill. Apply the same standard to this entry point and every supporting reference: no incident timelines, machine inventories, project identities, or lists of attempted fixes. Keep those facts and dated evidence in the project record or verification output. Include a platform-specific constraint only when it changes the procedure, with its applicability and source; one observation does not establish a universal cause or fix. Replace conflicting guidance rather than appending another exception.
+Distill a verified lesson into usable guidance in its owning skill. For setup or recovery instructions, give the parameterized command or API call, prerequisites, action order, fallback conditions, and success check; resolve machine-specific values from configuration. Generalizing a lesson must preserve the procedure that lets the next agent succeed, not reduce it to “inspect, retry, and verify.” Apply this to the entry point and every supporting reference.
+
+Keep incident timelines, machine inventories, project identities, and dated evidence in the project record or verification output. Include a platform constraint only when it changes the procedure, with its applicability and source; one observation does not establish a universal cause or fix. Replace conflicting guidance rather than appending another exception.
 
 Code, interface, gameplay, and environment lessons belong to their respective dependencies. Keep Studio operations here and avoid duplicating another owner's guidance.
 

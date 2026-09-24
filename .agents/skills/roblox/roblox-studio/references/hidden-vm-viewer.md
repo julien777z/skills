@@ -27,6 +27,21 @@ installation outside game checkouts and record actual versions in verification e
 - Reconnection checks the existing viewer's connection state before restarting Studio or the VM.
   The tab stays hidden unless the user needs to sign in or wants to watch.
 
+With noVNC and websockify, resolve the installed viewer directory, an unused local port, and the
+verified VNC endpoint from runner configuration. Start the proxy as a tracked task-owned process:
+
+```sh
+websockify --web "$studio_viewer_dir" "127.0.0.1:$studio_viewer_port" "$studio_vnc_endpoint"
+```
+
+Open `http://127.0.0.1:<viewer-port>/vnc.html` in the permitted background browser. Set the viewer's
+WebSocket host and port to that loopback listener and connect through the normal authentication
+form. If an SSH forward supplies the VNC endpoint, establish and verify it before starting the
+proxy. Confirm the listening address and fresh guest frames, then retain the process handle for
+the cleanup below. Use the installed tools' help when their options differ; this recipe follows
+the [noVNC quick start](https://github.com/novnc/noVNC#quick-start) and
+[websockify web-server option](https://github.com/novnc/websockify#additional-websockify-features).
+
 ## Security boundary
 
 Loopback restricts the browser proxy to the Mac; it does not itself restrict the guest's
@@ -61,8 +76,10 @@ installed software, login, preferences, and SSH setup. Never remove the VM to cl
 
 ## Guest file pickers
 
-Remote input can arrive before a field gains focus or before its display updates. Verify the
-active field and rendered text before submitting, including full paths in file pickers. If bulk
-input is incomplete, use the supported slower input method and check completion before moving
-fields. Do not repeatedly submit incomplete credentials. Separate modal previews from the action
-that commits an import, and verify the import's terminal result.
+Remote input can arrive before a field gains focus or before its display updates. Focus the field,
+wait for its active state, enter the text, and verify the rendered value before submitting or moving
+fields. If bulk entry drops characters, correct the field and use the active tool's per-character
+key input with brief intervals; verify completion, including the full path in a file picker.
+Do not repeatedly submit incomplete credentials. For an import queue covered by a preview, finish
+the preview options and close it before activating **Start Import** in the queue. Verify the
+terminal import result; opening or configuring the preview does not commit the import.

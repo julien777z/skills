@@ -120,6 +120,10 @@ outcome, because silence reads as the guidance having been fixed.
      change. Removing a bad example while retaining a directive that regenerates it is incomplete.
      Put incident evidence in the project/verification record and state that destination explicitly.
      Fix the producing instruction and its output together.
+   - When generalizing or shortening guidance, account for each useful instruction removed: retain
+     it as a reusable procedure, link its owning guidance, or establish why it no longer applies.
+     Check that the next reader can still perform the action and recognize success; removing the
+     incident details must not remove the lesson. Apply the preservation criteria in the quality reference.
    - Check skill shape and output against those criteria. Move inline criteria to a named reference
      when required, and add the appropriate output template or delivery report line when absent.
      Update existing files in place and report any structural changes. Before delivery, follow the

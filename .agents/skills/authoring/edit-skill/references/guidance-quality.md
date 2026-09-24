@@ -8,6 +8,13 @@ and examples. A supporting file is part of the skill, not an exemption from its 
 - Guidance states a transferable decision or procedure. Incident dates, machine inventories,
   project identities, test outcomes, and recovery diaries belong in project records or verification
   evidence. Renaming a product or moving its anecdote to a reference does not make it generic.
+- Generalization preserves operational knowledge: applicability, prerequisites, action order,
+  success checks, and relevant recovery or stopping conditions. Stable commands and API names are
+  useful detail; replace environment-specific values with configuration or placeholders. “Inspect
+  and retry” is not a substitute for a known procedure. Evidence records keep the incident;
+  the skill or its linked owner keeps the reusable lesson.
+  Linking an API reference preserves syntax, but the procedure must still say which operation or
+  options apply and how to check the result.
 - A concrete platform constraint belongs only when it changes the procedure. State its applicable
   boundary and source; keep observed symptoms separate from proven causes and avoid inferring a
   universal rule from one run. Configuration supplies environment-specific values.
