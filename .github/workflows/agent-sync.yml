@@ -26,7 +26,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: julien777z/agent-sync-action@852f2253f9dbfb84c78a99f81983f3e23d873554
+      - uses: julien777z/agent-sync-action@be8a699a2e0d470dcbaac64eacd225837deda2fb
         with:
           output-dir: .agents/.auto_generated
           refresh-external-skills: ${{ github.event_name == 'schedule' }}
