@@ -137,8 +137,14 @@ walking, interaction, and captures through SSH with no host viewer. This proves 
 does not use host UI. A later read-only check confirmed the host was locked while guest SSH captures
 and native Studio dialog clicks still worked. A published-client follow-up under the same observed
 host lock verified a start-button click and held/released movement with changed scene and distance.
-Host sleep remains untested. Input qualification also does not establish clean mesh rendering: record
-visible rendering defects separately. Record those limits and current versions in untracked run evidence.
+After the user unlocked the host, guest geometry corruption persisted. The same assets and Studio
+0.737.0.7371584 rendered cleanly on the physical host and incorrectly in the guest's script-free
+scene. Host lock therefore did not account for that observed guest rendering defect. Guest control
+and capture remained usable in both observed host states; this does not establish pixel-identical
+output, clean meshes, or behavior during host sleep. The host's own Studio MCP captures timed out
+while locked and resumed after unlocking, so its capture limitation must not be applied to the guest.
+Keep current versions and dated images in untracked run evidence; qualify rendering separately from
+input and capture.
 
 ## Authentication and user handoff
 
