@@ -20,4 +20,21 @@ For every major character, propose silhouette, scale, face, clothing, palette, m
 
 Separate canon authority from implementation evidence. An approved written trait is established canon, not proof of a working model, scene, or animation. Keep newly invented traits, dialogue, staging, and behavior proposed even when attached to an existing character or quest. Split mixed entries into evidenced retained details and proposed additions; use unknown for unverified runtime or playtest status. Only source evidence can establish implementation, and only observed gameplay can establish playtested status.
 
+Review the cast as a group as well as individually. Give each major character concrete
+recognition cues tied to role and personality, including cues beyond color or a nameplate:
+silhouette, proportions, headwear, clothing cut, face, carried tools, posture, or movement.
+Shared rigs and animations can remain canonical while character definitions supply
+distinct designs. Propose practical variations for supporting NPCs where repetition
+obscures their roles; intentional uniforms still need readable individual identities
+when the player must recognize the wearer. “Existing rig,” a different name, or a
+palette swap alone does not satisfy a major character's visual design.
+
+Map each proposed appearance to the actual model, variant definition, props, and motion
+that implement it. Compare the resulting cast from normal player distance and relevant
+gameplay cameras, with nameplates hidden or disregarded. Check whether players can
+distinguish the intended characters and roles. A model file's existence or a description
+in canon does not prove that its distinguishing traits render. Record retained details,
+proposed variants, implementation evidence, and observed cast readability separately;
+flag shared placeholders and unverified designs rather than treating them as completed.
+
 Score each candidate from 1 (absent/contradictory) to 5 (specific and convincing) on coherence, character agency, playable variety, emotional payoff, onboarding clarity, and feasibility. A candidate with an unresolved central ending, contradictory mandatory dependencies, or a passive player climax fails regardless of total score. Scores compare design judgment; they are not measured retention predictions.

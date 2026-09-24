@@ -179,6 +179,10 @@ outcome, because silence reads as the guidance having been fixed.
       interpreter or any interpreter meeting the sync tool's version, and fix every
       report it prints before pushing; a description holding a colon followed by a space is the usual
       one, and quoting the value is the fix.
+      Check the entire canonical skills tree against repository packaging rules, including
+      imported skills, rather than only the files being edited. Remove forbidden provider UI
+      metadata such as `agents/openai.yaml` from canonical skill packages; leave generated
+      mirrors to Agent Sync. A clean changed file does not make a failing tree validation pass.
    3. **Run `code-simplify`** across the branch and act on what it reports: guidance duplicated
       between peer rules or peer skills, a section grown around a second subject, a heading named for
       a category with one member, a rubric left inline that the skill-shape rule sends to a
