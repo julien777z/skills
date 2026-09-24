@@ -19,10 +19,11 @@ tracing a test surface is; without one, fix what the focused pass can finish.
 1. Read the complete [rubric](references/rubric.md) before inspecting, reviewing, changing, or
    executing any covered test surface. Discover the repository's test roots, fixture packages,
    factory owner, shared test utilities, runner targets, and analogous sibling tests.
-2. For an application change, finish implementation before writing or strengthening tests or test
-   support. If an applicable authorized manual path exists, verify the behavior there first; fix
-   and retry failures before writing tests. A pull-request-head test deployment requires explicit
-   user authorization. Existing tests may still be run to diagnose development failures.
+2. For an application change, finish the task's implementation across every affected component and
+   repository before writing or strengthening tests or test support. If an applicable authorized
+   manual path exists, verify the complete behavior there first; fix and retry failures before
+   writing tests. A pull-request-head test deployment requires explicit user authorization.
+   Existing tests may still be run to diagnose development failures.
 3. Identify the source owner and place the test beneath its corresponding suite and classification.
    Reuse the canonical fixture or factory for every domain value. When it lacks required data,
    extend that owner and update its consumers instead of spelling the value in the test.

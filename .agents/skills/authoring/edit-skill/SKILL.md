@@ -51,6 +51,12 @@ outcome, because silence reads as the guidance having been fixed.
    - If the user explicitly says the type, use it.
    - If type is not explicit, infer it only when confidence is high.
    - If not confident, ask: **"Should this be an agent, skill, or rule?"**
+   - A file or skill the request names is a candidate, not proof of ownership. Compare it with its
+     callers and dependencies before choosing the target. A condition governing a specific action
+     belongs to that action's skill, even when a broader caller sequences the surrounding task.
+     When the owner necessarily runs before the action, remove equivalent conditions from callers;
+     strengthen its trigger or invocation only if that owner would otherwise be missed. Explain the
+     placement.
    - **When the request names no target, find the guidance that let the gap through and change it
      there.** A request usually arrives as a symptom with no file attached — "that is a bad
      implementation, do not use X" — and the file to edit is the one that governs the thing X
@@ -118,7 +124,6 @@ outcome, because silence reads as the guidance having been fixed.
    - Normalize the touched file's nearby structure when needed: combine narrow sections, remove redundant wording, and order foundational guidance before specialized concerns.
    - When adding a **new** restriction or rule, keep the wording **concise**—one clear statement or bullet per idea; do not pad with redundant sentences or multiple bullets that restate the same requirement.
    - **Stable guidance:** Write at the broadest scope that remains truthful. Describe reusable roles, boundaries, and decision criteria generically even in repository-focused guidance when the pattern is not repository-specific. Keep concrete repository names only when correctness depends on that local contract, and never turn one local example into an untrue universal rule.
-   - Before adding guidance, inspect both the skills the edited skill invokes and the skills that invoke or consume it, plus the rules those paths always load. Keep a shared decision boundary in its canonical owner; remove duplicate or conflicting wording from skills that necessarily run with that owner, leaving only a reference when useful. Retain local wording when the owner is not guaranteed to run or the local contract genuinely differs.
    - **Prefer the broad statement, and let the request be its example.** A request arrives as one symptom, and the rule it needs names the class that symptom belongs to; the symptom stays as one illustration of it. Asked for `Final` on string constants, write `Final` for every module-level constant; asked for a walkthrough rule because a page reloaded in a loop once a back-end change was absent, write that the run is judged against intended behaviour because an API error surfaces as any unintended behaviour, and name the loop only as one instance. A rule written for the symptom is silent on the next one, and the next one is what it will be read for. Broaden to the class the user plainly meant, never to a neighbouring subject.
    - Keep reusable skill names, instructions, scripts, and interfaces model-agnostic. Name a client or model only in a scoped compatibility section where its behavior genuinely differs.
    - Do not add committed tests for skills or their helper scripts, inside or outside the skill directory. Keep any needed execution checks temporary and untracked.

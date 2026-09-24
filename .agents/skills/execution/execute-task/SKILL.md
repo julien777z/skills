@@ -98,10 +98,9 @@ how those issues are handled.
   library consumer, public export, or external contract still depends on it; remove tests that
   exist only to exercise the dead code; and validate the affected behavior. This requirement does
   not turn implementation into a proactive dead-code audit of the whole repository.
-- Use the repository's relevant tests as the regression guardrail once the implementation is
-  complete. Do not preserve a defect solely because an existing test asserts the old behavior.
-  When coverage is absent or insufficient, use the strongest available validation and account
-  explicitly for the uncovered behavior.
+- Use the repository's relevant tests as the regression guardrail; do not preserve a defect solely
+  because an existing test asserts the old behavior. When coverage is absent or insufficient, use
+  the strongest available validation and account explicitly for the uncovered behavior.
 - One focused pass means the correction needs no separate research or design phase and is not
   expected to require multiple implementation iterations.
 - Apply an owned API, protobuf, schema, payload, or stored-shape change selected by
@@ -151,14 +150,6 @@ Read and invoke `code-simplify` as the change is made — after each meaningful 
 - Apply simplifications that produce an overall net improvement and can be completed and verified
   in one focused pass, using `pre-production` for contract decisions.
 - Ask the user about larger or decision-dependent simplifications before applying them.
-
-## Verification Order
-
-- Finish the task's implementation across every affected component and repository before writing
-  or strengthening tests. When an authorized manual path can exercise the intended behavior, make
-  the complete path work there first, fixing and retrying failures; only then write tests for the
-  resulting contract. Existing tests may be run during diagnosis, but passing a partial path is
-  not permission to start new tests while implementation remains unfinished.
 
 ## Pre-Push Gate
 
