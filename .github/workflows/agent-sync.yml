@@ -1,14 +1,11 @@
 name: Agent Sync
 
 on:
-  workflow_dispatch:
   push:
-    branches: [main, master]
+    branches: [main]
     paths:
       - ".agents/**"
       - ".github/workflows/agent-sync.yml"
-  schedule:
-    - cron: "0 6 * * 5"
 
 concurrency:
   group: agent-sync-${{ github.ref }}
@@ -21,7 +18,7 @@ jobs:
   sync:
     name: Sync agent files
     runs-on: ubuntu-latest
-    if: github.event_name != 'push' || github.actor != 'github-actions[bot]'
+    if: github.actor != 'github-actions[bot]'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -29,4 +26,3 @@ jobs:
       - uses: julien777z/agent-sync-action@claude/lucid-cray-iarvll
         with:
           output-dir: .agents/.auto_generated
-          refresh-external-skills: ${{ github.event_name == 'schedule' }}
