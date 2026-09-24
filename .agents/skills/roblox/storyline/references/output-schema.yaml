@@ -10,6 +10,7 @@ canon_constraints: []
 journey: [] # {phase: first_launch | onboarding | normal_play | climax | aftermath | revisit, beats, pacing, onboarding_steps, context, exit_condition}
 learned_concepts: [] # {id, plain_explanation, first_use_beat, later_uses}
 characters: [] # {id, name, role, appearance: {silhouette, scale, face, clothing, palette, materials, props, movement, emotional_impression, recognition_cues, shared_base, required_variants, implementation_owner, after_reversal, retained_canon, proposed_additions, status: proposed | implemented | playtested | unknown, evidence}, voice, want, need, fear, secret, limitation, arc, relationships: [{character_id, relationship, change}]}
+character_staging: [] # {id, character_ids, beat_ids, world_id, location, reason_present, presence_conditions, entrance_or_reveal, activity_before_engagement, player_approach, first_cue, interaction_conditions, encounter_behavior, departure_or_aftermath, return_conditions, interruption_resume, shared_progress_behavior, implementation_owner, status: proposed | implemented | playtested | unknown, evidence}
 worlds: [] # {id, name, purpose, geography, local_question, arrival, activities, resolution, revisit_state, required_map_changes}
 arcs: [] # {id, title, dramatic_question, setup, escalation, reversal, climax, ending, aftermath, future_hook}
 beats: [] # {id, arc_id, world_id, characters, prerequisites, player_goal, player_action, revelation, consequence, dialogue_sample, completion, optional, status, evidence}
@@ -45,6 +46,7 @@ verification:
     onboarding_observed: unknown
     character_presentation_observed: unknown
     cast_distinguishability_observed: unknown
+    character_staging_observed: unknown
     playable_walkthrough: unknown
     ending_observed: unknown
     revisits_observed: unknown

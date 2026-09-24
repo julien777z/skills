@@ -37,4 +37,27 @@ in canon does not prove that its distinguishing traits render. Record retained d
 proposed variants, implementation evidence, and observed cast readability separately;
 flag shared placeholders and unverified designs rather than treating them as completed.
 
+## Character staging and encounters
+
+For each enemy or NPC role, design the player's encounter as a scene rather than a
+placed model. Specify its location and reason for being there, presence prerequisites,
+entrance or reveal, activity before engagement, the player's approach and first cue,
+interaction or combat trigger, and exit or continuing behavior afterward. Shared
+population rules can cover repeated ambient roles; major characters need individual
+staging. Tie actions to motives and surroundings so the player can understand what
+the character is doing without reading the design document. An intimidating model
+idling at an arbitrary coordinate does not establish a dramatic introduction.
+
+Distinguish early foreshadowing, active encounters, ordinary residents, and aftermath
+appearances. Choose continuous presence or a triggered arrival deliberately; do not
+require a cutscene for every meeting or hide useful residents without a story reason.
+Define visibility separately from interaction availability, including conditions for
+departure, return, interruption/resume, and revisits. Account for players at different
+progress when scenes are shared. Map these conditions to implementation owners and
+inspect the scene before, during, and after the encounter from normal walking and
+gameplay cameras. Record staging and its observed status in durable canon so future
+story revisions preserve both the introduction and subsequent appearances.
+
+## Proposal evaluation
+
 Score each candidate from 1 (absent/contradictory) to 5 (specific and convincing) on coherence, character agency, playable variety, emotional payoff, onboarding clarity, and feasibility. A candidate with an unresolved central ending, contradictory mandatory dependencies, or a passive player climax fails regardless of total score. Scores compare design judgment; they are not measured retention predictions.
