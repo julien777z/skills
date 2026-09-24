@@ -1,6 +1,6 @@
 # Skills
 
-Shared agent skills for every repository, in one place.
+Shared agent skills, agents, and reusable rules for every repository, in one place.
 
 One canonical copy of each skill lives under `.agents/skills/`. [Agent
 Sync](https://github.com/julien777z/agent-sync-action) mirrors them to Claude, Cursor and Codex,
@@ -28,24 +28,26 @@ and exits on clone,
 update, or installation failure. Cloud environment image caching can skip setup on later sessions;
 the previously installed skills remain available then.
 
-The local installer links each skill into `~/.claude/skills`, `~/.codex/skills`, and
-`~/.cursor/skills` for whichever of those
-roots already exist, and each agent definition into `~/.claude/agents` and `~/.cursor/agents`.
-Re-running refreshes owned links and prunes the ones a removed skill left behind. A real directory
-or foreign link at a skill name is reported before any links change so its contents can be
-reconciled safely.
+The local installer links skills, reusable rules, and applicable agent definitions into existing
+Claude, Codex, and Cursor user roots. Codex's global `AGENTS.md` links to the same canonical
+`global.md` rule used by the other harnesses. Repository-specific rules stay in each repository's
+`project.md`. Re-running refreshes owned links and prunes obsolete ones; real content or foreign
+links at an installed path are reported before any links change.
 
 ## Layout
 
 | Path | Purpose |
 |---|---|
-| `.agents/skills/<folder>/<name>/` | One skill: `SKILL.md`, with `references/`, `scripts/`, `assets/`, or `resources/` beside it. The folders sort the skills and reach no provider — each one still installs as `<name>`, so a name is unique across the whole tree. |
+| `.agents/skills/<category>/<name>/` | One skill: `SKILL.md`, with `references/`, `scripts/`, `assets/`, or `resources/` beside it. The categories sort the skills and reach no provider — each one still installs as `<name>`, so a name is unique across the whole tree. |
 | `.agents/agents/` | Subagent definitions; the tier each runs on is stated by the skill that launches it. |
+| `.agents/rules/` | Reconciled reusable rules; technology-specific rules retain their file scopes. |
 | `.agents/external_skills.json` | Third-party skills the workflow installs from [skills.sh](https://skills.sh/). |
 | `.agents/.auto_generated/` | Provider mirrors the workflow generates on `main`; never edited by hand. |
 | `AGENTS.md` | Repository instructions the workflow generates at the root; never edited by hand. |
-| `bootstrap/install.sh` | Links the skills and agents into the user-level roots. |
+| `bootstrap/install.sh` | Links skills, agents, and rules into user-level roots. |
 | `bootstrap/cloud-install.sh` | Selects the attached or cached checkout and installs it for Claude cloud's user. |
+
+The [rule reconciliation notes](docs/rule-reconciliation.md) record which wording was chosen from divergent consumer copies.
 
 ## Skills
 
@@ -81,6 +83,7 @@ These run only when you ask for them by name, such as `/refactor`.
 | [`refactor`](.agents/skills/execution/refactor/SKILL.md) | Resolve and confirm a repository refactor scope, use multiple independent reviewers to plan structural improvements, then implement an approved plan. |
 | [`schema-doctor`](.agents/skills/doctors/schema-doctor/SKILL.md) | Audit and correct unjustified nullability, model complexity, primary-key design, and index design across repository API contracts, serialized schemas, persisted schemas, and the field flows connecting them. |
 | [`skill-gauntlet`](.agents/skills/authoring/skill-gauntlet/SKILL.md) | Audit installed agent skills across every visible scope, then autonomously benchmark, upgrade, retire, and install user-selected skills through isolated blind evaluations and a resumable local dashboard. |
+| [`study-games`](.agents/skills/roblox/study-games/SKILL.md) | Explicit user-invoked research of the current Roblox desktop US charts. |
 | [`take-over-pr`](.agents/skills/git/take-over-pr/SKILL.md) | Make a pull request's branch the working checkout so its work continues in this session. |
 | [`tests-doctor`](.agents/skills/doctors/tests-doctor/SKILL.md) | Audit and correct a test suite for consistency, redundancy, naming, runtime, coverage by test, and determinism, preferring fewer higher-quality tests. |
 
@@ -118,7 +121,7 @@ An agent reaches for these on its own whenever the work calls for them.
 | [`list-skills`](.agents/skills/workspace/list-skills/SKILL.md) | List and reconcile canonical skills across a bounded collection of local repositories. |
 | [`luau`](.agents/skills/roblox/luau/SKILL.md) | Apply whenever Roblox Luau source is opened, read, reviewed, created, or modified, including scripts, modules, builders, tests, network contracts, and tooling configuration. |
 | [`merge-conflict`](.agents/skills/git/merge-conflict/SKILL.md) | Incorporate the base branch into a branch — a merge, a rebase, a pull, a branch update, or a conflict Git or the hosting service reports — by comparing what each side did and keeping the better answer, with the resolved result gated before it is pushed. |
-| [`no-ai-slop`](.agents/skills/review/no-ai-slop/SKILL.md) | Edit drafts into sharper, more human writing while preserving the writer's personal voice, or detect AI-slop patterns without rewriting. |
+| [`no-text-ai-slop`](.agents/skills/review/no-text-ai-slop/SKILL.md) | Edit drafts into sharper, more human writing while preserving the writer's personal voice, or detect AI-slop patterns without rewriting. |
 | [`plan-change`](.agents/skills/execution/plan-change/SKILL.md) | Present plans for explicit approval and carry approved plans to their last step. |
 | [`pre-production`](.agents/skills/execution/pre-production/SKILL.md) | Apply a pre-release repository's product constraints when planning, implementing, simplifying, or reviewing contracts, schemas, migrations, and stored data. |
 | [`prisma-client-api`](.agents/skills/web/prisma-client-api/SKILL.md) | Prisma Client API reference covering model queries, filters, operators, and client methods. |
@@ -143,7 +146,6 @@ An agent reaches for these on its own whenever the work calls for them.
 | [`security-audit`](.agents/skills/review/security-audit/SKILL.md) | Security audit of a codebase — web apps, APIs, services, CLI tools, libraries, daemons, and more. |
 | [`smoke-test`](.agents/skills/authoring/smoke-test/SKILL.md) | Prove a skill edit changes what a reader does: rebuild the miss that prompted it, run reviewers on the edited and the original text, and score both against stated criteria before the pull request merges. |
 | [`storyline`](.agents/skills/roblox/storyline/SKILL.md) | Create, audit, or extend a game's substantial, coherent storyline with independent narrative proposals, motivated characters, playable story beats, a connected story web, and a satisfying ending. |
-| [`study-games`](.agents/skills/roblox/study-games/SKILL.md) | Explicit user-invoked research of the current Roblox desktop US charts. |
 | [`subagent-selection`](.agents/skills/execution/subagent-selection/SKILL.md) | Apply whenever selecting or launching sub-agents, whether directly for a task or through another skill. |
 | [`tailwind-design-system`](.agents/skills/web/tailwind-design-system/SKILL.md) | Build scalable design systems with Tailwind CSS v4, design tokens, component libraries, and responsive patterns. |
 | [`test-fixture`](.agents/skills/authoring/test-fixture/SKILL.md) | Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. |
@@ -179,5 +181,5 @@ the acceptance gate, and the smoke test before the pull request merges.
 
 ```bash
 bootstrap/install.sh                                            # link into this machine's roots
-python3.12 .agents/skills/edit-skill/scripts/validate_sources.py # mirror with the pinned sync tool
+python3.12 .agents/skills/authoring/edit-skill/scripts/validate_sources.py # mirror with the pinned sync tool
 ```

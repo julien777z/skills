@@ -1,1 +1,0 @@
-../../../../skills/doctors/config-doctor/SKILL.md

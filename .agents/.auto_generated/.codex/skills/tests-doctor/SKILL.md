@@ -1,1 +1,0 @@
-../../../../skills/doctors/tests-doctor/SKILL.md

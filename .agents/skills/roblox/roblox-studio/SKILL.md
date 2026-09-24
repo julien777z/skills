@@ -10,7 +10,7 @@ Carry a Roblox game request through implementation, visual polish, real playtest
 ## Dependencies
 
 - `luau` — apply when reading or changing Luau; owns code, types, server authority, and lifecycle cleanup.
-- `roblox-react` — apply when inspecting, changing, or testing interfaces; owns responsive layout, visual quality, and interaction checks.
+- `roblox-react` — apply when inspecting, changing, or testing React-rendered interfaces; owns responsive layout, visual quality, and interaction checks.
 - `roblox-building` — apply for environments, assets, traversal, and map/place architecture.
 - `roblox-gameplay` — apply when modifying gameplay.
 - `agent-lock` — coordinate exclusive access before controlling a shared runner.
@@ -30,6 +30,9 @@ Carry a Roblox game request through implementation, visual polish, real playtest
 Inspect installed tools and project conventions before building. Prefer a suitable Studio connector/API or Rojo for supported operations, and computer control for Studio-only UI. Blender is encouraged for original editable assets; its background Python mode is useful for repeatable modeling, export, and contact-sheet renders. Python and the Luau CLI are useful for build orchestration, artifact validation, and pure rules tests.
 
 Read the [source, editor, and publication reference](references/studio-workflow.md) when synchronizing source, importing/exporting, running Studio automation, or publishing. Read [source and place delivery](references/source-delivery.md) when synchronizing module/package trees or validating built places.
+
+Read [world-space text inspection](references/world-space-text.md) whenever changing or testing an
+authored sign or a runtime world-space message, regardless of its renderer.
 
 Keep generated scripts separate from imported assets and Studio-authored scenery. Maintain editable source, Blender originals, exported assets, and build instructions. A routine script rebuild must preserve manual art. Test that the saved/rebuilt place contains the actual assets and terrain, rather than relying on the current Studio session or cached meshes.
 

@@ -49,23 +49,6 @@ ancestor; give each visible horizontal card row its own bounded space. Keep tran
 overworld notices from covering modal actions. Verify scrolling to the final item and
 resizing while the window is open, not only the initial screenshot.
 
-## World-space text
-
-Before changing a sign or other world-space message, inspect the adornee and all of
-its text-bearing descendants, SurfaceGuis, BillboardGuis, decals, and textures. Find
-the authored presentation and runtime writers; fix ownership so updates are
-idempotent and do not leave competing text on the same face. Preserve intentional
-artwork and give any simultaneous messages separate layout space.
-
-Choose surface dimensions, canvas resolution or PixelsPerStud, font size, padding,
-line spacing, and wrapping together for the intended reading distance. Shorten copy
-or enlarge/restructure the presentation when it cannot fit legibly; automatic text
-scaling alone can hide overflow by making words too small. Verify in Play at normal
-player height on supported desktop and touch viewports, including the longest real
-content, relevant lighting, oblique approaches, and overlapping world objects.
-Inspect screenshots before and after state changes and after repeated application
-or rejoin; check the rendered words, not just Text properties or label bounds.
-
 ## Composition and feature ownership
 
 Follow the template's distinction between mounting, feature state, and leaf components. A canonical Core UI mount helper owns the ScreenGui and React root; its caller owns unmounting. Use one root per mounted interface, `ResetOnSpawn = false`, and an explicit safe-inset policy. Inject the PlayerGui from the client entry point so engine tests do not depend on `Players.LocalPlayer`.

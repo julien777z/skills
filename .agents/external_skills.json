@@ -5,168 +5,169 @@
       "name": "agent-browser",
       "repo": "vercel-labs/agent-browser",
       "skill": "agent-browser",
-      "folder": "workspace",
+      "category": "workspace",
       "update_on_sync": true
     },
     {
       "name": "async-python-patterns",
       "repo": "wshobson/agents",
       "skill": "async-python-patterns",
-      "folder": "python",
+      "category": "python",
       "update_on_sync": true
     },
     {
       "name": "clerk-nextjs-patterns",
       "repo": "clerk/skills",
       "skill": "clerk-nextjs-patterns",
-      "folder": "web",
+      "category": "web",
       "update_on_sync": true
     },
     {
       "name": "design-taste-frontend",
       "repo": "Leonxlnx/taste-skill",
       "skill": "design-taste-frontend",
-      "folder": "web",
+      "category": "web",
       "update_on_sync": true
     },
     {
       "name": "frontend-design",
       "repo": "anthropics/skills",
       "skill": "frontend-design",
-      "folder": "web",
+      "category": "web",
       "update_on_sync": true
     },
     {
       "name": "i-have-adhd",
       "repo": "ayghri/i-have-adhd",
       "skill": "i-have-adhd",
-      "folder": "execution",
+      "category": "execution",
       "update_on_sync": false
     },
     {
       "name": "no-ai-slop",
+      "skill_name_override": "no-text-ai-slop",
       "repo": "petergyang/no-ai-slop",
       "skill": "no-ai-slop",
-      "folder": "review",
+      "category": "review",
       "update_on_sync": true
     },
     {
       "name": "prisma-client-api",
       "repo": "prisma/skills",
       "skill": "prisma-client-api",
-      "folder": "web",
+      "category": "web",
       "update_on_sync": true
     },
     {
       "name": "python-anti-patterns",
       "repo": "wshobson/agents",
       "skill": "python-anti-patterns",
-      "folder": "python",
+      "category": "python",
       "update_on_sync": true
     },
     {
       "name": "python-background-jobs",
       "repo": "wshobson/agents",
       "skill": "python-background-jobs",
-      "folder": "python",
+      "category": "python",
       "update_on_sync": true
     },
     {
       "name": "python-configuration",
       "repo": "wshobson/agents",
       "skill": "python-configuration",
-      "folder": "python",
+      "category": "python",
       "update_on_sync": true
     },
     {
       "name": "python-design-patterns",
       "repo": "wshobson/agents",
       "skill": "python-design-patterns",
-      "folder": "python",
+      "category": "python",
       "update_on_sync": true
     },
     {
       "name": "python-error-handling",
       "repo": "wshobson/agents",
       "skill": "python-error-handling",
-      "folder": "python",
+      "category": "python",
       "update_on_sync": true
     },
     {
       "name": "python-performance-optimization",
       "repo": "wshobson/agents",
       "skill": "python-performance-optimization",
-      "folder": "python",
+      "category": "python",
       "update_on_sync": true
     },
     {
       "name": "python-project-structure",
       "repo": "wshobson/agents",
       "skill": "python-project-structure",
-      "folder": "python",
+      "category": "python",
       "update_on_sync": true
     },
     {
       "name": "python-resilience",
       "repo": "wshobson/agents",
       "skill": "python-resilience",
-      "folder": "python",
+      "category": "python",
       "update_on_sync": true
     },
     {
       "name": "python-resource-management",
       "repo": "wshobson/agents",
       "skill": "python-resource-management",
-      "folder": "python",
+      "category": "python",
       "update_on_sync": true
     },
     {
       "name": "python-testing-patterns",
       "repo": "wshobson/agents",
       "skill": "python-testing-patterns",
-      "folder": "python",
+      "category": "python",
       "update_on_sync": true
     },
     {
       "name": "python-type-safety",
       "repo": "wshobson/agents",
       "skill": "python-type-safety",
-      "folder": "python",
+      "category": "python",
       "update_on_sync": true
     },
     {
       "name": "tailwind-design-system",
       "repo": "wshobson/agents",
       "skill": "tailwind-design-system",
-      "folder": "web",
+      "category": "web",
       "update_on_sync": true
     },
     {
       "name": "vercel-composition-patterns",
       "repo": "vercel-labs/agent-skills",
       "skill": "vercel-composition-patterns",
-      "folder": "web",
+      "category": "web",
       "update_on_sync": true
     },
     {
       "name": "vercel-react-best-practices",
       "repo": "vercel-labs/agent-skills",
       "skill": "vercel-react-best-practices",
-      "folder": "web",
+      "category": "web",
       "update_on_sync": true
     },
     {
       "name": "vercel-react-view-transitions",
       "repo": "vercel-labs/agent-skills",
       "skill": "vercel-react-view-transitions",
-      "folder": "web",
+      "category": "web",
       "update_on_sync": true
     },
     {
       "name": "web-design-guidelines",
       "repo": "vercel-labs/agent-skills",
       "skill": "web-design-guidelines",
-      "folder": "web",
+      "category": "web",
       "update_on_sync": true
     }
   ]

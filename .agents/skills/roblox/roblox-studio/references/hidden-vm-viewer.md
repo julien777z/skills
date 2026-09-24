@@ -27,14 +27,29 @@ installation outside game checkouts and record actual versions in verification e
 - Reconnection checks the existing viewer's connection state before restarting Studio or the VM.
   The tab stays hidden unless the user needs to sign in or wants to watch.
 
-With noVNC and websockify, resolve the installed viewer directory, an unused local port, and the
-verified VNC endpoint from runner configuration. Start the proxy as a tracked task-owned process:
+With noVNC and websockify, load the runner identity and set the viewer directory to the installed
+noVNC distribution containing `vnc.html`. Choose an unused loopback port (6080 is an example),
+and derive the current guest address from Tart rather than a saved IP. Verify the guest's VNC
+service is reachable on its configured port; if it is available only through an SSH forward, use
+that verified local forward as the endpoint instead. Start the proxy as a tracked task-owned process:
 
 ```sh
+source "$HOME/.config/roblox-studio/runner.env"
+studio_viewer_dir=/absolute/path/to/installed/noVNC
+studio_viewer_port=6080
+studio_vnc_endpoint="$("$ROBLOX_STUDIO_TART" ip "$ROBLOX_STUDIO_VM"):5900"
+test -f "$studio_viewer_dir/vnc.html"
+command -v websockify
+if lsof -nP -iTCP:"$studio_viewer_port" -sTCP:LISTEN | grep -q .; then
+  echo "Choose another unused viewer port" >&2
+  exit 1
+fi
+nc -z "${studio_vnc_endpoint%:*}" "${studio_vnc_endpoint##*:}"
 websockify --web "$studio_viewer_dir" "127.0.0.1:$studio_viewer_port" "$studio_vnc_endpoint"
 ```
 
-Open `http://127.0.0.1:<viewer-port>/vnc.html` in the permitted background browser. Set the viewer's
+Open `http://127.0.0.1:6080/vnc.html` in the permitted background browser (or substitute the chosen
+port). Set the viewer's
 WebSocket host and port to that loopback listener and connect through the normal authentication
 form. If an SSH forward supplies the VNC endpoint, establish and verify it before starting the
 proxy. Confirm the listening address and fresh guest frames, then retain the process handle for

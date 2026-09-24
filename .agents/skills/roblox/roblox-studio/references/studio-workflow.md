@@ -57,14 +57,19 @@ Repeated queries with thousands of individual instances in `FilterDescendantsIns
 ## Explicit lighting in generated places
 
 Set the intended lighting properties explicitly in generated places using the current serializer
-and Studio API. Inspect the reopened place's active lighting configuration and visually compare
-it with the authored scene; implicit defaults or serialization changes can alter the result.
-Keep ambient/exposure choices consistent with the art direction and test affected device behavior.
-See the [Lighting reference](https://create.roblox.com/docs/reference/engine/classes/Lighting).
+and Studio API. For example, a Rojo 7.7 build serialized `LightingStyle: Realistic` and
+`PrioritizeLightingQuality: true`; omitting them changed the reopened scene's lighting. Inspect
+the reopened place's `LightingStyle` and visually compare it with the authored scene.
+Do not use the deprecated `Technology` property's ordinary command-context readback as proof of
+the active style. Keep ambient/exposure choices consistent with the art direction and test affected
+device behavior. See the [Lighting reference](https://create.roblox.com/docs/reference/engine/classes/Lighting).
 
 ## Bounded binary exports through MCP
 
-Large textual results and instance properties can have size limits. Serialize once, retrieve the
-encoded bytes in chunks below the transport and storage limits, and validate the reassembled length,
-decoding, and checksum before replacing the local artifact. Bound temporary storage and remove it
-even after failure. Keep the original binary until validation succeeds.
+Large textual results and instance properties can have size limits. In Studio 0.737,
+`execute_luau` truncated a result near 100,000 characters and a `StringValue` rejected a
+435,776-character value; 70,000-character encoded chunks worked for that export. Start with a
+bounded chunk at or below that observed size, check each response length, and reduce the size if
+the current transport truncates it. Serialize once, retrieve all chunks, then validate the
+reassembled length, decoding, and checksum before replacing the local artifact. Remove temporary
+storage even after failure, and keep the original binary until validation succeeds.

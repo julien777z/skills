@@ -31,9 +31,10 @@ export ROBLOX_STUDIO_SSH="$ROBLOX_STUDIO_SSH_USER@$("$ROBLOX_STUDIO_TART" ip "$R
 MCP helpers use `ROBLOX_STUDIO_SSH`, `ROBLOX_STUDIO_SSH_KEY`, and
 `ROBLOX_STUDIO_KNOWN_HOSTS`. `ROBLOX_ALLOW_HOST_STUDIO=1` is the deliberate authorized
 single-editor fallback, not the default. Inspect and reuse existing settings before provisioning
-tools or asking for sign-in. Shared desktop ownership covers input, tests, open-project changes, and shutdown. Its lock key
-identifies the configured machine across all games; a game-specific key cannot protect that shared
-resource. Independent source/build work can continue while another task owns it.
+tools or asking for sign-in. Shared desktop ownership covers input, tests, open-project changes,
+and shutdown. Use the same `vm-desktop:roblox-studio` agent-lock key across all games using this
+retained runner; a game-specific key cannot protect it. Independent source/build work can continue
+while another task owns the desktop.
 
 ## Runner selection
 

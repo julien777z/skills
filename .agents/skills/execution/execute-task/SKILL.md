@@ -34,6 +34,34 @@ Run every change the same way, whether a plan preceded it or the user asked for 
   not run this skill. It does not close an open run either: a run still holding named work stays
   active through such a turn, and that turn moves its items.
 
+## Task Authorization
+
+- Carry the user's authorization for the task through its ordinary implementation, verification,
+  scoped external changes, retries, recovery, and cleanup. A follow-up, interruption, failed attempt,
+  or context reset does not require the user to approve those sub-steps again.
+- Ask only for a decision that materially changes the authorized target, recipient, or outcome, or
+  for an action-time confirmation a platform actually requires. Make that question specific to the
+  new decision or action; never ask the user to reconfirm the task or say "continue" to resume it.
+- An implementation constraint is not a new approval boundary. Exhaust authorized ways to
+  complete a sub-step yourself. Do not mistake an action-time confirmation for a mandatory user
+  hand-off: after the user confirms the specific pending action, perform it yourself. Hand off only
+  when the platform requires the user's own interaction. Never request a secret through chat.
+- After a required confirmation, continue the remaining authorized work without another general
+  approval request. A refused or unanswered confirmation blocks only the action it governs; keep
+  moving on independent work.
+
+## Browser Access
+
+- Use the user's `@Chrome` browser for browser work. Open a new, agent-owned tab in that same browser
+  and keep it in the background when the browser supports that; tab isolation does not mean using a
+  different browser, profile, or account. Do not inspect, focus, reuse, or close the user's existing
+  tabs. If the user explicitly names a different browser or an existing tab for the task, follow
+  that direction instead.
+- If `@Chrome` tab control is unavailable, use regular Chrome as the fallback and open a new
+  agent-owned tab there. It may come to the foreground; keep the user's existing tabs untouched.
+  Continue through an appropriate API or CLI when that is more direct. Report a browser-specific
+  blocker only if neither Chrome path can complete the required interaction.
+
 ## Product Constraints
 
 `pre-production` is active as soon as the run opens in a repository that declares it. Read it
@@ -79,10 +107,11 @@ how those issues are handled.
 - Apply an owned API, protobuf, schema, payload, or stored-shape change selected by
   `pre-production` without a second approval; update every in-repository consumer, generated
   artifact, and required migration for the target contract.
-- Ask only when a correction needs user-owned product intent, a security or disclosure decision,
-  destructive action, expanded external authority, or an architectural decision that
-  `pre-production` does not settle. For a bug the fix proceeds and is not held for an answer; what
-  goes to the user is scope, sequencing, and where the work lands, never whether it is fixed.
+- Apply **Task Authorization** to encountered corrections. Ask only when the correction materially
+  changes user-owned product intent, security or disclosure posture, target, recipient, or outcome
+  beyond the task, or a platform requires action-time confirmation. For a bug the fix proceeds and
+  is not held for an answer; what goes to the user is scope, sequencing, and where the work lands,
+  never whether it is fixed.
 - When asking, state the trigger, impact, expected work, recommendation, and concrete choices.
 - Continue independent approved work when the unresolved issue does not block it.
 

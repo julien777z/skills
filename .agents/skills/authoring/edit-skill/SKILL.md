@@ -136,6 +136,10 @@ outcome, because silence reads as the guidance having been fixed.
    - Express each independent requirement once, usually as one concise bullet. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
    - Normalize the touched file's nearby structure when needed: combine narrow sections, remove redundant wording, and order foundational guidance before specialized concerns.
    - When adding a **new** restriction or rule, keep the wording **concise**—one clear statement or bullet per idea; do not pad with redundant sentences or multiple bullets that restate the same requirement.
+   - **Stable guidance:** Write at the broadest scope that remains truthful. Describe reusable roles, boundaries, and decision criteria generically even in repository-focused guidance when the pattern is not repository-specific. Keep concrete repository names only when correctness depends on that local contract, and never turn one local example into an untrue universal rule.
+   - Keep temporary task, session, and pull-request directions in the work they govern; never encode them as canonical rules or skills. Before editing shared guidance, identify the lasting behavior the request actually intends and exclude conditions that expire with the current work.
+   - Before adding guidance, inspect both the skills the edited skill invokes and the skills that invoke or consume it, plus the rules those paths always load. Keep a shared decision boundary in its canonical owner; remove duplicate or conflicting wording from skills that necessarily run with that owner, leaving only a reference when useful. Retain local wording when the owner is not guaranteed to run or the local contract genuinely differs.
+   - **Prefer the broad statement, and let the request be its example.** A request arrives as one symptom, and the rule it needs names the class that symptom belongs to; the symptom stays as one illustration of it. Asked for `Final` on string constants, write `Final` for every module-level constant; asked for a walkthrough rule because a page reloaded in a loop once a back-end change was absent, write that the run is judged against intended behaviour because an API error surfaces as any unintended behaviour, and name the loop only as one instance. A rule written for the symptom is silent on the next one, and the next one is what it will be read for. Broaden to the class the user plainly meant, never to a neighbouring subject.
    - Keep reusable skill names, instructions, scripts, and interfaces model-agnostic. Name a client or model only in a scoped compatibility section where its behavior genuinely differs.
    - Do not add committed tests for skills or their helper scripts, inside or outside the skill directory. Keep any needed execution checks temporary and untracked.
    - **Refer to a skill, and to anything inside it, by the skill's name, never by path.** `the `code-simplify` skill's rubric reference` is right; a relative path into another skill's directory is wrong, because the directories move between repositories and user-level roots and the name is the only stable handle.
@@ -184,8 +188,9 @@ outcome, because silence reads as the guidance having been fixed.
       metadata such as `agents/openai.yaml` from canonical skill packages; leave generated
       mirrors to Agent Sync. A clean changed file does not make a failing tree validation pass.
    3. **Run `code-simplify`** across the branch and act on what it reports: guidance duplicated
-      between peer rules or peer skills, a section grown around a second subject, a heading named for
-      a category with one member, a rubric left inline that the skill-shape rule sends to a
+      between peer rules or skills, including a caller and a skill it always invokes; a section grown
+      around a second subject; a heading named for a category with one member; a rubric left inline
+      that the skill-shape rule sends to a
       reference. Prose duplicates as readily as code, and nothing else catches it. Every `.agents`
       change gets that pass over its entry point and supporting files, a one-line rule edit as much as a
       new skill: a single bullet added to
@@ -196,7 +201,9 @@ outcome, because silence reads as the guidance having been fixed.
       both.
    4. **Run `acceptance-gate`** with its diff question over the `.agents` diff, the request as the
       intent statement. It judges whether the guidance answers the request at the breadth step 5
-      asks for and whether every mechanism it adds earns its place; a flag gets the one rewrite that
+      asks for and whether every mechanism it adds earns its place. Treat a named tool, surface, or
+      workaround in generic guidance as a finding unless the skill's contract depends on it; the
+      incident's route must not narrow the durable decision boundary. A flag gets the one rewrite that
       skill allows, and the rewrite goes to a fresh gate. A second flag ends the rewriting: fix it
       when the flag names a defect in the guidance, merge as it stands when it names a preference
       the rewrite already answered, or drop the item when neither holds, and state which and why in
@@ -274,6 +281,11 @@ outcome, because silence reads as the guidance having been fixed.
       from that text for the rest of the session. A skill invoked while its change is still open
       is read the same way from the branch that carries it, never from a checkout that predates
       it.
+      After the default-branch Agent Sync run completes, refresh the repository's main local
+      checkout, not the task worktree: if that checkout is clean, check out the default branch and
+      pull with `--ff-only`. If it has dirty files, leave them untouched and report the skipped
+      refresh. An instruction to leave the pull request open also leaves this post-merge step for
+      a later session.
 
 ## Output
 

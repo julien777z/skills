@@ -19,17 +19,21 @@ tracing a test surface is; without one, fix what the focused pass can finish.
 1. Read the complete [rubric](references/rubric.md) before inspecting, reviewing, changing, or
    executing any covered test surface. Discover the repository's test roots, fixture packages,
    factory owner, shared test utilities, runner targets, and analogous sibling tests.
-2. Identify the source owner and place the test beneath its corresponding suite and classification.
+2. For an application change, finish implementation before writing or strengthening tests or test
+   support. If an applicable authorized manual path exists, verify the behavior there first; fix
+   and retry failures before writing tests. A pull-request-head test deployment requires explicit
+   user authorization. Existing tests may still be run to diagnose development failures.
+3. Identify the source owner and place the test beneath its corresponding suite and classification.
    Reuse the canonical fixture or factory for every domain value. When it lacks required data,
    extend that owner and update its consumers instead of spelling the value in the test.
-3. Reuse an existing case when setup, execution, and assertions match. Parametrize cases that vary
+4. Reuse an existing case when setup, execution, and assertions match. Parametrize cases that vary
    only by inputs or outcomes; keep shared fixture context outside the parameter table.
-4. Keep builders and fixtures out of test modules. Put reusable construction in the established
+5. Keep builders and fixtures out of test modules. Put reusable construction in the established
    fixture, factory, or test-utility owner and keep each test focused on arranging, exercising, and
    asserting behavior.
-5. Run real deterministic application code and real domain models. Double only boundaries the
+6. Run real deterministic application code and real domain models. Double only boundaries the
    process cannot cross or faults the real path cannot produce, using the shallowest declared seam.
-6. Before completion, inspect every literal added or changed in tests and test support.
+7. Before completion, inspect every literal added or changed in tests and test support.
    Replace domain data, sample identities, addresses, names, identifiers, payload fields, and fixture
    facts with values read from the canonical fixture or factory. A provider request or response body
    remains domain data even when it is an expected value, so build it from that owner rather than
@@ -37,13 +41,12 @@ tracing a test surface is; without one, fix what the focused pass can finish.
    disposition of every changed literal family, including allowed protocol, parametrized-case, and
    ownerless local-control values. A review is incomplete until each family is listed with one of the
    rubric's dispositions, even when that disposition permits it.
-7. Prove every distinct new behavioral guarantee through the mutation workflow below, restore the
+8. Prove every distinct new behavioral guarantee through the mutation workflow below, restore the
    exact baseline, and run the affected repository targets once on the completed tree.
 
 ## Mutation Proof
 
-Write every new or materially strengthened behavioral test in the implementation batch before
-starting proof; a batch of one still qualifies. Then, for each distinct guarantee:
+After writing new or materially strengthened behavioral tests, prove each distinct guarantee:
 
 1. Select the nearest editable canonical first-party implementation. Never mutate generated or
    vendored output, run generation for proof, or mutate the test itself. Mutate test support only

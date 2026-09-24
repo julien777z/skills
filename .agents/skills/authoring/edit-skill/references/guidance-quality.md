@@ -41,9 +41,10 @@ routes through it (two modes, two kinds of target, two hosts) keeps the shared w
 `SKILL.md` and gives each route its own reference, so the file a reader loads first stays short
 enough to be read whole. References may explain the technical steps for a route selected by the
 entry point. They do not select the top-level workflow, hide a decision gate, declare a dependency,
-or invoke another skill. Scripts the skill runs go under `scripts/`, assets it serves under
-`assets/`, and nothing else enters the directory: no provider metadata such as `agents/openai.yaml`,
-which stays outside repositories and is never propagated.
+or invoke another skill. Scripts the skill runs go under `scripts/`; supporting files may live
+under `assets/`, `resources/`, or another directory named for their role. Keep only files the skill
+needs. Provider metadata such as `agents/openai.yaml` stays outside repositories and is never
+propagated.
 
 **Description.** The front-matter `description` is read on every turn, for every skill, to decide
 whether this one fires. Its whole job is to state **when** — the situations that should reach it,

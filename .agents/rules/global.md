@@ -18,8 +18,8 @@ alwaysApply: true
 ## Repository Skills
 
 - Never add `agents/openai.yaml` to a repository skill. Repository skills contain `SKILL.md` and
-  only the scripts, references, or assets required by the skill itself; provider UI metadata stays
-  outside repositories and is never propagated.
+  only supporting files required by the skill; provider UI metadata stays outside repositories
+  and is never propagated.
 
 ## Agent Prompts
 
@@ -92,8 +92,8 @@ alwaysApply: true
   A test needing a table with a secret column names it for that — a record with a secret — rather
   than borrowing the one real table the change was made for.
 - A consumer's needs are a legitimate reason to build something and never a reason to name it after
-  them. Describe the target repository's own contract and behavior to reviewers; keep
-  consumer-specific coordination in user chat, following the GitHub artifact rules.
+  them. Where a consumer's specifics matter to reviewers, they belong in the pull request
+  description, which is read once, rather than in code that outlives the conversation.
 - Sample values follow the same rule: prefer plainly synthetic literals over ones shaped like a
   real identifier from another system's domain.
 
