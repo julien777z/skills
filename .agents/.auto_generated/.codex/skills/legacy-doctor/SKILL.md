@@ -1,1 +1,0 @@
-../../../../skills/doctors/legacy-doctor/SKILL.md

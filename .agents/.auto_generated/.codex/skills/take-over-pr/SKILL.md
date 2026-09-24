@@ -1,1 +1,0 @@
-../../../../skills/git/take-over-pr/SKILL.md
