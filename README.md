@@ -38,7 +38,7 @@ links at an installed path are reported before any links change.
 
 | Path | Purpose |
 |---|---|
-| `.agents/skills/<folder>/<name>/` | One skill: `SKILL.md`, with `references/`, `scripts/`, `assets/`, or `resources/` beside it. The folders sort the skills and reach no provider — each one still installs as `<name>`, so a name is unique across the whole tree. |
+| `.agents/skills/<category>/<name>/` | One skill: `SKILL.md`, with `references/`, `scripts/`, `assets/`, or `resources/` beside it. The categories sort the skills and reach no provider — each one still installs as `<name>`, so a name is unique across the whole tree. |
 | `.agents/agents/` | Subagent definitions; the tier each runs on is stated by the skill that launches it. |
 | `.agents/rules/` | Reconciled reusable rules; technology-specific rules retain their file scopes. |
 | `.agents/external_skills.json` | Third-party skills the workflow installs from [skills.sh](https://skills.sh/). |
@@ -120,7 +120,7 @@ An agent reaches for these on its own whenever the work calls for them.
 | [`list-skills`](.agents/skills/workspace/list-skills/SKILL.md) | List and reconcile canonical skills across a bounded collection of local repositories. |
 | [`luau`](.agents/skills/roblox/luau/SKILL.md) | Apply whenever Roblox Luau source is opened, read, reviewed, created, or modified, including scripts, modules, builders, tests, network contracts, and tooling configuration. |
 | [`merge-conflict`](.agents/skills/git/merge-conflict/SKILL.md) | Incorporate the base branch into a branch — a merge, a rebase, a pull, a branch update, or a conflict Git or the hosting service reports — by comparing what each side did and keeping the better answer, with the resolved result gated before it is pushed. |
-| [`no-ai-slop`](.agents/skills/review/no-ai-slop/SKILL.md) | Edit drafts into sharper, more human writing while preserving the writer's personal voice, or detect AI-slop patterns without rewriting. |
+| [`no-text-ai-slop`](.agents/skills/review/no-text-ai-slop/SKILL.md) | Edit drafts into sharper, more human writing while preserving the writer's personal voice, or detect AI-slop patterns without rewriting. |
 | [`plan-change`](.agents/skills/execution/plan-change/SKILL.md) | Present plans for explicit approval and carry approved plans to their last step. |
 | [`pre-production`](.agents/skills/execution/pre-production/SKILL.md) | Apply a pre-release repository's product constraints when planning, implementing, simplifying, or reviewing contracts, schemas, migrations, and stored data. |
 | [`prisma-client-api`](.agents/skills/web/prisma-client-api/SKILL.md) | Prisma Client API reference covering model queries, filters, operators, and client methods. |
