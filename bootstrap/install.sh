@@ -25,7 +25,7 @@ check_link() {
     "$REPO_ROOT"/*) return 0 ;;
   esac
   # A previous install may point at another checkout of this same repository. Allow that
-  # owned link to move to the dedicated refresh checkout, but never replace a third-party link.
+  # owned link to move to the checkout running this installer, but preserve third-party links.
   old_root="$(git -C "$(dirname "$resolved")" rev-parse --show-toplevel 2>/dev/null || true)"
   old_remote="$(git -C "$old_root" remote get-url origin 2>/dev/null || true)"
   case "$old_remote:$resolved" in

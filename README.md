@@ -10,7 +10,9 @@ skills.
 
 ## Quick Start
 
-For a local checkout, run `bash bootstrap/install.sh` from that checkout. For Claude cloud, put
+For a local installation, run `bash bootstrap/install.sh` from the main checkout. User-level
+links point directly into that checkout; pull `main` there after a merge to update installed
+guidance. Edit skills on a separate branch or worktree. For Claude cloud, put
 this at the start of the environment setup script, before project-specific setup commands:
 
 ```bash
