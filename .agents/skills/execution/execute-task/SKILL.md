@@ -232,8 +232,8 @@ An example naming a real artifact of another repository is the defect, however a
 
 Name things for the shape being demonstrated, never for whichever caller prompted the work. A
 consumer's needs are a legitimate reason to build something and never a reason to name it after
-them; where their specifics matter to a reviewer, they belong in the pull request description, which
-is read once, rather than in code and documentation that outlive the conversation.
+them. Describe the target repository's own contract and behavior to reviewers; keep
+consumer-specific coordination in user chat, following the Multi-Repository Delivery rule above.
 
 Where this run touched more than one repository, sweep for it before delivering: search each
 repository for the distinctive nouns of the others it was worked on beside, and read what comes

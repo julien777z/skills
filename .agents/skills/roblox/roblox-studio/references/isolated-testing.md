@@ -1,8 +1,8 @@
-# Isolate windows as well as player input
+# VM access and lifecycle
 
 ## One shared Roblox development runner
 
-All game creation and testing use the same retained **`roblox-studio`** VM when its capabilities work.
+All game creation and testing use the same configured, retained VM when its capabilities work.
 It is shared infrastructure, not owned by one game repository. Keep Studio/Roblox, authentication,
 SSH identity, and tool installations reusable across games; keep each game's source, artifacts, and
 test data in its own guest workspace. Existing game directories may keep their game names. Never
@@ -11,8 +11,7 @@ use the same runner.
 
 Host runner settings live outside repositories at `~/.config/roblox-studio/runner.env`; shared tools,
 SSH keys, and verified host keys live under `~/.local/share/roblox-studio/`. These local files are not
-committed or mirrored by Agent Sync. Preserve their permissions and authentication. The current
-runner retains the original machine's disk and login; renaming it does not require cloning or resetting it.
+committed or mirrored by Agent Sync. Preserve their permissions and authentication. Discover the configured runner identity; never assume a machine name from another session.
 
 Load the shared settings, inspect the VM's state with the pinned Tart binary, and start it when stopped:
 
@@ -32,10 +31,10 @@ export ROBLOX_STUDIO_SSH="$ROBLOX_STUDIO_SSH_USER@$("$ROBLOX_STUDIO_TART" ip "$R
 MCP helpers use `ROBLOX_STUDIO_SSH`, `ROBLOX_STUDIO_SSH_KEY`, and
 `ROBLOX_STUDIO_KNOWN_HOSTS`. `ROBLOX_ALLOW_HOST_STUDIO=1` is the deliberate authorized
 single-editor fallback, not the default. Inspect and reuse existing settings before provisioning
-tools or asking for sign-in. If the runner is already serving another task, coordinate access using
-[agent-lock](../../agent-lock/SKILL.md) with the shared `vm-desktop:roblox-studio` key before taking
-over its desktop, starting tests, changing the open project, or shutting it down. Game-specific
-lock names would not protect the shared machine. Independent source/build work can continue.
+tools or asking for sign-in. Shared desktop ownership covers input, tests, open-project changes,
+and shutdown. Use the same `vm-desktop:roblox-studio` agent-lock key across all games using this
+retained runner; a game-specific key cannot protect it. Independent source/build work can continue
+while another task owns the desktop.
 
 ## Runner selection
 
@@ -46,18 +45,26 @@ use the hidden guest viewer for supported native UI or capture needs. Do not cho
 just because it is already open or would allow parallel work.
 
 Studio MCP can deliver input without moving the host pointer, but Studio's multiplayer test service
-can still open several native client windows. The user reported obstruction from those windows.
-Unattended game launches and interactive verification must therefore run inside a VM or another
+can still open several native client windows. Unattended game launches and interactive verification
+must therefore run inside a VM or another
 authorized isolated machine. Keep all Studio/client windows, input, screenshots, and device
 simulation in that environment. Do not treat hiding a host window after launch as isolation.
 
-## Tart pilot on Apple Silicon
+## Headless guest capabilities
 
-Use the official [Tart quick start](https://tart.run/quick-start/) and inspect the pinned tool's CLI
-help. The retained shared pilot uses Tart **2.37.0**, the digest-pinned image
-`ghcr.io/cirruslabs/macos-sequoia-base@sha256:4947ac5ab1b2fdc46ab856132d2ba958f8e45b5f85192c66370dafc028c514dd`,
-8 CPU cores, 16384 MB RAM, an 80 GB disk, and a 1920×1080 display. Record actual versions/configuration
-in ignored verification evidence. These are pilot settings, not universal performance requirements.
+For a Tart runner, use the official [quick start](https://tart.run/quick-start/) and the installed
+CLI's help. Keep actual versions, image identity, resource allocation, and qualification results in
+local configuration and verification evidence. Reuse the retained runner before provisioning one.
+
+Resolve a recovery attempt's reported prerequisites before retrying. For a macOS updater reporting
+a missing recovery volume, inspect the guest's disk layout with `diskutil list`. If the required
+recovery volume is absent, stop repeated installer downloads; downloading again does not supply
+that disk prerequisite. Consult the image provider's recovery requirements: the
+[Tart macOS image template](https://github.com/cirruslabs/macos-image-templates/blob/main/templates/vanilla-tahoe.pkr.hcl)
+retains a recovery partition for software updates. This diagnosis applies to that reported
+condition, not every update failure. Preserve the authenticated disk and use a documented recovery
+path; destructive repairs require their own applicable authorization. Verify the prerequisite
+before retrying the update.
 
 Run with `--no-graphics --no-clipboard --no-audio` so the VM does not create a host window, share the
 clipboard, or play test audio through the user's speakers. Transfer only the project/test files over
@@ -85,7 +92,7 @@ isolated runner works. Continue independent lint, type, test, and build work; do
 
 When viewport capture fails but the guest desktop is usable, the optional
 [hidden VM viewer](hidden-vm-viewer.md) provides background images and guest-native UI
-without a visible Screen Sharing window. It documents the verified recipe, authentication,
+without a visible Screen Sharing window. It describes connection requirements, authentication,
 unencrypted-transport limitation, live-image check, and cleanup. It does not establish
 that the guest renders game assets correctly.
 
@@ -97,6 +104,39 @@ MCP helpers use `ROBLOX_ALLOW_HOST_STUDIO=1` to enable this deliberate single-wi
 choice; do not set it speculatively to bypass the default isolation guard. Multiplayer
 launches remain in the isolated runner.
 
+## Direct guest control
+
+Host Screen Sharing, guest SSH, and guest input are separate capabilities. When the host viewer
+is unavailable, first check whether the retained VM is running and SSH still reaches its normal
+signed-in desktop. Prefer guest MCP for supported Studio actions. When the active tool policy and
+user authorization permit direct guest input, an existing guest-native helper can operate the
+published Roblox player over SSH without opening a host viewer. Otherwise use the permitted
+hidden viewer or Screen Sharing path; do not infer that the VM needs rebuilding or new Roblox login.
+
+Before relying on direct control, take a fresh capture, click a real visible button, hold and release
+a movement key briefly, then capture the result. Permission checks and screenshots alone do not
+qualify input: include this active test in the plan and execute it before calling control usable.
+Verify the intended application, account, and place. Keep input and
+capture entirely inside the VM, retain the shared desktop lock, and release every held key/button.
+A helper should refuse host execution, target a verified process/window, confirm foreground focus
+before input, and bound key holds. Check existing guest Accessibility and Screen Recording access;
+use normal guest permission/login UI when required, never disable authentication or edit privacy
+databases. SSH access alone does not establish UI permission or an unlocked guest.
+
+For a macOS helper using CoreGraphics input and window capture, capture the target window with
+`screencapture -x -o -l <window-id> <path>`: `-o` removes shadow padding. Map coordinates from the
+actual PNG dimensions to that same window's `CGWindowBounds`, including its origin and Retina
+scale. Recapture after resizing, navigation, or process replacement.
+Do not reuse coordinates from a resized image without converting them back to its source dimensions.
+A main-window capture can omit a separate save or permission dialog. If input appears ineffective,
+inspect the guest window inventory or capture the guest desktop before retrying; never substitute
+a host-desktop capture.
+
+Control, capture, and rendering are separate capabilities. A usable screenshot proves capture;
+its contents still need visual inspection. Diagnose artifacts where the image is rendered, using
+the same source and assets for comparisons. Keep host-UI availability separate from independent
+guest access, and record any untested capability without blocking the ones that work.
+
 ## Authentication and user handoff
 
 Treat viewer authentication, guest macOS login/unlock, and Roblox account sign-in as separate steps.
@@ -106,12 +146,9 @@ out of repository files, commands, URLs, and reports. If credentials are unavail
 specific missing access rather than assuming the user must handle every login.
 
 Before asking the user to interact with the VM, verify that its desktop and the intended application
-page are visible. **Never hand over a Screen Sharing/noVNC credentials dialog when the guest login
-is already available.** In the September 2026 macOS Screen Sharing run, opening the VNC URL stopped
-at its name/password dialog. Entering the existing guest credentials, choosing Sign In, then Standard
-and Continue displayed the desktop with the intended Roblox page. Merely launching the viewer had
-not connected it. Recheck the rendered result when reconnecting; an authenticated hidden viewer does
-not automatically authenticate a separate native Screen Sharing connection.
+page are visible. A viewer connection dialog is not a connected desktop. Complete the normal
+connection options and verify the rendered application before handoff. Authenticate each chosen
+viewer normally; one viewer's connection does not authenticate another.
 
 Reuse retained Roblox sessions and available authorized sign-in methods. If Roblox itself requires
 a step the agent cannot complete, automatically open its normal sign-in or Quick Sign-in page in
@@ -121,6 +158,9 @@ blocker requires user action. Continue independent work while waiting. After set
 only the task's viewer so unattended guest windows stay out of the user's way.
 
 ## End of session: preserve the machine, stop its resource use
+
+Shut down only after meeting the [completion or blocker criteria](../SKILL.md#work-autonomously-within-the-requested-scope),
+or when the user asks to pause or stop. A progress update does not end the test session.
 
 When the game work is done, save the authorized project artifacts, close Roblox Studio normally,
 and **shut down the guest VM** so it is no longer running locally. Verify that Studio closed and the
@@ -142,10 +182,9 @@ only if normal authentication or another required user setup step is actually ne
 ## Qualification for game research
 
 Qualify the guest browser/media path and the **published Roblox client** separately from Studio.
-If published games launch, accept ordinary player input, and yield usable captures without host
-windows/focus/input interference, record that capability and require this reusable VM for both
-passive and play modes of `study-games`. Passive mode uses guest browsing/video viewing; play mode
-uses the guest's Roblox client. Studio MCP capability alone does not prove published-client control.
-If that qualification fails, record its concrete limit and keep play research incomplete; do not
+Browser/media viewing and published-client play each require ordinary input and usable captures
+without host windows/focus/input interference. Studio MCP capability alone does not prove those
+capabilities. Record each result separately. If qualification fails, keep the dependent work
+incomplete; do not
 silently revert to host interaction. Host-side read-only APIs may assist data retrieval/aggregation,
 but must not become a workaround that opens host research/game windows.
