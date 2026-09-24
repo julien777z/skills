@@ -1,13 +1,15 @@
-schema_version: 1
+schema_version: 2
 mode: audit # create | audit | extend
-status: proposal # selected | implemented
 premise: ""
 player_role: ""
 audience_and_tone: ""
 assumptions: []
 source_evidence: [] # {path, observation}; observed facts only
 canon_constraints: []
-characters: [] # {id, name, role, voice, want, need, fear, secret, limitation, arc, relationships: [{character_id, relationship, change}]}
+journey: [] # {phase: first_launch | onboarding | normal_play | climax | aftermath | revisit, beats, pacing, onboarding_steps, context, exit_condition}
+learned_concepts: [] # {id, plain_explanation, first_use_beat, later_uses}
+characters: [] # {id, name, role, appearance: {silhouette, scale, face, clothing, palette, materials, props, movement, emotional_impression, recognition_cues, shared_base, required_variants, implementation_owner, after_reversal, retained_canon, proposed_additions}, voice, want, need, fear, secret, limitation, arc, relationships: [{character_id, relationship, change}]}
+character_staging: [] # {id, character_ids, beat_ids, world_id, location, reason_present, presence_conditions, entrance_or_reveal, activity_before_engagement, player_approach, first_cue, interaction_conditions, encounter_behavior, departure_or_aftermath, return_conditions, interruption_resume, shared_progress_behavior, implementation_owner}
 worlds: [] # {id, name, purpose, geography, local_question, arrival, activities, resolution, revisit_state, required_map_changes}
 arcs: [] # {id, title, dramatic_question, setup, escalation, reversal, climax, ending, aftermath, future_hook}
 beats: [] # {id, arc_id, world_id, characters, prerequisites, player_goal, player_action, revelation, consequence, dialogue_sample, completion, optional}
@@ -35,10 +37,17 @@ selection:
     chosen: ""
     rationale: ""
     rejected_elements: []
-implementation: [] # {content_owner, change, dependencies, acceptance}
+implementation: [] # {content_id, content_owner, change, dependencies, acceptance, status: proposed | implemented | playtested | unknown, evidence}; one entry per changed element, referring to its stable ID above
 risks: []
+# Verification checks use pass | fail | unknown. A pass needs evidence and cannot claim playtested
+# behavior for a content_id whose implementation entry has not reached playtested.
 verification:
     source_audit: unknown
     reference_integrity: unknown
+    onboarding_observed: unknown
+    character_presentation_observed: unknown
+    cast_distinguishability_observed: unknown
+    character_staging_observed: unknown
     playable_walkthrough: unknown
     ending_observed: unknown
+    revisits_observed: unknown

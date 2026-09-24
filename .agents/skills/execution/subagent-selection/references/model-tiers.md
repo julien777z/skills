@@ -7,7 +7,7 @@ The tiers are ordered from cheap to frontier; frontier is the highest tier in th
 | Tier       | Codex | Claude | Intended use                                       |
 | ---------- | ----- | ------ | -------------------------------------------------- |
 | `cheap`    | Luna  | Haiku  | Lower-cost, bounded tasks and cheaper-model checks |
-| `standard` | Terra | Sonnet | Balanced reviews, analysis, and substantive tasks  |
+| `standard` | Luna  | Sonnet | Balanced reviews, analysis, and substantive tasks  |
 | `advanced` | Sol   | Opus   | Difficult tasks requiring stronger reasoning       |
 | `frontier` | Astra | Fable  | The most demanding tasks; highest available tier   |
 

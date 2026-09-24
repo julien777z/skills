@@ -40,7 +40,9 @@ if [ -n "$(run_as_user git -C "$CACHE" status --porcelain)" ]; then
   echo "Skills setup clone has local edits; refusing to overwrite them: $CACHE" >&2
   exit 1
 fi
-run_as_user git -C "$CACHE" pull --ff-only
+run_as_user git -C "$CACHE" fetch origin main
+run_as_user git -C "$CACHE" switch main
+run_as_user git -C "$CACHE" merge --ff-only origin/main
 
 source="$CACHE"
 while IFS= read -r git_marker; do

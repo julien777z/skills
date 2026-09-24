@@ -34,6 +34,34 @@ Run every change the same way, whether a plan preceded it or the user asked for 
   not run this skill. It does not close an open run either: a run still holding named work stays
   active through such a turn, and that turn moves its items.
 
+## Task Authorization
+
+- Carry the user's authorization for the task through its ordinary implementation, verification,
+  scoped external changes, retries, recovery, and cleanup. A follow-up, interruption, failed attempt,
+  or context reset does not require the user to approve those sub-steps again.
+- Ask only for a decision that materially changes the authorized target, recipient, or outcome, or
+  for an action-time confirmation a platform actually requires. Make that question specific to the
+  new decision or action; never ask the user to reconfirm the task or say "continue" to resume it.
+- An implementation constraint is not a new approval boundary. Exhaust authorized ways to
+  complete a sub-step yourself. Do not mistake an action-time confirmation for a mandatory user
+  hand-off: after the user confirms the specific pending action, perform it yourself. Hand off only
+  when the platform requires the user's own interaction. Never request a secret through chat.
+- After a required confirmation, continue the remaining authorized work without another general
+  approval request. A refused or unanswered confirmation blocks only the action it governs; keep
+  moving on independent work.
+
+## Browser Access
+
+- Use the user's `@Chrome` browser for browser work. Open a new, agent-owned tab in that same browser
+  and keep it in the background when the browser supports that; tab isolation does not mean using a
+  different browser, profile, or account. Do not inspect, focus, reuse, or close the user's existing
+  tabs. If the user explicitly names a different browser or an existing tab for the task, follow
+  that direction instead.
+- If `@Chrome` tab control is unavailable, use regular Chrome as the fallback and open a new
+  agent-owned tab there. It may come to the foreground; keep the user's existing tabs untouched.
+  Continue through an appropriate API or CLI when that is more direct. Report a browser-specific
+  blocker only if neither Chrome path can complete the required interaction.
+
 ## Product Constraints
 
 `pre-production` is active as soon as the run opens in a repository that declares it. Read it
@@ -70,19 +98,20 @@ how those issues are handled.
   library consumer, public export, or external contract still depends on it; remove tests that
   exist only to exercise the dead code; and validate the affected behavior. This requirement does
   not turn implementation into a proactive dead-code audit of the whole repository.
-- Use the repository's relevant tests as the primary regression guardrail. Add or update tests for
-  the intended contract and run them; do not preserve a defect solely because an existing test
-  asserts the old behavior. When coverage is absent or insufficient, use the strongest available
-  validation and account explicitly for the uncovered behavior.
+- Use the repository's relevant tests as the regression guardrail once the implementation is
+  complete. Do not preserve a defect solely because an existing test asserts the old behavior.
+  When coverage is absent or insufficient, use the strongest available validation and account
+  explicitly for the uncovered behavior.
 - One focused pass means the correction needs no separate research or design phase and is not
   expected to require multiple implementation iterations.
 - Apply an owned API, protobuf, schema, payload, or stored-shape change selected by
   `pre-production` without a second approval; update every in-repository consumer, generated
   artifact, and required migration for the target contract.
-- Ask only when a correction needs user-owned product intent, a security or disclosure decision,
-  destructive action, expanded external authority, or an architectural decision that
-  `pre-production` does not settle. For a bug the fix proceeds and is not held for an answer; what
-  goes to the user is scope, sequencing, and where the work lands, never whether it is fixed.
+- Apply **Task Authorization** to encountered corrections. Ask only when the correction materially
+  changes user-owned product intent, security or disclosure posture, target, recipient, or outcome
+  beyond the task, or a platform requires action-time confirmation. For a bug the fix proceeds and
+  is not held for an answer; what goes to the user is scope, sequencing, and where the work lands,
+  never whether it is fixed.
 - When asking, state the trigger, impact, expected work, recommendation, and concrete choices.
 - Continue independent approved work when the unresolved issue does not block it.
 
@@ -122,6 +151,14 @@ Read and invoke `code-simplify` as the change is made — after each meaningful 
 - Apply simplifications that produce an overall net improvement and can be completed and verified
   in one focused pass, using `pre-production` for contract decisions.
 - Ask the user about larger or decision-dependent simplifications before applying them.
+
+## Verification Order
+
+- Finish the task's implementation across every affected component and repository before writing
+  or strengthening tests. When an authorized manual path can exercise the intended behavior, make
+  the complete path work there first, fixing and retrying failures; only then write tests for the
+  resulting contract. Existing tests may be run during diagnosis, but passing a partial path is
+  not permission to start new tests while implementation remains unfinished.
 
 ## Pre-Push Gate
 
@@ -195,8 +232,8 @@ An example naming a real artifact of another repository is the defect, however a
 
 Name things for the shape being demonstrated, never for whichever caller prompted the work. A
 consumer's needs are a legitimate reason to build something and never a reason to name it after
-them; where their specifics matter to a reviewer, they belong in the pull request description, which
-is read once, rather than in code and documentation that outlive the conversation.
+them. Describe the target repository's own contract and behavior to reviewers; keep
+consumer-specific coordination in user chat, following the Multi-Repository Delivery rule above.
 
 Where this run touched more than one repository, sweep for it before delivering: search each
 repository for the distinctive nouns of the others it was worked on beside, and read what comes

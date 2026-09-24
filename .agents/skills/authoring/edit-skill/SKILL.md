@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit a skill, rule, or agent file under `.agents`, implement the concrete issue that prompted it, and deliver it through simplification, the acceptance gate, the smoke test, and the user's approval of an example response before the pull request merges. Applies whenever agent guidance is added or edited, invoked or not, and whenever a gap in existing guidance is identified — a skill that let a miss through, one whose trigger did not fire, one that says nothing about the case in hand — because noticing the gap is what starts this skill, not being asked to fix it.
+description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. Deliver through simplification, the acceptance gate, and the smoke test before the pull request merges.
 ---
 
 # Edit Skill
@@ -66,6 +66,9 @@ outcome, because silence reads as the guidance having been fixed.
      wording — and strengthen the owning guidance or workflow so the same path cannot bypass it.
      When the owning skill was not invoked, harden its frontmatter description first; body text
      cannot control a run that never loads the skill.
+   - When the user points out a guidance failure, trace the actual path from the request to the
+     missed behavior before editing: which instruction applied, whether its skill loaded, and why
+     the agent's decision diverged. Correct the current work and the owning guidance in this run.
    - **When no existing rule or skill governs the subject, propose a new one and ask before
      creating it.** State the recommended name and, in at most three sentences, what it would say
      and what it would change, with the question tool; create it only on a yes. An existing file
@@ -111,13 +114,36 @@ outcome, because silence reads as the guidance having been fixed.
    - This path restriction applies to the agent-content update, not to source changes required to fix an underlying issue from step 3.
 
 5. Upsert behavior.
-   - If target file exists, read it completely, then check it against **Skill shape** and **Output** below before making the requested change: a skill whose criteria sit inline gets a `references/` file, and a skill that returns a response with no `## Output` section gets one with its template, in this same edit and whether or not the request mentioned them, and list what they add among the files and sections the change makes. Then update it in place with the requested changes.
+   - Read the [guidance quality criteria](references/guidance-quality.md), then inventory and read the
+     target entry point and its referenced files, scripts, templates, and examples. Follow supporting
+     links within the package; reviewing only `SKILL.md` or the edited hunk is incomplete. Apply the
+     same genericity, ownership, clarity, and evidence standards to every file.
+   - Trace each miss to the instruction that produced or allowed it, including instructions for
+     adding or recording guidance. Name that governing instruction and its replacement in the
+     change. Removing a bad example while retaining a directive that regenerates it is incomplete.
+     Put incident evidence in the project/verification record and state that destination explicitly.
+     Fix the producing instruction and its output together.
+   - When generalizing or shortening guidance, account for each useful instruction removed: retain
+     it as a reusable procedure, link its owning guidance, or establish why it no longer applies.
+     Check that the next reader can still perform the action and recognize success; removing the
+     incident details must not remove the lesson. Apply the preservation criteria in the quality reference.
+   - Check skill shape and output against those criteria. Move inline criteria to a named reference
+     when required, and add the appropriate output template or delivery report line when absent.
+     Update existing files in place and report any structural changes. Before delivery, follow the
+     entry point's links again and confirm that each route loads its required guidance. References
+     must not hide an essential rule or introduce an unexplained mode or dependency. Check genericity
+     with a materially different instance of the same failure class; state that case and its expected
+     outcome in validation. Renaming the original example or replaying only it does not establish breadth.
    - If target file does not exist, create it with a concise structure matching existing style.
    - Place new guidance under the broadest existing subject section that fits. Use durable topic headings rather than creating a heading for one requirement.
    - Express each independent requirement once, usually as one concise bullet. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
    - Normalize the touched file's nearby structure when needed: combine narrow sections, remove redundant wording, and order foundational guidance before specialized concerns.
    - When adding a **new** restriction or rule, keep the wording **concise**—one clear statement or bullet per idea; do not pad with redundant sentences or multiple bullets that restate the same requirement.
    - **Stable guidance:** Write at the broadest scope that remains truthful. Describe reusable roles, boundaries, and decision criteria generically even in repository-focused guidance when the pattern is not repository-specific. Keep concrete repository names only when correctness depends on that local contract, and never turn one local example into an untrue universal rule.
+   - Separate temporary task, session, and pull-request directions from lasting guidance before
+     writing. Apply the former to the current work only; never encode them as canonical rules or
+     skills. State the transferable failure class and check a different instance before committing.
+   - Before adding guidance, inspect the skills the edited skill invokes, the skills that invoke or consume it, and the rules those paths load. Keep a shared decision boundary in its canonical owner and remove conflicting copies between peer skills. Preserve a skill's restatement of an ambient rule when it helps the reader act at the point of use; do not delete it solely because the rule also exists.
    - **Prefer the broad statement, and let the request be its example.** A request arrives as one symptom, and the rule it needs names the class that symptom belongs to; the symptom stays as one illustration of it. Asked for `Final` on string constants, write `Final` for every module-level constant; asked for a walkthrough rule because a page reloaded in a loop once a back-end change was absent, write that the run is judged against intended behaviour because an API error surfaces as any unintended behaviour, and name the loop only as one instance. A rule written for the symptom is silent on the next one, and the next one is what it will be read for. Broaden to the class the user plainly meant, never to a neighbouring subject.
    - Keep reusable skill names, instructions, scripts, and interfaces model-agnostic. Name a client or model only in a scoped compatibility section where its behavior genuinely differs.
    - Do not add committed tests for skills or their helper scripts, inside or outside the skill directory. Keep any needed execution checks temporary and untracked.
@@ -127,50 +153,7 @@ outcome, because silence reads as the guidance having been fixed.
    - Do not embed product-specific file paths or copy current application code into reusable skills; those go stale when files move or refactors land. Prefer generic placeholders (for example `services/<name>/...`), short pattern descriptions, or minimal invented examples that are not tied to live paths or current line-level code.
    - **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract, and where a skill genuinely needs one local fact, take it from the repository's `project.md` or a setting rather than baking it in. Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
    - **Generic ownership is determined by the skill's name and purpose.** Only a product-named skill that owns that product contract may carry its product facts. Language, platform, framework, and workflow skills — including Luau — must work across products; put their repository commands, identities, hosts, packages, and fixtures in project rules or a domain-specific skill.
-   - Retain examples only when they clarify a non-obvious distinction; remove examples that merely repeat the prose.
    - Keep topic-specific restrictions with their topic. Keep an existing `## Guardrails` section at the bottom, and create one only for cross-cutting safety or preservation constraints.
-
-   **Skill shape.** `SKILL.md` holds how the skill runs: its trigger, its dependencies, its
-   workflow, its output, its guardrails. What a reader *applies* rather than *follows* lives in
-   `references/<topic>.md` beside it, named for what it holds — a rubric, a checklist, a catalogue,
-   a protocol — and `SKILL.md` names the file at the point the workflow reads it. A skill with two
-   routes through it (two modes, two kinds of target, two hosts) keeps the shared workflow in
-   `SKILL.md` and gives each route its own reference, so the file a reader loads first stays short
-   enough to be read whole. A reference is passive: it states criteria and never a step, a
-   dependency, or an invocation. Scripts the skill runs go under `scripts/`, assets it serves under
-   `assets/`, and nothing else enters the directory: no provider metadata such as `agents/openai.yaml`,
-   which stays outside repositories and is never propagated.
-
-   **Description.** The front-matter `description` is read on every turn, for every skill, to decide
-   whether this one fires. Its whole job is to state **when** — the situations that should reach it,
-   in the words a task actually arrives in. What it does belongs there only so far as a reader needs
-   it to recognise those situations; the body says the rest.
-
-   So the slash command earns no space. It is the skill's own name, the listing already shows it, and
-   a reader deciding whether to invoke has it in hand — `Invoke as /refactor to refactor a
-   repository` spends its opening clause telling the reader something they used to get here. Keep the
-   trigger and drop the command: `Use to refactor a repository, change request, branch, path, symbol,
-   or concern.` The same goes for a phrase naming the skill, `Use this skill to`, and a restatement of
-   the skill's title.
-
-   Where an invocation carries an argument the trigger depends on, the argument is the thing worth
-   naming — a target, a scope, a mode — not the command that precedes it.
-
-   The opening sentence still says what the skill does, because a generated listing renders it as the
-   skill's summary; the trigger follows it rather than replacing it.
-
-   Judge a description by substitution: read it without knowing which skill it belongs to. If it still says which situations
-   fire the skill, it works. If the remainder names no situation, it was never a trigger.
-
-   **Output.** A skill whose result is a response the user reads — a listing, a report, a summary, a
-   verdict, a draft — carries an `## Output` section as its last section before any `## Guardrails`,
-   holding a hard-coded Markdown template the response is filled into: fixed headings, fixed list
-   shapes, and a stated fallback for the empty case, so two runs on the same input read the same.
-   A skill whose result is edits, a merge, a deployment, or a running system has no template to
-   hold, and carries instead the report line its delivery step owes. The test is whether two
-   correct runs should read the same shape; write the template when they should, and leave it out
-   rather than forcing a shape onto a result that varies. That call is the editor's own, made from
-   what the skill returns, never a question put to the user.
 
 6. Multi-target behavior.
    - Apply multi-target updates for `agents`, `skills`, and `rules`.
@@ -205,11 +188,17 @@ outcome, because silence reads as the guidance having been fixed.
       interpreter or any interpreter meeting the sync tool's version, and fix every
       report it prints before pushing; a description holding a colon followed by a space is the usual
       one, and quoting the value is the fix.
+      Check the entire canonical skills tree against repository packaging rules, including
+      imported skills, rather than only the files being edited. Remove forbidden provider UI
+      metadata such as `agents/openai.yaml` from canonical skill packages; leave generated
+      mirrors to Agent Sync. A clean changed file does not make a failing tree validation pass.
    3. **Run `code-simplify`** across the branch and act on what it reports: guidance duplicated
-      between peer rules or peer skills, a section grown around a second subject, a heading named for
-      a category with one member, a rubric left inline that the skill-shape rule sends to a
+      between peer rules or skills, including a caller and a skill it always invokes; a section grown
+      around a second subject; a heading named for a category with one member; a rubric left inline
+      that the skill-shape rule sends to a
       reference. Prose duplicates as readily as code, and nothing else catches it. Every `.agents`
-      change gets that pass, a one-line rule edit as much as a new skill: a single bullet added to
+      change gets that pass over its entry point and supporting files, a one-line rule edit as much as a
+      new skill: a single bullet added to
       the file that does not own it is exactly the duplication this catches, and it is the change
       least likely to be looked at twice. Run it in process over the branch's own files, never
       fanned out to subagents: a guidance diff is a scope one reviewer holds whole, and the reviewer
@@ -217,7 +206,9 @@ outcome, because silence reads as the guidance having been fixed.
       both.
    4. **Run `acceptance-gate`** with its diff question over the `.agents` diff, the request as the
       intent statement. It judges whether the guidance answers the request at the breadth step 5
-      asks for and whether every mechanism it adds earns its place; a flag gets the one rewrite that
+      asks for and whether every mechanism it adds earns its place. Treat a named tool, surface, or
+      workaround in generic guidance as a finding unless the skill's contract depends on it; the
+      incident's route must not narrow the durable decision boundary. A flag gets the one rewrite that
       skill allows, and the rewrite goes to a fresh gate. A second flag ends the rewriting: fix it
       when the flag names a defect in the guidance, merge as it stands when it names a preference
       the rewrite already answered, or drop the item when neither holds, and state which and why in
@@ -227,7 +218,9 @@ outcome, because silence reads as the guidance having been fixed.
       waiver its **When It Runs** bounds. It runs here rather than before step 3, because a round
       run against wording the simplification pass then rewrites has tested text nobody will follow.
       That pass settles how the guidance reads; this one settles whether it changes what a reader
-      does, against the miss that prompted it and with the original text as the control. An edit
+      does, against the miss that prompted it and with the original text as the control. Give both
+      readers the complete relevant package, including the references needed for the scenario; an
+      entry-point-only test cannot prove a reference fix. An edit
       whose smoke run fails is revised and rerun within the rounds that skill bounds, never merged
       on the strength of reading well; a spent bound is decided as that skill says.
       A **mechanical seam edit** changes no behaviour and needs no smoke run: a dependency
@@ -293,6 +286,10 @@ outcome, because silence reads as the guidance having been fixed.
       from that text for the rest of the session. A skill invoked while its change is still open
       is read the same way from the branch that carries it, never from a checkout that predates
       it.
+      After the default-branch Agent Sync run completes, refresh the repository's main local
+      checkout, not the task worktree: if that checkout is clean, check out the default branch and
+      pull with `--ff-only`. If it has dirty files, leave them untouched and report the skipped
+      refresh.
 
 ## Output
 

@@ -1,1 +1,0 @@
-../../../../skills/git/cr/SKILL.md
