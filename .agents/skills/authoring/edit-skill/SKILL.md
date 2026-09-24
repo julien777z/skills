@@ -185,9 +185,9 @@ outcome, because silence reads as the guidance having been fixed.
       requested, and a pull request left open keeps every later session working from the guidance
       this change replaced. A source fix required by step 3 never shares this pull request, because
       the guidance pull request has explicit merge guidance and the source fix does not. It goes
-      where the GitHub rules send any encountered fix — into the change already in flight when one
-      is open, and onto a branch off the freshly fetched default only when nothing is — so carving
-      the configuration out never costs the source fix a third branch of its own.
+      into an existing source-code branch when its pull request is open, or onto a branch off the
+      freshly fetched default branch when no source-code pull request is open. Never route source
+      files into the agent-configuration branch.
    2. **Run `validate_sources.py`**, which sits under `scripts/` beside this skill, before the pull request opens, and again before it
       merges when the branch changed since. Nothing on a pull request runs the sync: the workflow
       runs on the default branch after the merge, so a file it refuses is refused once every session
