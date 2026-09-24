@@ -10,7 +10,9 @@ skills.
 
 ## Quick Start
 
-For a local checkout, run `bash bootstrap/install.sh` from that checkout. For Claude cloud, put
+For a local installation, run `bash bootstrap/install.sh` from the main checkout. User-level
+links point directly into that checkout; pull `main` there after a merge to update installed
+guidance. Edit skills on a separate branch or worktree. For Claude cloud, put
 this at the start of the environment setup script, before project-specific setup commands:
 
 ```bash
@@ -108,7 +110,7 @@ An agent reaches for these on its own whenever the work calls for them.
 | [`defer-scope`](.agents/skills/deferrals/defer-scope/SKILL.md) | Record deferred repository work in Linear, with the repository ledger and focused record pull request as an availability fallback; with no scope, read active Linear and legacy repository records. |
 | [`design-taste-frontend`](.agents/skills/web/design-taste-frontend/SKILL.md) | Anti-slop frontend skill for landing pages, portfolios, and redesigns. |
 | [`doctor-protocol`](.agents/skills/doctors/doctor-protocol/SKILL.md) | The audit-and-fix protocol every doctor skill runs on — scope resolution, read-only reviewer fan-out, a parent-owned ledger, an acceptance-gated remediation plan, sole-editor implementation, final review, deferral of leftovers, and the report skeleton. |
-| [`edit-skill`](.agents/skills/authoring/edit-skill/SKILL.md) | Add or edit a skill, rule, or agent file under `.agents`, implement the concrete issue that prompted it, and deliver it through simplification, the acceptance gate, the smoke test, and the user's approval of an example response before the pull request merges. |
+| [`edit-skill`](.agents/skills/authoring/edit-skill/SKILL.md) | Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance. |
 | [`execute-task`](.agents/skills/execution/execute-task/SKILL.md) | Always run this. Invoke once, before the first edit, at the start of every task that changes files — including one that only begins changing files because work turned up a defect — and keep it active until the task's report: it shapes every response, applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, simplifies as the change grows, gates the branch before it is pushed, and delivers each repository independently. |
 | [`frontend-design`](.agents/skills/web/frontend-design/SKILL.md) | Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one. |
 | [`generic-push`](.agents/skills/git/generic-push/SKILL.md) | Keep repository publishing metadata generic and isolated. |
@@ -140,7 +142,7 @@ An agent reaches for these on its own whenever the work calls for them.
 | [`rebuild-git-history`](.agents/skills/git/rebuild-git-history/SKILL.md) | Rewrite a branch you own into one commit per material change, or drop one change from it, without losing content: the old head stays under a backup ref, the result is proven against it before anything moves, and the push is leased. |
 | [`roblox-building`](.agents/skills/roblox/roblox-building/SKILL.md) | Apply when planning, inspecting, creating, modifying, importing, optimizing, or playtesting Roblox maps, worlds, terrain, buildings, props, environmental meshes, or Blender assets. |
 | [`roblox-gameplay`](.agents/skills/roblox/roblox-gameplay/SKILL.md) | Apply every time actively modifying a Roblox game, including mechanics, progression, rewards, controls, presentation, UI, and world content. |
-| [`roblox-react`](.agents/skills/roblox/roblox-react/SKILL.md) | Apply whenever Roblox UI is opened, inspected, designed, created, modified, or playtested, especially React Luau components, hooks, HUDs, menus, modals, tutorials, cards, and viewport previews. |
+| [`roblox-react`](.agents/skills/roblox/roblox-react/SKILL.md) | Apply whenever a React-rendered Roblox UI is opened, inspected, designed, created, modified, or playtested, including HUDs, menus, tutorials, cards, viewport previews, and React-owned world-space messages. |
 | [`roblox-studio`](.agents/skills/roblox/roblox-studio/SKILL.md) | Create, update, polish, and playtest Roblox games in Roblox Studio, including detailed maps, character presentation, Blender assets, background MCP playtests, and verified place delivery. |
 | [`run-site`](.agents/skills/workspace/run-site/SKILL.md) | Bring a local application stack up, repair startup blockers, and prove the running site works by driving a real browser through sign-in and core functionality with screenshots. |
 | [`security-audit`](.agents/skills/review/security-audit/SKILL.md) | Security audit of a codebase — web apps, APIs, services, CLI tools, libraries, daemons, and more. |
@@ -181,5 +183,5 @@ the acceptance gate, and the smoke test before the pull request merges.
 
 ```bash
 bootstrap/install.sh                                            # link into this machine's roots
-python3.12 .agents/skills/edit-skill/scripts/validate_sources.py # mirror with the pinned sync tool
+python3.12 .agents/skills/authoring/edit-skill/scripts/validate_sources.py # mirror with the pinned sync tool
 ```

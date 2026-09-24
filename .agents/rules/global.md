@@ -18,8 +18,8 @@ alwaysApply: true
 ## Repository Skills
 
 - Never add `agents/openai.yaml` to a repository skill. Repository skills contain `SKILL.md` and
-  only the scripts, references, or assets required by the skill itself; provider UI metadata stays
-  outside repositories and is never propagated.
+  only supporting files required by the skill; provider UI metadata stays outside repositories
+  and is never propagated.
 
 ## Agent Prompts
 
@@ -31,7 +31,11 @@ alwaysApply: true
 
 ## User-Triggered Action Skills
 
-- Run an action skill only after the user directly invokes it in the current request. Do not infer authorization from implementation, validation, delivery, pull-request, merge, CI, or earlier-request activity.
+- Run a user-triggered action skill only after the user directly invokes it in the current request.
+  Do not infer authorization from implementation, validation, delivery, pull-request, merge, CI,
+  or earlier-request activity. Guidance maintenance is the exception: `edit-skill` runs when the
+  user reports a guidance failure or canonical guidance is being changed, so the failure and its
+  owning instruction are repaired together.
 - **Recording a deferral is the exception, and it is never optional.** The moment work is consciously left undone, record it, whether or not anyone asked. Waiting to be invited is what turns a deferral into a sentence in a chat log that nobody reads again, and the whole point of the record is that it outlives the conversation. Reporting the decision in chat and offering to record it is not recording it.
 - Each direct invocation authorizes one execution by default. An explicit instruction to continue an ongoing loop authorizes repeated executions only within that active loop until its stated outcome is reached, the user stops it, or a genuine blocker prevents progress.
 - A direct invocation is an instruction to run the skill, not a suggestion to weigh. Start it, and run it at the effort and scope the invocation states.
@@ -91,9 +95,6 @@ alwaysApply: true
 - Name things for the shape being exercised, not for whichever caller happened to prompt the work.
   A test needing a table with a secret column names it for that — a record with a secret — rather
   than borrowing the one real table the change was made for.
-- A consumer's needs are a legitimate reason to build something and never a reason to name it after
-  them. Where a consumer's specifics matter to reviewers, they belong in the pull request
-  description, which is read once, rather than in code that outlives the conversation.
 - Sample values follow the same rule: prefer plainly synthetic literals over ones shaped like a
   real identifier from another system's domain.
 
