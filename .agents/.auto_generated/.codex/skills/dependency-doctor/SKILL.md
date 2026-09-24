@@ -1,1 +1,0 @@
-../../../../skills/doctors/dependency-doctor/SKILL.md

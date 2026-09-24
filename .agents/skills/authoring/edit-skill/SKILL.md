@@ -217,7 +217,9 @@ outcome, because silence reads as the guidance having been fixed.
       both.
    4. **Run `acceptance-gate`** with its diff question over the `.agents` diff, the request as the
       intent statement. It judges whether the guidance answers the request at the breadth step 5
-      asks for and whether every mechanism it adds earns its place; a flag gets the one rewrite that
+      asks for and whether every mechanism it adds earns its place. Treat a named tool, surface, or
+      workaround in generic guidance as a finding unless the skill's contract depends on it; the
+      incident's route must not narrow the durable decision boundary. A flag gets the one rewrite that
       skill allows, and the rewrite goes to a fresh gate. A second flag ends the rewriting: fix it
       when the flag names a defect in the guidance, merge as it stands when it names a preference
       the rewrite already answered, or drop the item when neither holds, and state which and why in
@@ -293,6 +295,11 @@ outcome, because silence reads as the guidance having been fixed.
       from that text for the rest of the session. A skill invoked while its change is still open
       is read the same way from the branch that carries it, never from a checkout that predates
       it.
+      After the default-branch Agent Sync run completes, refresh the repository's main local
+      checkout, not the task worktree: if that checkout is clean, check out the default branch and
+      pull with `--ff-only`. If it has dirty files, leave them untouched and report the skipped
+      refresh. An instruction to leave the pull request open also leaves this post-merge step for
+      a later session.
 
 ## Output
 

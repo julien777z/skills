@@ -1,1 +1,0 @@
-../../../../skills/doctors/docs-doctor/SKILL.md

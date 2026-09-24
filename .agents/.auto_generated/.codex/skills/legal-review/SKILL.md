@@ -1,1 +1,0 @@
-../../../../skills/review/legal-review/SKILL.md

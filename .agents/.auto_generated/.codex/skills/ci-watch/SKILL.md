@@ -1,1 +1,0 @@
-../../../../skills/git/ci-watch/SKILL.md

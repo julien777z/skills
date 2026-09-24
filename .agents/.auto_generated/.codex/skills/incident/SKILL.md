@@ -1,1 +1,0 @@
-../../../../skills/execution/incident/SKILL.md

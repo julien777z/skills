@@ -1,1 +1,0 @@
-../../../../skills/deferrals/execute-defer-scope/SKILL.md
