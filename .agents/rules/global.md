@@ -31,7 +31,11 @@ alwaysApply: true
 
 ## User-Triggered Action Skills
 
-- Run an action skill only after the user directly invokes it in the current request. Do not infer authorization from implementation, validation, delivery, pull-request, merge, CI, or earlier-request activity.
+- Run a user-triggered action skill only after the user directly invokes it in the current request.
+  Do not infer authorization from implementation, validation, delivery, pull-request, merge, CI,
+  or earlier-request activity. Guidance maintenance is the exception: `edit-skill` runs when the
+  user reports a guidance failure or canonical guidance is being changed, so the failure and its
+  owning instruction are repaired together.
 - **Recording a deferral is the exception, and it is never optional.** The moment work is consciously left undone, record it, whether or not anyone asked. Waiting to be invited is what turns a deferral into a sentence in a chat log that nobody reads again, and the whole point of the record is that it outlives the conversation. Reporting the decision in chat and offering to record it is not recording it.
 - Each direct invocation authorizes one execution by default. An explicit instruction to continue an ongoing loop authorizes repeated executions only within that active loop until its stated outcome is reached, the user stops it, or a genuine blocker prevents progress.
 - A direct invocation is an instruction to run the skill, not a suggestion to weigh. Start it, and run it at the effort and scope the invocation states.
