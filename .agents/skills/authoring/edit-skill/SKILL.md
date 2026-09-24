@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit a skill, rule, or agent file under `.agents`, implement the concrete issue that prompted it, and deliver it through simplification, the acceptance gate, the smoke test, and the user's approval of an example response before the pull request merges. Applies whenever agent guidance is added or edited, invoked or not, and whenever a gap in existing guidance is identified — a skill that let a miss through, one whose trigger did not fire, one that says nothing about the case in hand — because noticing the gap is what starts this skill, not being asked to fix it.
+description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. Deliver through simplification, the acceptance gate, and the smoke test before the pull request merges.
 ---
 
 # Edit Skill
@@ -66,6 +66,9 @@ outcome, because silence reads as the guidance having been fixed.
      wording — and strengthen the owning guidance or workflow so the same path cannot bypass it.
      When the owning skill was not invoked, harden its frontmatter description first; body text
      cannot control a run that never loads the skill.
+   - When the user points out a guidance failure, trace the actual path from the request to the
+     missed behavior before editing: which instruction applied, whether its skill loaded, and why
+     the agent's decision diverged. Correct the current work and the owning guidance in this run.
    - **When no existing rule or skill governs the subject, propose a new one and ask before
      creating it.** State the recommended name and, in at most three sentences, what it would say
      and what it would change, with the question tool; create it only on a yes. An existing file
@@ -137,7 +140,9 @@ outcome, because silence reads as the guidance having been fixed.
    - Normalize the touched file's nearby structure when needed: combine narrow sections, remove redundant wording, and order foundational guidance before specialized concerns.
    - When adding a **new** restriction or rule, keep the wording **concise**—one clear statement or bullet per idea; do not pad with redundant sentences or multiple bullets that restate the same requirement.
    - **Stable guidance:** Write at the broadest scope that remains truthful. Describe reusable roles, boundaries, and decision criteria generically even in repository-focused guidance when the pattern is not repository-specific. Keep concrete repository names only when correctness depends on that local contract, and never turn one local example into an untrue universal rule.
-   - Keep temporary task, session, and pull-request directions in the work they govern; never encode them as canonical rules or skills. Before editing shared guidance, identify the lasting behavior the request actually intends and exclude conditions that expire with the current work.
+   - Separate temporary task, session, and pull-request directions from lasting guidance before
+     writing. Apply the former to the current work only; never encode them as canonical rules or
+     skills. State the transferable failure class and check a different instance before committing.
    - Before adding guidance, inspect both the skills the edited skill invokes and the skills that invoke or consume it, plus the rules those paths always load. Keep a shared decision boundary in its canonical owner; remove duplicate or conflicting wording from skills that necessarily run with that owner, leaving only a reference when useful. Retain local wording when the owner is not guaranteed to run or the local contract genuinely differs.
    - **Prefer the broad statement, and let the request be its example.** A request arrives as one symptom, and the rule it needs names the class that symptom belongs to; the symptom stays as one illustration of it. Asked for `Final` on string constants, write `Final` for every module-level constant; asked for a walkthrough rule because a page reloaded in a loop once a back-end change was absent, write that the run is judged against intended behaviour because an API error surfaces as any unintended behaviour, and name the loop only as one instance. A rule written for the symptom is silent on the next one, and the next one is what it will be read for. Broaden to the class the user plainly meant, never to a neighbouring subject.
    - Keep reusable skill names, instructions, scripts, and interfaces model-agnostic. Name a client or model only in a scoped compatibility section where its behavior genuinely differs.
@@ -284,8 +289,7 @@ outcome, because silence reads as the guidance having been fixed.
       After the default-branch Agent Sync run completes, refresh the repository's main local
       checkout, not the task worktree: if that checkout is clean, check out the default branch and
       pull with `--ff-only`. If it has dirty files, leave them untouched and report the skipped
-      refresh. An instruction to leave the pull request open also leaves this post-merge step for
-      a later session.
+      refresh.
 
 ## Output
 
