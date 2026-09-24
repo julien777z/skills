@@ -36,7 +36,8 @@ alwaysApply: true
 - Agents may create branches and pull requests, commit, and push scoped changes without additional approval.
 - Merging any pull request requires explicit user authorization in the current request or explicit
   applicable guidance in a rule or invoked skill for that pull request. A fix request, CI-test
-  request, successful check, or review does not itself authorize merging.
+  request, successful check, or review does not itself authorize merging. If neither authorization
+  source applies, do not merge or enable auto-merge.
 - A pull request confined to canonical agent configuration, including skills, rules, and agent definitions, may be merged without a separate request after `code-simplify` has run and its findings are resolved. For substantial guidance changes or changes to executable logic, first run the relevant smoke test against the exact pull-request head. Check that the complete pull request remains confined to agent configuration before using this exception.
 - When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, including one begun by another task. Do not close or leave it open merely because it is draft or conflicts with the base; close only when its change is superseded or no longer wanted.
 - An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization.
