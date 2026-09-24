@@ -51,9 +51,10 @@ alwaysApply: true
 - An explicit user authorization for a task covers every ordinary implementation, verification, and
   scoped external mutation required to complete that task. Do not fragment that authorization into
   repeated approval questions for its intermediate steps.
-- A request to fix, validate, or run CI tests authorizes those checks, not a merge, deployment,
-  publication, or release. Perform those actions only when the user explicitly authorizes them or
-  an applicable rule or invoked skill explicitly authorizes the specific action and target.
+- A request to fix authorizes implementation and ordinary verification; a request for CI tests
+  authorizes test workflows. Neither alone authorizes a merge, deployment, publication, or release.
+  Perform those actions only when the user explicitly authorizes them or an applicable rule or
+  invoked skill explicitly authorizes the specific action and target.
 - A clear task-wide statement such as "all approved" remains active until the authorized outcome is
   complete, the user withdraws it, or a proposed action materially expands the target, recipient,
   or outcome. It covers every foreseeable sub-task within that stated outcome, including retries,
