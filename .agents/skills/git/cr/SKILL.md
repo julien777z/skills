@@ -20,14 +20,16 @@ Run the complete high-effort fix review before merging the current branch's pull
   that passed final acceptance and the check gate. The merge is the run's declared outcome rather
   than a step inside it, so nothing reopens it: not the diff's size or reach, not that review widened
   it, not that no person has read it, and not this run's own unease about how much it changes.
+- A direct `$cr` invocation does not authorize creating a test deployment or a production release
+  triggered by merging. Require explicit authorization for either deployment in the current request.
 - **So never ask the user for permission to merge, and never end a run by offering the merge as the
   remaining step.** That question reads as diligence and is the failure this paragraph exists to
   prevent: the answer was given when the skill was invoked, the run has already spent its review on
   a head nobody merges, and the user has to say yes to a thing they already said. When the gates are
   green and the head is the accepted one, merge it.
-- What stops a merge is a gate, not a missing permission: a flag that is not yet resolved, a check
-  that is not green, a head that no longer matches the accepted SHA, or a conflict still unresolved.
-  Report one of those as the blocker it is. "Awaiting authorization" is never one of them.
+- What stops a merge is a gate: a flag that is not yet resolved, a check that is not green, a head
+  that no longer matches the accepted SHA, a conflict still unresolved, or missing authorization
+  for a production deployment that the merge would trigger. Report the specific gate.
 - The same invocation authorizes the declared `code-simplify` and `code-review` dependencies
   for this pull request, plus the repository's finalization skill, when the skill listing declares
   one, for its pre-merge and post-merge phases, including the non-production dependencies that skill
@@ -275,7 +277,13 @@ GitHub head lag, a queued or running relevant fallback check, a retryable rate l
 
 ## Workflow
 
-Before beginning review, submit and verify a test deployment from the exact current head of any runtime pull request that has a test-deployment path. Record the repository and head together with the exact provider app, component, active deployment ID, deployed source branch, immutable commit or image digest, provider deployment, and verified live result; a default-branch or merged artifact is not test evidence.
+Before beginning review, submit and verify a test deployment from the exact current head of a
+runtime pull request with a test-deployment path only when the current request explicitly authorizes
+that deployment. Record the repository and head together with the exact provider app, component,
+active deployment ID, deployed source branch, immutable commit or image digest, provider deployment,
+and verified live result; a default-branch or merged artifact is not test evidence. Without that
+authorization, skip deployment and continue review. Never dispatch a workflow or mutate a provider
+to work around this gate.
 
 1. Resolve the current branch and its pull request. When no PR exists, follow `/code-review`'s branch and commit setup rules, then create the PR through REST with `draft=false`. Review an existing draft PR normally. Run **Description Refresh** above before any other phase reads the pull request. Resolve the intent statement as `acceptance-gate` defines it and record the current merge-base SHA; pass the statement and **Pull Request Ownership** rule to every subagent in the run and into `/code-review high fix`. Run **Review Thread Triage**, then the first test pass **Validation Order** requires, then immediately the complete **Simplification Gate** above; no finalization or code-review phase starts before all three are clean.
 2. Invoke the repository's finalization skill for the pre-merge phase; where the skill listing declares none, skip this step and say so in the report. When this CR run was entered by an active finalization whose pre-merge phase already covers the current migration execution closure and safety evidence, reuse that phase instead of repeating it. The dependency phase never invokes CR.
@@ -299,4 +307,14 @@ Before beginning review, submit and verify a test deployment from the exact curr
    - Resolve them through **Incorporating The Base**: `merge-conflict` compares each collision and keeps the better answer rather than either side's. Merge time is no exception — a reversal here is a new reviewed hunk under **Review Continuity**, so rerun the lenses whose receipts it invalidates and repeat the check gate on the new head. Validate the resolved files, commit, and push.
    - Rerun the invalidated lenses when conflict resolution or a base-incorporation refactor changes a reviewed hunk, per **Review Continuity**; otherwise preserve the clean review receipts. Then repeat the exact-head check gate.
    - Report a blocker only when safe resolution requires an unauthorized product or contract decision.
-9. Immediately re-read the pull request and require its current head SHA to equal the exact head that passed final acceptance and the check gate. Squash-merge with that SHA in the REST request so GitHub rejects a concurrent head change. On a mismatch, return to the reviewed-input comparison and exact-head gate rather than merging. Verify the remote state is `MERGED`, then invoke or resume the repository's finalization skill for the post-merge phase against that exact merged commit, or, where none is declared, report the merge as the end of the run. Keep the CR run active while finalization applies migrations, reconciles deployment configuration, and repairs an authorized failed rollout. Report the original pull request and every focused repair pull request as clickable Markdown links after finalization succeeds or reaches a genuine blocker.
+9. Before merging, inspect active workflows and deployment configuration. If the merge would trigger
+   a production deployment, require its explicit authorization in the current request. Immediately
+   re-read the pull request and require its current head SHA to equal the exact head that passed final
+   acceptance and the check gate. Squash-merge with that SHA in the REST request so GitHub rejects a
+   concurrent head change. On a mismatch, return to the reviewed-input comparison and exact-head
+   gate rather than merging. Verify the remote state is `MERGED`, then invoke or resume the
+   repository's finalization skill for the post-merge phase against that exact merged commit, or,
+   where none is declared, report the merge as the end of the run. Keep the CR run active while
+   finalization applies migrations, reconciles deployment configuration, and repairs an authorized
+   failed rollout. Report the original pull request and every focused repair pull request as clickable
+   Markdown links after finalization succeeds or reaches a genuine blocker.

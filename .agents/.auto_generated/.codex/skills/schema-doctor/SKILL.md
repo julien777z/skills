@@ -1,1 +1,0 @@
-../../../../skills/doctors/schema-doctor/SKILL.md

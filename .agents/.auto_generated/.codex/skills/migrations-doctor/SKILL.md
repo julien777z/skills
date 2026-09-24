@@ -1,1 +1,0 @@
-../../../../skills/doctors/migrations-doctor/SKILL.md

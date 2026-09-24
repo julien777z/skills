@@ -1,15 +1,73 @@
 #!/usr/bin/env bash
 # Link this repository's skills and agent definitions into every user-level agent root that
-# already exists (~/.claude, ~/.codex, ~/.cursor). Re-running is safe: links are replaced, links
-# left behind by a removed skill are pruned, and a root that does not exist is left alone.
+# already exists (~/.claude, ~/.codex, ~/.cursor). Re-running is safe: owned links are refreshed,
+# links left behind by a removed skill are pruned, and a root that does not exist is left alone.
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CANONICAL_SKILLS="$REPO_ROOT/.agents/skills"
 CANONICAL_AGENTS="$REPO_ROOT/.agents/agents"
+CANONICAL_RULES="$REPO_ROOT/.agents/rules"
 GENERATED_ROOT="$REPO_ROOT/.agents/.auto_generated"
 PROVIDERS=(claude codex cursor)
 found_root=0
+
+check_link() {
+  local target="$1" link="$2" resolved old_root old_remote
+  [ -e "$link" ] || [ -L "$link" ] || return 0
+  if [ ! -L "$link" ]; then
+    echo "conflict: $link is a real file or directory" >&2
+    return 1
+  fi
+  resolved="$(realpath "$link" 2>/dev/null || true)"
+  [ -n "$resolved" ] || resolved="$(readlink "$link")"
+  case "$resolved" in
+    "$REPO_ROOT"/*) return 0 ;;
+  esac
+  # A previous install may point at another checkout of this same repository. Allow that
+  # owned link to move to the dedicated refresh checkout, but never replace a third-party link.
+  old_root="$(git -C "$(dirname "$resolved")" rev-parse --show-toplevel 2>/dev/null || true)"
+  old_remote="$(git -C "$old_root" remote get-url origin 2>/dev/null || true)"
+  case "$old_remote:$resolved" in
+    https://github.com/julien777z/skills.git:"$old_root"/.agents/*|\
+    https://github.com/julien777z/skills.git:"$old_root"/bootstrap/*|\
+    https://github.com/julien777z/skills:"$old_root"/.agents/*|\
+    https://github.com/julien777z/skills:"$old_root"/bootstrap/*|\
+    git@github.com:julien777z/skills.git:"$old_root"/.agents/*|\
+    git@github.com:julien777z/skills.git:"$old_root"/bootstrap/*)
+      return 0 ;;
+  esac
+  echo "conflict: $link points outside $REPO_ROOT" >&2
+  return 1
+}
+
+preflight_provider() {
+  local provider="$1" root="$HOME/.$provider" skill agent rule name failed=0
+  [ -d "$root" ] || return 0
+  while IFS= read -r skill; do
+    name="$(basename "$skill")"
+    check_link "$(link_source "$provider" skills "$name" "$skill")" "$root/skills/$name" || failed=1
+  done < <(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)
+  if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -d "$CANONICAL_AGENTS" ]; then
+    for agent in "$CANONICAL_AGENTS"/*.md; do
+      [ -f "$agent" ] || continue
+      name="$(basename "$agent")"
+      check_link "$(link_source "$provider" agents "$name" "$agent")" "$root/agents/$name" || failed=1
+    done
+  fi
+  if [ -d "$CANONICAL_RULES" ]; then
+    for rule in "$CANONICAL_RULES"/*.md; do
+      [ -f "$rule" ] || continue
+      name="$(basename "$rule")"
+      if [ "$provider" = "cursor" ]; then name="${name%.md}.mdc"; fi
+      check_link "$rule" "$root/rules/$name" || failed=1
+    done
+  fi
+  if [ "$provider" = "codex" ] && { [ -L "$root/AGENTS.md" ] || [ -s "$root/AGENTS.md" ]; }; then
+    check_link "$CANONICAL_RULES/global.md" "$root/AGENTS.md" || failed=1
+  fi
+  [ "$failed" -eq 0 ]
+}
 
 # The provider mirror carries native metadata the sync workflow generates (a Codex policy file,
 # an agent's model); it is preferred when the workflow has produced it.
@@ -25,27 +83,32 @@ link_source() {
 
 install_link() {
   local target="$1" link="$2"
-  if [ -e "$link" ] && [ ! -L "$link" ]; then
-    echo "skipping $link: a real file or directory is already there" >&2
-    return 0
-  fi
   ln -sfn "$target" "$link"
 }
 
 # Remove links into this repository whose target no longer exists.
 prune_links() {
-  local dir="$1" link target
+  local dir="$1" link target old_root relative
   for link in "$dir"/*; do
     [ -L "$link" ] || continue
     target="$(readlink "$link")"
     case "$target" in
       "$REPO_ROOT"/*) [ -e "$link" ] || rm -f "$link" ;;
+      *)
+        # A removed source can still exist in an older checkout; compare its relative path
+        # against the checkout being installed before retaining the old owned link.
+        check_link "$target" "$link" >/dev/null 2>&1 || continue
+        old_root="$(git -C "$(dirname "$target")" rev-parse --show-toplevel 2>/dev/null || true)"
+        [ -n "$old_root" ] || continue
+        relative="${target#"$old_root"/}"
+        [ -e "$REPO_ROOT/$relative" ] || rm -f "$link"
+        ;;
     esac
   done
 }
 
 install_provider() {
-  local provider="$1" root="$HOME/.$provider" skill agent name skills=0 agents=0
+  local provider="$1" root="$HOME/.$provider" skill agent rule name skills=0 agents=0 rules=0
   [ -d "$root" ] || return 0
   found_root=1
 
@@ -69,8 +132,32 @@ install_provider() {
     prune_links "$root/agents"
   fi
 
-  echo "$root: $skills skills, $agents agents linked"
+  if [ -d "$CANONICAL_RULES" ]; then
+    mkdir -p "$root/rules"
+    for rule in "$CANONICAL_RULES"/*.md; do
+      [ -f "$rule" ] || continue
+      name="$(basename "$rule")"
+      if [ "$provider" = "cursor" ]; then name="${name%.md}.mdc"; fi
+      install_link "$rule" "$root/rules/$name"
+      rules=$((rules + 1))
+    done
+    prune_links "$root/rules"
+  fi
+  if [ "$provider" = "codex" ]; then
+    install_link "$CANONICAL_RULES/global.md" "$root/AGENTS.md"
+  fi
+
+  echo "$root: $skills skills, $agents agents, $rules rules linked"
 }
+
+preflight_ok=1
+for provider in "${PROVIDERS[@]}"; do
+  preflight_provider "$provider" || preflight_ok=0
+done
+if [ "$preflight_ok" -eq 0 ]; then
+  echo "Resolve the listed skill conflicts before installing; no links were changed." >&2
+  exit 1
+fi
 
 for provider in "${PROVIDERS[@]}"; do
   install_provider "$provider"
