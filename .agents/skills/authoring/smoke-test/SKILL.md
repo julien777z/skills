@@ -19,7 +19,7 @@ a code change is tested: against the case that motivated it, with the change and
   `edit-skill` or was made directly. An edit that skipped this is unverified, and the report
   says so.
 - **An edit that changes no instruction a reader follows does not run at all, and its pull request
-  merges on the reading**. A term swapped for
+  is ready on the reading**. A term swapped for
   another, a spelling standardised, a typo corrected, a dead link repaired: the text asks a reader
   for exactly what it asked before. There is no behavioural claim to test, and the bar below needs
   a control run to miss, which no such edit can produce. Running it regardless holds the change
@@ -81,7 +81,7 @@ a code change is tested: against the case that motivated it, with the change and
    file the reviewer was never given — is fixed in the scenario, and the controls need no rerun for
    that.
 8. **Run the bounded loop.** The loop ends when every edited run meets every criterion, and the pull
-   request merges then and not before; a failing row is never merged while a round remains. **The
+   request is ready then and not before; a failing row never makes it ready while a round remains. **The
    rounds are bounded, and the bound is a judgement made before the first revision**: state how
    many rounds the miss is worth — three is usual, fewer for a one-line edit, more where each round
    is cheap and the criterion is central —

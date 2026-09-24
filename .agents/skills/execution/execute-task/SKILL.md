@@ -160,6 +160,11 @@ required — first the final `code-simplify` pass above, applying its simplifica
 re-gate once. Commit the edits before pushing. A branch whose diff holds only dot-files and
 dot-directories, `.github` aside, skips both.
 
+## Pull-Request Acceptance
+
+When deployment is part of acceptance, follow the GitHub rule's exact-head test path. If that path
+does not exist, implementing it remains work on the open branch.
+
 ## One Pull Request Per Repository
 
 **A session opens one branch and one pull request in each repository it touches, and every later

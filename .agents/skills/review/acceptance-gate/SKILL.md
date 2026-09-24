@@ -121,12 +121,10 @@ ends the item, and its disposition is the caller's, from these:
   mechanism with both flags as its reason;
 - **re-scope** — solve the part that can be solved cleanly and re-state the record or task for the
   rest;
-- **escalate** — put the conflict to the user with the flag quoted, as a blocker. Escalation is for
-  a change whose merge needs an authorization only the user holds; it is never how a caller avoids
-  a decision.
-- **let it stand** — keep the item with the flag's reason answered in the caller's own report. This
-  is available only where the change's merge needs no authorization — a pull request confined to
-  agent configuration — and there escalate is not: nothing is put to the user.
+- **escalate** — put a genuinely user-owned product or security decision to the user with the flag
+  quoted; it is never how a caller avoids deciding whether a finding is real.
+- **let it stand** — keep the item with the flag's reason answered in the caller's own report when
+  it is a preference rather than a defect. This disposition never grants pull-request merge authority.
 
 Work that is the change's own purpose is never reverted and recorded; a second flag on it escalates
 where escalate is available, and is otherwise the caller's to fix, let stand, or drop.
