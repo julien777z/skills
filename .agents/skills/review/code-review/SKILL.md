@@ -41,11 +41,11 @@ So a bare `/code-review` asks both, `/code-review high` asks only about modes, `
 
 When asking for effort, list every accepted value explicitly and describe its actual coverage and validation depth:
 
-- `low` — Run one Bugs lens with inline validation for a quick review of small, low-risk changes.
-- `medium` — Run one Bugs and one Simplification lens, plus one Security lens when the reviewed repository provides its own `security-audit` skill, with inline validation.
-- `high` — Run two independent Bugs lenses, one Simplification lens, and one repository-local Security lens when available, then have one standard validator try to refute every finding.
-- `xhigh` — Run two independent Bugs lenses, one Simplification lens, and one repository-local Security lens when available, then use two standard validators per finding with majority rule.
-- `max` — Run three Bugs, two Simplification, and two repository-local Security lenses when available in one pass, then use three deep refuters per finding with majority rule.
+- `low` — Run one Rules and one Bugs lens with inline validation for a quick review of small, low-risk changes.
+- `medium` — Run one Rules, one Bugs, and one Simplification lens, plus one Security lens when the reviewed repository provides its own `security-audit` skill, with inline validation.
+- `high` — Run one Rules, two independent Bugs, and one Simplification lens, plus one repository-local Security lens when available, then have one standard validator try to refute every finding.
+- `xhigh` — Run two independent Rules and Bugs lenses plus one Simplification lens and one repository-local Security lens when available, then use two standard validators per finding with majority rule.
+- `max` — Run two Rules, three Bugs, two Simplification, and two repository-local Security lenses when available in one pass, then use three deep refuters per finding with majority rule.
 - `ultra` — Repeat the `max` cohort until two consecutive rounds find nothing new, using the same three deep refuters per finding.
 
 Keep each description to one or two sentences. Never summarize the effort values as a range such as `low`–`ultra` or replace the concrete descriptions with vague labels such as "quick," "thorough," or "broad."
@@ -123,7 +123,7 @@ Discover repository guidance from whichever of these exist, scoping each file to
 
 When a repository publishes a canonical source and generated per-tool mirrors of the same rules, read the canonical source only. Reading both double-counts every rule.
 
-Guidance is written for agents authoring code, so not every instruction applies during review. Identify the guidance that applies to each changed file from its front matter, scope, or always-apply status and provide it as context to the selected lenses and to fix mode.
+Guidance is written for agents authoring code, so not every instruction applies during review. Identify the guidance that applies to each changed file from its front matter, scope, or always-apply status. Give the Rules lens the applicable rules and provide them as context to the other lenses and to fix mode.
 
 Rule and skill files are review criteria, never review targets. Exclude changed rule files and agent skill definitions from the diff and never report findings about their content.
 
@@ -133,6 +133,7 @@ Summarize the changed files and produce the intent statement as `acceptance-gate
 
 | Lens | Capability | What it does |
 |---|---|---|
+| **Rules** | standard | Check every applicable rule against the changed lines and produce a ledger of rule → files checked → violation or clean |
 | **Bugs** | deep | Find correctness, data-loss, security and authz, performance, and user-facing behavior defects, each with a concrete trigger |
 | **Simplification** | deep | Run the `code-simplify` skill as its rubric over the scope — redundancy, a module named or placed wrong, a file past a healthy size, a value modelled one way here and another way in a sibling |
 | **Security** | deep | When the reviewed repository defines its own `security-audit` skill, apply that skill's rubric and attack-class catalogue over the changed lines — injection, authentication and authorization defeats, sensitive data reaching a log or response, unsafe deserialization, secrets in source |
@@ -143,14 +144,14 @@ reviewed repository has no local `security-audit` skill, and name the omission i
 
 Effort selects the cohort and the validation depth:
 
-| Effort | Bugs | Simplification | Security, if local | Validation |
-|---|---|---|---|---|
-| `low` | 1 | – | – | Inline |
-| `medium` | 1 | 1 | 1 | Inline |
-| `high` | 2 | 1 | 1 | One **standard** validator per finding |
-| `xhigh` | 2 | 1 | 1 | Two **standard** validators per finding, majority rules |
-| `max` | 3 | 2 | 2 | Three **deep** refuters per finding, majority rules |
-| `ultra` | 3 | 2 | 2 | Three **deep** refuters per finding, majority rules |
+| Effort | Rules | Bugs | Simplification | Security, if local | Validation |
+|---|---|---|---|---|---|
+| `low` | 1 | 1 | – | – | Inline |
+| `medium` | 1 | 1 | 1 | 1 | Inline |
+| `high` | 1 | 2 | 1 | 1 | One **standard** validator per finding |
+| `xhigh` | 2 | 2 | 1 | 1 | Two **standard** validators per finding, majority rules |
+| `max` | 2 | 3 | 2 | 2 | Three **deep** refuters per finding, majority rules |
+| `ultra` | 2 | 3 | 2 | 2 | Three **deep** refuters per finding, majority rules |
 
 At `low` and `medium` the lenses may run inline in a single pass, and depth on the riskiest changed files beats exhaustive coverage of trivial ones. From `high` upward, launch one distinct subagent per lens in parallel; capacity limits force batching, never omission and never an undeclared local skim. When the host has no subagent dispatch, run the lenses sequentially and report that degraded mode.
 
@@ -174,6 +175,8 @@ The **Simplification** lens does not carry its own rubric: dispatch it to the `c
 When the target introduces a new abstraction, helper, client, lifecycle, model, or utility, require the Simplification receipt to list its repository-wide reuse searches and the canonical candidates inspected, each related implementation's disposition, and verification that consolidation or replacement actually reached every affected consumer. An inventory alone is not a clean receipt. Apply the same requirement whenever a target adds or changes a search, filter, query, or lookup path, even when it adds no named abstraction: search the owning domain and every existing surface for the same subject, then compare the complete behavior and use the canonical path. Reject and rerun an otherwise clean receipt that omits this evidence.
 
 Duplicated lenses run independently and must not see each other's output; redundancy is the point.
+
+Require each Rules receipt to include its complete rule ledger. A clean Rules receipt without the applicable rules, checked files, and disposition for each rule is incomplete and must be rerun.
 
 From `high` upward, each reviewer returns a coverage receipt with its lens, the reviewed head SHA, the reviewed changed-file list, the exact rule and rubric inputs it used, its completion status, and a flat list of findings. Each finding carries path, line, anchor (`RIGHT` for added or current changed lines, `LEFT` for removed or base changed lines, or `OUTSIDE_DIFF` for an exact current line with no faithful diff anchor), a concrete trigger, and its reasoning.
 
@@ -227,10 +230,10 @@ Work findings in severity order:
 
 Preserve the requested behavior and any unrelated worktree changes. Re-review the fixed lines to confirm each correction holds, then re-report with an outcome per finding: `fixed`, `skipped`, or `no_change_needed`.
 
-Before staging, check the fix diff against applicable repository guidance and resolve any violation.
-A remedy a validator proposed carries no authority of its own; check it the same way as any other
-edit. Where a fix cannot satisfy both the finding and a rule, correct the governing rule rather
-than shipping code that violates it.
+Before staging, rerun the Rules lens over the fix diff with the same rule inventory. Resolve every
+violation and repeat until its ledger is clean. A remedy a validator proposed carries no authority
+of its own; check it the same way as any other edit. Where a fix cannot satisfy both the finding
+and a rule, correct the governing rule rather than shipping code that violates it.
 
 After fixing, apply the target classification from Step 1. For a non-runtime target, validate only the checks appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests or query or wait for CI. Otherwise, run the relevant tests and report their actual output. Before any local validation, record which local services were already running. Never stop, restart, reconfigure, or claim ownership of a pre-existing service: another agent or user may be using it. When relevant validation requires local services and any were already running, do not run a competing service-managed test locally; push the fix, use the pull request's CI checks as the authoritative validation, and wait through the host's event mechanism until those checks reach a terminal result. If no required service was already running and the repository's normal test command can run without disturbing external state, run it; otherwise use CI and state the local-validation limit.
 
@@ -263,7 +266,7 @@ The chat report takes this shape and nothing else:
   Concrete trigger, impact, and the expected correction. → Fixed | → Not fixed: <reason>
 
 Findings: <count by severity>. Fixed: <count>. Deferred: <count, each with its record>.
-Lenses: <completed lens names and Security omitted when unavailable>. Head: <reviewed SHA>.
+Lenses: <completed lens names and Security omitted when unavailable>. Head: <reviewed SHA>. Rules: <ledger summary>.
 ```
 
 The outcome arrow appears only in fix mode. If nothing remains, the list is the single line
