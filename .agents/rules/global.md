@@ -29,6 +29,13 @@ alwaysApply: true
 
 - Never stage generated provider output manually. Only the repository's Agent Sync workflow may generate and commit provider mirrors.
 
+## Source References
+
+- Reference external code and automation by a maintained version tag when available, or by a
+  maintained branch while developing or when no release tag exists. Do not pin dependency manifests,
+  shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
+  the exact resolved commit for reproducibility and provenance.
+
 ## User-Triggered Action Skills
 
 - Run a user-triggered action skill only after the user directly invokes it in the current request.
