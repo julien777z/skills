@@ -1,9 +1,9 @@
 # Code Review Rubric
 
 What a review judges by: what anchors a finding, how a finding is validated, how it is rated, and
-what fix mode owes each confirmed finding. `SKILL.md` says how the review is run. The Simplification
-and Security lenses borrow the `code-simplify` and `security-audit` skills' `references/rubric.md`
-respectively, and neither skill's workflow.
+what fix mode owes each confirmed finding. `SKILL.md` says how the review is run. Simplification
+borrows the `code-simplify` skill's rubric; Security borrows the reviewed repository's local
+`security-audit` rubric when that skill exists. Neither borrows the other skill's workflow.
 
 ## Scope
 
@@ -34,8 +34,6 @@ Drop these outright:
 - Self-resolving transitional states and speculative compound failures.
 - Behavior changes that are intentional and part of the change's purpose.
 
-For rule findings, confirm the rule specifically applies to that file. An absolute rule is independently actionable and surrounding conventions cannot override it. For non-absolute guidance, confirm that repository conventions support treating it as required.
-
 Apply `pre-production` when validating a finding that changes a contract. A break that policy
 authorizes is a cost of the fix, not a refutation of the finding.
 
@@ -48,7 +46,7 @@ Every retained finding must be actionable, anchored to either the faithful chang
 Assign severity by realistic trigger likelihood, not the worst imaginable outcome:
 
 - **Critical** — data loss, security or auth bypass, crash, or broken core behavior.
-- **High** — likely defect in normal use, or a consequential rule violation.
+- **High** — likely defect in normal use.
 - **Medium** — real but conditional, narrowly scoped, recoverable, or limited in impact.
 - **Low** — valid minor or rare-edge issue. Keep at most the three most important.
 

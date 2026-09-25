@@ -39,7 +39,7 @@ outcome, because silence reads as the guidance having been fixed.
 
 - `code-simplify` — the pass over the guidance itself before it merges.
 - `acceptance-gate` — the diff question over the `.agents` change once it reads clean.
-- `smoke-test` — the proof that a skill edit changes what a reader does.
+- `test-skill` — the proof that a skill edit changes what a reader does.
 
 ## Behavior
 
@@ -223,7 +223,7 @@ outcome, because silence reads as the guidance having been fixed.
       the rewrite already answered, or drop the item when neither holds, and state which and why in
       the report, as that skill's **Bounds** leave it to the caller for a change whose merge needs
       no authorization.
-   5. **Run `smoke-test`** for every skill the change adds or edits, to a passing table or the
+   5. **Run `test-skill`** for every skill the change adds or edits, to a passing table or the
       waiver its **When It Runs** bounds. It runs here rather than before step 3, because a round
       run against wording the simplification pass then rewrites has tested text nobody will follow.
       That pass settles how the guidance reads; this one settles whether it changes what a reader
