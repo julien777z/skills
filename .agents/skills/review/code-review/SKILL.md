@@ -14,7 +14,7 @@ Provide a code review for the selected target.
 - `subagent-selection` — return model tiers for explicit reviewer dispatch.
 - `code-simplify` — its `references/rubric.md` is the complete simplification rubric for that review lens.
 - `pre-production` — supply the repository's target-contract and staging-data policy.
-- `security-audit` — its `references/rubric.md` defines an exploitable finding and its remedy, and its attack-class catalogue supplies that lens. The review borrows both and never the audit workflow.
+- A repository-local `security-audit`, when present — its `references/rubric.md` defines an exploitable finding and its remedy, and its attack-class catalogue supplies that lens. The review borrows both and never the audit workflow.
 - `acceptance-gate` — define the intent statement and gate the fixes the change did not itself
   introduce.
 
@@ -41,11 +41,11 @@ So a bare `/code-review` asks both, `/code-review high` asks only about modes, `
 
 When asking for effort, list every accepted value explicitly and describe its actual coverage and validation depth:
 
-- `low` — Run one Rules lens and one Bugs lens with inline validation for a quick review of small, low-risk changes.
-- `medium` — Run one Rules, Bugs, Contracts & comments, History, Simplification, and Security lens for a routine contextual review, with inline validation.
-- `high` — Run one Rules, two independent Bugs, one Contracts & comments, one History, one Prior PRs, one Simplification, and one Security lens, then have one standard validator try to refute every finding.
-- `xhigh` — Run two independent Rules and Bugs lenses plus one Contracts & comments, History, Prior PRs, Simplification, and Security lens, then use two standard validators per finding with majority rule.
-- `max` — Run two Rules, three Bugs, two Contracts & comments, two History, two Prior PRs, two Simplification, and two Security lenses in one pass, then use three deep refuters per finding with majority rule.
+- `low` — Run one Bugs lens with inline validation for a quick review of small, low-risk changes.
+- `medium` — Run one Bugs and one Simplification lens, plus one Security lens when the reviewed repository provides its own `security-audit` skill, with inline validation.
+- `high` — Run two independent Bugs lenses, one Simplification lens, and one repository-local Security lens when available, then have one standard validator try to refute every finding.
+- `xhigh` — Run two independent Bugs lenses, one Simplification lens, and one repository-local Security lens when available, then use two standard validators per finding with majority rule.
+- `max` — Run three Bugs, two Simplification, and two repository-local Security lenses when available in one pass, then use three deep refuters per finding with majority rule.
 - `ultra` — Repeat the `max` cohort until two consecutive rounds find nothing new, using the same three deep refuters per finding.
 
 Keep each description to one or two sentences. Never summarize the effort values as a range such as `low`–`ultra` or replace the concrete descriptions with vague labels such as "quick," "thorough," or "broad."
@@ -101,7 +101,7 @@ The review target is the complete `merge-base(default, HEAD)..HEAD` diff plus an
 
 Classify whether the target is non-runtime before choosing validation. A target is non-runtime when its complete diff does not change executable source, package or dependency definitions, tests, runtime configuration, CI workflows, generated runtime artifacts, or another contract that changes executed behavior. This is semantic rather than path-based: agent instructions, documentation, policies, static metadata, and non-executable configuration can live anywhere. Validate a non-runtime target with the checks appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests or query or wait for CI.
 
-When the target is a PR, use a **fast** agent to check eligibility and stop when any of these hold:
+When the target is a PR, check eligibility and stop when any of these hold:
 
 - The PR is closed or merged.
 - The PR does not need review, such as an automated dependency bump or a change that is trivially correct.
@@ -111,7 +111,7 @@ Draft status is never a reason to skip — this skill opens drafts by design. Th
 
 Use the host's pull-request tools when available, with `gh` as a fallback. Do not use web fetch for GitHub data. GitHub reads are always allowed.
 
-## Step 2 — Build the rule inventory
+## Step 2 — Build review context
 
 Discover repository guidance from whichever of these exist, scoping each file to its own directory subtree so a nested file governs only its descendants:
 
@@ -123,55 +123,34 @@ Discover repository guidance from whichever of these exist, scoping each file to
 
 When a repository publishes a canonical source and generated per-tool mirrors of the same rules, read the canonical source only. Reading both double-counts every rule.
 
-Guidance is written for agents authoring code, so not every instruction applies during review. Identify the rules that apply to each changed file from the file's front matter, scope, or always-apply status.
+Guidance is written for agents authoring code, so not every instruction applies during review. Identify the guidance that applies to each changed file from its front matter, scope, or always-apply status and provide it as context to the selected lenses and to fix mode.
 
 Rule and skill files are review criteria, never review targets. Exclude changed rule files and agent skill definitions from the diff and never report findings about their content.
 
-Use a **fast** agent to enumerate the applicable rule file paths, not their contents. Use a **standard** agent to summarize the changed files and produce the intent statement as `acceptance-gate` defines it, unless the caller supplied one. Give every reviewer the target's title, description, and change summary so they understand author intent.
+Summarize the changed files and produce the intent statement as `acceptance-gate` defines it, unless the caller supplied one. Give every reviewer the target's title, description, and change summary so they understand author intent.
 
 ## Step 3 — Run reviewer lenses
 
-**Three greps come first, run by the orchestrator over the target's added lines and handed to every lens as findings already made.** Before reading the diff for anything else, grep its added lines for three shapes and list
-every hit as a finding ahead of all others, with the remedy the rubric names:
-
-1. **A reader reaching through a table keyed by a model, class or type for a fact about the key**
-   — the pattern `[A-Z_]+\[` followed by a model, record, class, `type(` or `cls` expression, as in
-   `FORM_TYPES[model].label` or `KINDS[type(record)]`. Each hit is a finding whether or not the diff
-   added the table: the value belongs on the key as a class attribute or property, every reader
-   moves onto it, and the table goes.
-2. **A repository-wide fact held as a loose string** — an email address, a street address, a legal
-   entity or product name in a string literal outside one typed model in the package every consumer reads. Each hit
-   moves onto that model, which every consumer reads.
-3. **A container declared for one member** — `APIRouter(` (or the framework's router constructor)
-   in an added line, followed by a count of the handlers registered on that router in the resulting
-   tree. One handler is a finding whether or not the diff added the router: the handler moves onto
-   the router that already owns its resource, at a path under that resource, and the router and its
-   module go. A prefix ending in a verb or an operation is the same finding read from the URL.
-
-A report that lists no hit for any of the three greps says so in those words.
-
-A **Rules** lens runs at every effort level.
-
 | Lens | Capability | What it does |
 |---|---|---|
-| **Rules** | standard | Check every applicable rule against the changed lines and produce a ledger of rule → files checked → violation or clean |
 | **Bugs** | deep | Find correctness, data-loss, security and authz, performance, and user-facing behavior defects, each with a concrete trigger |
-| **Contracts & comments** | standard | Find changed behavior contradicting nearby docstrings, comments, type annotations, API or response models, or database constraints |
-| **History** | standard | Check `git log` and blame on the changed hunks for regressions against prior intent, only where the diff plausibly undoes earlier work |
-| **Prior PRs** | standard | Read earlier PRs touching these files and check whether past review comments apply again |
 | **Simplification** | deep | Run the `code-simplify` skill as its rubric over the scope — redundancy, a module named or placed wrong, a file past a healthy size, a value modelled one way here and another way in a sibling |
-| **Security** | deep | Apply the `security-audit` skill's `references/rubric.md` and its attack-class catalogue over the changed lines — injection, authentication and authorization defeats, sensitive data reaching a log or response, unsafe deserialization, secrets in source |
+| **Security** | deep | When the reviewed repository defines its own `security-audit` skill, apply that skill's rubric and attack-class catalogue over the changed lines — injection, authentication and authorization defeats, sensitive data reaching a log or response, unsafe deserialization, secrets in source |
+
+Discover Security only under the reviewed repository's `.agents/skills/` tree. An installed shared
+skill or a skill from another repository does not qualify. Omit Security without failure when the
+reviewed repository has no local `security-audit` skill, and name the omission in the report.
 
 Effort selects the cohort and the validation depth:
 
-| Effort | Rules | Bugs | Contracts & comments | History | Prior PRs | Simplification | Security | Validation |
-|---|---|---|---|---|---|---|---|---|
-| `low` | 1 | 1 | – | – | – | – | – | Inline |
-| `medium` | 1 | 1 | 1 | 1 | – | 1 | 1 | Inline |
-| `high` | 1 | 2 | 1 | 1 | 1 | 1 | 1 | One **standard** validator per finding |
-| `xhigh` | 2 | 2 | 1 | 1 | 1 | 1 | 1 | Two **standard** validators per finding, majority rules |
-| `max` | 2 | 3 | 2 | 2 | 2 | 2 | 2 | Three **deep** refuters per finding, majority rules |
-| `ultra` | 2 | 3 | 2 | 2 | 2 | 2 | 2 | Three **deep** refuters per finding, majority rules |
+| Effort | Bugs | Simplification | Security, if local | Validation |
+|---|---|---|---|---|
+| `low` | 1 | – | – | Inline |
+| `medium` | 1 | 1 | 1 | Inline |
+| `high` | 2 | 1 | 1 | One **standard** validator per finding |
+| `xhigh` | 2 | 1 | 1 | Two **standard** validators per finding, majority rules |
+| `max` | 3 | 2 | 2 | Three **deep** refuters per finding, majority rules |
+| `ultra` | 3 | 2 | 2 | Three **deep** refuters per finding, majority rules |
 
 At `low` and `medium` the lenses may run inline in a single pass, and depth on the riskiest changed files beats exhaustive coverage of trivial ones. From `high` upward, launch one distinct subagent per lens in parallel; capacity limits force batching, never omission and never an undeclared local skim. When the host has no subagent dispatch, run the lenses sequentially and report that degraded mode.
 
@@ -183,7 +162,12 @@ A confirmed finding from a lens resets its counter to zero, so a lens that goes 
 
 Name the retired lenses and their round counts in the report, so a reader can tell a lens that found nothing twice from one that never ran. Persist the counters with the logical review's receipts. A new target or an invocation unrelated to the active fix loop starts every lens at zero; a follow-up invocation required by fixes to the same target does not.
 
-The **Security** lens does not carry its own rubric: give it the `security-audit` skill and have it read that skill's complete core principles and attack-class catalogue for the current target, so the two stay one source of truth. Borrow the *rubric*, not the *workflow* — do not run the audit skill's own phases, write its findings files or report artifacts, or apply its remediation-approval gate. This lens applies the canonical rubric to the review scope and returns ordinary review findings.
+The **Security** lens does not carry its own rubric: when the reviewed repository has a local
+`security-audit` skill, give it that skill's complete core principles and attack-class catalogue
+for the current target, so the two stay one source of truth. Borrow the *rubric*, not the
+*workflow* — do not run the audit skill's own phases, write its findings files or report artifacts,
+or apply its remediation-approval gate. This lens applies the local rubric to the review scope and
+returns ordinary review findings.
 
 The **Simplification** lens does not carry its own rubric: dispatch it to the `code-simplify` agent, whose `references/rubric.md` is the complete rubric, so the two stay one source of truth rather than two drifting copies. Give it the same target, and one instruction this skill adds — `code-simplify` resolves a scope to the diff *plus* whole files *plus* sibling modules, and it should keep reading all three, but every finding it returns must still anchor to a line this target added or removed. Reading a sibling is how it sees that a new module is misnamed, sits in a package that does not own it, or models a value the codebase already models another way; unrelated sibling debt is not this review's finding. However, related behavior left behind by a newly introduced or promoted owner is an incomplete ownership move: anchor the finding to the new boundary, and include the unchanged implementations and consumers needed to complete it.
 
@@ -234,7 +218,7 @@ one, for the implementation and validation.
 Work findings in severity order:
 
 1. Apply the minimal correct fix. Do not refactor beyond the finding's blast radius.
-2. Follow the repository's own rules in the fix itself, the same ones the Rules lens checks.
+2. Follow the repository's own rules in the fix itself.
 3. When the minimal fix does not resolve the finding, fix its cause. A defect whose root lies outside the diff is still this review's to fix, and a rule the code knowingly breaks is resolved by correcting one of them, not by recording the contradiction. Where two rules genuinely conflict, make the governing rule state the real contract rather than leaving code that violates it.
 4. Escalate only a decision that is genuinely the user's: a change to intended product behavior, or a choice between defensible designs that the diff does not settle. Ask the specific question through the host's question tool and act on the answer. An unanswered question is one of only three routes to reporting a CONFIRMED finding unfixed, and the report must say what was asked.
 5. Size keeps a confirmed finding out of this round only under the size bar in `references/rubric.md` — Fix Mode; a confirmed defect is fixed here whatever its size. A scope the bar admits is recorded through the repository's deferral mechanism so it outlives the review, and the record is named in the report: a finding described only in the report is not deferred, it is dropped. That mechanism's admission gate decides whether the scope may be recorded at all; a refusal naming fix or do means the finding is fixed here, and one naming close is recorded cancelled with its reason and reconsideration criterion.
@@ -243,11 +227,10 @@ Work findings in severity order:
 
 Preserve the requested behavior and any unrelated worktree changes. Re-review the fixed lines to confirm each correction holds, then re-report with an outcome per finding: `fixed`, `skipped`, or `no_change_needed`.
 
-**Then run the Rules lens once more, over the fix diff alone, before staging anything.** A fix is code this review wrote, and nothing has checked it against the rule inventory — the lenses ran on the target as it was, so every line fix mode adds is unreviewed by construction. Confirming a fix resolves its finding is a different question from whether the fix itself breaks a rule, and a fix that trades a confirmed finding for a fresh violation has not improved the diff.
-
-Resolve that pass exactly like Step 3's Rules lens, with `git diff` over the fix edits as its scope and the same inventory from Step 2. Fix what it reports, at the same bar: a violation it finds is a finding, not a note. Repeat until it comes back clean, and say in the report that the pass ran and what it changed. Where a fix cannot satisfy both the finding and a rule, Step 8's rule-conflict clause governs — correct the governing rule rather than shipping code that violates it.
-
-**A remedy a validator proposed carries no authority of its own.** A validator's mandate is to confirm or refute a finding; when it also volunteers a fix, that fix is a suggestion from something that was never asked to check it against the rules. Put it through this pass like any other edit.
+Before staging, check the fix diff against applicable repository guidance and resolve any violation.
+A remedy a validator proposed carries no authority of its own; check it the same way as any other
+edit. Where a fix cannot satisfy both the finding and a rule, correct the governing rule rather
+than shipping code that violates it.
 
 After fixing, apply the target classification from Step 1. For a non-runtime target, validate only the checks appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests or query or wait for CI. Otherwise, run the relevant tests and report their actual output. Before any local validation, record which local services were already running. Never stop, restart, reconfigure, or claim ownership of a pre-existing service: another agent or user may be using it. When relevant validation requires local services and any were already running, do not run a competing service-managed test locally; push the fix, use the pull request's CI checks as the authoritative validation, and wait through the host's event mechanism until those checks reach a terminal result. If no required service was already running and the repository's normal test command can run without disturbing external state, run it; otherwise use CI and state the local-validation limit.
 
@@ -280,7 +263,7 @@ The chat report takes this shape and nothing else:
   Concrete trigger, impact, and the expected correction. → Fixed | → Not fixed: <reason>
 
 Findings: <count by severity>. Fixed: <count>. Deferred: <count, each with its record>.
-Lenses: <completed lens names>. Head: <reviewed SHA>. Rules: <ledger summary>.
+Lenses: <completed lens names and Security omitted when unavailable>. Head: <reviewed SHA>.
 ```
 
 The outcome arrow appears only in fix mode. If nothing remains, the list is the single line

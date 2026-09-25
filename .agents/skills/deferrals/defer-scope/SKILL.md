@@ -1,6 +1,6 @@
 ---
 name: defer-scope
-description: Record deferred repository work in Linear, with the repository ledger and focused record pull request as an availability fallback; with no scope, read active Linear and legacy repository records. Use when work is consciously left undone, or when asked what is deferred, outstanding, or still open.
+description: Record deferred work in the repository it affects, using Linear or that repository's ledger as an availability fallback; with no scope, read its active records. Use when work is consciously left undone, or when asked what is deferred, outstanding, or still open.
 ---
 
 # Defer Scope
@@ -64,8 +64,11 @@ prose are not durable records.
 
 ## Ownership And Identity
 
-Record work only for the repository that owns the affected code or operational surface and only when
-that repository is authorized. Otherwise report the boundary without writing elsewhere.
+Resolve the repository whose work is affected before searching or creating a record. If the work is
+blocked by shared infrastructure with no repository of its own, use the repository containing the
+blocked work. Write only when that repository is authorized; otherwise report the boundary without
+writing elsewhere. Neither the current checkout nor the repository containing this skill establishes
+ownership. Use the resolved repository for every Linear query and repository fallback operation.
 
 Give the problem a stable key of a few words naming the problem rather than a proposed fix. Resolve
 the canonical repository identity and the current change's pull-request number when one exists.
@@ -102,14 +105,14 @@ blocked update.
 Use the pre-transition repository workflow only when Linear preflight is unavailable before any
 write:
 
-1. Search `deferrals/<key>/`, `deferrals/declined/<key>/`, and open record pull-request diffs from
-   the fetched remote default branch. Reuse an active match and never reactivate a declined one
-   without explicit user direction.
+1. In the resolved affected repository, search `deferrals/<key>/`, `deferrals/declined/<key>/`, and
+   open record pull-request diffs from its fetched remote default branch. Reuse an active match and
+   never reactivate a declined one without explicit user direction.
 2. After the same admission, write `deferrals/<key>/DEFERRAL.md` with the problem, why it remains
    open — the admission verdict goes here — pickup scope, and a table of supporting files. Copy only
    supporting material required to keep the record durable.
-3. From a fresh remote-default branch, commit only that directory, push, and open one ready record
-   pull request. Return to the interrupted branch.
+3. From a fresh branch off that repository's remote default, commit only that directory, push, and
+   open one ready record pull request. Return to the interrupted branch.
 
 Never mix Linear and repository records for one deferral. Existing repository records remain in
 place until separately migrated or resolved through `execute-defer-scope`.

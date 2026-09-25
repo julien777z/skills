@@ -1,9 +1,9 @@
 ---
-name: smoke-test
+name: test-skill
 description: "Prove a skill edit changes what a reader does: rebuild the miss that prompted it, run reviewers on the edited and the original text, and score both against stated criteria before the pull request merges. Runs on every edit to a skill that changes what a reader does — a step added, removed or reordered, a decision moved, a criterion changed, a new obligation — whether the edit came through edit-skill, arrived while doing other work, or was made directly, and whether or not anyone invoked it. An edit that merges without it is unverified."
 ---
 
-# Smoke Test Skill
+# Test Skill
 
 A skill edit is a claim that different words produce different behaviour. Test the claim the way
 a code change is tested: against the case that motivated it, with the change and without it.
