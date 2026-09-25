@@ -367,9 +367,6 @@ except third_party_client.ApiException as exc:
 - Keep workflow files concise: merge related setup and dependency commands into one clearly named generic step when their execution order and conditions allow it. Do not split tool or package installation into separate steps merely by dependency.
 - Environment configuration that tunes a tool — retry counts, timeouts, cache locations, path entries — belongs in the step that installs or runs that tool, not in a step of its own. A step whose whole body writes to `$GITHUB_ENV` is named for a concern rather than an action, and the reader has to look elsewhere to find out which later step it affects. Write those exports at the end of the owning step so the setting and its consumer stay together.
 - Add an explanatory comment when an edge case requires an explicit version override.
-- Reference GitHub Actions by version tags, such as `actions/checkout@v4` and
-  `actions/setup-python@v5`. Use the pull request branch while testing an unreleased action,
-  then switch to its version tag when it is released. Never use a commit hash in `uses:`.
 
 ## Branches and Pull Requests
 
@@ -461,6 +458,13 @@ except third_party_client.ApiException as exc:
 ## Generated Agent Outputs
 
 - Never stage generated provider output manually. Only the repository's Agent Sync workflow may generate and commit provider mirrors.
+
+## Source References
+
+- Reference external code and automation by a maintained version tag when available, or by a
+  maintained branch while developing or when no release tag exists. Do not pin dependency manifests,
+  shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
+  the exact resolved commit for reproducibility and provenance.
 
 ## User-Triggered Action Skills
 
