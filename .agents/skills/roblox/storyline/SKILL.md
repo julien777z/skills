@@ -9,7 +9,7 @@ Create a story players want to act in, not a synopsis pasted over chores. Work a
 
 ## Dependencies
 
-- [subagent-selection](../../execution/subagent-selection/SKILL.md) — select explicit reviewer models for independent proposals.
+- `subagent-selection` — select explicit reviewer models for independent proposals.
 
 ## Workflow
 
