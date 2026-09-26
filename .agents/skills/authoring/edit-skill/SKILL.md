@@ -118,6 +118,7 @@ outcome, because silence reads as the guidance having been fixed.
    - Never read or write `.cursor/*`, `.claude/*`, `.codex/*`, or any other non-`.agents` agent or provider folder.
    - Do not manually create, update, or sync mirrored command/skill/rule files in those folders; repository automation propagates changes from `.agents` to Cursor, Claude, Codex, and similar targets. This holds with no exception, including where the change leaves a mirror pointing at a path it renames or deletes: the workflow reconciles those on the default branch, and a branch carrying a stale or broken one meanwhile is expected.
    - This path restriction applies to the agent-content update, not to source changes required to fix an underlying issue from step 3.
+   - When importing external guidance, inspect its actual entry points and file layout before registering it. If an owned sync tool cannot represent the source, extend that tool for the source's format and register the original content directly. Keep a standalone reference collection standalone: do not invent a substitute skill, relabel its files as skills, or bury it in another skill's references.
 
 5. Upsert behavior.
    - Read the [guidance quality criteria](references/guidance-quality.md), then inventory and read the

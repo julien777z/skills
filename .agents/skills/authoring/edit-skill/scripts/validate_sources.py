@@ -100,20 +100,37 @@ def install_tool(action: ActionReference, commit: str) -> Path:
     marker = install_dir / INSTALL_MARKER_FILENAME
 
     if marker.exists():
-        logger.info("Sync tool %s@%s is installed at %s", action["repository"], commit[:12], install_dir)
+        logger.info(
+            "Sync tool %s@%s is installed at %s",
+            action["repository"],
+            commit[:12],
+            install_dir,
+        )
 
         return tool_python(install_dir)
 
     if install_dir.exists():
         shutil.rmtree(install_dir)
 
-    logger.info("Installing sync tool %s@%s into %s", action["repository"], commit[:12], install_dir)
+    logger.info(
+        "Installing sync tool %s@%s into %s",
+        action["repository"],
+        commit[:12],
+        install_dir,
+    )
 
     venv.EnvBuilder(with_pip=True).create(install_dir)
 
     url = REPOSITORY_URL_TEMPLATE.format(repository=action["repository"])
     subprocess.run(
-        [str(tool_python(install_dir)), "-m", "pip", "install", "--quiet", f"git+{url}@{commit}"],
+        [
+            str(tool_python(install_dir)),
+            "-m",
+            "pip",
+            "install",
+            "--quiet",
+            f"git+{url}@{commit}",
+        ],
         check=True,
     )
     marker.touch()
@@ -122,40 +139,41 @@ def install_tool(action: ActionReference, commit: str) -> Path:
 
 
 def mirror_in_scratch(python: Path, root: Path, agents_dirname: str) -> SourceCheckOutcome:
-    """Mirror the canonical tree into a scratch copy of the repository with the sync tool."""
+    """Validate external resources and mirror canonical sources in a scratch copy."""
 
     with tempfile.TemporaryDirectory(prefix="agent-sync-") as scratch:
         shutil.copytree(root / agents_dirname, Path(scratch) / agents_dirname, symlinks=True)
+        commands = ["mirror-providers"]
+        if (Path(scratch) / agents_dirname / "external_resources.json").exists():
+            commands.insert(0, "vendor-resources")
 
-        run = subprocess.run(
-            [
+        for command in commands:
+            arguments = [
                 str(python),
                 "-m",
                 "agent_sync",
-                "mirror-providers",
+                command,
                 "--root",
                 scratch,
                 "--agents-dir",
                 agents_dirname,
-            ],
-            check=False,
-            capture_output=True,
-            text=True,
-        )
+            ]
+            if command == "vendor-resources":
+                arguments.append("--dry-run")
+            run = subprocess.run(arguments, check=False, capture_output=True, text=True)
+            outcome = TOOL_EXIT_OUTCOMES.get(run.returncode, SourceCheckOutcome.UNAVAILABLE)
+            if outcome is not SourceCheckOutcome.VALID:
+                logger.error("The sync tool reported:\n%s", (run.stdout + run.stderr).strip())
+                return outcome
 
-    outcome = TOOL_EXIT_OUTCOMES.get(run.returncode, SourceCheckOutcome.UNAVAILABLE)
-
-    if outcome is not SourceCheckOutcome.VALID:
-        logger.error("The sync tool reported:\n%s", (run.stdout + run.stderr).strip())
-
-    return outcome
+    return SourceCheckOutcome.VALID
 
 
 def main() -> SourceCheckOutcome:
     """Run the source check from the command line."""
 
     parser = argparse.ArgumentParser(
-        description="Mirror the canonical agent sources with the sync tool the workflow pins."
+        description="Validate canonical agent sources with the sync tool the workflow pins."
     )
     parser.add_argument(
         "--root",
@@ -188,7 +206,10 @@ def main() -> SourceCheckOutcome:
     python = install_tool(action, commit)
 
     logger.info(
-        "Mirroring %s in a scratch copy with %s@%s", agents_dirname, action["repository"], action["reference"]
+        "Validating %s in a scratch copy with %s@%s",
+        agents_dirname,
+        action["repository"],
+        action["reference"],
     )
 
     return mirror_in_scratch(python, root, agents_dirname)
@@ -206,7 +227,7 @@ if __name__ == "__main__":
 
     match outcome:
         case SourceCheckOutcome.VALID:
-            logger.info("Valid: the sync tool mirrored every canonical file.")
+            logger.info("Valid: the sync tool accepted every canonical source.")
         case SourceCheckOutcome.INVALID:
             logger.error("Invalid: the sync tool refused the canonical tree; fix what it reported above.")
         case SourceCheckOutcome.UNAVAILABLE:
