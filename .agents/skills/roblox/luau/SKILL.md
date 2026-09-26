@@ -12,7 +12,7 @@ description: Apply whenever Roblox Luau source is opened, read, reviewed, create
 
 Use this skill even for reading existing Roblox Luau so proposed changes follow its ownership and contracts. Inspect the repository's current conventions and canonical implementation before editing. Reading source alone does not require changing it or running the whole validation suite. User instructions and the actual change determine scope.
 
-Read [architecture and platform contracts](references/architecture.md) when changing ownership, composition, network contracts, environment detection, persistence, or security. Use the template architecture and toolchain for new games; preserve an existing game's authored contracts during unrelated work.
+Read [architecture and platform contracts](references/architecture.md) when changing ownership, composition, network contracts, environment detection, persistence, or security. Use the architecture and toolchain described here for new games; preserve an existing game's authored contracts during unrelated work.
 
 ## Readable, focused implementation
 
@@ -38,7 +38,7 @@ Use ProfileStore through one typed server-side owner for structured player data.
 
 ## Data compatibility
 
-For new or template-based games, follow the template's versioned migration and ProfileStore reconciliation contract when saved data changes. In existing games, preserve the established persistence contract and released progress. Append and test migrations for renamed, removed, split, or reinterpreted fields when the project's migration policy calls for them. A disposable development profile may be reset only when the project authorizes that operation and identifies the affected keys. Never turn a failed or unavailable DataStore read into a default profile save.
+For new games, use versioned migrations and ProfileStore reconciliation when saved data changes. In existing games, preserve the established persistence contract and released progress. Append and test migrations for renamed, removed, split, or reinterpreted fields when the project's migration policy calls for them. A disposable development profile may be reset only when the project authorizes that operation and identifies the affected keys. Never turn a failed or unavailable DataStore read into a default profile save.
 
 ## Spatial ownership
 

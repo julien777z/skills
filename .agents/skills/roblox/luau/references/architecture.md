@@ -1,12 +1,12 @@
 # Core, features, contracts, and engine ports
 
-Use the [roblox-game-template](https://github.com/Uglypoe/roblox-game-template/tree/main) as the required architecture for new games using these shared skills. Its canonical project rules own exact paths, commands, and data policy; follow those rules in a generated project.
+For new games, use the architecture below. For existing games, inspect their current ownership and data contracts before changing them.
 
 ## Dependency direction
 
-Organize source by server, client, and shared ownership, with `Core` for game-independent infrastructure and `Features/<Feature>` for game behavior, as the template defines. Core is reusable infrastructure; authored content and game rules belong to features. Entry modules compose dependencies and start features. Keep one server and one client startup root per place. Preserve functional engine override scripts separately from startup roots; inspect their purpose before removing them.
+Organize source by server, client, and shared ownership, with `Core` for game-independent infrastructure and `Features/<Feature>` for game behavior. Core is reusable infrastructure; authored content and game rules belong to features. Entry modules compose dependencies and start features. Keep one server and one client startup root per place. Preserve functional engine override scripts separately from startup roots; inspect their purpose before removing them.
 
-Core must not require feature implementation. Narrow composition files may combine feature contracts, such as the profile template and root Blink schema. Contracts contain types, frozen constants, defaults, or schema definitions and require only other contracts. Requiring a Luau module for types still executes it, so avoid cycles and engine work at module load. Resolve services and start subscriptions inside explicit constructors/start functions.
+Core must not require feature implementation. Narrow composition files may combine feature contracts, such as profile defaults and the root Blink schema. Contracts contain types, frozen constants, defaults, or schema definitions and require only other contracts. Requiring a Luau module for types still executes it, so avoid cycles and engine work at module load. Resolve services and start subscriptions inside explicit constructors/start functions.
 
 Expose a feature's public module or contracts to other features; keep private modules private. Wire optional cross-feature events in the entry module through injected callbacks or GoodSignal. If two features depend on one another, move the shared contract, connect a signal, or reconsider their ownership. Do not make Core understand quests, map names, or enemy IDs to satisfy the folder structure.
 
@@ -16,9 +16,9 @@ Use frozen constants with literal-preserving casts for state/tag unions rather t
 
 ## Server platform adapters
 
-Put server engine access behind the template's server-side platform layer. A typed port is a narrow table of functions in domain terms. Construct adapters at the application composition boundary and inject only the ports each service uses. Engine types in annotations are fine; engine values (`game`, `workspace`, `Instance`, `Enum`) remain in adapters, documented environment/network boundaries, or roots. Run the template's architecture check for new or template-based games; use the existing architecture check elsewhere; do not broaden its allowlist to conceal coupling.
+Put server engine access behind a server-side platform layer. A typed port is a narrow table of functions in domain terms. Construct adapters at the application composition boundary and inject only the ports each service uses. Engine types in annotations are fine; engine values (`game`, `workspace`, `Instance`, `Enum`) remain in adapters, documented environment/network boundaries, or roots. Enforce this boundary with an architecture check in new games; run the existing check in other projects. Do not broaden its allowlist to conceal coupling.
 
-Keep time, logging, players, persistence, networking, character operations, world queries, and teleportation explicit. Return domain values and translate engine enums in adapters. Disconnectable shapes let tests supply simple fakes. Do not copy unused template platform services, Clicker, analytics, or purchases into a game merely because the template has them.
+Keep time, logging, players, persistence, networking, character operations, world queries, and teleportation explicit. Return domain values and translate engine enums in adapters. Disconnectable shapes let tests supply simple fakes. Add only the ports and features the game actually uses.
 
 Log through a typed `log` port. Use `LogService:Info` / `Warn` with a stable message and separate structured context. Add user, encounter, or feature context without logging credentials or full profiles. A warning records a recoverable failure; use an actual error when the caller must unwind. Do not substitute `print(message, context)` for structured logging.
 
