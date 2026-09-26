@@ -1,6 +1,6 @@
 # Source and place delivery
 
-Treat checked-in Rojo projects as build inputs. Derive expected source/module/package trees from actual Rojo builds, not a second hardcoded script inventory. Synchronization must add, replace, and remove owned source trees while preserving unrelated serialized terrain and artwork byte-for-byte where possible. Compare every delivery place and the combined build with its own expected source closure, and reject test fixtures and bridges. Artifact checks complement the existing Studio result; they do not require another playtest when the tested source, packages, and assets match.
+Treat checked-in Rojo projects as build inputs and derive expected source/module/package trees from actual builds, not a second hardcoded inventory. Synchronization must add, replace, and remove owned source trees while preserving unrelated serialized terrain and artwork byte-for-byte where possible. Compare every delivery place and the combined build with its own expected source closure, and reject test fixtures and bridges. Artifact checks complement the existing Studio result; they do not require another playtest when the tested source, packages, and assets match.
 
 ## Test the delivery build directly
 

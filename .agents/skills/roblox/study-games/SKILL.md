@@ -1,6 +1,6 @@
 ---
 name: study-games
-description: Explicit user-invoked research of the current Roblox desktop US charts. Study 25 games by default in passive mode, or play each for up to five minutes when requested. Delegate two games per researcher, collect YAML notes on gameplay, UI and onboarding, and wait for all researchers before synthesizing supported patterns into the Roblox skills.
+description: Explicit user-invoked research of Roblox charts for the requested audience and region. Study 25 games by default in passive mode, or play each for up to five minutes when requested. Delegate two games per researcher, collect YAML notes on gameplay, UI and onboarding, and wait for all researchers before synthesizing supported patterns into the Roblox skills.
 disable-model-invocation: true
 ---
 
@@ -10,18 +10,19 @@ disable-model-invocation: true
 
 - `subagent-selection` — return the frontier model for research sub-agents.
 - `agent-lock` — serialize access to shared interactive runners.
+- `roblox-studio` — apply its testing guidance when research uses Studio or an isolated runner.
 - `roblox-gameplay` — own the resulting gameplay design guidance.
 - `roblox-react` — own the resulting UI guidance.
 
 Run only when explicitly invoked or requested by the user. Do not automatically research charts during ordinary game edits.
 
-Accept `mode: passive | play` and a game count `N`. Default to **passive** and **25 games** when omitted. An explicit count, genre, audience, or selection overrides that default. Start at the current [Roblox charts for desktop in the US](https://www.roblox.com/charts?device=computer&country=us). Record the observation date, chart category, filters, visible order, and each selected experience's title, creator, and exact URL. Rankings change; never substitute remembered hit games for the requested chart. If ranking content is unavailable, explain the gap and use only identifiable entries actually retrieved, without inventing their rank.
+Accept `mode: passive | play` and a game count `N`. Default to **passive** and **25 games** when omitted. An explicit count, genre, audience, or selection overrides that default. Choose the chart device, region, and category from the user's request or the current game's audience; when neither identifies them, state the selected chart filters as assumptions. Start at the current [Roblox charts](https://www.roblox.com/charts). Record the observation date, chart category, filters, visible order, and each selected experience's title, creator, and exact URL. Rankings change; never substitute remembered hit games for the requested chart. If ranking content is unavailable, explain the gap and use only identifiable entries actually retrieved, without inventing their rank.
 
 ## Reuse the isolated research environment
 
-Read [sandbox lifecycle and qualification](../roblox-studio/references/isolated-testing.md). Once the reusable VM is qualified for guest browser/media viewing and published Roblox play, **use it for both passive and play modes**: browsing/videos and all game windows stay inside the VM. Starting a research session should start the existing VM, not rebuild it. Studio MCP alone is not evidence that the published client can be controlled; record that separate qualification and any limits. Read-only host API retrieval/aggregation can assist, but do not open host browser/game windows as a substitute for the required isolated workflow.
+Read `roblox-studio`'s testing reference. Use a qualified isolated runner for published-client play or browsing that would obstruct the user's desktop. Reuse a configured runner when available. Studio MCP alone is not evidence that the published client can be controlled; qualify browser/media and published-client input and capture separately. Read-only API retrieval can assist, but it does not replace the requested observation or play.
 
-If the needed VM capability is unavailable, return the concrete blocker and supported evidence rather than pretending the mode completed. At the end, close the apps used for the work and shut down the VM; verify it is stopped. Preserve installed software, authenticated accounts, files, settings, and access for the next session. Never uninstall apps, log out, delete/reset the VM, or erase its persistent state as routine cleanup. Coordinate shutdown with the main agent so it does not interrupt another active assignment or game test.
+If the needed runner capability is unavailable, return the concrete blocker and supported evidence rather than pretending the mode completed. At the end, close task-owned apps and stop task-owned runner processes; preserve retained runner software, accounts, files, and access for the next session. Coordinate shutdown with the main agent so it does not interrupt another active assignment or game test.
 
 ## Delegate the observations
 
@@ -34,7 +35,7 @@ Partition the selected chart entries into batches of four. **Spawn two sub-agent
 
 Give every researcher the exact assigned titles/URLs/IDs, mode, five-minute play limit, shared lock key/coordinator host, scoped ownership receipt and expiry, evidence rules, and output schema below. Researchers must read `agent-lock` before controlling the player or shared guest desktop. Researchers must not independently replace the selected games. The main agent tracks each assignment and **waits for every researcher to finish** before compiling cross-game findings or updating skills. A blocked researcher still returns a structured partial record with its blocker; missing results are not completed coverage. Do not compile a partial batch as the final study while other researchers are running.
 
-Keep browser tabs, notes, and evidence separate. Apply the [agent-lock dependency](../agent-lock/SKILL.md) before using any shared interactive runner. **Published Roblox games are played one at a time, across all researchers and guest sessions.** Every researcher uses the exact key `roblox-player` on the orchestrator's host; a separate VM or different game ID does not create another play slot. The orchestrator acquires a lock immediately before granting a researcher its play turn and tracks it until that protected task completes. Verify ownership before input and hold it through leaving/stopping the client and releasing inputs. No heartbeats are required. Use the default ten-minute lock for one game, allowing time around the five-minute play limit for launch and cleanup; the CLI may set a different duration up to thirty minutes. Verify the player is closed or out of the experience before releasing with `--resource-idle`. Lock-wait time does not count toward the five-minute active-play limit.
+Keep browser tabs, notes, and evidence separate. Apply the `agent-lock` before using any shared interactive runner. **Published Roblox games are played one at a time, across all researchers and guest sessions.** Every researcher uses the exact key `roblox-player` on the orchestrator's host; a separate VM or different game ID does not create another play slot. The orchestrator acquires a lock immediately before granting a researcher its play turn and tracks it until that protected task completes. Verify ownership before input and hold it through leaving/stopping the client and releasing inputs. No heartbeats are required. Use the default ten-minute lock for one game, allowing time around the five-minute play limit for launch and cleanup; the CLI may set a different duration up to thirty minutes. Verify the player is closed or out of the experience before releasing with `--resource-idle`. Lock-wait time does not count toward the five-minute active-play limit.
 
 If another worker owns the player, wait using the dependency's bounded acquire calls or do independent passive research. Preserve the two-games-per-researcher assignments and wait for every researcher before synthesis. Relock between games so another waiting researcher can use the player; the orchestrator schedules turns. On researcher completion, failure, or cancellation, the orchestrator cleans up and releases any remaining owned locks as part of processing that completion. For a real command-based researcher, prefer the dependency's `consume` wrapper for automatic exit cleanup. Expiry frees the lock automatically, but does not prove an external player session has stopped: before starting a successor, stop the previous worker if necessary and verify its game is closed. A finished `acquire` CLI process is not the end of the researcher's task.
 
@@ -89,9 +90,9 @@ Record the first success, time to understand the next action, meaningful decisio
 
 After all assignments have returned, validate/deduplicate the records against the selected chart entries. Compare notes and identify supported common patterns, genre-specific exceptions, and tradeoffs. Use the number of games with relevant evidence as each pattern's denominator; unknown UI/onboarding records are not evidence against a pattern. Popularity is correlation, not proof of causation or a measurement of dopamine. Translate observations into practical design guidance; avoid copying distinctive art, names, layouts, or mechanics wholesale.
 
-Update canonical [roblox-gameplay](../roblox-gameplay/SKILL.md) with durable principles and a short sourced research reference. Preserve the user's scope and the game's identity. Do not silently turn research suggestions into new gameplay features. Save completed dated studies, ranks, per-game notes, sources, and limitations under the gameplay skill's `references/chart-studies/<date>.md` (or a structured YAML companion); keep raw working captures in ignored verification output. Keep only lasting, transferable themes in the main skill. Refresh or replace conclusions when later observations contradict them; do not accumulate a catalogue of trendy features.
+Update canonical `roblox-gameplay` with durable principles and a short sourced research reference. Preserve the user's scope and the game's identity. Do not silently turn research suggestions into new gameplay features. Save dated studies, ranks, per-game notes, sources, limitations, and raw captures in the invoking project's ignored verification output. Keep only lasting, transferable themes in the main skill. Refresh or replace conclusions when later observations contradict them; do not accumulate a catalogue of trendy features.
 
-Put supported UI-specific conventions in [roblox-react](../roblox-react/SKILL.md), with links back to the dated evidence. Keep gameplay/onboarding principles in `roblox-gameplay` and avoid duplicating the same rule across skills.
+Put supported UI-specific conventions in `roblox-react`, with evidence retained in the invoking project. Keep gameplay/onboarding principles in `roblox-gameplay` and avoid duplicating the same rule across skills.
 
 Report sample, mode, findings, material evidence limits, and exactly which guidance changed. Leave generated agent mirrors to Agent Sync.
 
@@ -106,10 +107,10 @@ study:
     requested_games: 25
     completed_games: 0
     chart:
-        url: "https://www.roblox.com/charts?device=computer&country=us"
+        url: "https://www.roblox.com/charts"
         category: null
-        device: computer
-        country: us
+        device: "selected device"
+        country: "selected region"
     assignments:
         - researcher: "researcher identifier"
           game_ids: []
