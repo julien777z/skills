@@ -99,6 +99,7 @@ An agent reaches for these on its own whenever the work calls for them.
 | [`agent-browser`](.agents/skills/workspace/agent-browser/SKILL.md) | Browser automation CLI for AI agents. Use when the user needs to interact with websites, including navigating pages, filling forms, clicking buttons, taking screenshots, extracting data, testing web apps, or automating any browser task. |
 | [`agent-lock`](.agents/skills/workspace/agent-lock/SKILL.md) | Coordinate exclusive use of a shared resource between agents using an exact string key. |
 | [`async-python-patterns`](.agents/skills/python/async-python-patterns/SKILL.md) | Master Python asyncio, concurrent programming, and async/await patterns for high-performance applications. |
+| [`awesome-design`](.agents/skills/web/awesome-design/SKILL.md) | Curated collection of DESIGN.md files from real websites. |
 | [`banned-terminology`](.agents/skills/review/banned-terminology/SKILL.md) | Owns the banned-terms list in resources/banned_words.json and enforces it. |
 | [`build-types`](.agents/skills/web/build-types/SKILL.md) | Regenerate generated API types from an OpenAPI document, using a local API checkout when it is present and the deployed API otherwise. |
 | [`clerk-nextjs-patterns`](.agents/skills/web/clerk-nextjs-patterns/SKILL.md) | Advanced Next.js patterns - middleware, Server Actions, caching with Clerk. |
@@ -116,6 +117,7 @@ An agent reaches for these on its own whenever the work calls for them.
 | [`generic-push`](.agents/skills/git/generic-push/SKILL.md) | Keep repository publishing metadata generic and isolated. |
 | [`get-doctors`](.agents/skills/doctors/get-doctors/SKILL.md) | List every doctor skill the skill listing declares with a one-line summary of what it audits. |
 | [`i-have-adhd`](.agents/skills/execution/i-have-adhd/SKILL.md) | Shape output for a reader with ADHD: lead with the next action, number multi-step work, restate state across turns, suppress tangents, give specific time estimates, make wins visible. |
+| [`image-to-code`](.agents/skills/web/image-to-code/SKILL.md) | Elite website image-to-code skill for Codex. |
 | [`linear`](.agents/skills/workspace/linear/SKILL.md) | Create, find, and update Linear issues through the available Linear integration with dynamic team, workflow, project, and label discovery. |
 | [`list-prs`](.agents/skills/workspace/list-prs/SKILL.md) | List the pull request URLs for every currently open pull request changed during the entire current session, including drafts. |
 | [`list-repos`](.agents/skills/workspace/list-repos/SKILL.md) | List the repository web URLs for every repository changed during the entire current session. |
