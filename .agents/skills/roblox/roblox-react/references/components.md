@@ -1,6 +1,6 @@
 # Framework and component practices
 
-Use the template's React Luau and ReactRoblox UI architecture for new games, with one owner for each UI tree. Keep server gameplay independent from the UI framework and preserve an existing game's UI contract during unrelated work.
+Use React Luau and ReactRoblox for UI in new games, with one owner for each UI tree. Keep server gameplay independent from the UI framework and preserve an existing game's UI contract during unrelated work.
 
 Prefer maintained [Roblox React Lua](https://github.com/Roblox/react-lua) packages for new React projects; inspect the active package manifest before changing an existing dependency. Distinguish official packages from community forks and do not migrate frameworks during unrelated work. Install compatible pinned React/renderer versions through Wally and commit its lockfile. Generate type forwarding with the pinned [wally-package-types](https://github.com/JohnnyMorganz/wally-package-types) recipe and current Rojo sourcemap rather than manually editing generated aliases.
 
