@@ -36,6 +36,15 @@ alwaysApply: true
   shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
   the exact resolved commit for reproducibility and provenance.
 
+## Credential Names
+
+- Name persistent API keys and other credentials for their durable role or consumer, such as
+  `CI tests` or `Backend API`. Avoid a single test case, experiment, or creation date in the name.
+- Reuse or rotate the credential that owns that role. Do not create a second key merely to validate
+  a new key or retry setup; first check whether the intended key already exists.
+- Express expiry through the provider's expiry setting or an explicit rotation record, not through
+  the credential's name.
+
 ## User-Triggered Action Skills
 
 - Run a user-triggered action skill only after the user directly invokes it in the current request.
