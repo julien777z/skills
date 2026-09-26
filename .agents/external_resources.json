@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "resources": [
+    {
+      "name": "awesome-design-md",
+      "repo": "VoltAgent/awesome-design-md",
+      "source_path": "design-md",
+      "update_on_sync": true
+    }
+  ]
+}
