@@ -42,23 +42,34 @@ def parse_front_matter(path: Path) -> dict[str, str]:
         raise ValueError(f"{path} has no closing front-matter fence") from error
 
     front_matter: dict[str, str] = {}
+    current_key: str | None = None
 
     for line in lines[1:closing]:
-        # An indented line belongs to the mapping above it, which the listing never reads.
+        if not line.strip():
+            continue
+
+        # Fold a multiline description while ignoring nested metadata.
         if line[:1].isspace():
+            if current_key == "description":
+                front_matter[current_key] += f" {line.strip()}"
             continue
 
         match = FRONT_MATTER_KEY_PATTERN.match(line)
 
         if match is None:
-            raise ValueError(f"{path} front matter is not one key per line: {line!r}")
+            raise ValueError(f"{path} has an invalid top-level front-matter line: {line!r}")
 
-        value = match.group(2).strip()
+        current_key = match.group(1)
+        front_matter[current_key] = match.group(2).strip()
 
+    for key, value in front_matter.items():
         if len(value) >= 2 and value[0] == value[-1] and value[0] in {'"', "'"}:
+            quote = value[0]
             value = value[1:-1]
+            if quote == "'":
+                value = value.replace("''", "'")
 
-        front_matter[match.group(1)] = value
+        front_matter[key] = value
 
     return front_matter
 
