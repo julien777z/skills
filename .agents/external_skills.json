@@ -16,6 +16,13 @@
       "update_on_sync": true
     },
     {
+      "name": "awesome-design",
+      "repo": "EagleFandel/awesome-design",
+      "skill": "awesome-design",
+      "category": "web",
+      "update_on_sync": true
+    },
+    {
       "name": "clerk-nextjs-patterns",
       "repo": "clerk/skills",
       "skill": "clerk-nextjs-patterns",
@@ -42,6 +49,13 @@
       "skill": "i-have-adhd",
       "category": "execution",
       "update_on_sync": false
+    },
+    {
+      "name": "image-to-code",
+      "repo": "Leonxlnx/taste-skill",
+      "skill": "image-to-code",
+      "category": "web",
+      "update_on_sync": true
     },
     {
       "name": "no-ai-slop",
