@@ -110,6 +110,8 @@ type Status = (typeof Status)[keyof typeof Status];
   endpoint, an identity, a feature switch — belongs in typed configuration even with a safe default;
   capitalization does not make it invariant. Implementation tuning — a timeout, a retry count, a
   debounce or poll interval — stays a typed constant beside its code.
+- Read environment variables only in the owning typed configuration module. Import validated values
+  elsewhere, and keep server secrets out of modules that browser code can import.
 - Extract a literal only when it is reused or carries domain meaning. Keep trivial single-use
   literals inline.
 - Do not prefix a name with the area it already lives in. The module path says it; add a qualifier
