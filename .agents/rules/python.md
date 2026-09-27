@@ -23,7 +23,8 @@ paths:
 - Prefer real SDK and model types over `cast(...)`; reserve a narrowly scoped cast for information the type system genuinely cannot express.
 - Do not "fix" typing by expanding simple transformations into repetitive key-by-key copy blocks (for example, manually assigning each dict key only to satisfy pyright). Fix the source type hints (or add a precise cast/narrowing at the boundary) so the transformation can stay concise and readable.
 - For persistence/update payloads (for example, `upsert(...)`), define a dedicated `TypedDict` and construct it inline at the call site. Do not add free-floating `build_*`/`make_*` helper functions whose only role is constructing a payload from another shape; the same no-free-floating-builders rule that applies to `BaseModel` applies here.
-- Build every `TypedDict` value by **calling** its constructor with keyword arguments (`MyTypedDict(field=value, ...)`), never by annotating a plain dict literal (`name: MyTypedDict = {...}`) or passing a bare dict where the parameter is typed. That covers module-level constants and shared blobs, nested rows inside lists (for example `CompoundVariantRule(match={...}, class_name="...")`), and an SDK's typed request parameters and options at every level of nesting (`sdk.params.WidgetCreateParams(owner=sdk.params.WidgetCreateParamsOwner(...))`, `sdk.RequestOptions(idempotency_key=key)`). Tests assert with the same constructors. This keeps the type as the construction site, not only a static annotation on a dict literal.
+- Build every `TypedDict` value by **calling** its constructor with keyword arguments (`WidgetUpdate(field=value, ...)`), never by annotating a plain dict literal (`name: WidgetUpdate = {...}`) or passing a bare dict where the parameter is typed. That covers module-level constants and shared blobs, nested rows inside lists (for example `CompoundVariantRule(match={...}, class_name="...")`), and an SDK's typed request parameters and options at every level of nesting (`sdk.params.WidgetCreateParams(owner=sdk.params.WidgetCreateParamsOwner(...))`, `sdk.RequestOptions(idempotency_key=key)`). Tests assert with the same constructors. This keeps the type as the construction site, not only a static annotation on a dict literal.
+- **No name you write or reference carries a `TypedDict` suffix.** Name a TypedDict for the shape it holds (`WidgetUpdate`, never `WidgetUpdateTypedDict`), and where an SDK ships a model class beside a `…TypedDict` twin of the same request, pass the model class.
 
 - Group parameters that always travel together and describe one concept into a single typed object, then pass that object rather than threading its fields through every signature and call site.
 
@@ -177,14 +178,8 @@ from myapp.http import fetch
 from myapp.http_transport import fetch
 ```
 
-- Prefer real fixes (annotations, stubs, deps). If a Pylint/static warning is a false positive or unfixable in our code (for example lazy third-party exports, missing stubs), use a **narrow** suppression: `# pylint: disable-next=<message-id>` on the smallest scope—never file-wide disables or import workarounds whose only purpose is to satisfy the checker.
-
-```python
-# pylint: disable-next=not-callable
-config = third_party_package.Config(
-    app_name="example",
-)
-```
+- **Never add an inline suppression**: no `# pylint: disable`, `# pyright: ignore`, `# type: ignore`, or `# noqa`. Fix what the checker reports — a precise annotation, a correctly typed decorator (a `ParamSpec` rather than a `Callable` that erases parameter names), stubs for an untyped dependency, the right import. A per-line disable reads the same whether its author weighed the finding or never looked, and once copied onto every sibling it hides the cause behind a pattern nobody questions.
+- A rule that misreads a construct the codebase deliberately relies on everywhere — coroutines implementing a generated synchronous base, say — is turned off once in the tool's configuration with its reason beside it. Code a generator emits keeps whatever directives its generator writes.
 
 ## Configuration
 

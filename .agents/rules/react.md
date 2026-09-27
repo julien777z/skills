@@ -207,9 +207,9 @@ function SearchInput() {
 }
 ```
 
-- **Server Components**: Fetch directly in the component
-- **Client Components**: Reuse the repository's established client-side data layer and shared fetcher.
-- **Mutations**: Reuse the mutation mechanism owned by that data layer.
+- **Render on the server.** A page, and every section of it that shows data, is an async Server Component that loads its data and renders it. A Client Component exists only for interaction the browser has to own — input, a dialog, drag-and-drop, a third-party widget — takes its data as props, and never fetches it.
+- **Writes are Server Actions** that authenticate their caller and re-render the page when they finish. A client-side data layer for reads — SWR, React Query, a fetching hook, a fallback cache seeded from the server — is the shape this replaces, not a companion to it, and a status that has to update live refreshes the server render on an interval instead of fetching on the client.
+- **A page never checks for a kind of user it is not linked to.** Navigation decides who reaches a page; a guard or empty state inside it for somebody it was never offered to is dead code.
 - **Show the message the API sent.** Never key a table of your own copy off status codes for a first-party API: that is a second copy of its error vocabulary that nothing keeps in step, and it overrides the message the service chose. Wrong copy is fixed at the service that produced it.
 - Keep one status-independent fallback for a response that carries no message at all, and reject a body that is a document rather than a message so a proxy's error page cannot reach the user as one.
 
