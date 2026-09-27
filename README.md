@@ -43,8 +43,9 @@ links at an installed path are reported before any links change.
 | `.agents/skills/<category>/<name>/` | One skill: `SKILL.md`, with `references/`, `scripts/`, `assets/`, or `resources/` beside it. The categories sort the skills and reach no provider — each one still installs as `<name>`, so a name is unique across the whole tree. |
 | `.agents/agents/` | Subagent definitions; the tier each runs on is stated by the skill that launches it. |
 | `.agents/rules/` | Reconciled reusable rules; technology-specific rules retain their file scopes. |
+| `.agents/project.md` | Repository-specific guidance included in generated `AGENTS.md`. |
 | `.agents/external_skills.json` | Third-party skills the workflow installs from [skills.sh](https://skills.sh/). |
-| `.agents/.auto_generated/` | Provider mirrors the workflow generates on `main`; never edited by hand. |
+| `.agents/.auto_generated/` | Provider mirrors the workflow generates on qualifying pushes; never edited by hand. |
 | `AGENTS.md` | Repository instructions the workflow generates at the root; never edited by hand. |
 | `bootstrap/install.sh` | Links skills, agents, and rules into user-level roots. |
 | `bootstrap/cloud-install.sh` | Selects the attached or cached checkout and installs it for Claude cloud's user. |
