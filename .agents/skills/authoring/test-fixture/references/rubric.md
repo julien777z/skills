@@ -243,6 +243,13 @@ rows, or payload fragments.
 Extend the shared factory owner when it already builds the shape. A single-suite consumer does
 not create an exception to shared ownership; scenario-specific values belong in suite fixtures.
 
+Name every test helper so a reader who has never opened it knows what it does and what it hands
+back. A helper named for its mechanism — the HTTP verb it sends (`post_order`, `get_invoice`), the
+transport (`send_`, `fetch_`, `call_`), or the persistence step (`stored_`, `persisted_`) — says
+how and leaves what to be guessed; name the domain act and, where siblings differ only in what they
+return, the difference (`request_order_creation` returns the response a failure test reads,
+`create_order` the parsed result).
+
 Prefer a ready, function-scoped fixture named for a domain role or state — the concrete thing it
 provides or lacks, never a coined adjective — when each test needs one standard
 instance, and prefer one that returns a real ORM instance for ORM-heavy tests. Add a callable

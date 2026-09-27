@@ -213,7 +213,11 @@ module's name (`TestContractors`). A helper that builds a model in a suite's `ut
 package is named `create_<shape>` (list every module-level `def` in those packages whose return type
 is a model, with its name; report every row): a bare noun (`flag`), a mechanics prefix
 (`stored_driver_license`), or a coinage (`flag_page`) is renamed `create_<shape>`, and the same shape
-built under two names in two files or two suites is one name across all of them. Read names across
+built under two names in two files or two suites is one name across all of them. Every other
+module-level `def` in those packages is named for the domain act it performs, per `test-fixture`
+(list each with its first word; report every row whose first word is an HTTP verb, a transport
+verb, or a persistence step): `post_order` is renamed for what it asks the application to do.
+Read names across
 sibling files and sibling suites before settling one: a suite's vocabulary is its source's, and the
 word the sibling suite already uses for the same shape wins over a new one.
 
