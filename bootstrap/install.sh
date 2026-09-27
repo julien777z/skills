@@ -8,6 +8,7 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CANONICAL_SKILLS="$REPO_ROOT/.agents/skills"
 CANONICAL_AGENTS="$REPO_ROOT/.agents/agents"
 CANONICAL_RULES="$REPO_ROOT/.agents/rules"
+CANONICAL_GLOBAL="$REPO_ROOT/.agents/global.md"
 GENERATED_ROOT="$REPO_ROOT/.agents/.auto_generated"
 PROVIDERS=(claude codex cursor)
 found_root=0
@@ -63,8 +64,13 @@ preflight_provider() {
       check_link "$rule" "$root/rules/$name" || failed=1
     done
   fi
+  if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -f "$CANONICAL_GLOBAL" ]; then
+    name="global.md"
+    if [ "$provider" = "cursor" ]; then name="global.mdc"; fi
+    check_link "$CANONICAL_GLOBAL" "$root/rules/$name" || failed=1
+  fi
   if [ "$provider" = "codex" ] && { [ -L "$root/AGENTS.md" ] || [ -s "$root/AGENTS.md" ]; }; then
-    check_link "$CANONICAL_RULES/global.md" "$root/AGENTS.md" || failed=1
+    check_link "$CANONICAL_GLOBAL" "$root/AGENTS.md" || failed=1
   fi
   [ "$failed" -eq 0 ]
 }
@@ -143,8 +149,14 @@ install_provider() {
     done
     prune_links "$root/rules"
   fi
+  if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -f "$CANONICAL_GLOBAL" ]; then
+    name="global.md"
+    if [ "$provider" = "cursor" ]; then name="global.mdc"; fi
+    install_link "$CANONICAL_GLOBAL" "$root/rules/$name"
+    rules=$((rules + 1))
+  fi
   if [ "$provider" = "codex" ]; then
-    install_link "$CANONICAL_RULES/global.md" "$root/AGENTS.md"
+    install_link "$CANONICAL_GLOBAL" "$root/AGENTS.md"
   fi
 
   echo "$root: $skills skills, $agents agents, $rules rules linked"

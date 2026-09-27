@@ -32,7 +32,7 @@ the previously installed skills remain available then.
 
 The local installer links skills, reusable rules, and applicable agent definitions into existing
 Claude, Codex, and Cursor user roots. Codex's global `AGENTS.md` links to the same canonical
-`global.md` rule used by the other harnesses. Repository-specific rules stay in each repository's
+`.agents/global.md` used by the other harnesses. Repository-specific rules stay in each repository's
 `project.md`. Re-running refreshes owned links and prunes obsolete ones; real content or foreign
 links at an installed path are reported before any links change.
 
