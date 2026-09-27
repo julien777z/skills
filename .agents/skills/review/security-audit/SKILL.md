@@ -73,9 +73,10 @@ Use the platform's equivalent capabilities while preserving the specified roles,
 
 ## The Audit Writes Nothing
 
-The audit's output is its report in chat and, where the session exposes Linear, an issue per approved
-finding. It produces no report file, no findings file, no plan file, and no directory inside the
-target repository. Findings live in the session until the user decides on them, and a decision is
+The audit's output is its report and, where the session exposes Linear, an issue per approved
+finding. The report is one findings file in the session's scratch directory, linked from the chat
+summary; nothing is written inside the target repository — no report, findings, or plan file, and no
+directory. Findings live in the session until the user decides on them, and a decision is
 recorded where the work will actually be picked up — a Linear issue, a `defer-scope` record, or the
 fix itself.
 

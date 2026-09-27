@@ -38,10 +38,11 @@ alwaysApply: true
 
 ## User-Facing Output
 
-- Invoke `i-have-adhd` before the session's first response, whether or not the user invoked it or
-  the running skill names it. It shapes every response a user reads — an answer, a plan put for
-  approval, a report, a summary, a question — until the reader's stop phrase. Detail a skill requires
-  beyond that shape — every finding, every row, a gated plan — goes in a linked file.
+- Invoke `i-have-adhd` before the first response a user reads in the session, whether or not the
+  user invoked it or the running skill names it. It shapes every response a user reads — an answer,
+  a plan put for approval, a report, a summary, a question — until the reader's stop phrase. Detail
+  a skill requires beyond that shape — every finding, every row, a gated plan — goes in a linked
+  file.
 
 ## User-Triggered Action Skills
 
