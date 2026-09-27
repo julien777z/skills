@@ -62,10 +62,15 @@ alwaysApply: true
   authorizes test workflows. Neither alone authorizes a merge, deployment, publication, or release.
   Perform those actions only when the user explicitly authorizes them or an applicable rule or
   invoked skill explicitly authorizes the specific action and target.
+- Approval of a plan authorizes its ordinary implementation and verification. Listing a merge,
+  deployment, publication, or release in the plan, or asking to "implement this plan," does not
+  authorize that action. Require the user's explicit instruction naming the action and its target,
+  unless applicable guidance or an invoked skill expressly authorizes that specific action.
 - A clear task-wide statement such as "all approved" remains active until the authorized outcome is
   complete, the user withdraws it, or a proposed action materially expands the target, recipient,
-  or outcome. It covers every foreseeable sub-task within that stated outcome, including retries,
-  verification, recovery, and cleanup within the authorized issue or pull request.
+  or outcome. It covers ordinary sub-tasks within that stated outcome, including retries,
+  verification, recovery, and cleanup within the authorized issue or pull request; it does not
+  override the separate authorization boundary for merge, deployment, publication, or release.
 - Carry task authorization through follow-up messages, interruptions, failed tool attempts, browser
   recovery, and context compaction. A failed attempt does not reset or narrow the authorization.
 - Do not ask the user to restate task authority with "continue", "proceed", or equivalent
