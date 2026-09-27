@@ -325,8 +325,8 @@ Apply the baseline prompt above, plus these explicit review rules:
      typed settings model; a provider API root fixed by an external protocol, and implementation
      tuning such as a timeout, retry count, backoff, or poll interval, stay typed module constants.
      A settings field holding tuning is the same finding as a constant holding configuration:
-     capitalization and `Final` do not make configuration invariant, and a safe default does not
-     make tuning configuration.
+     capitalization, `Final`, and a safe default do not make configuration invariant, and that a
+     deployment could override it does not make tuning configuration.
    - Every data-holding class lives in a model-owned file or package. Only a Pydantic `BaseSettings`
      class is configuration; registries, manifests, policies, provider payloads, and response
      schemas remain models.
