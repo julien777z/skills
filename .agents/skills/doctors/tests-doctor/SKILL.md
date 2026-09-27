@@ -500,7 +500,7 @@ before delivery and verify that none enters the delivered diff.
 
 ## Declared Outcome: The Slowest Tests Are Posted
 
-**This run posts one comment on its pull request ranking the ten slowest tests and the ten slowest
+**This run posts one comment on each of its pull requests ranking the ten slowest tests and the ten slowest
 fixtures, with each suite's wall time against the budget.** It is a declared outcome of the skill, so
 invoking the skill authorizes that comment under the comment rules, and it is posted whether the run
 brought every suite under budget or not.
@@ -511,9 +511,16 @@ the next session — so without this the run measures a breach on day one, deliv
 a later reader can act on. Ranked in one place, the next run has its baseline and anyone deciding
 what to cut can see what the time is being spent on.
 
-Post it once, updating the same comment when a later push changes the numbers rather than adding a
-second. Give it the measured durations and nothing else: no narration of what the run did about them,
+Post it once per pull request, updating the same comment when a later push changes the numbers
+rather than adding a second; each batch's pull request carries the ranking measured at its merge
+head, so the last one holds the final numbers against the baseline. Give it the measured durations and nothing else: no narration of what the run did about them,
 which the body and the diff already carry.
+
+## Delivery
+
+Tests-doctor delivers in merged batches under `doctor-protocol`'s **Deliver**. A test remediation
+touches files across every suite, and one pull request held open for the whole plan conflicts with
+every change landing beside it.
 
 ## Report Additions
 
