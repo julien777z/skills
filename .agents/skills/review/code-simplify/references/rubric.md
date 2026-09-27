@@ -323,16 +323,17 @@ Apply the baseline prompt above, plus these explicit review rules:
      there, by whether its owner is likely to change it on its own — per deployment, environment, or
      release, or while running the system — without changing the code that reads it. Those values
      belong on the owning typed settings model — credentials, proposal substitutions, repository
-     identities, workflow references, and deployment addresses are the usual cases; a value the
-     reading code's correctness fixes — a provider API root fixed by an external protocol, a
-     pattern, a format or limit the code is written around — stays a typed module constant. The kind
-     of value never decides it: a timeout, retry count, or interval is classified by the same test
-     as a credential or an address. Judge from how the value is used — whether it differs between
-     environments, whether it is tuned while the system runs, whether its owner has said it moves —
-     never from its type or its name. A constant holding configuration and a settings field holding
-     a code-fixed value are both findings, and the remedy moves each to the other side;
-     capitalization, `Final`, and a safe default do not make a value invariant, and a sibling
-     field's placement is evidence of nothing.
+     identities, workflow references, and deployment addresses are the usual cases. Every other
+     value — one nobody expects to change except together with the code that reads it, including
+     every value that code's correctness fixes, such as a provider API root fixed by an external
+     protocol, a pattern, or a format or limit the code is written around — stays a typed module
+     constant. The kind of value never decides it: a timeout, retry count, or interval is classified
+     by the same test as a credential or an address. Judge from how the value is used — whether it
+     differs between environments, whether it is tuned while the system runs, whether its owner has
+     said it moves — never from its type or its name. A constant holding a value its owner is likely
+     to change on its own and a settings field holding a value nobody expects to move are both
+     findings, and the remedy moves each to the other side; capitalization, `Final`, and a safe
+     default do not make a value invariant, and a sibling field's placement is evidence of nothing.
    - Every data-holding class lives in a model-owned file or package. Only a Pydantic `BaseSettings`
      class is configuration; registries, manifests, policies, provider payloads, and response
      schemas remain models.

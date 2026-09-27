@@ -109,8 +109,9 @@ type Status = (typeof Status)[keyof typeof Status];
 - A value its owner is likely to change on its own, without changing the code that reads it — an
   endpoint, an identity, a feature switch, a timeout or poll interval the owner expects to revisit —
   belongs in typed configuration even with a safe default; capitalization does not make it
-  invariant. A value the reading code's correctness fixes stays a typed constant beside that code.
-  What kind of value it is never decides which.
+  invariant. Every other value — one nobody expects to change except together with the code that
+  reads it, including every value that code's correctness fixes — stays a typed constant beside
+  that code. What kind of value it is never decides which.
 - Extract a literal only when it is reused or carries domain meaning. Keep trivial single-use
   literals inline.
 - Do not prefix a name with the area it already lives in. The module path says it; add a qualifier
