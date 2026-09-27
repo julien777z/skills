@@ -36,6 +36,13 @@ alwaysApply: true
   shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
   the exact resolved commit for reproducibility and provenance.
 
+## User-Facing Output
+
+- Invoke `i-have-adhd` before the first response a user reads in the session, whether or not the
+  user invoked it or the running skill names it. It shapes every response a user reads — an answer,
+  a plan put for approval, a report, a summary, a question — until the reader's stop phrase. Per-item
+  detail past five items — findings, rows — and any gated plan a skill requires go in a linked file.
+
 ## User-Triggered Action Skills
 
 - Run a user-triggered action skill only after the user directly invokes it in the current request.
@@ -153,6 +160,10 @@ alwaysApply: true
   user was still reading. An approved plan says it was approved.
 - A plan that exits unapproved is still the live plan. Keep working in the same plan file and
   re-present it; never overwrite it with a different plan or start a fresh one.
+- Send what a question asks about — a plan, an example response, a diff — as the final message of
+  a turn, with the question in that message as plain text. The question tool shows only the question
+  and its option labels, and text written in the same turn as a tool call can reach the user only as
+  a collapsed summary, so content placed in a preview, a description, or before a tool call is lost.
 - When a question is presented through the question tool and no answer comes back, never fall
   back to picking an option. Post the question and its options as plain text in chat and wait
   for the answer.
