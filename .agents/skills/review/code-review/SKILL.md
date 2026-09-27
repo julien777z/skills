@@ -174,6 +174,12 @@ The **Simplification** lens does not carry its own rubric: dispatch it to the `c
 
 When the target introduces a new abstraction, helper, client, lifecycle, model, or utility, require the Simplification receipt to list its repository-wide reuse searches and the canonical candidates inspected, each related implementation's disposition, and verification that consolidation or replacement actually reached every affected consumer. An inventory alone is not a clean receipt. Apply the same requirement whenever a target adds or changes a search, filter, query, or lookup path, even when it adds no named abstraction: search the owning domain and every existing surface for the same subject, then compare the complete behavior and use the canonical path. Reject and rerun an otherwise clean receipt that omits this evidence.
 
+When the target introduces a public concept, require the Simplification receipt to compare its
+interface and owner with existing public concepts serving the same purpose, and to say whether it
+belongs as a variant under an existing concept or needs an independent contract. A clean receipt
+without that assessment is incomplete; reject and rerun it even when the new implementation itself
+has no duplicate code.
+
 Duplicated lenses run independently and must not see each other's output; redundancy is the point.
 
 Require each Rules receipt to include its complete rule ledger. A clean Rules receipt without the applicable rules, checked files, and disposition for each rule is incomplete and must be rerun.

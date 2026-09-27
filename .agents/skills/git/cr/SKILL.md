@@ -133,6 +133,10 @@ Always fan this CR simplification pass out to multiple read-only subagents, even
 coherent app, service, package, or cross-cutting slices that collectively cover the entire scope;
 never divide it by arbitrary file counts. Give every subagent the complete `code-simplify` rubric
 for its slice and require findings anchored to paths and lines with the proposed restructuring.
+When the pull request adds public concepts across slices, assign one reviewer the cross-cutting
+interfaces and their existing peers as a coherent slice. Require its receipt to assess whether the
+new concepts are variants of existing ones; do not accept a clean simplification gate until that
+assessment and the resulting consumer boundaries are verified.
 
 Subagents do not edit. The parent reconciles overlapping findings, validates each one, and fixes
 every survivor under **Confirmed Findings**. Reproducing a defect on the base branch establishes only

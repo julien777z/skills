@@ -2,6 +2,208 @@
   "version": 1,
   "resources": [
     {
+      "kind": "skill",
+      "name": "agent-browser",
+      "repo": "vercel-labs/agent-browser",
+      "skill": "agent-browser",
+      "category": "workspace",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "async-python-patterns",
+      "repo": "wshobson/agents",
+      "skill": "async-python-patterns",
+      "category": "python",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "clerk-nextjs-patterns",
+      "repo": "clerk/skills",
+      "skill": "clerk-nextjs-patterns",
+      "category": "web",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "design-taste-frontend",
+      "repo": "Leonxlnx/taste-skill",
+      "skill": "design-taste-frontend",
+      "category": "web",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "frontend-design",
+      "repo": "anthropics/skills",
+      "skill": "frontend-design",
+      "category": "web",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "i-have-adhd",
+      "repo": "ayghri/i-have-adhd",
+      "skill": "i-have-adhd",
+      "category": "execution",
+      "update_on_sync": false
+    },
+    {
+      "kind": "skill",
+      "name": "image-to-code",
+      "repo": "Leonxlnx/taste-skill",
+      "skill": "image-to-code",
+      "category": "web",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "no-ai-slop",
+      "skill_name_override": "no-text-ai-slop",
+      "repo": "petergyang/no-ai-slop",
+      "skill": "no-ai-slop",
+      "category": "review",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "prisma-client-api",
+      "repo": "prisma/skills",
+      "skill": "prisma-client-api",
+      "category": "web",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "python-anti-patterns",
+      "repo": "wshobson/agents",
+      "skill": "python-anti-patterns",
+      "category": "python",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "python-background-jobs",
+      "repo": "wshobson/agents",
+      "skill": "python-background-jobs",
+      "category": "python",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "python-configuration",
+      "repo": "wshobson/agents",
+      "skill": "python-configuration",
+      "category": "python",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "python-design-patterns",
+      "repo": "wshobson/agents",
+      "skill": "python-design-patterns",
+      "category": "python",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "python-error-handling",
+      "repo": "wshobson/agents",
+      "skill": "python-error-handling",
+      "category": "python",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "python-performance-optimization",
+      "repo": "wshobson/agents",
+      "skill": "python-performance-optimization",
+      "category": "python",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "python-project-structure",
+      "repo": "wshobson/agents",
+      "skill": "python-project-structure",
+      "category": "python",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "python-resilience",
+      "repo": "wshobson/agents",
+      "skill": "python-resilience",
+      "category": "python",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "python-resource-management",
+      "repo": "wshobson/agents",
+      "skill": "python-resource-management",
+      "category": "python",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "python-testing-patterns",
+      "repo": "wshobson/agents",
+      "skill": "python-testing-patterns",
+      "category": "python",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "python-type-safety",
+      "repo": "wshobson/agents",
+      "skill": "python-type-safety",
+      "category": "python",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "tailwind-design-system",
+      "repo": "wshobson/agents",
+      "skill": "tailwind-design-system",
+      "category": "web",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "vercel-composition-patterns",
+      "repo": "vercel-labs/agent-skills",
+      "skill": "vercel-composition-patterns",
+      "category": "web",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "vercel-react-best-practices",
+      "repo": "vercel-labs/agent-skills",
+      "skill": "vercel-react-best-practices",
+      "category": "web",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "vercel-react-view-transitions",
+      "repo": "vercel-labs/agent-skills",
+      "skill": "vercel-react-view-transitions",
+      "category": "web",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "web-design-guidelines",
+      "repo": "vercel-labs/agent-skills",
+      "skill": "web-design-guidelines",
+      "category": "web",
+      "update_on_sync": true
+    },
+    {
+      "kind": "directory",
       "name": "awesome-design-md",
       "repo": "VoltAgent/awesome-design-md",
       "source_path": "design-md",

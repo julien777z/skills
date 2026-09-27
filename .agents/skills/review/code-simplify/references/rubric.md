@@ -45,6 +45,16 @@ the one the diff is establishing.
 
 For every new abstraction, helper, client, lifecycle, model, or utility, also search the whole repository by concept, dependency type, and key operations before concluding it is canonical. A sibling-only read cannot find an established implementation owned by another package.
 
+Inventory the **public concepts** the change adds or renames before judging their implementations:
+configuration files and schemas, commands and action inputs, packages and modules, documented
+resource types, and the names a consumer must learn. Compare each with the existing public concepts
+that serve the same purpose. Trace their interfaces, destinations, lifecycle, and owner; different
+file names or code paths do not prove different concepts. When one new concept is a variant of an
+existing one, put the variant under the existing public interface and owner, with an explicit type
+or option where needed. Do not leave parallel registries, commands, or packages merely because each
+implementation is internally tidy. Keep separate public concepts only when their consumers or
+contracts require a real independent boundary, and name that boundary in the receipt.
+
 When a change introduces another independent consumer of a cross-cutting mechanism, compare it with
 every existing consumer by responsibility, dependencies, inputs, outputs, and side effects — names
 and file paths are not the search boundary. A second implementation is presumptive evidence that the

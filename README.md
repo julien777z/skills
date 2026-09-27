@@ -43,8 +43,7 @@ links at an installed path are reported before any links change.
 | `.agents/skills/<category>/<name>/` | One skill: `SKILL.md`, with `references/`, `scripts/`, `assets/`, or `resources/` beside it. The categories sort the skills and reach no provider — each one still installs as `<name>`, so a name is unique across the whole tree. |
 | `.agents/agents/` | Subagent definitions; the tier each runs on is stated by the skill that launches it. |
 | `.agents/rules/` | Reconciled reusable rules; technology-specific rules retain their file scopes. |
-| `.agents/external_skills.json` | Third-party skills the workflow installs from [skills.sh](https://skills.sh/). |
-| `.agents/external_resources.json` | Third-party reference directories the workflow vendors without treating them as skills. |
+| `.agents/external_resources.json` | Third-party skills and reference directories vendored by the workflow. |
 | `.agents/resources/<name>/` | Vendored reference files, linked into each supported user-level root under `resources/<name>/`. |
 | `.agents/.auto_generated/` | Provider mirrors the workflow generates on `main`; never edited by hand. |
 | `AGENTS.md` | Repository instructions the workflow generates at the root; never edited by hand. |

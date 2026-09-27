@@ -94,6 +94,11 @@ and reported like every other, and answering the questions is not the review.
 
 Report the repository-wide reuse searches performed for newly introduced abstractions, including the concepts searched and the canonical candidates inspected. A clean result without this evidence is incomplete whenever the diff adds one of those abstractions.
 
+For every new public concept, list the existing peer interfaces and owners inspected, state whether
+the new behavior is a variant under one of them or needs an independent contract, and verify the
+resulting registry, command, package, and consumer boundaries. A clean report without that comparison
+is incomplete when the change adds a public concept.
+
 For every new independent consumer or boundary, report the analogous implementations inspected, the
 candidate shared owners, the common mechanism and consumer-specific behavior identified, and the
 reason each parallel implementation was consolidated or retained.
