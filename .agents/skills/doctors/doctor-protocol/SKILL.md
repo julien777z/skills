@@ -16,6 +16,7 @@ run; each doctor owns only its domain.
   before it lands.
 - `defer-scope` — record work consciously left undone; it runs the gate's admission question itself.
 - `pre-production` — apply the encountered-issue and target-contract policy while implementing.
+- `i-have-adhd` — the shape of the final report.
 
 Read the applicable dependencies before beginning. Apply their approval, compatibility, migration,
 and encountered-issue policies within the invoking doctor's declared change boundary; they do not
@@ -126,9 +127,10 @@ sequencing it late and describing it clearly in the pull request, not for a seco
 user asking to hold work apart, and the boundary the global rules draw around agent configuration,
 put an entry anywhere else.
 
-Then invoke `plan-change`. The audit and its ledger are read-only; neither authorizes an edit. A
-user decision a disposition produces — a test to cut, a flag whose removal changes behavior — is
-presented as options with each consequence and a recommendation.
+Then write the gated plan to a file and invoke `plan-change` to present it. The audit and its
+ledger are read-only; neither authorizes an edit. A user decision a disposition produces — a test to
+cut, a flag whose removal changes behavior — is presented as options with each consequence and a
+recommendation.
 
 ## Guard Recurrences
 
@@ -201,7 +203,7 @@ need more testing than one run.
 
 ## Report
 
-The final report names:
+The final report is written to a file and delivered through `i-have-adhd`. The file names:
 
 - the resolved scope and the inventory counts;
 - per-lens counts by disposition, including items that were already correct and needed no change;

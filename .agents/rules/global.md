@@ -36,6 +36,12 @@ alwaysApply: true
   shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
   the exact resolved commit for reproducibility and provenance.
 
+## User-Facing Output
+
+- Every response a user reads — an answer, a plan put for approval, a report, a summary, a
+  question — is shaped by `i-have-adhd`, whether or not the user invoked it or the running skill
+  names it. Load it when it is not already active.
+
 ## User-Triggered Action Skills
 
 - Run a user-triggered action skill only after the user directly invokes it in the current request.

@@ -40,6 +40,7 @@ outcome, because silence reads as the guidance having been fixed.
 - `code-simplify` — the pass over the guidance itself before it merges.
 - `acceptance-gate` — the diff question over the `.agents` change once it reads clean.
 - `test-skill` — the proof that a skill edit changes what a reader does.
+- `i-have-adhd` — the shape of the report below.
 
 ## Behavior
 
@@ -163,6 +164,10 @@ outcome, because silence reads as the guidance having been fixed.
    - Do not embed product-specific file paths or copy current application code into reusable skills; those go stale when files move or refactors land. Prefer generic placeholders (for example `services/<name>/...`), short pattern descriptions, or minimal invented examples that are not tied to live paths or current line-level code.
    - **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract, and where a skill genuinely needs one local fact, take it from the repository's `project.md` or a setting rather than baking it in. Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
    - **Generic ownership is determined by the skill's name and purpose.** Only a product-named skill that owns that product contract may carry its product facts. Language, platform, framework, and workflow skills — including Luau — must work across products; put their repository commands, identities, hosts, packages, and fixtures in project rules or a domain-specific skill.
+   - **A skill's user-facing output goes through `i-have-adhd`.** Any plan, report, summary, listing,
+     or question a skill returns to the user takes `i-have-adhd`'s shape, so an output template names
+     the facts a response carries and never a length. Where a skill states its output, declare
+     `i-have-adhd` under `## Dependencies`; check both in the package audit.
    - Keep topic-specific restrictions with their topic. Keep an existing `## Guardrails` section at the bottom, and create one only for cross-cutting safety or preservation constraints.
 
 6. Multi-target behavior.
@@ -305,7 +310,8 @@ outcome, because silence reads as the guidance having been fixed.
 
 ## Output
 
-Return this report, filled in; keep every heading and write `None` under one with nothing to list:
+Return this report through `i-have-adhd`, filled in; keep every heading and write `None` under one
+with nothing to list:
 
 ```markdown
 Files
