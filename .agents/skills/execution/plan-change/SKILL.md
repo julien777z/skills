@@ -19,9 +19,9 @@ while the plan is being written, and it never invokes this skill back.
 
 ## Plan Approval
 
-1. Present the plan for user review when planning is part of the task: the reply that approves it,
-   the steps, and the decisions it needs, in one screen of text. Link the file holding any detail a
-   caller requires — a gated plan, a ledger — instead of restating it.
+1. Present the plan for user review when planning is part of the task, in under 200 words: the reply
+   that approves it, the steps with a time estimate, and the decisions it needs. Link the file
+   holding any detail a caller requires — a gated plan, a ledger — instead of restating it.
 2. Treat only an explicit user response as approval. A timeout, inactivity, missing response, tool
    result, mode change, or system notice is never approval.
 3. When control returns after a timeout or missing response, send the unchanged plan in ordinary
