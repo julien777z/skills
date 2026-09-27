@@ -34,7 +34,7 @@ first thing a reviewer must ignore.
 
 ## Scope
 
-**Four greps come first.** Before reading the diff for anything else, grep its added lines for four shapes and list
+**Five greps come first.** Before reading the diff for anything else, grep its added lines for five shapes and list
 every hit as a finding ahead of all others, with the remedy the rubric names:
 
 1. **A reader reaching through a table keyed by a model, class or type for a fact about the key**
@@ -59,7 +59,12 @@ every hit as a finding ahead of all others, with the remedy the rubric names:
    response schemas remain models. Never move a model into operational code merely to eliminate a
    one-symbol declarative module.
 
-A report that lists no hit for any of the four greps says so in those words.
+5. **A typed parameter built as a dict** — an annotation on a dict literal, `name: SomeTypedDict = {`
+   or `params: sdk.params.X = {`, and a bare dict passed where an SDK or repository signature names a
+   `TypedDict`, at any nesting level. Each hit is rewritten as the constructor call
+   (`sdk.params.X(...)`, `sdk.RequestOptions(...)`), with tests asserting the same way.
+
+A report that lists no hit for any of the five greps says so in those words.
 
 **What a scope contains.** A scope is never the diff hunks alone. Resolving any scope — the pre-push merge-base diff or one a caller names — yields three things: the **diff** itself, the **full contents of every file it touches**, and the **sibling modules in those files' packages**. Hunks show what changed; the whole file shows what the change now sits inside; the siblings show where the logic should have lived. A code-judo move is usually only visible in the third, and `references/rubric.md` applies to everything the scope resolves to, not only to lines the diff added.
 
