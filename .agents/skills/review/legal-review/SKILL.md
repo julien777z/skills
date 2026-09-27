@@ -23,7 +23,6 @@ can approve.
 - `acceptance-gate` — every proposed fix is judged against the finding it closes and the
   product facts before it enters the plan.
 - `defer-scope` — anything consciously left undone after the plan is decided.
-- `i-have-adhd` — shape every response.
 
 ## Not Legal Advice
 

@@ -39,8 +39,9 @@ alwaysApply: true
 ## User-Facing Output
 
 - Every response a user reads — an answer, a plan put for approval, a report, a summary, a
-  question — is shaped by `i-have-adhd`, whether or not the user invoked it or the running skill
-  names it. Load it when it is not already active.
+  question — is shaped by `i-have-adhd` from the session's first response until the reader's stop
+  phrase, whether or not the user invoked it or the running skill names it. Detail a skill requires
+  beyond that shape — every finding, every row, a gated plan — goes in a linked file.
 
 ## User-Triggered Action Skills
 
