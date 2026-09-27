@@ -1,6 +1,6 @@
 # Lint, analysis, and test tooling
 
-Inspect the repository's pinned tool manifest, package lockfile, task runner, and CI workflows. Prefer the applicable [template conventions](https://github.com/Uglypoe/roblox-game-template/tree/main): Rokit for tools, Wally for packages, and just for commands. Discover actual recipes and pinned versions before running them; do not silently upgrade tools during a refactor.
+Use Rokit to pin tools, Wally to manage packages, Rojo to map source to places, Blink to generate networking, and `just` to own commands. Provide `just fmt`, `just lint`, `just analyze`, and `just test` recipes, and run the applicable checks for source changes. Inspect the repository's pinned tool manifest, package lockfile, task runner, and CI workflows to discover versions and command details before editing. Do not silently upgrade tools during a refactor.
 
 - [StyLua](https://github.com/JohnnyMorganz/StyLua) formats source; run the configured formatting check.
 - [Selene](https://kampfkarren.github.io/selene/roblox.html) supplies Roblox-aware lint checks.
@@ -10,7 +10,7 @@ Inspect the repository's pinned tool manifest, package lockfile, task runner, an
 
 Exclude installed packages, generated networking, vendored code, and verification artifacts consistently. Anchor root exclusions so build-output patterns cannot accidentally exclude authored builders. Do not suppress first-party diagnostics to get a green check. Generated agent mirrors are owned by Agent Sync, not a competing formatter.
 
-Prefer separate lint jobs per tool in **Run Lint**, automated suites in **Run Tests**, and build/artifact integrity checks in **Build Places**. Read the actual workflows to determine which checks exist and whether cloud execution is provisioned.
+When configuring CI, keep lint, automated tests, and build/artifact integrity checks distinct. Read the actual workflows to determine which checks exist and whether cloud execution is provisioned.
 
 ## Readability and blank lines
 
@@ -22,7 +22,7 @@ Author logical blank-line groups before formatting. [StyLua's configuration](htt
 
 Separate engine-independent behavior tests from Roblox engine tests, using shared typed fakes where appropriate. A Lute runner with Jest-compatible assertions is not actual Roblox Jest execution. Discover the project's installed runner, suite locations, and supported commands; keep manual interaction tooling separate and results ignored.
 
-Use one committed package lockfile with shared, server, and development dependencies. Mount development packages and fixtures only in a dedicated test project; delivery integrity must reject them. Cover authority, failure, cancellation, transitions, rewards, and shared spatial contracts. Static checks do not prove rendering, player controls, persistence across joins, or multiplayer behavior.
+Commit the project's package lockfile when its package manager produces one. When using a dedicated test project, mount development packages and fixtures only there; delivery integrity must reject them. Cover authority, failure, cancellation, transitions, rewards, and shared spatial contracts. Static checks do not prove rendering, player controls, persistence across joins, or multiplayer behavior.
 
 ## Verified version-specific issues
 

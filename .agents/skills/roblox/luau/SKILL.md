@@ -1,13 +1,18 @@
 ---
 name: luau
-description: Apply whenever Roblox Luau source is opened, read, reviewed, created, or modified, including scripts, modules, builders, tests, network contracts, and tooling configuration. Enforce readable typed code, server authority, lifecycle cleanup, shared spatial definitions, and the project's StyLua, Selene, luau-lsp analyze, and Lute lint checks.
+description: Apply whenever Roblox Luau source is opened, read, reviewed, created, or modified, including scripts, modules, builders, tests, network contracts, and tooling configuration. Enforce readable typed code, server authority, lifecycle cleanup, shared spatial definitions, and the checks configured by the consuming project.
 ---
 
 # Roblox Luau
 
+## Dependencies
+
+- `roblox-react` — apply for React-rendered Roblox interfaces.
+- `roblox-studio` — apply for Studio operations, playtests, and place synchronization.
+
 Use this skill even for reading existing Roblox Luau so proposed changes follow its ownership and contracts. Inspect the repository's current conventions and canonical implementation before editing. Reading source alone does not require changing it or running the whole validation suite. User instructions and the actual change determine scope.
 
-Read [architecture and platform contracts](references/architecture.md) when changing ownership, composition, network contracts, environment detection, persistence, or security. These conventions adopt the approved template while preserving the explicit MVP policy below.
+Use the required Core/Features architecture and typed server platform ports. Use Rokit, Wally, Rojo, Blink, and `just` as the required toolchain. Use React Luau with ReactRoblox for Roblox UI. Read [architecture and platform contracts](references/architecture.md) when changing ownership, composition, network contracts, environment detection, persistence, or security, and [lint and test tooling](references/tooling.md) for commands and checks.
 
 ## Readable, focused implementation
 
@@ -29,17 +34,11 @@ Separate animation/camera completion from authoritative resolution. Missing asse
 
 ## Structured player persistence
 
-Prefer loleris's **ProfileStore**, the successor to ProfileService, for new structured player-profile saving/loading. Read [ProfileStore integration guidance](references/player-data.md) when choosing, adding, or changing persistence. Keep one typed server-side owner, pin the dependency, respect session ownership and failed-load protection, and verify actual save/rejoin behavior. This preference does not require replacing an existing persistence layer during unrelated work.
+Use ProfileStore through one typed server-side owner for structured player data. Preserve session ownership, failed-load protection, cancellation during load, save/rejoin behavior, and released progress. Read [ProfileStore integration guidance](references/player-data.md) before changes.
 
-## MVP data and compatibility policy
+## Data compatibility
 
-Prefer one clean current runtime contract. Do not add backwards-compatible game code, compatibility shims, legacy load branches, dual formats, deprecated aliases, or shipped migrations unless the user explicitly requests them. Remove superseded paths instead of maintaining them for hypothetical consumers.
-
-For an unreleased/MVP game, development profiles may be reset or moved to a fresh namespace when fundamentally incompatible. A **short one-off migration for the team's explicitly identified testing profiles is also allowed** when it preserves useful testing progress cheaply. Execute it separately from game startup/loading, verify the resulting records against the current schema, then remove the executable migration script. Keep only concise outcome evidence under ignored verification output. Do not include migration code, reconciliation/backfill branches, or old-schema support in runtime modules, builds, or the shipped repository. Do not turn a quick developer-only conversion into a permanent migration framework.
-
-Before that one-off conversion, identify the exact development store and allowlisted tester keys, read and retain a temporary before-state, and respect any active session ownership. Transform only the intended records, validate the result, verify it by loading the current contract, and remove the script. This exception does not authorize a bulk migration of unknown or real player data. If a quick conversion is not sensible, a clean development reset remains valid. Never silently migrate during ordinary player loads.
-
-Keep incompatibility distinct from an unavailable or failed DataStore load: a read failure must never overwrite an unknown existing record with defaults. Keep test namespaces separate from real player data. If a released game or real player progress is involved, establish that requirement before choosing any data deletion; the MVP reset rule is not authority to wipe production users. A code-only refactor that preserves the current contract does not need a schema bump or reset.
+Use versioned, append-only saved-data migrations and ProfileStore reconciliation when saved data changes. Append and test a migration for renamed, removed, split, or reinterpreted fields. A disposable development profile may be reset only when the project authorizes that operation and identifies the affected keys. Never turn a failed or unavailable DataStore read into a default profile save.
 
 ## Spatial ownership
 
@@ -51,7 +50,7 @@ Use named attachments or tagged instances for movable interaction anchors. Valid
 
 Give connections, render callbacks, tweens, spawned/delayed work, and camera ownership an explicit owner and cleanup path. Invalidate stale work on unmount, character replacement, streaming removal, encounter exit, and shutdown. Check generation/session identity after every relevant asynchronous wait. Restore prior state rather than guessed defaults; release held inputs even on failure.
 
-For Roblox UI work, also apply [roblox-react](../roblox-react/SKILL.md). For Studio, assets, playtests, or source/place synchronization, apply [roblox-studio](../roblox-studio/SKILL.md). Read [Lint and test tooling](references/tooling.md) when running or changing checks.
+For React-rendered Roblox UI work, also apply `roblox-react`. For Studio, assets, playtests, or source/place synchronization, apply `roblox-studio`.
 
 ## Keep guidance current
 

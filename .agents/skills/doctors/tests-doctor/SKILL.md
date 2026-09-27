@@ -1,19 +1,19 @@
 ---
 name: tests-doctor
-description: Audit and correct a test suite for consistency, redundancy, naming, runtime, coverage by test, and determinism, preferring fewer higher-quality tests. It aligns every suite with its siblings and the source tree, folds same-shape tests into parametrized cases, times every suite against its budget, maps coverage by test with integration and end-to-end outranking unit, and moves construction out of test modules. Use to review, clean up, speed up, de-duplicate, rebalance, or find gaps in tests.
+description: Audit and correct existing tests for contract value, redundancy, weak assertions, naming, runtime, coverage by test, and determinism. It aligns suites with their source owners, consolidates duplicate proof, preserves independent contracts, measures runtime, and repairs proven defects. Use to review, clean up, speed up, de-duplicate, rebalance, or find gaps in tests.
 disable-model-invocation: true
 ---
 
 # Tests Doctor
 
-Bring every suite to the shape its siblings share, keep only the tests that prove something, name
-them as labels, run them within budget, and cover every flow with the test that proves it.
+Bring every suite to the shape its siblings share, repair or remove tests that prove nothing, name
+them as labels, run them within budget, and cover each contract at its strongest boundary.
 
 ## Dependencies
 
 - `doctor-protocol` — own the run.
-- `test-fixture` — the standard every added or rewritten test meets: canonical data, source
-  mirroring, parametrization, the name budget, construction outside tests, and the mutation proof.
+- `test-fixture` — the value and retention rubric applied to every existing test, and the standard
+  every added or rewritten test meets for data, placement, doubles, and mutation proof.
 
 Also read the repository's test-runner skill when the skill listing declares one, found by its
 description rather than assumed by name. Its locking, service, and pacing rules hold for every run
@@ -33,8 +33,8 @@ runner timeout, a CI limit, or a documented target.
 The measurement taken once before fan-out is the timing of every runner target through the
 runner's own per-test and per-fixture duration reporting, serialized as the runner requires. Add
 instrumentation only when the runner cannot report durations, and keep it only when the plan adopts
-it. Record wall time per suite and the slowest cases and fixtures. A suite that cannot run locally
-is recorded unmeasured with its CI duration when one is available.
+it. Record baseline pass/fail state, wall time per suite, and the slowest cases and fixtures. A suite
+that cannot run locally is recorded unmeasured with its CI duration when one is available.
 
 The budget is what the repository configures. Absent one, a suite finishes within five minutes of
 wall time, and no single case takes more than a small fraction of that.
@@ -133,16 +133,21 @@ mechanical check that finds every instance rather than the first one noticed:
   numbered duplicate file;
 - runner configuration blocks that disagree on markers or environment.
 
-### Remove Redundancy And Weak Assertions
+### Audit Test Value And Repair Weak Proof
 
-Tests with the same setup, flow, and assertions that differ only in inputs become one parametrized
-case with ids. A new fact about a scenario an existing test already exercises is an extra assertion
-on that test, renamed when the name no longer fits, never a new test. A test that asserts nothing,
-asserts the double's own input, computes its expected value with the code under test, or exercises
-only the framework is deleted or given a real expectation. A lower-level test replaying what a
-higher-level test proves through the real boundary keeps only the branch the flow cannot reach. A skip, xfail,
-or commented-out test whose condition no longer holds is revived or deleted. Removals count as
-wins: fewer, stronger tests beat more tests.
+Apply `test-fixture`'s value and retention rubric to every test declaration in scope, including
+parameter rows that need different dispositions. Read the complete test and owner, then record the
+rubric's candidate evidence before proposing a deletion. Mark each declaration retain, repair,
+consolidate, or delete, with its actual assertion and the contract it protects. Judge assertions,
+not names or deletion counts. A skip, xfail, or commented-out test whose condition no longer holds
+is revived or deleted.
+
+For each duplicated contract, identify the strongest keeper suite and the distinct risks other
+layers still protect. Carry every unique assertion into its owner before removing a replay. Repair
+vacuous assertions and negative controls that pass for the wrong reason; verify new or strengthened
+guarantees through `test-fixture`'s mutation proof. Retain independently valuable static and slow
+tests under the rubric's retention bar. A failing baseline test is investigated as a possible
+product defect, not treated as cleanup by default.
 
 ### Find Repeated Blocks With A Detector
 
@@ -417,11 +422,14 @@ under its existing name costs its callers nothing however many there are, and a 
 the isolation model is verified the same way as any other edit here: the affected suites re-run
 green, and the durations are re-taken against the same workload.
 
-Application changes qualify only for the performance exception below. Application correctness
-defects, configuration cleanup, missing injection seams, and structural refactoring are not
-independent reasons to change application code. Report those findings with evidence without adding
-their implementation to this doctor's plan. Do not weaken, skip, or delete tests to conceal them;
-report an unresolved failure honestly and continue the remaining test work.
+Application changes qualify only for the performance exception below, removal of a proven dead
+test-only seam, or repair of a product defect exposed by a baseline failing test. For a seam,
+inspect non-test callers and history, move coverage to its real owner boundary, then remove the
+unused export, flag, wrapper, injection hook, or dead path without a compatibility alias. For a
+baseline failure, reproduce the product defect, fix it at its owner in a separate commit, and show
+the same harness failing with the fix absent and passing with it present. Do not weaken, skip, or
+delete tests to conceal a defect. Other application correctness and structural changes remain
+outside this doctor's boundary and are reported with evidence.
 
 ### Application Performance Exception
 
@@ -444,8 +452,8 @@ and report the before/after evidence. The improvement must exceed measurement no
 unique coverage guarantee; never cut tests solely to achieve a timing target. A missed budget or
 unverified improvement remains unresolved rather than being reported as a successful performance fix.
 
-Reviewers check every application change against this exception at proposal and final review,
-including changes introduced during conflict resolution. Temporary application mutations used to
+Reviewers check every application performance change against this exception at proposal and final
+review, including changes introduced during conflict resolution. Temporary application mutations used to
 prove tests may bypass the performance exception only while running the proof; restore every one
 before delivery and verify that none enters the delivered diff.
 
@@ -460,6 +468,9 @@ before delivery and verify that none enters the delivered diff.
   with the next disposition, or put the remaining cause and its cost to the user in the current
   request.
 - A redundant test merges into the survivor; an assertion nobody else makes is never dropped.
+- A test-only production seam with no non-test caller is removed after its contract has a keeper;
+  a baseline test exposing a product defect is repaired at the owner with failing control and
+  passing candidate proof.
 - A name any naming check reports — a leading article, more than eight words, a numeric status
   code, a restated class noun — is renamed to a label within `test-fixture`'s word budget; the
   condition the name lost moves into the docstring, and a rename that would leave fewer than two

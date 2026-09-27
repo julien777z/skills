@@ -1,6 +1,6 @@
 # Asset and avatar standards
 
-Apply these standards to the game's genre and the requested change. They are not instructions to give every game fantasy scenery, quests, or custom avatars.
+Apply these standards to the game's genre and the requested change. They do not prescribe a genre, quest structure, or custom avatar.
 
 Environmental asset design and the Blender import pipeline belong to the building dependency declared in the entry point; this reference covers Studio character integration.
 
@@ -15,8 +15,8 @@ For an override, start with an appropriate Roblox body package/HumanoidDescripti
 - Preserve recognizable facial/skin appearance where compatible. A catalog face product ID is not necessarily an image content ID: inspect the loaded asset's actual Decal/Texture instead of assigning the product ID directly as a texture. Never execute scripts from an imported face/accessory model.
 - Current R15 assets may use AnimationConstraint-based joints rather than only Motor6D. Inspect the actual rig before writing procedural poses. Measure visible joint motion; a non-erroring animation call is insufficient evidence.
 - Layer procedural motion in appropriate animation/simulation phases so the default animator does not overwrite it immediately. Restore poses and clean connections after completion or character replacement.
-- Procedural idle/cast/hit/victory or other game-specific motion is an option when suitable. Do not describe those as uploaded animation clips. If uploaded clips are required, publish them under the correct owner and verify their IDs/permissions in the live experience.
-- Enemy action, impact, and defeat presentation should be readable and timed to the authoritative events. Client presentation completion must never decide whether server gameplay can proceed.
+- Procedural idle/action/impact/victory or other game-specific motion is an option when suitable. Do not describe those as uploaded animation clips. If uploaded clips are required, publish them under the correct owner and verify their IDs/permissions in the live experience.
+- Character action, impact, and defeat presentation should be readable and timed to the authoritative events. Client presentation completion must never decide whether server gameplay can proceed.
 
 ## Character collision and motion pitfalls
 

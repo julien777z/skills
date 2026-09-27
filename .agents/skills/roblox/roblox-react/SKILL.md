@@ -1,13 +1,19 @@
 ---
 name: roblox-react
-description: Apply whenever a React-rendered Roblox UI is opened, inspected, designed, created, modified, or playtested, including HUDs, menus, tutorials, cards, viewport previews, and React-owned world-space messages. Require readable, visually inspected desktop/touch interfaces, explicit cleanup, and repeated real-input Play tests.
+description: Apply whenever a React-rendered Roblox UI is opened, inspected, designed, created, modified, or playtested, including HUDs, menus, tutorials, selection screens, viewport previews, and React-owned world-space messages. Require readable, visually inspected desktop/touch interfaces, explicit cleanup, and repeated real-input Play tests.
 ---
 
 # Roblox React interfaces
 
-Make the UI clean, easy to use, beginner friendly, and visually pleasing. Treat these as acceptance criteria, not optional polish after code compiles. Preserve the game's established artwork and visual identity unless a redesign is requested. Reading an interface alone does not authorize an unrelated migration.
+## Dependencies
 
-Apply [luau](../luau/SKILL.md) whenever reading or editing its Luau code. Apply [roblox-studio](../roblox-studio/SKILL.md) for engine setup and playtest orchestration. Read [Framework and component practices](references/components.md) before changing architecture, dependencies, lifecycle, or layout.
+- `luau` — apply when reading or editing Luau code.
+- `roblox-studio` — apply for Studio setup and playtest orchestration.
+- `roblox-building` — apply for authored or runtime world-space text.
+
+Follow `luau`'s required UI framework. Make React-rendered interfaces clean, easy to use, beginner friendly, and visually pleasing. Treat these as acceptance criteria, not optional polish after code compiles. Preserve the game's established artwork and visual identity unless a redesign is requested.
+
+Apply `luau` whenever reading or editing its Luau code. Apply `roblox-studio` for engine setup and playtest orchestration. Read [Framework and component practices](references/components.md) before changing architecture, dependencies, lifecycle, or layout.
 
 ## Clarity and visual quality
 
@@ -17,18 +23,18 @@ Review the whole screen before individual controls. Identify the focal point and
 
 Make selected, hovered, focused, disabled, pending, successful, and failed states distinct. Explain why an action is unavailable where useful. Do not rely on color alone. Keep text legible over the world, accommodate wrapping and long content, and avoid tiny targets or decorative motion that delays actions. Respect reduced motion and preserve keyboard/gamepad focus where supported.
 
-Give card artwork, names, costs, slot numbers, and status labels dedicated layout space. Do not place status text over the illustration or squeeze an arbitrary label into a slot-number badge. Check the longest real label at the smallest supported card size, including selected, disabled, and provider-granted cards; inspect rendered text, not only its container bounds.
+Give artwork, names, costs, and status labels dedicated layout space. Do not place status text over artwork or squeeze long labels into tiny badges. Check the longest real label at the smallest supported component size and in every relevant state; inspect rendered text, not only its container bounds.
 
-For React-owned world-space messages, apply [world-space text inspection](../roblox-studio/references/world-space-text.md)
+For React-owned world-space messages, apply `roblox-building`'s world-space text inspection
 alongside the component lifecycle and interaction checks below.
 
-Share the theme, buttons, cards, modal shell, and preview adapters. Related windows use consistent close behavior, backdrop, focus/input handling, and dimensions appropriate to their content. A second window replaces the first; repeated triggers follow the game's documented toggle behavior. Exclusive start screens and modals must block underlying pointer, keyboard, hover, and movement input, then restore it on exit.
+Share the theme, controls, modal shell, and preview adapters where the game uses them. Related windows use consistent close behavior, backdrop, focus/input handling, and dimensions appropriate to their content. A second window replaces the first; repeated triggers follow the game's documented toggle behavior. Exclusive start screens and modals must block underlying pointer, keyboard, hover, and movement input, then restore it on exit.
 
-Use contextual prompts for nearby interactions and actionable touch equivalents. A tutorial teaches the actual current controls one step at a time, with feedback and pointers attached to measured controls. Use a recognizable arrowhead and tail for tutorial pointers, with a gentle bounce and a still reduced-motion state. Reserve a gutter beside the measured target; the entire animation envelope must stay outside instruction text, labels, and other controls. Positioning an arrow above a button does not establish that the space above it is empty. Dismiss blocking lessons before requiring the underlying action. Do not overwhelm beginners with controls or explanations that are not yet relevant.
+Use contextual prompts for nearby interactions and actionable touch equivalents. A tutorial teaches the actual current controls one step at a time, with feedback and pointers attached to measured controls. If using animated pointers, give them a clear shape and a still reduced-motion state. Reserve a gutter beside the measured target; the entire animation envelope must stay outside instruction text, labels, and other controls. Positioning an arrow above a button does not establish that the space above it is empty. Dismiss blocking lessons before requiring the underlying action. Do not overwhelm beginners with controls or explanations that are not yet relevant.
 
 ## Responsive components
 
-Persistent objective HUDs should prioritize the short next action over chapter headings and paragraphs. Keep a slim reminder visible, briefly reveal details on objective changes, and provide a clear click/tap disclosure control. Deliberately opened details should remain readable until dismissed; cancel automatic preview timers on objective replacement or unmount. Inspect both expanded and settled states, including long objectives on narrow screens.
+When a game has a persistent objective HUD, prioritize the next useful action over long headings and paragraphs. Keep a slim reminder visible, briefly reveal details on objective changes, and provide a clear click/tap disclosure control. Deliberately opened details should remain readable until dismissed; cancel automatic preview timers on objective replacement or unmount. Inspect both expanded and settled states, including long objectives on narrow screens.
 
 Fit panels to their content. Short dialogue or a small set of actions should not leave a large empty box. Use automatic sizing or measured layout content, readable maximum widths, and viewport height limits; introduce scrolling only when content exceeds those limits. Check both short and long copy, and reset scroll position when replacing the content with a new page.
 
@@ -38,11 +44,11 @@ Account for visible borders, focus/selection strokes, shadows, and rounded corne
 
 When a transition combines UI with world effects, inspect the effect through the actual scene materials and from the approach camera. Glass can hide translucent geometry behind it; a verified remedy is to hide that surface locally during the effect and restore its previous transparency on cleanup. Own and restore any cinematic camera as well. A component preview proves appearance and cleanup, not successful cross-place travel.
 
-Keep domain state authoritative and component props typed. Use stable keys and preserve expensive cards/ViewportFrames while changing selection, health, or enabled state. Own every subscription, tween, timer, model, and render callback; clean them up and cancel stale work on unmount. See the component reference for package typing and artwork adapters.
+Keep domain state authoritative and component props typed. Use stable keys and preserve expensive previews/ViewportFrames while changing selection, health, or enabled state. Own every subscription, tween, timer, model, and render callback; clean them up and cancel stale work on unmount. See the component reference for package typing and artwork adapters.
 
 ## Play test: click repeatedly and inspect the result
 
-Use Studio's supported MCP input and viewport capture inside the [isolated runner](../roblox-studio/references/isolated-testing.md), as described in [background testing](../roblox-studio/references/mcp-testing.md). Test actual player-facing controls; direct state mutation is not proof a button works. Do not take over the user's host keyboard/mouse or open obstructive host test windows.
+Use Studio's supported input and viewport capture in a qualified runner, as described in `roblox-studio`'s testing reference. Test actual player-facing controls; direct state mutation is not proof a button works. Do not take over the user's host keyboard/mouse or open obstructive host test windows.
 
 Run the repeated-click pass at the **start of a UI testing session**, when **creating or materially changing a UI**, and during **final verification / before an authorized publication**. A Play restart or routine retest within the same session is not a new session requiring the entire pass. Reuse recorded coverage; repeat an affected check only when a change, failure, or unresolved issue justifies it.
 
@@ -54,13 +60,9 @@ At those checkpoints, cover each affected flow:
 4. For selection/confirmation flows, change selection repeatedly, confirm, and attempt a duplicate confirmation. Verify the visible selected state and authoritative result agree; a timeout advancing the game is not proof a click registered.
 5. Inspect screenshots at supported desktop, narrow, and landscape phone/tablet sizes when UI changes. Apply the whole-screen composition criteria above; read every instruction, inspect all four button edges and rounded corners, and observe a complete pointer bounce at each affected tutorial step. Check its full motion envelope for text overlap and clipping, including while scrolling. A bounding-box assertion, successful click, or clean lint result is not visual acceptance. Record what was visually inspected; do not infer coverage from a different step or screen. Operate touch controls and scrolling in the simulator, including safe areas. Do not claim physical-device coverage from simulation.
 6. Repeat the flow after character replacement, encounter exit, or another relevant lifecycle boundary. Verify camera/input restore, previews remain stable, and connections or animation work do not accumulate.
-7. For React-owned world-space text, apply the linked world-space inspection to initial and changed presentations; other UI screenshots and successful gameplay do not cover it.
+7. For React-owned world-space text, apply `roblox-building`'s world-space inspection to initial and changed presentations; other UI screenshots and successful gameplay do not cover it.
 
 Fix visible or interaction defects discovered in the affected flow even when lint and builds pass. Keep evidence of actual outcomes. Scale broader gameplay coverage to the change and distinguish Studio, device simulation, persistence, and published-client verification.
-
-## Keep guidance current
-
-Record verified reusable UI/React issues and solutions in this skill. Put Studio connection/input orchestration in `roblox-studio`, general Luau lint/type guidance in `luau`, and game-specific UI contracts in the project skill. Keep one canonical owner for each rule and leave generated agent mirrors to Agent Sync.
 
 ## Startup and transient feedback
 
@@ -75,14 +77,10 @@ actionable recovery instead of an endless loading screen. Verify fast, delayed,
 stalled, and failed loads on desktop and touch layouts, including reduced motion and
 the transition from loading to usable gameplay.
 
-Exercise a fast first interaction as well as the settled screen. A wardrobe preview can
-finish before the live character is ready. If a valid request starts a busy UI state,
-the server must acknowledge a temporary readiness rejection with recoverable feedback;
-silently returning can leave the UI stuck forever. Verify that the same visible button
-becomes usable again and succeeds once the character is ready. Keep authority checks.
+Exercise a fast first interaction as well as the settled screen. If a request starts a busy UI state before its required data or character is ready, the server must acknowledge a temporary rejection with recoverable feedback; silently returning can leave the UI stuck. Verify that the same visible control becomes usable again and succeeds once its prerequisites are ready. Keep authority checks.
 
-Inspect transient notices together with the persistent HUD. A wide top-center toast
-can cover the chapter panel even when each component fits the viewport independently.
-Use a reserved area above the exploration toolbar and bound its width; verify short
-and wrapped messages on desktop and phone. Combat notices need their own placement
-so they do not cover cards or targeting controls.
+Inspect transient notices together with the persistent HUD. A transient notice can cover a persistent objective or primary action even when each component fits independently. Reserve space or place notices where they do not cover active controls; verify short and wrapped messages on desktop and phone.
+
+## Keep guidance current
+
+Record verified reusable UI/React issues and solutions in this skill. Put Studio connection/input orchestration in `roblox-studio`, general Luau lint/type guidance in `luau`, and game-specific UI contracts in the project skill. Keep one canonical owner for each rule and leave generated agent mirrors to Agent Sync.

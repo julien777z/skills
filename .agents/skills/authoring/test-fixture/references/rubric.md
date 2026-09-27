@@ -2,6 +2,56 @@
 
 Apply these criteria to every test, test-data, test-support, and test-configuration change.
 
+## Test Value And Retention
+
+Before adding a test, answer four questions; a missing answer means do not add it yet:
+
+1. What observable behavior, invariant, or independent contract does it protect?
+2. What credible regression makes it fail?
+3. Why does existing coverage not already catch that failure? Each contract has one primary test
+   owner at the strongest boundary. Another layer needs its own distinct risk, such as a transport
+   or lifecycle failure the owner cannot reach. Prefer extending a parameter table or shared fixture
+   over a near-duplicate test; consolidate duplicated setup in the same change.
+4. Does it need a production seam — an export, flag, wrapper, or injection hook — that no production
+   caller needs? If so, move the test to the real boundary instead.
+
+Check new and existing tests against these low-value patterns:
+
+- assertion-free coverage probes, self-comparisons, identity copiers, and expected values produced
+  by the helper or renderer under test;
+- copied fixtures, inventories, manifests, export lists, or duplicate invocations of one contract;
+- exact source, import, or string greps, and private predicate or call-shape tests duplicated at a
+  real boundary;
+- provider-local replays of shared helpers, tests preserving test-only exports or wrappers, and
+  production code whose only callers are tests;
+- mocks that implement the asserted behavior, one identical mock standing in for different APIs,
+  or fixtures supplying the receipt, admission, or callback order the owner should produce;
+- persistence asserted against a store the exercised path never writes, and capability tests that
+  restate flags instead of exercising the delivery or acknowledgement they promise;
+- negative controls that pass for an unrelated reason, and names or fixtures that promise more
+  than the input and assertions exercise.
+
+A match fails the gate for a new test unless the test independently guards a contract below. An
+existing match is suspect, not automatically deletable. A test that would break under
+behavior-preserving source reorganization is asserting implementation rather than behavior; move
+it to the owning boundary. Bug regressions fail on the pre-fix code for the intended reason and pass
+after the owner repair. One regression at the owner boundary covers the bug.
+
+Keep a test when it independently enforces a public API, plugin interface, protocol, configuration,
+migration, storage, security, platform, default, exact user-facing bytes, generated cross-language,
+package, release, or architecture contract. Also keep observable call ordering and regressions with
+a credible failure mode. Source inspection can be the cheapest independent guard when it fails as
+the user-facing key, byte, or path changes and survives an identifier-only refactor. Static or slow
+is not a deletion reason. A baseline failure may expose a product bug; reproduce it and repair the
+owner rather than deleting its test.
+
+Before deleting an existing test, record its exact name and location, the failure it can detect,
+non-test callers of the covered source or support seam, the stronger owner-boundary proof that
+remains (or why none is needed), relevant history, the source or support deletion it unlocks, risk,
+and a focused validation command. Missing evidence leaves the candidate unready for deletion.
+Read the complete test and production owner, entry point, callers, callees, sibling implementations,
+overlapping tests, and CI routing; inspect dependency source or types for dependency-backed claims.
+
 ## Find The Canonical Test Data
 
 Before adding a value, fixture, factory, or builder, discover the current suite's fixture mechanism

@@ -93,9 +93,9 @@ These run only when you ask for them by name, such as `/refactor`.
 | [`refactor`](.agents/skills/execution/refactor/SKILL.md) | Resolve and confirm a repository refactor scope, use multiple independent reviewers to plan structural improvements, then implement an approved plan. |
 | [`schema-doctor`](.agents/skills/doctors/schema-doctor/SKILL.md) | Audit and correct unjustified nullability, model complexity, primary-key design, and index design across repository API contracts, serialized schemas, persisted schemas, and the field flows connecting them. |
 | [`skill-gauntlet`](.agents/skills/authoring/skill-gauntlet/SKILL.md) | Audit installed agent skills across every visible scope, then autonomously benchmark, upgrade, retire, and install user-selected skills through isolated blind evaluations and a resumable local dashboard. |
-| [`study-games`](.agents/skills/roblox/study-games/SKILL.md) | Explicit user-invoked research of the current Roblox desktop US charts. |
+| [`study-games`](.agents/skills/roblox/study-games/SKILL.md) | Explicit user-invoked research of Roblox charts for the requested audience and region. |
 | [`take-over-pr`](.agents/skills/git/take-over-pr/SKILL.md) | Make a pull request's branch the working checkout so its work continues in this session. |
-| [`tests-doctor`](.agents/skills/doctors/tests-doctor/SKILL.md) | Audit and correct a test suite for consistency, redundancy, naming, runtime, coverage by test, and determinism, preferring fewer higher-quality tests. |
+| [`tests-doctor`](.agents/skills/doctors/tests-doctor/SKILL.md) | Audit and correct existing tests for contract value, redundancy, weak assertions, naming, runtime, coverage by test, and determinism. |
 
 ### Model-Invoked
 
@@ -151,8 +151,8 @@ An agent reaches for these on its own whenever the work calls for them.
 | [`rebuild-git-history`](.agents/skills/git/rebuild-git-history/SKILL.md) | Rewrite a branch you own into one commit per material change, or drop one change from it, without losing content: the old head stays under a backup ref, the result is proven against it before anything moves, and the push is leased. |
 | [`roblox-building`](.agents/skills/roblox/roblox-building/SKILL.md) | Apply when planning, inspecting, creating, modifying, importing, optimizing, or playtesting Roblox maps, worlds, terrain, buildings, props, environmental meshes, or Blender assets. |
 | [`roblox-gameplay`](.agents/skills/roblox/roblox-gameplay/SKILL.md) | Apply every time actively modifying a Roblox game, including mechanics, progression, rewards, controls, presentation, UI, and world content. |
-| [`roblox-react`](.agents/skills/roblox/roblox-react/SKILL.md) | Apply whenever a React-rendered Roblox UI is opened, inspected, designed, created, modified, or playtested, including HUDs, menus, tutorials, cards, viewport previews, and React-owned world-space messages. |
-| [`roblox-studio`](.agents/skills/roblox/roblox-studio/SKILL.md) | Create, update, polish, and playtest Roblox games in Roblox Studio, including detailed maps, character presentation, Blender assets, background MCP playtests, and verified place delivery. |
+| [`roblox-react`](.agents/skills/roblox/roblox-react/SKILL.md) | Apply whenever a React-rendered Roblox UI is opened, inspected, designed, created, modified, or playtested, including HUDs, menus, tutorials, selection screens, viewport previews, and React-owned world-space messages. |
+| [`roblox-studio`](.agents/skills/roblox/roblox-studio/SKILL.md) | Create, update, polish, and playtest Roblox games in Roblox Studio, including maps, assets, interfaces, playtests, and authorized place delivery. |
 | [`run-site`](.agents/skills/workspace/run-site/SKILL.md) | Bring a local application stack up, repair startup blockers, and prove the running site works by driving a real browser through sign-in and core functionality with screenshots. |
 | [`security-audit`](.agents/skills/review/security-audit/SKILL.md) | Security audit of a codebase — web apps, APIs, services, CLI tools, libraries, daemons, and more. |
 | [`storyline`](.agents/skills/roblox/storyline/SKILL.md) | Create, audit, or extend a game's substantial, coherent storyline with independent narrative proposals, motivated characters, playable story beats, a connected story web, and a satisfying ending. |

@@ -4,7 +4,7 @@
 
 Record the intended experience (universe), place IDs, owner, local file, and build paths. Verify the active Studio title and place ID before writing or publishing. Create a new experience when requested; never copy an excluded recent project. Updates must preserve existing saved progress and authored artwork.
 
-Use a scripts-only Rojo project during iteration, and a separate complete-place build containing serialized art, rig, map, and terrain archives. Test the complete build in a fresh session. Check serializer compatibility against the installed versions and current official releases before diagnosing an asset as corrupt.
+Use separate Rojo iteration and complete-place delivery builds; they serve different purposes. Include serialized art, rigs, maps, and terrain archives in the delivery artifact and test its contents in a fresh session when serialization is affected. Check serializer compatibility against the installed versions and current official releases before diagnosing an asset as corrupt.
 
 Terrain is not ordinary geometry. Preserve it with `Terrain:CopyRegion()` and restore with `PasteRegion()` at the recorded voxel corner. Regions use 4-stud voxel coordinates. Archive distant maps separately to avoid serializing the empty space between them. Verify restored cell counts and walk the actual terrain in a rebuilt place. A current Studio viewport can hide a missing terrain export.
 
@@ -14,7 +14,7 @@ Studio's `SerializationService:SerializeInstancesAsync()` and `EncodingService:B
 
 ## Multiple maps and persistence
 
-A Roblox experience is a universe containing one or more places. Prefer separate places in the same experience for large independent maps; their DataStores are shared. If requested, make the start place a small loader that reads the durable profile and uses server-side `TeleportService:TeleportAsync()` to send the player to the saved map's entrance. Keep a validated map ID to place ID registry. Do not treat untrusted teleport data as inventory or progression authority.
+A Roblox experience is a universe containing one or more places. When using separate places in one experience for large independent maps, their DataStores are shared. If the game calls for a loader, make the start place a small loader that reads the durable profile and uses server-side `TeleportService:TeleportAsync()` to send the player to the saved map's entrance. Keep a validated map ID to place ID registry. Do not treat untrusted teleport data as inventory or progression authority.
 
 Persist map identity rather than an arbitrary exact position when entrance-based resume is intended. Save and safely release session ownership before another place acquires the profile; freeze mutations during handoff. Handle both thrown errors and `TeleportInitFailed`, bounded retries, and recovery without dropping progress or duplicating grants. A failed load must never route using a default profile that overwrites real progress. Studio cannot execute actual cross-place teleports. Report them as unverified unless a live-client test was explicitly requested or needed to investigate a reported live-only defect; do not make that test a routine delivery gate.
 
@@ -42,7 +42,7 @@ Opening a local place can launch a separate Studio process. An existing app-cont
 
 Multiple browser processes can have different tabs/accounts. An AppleScript browser query may reach a separate automation instance rather than the signed-in visible browser. Verify the actual page/account through the chosen surface. Do not browse unrelated user tabs to compensate.
 
-A locked desktop affects operations that depend on that desktop. Independent guest access follows the [VM access reference](isolated-testing.md); independent file, build, and API work can continue.
+A locked desktop affects operations that depend on that desktop. Independent guest access follows the [testing reference](testing.md); independent file, build, and API work can continue.
 
 ## Delivery
 
