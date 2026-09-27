@@ -260,8 +260,10 @@ outcome, because silence reads as the guidance having been fixed.
       the user uses and whose response this change alters.** A summary they read, a listing they
       act on, a report they take a decision from: for each such skill the change adds, or edits in
       a way that changes what it returns, run the edited skill yourself on real current input — the branch in flight for a skill that summarises or reviews, the request in
-      hand for one that edits, the smoke scenario only where no real input exists — and show what it
-      returned, verbatim, then ask with the question tool whether to approve or reject it. The run
+      hand for one that edits, the smoke scenario only where no real input exists — and send what it
+      returned, verbatim, under the heading `Example output`, as the final message of a turn that
+      asks in plain text whether to approve or reject it, as the global rules on questions require.
+      The run
       is this session's own: a subagent's smoke report and a hand-written illustration both stand in
       for the behaviour and neither is it. Show the next skill only after the previous one is
       approved, never several in one question. On a rejection, ask what must change, revise the
