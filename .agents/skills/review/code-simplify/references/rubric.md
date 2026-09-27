@@ -54,6 +54,12 @@ existing one, put the variant under the existing public interface and owner, wit
 or option where needed. Do not leave parallel registries, commands, or packages merely because each
 implementation is internally tidy. Keep separate public concepts only when their consumers or
 contracts require a real independent boundary, and name that boundary in the receipt.
+Sharing a parser or loader while retaining two registry files, commands, or package owners is only
+implementation reuse; it does not remove the extra public concept. For a variant, propose the
+resulting single registry, command, and owner explicitly, then trace the consumers that must move.
+If two files register entries of the same broader concept, combine those entries into one registry
+file and distinguish variants in the entry schema. A loader that selects between two registry files
+still makes consumers learn two registration surfaces and does not meet this standard.
 
 When a change introduces another independent consumer of a cross-cutting mechanism, compare it with
 every existing consumer by responsibility, dependencies, inputs, outputs, and side effects — names
