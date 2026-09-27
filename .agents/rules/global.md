@@ -73,6 +73,10 @@ alwaysApply: true
   override the separate authorization boundary for merge, deployment, publication, or release.
 - Carry task authorization through follow-up messages, interruptions, failed tool attempts, browser
   recovery, and context compaction. A failed attempt does not reset or narrow the authorization.
+- Authorization to send messages to another agent or external session covers only the messages and
+  purpose the user specified. Permission for a bounded exchange does not authorize later updates
+  to the same recipient; ask before sending more unless the user explicitly approved an ongoing
+  exchange.
 - Do not ask the user to restate task authority with "continue", "proceed", or equivalent
   intermediate approval questions. State progress and take the next ordinary authorized action.
 - When a platform imposes an action-time confirmation for a distinct sensitive action, complete all
