@@ -189,7 +189,7 @@ config = third_party_package.Config(
 ## Configuration
 
 - Define each configuration owner's settings in one descriptively named `BaseSettings` class such as `ActionConfig` in its `config.py`. A repository may have distinct application, worker, or script configuration owners; do not combine unrelated settings merely to produce one repository-wide class. Keep each config module declarative: instantiate its settings once at that owner's composition boundary, then pass or import that validated object wherever settings are needed.
-- Put a value in that settings class when, and only when, its owner is likely to change it on its own — per deployment, per environment, per release, or while running the system — without changing the code that reads it. What kind of value it is never decides this: a timeout, retry count, or batch size the owner expects to revisit is configuration exactly as a credential, a host, or a feature switch is. Every other value — one nobody expects to change except together with the code that reads it, including every value that code's correctness fixes, such as a pattern it parses with or a format or limit a protocol defines — is a typed module constant beside that code.
+- Put a value in that settings class when, and only when, its owner is likely to change it on its own — per deployment, per environment, per release, or while running the system — without changing the code that reads it. What kind of value it is never decides this: a timeout, retry count, or batch size the owner expects to revisit is configuration exactly as a credential, a host the deployment chooses, or a feature switch is. Every other value — one nobody expects to change except together with the code that reads it, including every value that code's correctness fixes, such as a pattern it parses with or a format or limit a protocol defines — is a typed module constant beside that code. Where the evidence settles neither side, the value stays where its owner put it.
 - Give configurable values typed defaults when the repository has a safe default, and let `pydantic-settings` provide namespaced environment overrides.
 - Use `TypedDict` only for static structured data that is not configuration.
 
@@ -222,7 +222,7 @@ APPLICATION_CONFIG = ActionConfig()
 - Place module-level constants and enums (including type aliases like `AllowedApiClient`) directly after imports.
 - When assembling a structured string from variable parts, define one named template and use `str.format(...)` rather than composing separate prefix and suffix constants. Use native template strings only when they are supported across the project's full Python version range.
 - Use `Final[T]` from `typing` and UPPER_SNAKE_CASE names for constants.
-- Compiled regexes, stable paths, sentinels, and every other value nobody expects to change apart from the code that reads it are constants, not settings.
+- Compiled regexes, stable paths, and sentinels are constants, not settings.
 - Compile regular expressions once at module scope and call methods on the compiled pattern instead of passing pattern strings repeatedly to `re.match`, `re.search`, `re.fullmatch`, or `re.sub`.
 - **When several constants form one family of the same shape** — parallel compiled patterns, per-kind values, same-shaped lookup entries — define one mapping keyed by an enum or other typed key instead of a pile of individually named constants, and iterate or index that mapping at the use site. A few unrelated constants are fine as standalone names; a family of related ones is a data structure.
 

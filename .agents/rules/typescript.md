@@ -111,7 +111,8 @@ type Status = (typeof Status)[keyof typeof Status];
   belongs in typed configuration even with a safe default; capitalization does not make it
   invariant. Every other value — one nobody expects to change except together with the code that
   reads it, including every value that code's correctness fixes — stays a typed constant beside
-  that code. What kind of value it is never decides which.
+  that code. What kind of value it is never decides which, and where the evidence settles neither
+  side, the value stays where its owner put it.
 - Extract a literal only when it is reused or carries domain meaning. Keep trivial single-use
   literals inline.
 - Do not prefix a name with the area it already lives in. The module path says it; add a qualifier

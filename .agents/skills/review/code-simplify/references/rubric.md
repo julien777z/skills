@@ -332,8 +332,10 @@ Apply the baseline prompt above, plus these explicit review rules:
      differs between environments, whether it is tuned while the system runs, whether its owner has
      said it moves — never from its type or its name. A constant holding a value its owner is likely
      to change on its own and a settings field holding a value nobody expects to move are both
-     findings, and the remedy moves each to the other side; capitalization, `Final`, and a safe
-     default do not make a value invariant, and a sibling field's placement is evidence of nothing.
+     findings when that evidence shows it; where the evidence settles neither side, the value stays
+     where its owner put it, because moving it needs evidence, never a guess from its kind. The
+     remedy moves a finding to the other side; capitalization, `Final`, and a safe default do not
+     make a value invariant, and a sibling field's placement is evidence of nothing.
    - Every data-holding class lives in a model-owned file or package. Only a Pydantic `BaseSettings`
      class is configuration; registries, manifests, policies, provider payloads, and response
      schemas remain models.
