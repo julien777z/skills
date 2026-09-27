@@ -6,7 +6,7 @@ description: Must be used before creating, moving, renaming, editing, reviewing,
 # Test Fixture
 
 Build tests from the repository's canonical test surfaces, keep them beside the source concern they
-exercise, and prove that new coverage detects the regression it claims to prevent.
+exercise, and prove that each test protects behavior or an independent contract.
 
 ## Dependencies
 
@@ -19,22 +19,26 @@ tracing a test surface is; without one, fix what the focused pass can finish.
 1. Read the complete [rubric](references/rubric.md) before inspecting, reviewing, changing, or
    executing any covered test surface. Discover the repository's test roots, fixture packages,
    factory owner, shared test utilities, runner targets, and analogous sibling tests.
-2. For an application change, finish the task's implementation across every affected component and
+2. Apply the rubric's value gate before adding or changing a test. Name its observable
+   guarantee, credible regression, distinct coverage need, and any production seam it demands.
+   Check an existing test's independent contract and collect the rubric's evidence before deleting
+   it.
+3. For an application change, finish the task's implementation across every affected component and
    repository before writing or strengthening tests or test support. If an applicable authorized
    manual path exists, verify the complete behavior there first; fix and retry failures before
    writing tests. A pull-request-head test deployment requires explicit user authorization.
    Existing tests may still be run to diagnose development failures.
-3. Identify the source owner and place the test beneath its corresponding suite and classification.
+4. Identify the source owner and place the test beneath its corresponding suite and classification.
    Reuse the canonical fixture or factory for every domain value. When it lacks required data,
    extend that owner and update its consumers instead of spelling the value in the test.
-4. Reuse an existing case when setup, execution, and assertions match. Parametrize cases that vary
+5. Reuse an existing case when setup, execution, and assertions match. Parametrize cases that vary
    only by inputs or outcomes; keep shared fixture context outside the parameter table.
-5. Keep builders and fixtures out of test modules. Put reusable construction in the established
+6. Keep builders and fixtures out of test modules. Put reusable construction in the established
    fixture, factory, or test-utility owner and keep each test focused on arranging, exercising, and
    asserting behavior.
-6. Run real deterministic application code and real domain models. Double only boundaries the
+7. Run real deterministic application code and real domain models. Double only boundaries the
    process cannot cross or faults the real path cannot produce, using the shallowest declared seam.
-7. Before completion, inspect every literal added or changed in tests and test support.
+8. Before completion, inspect every literal added or changed in tests and test support.
    Replace domain data, sample identities, addresses, names, identifiers, payload fields, and fixture
    facts with values read from the canonical fixture or factory. A provider request or response body
    remains domain data even when it is an expected value, so build it from that owner rather than
@@ -42,7 +46,7 @@ tracing a test surface is; without one, fix what the focused pass can finish.
    disposition of every changed literal family, including allowed protocol, parametrized-case, and
    ownerless local-control values. A review is incomplete until each family is listed with one of the
    rubric's dispositions, even when that disposition permits it.
-8. Prove every distinct new behavioral guarantee through the mutation workflow below, restore the
+9. Prove every distinct new behavioral guarantee through the mutation workflow below, restore the
    exact baseline, and run the affected repository targets once on the completed tree.
 
 ## Mutation Proof
