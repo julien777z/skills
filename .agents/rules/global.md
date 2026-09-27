@@ -150,9 +150,10 @@ alwaysApply: true
   user was still reading. An approved plan says it was approved.
 - A plan that exits unapproved is still the live plan. Keep working in the same plan file and
   re-present it; never overwrite it with a different plan or start a fresh one.
-- Before asking with the question tool, send what the question asks about — a plan, an example
-  response, a diff — as a chat message of its own. The tool shows only the question and its option
-  labels, so content placed only in a preview or description never reaches the user.
+- Send what a question asks about — a plan, an example response, a diff — as the final message of
+  a turn, with the question in that message as plain text. The question tool shows only the question
+  and its option labels, and text written in the same turn as a tool call can reach the user only as
+  a collapsed summary, so content placed in a preview, a description, or before a tool call is lost.
 - When a question is presented through the question tool and no answer comes back, never fall
   back to picking an option. Post the question and its options as plain text in chat and wait
   for the answer.
