@@ -39,6 +39,12 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 - Carry the user's authorization for the task through its ordinary implementation, verification,
   scoped external changes, retries, recovery, and cleanup. A follow-up, interruption, failed attempt,
   or context reset does not require the user to approve those sub-steps again.
+- Treat merge, deployment, publication, and release as separate outcomes outside the ordinary
+  scoped external changes above. "Implement this plan" is not an explicit instruction for any of
+  those outcomes, even when the plan names the action and target. Before acting, identify the
+  user's separate explicit instruction for that action and target or applicable guidance or an
+  invoked skill that expressly authorizes it; otherwise complete the reviewable work and leave
+  that outcome pending.
 - Ask only for a decision that materially changes the authorized target, recipient, or outcome, or
   for an action-time confirmation a platform actually requires. Make that question specific to the
   new decision or action; never ask the user to reconfirm the task or say "continue" to resume it.
