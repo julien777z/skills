@@ -27,8 +27,13 @@ while the plan is being written, and it never invokes this skill back.
 4. Continue the same plan after an interruption. Never replace or silently revise an unapproved
    plan; incorporate user amendments and present the complete revised plan again.
 
-## An Approved Plan Runs To Its Last Step
+## An Approved Plan Runs Through Its Authorized Steps
 
+- Approval to implement a plan authorizes ordinary implementation and verification, not a merge,
+  deployment, publication, or release it happens to list. Before one of those actions, check for
+  the user's explicit instruction naming that action and target, or applicable guidance or an
+  invoked skill that expressly authorizes it. If neither exists, finish the reviewable preparation
+  and leave that action pending; do not treat the plan's step list as permission.
 - **Offering the next step as a choice is a stop wearing a question mark.** "Say the word and I will
   start the next group, or stop here" hands back an instruction the user gave once, and reads as
   deference while costing them the work they expected finished. Do not write it.
@@ -48,5 +53,6 @@ parallel structure and postpone the ownership decision until implementation.
 
 ## Completion
 
-The plan is implemented when `execute-task`'s completion holds for its last step, and the report
-lists every planned outcome against what landed.
+The plan is implemented when `execute-task`'s completion holds for its last authorized step, and
+the report lists every planned outcome against what landed. Name any merge, deployment,
+publication, or release still awaiting its separate authorization as pending, not complete.
