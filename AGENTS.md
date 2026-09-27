@@ -604,7 +604,7 @@ except third_party_client.ApiException as exc:
 
 # HTTP Rules
 
-- Call a third-party provider through its official SDK when one exists. Hand-rolled requests re-declare the provider's endpoints, authentication, request and response shapes, and error format, all of which the SDK already owns and keeps current. The repository's shared HTTP helper is for providers without one; never hand-roll requests to a provider whose SDK covers them.
+- Before writing provider HTTP calls, check whether its official SDK covers the required endpoints and protocol features. Use the SDK for operations it covers and the repository's shared HTTP helper or established client for those it does not.
 - Prefer the repository's shared HTTP helper or client abstraction over spawning ad-hoc clients deep in application code.
 - If the project already centralizes retries, auth headers, or response parsing, reuse that shared layer instead of reimplementing it per call site.
 - Keep raw `response.json()` parsing at the boundary layer; do not scatter transport parsing logic across core business logic.
@@ -979,7 +979,7 @@ class ActionConfig(BaseSettings):
 APPLICATION_CONFIG = ActionConfig()
 ```
 
-- API keys and secrets must be **required** config fields with **no defaults** (no `= ""` or `| None = None` escape hatches); optionality is reserved for credentials with a documented ambient fallback (for example AWS IAM role credentials).
+- Declare settings needed for supported operations without a safe default, including API keys and secrets, as required non-nullable Pydantic fields. Validate nonempty strings on the field and do not repeat missing-value checks in consumers. Use optional fields only when absence is supported, such as credentials with a documented ambient fallback.
 - Do not add useless config values like `DEFAULT_ENVIRONMENT`.
 - A provider's published sandbox and production hosts are constants in that provider's package, and the application's canonical environment check selects between them. Select a provider's host from that check (such as the settings object's `is_production`), never from a provider-specific environment setting or enum that restates what the deployment environment already decides.
 - Do not add helper functions like `_get_environment` when the value already exists on the shared settings object.
