@@ -1,11 +1,4 @@
 ---
-globs:
-- pyproject.toml
-- poetry.lock
-- '**/requirements*.in'
-- '**/requirements*.lock'
-- '**/requirements*.txt'
-- '**/*.py'
 alwaysApply: false
 paths:
 - pyproject.toml

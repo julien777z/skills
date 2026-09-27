@@ -116,13 +116,13 @@ alwaysApply: true
 
 ## Rule Files
 
-- Every rule file except `project.md` states guidance that holds in any repository using that
+- Every `.agents/rules/*.md` file states guidance that holds in any repository using that
   technology. Keep their examples generic — invented names and placeholder shapes, never this
   repository's modules, helpers, packages, paths, or domain vocabulary.
-- `project.md` is the only home for repository-specific guidance: the shared base classes,
+- `.agents/project.md` is the home for repository-specific guidance: the shared base classes,
   helpers, packages, and layout this repository actually defines.
 - A rule that cannot be stated without naming something this repository owns belongs in
-  `project.md`. Move it there rather than rewording it into something generic but untrue.
+  `.agents/project.md`. Move it there rather than rewording it into something generic but untrue.
 
 ## Documentation
 

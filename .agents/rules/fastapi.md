@@ -1,7 +1,5 @@
 ---
 description: Use APIRouter-based route organization, validate in models, and keep response handling consistent.
-globs:
-- '**/*.py'
 alwaysApply: false
 paths:
 - '**/*.py'

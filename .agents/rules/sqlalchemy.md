@@ -1,7 +1,5 @@
 ---
 description: Use SQLAlchemy ORM/core query builders and shared table helpers instead of manual SQL strings.
-globs:
-- '**/*.py'
 alwaysApply: false
 paths:
 - '**/*.py'

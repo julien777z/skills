@@ -1,7 +1,4 @@
 ---
-globs:
-- '**/*.ts'
-- '**/*.tsx'
 alwaysApply: false
 paths:
 - '**/*.ts'

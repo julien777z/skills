@@ -1,8 +1,4 @@
 ---
-globs:
-- '**/*.ts'
-- '**/*.tsx'
-- biome.json
 alwaysApply: false
 paths:
 - '**/*.ts'
