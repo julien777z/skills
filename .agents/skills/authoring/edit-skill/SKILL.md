@@ -181,16 +181,15 @@ outcome, because silence reads as the guidance having been fixed.
    guidance the change replaces.
    Step 6's review of an altered example response is the one question this delivery puts to the
    user.
-   1. **Branch and commit.** Put it on the agent-configuration branch already in flight when one is
-      open; otherwise branch from the freshly fetched default branch. Commit only the `.agents`
-      files, and never a provider mirror, then open a pull request carrying
-      nothing else. None of that waits to be asked: the decision was made when the edit was
-      requested, and a pull request left open keeps every later session working from the guidance
-      this change replaced. A source fix required by step 3 never shares this pull request, because
-      the guidance pull request has explicit merge guidance and the source fix does not. It goes
-      into an existing source-code branch when its pull request is open, or onto a branch off the
-      freshly fetched default branch when no source-code pull request is open. Never route source
-      files into the agent-configuration branch.
+   1. **Branch and commit.** When the session already has an open pull request in the repository
+      being edited, the edit goes onto that branch, under the GitHub rule's one pull request per
+      repository per session; the pull request then carries source as well as guidance, merges only
+      on the user's authorization, and the rest of this delivery still runs before it is reported.
+      Otherwise branch from the freshly fetched default branch, commit only the `.agents` files, and
+      never a provider mirror, and open a pull request. None of that waits to be asked: the decision
+      was made when the edit was requested, and a pull request left open keeps every later session
+      working from the guidance this change replaced. A source fix required by step 3 in the same
+      repository joins that pull request.
    2. **Run `validate_sources.py`**, which sits under `scripts/` beside this skill, before the pull request opens, and again before it
       merges when the branch changed since. Nothing on a pull request runs the sync: the workflow
       runs on the default branch after the merge, so a file it refuses is refused once every session
