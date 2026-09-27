@@ -1,4 +1,5 @@
 ---
+description: Read when adding or changing HTTP clients, provider SDK calls, internal service requests, retries, authentication headers, or response parsing in Python.
 alwaysApply: false
 paths:
 - '**/*.py'

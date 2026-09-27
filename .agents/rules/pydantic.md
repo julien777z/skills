@@ -1,4 +1,5 @@
 ---
+description: Read when defining Pydantic models or settings, validating external data, constructing typed payloads, or changing serialization and field behavior.
 alwaysApply: false
 paths:
 - '**/*.py'

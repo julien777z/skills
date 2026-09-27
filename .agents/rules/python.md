@@ -1,5 +1,5 @@
 ---
-description: Follow modern Python typing, import, formatting, error handling, and maintainability conventions.
+description: Read when editing or reviewing Python code. Covers typing, imports, module boundaries, configuration, runtime data, errors, logging, and documentation.
 alwaysApply: false
 paths:
 - '**/*.py'

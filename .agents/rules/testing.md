@@ -1,4 +1,5 @@
 ---
+description: Read when adding or changing tests, fixtures, test data, mocks, assertions, test configuration, or environment-dependent checks.
 alwaysApply: false
 paths:
 - '**/tests/**'

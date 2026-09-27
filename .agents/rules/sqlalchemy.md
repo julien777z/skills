@@ -1,5 +1,5 @@
 ---
-description: Use SQLAlchemy ORM/core query builders and shared table helpers instead of manual SQL strings.
+description: Read when defining SQLAlchemy tables and relationships, changing queries, or handling sessions, transactions, PostgreSQL types, and time values.
 alwaysApply: false
 paths:
 - '**/*.py'

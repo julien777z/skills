@@ -1,4 +1,5 @@
 ---
+description: Read when changing Python project configuration, Poetry dependencies, lockfiles, requirements files, or the Python test environment.
 alwaysApply: false
 paths:
 - pyproject.toml

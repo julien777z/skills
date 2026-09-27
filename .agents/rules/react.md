@@ -1,4 +1,5 @@
 ---
+description: Read when building or changing React components, hooks, state, rendering, layouts, interface copy, or Next.js App Router surfaces.
 alwaysApply: false
 paths:
 - '**/*.ts'
