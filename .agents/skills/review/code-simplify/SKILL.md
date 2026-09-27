@@ -58,7 +58,6 @@ every hit as a finding ahead of all others, with the remedy the rubric names:
    belongs in `config.py` or `config/`; registries, manifests, policies, provider payloads, and
    response schemas remain models. Never move a model into operational code merely to eliminate a
    one-symbol declarative module.
-
 5. **A typed parameter built as a dict** — an annotation on a dict literal, `name: SomeTypedDict = {`
    or `params: sdk.params.X = {`, and a bare dict passed where an SDK or repository signature names a
    `TypedDict`, at any nesting level. Each hit is rewritten as the constructor call

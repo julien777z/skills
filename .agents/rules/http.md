@@ -8,7 +8,7 @@ paths:
 
 # HTTP Rules
 
-- Call a third-party provider through its official SDK when one exists. The repository's shared HTTP helper is for providers without one; never hand-roll requests to a provider whose SDK covers them.
+- Call a third-party provider through its official SDK when one exists. Hand-rolled requests re-declare the provider's endpoints, authentication, request and response shapes, and error format, all of which the SDK already owns and keeps current. The repository's shared HTTP helper is for providers without one; never hand-roll requests to a provider whose SDK covers them.
 - Prefer the repository's shared HTTP helper or client abstraction over spawning ad-hoc clients deep in application code.
 - If the project already centralizes retries, auth headers, or response parsing, reuse that shared layer instead of reimplementing it per call site.
 - Keep raw `response.json()` parsing at the boundary layer; do not scatter transport parsing logic across core business logic.

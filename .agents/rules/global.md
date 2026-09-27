@@ -94,6 +94,7 @@ alwaysApply: true
 
 ## Live Deployment Validation
 
+- **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. Deployed and shared remote environments are not local; the rules below govern them.
 - Treat create, update, and delete requests against a live deployment as data mutations, not health
   checks. Run them only against a target that the repository explicitly designates for mutation
   testing; when no such target exists, live smoke testing is read-only.

@@ -228,12 +228,10 @@ def create_order(order_fixture, customer_fixture, create_customer):
 - Choosing which tiers to run is not the author's call. Do not skip a tier because it looks unaffected, runs slowly, or needs services started — start them. If a tier genuinely cannot run, name it and say why alongside the result, because a result reported without that caveat claims coverage that was never achieved.
 - Every directory holding tests must be reachable from a runner target, and a test should assert that correspondence. A tier that no target selects is a tier nothing reports on.
 
-- If tests cannot be run locally (for example, missing dependencies, Docker not available, or environment issues), do NOT guess what the issue is. Ask the user for the error logs instead of speculating.
 - When CI tests fail and you cannot access the logs directly, ask the user to provide the failure output before attempting fixes.
 
 ## Environments
 
-- **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. Deployed and shared remote environments are not local and stay governed by their own rules.
 - A cloud workspace snapshot restores files, not running processes. A failing `docker info` at session start means the daemon may need to be started; it does not by itself prove Docker is unavailable.
 - Prefer the repository's service-startup helper or skill. Otherwise start the daemon explicitly and wait for `docker info` to succeed:
 

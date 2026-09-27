@@ -74,6 +74,9 @@ function Card({ title, subtitle = "", className = "" }: CardProps) {
   warns the reader about their own ordinary action reads as suspicion. A person submitting a record on
   behalf of someone in their own workspace, who has already ticked the box that says they may, does
   not need to be told that the action is logged or attributed to them.
+- **Name a surface for what it holds, never for the reader's role in it.** A reader knows which side
+  of a transaction they are on, so "Payer Accounts", "Payout Methods" or "Your Seller Profile" labels
+  them rather than the thing; the heading is "Bank Accounts", "Profile", whatever the surface holds.
 - **Never state what the reader takes for granted.** That data is encrypted, stored securely, kept
   private, or handled carefully is assumed of any product in this category; saying it out loud plants
   the doubt it was meant to settle. Mention a property only where the reader has to act on it or

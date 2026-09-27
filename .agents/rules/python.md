@@ -189,7 +189,7 @@ config = third_party_package.Config(
 ## Configuration
 
 - Define each configuration owner's settings in one descriptively named `BaseSettings` class such as `ActionConfig` in its `config.py`. A repository may have distinct application, worker, or script configuration owners; do not combine unrelated settings merely to produce one repository-wide class. Keep each config module declarative: instantiate its settings once at that owner's composition boundary, then pass or import that validated object wherever settings are needed.
-- Put a value in that settings class when, and only when, its owner would reasonably change it between deployments, environments, or releases: credentials, hosts and endpoints, identities, feature switches, and tool or CLI versions expected to move. Implementation tuning — timeouts, retry counts, backoff and poll intervals, batch sizes — is a typed module constant beside the code that uses it, even though a deployment could in principle override it.
+- Put a value in that settings class when, and only when, its owner would reasonably change it between deployments, environments, or releases: credentials, hosts and endpoints the deployment itself chooses, identities, feature switches, and tool or CLI versions expected to move. Implementation tuning — timeouts, retry counts, backoff and poll intervals, batch sizes — is a typed module constant beside the code that uses it, even though a deployment could in principle override it.
 - Give configurable values typed defaults when the repository has a safe default, and let `pydantic-settings` provide namespaced environment overrides.
 - Use `TypedDict` only for static structured data that is not configuration.
 
@@ -210,7 +210,7 @@ APPLICATION_CONFIG = ActionConfig()
 
 - API keys and secrets must be **required** config fields with **no defaults** (no `= ""` or `| None = None` escape hatches); optionality is reserved for credentials with a documented ambient fallback (for example AWS IAM role credentials).
 - Do not add useless config values like `DEFAULT_ENVIRONMENT`.
-- Select a provider's sandbox or production host from the application's canonical environment check (such as the settings object's `is_production`), never from a provider-specific environment setting or enum that restates what the deployment environment already decides.
+- A provider's published sandbox and production hosts are constants in that provider's package, and the application's canonical environment check selects between them. Select a provider's host from that check (such as the settings object's `is_production`), never from a provider-specific environment setting or enum that restates what the deployment environment already decides.
 - Do not add helper functions like `_get_environment` when the value already exists on the shared settings object.
 - Do not read environment variables directly with `os.getenv`, `os.environ`, or `os.environ.get` in application/service/library code.
 - Always read environment-backed values from the typed settings object so defaults, validation, and normalization live in one place.
@@ -465,7 +465,7 @@ return next(
 
 ## External APIs and Errors
 
-- **Call a third-party provider through its official SDK when one exists.** Hand-rolled HTTP requests re-declare the provider's endpoints, authentication, request and response shapes, and error format, all of which the SDK already owns and keeps current. The repository's shared HTTP helper is for providers that publish no SDK. Inject the SDK client like any other client, run a synchronous SDK off the event loop, catch its documented exception types, and build its requests with its own typed request classes.
+- Run a synchronous SDK's calls off the event loop (for example with `asyncio.to_thread`) when the application is asynchronous.
 - Verify SDK method availability before coding integrations:
   - Prefer checking official docs with `@Browser`, or
   - Inspect the installed SDK directly (for example with Python `inspect`/`hasattr`) in the current environment.
