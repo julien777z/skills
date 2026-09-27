@@ -99,6 +99,12 @@ Then open a **draft** PR against the remote default branch when no open PR alrea
 
 The review target is the complete `merge-base(default, HEAD)..HEAD` diff plus any uncommitted intended changes — every commit on the branch, not only the latest push. If that is empty, stop and report there is nothing to review. Record the PR number, base branch, head branch, and full head SHA, or the ref range.
 
+In every review round, give each dispatched reviewer and validator the merge-base SHA, current head
+SHA, complete pull-request diff, and complete changed-file list. When a previous reviewed head
+exists, also give the diff from that head to the current head so recent fixes receive focused
+attention. That incremental diff supplements the full pull-request target; never substitute the
+latest commit or fix diff for it.
+
 Classify whether the target is non-runtime before choosing validation. A target is non-runtime when its complete diff does not change executable source, package or dependency definitions, tests, runtime configuration, CI workflows, generated runtime artifacts, or another contract that changes executed behavior. This is semantic rather than path-based: agent instructions, documentation, policies, static metadata, and non-executable configuration can live anywhere. Validate a non-runtime target with the checks appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests or query or wait for CI.
 
 When the target is a PR, check eligibility and stop when any of these hold:
@@ -198,6 +204,11 @@ Do not classify validity by file extension or category. A lock file can change e
 ## Step 4 — Validate findings
 
 Deduplicate findings describing the same underlying issue, then validate each one against the diff as `references/rubric.md` — Validation directs: validators are told to refute, every finding resolves to CONFIRMED or refuted, the rubric lists what is dropped outright, and the one undecidable case — intent that exists nowhere in the repository — goes to the user in the shape step 8 uses for an ambiguous fix.
+
+Require each validator to state the full pull-request range it inspected and, on a later round, the
+incremental range it checked for the latest fixes. Reject a validation based only on the latest
+commit, even if the finding sits in that commit; rerun it against the complete target before using
+its verdict.
 
 ## Step 5 — Rate and rank
 
