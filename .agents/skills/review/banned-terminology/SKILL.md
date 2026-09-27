@@ -62,15 +62,11 @@ Renaming a single function, class, or variable is an ordinary edit and does not 
 3. **Sort the inventory by what each identifier does**, then rename per behavior.
 
 4. **Leave third-party names alone, and generated names are not third-party.** A standard-library
-   or SDK identifier a dependency declares (`asyncio.ensure_future`, a `json` keyword argument) is
-   not ours to rename. A name emitted by a code generator this repository runs is ours, whoever
-   wrote the generator: a protocol compiler's or client generator's naming convention makes the file
-   generated, not external. Make the generation step emit a repository-owned name for it — through
-   its own template, or an alias it writes beside the output — and point every reference at that
-   name, so the term never appears where the code names things. That the generator's naming is
-   fixed, not configurable, or a standard convention, or that the step writes no such name yet, is
-   why the rename adds one, never a reason to keep the term. Say in the pull request which external
-   names still carry the word.
+   or SDK identifier carrying the term (`asyncio.ensure_future`, a `json` keyword argument) is not
+   ours to rename. A name this repository's own code generation emits is: the generation step also
+   emits a repository-owned name for it, and every reference reads that name, so the term never
+   appears where the code names things. Say in the pull request which external names still carry
+   the word.
 
 5. **Rename every usage the term reaches** — identifiers, docstrings, comments, test names, fixture
    names, the wire contracts that carry them, and the examples inside rule files.
