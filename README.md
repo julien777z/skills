@@ -52,13 +52,6 @@ links at an installed path are reported before any links change.
 
 The [rule reconciliation notes](docs/rule-reconciliation.md) record which wording was chosen from divergent consumer copies.
 
-## Reference Collections
-
-[`awesome-design-md`](.agents/resources/awesome-design-md/) contains the design references from
-[VoltAgent/awesome-design-md](https://github.com/VoltAgent/awesome-design-md). The collection is
-available at `resources/awesome-design-md/` in each supported user-level agent root. It is a
-reference collection, so it has no skill command or provider skill mirror.
-
 ## Skills
 
 The two groups differ in who starts a skill: a user-invoked one carries

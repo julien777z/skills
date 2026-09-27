@@ -18,13 +18,6 @@
       "update_on_sync": true
     },
     {
-      "kind": "directory",
-      "name": "awesome-design-md",
-      "repo": "VoltAgent/awesome-design-md",
-      "source_path": "design-md",
-      "update_on_sync": true
-    },
-    {
       "kind": "skill",
       "name": "clerk-nextjs-patterns",
       "repo": "clerk/skills",
