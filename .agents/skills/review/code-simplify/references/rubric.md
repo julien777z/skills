@@ -410,7 +410,7 @@ For every meaningful change, ask:
 
 ## What to Flag Aggressively
 
-**Run four greps over the diff's added lines before reading for anything else, and report every hit
+**Run five greps over the diff's added lines before reading for anything else, and report every hit
 as a finding:**
 
 1. A subscript whose key is a model, class or `type(...)` — `FORM_TYPES[record_model]`,
@@ -433,8 +433,13 @@ as a finding:**
    in `config.py` or `config/`; registries, manifests, policies, provider payloads, and response
    schemas remain models. Never use operational code as the destination merely to avoid a
    one-symbol declarative module.
+5. A dict literal carrying a `TypedDict` annotation — `name: SomeTypedDict = {`,
+   `params: sdk.params.X = {`, `options: sdk.RequestOptions = {` — and a bare dict passed where an SDK
+   or repository signature names a `TypedDict`, at any nesting level. Each hit is a typed value built
+   as an untyped one; the remedy is the constructor call, `sdk.params.X(...)`, with tests asserting
+   the same way.
 
-A report that declares the diff clean without listing these four greps and their hits has not run
+A report that declares the diff clean without listing these five greps and their hits has not run
 them.
 
 Escalate findings when you see:
@@ -506,6 +511,19 @@ Escalate findings when you see:
 - A repository-wide fact — the company's legal name, its support address, its postal address, the
   product name — kept as loose strings inside one consumer, such as an email renderer or a document
   builder, instead of one typed model in the shared package that every consumer reads.
+- Hand-rolled HTTP requests to a third-party provider that publishes an official SDK: request and
+  response models, header authentication and error parsing written for endpoints the SDK already
+  covers. The remedy is the SDK behind an injected client, with the hand-written request models
+  deleted. A shared HTTP helper does not make the hand-rolled call acceptable; it is for providers
+  without an SDK.
+- A declaration describing one external provider — an enum of its products or modes, its request
+  or response models, its host constants — placed in a service-wide `core/` or shared module. The
+  remedy is the provider's own package.
+- A provider-specific environment setting — `PROVIDER_ENV`, a sandbox flag, an environment enum for
+  one provider — that restates what the application's canonical environment check already decides.
+  The remedy deletes the setting and its enum and derives the provider's host from the canonical
+  check (`is_production`, `is_staging`) on the settings object. Moving the setting into a
+  provider-owned config class keeps the defect; it is not the remedy.
 
 ## Preferred Remedies
 

@@ -41,7 +41,7 @@ earlier question about the same item. It receives four things and nothing else:
    record;
 4. exactly one question from the list below.
 
-**Its first act on any diff is four greps.** Before reading the diff for anything else, grep its added lines for four shapes and list
+**Its first act on any diff is five greps.** Before reading the diff for anything else, grep its added lines for five shapes and list
 every hit as a finding ahead of all others, with the remedy the rubric names:
 
 1. **A reader reaching through a table keyed by a model, class or type for a fact about the key**
@@ -63,8 +63,12 @@ every hit as a finding ahead of all others, with the remedy the rubric names:
    belongs in `config.py` or `config/`; registries, manifests, policies, provider payloads, and
    response schemas remain models. Never move a model into operational code merely to eliminate a
    one-symbol declarative module.
+5. **A typed parameter built as a dict** — an annotation on a dict literal, `name: SomeTypedDict = {`
+   or `params: sdk.params.X = {`, and a bare dict passed where an SDK or repository signature names a
+   `TypedDict`, at any nesting level. Each hit is rewritten as the constructor call
+   (`sdk.params.X(...)`, `sdk.RequestOptions(...)`), with tests asserting the same way.
 
-A report that lists no hit for any of the four greps says so in those words.
+A report that lists no hit for any of the five greps says so in those words.
 
 It returns the verdict its question defines, shaped as `references/rubric.md` — What A Verdict Names
 requires.
