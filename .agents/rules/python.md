@@ -189,7 +189,7 @@ config = third_party_package.Config(
 ## Configuration
 
 - Define each configuration owner's settings in one descriptively named `BaseSettings` class such as `ActionConfig` in its `config.py`. A repository may have distinct application, worker, or script configuration owners; do not combine unrelated settings merely to produce one repository-wide class. Keep each config module declarative: instantiate its settings once at that owner's composition boundary, then pass or import that validated object wherever settings are needed.
-- Put environment-backed, deployment-tunable, or intentionally overridable values in that settings class. This includes tool and CLI versions that are likely to change in future releases; do not freeze them as module constants.
+- Put a value in that settings class only when its owner would reasonably change it between deployments, environments, or releases: credentials, hosts and endpoints, identities, feature switches, and tool or CLI versions expected to move. Implementation tuning — timeouts, retry counts, backoff and poll intervals, batch sizes — is a typed module constant beside the code that uses it, even though a deployment could in principle override it.
 - Give configurable values typed defaults when the repository has a safe default, and let `pydantic-settings` provide namespaced environment overrides.
 - Use `TypedDict` only for static structured data that is not configuration.
 
@@ -201,7 +201,7 @@ class ActionConfig(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="APPLICATION_", frozen=True)
 
     tool_cli_version: str = "1.2.3"
-    request_timeout_seconds: int = 30
+    service_base_url: str = "https://api.example.com"
 
 
 # application.py or another composition boundary
@@ -209,7 +209,6 @@ ACTION_CONFIG = ActionConfig()
 ```
 
 - API keys and secrets must be **required** config fields with **no defaults** (no `= ""` or `| None = None` escape hatches); optionality is reserved for credentials with a documented ambient fallback (for example AWS IAM role credentials).
-- Avoid large piles of module-level constants. If a value is genuinely operator-tunable, add it to the project's central config model or settings layer.
 - Do not add useless config values like `DEFAULT_ENVIRONMENT`.
 - Do not add helper functions like `_get_environment` when the value already exists on the shared settings object.
 - Do not read environment variables directly with `os.getenv`, `os.environ`, or `os.environ.get` in application/service/library code.
@@ -222,7 +221,7 @@ ACTION_CONFIG = ActionConfig()
 - Place module-level constants and enums (including type aliases like `AllowedApiClient`) directly after imports.
 - When assembling a structured string from variable parts, define one named template and use `str.format(...)` rather than composing separate prefix and suffix constants. Use native template strings only when they are supported across the project's full Python version range.
 - Use `Final[T]` from `typing` and UPPER_SNAKE_CASE names for constants.
-- Reserve constants for values that are genuinely invariant, such as compiled regexes, stable paths, or implementation sentinels. Values likely to change between releases or deployments belong in the typed settings class even when they have a default.
+- Keep a value a constant unless its owner would reasonably change it between deployments or releases, which the Configuration section sends to settings. Compiled regexes, stable paths, sentinels, and implementation tuning such as a timeout or retry count are constants.
 - Compile regular expressions once at module scope and call methods on the compiled pattern instead of passing pattern strings repeatedly to `re.match`, `re.search`, `re.fullmatch`, or `re.sub`.
 - **When several constants form one family of the same shape** — parallel compiled patterns, per-kind values, same-shaped lookup entries — define one mapping keyed by an enum or other typed key instead of a pile of individually named constants, and iterate or index that mapping at the use site. A few unrelated constants are fine as standalone names; a family of related ones is a data structure.
 
@@ -259,7 +258,7 @@ Avoid trivial wrapper functions that add no value. A function that just returns 
 - Return an enum for an outcome with more than two states or states whose names carry meaning. Never return bare integers as application status codes.
 - A subprocess return code is an external value and may remain an `int` at that boundary. Convert it into the domain outcome enum before carrying it through the application.
 - Do not rebind function arguments to a second local name when the value is unchanged (for example, `profile = obj`); name the parameter correctly at the signature instead.
-- Do not add passthrough function or method parameters when every call site provides the value from one shared source (for example, forwarding `timeout_seconds` from `APPLICATION_CONFIG` in every call); read from that source directly where the value is used.
+- Do not add passthrough function or method parameters when every call site provides the value from one shared source (for example, forwarding `service_base_url` from `APPLICATION_CONFIG` in every call); read from that source directly where the value is used.
 - Give domain-specific parsers and converters domain-qualified names so imports from multiple domains cannot silently shadow one another. Keep unqualified names only for genuinely domain-independent transformations.
 - **Name a guard for the condition it asserts, not for the outcome it prevents.** A function that
   raises when an invariant is broken is named `assert_<invariant>`, so the call site reads as the

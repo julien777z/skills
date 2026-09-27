@@ -319,12 +319,14 @@ Apply the baseline prompt above, plus these explicit review rules:
      annotated like any other binding. An untyped module-level name is a finding on its own,
      whatever it holds and however obvious the value looks. Grep the diff for added module-level
      assignments without an annotation rather than hoping to notice them while reading.
-   - Classify every added constant by whether operators, repositories, or releases may reasonably
-     change it. Only true invariants stay module constants: a provider API root fixed by an external
-     protocol may be invariant, while credentials, proposal substitutions, repository identities,
-     workflow references, timeouts, deployment addresses, and other tunable values belong on the
-     owning typed settings model even when they have safe defaults. Capitalization and `Final` do
-     not make a configurable value invariant.
+   - Classify every added constant and settings field by whether its owner would reasonably change
+     it between deployments, environments, or releases. Credentials, proposal substitutions,
+     repository identities, workflow references, and deployment addresses belong on the owning
+     typed settings model; a provider API root fixed by an external protocol, and implementation
+     tuning such as a timeout, retry count, backoff, or poll interval, stay typed module constants.
+     A settings field holding tuning is the same finding as a constant holding configuration:
+     capitalization and `Final` do not make configuration invariant, and a safe default does not
+     make tuning configuration.
    - Every data-holding class lives in a model-owned file or package. Only a Pydantic `BaseSettings`
      class is configuration; registries, manifests, policies, provider payloads, and response
      schemas remain models.
