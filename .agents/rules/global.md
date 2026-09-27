@@ -131,6 +131,9 @@ alwaysApply: true
 - Git history is the record of what changed; documentation describes what exists now.
 - The same applies to code comments and docstrings: no "formerly", "replaces", or "kept for
   backwards compatibility" notes.
+- When an environment has a domain name, refer to it by that exact domain name in guidance and
+  user-facing text. Account owners, provider projects, and tailnet labels name distinct resources,
+  not the environment.
 
 ## Replacement Contracts
 
