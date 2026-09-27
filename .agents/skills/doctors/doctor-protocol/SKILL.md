@@ -123,8 +123,7 @@ never say where they go.
 
 That holds for a group large enough to deserve its own review, too. Size is an argument for
 sequencing it late and describing it clearly in the pull request, not for a second branch. Only the
-user asking to hold work apart, and the boundary the global rules draw around agent configuration,
-put an entry anywhere else.
+user asking to hold work apart puts an entry anywhere else.
 
 Then invoke `plan-change`. The audit and its ledger are read-only; neither authorizes an edit. A
 user decision a disposition produces — a test to cut, a flag whose removal changes behavior — is

@@ -70,8 +70,8 @@ the intent's removed shapes. The gate may flag how the work is implemented; it m
 solely because it widened the pull request, recommend splitting it, or decide where it should land.
 Repair a flag in the pull request under review.
 
-The independent pull requests already required for an admitted deferral, a change in another
-repository, or agent configuration remain exceptions. Separately
+The independent pull requests already required for an admitted deferral or a change in another
+repository remain exceptions. Separately
 requested work after the CR run completes remains outside this run's authorization. None of those
 exceptions permits moving active-run fixes out of the pull request under review.
 
