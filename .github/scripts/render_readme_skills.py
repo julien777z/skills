@@ -13,18 +13,13 @@ BOT_EMAIL: Final[str] = "github-actions[bot]@users.noreply.github.com"
 START_MARKER: Final[str] = "<!-- skills:start -->"
 END_MARKER: Final[str] = "<!-- skills:end -->"
 FRONT_MATTER_KEY_PATTERN: Final[re.Pattern[str]] = re.compile(r"^([A-Za-z][\w-]*):\s*(.*)$")
-SENTENCE_PATTERN: Final[re.Pattern[str]] = re.compile(r"(?<=[.!?])\s+")
-# Long enough that a routing opener such as "Always run this." cannot stand as the summary.
-MINIMUM_SUMMARY_LENGTH: Final[int] = 40
 
 
 class Skill(NamedTuple):
     """One skill's listing entry, read from its front matter."""
 
-    slug: str
     path: Path
     name: str
-    description: str
     user_invoked_only: bool
 
 
@@ -81,18 +76,14 @@ def read_skills() -> list[Skill]:
 
     for skill_file in sorted(SKILLS_DIRECTORY.glob("**/SKILL.md")):
         front_matter = parse_front_matter(skill_file)
-        slug = skill_file.parent.name
-
         for required in ("name", "description"):
             if not front_matter.get(required):
                 raise ValueError(f"{skill_file} front matter has no {required}")
 
         skills.append(
             Skill(
-                slug=slug,
                 path=skill_file,
                 name=front_matter["name"],
-                description=front_matter["description"],
                 user_invoked_only=front_matter.get("disable-model-invocation") == "true",
             )
         )
@@ -103,32 +94,17 @@ def read_skills() -> list[Skill]:
     return sorted(skills, key=lambda skill: skill.name)
 
 
-def summarize(description: str) -> str:
-    """Return the opening sentences of a description, up to the first that says what the skill does."""
-
-    summary = ""
-
-    for sentence in SENTENCE_PATTERN.split(description):
-        summary = f"{summary} {sentence}".strip()
-
-        if len(summary) >= MINIMUM_SUMMARY_LENGTH:
-            break
-
-    return summary
-
-
-def render_table(skills: list[Skill]) -> str:
-    """Render one group of skills as a Markdown table."""
+def render_links(skills: list[Skill]) -> str:
+    """Render compact links; each skill file carries its full description."""
 
     if not skills:
         return "_None._"
 
-    rows = "\n".join(
-        f"| [`{skill.name}`]({skill.path}) | {summarize(skill.description)} |"
-        for skill in skills
+    links = [f"[`{skill.name}`]({skill.path})" for skill in skills]
+    return "\n".join(
+        f"- {' · '.join(links[index:index + 4])}"
+        for index in range(0, len(links), 4)
     )
-
-    return f"| Skill | What it does |\n|---|---|\n{rows}"
 
 
 def render_section(skills: list[Skill]) -> str:
@@ -145,13 +121,13 @@ def render_section(skills: list[Skill]) -> str:
             "",
             "These run only when you ask for them by name, such as `/refactor`.",
             "",
-            render_table(user_invoked),
+            render_links(user_invoked),
             "",
             "### Model-Invoked",
             "",
             "An agent reaches for these on its own whenever the work calls for them.",
             "",
-            render_table(model_invoked),
+            render_links(model_invoked),
             "",
             END_MARKER,
         ]

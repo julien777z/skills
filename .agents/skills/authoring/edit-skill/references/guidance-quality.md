@@ -71,6 +71,9 @@ fire the skill, it works. If the remainder names no situation, it was never a tr
 verdict, a draft — carries an `## Output` section as its last section before any `## Guardrails`,
 holding a hard-coded Markdown template the response is filled into: fixed headings, fixed list
 shapes, and a stated fallback for the empty case, so two runs on the same input read the same.
+Because every user-facing response goes through `i-have-adhd` (global rule **User-Facing Output**),
+the template names the facts a response carries and sends per-item detail past five items to a
+linked file; a word limit it sets binds only while `i-have-adhd` is active.
 A skill whose result is edits, a merge, a deployment, or a running system has no template to
 hold, and carries instead the report line its delivery step owes. The test is whether two
 correct runs should read the same shape; write the template when they should, and leave it out

@@ -6,7 +6,9 @@ description: Keep repository publishing metadata generic and isolated. Use when 
 # Generic Publishing Metadata
 
 - Keep branch names, commit messages, pull request titles, and pull request bodies generic without requiring them to repeat one phrase.
-- Choose independent wording for each artifact and commit so each message describes its change category without exposing domain names, sensitive identifiers, or repository-specific context.
+- Choose independent wording for each artifact and commit so each message describes its change
+  category without exposing sensitive identifiers or unrelated repository context. Omit environment
+  names when unnecessary; when one must be named, use its exact domain name.
   Examples: `Fixes action button`, `Fixes UI issue`, or `Updates tests`.
 - Use the repository's required branch prefix with a slug derived from a generic description of the overall change.
   Example: `agent/fixes-ui-bugs`, where `agent/` stands for the repository-required prefix.
