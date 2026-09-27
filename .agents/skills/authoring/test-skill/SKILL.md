@@ -97,8 +97,8 @@ a code change is tested: against the case that motivated it, with the change and
    delivery's call, not this skill's. A loop
    that will not close within the bound usually means the miss in step 1 was misstated; say so when
    it is.
-9. **Report** the table in chat, as `## Output` shapes it, with each run's quoted evidence in one
-   file in the session's scratch directory, linked from the report. Put one sentence in the pull
+9. **Report** the table itself in chat, as `## Output` shapes it; only the quoted evidence behind
+   each `pass` goes to one file in the session's scratch directory, linked from the report. Put one sentence in the pull
    request description naming the miss the edit closes. The table is evidence and does not belong
    in the description.
 
