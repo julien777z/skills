@@ -208,7 +208,7 @@ class ActionConfig(BaseSettings):
 APPLICATION_CONFIG = ActionConfig()
 ```
 
-- API keys and secrets must be **required** config fields with **no defaults** (no `= ""` or `| None = None` escape hatches); optionality is reserved for credentials with a documented ambient fallback (for example AWS IAM role credentials).
+- Declare settings needed for supported operations without a safe default, including API keys and secrets, as required non-nullable Pydantic fields. Validate nonempty strings on the field and do not repeat missing-value checks in consumers. Use optional fields only when absence is supported, such as credentials with a documented ambient fallback.
 - Do not add useless config values like `DEFAULT_ENVIRONMENT`.
 - A provider's published sandbox and production hosts are constants in that provider's package, and the application's canonical environment check selects between them. Select a provider's host from that check (such as the settings object's `is_production`), never from a provider-specific environment setting or enum that restates what the deployment environment already decides.
 - Do not add helper functions like `_get_environment` when the value already exists on the shared settings object.

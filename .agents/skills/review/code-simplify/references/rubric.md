@@ -514,8 +514,8 @@ Escalate findings when you see:
 - Hand-rolled HTTP requests to a third-party provider that publishes an official SDK: request and
   response models, header authentication and error parsing written for endpoints the SDK already
   covers. The remedy is the SDK behind an injected client, with the hand-written request models
-  deleted. A shared HTTP helper does not make the hand-rolled call acceptable; it is for providers
-  without an SDK.
+  deleted. A shared HTTP helper serves required endpoints or protocol features that the SDK does
+  not cover; its presence does not justify bypassing covered SDK operations.
 - A declaration describing one external provider — an enum of its products or modes, its request
   or response models, its host constants — placed in a service-wide `core/` or shared module. The
   remedy is the provider's own package.
