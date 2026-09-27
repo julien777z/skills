@@ -88,12 +88,12 @@ outcome, because silence reads as the guidance having been fixed.
 4. Resolve which repository owns the target, then its path inside that repository's `.agents`.
    - **Shared or repository-owned.** Generic skills live in one shared skills repository and reach
      every session through a user-level skill root; repository-specific skills, every rule, and
-     repository-specific agents live in the repository they describe. An existing skill is shared
-     when the entry the user-level root holds for it (`~/.claude/skills/<name>`,
-     `~/.codex/skills/<name>`, `~/.cursor/skills/<name>`) is a symlink into a checkout of the skills
-     repository — read the link — and repository-owned when the current repository holds it under
-     `.agents/skills/`, at any depth. A new skill goes to the skills repository when it reads generically
-     once written and to the current repository when its correctness depends on a local contract.
+     repository-specific agents live in the repository they describe. Inspect a skill's content and
+     dependencies to decide ownership, including for an existing skill: a user-level symlink shows
+     where it is installed, not where it belongs. A new or existing skill goes to the skills
+     repository only when it reads generically without losing required behavior. If making it
+     generic would remove or misstate guidance it needs to give, put it in the repository it
+     describes under `.agents/skills/`, at any depth; move a misplaced existing skill there.
      An agent definition that a shared skill runs on goes with that skill; every other agent, and
      every rule, is repository-owned.
    - A shared target is edited in the skills repository's checkout — the one the user-level link
@@ -162,7 +162,7 @@ outcome, because silence reads as the guidance having been fixed.
    - Before delivery, audit each edited skill's complete package and its affected callers: list every instruction to apply or invoke another skill, compare those names with the owning entry point's `## Dependencies`, and resolve missing, stale, or path-based entries. Check references separately for hidden invocations and cross-skill filesystem links; move the invocation to `SKILL.md` and refer to the other package by skill name. A passing source mirror does not replace this audit.
    - Do not embed product-specific file paths or copy current application code into reusable skills; those go stale when files move or refactors land. Prefer generic placeholders (for example `services/<name>/...`), short pattern descriptions, or minimal invented examples that are not tied to live paths or current line-level code.
    - **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract, and where a skill genuinely needs one local fact, take it from the repository's `project.md` or a setting rather than baking it in. Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
-   - **Generic ownership is determined by the skill's name and purpose.** Only a product-named skill that owns that product contract may carry its product facts. Language, platform, framework, and workflow skills — including Luau — must work across products; put their repository commands, identities, hosts, packages, and fixtures in project rules or a domain-specific skill.
+   - **Generic ownership is determined by what the skill must do, not its name.** A generically named skill can depend on one repository's contract; keep that skill in the repository and its facts in project guidance. Language, platform, framework, and workflow skills that truly apply across products remain shared and read repository commands, identities, hosts, packages, and fixtures from project guidance rather than embedding them.
    - Keep topic-specific restrictions with their topic. Keep an existing `## Guardrails` section at the bottom, and create one only for cross-cutting safety or preservation constraints.
 
 6. Multi-target behavior.
