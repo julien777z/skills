@@ -1,8 +1,6 @@
 ---
 globs:
 - '**/*.py'
-paths:
-- '**/*.py'
 alwaysApply: false
 ---
 

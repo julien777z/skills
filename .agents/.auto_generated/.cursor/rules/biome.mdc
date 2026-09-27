@@ -3,10 +3,6 @@ globs:
 - '**/*.ts'
 - '**/*.tsx'
 - biome.json
-paths:
-- '**/*.ts'
-- '**/*.tsx'
-- biome.json
 alwaysApply: false
 ---
 

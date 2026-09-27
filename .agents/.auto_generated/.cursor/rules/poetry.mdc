@@ -6,13 +6,6 @@ globs:
 - '**/requirements*.lock'
 - '**/requirements*.txt'
 - '**/*.py'
-paths:
-- pyproject.toml
-- poetry.lock
-- '**/requirements*.in'
-- '**/requirements*.lock'
-- '**/requirements*.txt'
-- '**/*.py'
 alwaysApply: false
 ---
 

@@ -3,10 +3,6 @@ globs:
 - '**/tests/**'
 - '**/test_*.py'
 - '**/conftest.py'
-paths:
-- '**/tests/**'
-- '**/test_*.py'
-- '**/conftest.py'
 alwaysApply: false
 ---
 

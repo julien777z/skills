@@ -2,9 +2,6 @@
 globs:
 - '**/*.ts'
 - '**/*.tsx'
-paths:
-- '**/*.ts'
-- '**/*.tsx'
 alwaysApply: false
 ---
 
