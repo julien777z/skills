@@ -87,7 +87,7 @@ These run only when you ask for them by name, such as `/refactor`.
 | [`skill-gauntlet`](.agents/skills/authoring/skill-gauntlet/SKILL.md) | Audit installed agent skills across every visible scope, then autonomously benchmark, upgrade, retire, and install user-selected skills through isolated blind evaluations and a resumable local dashboard. |
 | [`study-games`](.agents/skills/roblox/study-games/SKILL.md) | Explicit user-invoked research of Roblox charts for the requested audience and region. |
 | [`take-over-pr`](.agents/skills/git/take-over-pr/SKILL.md) | Make a pull request's branch the working checkout so its work continues in this session. |
-| [`tests-doctor`](.agents/skills/doctors/tests-doctor/SKILL.md) | Audit and correct a test suite for consistency, redundancy, naming, runtime, coverage by test, and determinism, preferring fewer higher-quality tests. |
+| [`tests-doctor`](.agents/skills/doctors/tests-doctor/SKILL.md) | Audit and correct existing tests for contract value, redundancy, weak assertions, naming, runtime, coverage by test, and determinism. |
 
 ### Model-Invoked
 
