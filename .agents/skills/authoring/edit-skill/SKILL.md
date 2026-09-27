@@ -173,11 +173,11 @@ outcome, because silence reads as the guidance having been fixed.
    - If one request contains multiple distinct items, map each item to the best existing file or a new file within the same inferred/selected type.
    - If scope is ambiguous, ask a short follow-up before editing.
 
-7. Deliver it, in this order. Every call inside this delivery is the editor's own — a flagged
-   gate, a smoke round that would not close — made and stated in the report, because a pull
-   request confined to agent configuration has merge authorization under the GitHub rule after its
-   stated gates; this authorization does not extend to a source-fix pull request or to a release
-   workflow. A question asking for that authorization only holds every later session on the
+7. Deliver it, in this order. While the pull request carries only `.agents` files, every call
+   inside this delivery is the editor's own — a flagged gate, a smoke round that would not close —
+   made and stated in the report, because a pull request confined to agent configuration has merge
+   authorization under the GitHub rule after its stated gates; this authorization does not extend
+   to a pull request that also carries source or to a release workflow. A question asking for that authorization only holds every later session on the
    guidance the change replaces.
    Step 6's review of an altered example response is the one question this delivery puts to the
    user.
@@ -223,7 +223,8 @@ outcome, because silence reads as the guidance having been fixed.
       when the flag names a defect in the guidance, merge as it stands when it names a preference
       the rewrite already answered, or drop the item when neither holds, and state which and why in
       the report, as that skill's **Bounds** leave it to the caller for a change whose merge needs
-      no authorization.
+      no authorization. On a pull request that also carries source, a second flag escalates to the
+      user under those **Bounds** instead.
    5. **Run `test-skill`** for every skill the change adds or edits, to a passing table or the
       waiver its **When It Runs** bounds. It runs here rather than before step 3, because a round
       run against wording the simplification pass then rewrites has tested text nobody will follow.
