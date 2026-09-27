@@ -1,8 +1,8 @@
 # Framework and component practices
 
-Use React Luau and ReactRoblox for UI in new games, with one owner for each UI tree. Keep server gameplay independent from the UI framework and preserve an existing game's UI contract during unrelated work.
+Give each UI tree one owner. Keep server gameplay independent from the UI framework required by `luau`.
 
-Prefer maintained [Roblox React Lua](https://github.com/Roblox/react-lua) packages for new React projects; inspect the active package manifest before changing an existing dependency. Distinguish official packages from community forks and do not migrate frameworks during unrelated work. Install compatible pinned React/renderer versions through Wally and commit its lockfile. Generate type forwarding with the pinned [wally-package-types](https://github.com/JohnnyMorganz/wally-package-types) recipe and current Rojo sourcemap rather than manually editing generated aliases.
+Use maintained [Roblox React Lua](https://github.com/Roblox/react-lua) packages. Inspect the active package manifest and distinguish official packages from community forks. Install compatible pinned React/renderer versions through Wally and commit its lockfile. Generate type forwarding with the pinned [wally-package-types](https://github.com/JohnnyMorganz/wally-package-types) recipe and current Rojo sourcemap rather than manually editing generated aliases.
 
 Keep shared theme, controls, modal shells, and viewport adapters canonical where the UI uses them. Component props and domain data stay typed. React's `Node` and `ReactElement` types are not interchangeable in all package versions: explicit component return types and typed child dictionaries can resolve inference/variance errors without casting to `any`. Inspect the installed package types when diagnosing this.
 

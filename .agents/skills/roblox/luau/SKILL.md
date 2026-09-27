@@ -12,7 +12,7 @@ description: Apply whenever Roblox Luau source is opened, read, reviewed, create
 
 Use this skill even for reading existing Roblox Luau so proposed changes follow its ownership and contracts. Inspect the repository's current conventions and canonical implementation before editing. Reading source alone does not require changing it or running the whole validation suite. User instructions and the actual change determine scope.
 
-Read [architecture and platform contracts](references/architecture.md) when changing ownership, composition, network contracts, environment detection, persistence, or security. Use the architecture and toolchain described here for new games; preserve an existing game's authored contracts during unrelated work.
+Use the required Core/Features architecture and typed server platform ports. Use Rokit, Wally, Rojo, Blink, and `just` as the required toolchain. Use React Luau with ReactRoblox for Roblox UI. Read [architecture and platform contracts](references/architecture.md) when changing ownership, composition, network contracts, environment detection, persistence, or security, and [lint and test tooling](references/tooling.md) for commands and checks.
 
 ## Readable, focused implementation
 
@@ -34,11 +34,11 @@ Separate animation/camera completion from authoritative resolution. Missing asse
 
 ## Structured player persistence
 
-Use ProfileStore through one typed server-side owner for structured player data. Preserve session ownership, failed-load protection, cancellation during load, and save/rejoin behavior. Read [ProfileStore integration guidance](references/player-data.md) before changes. Keep an existing game's data contract intact during unrelated work.
+Use ProfileStore through one typed server-side owner for structured player data. Preserve session ownership, failed-load protection, cancellation during load, save/rejoin behavior, and released progress. Read [ProfileStore integration guidance](references/player-data.md) before changes.
 
 ## Data compatibility
 
-For new games, use versioned migrations and ProfileStore reconciliation when saved data changes. In existing games, preserve the established persistence contract and released progress. Append and test migrations for renamed, removed, split, or reinterpreted fields when the project's migration policy calls for them. A disposable development profile may be reset only when the project authorizes that operation and identifies the affected keys. Never turn a failed or unavailable DataStore read into a default profile save.
+Use versioned, append-only saved-data migrations and ProfileStore reconciliation when saved data changes. Append and test a migration for renamed, removed, split, or reinterpreted fields. A disposable development profile may be reset only when the project authorizes that operation and identifies the affected keys. Never turn a failed or unavailable DataStore read into a default profile save.
 
 ## Spatial ownership
 
@@ -50,7 +50,7 @@ Use named attachments or tagged instances for movable interaction anchors. Valid
 
 Give connections, render callbacks, tweens, spawned/delayed work, and camera ownership an explicit owner and cleanup path. Invalidate stale work on unmount, character replacement, streaming removal, encounter exit, and shutdown. Check generation/session identity after every relevant asynchronous wait. Restore prior state rather than guessed defaults; release held inputs even on failure.
 
-For Roblox UI work, also apply `roblox-react`. For Studio, assets, playtests, or source/place synchronization, apply `roblox-studio`. Read [Lint and test tooling](references/tooling.md) when running or changing checks.
+For React-rendered Roblox UI work, also apply `roblox-react`. For Studio, assets, playtests, or source/place synchronization, apply `roblox-studio`.
 
 ## Keep guidance current
 

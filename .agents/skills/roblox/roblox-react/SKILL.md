@@ -11,7 +11,7 @@ description: Apply whenever a React-rendered Roblox UI is opened, inspected, des
 - `roblox-studio` — apply for Studio setup and playtest orchestration.
 - `roblox-building` — apply for authored or runtime world-space text.
 
-Make the UI clean, easy to use, beginner friendly, and visually pleasing. Treat these as acceptance criteria, not optional polish after code compiles. Preserve the game's established artwork and visual identity unless a redesign is requested. Reading an interface alone does not authorize an unrelated migration.
+Follow `luau`'s required UI framework. Make React-rendered interfaces clean, easy to use, beginner friendly, and visually pleasing. Treat these as acceptance criteria, not optional polish after code compiles. Preserve the game's established artwork and visual identity unless a redesign is requested.
 
 Apply `luau` whenever reading or editing its Luau code. Apply `roblox-studio` for engine setup and playtest orchestration. Read [Framework and component practices](references/components.md) before changing architecture, dependencies, lifecycle, or layout.
 

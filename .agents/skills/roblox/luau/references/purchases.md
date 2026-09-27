@@ -10,4 +10,4 @@ Keep receipt history bounded with an explicit retention rationale; truncation ca
 
 Cache successful game-pass ownership for the current session. Do not cache a transient lookup failure as authoritative absence. Apply newly purchased pass perks and joining-player perks through the same policy.
 
-Test duplicate receipts, failed saves, session loss, delayed profile availability, registration errors, and unknown environments against fakes, then verify the real engine adapter separately. Studio test purchases/mock saves are distinct from persistent staging behavior. Follow the Luau skill's current save policy rather than importing a migration framework.
+Test duplicate receipts, failed saves, session loss, delayed profile availability, registration errors, and unknown environments against fakes, then verify the real engine adapter separately. Studio test purchases/mock saves are distinct from persistent staging behavior. Follow the Luau skill's saved-data versioning and durability policy.

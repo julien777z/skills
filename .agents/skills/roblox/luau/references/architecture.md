@@ -1,6 +1,6 @@
 # Core, features, contracts, and engine ports
 
-For new games, use the architecture below. For existing games, inspect their current ownership and data contracts before changing them.
+Use this architecture for Roblox game code. Inspect the current ownership and data contracts before editing so changes preserve released progress and remain within the requested scope.
 
 ## Dependency direction
 
@@ -16,7 +16,7 @@ Use frozen constants with literal-preserving casts for state/tag unions rather t
 
 ## Server platform adapters
 
-Put server engine access behind a server-side platform layer. A typed port is a narrow table of functions in domain terms. Construct adapters at the application composition boundary and inject only the ports each service uses. Engine types in annotations are fine; engine values (`game`, `workspace`, `Instance`, `Enum`) remain in adapters, documented environment/network boundaries, or roots. Enforce this boundary with an architecture check in new games; run the existing check in other projects. Do not broaden its allowlist to conceal coupling.
+Put server engine access behind a server-side platform layer. A typed port is a narrow table of functions in domain terms. Construct adapters at the application composition boundary and inject only the ports each service uses. Engine types in annotations are fine; engine values (`game`, `workspace`, `Instance`, `Enum`) remain in adapters, documented environment/network boundaries, or roots. Enforce this boundary with an architecture check. Do not broaden its allowlist to conceal coupling.
 
 Keep time, logging, players, persistence, networking, character operations, world queries, and teleportation explicit. Return domain values and translate engine enums in adapters. Disconnectable shapes let tests supply simple fakes. Add only the ports and features the game actually uses.
 
