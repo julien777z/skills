@@ -61,7 +61,7 @@ preflight_provider() {
       [ -f "$rule" ] || continue
       name="$(basename "$rule")"
       if [ "$provider" = "cursor" ]; then name="${name%.md}.mdc"; fi
-      check_link "$rule" "$root/rules/$name" || failed=1
+      check_link "$(link_source "$provider" rules "$name" "$rule")" "$root/rules/$name" || failed=1
     done
   fi
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -f "$CANONICAL_GLOBAL" ]; then
@@ -144,7 +144,7 @@ install_provider() {
       [ -f "$rule" ] || continue
       name="$(basename "$rule")"
       if [ "$provider" = "cursor" ]; then name="${name%.md}.mdc"; fi
-      install_link "$rule" "$root/rules/$name"
+      install_link "$(link_source "$provider" rules "$name" "$rule")" "$root/rules/$name"
       rules=$((rules + 1))
     done
     prune_links "$root/rules"
