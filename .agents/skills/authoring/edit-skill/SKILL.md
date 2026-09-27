@@ -177,10 +177,11 @@ outcome, because silence reads as the guidance having been fixed.
    inside this delivery is the editor's own — a flagged gate, a smoke round that would not close —
    made and stated in the report, because a pull request confined to agent configuration has merge
    authorization under the GitHub rule after its stated gates; this authorization does not extend
-   to a pull request that also carries source or to a release workflow. A question asking for that authorization only holds every later session on the
-   guidance the change replaces.
-   Step 6's review of an altered example response is the one question this delivery puts to the
-   user.
+   to a pull request that also carries source or to a release workflow. A question asking for that
+   authorization only holds every later session on the guidance the change replaces. On a pull
+   request carrying only `.agents` files, step 6's review of an altered example response is the one
+   question this delivery puts to the user; on one that also carries source, the merge in step 7 and
+   a flag escalated in step 4 go to the user as well.
    1. **Branch and commit.** When the session already has an open pull request in the repository
       being edited, the edit goes onto its branch, under the GitHub rule's one pull request per
       repository per session; otherwise branch from the freshly fetched default branch and open a
