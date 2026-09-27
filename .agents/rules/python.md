@@ -189,7 +189,7 @@ config = third_party_package.Config(
 ## Configuration
 
 - Define each configuration owner's settings in one descriptively named `BaseSettings` class such as `ActionConfig` in its `config.py`. A repository may have distinct application, worker, or script configuration owners; do not combine unrelated settings merely to produce one repository-wide class. Keep each config module declarative: instantiate its settings once at that owner's composition boundary, then pass or import that validated object wherever settings are needed.
-- Put a value in that settings class only when its owner would reasonably change it between deployments, environments, or releases: credentials, hosts and endpoints, identities, feature switches, and tool or CLI versions expected to move. Implementation tuning — timeouts, retry counts, backoff and poll intervals, batch sizes — is a typed module constant beside the code that uses it, even though a deployment could in principle override it.
+- Put a value in that settings class when, and only when, its owner would reasonably change it between deployments, environments, or releases: credentials, hosts and endpoints, identities, feature switches, and tool or CLI versions expected to move. Implementation tuning — timeouts, retry counts, backoff and poll intervals, batch sizes — is a typed module constant beside the code that uses it, even though a deployment could in principle override it.
 - Give configurable values typed defaults when the repository has a safe default, and let `pydantic-settings` provide namespaced environment overrides.
 - Use `TypedDict` only for static structured data that is not configuration.
 
@@ -221,7 +221,7 @@ ACTION_CONFIG = ActionConfig()
 - Place module-level constants and enums (including type aliases like `AllowedApiClient`) directly after imports.
 - When assembling a structured string from variable parts, define one named template and use `str.format(...)` rather than composing separate prefix and suffix constants. Use native template strings only when they are supported across the project's full Python version range.
 - Use `Final[T]` from `typing` and UPPER_SNAKE_CASE names for constants.
-- Keep a value a constant unless its owner would reasonably change it between deployments or releases, which the Configuration section sends to settings. Compiled regexes, stable paths, sentinels, and implementation tuning such as a timeout or retry count are constants.
+- What the Configuration section does not send to settings is a constant: compiled regexes, stable paths, sentinels, implementation tuning.
 - Compile regular expressions once at module scope and call methods on the compiled pattern instead of passing pattern strings repeatedly to `re.match`, `re.search`, `re.fullmatch`, or `re.sub`.
 - **When several constants form one family of the same shape** — parallel compiled patterns, per-kind values, same-shaped lookup entries — define one mapping keyed by an enum or other typed key instead of a pile of individually named constants, and iterate or index that mapping at the use site. A few unrelated constants are fine as standalone names; a family of related ones is a data structure.
 
