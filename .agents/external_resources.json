@@ -18,6 +18,13 @@
       "update_on_sync": true
     },
     {
+      "kind": "directory",
+      "name": "awesome-design-md",
+      "repo": "VoltAgent/awesome-design-md",
+      "source_path": "design-md",
+      "update_on_sync": true
+    },
+    {
       "kind": "skill",
       "name": "clerk-nextjs-patterns",
       "repo": "clerk/skills",
@@ -54,6 +61,14 @@
       "name": "image-to-code",
       "repo": "Leonxlnx/taste-skill",
       "skill": "image-to-code",
+      "category": "web",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "impeccable",
+      "repo": "pbakaus/impeccable",
+      "skill": "impeccable",
       "category": "web",
       "update_on_sync": true
     },
@@ -200,13 +215,6 @@
       "repo": "vercel-labs/agent-skills",
       "skill": "web-design-guidelines",
       "category": "web",
-      "update_on_sync": true
-    },
-    {
-      "kind": "directory",
-      "name": "awesome-design-md",
-      "repo": "VoltAgent/awesome-design-md",
-      "source_path": "design-md",
       "update_on_sync": true
     }
   ]

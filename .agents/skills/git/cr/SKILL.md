@@ -137,6 +137,9 @@ When the pull request adds public concepts across slices, assign one reviewer th
 interfaces and their existing peers as a coherent slice. Require its receipt to assess whether the
 new concepts are variants of existing ones; do not accept a clean simplification gate until that
 assessment and the resulting consumer boundaries are verified.
+When they are variants, require the reviewer to propose one resulting registry, command, and package
+owner wherever those interfaces exist. Sharing only implementation helpers does not close the gate
+while parallel public surfaces remain.
 
 Subagents do not edit. The parent reconciles overlapping findings, validates each one, and fixes
 every survivor under **Confirmed Findings**. Reproducing a defect on the base branch establishes only

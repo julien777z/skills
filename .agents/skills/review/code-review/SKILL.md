@@ -179,6 +179,9 @@ interface and owner with existing public concepts serving the same purpose, and 
 belongs as a variant under an existing concept or needs an independent contract. A clean receipt
 without that assessment is incomplete; reject and rerun it even when the new implementation itself
 has no duplicate code.
+For a variant, require the receipt to propose the resulting single public registry, command, and
+package owner where those surfaces apply, and to name the consumers that must move. A receipt that
+only proposes sharing low-level helpers while keeping parallel public surfaces is incomplete.
 
 Duplicated lenses run independently and must not see each other's output; redundancy is the point.
 
