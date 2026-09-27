@@ -72,6 +72,11 @@ completely, explicitly invoke it, and announce the invocation before the first e
 a dependency is not an invocation. Where the repository declares none, read its product state from
 its project guidance and treat every compatibility question below as one that guidance answers.
 
+Before editing a language or package, read its applicable shared and repository rules and nearby
+analogous files. Match their code grouping and spacing in every new or substantially edited file;
+inspect the complete result beside those siblings before delivery. A formatter passing is not a
+substitute for that comparison.
+
 ## Encountered Issues
 
 Apply `pre-production`'s encountered-issues policy while making the change. The rules below govern

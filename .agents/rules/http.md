@@ -8,6 +8,7 @@ paths:
 
 # HTTP Rules
 
+- Before writing provider HTTP calls, check whether its official SDK covers the required endpoints and protocol features. Use the SDK for operations it covers and the repository's shared HTTP helper or established client for those it does not.
 - Prefer the repository's shared HTTP helper or client abstraction over spawning ad-hoc clients deep in application code.
 - If the project already centralizes retries, auth headers, or response parsing, reuse that shared layer instead of reimplementing it per call site.
 - Keep raw `response.json()` parsing at the boundary layer; do not scatter transport parsing logic across core business logic.

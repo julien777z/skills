@@ -228,7 +228,6 @@ def create_order(order_fixture, customer_fixture, create_customer):
 - Choosing which tiers to run is not the author's call. Do not skip a tier because it looks unaffected, runs slowly, or needs services started — start them. If a tier genuinely cannot run, name it and say why alongside the result, because a result reported without that caveat claims coverage that was never achieved.
 - Every directory holding tests must be reachable from a runner target, and a test should assert that correspondence. A tier that no target selects is a tier nothing reports on.
 
-- If tests cannot be run locally (for example, missing dependencies, Docker not available, or environment issues), do NOT guess what the issue is. Ask the user for the error logs instead of speculating.
 - When CI tests fail and you cannot access the logs directly, ask the user to provide the failure output before attempting fixes.
 
 ## Environments

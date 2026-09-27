@@ -80,6 +80,10 @@ alwaysApply: true
   override the separate authorization boundary for merge, deployment, publication, or release.
 - Carry task authorization through follow-up messages, interruptions, failed tool attempts, browser
   recovery, and context compaction. A failed attempt does not reset or narrow the authorization.
+- Authorization to send messages to another agent or external session covers only the messages and
+  purpose the user specified. Permission for a bounded exchange does not authorize later updates
+  to the same recipient; ask before sending more unless the user explicitly approved an ongoing
+  exchange.
 - Do not ask the user to restate task authority with "continue", "proceed", or equivalent
   intermediate approval questions. State progress and take the next ordinary authorized action.
 - When a platform imposes an action-time confirmation for a distinct sensitive action, complete all
@@ -98,6 +102,10 @@ alwaysApply: true
   browser tab or window for the current task, that instruction overrides the isolation preference;
   use only the authorized surface and leave every other user-owned surface untouched.
 - Report a block only when the requested surface itself cannot complete the next required action and safe alternatives have been exhausted.
+
+## Local Environments
+
+- **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. Deployed and shared remote environments are not local; the next section governs them.
 
 ## Live Deployment Validation
 
@@ -138,6 +146,8 @@ alwaysApply: true
 - Git history is the record of what changed; documentation describes what exists now.
 - The same applies to code comments and docstrings: no "formerly", "replaces", or "kept for
   backwards compatibility" notes.
+- Use an environment's exact domain name for both it and its tailnet; never append owner or
+  organization aliases. Name provider accounts and projects only as separate resources.
 
 ## Replacement Contracts
 

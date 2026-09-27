@@ -178,16 +178,17 @@ each choice reaches for.
 **Diff — should this stand?** Does the finished diff do what the accepted proposal said, and nothing
 in the removed shape?
 
-Four shapes the diff question reads for on every change, because a fix written after review takes
+Five shapes the diff question reads for on every change, because a fix written after review takes
 them most easily: a reader that reaches through a lookup table keyed by a model for a fact the model
 could declare on itself — `TABLE[model].label` in an added line is the finding even when the table
 predates the diff — a repository-wide fact kept as loose strings inside one consumer instead of a
 typed owner in the shared package, a container declared for one member — a router carrying one
-handler, whose handler belongs on the router that owns its resource — and a data-holding class
-declared outside a model-owned module. Only a Pydantic `BaseSettings` class belongs in
-configuration; registries, manifests, policies, provider payloads, and response schemas remain
-models. All four are the greps code-simplify opens with; the gate runs them over the diff's added
-lines and lists their hits before anything else.
+handler, whose handler belongs on the router that owns its resource — a data-holding class declared
+outside a model-owned module, and a typed parameter built as a dict literal instead of its
+`TypedDict` constructor. Only a Pydantic `BaseSettings` class belongs in configuration; registries,
+manifests, policies, provider payloads, and response schemas remain models. All five are the greps
+code-simplify opens with; the gate runs them over the diff's added lines and lists their hits before
+anything else.
 
 **Base incorporation — what did the base bring in that the change must refactor?**
 
