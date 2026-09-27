@@ -215,8 +215,9 @@ is a model, with its name; report every row): a bare noun (`flag`), a mechanics 
 (`stored_driver_license`), or a coinage (`flag_page`) is renamed `create_<shape>`, and the same shape
 built under two names in two files or two suites is one name across all of them. Every other
 module-level `def` in those packages is named for the domain act it performs, per `test-fixture`
-(list each with its first word; report every row whose first word is an HTTP verb, a transport
-verb, or a persistence step): `post_order` is renamed for what it asks the application to do.
+(list each with its first word; report every row whose first word is `post`, `put`, `patch`, a
+transport verb, or a word saying how its value was made): `post_order` is renamed for what it asks
+the application to do, and a `stored_customer` fixture for the role that customer plays.
 Read names across
 sibling files and sibling suites before settling one: a suite's vocabulary is its source's, and the
 word the sibling suite already uses for the same shape wins over a new one.
