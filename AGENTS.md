@@ -523,6 +523,10 @@ except third_party_client.ApiException as exc:
   use only the authorized surface and leave every other user-owned surface untouched.
 - Report a block only when the requested surface itself cannot complete the next required action and safe alternatives have been exhausted.
 
+## Local Environments
+
+- **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. Deployed and shared remote environments are not local; the next section governs them.
+
 ## Live Deployment Validation
 
 - Treat create, update, and delete requests against a live deployment as data mutations, not health
@@ -600,6 +604,7 @@ except third_party_client.ApiException as exc:
 
 # HTTP Rules
 
+- Call a third-party provider through its official SDK when one exists. Hand-rolled requests re-declare the provider's endpoints, authentication, request and response shapes, and error format, all of which the SDK already owns and keeps current. The repository's shared HTTP helper is for providers without one; never hand-roll requests to a provider whose SDK covers them.
 - Prefer the repository's shared HTTP helper or client abstraction over spawning ad-hoc clients deep in application code.
 - If the project already centralizes retries, auth headers, or response parsing, reuse that shared layer instead of reimplementing it per call site.
 - Keep raw `response.json()` parsing at the boundary layer; do not scatter transport parsing logic across core business logic.
@@ -789,7 +794,7 @@ class WidgetPosition(BaseModel):
 - Prefer real SDK and model types over `cast(...)`; reserve a narrowly scoped cast for information the type system genuinely cannot express.
 - Do not "fix" typing by expanding simple transformations into repetitive key-by-key copy blocks (for example, manually assigning each dict key only to satisfy pyright). Fix the source type hints (or add a precise cast/narrowing at the boundary) so the transformation can stay concise and readable.
 - For persistence/update payloads (for example, `upsert(...)`), define a dedicated `TypedDict` and construct it inline at the call site. Do not add free-floating `build_*`/`make_*` helper functions whose only role is constructing a payload from another shape; the same no-free-floating-builders rule that applies to `BaseModel` applies here.
-- When a `TypedDict` types a module-level constant or other shared blob (for example a CVA style config), build the value by **calling** the TypedDict constructor with keyword arguments (`MyTypedDict(field=value, ...)`) instead of assigning an annotated plain dict literal (`name: MyTypedDict = {...}`). Use the same for nested TypedDict rows inside lists (for example `CompoundVariantRule(match={...}, class_name="...")`). This keeps the type as the construction site, not only a static annotation on a dict literal.
+- Build every `TypedDict` value by **calling** its constructor with keyword arguments (`MyTypedDict(field=value, ...)`), never by annotating a plain dict literal (`name: MyTypedDict = {...}`) or passing a bare dict where the parameter is typed. That covers module-level constants and shared blobs, nested rows inside lists (for example `CompoundVariantRule(match={...}, class_name="...")`), and an SDK's typed request parameters and options at every level of nesting (`sdk.params.WidgetCreateParams(owner=sdk.params.WidgetCreateParamsOwner(...))`, `sdk.RequestOptions(idempotency_key=key)`). Tests assert with the same constructors. This keeps the type as the construction site, not only a static annotation on a dict literal.
 
 - Group parameters that always travel together and describe one concept into a single typed object, then pass that object rather than threading its fields through every signature and call site.
 
@@ -955,7 +960,7 @@ config = third_party_package.Config(
 ## Configuration
 
 - Define each configuration owner's settings in one descriptively named `BaseSettings` class such as `ActionConfig` in its `config.py`. A repository may have distinct application, worker, or script configuration owners; do not combine unrelated settings merely to produce one repository-wide class. Keep each config module declarative: instantiate its settings once at that owner's composition boundary, then pass or import that validated object wherever settings are needed.
-- Put a value in that settings class when, and only when, its owner would reasonably change it between deployments, environments, or releases: credentials, hosts and endpoints, identities, feature switches, and tool or CLI versions expected to move. Implementation tuning — timeouts, retry counts, backoff and poll intervals, batch sizes — is a typed module constant beside the code that uses it, even though a deployment could in principle override it.
+- Put a value in that settings class when, and only when, its owner would reasonably change it between deployments, environments, or releases: credentials, hosts and endpoints the deployment itself chooses, identities, feature switches, and tool or CLI versions expected to move. Implementation tuning — timeouts, retry counts, backoff and poll intervals, batch sizes — is a typed module constant beside the code that uses it, even though a deployment could in principle override it.
 - Give configurable values typed defaults when the repository has a safe default, and let `pydantic-settings` provide namespaced environment overrides.
 - Use `TypedDict` only for static structured data that is not configuration.
 
@@ -976,6 +981,7 @@ APPLICATION_CONFIG = ActionConfig()
 
 - API keys and secrets must be **required** config fields with **no defaults** (no `= ""` or `| None = None` escape hatches); optionality is reserved for credentials with a documented ambient fallback (for example AWS IAM role credentials).
 - Do not add useless config values like `DEFAULT_ENVIRONMENT`.
+- A provider's published sandbox and production hosts are constants in that provider's package, and the application's canonical environment check selects between them. Select a provider's host from that check (such as the settings object's `is_production`), never from a provider-specific environment setting or enum that restates what the deployment environment already decides.
 - Do not add helper functions like `_get_environment` when the value already exists on the shared settings object.
 - Do not read environment variables directly with `os.getenv`, `os.environ`, or `os.environ.get` in application/service/library code.
 - Always read environment-backed values from the typed settings object so defaults, validation, and normalization live in one place.
@@ -1093,6 +1099,8 @@ def get_auth_secret(config: Settings | None = None) -> str:
 - Define Pydantic `BaseModel` classes and other application data models under the package's `models/` directory.
 - Split models into intuitively named files by concept, such as `models/configuration.py` or `models/submission.py`.
 - Do not place models beside operational code or collect unrelated models in a catch-all `models.py` module.
+
+- A declaration that describes one external provider — its enums, request and response models, host constants — lives in that provider's package beside its other models, never in a service-wide `core/` or shared enums module. A core enums module holds only the application's own domain vocabulary.
 
 - Files under a `models/` package contain only declarative models, enums, and behavior intrinsic to validating or representing those models. Do not put runtime registries, mappings, instantiated collaborators, filesystem layouts, I/O, or orchestration in model files.
 - Put runtime mappings and operational behavior in the module that owns their use. A typed `config.py` built with `pydantic-settings` is the explicit exception for the repository's settings class only; instantiate that class at the application or script composition boundary.
@@ -1228,6 +1236,7 @@ return next(
 
 ## External APIs and Errors
 
+- Run a synchronous SDK's calls off the event loop (for example with `asyncio.to_thread`) when the application is asynchronous.
 - Verify SDK method availability before coding integrations:
   - Prefer checking official docs with `@Browser`, or
   - Inspect the installed SDK directly (for example with Python `inspect`/`hasattr`) in the current environment.
@@ -1552,6 +1561,9 @@ function Card({ title, subtitle = "", className = "" }: CardProps) {
   warns the reader about their own ordinary action reads as suspicion. A person submitting a record on
   behalf of someone in their own workspace, who has already ticked the box that says they may, does
   not need to be told that the action is logged or attributed to them.
+- **Name a surface for what it holds, never for the reader's role in it.** A reader knows which side
+  of a transaction they are on, so "Payer Accounts", "Payout Methods" or "Your Seller Profile" labels
+  them rather than the thing; the heading is "Bank Accounts", "Profile", whatever the surface holds.
 - **Never state what the reader takes for granted.** That data is encrypted, stored securely, kept
   private, or handled carefully is assumed of any product in this category; saying it out loud plants
   the doubt it was meant to settle. Mention a property only where the reader has to act on it or
@@ -2015,7 +2027,6 @@ def create_order(order_fixture, customer_fixture, create_customer):
 - Choosing which tiers to run is not the author's call. Do not skip a tier because it looks unaffected, runs slowly, or needs services started — start them. If a tier genuinely cannot run, name it and say why alongside the result, because a result reported without that caveat claims coverage that was never achieved.
 - Every directory holding tests must be reachable from a runner target, and a test should assert that correspondence. A tier that no target selects is a tier nothing reports on.
 
-- If tests cannot be run locally (for example, missing dependencies, Docker not available, or environment issues), do NOT guess what the issue is. Ask the user for the error logs instead of speculating.
 - When CI tests fail and you cannot access the logs directly, ask the user to provide the failure output before attempting fixes.
 
 ## Environments
