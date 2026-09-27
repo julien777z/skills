@@ -383,8 +383,8 @@ except third_party_client.ApiException as exc:
 - Agents may create branches and pull requests, commit, and push scoped changes without additional approval.
 - Merging any pull request requires explicit user authorization in the current request or explicit
   applicable guidance in a rule or invoked skill for that pull request. A fix request, CI-test
-  request, successful check, or review does not itself authorize merging. If neither authorization
-  source applies, do not merge or enable auto-merge.
+  request, successful check, review, or request to implement a plan that lists a merge does not
+  itself authorize merging. If neither authorization source applies, do not merge or enable auto-merge.
 - A pull request confined to canonical agent configuration, including skills, rules, and agent definitions, may be merged without a separate request after `code-simplify` has run and its findings are resolved. For substantial guidance changes or changes to executable logic, first run the relevant smoke test against the exact pull-request head. Check that the complete pull request remains confined to agent configuration before using this exception.
 - When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, including one begun by another task. Do not close or leave it open merely because it is draft or conflicts with the base; close only when its change is superseded or no longer wanted.
 - An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization.
@@ -492,10 +492,15 @@ except third_party_client.ApiException as exc:
   authorizes test workflows. Neither alone authorizes a merge, deployment, publication, or release.
   Perform those actions only when the user explicitly authorizes them or an applicable rule or
   invoked skill explicitly authorizes the specific action and target.
+- Approval of a plan authorizes its ordinary implementation and verification. Listing a merge,
+  deployment, publication, or release in the plan, or asking to "implement this plan," does not
+  authorize that action. Require the user's explicit instruction naming the action and its target,
+  unless applicable guidance or an invoked skill expressly authorizes that specific action.
 - A clear task-wide statement such as "all approved" remains active until the authorized outcome is
   complete, the user withdraws it, or a proposed action materially expands the target, recipient,
-  or outcome. It covers every foreseeable sub-task within that stated outcome, including retries,
-  verification, recovery, and cleanup within the authorized issue or pull request.
+  or outcome. It covers ordinary sub-tasks within that stated outcome, including retries,
+  verification, recovery, and cleanup within the authorized issue or pull request; it does not
+  override the separate authorization boundary for merge, deployment, publication, or release.
 - Carry task authorization through follow-up messages, interruptions, failed tool attempts, browser
   recovery, and context compaction. A failed attempt does not reset or narrow the authorization.
 - Do not ask the user to restate task authority with "continue", "proceed", or equivalent
