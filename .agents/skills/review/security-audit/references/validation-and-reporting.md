@@ -85,7 +85,7 @@ For each finding the file gives its id, severity, the attack in one or two sente
 conditions it rests on, the trace as file paths with line numbers, and the smallest remediation —
 with the materially simpler alternative beside it where one exists, as the rubric requires.
 
-Then, briefly: the baseline comparable the severities were calibrated against, the hardening notes
+The chat summary then gives, briefly, the baseline comparable the severities were calibrated against, the hardening notes
 with their own ids, what the codebase does well, and the coverage statement recommending another run.
 
 Keep it short. A report longer than the codebase deserves is padding.

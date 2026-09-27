@@ -57,8 +57,8 @@ about the target as a whole. `acceptance-gate` runs this skill at `low` against 
 
 **A skill that borrows this one runs Phases 1-5 and stops.** Phase 6 — the approval gate, the
 tracking, the fixes — belongs to a caller the user invoked to audit something, not to one that
-borrowed the rubric to judge its own item; that caller takes the findings into its own verdict and
-owns what happens next.
+borrowed the rubric to judge its own item; that caller takes the findings into its own verdict,
+writes no findings file, and owns what happens next.
 
 ## Platform terminology
 
@@ -71,7 +71,7 @@ This skill is agent-neutral. In the methodology:
 
 Use the platform's equivalent capabilities while preserving the specified roles, parallelism, prompts, and independence boundaries.
 
-## The Audit Writes Nothing
+## What The Audit Writes
 
 The audit's output is its report and, where the session exposes Linear, an issue per approved
 finding. The report is one findings file in the session's scratch directory, linked from the chat
@@ -80,8 +80,8 @@ directory. Findings live in the session until the user decides on them, and a de
 recorded where the work will actually be picked up — a Linear issue, a `defer-scope` record, or the
 fix itself.
 
-The only files an audit run ever writes are the ones an **approved fix** changes: code, tests, and
-whatever the fix's own contracts require.
+Beyond its findings file in the session's scratch directory, the only files an audit run writes are
+the ones an **approved fix** changes: code, tests, and whatever the fix's own contracts require.
 
 That bounds what the audit can claim. A report is what this run found; it never asserts a codebase is
 clean, because no single run establishes that — see **Coverage** below.
@@ -121,7 +121,8 @@ Every level runs every phase; **Effort** above says with what cohort.
    **What A Surviving Finding Has Been Put Through**.
 4. **Verify independently** — Use Phase 4 there: a fresh agent per surviving finding checks every
    factual claim against the source.
-5. **Report** — Use Phase 5 there: present the findings in chat, ordered by severity.
+5. **Report** — Use Phase 5 there: write every finding to the scratch findings file and give the
+   chat summary it shapes.
 6. **Plan, approve, track** — Use Phase 6 there, which owns the approval gate, Linear deduplication
    and tracking, and implementation. **Never start fixing or open a fix pull request before the user
    approves that fix.**

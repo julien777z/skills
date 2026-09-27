@@ -206,8 +206,8 @@ Before reporting a clean result at `high` or above, verify that every launched l
 
 When the host exposes a structured findings tool, report through it, passing the effort level, and do not also print the findings as prose. Where its schema offers a verdict meaning unverified, leave that value unused — nothing surviving step 4 has one. Prose carries no qualifier either: no "possibly", no "may", no request that the reader go check.
 
-Otherwise write every finding to one file in the session's scratch directory and report in chat as
-`## Output` shapes it.
+Otherwise report in chat as `## Output` shapes it; when more than five findings remain, first write
+every finding to one file in the session's scratch directory.
 
 ## Step 8 — Fix mode
 
@@ -273,12 +273,12 @@ Lenses: <completed lens names and Security omitted when unavailable>. Head: <rev
 The chat list carries the five most severe findings; the file holds every finding in the same
 shape and is linked on a closing line, `All findings: <link>`, whenever more than five remain. The
 outcome arrow appears only in fix mode. If nothing remains, the list is the single line
-`No findings.` and the two closing lines stay. In degraded mode, add one line stating that no
+`No findings.` and the closing lines stay. In degraded mode, add one line stating that no
 subagent dispatch was available.
 
 ## Constraints
 
-- Outside fix mode, the only permitted mutations are creating a branch, committing when the branch carries no commits of its own, pushing, and opening a draft PR. Never commit the worktree of a branch that already carries commits.
+- Outside fix mode, the only permitted mutations — besides the findings file in the session's scratch directory, never in the repository — are creating a branch, committing when the branch carries no commits of its own, pushing, and opening a draft PR. Never commit the worktree of a branch that already carries commits.
 - Do not fix findings unless fix mode is on.
 - Do not post to GitHub unless comment mode is on.
 - Do not build, typecheck, or run tests during the review pass. The fix pass runs tests after applying corrections; the review pass never does.
