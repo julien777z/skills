@@ -106,9 +106,10 @@ type Status = (typeof Status)[keyof typeof Status];
   untyped module-level name is a finding on its own, whatever it holds.
 - **Several constants of one shape are a data structure, not a pile of names.** Parallel per-kind
   values become one mapping keyed by the union that names those kinds, read at the use site.
-- Reserve constants for what is genuinely invariant. A value operators, environments or releases may
-  reasonably change belongs in typed configuration even when it has a safe default; capitalization
-  does not make it invariant.
+- A value its owner would reasonably change between deployments, environments, or releases — an
+  endpoint, an identity, a feature switch — belongs in typed configuration even with a safe default;
+  capitalization does not make it invariant. Implementation tuning — a timeout, a retry count, a
+  debounce or poll interval — stays a typed constant beside its code.
 - Extract a literal only when it is reused or carries domain meaning. Keep trivial single-use
   literals inline.
 - Do not prefix a name with the area it already lives in. The module path says it; add a qualifier
