@@ -1,6 +1,6 @@
 # Lint, analysis, and test tooling
 
-Inspect the repository's pinned tool manifest, package lockfile, task runner, and CI workflows. For new games, use Rokit to pin tools, Wally to manage packages, Rojo to map source to places, Blink to generate networking, and `just` to own commands. Provide `just fmt`, `just lint`, `just analyze`, and `just test` recipes, and run the applicable checks for source changes. In existing games, follow their configured commands. Discover pinned versions before changing them; do not silently upgrade tools during a refactor.
+Use Rokit to pin tools, Wally to manage packages, Rojo to map source to places, Blink to generate networking, and `just` to own commands. Provide `just fmt`, `just lint`, `just analyze`, and `just test` recipes, and run the applicable checks for source changes. Inspect the repository's pinned tool manifest, package lockfile, task runner, and CI workflows to discover versions and command details before editing. Do not silently upgrade tools during a refactor.
 
 - [StyLua](https://github.com/JohnnyMorganz/StyLua) formats source; run the configured formatting check.
 - [Selene](https://kampfkarren.github.io/selene/roblox.html) supplies Roblox-aware lint checks.

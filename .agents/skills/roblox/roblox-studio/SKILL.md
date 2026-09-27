@@ -5,7 +5,7 @@ description: Create, update, polish, and playtest Roblox games in Roblox Studio,
 
 # Roblox Studio
 
-Carry a Roblox game request through implementation, visual polish, real playtests, and the authorized delivery. Support both new experiences and changes to existing games. Adapt the mechanics and art direction to the user's game; do not transplant another project's names, story, map, assets, or architecture.
+Carry a Roblox game request through implementation, visual polish, real playtests, and the authorized delivery. Adapt the mechanics and art direction to the user's game; do not transplant another project's names, story, map, assets, or architecture.
 
 ## Dependencies
 
@@ -20,7 +20,7 @@ Carry a Roblox game request through implementation, visual polish, real playtest
 - Treat an approved plan as an implementation request. Make routine design and engineering choices, fix failures, and continue through verification with minimal user input.
 - Continue until the stated issue is resolved and verified, or a concrete blocker leaves no safe, authorized way to make further progress. An unresolved defect, passing CI, a pushed PR, a failed recovery attempt, or a status report is not a stopping point. Investigate the next supported hypothesis, repair the failed capability, or use an authorized alternative; do not make the user repeatedly say "continue".
 - Before declaring a blocker, identify the exact required action that cannot succeed, the evidence, the relevant recovery and alternative paths tried, and the specific external change or user input needed. Distinguish an unavailable tool from an unsolved product defect. Continue independent work while a dependent action is blocked; avoid repeating unchanged attempts or turning an unconfirmed cause into a conclusion.
-- First establish the workspace, intended place/experience, signed-in owner, existing source/art, and any explicitly excluded games. For a new game, create a genuinely new place. For an update, work against the verified intended place. Never use a similarly named recent place as proof of identity.
+- First establish the workspace, intended place/experience, signed-in owner, existing source/art, and any explicitly excluded games. Verify whether the task calls for creating a place or updating one, then work against that destination. Never use a similarly named recent place as proof of identity.
 - Record the place ID, universe ID, owner, local file, source/build paths, and current verification status in the workspace. Preserve this state across long runs.
 - Use authorization already supplied in the task. Publishing, paid assets, account changes, and computer-control fallbacks must remain within that authorization and the active tool policies. Do the reviewable work before any genuinely necessary final approval. Do not add a blanket approval gate for ordinary edits, fixes, imports, or tests.
 - Choose a runner that can execute the required Studio operations without interfering with the user's active desktop. Confirm its input, capture, and window behavior before relying on it. Read the [testing reference](references/testing.md) before choosing the control path.

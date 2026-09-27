@@ -48,7 +48,7 @@ Low triangle counts alone do not guarantee smooth play. Also inspect draw calls,
 
 ## Build and Play test
 
-Use `roblox-studio` for imports, preserved terrain, source synchronization, background MCP tests, and authorized delivery. Apply `luau` when opening or modifying builders/scripts. UI belongs to `roblox-react`.
+Use `roblox-studio` for imports, preserved terrain, source synchronization, background MCP tests, and authorized delivery. Apply `luau` when opening or modifying builders/scripts. React-rendered UI belongs to `roblox-react`.
 
 Trace every affected entrance and activity access route all the way to the established traversal network; a reachable destination or walkable grass does not prove its authored path connects. Apply the route-continuity criteria in the map-making reference. Walk the arrival route, every changed connection, bridges/ramps, doors, and activity boundaries in both directions. Inspect at player height and supported camera zoom/pitch from multiple approaches. Check clipping, floating props, flicker, inaccessible steps, collision snags, misleading paths, bland sightlines, and accidental views of other maps. Fix defects in the canonical builder and saved artwork so rebuilding preserves the repair.
 

@@ -70,7 +70,7 @@ Fit companions to the genre, progression, and production stage. A popular featur
 
 Play the affected loop through ordinary controls. Observe how quickly a beginner understands the next action, whether success is visible/audible, whether rewards agree with real state, and whether another attempt feels inviting. Check feedback at normal player pace and during rapid repeated successes, including overlap, audio buildup, cleanup, and performance. Keep stronger milestones distinct from routine hits.
 
-Apply `roblox-react` for UI clarity and its scheduled repeated-click checks, `roblox-building` for coherent, interesting worlds, `luau` for authority and cleanup, and `roblox-studio` for non-interfering Play tests. Static checks cannot establish enjoyment; short playtests cannot prove long-term retention.
+When the work involves React-rendered UI, apply `roblox-react` for clarity and its scheduled repeated-click checks. Apply `roblox-building` for coherent, interesting worlds, `luau` for authority and cleanup, and `roblox-studio` for non-interfering Play tests. Static checks cannot establish enjoyment; short playtests cannot prove long-term retention.
 
 ## Learn from evidence
 
