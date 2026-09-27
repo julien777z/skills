@@ -61,6 +61,16 @@ every hit as a finding ahead of all others, with the remedy the rubric names:
 
 A report that lists no hit for any of the four greps says so in those words.
 
+Before ranking structural findings, scan adjacent statement pairs in every added or substantially
+edited function after formatting. List exact line pairs where a completed guard meets setup, one
+guard meets the next, a derived value meets its validation, or a copy or mutation meets
+postprocessing or comparison. Every missing blank line at those boundaries is a legibility finding;
+do not suppress it as a cosmetic nit or omit it because a larger finding exists. Also list every
+conditional selecting a fixed set of string statuses, including log-only values, and flag inline
+literals where the applicable language rules call for a named finite-state type. In Python use a
+string enum; in TypeScript follow the const-object and value-union rule. A clean report must show
+the inspected pairs and status conditionals, not just say readability and types were checked.
+
 **What a scope contains.** A scope is never the diff hunks alone. Resolving any scope — the pre-push merge-base diff or one a caller names — yields three things: the **diff** itself, the **full contents of every file it touches**, and the **sibling modules in those files' packages**. Hunks show what changed; the whole file shows what the change now sits inside; the siblings show where the logic should have lived. A code-judo move is usually only visible in the third, and `references/rubric.md` applies to everything the scope resolves to, not only to lines the diff added.
 
 **The scope says what must be read, never what may be reported.** It is a floor on the reading, so a

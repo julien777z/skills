@@ -34,6 +34,12 @@ Drop these outright:
 - Self-resolving transitional states and speculative compound failures.
 - Behavior changes that are intentional and part of the change's purpose.
 
+Missing visual separation between logical code stages is a readability finding when the formatter
+leaves it unchanged; formatter success does not refute it. A conditional selecting a fixed set of
+status strings describes one typed state even when the value is only logged; the log destination
+does not refute a finding for inline literals. Use the named finite-state representation required
+by the applicable language rules.
+
 Apply `pre-production` when validating a finding that changes a contract. A break that policy
 authorizes is a cost of the fix, not a refutation of the finding.
 

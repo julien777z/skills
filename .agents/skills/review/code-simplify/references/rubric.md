@@ -410,6 +410,7 @@ For every meaningful change, ask:
 - Is any file or component in scope past a healthy size boundary?
 - Are there repeated conditionals that signal a missing model or missing helper?
 - Is the implementation direct and legible, or does it rely on special cases and incidental control flow?
+- Can a reader see the function's distinct stages from its paragraph breaks, even after formatting passes?
 - Is this abstraction actually earning its keep, or is it just a wrapper?
 - Does any function take one declared shape and only read it — a method that shape is missing — how many of them sit over that same shape, and can that declaration hold a method at all?
 - Did the diff introduce casts, optionality, or ad-hoc object shapes that obscure the real invariant?
@@ -420,6 +421,7 @@ For every meaningful change, ask:
 - Does any new enum, constant set, mapping, or model re-declare a set the repository already has,
   and does every module-level declaration carry its type?
 - Does this represent a value differently from how a sibling already represents the same thing — a bare string where an enum exists, a fresh constant where a canonical type is the established shape?
+- Does a branch or conditional produce a closed set of string states, including log-only statuses, that belongs on the language's canonical named finite-state type rather than inline literals?
 - Is this orchestration more sequential or less atomic than it needs to be?
 - Does any docstring the diff adds run past one line?
 - Does any test module in scope hold a second test class, or a helper beside its classes?
@@ -483,6 +485,8 @@ Escalate findings when you see:
 - Copy-pasted logic instead of extracted helpers.
 - Narrow edge-case handling implemented in the middle of an already busy function.
 - Refactors that technically pass tests but make the code less modular or less readable.
+- Adjacent stages in a new or substantially edited function with no blank line between a completed guard and the next setup, validation and I/O, or copying and postprocessing. Report each missing paragraph break even when the formatter leaves it untouched.
+- A conditional selecting among a fixed set of status strings as inline literals, including when the selected value is only logged. Search for an existing named finite-state type by its values; use the representation required by the language's rules, such as a string enum in Python or a const object with an inferred union in TypeScript.
 - "Temporary" branching that is likely to become permanent debt.
 - Bespoke helpers where the codebase already has a canonical utility for the job.
 - A generic helper with exactly one caller, especially one this diff just created by extraction. One caller is not proof a helper is unnecessary; it is usually proof the sweep stopped at the first site. Search for the rest by the operation it performs, not by its name, and either use it there or fold it back into its single caller.

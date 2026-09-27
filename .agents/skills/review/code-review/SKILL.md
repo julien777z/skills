@@ -9,6 +9,23 @@ Provide a code review for the selected target.
 
 `references/rubric.md` holds what the review judges by; this file holds how it is run.
 
+For changed Python files, first run this skill's `scripts/paragraph_candidates.py` with the
+reviewed files as arguments. It lists adjacent statement pairs where a completed guard meets
+setup, one guard meets the next, a derived value meets its validation, or an operation meets the
+next stage. Inspect every candidate in numbered source and report missing blank lines as Rules
+findings even if the formatter accepts the file. Apply the same stage-boundary check by reading
+source in other languages. The Rules receipt lists every candidate pair and its disposition,
+including when another finding exists. A receipt without that list is incomplete and must be
+rerun. Any pair described as separate stages without a blank line is a Rules finding, even at low
+effort; it cannot remain only in the coverage receipt. The coordinator rejects and reruns a receipt
+that names such a pair but omits it from the findings list.
+
+The Rules receipt also lists every conditional choosing among a fixed set of string statuses,
+including log-only values. Inline literals bypassing the language's named finite-state type are
+findings: use a string enum in Python and the applicable const-object and value-union pattern in
+TypeScript. Preserve externally fixed values in that type. A receipt without the conditional list
+is incomplete and must be rerun.
+
 ## Dependencies
 
 - `subagent-selection` — return model tiers for explicit reviewer dispatch.
@@ -192,7 +209,6 @@ only proposes sharing low-level helpers while keeping parallel public surfaces i
 Duplicated lenses run independently and must not see each other's output; redundancy is the point.
 
 Require each Rules receipt to include its complete rule ledger. A clean Rules receipt without the applicable rules, checked files, and disposition for each rule is incomplete and must be rerun.
-
 From `high` upward, each reviewer returns a coverage receipt with its lens, the reviewed head SHA, the reviewed changed-file list, the exact rule and rubric inputs it used, its completion status, and a flat list of findings. Each finding carries path, line, anchor (`RIGHT` for added or current changed lines, `LEFT` for removed or base changed lines, or `OUTSIDE_DIFF` for an exact current line with no faithful diff anchor), a concrete trigger, and its reasoning.
 
 For `ultra`, deduplicate each round against every finding seen so far, not only against confirmed ones, or rejected findings resurface every round and the loop never converges.
