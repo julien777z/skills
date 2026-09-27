@@ -208,7 +208,7 @@ class ActionConfig(BaseSettings):
 APPLICATION_CONFIG = ActionConfig()
 ```
 
-- API keys and secrets must be **required** config fields with **no defaults** (no `= ""` or `| None = None` escape hatches); optionality is reserved for credentials with a documented ambient fallback (for example AWS IAM role credentials).
+- Declare settings needed for supported operations without a safe default, including API keys and secrets, as required non-nullable Pydantic fields. Validate nonempty strings on the field and do not repeat missing-value checks in consumers. Use optional fields only when absence is supported, such as credentials with a documented ambient fallback.
 - Do not add useless config values like `DEFAULT_ENVIRONMENT`.
 - Do not add helper functions like `_get_environment` when the value already exists on the shared settings object.
 - Do not read environment variables directly with `os.getenv`, `os.environ`, or `os.environ.get` in application/service/library code.
@@ -462,9 +462,7 @@ return next(
 
 ## External APIs and Errors
 
-- Verify SDK method availability before coding integrations:
-  - Prefer checking official docs with `@Browser`, or
-  - Inspect the installed SDK directly (for example with Python `inspect`/`hasattr`) in the current environment.
+- Before coding a provider integration, verify a maintained SDK's endpoint and protocol-feature coverage through official docs or inspection of the installed library. Use it when complete; otherwise use an existing shared transport or the repository's established HTTP client.
 - Do not add defensive attribute checks or fallback branches for third-party SDK methods (for example, catching `AttributeError` to try an alternate call path).
 - Call the expected SDK method directly; if the integration changes, update it explicitly rather than supporting multiple speculative shapes in runtime code.
 
