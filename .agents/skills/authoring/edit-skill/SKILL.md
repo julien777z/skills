@@ -164,8 +164,8 @@ outcome, because silence reads as the guidance having been fixed.
    - **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract, and where a skill genuinely needs one local fact, take it from the repository's `project.md` or a setting rather than baking it in. Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
    - **Generic ownership is determined by the skill's name and purpose.** Only a product-named skill that owns that product contract may carry its product facts. Language, platform, framework, and workflow skills — including Luau — must work across products; put their repository commands, identities, hosts, packages, and fixtures in project rules or a domain-specific skill.
    - **A skill's user-facing output goes through `i-have-adhd`** (global rule **User-Facing
-     Output**), so an output template names the facts a response carries, never a length, and
-     sends per-item detail to a linked file.
+     Output**), so an output template names the facts a response carries and sends per-item detail
+     to a linked file. A word limit it sets binds only while `i-have-adhd` is active.
    - Keep topic-specific restrictions with their topic. Keep an existing `## Guardrails` section at the bottom, and create one only for cross-cutting safety or preservation constraints.
 
 6. Multi-target behavior.
