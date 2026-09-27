@@ -103,8 +103,8 @@ under the GitHub rules on branch ownership, and its resolved result is theirs to
    merged code and relevant surrounding implementations as well as conflict resolutions. Exclude
    landed immutable migration revisions; their repository-owned migration procedure still applies.
 3. The verdict takes the shape the rubric's base-incorporation test requires.
-4. Refactor flagged incoming code through the proposal and diff questions within **Bounds**. Obtain a
-   completed independent verdict covering the resolved result and any corrections before pushing or
+4. Refactor flagged code, whether incoming or an older gap the verdict found in surrounding code,
+   through the proposal and diff questions within **Bounds**. Obtain a completed independent verdict covering the resolved result and any corrections before pushing or
    declaring reconciliation complete. Record the compared commits and reviewed result with that
    verdict. A missing review or unresolved flag is not acceptance; mergeability and tests are separate
    evidence, and acceptance grants no pull-request merge authorization.

@@ -80,15 +80,17 @@ its project guidance and treat every compatibility question below as one that gu
 Apply `pre-production`'s encountered-issues policy while making the change. The rules below govern
 how those issues are handled.
 
-- **A bug the work turns up is fixed in the change in flight, and offering it to the user is not a
-  disposition.** "Want this handled, or shall I leave it?" reads as diligence and is the failure this
-  section exists to prevent: it spends a turn to obtain permission for something already required,
-  and a no leaves a known defect in the tree with the agent's name on the decision. The question that
+- **A bug the work turns up, or a finding a gate, review, or simplification pass returns, is fixed in
+  the change in flight, and offering it to the user is not a disposition.** "Want this handled, or
+  shall I leave it?" reads as diligence and is the failure this section exists to prevent: it spends
+  a turn to obtain permission for something already required, and a no leaves a known defect in the
+  tree with the agent's name on the decision. The question that
   is genuinely the user's is about a **product change** — what a feature does, what a record keeps,
   who a surface serves, a contract somebody outside the repository speaks — never whether an
-  encountered bug gets fixed.
-- Being found rather than assigned changes nothing about whether a bug is fixed; it changes only
-  where the fix lands, which is the branch in flight. Say in the report what was fixed and why it
+  encountered issue gets fixed.
+- Being found rather than assigned, or predating the change — older code in a file the work
+  touches, a gap a gate labels pre-existing — changes nothing about whether it is fixed; it changes
+  only where the fix lands, which is the branch in flight. Say in the report what was fixed and why it
   was in the path of the work, so the reviewer sees a decision rather than a surprise.
 - What puts a **new** issue in that path is an act the work performed: a file it opened, a command
   it ran, a check it read, a review it received. How far the fix then reaches is a different
@@ -97,8 +99,8 @@ how those issues are handled.
   concrete failure modes, and available validation instead of treating the label as a stop rule.
 - Fix and verify a non-defect improvement when the correction can be completed in one focused pass
   and produces an overall net gain: removing a code smell, simplifying the implementation, or
-  applying the target-contract policy from `pre-production`. A defect is governed above and carries
-  no such condition.
+  applying the target-contract policy from `pre-production`. A defect, or a finding a gate, review,
+  or simplification pass returns, is governed above and carries no such condition.
 - Delete every piece of confirmed dead code encountered during implementation, even when it sits
   outside the files or packages already being changed. Confirm that no live application or
   library consumer, public export, or external contract still depends on it; remove tests that
@@ -112,11 +114,12 @@ how those issues are handled.
 - Apply an owned API, protobuf, schema, payload, or stored-shape change selected by
   `pre-production` without a second approval; update every in-repository consumer, generated
   artifact, and required migration for the target contract.
-- Apply **Task Authorization** to encountered corrections. Ask only when the correction materially
-  changes user-owned product intent, security or disclosure posture, target, recipient, or outcome
-  beyond the task, or a platform requires action-time confirmation. For a bug the fix proceeds and
-  is not held for an answer; what goes to the user is scope, sequencing, and where the work lands,
-  never whether it is fixed.
+- Apply **Task Authorization** to encountered corrections. Ask only when the correction is a product
+  change as the first bullet defines it, changes security or disclosure posture, reaches a
+  repository, environment, or external recipient the task did not authorize, or a platform requires
+  action-time confirmation. Another file, component, or package in the same repository is never a
+  new target. For a bug or a returned finding the fix proceeds and is not held for an answer; what
+  goes to the user is scope, sequencing, and where the work lands, never whether it is fixed.
 - When asking, state the trigger, impact, expected work, recommendation, and concrete choices.
 - Continue independent approved work when the unresolved issue does not block it.
 
@@ -153,9 +156,8 @@ Read and invoke `code-simplify` as the change is made — after each meaningful 
 - When simplification or dead-code deletion changes another file, add that file's full contents,
   its similar code, and its sibling modules to the scope recursively before continuing.
 - Resolve the final pass the same way, from the complete diff.
-- Apply simplifications that produce an overall net improvement and can be completed and verified
-  in one focused pass, using `pre-production` for contract decisions.
-- Ask the user about larger or decision-dependent simplifications before applying them.
+- Apply every simplification that produces an overall net improvement, using `pre-production` for
+  contract decisions; ask only about one that meets **Encountered Issues**' condition for asking.
 
 ## Pre-Push Gate
 
