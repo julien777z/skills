@@ -23,7 +23,7 @@ paths:
 - Prefer real SDK and model types over `cast(...)`; reserve a narrowly scoped cast for information the type system genuinely cannot express.
 - Do not "fix" typing by expanding simple transformations into repetitive key-by-key copy blocks (for example, manually assigning each dict key only to satisfy pyright). Fix the source type hints (or add a precise cast/narrowing at the boundary) so the transformation can stay concise and readable.
 - For persistence/update payloads (for example, `upsert(...)`), define a dedicated `TypedDict` and construct it inline at the call site. Do not add free-floating `build_*`/`make_*` helper functions whose only role is constructing a payload from another shape; the same no-free-floating-builders rule that applies to `BaseModel` applies here.
-- When a `TypedDict` types a module-level constant or other shared blob (for example a CVA style config), build the value by **calling** the TypedDict constructor with keyword arguments (`MyTypedDict(field=value, ...)`) instead of assigning an annotated plain dict literal (`name: MyTypedDict = {...}`). Use the same for nested TypedDict rows inside lists (for example `CompoundVariantRule(match={...}, class_name="...")`). This keeps the type as the construction site, not only a static annotation on a dict literal.
+- Build every `TypedDict` value by **calling** its constructor with keyword arguments (`MyTypedDict(field=value, ...)`), never by annotating a plain dict literal (`name: MyTypedDict = {...}`) or passing a bare dict where the parameter is typed. That covers module-level constants and shared blobs, nested rows inside lists (for example `CompoundVariantRule(match={...}, class_name="...")`), and an SDK's typed request parameters and options at every level of nesting (`sdk.params.WidgetCreateParams(owner=sdk.params.WidgetCreateParamsOwner(...))`, `sdk.RequestOptions(idempotency_key=key)`). Tests assert with the same constructors. This keeps the type as the construction site, not only a static annotation on a dict literal.
 
 - Group parameters that always travel together and describe one concept into a single typed object, then pass that object rather than threading its fields through every signature and call site.
 
@@ -210,6 +210,7 @@ APPLICATION_CONFIG = ActionConfig()
 
 - API keys and secrets must be **required** config fields with **no defaults** (no `= ""` or `| None = None` escape hatches); optionality is reserved for credentials with a documented ambient fallback (for example AWS IAM role credentials).
 - Do not add useless config values like `DEFAULT_ENVIRONMENT`.
+- Select a provider's sandbox or production host from the application's canonical environment check (such as the settings object's `is_production`), never from a provider-specific environment setting or enum that restates what the deployment environment already decides.
 - Do not add helper functions like `_get_environment` when the value already exists on the shared settings object.
 - Do not read environment variables directly with `os.getenv`, `os.environ`, or `os.environ.get` in application/service/library code.
 - Always read environment-backed values from the typed settings object so defaults, validation, and normalization live in one place.
@@ -327,6 +328,8 @@ def get_auth_secret(config: Settings | None = None) -> str:
 - Define Pydantic `BaseModel` classes and other application data models under the package's `models/` directory.
 - Split models into intuitively named files by concept, such as `models/configuration.py` or `models/submission.py`.
 - Do not place models beside operational code or collect unrelated models in a catch-all `models.py` module.
+
+- A declaration that describes one external provider — its enums, request and response models, host constants — lives in that provider's package beside its other models, never in a service-wide `core/` or shared enums module. A core enums module holds only the application's own domain vocabulary.
 
 - Files under a `models/` package contain only declarative models, enums, and behavior intrinsic to validating or representing those models. Do not put runtime registries, mappings, instantiated collaborators, filesystem layouts, I/O, or orchestration in model files.
 - Put runtime mappings and operational behavior in the module that owns their use. A typed `config.py` built with `pydantic-settings` is the explicit exception for the repository's settings class only; instantiate that class at the application or script composition boundary.
@@ -462,6 +465,7 @@ return next(
 
 ## External APIs and Errors
 
+- **Call a third-party provider through its official SDK when one exists.** Hand-rolled HTTP requests re-declare the provider's endpoints, authentication, request and response shapes, and error format, all of which the SDK already owns and keeps current. The repository's shared HTTP helper is for providers that publish no SDK. Inject the SDK client like any other client, run a synchronous SDK off the event loop, catch its documented exception types, and build its requests with its own typed request classes.
 - Verify SDK method availability before coding integrations:
   - Prefer checking official docs with `@Browser`, or
   - Inspect the installed SDK directly (for example with Python `inspect`/`hasattr`) in the current environment.

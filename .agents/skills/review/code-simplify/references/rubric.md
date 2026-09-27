@@ -506,6 +506,19 @@ Escalate findings when you see:
 - A repository-wide fact — the company's legal name, its support address, its postal address, the
   product name — kept as loose strings inside one consumer, such as an email renderer or a document
   builder, instead of one typed model in the shared package that every consumer reads.
+- Hand-rolled HTTP requests to a third-party provider that publishes an official SDK: request and
+  response models, header authentication and error parsing written for endpoints the SDK already
+  covers. The remedy is the SDK behind an injected client, with the hand-written request models
+  deleted. A shared HTTP helper does not make the hand-rolled call acceptable; it is for providers
+  without an SDK.
+- A typed parameter built as a plain dict — an annotated literal (`params: sdk.params.X = {...}`) or
+  a bare dict passed where an SDK or repository signature names a `TypedDict` — at any nesting level.
+  The remedy is the constructor call, `sdk.params.X(...)`, with tests asserting the same way.
+- A declaration describing one external provider — an enum of its environments or products, its
+  request or response models, its hosts — placed in a service-wide `core/` or shared module, and a
+  provider-specific environment setting that restates what the application's canonical environment
+  check already decides. The remedy is the provider's own package for the declaration and the
+  canonical check for the environment.
 
 ## Preferred Remedies
 
