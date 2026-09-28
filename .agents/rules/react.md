@@ -185,12 +185,6 @@ Apply this section only when the repository uses the Next.js App Router.
 
 ### Rendering and Data
 
-Default is Server Component. Use `"use client"` only when needed:
-- Event handlers (onClick, onChange, etc.)
-- Browser-only APIs (localStorage, window)
-- React hooks (useState, useEffect, useContext)
-- Third-party client libraries
-
 ```typescript
 // Server Component (default) - no directive needed
 async function UserList() {
@@ -207,7 +201,7 @@ function SearchInput() {
 }
 ```
 
-- **Render on the server.** A page, and every section of it that shows data, is an async Server Component that loads its data and renders it. A Client Component exists only for interaction the browser has to own — input, a dialog, drag-and-drop, a third-party widget — takes its data as props, and never fetches it.
+- **Render on the server.** A page, and every section of it that shows data, is an async Server Component that loads its data and renders it. A Client Component (`"use client"`) exists only for what the browser has to own — event handlers and input, state and effect hooks, browser-only APIs, a dialog, drag-and-drop, a third-party client widget — takes its data as props, and never fetches it.
 - **Writes are Server Actions** that authenticate their caller and re-render the page when they finish. A client-side data layer for reads — SWR, React Query, a fetching hook, a fallback cache seeded from the server — is the shape this replaces, not a companion to it, and a status that has to update live refreshes the server render on an interval instead of fetching on the client.
 - **A page never checks for a kind of user it is not linked to.** Navigation decides who reaches a page; a guard or empty state inside it for somebody it was never offered to is dead code.
 - **Show the message the API sent.** Never key a table of your own copy off status codes for a first-party API: that is a second copy of its error vocabulary that nothing keeps in step, and it overrides the message the service chose. Wrong copy is fixed at the service that produced it.
