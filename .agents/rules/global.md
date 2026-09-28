@@ -36,6 +36,18 @@ alwaysApply: true
   shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
   the exact resolved commit for reproducibility and provenance.
 
+## Credentials
+
+- Before creating a provider credential, inventory credentials already available for that provider
+  and reuse one that can serve the task. Give reusable API keys broad permissions across the
+  provider account's resources and related operations so routine future work does not need another
+  key or permission edit. If an existing key lacks access, broaden its permissions; create another
+  only when the existing key cannot be reused or edited.
+
+- Minimize credential exposure and remove accidental private copies where possible. A credential
+  encountered in private agent work has not thereby been made public. Revoke or rotate a credential
+  in response to exposure only after establishing that it was made public.
+
 ## User-Facing Output
 
 - Invoke `i-have-adhd` before the first response a user reads in the session, whether or not the
@@ -151,8 +163,12 @@ alwaysApply: true
 - Git history is the record of what changed; documentation describes what exists now.
 - The same applies to code comments and docstrings: no "formerly", "replaces", or "kept for
   backwards compatibility" notes.
-- Use an environment's exact domain name for both it and its tailnet; never append owner or
-  organization aliases. Name provider accounts and projects only as separate resources.
+
+## Environment Names
+
+- In code, documentation, and user-facing updates, use an environment's exact domain name for
+  everything scoped to that environment. Do not substitute a person or organization label; name
+  provider accounts and projects separately.
 
 ## Replacement Contracts
 
