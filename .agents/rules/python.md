@@ -21,7 +21,7 @@ paths:
 - Model structured payloads explicitly: use `TypedDict` for mapping-shaped data and Pydantic `BaseModel` for every data-holding class, rather than arbitrary inline dictionaries, `dict[str, object]`, `dataclass`, or `NamedTuple`.
 - Use exact types or precise unions for dynamic and nested shapes; never hide their contracts behind `Any` or placeholder `object` fields in application or test annotations.
 - Prefer real SDK and model types over `cast(...)`; reserve a narrowly scoped cast for information the type system genuinely cannot express.
-- Do not "fix" typing by expanding simple transformations into repetitive key-by-key copy blocks (for example, manually assigning each dict key only to satisfy pyright). Fix the source type hints (or add a precise cast/narrowing at the boundary) so the transformation can stay concise and readable.
+- Do not "fix" typing by expanding simple transformations into repetitive key-by-key copy blocks (for example, manually assigning each dict key only to satisfy pyright). Fix the source type hints (or add a precise cast/narrowing of our own types at the boundary) so the transformation can stay concise and readable.
 - For persistence/update payloads (for example, `upsert(...)`), define a dedicated `TypedDict` and construct it inline at the call site. Do not add free-floating `build_*`/`make_*` helper functions whose only role is constructing a payload from another shape; the same no-free-floating-builders rule that applies to `BaseModel` applies here.
 - Build every `TypedDict` value by **calling** its constructor with keyword arguments (`WidgetUpdate(field=value, ...)`), never by annotating a plain dict literal (`name: WidgetUpdate = {...}`) or passing a bare dict where the parameter is typed. That covers module-level constants and shared blobs, nested rows inside lists (for example `CompoundVariantRule(match={...}, class_name="...")`), and an SDK's typed request parameters and options at every level of nesting (`sdk.params.WidgetCreateParams(owner=sdk.params.WidgetCreateParamsOwner(...))`, `sdk.RequestOptions(idempotency_key=key)`). Tests assert with the same constructors. This keeps the type as the construction site, not only a static annotation on a dict literal.
 - **No name you write or reference carries a `TypedDict` suffix.** Name a TypedDict for the shape it holds (`WidgetUpdate`, never `WidgetUpdateTypedDict`), and where an SDK ships a model class beside a `…TypedDict` twin of the same request, pass the model class.
@@ -179,8 +179,19 @@ from myapp.http import fetch
 from myapp.http_transport import fetch
 ```
 
-- **Never add an inline suppression**: no `# pylint: disable`, `# pyright: ignore`, `# type: ignore`, or `# noqa`. Fix what the checker reports — a precise annotation, a correctly typed decorator (a `ParamSpec` rather than a `Callable` that erases parameter names), stubs for an untyped dependency, the right import. A per-line disable reads the same whether its author weighed the finding or never looked, and once copied onto every sibling it hides the cause behind a pattern nobody questions.
-- A rule that misreads a construct the codebase deliberately relies on everywhere — coroutines implementing a generated synchronous base, say — is turned off once in the tool's configuration with its reason beside it. Code a generator emits keeps whatever directives its generator writes.
+## Suppressions
+
+- **Never add an inline suppression**: no `# pylint: disable`, `# pyright: ignore`, `# type: ignore`, or `# noqa`. Fix what the checker reports about our own code — a precise annotation, a correctly typed decorator (a `ParamSpec` rather than a `Callable` that erases parameter names), the right import. A per-line disable reads the same whether its author weighed the finding or never looked, and once copied onto every sibling it hides the cause behind a pattern nobody questions.
+- **A third-party package's missing or incomplete types are that package's gap, never ours.** Delete
+  any stub file, `typings/` directory, cast or wrapper written to quiet them, and write none; the
+  answer is the category-wide configuration entry below, never code.
+- A category is turned off once in the tool's configuration, or filtered once by the repository's
+  lint gate, with its reason beside it, in two cases: it reports a third-party package's missing or
+  unknown types, or it misreads a construct the codebase deliberately relies on everywhere —
+  coroutines implementing a generated synchronous base, say. It applies to every package and every
+  file, never to one named package. A category turned off for dependencies is off for our own code
+  too; the checks that stay on, such as argument types and annotations on our own functions, keep
+  our own errors reported. Code a generator emits keeps whatever directives its generator writes.
 
 ## Configuration
 
