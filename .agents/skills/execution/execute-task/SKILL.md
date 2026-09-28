@@ -87,7 +87,7 @@ how those issues are handled.
   a turn to obtain permission for something already required, and a no leaves a known defect in the
   tree with the agent's name on the decision. The question that
   is genuinely the user's is about a **product change** — what a feature does, what a record keeps,
-  who a surface serves, a contract somebody outside the repository speaks — never whether an
+  who a surface serves, a contract a consumer outside the user's control speaks — never whether an
   encountered issue gets fixed.
 - Being found rather than assigned, or predating the change — older code in a file the work
   touches, a gap a gate labels pre-existing — changes nothing about whether it is fixed; it changes
@@ -113,14 +113,17 @@ how those issues are handled.
 - One focused pass means the correction needs no separate research or design phase and is not
   expected to require multiple implementation iterations.
 - Apply an owned API, protobuf, schema, payload, or stored-shape change selected by
-  `pre-production` without a second approval; update every in-repository consumer, generated
-  artifact, and required migration for the target contract.
+  `pre-production` without a second approval; update every consumer the user controls, in
+  whichever repository it lives, plus every generated artifact and required migration for the
+  target contract.
 - Apply **Task Authorization** to encountered corrections. Ask only when the correction is a product
   change as the first bullet defines it, changes security or disclosure posture, reaches a
   repository, environment, or external recipient the task did not authorize, or a platform requires
   action-time confirmation. Another file, component, or package in the same repository is never a
-  new target. For a bug or a returned finding the fix proceeds and is not held for an answer; what
-  goes to the user is scope, sequencing, and where the work lands, never whether it is fixed.
+  new target, and neither is a repository the user owns that consumes a contract the change breaks:
+  it is delivered under **Multi-Repository Delivery**. For a bug or a returned finding the fix
+  proceeds and is not held for an answer; what goes to the user is scope, sequencing, and where the
+  work lands, never whether it is fixed.
 - When asking, state the trigger, impact, expected work, recommendation, and concrete choices.
 - Continue independent approved work when the unresolved issue does not block it.
 

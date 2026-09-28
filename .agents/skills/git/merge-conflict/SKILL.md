@@ -70,8 +70,8 @@ answers to one question may now sit in one tree.
 10. **Push only after the verdict**, then re-query mergeability. Where the choice at step 4 is close
     and changes an interface others build on, put it to the user with a recommendation, as
     `pre-production`'s **Trade-Offs Are Surfaced, Never Enforced** directs, rather than settling it
-    silently; block only when a safe resolution needs a product or contract decision nobody has
-    authorized.
+    silently; block only when a safe resolution needs an unauthorized product decision, or a change
+    to a contract a consumer outside the user's control speaks.
 
 ## Output
 

@@ -90,7 +90,7 @@ the finding lives among them.
 
 When run as the pre-push pass (for example from the Stop hook), start from the **same diff as code-review's local / pre-push mode**: `git diff $(git merge-base <base> HEAD)` plus any untracked files the branch adds, where `<base>` is the repository's remote default branch (for example `origin/main` — use the actual default branch name; fall back to the local default branch if no remote is configured). This covers branch commits and uncommitted working-tree changes without unrelated upstream commits. Then resolve it into the three things above.
 
-When a caller provides a **broader scope** instead — for example the whole repository or specific directories or files — apply this rubric across **that** scope, not the pre-push diff. The merge-base diff above is only the default for the Stop-hook pre-push pass; always honor an explicit scope from the caller, preserve external contracts, and expand to every internal consumer needed for a complete simplification.
+When a caller provides a **broader scope** instead — for example the whole repository or specific directories or files — apply this rubric across **that** scope, not the pre-push diff. The merge-base diff above is only the default for the Stop-hook pre-push pass; always honor an explicit scope from the caller, preserve what a consumer outside the user's control observes, and expand to every owned consumer, in any repository, needed for a complete simplification.
 
 ## Output Expectations
 

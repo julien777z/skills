@@ -72,8 +72,10 @@ also not a reason to stop at the first file, and the section below governs how f
 
 - **A behaviour change is not a blocker.** Where the cleanest result shifts behaviour — a value
   reaching a store it never reached before, a permission finally applying where it always should have,
-  a field appearing or disappearing for some caller — that is the user's decision, and the way to put
+  a value newly shown to or withheld from someone — that is the user's decision, and the way to put
   it to them is to state it plainly and carry on with the work that does not depend on the answer.
+  A shape change to an owned contract is not one of those: it is made, with every consumer, and
+  stated in the pull request.
 - **Never quietly narrow the work to avoid the conversation.** Choosing the option that changes nothing
   is choosing the sloppier result on the user's behalf while hiding that a choice existed. Silence
   reads as "there was no decision to make".
@@ -101,7 +103,12 @@ also not a reason to stop at the first file, and the section below governs how f
   browser support, empty states, and provider-failure behavior the released product needs.
 - Prefer a deliberate break to an owned API, wire, schema, payload, or stored shape when it
   materially simplifies the result. Migrate affected consumers and data, then remove the old shape;
-  update every in-repository consumer and generated contract in the same change.
+  update every consumer and generated contract in the same change.
+- **An owned contract stays owned across repositories.** A consumer in a sibling repository the
+  user owns makes the break multi-repository work, never somebody else's decision; only a consumer
+  outside the user's control freezes a shape. **Scope Follows The Defect** holds for a break as for
+  a bug: the new shape reaches every site answering the same question, never only the one the work
+  started from.
 - Do not weaken a compatibility gate to hide an intentional break. Report the exact failure and the
   contract change it detected so a reviewer can distinguish intended from accidental breakage.
 - For disposable development records, follow the repository's stated policy. A one-time conversion
@@ -111,8 +118,8 @@ also not a reason to stop at the first file, and the section below governs how f
 
 ## Owned And Third-Party Contracts
 
-- Everything above is about contracts this repository owns and can change by migrating its
-  consumers. **A third-party provider's contract is not ours and cannot change at all.**
+- Everything above is about contracts the user owns and can change by migrating every consumer
+  of them. **A third-party provider's contract is not ours and cannot change at all.**
 - So where the two must meet, only one side can move, and it is always ours. "The provider encodes it
   differently" is a statement about our model, not about theirs: our model is the one that accepts
   what the provider sends, in the shape the provider sends it.
