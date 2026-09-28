@@ -154,11 +154,15 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   maximum height, so the surface stays as tall as its content until it reaches the cap. A height set
   from outside the content belongs only to a surface whose content fills the space it is given — a
   chart, a map, media — to one the reader sized, or to a section deliberately sized to the viewport.
-- **Navigation decides who reaches a page.** A guard or empty state inside a page for somebody it
-  was never offered to is dead code. A multi-step flow the reader has finished — a verification, a
-  setup, an onboarding — leaves the navigation, and its page redirects, because a reader who was
-  offered it still holds its address; the completion is announced once, as a dismissible success
-  banner where the reader lands.
+- **Navigation decides who reaches a page, and the decision that hides a page also refuses to serve
+  it.** An address the viewer's role, workspace, plan or permissions never offer them redirects to
+  the viewer's home. So does a multi-step flow the reader has finished — a verification, a setup,
+  an onboarding — which leaves the navigation while the reader still holds its address; the
+  completion is announced once, as a dismissible success banner where the reader lands. A screen or
+  empty state telling the viewer the page belongs to somebody else — "this page is for …", "switch
+  to … to use it", "you don't have access" — is dead code wherever it sits, in a page, a layout or a
+  gate: the check becomes the redirect and the screen is deleted, never restyled, moved into a
+  shared message component, or kept because a task lists it among the states to restyle.
 - **Inside a page, offer only what applies to the reader.** A choice, a document, a field or a
   status row the reader can never use — the other region's version of a document, the other account
   type's settings — is left out, decided by the same rule that decides which one applies, never
@@ -171,7 +175,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   action at the end,** apart, so the control that goes back never sits beside the one that commits.
 - **A page whose only content is a status message renders a full-page message state**, centered in
   the page, never a small card left under the flow's own chrome — a stepper, tabs, a form header —
-  that no longer applies. A form or list long enough to fill the page keeps its card.
+  that no longer applies. A form or list long enough to fill the page keeps its card. The message
+  reports on the reader's own work; a notice that the page is for somebody else is not one, and
+  redirects as the navigation bullet above says.
 - **A failure beside working content is a dismissible banner above that content.** It never
   replaces a surface's own heading or description, which keep saying what the surface is while the
   banner says what went wrong.
