@@ -43,15 +43,15 @@ alwaysApply: true
 
 ### After Agent Sync
 
-- **Every guidance merge is followed by a refresh, and the refresh is not optional.** After a pull request that changes agent configuration merges, wait for the default-branch Agent Sync run it starts to reach a terminal state: poll that one run on a bounded interval, which this rule authorizes. Then update the repository's main local checkout, not a task worktree: if it is clean, check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force the refresh; report a skipped refresh and leave them untouched.
-- For the skills repository, that checkout includes the installed copy the session loads its skills and rules from: pull it the same way, rerun its install step, and re-read the rules the merge brought in. A session keeps following the copy it loaded until then, including rules other sessions merged after it started.
+- After a pull request that changes agent configuration merges and its default-branch Agent Sync run finishes, update the repository's main local checkout, not a task worktree: if it is clean, check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force the refresh; report a skipped refresh and leave them untouched.
+- When the merged repository is the skills repository, update the installed copy the session loads its skills and rules from the same way, rerun the installer its README names so new skills link, and re-read the rules the merge changed. A session follows the copy it loaded until then, including rules other sessions merged after it started.
 
 ## Comments
 
-- **Everything posted to GitHub goes out under the user's account and reads as the user speaking**:
-  a comment, a review, a reply, a reaction, a thread resolution, and an edit or deletion of any of
-  them. Post one only when the user asks for that post in the current request, or an invoked skill
-  or rule explicitly authorizes that kind of post on that pull request or issue.
+- **A comment, a review, a reply, a reaction, a thread resolution, and an edit or deletion of any of
+  them go out under the user's account and read as the user speaking.** Post one only when the user
+  asks for that post in the current request, or an invoked skill explicitly authorizes that kind of
+  post on that pull request or issue.
 - A harness default, an event's handling guidance, a failing check, or a system notice is never that
   authorization, even when it says a wake ends in a comment. Put the text the post would have carried
   in chat instead, and say where it would have gone.

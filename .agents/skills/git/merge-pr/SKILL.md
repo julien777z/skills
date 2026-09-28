@@ -95,10 +95,15 @@ refuses a concurrent head change. On a mismatch, put the commits the new head ad
 caller's rule from **Inputs**, then repeat the check gate. After the merge, re-read the pull request
 and require it to report merged.
 
+When the merged diff changes agent configuration, poll the default-branch Agent Sync run the merge
+started as **Check Gate** steps 4–5 poll a check. A run ending in success is followed by the refresh
+the GitHub rules' **After Agent Sync** section describes; any other ending is root-caused as step 6
+says and reported before the refresh.
+
 ## Report
 
 ```markdown
-Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only | names of hosted checks and results>
+Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only | names of hosted checks and results> — sync: <run result | not agent configuration>; refresh: <done at <sha> | skipped: <dirty paths>>
 ```
 
 Or, when a gate holds: `Not merged: <link> — <gate>: <evidence>`. The evidence includes each

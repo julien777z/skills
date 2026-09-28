@@ -307,7 +307,7 @@ outcome, because silence reads as the guidance having been fixed.
       does not.
    8. **Nothing propagates.** The skills repository is the only copy of a shared skill, and every
       session reads it through its user-level link, so a merged edit reaches the next session on
-      its own; the current session gets it only through the refresh step 9 ends with. A skill that reads generically but was written into one repository's `.agents` is
+      its own. A skill that reads generically but was written into one repository's `.agents` is
       moved to the skills repository in the same change rather than left as a second copy.
    9. **Read the merged text back before using it.** A merge changes the default branch, not the
       checkout: a session working on another branch still carries the old skill in its tree, and a
@@ -317,10 +317,8 @@ outcome, because silence reads as the guidance having been fixed.
       from that text for the rest of the session. A skill invoked while its change is still open
       is read the same way from the branch that carries it, never from a checkout that predates
       it.
-      Then wait for the default-branch Agent Sync run the merge started to finish and refresh as
-      the GitHub rules' **After Agent Sync** section says — the main local checkout and, for the
-      skills repository, the installed copy the session loads, with its install step rerun. The
-      merge is not delivered to this session until that refresh has run.
+      `merge-pr` then waits for the default-branch Agent Sync run and refreshes the main local
+      checkout and, for the skills repository, the installed copy this session loads.
 
 ## Output
 
@@ -348,6 +346,7 @@ Checks
 - Smoke test: <passing table reported above | bound spent: <stands with the miss | edited again | dropped> — <reason> | not run: <reason>>
 - Example approved: <one line per skill: name — approved after <n> round(s) | skipped, no response the user uses | skipped, response unchanged | rule-only change>
 - Merged text read back: <default branch head the touched skills and rules were re-read from | not merged>
+- Refresh: <main checkout and installed copy at <sha>, installer rerun | skipped: <dirty paths> | not merged>
 
 Pull request
 
