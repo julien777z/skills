@@ -68,9 +68,10 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    hang, push a speculative fix, cancel, re-run, or report the run stuck from a pending status alone.
 6. **A failed check is root-caused and fixed.** Read its annotations and complete log, fix the
    repository input responsible — code, test, configuration or workflow — and commit and push it.
-   A failure an external service caused is an encountered issue under `pre-production` and is fixed
-   the same way; never re-run a job to get past a failure. Report a blocker only when the missing coverage
-   needs user input or unavailable credentials, with the check, evidence and remediation attempted.
+   A failure an external service caused is an encountered issue under `pre-production` and is
+   fixed the same way; never re-run a job to get past a failure. Report a blocker only when the
+   missing coverage needs user input or unavailable credentials, with the check, evidence and
+   remediation attempted.
 7. Never stop, restart, reconfigure or claim a local service the calling workflow did not start:
    another agent or person may be using it. When relevant validation needs local services and one it
    did not start is running, use the matching hosted check as the fallback rather than running a

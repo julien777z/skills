@@ -99,11 +99,12 @@ outcome, because silence reads as the guidance having been fixed.
      An agent definition that a shared skill runs on goes with that skill; every other agent, and
      every rule, is repository-owned.
    - A shared target is edited in the skills repository's checkout — the one the user-level link
-     resolves to or, when the session has none, a writable checkout attached to or cloned into the
-     session — on a branch and pull request in that repository, never through the link's path from
-     another repository's branch. A cloud setup clone installed only to provide skills is not the
-     editing checkout. Transfer the edit to a separate skills-repository session only when no writable
-     checkout can be obtained, never by editing the installed clone.
+     resolves to or, when the session has no editing checkout, a writable checkout attached to
+     or cloned into the session — on a branch and pull request in that repository, never
+     through the link's path from another repository's branch. A cloud setup clone installed
+     only to provide skills is not the editing checkout. Transfer the edit to a separate
+     skills-repository session only when no writable checkout can be obtained, never by editing
+     the installed clone.
      The originating session supplies the observed miss, original task, relevant diff or small
      file set, repository commit, original skill text, and two to four observable pass criteria.
      Include a sanitized fixture when the skills session cannot read the originating repository.
