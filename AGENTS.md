@@ -281,7 +281,7 @@ Canonical guidance lives in `.agents/`.
 
 - Read `.agents/rules/biome.md` for files matching `**/*.ts`, `**/*.tsx`, `biome.json`: biome
 - Read `.agents/rules/fastapi.md` for files matching `**/*.py`: Use APIRouter-based route organization, validate in models, and keep response handling consistent.
-- Read `.agents/rules/http.md` for files matching `**/*.py`: http
+- Read `.agents/rules/http.md` for files matching `**/*.py`, `**/*.ts`, `**/*.tsx`: http
 - Read `.agents/rules/poetry.md` for files matching `pyproject.toml`, `poetry.lock`, `**/requirements*.in`, `**/requirements*.lock`, `**/requirements*.txt`, `**/*.py`: poetry
 - Read `.agents/rules/pydantic.md` for files matching `**/*.py`: pydantic
 - Read `.agents/rules/python.md` for files matching `**/*.py`: Follow modern Python typing, import, formatting, error handling, and maintainability conventions.
