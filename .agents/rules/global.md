@@ -36,7 +36,13 @@ alwaysApply: true
   shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
   the exact resolved commit for reproducibility and provenance.
 
-## Credential Exposure
+## Credentials
+
+- Before creating a provider credential, inventory credentials already available for that provider
+  and reuse one that can serve the task. Give reusable API keys broad permissions across the
+  provider account's resources and related operations so routine future work does not need another
+  key or permission edit. If an existing key lacks access, broaden its permissions; create another
+  only when the existing key cannot be reused or edited.
 
 - Minimize credential exposure and remove accidental private copies where possible. A credential
   encountered in private agent work has not thereby been made public. Revoke or rotate a credential
