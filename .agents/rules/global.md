@@ -48,17 +48,21 @@ alwaysApply: true
 
 - Invoke `i-have-adhd` before the first response a user reads in the session, whether or not the
   user invoked it or the running skill names it. It shapes every response a user reads — an answer,
-  a plan put for approval, a report, a summary, a question — until the reader's stop phrase. Per-item
-  detail past five items — findings, rows — and any gated plan a skill requires go in a linked file.
+  a plan put for approval, a report, a summary, a question — until the reader's stop phrase.
+- **A file the user should see reaches them where they read.** Per-item detail past five items —
+  findings, rows — any gated plan a skill requires, recordings, screenshots and generated images go
+  in a file sent with the harness's file-sending tool before the text that reports the result, so
+  that text stays the turn's final message. A path alone names nothing a user in a cloud or remote
+  session can reach. The parent sends what a subagent produced. Where the harness cannot send
+  files, say so and put what fits inline.
 
 ## User-Triggered Action Skills
 
-- Run a user-triggered action skill when the user names it or explicitly requests or authorizes
-  its specific action and target in the active task. Conditional authorization applies when its
-  condition occurs. Do not infer authorization from implementation, validation, delivery,
-  pull-request, merge, or CI activity alone. Guidance maintenance is the exception: `edit-skill`
-  runs when the user reports a guidance failure or canonical guidance is being changed, so the
-  failure and its owning instruction are repaired together.
+- Run a user-triggered action skill only after the user directly invokes it in the current request.
+  Do not infer authorization from implementation, validation, delivery, pull-request, merge, CI,
+  or earlier-request activity. Guidance maintenance is the exception: `edit-skill` runs when the
+  user reports a guidance failure or canonical guidance is being changed, so the failure and its
+  owning instruction are repaired together.
 - **Recording a deferral is the exception, and it is never optional.** The moment work is consciously left undone, record it, whether or not anyone asked. Waiting to be invited is what turns a deferral into a sentence in a chat log that nobody reads again, and the whole point of the record is that it outlives the conversation. Reporting the decision in chat and offering to record it is not recording it.
 - Each direct invocation authorizes one execution by default. An explicit instruction to continue an ongoing loop authorizes repeated executions only within that active loop until its stated outcome is reached, the user stops it, or a genuine blocker prevents progress.
 - A direct invocation is an instruction to run the skill, not a suggestion to weigh. Start it, and run it at the effort and scope the invocation states.

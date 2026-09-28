@@ -124,12 +124,6 @@ type Status = (typeof Status)[keyof typeof Status];
 
 ## External Data And Errors
 
-- **Any unsuccessful response from a service gets one branch.** Report the status and raise the
-  caller's error. Do not branch per status code or map a provider's codes onto distinct messages;
-  that restates a contract we do not own.
-- Success is the whole `2xx` range, not `200`. A create call answers `201`.
-- Read a domain outcome from the body of a successful response, never from the status of a refused
-  one.
 - Implement the one contract the boundary actually has. Do not widen a type or add a branch for a
   shape that is not part of it, and prefer fixing the call site over adding defensive conversion in a
   shared helper.
@@ -150,7 +144,8 @@ type Status = (typeof Status)[keyof typeof Status];
   identically whether its author weighed the finding and judged it wrong or never looked, so the next
   reader cannot tell which, and the exemption outlives whoever had a reason for it.
 - Fix what the tool reports about our own code, publish types at the source when the package is
-  ours, or leave our own report standing. A red run carrying known reports is a truthful record of work
+  ours — read from whose repository it is, not from whether it lives in this one — or leave our own
+  report standing. A red run carrying known reports is a truthful record of work
   still to do.
 - **A third-party package's missing or incomplete types are that package's gap, never ours.** Write
   no declaration file, `declare module`, cast or wrapper to quiet them, and leave no report of

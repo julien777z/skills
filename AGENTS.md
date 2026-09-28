@@ -131,8 +131,13 @@ Canonical guidance lives in `.agents/`.
 
 - Invoke `i-have-adhd` before the first response a user reads in the session, whether or not the
   user invoked it or the running skill names it. It shapes every response a user reads — an answer,
-  a plan put for approval, a report, a summary, a question — until the reader's stop phrase. Per-item
-  detail past five items — findings, rows — and any gated plan a skill requires go in a linked file.
+  a plan put for approval, a report, a summary, a question — until the reader's stop phrase.
+- **A file the user should see reaches them where they read.** Per-item detail past five items —
+  findings, rows — any gated plan a skill requires, recordings, screenshots and generated images go
+  in a file sent with the harness's file-sending tool before the text that reports the result, so
+  that text stays the turn's final message. A path alone names nothing a user in a cloud or remote
+  session can reach. The parent sends what a subagent produced. Where the harness cannot send
+  files, say so and put what fits inline.
 
 ## User-Triggered Action Skills
 
@@ -276,7 +281,7 @@ Canonical guidance lives in `.agents/`.
 
 - Read `.agents/rules/biome.md` for files matching `**/*.ts`, `**/*.tsx`, `biome.json`: biome
 - Read `.agents/rules/fastapi.md` for files matching `**/*.py`: Use APIRouter-based route organization, validate in models, and keep response handling consistent.
-- Read `.agents/rules/http.md` for files matching `**/*.py`: http
+- Read `.agents/rules/http.md` for files matching `**/*.py`, `**/*.ts`, `**/*.tsx`: http
 - Read `.agents/rules/poetry.md` for files matching `pyproject.toml`, `poetry.lock`, `**/requirements*.in`, `**/requirements*.lock`, `**/requirements*.txt`, `**/*.py`: poetry
 - Read `.agents/rules/pydantic.md` for files matching `**/*.py`: pydantic
 - Read `.agents/rules/python.md` for files matching `**/*.py`: Follow modern Python typing, import, formatting, error handling, and maintainability conventions.
