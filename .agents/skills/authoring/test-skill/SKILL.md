@@ -98,7 +98,7 @@ a code change is tested: against the case that motivated it, with the change and
    that will not close within the bound usually means the miss in step 1 was misstated; say so when
    it is.
 9. **Report** the table itself in chat, as `## Output` shapes it; only the quoted evidence behind
-   each `pass` goes to one file in the session's scratch directory, linked from the report. Put one sentence in the pull
+   each `pass` goes to one file in the session's scratch directory, sent with the report. Put one sentence in the pull
    request description naming the miss the edit closes. The table is evidence and does not belong
    in the description.
 
@@ -127,7 +127,7 @@ Miss: <one sentence>
 | <model> | edited | pass | miss | ... |
 | <model> | original | miss | pass | ... |
 
-Evidence: <link to the scratch file quoting the line behind each pass>
+Evidence: <the scratch file quoting the line behind each pass, sent with the report>
 
 Verdict: passes | revised and rerun (round <n>) | bound spent: <stands with the miss | edited again | dropped> — <reason> | not run: <reason>
 ```

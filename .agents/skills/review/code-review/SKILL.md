@@ -242,7 +242,7 @@ Before reporting a clean result at `high` or above, verify that every launched l
 When the host exposes a structured findings tool, report through it, passing the effort level, and do not also print the findings as prose. Where its schema offers a verdict meaning unverified, leave that value unused — nothing surviving step 4 has one. Prose carries no qualifier either: no "possibly", no "may", no request that the reader go check.
 
 Otherwise report in chat as `## Output` shapes it; when more than five findings remain, first write
-every finding to one file in the session's scratch directory.
+every finding to one file in the session's scratch directory and send it with the report.
 
 ## Step 8 — Fix mode
 
