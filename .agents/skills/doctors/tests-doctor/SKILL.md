@@ -146,7 +146,8 @@ is revived or deleted.
 Duplication is judged inside one classification — unit, integration, or end-to-end — and never
 across them: two tests of the same classification asserting one contract are consolidated, and a
 test is never deleted, merged away, or moved out because a test of another classification reaches
-the same assertion. For each duplicated contract within a classification, pick the keeper and carry
+the same assertion. A test of another classification is never the keeper: an end-to-end test
+whose assertion an integration test repeats is retained, not consolidated into it. For each duplicated contract within a classification, pick the keeper and carry
 every unique assertion into it before removing the replay. Repair
 vacuous assertions and negative controls that pass for the wrong reason; verify new or strengthened
 guarantees through `test-fixture`'s mutation proof. Retain independently valuable static and slow
@@ -240,14 +241,20 @@ also a flaky one.
 **Weigh every dominating case against what it proves.** A test earns its runtime by the failure it
 would catch, so the question is what a reader loses if it goes, not whether it passes. One that
 asserts little for a large share of the suite's wall time is folded into a case of the same
-classification that is already paying that setup, or made cheaper where it stands. No test is cut
-because a test of another classification reaches the same assertion; an end-to-end test's worth is
-that it runs the real services. In a pre-production repository that trade is ordinary rather than a last resort: a suite nobody will wait for is
-coverage nobody runs.
+classification that is already paying that setup, or made cheaper where it stands. In a
+pre-production repository folding and speeding up cases is ordinary rather than a last resort: a
+suite nobody will wait for is coverage nobody runs.
+
+**No budget removes a test because a test of another classification makes the same assertion.** An
+end-to-end test that an integration or unit test also reaches stays, however far over budget its
+suite is and whatever stage the repository is in: its worth is that it runs the real services, which
+the cheaper test does not. Being over budget, being pre-production, and the cheaper test being
+"sufficient" are not reasons to cut it; bring the suite under budget by making its cases cheaper or
+folding them into cases of the same classification.
 
 Preserve every unique guarantee while doing it. Cutting a case whose assertion nothing else in its
-classification makes is
-a coverage loss wearing a timing win, so name what each cut proved and where that fact now lives.
+classification makes is a coverage loss wearing a timing win, so name what each cut proved and where
+that fact now lives.
 
 ### Map Coverage By Test
 
