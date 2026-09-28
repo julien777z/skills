@@ -310,10 +310,12 @@ Apply the baseline prompt above, plus these explicit review rules:
      source when the package is ours, or to leave the report standing. A red tool carrying known
      reports is a truthful record of work still to do; the same run with them papered over is not.
    - **A report about a third-party package's own types is answered in configuration, never in
-     code.** The category that reports a dependency's missing or unknown types is turned off once in
-     the tool's configuration, or filtered once by the repository's lint gate, for every package and
-     every file. That single category-wide entry is the one exception to this item; an entry naming
-     one package is the suppression it flags.
+     code.** Its answer is never a stub, a `typings/` directory, a cast or a wrapper — delete any the
+     diff adds, however accurate — and never a report left standing: the category that reports a
+     dependency's missing or unknown types is turned off once in the tool's configuration, or
+     filtered once by the repository's lint gate, for every package and every file. That single
+     category-wide entry is the one exception to this item; an entry naming one package is the
+     suppression it flags.
    - Generated output is out of scope — a suppression inside a file the toolchain writes is that
      toolchain's business, not the author's.
    - This applies to your own edits with no exception. A pass that removes somebody else's suppression
