@@ -137,15 +137,15 @@ ends the question.
    mechanisms the fix would add, priced by the rubric; the work is of genuine size and its need is
    arguable — a redesign, a sweep across many files somebody could reasonably decline; an external
    blocker stands, which is something outside the repository the fix cannot be written without — a
-   credential nobody has issued, a vendor change, an answer only a third party can give. A change
-   owed by a library or service the user owns is never one, wherever it lives: its fix is written
-   now, in that repository, and the consuming change is written against it, so the item is fix or
-   do — never defer, and never close with the work handed to that repository's backlog. Read
-   ownership from the dependency's source — whose repository it is — never from whether it sits in
-   this repository or from a record calling it out of scope; a decision
+   credential nobody has issued, a vendor change, an answer only a third party can give; a decision
    that is somebody else's is already put to that person and still open, or the user declined it in
    the current request; or an attempted fix, shown to the gate, could not be completed without the
-   removed shape or a rubric finding. That the code under change is deployed or running somewhere, a
+   removed shape or a rubric finding. Work owed by a library or service the user owns is never an
+   external blocker: its fix is written in that repository and the consuming change is written
+   against it, the other tests deciding the item as if the library lived here — so it is never closed
+   by handing the work to that repository's backlog. Ownership is read from whose repository the
+   dependency is, never from where it sits or from a record calling it out of scope. That the code
+   under change is deployed or running somewhere, a
    backfill in flight on live data included, is the order the fix rolls out in, stated in the pull
    request; it is never a blocker. The gate never routes work to a decision on its own: where a fix
    has a product dimension, the change takes the cleanest fix and states the trade-off in the pull

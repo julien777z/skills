@@ -43,10 +43,7 @@ default branch and inspect the recent commits and pull requests that changed tha
 recent intentional replacement as current behavior: follow its replacement mechanism or report the
 authorization boundary, rather than deferring the fact that the old mechanism disappeared. A
 deferral requires genuinely unfinished work after this reconciliation, not merely a changed design.
-An external blocker is something outside the repository the fix cannot be written without — a
-credential nobody has issued, a vendor change, an answer only a third party can give. That the code
-under change is deployed or running somewhere, a backfill in flight on live data included, is the
-order the fix rolls out in, stated in the pull request; it is never a blocker on writing it.
+What counts as an external blocker is `acceptance-gate`'s defer test, owned libraries included.
 
 Record work that is genuinely larger than the change in flight and whose need is arguable — a
 redesign, a broad sweep somebody could reasonably decline — or that is blocked externally, or that
@@ -64,10 +61,11 @@ prose are not durable records.
 
 ## Changing A Record
 
-A record leaves the active set only on `acceptance-gate`'s triage verdict. A change that makes a
-recorded problem look resolved, moot or not worth doing puts the record to that question with its
-evidence, including who owns the work, and carries out the disposition it returns; it never
-declines, voids or retires the record on its own reading. Report the verdict with the change.
+A record whose problem still exists leaves the active set only on `acceptance-gate`'s triage
+verdict, put with its evidence and who owns the work, so it is declined only on a close. A record a
+change resolves, or shows was never real, is retired only with the tree evidence
+`execute-defer-scope`'s **Already resolved** and **Void** require. No record is declined, voided or
+retired inline on the author's own reading; report the verdict or the evidence with the change.
 
 ## Ownership And Identity
 
