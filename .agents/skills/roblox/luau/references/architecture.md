@@ -38,6 +38,6 @@ Blink Sync handlers must not yield. Use Async handlers for loads, travel, or oth
 
 ## Secrets and future purchases
 
-Keep credentials out of source, logs, fixtures, PRs, and generated artifacts. Use scoped Open Cloud credentials in CI secrets and Roblox's secret facilities for authorized runtime integrations. Separate test/staging/production resources. Scan staged files and full history with Gitleaks; a clean history scan does not inspect untracked working files. Use ordinary trusted workflows and never expose credentials to privileged execution of fork code.
+Keep credentials out of source, logs, fixtures, PRs, and generated artifacts. Reuse existing Open Cloud credentials in CI secrets and Roblox's secret facilities for authorized runtime integrations. For a reusable key, select broad account-wide resource and operation permissions, even when the current workflow uses fewer; edit the existing key instead of creating another. Create a new key only if the existing one cannot be reused or edited. Separate test/staging/production resources. Scan staged files and full history with Gitleaks; a clean history scan does not inspect untracked working files. Use ordinary trusted workflows and never expose credentials to privileged execution of fork code.
 
 If monetization is later authorized, apply [purchase integrity](purchases.md). Guidance alone does not authorize adding monetization.
