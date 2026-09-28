@@ -120,6 +120,15 @@ function Card({ title, subtitle = "", className = "" }: CardProps) {
   footer takes no space, so whatever sits behind it is hidden with nothing in the markup to say so.
   Prefer giving that chrome its own row in a flex or grid column, where the browser reserves the
   space; reach for absolute positioning only where the overlap is the intent.
+- **A surface is as tall as its content, never taller.** A card, panel, section or widget showing a
+  large empty area — below its content, or between the content and the control that acts on it —
+  reads as unfinished. Content flows from the top and each control sits directly after what it acts
+  on, never pushed to the bottom of a stretched container by a fill or a space-between. A shorter
+  surface beside a taller one keeps its own height rather than stretching to match, and an empty
+  state is sized like any other content. Content that can outgrow its surface scrolls inside a
+  maximum height, so the surface stays as tall as its content until it reaches the cap. A height set
+  from outside the content belongs only to a surface whose content fills the space it is given — a
+  chart, a map, media — to one the reader sized, or to a section deliberately sized to the viewport.
 - A component that renders inside more than one shell — a widget in a canvas and on a page, a card
   in a list and alone — is checked in each one. Spacing that a parent supplies in one place and not
   the other is what a single screenshot cannot settle.
