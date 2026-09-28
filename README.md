@@ -4,7 +4,7 @@ Shared agent skills, agents, and reusable rules for every repository, in one pla
 
 One canonical copy of each skill lives under `.agents/skills/`. [Agent
 Sync](https://github.com/julien777z/agent-sync-action) mirrors them to Claude, Cursor and Codex,
-vendors the third-party skills registered in `.agents/external_skills.json`, and `bootstrap/install.sh`
+vendors the third-party skills and reference collections registered under `.agents/`, and `bootstrap/install.sh`
 links the result into this machine's user-level roots — so every repository's session sees the same
 skills.
 
@@ -30,7 +30,7 @@ and exits on clone,
 update, or installation failure. Cloud environment image caching can skip setup on later sessions;
 the previously installed skills remain available then.
 
-The local installer links skills, reusable rules, and applicable agent definitions into existing
+The local installer links skills, reference collections, reusable rules, and applicable agent definitions into existing
 Claude, Codex, and Cursor user roots. Codex's global `AGENTS.md` links to the same canonical
 `global.md` rule used by the other harnesses. Repository-specific rules stay in each repository's
 `project.md`. Re-running refreshes owned links and prunes obsolete ones; real content or foreign
@@ -43,10 +43,11 @@ links at an installed path are reported before any links change.
 | `.agents/skills/<category>/<name>/` | One skill: `SKILL.md`, with `references/`, `scripts/`, `assets/`, or `resources/` beside it. The categories sort the skills and reach no provider — each one still installs as `<name>`, so a name is unique across the whole tree. |
 | `.agents/agents/` | Subagent definitions; the tier each runs on is stated by the skill that launches it. |
 | `.agents/rules/` | Reconciled reusable rules; technology-specific rules retain their file scopes. |
-| `.agents/external_skills.json` | Third-party skills the workflow installs from [skills.sh](https://skills.sh/). |
+| `.agents/external_resources.json` | Third-party skills and reference directories vendored by the workflow. |
+| `.agents/resources/<name>/` | Vendored reference files, linked into each supported user-level root under `resources/<name>/`. |
 | `.agents/.auto_generated/` | Provider mirrors the workflow generates on `main`; never edited by hand. |
 | `AGENTS.md` | Repository instructions the workflow generates at the root; never edited by hand. |
-| `bootstrap/install.sh` | Links skills, agents, and rules into user-level roots. |
+| `bootstrap/install.sh` | Links skills, resources, agents, and rules into user-level roots. |
 | `bootstrap/cloud-install.sh` | Selects the attached or cached checkout and installs it for Claude cloud's user. |
 
 The [rule reconciliation notes](docs/rule-reconciliation.md) record which wording was chosen from divergent consumer copies.
@@ -98,7 +99,6 @@ An agent reaches for these on its own whenever the work calls for them.
 | [`agent-browser`](.agents/skills/workspace/agent-browser/SKILL.md) | Browser automation CLI for AI agents. Use when the user needs to interact with websites, including navigating pages, filling forms, clicking buttons, taking screenshots, extracting data, testing web apps, or automating any browser task. |
 | [`agent-lock`](.agents/skills/workspace/agent-lock/SKILL.md) | Coordinate exclusive use of a shared resource between agents using an exact string key. |
 | [`async-python-patterns`](.agents/skills/python/async-python-patterns/SKILL.md) | Master Python asyncio, concurrent programming, and async/await patterns for high-performance applications. |
-| [`awesome-design`](.agents/skills/web/awesome-design/SKILL.md) | Curated collection of DESIGN.md files from real websites. |
 | [`banned-terminology`](.agents/skills/review/banned-terminology/SKILL.md) | Owns the banned-terms list in resources/banned_words.json and enforces it. |
 | [`build-types`](.agents/skills/web/build-types/SKILL.md) | Regenerate generated API types from an OpenAPI document, using a local API checkout when it is present and the deployed API otherwise. |
 | [`clerk-nextjs-patterns`](.agents/skills/web/clerk-nextjs-patterns/SKILL.md) | Advanced Next.js patterns - middleware, Server Actions, caching with Clerk. |

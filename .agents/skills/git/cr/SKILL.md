@@ -1,31 +1,34 @@
 ---
 name: cr
-description: Triage and resolve the pull request's open review threads, run multi-subagent code-simplify across the complete pull request and related code, then run the high-effort fix review, repair failed checks, squash-merge, and verify the pull request is merged. Use on the current branch's pull request when it should be taken all the way through review to a merge.
+description: Triage and resolve a pull request's review threads, run multi-subagent code-simplify and high-effort fix review, then repair failed checks. Merge after the gates unless the user explicitly asks to finish review without merging.
 disable-model-invocation: true
 ---
 
 # CR
 
-Run the complete high-effort fix review before merging the current branch's pull request.
+Run the complete high-effort fix review and exact-head gates for the current branch's pull request.
 
 ## Invocation Authorization
 
 - Run this skill only when the user directly invokes `$cr` in the current task.
 - For a direct `$cr` invocation, this instruction overrides `code-review`'s standalone argument prompt: run `code-review high fix <PR>` without comment mode; do not ask the user to select review effort or modes.
-- **A direct `$cr` invocation authorizes the squash merge of its target pull request**, at the head
-  that passed final acceptance and the check gate. The merge is the run's declared outcome rather
-  than a step inside it, so nothing reopens it: not the diff's size or reach, not that review widened
-  it, not that no person has read it, and not this run's own unease about how much it changes.
+- **A direct `$cr` invocation authorizes the squash merge of its target pull request** at the head
+  that passed final acceptance and the check gate, unless the user explicitly withholds merge. That
+  restriction changes only the final action: complete every gate and report the clean exact head
+  with the pull request open. When merge is authorized, nothing reopens it: not the diff's size or
+  reach, not that review widened it, and not this run's own unease about how much it changes.
+- Dispatching a release workflow or creating a test deployment is a separate action and requires
+  its own authorization.
 - **So never ask the user for permission to merge, and never end a run by offering the merge as the
   remaining step.** That question reads as diligence and is the failure this paragraph exists to
   prevent: the answer was given when the skill was invoked, the run has already spent its review on
   a head nobody merges, and the user has to say yes to a thing they already said. When the gates are
-  green and the head is the accepted one, merge it.
+  green and the head is the accepted one, merge it when authorized.
 - The one gate this run holds before step 7 is an unresolved `acceptance-gate` flag; every later
   gate is `merge-pr`'s, and the run reports the one it names.
-- The same invocation authorizes the declared `code-simplify`, `code-review`, `merge-conflict` and
-  `merge-pr` dependencies for this pull request. It does not authorize an independent simplification, review, release
-  workflow, deployment, or unrelated provider mutation.
+- The same invocation authorizes the declared `code-simplify`, `code-review`, `merge-conflict`, and
+  `merge-pr` dependencies for this pull request. It does not authorize an independent review,
+  release workflow, deployment, or unrelated provider mutation.
 - A new task starts a new authorization boundary. An invocation from an earlier task does not carry forward, including after context compaction or when the new task continues work on the same branch or pull request.
 - A completed CR run closes its authorization boundary. Application work requested afterward is a new
   update and requires a new direct invocation, even when it targets the same repository, branch, pull
@@ -84,7 +87,7 @@ Check each claim against the head rather than against the memory of writing it, 
 most likely to be wrong are the ones that were true when they were written.
 
 Rewrite it at the branch rules' own bar rather than patching the stale sentences, and never from a
-partial read of a body a tool truncated. Then refresh it once more before the merge gate, because the
+partial read of a body a tool truncated. Then refresh it once more before the final gate, because the
 run's own simplification and finding fixes change what the branch does after this first pass.
 
 ## Review Thread Triage
@@ -128,6 +131,13 @@ Always fan this CR simplification pass out to multiple read-only subagents, even
 coherent app, service, package, or cross-cutting slices that collectively cover the entire scope;
 never divide it by arbitrary file counts. Give every subagent the complete `code-simplify` rubric
 for its slice and require findings anchored to paths and lines with the proposed restructuring.
+When the pull request adds public concepts across slices, assign one reviewer the cross-cutting
+interfaces and their existing peers as a coherent slice. Require its receipt to assess whether the
+new concepts are variants of existing ones; do not accept a clean simplification gate until that
+assessment and the resulting consumer boundaries are verified.
+When they are variants, require the reviewer to propose one resulting registry, command, and package
+owner wherever those interfaces exist. Sharing only implementation helpers does not close the gate
+while parallel public surfaces remain.
 
 Subagents do not edit. The parent reconciles overlapping findings, validates each one, and fixes
 every survivor under **Confirmed Findings**. Reproducing a defect on the base branch establishes only
@@ -251,13 +261,13 @@ queued delegated agents and that every required review, validation, check, and d
 terminal receipt for the exact gated head. If any work remains, return to its wait loop; never use a
 final response as a handoff for unfinished CR work.
 
-An unfinished phase is never a final result. Do not answer with "still in progress," ask the user to say "continue," or rely on another user turn to resume work. Use commentary only for progress updates, and use the host's event, webhook, or wait mechanism for pending external state. A user request that is explicitly scoped to a separate branch or pull request must not interrupt or terminate the current CR loop; complete that independent work without changing the current review target, then resume the loop in the same session.
+An unfinished phase is never a final result. Do not answer with "still in progress," ask the user to say "continue," or rely on another user turn to resume work. Use commentary only for progress updates, and use the host's event, webhook, or wait mechanism for pending external state. An additional user request does not close the active run unless it explicitly stops, pauses, or replaces it. Complete the added work in its owning branch, invalidate affected receipts under **Review Continuity**, then resume CR at the first nonterminal phase before a final response.
 
 Carry the run's state throughout: the current workflow step, repository and PR, exact head SHA, the intent statement and recorded merge-base SHA, review-thread dispositions, reviewed-input digests, completed review receipts and lens-retirement counters, `acceptance-gate` verdicts keyed by head SHA, fixes and validation already completed, and the pending gate. At the start of every resumed turn and after context compaction, re-establish that state, verify the recorded head and inputs against GitHub and the worktree, then resume from the first nonterminal phase.
 
 Hold that state in the session; never write it to a checkpoint file. The pull request is the durable record: its commits, its pushed head, its checks, and its comments are what a resumed turn reads to find the run, and they cannot drift from it the way a separate file can.
 
-GitHub head lag, a retryable rate limit, and any state `merge-pr` is still waiting on are nonterminal. Only conclude the session after the PR is verified merged, or after reporting a genuine blocker that cannot be safely resolved without user input or an external-state change that the host cannot wait for. A question already recorded as a deferral is not such a blocker: it has been answered by being written down, and the run merges without it.
+GitHub head lag, a retryable rate limit, and any state `merge-pr` is still waiting on are nonterminal. Only conclude the session after the PR is verified merged, after the exact-head review and check gates complete when the user withheld merge, or after reporting a genuine blocker that cannot be safely resolved without user input or an external-state change that the host cannot wait for. A question already recorded as a deferral is not such a blocker: it has been answered by being written down, and the run continues without it.
 
 ## Workflow
 
@@ -274,15 +284,11 @@ to work around this gate.
 3. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the run continues; see **Deferred Findings**. Stop and report only a finding that can be neither fixed nor recorded.
 4. Classify each correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean. This is the same authorized CR execution, not a new action-skill invocation.
 5. Once the review is clean, put the complete pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement. Fix every flag, then put only the fix diff to a fresh gate; a second flag on the change's own work is a blocker to report to the user, unless the pull request is confined to agent configuration, where `acceptance-gate`'s **Bounds** leave the disposition with this run. The accepted head is the SHA `merge-pr` receives.
-6. Run **Description Refresh**'s second pass, then the second test pass **Validation Order**
-   requires. Never stop, restart, reconfigure or claim a local service this run did not start.
+6. Run **Description Refresh**'s second pass, then the second test pass **Validation Order** requires. Never stop, restart, reconfigure or claim a local service this run did not start.
 7. Invoke `merge-pr` with:
    - the pull request and the head step 5 accepted;
    - the affected behaviors step 6 covered locally;
-   - the fix rule for every fix it makes — a check fix, a conflict resolution, a commit someone else
-     pushed: first **Review Continuity** reruns the lenses the fix reopens, then `acceptance-gate`'s
-     diff question judges the fix's diff. A fix counts only once both have passed.
+   - whether the user withheld merge;
+   - the fix rule for every fix it makes — a check fix, a conflict resolution, a commit someone else pushed: first **Review Continuity** reruns the lenses the fix reopens, then `acceptance-gate`'s diff question judges the fix's diff. A fix counts only once both have passed.
 
-   Base updates it performs are **Incorporating The Base** for this run. When it reports the merge,
-   give the **Completion Report** above and end the run; when it reports a gate that holds, report
-   that gate.
+   Base updates it performs are **Incorporating The Base** for this run. When it reports the merge, or the exact-head gates complete with merge withheld, give the **Completion Report** above and end the run; when it reports a gate that holds, report that gate.

@@ -26,9 +26,9 @@ has reached a terminal result.
 ## Inputs
 
 The caller supplies the repository, the pull request, the head SHA its final acceptance passed, the
-affected behaviors its local tests already cover, and the rule that decides what a fix made here
-reopens in its own review. A caller with no such rule has each fix's diff judged the way it judged
-the accepted head before the gate repeats.
+affected behaviors its local tests already cover, whether merge was explicitly withheld, and the
+rule that decides what a fix made here reopens in its own review. A caller with no such rule has
+each fix's diff judged the way it judged the accepted head before the gate repeats.
 
 ## Transport
 
@@ -88,8 +88,9 @@ When GitHub reports a conflict, or the merge is rejected for one:
 
 ## Merge
 
-Re-read the pull request immediately before merging and require its head SHA to equal the head that
-passed acceptance and the check gate. Squash-merge with that SHA in the request —
+Re-read the pull request after the check gate and require its head SHA to equal the head that
+passed acceptance and the check gate. If merge was explicitly withheld, confirm the pull request
+remains open, report the clean exact head, and stop. Otherwise squash-merge with that SHA in the request —
 `PUT /repos/{owner}/{repo}/pulls/{number}/merge` with `merge_method=squash` and `sha` — so GitHub
 refuses a concurrent head change. On a mismatch, put the commits the new head adds through the
 caller's rule from **Inputs**, then repeat the check gate. After the merge, re-read the pull request
@@ -108,3 +109,5 @@ Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only 
 
 Or, when a gate holds: `Not merged: <link> — <gate>: <evidence>`. The evidence includes each
 relevant check's terminal result, read from its log where its status was stale.
+
+When merge was withheld: `Reviewed: <link> at <short sha> — checks: <local only | names of hosted checks and results>; pull request open`.
