@@ -66,6 +66,17 @@ every hit as a finding ahead of all others, with the remedy the rubric names:
 
 A report that lists no hit for any of the five greps says so in those words.
 
+Before ranking structural findings, scan adjacent statement pairs in every added or substantially
+edited function after formatting. List exact line pairs where a completed guard meets setup, one
+guard meets the next, a derived value meets its validation, or a copy or mutation meets
+postprocessing or comparison. Every missing blank line at those boundaries is a legibility finding;
+do not suppress it as a cosmetic nit or omit it because a larger finding exists. Also list every
+conditional selecting a fixed set of string statuses, including log-only values, and flag inline
+literals where the applicable language rules call for a named finite-state type. In Python use
+`Enum` for internal states and `StrEnum` for string contracts; in TypeScript follow the const-object
+and value-union rule. A clean report must show the inspected pairs and status conditionals, not just
+say readability and types were checked.
+
 **What a scope contains.** A scope is never the diff hunks alone. Resolving any scope — the pre-push merge-base diff or one a caller names — yields three things: the **diff** itself, the **full contents of every file it touches**, and the **sibling modules in those files' packages**. Hunks show what changed; the whole file shows what the change now sits inside; the siblings show where the logic should have lived. A code-judo move is usually only visible in the third, and `references/rubric.md` applies to everything the scope resolves to, not only to lines the diff added.
 
 **The scope says what must be read, never what may be reported.** It is a floor on the reading, so a
@@ -98,6 +109,11 @@ The questions a briefing asks steer emphasis, never scope: a file no question me
 and reported like every other, and answering the questions is not the review.
 
 Report the repository-wide reuse searches performed for newly introduced abstractions, including the concepts searched and the canonical candidates inspected. A clean result without this evidence is incomplete whenever the diff adds one of those abstractions.
+
+For every new public concept, list the existing peer interfaces and owners inspected, state whether
+the new behavior is a variant under one of them or needs an independent contract, and verify the
+resulting registry, command, package, and consumer boundaries. A clean report without that comparison
+is incomplete when the change adds a public concept.
 
 For every new independent consumer or boundary, report the analogous implementations inspected, the
 candidate shared owners, the common mechanism and consumer-specific behavior identified, and the

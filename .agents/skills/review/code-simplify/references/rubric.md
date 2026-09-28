@@ -45,6 +45,22 @@ the one the diff is establishing.
 
 For every new abstraction, helper, client, lifecycle, model, or utility, also search the whole repository by concept, dependency type, and key operations before concluding it is canonical. A sibling-only read cannot find an established implementation owned by another package.
 
+Inventory the **public concepts** the change adds or renames before judging their implementations:
+configuration files and schemas, commands and action inputs, packages and modules, documented
+resource types, and the names a consumer must learn. Compare each with the existing public concepts
+that serve the same purpose. Trace their interfaces, destinations, lifecycle, and owner; different
+file names or code paths do not prove different concepts. When one new concept is a variant of an
+existing one, put the variant under the existing public interface and owner, with an explicit type
+or option where needed. Do not leave parallel registries, commands, or packages merely because each
+implementation is internally tidy. Keep separate public concepts only when their consumers or
+contracts require a real independent boundary, and name that boundary in the receipt.
+Sharing a parser or loader while retaining two registry files, commands, or package owners is only
+implementation reuse; it does not remove the extra public concept. For a variant, propose the
+resulting single registry, command, and owner explicitly, then trace the consumers that must move.
+If two files register entries of the same broader concept, combine those entries into one registry
+file and distinguish variants in the entry schema. A loader that selects between two registry files
+still makes consumers learn two registration surfaces and does not meet this standard.
+
 When a change introduces another independent consumer of a cross-cutting mechanism, compare it with
 every existing consumer by responsibility, dependencies, inputs, outputs, and side effects — names
 and file paths are not the search boundary. A second implementation is presumptive evidence that the
@@ -405,6 +421,7 @@ For every meaningful change, ask:
 - Is any file or component in scope past a healthy size boundary?
 - Are there repeated conditionals that signal a missing model or missing helper?
 - Is the implementation direct and legible, or does it rely on special cases and incidental control flow?
+- Can a reader see the function's distinct stages from its paragraph breaks, even after formatting passes?
 - Is this abstraction actually earning its keep, or is it just a wrapper?
 - Does any function take one declared shape and only read it — a method that shape is missing — how many of them sit over that same shape, and can that declaration hold a method at all?
 - Did the diff introduce casts, optionality, or ad-hoc object shapes that obscure the real invariant?
@@ -415,6 +432,7 @@ For every meaningful change, ask:
 - Does any new enum, constant set, mapping, or model re-declare a set the repository already has,
   and does every module-level declaration carry its type?
 - Does this represent a value differently from how a sibling already represents the same thing — a bare string where an enum exists, a fresh constant where a canonical type is the established shape?
+- Does a branch or conditional produce a closed set of string states, including log-only statuses, that belongs on the language's canonical named finite-state type rather than inline literals?
 - Is this orchestration more sequential or less atomic than it needs to be?
 - Does any docstring the diff adds run past one line?
 - Does any test module in scope hold a second test class, or a helper beside its classes?
@@ -483,6 +501,8 @@ Escalate findings when you see:
 - Copy-pasted logic instead of extracted helpers.
 - Narrow edge-case handling implemented in the middle of an already busy function.
 - Refactors that technically pass tests but make the code less modular or less readable.
+- Adjacent stages in a new or substantially edited function with no blank line between a completed guard and the next setup, validation and I/O, or copying and postprocessing. Report each missing paragraph break even when the formatter leaves it untouched.
+- A conditional selecting among a fixed set of status strings as inline literals, including when the selected value is only logged. Search for an existing named finite-state type by its values; use the representation required by the language's rules, such as `Enum` for internal Python states, `StrEnum` for string contracts, or a const object with an inferred union in TypeScript.
 - "Temporary" branching that is likely to become permanent debt.
 - Bespoke helpers where the codebase already has a canonical utility for the job.
 - A generic helper with exactly one caller, especially one this diff just created by extraction. One caller is not proof a helper is unnecessary; it is usually proof the sweep stopped at the first site. Search for the rest by the operation it performs, not by its name, and either use it there or fold it back into its single caller.

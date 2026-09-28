@@ -231,6 +231,15 @@ outcome, because silence reads as the guidance having been fixed.
       imported skills, rather than only the files being edited. Remove forbidden provider UI
       metadata such as `agents/openai.yaml` from canonical skill packages; leave generated
       mirrors to Agent Sync. A clean changed file does not make a failing tree validation pass.
+      When the guidance needs a change in an unreleased tool owned by another repository, point
+      the consuming workflow at that tool's active branch and validate against it. Complete this
+      pull request's own gates and merge under step 7's authorization without waiting for the tool's
+      review loop. If that pull request changes files outside `.agents`, obtain the user authorization
+      step 7 requires. After the tool merges and receives an authorized release, open a separate pull
+      request from the latest default branch to replace the branch reference with its maintained
+      version tag and validate the tagged tool. Obtain user merge authorization for that follow-up
+      when it changes the consuming workflow outside `.agents`. The initial merge does not authorize
+      the release or the later merge.
    3. **Run `code-simplify`** across the branch and act on what it reports: guidance duplicated
       between peer rules or skills, including a caller and a skill it always invokes; a section grown
       around a second subject; a heading named for a category with one member; a rubric left inline

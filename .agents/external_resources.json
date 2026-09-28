@@ -1,7 +1,8 @@
 {
   "version": 1,
-  "skills": [
+  "resources": [
     {
+      "kind": "skill",
       "name": "agent-browser",
       "repo": "vercel-labs/agent-browser",
       "skill": "agent-browser",
@@ -9,6 +10,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "async-python-patterns",
       "repo": "wshobson/agents",
       "skill": "async-python-patterns",
@@ -16,6 +18,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "clerk-nextjs-patterns",
       "repo": "clerk/skills",
       "skill": "clerk-nextjs-patterns",
@@ -23,6 +26,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "design-taste-frontend",
       "repo": "Leonxlnx/taste-skill",
       "skill": "design-taste-frontend",
@@ -30,6 +34,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "frontend-design",
       "repo": "anthropics/skills",
       "skill": "frontend-design",
@@ -37,6 +42,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "i-have-adhd",
       "repo": "ayghri/i-have-adhd",
       "skill": "i-have-adhd",
@@ -44,6 +50,7 @@
       "update_on_sync": false
     },
     {
+      "kind": "skill",
       "name": "image-to-code",
       "repo": "Leonxlnx/taste-skill",
       "skill": "image-to-code",
@@ -51,6 +58,15 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
+      "name": "impeccable",
+      "repo": "pbakaus/impeccable",
+      "skill": "impeccable",
+      "category": "web",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
       "name": "no-ai-slop",
       "skill_name_override": "no-text-ai-slop",
       "repo": "petergyang/no-ai-slop",
@@ -59,6 +75,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "prisma-client-api",
       "repo": "prisma/skills",
       "skill": "prisma-client-api",
@@ -66,6 +83,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "python-anti-patterns",
       "repo": "wshobson/agents",
       "skill": "python-anti-patterns",
@@ -73,6 +91,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "python-background-jobs",
       "repo": "wshobson/agents",
       "skill": "python-background-jobs",
@@ -80,6 +99,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "python-configuration",
       "repo": "wshobson/agents",
       "skill": "python-configuration",
@@ -87,6 +107,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "python-design-patterns",
       "repo": "wshobson/agents",
       "skill": "python-design-patterns",
@@ -94,6 +115,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "python-error-handling",
       "repo": "wshobson/agents",
       "skill": "python-error-handling",
@@ -101,6 +123,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "python-performance-optimization",
       "repo": "wshobson/agents",
       "skill": "python-performance-optimization",
@@ -108,6 +131,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "python-project-structure",
       "repo": "wshobson/agents",
       "skill": "python-project-structure",
@@ -115,6 +139,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "python-resilience",
       "repo": "wshobson/agents",
       "skill": "python-resilience",
@@ -122,6 +147,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "python-resource-management",
       "repo": "wshobson/agents",
       "skill": "python-resource-management",
@@ -129,6 +155,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "python-testing-patterns",
       "repo": "wshobson/agents",
       "skill": "python-testing-patterns",
@@ -136,6 +163,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "python-type-safety",
       "repo": "wshobson/agents",
       "skill": "python-type-safety",
@@ -143,6 +171,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "tailwind-design-system",
       "repo": "wshobson/agents",
       "skill": "tailwind-design-system",
@@ -150,6 +179,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "vercel-composition-patterns",
       "repo": "vercel-labs/agent-skills",
       "skill": "vercel-composition-patterns",
@@ -157,6 +187,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "vercel-react-best-practices",
       "repo": "vercel-labs/agent-skills",
       "skill": "vercel-react-best-practices",
@@ -164,6 +195,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "vercel-react-view-transitions",
       "repo": "vercel-labs/agent-skills",
       "skill": "vercel-react-view-transitions",
@@ -171,6 +203,7 @@
       "update_on_sync": true
     },
     {
+      "kind": "skill",
       "name": "web-design-guidelines",
       "repo": "vercel-labs/agent-skills",
       "skill": "web-design-guidelines",

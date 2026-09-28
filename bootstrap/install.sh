@@ -8,7 +8,7 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CANONICAL_SKILLS="$REPO_ROOT/.agents/skills"
 CANONICAL_AGENTS="$REPO_ROOT/.agents/agents"
 CANONICAL_RULES="$REPO_ROOT/.agents/rules"
-CANONICAL_GLOBAL="$REPO_ROOT/.agents/global.md"
+CANONICAL_RESOURCES="$REPO_ROOT/.agents/resources"
 GENERATED_ROOT="$REPO_ROOT/.agents/.auto_generated"
 PROVIDERS=(claude codex cursor)
 found_root=0
@@ -43,12 +43,19 @@ check_link() {
 }
 
 preflight_provider() {
-  local provider="$1" root="$HOME/.$provider" skill agent rule name failed=0
+  local provider="$1" root="$HOME/.$provider" skill agent rule resource name failed=0
   [ -d "$root" ] || return 0
   while IFS= read -r skill; do
     name="$(basename "$skill")"
     check_link "$(link_source "$provider" skills "$name" "$skill")" "$root/skills/$name" || failed=1
   done < <(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)
+  if [ -d "$CANONICAL_RESOURCES" ]; then
+    for resource in "$CANONICAL_RESOURCES"/*; do
+      [ -d "$resource" ] || continue
+      name="$(basename "$resource")"
+      check_link "$resource" "$root/resources/$name" || failed=1
+    done
+  fi
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -d "$CANONICAL_AGENTS" ]; then
     for agent in "$CANONICAL_AGENTS"/*.md; do
       [ -f "$agent" ] || continue
@@ -114,7 +121,7 @@ prune_links() {
 }
 
 install_provider() {
-  local provider="$1" root="$HOME/.$provider" skill agent rule name skills=0 agents=0 rules=0
+  local provider="$1" root="$HOME/.$provider" skill agent rule resource name skills=0 agents=0 rules=0 resources=0
   [ -d "$root" ] || return 0
   found_root=1
 
@@ -125,6 +132,17 @@ install_provider() {
     skills=$((skills + 1))
   done < <(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)
   prune_links "$root/skills"
+
+  if [ -d "$CANONICAL_RESOURCES" ]; then
+    mkdir -p "$root/resources"
+    for resource in "$CANONICAL_RESOURCES"/*; do
+      [ -d "$resource" ] || continue
+      name="$(basename "$resource")"
+      install_link "$resource" "$root/resources/$name"
+      resources=$((resources + 1))
+    done
+  fi
+  prune_links "$root/resources"
 
   # Only Claude and Cursor hold agent definitions beside their skills.
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -d "$CANONICAL_AGENTS" ]; then
@@ -159,7 +177,7 @@ install_provider() {
     install_link "$CANONICAL_GLOBAL" "$root/AGENTS.md"
   fi
 
-  echo "$root: $skills skills, $agents agents, $rules rules linked"
+  echo "$root: $skills skills, $agents agents, $rules rules, $resources resources linked"
 }
 
 preflight_ok=1

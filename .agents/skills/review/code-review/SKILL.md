@@ -10,6 +10,22 @@ Provide a code review for the selected target.
 
 `references/rubric.md` holds what the review judges by; this file holds how it is run.
 
+For changed Python files, first run this skill's `scripts/paragraph_candidates.py` with the
+reviewed files as arguments. It lists adjacent statement pairs where a completed guard meets
+setup, one guard meets the next, a derived value meets its validation, or an operation meets the
+next stage. Inspect every candidate in numbered source and report missing blank lines as Rules
+findings even if the formatter accepts the file. Apply the same stage-boundary check by reading
+source in other languages. The Rules receipt lists every candidate pair and its disposition,
+including when another finding exists. A receipt without that list is incomplete and must be
+rerun. Any pair described as separate stages without a blank line is a Rules finding, even at low
+effort; it cannot remain only in the coverage receipt. The coordinator rejects and reruns a receipt
+that names such a pair but omits it from the findings list.
+
+The Rules receipt also lists every conditional choosing among a fixed set of string statuses,
+including log-only values. Inline literals bypassing the language's named finite-state type are
+findings. Use the representation required by the applicable language rule and preserve externally
+fixed values in that type. A receipt without the conditional list is incomplete and must be rerun.
+
 ## Dependencies
 
 - `subagent-selection` — return model tiers for explicit reviewer dispatch.
@@ -100,6 +116,12 @@ Then open a **draft** PR against the remote default branch when no open PR alrea
 
 The review target is the complete `merge-base(default, HEAD)..HEAD` diff plus any uncommitted intended changes — every commit on the branch, not only the latest push. If that is empty, stop and report there is nothing to review. Record the PR number, base branch, head branch, and full head SHA, or the ref range.
 
+In every review round, give each dispatched reviewer and validator the merge-base SHA, current head
+SHA, complete pull-request diff, and complete changed-file list. When a previous reviewed head
+exists, also give the diff from that head to the current head so recent fixes receive focused
+attention. That incremental diff supplements the full pull-request target; never substitute the
+latest commit or fix diff for it.
+
 Classify whether the target is non-runtime before choosing validation. A target is non-runtime when its complete diff does not change executable source, package or dependency definitions, tests, runtime configuration, CI workflows, generated runtime artifacts, or another contract that changes executed behavior. This is semantic rather than path-based: agent instructions, documentation, policies, static metadata, and non-executable configuration can live anywhere. Validate a non-runtime target with the checks appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests or query or wait for CI.
 
 When the target is a PR, check eligibility and stop when any of these hold:
@@ -175,10 +197,18 @@ The **Simplification** lens does not carry its own rubric: dispatch it to the `c
 
 When the target introduces a new abstraction, helper, client, lifecycle, model, or utility, require the Simplification receipt to list its repository-wide reuse searches and the canonical candidates inspected, each related implementation's disposition, and verification that consolidation or replacement actually reached every affected consumer. An inventory alone is not a clean receipt. Apply the same requirement whenever a target adds or changes a search, filter, query, or lookup path, even when it adds no named abstraction: search the owning domain and every existing surface for the same subject, then compare the complete behavior and use the canonical path. Reject and rerun an otherwise clean receipt that omits this evidence.
 
+When the target introduces a public concept, require the Simplification receipt to compare its
+interface and owner with existing public concepts serving the same purpose, and to say whether it
+belongs as a variant under an existing concept or needs an independent contract. A clean receipt
+without that assessment is incomplete; reject and rerun it even when the new implementation itself
+has no duplicate code.
+For a variant, require the receipt to propose the resulting single public registry, command, and
+package owner where those surfaces apply, and to name the consumers that must move. A receipt that
+only proposes sharing low-level helpers while keeping parallel public surfaces is incomplete.
+
 Duplicated lenses run independently and must not see each other's output; redundancy is the point.
 
 Require each Rules receipt to include its complete rule ledger. A clean Rules receipt without the applicable rules, checked files, and disposition for each rule is incomplete and must be rerun.
-
 From `high` upward, each reviewer returns a coverage receipt with its lens, the reviewed head SHA, the reviewed changed-file list, the exact rule and rubric inputs it used, its completion status, and a flat list of findings. Each finding carries path, line, anchor (`RIGHT` for added or current changed lines, `LEFT` for removed or base changed lines, or `OUTSIDE_DIFF` for an exact current line with no faithful diff anchor), a concrete trigger, and its reasoning.
 
 For `ultra`, deduplicate each round against every finding seen so far, not only against confirmed ones, or rejected findings resurface every round and the loop never converges.
@@ -190,6 +220,11 @@ Do not classify validity by file extension or category. A lock file can change e
 ## Step 4 — Validate findings
 
 Deduplicate findings describing the same underlying issue, then validate each one against the diff as `references/rubric.md` — Validation directs: validators are told to refute, every finding resolves to CONFIRMED or refuted, the rubric lists what is dropped outright, and the one undecidable case — intent that exists nowhere in the repository — goes to the user in the shape step 8 uses for an ambiguous fix.
+
+Require each validator to state the full pull-request range it inspected and, on a later round, the
+incremental range it checked for the latest fixes. Reject a validation based only on the latest
+commit, even if the finding sits in that commit; rerun it against the complete target before using
+its verdict.
 
 ## Step 5 — Rate and rank
 
