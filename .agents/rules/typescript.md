@@ -150,13 +150,13 @@ type Status = (typeof Status)[keyof typeof Status];
   identically whether its author weighed the finding and judged it wrong or never looked, so the next
   reader cannot tell which, and the exemption outlives whoever had a reason for it.
 - Fix what the tool reports about our own code, publish types at the source when the package is
-  ours, or leave the report standing. A red run carrying known reports is a truthful record of work
+  ours, or leave our own report standing. A red run carrying known reports is a truthful record of work
   still to do.
 - **A third-party package's missing or incomplete types are that package's gap, never ours.** Write
-  no declaration file, `declare module`, cast or wrapper to quiet them. The category that reports
-  them is turned off once in the tool's configuration, or filtered once by the repository's lint
-  gate, for every package and every file, never for one named package — the one configuration entry
-  this section admits. A category turned off for dependencies is off for our own code too; the
+  no declaration file, `declare module`, cast or wrapper to quiet them, and leave no report of
+  theirs standing: the category that reports them is turned off once in the tool's configuration,
+  or filtered once by the repository's lint gate, with its reason beside it, for every package and
+  every file, never for one named package — the one configuration entry this section admits. A category turned off for dependencies is off for our own code too; the
   checks that stay on keep our own errors reported.
 - The Comments section's exception admits a tooling directive as something other than prose, so a
   sweep that strips comments leaves it alone. That is about not deleting one that already exists; it
