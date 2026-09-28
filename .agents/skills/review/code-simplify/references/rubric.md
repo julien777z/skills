@@ -320,15 +320,26 @@ Apply the baseline prompt above, plus these explicit review rules:
      whatever it holds and however obvious the value looks. Grep the diff for added module-level
      assignments without an annotation rather than hoping to notice them while reading.
    - Classify every constant and settings field in the files the review reads, added or already
-     there, by whether its owner would reasonably change it between deployments, environments, or
-     releases. Credentials, proposal substitutions, repository identities, workflow references, and
-     deployment addresses belong on the owning typed settings model; a provider API root fixed by an
-     external protocol, and implementation tuning such as a timeout, retry count, backoff, or poll
-     interval, stay typed module constants.
-     A settings field holding tuning is always a finding, the same as a constant holding
-     configuration, and the remedy moves it to a constant beside its consumer: capitalization,
-     `Final`, and a safe default do not make configuration invariant, and neither a deployment's
-     ability to override it nor sibling fields already holding tuning make tuning configuration.
+     there, by whether its owner is likely to change it on its own — per deployment, environment, or
+     release, or while running the system — without changing the code that reads it. Those values
+     belong on the owning typed settings model — credentials, proposal substitutions, repository
+     identities, workflow references, and deployment addresses are the usual cases. Every other
+     value — one nobody expects to change except together with the code that reads it, including
+     every value that code's correctness fixes, such as a provider API root fixed by an external
+     protocol, a pattern, or a format or limit the code is written around — stays a typed module
+     constant. The kind of value never decides it: a timeout, retry count, or interval is classified
+     by the same test as a credential or an address. Judge from how the value is used — whether it
+     differs between environments, whether it is tuned while the system runs, whether its owner has
+     said it moves — never from its type or its name. A constant holding a value its owner is likely
+     to change on its own and a settings field holding a value nobody expects to move are both
+     findings when that evidence shows it; where the evidence settles neither side, the value stays
+     where its owner put it, because moving it needs evidence, never a guess from its kind. The
+     remedy moves a finding to the other side; capitalization, `Final`, and a safe default do not
+     make a value invariant. Evidence is something the review reads about that value itself — an
+     override of it, a statement that its owner changes it, a caller that tunes it. Another value's
+     placement or override, even one of the same kind in the same file, says nothing about this one,
+     and neither does a reviewer's supposition that an owner would tune it, however plausible for
+     its kind.
    - Every data-holding class lives in a model-owned file or package. Only a Pydantic `BaseSettings`
      class is configuration; registries, manifests, policies, provider payloads, and response
      schemas remain models.
