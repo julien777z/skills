@@ -14,7 +14,9 @@ paths:
 
 ## Components and Props
 
-- One component per file (with co-located helpers)
+- Components share a module with the others of their area, under the TypeScript rules' module
+  structure; a component takes a file of its own only where it opens a `'use client'` boundary or is
+  large enough to be read alone
 - Named exports for components
 - Default exports only for page components
 
