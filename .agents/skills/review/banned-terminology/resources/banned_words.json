@@ -123,7 +123,7 @@
         "tiering"
       ],
       "applies_to": "repository-owned identifiers, docstrings, comments, test names, file and directory names, the rules and skills agents read, and the pull requests and messages written to the user",
-      "use_instead": "Name the thing the word stood for. A group of tests is a \"suite\", or just \"tests\". An access or verification rank is a \"level\". A model is \"stronger\" or \"weaker\", or has more or less \"capability\". A subscription is a \"plan\", and stacked z-indexes are \"bands\".",
+      "use_instead": "Name the thing the word stood for. A group of tests is a \"suite\", or just \"tests\", and unit, integration, or end-to-end is a test's \"classification\". An access or verification rank is a \"level\". A model is \"stronger\" or \"weaker\", or has more or less \"capability\". A subscription is a \"plan\", and stacked z-indexes are \"bands\".",
       "why": "One word covered the test suites, a caller's access level, a model's capability and a billing plan, so a reader met it in four unrelated places and could not tell which one it meant."
     },
     {

@@ -7,7 +7,7 @@ disable-model-invocation: true
 # Tests Doctor
 
 Bring every suite to the shape its siblings share, repair or remove tests that prove nothing, name
-them as labels, run them within budget, and cover each contract at its strongest boundary.
+them as labels, run them within budget, and cover each contract in every classification that can reach it.
 
 ## Dependencies
 
@@ -58,7 +58,8 @@ it is invisible in a ranking of test bodies. Report both totals per suite.
 One domain reviewer per suite family — each application, service, and package suite, and each
 cross-boundary group such as end-to-end, migration, script, or front-end as its own slice — applies
 the redundancy, naming, runtime, doubles, and construction lenses to its slice. The cross-cutting
-reviewer owns the layout and coverage lenses and the duplicates across suites, because those are
+reviewer owns the layout and coverage lenses and the duplicates across suites of one
+classification, because those are
 visible only across slices, and compares the doubles table across suites, since a seam one suite
 uses and its sibling patches around is visible only there. A narrow scope gets two independent
 passes.
@@ -253,7 +254,7 @@ a coverage loss wearing a timing win, so name what each cut proved and where tha
 Map entry points — routes, RPC methods, commands, jobs, event consumers — gateways and clients,
 persistence and migrations, and user journeys to the tests that exercise them in each classification. A
 journey with no end-to-end test, a boundary crossing with no integration test, and a flow covered
-only with its boundary mocked are gaps; a pure function covered only end-to-end is misplaced cost.
+only with its boundary mocked are gaps; a pure function covered only end-to-end is a unit gap.
 Integration and end-to-end coverage outrank unit coverage for anything that crosses a boundary: a
 unit test added for a flow whose integration or end-to-end path is untested is itself the gap.
 
@@ -469,8 +470,9 @@ before delivery and verify that none enters the delivered diff.
 ### Findings
 
 - A slow suite, in order: widen the scope of the fixtures that dominate it, so an expensive world is
-  built once for the tests that share it rather than per test; cut or move the cases whose runtime
-  is out of proportion to what they prove; fix the remaining test-side causes; admit a focused
+  built once for the tests that share it rather than per test; fold the cases whose runtime is out of
+  proportion to what they prove into a case of the same classification already paying that setup,
+  or make them cheaper where they stand; fix the remaining test-side causes; admit a focused
   application fix only through the performance exception; parallelize where the runner and shared
   resources allow, never across a shared database or lock. Re-time after implementation against the
   same workload. A suite still over budget is unfinished work, not a line in the report: carry on
@@ -487,8 +489,8 @@ before delivery and verify that none enters the delivered diff.
   words takes a hand-chosen label rather than the mechanical residue.
 - A layout finding moves to the pattern `test-fixture`'s ownership rules select; an even split
   between equally valid patterns is a user decision.
-- A coverage gap is closed by the test that proves it, and a misplaced test moves between suites;
-  closing a gap in one classification removes no test from another. Every added or rewritten test follows `test-fixture`,
+- A coverage gap is closed by the test that proves it, and a misplaced test moves between suites.
+  Every added or rewritten test follows `test-fixture`,
   including its mutation proof per batch.
 - A construction finding moves the construction to the suite's shared home and reads identities
   from the canonical fixtures. A factory-content finding deletes the override or the provider, or
@@ -531,7 +533,8 @@ every change landing beside it.
 
 - per suite: wall time before and after against the budget, and unmeasured suites with the reason;
 - per suite: the sum of test call durations against wall time, naming setup-dominated suites;
-- each case cut or moved for disproportionate runtime, with what it proved and where that now lives;
+- each case folded or made cheaper for disproportionate runtime, with what it proved and where that
+  now lives;
 - per suite: tests removed, parametrized, renamed, moved, and added;
 - skip and xfail marks resolved;
 - per suite, foreign domain nouns removed and the fixtures that carried them;

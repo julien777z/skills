@@ -147,10 +147,11 @@ async def test_extracts_tenant_from_token(mock_config):
 
 - Combine similar test cases with `@pytest.mark.parametrize` instead of duplicating tests.
 - **Redundancy is judged within one classification — unit, integration, or end-to-end — never across
-  them.** End-to-end tests run the real services, integration tests still stand some in, and unit
-  tests stand in all of them, so an assertion one of them makes never makes another's redundant.
-  Consolidate duplicates inside a classification; never delete a test because a test of another
-  classification covers it. End-to-end coverage is preferred wherever it reaches the contract.
+  them.** End-to-end tests run the real services, integration tests replace some of them with
+  doubles, and unit tests replace all of them, so an assertion one of them makes never makes
+  another's redundant. Consolidate duplicates inside a classification; never delete a test because a
+  test of another classification covers it. When adding coverage, write the end-to-end test wherever
+  one can reach the contract.
 - Tests that follow the same pattern with different inputs (for example, authorization error tests, not-found vs invalid-id, different name formats) must use `@pytest.mark.parametrize` instead of separate test methods.
 - Use `@pytest.mark.parametrize` for same-shape scenarios with different inputs.
 - Add readable `ids` for parametrized cases.

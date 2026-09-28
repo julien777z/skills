@@ -4,13 +4,19 @@ Apply these criteria to every test, test-data, test-support, and test-configurat
 
 ## Test Value And Retention
 
+**A test is never redundant with a test of another classification — unit, integration, or
+end-to-end.** End-to-end tests run the real services, integration tests replace some of them with
+doubles, and unit tests replace all of them, so the same assertion proves something different in
+each: an end-to-end test that an integration test also reaches stays, and so does an integration
+test a unit test also reaches. When adding coverage, write the end-to-end test wherever one can
+reach the contract.
+
 Before adding a test, answer four questions; a missing answer means do not add it yet:
 
 1. What observable behavior, invariant, or independent contract does it protect?
 2. What credible regression makes it fail?
-3. Why does existing coverage of the same classification — unit, integration, or end-to-end — not
-   already catch that failure? Coverage is compared only within one classification: a test in
-   another classification never answers this question, in either direction. Prefer extending a
+3. Why does existing coverage of the same classification not already catch that failure? Prefer
+   extending a
    parameter table or shared fixture over a near-duplicate test; consolidate duplicated setup in
    the same change.
 4. Does it need a production seam — an export, flag, wrapper, or injection hook — that no production
@@ -21,8 +27,8 @@ Check new and existing tests against these low-value patterns:
 - assertion-free coverage probes, self-comparisons, identity copiers, and expected values produced
   by the helper or renderer under test;
 - copied fixtures, inventories, manifests, export lists, or duplicate invocations of one contract;
-- exact source, import, or string greps, and private predicate or call-shape tests duplicated at a
-  real boundary;
+- exact source, import, or string greps, and private predicate or call-shape tests duplicated by a
+  test of the same classification at a real boundary;
 - provider-local replays of shared helpers, tests preserving test-only exports or wrappers, and
   production code whose only callers are tests;
 - mocks that implement the asserted behavior, one identical mock standing in for different APIs,
@@ -33,12 +39,7 @@ Check new and existing tests against these low-value patterns:
   than the input and assertions exercise.
 
 A match fails the gate for a new test unless the test independently guards a contract below. An
-existing match is suspect, not automatically deletable. **A test is never redundant with a test of
-another classification.** An end-to-end test runs the real services, an integration test still
-stands some of them in, and a unit test stands in all of them, so the same assertion proves
-different things in each; an end-to-end test that an integration test also reaches, or an
-integration test a unit test also reaches, stays. End-to-end coverage is preferred wherever it can
-reach the contract. A test that would break under
+existing match is suspect, not automatically deletable. A test that would break under
 behavior-preserving source reorganization is asserting implementation rather than behavior; move
 it to the owning boundary. Bug regressions fail on the pre-fix code for the intended reason and pass
 after the owner repair. One regression at the owner boundary covers the bug.
@@ -355,8 +356,8 @@ in the process — a predicate, a policy, a formatter, a normalization helper, a
 as itself, with its input arranged by the suite's fixtures. A repository-owned object — a request, a
 settings object, a domain model, an ORM row, a result model, a scope or context object — is a real
 instance from the suite's fixtures, its factories, or its own constructor. A flow that needs a row
-proves itself in the tests that have the real database, and lower-level tests keep only the branch
-the real path cannot reach; a conflict the database raises is produced by inserting the conflicting row,
+is proven in the tests that have the real database, never by patching persistence in a test without
+one; a conflict the database raises is produced by inserting the conflicting row,
 never by patching `insert` to raise.
 
 A double is for what the process cannot cross — a third-party SDK, the network, another service, the
