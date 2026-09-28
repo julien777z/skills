@@ -36,7 +36,7 @@ requires = ["poetry-core>=2.0.0"]
 build-backend = "poetry.core.masonry.api"
 ```
 
-- Use `poetry install`, `poetry run black .`, and `poetry run pyright` for the standard local workflow. Run the suite through the repository's own test-runner entry point when it defines one, since a bare `pytest` invocation reaches only the tiers its default collection happens to find.
+- Use `poetry install`, `poetry run black .`, and `poetry run pyright` for the standard local workflow. Run the suite through the repository's own test-runner entry point when it defines one, since a bare `pytest` invocation reaches only the suites its default collection happens to find.
 
 ## Application Structure
 

@@ -1,6 +1,6 @@
 ---
 name: banned-terminology
-description: Owns the banned-terms list in resources/banned_words.json and enforces it. Use when naming anything, when reviewing a name, when the user says a term is bad, confusing, or should not be used, when they reject a replacement an entry recommends, when they lift a ban, or whenever the decision is about a word rather than one symbol.
+description: Owns the banned-terms list in resources/banned_words.json and enforces it. Use when naming anything, when writing a pull request or a message to the user, when reviewing a name, when the user says a term is bad, confusing, or should not be used, when they reject a replacement an entry recommends, when they lift a ban, or whenever the decision is about a word rather than one symbol.
 ---
 
 # Banned Terminology
@@ -9,7 +9,8 @@ description: Owns the banned-terms list in resources/banned_words.json and enfor
 the term, what to use instead, why the term fails, and any replacement already rejected.
 
 Never use vague, cute, or placeholder terminology in identifiers, docstrings, comments, or test
-names. Name things for the behavior they actually have. This holds for **new and pre-existing
+names, or in any other surface an entry's `applies_to` names, such as pull requests and messages to
+the user. Name things for the behavior they actually have. This holds for **new and pre-existing
 code**: touching a file that still uses a banned term means renaming it.
 
 If you reach for a placeholder-ish term a future reader could not decode from the name alone, pick a
