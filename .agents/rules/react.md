@@ -38,7 +38,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   `actionHref` — so each caller keeps its own content without the component growing a prop per
   field. A call site fills slots; it never assembles the surface from its primitives or adds a one-off
   structural Tailwind override. Structural behavior a caller needs becomes a prop or variant; simple
-  width utilities such as `w-full` are the narrow exception.
+  width utilities such as `w-full` are the narrow exception. Where a surface is hand-assembled, the
+  fix names the one component that replaces it and lists each slot prop it takes.
 
 ## Reference Data
 
