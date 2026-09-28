@@ -485,7 +485,8 @@ Escalate findings when you see:
 - A file over 1000 lines anywhere in scope, whatever put it there.
 - Any suppression the diff adds — `pyright: ignore`, `type: ignore`, `noqa`, `pylint: disable`, a
   broadened `except`, a new linter-ignore entry, a lowered threshold, a hand-written stub — outside
-  generated output. Grep for these; they do not surface from reading for structure.
+  generated output and the once-for-every-package third-party typing exemption item 9 admits; a
+  per-package entry is still a finding. Grep for these; they do not surface from reading for structure.
 - A test module holding two or more test classes, whatever put the second one there.
 - A docstring the diff adds that runs past one line.
 - A function, constant, or model defined in a test module beside its tests, whatever its size or
