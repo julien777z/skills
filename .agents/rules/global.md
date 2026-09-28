@@ -38,11 +38,9 @@ alwaysApply: true
 
 ## Credential Exposure
 
-- Keep credentials out of source, reports, and avoidable tool output. If a credential appears in
-  agent context, a tool call or result, an internal log, or another private work surface, contain
-  further copies and remove accidental artifacts where possible; that alone is not public
-  disclosure. Revoke or rotate a credential in response to exposure only when it was made public.
-  Establish that public disclosure occurred before taking the disruptive action.
+- Minimize credential exposure and remove accidental private copies where possible. A credential
+  encountered in private agent work has not thereby been made public. Revoke or rotate a credential
+  in response to exposure only after establishing that it was made public.
 
 ## User-Facing Output
 
