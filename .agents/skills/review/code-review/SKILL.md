@@ -22,9 +22,8 @@ that names such a pair but omits it from the findings list.
 
 The Rules receipt also lists every conditional choosing among a fixed set of string statuses,
 including log-only values. Inline literals bypassing the language's named finite-state type are
-findings: use a string enum in Python and the applicable const-object and value-union pattern in
-TypeScript. Preserve externally fixed values in that type. A receipt without the conditional list
-is incomplete and must be rerun.
+findings. Use the representation required by the applicable language rule and preserve externally
+fixed values in that type. A receipt without the conditional list is incomplete and must be rerun.
 
 ## Dependencies
 

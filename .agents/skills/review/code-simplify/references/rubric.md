@@ -486,7 +486,7 @@ Escalate findings when you see:
 - Narrow edge-case handling implemented in the middle of an already busy function.
 - Refactors that technically pass tests but make the code less modular or less readable.
 - Adjacent stages in a new or substantially edited function with no blank line between a completed guard and the next setup, validation and I/O, or copying and postprocessing. Report each missing paragraph break even when the formatter leaves it untouched.
-- A conditional selecting among a fixed set of status strings as inline literals, including when the selected value is only logged. Search for an existing named finite-state type by its values; use the representation required by the language's rules, such as a string enum in Python or a const object with an inferred union in TypeScript.
+- A conditional selecting among a fixed set of status strings as inline literals, including when the selected value is only logged. Search for an existing named finite-state type by its values; use the representation required by the language's rules, such as `Enum` for internal Python states, `StrEnum` for string contracts, or a const object with an inferred union in TypeScript.
 - "Temporary" branching that is likely to become permanent debt.
 - Bespoke helpers where the codebase already has a canonical utility for the job.
 - A generic helper with exactly one caller, especially one this diff just created by extraction. One caller is not proof a helper is unnecessary; it is usually proof the sweep stopped at the first site. Search for the rest by the operation it performs, not by its name, and either use it there or fold it back into its single caller.
