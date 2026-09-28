@@ -101,4 +101,5 @@ and require it to report merged.
 Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only | names of hosted checks and results>
 ```
 
-Or, when a gate holds: `Not merged: <link> — <gate>: <evidence>`.
+Or, when a gate holds: `Not merged: <link> — <gate>: <evidence>`. The evidence includes each
+relevant check's terminal result, read from its log where its status was stale.
