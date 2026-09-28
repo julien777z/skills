@@ -123,10 +123,11 @@ function Card({ title, subtitle = "", className = "" }: CardProps) {
 - **A surface is as tall as its content, never taller.** A card, panel, section or widget showing a
   large empty area — below its content, or between the content and the control that acts on it —
   reads as unfinished. Content flows from the top and each control sits directly after what it acts
-  on, never pushed to the bottom of a stretched container by a fill or a space-between. Surfaces
-  sharing a row take its height from the tallest content in it, not from a fixed number, and an empty
-  state is sized like any other content. A fixed height belongs only to a surface whose content
-  scrolls inside it.
+  on, never pushed to the bottom of a stretched container by a fill or a space-between. A shorter
+  surface beside a taller one keeps its own height rather than stretching to match, and an empty
+  state is sized like any other content. A height set from outside the content belongs only to a
+  surface whose content scrolls inside it or fills the space it is given — a chart, a map, media —
+  to one the reader sized, or to a section deliberately sized to the viewport.
 - A component that renders inside more than one shell — a widget in a canvas and on a page, a card
   in a list and alone — is checked in each one. Spacing that a parent supplies in one place and not
   the other is what a single screenshot cannot settle.
