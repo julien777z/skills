@@ -1,6 +1,6 @@
 ---
 name: tests-doctor
-description: Audit and correct existing tests for contract value, redundancy, weak assertions, naming, runtime, coverage by test, and determinism. It aligns suites with their source owners, consolidates duplicate proof, preserves independent contracts, measures runtime, and repairs proven defects. Use to review, clean up, speed up, de-duplicate, rebalance, or find gaps in tests.
+description: Audit and correct existing tests for contract value, redundancy, weak assertions, naming, runtime, coverage by test, and determinism. It aligns suites with their source owners, consolidates duplicate proof, preserves independent contracts, measures runtime, and repairs proven defects. Use to review, clean up, speed up, de-duplicate, or find gaps in tests.
 disable-model-invocation: true
 ---
 
@@ -240,13 +240,13 @@ also a flaky one.
 **Weigh every dominating case against what it proves.** A test earns its runtime by the failure it
 would catch, so the question is what a reader loses if it goes, not whether it passes. One that
 asserts little for a large share of the suite's wall time is folded into a case of the same
-classification that is already paying that setup, or made cheaper where it stands. An end-to-end
-test is never cut because a cheaper classification reaches the same assertion: that it runs the
-real services is what it proves. In a pre-production
-repository that trade is ordinary rather than a last resort: a suite nobody will wait for is
+classification that is already paying that setup, or made cheaper where it stands. No test is cut
+because a test of another classification reaches the same assertion; an end-to-end test's worth is
+that it runs the real services. In a pre-production repository that trade is ordinary rather than a last resort: a suite nobody will wait for is
 coverage nobody runs.
 
-Preserve every unique guarantee while doing it. Cutting a case whose assertion nothing else makes is
+Preserve every unique guarantee while doing it. Cutting a case whose assertion nothing else in its
+classification makes is
 a coverage loss wearing a timing win, so name what each cut proved and where that fact now lives.
 
 ### Map Coverage By Test
@@ -459,7 +459,7 @@ generated plan does not substitute for this evidence.
 
 After implementation, repeat the same suite workload, verify its budget outcome and correctness,
 and report the before/after evidence. The improvement must exceed measurement noise. Preserve every
-unique coverage guarantee; never cut tests solely to achieve a timing target. A missed budget or
+coverage guarantee unique within its classification; never cut tests solely to achieve a timing target. A missed budget or
 unverified improvement remains unresolved rather than being reported as a successful performance fix.
 
 Reviewers check every application performance change against this exception at proposal and final

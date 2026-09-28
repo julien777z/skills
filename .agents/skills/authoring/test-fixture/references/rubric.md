@@ -42,7 +42,7 @@ A match fails the gate for a new test unless the test independently guards a con
 existing match is suspect, not automatically deletable. A test that would break under
 behavior-preserving source reorganization is asserting implementation rather than behavior; move
 it to the owning boundary. Bug regressions fail on the pre-fix code for the intended reason and pass
-after the owner repair. One regression at the owner boundary covers the bug.
+after the owner repair. One regression per classification that reaches the bug covers it.
 
 Keep a test when it independently enforces a public API, plugin interface, protocol, configuration,
 migration, storage, security, platform, default, exact user-facing bytes, generated cross-language,
