@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: Apply target-contract constraints to every implementation and review task, including configuration, APIs, schemas, and stored data. Use it to prevent legacy paths and parallel mechanisms and to plan migrations for affected users and data.
+description: Apply target-contract constraints to every implementation and review task, including configuration, APIs, schemas, and stored data. Use it to prevent legacy paths and parallel mechanisms, to plan migrations for affected users and data, and whenever a CI job fails along the way.
 ---
 
 # Pre-Production
@@ -21,6 +21,14 @@ Fix and validate every concrete issue naturally encountered during authorized wo
 predates the task or sits outside the initial file set. Follow the evidence through the affected
 callers and owners. That obligation is not a licence to audit areas the evidence never reaches; it is
 also not a reason to stop at the first file, and the section below governs how far it does reach.
+
+- **A red CI job is an encountered issue, whoever caused it.** A package index serving no candidates,
+  a registry or network timeout, a runner fault, a test that passes on a second try: each is the
+  pipeline depending on something it does not control, and that dependency is a defect in the
+  repository. Fix the input that exposes it — restore resolved dependencies from a cache keyed on the
+  lockfile, replace a live service with a fake, make the test deterministic — and push that.
+  Re-running the job is never the fix: a green re-run proves the outage ended, not that the pipeline
+  survives the next one.
 
 ## Scope Follows The Defect, Not The Request
 
