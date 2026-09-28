@@ -177,6 +177,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 - **A form a person signs, certifies or attests to starts empty.** Nothing is seeded from a profile
   or an earlier submission, because the signer vouches for what they entered.
+- **A form longer than a handful of fields is grouped into titled sections,** each holding the
+  fields that answer one question, and forms that are siblings — the variants of one document, the
+  create and edit of one record — share one section layout through one shared section component.
 - **Related short fields sit side by side wherever the width allows,** wrapping only when it does
   not.
 - **One act gets one confirmation.** A single checkbox, worded as the whole statement the reader is
