@@ -33,7 +33,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 - **A component owns its structure; a call site supplies content.** A surface made of parts — a
   card with a title, an action, a body and a footer — takes them as slots (`action={...}`,
-  `footer={...}`, `children`) and owns their spacing, alignment and dividers through its variants.
+  `footer={...}`, `children`) and owns their spacing, alignment, dividers and type sizes through its
+  variants, so each kind of text — a name, a figure, a label — has one size across the product.
   A slot takes the element itself — `action={<Button>…</Button>}`, never `actionLabel` and
   `actionHref` — so each caller keeps its own content without the component growing a prop per
   field. A call site fills slots; it never assembles the surface from its primitives or adds a one-off
@@ -98,9 +99,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   what the reader should put in it, in the words they would use themselves.
 - Say the one thing the reader needs and stop. Prefer no description to a description that repeats
   the label, narrates the obvious, or hedges. Where a sentence is only there to cover the product,
-  cut it. That includes a paragraph explaining the mechanics around an action — who certifies what,
-  what the reader is not doing — and a note of a side effect nobody asked about, such as what a
-  submission replaces or what stays downloadable.
+  cut it. That includes a paragraph explaining the mechanics around an action, such as which party
+  performs which step, and a note of a side effect nobody asked about, such as what happens to
+  earlier versions.
 - **A status reads from the viewer's side.** Name the state in terms of what that reader did or
   still has to do, and keep internal steps they take no part in behind a visual cue: a person who
   sent a form sees "Submitted", with the tone telling review apart from acceptance, while the
@@ -142,8 +143,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **A surface is as tall as its content, never taller.** A card, panel, section or widget showing a
   large empty area — below its content, or between the content and the control that acts on it —
   reads as unfinished. Content flows from the top and each control sits directly after what it acts
-  on, never pushed to the bottom of a stretched container by a fill or a space-between. Surfaces
-  sharing a row end on the same line, and they get there by balancing what they hold — cutting a
+  on, never pushed to the bottom of a stretched container by a fill or a space-between, or to the
+  far edge of an otherwise empty row or footer. Surfaces sharing a row share its width and end on
+  the same line, and they get there by balancing what they hold — cutting a
   line that earns no place, moving a control, re-pairing the surfaces — never by stretching the
   shorter one; where content cannot be balanced, the shorter keeps its own height. An empty state is
   sized like any other content. Content that can outgrow its surface scrolls inside a
@@ -155,41 +157,34 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   setup, an onboarding — leaves the navigation, and its page redirects, because a reader who was
   offered it still holds its address; the completion is announced once, as a dismissible success
   banner where the reader lands.
+- **Inside a page, offer only what applies to the reader.** A choice, a document, a field or a
+  status row the reader can never use — the other region's version of a document, the other account
+  type's settings — is left out, decided by the same rule that decides which one applies, never
+  listed beside it.
+- **A step-by-step flow puts Back at the start of its footer and the primary action at the end,**
+  apart, so the control that goes back never sits beside the one that commits.
 - **A page whose only content is a status message renders a full-page message state**, centered in
   the page, never a small card left under the flow's own chrome — a stepper, tabs, a form header —
   that no longer applies. A form or list long enough to fill the page keeps its card.
 - **A failure beside working content is a dismissible banner above that content.** It never
   replaces a surface's own heading or description, which keep saying what the surface is while the
   banner says what went wrong.
-- **Surfaces sharing a row share its width,** and a surface lays its fields out side by side
-  wherever the width allows, wrapping only when it does not. A narrow card stacking three short
-  fields beside a wide one holding a list is the mismatch this rules out.
-- **Type size belongs to the component that renders the text, never to a call site.** A name, a
-  figure, a label, a heading each has one size across the product, set once in the component that
-  owns that kind of text; a figure that is larger on one card than another is two scales, and the
-  larger one is always the one that looks wrong.
 - A component that renders inside more than one shell — a widget in a canvas and on a page, a card
   in a list and alone — is checked in each one. Spacing that a parent supplies in one place and not
   the other is what a single screenshot cannot settle.
 
 ## Forms
 
-- **Offer only what applies to the reader.** A choice, a form, a field or a status row the reader
-  can never use — the other jurisdiction's form, the other account type's settings — is left out,
-  decided by the same rule that decides which one applies, never listed beside it.
 - **A form a person signs, certifies or attests to starts empty.** Nothing is seeded from a profile
-  or an earlier submission, because the signer vouches for what they entered; the only preset is a
-  format choice a field needs to render.
+  or an earlier submission, because the signer vouches for what they entered.
+- **Fields sit side by side wherever the width allows,** wrapping only when it does not.
 - **One act gets one confirmation.** A single checkbox, worded as the whole statement the reader is
   making, stands for it; a second box restating part of the first asks twice.
-- **Long fixed text a reader must accept — a certification, terms, a disclosure — sits in a short
-  scrollable area** of smaller muted type, with the control that accepts it directly below, so the
-  form around it stays readable.
-- **A placeholder shows a realistic example of the value's format,** such as `123-45-6789`, never
-  zeros, dots or a mask that reads as an existing value hidden from the reader.
-- **A step-by-step flow puts Back at the start of its footer and the primary action at the end,**
-  apart, so the control that goes back never sits beside the one that commits. A step whose only
-  content is a message and one action puts that action directly under the message, with no footer.
+- **Long fixed text a reader must accept — a certification, terms, a disclosure — is set in smaller
+  muted type** and scrolls inside a maximum height as Layout And Spacing describes, with the control
+  that accepts it directly below.
+- **A placeholder shows a realistic example of the value's format,** such as `555-0100` or
+  `2030-01-31`, never zeros, dots or a mask that reads as an existing value hidden from the reader.
 
 ## State and Hooks
 
