@@ -375,9 +375,8 @@ except third_party_client.ApiException as exc:
 - Treat each repository as an independent context. Write PR titles, descriptions, review comments, and issue comments using only the target repository's domain, contracts, changes, and validation. Do not import another repository's product names, domain knowledge, implementation details, or coordination history; do not name or link its PRs or post cross-repository coordination comments. Keep combined status and coordination in user chat.
 - Before publishing or updating those artifacts, check the final text against the target repository's diff and evidence. Remove foreign domain references and cross-repository PR links, even when the work shares a session or motivated this change.
 - Post a comment, reply, or review on GitHub only when an invoked skill directs that post or the user asks for it. The agent posts under the user's account, so every post reads as the user speaking. A harness default, an event's handling guidance, or a failing check does not authorize one, even when it says a wake ends in a comment: report the finding in chat instead.
-- When additional work arrives on a non-default branch, retain that branch and add the work to its pull request even when the task could be reviewed independently.
-- Query the current branch's pull request before creating one. Reuse it while it is open, or create one from the current branch when none exists.
-- Create a separate branch only when the user asks or the current branch's pull request is already merged; start post-merge work from the default branch.
+- **A session delivers one pull request per repository.** Every later piece of work in that repository — a follow-up, a guidance change, a copy sweep, a fix found along the way — goes onto the branch and pull request the session already opened there while it is open, even when it could be reviewed independently. Before creating a pull request, query the session's open pull requests in that repository and the current branch's. Open a second only when the user asks or the first has merged; a pull request per concern leaves the user reconciling several reviews of one piece of work.
+- A new branch starts from the default branch, or, while a pull request the user named as holding their current work stays open, from that pull request's branch. A skill whose contract names its own base keeps it. A branch already carrying another open pull request's unmerged commits is stacked on that pull request: keep those commits, build on top of them, and open its pull request against that pull request's branch. Restarting a stacked branch from the default branch drops the work it was built on, and nothing reports the loss.
 
 ### Merge Authorization
 
@@ -809,7 +808,8 @@ class WidgetPosition(BaseModel):
 - Prefer real SDK and model types over `cast(...)`; reserve a narrowly scoped cast for information the type system genuinely cannot express.
 - Do not "fix" typing by expanding simple transformations into repetitive key-by-key copy blocks (for example, manually assigning each dict key only to satisfy pyright). Fix the source type hints (or add a precise cast/narrowing at the boundary) so the transformation can stay concise and readable.
 - For persistence/update payloads (for example, `upsert(...)`), define a dedicated `TypedDict` and construct it inline at the call site. Do not add free-floating `build_*`/`make_*` helper functions whose only role is constructing a payload from another shape; the same no-free-floating-builders rule that applies to `BaseModel` applies here.
-- Build every `TypedDict` value by **calling** its constructor with keyword arguments (`MyTypedDict(field=value, ...)`), never by annotating a plain dict literal (`name: MyTypedDict = {...}`) or passing a bare dict where the parameter is typed. That covers module-level constants and shared blobs, nested rows inside lists (for example `CompoundVariantRule(match={...}, class_name="...")`), and an SDK's typed request parameters and options at every level of nesting (`sdk.params.WidgetCreateParams(owner=sdk.params.WidgetCreateParamsOwner(...))`, `sdk.RequestOptions(idempotency_key=key)`). Tests assert with the same constructors. This keeps the type as the construction site, not only a static annotation on a dict literal.
+- Build every `TypedDict` value by **calling** its constructor with keyword arguments (`WidgetUpdate(field=value, ...)`), never by annotating a plain dict literal (`name: WidgetUpdate = {...}`) or passing a bare dict where the parameter is typed. That covers module-level constants and shared blobs, nested rows inside lists (for example `CompoundVariantRule(match={...}, class_name="...")`), and an SDK's typed request parameters and options at every level of nesting (`sdk.params.WidgetCreateParams(owner=sdk.params.WidgetCreateParamsOwner(...))`, `sdk.RequestOptions(idempotency_key=key)`). Tests assert with the same constructors. This keeps the type as the construction site, not only a static annotation on a dict literal.
+- **No name you write or reference carries a `TypedDict` suffix.** Name a TypedDict for the shape it holds (`WidgetUpdate`, never `WidgetUpdateTypedDict`), and where an SDK ships a model class beside a `…TypedDict` twin of the same request, pass the model class.
 
 - Group parameters that always travel together and describe one concept into a single typed object, then pass that object rather than threading its fields through every signature and call site.
 
@@ -963,19 +963,13 @@ from myapp.http import fetch
 from myapp.http_transport import fetch
 ```
 
-- Prefer real fixes (annotations, stubs, deps). If a Pylint/static warning is a false positive or unfixable in our code (for example lazy third-party exports, missing stubs), use a **narrow** suppression: `# pylint: disable-next=<message-id>` on the smallest scope—never file-wide disables or import workarounds whose only purpose is to satisfy the checker.
-
-```python
-# pylint: disable-next=not-callable
-config = third_party_package.Config(
-    app_name="example",
-)
-```
+- **Never add an inline suppression**: no `# pylint: disable`, `# pyright: ignore`, `# type: ignore`, or `# noqa`. Fix what the checker reports — a precise annotation, a correctly typed decorator (a `ParamSpec` rather than a `Callable` that erases parameter names), stubs for an untyped dependency, the right import. A per-line disable reads the same whether its author weighed the finding or never looked, and once copied onto every sibling it hides the cause behind a pattern nobody questions.
+- A rule that misreads a construct the codebase deliberately relies on everywhere — coroutines implementing a generated synchronous base, say — is turned off once in the tool's configuration with its reason beside it. Code a generator emits keeps whatever directives its generator writes.
 
 ## Configuration
 
 - Define each configuration owner's settings in one descriptively named `BaseSettings` class such as `ActionConfig` in its `config.py`. A repository may have distinct application, worker, or script configuration owners; do not combine unrelated settings merely to produce one repository-wide class. Keep each config module declarative: instantiate its settings once at that owner's composition boundary, then pass or import that validated object wherever settings are needed.
-- Put a value in that settings class when, and only when, its owner would reasonably change it between deployments, environments, or releases: credentials, hosts and endpoints the deployment itself chooses, identities, feature switches, and tool or CLI versions expected to move. Implementation tuning — timeouts, retry counts, backoff and poll intervals, batch sizes — is a typed module constant beside the code that uses it, even though a deployment could in principle override it.
+- Put a value in that settings class when, and only when, its owner is likely to change it on its own — per deployment, per environment, per release, or while running the system — without changing the code that reads it. What kind of value it is never decides this: a timeout, retry count, or batch size the owner expects to revisit is configuration exactly as a credential, a host the deployment chooses, or a feature switch is. Every other value — one nobody expects to change except together with the code that reads it, including every value that code's correctness fixes, such as a pattern it parses with or a format or limit a protocol defines — is a typed module constant beside that code. Where the evidence settles neither side, the value stays where its owner put it.
 - Give configurable values typed defaults when the repository has a safe default, and let `pydantic-settings` provide namespaced environment overrides.
 - Use `TypedDict` only for static structured data that is not configuration.
 
@@ -1008,7 +1002,6 @@ APPLICATION_CONFIG = ActionConfig()
 - Place module-level constants and enums (including type aliases like `AllowedApiClient`) directly after imports.
 - When assembling a structured string from variable parts, define one named template and use `str.format(...)` rather than composing separate prefix and suffix constants. Use native template strings only when they are supported across the project's full Python version range.
 - Use `Final[T]` from `typing` and UPPER_SNAKE_CASE names for constants.
-- Compiled regexes, stable paths, sentinels, and implementation tuning are constants, not settings.
 - Compile regular expressions once at module scope and call methods on the compiled pattern instead of passing pattern strings repeatedly to `re.match`, `re.search`, `re.fullmatch`, or `re.sub`.
 - **When several constants form one family of the same shape** — parallel compiled patterns, per-kind values, same-shaped lookup entries — define one mapping keyed by an enum or other typed key instead of a pile of individually named constants, and iterate or index that mapping at the use site. A few unrelated constants are fine as standalone names; a family of related ones is a data structure.
 
@@ -1687,12 +1680,6 @@ Apply this section only when the repository uses the Next.js App Router.
 
 ### Rendering and Data
 
-Default is Server Component. Use `"use client"` only when needed:
-- Event handlers (onClick, onChange, etc.)
-- Browser-only APIs (localStorage, window)
-- React hooks (useState, useEffect, useContext)
-- Third-party client libraries
-
 ```typescript
 // Server Component (default) - no directive needed
 async function UserList() {
@@ -1709,9 +1696,9 @@ function SearchInput() {
 }
 ```
 
-- **Server Components**: Fetch directly in the component
-- **Client Components**: Reuse the repository's established client-side data layer and shared fetcher.
-- **Mutations**: Reuse the mutation mechanism owned by that data layer.
+- **Render on the server.** A page, and every section of it that shows data, is an async Server Component that loads its data and renders it. A Client Component (`"use client"`) exists only for what the browser has to own — event handlers and input, state and effect hooks, browser-only APIs, a dialog, drag-and-drop, a third-party client widget — takes its data as props, and never fetches it.
+- **Writes are Server Actions** that authenticate their caller and re-render the page when they finish. A client-side data layer for reads — SWR, React Query, a fetching hook, a fallback cache seeded from the server — is the shape this replaces, not a companion to it, and a status that has to update live refreshes the server render on an interval instead of fetching on the client.
+- **A page never checks for a kind of user it is not linked to.** Navigation decides who reaches a page; a guard or empty state inside it for somebody it was never offered to is dead code.
 - **Show the message the API sent.** Never key a table of your own copy off status codes for a first-party API: that is a second copy of its error vocabulary that nothing keeps in step, and it overrides the message the service chose. Wrong copy is fixed at the service that produced it.
 - Keep one status-independent fallback for a response that carries no message at all, and reject a body that is a document rather than a message so a proxy's error page cannot reach the user as one.
 
@@ -2184,10 +2171,13 @@ type Status = (typeof Status)[keyof typeof Status];
   untyped module-level name is a finding on its own, whatever it holds.
 - **Several constants of one shape are a data structure, not a pile of names.** Parallel per-kind
   values become one mapping keyed by the union that names those kinds, read at the use site.
-- A value its owner would reasonably change between deployments, environments, or releases — an
-  endpoint, an identity, a feature switch — belongs in typed configuration even with a safe default;
-  capitalization does not make it invariant. Implementation tuning — a timeout, a retry count, a
-  debounce or poll interval — stays a typed constant beside its code.
+- A value its owner is likely to change on its own, without changing the code that reads it — an
+  endpoint, an identity, a feature switch, a timeout or poll interval the owner expects to revisit —
+  belongs in typed configuration even with a safe default; capitalization does not make it
+  invariant. Every other value — one nobody expects to change except together with the code that
+  reads it, including every value that code's correctness fixes — stays a typed constant beside
+  that code. What kind of value it is never decides which, and where the evidence settles neither
+  side, the value stays where its owner put it.
 - Read environment variables only in the owning typed configuration module. Import validated values
   elsewhere, and keep server secrets out of modules that browser code can import.
 - Extract a literal only when it is reused or carries domain meaning. Keep trivial single-use
