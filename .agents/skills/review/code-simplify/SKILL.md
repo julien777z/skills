@@ -1,6 +1,7 @@
 ---
 name: code-simplify
 description: Strictly review the branch's changes for reuse, simplification, abstraction quality, and maintainability, then fix the issues. An ambitious code-quality pass that hunts for structural simplifications (code-judo moves), giant files, and spaghetti-condition growth.
+short_description: 'Strictly review the branch''s changes for reuse, simplification, abstraction quality, and maintainability, then fix the issues.'
 ---
 
 # Code Simplify

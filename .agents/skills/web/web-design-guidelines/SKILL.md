@@ -6,6 +6,7 @@ metadata:
   version: 1.0.0
   argument-hint: <file-or-pattern>
   source: https://github.com/vercel-labs/agent-skills
+short_description: 'Review UI code for Web Interface Guidelines compliance.'
 ---
 
 # Web Interface Guidelines

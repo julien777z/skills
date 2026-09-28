@@ -8,6 +8,7 @@ metadata:
 license: MIT
 allowed-tools: WebFetch
 compatibility: Requires NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY and CLERK_SECRET_KEY. For manual JWT verification (standalone API servers without Clerk middleware), additionally requires CLERK_JWT_KEY or CLERK_PEM_PUBLIC_KEY.
+short_description: 'Advanced Next.js patterns - middleware, Server Actions, caching with Clerk.'
 ---
 
 # Next.js Patterns

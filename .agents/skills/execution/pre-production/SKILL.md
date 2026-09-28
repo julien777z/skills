@@ -1,6 +1,7 @@
 ---
 name: pre-production
 description: Apply a pre-release repository's product constraints when planning, implementing, simplifying, or reviewing contracts, schemas, migrations, and stored data. Use it to decide how broad a change should be, whether a nearby duplicate belongs in scope, and how to surface a behaviour trade-off rather than narrowing the work around it.
+short_description: 'Apply a pre-release repository''s product constraints to contracts, schemas, and stored data.'
 ---
 
 # Pre-Production

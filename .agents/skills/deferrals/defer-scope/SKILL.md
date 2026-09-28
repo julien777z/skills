@@ -1,6 +1,7 @@
 ---
 name: defer-scope
 description: Record deferred work in the repository it affects, using Linear or that repository's ledger as an availability fallback; with no scope, read its active records. Use when work is consciously left undone, or when asked what is deferred, outstanding, or still open.
+short_description: 'Record unfinished work in the repository it affects, or read its active records.'
 ---
 
 # Defer Scope

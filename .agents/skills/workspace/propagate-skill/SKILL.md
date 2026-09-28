@@ -1,6 +1,7 @@
 ---
 name: propagate-skill
 description: Reconcile skills across the user's repository collection. Move reusable guidance into the shared skills repository, preserve repository-specific guidance at its owner, remove generic copies from consumers, and connect editable user-level installations to the canonical checkout. Use when the user asks to propagate, consolidate, or synchronize skills.
+short_description: 'Reconcile skills across the user''s repository collection.'
 ---
 
 # Propagate Skill Changes

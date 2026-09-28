@@ -15,42 +15,6 @@ END_MARKER: Final[str] = "<!-- skills:end -->"
 FRONT_MATTER_KEY_PATTERN: Final[re.Pattern[str]] = re.compile(r"^([A-Za-z][\w-]*):\s*(.*)$")
 SENTENCE_PATTERN: Final[re.Pattern[str]] = re.compile(r"(?<=[.!?])\s+")
 MAX_SUMMARY_LENGTH: Final[int] = 140
-SHORT_DESCRIPTIONS: Final[dict[str, str]] = {
-    "acceptance-gate": "Have an independent reviewer decide whether a proposed change fits the task and the repository.",
-    "assume-library-update": "Write consuming code for a change in one of your libraries before the library update is available.",
-    "ci-watch": "Watch a pull request, resolve review findings, and check that CI passes.",
-    "config-doctor": "Find configuration names that disagree across code and deployments, or are no longer used.",
-    "coordinate-repositories": "Carry one task across selected repositories and user-level installations.",
-    "cr": "Resolve a pull request's review threads and checks, then merge and verify it.",
-    "current-changes": "Summarize the branch's changes against the default branch with links to the code.",
-    "defer-execution": "Schedule separate work on its own branch, either now or after the current pull request merges.",
-    "defer-scope": "Record unfinished work in the repository it affects, or read its active records.",
-    "doctor-protocol": "Set the audit, fix, review, and reporting process used by every doctor skill.",
-    "edit-skill": "Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.",
-    "execute-defer-scope": "Review and resolve recorded deferred work for a chosen issue, path, or pull request.",
-    "execute-task": "Apply repository guidance, fix issues found along the way, validate the diff, and deliver the change.",
-    "guidance-doctor": "Review agent guidance for instructions to cut, clarify, or add.",
-    "i-have-adhd": "Make responses easier to scan, with the next action first and tangents removed.",
-    "incident": "Restore a broken deployed service, test the fix, and merge the scoped repair.",
-    "legacy-doctor": "Remove fallbacks, aliases, and duplicate paths left over from an old contract.",
-    "luau": "Apply Roblox Luau conventions when reading or changing game code and tooling.",
-    "manage-mcps": "Audit and repair managed MCP connectors across Claude Desktop and Codex.",
-    "merge-conflict": "Bring the base branch into a work branch, resolve conflicts, and validate the result.",
-    "pre-production": "Apply a pre-release repository's product constraints to contracts, schemas, and stored data.",
-    "rebuild-git-history": "Rework your branch into focused commits while preserving and checking its content.",
-    "refactor": "Plan and carry out a repository refactor with independent structural review.",
-    "roblox-building": "Build and improve Roblox worlds, terrain, structures, props, and assets.",
-    "roblox-react": "Design and change React-rendered Roblox interfaces, including HUDs and menus.",
-    "roblox-studio": "Create, polish, and playtest Roblox games in Studio.",
-    "run-site": "Start a local app, repair startup failures, and test its core flow in a browser.",
-    "schema-doctor": "Check models and schemas for unnecessary nulls, complexity, keys, and indexes.",
-    "skill-gauntlet": "Audit installed agent skills and test which ones to improve, retire, or install.",
-    "storyline": "Create or improve a coherent game story with playable beats and a satisfying ending.",
-    "test-fixture": "Check test data and fixtures before changing tests or running tests after a fixture change.",
-    "test-skill": "Compare edited and original skill guidance against the same scenario.",
-    "text-highlight": "Show code changes in small diff-shaped excerpts that are easy to locate.",
-    "vercel-react-view-transitions": "Build smooth React animations with the View Transition API.",
-}
 
 
 class Skill(NamedTuple):
@@ -59,6 +23,7 @@ class Skill(NamedTuple):
     path: Path
     name: str
     description: str
+    short_description: str | None
     user_invoked_only: bool
 
 
@@ -124,6 +89,7 @@ def read_skills() -> list[Skill]:
                 path=skill_file,
                 name=front_matter["name"],
                 description=front_matter["description"],
+                short_description=front_matter.get("short_description"),
                 user_invoked_only=front_matter.get("disable-model-invocation") == "true",
             )
         )
@@ -135,10 +101,10 @@ def read_skills() -> list[Skill]:
 
 
 def summarize(skill: Skill) -> str:
-    """Use an authored short summary when the skill's opening sentence runs long."""
+    """Use the skill's own summary, or its opening sentence if absent."""
 
-    summary = SHORT_DESCRIPTIONS.get(skill.name, SENTENCE_PATTERN.split(skill.description)[0])
-    if len(summary) > MAX_SUMMARY_LENGTH:
+    summary = skill.short_description or SENTENCE_PATTERN.split(skill.description)[0]
+    if skill.short_description and len(summary) > MAX_SUMMARY_LENGTH:
         raise ValueError(f"{skill.name} needs a shorter README description")
     return summary
 

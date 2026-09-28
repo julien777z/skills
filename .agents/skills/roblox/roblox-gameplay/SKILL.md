@@ -1,6 +1,7 @@
 ---
 name: roblox-gameplay
 description: Apply every time actively modifying a Roblox game, including mechanics, progression, rewards, controls, presentation, UI, and world content. Shape a fun, immediately understandable loop with frequent satisfying successes, rich readable feedback, meaningful progression suited to the game.
+short_description: 'Apply every time actively modifying a Roblox game, including mechanics, progression, rewards, controls, presentation, UI, and world content.'
 ---
 
 # Roblox gameplay and player enjoyment

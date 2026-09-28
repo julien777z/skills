@@ -6,6 +6,7 @@ metadata:
   version: 1.0.0
   source: https://github.com/vercel-labs/agent-skills
 license: MIT
+short_description: 'React and Next.js performance optimization guidelines from Vercel Engineering.'
 ---
 
 # Vercel React Best Practices

@@ -6,6 +6,7 @@ metadata:
   version: 7.9.1
   source: https://github.com/prisma/skills
 license: MIT
+short_description: 'Prisma Client API reference covering model queries, filters, operators, and client methods.'
 ---
 
 # Prisma Client API Reference

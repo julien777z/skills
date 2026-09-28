@@ -6,6 +6,7 @@ metadata:
   tags: "ADHD, Output Style, Productivity, Formatting"
   category: "productivity"
   source: https://github.com/ayghri/i-have-adhd
+short_description: 'Make responses easier to scan, with the next action first and tangents removed.'
 ---
 
 # i-have-adhd

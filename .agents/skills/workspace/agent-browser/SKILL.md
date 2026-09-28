@@ -5,6 +5,7 @@ metadata:
   source: https://github.com/vercel-labs/agent-browser
 allowed-tools: Bash(agent-browser:*), Bash(npx agent-browser:*)
 hidden: true
+short_description: 'Browser automation CLI for AI agents.'
 ---
 
 # agent-browser

@@ -1,6 +1,7 @@
 ---
 name: run-site
 description: Bring a local application stack up, repair startup blockers, and prove the running site works by driving a real browser through sign-in and core functionality with screenshots. Use when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works.
+short_description: 'Start a local app, repair startup failures, and test its core flow in a browser.'
 ---
 
 # Run Site

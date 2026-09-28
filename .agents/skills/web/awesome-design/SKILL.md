@@ -24,6 +24,7 @@ metadata:
   - https://github.com/VoltAgent/awesome-design-md
   source: https://github.com/EagleFandel/awesome-design
 license: MIT
+short_description: 'Curated collection of DESIGN.md files from real websites.'
 ---
 
 # Awesome DESIGN.md

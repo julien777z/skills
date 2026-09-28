@@ -61,8 +61,10 @@ the skill's title.
 Where an invocation carries an argument the trigger depends on, the argument is the thing worth
 naming — a target, a scope, a mode — not the command that precedes it.
 
-The opening sentence still says what the skill does, because a generated listing renders it as the
-skill's summary; the trigger follows it rather than replacing it.
+Give each skill a separate `short_description` in frontmatter: one plain sentence about what it
+does that a reader can scan in a listing. Keep the full `description` for invocation triggers and
+details. A listing can use the opening sentence of `description` when older or external skills lack
+the short field.
 
 Judge a description by substitution: read it without knowing which skill it belongs to. If it still says which situations
 fire the skill, it works. If the remainder names no situation, it was never a trigger.

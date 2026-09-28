@@ -1,6 +1,7 @@
 ---
 name: list-rules
 description: List and reconcile canonical rules across a bounded collection of local repositories. Use when the user asks which rules repositories have, where they occur, or whether a shared rule has conflicting language.
+short_description: 'List and reconcile canonical rules across a bounded collection of local repositories.'
 ---
 
 # List Rules

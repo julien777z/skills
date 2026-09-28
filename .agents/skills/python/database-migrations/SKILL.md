@@ -1,6 +1,7 @@
 ---
 name: database-migrations
 description: Guide for authoring, rebasing, and troubleshooting Alembic database migrations, including how to avoid and fix branched migration graphs.
+short_description: 'Guide for authoring, rebasing, and troubleshooting Alembic database migrations, including how to avoid and fix branched migration graphs.'
 ---
 
 # Database Migrations

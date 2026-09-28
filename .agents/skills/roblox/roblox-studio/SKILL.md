@@ -1,6 +1,7 @@
 ---
 name: roblox-studio
 description: Create, update, polish, and playtest Roblox games in Roblox Studio, including maps, assets, interfaces, playtests, and authorized place delivery. Apply companion skills for code, interfaces, world design, and gameplay when relevant.
+short_description: 'Create, polish, and playtest Roblox games in Studio.'
 ---
 
 # Roblox Studio

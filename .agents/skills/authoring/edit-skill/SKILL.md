@@ -1,6 +1,7 @@
 ---
 name: edit-skill
 description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. Deliver through simplification, the acceptance gate, and the smoke test before the pull request merges.
+short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
 # Edit Skill
@@ -139,6 +140,10 @@ outcome, because silence reads as the guidance having been fixed.
      incident details must not remove the lesson. Apply the preservation criteria in the quality reference.
    - Check skill shape and output against those criteria. Move inline criteria to a named reference
      when required, and add the appropriate output template or delivery report line when absent.
+   - For every skill added or edited, include a concise `short_description` in frontmatter for
+     skill listings. Keep the full `description` focused on when the skill runs, and refresh any
+     repository skill index from those fields. For vendored skills, verify that source refreshes
+     preserve locally authored listing metadata; extend the updater when they do not.
      Update existing files in place and report any structural changes. Before delivery, follow the
      entry point's links again and confirm that each route loads its required guidance. References
      must not hide an essential rule or introduce an unexplained mode or dependency. Check genericity

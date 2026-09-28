@@ -1,6 +1,7 @@
 ---
 name: list-repos
 description: List the repository web URLs for every repository changed during the entire current session. Use when asked for links to all repositories touched, modified, committed, pushed, or otherwise changed during the session.
+short_description: 'List the repository web URLs for every repository changed during the entire current session.'
 ---
 
 # List Repositories

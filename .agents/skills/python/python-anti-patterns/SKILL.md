@@ -3,6 +3,7 @@ name: python-anti-patterns
 description: Use this skill when reviewing Python code for common anti-patterns to avoid. Use as a checklist when reviewing code, before finalizing implementations, or when debugging issues that might stem from known bad practices.
 metadata:
   source: https://github.com/wshobson/agents
+short_description: 'Use this skill when reviewing Python code for common anti-patterns to avoid.'
 ---
 
 # Python Anti-Patterns Checklist

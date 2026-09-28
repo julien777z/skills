@@ -1,6 +1,7 @@
 ---
 name: plan-change
 description: Present plans for explicit approval and carry approved plans to their last step. Use whenever an agent presents a plan, resumes after a plan timeout or missing response, or implements an approved plan.
+short_description: 'Present plans for explicit approval and carry approved plans to their last step.'
 ---
 
 # Plan Change

@@ -3,6 +3,7 @@ name: python-type-safety
 description: Python type safety with type hints, generics, protocols, and strict type checking. Use when adding type annotations, implementing generic classes, defining structural interfaces, or configuring mypy/pyright.
 metadata:
   source: https://github.com/wshobson/agents
+short_description: 'Python type safety with type hints, generics, protocols, and strict type checking.'
 ---
 
 # Python Type Safety

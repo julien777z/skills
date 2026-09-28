@@ -1,6 +1,7 @@
 ---
 name: roblox-building
 description: Apply when planning, inspecting, creating, modifying, importing, optimizing, or playtesting Roblox maps, worlds, terrain, buildings, props, environmental meshes, or Blender assets. Require coherent environments, deliberate place architecture, economical measured geometry, readable traversal, preserved artwork, and player-height visual/performance checks.
+short_description: 'Build and improve Roblox worlds, terrain, structures, props, and assets.'
 ---
 
 # Roblox building and world design

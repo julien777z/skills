@@ -1,6 +1,7 @@
 ---
 name: luau
 description: Apply whenever Roblox Luau source is opened, read, reviewed, created, or modified, including scripts, modules, builders, tests, network contracts, and tooling configuration. Enforce readable typed code, server authority, lifecycle cleanup, shared spatial definitions, and the checks configured by the consuming project.
+short_description: 'Apply Roblox Luau conventions when reading or changing game code and tooling.'
 ---
 
 # Roblox Luau

@@ -6,6 +6,7 @@ metadata:
   version: 1.0.0
   source: https://github.com/vercel-labs/agent-skills
 license: MIT
+short_description: 'React composition patterns that scale.'
 ---
 
 # React Composition Patterns
