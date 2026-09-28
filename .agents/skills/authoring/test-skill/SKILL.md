@@ -68,35 +68,26 @@ a code change is tested: against the case that motivated it, with the change and
 7. **Judge the table.** The edit passes when every run reading the edited text meets every criterion
    and at least one control run misses at least one. Both halves matter. A control that also passes
    means one of two things and the tester says which: the words changed nothing a reader does, or
-   the scenario is too easy to separate them. Sharpen the scenario inside the same bound, and when
-   that bound is spent apply the same decision a spent bound gets below. An edited run that misses
-   names the sentence to revise: revise toward what it missed, keep the language broad, and rerun
-   that model once. Controls run in the first round only, since the original text does not change;
+   the scenario is too easy to separate them. Sharpen the scenario and rerun the comparison. An
+   edited run that misses names the sentence to revise: revise toward what it missed, keep the
+   language broad, and rerun that model. Controls run in the first round only when the scenario
+   stays the same, since the original text does not change;
    a revision reruns only the models that missed, all of them together, never one after another.
    A run that named the shape and then reasoned it away —
    "correctly delegates", "intentional", "not problematic" — is a wording miss of one kind: the check
    left its disposition to judgement, so the revision states the disposition as fixed and names the
    reasons a reader gives for keeping the shape as not reasons. Before a third round, re-read the
    scenario and the criteria as well as the wording: a criterion the scenario cannot satisfy — a
-   file the reviewer was never given — is fixed in the scenario, and the controls need no rerun for
-   that.
-8. **Run the bounded loop.** The loop ends when every edited run meets every criterion, and the pull
-   request merges then and not before; a failing row is never merged while a round remains. **The
-   rounds are bounded, and the bound is a judgement made before the first revision**: state how
-   many rounds the miss is worth — three is usual, fewer for a one-line edit, more where each round
-   is cheap and the criterion is central —
-   and when the last one still fails, stop revising and decide: let the edit stand with the miss
-   when the failing report follows the edit in substance and misses only the words the criterion
-   looked for, make a different change to the skill when the rounds tried one shape of wording and
-   another is still untried, or drop the edit when the controls show the words changed nothing —
-   unless the edit is strictly broader than the text it replaces, a class named where only an
-   instance was, in which case let it stand. The three are the whole set, so the pull request is
-   never left open on this, and the decision is the tester's and is never put to the user; asking
-   holds every later session on the text the edit replaces. Report the table, the sentence last
-   revised, and the decision with its reason; whether the pull request then merges is the
-   delivery's call, not this skill's. A loop
-   that will not close within the bound usually means the miss in step 1 was misstated; say so when
-   it is.
+   file the reviewer was never given — is fixed in the scenario, and both edited and control runs
+   use the corrected scenario.
+8. **Use a round budget to diagnose, not waive, a miss.** Choose the first budget before revising —
+   three rounds is usual. If an edited run still fails after that budget, inspect whether the
+   scenario and criteria actually expose the miss, then change the skill's instruction or the
+   scenario materially and rerun the failed model. Keep doing so until every edited run meets every
+   criterion and at least one control misses. Never mark a failing edited run as passing, let the
+   skill edit stand as verified, or merge it because a round count was reached. When reviewers
+   cannot run, report the smoke as `not run` and leave the merge pending. Report the table and the
+   wording or scenario change that closed each miss.
 9. **Report** the table itself in chat, as `## Output` shapes it; only the quoted evidence behind
    each `pass` goes to one file in the session's scratch directory, linked from the report. Put one sentence in the pull
    request description naming the miss the edit closes. The table is evidence and does not belong
@@ -129,7 +120,7 @@ Miss: <one sentence>
 
 Evidence: <link to the scratch file quoting the line behind each pass>
 
-Verdict: passes | revised and rerun (round <n>) | bound spent: <stands with the miss | edited again | dropped> — <reason> | not run: <reason>
+Verdict: passes | revised and rerun (round <n>) | not run: <reason>
 ```
 
 Every cell carries `pass` or `miss`; the evidence file quotes the line behind each `pass`. A control row for a
@@ -141,5 +132,5 @@ new skill reads `none` in its Text column.
 - Follow the shared tier selection. Never omit a control or claim complete coverage when a tier was not run.
 - Never edit the skill under test between launching a pair of runs and scoring them.
 - Keep the scenario while the branch is open; every later edit of that skill reuses it.
-- Never let a failing row stand before the bounded rounds are spent; after them, decide and state
-  the decision. The decision is never put to the user, before the bound or after it.
+- Never treat a failing edited row as verified; a round budget calls for a different approach to
+  the wording or scenario, followed by another run.
