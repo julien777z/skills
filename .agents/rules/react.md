@@ -143,7 +143,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   maximum height, so the surface stays as tall as its content until it reaches the cap. A height set
   from outside the content belongs only to a surface whose content fills the space it is given — a
   chart, a map, media — to one the reader sized, or to a section deliberately sized to the viewport.
-- **A page whose only content is a status message renders the full-page message state**, centred in
+- **Navigation decides who reaches a page.** A guard or empty state inside a page for somebody it
+  was never offered to is dead code. A multi-step flow the reader has finished — a verification, a
+  setup, an onboarding — leaves the navigation, and its page redirects, because a reader who was
+  offered it still holds its address; the completion is announced once, as a dismissible success
+  banner where the reader lands.
+- **A page whose only content is a status message renders a full-page message state**, centered in
   the page, never a small card left under the flow's own chrome — a stepper, tabs, a form header —
   that no longer applies. A form or list long enough to fill the page keeps its card.
 - A component that renders inside more than one shell — a widget in a canvas and on a page, a card
@@ -232,10 +237,6 @@ function SearchInput() {
 
 - **Render on the server.** A page, and every section of it that shows data, is an async Server Component that loads its data and renders it. A Client Component (`"use client"`) exists only for what the browser has to own — event handlers and input, state and effect hooks, browser-only APIs, a dialog, drag-and-drop, a third-party client widget — takes its data as props, and never fetches it.
 - **Writes are Server Actions** that authenticate their caller and re-render the page when they finish. A client-side data layer for reads — SWR, React Query, a fetching hook, a fallback cache seeded from the server — is the shape this replaces, not a companion to it, and a status that has to update live refreshes the server render on an interval instead of fetching on the client.
-- **A page never checks for a kind of user it is not linked to.** Navigation decides who reaches a page; a guard or empty state inside it for somebody it was never offered to is dead code.
-- **A finished flow is not a destination.** Once a multi-step flow — a verification, a setup, an
-  onboarding — is complete, its page leaves the navigation and redirects anyone who arrives, and
-  the completion is announced once, as a dismissible success banner on the page the reader lands on.
 - **Show the message the API sent.** Never key a table of your own copy off status codes for a first-party API: that is a second copy of its error vocabulary that nothing keeps in step, and it overrides the message the service chose. Wrong copy is fixed at the service that produced it.
 - Keep one status-independent fallback for a response that carries no message at all, and reject a body that is a document rather than a message so a proxy's error page cannot reach the user as one.
 
