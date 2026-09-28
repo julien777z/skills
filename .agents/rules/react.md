@@ -10,7 +10,10 @@ paths:
 
 ## Components and Props
 
-- One component per file (with co-located helpers)
+- Components follow the TypeScript rules' module structure and share the module that owns their
+  domain. A `"use client"` directive covers its whole module, so a domain's client components share
+  one client module beside it, named for the domain and what that half holds (`payments-controls.tsx`
+  beside `payments.tsx`) — the one split the directive forces beyond that structure
 - Named exports for components
 - Default exports only for page components
 
@@ -116,6 +119,17 @@ function Card({ title, subtitle = "", className = "" }: CardProps) {
   footer takes no space, so whatever sits behind it is hidden with nothing in the markup to say so.
   Prefer giving that chrome its own row in a flex or grid column, where the browser reserves the
   space; reach for absolute positioning only where the overlap is the intent.
+- **A surface is as tall as its content, never taller.** A card, panel, section or widget showing a
+  large empty area — below its content, or between the content and the control that acts on it —
+  reads as unfinished. Content flows from the top and each control sits directly after what it acts
+  on, never pushed to the bottom of a stretched container by a fill or a space-between. Surfaces
+  sharing a row end on the same line, and they get there by balancing what they hold — cutting a
+  line that earns no place, moving a control, re-pairing the surfaces — never by stretching the
+  shorter one; where content cannot be balanced, the shorter keeps its own height. An empty state is
+  sized like any other content. Content that can outgrow its surface scrolls inside a
+  maximum height, so the surface stays as tall as its content until it reaches the cap. A height set
+  from outside the content belongs only to a surface whose content fills the space it is given — a
+  chart, a map, media — to one the reader sized, or to a section deliberately sized to the viewport.
 - A component that renders inside more than one shell — a widget in a canvas and on a page, a card
   in a list and alone — is checked in each one. Spacing that a parent supplies in one place and not
   the other is what a single screenshot cannot settle.
@@ -172,7 +186,8 @@ Apply this section only when the repository uses the Next.js App Router.
 - `layout.tsx` - Shared layouts
 - `loading.tsx` - Loading UI
 - `error.tsx` - Error boundary
-- `not-found.tsx` - 404 page
+- `not-found.tsx` - 404 page, at the app root only; the root layout carries no app shell, so a
+  missing page renders as a full page
 - `_components/` - Page-specific components
 
 - Use `Link` from `next/link` for navigation
@@ -182,13 +197,15 @@ Apply this section only when the repository uses the Next.js App Router.
 ### Rendering and Data
 
 ```typescript
-// Server Component (default) - no directive needed
+// users.tsx - Server Components, no directive
 async function UserList() {
   const users = await fetchUsers(); // Direct DB/API access
   return <ul>{users.map(u => <li key={u.id}>{u.name}</li>)}</ul>;
 }
+```
 
-// Client Component - requires directive
+```typescript
+// users-controls.tsx - Client Components, directive on the first line
 "use client";
 
 function SearchInput() {

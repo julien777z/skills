@@ -128,7 +128,7 @@ An agent reaches for these on its own whenever the work calls for them.
 | [`merge-pr`](.agents/skills/git/merge-pr/SKILL.md) | Take a reviewed pull request through its exact-head check gate, resolve merge conflicts, and squash-merge it at the gated head, verifying the merge. |
 | [`no-text-ai-slop`](.agents/skills/review/no-text-ai-slop/SKILL.md) | Edit drafts into sharper, more human writing while preserving the writer's personal voice, or detect AI-slop patterns without rewriting. |
 | [`plan-change`](.agents/skills/execution/plan-change/SKILL.md) | Present plans for explicit approval and carry approved plans to their last step. |
-| [`pre-production`](.agents/skills/execution/pre-production/SKILL.md) | Apply a pre-release repository's product constraints when planning, implementing, simplifying, or reviewing contracts, schemas, migrations, and stored data. |
+| [`pre-production`](.agents/skills/execution/pre-production/SKILL.md) | Apply target-contract constraints to every implementation and review task, including configuration, APIs, schemas, and stored data. |
 | [`prisma-client-api`](.agents/skills/web/prisma-client-api/SKILL.md) | Prisma Client API reference covering model queries, filters, operators, and client methods. |
 | [`propagate-skill`](.agents/skills/workspace/propagate-skill/SKILL.md) | Reconcile skills across the user's repository collection. |
 | [`python-anti-patterns`](.agents/skills/python/python-anti-patterns/SKILL.md) | Use this skill when reviewing Python code for common anti-patterns to avoid. |

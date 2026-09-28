@@ -10,8 +10,7 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 
 ## Dependencies
 
-- `pre-production` — the repository's target-contract and staging-data policy, when the repository
-  declares one.
+- `pre-production` — the target-contract policy for every repository and its data obligations.
 - `code-simplify` — simplify each meaningful implementation batch and the complete diff before delivery.
 - `acceptance-gate` — judge the complete branch diff before it is pushed.
 - `generic-push` — keep each repository's publishing metadata independent during multi-repository changes.
@@ -68,10 +67,10 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 
 ## Product Constraints
 
-`pre-production` is active as soon as the run opens in a repository that declares it. Read it
-completely, explicitly invoke it, and announce the invocation before the first edit. Listing it as
-a dependency is not an invocation. Where the repository declares none, read its product state from
-its project guidance and treat every compatibility question below as one that guidance answers.
+`pre-production` is active in every change task. Read it completely, explicitly invoke it, and
+announce the invocation before the first edit. Listing it as a dependency is not an invocation.
+Read the repository's product state from its project guidance before choosing how to change a
+contract or stored value.
 
 Before editing a language or package, read its applicable shared and repository rules and nearby
 analogous files. Match their code grouping and spacing in every new or substantially edited file;

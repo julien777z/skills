@@ -14,8 +14,8 @@ answers to one question may now sit in one tree.
 
 - `acceptance-gate` — its **Base incorporation** procedure judges the resolved result before it is
   pushed.
-- `pre-production` — the tie-breaker when two designs are equally good, in a repository that
-  declares it; elsewhere the repository's project guidance stands in.
+- `pre-production` — apply the target-contract policy to every collision and use it to resolve
+  design ties.
 
 ## Neither Side Is Authoritative
 
@@ -41,7 +41,9 @@ answers to one question may now sit in one tree.
 3. **Read the whole incorporation, not the conflict markers.** Diff the previous base to the
    incorporated base, and read that diff against the branch's own diff: every place both touched the
    same question is a collision, whether Git marked it or merged it silently.
-4. **Compare each collision on what the two designs do in this tree.** For each one, name which
+4. **Compare each collision on what the two designs do in this tree.** Apply `pre-production`'s
+   target-contract policy to each candidate; a legacy path does not survive because it preserves
+   previous behavior. For each collision, name which
    side's answer is better and why before touching either: which leaves fewer mechanisms for one
    concern, which removes duplication the other invites, which failure modes each has already
    produced in code somebody wrote. A design already duplicated in its own tree is evidence about
@@ -54,9 +56,9 @@ answers to one question may now sit in one tree.
    apply `pre-production`'s test and take whichever yields the cleaner result and leaves the fewest
    mechanisms behind. Where that still does not separate them, the two are one design under two
    names, and the answer is the spelling the rest of the repository already reads.
-6. **Preserve behaviour on both sides.** The base's behaviour stays; the branch's authorized result
-   stays; only their shapes are chosen between. A resolution that drops a behaviour either side
-   introduced is a defect, not a resolution.
+6. **Preserve behaviour required by the target contract.** Migrate affected consumers and retained
+   data before removing an obsolete shape. A resolution that drops required behaviour is a defect;
+   preserving a legacy runtime path is not a way to avoid the migration.
 7. **Regenerate what is generated** — lockfiles, generated contracts, provider mirrors — from the
    resolved sources with the repository's own tooling, never by hand. Remove every conflict marker,
    run `git diff --check`, and run the repository's fast checks.

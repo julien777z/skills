@@ -10,6 +10,7 @@ paths:
 
 ## Test Organization
 
+- Call a group of tests a suite, and unit, integration, or end-to-end its classification, in code, guidance, pull requests, and messages to the user.
 - Test directories should mirror the source code structure.
 - If the source has `core/`, `models/`, `routes/`, or `services/`, keep the corresponding `unit/` and `integration/` folders aligned with those boundaries.
 - Place tests next to the source subdomain they verify, not in a loosely related folder.
@@ -141,6 +142,12 @@ async def test_extracts_tenant_from_token(mock_config):
 ```
 
 - Combine similar test cases with `@pytest.mark.parametrize` instead of duplicating tests.
+- **Redundancy is judged within one classification — unit, integration, or end-to-end — never across
+  them.** End-to-end tests run the real services, integration tests replace some of them with
+  doubles, and unit tests replace all of them, so an assertion one of them makes never makes
+  another's redundant. Consolidate duplicates inside a classification; never delete a test because a
+  test of another classification covers it. When adding coverage, write the end-to-end test wherever
+  one can reach the contract.
 - Tests that follow the same pattern with different inputs (for example, authorization error tests, not-found vs invalid-id, different name formats) must use `@pytest.mark.parametrize` instead of separate test methods.
 - Use `@pytest.mark.parametrize` for same-shape scenarios with different inputs.
 - Add readable `ids` for parametrized cases.
@@ -221,8 +228,8 @@ def create_order(order_fixture, customer_fixture, create_customer):
 - For every pull request an agent creates, ensure all test-related CI jobs pass before considering delivery complete; investigate and fix any failures within the pull request's scope.
 
 - Run tests through the repository's test-runner skill, at its full scope, rather than invoking the test framework directly against a hand-picked path. A single suite is for iterating on a failure you are actively fixing, never the run a change is verified against.
-- Choosing which tiers to run is not the author's call. Do not skip a tier because it looks unaffected, runs slowly, or needs services started — start them. If a tier genuinely cannot run, name it and say why alongside the result, because a result reported without that caveat claims coverage that was never achieved.
-- Every directory holding tests must be reachable from a runner target, and a test should assert that correspondence. A tier that no target selects is a tier nothing reports on.
+- Choosing which suites to run is not the author's call. Do not skip a suite because it looks unaffected, runs slowly, or needs services started — start them. If a suite genuinely cannot run, name it and say why alongside the result, because a result reported without that caveat claims coverage that was never achieved.
+- Every directory holding tests must be reachable from a runner target, and a test should assert that correspondence. A suite that no target selects is a suite nothing reports on.
 
 - When CI tests fail and you cannot access the logs directly, ask the user to provide the failure output before attempting fixes.
 

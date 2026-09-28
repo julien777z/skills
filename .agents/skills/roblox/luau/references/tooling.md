@@ -18,7 +18,7 @@ Author logical blank-line groups before formatting. [StyLua's configuration](htt
 
 [Selene deliberately leaves whitespace formatting to formatters](https://kampfkarren.github.io/selene/luacheck.html). [Lute's built-in lint rules](https://lute.luau.org/cli/lint/) and Luau type analysis do not enforce semantic grouping either. Lute supports custom rules, but a mechanical line-count heuristic cannot identify responsibilities. Inspect readability explicitly; adjust supported formatting options when they improve the actual output, without claiming an unavailable enforcement option.
 
-## Test tiers
+## Test suites
 
 Separate engine-independent behavior tests from Roblox engine tests, using shared typed fakes where appropriate. A Lute runner with Jest-compatible assertions is not actual Roblox Jest execution. Discover the project's installed runner, suite locations, and supported commands; keep manual interaction tooling separate and results ignored.
 

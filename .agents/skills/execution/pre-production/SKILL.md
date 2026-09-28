@@ -1,23 +1,20 @@
 ---
 name: pre-production
-description: Apply a pre-release repository's product constraints when planning, implementing, simplifying, or reviewing contracts, schemas, migrations, and stored data. Use it to decide how broad a change should be, whether a nearby duplicate belongs in scope, and how to surface a behaviour trade-off rather than narrowing the work around it.
-short_description: 'Apply a pre-release repository''s product constraints to contracts, schemas, and stored data.'
+description: Apply target-contract constraints to every implementation and review task, including configuration, APIs, schemas, and stored data. Use it to prevent legacy paths and parallel mechanisms and to plan migrations for affected users and data.
+short_description: 'Apply target-contract constraints to implementation and review tasks.'
 ---
 
 # Pre-Production
 
-Build the clean release target instead of preserving transitional behavior.
+Build the clean target contract instead of preserving transitional behavior.
 
 ## Product State
 
-- This skill applies to a repository that has not released: work in progress, pre-MVP, deployed
-  only to environments its own team uses, with no external users depending on any contract it
-  serves.
-- The repository's project guidance states the rest — which environments exist, how disposable
-  their data is, and which surfaces are privileged. Read it before deciding anything this skill
-  leaves to the repository, and never assume one repository's answer holds in another.
-- Where the repository's guidance says it has released users, this skill does not apply. Say so
-  rather than applying it anyway.
+- Apply this skill in every repository. Read its project guidance to determine which contracts have
+  external users, which environments and records are disposable, and which surfaces are privileged;
+  never infer those facts from an environment name.
+- Migrate affected users and retained data onto the target contract before removing the old one.
+  Release state changes the migration work, never the prohibition on legacy runtime paths.
 
 ## Encountered Issues
 
@@ -43,10 +40,8 @@ also not a reason to stop at the first file, and the section below governs how f
   the chance to ask for the clean one, because they cannot ask for what they were never shown.
   Surveying the surrounding code for the same defect is part of answering the request, not a favour
   added to it.
-- The bar is what the cleanest result requires, not what the smallest diff permits. Without released
-  users there is no deprecation window to honour and no stored data to migrate around, so the only
-  remaining argument for the narrow version is the effort of the wider one — which is the agent's
-  effort to spend, never a cost to charge the user.
+- The bar is what the cleanest result requires, not what the smallest diff permits. Existing users
+  and data may require migration work; effort alone is never a reason to keep parallel mechanisms.
 - **A derivative class, a flag, a parallel helper, or a second declaration added to avoid touching
   something is not a smaller change; it is the same change plus a new thing to delete later.** When the
   narrow option requires inventing structure the clean option would remove, the narrow option is the
@@ -100,11 +95,14 @@ also not a reason to stop at the first file, and the section below governs how f
 - Implement the contract the released product should have. Do not add compatibility shims,
   transitional runtime branches, dual reads or writes, temporary feature paths, or speculative
   handling for obsolete shapes.
+- Treat configuration inputs as owned contracts. Replace a stale deployed value at the existing
+  setting and its deployment owner; do not add another file, environment key, or fallback path to
+  override it.
 - Legitimate production resilience is not transitional fallback code. Keep the error handling,
   browser support, empty states, and provider-failure behavior the released product needs.
-- Prefer a deliberate API, wire, schema, payload, or stored-shape break when it materially
-  simplifies the result. Remove the old shape and update every in-repository consumer and generated
-  contract in the same change.
+- Prefer a deliberate break to an owned API, wire, schema, payload, or stored shape when it
+  materially simplifies the result. Migrate affected consumers and data, then remove the old shape;
+  update every in-repository consumer and generated contract in the same change.
 - Do not weaken a compatibility gate to hide an intentional break. Report the exact failure and the
   contract change it detected so a reviewer can distinguish intended from accidental breakage.
 - For disposable development records, follow the repository's stated policy. A one-time conversion
@@ -114,8 +112,8 @@ also not a reason to stop at the first file, and the section below governs how f
 
 ## Owned And Third-Party Contracts
 
-- Everything above is about contracts this repository owns, and they are free to break. **A
-  third-party provider's contract is not one of them and cannot change at all.**
+- Everything above is about contracts this repository owns and can change by migrating its
+  consumers. **A third-party provider's contract is not ours and cannot change at all.**
 - So where the two must meet, only one side can move, and it is always ours. "The provider encodes it
   differently" is a statement about our model, not about theirs: our model is the one that accepts
   what the provider sends, in the shape the provider sends it.

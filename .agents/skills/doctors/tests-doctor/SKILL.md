@@ -1,6 +1,6 @@
 ---
 name: tests-doctor
-description: Audit and correct existing tests for contract value, redundancy, weak assertions, naming, runtime, coverage by test, and determinism. It aligns suites with their source owners, consolidates duplicate proof, preserves independent contracts, measures runtime, and repairs proven defects. Use to review, clean up, speed up, de-duplicate, rebalance, or find gaps in tests.
+description: Audit and correct existing tests for contract value, redundancy, weak assertions, naming, runtime, coverage by test, and determinism. It aligns suites with their source owners, consolidates duplicate proof, preserves independent contracts, measures runtime, and repairs proven defects. Use to review, clean up, speed up, de-duplicate, or find gaps in tests.
 short_description: 'Audit and correct existing tests for contract value, redundancy, weak assertions, naming, runtime, coverage by test, and determinism.'
 disable-model-invocation: true
 ---
@@ -8,7 +8,8 @@ disable-model-invocation: true
 # Tests Doctor
 
 Bring every suite to the shape its siblings share, repair or remove tests that prove nothing, name
-them as labels, run them within budget, and cover each contract at its strongest boundary.
+them as labels, run them within budget, and cover each contract in every classification that can
+reach it.
 
 ## Dependencies
 
@@ -59,8 +60,8 @@ it is invisible in a ranking of test bodies. Report both totals per suite.
 One domain reviewer per suite family — each application, service, and package suite, and each
 cross-boundary group such as end-to-end, migration, script, or front-end as its own slice — applies
 the redundancy, naming, runtime, doubles, and construction lenses to its slice. The cross-cutting
-reviewer owns the layout and coverage lenses and the duplicates across suites, because those are
-visible only across slices, and compares the doubles table across suites, since a seam one suite
+reviewer owns the layout and coverage lenses and the duplicates across suites of one
+classification, because those are visible only across slices, and compares the doubles table across suites, since a seam one suite
 uses and its sibling patches around is visible only there. A narrow scope gets two independent
 passes.
 
@@ -143,9 +144,13 @@ consolidate, or delete, with its actual assertion and the contract it protects. 
 not names or deletion counts. A skip, xfail, or commented-out test whose condition no longer holds
 is revived or deleted.
 
-For each duplicated contract, identify the strongest keeper suite and the distinct risks other
-layers still protect. Carry every unique assertion into its owner before removing a replay. Repair
-vacuous assertions and negative controls that pass for the wrong reason; verify new or strengthened
+Duplication is judged inside one classification — unit, integration, or end-to-end — and never
+across them: two tests of the same classification asserting one contract are consolidated, and a
+test is never deleted, merged away, or moved out because a test of another classification reaches
+the same assertion. A test of another classification is never the keeper: an end-to-end test
+whose assertion an integration test repeats is retained, not consolidated into it. For each
+duplicated contract within a classification, pick the keeper and carry every unique assertion into
+it before removing the replay. Repair vacuous assertions and negative controls that pass for the wrong reason; verify new or strengthened
 guarantees through `test-fixture`'s mutation proof. Retain independently valuable static and slow
 tests under the rubric's retention bar. A failing baseline test is investigated as a possible
 product defect, not treated as cleanup by default.
@@ -236,21 +241,28 @@ also a flaky one.
 
 **Weigh every dominating case against what it proves.** A test earns its runtime by the failure it
 would catch, so the question is what a reader loses if it goes, not whether it passes. One that
-rebuilds an expensive world to assert something a cheaper test at another level already reaches, or
-that asserts little for a large share of the suite's wall time, is cut, folded into a case that is
-already paying that setup, or moved to the level where its setup is free. In a pre-production
-repository that trade is ordinary rather than a last resort: a suite nobody will wait for is
-coverage nobody runs.
+asserts little for a large share of the suite's wall time is folded into a case of the same
+classification that is already paying that setup, or made cheaper where it stands. In a
+pre-production repository folding and speeding up cases is ordinary rather than a last resort: a
+suite nobody will wait for is coverage nobody runs.
 
-Preserve every unique guarantee while doing it. Cutting a case whose assertion nothing else makes is
-a coverage loss wearing a timing win, so name what each cut proved and where that fact now lives.
+**No budget removes a test because a test of another classification makes the same assertion.** An
+end-to-end test that an integration or unit test also reaches stays, however far over budget its
+suite is and whatever stage the repository is in: its worth is that it runs the real services, which
+the cheaper test does not. Being over budget, being pre-production, and the cheaper test being
+"sufficient" are not reasons to cut it; bring the suite under budget by making its cases cheaper or
+folding them into cases of the same classification.
+
+Preserve every unique guarantee while doing it. Cutting a case whose assertion nothing else in its
+classification makes is a coverage loss wearing a timing win, so name what each cut proved and where
+that fact now lives.
 
 ### Map Coverage By Test
 
 Map entry points — routes, RPC methods, commands, jobs, event consumers — gateways and clients,
-persistence and migrations, and user journeys to the tests that exercise them at each level. A
-journey with no end-to-end test, a boundary crossing with no integration test, and a flow covered
-only with its boundary mocked are gaps; a pure function covered only end-to-end is misplaced cost.
+persistence and migrations, and user journeys to the tests that exercise them in each
+classification. A journey with no end-to-end test, a boundary crossing with no integration test, and a flow covered
+only with its boundary mocked are gaps; a pure function covered only end-to-end is a unit gap.
 Integration and end-to-end coverage outrank unit coverage for anything that crosses a boundary: a
 unit test added for a flow whose integration or end-to-end path is untested is itself the gap.
 
@@ -455,8 +467,8 @@ generated plan does not substitute for this evidence.
 
 After implementation, repeat the same suite workload, verify its budget outcome and correctness,
 and report the before/after evidence. The improvement must exceed measurement noise. Preserve every
-unique coverage guarantee; never cut tests solely to achieve a timing target. A missed budget or
-unverified improvement remains unresolved rather than being reported as a successful performance fix.
+coverage guarantee unique within its classification; never cut tests solely to achieve a timing
+target. A missed budget or unverified improvement remains unresolved rather than being reported as a successful performance fix.
 
 Reviewers check every application performance change against this exception at proposal and final
 review, including changes introduced during conflict resolution. Temporary application mutations used to
@@ -466,14 +478,16 @@ before delivery and verify that none enters the delivered diff.
 ### Findings
 
 - A slow suite, in order: widen the scope of the fixtures that dominate it, so an expensive world is
-  built once for the tests that share it rather than per test; cut or move the cases whose runtime
-  is out of proportion to what they prove; fix the remaining test-side causes; admit a focused
+  built once for the tests that share it rather than per test; fold the cases whose runtime is out of
+  proportion to what they prove into a case of the same classification already paying that setup,
+  or make them cheaper where they stand; fix the remaining test-side causes; admit a focused
   application fix only through the performance exception; parallelize where the runner and shared
   resources allow, never across a shared database or lock. Re-time after implementation against the
   same workload. A suite still over budget is unfinished work, not a line in the report: carry on
   with the next disposition, or put the remaining cause and its cost to the user in the current
   request.
-- A redundant test merges into the survivor; an assertion nobody else makes is never dropped.
+- A redundant test merges into the survivor of its own classification; an assertion nobody else
+  in that classification makes is never dropped.
 - A test-only production seam with no non-test caller is removed after its contract has a keeper;
   a baseline test exposing a product defect is repaired at the owner with failing control and
   passing candidate proof.
@@ -483,9 +497,8 @@ before delivery and verify that none enters the delivered diff.
   words takes a hand-chosen label rather than the mechanical residue.
 - A layout finding moves to the pattern `test-fixture`'s ownership rules select; an even split
   between equally valid patterns is a user decision.
-- A coverage gap is closed by the test that proves it, a misplaced test moves between suites, and
-  the redundant lower copy is removed. Every added or rewritten test follows `test-fixture`,
-  including its mutation proof per batch.
+- A coverage gap is closed by the test that proves it, and a misplaced test moves between suites.
+  Every added or rewritten test follows `test-fixture`, including its mutation proof per batch.
 - A construction finding moves the construction to the suite's shared home and reads identities
   from the canonical fixtures. A factory-content finding deletes the override or the provider, or
   folds the repeated shape into one generator taking the value that varied; the model's default and
@@ -527,7 +540,8 @@ every change landing beside it.
 
 - per suite: wall time before and after against the budget, and unmeasured suites with the reason;
 - per suite: the sum of test call durations against wall time, naming setup-dominated suites;
-- each case cut or moved for disproportionate runtime, with what it proved and where that now lives;
+- each case folded or made cheaper for disproportionate runtime, with what it proved and where that
+  now lives;
 - per suite: tests removed, parametrized, renamed, moved, and added;
 - skip and xfail marks resolved;
 - per suite, foreign domain nouns removed and the fixtures that carried them;

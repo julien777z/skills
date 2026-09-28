@@ -298,20 +298,26 @@ Apply the baseline prompt above, plus these explicit review rules:
 
 9. **Treat every suppression the diff adds as a finding, and never add one yourself.**
    - A `# pyright: ignore`, `# type: ignore`, `# noqa`, `# pylint: disable`, a widened `except`, a new
-     entry in a linter's ignore list, a lowered threshold, a hand-written stub or `typings/` directory:
-     each buys a quiet tool while the thing being reported stays exactly where it was.
+     entry in a linter's ignore list, a lowered threshold, a hand-written stub or `typings/` directory,
+     a cast or wrapper that quiets a dependency's types: each buys a quiet tool while the thing being reported stays exactly where it was.
    - This is the one class of change that makes a diff *look* cleaner by making the codebase worse, so
      it is invisible to every other check in this rubric. Grep the diff for it explicitly rather than
      hoping it turns up while reading.
    - **A suppression is not evidence the finding was considered.** It reads identically whether the
      author weighed the report and judged it wrong or never looked at it, and the next reader cannot
      tell which. Nothing in the file records the reasoning, so the exemption outlives whoever had one.
-   - Check the siblings before believing a suppression is necessary. An untyped import that every other
-     call site in the repository imports bare is not a finding this one site has to silence; it is a
-     finding somebody added noise to hide.
-   - The honest answers are to fix what the tool is reporting, to publish types at the source when the
-     package is ours, or to leave the report standing. A red tool carrying known reports is a truthful
-     record of work still to do; the same run with them papered over is not.
+   - The honest answers are to fix what the tool reports about our own code, to publish types at the
+     source when the package is ours, or to leave our own report standing. A red tool carrying known
+     reports is a truthful record of work still to do; the same run with them papered over is not.
+   - **A report about a third-party package's own types is answered in configuration, never in
+     code.** Its answer is never a stub, a `typings/` directory, a cast or a wrapper — delete any the
+     diff adds, however accurate — and never a report left standing: the category that reports a
+     dependency's missing or unknown types is turned off once in the tool's configuration, or
+     filtered once by the repository's lint gate, for every package and every file. The
+     category-wide configuration entries the language rule admits — a dependency's missing or
+     unknown types, or a construct the codebase deliberately relies on everywhere — each with its
+     reason beside it, are the only exceptions to this item; an entry naming one package is the
+     suppression it flags.
    - Generated output is out of scope — a suppression inside a file the toolchain writes is that
      toolchain's business, not the author's.
    - This applies to your own edits with no exception. A pass that removes somebody else's suppression
@@ -481,7 +487,8 @@ Escalate findings when you see:
 - A file over 1000 lines anywhere in scope, whatever put it there.
 - Any suppression the diff adds — `pyright: ignore`, `type: ignore`, `noqa`, `pylint: disable`, a
   broadened `except`, a new linter-ignore entry, a lowered threshold, a hand-written stub — outside
-  generated output. Grep for these; they do not surface from reading for structure.
+  generated output and the configuration entries item 9 admits; a cast or wrapper
+  that quiets a dependency's types, or an entry naming one package, is still a finding. Grep for these; they do not surface from reading for structure.
 - A test module holding two or more test classes, whatever put the second one there.
 - A docstring the diff adds that runs past one line.
 - A function, constant, or model defined in a test module beside its tests, whatever its size or
@@ -562,7 +569,9 @@ When you identify a code-quality problem, prefer suggestions like:
 
 - Delete a whole layer of indirection rather than polishing it.
 - Delete the abstraction outright and rely on the mechanism that already did its job.
-- Fix what the tool is reporting, or leave the report standing — never silence it.
+- Fix what the tool reports about our own code, answer a dependency's missing types with the
+  configuration entry item 9 admits, or leave our own report standing — never silence it inline or
+  per package.
 - Reframe the state model so conditionals disappear instead of getting centralized.
 - Change the ownership boundary so the feature becomes a natural extension of an existing abstraction.
 - Turn special-case logic into a simpler default flow with fewer exceptions.
@@ -626,7 +635,8 @@ Treat these as presumptive blockers unless the author can justify them clearly:
 - the PR adds, anywhere in its diff, the shape its own deletions remove
 - the PR preserves a lot of incidental complexity when there is a plausible code-judo move that would delete it
 - a file in scope is over 1000 lines and was not decomposed
-- the PR silences a linter or type checker anywhere outside generated output
+- the PR silences a linter or type checker anywhere outside generated output and the
+  configuration entries item 9 admits
 - the PR adds ad-hoc branching that makes an existing flow more tangled
 - the PR solves a local problem by scattering feature checks across shared code
 - the PR adds an unnecessary abstraction, wrapper, or cast-heavy contract that makes the design more indirect
