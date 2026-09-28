@@ -117,6 +117,7 @@ An agent reaches for these on its own whenever the work calls for them.
 | [`get-doctors`](.agents/skills/doctors/get-doctors/SKILL.md) | List every doctor skill the skill listing declares with a one-line summary of what it audits. |
 | [`i-have-adhd`](.agents/skills/execution/i-have-adhd/SKILL.md) | Shape output for a reader with ADHD: lead with the next action, number multi-step work, restate state across turns, suppress tangents, give specific time estimates, make wins visible. |
 | [`image-to-code`](.agents/skills/web/image-to-code/SKILL.md) | Elite website image-to-code skill for Codex. |
+| [`impeccable`](.agents/skills/web/impeccable/SKILL.md) | Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or otherwise improve a frontend interface. |
 | [`linear`](.agents/skills/workspace/linear/SKILL.md) | Create, find, and update Linear issues through the available Linear integration with dynamic team, workflow, project, and label discovery. |
 | [`list-prs`](.agents/skills/workspace/list-prs/SKILL.md) | List the pull request URLs for every currently open pull request changed during the entire current session, including drafts. |
 | [`list-repos`](.agents/skills/workspace/list-repos/SKILL.md) | List the repository web URLs for every repository changed during the entire current session. |
