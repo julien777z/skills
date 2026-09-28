@@ -64,6 +64,14 @@ Run every change the same way, whether a plan preceded it or the user asked for 
   Continue through an appropriate API or CLI when that is more direct. Report a browser-specific
   blocker only if neither Chrome path can complete the required interaction.
 
+## Environment Refusals
+
+- **An environment refusal is a route to find, not a blocker to report.** A repository missing from
+  the session is attached or cloned as a writable checkout; a host the environment refuses is reached
+  through a path it does serve, and a tool that took the refused path is fixed to take the served
+  one; a command a permission boundary denies is put to the user as that exact approval. Report a
+  blocker only once every served path has been tried and has failed.
+
 ## Product Constraints
 
 `pre-production` is active in every change task. Read it completely, explicitly invoke it, and

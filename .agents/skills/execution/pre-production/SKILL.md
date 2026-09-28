@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: Apply target-contract constraints to every implementation and review task, including configuration, APIs, schemas, and stored data. Use it to prevent legacy paths and parallel mechanisms, to plan migrations for affected users and data, and whenever a CI job fails or the environment refuses a repository, host or command along the way.
+description: Apply target-contract constraints to every implementation and review task, including configuration, APIs, schemas, and stored data. Use it to prevent legacy paths and parallel mechanisms, to plan migrations for affected users and data, and whenever a CI job fails along the way.
 ---
 
 # Pre-Production
@@ -27,13 +27,8 @@ also not a reason to stop at the first file, and the section below governs how f
   pipeline depending on something it does not control, and that dependency is a defect in the
   repository. Fix the input that exposes it — restore resolved dependencies from a cache keyed on the
   lockfile, replace a live service with a fake, make the test deterministic — and push that.
-- **Re-running a job is never the fix, and never the way past a failure.** A green re-run proves the
-  outage ended, not that the pipeline survives the next one, and it reports as settled the very
-  dependency that failed. That holds for a transient failure as much as a deterministic one.
-- **An environment refusal is a route to find, not a blocker to report.** A repository missing from
-  the session is attached to it; a host the sandbox refuses is reached through a path it does serve,
-  and a tool that took the refused path is fixed to take the served one. Report a blocker only once
-  attaching the repository and every served path have been tried and have failed.
+  Re-running the job is never the fix: a green re-run proves the outage ended, not that the pipeline
+  survives the next one.
 
 ## Scope Follows The Defect, Not The Request
 
