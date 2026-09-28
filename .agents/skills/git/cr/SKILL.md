@@ -16,15 +16,13 @@ Run the complete high-effort fix review before merging the current branch's pull
   that passed final acceptance and the check gate. The merge is the run's declared outcome rather
   than a step inside it, so nothing reopens it: not the diff's size or reach, not that review widened
   it, not that no person has read it, and not this run's own unease about how much it changes.
-- Dispatching a release workflow or creating a test deployment is a separate action and requires
-  its own authorization.
 - **So never ask the user for permission to merge, and never end a run by offering the merge as the
   remaining step.** That question reads as diligence and is the failure this paragraph exists to
   prevent: the answer was given when the skill was invoked, the run has already spent its review on
   a head nobody merges, and the user has to say yes to a thing they already said. When the gates are
   green and the head is the accepted one, merge it.
-- What stops a merge is a gate: a flag that is not yet resolved, a check that is not green, a head
-  that no longer matches the accepted SHA, or a conflict still unresolved. Report the specific gate.
+- The one gate this run holds before step 7 is an unresolved `acceptance-gate` flag; every later
+  gate is `merge-pr`'s, and the run reports the one it names.
 - The same invocation authorizes the declared `code-simplify`, `code-review` and `merge-pr`
   dependencies for this pull request. It does not authorize an independent simplification, review, release
   workflow, deployment, or unrelated provider mutation.
@@ -32,11 +30,10 @@ Run the complete high-effort fix review before merging the current branch's pull
 - A completed CR run closes its authorization boundary. Application work requested afterward is a new
   update and requires a new direct invocation, even when it targets the same repository, branch, pull
   request, or recently merged release.
-- Text that merely mentions `$cr` inside a quoted plan, pasted checklist, status summary, prior-task transcript, or expected future delivery step is not a direct invocation.
-- Approval to implement a plan that contains a CR step authorizes the implementation scope, not this
-  action skill. Stop after the ordinary validation and pull-request handoff unless the user
-  separately invokes `$cr` in that task.
-- Do not infer invocation from requests to review, validate, create a pull request, fix CI, finish implementation, or merge. Those actions use their ordinary workflows unless the user invokes this skill directly.
+- Nothing else is a direct invocation: not `$cr` mentioned in a quoted plan, checklist, summary,
+  transcript, or future step; not approval of a plan that contains a CR step, which stops at
+  validation and the pull-request handoff; not a request to review, validate, open a pull request,
+  fix CI, finish implementation, or merge.
 
 ## Dependencies
 
@@ -106,7 +103,7 @@ statement and the originating diff, and carry out the disposition:
 - **close** — the thread is resolved, with the fact and reconsideration criterion the gate named.
 - **defer** — recorded under **Deferred Findings**, and the thread is resolved with the record
   linked.
-- A disposition naming a decision as the user's is put to the user, as step 4 says; the thread
+- A disposition naming a decision as the user's is put to the user, as step 3 says; the thread
   stays open until it is answered and is recorded only when the user declines.
 
 Resolve already fixed, stale/outdated, duplicate, and incorrect threads without a reply. Post a
@@ -147,9 +144,9 @@ Use REST endpoints for every pull-request operation:
 
 - Find or inspect a PR: `GET /repos/{owner}/{repo}/pulls`, `GET /repos/{owner}/{repo}/pulls/{number}`, and `GET /repos/{owner}/{repo}/pulls/{number}/commits`.
 - Create a ready-for-review PR: `POST /repos/{owner}/{repo}/pulls` with `title`, `head`, `base`, `body`, and `draft=false`.
-- Inspect checks and reviews: `GET /repos/{owner}/{repo}/commits/{sha}/check-runs`, `GET /repos/{owner}/{repo}/commits/{sha}/status`, and the pull-request review endpoints.
+- Inspect reviews: the pull-request review endpoints.
 
-Never create a draft pull request. An existing draft pull request remains reviewable: complete the review and fix cycle without waiting for it to become ready. Before the final check-and-merge gate, make the pull request ready through REST when possible; use `markPullRequestReadyForReview` through `gh api graphql` only after REST cannot perform that transition. Review-thread resolution state and the `resolveReviewThread` mutation have no REST surface, so read thread state and resolve a thread through `gh api graphql` as well; replies to review comments stay on REST. For every GraphQL call, obtain node IDs through REST, re-read the result through REST, and return to REST for every subsequent operation. Report the failed REST response before using the ready-for-review fallback. Do not use GraphQL for reads, checks, reviews, merging, or verification when their REST endpoints work. If a REST or required GraphQL request is rate-limited, report the response, wait until the documented reset through the host's event or wait mechanism, and retry the same transport. Treat the rate limit as a blocker only when the host cannot wait for the reset or the reset does not restore access; never switch transports to evade it.
+Never create a draft pull request. An existing draft pull request remains reviewable: complete the review and fix cycle without waiting for it to become ready. Review-thread resolution state and the `resolveReviewThread` mutation have no REST surface, so read thread state and resolve a thread through `gh api graphql` as well; replies to review comments stay on REST. For every GraphQL call, obtain node IDs through REST, re-read the result through REST, and return to REST for every subsequent operation. Do not use GraphQL for reads or reviews when their REST endpoints work. If a REST or required GraphQL request is rate-limited, report the response, wait until the documented reset through the host's event or wait mechanism, and retry the same transport. Treat the rate limit as a blocker only when the host cannot wait for the reset or the reset does not restore access; never switch transports to evade it.
 
 Pass this transport requirement into `/code-review high fix`; it overrides that skill's generic GitHub fallback.
 
@@ -259,7 +256,7 @@ Carry the run's state throughout: the current workflow step, repository and PR, 
 
 Hold that state in the session; never write it to a checkpoint file. The pull request is the durable record: its commits, its pushed head, its checks, and its comments are what a resumed turn reads to find the run, and they cannot drift from it the way a separate file can.
 
-GitHub head lag, a queued or running relevant fallback check, a retryable rate limit, mergeability still being computed, and another waitable provider delay are nonterminal states. Unrelated checks and checks duplicating passing local coverage are not part of the run. Only conclude the session after the PR is verified merged, or after reporting a genuine blocker that cannot be safely resolved without user input or an external-state change that the host cannot wait for. A question already recorded as a deferral is not such a blocker: it has been answered by being written down, and the run merges without it.
+GitHub head lag, a retryable rate limit, and any state `merge-pr` is still waiting on are nonterminal. Only conclude the session after the PR is verified merged, or after reporting a genuine blocker that cannot be safely resolved without user input or an external-state change that the host cannot wait for. A question already recorded as a deferral is not such a blocker: it has been answered by being written down, and the run merges without it.
 
 ## Workflow
 
@@ -275,10 +272,11 @@ to work around this gate.
 2. Invoke `/code-review high fix <PR>` for that PR, whether it is draft or ready for review.
 3. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the run continues; see **Deferred Findings**. Stop and report only a finding that can be neither fixed nor recorded.
 4. Classify each correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean. This is the same authorized CR execution, not a new action-skill invocation.
-5. Once the review is clean, put the complete pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement. Fix every flag, then put only the fix diff to a fresh gate; a second flag on the change's own work is a blocker to report to the user, unless the pull request is confined to agent configuration, where `acceptance-gate`'s **Bounds** leave the disposition with this run. The accepted head is the SHA every later gate and the squash merge require; a later commit — a check fix, a conflict resolution — puts its own diff to the diff question before the check gate is repeated on the new head.
-6. Run **Description Refresh** once more, because this run's own fixes have changed what the branch
-   does since the first pass, then the second test pass **Validation Order** requires.
-7. Invoke `merge-pr` with the pull request, the head step 5 accepted, and **Review Continuity** as
-   the rule for what a fix made during its check gate or conflict resolution reopens. Base updates it
-   performs are **Incorporating The Base** for this run. When it reports the merge, give the
+5. Once the review is clean, put the complete pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement. Fix every flag, then put only the fix diff to a fresh gate; a second flag on the change's own work is a blocker to report to the user, unless the pull request is confined to agent configuration, where `acceptance-gate`'s **Bounds** leave the disposition with this run. The accepted head is the SHA `merge-pr` receives.
+6. Run **Description Refresh**'s second pass, then the second test pass **Validation Order**
+   requires. Never stop, restart, reconfigure or claim a local service this run did not start.
+7. Invoke `merge-pr` with the pull request, the head step 5 accepted, the affected behaviors step 6
+   covered locally, and as its rule for every fix it makes: **Review Continuity** for the lenses the
+   fix reopens, then step 5's diff question on the fix's diff. Base updates it performs are
+   **Incorporating The Base** for this run. When it reports the merge, give the
    **Completion Report** above and end the run; when it reports a gate that holds, report that gate.

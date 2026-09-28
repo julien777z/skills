@@ -17,8 +17,7 @@ run; each doctor owns only its domain.
 - `defer-scope` — record work consciously left undone; it runs the gate's admission question itself.
 - `pre-production` — apply the encountered-issue and target-contract policy while implementing.
 - `merge-pr` — for a doctor that delivers in merged batches, the check gate, conflict resolution and
-  verified squash merge of each batch pull request its run opens; invoking such a doctor authorizes
-  those merges.
+  verified squash merge of each batch pull request its run opens.
 
 Read the applicable dependencies before beginning. Apply their approval, compatibility, migration,
 and encountered-issue policies within the invoking doctor's declared change boundary; they do not

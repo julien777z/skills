@@ -11,8 +11,8 @@ of folding it into the change already in flight.
 
 **This skill accepts unrecorded scopes and creates no deferral record.** `defer-scope` records the
 durable Linear or repository-fallback entry, and `execute-defer-scope` resolves it. When work already
-has a Linear issue, legacy directory, or record pull request, invoke `execute-defer-scope` so its
-record and implementation receive one disposition. A scope handed here is already spoken for;
+has a Linear issue, legacy directory, or record pull request, tell the user to invoke
+`execute-defer-scope` so its record and implementation receive one disposition. A scope handed here is already spoken for;
 recording it would leave the next reader to distinguish work awaiting a decision from work awaiting
 a merge.
 
