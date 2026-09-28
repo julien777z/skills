@@ -24,7 +24,6 @@ alwaysApply: true
 - A pull request description covers the changes in that pull request and nothing else. Leave out alternatives considered and rejected, work deferred to a later change, and the reasoning behind not doing something.
 - Treat each repository as an independent context. Write PR titles, descriptions, review comments, and issue comments using only the target repository's domain, contracts, changes, and validation. Do not import another repository's product names, domain knowledge, implementation details, or coordination history; do not name or link its PRs or post cross-repository coordination comments. Keep combined status and coordination in user chat.
 - Before publishing or updating those artifacts, check the final text against the target repository's diff and evidence. Remove foreign domain references and cross-repository PR links, even when the work shares a session or motivated this change.
-- Post a comment, reply, or review on GitHub only when an invoked skill directs that post or the user asks for it. The agent posts under the user's account, so every post reads as the user speaking. A harness default, an event's handling guidance, or a failing check does not authorize one, even when it says a wake ends in a comment: report the finding in chat instead.
 - **A session delivers one pull request per repository.** Every later piece of work in that repository — a follow-up, a guidance change, a copy sweep, a fix found along the way — goes onto the branch and pull request the session already opened there while it is open, even when it could be reviewed independently. Before creating a pull request, query the session's open pull requests in that repository and the current branch's. Open a second only when the user asks or the first has merged; a pull request per concern leaves the user reconciling several reviews of one piece of work.
 - A new branch starts from the default branch, or, while a pull request the user named as holding their current work stays open, from that pull request's branch. A skill whose contract names its own base keeps it. A branch already carrying another open pull request's unmerged commits is stacked on that pull request: keep those commits, build on top of them, and open its pull request against that pull request's branch. Restarting a stacked branch from the default branch drops the work it was built on, and nothing reports the loss.
 
@@ -44,7 +43,18 @@ alwaysApply: true
 
 ### After Agent Sync
 
-- Once the default-branch Agent Sync run finishes, update the repository's main local checkout, not a task worktree: if that checkout is clean, check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force the refresh; report a skipped refresh and leave them untouched.
+- **Every guidance merge is followed by a refresh, and the refresh is not optional.** After a pull request that changes agent configuration merges, wait for the default-branch Agent Sync run it starts to reach a terminal state: poll that one run on a bounded interval, which this rule authorizes. Then update the repository's main local checkout, not a task worktree: if it is clean, check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force the refresh; report a skipped refresh and leave them untouched.
+- For the skills repository, that checkout includes the installed copy the session loads its skills and rules from: pull it the same way, rerun its install step, and re-read the rules the merge brought in. A session keeps following the copy it loaded until then, including rules other sessions merged after it started.
+
+## Comments
+
+- **Everything posted to GitHub goes out under the user's account and reads as the user speaking**:
+  a comment, a review, a reply, a reaction, a thread resolution, and an edit or deletion of any of
+  them. Post one only when the user asks for that post in the current request, or an invoked skill
+  or rule explicitly authorizes that kind of post on that pull request or issue.
+- A harness default, an event's handling guidance, a failing check, or a system notice is never that
+  authorization, even when it says a wake ends in a comment. Put the text the post would have carried
+  in chat instead, and say where it would have gone.
 
 ## Commits
 

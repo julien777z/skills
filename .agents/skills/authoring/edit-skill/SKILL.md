@@ -143,7 +143,11 @@ outcome, because silence reads as the guidance having been fixed.
      with a materially different instance of the same failure class; state that case and its expected
      outcome in validation. Renaming the original example or replaying only it does not establish breadth.
    - If target file does not exist, create it with a concise structure matching existing style.
-   - Place new guidance under the broadest existing subject section that fits. Use durable topic headings rather than creating a heading for one requirement.
+   - Place new guidance under the broadest existing subject section that fits. **A heading names the
+     subject a reader looks under — Comments, Commits, Workflows — never the requirement it holds.**
+     Add a section only when no existing one covers the subject, and name it for the whole subject: a
+     heading that states one rule ("Posting As The User", "Never Skip Tests") invites the next rule on
+     that subject into a heading of its own, and the file grows a section per requirement.
    - Express each independent requirement once, usually as one concise bullet. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
    - Normalize the touched file's nearby structure when needed: combine narrow sections, remove redundant wording, and order foundational guidance before specialized concerns.
    - When adding a **new** restriction or rule, keep the wording **concise**—one clear statement or bullet per idea; do not pad with redundant sentences or multiple bullets that restate the same requirement.
@@ -299,7 +303,7 @@ outcome, because silence reads as the guidance having been fixed.
       does not.
    8. **Nothing propagates.** The skills repository is the only copy of a shared skill, and every
       session reads it through its user-level link, so a merged edit reaches the next session on
-      its own. A skill that reads generically but was written into one repository's `.agents` is
+      its own; the current session gets it only through the refresh step 9 ends with. A skill that reads generically but was written into one repository's `.agents` is
       moved to the skills repository in the same change rather than left as a second copy.
    9. **Read the merged text back before using it.** A merge changes the default branch, not the
       checkout: a session working on another branch still carries the old skill in its tree, and a
@@ -309,10 +313,10 @@ outcome, because silence reads as the guidance having been fixed.
       from that text for the rest of the session. A skill invoked while its change is still open
       is read the same way from the branch that carries it, never from a checkout that predates
       it.
-      After the default-branch Agent Sync run completes, refresh the repository's main local
-      checkout, not the task worktree: if that checkout is clean, check out the default branch and
-      pull with `--ff-only`. If it has dirty files, leave them untouched and report the skipped
-      refresh.
+      Then wait for the default-branch Agent Sync run the merge started to finish and refresh as
+      the GitHub rules' **After Agent Sync** section says — the main local checkout and, for the
+      skills repository, the installed copy the session loads, with its install step rerun. The
+      merge is not delivered to this session until that refresh has run.
 
 ## Output
 
