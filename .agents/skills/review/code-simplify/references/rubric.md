@@ -335,7 +335,8 @@ Apply the baseline prompt above, plus these explicit review rules:
      findings when that evidence shows it; where the evidence settles neither side, the value stays
      where its owner put it, because moving it needs evidence, never a guess from its kind. The
      remedy moves a finding to the other side; capitalization, `Final`, and a safe default do not
-     make a value invariant, and a sibling field's placement is evidence of nothing.
+     make a value invariant. Evidence counts only for the value it is about: another value's
+     placement or override, even one of the same kind in the same file, says nothing about this one.
    - Every data-holding class lives in a model-owned file or package. Only a Pydantic `BaseSettings`
      class is configuration; registries, manifests, policies, provider payloads, and response
      schemas remain models.
