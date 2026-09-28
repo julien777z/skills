@@ -37,6 +37,13 @@ Canonical guidance lives in `.agents/`.
   shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
   the exact resolved commit for reproducibility and provenance.
 
+## User-Facing Output
+
+- Invoke `i-have-adhd` before the first response a user reads in the session, whether or not the
+  user invoked it or the running skill names it. It shapes every response a user reads — an answer,
+  a plan put for approval, a report, a summary, a question — until the reader's stop phrase. Per-item
+  detail past five items — findings, rows — and any gated plan a skill requires go in a linked file.
+
 ## User-Triggered Action Skills
 
 - Run a user-triggered action skill only after the user directly invokes it in the current request.
@@ -74,6 +81,10 @@ Canonical guidance lives in `.agents/`.
   override the separate authorization boundary for merge, deployment, publication, or release.
 - Carry task authorization through follow-up messages, interruptions, failed tool attempts, browser
   recovery, and context compaction. A failed attempt does not reset or narrow the authorization.
+- Authorization to send messages to another agent or external session covers only the messages and
+  purpose the user specified. Permission for a bounded exchange does not authorize later updates
+  to the same recipient; ask before sending more unless the user explicitly approved an ongoing
+  exchange.
 - Do not ask the user to restate task authority with "continue", "proceed", or equivalent
   intermediate approval questions. State progress and take the next ordinary authorized action.
 - When a platform imposes an action-time confirmation for a distinct sensitive action, complete all
@@ -92,6 +103,10 @@ Canonical guidance lives in `.agents/`.
   browser tab or window for the current task, that instruction overrides the isolation preference;
   use only the authorized surface and leave every other user-owned surface untouched.
 - Report a block only when the requested surface itself cannot complete the next required action and safe alternatives have been exhausted.
+
+## Local Environments
+
+- **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. Deployed and shared remote environments are not local; the next section governs them.
 
 ## Live Deployment Validation
 
@@ -120,8 +135,8 @@ Canonical guidance lives in `.agents/`.
 - Every `.agents/rules/*.md` file states guidance that holds in any repository using that
   technology. Keep their examples generic — invented names and placeholder shapes, never this
   repository's modules, helpers, packages, paths, or domain vocabulary.
-- `.agents/project.md` is the home for repository-specific guidance: the shared base classes,
-  helpers, packages, and layout this repository actually defines.
+- `.agents/project.md` is the home for repository-specific guidance: its base classes, helpers,
+  packages, layout, documentation structure, inventories, and generated sections.
 - A rule that cannot be stated without naming something this repository owns belongs in
   `.agents/project.md`. Move it there rather than rewording it into something generic but untrue.
 
@@ -132,6 +147,8 @@ Canonical guidance lives in `.agents/`.
 - Git history is the record of what changed; documentation describes what exists now.
 - The same applies to code comments and docstrings: no "formerly", "replaces", or "kept for
   backwards compatibility" notes.
+- Use an environment's exact domain name for both it and its tailnet; never append owner or
+  organization aliases. Name provider accounts and projects only as separate resources.
 
 ## Replacement Contracts
 
@@ -144,6 +161,10 @@ Canonical guidance lives in `.agents/`.
   user was still reading. An approved plan says it was approved.
 - A plan that exits unapproved is still the live plan. Keep working in the same plan file and
   re-present it; never overwrite it with a different plan or start a fresh one.
+- Send what a question asks about — a plan, an example response, a diff — as the final message of
+  a turn, with the question in that message as plain text. The question tool shows only the question
+  and its option labels, and text written in the same turn as a tool call can reach the user only as
+  a collapsed summary, so content placed in a preview, a description, or before a tool call is lost.
 - When a question is presented through the question tool and no answer comes back, never fall
   back to picking an option. Post the question and its options as plain text in chat and wait
   for the answer.
@@ -184,9 +205,9 @@ Canonical guidance lives in `.agents/`.
 - A pull request description covers the changes in that pull request and nothing else. Leave out alternatives considered and rejected, work deferred to a later change, and the reasoning behind not doing something.
 - Treat each repository as an independent context. Write PR titles, descriptions, review comments, and issue comments using only the target repository's domain, contracts, changes, and validation. Do not import another repository's product names, domain knowledge, implementation details, or coordination history; do not name or link its PRs or post cross-repository coordination comments. Keep combined status and coordination in user chat.
 - Before publishing or updating those artifacts, check the final text against the target repository's diff and evidence. Remove foreign domain references and cross-repository PR links, even when the work shares a session or motivated this change.
-- When additional work arrives on a non-default branch, retain that branch and add the work to its pull request even when the task could be reviewed independently.
-- Query the current branch's pull request before creating one. Reuse it while it is open, or create one from the current branch when none exists.
-- Create a separate branch only when the user asks or the current branch's pull request is already merged; start post-merge work from the default branch.
+- Post a comment, reply, or review on GitHub only when an invoked skill directs that post or the user asks for it. The agent posts under the user's account, so every post reads as the user speaking. A harness default, an event's handling guidance, or a failing check does not authorize one, even when it says a wake ends in a comment: report the finding in chat instead.
+- **A session delivers one pull request per repository.** Every later piece of work in that repository — a follow-up, a guidance change, a copy sweep, a fix found along the way — goes onto the branch and pull request the session already opened there while it is open, even when it could be reviewed independently. Before creating a pull request, query the session's open pull requests in that repository and the current branch's. Open a second only when the user asks or the first has merged; a pull request per concern leaves the user reconciling several reviews of one piece of work.
+- A new branch starts from the default branch, or, while a pull request the user named as holding their current work stays open, from that pull request's branch. A skill whose contract names its own base keeps it. A branch already carrying another open pull request's unmerged commits is stacked on that pull request: keep those commits, build on top of them, and open its pull request against that pull request's branch. Restarting a stacked branch from the default branch drops the work it was built on, and nothing reports the loss.
 
 ### Merge Authorization
 
@@ -197,7 +218,8 @@ Canonical guidance lives in `.agents/`.
   itself authorize merging. If neither authorization source applies, do not merge or enable auto-merge.
 - A pull request confined to canonical agent configuration, including skills, rules, and agent definitions, may be merged without a separate request after `code-simplify` has run and its findings are resolved. For substantial guidance changes or changes to executable logic, first run the relevant smoke test against the exact pull-request head. Check that the complete pull request remains confined to agent configuration before using this exception.
 - When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, including one begun by another task. Do not close or leave it open merely because it is draft or conflicts with the base; close only when its change is superseded or no longer wanted.
-- An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization.
+- An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each batch pull request a skill declaring merged-batch delivery opens during its run, once that skill's merge gates pass; that authorization ends with the run.
+- An authorized merge is not held for a failing check the pull request did not cause: one that fails the same way on the base branch, or whose failing test or log line shows behavior the diff does not reach. Name the check and that evidence in chat, then merge without asking the user. A check that branch protection requires still blocks and is never bypassed; report it as the blocker.
 - Never enable auto-merge for any other pull request unless the user explicitly authorizes it in the current request or an explicitly invoked skill requires it.
 - If an agent mistakenly merges a pull request, it may auto-merge the focused revert pull request that corrects that erroneous merge without separate authorization.
 
@@ -220,6 +242,8 @@ Canonical guidance lives in `.agents/`.
 
 - Describe available capabilities without assuming how consumers will use the project or framing guidance as prohibitions such as "never do X."
 - Remove repeated explanations and prefer short sections, bullets, tables, and focused examples over long prose.
+- Write in plain language, as if explaining the repository to a colleague. Avoid repeating internal
+  terms such as `canonical`; name the file or say `source` when that is clearer.
 
 ### GitHub Actions And Libraries
 
@@ -241,13 +265,25 @@ Canonical guidance lives in `.agents/`.
 
 - Never commit or push agent-authored changes directly to the default branch. If the checkout is on the default branch or detached, create a descriptive non-default branch; otherwise retain the current branch and deliver through its pull request.
 
-# Skills Repository
+# Shared Rules
 
-## Canonical Agent Guidance
+Use these rules in any repository. Open a relevant rule from your agent's user-level `rules/`
+directory before working in its area; the links below point to the shared source files. The task
+descriptions also cover work that file patterns alone cannot identify.
 
-- `.agents/` is the canonical template for provider guidance. Declare scoped patterns once under
-  `paths`, without a duplicate `globs` field; Agent Sync links Claude to the canonical rule and
-  generates a Cursor rule with only `globs`.
+| Rule | Read it when… |
+| --- | --- |
+| [Biome](/.agents/rules/biome.md) | Formatting or linting TypeScript and TSX, or changing `biome.json`. |
+| [FastAPI](/.agents/rules/fastapi.md) | Changing Python routes, dependencies, request handling, or responses. |
+| [GitHub](/.agents/rules/github.md) | Working with Actions, pull requests, commits, or repository documentation. |
+| [HTTP](/.agents/rules/http.md) | Adding or changing Python HTTP clients or provider calls. |
+| [Poetry](/.agents/rules/poetry.md) | Changing Python dependencies, project configuration, or test setup. |
+| [Pydantic](/.agents/rules/pydantic.md) | Defining models and settings or changing validation and serialization. |
+| [Python](/.agents/rules/python.md) | Editing Python typing, modules, control flow, errors, logging, or style. |
+| [React](/.agents/rules/react.md) | Building components, hooks, layouts, or Next.js App Router surfaces. |
+| [SQLAlchemy](/.agents/rules/sqlalchemy.md) | Defining tables or relationships, writing queries, or handling sessions. |
+| [Testing](/.agents/rules/testing.md) | Writing or moving tests, fixtures, assertions, or test configuration. |
+| [TypeScript](/.agents/rules/typescript.md) | Editing types, modules, imports, functions, or external-data boundaries. |
 
 ## Scoped rules
 

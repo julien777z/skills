@@ -181,19 +181,20 @@ Before creating any branch, check whether this session already has one in that r
 second is the failure this section exists to prevent, and the reviewer pays for it: two pull requests
 in one repository that must be read together, merged in order, and kept from conflicting.
 
-Three things earn a separate branch, and nothing else does:
+Two things earn a separate branch, and nothing else does:
 
 - the user asks for that work to be held apart;
 - the session's pull request in that repository has already merged, so the work starts from the
-  freshly fetched default branch;
-- the change is agent configuration, which goes to the default branch on its own under the GitHub
-  rules, because the next session reads it rather than shipping it.
+  freshly fetched default branch.
+
+A change to agent configuration is work like any other and joins the session's pull request in its
+repository.
 
 **"It could be reviewed on its own" is never a reason, and neither is a feeling that the new work is
 a different kind of thing.** Both are always available — every added option, every fix, every
 rewritten paragraph could be read alone — so a rule that yields to them yields always, and the
 session ends with a pull request per request. When a reason to split arrives, check it against the
-three above by name; anything else is this rule being argued with rather than applied.
+two above by name; anything else is this rule being argued with rather than applied.
 
 **Having already opened the second one is not a reason to keep it.** Move its commits onto the branch
 already in flight, close it saying where the work went, and say in chat what was consolidated.
