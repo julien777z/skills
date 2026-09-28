@@ -1,8 +1,8 @@
 ---
 name: migrations-doctor
 description: Audit and correct a repository's database migration chains, revisions, registries, and test scaffolding. It covers graph integrity, revision uniformity, downgrade adequacy, survivorship presence, schema parity, ownership, environment consistency, and history discipline. Use to audit migrations, a forked or branched chain, revision headers, downgrades, backfills, or migration tests.
-disable-model-invocation: true
 short_description: 'Audit and correct a repository''s database migration chains, revisions, registries, and test scaffolding.'
+disable-model-invocation: true
 ---
 
 # Migrations Doctor

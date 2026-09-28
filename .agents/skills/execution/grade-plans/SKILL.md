@@ -1,8 +1,8 @@
 ---
 name: grade-plans
 description: Compare, grade, rate, rank, or choose between two implementation plans written for the same goal or original agent prompt. Takes the goal both plans were written for. Produces a consistent evidence-based comparison with weighted scores, strengths, weaknesses, a winner or tie, and useful ideas to carry between plans.
-disable-model-invocation: true
 short_description: 'Compare, grade, rate, rank, or choose between two implementation plans written for the same goal or original agent prompt.'
+disable-model-invocation: true
 ---
 
 # Grade Plans

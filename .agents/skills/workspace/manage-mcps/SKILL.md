@@ -1,8 +1,8 @@
 ---
 name: manage-mcps
 description: Audit, restore, reauthenticate, and align managed remote MCP connectors across Claude Desktop and Codex, preserving unknown connectors and permission overrides. Use when a connector is missing, broken, unauthenticated, or out of step between hosts.
-disable-model-invocation: true
 short_description: 'Audit and repair managed MCP connectors across Claude Desktop and Codex.'
+disable-model-invocation: true
 ---
 
 # Manage MCPs

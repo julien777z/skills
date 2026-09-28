@@ -2,14 +2,12 @@
 name: clerk-nextjs-patterns
 description: Advanced Next.js patterns - middleware, Server Actions, caching with Clerk.
 metadata:
-  agent_sync_local_short_description: true
   author: clerk
   version: 2.2.0
   source: https://github.com/clerk/skills
 license: MIT
 allowed-tools: WebFetch
 compatibility: Requires NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY and CLERK_SECRET_KEY. For manual JWT verification (standalone API servers without Clerk middleware), additionally requires CLERK_JWT_KEY or CLERK_PEM_PUBLIC_KEY.
-short_description: 'Advanced Next.js patterns - middleware, Server Actions, caching with Clerk.'
 ---
 
 # Next.js Patterns

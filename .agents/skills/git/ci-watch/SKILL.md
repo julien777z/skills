@@ -1,8 +1,8 @@
 ---
 name: ci-watch
 description: Find and watch a GitHub pull request for review findings, investigate each finding, fix and push legitimate issues, and stop once checks are green and review threads are resolved. Use when asked to watch, monitor, poll, babysit, or keep checking a PR for review comments or automated review feedback.
-disable-model-invocation: true
 short_description: 'Watch a pull request, resolve review findings, and check that CI passes.'
+disable-model-invocation: true
 ---
 
 # CI Watch

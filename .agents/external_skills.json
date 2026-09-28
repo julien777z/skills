@@ -16,13 +16,6 @@
       "update_on_sync": true
     },
     {
-      "name": "awesome-design",
-      "repo": "EagleFandel/awesome-design",
-      "skill": "awesome-design",
-      "category": "web",
-      "update_on_sync": true
-    },
-    {
       "name": "clerk-nextjs-patterns",
       "repo": "clerk/skills",
       "skill": "clerk-nextjs-patterns",

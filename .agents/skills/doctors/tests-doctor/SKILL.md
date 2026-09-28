@@ -1,8 +1,8 @@
 ---
 name: tests-doctor
 description: Audit and correct existing tests for contract value, redundancy, weak assertions, naming, runtime, coverage by test, and determinism. It aligns suites with their source owners, consolidates duplicate proof, preserves independent contracts, measures runtime, and repairs proven defects. Use to review, clean up, speed up, de-duplicate, rebalance, or find gaps in tests.
-disable-model-invocation: true
 short_description: 'Audit and correct existing tests for contract value, redundancy, weak assertions, naming, runtime, coverage by test, and determinism.'
+disable-model-invocation: true
 ---
 
 # Tests Doctor

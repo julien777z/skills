@@ -1,8 +1,8 @@
 ---
 name: new-doctor
 description: Create a doctor skill on the shared doctor-protocol for one class of repository hygiene. Takes the name of the doctor to add.
-disable-model-invocation: true
 short_description: 'Create a doctor skill on the shared doctor-protocol for one class of repository hygiene.'
+disable-model-invocation: true
 ---
 
 # New Doctor

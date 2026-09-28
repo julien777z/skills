@@ -1,8 +1,8 @@
 ---
 name: incident
 description: "Restore a broken deployed service using a browser and the repository's deployment skill as needed, deploy and test a fix branch, and merge scoped fix pull requests after one Bugs and Simplification review round. Use when something is down, degraded, stuck, or has to be working now."
-disable-model-invocation: true
 short_description: 'Restore a broken deployed service, test the fix, and merge the scoped repair.'
+disable-model-invocation: true
 ---
 
 # Incident

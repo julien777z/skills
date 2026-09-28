@@ -1,8 +1,8 @@
 ---
 name: study-games
 description: Explicit user-invoked research of Roblox charts for the requested audience and region. Study 25 games by default in passive mode, or play each for up to five minutes when requested. Delegate two games per researcher, collect YAML notes on gameplay, UI and onboarding, and wait for all researchers before synthesizing supported patterns into the Roblox skills.
-disable-model-invocation: true
 short_description: 'Explicit user-invoked research of Roblox charts for the requested audience and region.'
+disable-model-invocation: true
 ---
 
 # Study Roblox games

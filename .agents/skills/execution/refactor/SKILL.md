@@ -1,8 +1,8 @@
 ---
 name: refactor
 description: Resolve and confirm a repository refactor scope, use multiple independent reviewers to plan structural improvements, then implement an approved plan. Use to refactor a repository, change request, branch, path, symbol, or concern.
-disable-model-invocation: true
 short_description: 'Plan and carry out a repository refactor with independent structural review.'
+disable-model-invocation: true
 ---
 
 # Refactor

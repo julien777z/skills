@@ -141,28 +141,29 @@ outcome, because silence reads as the guidance having been fixed.
      incident details must not remove the lesson. Apply the preservation criteria in the quality reference.
    - Check skill shape and output against those criteria. Move inline criteria to a named reference
      when required, and add the appropriate output template or delivery report line when absent.
-   - For every skill added or edited, include a concise `short_description` in frontmatter for
-     skill listings. Keep the full `description` focused on when the skill runs, and refresh any
-     repository skill index from those fields. For a vendored skill whose `short_description` is
-     locally authored, set `metadata.agent_sync_local_short_description: true` so Agent Sync keeps
-     it during source refreshes. Verify that refreshes preserve locally authored listing metadata;
-     extend the updater when they do not.
-     Update existing files in place and report any structural changes. Before delivery, follow the
+   - Update existing files in place and report any structural changes. Before delivery, follow the
      entry point's links again and confirm that each route loads its required guidance. References
      must not hide an essential rule or introduce an unexplained mode or dependency. Check genericity
      with a materially different instance of the same failure class; state that case and its expected
      outcome in validation. Renaming the original example or replaying only it does not establish breadth.
-   - After a dependency pull request merges, replace any reference to its branch with a maintained
-     version tag. For Agent Sync Action, authorization to merge its pull request also covers the
-     release needed by consumers: publish a minor version for a new capability or a patch version
-     for a bug fix, verify that `v0` points to the release, then update consumers to `@v0`. Do not
-     leave a consumer on the merged branch.
+   - After a dependency pull request merges, replace consumer references to its branch with a
+     maintained version tag. When publication is authorized, use a minor release for a new
+     capability or a patch release for a bug fix; verify any moving major tag points to the
+     release before updating consumers. Do not leave a consumer on the merged branch.
    - If target file does not exist, create it with a concise structure matching existing style.
-   - Place new guidance under the broadest existing subject section that fits. Use durable topic headings rather than creating a heading for one requirement.
+   - Group frontmatter fields by subject. Put a field that summarizes, qualifies, or overrides
+     another immediately after the field it relates to, unless the format requires another order.
+     Place new body guidance under the broadest existing subject section that fits. A reported
+     misplaced field is a case to test this general rule, not a reason to name that field in shared
+     guidance. Use durable topic headings rather than creating a heading for one requirement.
    - Express each independent requirement once, usually as one concise bullet. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
    - Normalize the touched file's nearby structure when needed: combine narrow sections, remove redundant wording, and order foundational guidance before specialized concerns.
    - When adding a **new** restriction or rule, keep the wording **concise**—one clear statement or bullet per idea; do not pad with redundant sentences or multiple bullets that restate the same requirement.
-   - **Stable guidance:** Write at the broadest scope that remains truthful. Describe reusable roles, boundaries, and decision criteria generically even in repository-focused guidance when the pattern is not repository-specific. Keep concrete repository names only when correctness depends on that local contract, and never turn one local example into an untrue universal rule.
+   - **Stable guidance:** Write at the broadest scope that remains truthful. Treat a named field,
+     file, or section in a request as an example of its broader class unless its exact identity is
+     required by the contract. Describe reusable roles, boundaries, and decision criteria generically
+     even in repository-focused guidance when the pattern is not repository-specific. Keep concrete
+     repository names only when correctness depends on that local contract.
    - Before adding a requirement to a shared rule, test it against a repository without the feature that prompted it. If it prescribes the current repository's documentation sections, inventory, or generation workflow, put it in `.agents/project.md`; keep the shared rule limited to guidance that still makes sense elsewhere.
    - When the user asks to add guidance from another repository, treat that repository as source material: encode transferable requirements in the owning skills and refer to those skills by name. Before delivery, audit the edited package for the source repository's name, links, paths, commands, versions, and configuration; never hard-code or cite that repository in a skill.
    - Separate temporary task, session, and pull-request directions from lasting guidance before

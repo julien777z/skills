@@ -1,8 +1,8 @@
 ---
 name: guidance-doctor
 description: Audit the repository's agent guidance for what to cut, tighten, or add, against what a current model does unprompted and what the vendors' current authoring guidance says. The guidance is every rule, skill, agent definition, hook, settings file, and external-skill registry entry the repository keeps for its agents. Use to audit rules or skills for redundancy, staleness, contradiction, budget, or usefulness.
-disable-model-invocation: true
 short_description: 'Review agent guidance for instructions to cut, clarify, or add.'
+disable-model-invocation: true
 ---
 
 # Guidance Doctor
