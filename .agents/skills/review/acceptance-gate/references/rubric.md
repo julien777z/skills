@@ -136,8 +136,9 @@ ends the question.
 3. **defer** — the item is worth doing, and one of these holds: the gain today does not carry the
    mechanisms the fix would add, priced by the rubric; the work is of genuine size and its need is
    arguable — a redesign, a sweep across many files somebody could reasonably decline; an external
-   blocker stands, which is something outside the repository the fix cannot be written without — a
-   credential nobody has issued, a vendor change, an answer only a third party can give; a decision
+   blocker stands, which is something outside every repository the user owns that the fix cannot be
+   written without — a credential nobody has issued, a vendor change, an answer only a third party
+   can give; a decision
    that is somebody else's is already put to that person and still open, or the user declined it in
    the current request; or an attempted fix, shown to the gate, could not be completed without the
    removed shape or a rubric finding. Work owed by a library or service the user owns is never an
@@ -145,8 +146,7 @@ ends the question.
    against it, the other tests deciding the item as if the library lived here — so it is never closed
    by handing the work to that repository's backlog. Ownership is read from whose repository the
    dependency is, never from where it sits or from a record calling it out of scope. That the code
-   under change is deployed or running somewhere, a
-   backfill in flight on live data included, is the order the fix rolls out in, stated in the pull
+   under change is deployed or running somewhere, a backfill in flight on live data included, is the order the fix rolls out in, stated in the pull
    request; it is never a blocker. The gate never routes work to a decision on its own: where a fix
    has a product dimension, the change takes the cleanest fix and states the trade-off in the pull
    request, or the fork is put to the user now, never filed as theirs unasked. A defer also requires

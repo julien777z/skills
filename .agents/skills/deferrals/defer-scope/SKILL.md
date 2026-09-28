@@ -1,6 +1,6 @@
 ---
 name: defer-scope
-description: Record deferred work in the repository it affects, using Linear or that repository's ledger as an availability fallback; with no scope, read its active records. Use when work is consciously left undone, when a change would resolve, retire, decline or void a recorded deferral, or when asked what is deferred, outstanding, or still open.
+description: Record deferred work in the repository it affects, using Linear or that repository's ledger as an availability fallback; with no scope, read its active records. Use when work is consciously left undone, when a change would take a recorded deferral out of the active set, or when asked what is deferred, outstanding, or still open.
 ---
 
 # Defer Scope
@@ -10,7 +10,8 @@ Keep a problem alive after the conversation ends without scheduling its implemen
 ## Dependencies
 
 - `linear` — find, create, and update the primary durable issue.
-- `acceptance-gate` — admit a record before anything is written.
+- `acceptance-gate` — admit a record before anything is written, and triage one before it leaves
+  the active set.
 
 ## Modes
 
