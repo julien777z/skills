@@ -252,6 +252,18 @@ A new request does not cancel it. The two queue together, and the turn that serv
 moves the old one — the user asking about something else is not the user withdrawing what they asked
 for before.
 
+**Work in flight is named work the moment something else takes the turn**, whether or not a report
+ever named it: an approved plan short of its last entry, commits a remote lacks, a checkout left
+mid-edit. An interruption, a new request, and a context summary each take the turn, and the work
+they displace goes into the session's task list with its next step before anything else starts.
+
+- **An interruption pauses the step in flight; it never ends the run.** "Continue", or anything
+  meaning it, resumes exactly that step, and is never answered with nothing.
+- **A context summary's pending list is this run's named work**, not background. The first turn
+  after it moves the oldest item as well as whatever the summary's next step names.
+- **Commits a remote lacks are undelivered work.** Their next step is the pre-push gate and the push,
+  and the size of that gate is never a reason to leave them local.
+
 **The failure is a report, not a refusal.** It reads as diligence: the item appears under "still to
 do", the turn ends, the next message arrives, and the item appears again, unchanged, in the next
 report. Nothing was declined and nothing was done, and each repetition makes the next one easier,
