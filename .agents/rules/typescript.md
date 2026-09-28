@@ -124,12 +124,6 @@ type Status = (typeof Status)[keyof typeof Status];
 
 ## External Data And Errors
 
-- **Any unsuccessful response from a service gets one branch.** Report the status and raise the
-  caller's error. Do not branch per status code or map a provider's codes onto distinct messages;
-  that restates a contract we do not own.
-- Success is the whole `2xx` range, not `200`. A create call answers `201`.
-- Read a domain outcome from the body of a successful response, never from the status of a refused
-  one.
 - Implement the one contract the boundary actually has. Do not widen a type or add a branch for a
   shape that is not part of it, and prefer fixing the call site over adding defensive conversion in a
   shared helper.
