@@ -292,11 +292,12 @@ An item may leave that state three ways, and each is stated in its own line:
 **A wait blocks only the work that depends on what is awaited.** While one item waits on something
 outside the run's hands — a background agent, CI, a review, a build, the user's answer to one
 question or confirmation — start the authorized, already-named work that neither needs the awaited
-result nor touches the files or resources the awaited work is changing; where the dependency is only
-a shape both sides already agreed, such as a planned contract, build against that shape. A turn that
-ends on "still waiting on X" while such work exists is the failure above, and a status report is not
-a stopping point. Only when every remaining item depends on the awaited result does the turn end on
-the wait.
+result nor touches the files or resources the awaited work is changing. Each item held for the wait
+names what it uses that only the awaited result will supply, and one with nothing to name starts
+now: coming later in the plan, belonging to the same feature, or consuming a shape the plan already
+fixed is not such a thing, so build against that shape. A turn that ends on "still waiting on X"
+while such work exists is the failure above, and a status report is not a stopping point. Only when
+every remaining item depends on the awaited result does the turn end on the wait.
 
 ## Completion
 
