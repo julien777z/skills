@@ -15,8 +15,9 @@ paths:
 ## Components and Props
 
 - Components follow the TypeScript rules' module structure and share the module that owns their
-  domain. A `'use client'` directive covers its whole module, so a domain's client components share a
-  client module kept apart from its server components
+  domain. A `"use client"` directive covers its whole module, so a domain's client components share
+  one client module beside it, named for the domain and what that half holds (`payments-controls.tsx`
+  beside `payments.tsx`) — the one split the directive forces beyond that structure
 - Named exports for components
 - Default exports only for page components
 
@@ -200,13 +201,15 @@ Apply this section only when the repository uses the Next.js App Router.
 ### Rendering and Data
 
 ```typescript
-// Server Component (default) - no directive needed
+// users.tsx - Server Components, no directive
 async function UserList() {
   const users = await fetchUsers(); // Direct DB/API access
   return <ul>{users.map(u => <li key={u.id}>{u.name}</li>)}</ul>;
 }
+```
 
-// Client Component - requires directive
+```typescript
+// users-controls.tsx - Client Components, directive on the first line
 "use client";
 
 function SearchInput() {
