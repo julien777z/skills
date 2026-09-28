@@ -163,9 +163,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   status row the reader can never use — the other region's version of a document, the other account
   type's settings — is left out, decided by the same rule that decides which one applies, never
   listed beside it.
-- **Every step of a page flow renders as a page, in the flow's own frame, never as a dialog.** A
-  dialog is for one action taken from inside a page — recording a record on someone's behalf, a
-  quick edit — and the same form can serve both, rendered in each host's frame.
+- **Every step of a multi-step flow renders as a page, in the flow's own frame, never as a
+  dialog.** A dialog is for one action taken from inside a page, however long its form —
+  submitting a form outside any flow, submitting on someone's behalf, a quick edit — and the same
+  form serves both, rendered in each host's frame.
 - **A step-by-step flow with a Back control puts it at the start of its footer and the primary
   action at the end,** apart, so the control that goes back never sits beside the one that commits.
 - **A page whose only content is a status message renders a full-page message state**, centered in
