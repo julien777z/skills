@@ -65,8 +65,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 ## Shared Surfaces
 
-- **A change to a shared mechanism is applied everywhere that mechanism appears, in the same
-  change.** A widget grid, a list row, a dialog shell, an edit-mode chrome, an empty state: when a
+- **A change to a shared mechanism is applied everywhere that mechanism appears, and on every
+  sibling surface, in the same change.** A widget grid, a list row, a dialog shell, an edit-mode chrome, an empty state: when a
   design or a fix arrives for one page built on it, the other pages built on it are in scope too.
   Search for every surface that renders the same component or hook before editing, and every
   sibling surface — the variants of one document, the create and edit of one record — whether or
@@ -147,7 +147,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   reads as unfinished. Content flows from the top and each control sits directly after what it acts
   on, never pushed to the bottom of a stretched container by a fill or a space-between, or to the
   far edge of an otherwise empty row or footer. Surfaces sharing a row split its width evenly,
-  except a main area beside a narrow side rail, and end on the same line, and they get there by balancing what they hold — cutting a
+  unless one is a main area beside a narrow side rail. They end on the same line, and they get there by balancing what they hold — cutting a
   line that earns no place, moving a control, re-pairing the surfaces — never by stretching the
   shorter one; where content cannot be balanced, the shorter keeps its own height. An empty state is
   sized like any other content. Content that can outgrow its surface scrolls inside a
