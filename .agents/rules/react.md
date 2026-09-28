@@ -65,11 +65,13 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 ## Shared Surfaces
 
-- **A change to a shared mechanism is applied everywhere that mechanism appears, in the same
-  change.** A widget grid, a list row, a dialog shell, an edit-mode chrome, an empty state: when a
+- **A change to a shared mechanism is applied everywhere that mechanism appears, and on every
+  sibling surface, in the same change.** A widget grid, a list row, a dialog shell, an edit-mode chrome, an empty state: when a
   design or a fix arrives for one page built on it, the other pages built on it are in scope too.
-  Search for every surface that renders the same component or hook before editing, and land the
-  change on all of them together. A page left on the old shape is a defect, not a follow-up.
+  Search for every surface that renders the same component or hook before editing, and every
+  sibling surface — the variants of one document, the create and edit of one record — whether or
+  not it renders that component yet, since siblings share one structure; land the change on all of
+  them together. A page left on the old shape is a defect, not a follow-up.
 - Never build a second copy of a mechanism beside the one the page already shares. Extend the
   existing component or hook with the new behavior, parameterized where the pages differ, and let
   every consumer pick it up. Two implementations of one mechanism drift the moment either is edited.
@@ -145,7 +147,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   reads as unfinished. Content flows from the top and each control sits directly after what it acts
   on, never pushed to the bottom of a stretched container by a fill or a space-between, or to the
   far edge of an otherwise empty row or footer. Surfaces sharing a row split its width evenly,
-  except a main area beside a narrow side rail, and end on the same line, and they get there by balancing what they hold — cutting a
+  unless one is a main area beside a narrow side rail. They end on the same line, and they get there by balancing what they hold — cutting a
   line that earns no place, moving a control, re-pairing the surfaces — never by stretching the
   shorter one; where content cannot be balanced, the shorter keeps its own height. An empty state is
   sized like any other content. Content that can outgrow its surface scrolls inside a
@@ -177,6 +179,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 - **A form a person signs, certifies or attests to starts empty.** Nothing is seeded from a profile
   or an earlier submission, because the signer vouches for what they entered.
+- **A form longer than a handful of fields is grouped into titled sections,** each holding the
+  fields that answer one question; sibling forms share one section layout, under **Shared
+  Surfaces** above.
 - **Related short fields sit side by side wherever the width allows,** wrapping only when it does
   not.
 - **One act gets one confirmation.** A single checkbox, worded as the whole statement the reader is
