@@ -2,6 +2,7 @@
 name: no-text-ai-slop
 description: Edit drafts into sharper, more human writing while preserving the writer's personal voice, or detect AI-slop patterns without rewriting. Use when the user wants a draft clearer, more direct, more opinionated, or less AI-sounding, or asks whether writing reads as AI.
 metadata:
+  agent_sync_local_short_description: true
   source: https://github.com/petergyang/no-ai-slop
 short_description: 'Edit drafts into sharper, more human writing while preserving the writer''s personal voice, or detect AI-slop patterns without rewriting.'
 ---

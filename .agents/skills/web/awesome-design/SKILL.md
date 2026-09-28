@@ -18,6 +18,7 @@ description: 'Curated collection of DESIGN.md files from real websites. Each DES
 
   '
 metadata:
+  agent_sync_local_short_description: true
   version: 1.0.0
   category: design
   sources:

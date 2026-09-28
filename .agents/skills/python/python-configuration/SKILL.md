@@ -2,6 +2,7 @@
 name: python-configuration
 description: Python configuration management via environment variables and typed settings. Use when externalizing config, setting up pydantic-settings, managing secrets, or implementing environment-specific behavior.
 metadata:
+  agent_sync_local_short_description: true
   source: https://github.com/wshobson/agents
 short_description: 'Python configuration management via environment variables and typed settings.'
 ---

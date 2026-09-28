@@ -2,6 +2,7 @@
 name: clerk-nextjs-patterns
 description: Advanced Next.js patterns - middleware, Server Actions, caching with Clerk.
 metadata:
+  agent_sync_local_short_description: true
   author: clerk
   version: 2.2.0
   source: https://github.com/clerk/skills

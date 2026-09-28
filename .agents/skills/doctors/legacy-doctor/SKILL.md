@@ -66,7 +66,7 @@ A reader defaults, coerces, or guards a value the contract already supplies.
 - every coercion of a value the same module writes in one shape.
 
 The remedy is to read the contract; where the contract is what is wrong — a field that should stop
-being optional — the fix is `schema-doctor`'s and is handed to it. Left alone: a third-party
+being optional — the fix is `schema-doctor`'s and is left to it. Left alone: a third-party
 payload whose field is genuinely optional; a value legitimately blank in the artifact produced; a
 legitimate expected state of canonical data; a guard on a data-fetching library's loading slot; an
 attribute probe used to investigate rather than shipped.
@@ -176,8 +176,8 @@ an enum member a stored row or a third-party producer can still supply.
 - Where a flag's retirement backfill has not run, its removal is a user decision naming the data
   still in the old shape.
 - An unsupported historical record is never a finding and never receives a fallback.
-- A finding a sibling doctor owns is handed to it by name and counted in the report, not fixed
-  here.
+- A finding a sibling doctor owns is not fixed here; the report names it with that doctor and
+  counts it.
 
 The cross-cutting reviewer compares one shape across packages and languages — a helper
 reimplemented in a sibling, a memoization written twice across apps, a status derivation written
@@ -196,4 +196,4 @@ contract, and confirms no proposed guard asserts the absence of a retired implem
 - each suppression removed and the rule code proposed as its guard;
 - each check whose verdict gates again;
 - each finding a sibling doctor owns, named with the doctor that rediscovers it;
-- each conflict met between the repository's own rule files, handed to `guidance-doctor`.
+- each conflict met between the repository's own rule files, left to `guidance-doctor`.

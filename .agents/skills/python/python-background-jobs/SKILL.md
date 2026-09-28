@@ -2,6 +2,7 @@
 name: python-background-jobs
 description: Python background job patterns including task queues, workers, and event-driven architecture. Use when implementing async task processing, job queues, long-running operations, or decoupling work from request/response cycles.
 metadata:
+  agent_sync_local_short_description: true
   source: https://github.com/wshobson/agents
 short_description: 'Python background job patterns including task queues, workers, and event-driven architecture.'
 ---

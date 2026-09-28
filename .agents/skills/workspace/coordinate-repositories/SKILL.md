@@ -8,6 +8,11 @@ short_description: 'Carry one task across selected repositories and user-level i
 
 Carry out the caller's task consistently across the selected repository collection without treating matching names or layouts as proof of matching behavior.
 
+## Dependencies
+
+- `merge-conflict` — resolve a row's conflicting pull request.
+- `merge-pr` — merge a row's pull request when the user authorized that merge.
+
 ## Workflow
 
 1. Determine whether the workspace is local and sibling repositories can be safely coordinated. Use filesystem layout, remotes, environment markers, and accessible siblings as evidence. In a cloud, ephemeral, or ambiguous environment, do not search broadly or mutate other repositories; report the limitation or ask the user.
@@ -34,7 +39,7 @@ Carry out the caller's task consistently across the selected repository collecti
 - When a requested cross-repository change conflicts with a target's existing context, pause the entire operation and require the caller to choose the resolution through the structured ask-question/input tool when available, otherwise through chat. State the exact target context and requested change, recommend propagation if it is reusable as generic guidance, and otherwise recommend removal; never begin or continue propagation, silently preserve, adapt, or remove the target state, or advance another row while awaiting that choice.
 - Treat the fetched remote default branch as authoritative for discovery and applicability.
 - Never leave reusable repository-neutral guidance stranded in one consumer when the task has a canonical source.
-- Do not commit, push, open, ready, or merge pull requests unless the user authorized that persistent action.
+- Do not commit, push, open, ready, or merge pull requests unless the user authorized that persistent action. A row whose merge the user authorized merges through `merge-pr`, pinned to the row's head the step 14 audit verified, with the checks step 9 ran as its local coverage.
 - Never install an absent user-level skill, mutate managed or read-only skill roots, or leave a failed or blocked local installation partially changed. Retain its verified snapshot until the row reaches `local-verified` or its original digest has been restored.
 - Keep each repository's changes focused; never combine unrelated work merely because it is locally available.
 - Prefer independent progress for ordinary validation or execution failures. A cross-repository conflict is different: it pauses the operation until the caller resolves it.

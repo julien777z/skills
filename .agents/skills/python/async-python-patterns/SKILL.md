@@ -3,6 +3,7 @@ name: async-python-patterns
 description: Master Python asyncio, concurrent programming, and async/await patterns for high-performance applications. Use when building async APIs, concurrent systems, or I/O-bound applications requiring non-blocking operations.
 metadata:
   source: https://github.com/wshobson/agents
+  agent_sync_local_short_description: true
 short_description: 'Master Python asyncio, concurrent programming, and async/await patterns for high-performance applications.'
 ---
 

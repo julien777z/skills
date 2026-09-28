@@ -41,6 +41,7 @@ outcome, because silence reads as the guidance having been fixed.
 - `code-simplify` — the pass over the guidance itself before it merges.
 - `acceptance-gate` — the diff question over the `.agents` change once it reads clean.
 - `test-skill` — the proof that a skill edit changes what a reader does.
+- `merge-pr` — the verified squash merge of the pull request step 7 clears.
 
 ## Behavior
 
@@ -142,13 +143,20 @@ outcome, because silence reads as the guidance having been fixed.
      when required, and add the appropriate output template or delivery report line when absent.
    - For every skill added or edited, include a concise `short_description` in frontmatter for
      skill listings. Keep the full `description` focused on when the skill runs, and refresh any
-     repository skill index from those fields. For vendored skills, verify that source refreshes
-     preserve locally authored listing metadata; extend the updater when they do not.
+     repository skill index from those fields. For a vendored skill whose `short_description` is
+     locally authored, set `metadata.agent_sync_local_short_description: true` so Agent Sync keeps
+     it during source refreshes. Verify that refreshes preserve locally authored listing metadata;
+     extend the updater when they do not.
      Update existing files in place and report any structural changes. Before delivery, follow the
      entry point's links again and confirm that each route loads its required guidance. References
      must not hide an essential rule or introduce an unexplained mode or dependency. Check genericity
      with a materially different instance of the same failure class; state that case and its expected
      outcome in validation. Renaming the original example or replaying only it does not establish breadth.
+   - After a dependency pull request merges, replace any reference to its branch with a maintained
+     version tag. For Agent Sync Action, authorization to merge its pull request also covers the
+     release needed by consumers: publish a minor version for a new capability or a patch version
+     for a bug fix, verify that `v0` points to the release, then update consumers to `@v0`. Do not
+     leave a consumer on the merged branch.
    - If target file does not exist, create it with a concise structure matching existing style.
    - Place new guidance under the broadest existing subject section that fits. Use durable topic headings rather than creating a heading for one requirement.
    - Express each independent requirement once, usually as one concise bullet. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
@@ -167,8 +175,14 @@ outcome, because silence reads as the guidance having been fixed.
    - Do not add committed tests for skills or their helper scripts, inside or outside the skill directory. Keep any needed execution checks temporary and untracked.
    - **Refer to a skill, and to anything inside it, by the skill's name, never by path.** `the `code-simplify` skill's rubric reference` is right; a relative path into another skill's directory is wrong, because the directories move between repositories and user-level roots and the name is the only stable handle.
    - Declare every invoked skill by canonical skill name in a near-top `## Dependencies` section of the owning `SKILL.md`. That section lists skills only, never tools, plugins, scripts, references, assets, executables, or filesystem paths.
+   - **A skill restricted to user invocation is never a dependency.** No other skill lists it under
+     `## Dependencies`, invokes it, follows its steps, or hands it work. When another skill needs its
+     steps, those steps move into a skill the model may invoke, which both then depend on; telling the
+     user to invoke it never stands in for steps the other skill needs. Another skill may still name
+     it — to say what it owns, or to tell the user to invoke it, conditioned on its presence where it
+     may be absent.
    - Invoke dependent skills only from the owning `SKILL.md`. References and other supporting files are passive and must not invoke skills or identify dependencies through relative paths to another `SKILL.md`.
-   - Before delivery, audit each edited skill's complete package and its affected callers: list every instruction to apply or invoke another skill, compare those names with the owning entry point's `## Dependencies`, and resolve missing, stale, or path-based entries. Check references separately for hidden invocations and cross-skill filesystem links; move the invocation to `SKILL.md` and refer to the other package by skill name. A passing source mirror does not replace this audit.
+   - Before delivery, audit each edited skill's complete package and its affected callers: list every instruction to apply or invoke another skill, compare those names with the owning entry point's `## Dependencies`, and resolve missing, stale, or path-based entries and any entry naming a skill restricted to user invocation. Check references separately for hidden invocations and cross-skill filesystem links; move the invocation to `SKILL.md` and refer to the other package by skill name. A passing source mirror does not replace this audit.
    - Do not embed product-specific file paths or copy current application code into reusable skills; those go stale when files move or refactors land. Prefer generic placeholders (for example `services/<name>/...`), short pattern descriptions, or minimal invented examples that are not tied to live paths or current line-level code.
    - **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract, and where a skill genuinely needs one local fact, take it from the repository's `project.md` or a setting rather than baking it in. Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
    - **Generic ownership is determined by what the skill must do, not its name.** A generically named skill can depend on one repository's contract; keep that skill in the repository and its facts in project guidance. Language, platform, framework, and workflow skills that truly apply across products remain shared and read repository commands, identities, hosts, packages, and fixtures from project guidance rather than embedding them.
@@ -292,7 +306,8 @@ outcome, because silence reads as the guidance having been fixed.
       pull request carrying only `.agents` files, so one file outside them withdraws it — and the
       one that slips in is never announced. Read the changed paths rather than trusting your memory
       of what you edited; a stray formatter run or a file picked up by `git add -A` looks identical
-      to intent. Everything in `.agents`, merge it: a pull request carrying a skill change merges
+      to intent. Everything in `.agents`, merge it through `merge-pr` with the head
+      `acceptance-gate` accepted: a pull request carrying a skill change merges
       once step 6 approved every example, and one carrying only rules merges on sight as the GitHub
       rules say. Anything outside is source the pull request carries under step 1: it merges only on
       the user's authorization, and no file is split out to earn the merge. A pull request a doctor

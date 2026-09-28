@@ -101,6 +101,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`list-skills`](.agents/skills/workspace/list-skills/SKILL.md) — List and reconcile canonical skills across a bounded collection of local repositories.
 - [`luau`](.agents/skills/roblox/luau/SKILL.md) — Apply Roblox Luau conventions when reading or changing game code and tooling.
 - [`merge-conflict`](.agents/skills/git/merge-conflict/SKILL.md) — Bring the base branch into a work branch, resolve conflicts, and validate the result.
+- [`merge-pr`](.agents/skills/git/merge-pr/SKILL.md) — Validate and merge an authorized pull request at its reviewed head.
 - [`no-text-ai-slop`](.agents/skills/review/no-text-ai-slop/SKILL.md) — Edit drafts into sharper, more human writing while preserving the writer's personal voice, or detect AI-slop patterns without rewriting.
 - [`plan-change`](.agents/skills/execution/plan-change/SKILL.md) — Present plans for explicit approval and carry approved plans to their last step.
 - [`pre-production`](.agents/skills/execution/pre-production/SKILL.md) — Apply a pre-release repository's product constraints to contracts, schemas, and stored data.
