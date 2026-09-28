@@ -266,28 +266,29 @@ It is never a flake. Runs overlap by design: every pull request's CI and every l
 provider account and usually one test destination, so a suite that fits the limit only when it runs
 alone fails whenever it does not, and a refusal in any log is the evidence.
 
-Count each run's real calls to each provider, per account and per destination, from the suite and
-the service logs, and read them against the limits the provider documents and the ones it answered
+The inventory's per-run calls to each provider, per account and per destination, are the evidence;
+read them with the service logs against the limits the provider documents and the ones it answered
 with. Then clear the refusal without losing a step the tests prove, taking these in order:
 
-- fold tests of one classification that make the same real call into one that asserts every step
-  the others did;
-- make the contract's real call once per run, not once per test that reads its outcome;
+- fold tests of one classification that make the same real call, the way **Audit Test Value And
+  Repair Weak Proof** folds duplicate proof;
+- make the contract's real call once per run and share its outcome, the way a slow suite's setup is
+  widened to the tests that share it;
 - clear the state the repository keeps about earlier calls to the provider — a counter or cooldown
   keyed by account or destination — before the test, since state an earlier run left behind is
   shared state like any other; clearing it is not raising the limit;
 - close what the test opened at the provider — cancel, expire, delete — so the next run starts from
   nothing;
 - where the provider limits a destination across runs, give each run its own destination, or pace
-  the call against the provider's own record of the last one before making it.
+  the call against the provider's own record of the last one before making it — waiting before the
+  call is pacing, waiting after a refusal is a retry.
 
 Skipping the test, mocking the provider in an end-to-end test, retrying after a refusal, sleeping
 until green, raising a limit only for tests, and widening the assertion to accept the refusal are
 not remedies: each keeps the collision and loses what the test proved. **No end-to-end test swaps
 its real call for a double to make room for another's** — reading the outcome of the run's one real
 call is not a double; one test kept real beside a second that now doubles the provider is still an
-end-to-end test with its provider mocked; fold the two instead. Waiting before the call because the
-provider's record says the last one was too recent is pacing; waiting after a refusal is a retry.
+end-to-end test with its provider mocked; fold the two instead.
 
 ### Map Coverage By Test
 
