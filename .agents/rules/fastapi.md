@@ -237,8 +237,6 @@ return ApiEnvelope(success=True, data=data)
 - Raise the project's standard API error response directly with an appropriate `HTTPStatus`. Do not wrap it in a helper (for example, `bad_request("...")` or `not_found("...")`) just to set the status code; the call site already states the failure mode, and the helper only adds indirection.
 - This includes log-and-raise wrappers (for example a `raise_internal_api_error(...)` that logs then raises): log and `raise ApiError(...) from exc` inline at the failure site instead.
 - Always pass `status_code=HTTPStatus.X` and `detail="..."` at the `raise` site so the status is visible without jumping to a helper.
-- For bad or invalid client-provided data, raise the project's standard API error response with `HTTPStatus.BAD_REQUEST`.
-- Do not use `HTTPStatus.UNPROCESSABLE_ENTITY` for bad-data validation errors.
 - Service functions may raise the project's standard API error when a domain check maps directly to an HTTP error (e.g., returning a 403 for authorization failures). Do not force these cases into route-layer-only error raising.
 
 ```python
@@ -277,14 +275,6 @@ except third_party_client.ApiException as exc:
 except third_party_client.ApiException as exc:
     raise_internal_error_response(error="Failed to fetch resource", log_message="...", exc=exc)
 ```
-
-## Gateway Statuses
-
-- **Never answer a request with 502, 503, or 504.** A reverse proxy generates those three for
-  itself, so a platform edge replaces the body with its own error page and the message the code
-  wrote never reaches the caller. Return `HTTPStatus.INTERNAL_SERVER_ERROR`, log the upstream's own
-  status at the failure site, and leave all three out of any status-code map rather than listing
-  them.
 
 ## Pagination
 
