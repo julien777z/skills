@@ -184,7 +184,9 @@ from myapp.http_transport import fetch
 - **Never add an inline suppression**: no `# pylint: disable`, `# pyright: ignore`, `# type: ignore`, or `# noqa`. Fix what the checker reports about our own code — a precise annotation, a correctly typed decorator (a `ParamSpec` rather than a `Callable` that erases parameter names), the right import. A per-line disable reads the same whether its author weighed the finding or never looked, and once copied onto every sibling it hides the cause behind a pattern nobody questions.
 - **A third-party package's missing or incomplete types are that package's gap, never ours.** Delete
   any stub file, `typings/` directory, cast or wrapper written to quiet them, and write none; the
-  answer is the category-wide configuration entry below, never code.
+  answer is the category-wide configuration entry below, never code. A package the user owns is not
+  third-party wherever it lives: its types are published at its source — a `py.typed` marker and the
+  annotations its public surface needs. Read ownership from whose repository it is.
 - A category is turned off once in the tool's configuration, or filtered once by the repository's
   lint gate, with its reason beside it, in two cases: it reports a third-party package's missing or
   unknown types, or it misreads a construct the codebase deliberately relies on everywhere —
