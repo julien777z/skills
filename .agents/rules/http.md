@@ -21,9 +21,10 @@ paths:
 - For requests to internal services, prefer a generated or shared typed client when one exists.
 - If no shared client exists for a service boundary that is used repeatedly, create or generate one instead of hand-rolling the same HTTP integration in multiple places.
 - A caller accepts the whole `2xx` range as success, not only 200.
-- **Any unsuccessful response from a service gets one branch.** Report the status and raise the
-  caller's error. Do not branch per status code or map a provider's codes onto distinct messages;
-  that restates a contract we do not own.
+- **An unsuccessful response gets one error branch.** Report the status and raise the caller's
+  error, never a per-status message and never a provider's codes mapped onto messages of our own;
+  that restates a contract we do not own. Retrying a transient status — 429, and the 502, 503 or
+  504 a proxy generates — in the shared client is the one status distinction a caller makes.
 - Read a domain outcome from the body of a successful response, never from the status of a refused
   one.
 
@@ -32,7 +33,8 @@ paths:
 - **A service answers with the common statuses only.** Every success is 200, a create and a delete
   included, never 201, 202 or 204. A failure is one of 400 (invalid client-provided data included,
   never 422), 401, 403, 404, 409, 429 or 500. A rarer status — 408, 412, 413, 501 and the rest
-  — is a distinction no caller branches on, and the message carries what it would have said.
+  — is a distinction the common set already expresses, so the message carries what it would have
+  said.
 - **Never answer with 502, 503, or 504.** A reverse proxy generates those three for itself, so a
   platform edge replaces the body with its own error page and the message the code wrote never
   reaches the caller. Answer 500 and log the upstream's own status at the failure site.
