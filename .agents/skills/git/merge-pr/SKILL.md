@@ -83,8 +83,8 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
 When GitHub reports a conflict, or the merge is rejected for one:
 
 - Incorporate the base through `merge-conflict`; the resolution is a fix under **Check Gate** step 8.
-- Report a blocker only when a safe resolution needs a product or contract decision nobody has
-  authorized.
+- Report a blocker only when a safe resolution needs an unauthorized product decision, or a change
+  to a contract a consumer outside the user's control speaks.
 
 ## Merge
 
