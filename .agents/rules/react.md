@@ -187,7 +187,8 @@ Apply this section only when the repository uses the Next.js App Router.
 - `layout.tsx` - Shared layouts
 - `loading.tsx` - Loading UI
 - `error.tsx` - Error boundary
-- `not-found.tsx` - 404 page
+- `not-found.tsx` - 404 page, declared once at the app root so a missing page renders as a full
+  page; a route segment adds none of its own inside the app shell
 - `_components/` - Page-specific components
 
 - Use `Link` from `next/link` for navigation
