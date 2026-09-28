@@ -7,7 +7,8 @@ disable-model-invocation: true
 # Tests Doctor
 
 Bring every suite to the shape its siblings share, repair or remove tests that prove nothing, name
-them as labels, run them within budget, and cover each contract in every classification that can reach it.
+them as labels, run them within budget, and cover each contract in every classification that can
+reach it.
 
 ## Dependencies
 
@@ -59,8 +60,7 @@ One domain reviewer per suite family — each application, service, and package 
 cross-boundary group such as end-to-end, migration, script, or front-end as its own slice — applies
 the redundancy, naming, runtime, doubles, and construction lenses to its slice. The cross-cutting
 reviewer owns the layout and coverage lenses and the duplicates across suites of one
-classification, because those are
-visible only across slices, and compares the doubles table across suites, since a seam one suite
+classification, because those are visible only across slices, and compares the doubles table across suites, since a seam one suite
 uses and its sibling patches around is visible only there. A narrow scope gets two independent
 passes.
 
@@ -147,9 +147,9 @@ Duplication is judged inside one classification — unit, integration, or end-to
 across them: two tests of the same classification asserting one contract are consolidated, and a
 test is never deleted, merged away, or moved out because a test of another classification reaches
 the same assertion. A test of another classification is never the keeper: an end-to-end test
-whose assertion an integration test repeats is retained, not consolidated into it. For each duplicated contract within a classification, pick the keeper and carry
-every unique assertion into it before removing the replay. Repair
-vacuous assertions and negative controls that pass for the wrong reason; verify new or strengthened
+whose assertion an integration test repeats is retained, not consolidated into it. For each
+duplicated contract within a classification, pick the keeper and carry every unique assertion into
+it before removing the replay. Repair vacuous assertions and negative controls that pass for the wrong reason; verify new or strengthened
 guarantees through `test-fixture`'s mutation proof. Retain independently valuable static and slow
 tests under the rubric's retention bar. A failing baseline test is investigated as a possible
 product defect, not treated as cleanup by default.
@@ -259,8 +259,8 @@ that fact now lives.
 ### Map Coverage By Test
 
 Map entry points — routes, RPC methods, commands, jobs, event consumers — gateways and clients,
-persistence and migrations, and user journeys to the tests that exercise them in each classification. A
-journey with no end-to-end test, a boundary crossing with no integration test, and a flow covered
+persistence and migrations, and user journeys to the tests that exercise them in each
+classification. A journey with no end-to-end test, a boundary crossing with no integration test, and a flow covered
 only with its boundary mocked are gaps; a pure function covered only end-to-end is a unit gap.
 Integration and end-to-end coverage outrank unit coverage for anything that crosses a boundary: a
 unit test added for a flow whose integration or end-to-end path is untested is itself the gap.
@@ -466,8 +466,8 @@ generated plan does not substitute for this evidence.
 
 After implementation, repeat the same suite workload, verify its budget outcome and correctness,
 and report the before/after evidence. The improvement must exceed measurement noise. Preserve every
-coverage guarantee unique within its classification; never cut tests solely to achieve a timing target. A missed budget or
-unverified improvement remains unresolved rather than being reported as a successful performance fix.
+coverage guarantee unique within its classification; never cut tests solely to achieve a timing
+target. A missed budget or unverified improvement remains unresolved rather than being reported as a successful performance fix.
 
 Reviewers check every application performance change against this exception at proposal and final
 review, including changes introduced during conflict resolution. Temporary application mutations used to
@@ -497,8 +497,7 @@ before delivery and verify that none enters the delivered diff.
 - A layout finding moves to the pattern `test-fixture`'s ownership rules select; an even split
   between equally valid patterns is a user decision.
 - A coverage gap is closed by the test that proves it, and a misplaced test moves between suites.
-  Every added or rewritten test follows `test-fixture`,
-  including its mutation proof per batch.
+  Every added or rewritten test follows `test-fixture`, including its mutation proof per batch.
 - A construction finding moves the construction to the suite's shared home and reads identities
   from the canonical fixtures. A factory-content finding deletes the override or the provider, or
   folds the repeated shape into one generator taking the value that varied; the model's default and

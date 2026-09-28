@@ -16,9 +16,8 @@ Before adding a test, answer four questions; a missing answer means do not add i
 1. What observable behavior, invariant, or independent contract does it protect?
 2. What credible regression makes it fail?
 3. Why does existing coverage of the same classification not already catch that failure? Prefer
-   extending a
-   parameter table or shared fixture over a near-duplicate test; consolidate duplicated setup in
-   the same change.
+   extending a parameter table or shared fixture over a near-duplicate test; consolidate duplicated
+   setup in the same change.
 4. Does it need a production seam — an export, flag, wrapper, or injection hook — that no production
    caller needs? If so, move the test to the real boundary instead.
 
