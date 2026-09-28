@@ -152,6 +152,11 @@ type Status = (typeof Status)[keyof typeof Status];
   reader cannot tell which, and the exemption outlives whoever had a reason for it.
 - Fix what the tool reports, publish types at the source when the package is ours, or leave the
   report standing. A red run carrying known reports is a truthful record of work still to do.
+- **A report about a third-party package's own types is not ours to fix.** Missing or incomplete
+  types in a dependency are that dependency's gap: write no declaration file, `declare module` or
+  cast to quiet them. Where a tool can exempt that category in its configuration, it does so once for
+  every package, never by naming packages — the one configuration entry this section admits. An
+  error in our own code at the same call is still ours.
 - The Comments section's exception admits a tooling directive as something other than prose, so a
   sweep that strips comments leaves it alone. That is about not deleting one that already exists; it
   is not licence to add one.

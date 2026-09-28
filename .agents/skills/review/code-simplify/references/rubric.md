@@ -312,6 +312,10 @@ Apply the baseline prompt above, plus these explicit review rules:
    - The honest answers are to fix what the tool is reporting, to publish types at the source when the
      package is ours, or to leave the report standing. A red tool carrying known reports is a truthful
      record of work still to do; the same run with them papered over is not.
+   - **A finding about a third-party package's own types is not a finding for this repository.** Its
+     answer is neither a stub nor a report left standing: the tool's configuration or lint gate stops
+     reporting that category once, for every package. A per-package entry is the suppression this
+     item flags; an error in our own code at the same call is still ours.
    - Generated output is out of scope — a suppression inside a file the toolchain writes is that
      toolchain's business, not the author's.
    - This applies to your own edits with no exception. A pass that removes somebody else's suppression
