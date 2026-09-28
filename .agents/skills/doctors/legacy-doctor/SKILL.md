@@ -175,8 +175,8 @@ an enum member a stored row or a third-party producer can still supply.
 - Where a flag's retirement backfill has not run, its removal is a user decision naming the data
   still in the old shape.
 - An unsupported historical record is never a finding and never receives a fallback.
-- A finding a sibling doctor owns is handed to it by name and counted in the report, not fixed
-  here.
+- A finding a sibling doctor owns is not fixed here; the report names it with that doctor and
+  counts it.
 
 The cross-cutting reviewer compares one shape across packages and languages — a helper
 reimplemented in a sibling, a memoization written twice across apps, a status derivation written

@@ -290,7 +290,8 @@ outcome, because silence reads as the guidance having been fixed.
       pull request carrying only `.agents` files, so one file outside them withdraws it — and the
       one that slips in is never announced. Read the changed paths rather than trusting your memory
       of what you edited; a stray formatter run or a file picked up by `git add -A` looks identical
-      to intent. Everything in `.agents`, merge it through `merge-pr` with the head `acceptance-gate` accepted: a pull request carrying a skill change merges
+      to intent. Everything in `.agents`, merge it through `merge-pr` with the head
+      `acceptance-gate` accepted: a pull request carrying a skill change merges
       once step 6 approved every example, and one carrying only rules merges on sight as the GitHub
       rules say. Anything outside is source the pull request carries under step 1: it merges only on
       the user's authorization, and no file is split out to earn the merge. A pull request a doctor

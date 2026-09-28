@@ -23,8 +23,8 @@ Run the complete high-effort fix review before merging the current branch's pull
   green and the head is the accepted one, merge it.
 - The one gate this run holds before step 7 is an unresolved `acceptance-gate` flag; every later
   gate is `merge-pr`'s, and the run reports the one it names.
-- The same invocation authorizes the declared `code-simplify`, `code-review` and `merge-pr`
-  dependencies for this pull request. It does not authorize an independent simplification, review, release
+- The same invocation authorizes the declared `code-simplify`, `code-review`, `merge-conflict` and
+  `merge-pr` dependencies for this pull request. It does not authorize an independent simplification, review, release
   workflow, deployment, or unrelated provider mutation.
 - A new task starts a new authorization boundary. An invocation from an earlier task does not carry forward, including after context compaction or when the new task continues work on the same branch or pull request.
 - A completed CR run closes its authorization boundary. Application work requested afterward is a new
@@ -42,6 +42,7 @@ Run the complete high-effort fix review before merging the current branch's pull
 - `code-review` — run the complete review and fix workflow before the merge gate.
 - `acceptance-gate` — admit deferrals, gate would-be-deferral fixes and base-incorporation
   refactors, and accept the final diff.
+- `merge-conflict` — resolve every base update this run performs before `merge-pr` starts.
 - `merge-pr` — take the accepted head through the check gate, conflict resolution and the verified
   squash merge.
 
@@ -275,9 +276,13 @@ to work around this gate.
 5. Once the review is clean, put the complete pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement. Fix every flag, then put only the fix diff to a fresh gate; a second flag on the change's own work is a blocker to report to the user, unless the pull request is confined to agent configuration, where `acceptance-gate`'s **Bounds** leave the disposition with this run. The accepted head is the SHA `merge-pr` receives.
 6. Run **Description Refresh**'s second pass, then the second test pass **Validation Order**
    requires. Never stop, restart, reconfigure or claim a local service this run did not start.
-7. Invoke `merge-pr` with the pull request, the head step 5 accepted, the affected behaviors step 6
-   covered locally, and as its rule for every fix it makes — a check fix, a conflict resolution, a
-   commit someone else pushed — two parts, both every time: **Review Continuity** reruns the lenses
-   the fix reopens, then `acceptance-gate`'s diff question judges the fix's diff. Base updates it performs are
-   **Incorporating The Base** for this run. When it reports the merge, give the
-   **Completion Report** above and end the run; when it reports a gate that holds, report that gate.
+7. Invoke `merge-pr` with:
+   - the pull request and the head step 5 accepted;
+   - the affected behaviors step 6 covered locally;
+   - the fix rule for every fix it makes — a check fix, a conflict resolution, a commit someone else
+     pushed: first **Review Continuity** reruns the lenses the fix reopens, then `acceptance-gate`'s
+     diff question judges the fix's diff. A fix counts only once both have passed.
+
+   Base updates it performs are **Incorporating The Base** for this run. When it reports the merge,
+   give the **Completion Report** above and end the run; when it reports a gate that holds, report
+   that gate.
