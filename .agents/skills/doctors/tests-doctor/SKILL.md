@@ -213,7 +213,12 @@ module's name (`TestContractors`). A helper that builds a model in a suite's `ut
 package is named `create_<shape>` (list every module-level `def` in those packages whose return type
 is a model, with its name; report every row): a bare noun (`flag`), a mechanics prefix
 (`stored_driver_license`), or a coinage (`flag_page`) is renamed `create_<shape>`, and the same shape
-built under two names in two files or two suites is one name across all of them. Read names across
+built under two names in two files or two suites is one name across all of them. Every other
+module-level `def` in those packages is named for the domain act it performs, per `test-fixture`
+(list each with its first word; report every row whose first word is `post`, `put`, `patch`, a
+transport verb, or a word saying how its value was made): `post_order` is renamed for what it asks
+the application to do, and a `stored_customer` fixture for the role that customer plays.
+Read names across
 sibling files and sibling suites before settling one: a suite's vocabulary is its source's, and the
 word the sibling suite already uses for the same shape wins over a new one.
 
@@ -495,7 +500,7 @@ before delivery and verify that none enters the delivered diff.
 
 ## Declared Outcome: The Slowest Tests Are Posted
 
-**This run posts one comment on its pull request ranking the ten slowest tests and the ten slowest
+**This run posts one comment on each of its pull requests ranking the ten slowest tests and the ten slowest
 fixtures, with each suite's wall time against the budget.** It is a declared outcome of the skill, so
 invoking the skill authorizes that comment under the comment rules, and it is posted whether the run
 brought every suite under budget or not.
@@ -506,9 +511,16 @@ the next session — so without this the run measures a breach on day one, deliv
 a later reader can act on. Ranked in one place, the next run has its baseline and anyone deciding
 what to cut can see what the time is being spent on.
 
-Post it once, updating the same comment when a later push changes the numbers rather than adding a
-second. Give it the measured durations and nothing else: no narration of what the run did about them,
+Post it once per pull request, updating the same comment when a later push changes the numbers
+rather than adding a second; each batch's pull request carries the ranking measured at its merge
+head, so the last one holds the final numbers against the baseline. Give it the measured durations and nothing else: no narration of what the run did about them,
 which the body and the diff already carry.
+
+## Delivery
+
+Tests-doctor delivers in merged batches under `doctor-protocol`'s **Deliver**. A test remediation
+touches files across every suite, and one pull request held open for the whole plan conflicts with
+every change landing beside it.
 
 ## Report Additions
 

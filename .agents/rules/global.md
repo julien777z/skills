@@ -36,6 +36,13 @@ alwaysApply: true
   shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
   the exact resolved commit for reproducibility and provenance.
 
+## User-Facing Output
+
+- Invoke `i-have-adhd` before the first response a user reads in the session, whether or not the
+  user invoked it or the running skill names it. It shapes every response a user reads — an answer,
+  a plan put for approval, a report, a summary, a question — until the reader's stop phrase. Per-item
+  detail past five items — findings, rows — and any gated plan a skill requires go in a linked file.
+
 ## User-Triggered Action Skills
 
 - Run a user-triggered action skill only after the user directly invokes it in the current request.
@@ -73,6 +80,10 @@ alwaysApply: true
   override the separate authorization boundary for merge, deployment, publication, or release.
 - Carry task authorization through follow-up messages, interruptions, failed tool attempts, browser
   recovery, and context compaction. A failed attempt does not reset or narrow the authorization.
+- Authorization to send messages to another agent or external session covers only the messages and
+  purpose the user specified. Permission for a bounded exchange does not authorize later updates
+  to the same recipient; ask before sending more unless the user explicitly approved an ongoing
+  exchange.
 - Do not ask the user to restate task authority with "continue", "proceed", or equivalent
   intermediate approval questions. State progress and take the next ordinary authorized action.
 - When a platform imposes an action-time confirmation for a distinct sensitive action, complete all
@@ -135,9 +146,8 @@ alwaysApply: true
 - Git history is the record of what changed; documentation describes what exists now.
 - The same applies to code comments and docstrings: no "formerly", "replaces", or "kept for
   backwards compatibility" notes.
-- When an environment has a domain name, refer to it by that exact domain name in guidance and
-  user-facing text. Account owners, provider projects, and tailnet labels name distinct resources,
-  not the environment.
+- Use an environment's exact domain name for both it and its tailnet; never append owner or
+  organization aliases. Name provider accounts and projects only as separate resources.
 
 ## Replacement Contracts
 
@@ -150,6 +160,10 @@ alwaysApply: true
   user was still reading. An approved plan says it was approved.
 - A plan that exits unapproved is still the live plan. Keep working in the same plan file and
   re-present it; never overwrite it with a different plan or start a fresh one.
+- Send what a question asks about — a plan, an example response, a diff — as the final message of
+  a turn, with the question in that message as plain text. The question tool shows only the question
+  and its option labels, and text written in the same turn as a tool call can reach the user only as
+  a collapsed summary, so content placed in a preview, a description, or before a tool call is lost.
 - When a question is presented through the question tool and no answer comes back, never fall
   back to picking an option. Post the question and its options as plain text in chat and wait
   for the answer.

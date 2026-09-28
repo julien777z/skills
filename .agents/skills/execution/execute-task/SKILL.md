@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once, before the first edit, at the start of every task that changes files — including one that only begins changing files because work turned up a defect — and keep it active until the task's report: it shapes every response, applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, simplifies as the change grows, gates the branch before it is pushed, and delivers each repository independently. Never invoke it from inside a skill it runs."
+description: "Always run this. Invoke once, before the first edit, at the start of every task that changes files — including one that only begins changing files because work turned up a defect — and keep it active until the task's report: it applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, simplifies as the change grows, gates the branch before it is pushed, and delivers each repository independently. Never invoke it from inside a skill it runs."
 ---
 
 # Execute Task
@@ -9,9 +9,6 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 
 ## Dependencies
 
-- `i-have-adhd` — shape every user-facing response for the rest of the session, from the first one
-  of the task until the reader's stop phrase. Invoke it at the start of the run when it is not
-  already active in the session; a second invocation in an active session changes nothing.
 - `pre-production` — the repository's target-contract and staging-data policy, when the repository
   declares one.
 - `code-simplify` — simplify each meaningful implementation batch and the complete diff before delivery.
@@ -25,7 +22,7 @@ Run every change the same way, whether a plan preceded it or the user asked for 
   Named** keeps the run open until every named item is done or has left that state one of the three
   ways it lists. Nothing in the task re-enters the skill; the run simply has not ended.
 - A skill that lists this one as a dependency — `plan-change` does — invokes it once, and the
-  skills this one invokes never invoke it back: `i-have-adhd`, `pre-production`, `code-simplify`,
+  skills this one invokes never invoke it back: `pre-production`, `code-simplify`,
   `acceptance-gate`, and `generic-push` are leaves of this run. A second invocation while one is
   active does nothing more than continue the active run.
 - This skill never invokes `plan-change`. Where a task needs a plan, `plan-change` runs first and

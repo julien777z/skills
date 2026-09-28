@@ -113,6 +113,8 @@ type Status = (typeof Status)[keyof typeof Status];
   reads it, including every value that code's correctness fixes — stays a typed constant beside
   that code. What kind of value it is never decides which, and where the evidence settles neither
   side, the value stays where its owner put it.
+- Read environment variables only in the owning typed configuration module. Import validated values
+  elsewhere, and keep server secrets out of modules that browser code can import.
 - Extract a literal only when it is reused or carries domain meaning. Keep trivial single-use
   literals inline.
 - Do not prefix a name with the area it already lives in. The module path says it; add a qualifier

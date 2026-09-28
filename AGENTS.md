@@ -388,7 +388,8 @@ except third_party_client.ApiException as exc:
   itself authorize merging. If neither authorization source applies, do not merge or enable auto-merge.
 - A pull request confined to canonical agent configuration, including skills, rules, and agent definitions, may be merged without a separate request after `code-simplify` has run and its findings are resolved. For substantial guidance changes or changes to executable logic, first run the relevant smoke test against the exact pull-request head. Check that the complete pull request remains confined to agent configuration before using this exception.
 - When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, including one begun by another task. Do not close or leave it open merely because it is draft or conflicts with the base; close only when its change is superseded or no longer wanted.
-- An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization.
+- An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each batch pull request a skill declaring merged-batch delivery opens during its run, once that skill's merge gates pass; that authorization ends with the run.
+- An authorized merge is not held for a failing check the pull request did not cause: one that fails the same way on the base branch, or whose failing test or log line shows behavior the diff does not reach. Name the check and that evidence in chat, then merge without asking the user. A check that branch protection requires still blocks and is never bypassed; report it as the blocker.
 - Never enable auto-merge for any other pull request unless the user explicitly authorizes it in the current request or an explicitly invoked skill requires it.
 - If an agent mistakenly merges a pull request, it may auto-merge the focused revert pull request that corrects that erroneous merge without separate authorization.
 
@@ -467,6 +468,13 @@ except third_party_client.ApiException as exc:
   shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
   the exact resolved commit for reproducibility and provenance.
 
+## User-Facing Output
+
+- Invoke `i-have-adhd` before the first response a user reads in the session, whether or not the
+  user invoked it or the running skill names it. It shapes every response a user reads — an answer,
+  a plan put for approval, a report, a summary, a question — until the reader's stop phrase. Per-item
+  detail past five items — findings, rows — and any gated plan a skill requires go in a linked file.
+
 ## User-Triggered Action Skills
 
 - Run a user-triggered action skill only after the user directly invokes it in the current request.
@@ -504,6 +512,10 @@ except third_party_client.ApiException as exc:
   override the separate authorization boundary for merge, deployment, publication, or release.
 - Carry task authorization through follow-up messages, interruptions, failed tool attempts, browser
   recovery, and context compaction. A failed attempt does not reset or narrow the authorization.
+- Authorization to send messages to another agent or external session covers only the messages and
+  purpose the user specified. Permission for a bounded exchange does not authorize later updates
+  to the same recipient; ask before sending more unless the user explicitly approved an ongoing
+  exchange.
 - Do not ask the user to restate task authority with "continue", "proceed", or equivalent
   intermediate approval questions. State progress and take the next ordinary authorized action.
 - When a platform imposes an action-time confirmation for a distinct sensitive action, complete all
@@ -566,9 +578,8 @@ except third_party_client.ApiException as exc:
 - Git history is the record of what changed; documentation describes what exists now.
 - The same applies to code comments and docstrings: no "formerly", "replaces", or "kept for
   backwards compatibility" notes.
-- When an environment has a domain name, refer to it by that exact domain name in guidance and
-  user-facing text. Account owners, provider projects, and tailnet labels name distinct resources,
-  not the environment.
+- Use an environment's exact domain name for both it and its tailnet; never append owner or
+  organization aliases. Name provider accounts and projects only as separate resources.
 
 ## Replacement Contracts
 
@@ -581,6 +592,10 @@ except third_party_client.ApiException as exc:
   user was still reading. An approved plan says it was approved.
 - A plan that exits unapproved is still the live plan. Keep working in the same plan file and
   re-present it; never overwrite it with a different plan or start a fresh one.
+- Send what a question asks about — a plan, an example response, a diff — as the final message of
+  a turn, with the question in that message as plain text. The question tool shows only the question
+  and its option labels, and text written in the same turn as a tool call can reach the user only as
+  a collapsed summary, so content placed in a preview, a description, or before a tool call is lost.
 - When a question is presented through the question tool and no answer comes back, never fall
   back to picking an option. Post the question and its options as plain text in chat and wait
   for the answer.
@@ -2173,6 +2188,8 @@ type Status = (typeof Status)[keyof typeof Status];
   endpoint, an identity, a feature switch — belongs in typed configuration even with a safe default;
   capitalization does not make it invariant. Implementation tuning — a timeout, a retry count, a
   debounce or poll interval — stays a typed constant beside its code.
+- Read environment variables only in the owning typed configuration module. Import validated values
+  elsewhere, and keep server secrets out of modules that browser code can import.
 - Extract a literal only when it is reused or carries domain meaning. Keep trivial single-use
   literals inline.
 - Do not prefix a name with the area it already lives in. The module path says it; add a qualifier
