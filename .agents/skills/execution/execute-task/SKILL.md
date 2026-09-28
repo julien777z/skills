@@ -49,8 +49,8 @@ Run every change the same way, whether a plan preceded it or the user asked for 
   hand-off: after the user confirms the specific pending action, perform it yourself. Hand off only
   when the platform requires the user's own interaction. Never request a secret through chat.
 - After a required confirmation, continue the remaining authorized work without another general
-  approval request. A refused or unanswered confirmation blocks only the action it governs; keep
-  moving on independent work.
+  approval request. A refused or unanswered confirmation blocks only the action it governs, as
+  **Work You Have Already Named** says of every wait.
 
 ## Browser Access
 
@@ -133,7 +133,6 @@ how those issues are handled.
   proceeds and is not held for an answer; what goes to the user is scope, sequencing, and where the
   work lands, never whether it is fixed.
 - When asking, state the trigger, impact, expected work, recommendation, and concrete choices.
-- Continue independent approved work when the unresolved issue does not block it.
 
 ## CI Gates And Deliberate Breaks
 
@@ -289,6 +288,15 @@ An item may leave that state three ways, and each is stated in its own line:
   is an authorization this session does not hold;
 - it is no longer work, because the user withdrew it or a later request superseded it, said with
   that reason.
+
+**A wait blocks only the work that depends on what is awaited.** While one item waits on something
+outside the run's hands — a background agent, CI, a review, a build, the user's answer to one
+question or confirmation — start the authorized, already-named work that neither needs the awaited
+result nor touches the files or resources the awaited work is changing; where the dependency is only
+a shape both sides already agreed, such as a planned contract, build against that shape. A turn that
+ends on "still waiting on X" while such work exists is the failure above, and a status report is not
+a stopping point. Only when every remaining item depends on the awaited result does the turn end on
+the wait.
 
 ## Completion
 
