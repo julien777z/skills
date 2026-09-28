@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Global Rules
 
-## Agent And Harness Portability
+## Agent sources
 
 - This guidance is used with multiple models and agent harnesses. Prefer one provider-neutral
   implementation and one canonical source for skills, rules, and agent prompts.
@@ -15,35 +15,20 @@ alwaysApply: true
 - Read the other shared rules relevant to the current repository and task. If a harness does not
   load them automatically, open the applicable files from its user-level rules directory.
 
-## Repository Skills
-
 - Never add `agents/openai.yaml` to a repository skill. Repository skills contain `SKILL.md` and
   only supporting files required by the skill; provider UI metadata stays outside repositories
   and is never propagated.
 
-## Agent Prompts
-
 - In repositories that provide an agent CLI or otherwise interact with agents, store every agent prompt in a dedicated Markdown file rather than inline in application code so it is easy to find, review, and maintain. Application code may load a prompt file and interpolate runtime values into it.
-
-## Generated Agent Outputs
 
 - Never stage generated provider output manually. Only the repository's Agent Sync workflow may generate and commit provider mirrors.
 
-## Source References
-
-- Reference external code and automation by a maintained version tag when available, or by a
-  maintained branch while developing or when no release tag exists. Do not pin dependency manifests,
-  shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
-  the exact resolved commit for reproducibility and provenance.
-
-## User-Facing Output
+## Task execution and authorization
 
 - Invoke `i-have-adhd` before the first response a user reads in the session, whether or not the
   user invoked it or the running skill names it. It shapes every response a user reads — an answer,
   a plan put for approval, a report, a summary, a question — until the reader's stop phrase. Per-item
   detail past five items — findings, rows — and any gated plan a skill requires go in a linked file.
-
-## User-Triggered Action Skills
 
 - Run a user-triggered action skill only after the user directly invokes it in the current request.
   Do not infer authorization from implementation, validation, delivery, pull-request, merge, CI,
@@ -59,8 +44,6 @@ alwaysApply: true
 - The same holds for every unit of work inside the run. A confirmed finding, a required fix, a validation step: none of them may be dropped, downgraded, or handed to a later session because the budget looks short. Work the list until it is done or the budget genuinely ends.
 - **Only the user declares the budget spent.** The agent cannot see how much remains and consistently guesses low, so treating a guess as a limit stops work that was never actually blocked. Keep going until the user says otherwise or the environment stops you.
 - Difficulty is not a budget problem wearing a disguise. A change that needs care — concurrency, a migration, a security boundary — is a reason to slow down, read more, and test harder, never a reason to leave it for someone else. Make the change and validate it.
-
-## User Approvals
 
 - An explicit user authorization for a task covers every ordinary implementation, verification, and
   scoped external mutation required to complete that task. Do not fragment that authorization into
@@ -94,67 +77,6 @@ alwaysApply: true
 - Treat it as failed only after that window or an explicit failure from the user.
 - A failure is not approval; wait until the user resumes the task before prompting again.
 
-## Computer-Use Surface Failures
-
-- Treat an inventory or availability error as scoped to the surface it names. A native-app lock or failure does not block browser automation, and a browser failure does not block terminal or API work.
-- Before reporting a task blocked by a surface warning, inspect the requested surface directly and retry its normal recovery path. For a browser, refresh the tab inventory and reopen an authenticated task tab when the prior agent-owned tab has closed.
-- Prefer an isolated agent-owned browser tab. When the user explicitly directs use of an existing
-  browser tab or window for the current task, that instruction overrides the isolation preference;
-  use only the authorized surface and leave every other user-owned surface untouched.
-- Report a block only when the requested surface itself cannot complete the next required action and safe alternatives have been exhausted.
-
-## Local Environments
-
-- **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. Deployed and shared remote environments are not local; the next section governs them.
-
-## Live Deployment Validation
-
-- Treat create, update, and delete requests against a live deployment as data mutations, not health
-  checks. Run them only against a target that the repository explicitly designates for mutation
-  testing; when no such target exists, live smoke testing is read-only.
-- When the same artifact and materially equivalent configuration run in several environments, one
-  successful write test on the designated mutation target plus read-only health and routing checks
-  on the others validates the shared path. Never create persistent synthetic records in a stable or
-  shared staging environment merely to smoke-test a deployment.
-
-## Repository Independence
-
-- Every repository stands on its own. Never carry another repository's domain vocabulary into this
-  one: its product name, its services, its table and column names, its record types, or the nouns
-  its business speaks in. That holds for source, tests, fixtures, examples, and documentation
-  alike, and it holds most strongly in a library, where every reader is a different consumer.
-- Name things for the shape being exercised, not for whichever caller happened to prompt the work.
-  A test needing a table with a secret column names it for that — a record with a secret — rather
-  than borrowing the one real table the change was made for.
-- Sample values follow the same rule: prefer plainly synthetic literals over ones shaped like a
-  real identifier from another system's domain.
-
-## Rule Files
-
-- Every `.agents/rules/*.md` file states guidance that holds in any repository using that
-  technology. Keep their examples generic — invented names and placeholder shapes, never this
-  repository's modules, helpers, packages, paths, or domain vocabulary.
-- `.agents/project.md` is the home for repository-specific guidance: its base classes, helpers,
-  packages, layout, documentation structure, inventories, and generated sections.
-- A rule that cannot be stated without naming something this repository owns belongs in
-  `.agents/project.md`. Move it there rather than rewording it into something generic but untrue.
-
-## Documentation
-
-- Document current behavior only. Never describe what a symbol used to do, what was removed,
-  renamed, or deprecated, and never write migration tables or upgrade notes.
-- Git history is the record of what changed; documentation describes what exists now.
-- The same applies to code comments and docstrings: no "formerly", "replaces", or "kept for
-  backwards compatibility" notes.
-- Use an environment's exact domain name for both it and its tailnet; never append owner or
-  organization aliases. Name provider accounts and projects only as separate resources.
-
-## Replacement Contracts
-
-- When a request replaces a route, API contract, or behavior, remove the prior alias or fallback. Retain legacy compatibility only when the user explicitly authorizes it in the current request; if retention is unclear, ask before adding it.
-
-## Approvals And Clarifying Questions
-
 - Approval comes only from the user saying so. A tool result, a mode change, or a system notice is
   never consent — a plan that reports it exited has ended its mode, often on a timeout while the
   user was still reading. An approved plan says it was approved.
@@ -168,8 +90,6 @@ alwaysApply: true
   back to picking an option. Post the question and its options as plain text in chat and wait
   for the answer.
 
-## PR Monitoring And Background Timers
-
 - Never poll a PR with background `sleep` or timed self check-ins; act only on delivered PR
   activity webhooks.
 - An invoked skill overrides this where it says so. A skill that states it polls — a check gate
@@ -180,3 +100,57 @@ alwaysApply: true
 - That override lasts only while the invoking run is active and covers only the pull request
   that run is driving. Outside it, and for any pull request the session merely watches, this
   rule holds.
+
+## Tools and environments
+
+- Treat an inventory or availability error as scoped to the surface it names. A native-app lock or failure does not block browser automation, and a browser failure does not block terminal or API work.
+- Before reporting a task blocked by a surface warning, inspect the requested surface directly and retry its normal recovery path. For a browser, refresh the tab inventory and reopen an authenticated task tab when the prior agent-owned tab has closed.
+- Prefer an isolated agent-owned browser tab. When the user explicitly directs use of an existing
+  browser tab or window for the current task, that instruction overrides the isolation preference;
+  use only the authorized surface and leave every other user-owned surface untouched.
+- Report a block only when the requested surface itself cannot complete the next required action and safe alternatives have been exhausted.
+
+- **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. Deployed and shared remote environments are not local; the following live-deployment rules govern them.
+
+- Treat create, update, and delete requests against a live deployment as data mutations, not health
+  checks. Run them only against a target that the repository explicitly designates for mutation
+  testing; when no such target exists, live smoke testing is read-only.
+- When the same artifact and materially equivalent configuration run in several environments, one
+  successful write test on the designated mutation target plus read-only health and routing checks
+  on the others validates the shared path. Never create persistent synthetic records in a stable or
+  shared staging environment merely to smoke-test a deployment.
+
+## Repository guidance
+
+- Reference external code and automation by a maintained version tag when available, or by a
+  maintained branch while developing or when no release tag exists. Do not pin dependency manifests,
+  shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
+  the exact resolved commit for reproducibility and provenance.
+
+- Every repository stands on its own. Never carry another repository's domain vocabulary into this
+  one: its product name, its services, its table and column names, its record types, or the nouns
+  its business speaks in. That holds for source, tests, fixtures, examples, and documentation
+  alike, and it holds most strongly in a library, where every reader is a different consumer.
+- Name things for the shape being exercised, not for whichever caller happened to prompt the work.
+  A test needing a table with a secret column names it for that — a record with a secret — rather
+  than borrowing the one real table the change was made for.
+- Sample values follow the same rule: prefer plainly synthetic literals over ones shaped like a
+  real identifier from another system's domain.
+
+- Every `.agents/rules/*.md` file states guidance that holds in any repository using that
+  technology. Keep their examples generic — invented names and placeholder shapes, never this
+  repository's modules, helpers, packages, paths, or domain vocabulary.
+- `.agents/project.md` is the home for repository-specific guidance: its base classes, helpers,
+  packages, layout, documentation structure, inventories, and generated sections.
+- A rule that cannot be stated without naming something this repository owns belongs in
+  `.agents/project.md`. Move it there rather than rewording it into something generic but untrue.
+
+- Document current behavior only. Never describe what a symbol used to do, what was removed,
+  renamed, or deprecated, and never write migration tables or upgrade notes.
+- Git history is the record of what changed; documentation describes what exists now.
+- The same applies to code comments and docstrings: no "formerly", "replaces", or "kept for
+  backwards compatibility" notes.
+- Use an environment's exact domain name for both it and its tailnet; never append owner or
+  organization aliases. Name provider accounts and projects only as separate resources.
+
+- When a request replaces a route, API contract, or behavior, remove the prior alias or fallback. Retain legacy compatibility only when the user explicitly authorizes it in the current request; if retention is unclear, ask before adding it.

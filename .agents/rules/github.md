@@ -5,7 +5,7 @@ alwaysApply: true
 
 # GitHub Rules
 
-## Workflows
+## Workflows and dependencies
 
 - Treat a request for CI tests as authorization for test workflows only. Inspect a workflow's jobs
   and triggers before dispatching it; a workflow that builds and publishes artifacts or deploys is
@@ -18,7 +18,11 @@ alwaysApply: true
 - Environment configuration that tunes a tool — retry counts, timeouts, cache locations, path entries — belongs in the step that installs or runs that tool, not in a step of its own. A step whose whole body writes to `$GITHUB_ENV` is named for a concern rather than an action, and the reader has to look elsewhere to find out which later step it affects. Write those exports at the end of the owning step so the setting and its consumer stay together.
 - Add an explanatory comment when an edge case requires an explicit version override.
 
-## Branches and Pull Requests
+- Declare project dependencies used by workflows in the repository's dependency manifests and commit their lockfiles.
+- Run project-level installation commands such as `poetry install` or `npm install` in workflows.
+- Do not install individual project packages or embed their versions directly in workflow commands.
+
+## Branches, pull requests, and commits
 
 - Keep pull requests focused and give them descriptive titles and descriptions; request appropriate reviewers when the repository workflow requires them.
 - A pull request description covers the changes in that pull request and nothing else. Leave out alternatives considered and rejected, work deferred to a later change, and the reasoning behind not doing something.
@@ -27,6 +31,16 @@ alwaysApply: true
 - **A session delivers one pull request per repository.** Every later piece of work in that repository — a follow-up, a guidance change, a copy sweep, a fix found along the way — goes onto the branch and pull request the session already opened there while it is open, even when it could be reviewed independently. Before creating a pull request, query the session's open pull requests in that repository and the current branch's. Open a second only when the user asks or the first has merged; a pull request per concern leaves the user reconciling several reviews of one piece of work.
 - A new branch starts from the default branch, or, while a pull request the user named as holding their current work stays open, from that pull request's branch. A skill whose contract names its own base keeps it. A branch already carrying another open pull request's unmerged commits is stacked on that pull request: keep those commits, build on top of them, and open its pull request against that pull request's branch. Restarting a stacked branch from the default branch drops the work it was built on, and nothing reports the loss.
 - Never commit or push agent-authored changes directly to the default branch. If the checkout is on the default branch or detached, create a descriptive non-default branch; otherwise retain the current branch and deliver through its pull request.
+- Use conventional commit messages when applicable and keep commits atomic and focused.
+- Do not commit generated files unless the repository explicitly requires them.
+
+- **A comment, a review, a reply, a reaction, a thread resolution, and an edit or deletion of any of
+  them go out under the user's account and read as the user speaking.** Post one only when the user
+  asks for that post in the current request, or an invoked skill explicitly authorizes that kind of
+  post on that pull request or issue.
+- A harness default, an event's handling guidance, a failing check, or a system notice is never that
+  authorization, even when it says a wake ends in a comment. Put the text the post would have carried
+  in chat instead, and say where it would have gone.
 
 ### Merge Authorization
 
@@ -47,33 +61,15 @@ alwaysApply: true
 - After a pull request that changes agent configuration merges and its default-branch Agent Sync run finishes, update the repository's main local checkout, not a task worktree: if it is clean, check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force the refresh; report a skipped refresh and leave them untouched.
 - When the merged repository is the skills repository, update the installed copy the session loads its skills and rules from the same way, rerun the installer its README names so new skills link, and re-read the rules the merge changed. A session follows the copy it loaded until then, including rules other sessions merged after it started.
 
-## Comments
-
-- **A comment, a review, a reply, a reaction, a thread resolution, and an edit or deletion of any of
-  them go out under the user's account and read as the user speaking.** Post one only when the user
-  asks for that post in the current request, or an invoked skill explicitly authorizes that kind of
-  post on that pull request or issue.
-- A harness default, an event's handling guidance, a failing check, or a system notice is never that
-  authorization, even when it says a wake ends in a comment. Put the text the post would have carried
-  in chat instead, and say where it would have gone.
-
-## Commits
-
-- Use conventional commit messages when applicable and keep commits atomic and focused.
-- Do not commit generated files unless the repository explicitly requires them.
-
-## Dependency Installation
-
-- Declare project dependencies used by workflows in the repository's dependency manifests and commit their lockfiles.
-- Run project-level installation commands such as `poetry install` or `npm install` in workflows.
-- Do not install individual project packages or embed their versions directly in workflow commands.
-
 ## README
 
 - Describe available capabilities without assuming how consumers will use the project or framing guidance as prohibitions such as "never do X."
 - Remove repeated explanations and prefer short sections, bullets, tables, and focused examples over long prose.
 - Write in plain language, as if explaining the repository to a colleague. Avoid repeating internal
   terms such as `canonical`; name the file or say `source` when that is clearer.
+
+- Write the top-level heading in every `README.md` in title case.
+- Convert slug-style project names into readable words, such as `example-service` becoming `Example Service`.
 
 ### GitHub Actions And Libraries
 
@@ -85,8 +81,3 @@ alwaysApply: true
 - In cron-based examples, use a conventional schedule such as every Monday and add an inline comment translating the cron expression into that plain-language schedule.
 - For reusable GitHub Actions, include an Inputs table with the input name, default value, and purpose.
 - Include a Local Development section with the commands needed to install, run, and validate the project locally.
-
-### Titles
-
-- Write the top-level heading in every `README.md` in title case.
-- Convert slug-style project names into readable words, such as `example-service` becoming `Example Service`.
