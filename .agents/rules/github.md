@@ -62,6 +62,8 @@ alwaysApply: true
 
 - Describe available capabilities without assuming how consumers will use the project or framing guidance as prohibitions such as "never do X."
 - Remove repeated explanations and prefer short sections, bullets, tables, and focused examples over long prose.
+- Write in plain language, as if explaining the repository to a colleague. Avoid repeating internal
+  terms such as `canonical`; name the file or say `source` when that is clearer.
 
 ### GitHub Actions And Libraries
 
