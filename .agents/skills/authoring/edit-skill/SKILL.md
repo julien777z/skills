@@ -174,7 +174,11 @@ outcome, because silence reads as the guidance having been fixed.
    - Do not embed product-specific file paths or copy current application code into reusable skills; those go stale when files move or refactors land. Prefer generic placeholders (for example `services/<name>/...`), short pattern descriptions, or minimal invented examples that are not tied to live paths or current line-level code.
    - **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract, and where a skill genuinely needs one local fact, take it from the repository's `project.md` or a setting rather than baking it in. Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
    - **Generic ownership is determined by what the skill must do, not its name.** A generically named skill can depend on one repository's contract; keep that skill in the repository and its facts in project guidance. Language, platform, framework, and workflow skills that truly apply across products remain shared and read repository commands, identities, hosts, packages, and fixtures from project guidance rather than embedding them.
-   - Keep topic-specific restrictions with their topic. Keep an existing `## Guardrails` section at the bottom, and create one only for cross-cutting safety or preservation constraints.
+   - Keep topic-specific restrictions with their topic, safety restrictions included: a rule about
+     one subject — comments, pushes, secrets — goes under that subject's heading, created if none
+     exists, never into `## Guardrails` because it guards something. Keep an existing `## Guardrails`
+     section at the bottom for constraints that span the file's subjects, and create one only for
+     those.
 
 6. Multi-target behavior.
    - Apply multi-target updates for `agents`, `skills`, and `rules`.
