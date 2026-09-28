@@ -147,8 +147,12 @@ alwaysApply: true
 - Git history is the record of what changed; documentation describes what exists now.
 - The same applies to code comments and docstrings: no "formerly", "replaces", or "kept for
   backwards compatibility" notes.
-- Use an environment's exact domain name for both it and its tailnet; never append owner or
-  organization aliases. Name provider accounts and projects only as separate resources.
+
+## Environment Names
+
+- In code, documentation, and user-facing updates, use an environment's exact domain name for
+  everything scoped to that environment. Do not substitute a person or organization label; name
+  provider accounts and projects separately.
 
 ## Replacement Contracts
 
