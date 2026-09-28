@@ -98,7 +98,14 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   what the reader should put in it, in the words they would use themselves.
 - Say the one thing the reader needs and stop. Prefer no description to a description that repeats
   the label, narrates the obvious, or hedges. Where a sentence is only there to cover the product,
-  cut it.
+  cut it. That includes a paragraph explaining the mechanics around an action — who certifies what,
+  what the reader is not doing — and a note of a side effect nobody asked about, such as what a
+  submission replaces or what stays downloadable.
+- **A status reads from the viewer's side.** Name the state in terms of what that reader did or
+  still has to do, and keep internal steps they take no part in behind a visual cue: a person who
+  sent a form sees "Submitted", with the tone telling review apart from acceptance, while the
+  reviewer sees "Pending review" and "Approved". One status maps to each audience's label in one
+  place.
 
 ### Confirmation Dialogs
 
@@ -151,9 +158,38 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **A page whose only content is a status message renders a full-page message state**, centered in
   the page, never a small card left under the flow's own chrome — a stepper, tabs, a form header —
   that no longer applies. A form or list long enough to fill the page keeps its card.
+- **A failure beside working content is a dismissible banner above that content.** It never
+  replaces a surface's own heading or description, which keep saying what the surface is while the
+  banner says what went wrong.
+- **Surfaces sharing a row share its width,** and a surface lays its fields out side by side
+  wherever the width allows, wrapping only when it does not. A narrow card stacking three short
+  fields beside a wide one holding a list is the mismatch this rules out.
+- **Type size belongs to the component that renders the text, never to a call site.** A name, a
+  figure, a label, a heading each has one size across the product, set once in the component that
+  owns that kind of text; a figure that is larger on one card than another is two scales, and the
+  larger one is always the one that looks wrong.
 - A component that renders inside more than one shell — a widget in a canvas and on a page, a card
   in a list and alone — is checked in each one. Spacing that a parent supplies in one place and not
   the other is what a single screenshot cannot settle.
+
+## Forms
+
+- **Offer only what applies to the reader.** A choice, a form, a field or a status row the reader
+  can never use — the other jurisdiction's form, the other account type's settings — is left out,
+  decided by the same rule that decides which one applies, never listed beside it.
+- **A form a person signs, certifies or attests to starts empty.** Nothing is seeded from a profile
+  or an earlier submission, because the signer vouches for what they entered; the only preset is a
+  format choice a field needs to render.
+- **One act gets one confirmation.** A single checkbox, worded as the whole statement the reader is
+  making, stands for it; a second box restating part of the first asks twice.
+- **Long fixed text a reader must accept — a certification, terms, a disclosure — sits in a short
+  scrollable area** of smaller muted type, with the control that accepts it directly below, so the
+  form around it stays readable.
+- **A placeholder shows a realistic example of the value's format,** such as `123-45-6789`, never
+  zeros, dots or a mask that reads as an existing value hidden from the reader.
+- **A step-by-step flow puts Back at the start of its footer and the primary action at the end,**
+  apart, so the control that goes back never sits beside the one that commits. A step whose only
+  content is a message and one action puts that action directly under the message, with no footer.
 
 ## State and Hooks
 
