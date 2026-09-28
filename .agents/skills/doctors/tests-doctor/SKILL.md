@@ -1,6 +1,6 @@
 ---
 name: tests-doctor
-description: Audit and correct existing tests for contract value, redundancy, weak assertions, naming, runtime, coverage by test, and determinism. It aligns suites with their source owners, consolidates duplicate proof, preserves independent contracts, measures runtime, and repairs proven defects. Use to review, clean up, speed up, de-duplicate, or find gaps in tests.
+description: Audit and correct existing tests for contract value, redundancy, weak assertions, naming, runtime, third-party rate limits, coverage by test, and determinism. It aligns suites with their source owners, consolidates duplicate proof, preserves independent contracts, measures runtime, and repairs proven defects. Use to review, clean up, speed up, de-duplicate, or find gaps in tests.
 disable-model-invocation: true
 ---
 
@@ -28,8 +28,9 @@ factories, helpers, and shared cases; markers, skip and xfail marks, and comment
 runner's targets and the CI jobs that run tests; every double — each `patch`, `patch.object`, and
 `monkeypatch.setattr` target and each `Mock`, `AsyncMock`, and `MagicMock` construction — with the
 owner of its target, whether the real implementation crosses a process boundary, and the seam the
-application declares for that dependency when one exists; and any configured budget, whether a
-runner timeout, a CI limit, or a documented target.
+application declares for that dependency when one exists; each third party a suite calls for real,
+with the calls one run makes to it per account and per destination; and any configured budget,
+whether a runner timeout, a CI limit, or a documented target.
 
 The measurement taken once before fan-out is the timing of every runner target through the
 runner's own per-test and per-fixture duration reporting, serialized as the runner requires. Add
@@ -58,7 +59,7 @@ it is invisible in a ranking of test bodies. Report both totals per suite.
 
 One domain reviewer per suite family — each application, service, and package suite, and each
 cross-boundary group such as end-to-end, migration, script, or front-end as its own slice — applies
-the redundancy, naming, runtime, doubles, and construction lenses to its slice. The cross-cutting
+the redundancy, naming, runtime, third-party limit, doubles, and construction lenses to its slice. The cross-cutting
 reviewer owns the layout and coverage lenses and the duplicates across suites of one
 classification, because those are visible only across slices, and compares the doubles table across suites, since a seam one suite
 uses and its sibling patches around is visible only there. A narrow scope gets two independent
@@ -255,6 +256,36 @@ folding them into cases of the same classification.
 Preserve every unique guarantee while doing it. Cutting a case whose assertion nothing else in its
 classification makes is a coverage loss wearing a timing win, so name what each cut proved and where
 that fact now lives.
+
+### Stay Inside Third-Party Limits
+
+**A run that draws a limit refusal from a third party it calls is a defect in the suite** — an HTTP
+429, a provider's throttling or quota code, a refusal to deliver to a destination sent to too often.
+It is never a flake. Runs overlap by design: every pull request's CI and every local run share the
+provider account and usually one test destination, so a suite that fits the limit only when it runs
+alone fails whenever it does not, and a refusal in any log is the evidence.
+
+Count each run's real calls to each provider, per account and per destination, from the suite and
+the service logs, and read them against the limits the provider documents and the ones it answered
+with. Then bring the count down without losing a step the tests prove, in this order:
+
+- fold tests of one classification that make the same real call into one that asserts every step
+  the others did;
+- make the contract's real call once per run, not once per test that reads its outcome;
+- reset limiter state the repository owns before the test, since a counter an earlier run left
+  behind is shared state like any other;
+- close what the test opened at the provider — cancel, expire, delete — so the next run starts from
+  nothing;
+- where the provider limits a destination across runs, give each run its own destination, or pace
+  the call against the provider's own record of the last one before making it.
+
+Skipping the test, mocking the provider in an end-to-end test, retrying after a refusal, sleeping
+until green, raising a limit only for tests, and widening the assertion to accept the refusal are
+not remedies: each keeps the collision and loses what the test proved. **No end-to-end test gives up
+its real call to make room for another's** — one test kept real beside a second that now doubles the
+provider is still an end-to-end test with its provider mocked; fold the two instead. Waiting before
+the call because the provider's record says the last one was too recent is pacing; waiting after a
+refusal is a retry.
 
 ### Map Coverage By Test
 
@@ -485,6 +516,9 @@ before delivery and verify that none enters the delivered diff.
   same workload. A suite still over budget is unfinished work, not a line in the report: carry on
   with the next disposition, or put the remaining cause and its cost to the user in the current
   request.
+- A third-party limit finding reduces the run's real calls to that provider by the order in
+  **Stay Inside Third-Party Limits**, and is verified by running the affected suite twice back to
+  back with neither drawing a refusal.
 - A redundant test merges into the survivor of its own classification; an assertion nobody else
   in that classification makes is never dropped.
 - A test-only production seam with no non-test caller is removed after its contract has a keeper;
@@ -545,6 +579,7 @@ every change landing beside it.
 - skip and xfail marks resolved;
 - per suite, foreign domain nouns removed and the fixtures that carried them;
 - the coverage map by test, with gaps closed and gaps recorded;
+- per provider: real calls per run before and after, and the refusals the baseline drew;
 - determinism corrections; per suite, doubles of repository-owned code removed, moved to the suite
   with the real boundary, or retained with the fault they inject; and declared seams no test used
   before the run;
