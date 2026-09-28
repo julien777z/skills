@@ -298,24 +298,22 @@ Apply the baseline prompt above, plus these explicit review rules:
 
 9. **Treat every suppression the diff adds as a finding, and never add one yourself.**
    - A `# pyright: ignore`, `# type: ignore`, `# noqa`, `# pylint: disable`, a widened `except`, a new
-     entry in a linter's ignore list, a lowered threshold, a hand-written stub or `typings/` directory:
-     each buys a quiet tool while the thing being reported stays exactly where it was.
+     entry in a linter's ignore list, a lowered threshold, a hand-written stub or `typings/` directory,
+     a cast or wrapper that quiets a dependency's types: each buys a quiet tool while the thing being reported stays exactly where it was.
    - This is the one class of change that makes a diff *look* cleaner by making the codebase worse, so
      it is invisible to every other check in this rubric. Grep the diff for it explicitly rather than
      hoping it turns up while reading.
    - **A suppression is not evidence the finding was considered.** It reads identically whether the
      author weighed the report and judged it wrong or never looked at it, and the next reader cannot
      tell which. Nothing in the file records the reasoning, so the exemption outlives whoever had one.
-   - Check the siblings before believing a suppression is necessary. An untyped import that every other
-     call site in the repository imports bare is not a finding this one site has to silence; it is a
-     finding somebody added noise to hide.
-   - The honest answers are to fix what the tool is reporting, to publish types at the source when the
-     package is ours, or to leave the report standing. A red tool carrying known reports is a truthful
-     record of work still to do; the same run with them papered over is not.
-   - **A finding about a third-party package's own types is not a finding for this repository.** Its
-     answer is neither a stub nor a report left standing: the tool's configuration or lint gate stops
-     reporting that category once, for every package. A per-package entry is the suppression this
-     item flags; an error in our own code at the same call is still ours.
+   - The honest answers are to fix what the tool reports about our own code, to publish types at the
+     source when the package is ours, or to leave the report standing. A red tool carrying known
+     reports is a truthful record of work still to do; the same run with them papered over is not.
+   - **A report about a third-party package's own types is answered in configuration, never in
+     code.** The category that reports a dependency's missing or unknown types is turned off once in
+     the tool's configuration, or filtered once by the repository's lint gate, for every package and
+     every file. That single category-wide entry is the one exception to this item; an entry naming
+     one package is the suppression it flags.
    - Generated output is out of scope — a suppression inside a file the toolchain writes is that
      toolchain's business, not the author's.
    - This applies to your own edits with no exception. A pass that removes somebody else's suppression
@@ -485,8 +483,8 @@ Escalate findings when you see:
 - A file over 1000 lines anywhere in scope, whatever put it there.
 - Any suppression the diff adds — `pyright: ignore`, `type: ignore`, `noqa`, `pylint: disable`, a
   broadened `except`, a new linter-ignore entry, a lowered threshold, a hand-written stub — outside
-  generated output and the once-for-every-package third-party typing exemption item 9 admits; a
-  per-package entry is still a finding. Grep for these; they do not surface from reading for structure.
+  generated output and the category-wide third-party typing entry item 9 admits; a cast or wrapper
+  that quiets a dependency's types, or an entry naming one package, is still a finding. Grep for these; they do not surface from reading for structure.
 - A test module holding two or more test classes, whatever put the second one there.
 - A docstring the diff adds that runs past one line.
 - A function, constant, or model defined in a test module beside its tests, whatever its size or

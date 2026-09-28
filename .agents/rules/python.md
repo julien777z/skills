@@ -179,14 +179,18 @@ from myapp.http import fetch
 from myapp.http_transport import fetch
 ```
 
-- **Never add an inline suppression**: no `# pylint: disable`, `# pyright: ignore`, `# type: ignore`, or `# noqa`. Fix what the checker reports — a precise annotation, a correctly typed decorator (a `ParamSpec` rather than a `Callable` that erases parameter names), the right import. A per-line disable reads the same whether its author weighed the finding or never looked, and once copied onto every sibling it hides the cause behind a pattern nobody questions.
-- **A finding about a third-party package's own types is not ours to fix.** Missing stubs, and unknown
-  or partially unknown types flowing from a package that ships incomplete annotations, are that
-  package's gap. Write no stub files, no `typings/` directory, and no cast or wrapper to quiet them;
-  the checker's configuration or lint gate stops reporting those categories once, for every package,
-  never by naming packages. An error in our own code at the same call — a wrong argument type, a
-  missing annotation on our own function — is still ours.
-- A rule that misreads a construct the codebase deliberately relies on everywhere — coroutines implementing a generated synchronous base, say — is turned off once in the tool's configuration with its reason beside it. Code a generator emits keeps whatever directives its generator writes.
+## Suppressions
+
+- **Never add an inline suppression**: no `# pylint: disable`, `# pyright: ignore`, `# type: ignore`, or `# noqa`. Fix what the checker reports about our own code — a precise annotation, a correctly typed decorator (a `ParamSpec` rather than a `Callable` that erases parameter names), the right import. A per-line disable reads the same whether its author weighed the finding or never looked, and once copied onto every sibling it hides the cause behind a pattern nobody questions.
+- **A third-party package's missing or incomplete types are that package's gap, never ours.** Write
+  no stub files, no `typings/` directory, and no cast or wrapper to quiet them.
+- A category is turned off once in the tool's configuration, or filtered once by the repository's
+  lint gate, with its reason beside it, in two cases: it reports a third-party package's missing or
+  unknown types, or it misreads a construct the codebase deliberately relies on everywhere —
+  coroutines implementing a generated synchronous base, say. It applies to every package and every
+  file, never to one named package. A category turned off for dependencies is off for our own code
+  too; the checks that stay on, such as argument types and annotations on our own functions, keep
+  our own errors reported. Code a generator emits keeps whatever directives its generator writes.
 
 ## Configuration
 
