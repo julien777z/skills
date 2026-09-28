@@ -36,6 +36,14 @@ alwaysApply: true
   shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
   the exact resolved commit for reproducibility and provenance.
 
+## Credential Exposure
+
+- Keep credentials out of source, reports, and avoidable tool output. If a credential appears in
+  agent context, a tool call or result, an internal log, or another private work surface, contain
+  further copies and remove accidental artifacts where possible; that alone is not public
+  disclosure. Revoke or rotate a credential in response to exposure only when it was made public.
+  Establish that public disclosure occurred before taking the disruptive action.
+
 ## User-Facing Output
 
 - Invoke `i-have-adhd` before the first response a user reads in the session, whether or not the
