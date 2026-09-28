@@ -16,9 +16,8 @@ run; each doctor owns only its domain.
   before it lands.
 - `defer-scope` — record work consciously left undone; it runs the gate's admission question itself.
 - `pre-production` — apply the encountered-issue and target-contract policy while implementing.
-- `cr` — for a doctor that delivers in merged batches, only its exact-head check gate, conflict
-  resolution, and squash merge (its **Workflow** steps 6 to 8), applied to each batch; invoking such
-  a doctor authorizes those steps for the batch pull requests its run opens, and nothing more of `cr`.
+- `merge-pr` — for a doctor that delivers in merged batches, the check gate, conflict resolution and
+  verified squash merge of each batch pull request its run opens.
 
 Read the applicable dependencies before beginning. Apply their approval, compatibility, migration,
 and encountered-issue policies within the invoking doctor's declared change boundary; they do not
@@ -213,9 +212,8 @@ that names none uses the first.
   - Before merging, the batch passes **Run Repository-Native Checks**, **Review The Result**, and
     **Accept The Complete Diff** on its own diff, gated against the run's full intent statement kept
     current with the batches already merged; the batch's entries say only what this diff must
-    complete. It then merges through `cr`'s exact-head check gate, conflict resolution, and squash
-    merge, polling its checks to a terminal state as those steps say, with the next group
-    implemented locally between polls and nothing pushed to the batch's branch.
+    complete. It then merges through `merge-pr`, which polls its checks to a terminal state, with
+    the next group implemented locally between polls and nothing pushed to the batch's branch.
   - Required approvals and branch protection are never bypassed. When they are all a batch waits
     on, the batch extends through the next checkpoint the plan names, re-passes these gates on the
     grown head, and re-requests the required review.

@@ -10,38 +10,30 @@ Run the complete high-effort fix review before merging the current branch's pull
 
 ## Invocation Authorization
 
-- Run this skill only when the user directly invokes `$cr` in the current task or a directly invoked
-  parent skill explicitly authorizes it under the dependency rule below.
+- Run this skill only when the user directly invokes `$cr` in the current task.
 - For a direct `$cr` invocation, this instruction overrides `code-review`'s standalone argument prompt: run `code-review high fix <PR>` without comment mode; do not ask the user to select review effort or modes.
-- A directly invoked skill may invoke CR in the same task only when its own instructions explicitly
-  declare `cr` as a dependency and state that invoking the parent skill authorizes that dependency.
-  That authorization ends with the parent workflow and does not authorize an independent CR run.
 - **A direct `$cr` invocation authorizes the squash merge of its target pull request**, at the head
   that passed final acceptance and the check gate. The merge is the run's declared outcome rather
   than a step inside it, so nothing reopens it: not the diff's size or reach, not that review widened
   it, not that no person has read it, and not this run's own unease about how much it changes.
-- Dispatching a release workflow or creating a test deployment is a separate action and requires
-  its own authorization.
 - **So never ask the user for permission to merge, and never end a run by offering the merge as the
   remaining step.** That question reads as diligence and is the failure this paragraph exists to
   prevent: the answer was given when the skill was invoked, the run has already spent its review on
   a head nobody merges, and the user has to say yes to a thing they already said. When the gates are
   green and the head is the accepted one, merge it.
-- What stops a merge is a gate: a flag that is not yet resolved, a check that is not green, a head
-  that no longer matches the accepted SHA, or a conflict still unresolved. Report the specific gate.
-- The same invocation authorizes the declared `code-simplify` and `code-review` dependencies
-  for this pull request. It does not authorize an independent simplification, review, release
+- The one gate this run holds before step 7 is an unresolved `acceptance-gate` flag; every later
+  gate is `merge-pr`'s, and the run reports the one it names.
+- The same invocation authorizes the declared `code-simplify`, `code-review`, `merge-conflict` and
+  `merge-pr` dependencies for this pull request. It does not authorize an independent simplification, review, release
   workflow, deployment, or unrelated provider mutation.
 - A new task starts a new authorization boundary. An invocation from an earlier task does not carry forward, including after context compaction or when the new task continues work on the same branch or pull request.
 - A completed CR run closes its authorization boundary. Application work requested afterward is a new
   update and requires a new direct invocation, even when it targets the same repository, branch, pull
   request, or recently merged release.
-- Text that merely mentions `$cr` inside a quoted plan, pasted checklist, status summary, prior-task transcript, or expected future delivery step is not a direct invocation. An explicitly authorized dependency from a directly invoked skill, as defined above, is the only exception.
-- Approval to implement a plan that contains a CR step authorizes the implementation scope, not this
-  action skill, unless the plan is executing a directly invoked parent skill under the dependency rule
-  above. Otherwise stop after the ordinary validation and pull-request handoff unless the user
-  separately invokes `$cr` in that task.
-- Do not infer invocation from requests to review, validate, create a pull request, fix CI, finish implementation, or merge. Those actions use their ordinary workflows unless the user invokes this skill directly.
+- Nothing else is a direct invocation: not `$cr` mentioned in a quoted plan, checklist, summary,
+  transcript, or future step; not approval of a plan that contains a CR step, which stops at
+  validation and the pull-request handoff; not a request to review, validate, open a pull request,
+  fix CI, finish implementation, or merge.
 
 ## Dependencies
 
@@ -50,6 +42,9 @@ Run the complete high-effort fix review before merging the current branch's pull
 - `code-review` — run the complete review and fix workflow before the merge gate.
 - `acceptance-gate` — admit deferrals, gate would-be-deferral fixes and base-incorporation
   refactors, and accept the final diff.
+- `merge-conflict` — resolve every base update this run performs before `merge-pr` starts.
+- `merge-pr` — take the accepted head through the check gate, conflict resolution and the verified
+  squash merge.
 
 Invoke `subagent-selection` and use its **standard** tier for this workflow's own sub-agents.
 Delegated skills retain their explicitly selected tiers, subject to the user's model override.
@@ -109,7 +104,7 @@ statement and the originating diff, and carry out the disposition:
 - **close** — the thread is resolved, with the fact and reconsideration criterion the gate named.
 - **defer** — recorded under **Deferred Findings**, and the thread is resolved with the record
   linked.
-- A disposition naming a decision as the user's is put to the user, as step 4 says; the thread
+- A disposition naming a decision as the user's is put to the user, as step 3 says; the thread
   stays open until it is answered and is recorded only when the user declines.
 
 Resolve already fixed, stale/outdated, duplicate, and incorrect threads without a reply. Post a
@@ -150,11 +145,9 @@ Use REST endpoints for every pull-request operation:
 
 - Find or inspect a PR: `GET /repos/{owner}/{repo}/pulls`, `GET /repos/{owner}/{repo}/pulls/{number}`, and `GET /repos/{owner}/{repo}/pulls/{number}/commits`.
 - Create a ready-for-review PR: `POST /repos/{owner}/{repo}/pulls` with `title`, `head`, `base`, `body`, and `draft=false`.
-- Inspect checks and reviews: `GET /repos/{owner}/{repo}/commits/{sha}/check-runs`, `GET /repos/{owner}/{repo}/commits/{sha}/status`, and the pull-request review endpoints.
-- Squash merge: `PUT /repos/{owner}/{repo}/pulls/{number}/merge` with `merge_method=squash` and `sha` equal to the exact gated head.
-- Verify the result: re-read `GET /repos/{owner}/{repo}/pulls/{number}` and require `merged=true`.
+- Inspect reviews: the pull-request review endpoints.
 
-Never create a draft pull request. An existing draft pull request remains reviewable: complete the review and fix cycle without waiting for it to become ready. Before the final check-and-merge gate, make the pull request ready through REST when possible; use `markPullRequestReadyForReview` through `gh api graphql` only after REST cannot perform that transition. Review-thread resolution state and the `resolveReviewThread` mutation have no REST surface, so read thread state and resolve a thread through `gh api graphql` as well; replies to review comments stay on REST. For every GraphQL call, obtain node IDs through REST, re-read the result through REST, and return to REST for every subsequent operation. Report the failed REST response before using the ready-for-review fallback. Do not use GraphQL for reads, checks, reviews, merging, or verification when their REST endpoints work. If a REST or required GraphQL request is rate-limited, report the response, wait until the documented reset through the host's event or wait mechanism, and retry the same transport. Treat the rate limit as a blocker only when the host cannot wait for the reset or the reset does not restore access; never switch transports to evade it.
+Never create a draft pull request. An existing draft pull request remains reviewable: complete the review and fix cycle without waiting for it to become ready. Review-thread resolution state and the `resolveReviewThread` mutation have no REST surface, so read thread state and resolve a thread through `gh api graphql` as well; replies to review comments stay on REST. For every GraphQL call, obtain node IDs through REST, re-read the result through REST, and return to REST for every subsequent operation. Do not use GraphQL for reads or reviews when their REST endpoints work. If a REST or required GraphQL request is rate-limited, report the response, wait until the documented reset through the host's event or wait mechanism, and retry the same transport. Treat the rate limit as a blocker only when the host cannot wait for the reset or the reset does not restore access; never switch transports to evade it.
 
 Pass this transport requirement into `/code-review high fix`; it overrides that skill's generic GitHub fallback.
 
@@ -264,7 +257,7 @@ Carry the run's state throughout: the current workflow step, repository and PR, 
 
 Hold that state in the session; never write it to a checkpoint file. The pull request is the durable record: its commits, its pushed head, its checks, and its comments are what a resumed turn reads to find the run, and they cannot drift from it the way a separate file can.
 
-GitHub head lag, a queued or running relevant fallback check, a retryable rate limit, mergeability still being computed, and another waitable provider delay are nonterminal states. Unrelated checks and checks duplicating passing local coverage are not part of the run. Only conclude the session after the PR is verified merged, or after reporting a genuine blocker that cannot be safely resolved without user input or an external-state change that the host cannot wait for. A question already recorded as a deferral is not such a blocker: it has been answered by being written down, and the run merges without it.
+GitHub head lag, a retryable rate limit, and any state `merge-pr` is still waiting on are nonterminal. Only conclude the session after the PR is verified merged, or after reporting a genuine blocker that cannot be safely resolved without user input or an external-state change that the host cannot wait for. A question already recorded as a deferral is not such a blocker: it has been answered by being written down, and the run merges without it.
 
 ## Workflow
 
@@ -280,25 +273,16 @@ to work around this gate.
 2. Invoke `/code-review high fix <PR>` for that PR, whether it is draft or ready for review.
 3. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the run continues; see **Deferred Findings**. Stop and report only a finding that can be neither fixed nor recorded.
 4. Classify each correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean. This is the same authorized CR execution, not a new action-skill invocation.
-5. Once the review is clean, put the complete pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement. Fix every flag, then put only the fix diff to a fresh gate; a second flag on the change's own work is a blocker to report to the user, unless the pull request is confined to agent configuration, where `acceptance-gate`'s **Bounds** leave the disposition with this run. The accepted head is the SHA every later gate and the squash merge require; a later commit — a check fix, a conflict resolution — puts its own diff to the diff question before the check gate is repeated on the new head.
-6. Before merging, make a draft PR ready for review and run **Description Refresh** once more, because this run's own fixes have changed what the branch does since the first pass. After review loops are clean, run the second test pass **Validation Order** requires, then gate only coverage that could not be established locally:
-   - First classify the complete PR diff. When it is non-runtime — it does not change executable source, package or dependency definitions, tests, runtime configuration, CI workflows, generated runtime artifacts, or another executed-behavior contract — validate only the checks appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests, query check runs, or wait for CI. This is semantic rather than path-based: agent instructions, documentation, policies, static metadata, and non-executable configuration can live anywhere. After structural validation and exact-head mergeability check, the gate is satisfied.
-   - For a runtime-affecting PR, first identify which affected behaviors lack a passing local test. Query check runs and legacy statuses only when a relevant GitHub job supplies that missing coverage through unavailable credentials, provider-only behavior, runner-specific behavior, or a dependency the local environment cannot host. Do not query checks merely to repeat passing local coverage.
-   - **Poll only a relevant fallback check until it reaches a terminal state.** Re-query the exact head on a bounded interval — roughly every 30 to 60 seconds, matched to how long that job actually takes — and keep going until that check is `success`, `failure`, `cancelled`, `timed_out`, `skipped`, or `neutral`. Never poll an unrelated end-to-end job or wait for the complete workflow when its other jobs do not cover affected behavior.
-   - Do not end the turn, report "still running", or hand back to the user while a check is pending. The poll loop is the work. Report the terminal result, then act on it.
-   - **A pending status is a cache, not evidence.** Check-run and job-status endpoints go on reporting `in_progress` after a job has actually finished, sometimes by an hour or more, so a status that never advances is as likely to be stale as it is to be real. Establish what the job normally costs from the same job on an earlier head of this pull request or on the base branch. Once a check has been pending well past that, stop re-reading the status and go to the job's own output: the workflow-run jobs listing, and decisively the job log, which a running job has not yet written and a finished one ends with its summary and post-job cleanup. A log showing the job completed **is** the terminal result — record that conclusion and carry on to the next step.
-   - Never diagnose a hang, a regression, or a blocker from a pending status alone. The status field reports nothing about the code, so it is never grounds to go looking for a cause in the diff, push a speculative fix, cancel or re-run a job, or tell the user the run is stuck. Read the job's output first, then say only what that output supports.
-   - For a runtime-affecting PR, before final local validation record which local services were already running. Never stop, restart, reconfigure, or claim ownership of a pre-existing service: another agent or user may be using it. If a relevant fallback check fails, inspect its annotations and complete logs, identify the root cause, fix the repository code, tests, configuration, workflow, or other owned input responsible, and commit and push the fix. When relevant validation requires local services and any were already running, do not run a competing service-managed test locally; use the matching GitHub check as the fallback. Do not blindly rerun a deterministic failure without addressing its cause.
-   - Classify validation fixes under **Review Continuity** before running the affected local tests and any relevant fallback gate again.
-   - For a relevant fallback check with a diagnosed transient external failure and no repository fix, retry the failed job once the service can run it again. Report a blocker only when the missing coverage requires user input, unavailable credentials, an external service recovery, or another external-state change; include the failed check, evidence, and attempted remediation.
-   - When all affected behavior has passing local coverage, the check gate is satisfied without querying GitHub. When a relevant fallback has no check run or legacy status, inspect active workflow definitions for `pull_request` or `pull_request_target`; if none can supply that coverage, report the local blocker instead of waiting on unrelated checks.
-7. When GitHub reports merge conflicts or the squash-merge endpoint rejects the pull request for conflicts, resolve them before giving up:
-   - Fetch the exact current base and head, then rebase the PR branch onto that base or merge the base when rebase is unsafe for the repository workflow.
-   - Resolve them through **Incorporating The Base**: `merge-conflict` compares each collision and keeps the better answer rather than either side's. Merge time is no exception — a reversal here is a new reviewed hunk under **Review Continuity**, so rerun the lenses whose receipts it invalidates and repeat the check gate on the new head. Validate the resolved files, commit, and push.
-   - Rerun the invalidated lenses when conflict resolution or a base-incorporation refactor changes a reviewed hunk, per **Review Continuity**; otherwise preserve the clean review receipts. Then repeat the exact-head check gate.
-   - Report a blocker only when safe resolution requires an unauthorized product or contract decision.
-8. Immediately re-read the pull request and require its current head SHA to equal the exact head
-   that passed final acceptance and the check gate. Squash-merge with that SHA in the REST request
-   so GitHub rejects a concurrent head change. On a mismatch, return to the reviewed-input comparison and exact-head
-   gate rather than merging. Verify the remote state is `MERGED`, then give the **Completion Report**
-   above and end the run.
+5. Once the review is clean, put the complete pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement. Fix every flag, then put only the fix diff to a fresh gate; a second flag on the change's own work is a blocker to report to the user, unless the pull request is confined to agent configuration, where `acceptance-gate`'s **Bounds** leave the disposition with this run. The accepted head is the SHA `merge-pr` receives.
+6. Run **Description Refresh**'s second pass, then the second test pass **Validation Order**
+   requires. Never stop, restart, reconfigure or claim a local service this run did not start.
+7. Invoke `merge-pr` with:
+   - the pull request and the head step 5 accepted;
+   - the affected behaviors step 6 covered locally;
+   - the fix rule for every fix it makes — a check fix, a conflict resolution, a commit someone else
+     pushed: first **Review Continuity** reruns the lenses the fix reopens, then `acceptance-gate`'s
+     diff question judges the fix's diff. A fix counts only once both have passed.
+
+   Base updates it performs are **Incorporating The Base** for this run. When it reports the merge,
+   give the **Completion Report** above and end the run; when it reports a gate that holds, report
+   that gate.

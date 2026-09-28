@@ -93,7 +93,7 @@ Exactly one per gate, each decided by the tests in `references/rubric.md`:
 ### Base incorporation
 
 Run after every
-incorporation of the base this session performed, whether or not `cr` is active or Git reports
+incorporation of the base this session performed, whether or not Git reports
 conflicts. The base advancing remotely without being incorporated does not trigger the check, and
 neither does an incorporation another session performed and pushed: that branch has changed hands
 under the GitHub rules on branch ownership, and its resolved result is theirs to gate.
