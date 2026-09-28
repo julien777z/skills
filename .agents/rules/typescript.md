@@ -1,5 +1,4 @@
 ---
-description: Read when editing TypeScript or TSX types, modules, imports, functions, constants, external-data boundaries, errors, or suppressions.
 alwaysApply: false
 paths:
 - '**/*.ts'

@@ -1,5 +1,4 @@
 ---
-description: Read when editing TypeScript, TSX, or Biome configuration, or when formatting, sorting imports, or resolving Biome lint findings.
 alwaysApply: false
 paths:
 - '**/*.ts'

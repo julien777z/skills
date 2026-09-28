@@ -1,5 +1,5 @@
 ---
-description: Read when changing FastAPI routes, dependencies, request and response models, webhooks, pagination, or route-facing service boundaries.
+description: Use APIRouter-based route organization, validate in models, and keep response handling consistent.
 alwaysApply: false
 paths:
 - '**/*.py'
