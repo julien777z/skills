@@ -1,6 +1,6 @@
 ---
 name: defer-scope
-description: Record deferred work in the repository it affects, using Linear or that repository's ledger as an availability fallback; with no scope, read its active records. Use when work is consciously left undone, or when asked what is deferred, outstanding, or still open.
+description: Record deferred work in the repository it affects, using Linear or that repository's ledger as an availability fallback; with no scope, read its active records. Use when work is consciously left undone, when a change would resolve, retire, decline or void a recorded deferral, or when asked what is deferred, outstanding, or still open.
 ---
 
 # Defer Scope
@@ -61,6 +61,13 @@ confirmed defect is how the refusal gets laundered into somebody else's decision
 settles nothing the gate would admit. When part is small, fix that part and record
 only the remainder. Record at the moment work is consciously left undone; chat and pull-request
 prose are not durable records.
+
+## Changing A Record
+
+A record leaves the active set only on `acceptance-gate`'s triage verdict. A change that makes a
+recorded problem look resolved, moot or not worth doing puts the record to that question with its
+evidence, including who owns the work, and carries out the disposition it returns; it never
+declines, voids or retires the record on its own reading. Report the verdict with the change.
 
 ## Ownership And Identity
 

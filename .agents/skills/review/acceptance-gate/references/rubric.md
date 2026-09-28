@@ -137,7 +137,11 @@ ends the question.
    mechanisms the fix would add, priced by the rubric; the work is of genuine size and its need is
    arguable — a redesign, a sweep across many files somebody could reasonably decline; an external
    blocker stands, which is something outside the repository the fix cannot be written without — a
-   credential nobody has issued, a vendor change, an answer only a third party can give; a decision
+   credential nobody has issued, a vendor change, an answer only a third party can give. A change
+   owed by a library or service the user owns is never one, wherever it lives: its fix is written in
+   that repository and the consuming change is written against it, so the item is fix or do. Read
+   ownership from the dependency's source — whose repository it is — never from whether it sits in
+   this repository or from a record calling it out of scope; a decision
    that is somebody else's is already put to that person and still open, or the user declined it in
    the current request; or an attempted fix, shown to the gate, could not be completed without the
    removed shape or a rubric finding. That the code under change is deployed or running somewhere, a

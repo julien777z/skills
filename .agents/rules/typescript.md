@@ -150,7 +150,8 @@ type Status = (typeof Status)[keyof typeof Status];
   identically whether its author weighed the finding and judged it wrong or never looked, so the next
   reader cannot tell which, and the exemption outlives whoever had a reason for it.
 - Fix what the tool reports about our own code, publish types at the source when the package is
-  ours, or leave our own report standing. A red run carrying known reports is a truthful record of work
+  ours — read from whose repository it is, not from whether it lives in this one — or leave our own
+  report standing. A red run carrying known reports is a truthful record of work
   still to do.
 - **A third-party package's missing or incomplete types are that package's gap, never ours.** Write
   no declaration file, `declare module`, cast or wrapper to quiet them, and leave no report of
