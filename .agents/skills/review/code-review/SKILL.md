@@ -241,8 +241,7 @@ Before reporting a clean result at `high` or above, verify that every launched l
 
 When the host exposes a structured findings tool, report through it, passing the effort level, and do not also print the findings as prose. Where its schema offers a verdict meaning unverified, leave that value unused — nothing surviving step 4 has one. Prose carries no qualifier either: no "possibly", no "may", no request that the reader go check.
 
-Otherwise report in chat as `## Output` shapes it; when more than five findings remain, first write
-every finding to one file in the session's scratch directory and send it with the report.
+Otherwise report in chat as `## Output` shapes it.
 
 ## Step 8 — Fix mode
 
@@ -305,9 +304,9 @@ Findings: <count by severity>. Fixed: <count>. Deferred: <count, each with its r
 Lenses: <completed lens names and Security omitted when unavailable>. Head: <reviewed SHA>. Rules: <ledger summary>.
 ```
 
-The chat list carries the five most severe findings; the file holds every finding in the same
-shape and is sent with the report whenever more than five remain. The
-outcome arrow appears only in fix mode. If nothing remains, the list is the single line
+The chat list carries the five most severe findings. Whenever more than five remain, one file in
+the session's scratch directory holds every finding in the same shape and is sent with the report.
+The outcome arrow appears only in fix mode. If nothing remains, the list is the single line
 `No findings.` and the closing lines stay. In degraded mode, add one line stating that no
 subagent dispatch was available.
 

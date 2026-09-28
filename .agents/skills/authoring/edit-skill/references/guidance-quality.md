@@ -72,7 +72,7 @@ verdict, a draft — carries an `## Output` section as its last section before a
 holding a hard-coded Markdown template the response is filled into: fixed headings, fixed list
 shapes, and a stated fallback for the empty case, so two runs on the same input read the same.
 Because every user-facing response goes through `i-have-adhd` (global rule **User-Facing Output**),
-the template names the facts a response carries and sends per-item detail past five items to a
+the template names the facts a response carries and puts per-item detail past five items in a
 file sent with the response; a word limit it sets binds only while `i-have-adhd` is active.
 A skill whose result is edits, a merge, a deployment, or a running system has no template to
 hold, and carries instead the report line its delivery step owes. The test is whether two

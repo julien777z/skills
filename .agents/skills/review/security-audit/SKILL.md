@@ -121,8 +121,7 @@ Every level runs every phase; **Effort** above says with what cohort.
    **What A Surviving Finding Has Been Put Through**.
 4. **Verify independently** — Use Phase 4 there: a fresh agent per surviving finding checks every
    factual claim against the source.
-5. **Report** — Use Phase 5 there: write every finding to the scratch findings file and give the
-   chat summary it shapes.
+5. **Report** — Use Phase 5 there.
 6. **Plan, approve, track** — Use Phase 6 there, which owns the approval gate, Linear deduplication
    and tracking, and implementation. **Never start fixing or open a fix pull request before the user
    approves that fix.**

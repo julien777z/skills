@@ -57,7 +57,7 @@ If Docker is required, inspect its current state and use the host's supported st
 
 Use the local production build when verifying production behavior. Follow the project's normal sign-in and approved reusable test identity/tenant; never invent an authentication bypass. Snapshot after navigation. Operate the actual affected controls, perform a meaningful workflow, and read the resulting state back through the documented API or persistence boundary. Capture screenshots and a recording of that flow, not just the initial page.
 
-Distinguish tool success from application success: verify the intended event and request occurred, then inspect its result. A startup health response alone does not establish signed-in rendering or behavior. Repair observed failures before reporting the walkthrough complete, and report with the recording and the stills that show each outcome and each defect, delivered as the User-Facing Output rule requires.
+Distinguish tool success from application success: verify the intended event and request occurred, then inspect its result. A startup health response alone does not establish signed-in rendering or behavior. Repair observed failures before reporting the walkthrough complete. Send the recording and the stills that show each outcome, each defect found and the fix that resolved it, as the User-Facing Output rule requires.
 
 ## Domain-specific walkthroughs
 

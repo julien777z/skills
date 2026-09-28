@@ -98,7 +98,7 @@ Report sample, mode, findings, material evidence limits, and exactly which guida
 
 ## Output: structured YAML notes
 
-Each researcher returns this structure for its assigned games. The orchestrator combines the game records and fills in the final synthesis only after all researchers finish. Use valid YAML, quote IDs as strings, use `null` for unknown values, and keep evidence separate from inference. Return the YAML as an artifact when a full 25-game record is too large for the conversation; send it as the User-Facing Output rule requires and summarize its findings. Store working notes under ignored `verification/`.
+Each researcher returns this structure for its assigned games. The orchestrator combines the game records and fills in the final synthesis only after all researchers finish. Use valid YAML, quote IDs as strings, use `null` for unknown values, and keep evidence separate from inference. The orchestrator writes the combined YAML to one file, sends it as the User-Facing Output rule requires, and summarizes its findings in chat. Store working notes under ignored `verification/`.
 
 ```yaml
 study:

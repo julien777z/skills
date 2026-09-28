@@ -24,18 +24,19 @@ paths:
 - Destructure props in function signature
 - Use optional chaining for optional props
 - Provide sensible defaults
-- Do not add one-off structural Tailwind overrides at component call sites. When a structural behavior is reusable, expose it through the component's props or variants; simple width utilities such as `w-full` are the narrow exception.
-- **A surface made of parts is one component whose slots are props.** A card with a title, an
-  action, a body and a footer takes them as `action={...}`, `footer={...}` and `children`, and owns
-  their spacing, alignment and dividers through its variants. A call site fills slots; it never
-  assembles the surface from its primitives or restyles them, because each hand-assembled copy
-  drifts into its own padding and alignment.
 
 ```typescript
-function Card({ title, subtitle = "", className = "" }: CardProps) {
+function Card({ title, action, footer, children, variant = "default" }: CardProps) {
   // ...
 }
 ```
+
+- **A component owns its structure; a call site supplies content.** A surface made of parts — a
+  card with a title, an action, a body and a footer — takes them as slots (`action={...}`,
+  `footer={...}`, `children`) and owns their spacing, alignment and dividers through its variants.
+  A call site fills slots; it never assembles the surface from its primitives or adds a one-off
+  structural Tailwind override. Structural behavior a caller needs becomes a prop or variant; simple
+  width utilities such as `w-full` are the narrow exception.
 
 ## Reference Data
 

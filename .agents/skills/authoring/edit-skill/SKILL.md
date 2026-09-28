@@ -330,7 +330,7 @@ outcome, because silence reads as the guidance having been fixed.
 ## Output
 
 Return this report, filled in; keep every heading, write `None` under one with nothing to list, and
-link a file holding the items past five under any heading:
+send a file holding the items past five under any heading as the User-Facing Output rule requires:
 
 ```markdown
 Files

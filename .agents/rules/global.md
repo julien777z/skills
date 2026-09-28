@@ -40,14 +40,13 @@ alwaysApply: true
 
 - Invoke `i-have-adhd` before the first response a user reads in the session, whether or not the
   user invoked it or the running skill names it. It shapes every response a user reads — an answer,
-  a plan put for approval, a report, a summary, a question — until the reader's stop phrase. Per-item
-  detail past five items — findings, rows — and any gated plan a skill requires go in a file the user
-  receives as the next bullet says.
-- **A file the user should see reaches them where they read.** When the user cannot open the
-  agent's machine, as in a cloud or remote session, a path names nothing they can reach. Send
-  recordings, screenshots, generated images and that detail file with the harness's
-  file-sending tool in the turn that reports the result. The parent sends what a subagent produced.
-  Where the harness cannot send files, say so and put what fits inline.
+  a plan put for approval, a report, a summary, a question — until the reader's stop phrase.
+- **A file the user should see reaches them where they read.** Per-item detail past five items —
+  findings, rows — any gated plan a skill requires, recordings, screenshots and generated images go
+  in a file sent with the harness's file-sending tool before the text that reports the result, so
+  that text stays the turn's final message. A path alone names nothing a user in a cloud or remote
+  session can reach. The parent sends what a subagent produced. Where the harness cannot send
+  files, say so and put what fits inline.
 
 ## User-Triggered Action Skills
 
