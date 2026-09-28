@@ -26,6 +26,7 @@ alwaysApply: true
 - Before publishing or updating those artifacts, check the final text against the target repository's diff and evidence. Remove foreign domain references and cross-repository PR links, even when the work shares a session or motivated this change.
 - **A session delivers one pull request per repository.** Every later piece of work in that repository — a follow-up, a guidance change, a copy sweep, a fix found along the way — goes onto the branch and pull request the session already opened there while it is open, even when it could be reviewed independently. Before creating a pull request, query the session's open pull requests in that repository and the current branch's. Open a second only when the user asks or the first has merged; a pull request per concern leaves the user reconciling several reviews of one piece of work.
 - A new branch starts from the default branch, or, while a pull request the user named as holding their current work stays open, from that pull request's branch. A skill whose contract names its own base keeps it. A branch already carrying another open pull request's unmerged commits is stacked on that pull request: keep those commits, build on top of them, and open its pull request against that pull request's branch. Restarting a stacked branch from the default branch drops the work it was built on, and nothing reports the loss.
+- Never commit or push agent-authored changes directly to the default branch. If the checkout is on the default branch or detached, create a descriptive non-default branch; otherwise retain the current branch and deliver through its pull request.
 
 ### Merge Authorization
 
@@ -87,7 +88,3 @@ alwaysApply: true
 
 - Write the top-level heading in every `README.md` in title case.
 - Convert slug-style project names into readable words, such as `example-service` becoming `Example Service`.
-
-## Guardrails
-
-- Never commit or push agent-authored changes directly to the default branch. If the checkout is on the default branch or detached, create a descriptive non-default branch; otherwise retain the current branch and deliver through its pull request.
