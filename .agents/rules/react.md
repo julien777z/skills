@@ -34,7 +34,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **A component owns its structure; a call site supplies content.** A surface made of parts — a
   card with a title, an action, a body and a footer — takes them as slots (`action={...}`,
   `footer={...}`, `children`) and owns their spacing, alignment and dividers through its variants.
-  A call site fills slots; it never assembles the surface from its primitives or adds a one-off
+  A slot takes the element itself — `action={<Button>…</Button>}`, never `actionLabel` and
+  `actionHref` — so each caller keeps its own content without the component growing a prop per
+  field. A call site fills slots; it never assembles the surface from its primitives or adds a one-off
   structural Tailwind override. Structural behavior a caller needs becomes a prop or variant; simple
   width utilities such as `w-full` are the narrow exception.
 
