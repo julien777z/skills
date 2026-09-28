@@ -123,9 +123,11 @@ function Card({ title, subtitle = "", className = "" }: CardProps) {
 - **A surface is as tall as its content, never taller.** A card, panel, section or widget showing a
   large empty area — below its content, or between the content and the control that acts on it —
   reads as unfinished. Content flows from the top and each control sits directly after what it acts
-  on, never pushed to the bottom of a stretched container by a fill or a space-between. A shorter
-  surface beside a taller one keeps its own height rather than stretching to match, and an empty
-  state is sized like any other content. Content that can outgrow its surface scrolls inside a
+  on, never pushed to the bottom of a stretched container by a fill or a space-between. Surfaces
+  sharing a row end on the same line, and they get there by balancing what they hold — cutting a
+  line that earns no place, moving a control, re-pairing the surfaces — never by stretching the
+  shorter one; where content cannot be balanced, the shorter keeps its own height. An empty state is
+  sized like any other content. Content that can outgrow its surface scrolls inside a
   maximum height, so the surface stays as tall as its content until it reaches the cap. A height set
   from outside the content belongs only to a surface whose content fills the space it is given — a
   chart, a map, media — to one the reader sized, or to a section deliberately sized to the viewport.
