@@ -250,10 +250,11 @@ under **One Run Per Task**.
 
 **A new request, an interruption, or a context summary cancels none of it**, and the work each one
 displaces is named work whether or not a report named it: an approved plan short of its last entry,
-commits a remote lacks, a checkout left mid-edit. It goes into the session's task list with its next
-step before anything else starts, and the turn that serves the new request also moves it — the user
-asking about something else is not the user withdrawing what they asked for before.
+commits a remote lacks, a checkout left mid-edit. The turn that serves the new request also moves
+it — the user asking about something else is not the user withdrawing what they asked for before.
 
+- **Write it down before anything else starts.** The displaced work goes into the session's task
+  list, with its next step, before the first step of whatever displaced it.
 - **An interruption pauses the step in flight; it never ends the run.** "Continue", or anything
   meaning it, resumes exactly that step, and is never answered with nothing.
 - **A context summary's pending list is this run's named work**, not background. The first turn

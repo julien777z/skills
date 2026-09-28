@@ -276,7 +276,8 @@ to work around this gate.
 6. Run **Description Refresh**'s second pass, then the second test pass **Validation Order**
    requires. Never stop, restart, reconfigure or claim a local service this run did not start.
 7. Invoke `merge-pr` with the pull request, the head step 5 accepted, the affected behaviors step 6
-   covered locally, and as its rule for every fix it makes: **Review Continuity** for the lenses the
-   fix reopens, then step 5's diff question on the fix's diff. Base updates it performs are
+   covered locally, and as its rule for every fix it makes — a check fix, a conflict resolution, a
+   commit someone else pushed — two parts, both every time: **Review Continuity** reruns the lenses
+   the fix reopens, then `acceptance-gate`'s diff question judges the fix's diff. Base updates it performs are
    **Incorporating The Base** for this run. When it reports the merge, give the
    **Completion Report** above and end the run; when it reports a gate that holds, report that gate.
