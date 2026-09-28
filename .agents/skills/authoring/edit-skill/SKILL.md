@@ -100,9 +100,10 @@ outcome, because silence reads as the guidance having been fixed.
    - A shared target is edited in the skills repository's checkout — the one the user-level link
      resolves to, or a fresh clone when the session has none — on a branch and pull request in that
      repository, never through the link's path from another repository's branch.
-     A cloud setup clone installed only to provide skills is not the editing checkout. If the
-     skills repository cannot be attached as a writable project in this session, transfer the
-     edit to a separate skills-repository session rather than changing the installed clone.
+     A cloud setup clone installed only to provide skills is not the editing checkout. When the
+     skills repository is not in the session, attach it as a writable project; its absence is never
+     on its own a reason to stop or hand off. Only when attaching it is refused, transfer the edit to
+     a separate skills-repository session rather than changing the installed clone.
      The originating session supplies the observed miss, original task, relevant diff or small
      file set, repository commit, original skill text, and two to four observable pass criteria.
      Include a sanitized fixture when the skills session cannot read the originating repository.
@@ -212,6 +213,8 @@ outcome, because silence reads as the guidance having been fixed.
       interpreter or any interpreter meeting the sync tool's version, and fix every
       report it prints before pushing; a description holding a colon followed by a space is the usual
       one, and quoting the value is the fix.
+      A source it cannot reach is not a blocker: attach that repository to the session, and when the
+      tool fetches through a path the environment refuses, fix the tool to use one it serves.
       Check the entire canonical skills tree against repository packaging rules, including
       imported skills, rather than only the files being edited. Remove forbidden provider UI
       metadata such as `agents/openai.yaml` from canonical skill packages; leave generated
