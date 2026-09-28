@@ -55,7 +55,7 @@ If Docker is required, inspect its current state and use the host's supported st
 
 ## Prove it works in a browser
 
-Use the local production build when verifying production behavior. Follow the project's normal sign-in and approved reusable test identity/tenant; never invent an authentication bypass. Snapshot after navigation. Operate the actual affected controls, perform a meaningful workflow, and read the resulting state back through the documented API or persistence boundary. Capture screenshots and a recording of that flow, not just the initial page.
+Use the local production build when verifying production behavior. Follow the project's normal sign-in and approved reusable test identity/tenant; never invent an authentication bypass. Snapshot after navigation. Operate the actual affected controls, perform a meaningful workflow, and read the resulting state back through the documented API or persistence boundary. Capture screenshots and a recording of that flow, not just the initial page, and send them to the user in chat with the harness's file-sending tool when reporting the result; a saved path is not delivery.
 
 Distinguish tool success from application success: verify the intended event and request occurred, then inspect its result. A startup health response alone does not establish signed-in rendering or behavior. Repair observed failures before reporting the walkthrough complete.
 

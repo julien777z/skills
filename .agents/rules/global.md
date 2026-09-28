@@ -42,6 +42,11 @@ alwaysApply: true
   user invoked it or the running skill names it. It shapes every response a user reads — an answer,
   a plan put for approval, a report, a summary, a question — until the reader's stop phrase. Per-item
   detail past five items — findings, rows — and any gated plan a skill requires go in a linked file.
+- **Media the user should see is sent in chat, never reported as a path.** Recordings, screenshots,
+  walkthrough stills and generated images live on the agent's machine, which the user cannot open,
+  so a report that names where they were saved has delivered nothing. Send them with the harness's
+  file-sending tool in the same turn the result is reported — the recording and the stills that
+  show each outcome and each defect — including media a subagent produced, which the parent sends.
 
 ## User-Triggered Action Skills
 
