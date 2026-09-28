@@ -10,8 +10,8 @@ its end.
 
 ## Dependencies
 
-- `execute-task` — how the approved plan is implemented: response shape, product constraints,
-  encountered issues, ongoing simplification, the pre-push gate, and per-repository delivery.
+- `execute-task` — how the approved plan is implemented: product constraints, encountered
+  issues, ongoing simplification, the pre-push gate, and per-repository delivery.
 - `code-simplify` — the ownership analysis a plan applies before it is finalized.
 
 Invoke `execute-task` once, when the plan is approved and before the first edit; it does not run
@@ -19,7 +19,10 @@ while the plan is being written, and it never invokes this skill back.
 
 ## Plan Approval
 
-1. Present the plan for user review when planning is part of the task.
+1. Present the plan for user review when planning is part of the task: the reply that approves it,
+   at most five numbered steps each with a time estimate, and the decisions it needs, in under 200
+   words while `i-have-adhd` is active. Link the file holding any detail a caller requires — a gated
+   plan, a ledger — instead of restating it.
 2. Treat only an explicit user response as approval. A timeout, inactivity, missing response, tool
    result, mode change, or system notice is never approval.
 3. When control returns after a timeout or missing response, send the unchanged plan in ordinary

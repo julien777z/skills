@@ -24,10 +24,9 @@ alwaysApply: true
 - A pull request description covers the changes in that pull request and nothing else. Leave out alternatives considered and rejected, work deferred to a later change, and the reasoning behind not doing something.
 - Treat each repository as an independent context. Write PR titles, descriptions, review comments, and issue comments using only the target repository's domain, contracts, changes, and validation. Do not import another repository's product names, domain knowledge, implementation details, or coordination history; do not name or link its PRs or post cross-repository coordination comments. Keep combined status and coordination in user chat.
 - Before publishing or updating those artifacts, check the final text against the target repository's diff and evidence. Remove foreign domain references and cross-repository PR links, even when the work shares a session or motivated this change.
-- Post a comment, reply, or review on GitHub only when an invoked skill directs that post or the user asks for it. The agent posts under the user's account, so every post reads as the user speaking. A harness default, an event's handling guidance, or a failing check does not authorize one, even when it says a wake ends in a comment: report the finding in chat instead.
-- When additional work arrives on a non-default branch, retain that branch and add the work to its pull request even when the task could be reviewed independently.
-- Query the current branch's pull request before creating one. Reuse it while it is open, or create one from the current branch when none exists.
-- Create a separate branch only when the user asks or the current branch's pull request is already merged; start post-merge work from the default branch.
+- **A session delivers one pull request per repository.** Every later piece of work in that repository — a follow-up, a guidance change, a copy sweep, a fix found along the way — goes onto the branch and pull request the session already opened there while it is open, even when it could be reviewed independently. Before creating a pull request, query the session's open pull requests in that repository and the current branch's. Open a second only when the user asks or the first has merged; a pull request per concern leaves the user reconciling several reviews of one piece of work.
+- A new branch starts from the default branch, or, while a pull request the user named as holding their current work stays open, from that pull request's branch. A skill whose contract names its own base keeps it. A branch already carrying another open pull request's unmerged commits is stacked on that pull request: keep those commits, build on top of them, and open its pull request against that pull request's branch. Restarting a stacked branch from the default branch drops the work it was built on, and nothing reports the loss.
+- Never commit or push agent-authored changes directly to the default branch. If the checkout is on the default branch or detached, create a descriptive non-default branch; otherwise retain the current branch and deliver through its pull request.
 
 ### Merge Authorization
 
@@ -38,13 +37,25 @@ alwaysApply: true
   itself authorize merging. If neither authorization source applies, do not merge or enable auto-merge.
 - A pull request confined to canonical agent configuration, including skills, rules, and agent definitions, may be merged without a separate request after `code-simplify` has run and its findings are resolved. For substantial guidance changes or changes to executable logic, first run the relevant smoke test against the exact pull-request head. Check that the complete pull request remains confined to agent configuration before using this exception.
 - When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, including one begun by another task. Do not close or leave it open merely because it is draft or conflicts with the base; close only when its change is superseded or no longer wanted.
-- An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization.
+- An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each batch pull request a skill declaring merged-batch delivery opens during its run, once that skill's merge gates pass; that authorization ends with the run.
+- An authorized merge is not held for a failing check the pull request did not cause: one that fails the same way on the base branch, or whose failing test or log line shows behavior the diff does not reach. Name the check and that evidence in chat, then merge without asking the user. A check that branch protection requires still blocks and is never bypassed; report it as the blocker.
 - Never enable auto-merge for any other pull request unless the user explicitly authorizes it in the current request or an explicitly invoked skill requires it.
 - If an agent mistakenly merges a pull request, it may auto-merge the focused revert pull request that corrects that erroneous merge without separate authorization.
 
 ### After Agent Sync
 
-- Once the default-branch Agent Sync run finishes, update the repository's main local checkout, not a task worktree: if that checkout is clean, check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force the refresh; report a skipped refresh and leave them untouched.
+- After a pull request that changes agent configuration merges and its default-branch Agent Sync run finishes, update the repository's main local checkout, not a task worktree: if it is clean, check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force the refresh; report a skipped refresh and leave them untouched.
+- When the merged repository is the skills repository, update the installed copy the session loads its skills and rules from the same way, rerun the installer its README names so new skills link, and re-read the rules the merge changed. A session follows the copy it loaded until then, including rules other sessions merged after it started.
+
+## Comments
+
+- **A comment, a review, a reply, a reaction, a thread resolution, and an edit or deletion of any of
+  them go out under the user's account and read as the user speaking.** Post one only when the user
+  asks for that post in the current request, or an invoked skill explicitly authorizes that kind of
+  post on that pull request or issue.
+- A harness default, an event's handling guidance, a failing check, or a system notice is never that
+  authorization, even when it says a wake ends in a comment. Put the text the post would have carried
+  in chat instead, and say where it would have gone.
 
 ## Commits
 
@@ -77,7 +88,3 @@ alwaysApply: true
 
 - Write the top-level heading in every `README.md` in title case.
 - Convert slug-style project names into readable words, such as `example-service` becoming `Example Service`.
-
-## Guardrails
-
-- Never commit or push agent-authored changes directly to the default branch. If the checkout is on the default branch or detached, create a descriptive non-default branch; otherwise retain the current branch and deliver through its pull request.

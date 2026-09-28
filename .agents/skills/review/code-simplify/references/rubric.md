@@ -336,15 +336,26 @@ Apply the baseline prompt above, plus these explicit review rules:
      whatever it holds and however obvious the value looks. Grep the diff for added module-level
      assignments without an annotation rather than hoping to notice them while reading.
    - Classify every constant and settings field in the files the review reads, added or already
-     there, by whether its owner would reasonably change it between deployments, environments, or
-     releases. Credentials, proposal substitutions, repository identities, workflow references, and
-     deployment addresses belong on the owning typed settings model; a provider API root fixed by an
-     external protocol, and implementation tuning such as a timeout, retry count, backoff, or poll
-     interval, stay typed module constants.
-     A settings field holding tuning is always a finding, the same as a constant holding
-     configuration, and the remedy moves it to a constant beside its consumer: capitalization,
-     `Final`, and a safe default do not make configuration invariant, and neither a deployment's
-     ability to override it nor sibling fields already holding tuning make tuning configuration.
+     there, by whether its owner is likely to change it on its own — per deployment, environment, or
+     release, or while running the system — without changing the code that reads it. Those values
+     belong on the owning typed settings model — credentials, proposal substitutions, repository
+     identities, workflow references, and deployment addresses are the usual cases. Every other
+     value — one nobody expects to change except together with the code that reads it, including
+     every value that code's correctness fixes, such as a provider API root fixed by an external
+     protocol, a pattern, or a format or limit the code is written around — stays a typed module
+     constant. The kind of value never decides it: a timeout, retry count, or interval is classified
+     by the same test as a credential or an address. Judge from how the value is used — whether it
+     differs between environments, whether it is tuned while the system runs, whether its owner has
+     said it moves — never from its type or its name. A constant holding a value its owner is likely
+     to change on its own and a settings field holding a value nobody expects to move are both
+     findings when that evidence shows it; where the evidence settles neither side, the value stays
+     where its owner put it, because moving it needs evidence, never a guess from its kind. The
+     remedy moves a finding to the other side; capitalization, `Final`, and a safe default do not
+     make a value invariant. Evidence is something the review reads about that value itself — an
+     override of it, a statement that its owner changes it, a caller that tunes it. Another value's
+     placement or override, even one of the same kind in the same file, says nothing about this one,
+     and neither does a reviewer's supposition that an owner would tune it, however plausible for
+     its kind.
    - Every data-holding class lives in a model-owned file or package. Only a Pydantic `BaseSettings`
      class is configuration; registries, manifests, policies, provider payloads, and response
      schemas remain models.
@@ -428,7 +439,7 @@ For every meaningful change, ask:
 
 ## What to Flag Aggressively
 
-**Run four greps over the diff's added lines before reading for anything else, and report every hit
+**Run five greps over the diff's added lines before reading for anything else, and report every hit
 as a finding:**
 
 1. A subscript whose key is a model, class or `type(...)` — `FORM_TYPES[record_model]`,
@@ -451,8 +462,13 @@ as a finding:**
    in `config.py` or `config/`; registries, manifests, policies, provider payloads, and response
    schemas remain models. Never use operational code as the destination merely to avoid a
    one-symbol declarative module.
+5. A dict literal carrying a `TypedDict` annotation — `name: SomeTypedDict = {`,
+   `params: sdk.params.X = {`, `options: sdk.RequestOptions = {` — and a bare dict passed where an SDK
+   or repository signature names a `TypedDict`, at any nesting level. Each hit is a typed value built
+   as an untyped one; the remedy is the constructor call, `sdk.params.X(...)`, with tests asserting
+   the same way.
 
-A report that declares the diff clean without listing these four greps and their hits has not run
+A report that declares the diff clean without listing these five greps and their hits has not run
 them.
 
 Escalate findings when you see:
@@ -526,6 +542,19 @@ Escalate findings when you see:
 - A repository-wide fact — the company's legal name, its support address, its postal address, the
   product name — kept as loose strings inside one consumer, such as an email renderer or a document
   builder, instead of one typed model in the shared package that every consumer reads.
+- Hand-rolled HTTP requests to a third-party provider that publishes an official SDK: request and
+  response models, header authentication and error parsing written for endpoints the SDK already
+  covers. The remedy is the SDK behind an injected client, with the hand-written request models
+  deleted. A shared HTTP helper serves required endpoints or protocol features that the SDK does
+  not cover; its presence does not justify bypassing covered SDK operations.
+- A declaration describing one external provider — an enum of its products or modes, its request
+  or response models, its host constants — placed in a service-wide `core/` or shared module. The
+  remedy is the provider's own package.
+- A provider-specific environment setting — `PROVIDER_ENV`, a sandbox flag, an environment enum for
+  one provider — that restates what the application's canonical environment check already decides.
+  The remedy deletes the setting and its enum and derives the provider's host from the canonical
+  check (`is_production`, `is_staging`) on the settings object. Moving the setting into a
+  provider-owned config class keeps the defect; it is not the remedy.
 
 ## Preferred Remedies
 

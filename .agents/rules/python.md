@@ -23,7 +23,8 @@ paths:
 - Prefer real SDK and model types over `cast(...)`; reserve a narrowly scoped cast for information the type system genuinely cannot express.
 - Do not "fix" typing by expanding simple transformations into repetitive key-by-key copy blocks (for example, manually assigning each dict key only to satisfy pyright). Fix the source type hints (or add a precise cast/narrowing at the boundary) so the transformation can stay concise and readable.
 - For persistence/update payloads (for example, `upsert(...)`), define a dedicated `TypedDict` and construct it inline at the call site. Do not add free-floating `build_*`/`make_*` helper functions whose only role is constructing a payload from another shape; the same no-free-floating-builders rule that applies to `BaseModel` applies here.
-- When a `TypedDict` types a module-level constant or other shared blob (for example a CVA style config), build the value by **calling** the TypedDict constructor with keyword arguments (`MyTypedDict(field=value, ...)`) instead of assigning an annotated plain dict literal (`name: MyTypedDict = {...}`). Use the same for nested TypedDict rows inside lists (for example `CompoundVariantRule(match={...}, class_name="...")`). This keeps the type as the construction site, not only a static annotation on a dict literal.
+- Build every `TypedDict` value by **calling** its constructor with keyword arguments (`WidgetUpdate(field=value, ...)`), never by annotating a plain dict literal (`name: WidgetUpdate = {...}`) or passing a bare dict where the parameter is typed. That covers module-level constants and shared blobs, nested rows inside lists (for example `CompoundVariantRule(match={...}, class_name="...")`), and an SDK's typed request parameters and options at every level of nesting (`sdk.params.WidgetCreateParams(owner=sdk.params.WidgetCreateParamsOwner(...))`, `sdk.RequestOptions(idempotency_key=key)`). Tests assert with the same constructors. This keeps the type as the construction site, not only a static annotation on a dict literal.
+- **No name you write or reference carries a `TypedDict` suffix.** Name a TypedDict for the shape it holds (`WidgetUpdate`, never `WidgetUpdateTypedDict`), and where an SDK ships a model class beside a `…TypedDict` twin of the same request, pass the model class.
 
 - Group parameters that always travel together and describe one concept into a single typed object, then pass that object rather than threading its fields through every signature and call site.
 
@@ -178,19 +179,13 @@ from myapp.http import fetch
 from myapp.http_transport import fetch
 ```
 
-- Prefer real fixes (annotations, stubs, deps). If a Pylint/static warning is a false positive or unfixable in our code (for example lazy third-party exports, missing stubs), use a **narrow** suppression: `# pylint: disable-next=<message-id>` on the smallest scope—never file-wide disables or import workarounds whose only purpose is to satisfy the checker.
-
-```python
-# pylint: disable-next=not-callable
-config = third_party_package.Config(
-    app_name="example",
-)
-```
+- **Never add an inline suppression**: no `# pylint: disable`, `# pyright: ignore`, `# type: ignore`, or `# noqa`. Fix what the checker reports — a precise annotation, a correctly typed decorator (a `ParamSpec` rather than a `Callable` that erases parameter names), stubs for an untyped dependency, the right import. A per-line disable reads the same whether its author weighed the finding or never looked, and once copied onto every sibling it hides the cause behind a pattern nobody questions.
+- A rule that misreads a construct the codebase deliberately relies on everywhere — coroutines implementing a generated synchronous base, say — is turned off once in the tool's configuration with its reason beside it. Code a generator emits keeps whatever directives its generator writes.
 
 ## Configuration
 
 - Define each configuration owner's settings in one descriptively named `BaseSettings` class such as `ActionConfig` in its `config.py`. A repository may have distinct application, worker, or script configuration owners; do not combine unrelated settings merely to produce one repository-wide class. Keep each config module declarative: instantiate its settings once at that owner's composition boundary, then pass or import that validated object wherever settings are needed.
-- Put a value in that settings class when, and only when, its owner would reasonably change it between deployments, environments, or releases: credentials, hosts and endpoints, identities, feature switches, and tool or CLI versions expected to move. Implementation tuning — timeouts, retry counts, backoff and poll intervals, batch sizes — is a typed module constant beside the code that uses it, even though a deployment could in principle override it.
+- Put a value in that settings class when, and only when, its owner is likely to change it on its own — per deployment, per environment, per release, or while running the system — without changing the code that reads it. What kind of value it is never decides this: a timeout, retry count, or batch size the owner expects to revisit is configuration exactly as a credential, a host the deployment chooses, or a feature switch is. Every other value — one nobody expects to change except together with the code that reads it, including every value that code's correctness fixes, such as a pattern it parses with or a format or limit a protocol defines — is a typed module constant beside that code. Where the evidence settles neither side, the value stays where its owner put it.
 - Give configurable values typed defaults when the repository has a safe default, and let `pydantic-settings` provide namespaced environment overrides.
 - Use `TypedDict` only for static structured data that is not configuration.
 
@@ -209,8 +204,9 @@ class ActionConfig(BaseSettings):
 APPLICATION_CONFIG = ActionConfig()
 ```
 
-- API keys and secrets must be **required** config fields with **no defaults** (no `= ""` or `| None = None` escape hatches); optionality is reserved for credentials with a documented ambient fallback (for example AWS IAM role credentials).
+- Declare settings needed for supported operations without a safe default, including API keys and secrets, as required non-nullable Pydantic fields. Validate nonempty strings on the field and do not repeat missing-value checks in consumers. Use optional fields only when absence is supported, such as credentials with a documented ambient fallback.
 - Do not add useless config values like `DEFAULT_ENVIRONMENT`.
+- A provider's published sandbox and production hosts are constants in that provider's package, and the application's canonical environment check selects between them. Select a provider's host from that check (such as the settings object's `is_production`), never from a provider-specific environment setting or enum that restates what the deployment environment already decides.
 - Do not add helper functions like `_get_environment` when the value already exists on the shared settings object.
 - Do not read environment variables directly with `os.getenv`, `os.environ`, or `os.environ.get` in application/service/library code.
 - Always read environment-backed values from the typed settings object so defaults, validation, and normalization live in one place.
@@ -222,7 +218,6 @@ APPLICATION_CONFIG = ActionConfig()
 - Place module-level constants and enums (including type aliases like `AllowedApiClient`) directly after imports.
 - When assembling a structured string from variable parts, define one named template and use `str.format(...)` rather than composing separate prefix and suffix constants. Use native template strings only when they are supported across the project's full Python version range.
 - Use `Final[T]` from `typing` and UPPER_SNAKE_CASE names for constants.
-- Compiled regexes, stable paths, sentinels, and implementation tuning are constants, not settings.
 - Compile regular expressions once at module scope and call methods on the compiled pattern instead of passing pattern strings repeatedly to `re.match`, `re.search`, `re.fullmatch`, or `re.sub`.
 - **When several constants form one family of the same shape** — parallel compiled patterns, per-kind values, same-shaped lookup entries — define one mapping keyed by an enum or other typed key instead of a pile of individually named constants, and iterate or index that mapping at the use site. A few unrelated constants are fine as standalone names; a family of related ones is a data structure.
 
@@ -328,6 +323,8 @@ def get_auth_secret(config: Settings | None = None) -> str:
 - Define Pydantic `BaseModel` classes and other application data models under the package's `models/` directory.
 - Split models into intuitively named files by concept, such as `models/configuration.py` or `models/submission.py`.
 - Do not place models beside operational code or collect unrelated models in a catch-all `models.py` module.
+
+- A declaration that describes one external provider — its enums, request and response models, host constants — lives in that provider's package beside its other models, never in a service-wide `core/` or shared enums module. A core enums module holds only the application's own domain vocabulary.
 
 - Files under a `models/` package contain only declarative models, enums, and behavior intrinsic to validating or representing those models. Do not put runtime registries, mappings, instantiated collaborators, filesystem layouts, I/O, or orchestration in model files.
 - Put runtime mappings and operational behavior in the module that owns their use. A typed `config.py` built with `pydantic-settings` is the explicit exception for the repository's settings class only; instantiate that class at the application or script composition boundary.
@@ -463,6 +460,7 @@ return next(
 
 ## External APIs and Errors
 
+- Run a synchronous SDK's calls off the event loop (for example with `asyncio.to_thread`) when the application is asynchronous.
 - Verify SDK method availability before coding integrations:
   - Prefer checking official docs with `@Browser`, or
   - Inspect the installed SDK directly (for example with Python `inspect`/`hasattr`) in the current environment.

@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once, before the first edit, at the start of every task that changes files — including one that only begins changing files because work turned up a defect — and keep it active until the task's report: it shapes every response, applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, simplifies as the change grows, gates the branch before it is pushed, and delivers each repository independently. Never invoke it from inside a skill it runs."
+description: "Always run this. Invoke once, before the first edit, at the start of every task that changes files — including one that only begins changing files because work turned up a defect — and keep it active until the task's report: it applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, simplifies as the change grows, gates the branch before it is pushed, and delivers each repository independently. Never invoke it from inside a skill it runs."
 ---
 
 # Execute Task
@@ -9,9 +9,6 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 
 ## Dependencies
 
-- `i-have-adhd` — shape every user-facing response for the rest of the session, from the first one
-  of the task until the reader's stop phrase. Invoke it at the start of the run when it is not
-  already active in the session; a second invocation in an active session changes nothing.
 - `pre-production` — the repository's target-contract and staging-data policy, when the repository
   declares one.
 - `code-simplify` — simplify each meaningful implementation batch and the complete diff before delivery.
@@ -25,7 +22,7 @@ Run every change the same way, whether a plan preceded it or the user asked for 
   Named** keeps the run open until every named item is done or has left that state one of the three
   ways it lists. Nothing in the task re-enters the skill; the run simply has not ended.
 - A skill that lists this one as a dependency — `plan-change` does — invokes it once, and the
-  skills this one invokes never invoke it back: `i-have-adhd`, `pre-production`, `code-simplify`,
+  skills this one invokes never invoke it back: `pre-production`, `code-simplify`,
   `acceptance-gate`, and `generic-push` are leaves of this run. A second invocation while one is
   active does nothing more than continue the active run.
 - This skill never invokes `plan-change`. Where a task needs a plan, `plan-change` runs first and
@@ -184,19 +181,20 @@ Before creating any branch, check whether this session already has one in that r
 second is the failure this section exists to prevent, and the reviewer pays for it: two pull requests
 in one repository that must be read together, merged in order, and kept from conflicting.
 
-Three things earn a separate branch, and nothing else does:
+Two things earn a separate branch, and nothing else does:
 
 - the user asks for that work to be held apart;
 - the session's pull request in that repository has already merged, so the work starts from the
-  freshly fetched default branch;
-- the change is agent configuration, which goes to the default branch on its own under the GitHub
-  rules, because the next session reads it rather than shipping it.
+  freshly fetched default branch.
+
+A change to agent configuration is work like any other and joins the session's pull request in its
+repository.
 
 **"It could be reviewed on its own" is never a reason, and neither is a feeling that the new work is
 a different kind of thing.** Both are always available — every added option, every fix, every
 rewritten paragraph could be read alone — so a rule that yields to them yields always, and the
 session ends with a pull request per request. When a reason to split arrives, check it against the
-three above by name; anything else is this rule being argued with rather than applied.
+two above by name; anything else is this rule being argued with rather than applied.
 
 **Having already opened the second one is not a reason to keep it.** Move its commits onto the branch
 already in flight, close it saying where the work went, and say in chat what was consolidated.
@@ -250,9 +248,19 @@ back. A borrowed name is invisible to the author precisely because it was famili
 all. The run that named the work owns it until it is done, and naming it is what keeps the run open
 under **One Run Per Task**.
 
-A new request does not cancel it. The two queue together, and the turn that serves the new one also
-moves the old one — the user asking about something else is not the user withdrawing what they asked
-for before.
+**A new request, an interruption, or a context summary cancels none of it**, and the work each one
+displaces is named work whether or not a report named it: an approved plan short of its last entry,
+commits a remote lacks, a checkout left mid-edit. The turn that serves the new request also moves
+it — the user asking about something else is not the user withdrawing what they asked for before.
+
+- **Write it down before anything else starts.** The displaced work goes into the session's task
+  list, with its next step, before the first step of whatever displaced it.
+- **An interruption pauses the step in flight; it never ends the run.** "Continue", or anything
+  meaning it, resumes exactly that step, and is never answered with nothing.
+- **A context summary's pending list is this run's named work**, not background. The first turn
+  after it moves the oldest item as well as whatever the summary's next step names.
+- **Commits a remote lacks are undelivered work**; their next step is the pre-push gate and the push,
+  whatever the gate's size.
 
 **The failure is a report, not a refusal.** It reads as diligence: the item appears under "still to
 do", the turn ends, the next message arrives, and the item appears again, unchanged, in the next

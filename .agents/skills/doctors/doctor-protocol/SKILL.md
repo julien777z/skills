@@ -16,6 +16,8 @@ run; each doctor owns only its domain.
   before it lands.
 - `defer-scope` — record work consciously left undone; it runs the gate's admission question itself.
 - `pre-production` — apply the encountered-issue and target-contract policy while implementing.
+- `merge-pr` — for a doctor that delivers in merged batches, the check gate, conflict resolution and
+  verified squash merge of each batch pull request its run opens.
 
 Read the applicable dependencies before beginning. Apply their approval, compatibility, migration,
 and encountered-issue policies within the invoking doctor's declared change boundary; they do not
@@ -23,7 +25,8 @@ expand that boundary.
 
 ## Declare What The Doctor Owns
 
-A doctor declares this skill as a dependency and supplies exactly five things:
+A doctor declares this skill as a dependency and supplies five things, and may name its delivery
+cadence under **Deliver**:
 
 1. an **inventory** — what it enumerates and where each item is discovered at runtime;
 2. **lenses** — each a defect shape, the evidence that establishes it, and the remedy;
@@ -123,8 +126,9 @@ never say where they go.
 
 That holds for a group large enough to deserve its own review, too. Size is an argument for
 sequencing it late and describing it clearly in the pull request, not for a second branch. Only the
-user asking to hold work apart, and the boundary the global rules draw around agent configuration,
-put an entry anywhere else.
+user asking to hold work apart puts an entry anywhere else. A doctor that delivers in merged
+batches names each checkpoint in its plan — the groups it closes and why the batch is substantial
+enough to merge on its own — so the user approves the checkpoints with the plan.
 
 Then invoke `plan-change`. The audit and its ledger are read-only; neither authorizes an edit. A
 user decision a disposition produces — a test to cut, a flag whose removal changes behavior — is
@@ -145,7 +149,7 @@ editor. Apply `code-simplify` after each meaningful implementation batch and acr
 result. Return to `plan-change` for a newly discovered decision that changes the approved outcome;
 do not silently narrow the correction.
 
-The plan is implemented to its last entry in one continuous run, into the branch already in flight.
+The plan is implemented to its last entry in one continuous run, into the branch in flight.
 A finished group is not a finished plan, and neither is a pushed commit or a green suite; go into
 the next group in the same turn. `plan-change` owns what may and may not stop that run.
 
@@ -195,15 +199,36 @@ stated only in chat, the plan, or the report is not recorded.
 
 ## Deliver
 
-The implemented result goes out as one pull request on the repository's delivery path and stays
-open: merging is the user's decision, agent configuration included, because a doctor's edit may
-need more testing than one run.
+The result goes out on the repository's delivery path in the cadence the doctor names; a doctor
+that names none uses the first.
+
+- **One pull request, left open.** Merging is the user's decision, agent configuration included,
+  because a doctor's edit may need more testing than one run.
+- **Merged batches.** The run merges its pull request at each checkpoint and carries the rest of the
+  plan on a fresh one, until the plan's last entry lands. Declaring this cadence authorizes those
+  merges under the GitHub rules.
+  - A batch ends at a checkpoint the approved plan names, never partway through an entry and never
+    with a fix separated from the guard that holds it.
+  - Before merging, the batch passes **Run Repository-Native Checks**, **Review The Result**, and
+    **Accept The Complete Diff** on its own diff, gated against the run's full intent statement kept
+    current with the batches already merged; the batch's entries say only what this diff must
+    complete. It then merges through `merge-pr`, which polls its checks to a terminal state, with
+    the next group implemented locally between polls and nothing pushed to the batch's branch.
+  - Required approvals and branch protection are never bypassed. When they are all a batch waits
+    on, the batch extends through the next checkpoint the plan names, re-passes these gates on the
+    grown head, and re-requests the required review.
+  - After the merge, fetch the default branch, cut the next branch from it (reusing the
+    run's branch name where the environment fixes one), carry the local work onto it, open its pull
+    request, and continue. A merged batch is never the finished run.
+  - The last batch's review also confirms that every approved disposition, across all batches,
+    landed.
 
 ## Report
 
 The final report names:
 
 - the resolved scope and the inventory counts;
+- each pull request the run opened, what it carried, and whether it merged;
 - per-lens counts by disposition, including items that were already correct and needed no change;
 - each applied correction and the evidence for it;
 - each retained item and the distinction or reason that retains it;

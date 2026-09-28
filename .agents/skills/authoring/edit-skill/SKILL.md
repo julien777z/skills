@@ -40,6 +40,7 @@ outcome, because silence reads as the guidance having been fixed.
 - `code-simplify` — the pass over the guidance itself before it merges.
 - `acceptance-gate` — the diff question over the `.agents` change once it reads clean.
 - `test-skill` — the proof that a skill edit changes what a reader does.
+- `merge-pr` — the verified squash merge of the pull request step 7 clears.
 
 ## Behavior
 
@@ -88,17 +89,17 @@ outcome, because silence reads as the guidance having been fixed.
 4. Resolve which repository owns the target, then its path inside that repository's `.agents`.
    - **Shared or repository-owned.** Generic skills live in one shared skills repository and reach
      every session through a user-level skill root; repository-specific skills, every rule, and
-     repository-specific agents live in the repository they describe. An existing skill is shared
-     when the entry the user-level root holds for it (`~/.claude/skills/<name>`,
-     `~/.codex/skills/<name>`, `~/.cursor/skills/<name>`) is a symlink into a checkout of the skills
-     repository — read the link — and repository-owned when the current repository holds it under
-     `.agents/skills/`, at any depth. A new skill goes to the skills repository when it reads generically
-     once written and to the current repository when its correctness depends on a local contract.
+     repository-specific agents live in the repository they describe. Inspect a skill's content and
+     dependencies to decide ownership, including for an existing skill: a user-level symlink shows
+     where it is installed, not where it belongs. A new or existing skill goes to the skills
+     repository only when it reads generically without losing required behavior. If making it
+     generic would remove or misstate guidance it needs to give, put it in the repository it
+     describes under `.agents/skills/`, at any depth; move a misplaced existing skill there.
      An agent definition that a shared skill runs on goes with that skill; every other agent, and
      every rule, is repository-owned.
    - A shared target is edited in the skills repository's checkout — the one the user-level link
-     resolves to, or a fresh clone when the session has none — on its own branch and pull request,
-     never through the link's path from another repository's branch.
+     resolves to, or a fresh clone when the session has none — on a branch and pull request in that
+     repository, never through the link's path from another repository's branch.
      A cloud setup clone installed only to provide skills is not the editing checkout. If the
      skills repository cannot be attached as a writable project in this session, transfer the
      edit to a separate skills-repository session rather than changing the installed clone.
@@ -142,7 +143,14 @@ outcome, because silence reads as the guidance having been fixed.
      with a materially different instance of the same failure class; state that case and its expected
      outcome in validation. Renaming the original example or replaying only it does not establish breadth.
    - If target file does not exist, create it with a concise structure matching existing style.
-   - Place new guidance under the broadest existing subject section that fits. Use durable topic headings rather than creating a heading for one requirement.
+   - Place new guidance under the broadest existing subject section that fits. **A heading names the
+     subject a reader looks under — Comments, Commits, Workflows — never the requirement it holds.**
+     Add a section only when no existing one covers the subject, and name it for the whole subject: a
+     heading that states one rule ("Posting As The User", "Never Skip Tests") invites the next rule on
+     that subject into a heading of its own, and the file grows a section per requirement. A
+     restriction on one subject — comments, pushes, secrets — goes under that subject's heading even
+     when it guards something; `## Guardrails`, kept at the bottom, holds only constraints that span
+     the file's subjects.
    - Express each independent requirement once, usually as one concise bullet. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
    - Normalize the touched file's nearby structure when needed: combine narrow sections, remove redundant wording, and order foundational guidance before specialized concerns.
    - When adding a **new** restriction or rule, keep the wording **concise**—one clear statement or bullet per idea; do not pad with redundant sentences or multiple bullets that restate the same requirement.
@@ -158,12 +166,17 @@ outcome, because silence reads as the guidance having been fixed.
    - Do not add committed tests for skills or their helper scripts, inside or outside the skill directory. Keep any needed execution checks temporary and untracked.
    - **Refer to a skill, and to anything inside it, by the skill's name, never by path.** `the `code-simplify` skill's rubric reference` is right; a relative path into another skill's directory is wrong, because the directories move between repositories and user-level roots and the name is the only stable handle.
    - Declare every invoked skill by canonical skill name in a near-top `## Dependencies` section of the owning `SKILL.md`. That section lists skills only, never tools, plugins, scripts, references, assets, executables, or filesystem paths.
+   - **A skill restricted to user invocation is never a dependency.** No other skill lists it under
+     `## Dependencies`, invokes it, follows its steps, or hands it work. When another skill needs its
+     steps, those steps move into a skill the model may invoke, which both then depend on; telling the
+     user to invoke it never stands in for steps the other skill needs. Another skill may still name
+     it — to say what it owns, or to tell the user to invoke it, conditioned on its presence where it
+     may be absent.
    - Invoke dependent skills only from the owning `SKILL.md`. References and other supporting files are passive and must not invoke skills or identify dependencies through relative paths to another `SKILL.md`.
-   - Before delivery, audit each edited skill's complete package and its affected callers: list every instruction to apply or invoke another skill, compare those names with the owning entry point's `## Dependencies`, and resolve missing, stale, or path-based entries. Check references separately for hidden invocations and cross-skill filesystem links; move the invocation to `SKILL.md` and refer to the other package by skill name. A passing source mirror does not replace this audit.
+   - Before delivery, audit each edited skill's complete package and its affected callers: list every instruction to apply or invoke another skill, compare those names with the owning entry point's `## Dependencies`, and resolve missing, stale, or path-based entries and any entry naming a skill restricted to user invocation. Check references separately for hidden invocations and cross-skill filesystem links; move the invocation to `SKILL.md` and refer to the other package by skill name. A passing source mirror does not replace this audit.
    - Do not embed product-specific file paths or copy current application code into reusable skills; those go stale when files move or refactors land. Prefer generic placeholders (for example `services/<name>/...`), short pattern descriptions, or minimal invented examples that are not tied to live paths or current line-level code.
    - **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract, and where a skill genuinely needs one local fact, take it from the repository's `project.md` or a setting rather than baking it in. Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
-   - **Generic ownership is determined by the skill's name and purpose.** Only a product-named skill that owns that product contract may carry its product facts. Language, platform, framework, and workflow skills — including Luau — must work across products; put their repository commands, identities, hosts, packages, and fixtures in project rules or a domain-specific skill.
-   - Keep topic-specific restrictions with their topic. Keep an existing `## Guardrails` section at the bottom, and create one only for cross-cutting safety or preservation constraints.
+   - **Generic ownership is determined by what the skill must do, not its name.** A generically named skill can depend on one repository's contract; keep that skill in the repository and its facts in project guidance. Language, platform, framework, and workflow skills that truly apply across products remain shared and read repository commands, identities, hosts, packages, and fixtures from project guidance rather than embedding them.
 
 6. Multi-target behavior.
    - Apply multi-target updates for `agents`, `skills`, and `rules`.
@@ -173,24 +186,23 @@ outcome, because silence reads as the guidance having been fixed.
    - If one request contains multiple distinct items, map each item to the best existing file or a new file within the same inferred/selected type.
    - If scope is ambiguous, ask a short follow-up before editing.
 
-7. Deliver it, in this order. Every call inside this delivery is the editor's own — a flagged
-   gate, a smoke round that would not close — made and stated in the report, because a pull
-   request confined to agent configuration has merge authorization under the GitHub rule after its
-   stated gates; this authorization does not extend to a source-fix pull request or to a release
-   workflow. A question asking for that authorization only holds every later session on the
-   guidance the change replaces.
-   Step 6's review of an altered example response is the one question this delivery puts to the
-   user.
-   1. **Branch and commit.** Put it on the agent-configuration branch already in flight when one is
-      open; otherwise branch from the freshly fetched default branch. Commit only the `.agents`
-      files, and never a provider mirror, then open a pull request carrying
-      nothing else. None of that waits to be asked: the decision was made when the edit was
-      requested, and a pull request left open keeps every later session working from the guidance
-      this change replaced. A source fix required by step 3 never shares this pull request, because
-      the guidance pull request has explicit merge guidance and the source fix does not. It goes
-      into an existing source-code branch when its pull request is open, or onto a branch off the
-      freshly fetched default branch when no source-code pull request is open. Never route source
-      files into the agent-configuration branch.
+7. Deliver it, in this order. While the pull request carries only `.agents` files, every call
+   inside this delivery is the editor's own — a flagged gate, a smoke round that would not close —
+   made and stated in the report, because a pull request confined to agent configuration has merge
+   authorization under the GitHub rule after its stated gates; this authorization does not extend
+   to a pull request that also carries source or to a release workflow. A question asking for that
+   authorization only holds every later session on the guidance the change replaces. On a pull
+   request carrying only `.agents` files, step 6's review of an altered example response is the one
+   question this delivery puts to the user; on one that also carries source, the merge in step 7 and
+   a flag escalated in step 4 go to the user as well.
+   1. **Branch and commit.** When the session already has an open pull request in the repository
+      being edited, the edit goes onto its branch, under the GitHub rule's one pull request per
+      repository per session; otherwise branch from the freshly fetched default branch and open a
+      pull request. Commit the `.agents` files, never a provider mirror. None of that waits to be
+      asked: the decision was made when the edit was requested, and a pull request left open keeps
+      every later session working from the guidance this change replaced. A source fix required by
+      step 3 in the same repository joins that pull request, and the rest of this delivery runs on a
+      pull request carrying source as fully as on one carrying guidance alone.
    2. **Run `validate_sources.py`**, which sits under `scripts/` beside this skill, before the pull request opens, and again before it
       merges when the branch changed since. Nothing on a pull request runs the sync: the workflow
       runs on the default branch after the merge, so a file it refuses is refused once every session
@@ -204,6 +216,15 @@ outcome, because silence reads as the guidance having been fixed.
       imported skills, rather than only the files being edited. Remove forbidden provider UI
       metadata such as `agents/openai.yaml` from canonical skill packages; leave generated
       mirrors to Agent Sync. A clean changed file does not make a failing tree validation pass.
+      When the guidance needs a change in an unreleased tool owned by another repository, point
+      the consuming workflow at that tool's active branch and validate against it. Complete this
+      pull request's own gates and merge under step 7's authorization without waiting for the tool's
+      review loop. If that pull request changes files outside `.agents`, obtain the user authorization
+      step 7 requires. After the tool merges and receives an authorized release, open a separate pull
+      request from the latest default branch to replace the branch reference with its maintained
+      version tag and validate the tagged tool. Obtain user merge authorization for that follow-up
+      when it changes the consuming workflow outside `.agents`. The initial merge does not authorize
+      the release or the later merge.
    3. **Run `code-simplify`** across the branch and act on what it reports: guidance duplicated
       between peer rules or skills, including a caller and a skill it always invokes; a section grown
       around a second subject; a heading named for a category with one member; a rubric left inline
@@ -225,7 +246,8 @@ outcome, because silence reads as the guidance having been fixed.
       when the flag names a defect in the guidance, merge as it stands when it names a preference
       the rewrite already answered, or drop the item when neither holds, and state which and why in
       the report, as that skill's **Bounds** leave it to the caller for a change whose merge needs
-      no authorization.
+      no authorization. On a pull request that also carries source, a second flag escalates to the
+      user under those **Bounds** instead.
    5. **Run `test-skill`** for every skill the change adds or edits, to a passing table or the
       waiver its **When It Runs** bounds. It runs here rather than before step 3, because a round
       run against wording the simplification pass then rewrites has tested text nobody will follow.
@@ -260,8 +282,10 @@ outcome, because silence reads as the guidance having been fixed.
       the user uses and whose response this change alters.** A summary they read, a listing they
       act on, a report they take a decision from: for each such skill the change adds, or edits in
       a way that changes what it returns, run the edited skill yourself on real current input — the branch in flight for a skill that summarises or reviews, the request in
-      hand for one that edits, the smoke scenario only where no real input exists — and show what it
-      returned, verbatim, then ask with the question tool whether to approve or reject it. The run
+      hand for one that edits, the smoke scenario only where no real input exists — and send what it
+      returned, verbatim, under the heading `Example output`, as the final message of a turn that
+      asks in plain text whether to approve or reject it, as the global rules on questions require.
+      The run
       is this session's own: a subagent's smoke report and a hand-written illustration both stand in
       for the behaviour and neither is it. Show the next skill only after the previous one is
       approved, never several in one question. On a rejection, ask what must change, revise the
@@ -281,14 +305,16 @@ outcome, because silence reads as the guidance having been fixed.
       pull request carrying only `.agents` files, so one file outside them withdraws it — and the
       one that slips in is never announced. Read the changed paths rather than trusting your memory
       of what you edited; a stray formatter run or a file picked up by `git add -A` looks identical
-      to intent. Everything in `.agents`, merge it: a pull request carrying a skill change merges
+      to intent. Everything in `.agents`, merge it through `merge-pr` with the head
+      `acceptance-gate` accepted: a pull request carrying a skill change merges
       once step 6 approved every example, and one carrying only rules merges on sight as the GitHub
-      rules say. Anything outside, move that file to its own branch first. A pull request a doctor
+      rules say. Anything outside is source the pull request carries under step 1: it merges only on
+      the user's authorization, and no file is split out to earn the merge. A pull request a doctor
       run or `new-doctor` opens is left for the user instead; the steps above still run, the merge
       does not.
-   8. **Nothing propagates.** The skills repository is the only copy of a shared skill, and every
-      session reads it through its user-level link, so a merged edit reaches the next session on
-      its own. A skill that reads generically but was written into one repository's `.agents` is
+   8. **Nothing is copied by hand.** The skills repository is the only copy of a shared skill;
+      sessions receive a merged edit through the refresh step 9 ends with, never through a copy
+      placed in another repository or install. A skill that reads generically but was written into one repository's `.agents` is
       moved to the skills repository in the same change rather than left as a second copy.
    9. **Read the merged text back before using it.** A merge changes the default branch, not the
       checkout: a session working on another branch still carries the old skill in its tree, and a
@@ -298,14 +324,13 @@ outcome, because silence reads as the guidance having been fixed.
       from that text for the rest of the session. A skill invoked while its change is still open
       is read the same way from the branch that carries it, never from a checkout that predates
       it.
-      After the default-branch Agent Sync run completes, refresh the repository's main local
-      checkout, not the task worktree: if that checkout is clean, check out the default branch and
-      pull with `--ff-only`. If it has dirty files, leave them untouched and report the skipped
-      refresh.
+      `merge-pr` then waits for the default-branch Agent Sync run and refreshes the main local
+      checkout and, for the skills repository, the installed copy this session loads.
 
 ## Output
 
-Return this report, filled in; keep every heading and write `None` under one with nothing to list:
+Return this report, filled in; keep every heading, write `None` under one with nothing to list, and
+link a file holding the items past five under any heading:
 
 ```markdown
 Files
@@ -328,6 +353,7 @@ Checks
 - Smoke test: <passing table reported above | bound spent: <stands with the miss | edited again | dropped> — <reason> | not run: <reason>>
 - Example approved: <one line per skill: name — approved after <n> round(s) | skipped, no response the user uses | skipped, response unchanged | rule-only change>
 - Merged text read back: <default branch head the touched skills and rules were re-read from | not merged>
+- Refresh: <main checkout and installed copy at <sha>, installer rerun | skipped: <dirty paths> | not merged>
 
 Pull request
 
