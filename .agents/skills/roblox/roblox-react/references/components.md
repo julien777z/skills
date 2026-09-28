@@ -37,4 +37,4 @@ Separate mounting, feature state, and leaf components. A canonical Core UI mount
 
 Feature App components own subscriptions and UI state. Receive subscriptions as typed props, connect them in effects, and return cleanup. Leaf modules return component functions with exported typed Props; they receive data/actions without requiring networking or fetching the local player. Keep rules, formatting, and state transformations engine-free where useful. Preserve expensive preview identities during snapshot updates.
 
-Run React tests in the project's Roblox engine tier; pure presentation policy can use its standalone tier. Automated checks complement the parent skill's real-input, repeated-click, responsive, and visual acceptance checks.
+Run React tests in the project's Roblox engine suite; pure presentation policy can use its standalone suite. Automated checks complement the parent skill's real-input, repeated-click, responsive, and visual acceptance checks.

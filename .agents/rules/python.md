@@ -363,7 +363,7 @@ register_task(task_type=TaskType.PROCESS_RESOURCE, handler_name=handler.__name__
   - gateway module (external/internal API client calls)
   - domain helper modules (policy/state decisions, AI resolution, etc.)
 - Keep public service function signatures stable while refactoring internals.
-- **No upward imports**: `lib/` must never import from `services/`. Shared infrastructure both tiers need (client factories, session wiring, config) lives in `core/`, which either tier may import.
+- **No upward imports**: `lib/` must never import from `services/`. Shared infrastructure both layers need (client factories, session wiring, config) lives in `core/`, which either layer may import.
 - **Orchestration does not live under `lib/`**: a module whose functions are route-facing entry points (they accept request-shaped inputs and return response models) belongs in `services/`, even if it started life as a helper. Keep the pure helpers (query builders, row/CSV machinery, mappers) in `lib/` and move only the orchestrator.
 - **A transport-only "service" is a gateway**: a `services/` module whose functions only wrap internal-service or external API calls belongs in `lib/<domain>/gateway.py`; keeping it under `services/` invites upward imports from other lib modules.
 

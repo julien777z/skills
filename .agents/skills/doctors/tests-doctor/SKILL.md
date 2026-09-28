@@ -142,8 +142,11 @@ consolidate, or delete, with its actual assertion and the contract it protects. 
 not names or deletion counts. A skip, xfail, or commented-out test whose condition no longer holds
 is revived or deleted.
 
-For each duplicated contract, identify the strongest keeper suite and the distinct risks other
-layers still protect. Carry every unique assertion into its owner before removing a replay. Repair
+Duplication is judged inside one classification — unit, integration, or end-to-end — and never
+across them: two tests of the same classification asserting one contract are consolidated, and a
+test is never deleted, merged away, or moved out because a test of another classification reaches
+the same assertion. For each duplicated contract within a classification, pick the keeper and carry
+every unique assertion into it before removing the replay. Repair
 vacuous assertions and negative controls that pass for the wrong reason; verify new or strengthened
 guarantees through `test-fixture`'s mutation proof. Retain independently valuable static and slow
 tests under the rubric's retention bar. A failing baseline test is investigated as a possible
@@ -235,9 +238,10 @@ also a flaky one.
 
 **Weigh every dominating case against what it proves.** A test earns its runtime by the failure it
 would catch, so the question is what a reader loses if it goes, not whether it passes. One that
-rebuilds an expensive world to assert something a cheaper test at another level already reaches, or
-that asserts little for a large share of the suite's wall time, is cut, folded into a case that is
-already paying that setup, or moved to the level where its setup is free. In a pre-production
+asserts little for a large share of the suite's wall time is folded into a case of the same
+classification that is already paying that setup, or made cheaper where it stands. An end-to-end
+test is never cut because a cheaper classification reaches the same assertion: that it runs the
+real services is what it proves. In a pre-production
 repository that trade is ordinary rather than a last resort: a suite nobody will wait for is
 coverage nobody runs.
 
@@ -247,7 +251,7 @@ a coverage loss wearing a timing win, so name what each cut proved and where tha
 ### Map Coverage By Test
 
 Map entry points — routes, RPC methods, commands, jobs, event consumers — gateways and clients,
-persistence and migrations, and user journeys to the tests that exercise them at each level. A
+persistence and migrations, and user journeys to the tests that exercise them in each classification. A
 journey with no end-to-end test, a boundary crossing with no integration test, and a flow covered
 only with its boundary mocked are gaps; a pure function covered only end-to-end is misplaced cost.
 Integration and end-to-end coverage outrank unit coverage for anything that crosses a boundary: a
@@ -472,7 +476,8 @@ before delivery and verify that none enters the delivered diff.
   same workload. A suite still over budget is unfinished work, not a line in the report: carry on
   with the next disposition, or put the remaining cause and its cost to the user in the current
   request.
-- A redundant test merges into the survivor; an assertion nobody else makes is never dropped.
+- A redundant test merges into the survivor of its own classification; an assertion nobody else
+  in that classification makes is never dropped.
 - A test-only production seam with no non-test caller is removed after its contract has a keeper;
   a baseline test exposing a product defect is repaired at the owner with failing control and
   passing candidate proof.
@@ -482,8 +487,8 @@ before delivery and verify that none enters the delivered diff.
   words takes a hand-chosen label rather than the mechanical residue.
 - A layout finding moves to the pattern `test-fixture`'s ownership rules select; an even split
   between equally valid patterns is a user decision.
-- A coverage gap is closed by the test that proves it, a misplaced test moves between suites, and
-  the redundant lower copy is removed. Every added or rewritten test follows `test-fixture`,
+- A coverage gap is closed by the test that proves it, and a misplaced test moves between suites;
+  closing a gap in one classification removes no test from another. Every added or rewritten test follows `test-fixture`,
   including its mutation proof per batch.
 - A construction finding moves the construction to the suite's shared home and reads identities
   from the canonical fixtures. A factory-content finding deletes the override or the provider, or

@@ -8,10 +8,11 @@ Before adding a test, answer four questions; a missing answer means do not add i
 
 1. What observable behavior, invariant, or independent contract does it protect?
 2. What credible regression makes it fail?
-3. Why does existing coverage not already catch that failure? Each contract has one primary test
-   owner at the strongest boundary. Another layer needs its own distinct risk, such as a transport
-   or lifecycle failure the owner cannot reach. Prefer extending a parameter table or shared fixture
-   over a near-duplicate test; consolidate duplicated setup in the same change.
+3. Why does existing coverage of the same classification — unit, integration, or end-to-end — not
+   already catch that failure? Coverage is compared only within one classification: a test in
+   another classification never answers this question, in either direction. Prefer extending a
+   parameter table or shared fixture over a near-duplicate test; consolidate duplicated setup in
+   the same change.
 4. Does it need a production seam — an export, flag, wrapper, or injection hook — that no production
    caller needs? If so, move the test to the real boundary instead.
 
@@ -32,7 +33,12 @@ Check new and existing tests against these low-value patterns:
   than the input and assertions exercise.
 
 A match fails the gate for a new test unless the test independently guards a contract below. An
-existing match is suspect, not automatically deletable. A test that would break under
+existing match is suspect, not automatically deletable. **A test is never redundant with a test of
+another classification.** An end-to-end test runs the real services, an integration test still
+stands some of them in, and a unit test stands in all of them, so the same assertion proves
+different things in each; an end-to-end test that an integration test also reaches, or an
+integration test a unit test also reaches, stays. End-to-end coverage is preferred wherever it can
+reach the contract. A test that would break under
 behavior-preserving source reorganization is asserting implementation rather than behavior; move
 it to the owning boundary. Bug regressions fail on the pre-fix code for the intended reason and pass
 after the owner repair. One regression at the owner boundary covers the bug.
@@ -46,7 +52,7 @@ is not a deletion reason. A baseline failure may expose a product bug; reproduce
 owner rather than deleting its test.
 
 Before deleting an existing test, record its exact name and location, the failure it can detect,
-non-test callers of the covered source or support seam, the stronger owner-boundary proof that
+non-test callers of the covered source or support seam, the proof of the same classification that
 remains (or why none is needed), relevant history, the source or support deletion it unlocks, risk,
 and a focused validation command. Missing evidence leaves the candidate unready for deletion.
 Read the complete test and production owner, entry point, callers, callees, sibling implementations,
