@@ -155,7 +155,12 @@ outcome, because silence reads as the guidance having been fixed.
      another immediately after the field it relates to, unless the format requires another order.
      Place new body guidance under the broadest existing subject section that fits. A reported
      misplaced field is a case to test this general rule, not a reason to name that field in shared
-     guidance. Use durable topic headings rather than creating a heading for one requirement.
+     guidance.
+   - A heading names the subject a reader looks under — Comments, Commits, Workflows — never the
+     requirement it holds. Add a section only when no existing one covers the subject, and name it
+     for the whole subject: a heading that states one rule invites the next rule on that subject
+     into a heading of its own. A restriction on one subject goes under that subject's heading;
+     `## Guardrails`, kept at the bottom, holds only constraints that span the file's subjects.
    - Express each independent requirement once, usually as one concise bullet. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
    - Normalize the touched file's nearby structure when needed: combine narrow sections, remove redundant wording, and order foundational guidance before specialized concerns.
    - When adding a **new** restriction or rule, keep the wording **concise**—one clear statement or bullet per idea; do not pad with redundant sentences or multiple bullets that restate the same requirement.
@@ -187,7 +192,6 @@ outcome, because silence reads as the guidance having been fixed.
    - Do not embed product-specific file paths or copy current application code into reusable skills; those go stale when files move or refactors land. Prefer generic placeholders (for example `services/<name>/...`), short pattern descriptions, or minimal invented examples that are not tied to live paths or current line-level code.
    - **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract, and where a skill genuinely needs one local fact, take it from the repository's `project.md` or a setting rather than baking it in. Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
    - **Generic ownership is determined by what the skill must do, not its name.** A generically named skill can depend on one repository's contract; keep that skill in the repository and its facts in project guidance. Language, platform, framework, and workflow skills that truly apply across products remain shared and read repository commands, identities, hosts, packages, and fixtures from project guidance rather than embedding them.
-   - Keep topic-specific restrictions with their topic. Keep an existing `## Guardrails` section at the bottom, and create one only for cross-cutting safety or preservation constraints.
 
 6. Multi-target behavior.
    - Apply multi-target updates for `agents`, `skills`, and `rules`.
@@ -314,9 +318,9 @@ outcome, because silence reads as the guidance having been fixed.
       the user's authorization, and no file is split out to earn the merge. A pull request a doctor
       run or `new-doctor` opens is left for the user instead; the steps above still run, the merge
       does not.
-   8. **Nothing propagates.** The skills repository is the only copy of a shared skill, and every
-      session reads it through its user-level link, so a merged edit reaches the next session on
-      its own. A skill that reads generically but was written into one repository's `.agents` is
+   8. **Nothing is copied by hand.** The skills repository is the only copy of a shared skill;
+      sessions receive a merged edit through the refresh step 9 ends with, never through a copy
+      placed in another repository or install. A skill that reads generically but was written into one repository's `.agents` is
       moved to the skills repository in the same change rather than left as a second copy.
    9. **Read the merged text back before using it.** A merge changes the default branch, not the
       checkout: a session working on another branch still carries the old skill in its tree, and a
@@ -326,10 +330,8 @@ outcome, because silence reads as the guidance having been fixed.
       from that text for the rest of the session. A skill invoked while its change is still open
       is read the same way from the branch that carries it, never from a checkout that predates
       it.
-      After the default-branch Agent Sync run completes, refresh the repository's main local
-      checkout, not the task worktree: if that checkout is clean, check out the default branch and
-      pull with `--ff-only`. If it has dirty files, leave them untouched and report the skipped
-      refresh.
+      `merge-pr` then waits for the default-branch Agent Sync run and refreshes the main local
+      checkout and, for the skills repository, the installed copy this session loads.
 
 ## Output
 
@@ -357,6 +359,7 @@ Checks
 - Smoke test: <passing table reported above | bound spent: <stands with the miss | edited again | dropped> — <reason> | not run: <reason>>
 - Example approved: <one line per skill: name — approved after <n> round(s) | skipped, no response the user uses | skipped, response unchanged | rule-only change>
 - Merged text read back: <default branch head the touched skills and rules were re-read from | not merged>
+- Refresh: <main checkout and installed copy at <sha>, installer rerun | skipped: <dirty paths> | not merged>
 
 Pull request
 
