@@ -14,9 +14,9 @@ paths:
 
 ## Components and Props
 
-- Components share a module with the others of their area, under the TypeScript rules' module
-  structure; a component takes a file of its own only where it opens a `'use client'` boundary or is
-  large enough to be read alone
+- Components follow the TypeScript rules' module structure and share the module that owns their
+  domain. A `'use client'` directive covers its whole module, so a domain's client components share a
+  client module kept apart from its server components
 - Named exports for components
 - Default exports only for page components
 
