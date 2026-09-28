@@ -306,7 +306,7 @@ Lenses: <completed lens names and Security omitted when unavailable>. Head: <rev
 ```
 
 The chat list carries the five most severe findings; the file holds every finding in the same
-shape and is linked on a closing line, `All findings: <link>`, whenever more than five remain. The
+shape and is sent with the report whenever more than five remain. The
 outcome arrow appears only in fix mode. If nothing remains, the list is the single line
 `No findings.` and the closing lines stay. In degraded mode, add one line stating that no
 subagent dispatch was available.
