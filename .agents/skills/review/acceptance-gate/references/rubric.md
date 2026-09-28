@@ -138,8 +138,9 @@ ends the question.
    arguable — a redesign, a sweep across many files somebody could reasonably decline; an external
    blocker stands, which is something outside the repository the fix cannot be written without — a
    credential nobody has issued, a vendor change, an answer only a third party can give. A change
-   owed by a library or service the user owns is never one, wherever it lives: its fix is written in
-   that repository and the consuming change is written against it, so the item is fix or do. Read
+   owed by a library or service the user owns is never one, wherever it lives: its fix is written
+   now, in that repository, and the consuming change is written against it, so the item is fix or
+   do — never defer, and never close with the work handed to that repository's backlog. Read
    ownership from the dependency's source — whose repository it is — never from whether it sits in
    this repository or from a record calling it out of scope; a decision
    that is somebody else's is already put to that person and still open, or the user declined it in
