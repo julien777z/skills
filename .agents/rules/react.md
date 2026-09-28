@@ -144,7 +144,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   large empty area — below its content, or between the content and the control that acts on it —
   reads as unfinished. Content flows from the top and each control sits directly after what it acts
   on, never pushed to the bottom of a stretched container by a fill or a space-between, or to the
-  far edge of an otherwise empty row or footer. Surfaces sharing a row share its width and end on
+  far edge of an otherwise empty row or footer. Surfaces sharing a row split its width evenly — a main area beside a narrow side rail aside — and end on
   the same line, and they get there by balancing what they hold — cutting a
   line that earns no place, moving a control, re-pairing the surfaces — never by stretching the
   shorter one; where content cannot be balanced, the shorter keeps its own height. An empty state is
@@ -161,8 +161,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   status row the reader can never use — the other region's version of a document, the other account
   type's settings — is left out, decided by the same rule that decides which one applies, never
   listed beside it.
-- **A step-by-step flow puts Back at the start of its footer and the primary action at the end,**
-  apart, so the control that goes back never sits beside the one that commits.
+- **A step-by-step flow with a Back control puts it at the start of its footer and the primary
+  action at the end,** apart, so the control that goes back never sits beside the one that commits.
 - **A page whose only content is a status message renders a full-page message state**, centered in
   the page, never a small card left under the flow's own chrome — a stepper, tabs, a form header —
   that no longer applies. A form or list long enough to fill the page keeps its card.
@@ -177,12 +177,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 - **A form a person signs, certifies or attests to starts empty.** Nothing is seeded from a profile
   or an earlier submission, because the signer vouches for what they entered.
-- **Fields sit side by side wherever the width allows,** wrapping only when it does not.
+- **Related short fields sit side by side wherever the width allows,** wrapping only when it does
+  not.
 - **One act gets one confirmation.** A single checkbox, worded as the whole statement the reader is
   making, stands for it; a second box restating part of the first asks twice.
 - **Long fixed text a reader must accept — a certification, terms, a disclosure — is set in smaller
-  muted type** and scrolls inside a maximum height as Layout And Spacing describes, with the control
-  that accepts it directly below.
+  muted type** and scrolls inside a maximum height as Layout And Spacing describes.
 - **A placeholder shows a realistic example of the value's format,** such as `555-0100` or
   `2030-01-31`, never zeros, dots or a mask that reads as an existing value hidden from the reader.
 
