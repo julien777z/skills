@@ -8,7 +8,6 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CANONICAL_SKILLS="$REPO_ROOT/.agents/skills"
 CANONICAL_AGENTS="$REPO_ROOT/.agents/agents"
 CANONICAL_RULES="$REPO_ROOT/.agents/rules"
-CANONICAL_GLOBAL="$REPO_ROOT/.agents/global.md"
 CANONICAL_RESOURCES="$REPO_ROOT/.agents/resources"
 GENERATED_ROOT="$REPO_ROOT/.agents/.auto_generated"
 PROVIDERS=(claude codex cursor)
@@ -69,16 +68,11 @@ preflight_provider() {
       [ -f "$rule" ] || continue
       name="$(basename "$rule")"
       if [ "$provider" = "cursor" ]; then name="${name%.md}.mdc"; fi
-      check_link "$(link_source "$provider" rules "$name" "$rule")" "$root/rules/$name" || failed=1
+      check_link "$rule" "$root/rules/$name" || failed=1
     done
   fi
-  if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -f "$CANONICAL_GLOBAL" ]; then
-    name="global.md"
-    if [ "$provider" = "cursor" ]; then name="global.mdc"; fi
-    check_link "$CANONICAL_GLOBAL" "$root/rules/$name" || failed=1
-  fi
   if [ "$provider" = "codex" ] && { [ -L "$root/AGENTS.md" ] || [ -s "$root/AGENTS.md" ]; }; then
-    check_link "$CANONICAL_GLOBAL" "$root/AGENTS.md" || failed=1
+    check_link "$CANONICAL_RULES/global.md" "$root/AGENTS.md" || failed=1
   fi
   [ "$failed" -eq 0 ]
 }
@@ -163,19 +157,13 @@ install_provider() {
       [ -f "$rule" ] || continue
       name="$(basename "$rule")"
       if [ "$provider" = "cursor" ]; then name="${name%.md}.mdc"; fi
-      install_link "$(link_source "$provider" rules "$name" "$rule")" "$root/rules/$name"
+      install_link "$rule" "$root/rules/$name"
       rules=$((rules + 1))
     done
     prune_links "$root/rules"
   fi
-  if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -f "$CANONICAL_GLOBAL" ]; then
-    name="global.md"
-    if [ "$provider" = "cursor" ]; then name="global.mdc"; fi
-    install_link "$CANONICAL_GLOBAL" "$root/rules/$name"
-    rules=$((rules + 1))
-  fi
   if [ "$provider" = "codex" ]; then
-    install_link "$CANONICAL_GLOBAL" "$root/AGENTS.md"
+    install_link "$CANONICAL_RULES/global.md" "$root/AGENTS.md"
   fi
 
   echo "$root: $skills skills, $agents agents, $rules rules, $resources resources linked"
