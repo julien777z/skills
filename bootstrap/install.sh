@@ -218,7 +218,7 @@ preflight_provider() {
     check_link "$root/rules/$name" || failed=1
   fi
 
-  if [ "$provider" = "codex" ] && { [ -L "$root/AGENTS.md" ] || [ -s "$root/AGENTS.md" ]; }; then
+  if [ "$provider" = "codex" ] && { [ -e "$root/AGENTS.md" ] || [ -L "$root/AGENTS.md" ]; }; then
     check_link "$root/AGENTS.md" || failed=1
   fi
 
@@ -322,6 +322,7 @@ install_provider() {
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ "$CANONICAL_GLOBAL" != "$CANONICAL_RULES/global.md" ]; then
     name="global.md"
     if [ "$provider" = "cursor" ]; then name="global.mdc"; fi
+
     ln -sfn "$CANONICAL_GLOBAL" "$root/rules/$name"
     rules=$((rules + 1))
   fi
