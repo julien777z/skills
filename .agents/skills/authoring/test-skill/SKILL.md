@@ -109,7 +109,7 @@ Smoke test: <skill name>
 
 Miss: <one sentence>
 
-| Criterion | <Model> A | <Model> B | <Model> A | <Model> B |
+| Criterion | <Model 1> A | <Model 1> B | <Model 2> A | <Model 2> B |
 |---|---|---|---|---|
 | Result | pass | miss | pass | miss |
 | <criterion 1> | pass | miss | pass | pass |
