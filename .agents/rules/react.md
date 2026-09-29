@@ -81,7 +81,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   share one structure; land the change on all of them together. A page left on the old shape is a
   defect, not a follow-up.
 - **A surface that does for one audience what another already does for a second takes that
-  sibling's component, placement, size and controls.** A first-run checklist, a status summary or a
+  sibling's component, placement, size and controls, differing only in the content each audience
+  needs.** A first-run checklist, a status summary or a
   setup step shown to each role, plan or workspace kind is one surface: when one audience's version
   sits in the grid at half width with plain rows, the other's is not a full-width card with its own
   buttons. Read the existing sibling before building the new one, and build on it.
@@ -180,11 +181,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   status row the reader can never use — the other region's version of a document, the other account
   type's settings — is left out, decided by the same rule that decides which one applies, never
   listed beside it.
-- **A screen offers one control per destination or action.** Two buttons that open the same form or
-  page — a checklist step's button beside a quick link, a row's link beside its own "View" button, a
-  header action repeated in the section below it — read as two different actions and crowd the
-  screen. Keep one button where the reader looks for it; anywhere else the same step appears, name
-  it as text, or link it from its label, never with a second button.
+- **A screen offers one control per destination or action** — a button, a link, a menu item, an
+  icon or a clickable row. Two that open the same form or page — a checklist step's button or linked
+  label beside a quick link, a row that opens its record beside that row's own "View" link, a header
+  action repeated in the section below it — read as two different actions and crowd the screen.
+  Keep the one control where the reader looks for it; anywhere else the same step appears, it is
+  plain text.
 - **Every step of a multi-step flow renders as a page, in the flow's own chrome, never as a
   dialog.** A dialog is for one action taken from inside a page, however long its form —
   submitting a form outside any flow, submitting on someone's behalf, a quick edit — and one form
