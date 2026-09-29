@@ -235,6 +235,7 @@ return ApiEnvelope(success=True, data=data)
 
 ## Error Handling
 
+- Raise exceptions for failures in routes and services. Do not return an error string, a list of error strings, or a success-shaped result that callers must inspect to discover failure.
 - Raise the project's standard API error response directly with an appropriate `HTTPStatus`. Do not wrap it in a helper (for example, `bad_request("...")` or `not_found("...")`) just to set the status code; the call site already states the failure mode, and the helper only adds indirection.
 - This includes log-and-raise wrappers (for example a `raise_internal_api_error(...)` that logs then raises): log and `raise ApiError(...) from exc` inline at the failure site instead.
 - Always pass `status_code=HTTPStatus.X` and `detail="..."` at the `raise` site so the status is visible without jumping to a helper.
