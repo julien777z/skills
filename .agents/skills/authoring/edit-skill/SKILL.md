@@ -106,8 +106,9 @@ outcome, because silence reads as the guidance having been fixed.
      only to provide skills is not the editing checkout. Transfer the edit to a separate
      skills-repository session only when no writable checkout can be obtained, never by editing
      the installed clone.
-     The originating session supplies the observed miss, original task, relevant diff or small
-     file set, repository commit, original skill text, and two to four observable pass criteria.
+     The originating session supplies the observed miss and its failure class, original task,
+     relevant diff or small file set, repository commit, original skill text, and two to four
+     observable pass criteria.
      Include a sanitized fixture when the skills session cannot read the originating repository.
      The skills session tests original and proposed wording against the same case and names the
      exact proposed pull-request head. For repository-dependent behavior, the originating session
@@ -180,7 +181,7 @@ outcome, because silence reads as the guidance having been fixed.
      skills. State the transferable failure class and check a different instance before committing.
    - A skill may restate an ambient rule when it helps the reader act at the point of use; this does
      not license a second copy of a decision boundary owned by a skill that necessarily runs.
-   - **Prefer the broad statement, and let the request be its example.** A request arrives as one symptom, and the rule it needs names the class that symptom belongs to; the symptom stays as one illustration of it. Asked for `Final` on string constants, write `Final` for every module-level constant; asked for a walkthrough rule because a page reloaded in a loop once a back-end change was absent, write that the run is judged against intended behaviour because an API error surfaces as any unintended behaviour, and name the loop only as one instance. A rule written for the symptom is silent on the next one, and the next one is what it will be read for. Broaden to the class the user plainly meant, never to a neighbouring subject.
+   - **Prefer the broad statement, and let the request be its example.** A request arrives as one symptom, and the rule it needs names the class that symptom belongs to; the symptom stays as one illustration of it. Asked for `Final` on string constants, write `Final` for every module-level constant; asked for a walkthrough rule because a page reloaded in a loop once a back-end change was absent, write that the run is judged against intended behaviour because an API error surfaces as any unintended behaviour, and name the loop only as one instance. A rule written for the symptom is silent on the next one, and the next one is what it will be read for. Broaden to the class the user plainly meant, never to a neighbouring subject. Wording handed over — rule text in the request or in a delegating agent's brief — is input to this, never the spec: name the failure class, list at least two other instances of it, and write the rule to cover them, widening narrower wording as it arrives. An agent delegating an edit passes the class and the evidence, not finished rule text for one case.
    - Keep reusable skill names, instructions, scripts, and interfaces model-agnostic. Name a client or model only in a scoped compatibility section where its behavior genuinely differs.
    - Do not add committed tests for skills or their helper scripts, inside or outside the skill directory. Keep any needed execution checks temporary and untracked.
    - **Refer to a skill, and to anything inside it, by the skill's name, never by path.** `the `code-simplify` skill's rubric reference` is right; a relative path into another skill's directory is wrong, because the directories move between repositories and user-level roots and the name is the only stable handle.
@@ -359,7 +360,7 @@ Files
 
 Changes
 
-- <one sentence per change to the guidance>
+- <one sentence per change to the guidance: the failure class it covers first, the triggering case as one example>
 
 Underlying issue
 
