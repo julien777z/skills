@@ -25,14 +25,13 @@ is two invocations, and the user asks for both.
 Every invocation resolves to one of two routes. Make the call explicitly and say which one was
 taken and why.
 
-**Execute now, in a worktree.** Take this route when the scope is small enough for one focused
-pass **and** cannot conflict with the change in flight. Both halves must hold.
+**Execute now, in a worktree.** Take this route whenever the scope cannot conflict with the change
+in flight, whatever its size. A scope that needs a plan gets one through `plan-change` and still
+runs now, beside the change.
 
-**Execute after the merge.** Take this route otherwise — the scope is large, or it touches files
-the current branch also touches, or its correct shape depends on what the current change lands.
-
-When the two routes are genuinely close, prefer executing now. A branch that exists is worth more
-than a promise, and the merge route's whole cost is that nothing happens until someone comes back.
+**Execute after the merge.** Take this route only when the merge supplies something the scope
+uses: it touches files the current branch also touches, or its correct shape depends on what the
+current change lands. Name which of the two applies; that is the trigger the queued item carries.
 
 ### What "cannot conflict" means
 
@@ -47,13 +46,8 @@ new files cannot conflict. A scope that renames or moves a file the current bran
 conflicts, however small it looks.
 
 Where the current branch is still being worked, judge against what it will touch, not only what it
-has touched so far. When that is unclear, take the merge route.
-
-### What "small" means
-
-One focused pass by one agent: a rename, a move, a helper extraction, a documentation correction,
-a directory restructure whose call sites are mechanical. If the scope needs its own plan, spans
-subsystems, or would need review as a design change, it is not small.
+has touched so far: read its plan and its planned files. An overlap left unclear after that is
+resolved by reading further, never by defaulting to the merge.
 
 ## Route one: execute now, in a worktree
 
@@ -71,8 +65,7 @@ change in flight keeps running while this work happens beside it.
    and working directory stay where they were. Give it the scope, the worktree path, and the
    instruction to commit there.
 
-3. **Validate inside the worktree** with the repository's own checks for what changed. A scope
-   small enough for this route is small enough to validate.
+3. **Validate inside the worktree** with the repository's own checks for what changed.
 
 4. **Push and open a pull request** as ready for review, titled for the work.
 

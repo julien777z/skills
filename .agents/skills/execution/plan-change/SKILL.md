@@ -24,6 +24,9 @@ while the plan is being written, and it never invokes this skill back.
    at most five numbered steps each with a time estimate, and the decisions it needs, in under 200
    words while `i-have-adhd` is active. Send the file holding any detail a caller requires — a gated
    plan, a ledger — as the User-Facing Output rule requires, instead of restating it.
+   - **A step follows another only when it names what that one supplies or the files both
+     change;** every other step is marked to run alongside it, under `execute-task`'s **Work You
+     Have Already Named**, and the estimates count it in parallel rather than end to end.
    - **An estimate is the executing agent's own wall-clock, never the effort the same work would
      take a person, however plausible that figure reads.** Reading, searching and editing take an
      agent minutes whatever the file count; the time comes from what the run waits on — test and
