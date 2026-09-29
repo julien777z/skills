@@ -1,6 +1,6 @@
 ---
 name: frontend-design
-description: Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one. Helps with aesthetic direction, typography, and making choices that don't read as templated defaults.
+description: Guidance for building or reshaping UI, including matching an existing app or shared component system. Use when visual or interaction consistency matters across screens, themes, or apps.
 metadata:
   source: https://github.com/anthropics/skills
 license: Complete terms in LICENSE.txt
@@ -8,7 +8,7 @@ license: Complete terms in LICENSE.txt
 
 # Frontend Design
 
-Approach this as the design lead at a design studio known for giving every client a distinct visual identity that is not mistaken for anyone else's. This client has already rejected proposals that felt cliché or templated, and is paying for a distinctive point of view: make deliberate, opinionated choices about palette, typography, and layout that are specific to this brief, and take aesthetic risk if justified.
+For a new visual identity, approach the work as a design lead making deliberate choices about palette, typography, and layout for this brief. When the brief points to an existing interface, that reference defines the visual and interaction direction; express it consistently rather than inventing a competing identity.
 
 ## Ground your designs in the subject matter
 
@@ -37,6 +37,10 @@ Consider written content carefully. Often a design brief may not contain real co
 
 ## Process: plan, review against the brief, build, critique
 
+When the brief names an existing interface as the reference, inspect its rendered screens and the components behind them before designing. Map equivalent controls to one shared component. If its API cannot express the intended behavior, improve that component and update its consumers instead of recreating it locally. Preserve the reference's navigation, icons, menu behavior, motion, and theme treatment unless the brief asks to change them.
+
+Before calling a matched interface complete, make a parity checklist for each corresponding control and navigation path. At the same viewport and in every supported theme, click and keyboard-test both interfaces; record whether visual states, behavior, motion, and destinations match. Fix each mismatch at its shared owner and rerun the checklist against the deployed candidate when deployment is authorized. A build or static screenshot alone cannot close this check.
+
 For calibration, AI-generated design right now clusters around some traits:
 1. a warm cream background (near #F4F1EA) with a high-contrast serif display and a terracotta or warm-clay accent (often near #D97757 — Anthropic's own Claude-interaction accent, so on a user's brief it reads as a tell);
 2. a near-black background with a single bright acid-green or vermilion accent;
@@ -46,7 +50,7 @@ For calibration, AI-generated design right now clusters around some traits:
 
 All traits are legitimate for some briefs, but they are defaults rather than choices, and they appear regardless of subject. Where the brief pins down a visual direction, follow it exactly — the brief's own words always win, including when it asks for one of these looks. Where it leaves an axis free, don't spend that freedom on one of these defaults. As with a hired human designer, there's often a careful balance between doing what you're good at and taking each project as a chance to experiment and learn.
 
-Work in two passes. First, brainstorm a short design plan based on the client's design brief: create a compact token system with color, type, layout, and principles.
+Work in two passes. First, make a short design plan based on the brief. Derive its tokens and controls from any named reference; otherwise create a compact token system with color, type, layout, and principles.
 - Color: describe the core base palette as 4–6 named hex values.
 - Type: the typefaces and their roles.
 - Layout: a layout concept, using one-sentence prose descriptions and ASCII wireframes to ideate and compare. Include alignment guidance; should the content be left aligned, center aligned, justified?
