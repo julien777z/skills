@@ -42,6 +42,10 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
     echo "Skills setup clone has local edits; refusing to overwrite them: $REPO_ROOT" >&2
     exit 1
   fi
+  cloud_branch="$(run_as_cloud_user git -C "$REPO_ROOT" symbolic-ref --quiet --short HEAD)" || {
+    echo "Skills setup clone must be on a branch: $REPO_ROOT" >&2
+    exit 1
+  }
 
   # Claude's proxy may configure a CA bundle under /root that the clone owner cannot read.
   fetch_env=()
@@ -56,9 +60,8 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
     fi
     fetch_env=(GIT_SSL_CAINFO="$ca_bundle" SSL_CERT_FILE="$ca_bundle")
   fi
-  run_as_cloud_user env ${fetch_env[@]+"${fetch_env[@]}"} git -C "$REPO_ROOT" fetch origin main
-  run_as_cloud_user git -C "$REPO_ROOT" switch main
-  run_as_cloud_user git -C "$REPO_ROOT" merge --ff-only origin/main
+  run_as_cloud_user env ${fetch_env[@]+"${fetch_env[@]}"} git -C "$REPO_ROOT" fetch origin "$cloud_branch"
+  run_as_cloud_user git -C "$REPO_ROOT" merge --ff-only "origin/$cloud_branch"
 
   source_checkout="$REPO_ROOT"
   while IFS= read -r git_marker; do
