@@ -187,8 +187,9 @@ capture shows, since the two look identical.
 
 ### Evidence
 
-Record from the moment sign-in completes until the feature is exercised to its end — the form
-submitted and its result read back, the item seen in its list, the setting confirmed after a reload.
+Record the flow until the feature is exercised to its end — the form submitted and its result read
+back, the item seen in its list, the setting confirmed after a reload. Start recording before signing
+in: starting a recording opens a fresh browser context, so a session signed in before it is gone.
 The recorder writes WebM, which some viewers cannot play; send the MP4:
 
 ```bash
