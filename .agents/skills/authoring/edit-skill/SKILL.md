@@ -268,8 +268,8 @@ outcome, because silence reads as the guidance having been fixed.
       does, against the miss that prompted it and with the original text as the control. Give both
       readers the complete relevant package, including the references needed for the scenario; an
       entry-point-only test cannot prove a reference fix. An edit
-      whose smoke run fails is revised and rerun within the rounds that skill bounds, never merged
-      on the strength of reading well; a spent bound is decided as that skill says.
+      whose smoke run misses is diagnosed, changed and rerun as that skill says, never merged with
+      a failing row or on the strength of reading well.
       A **mechanical seam edit** changes no behaviour and needs no smoke run: a dependency
       replaced by the role phrase that finds it, a path generalized, a rename, a frontmatter key, a
       reference path corrected, wording that says the same thing shorter. The report says
@@ -366,7 +366,7 @@ Checks
 - Source check: passed on <head> | failed: <report>
 - Simplification: <clean | findings applied>
 - Acceptance gate: <accepted | rewritten and accepted | flagged twice: <fixed | merged as it stands | dropped> — <reason>>
-- Smoke test: <passing table reported above | bound spent: <stands with the miss | edited again | dropped> — <reason> | not run: <reason>>
+- Smoke test: <passing table reported above | dropped — <reason> | not run: <reason>>
 - Example approved: <one line per skill: name — approved after <n> round(s) | skipped, no response the user uses | skipped, response unchanged | rule-only change>
 - Merged text read back: <default branch head the touched skills and rules were re-read from | not merged>
 - Refresh: <main checkout and installed copy at <sha>, installer rerun | skipped: <dirty paths> | not merged>
