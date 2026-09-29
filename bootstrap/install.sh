@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Refresh a cloud setup clone when invoked from it, then link this repository's guidance into
+# Refresh a cloud setup clone once per invocation, then link this repository's guidance into
 # existing user-level agent roots. Owned links are refreshed and stale ones are pruned.
 set -euo pipefail
 
@@ -43,37 +43,39 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
   }
 
   is_skills_checkout "$REPO_ROOT" || { echo "Setup clone is not the skills repository: $REPO_ROOT" >&2; exit 1; }
-  if [ -n "$(run_as_cloud_user git -C "$REPO_ROOT" status --porcelain)" ]; then
-    echo "Skills setup clone has local edits; refusing to overwrite them: $REPO_ROOT" >&2
-    exit 1
-  fi
-  cloud_branch="$(run_as_cloud_user git -C "$REPO_ROOT" symbolic-ref --quiet --short HEAD)" || {
-    echo "Skills setup clone must be on a branch: $REPO_ROOT" >&2
-    exit 1
-  }
-  installer_blob="$(run_as_cloud_user git -C "$REPO_ROOT" rev-parse HEAD:bootstrap/install.sh)"
+  if [ "${SKILLS_INSTALL_UPDATED:-0}" != 1 ]; then
+    if [ -n "$(run_as_cloud_user git -C "$REPO_ROOT" status --porcelain)" ]; then
+      echo "Skills setup clone has local edits; refusing to overwrite them: $REPO_ROOT" >&2
+      exit 1
+    fi
+    cloud_branch="$(run_as_cloud_user git -C "$REPO_ROOT" symbolic-ref --quiet --short HEAD)" || {
+      echo "Skills setup clone must be on a branch: $REPO_ROOT" >&2
+      exit 1
+    }
+    installer_blob="$(run_as_cloud_user git -C "$REPO_ROOT" rev-parse HEAD:bootstrap/install.sh)"
 
-  # Claude's proxy may configure a CA bundle under /root that the clone owner cannot read.
-  fetch_env=()
-  ca_bundle="${GIT_SSL_CAINFO:-$(git config --get-urlmatch http.sslCAInfo "$SKILLS_REMOTE" || true)}"
-  ca_bundle="${ca_bundle:-${SSL_CERT_FILE:-}}"
-  if [ "$(id -u)" -eq 0 ] && [ -n "$ca_bundle" ] && [ -r "$ca_bundle" ]; then
-    if ! run_as_cloud_user test -r "$ca_bundle"; then
-      staged_ca="$(mktemp)"
-      trap 'rm -f "$staged_ca"' EXIT
-      install -m 0644 "$ca_bundle" "$staged_ca"
-      ca_bundle="$staged_ca"
+    # Claude's proxy may configure a CA bundle under /root that the clone owner cannot read.
+    fetch_env=()
+    ca_bundle="${GIT_SSL_CAINFO:-$(git config --get-urlmatch http.sslCAInfo "$SKILLS_REMOTE" || true)}"
+    ca_bundle="${ca_bundle:-${SSL_CERT_FILE:-}}"
+    if [ "$(id -u)" -eq 0 ] && [ -n "$ca_bundle" ] && [ -r "$ca_bundle" ]; then
+      if ! run_as_cloud_user test -r "$ca_bundle"; then
+        staged_ca="$(mktemp)"
+        trap 'rm -f "$staged_ca"' EXIT
+        install -m 0644 "$ca_bundle" "$staged_ca"
+        ca_bundle="$staged_ca"
+      fi
+      fetch_env=(GIT_SSL_CAINFO="$ca_bundle" SSL_CERT_FILE="$ca_bundle")
     fi
-    fetch_env=(GIT_SSL_CAINFO="$ca_bundle" SSL_CERT_FILE="$ca_bundle")
-  fi
-  run_as_cloud_user env ${fetch_env[@]+"${fetch_env[@]}"} git -C "$REPO_ROOT" fetch origin "$cloud_branch"
-  run_as_cloud_user git -C "$REPO_ROOT" merge --ff-only "origin/$cloud_branch"
-  if [ "$installer_blob" != "$(run_as_cloud_user git -C "$REPO_ROOT" rev-parse HEAD:bootstrap/install.sh)" ]; then
-    if [ -n "${staged_ca:-}" ]; then
-      rm -f "$staged_ca"
-      trap - EXIT
+    run_as_cloud_user env ${fetch_env[@]+"${fetch_env[@]}"} git -C "$REPO_ROOT" fetch origin "$cloud_branch"
+    run_as_cloud_user git -C "$REPO_ROOT" merge --ff-only "origin/$cloud_branch"
+    if [ "$installer_blob" != "$(run_as_cloud_user git -C "$REPO_ROOT" rev-parse HEAD:bootstrap/install.sh)" ]; then
+      if [ -n "${staged_ca:-}" ]; then
+        rm -f "$staged_ca"
+        trap - EXIT
+      fi
+      SKILLS_INSTALL_UPDATED=1 exec bash "$REPO_ROOT/bootstrap/install.sh"
     fi
-    exec bash "$REPO_ROOT/bootstrap/install.sh"
   fi
 
   source_checkout="$REPO_ROOT"

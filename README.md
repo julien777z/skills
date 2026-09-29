@@ -35,10 +35,12 @@ bash "$HOME/.local/share/agent-skills/bootstrap/install.sh"
 ```
 
 Use `bash "$HOME/.local/share/agent-skills/bootstrap/install.sh"` as the Codex cloud maintenance
-script so a resumed container refreshes the installation. The installer fast-forwards a clean cloud
-setup clone, selects an attached Skills checkout when Claude provides one, and links the result into
-existing agent roots. In Claude cloud it also links the root home used by the runtime. It exits on
-update, conflict, or installation failure.
+script so a resumed container refreshes the installation. Each installer invocation fetches the
+cloud setup clone's current branch once and fast-forwards it. It then selects an attached Skills
+checkout when Claude provides one and links the result into existing agent roots. In Claude cloud
+it also links the root home used by the runtime. During a session, an agent can run
+`reconcile-skills` to refresh guidance again. The installer exits on update, conflict, or
+installation failure.
 
 The local installer links skills, reference collections, reusable rules, and applicable agent definitions into existing
 Claude, Codex, and Cursor user roots. Codex's global `AGENTS.md` links to the same canonical
