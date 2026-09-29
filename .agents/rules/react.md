@@ -181,12 +181,13 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   status row the reader can never use — the other region's version of a document, the other account
   type's settings — is left out, decided by the same rule that decides which one applies, never
   listed beside it.
-- **A screen offers one control per destination or action** — a button, a link, a menu item, an
-  icon or a clickable row. Two that open the same form or page — a checklist step's button or linked
-  label beside a quick link, a row that opens its record beside that row's own "View" link, a header
-  action repeated in the section below it — read as two different actions and crowd the screen.
-  Keep the one control where the reader looks for it; anywhere else the same step appears, it is
-  plain text.
+- **A page's content offers one control per destination or action** — a button, a link, a menu item,
+  an icon or a clickable row; the app's own navigation is not counted against it. Two that open the
+  same form or page — a checklist step's button or linked label beside a quick link, a row that
+  opens its record beside that row's own "View" link, a header action repeated in the section below
+  it — read as two different actions and crowd the page. Keep the one control where the reader
+  looks for it; elsewhere, text naming the same destination stays plain text, and a control that
+  carries nothing else is removed.
 - **Every step of a multi-step flow renders as a page, in the flow's own chrome, never as a
   dialog.** A dialog is for one action taken from inside a page, however long its form —
   submitting a form outside any flow, submitting on someone's behalf, a quick edit — and one form
