@@ -196,9 +196,10 @@ code-simplify opens with; the gate runs them over the diff's added lines and lis
 anything else.
 
 **An added guard is priced like a missing one.** For every guard, refusal, validation, or branch a
-diff adds, the gate opens the writers of the value it tests — every path that creates or changes it —
-and names them in the verdict. It then applies `code-simplify`'s rubric on guards: one whose writers
-already make the refused state unreachable withholds nothing from anyone under **Product State**'s
+diff adds, the gate opens the writers of the value it tests and of what its path reads next — every
+function that creates or changes them — and names them in the verdict. It then applies
+`code-simplify`'s rubric on guards: one whose refused inputs those writers already exclude, or a
+check on the path already refuses, withholds nothing from anyone under **Product State**'s
 safeguard test and is flagged as dead code with that rubric's remedy, and one guarding a reachable
 state is flagged when sibling paths answering the same question lack it. An added check is never
 accepted as a security gain on its face.

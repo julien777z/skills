@@ -70,8 +70,9 @@ every hit as a finding ahead of all others, with the remedy the rubric names:
 
 A report that lists no hit for any of the five greps says so in those words.
 
-**Then it opens the writers of every value an added guard tests** and names them in the verdict, as
-the rubric's diff test says.
+**Then it lists every guard, refusal, validation, or branch the diff adds with the writers of the
+value it tests and of what its path reads next**, by path and function, and flags each one the
+rubric's diff test flags. A verdict with no added guard says `no guard added` in those words.
 
 It returns the verdict its question defines, shaped as `references/rubric.md` — What A Verdict Names
 requires.
@@ -158,6 +159,8 @@ Verdict: accept | flag | fix | close | defer | do
 - <for an acceptance: each addition whose kind matches a removed shape, the shape it takes, and why
   it is neither the removed shape nor a finding; one bullet per addition>
 - <for a triage disposition: the test that decided it and the fact it rests on>
+
+Writers read: <each guard the diff adds with the writers it read, or `no guard added`>
 
 Also read: <additions of other kinds, summarised in one line, or `none`>
 ```
