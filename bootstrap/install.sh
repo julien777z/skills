@@ -3,6 +3,11 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 readonly SKILLS_REMOTE='https://github.com/julien777z/skills.git'
+reexecuted=0
+
+if IFS= read -r -u 9 reexec_root 2>/dev/null && [ "$reexec_root" = "$REPO_ROOT" ]; then
+  reexecuted=1
+fi
 
 is_skills_remote() {
   case "$1" in
@@ -51,7 +56,7 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
 
   is_skills_checkout "$REPO_ROOT" || { echo "Setup clone is not the skills repository: $REPO_ROOT" >&2; exit 1; }
 
-  if [ "${SKILLS_INSTALL_UPDATED:-0}" != 1 ]; then
+  if [ "$reexecuted" -eq 0 ]; then
     if [ -n "$(run_as_cloud_user git -C "$REPO_ROOT" status --porcelain)" ]; then
       echo "Skills setup clone has local edits; refusing to overwrite them: $REPO_ROOT" >&2
       exit 1
@@ -87,7 +92,13 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
         trap - EXIT
       fi
 
-      SKILLS_INSTALL_UPDATED=1 exec bash "$REPO_ROOT/bootstrap/install.sh"
+      reexec_marker="$(mktemp)"
+      printf '%s\n' "$REPO_ROOT" > "$reexec_marker"
+
+      exec 9<"$reexec_marker"
+      rm -f "$reexec_marker"
+
+      exec bash "$REPO_ROOT/bootstrap/install.sh"
     fi
   fi
 
@@ -130,7 +141,7 @@ TARGET_HOMES=("$HOME")
 if [ -n "${CLOUD_HOME:-}" ]; then
   TARGET_HOMES=("$CLOUD_HOME")
 
-  if [ "$CLOUD_HOME" = /home/claude ]; then
+  if [ ! -d "$CLOUD_HOME/.codex" ]; then
     mkdir -p "$CLOUD_HOME/.claude"
   fi
 
