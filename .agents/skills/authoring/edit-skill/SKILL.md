@@ -148,10 +148,10 @@ outcome, because silence reads as the guidance having been fixed.
      must not hide an essential rule or introduce an unexplained mode or dependency. Check genericity
      with a materially different instance of the same failure class; state that case and its expected
      outcome in validation. Renaming the original example or replaying only it does not establish breadth.
-   - After a dependency pull request merges, replace consumer references to its branch with a
-     maintained version tag. When publication is authorized, use a minor release for a new
-     capability or a patch release for a bug fix; verify any moving major tag points to the
-     release before updating consumers. Do not leave a consumer on the merged branch.
+   - After a dependency receives a separately authorized release, replace consumer references to
+     its branch with a maintained version tag. Use a minor release for a new capability or a patch
+     release for a bug fix; verify any moving major tag points to that release and validate the
+     consumer against it. Do not switch to an unpublished tag or the default branch.
    - If target file does not exist, create it with a concise structure matching existing style.
    - Group frontmatter fields by subject. Put a field that summarizes, qualifies, or overrides
      another immediately after the field it relates to, unless the format requires another order.

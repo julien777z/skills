@@ -8,6 +8,7 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CANONICAL_SKILLS="$REPO_ROOT/.agents/skills"
 CANONICAL_AGENTS="$REPO_ROOT/.agents/agents"
 CANONICAL_RULES="$REPO_ROOT/.agents/rules"
+CANONICAL_GLOBAL="$REPO_ROOT/.agents/global.md"
 CANONICAL_RESOURCES="$REPO_ROOT/.agents/resources"
 GENERATED_ROOT="$REPO_ROOT/.agents/.auto_generated"
 PROVIDERS=(claude codex cursor)
