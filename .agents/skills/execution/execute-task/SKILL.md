@@ -185,6 +185,11 @@ until they pass. Commit the edits before pushing. A branch whose diff holds only
 dot-directories, `.github` aside, skips the simplification pass and the acceptance gate; the checks
 still run.
 
+Before that gate, list the exact adjacent line pairs where setup, a guard, transformation, side effect,
+or return meets the next phase without the blank line required by the global code-layout rule.
+Fix every listed boundary in the complete changed files; an unrelated bug or a passing formatter
+does not satisfy this spacing check.
+
 - **Push each coherent unit of work as soon as its gate is clean.** A push is what lets the user
   review and test the work, so a gated commit held locally withholds that review.
 - **The order is change, gate, push, then the slow verification**: a browser walkthrough, a full or
