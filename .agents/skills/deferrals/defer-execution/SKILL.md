@@ -135,9 +135,10 @@ the session whatever happens is one to record with `defer-scope` as well, which 
 ## Continuing deferred execution
 
 When a scope is already queued or a deferred pull request from this skill is open, **add every
-further deferred scope to that same branch and pull request**. This includes an active deferred
-pull request whose implementation is still in progress: do not create a second post-merge branch
-for related deferred work. Check both the session's queued work and open pull requests before
+further deferred scope of its kind to that same branch and pull request** — agent configuration and
+source stay apart, as the GitHub rule's **Branches and Pull Requests** says. This includes an active
+deferred pull request whose implementation is still in progress: do not create a second post-merge
+branch for related deferred work. Check both the session's queued work and open pull requests before
 starting. A scope that arrives before the first pull request opens joins the same future branch.
 
 Update the pull request body to cover the added work when appending. A body describing half of a

@@ -180,40 +180,19 @@ required — first the final `code-simplify` pass above, applying its simplifica
 re-gate once. Commit the edits before pushing. A branch whose diff holds only dot-files and
 dot-directories, `.github` aside, skips both.
 
-## One Pull Request Per Repository
+## Pull Requests
 
-**A session opens one branch and one pull request in each repository it touches, and every later
-request joins it.** The unit is the repository and the session, never the task: a new thing the user
-asks for mid-session is more work for the branch already in flight there, whatever it is — a feature
-beside a fix, a documentation change beside both, a second option in the same file.
-
-Before creating any branch, check whether this session already has one in that repository. Creating a
-second is the failure this section exists to prevent, and the reviewer pays for it: two pull requests
-in one repository that must be read together, merged in order, and kept from conflicting.
-
-Two things earn a separate branch, and nothing else does:
-
-- the user asks for that work to be held apart;
-- the session's pull request in that repository has already merged, so the work starts from the
-  freshly fetched default branch.
-
-A change to agent configuration is work like any other and joins the session's pull request in its
-repository.
-
-**"It could be reviewed on its own" is never a reason, and neither is a feeling that the new work is
-a different kind of thing.** Both are always available — every added option, every fix, every
-rewritten paragraph could be read alone — so a rule that yields to them yields always, and the
-session ends with a pull request per request. When a reason to split arrives, check it against the
-two above by name; anything else is this rule being argued with rather than applied.
-
-**Having already opened the second one is not a reason to keep it.** Move its commits onto the branch
-already in flight, close it saying where the work went, and say in chat what was consolidated.
+The GitHub rule's **Branches and Pull Requests** decides where each piece of work lands: per
+repository and session, one pull request for source and one for agent configuration, every later
+request joining the open one of its kind, never one per task. A guidance change never rides the
+source branch in flight, however closely it follows that work. Check the session's open pull
+requests in a repository before creating any branch there, and say in chat what was consolidated
+when a stray one is folded in.
 
 ## Multi-Repository Delivery
 
 When one change spans multiple repositories, treat each repository as an independent delivery
-context. The rule above applies inside each of them: one branch and one pull request per repository,
-not one per repository per task.
+context, with **Pull Requests** applying inside each of them.
 
 - Invoke `generic-push` separately for each repository before committing or publishing.
 - Write every branch name, commit message, pull-request title, pull-request description, review

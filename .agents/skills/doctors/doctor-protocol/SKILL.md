@@ -118,18 +118,20 @@ An entry flagged twice becomes a user decision stated in the plan, never a silen
 Check each entry against the doctor's change boundary before presenting it. Exclude entries whose
 required exception evidence is absent; approval of a generated plan cannot supply that evidence.
 
-**The plan schedules order, never branches.** Every entry lands in the one branch the run is
-driving, whatever lens found it and however unrelated two entries look. A plan that gives a group
-"its own branch" has split one approved instruction into several deliveries, and the ones after the
-first are what get dropped: the run reports the branch it opened, the user reads that as the work,
-and the rest survives only in a chat log. Say which entries go first and why the order matters;
-never say where they go.
+**The plan schedules order, never branches.** Every entry lands in the branch the run is driving for
+its kind — agent configuration or source, the one split the GitHub rule's **Branches and Pull
+Requests** makes — whatever lens found it and however unrelated two entries look. A plan that gives
+a group "its own branch" has split one approved instruction into several deliveries, and the ones
+after the first are what get dropped: the run reports the branch it opened, the user reads that as
+the work, and the rest survives only in a chat log. Say which entries go first and why the order
+matters; never say where they go.
 
 That holds for a group large enough to deserve its own review, too. Size is an argument for
-sequencing it late and describing it clearly in the pull request, not for a second branch. Only the
-user asking to hold work apart puts an entry anywhere else. A doctor that delivers in merged
-batches names each checkpoint in its plan — the groups it closes and why the batch is substantial
-enough to merge on its own — so the user approves the checkpoints with the plan.
+sequencing it late and describing it clearly in the pull request, not for a second branch. Beyond
+that split, only the user asking to hold work apart puts an entry anywhere else. A doctor that
+delivers in merged batches names each checkpoint in its plan — the groups it closes and why the
+batch is substantial enough to merge on its own — so the user approves the checkpoints with the
+plan.
 
 Then invoke `plan-change`. The audit and its ledger are read-only; neither authorizes an edit. A
 user decision a disposition produces — a test to cut, a flag whose removal changes behavior — is
@@ -201,7 +203,8 @@ stated only in chat, the plan, or the report is not recorded.
 ## Deliver
 
 The result goes out on the repository's delivery path in the cadence the doctor names; a doctor
-that names none uses the first.
+that names none uses the first. A run that changes both agent configuration and source carries each
+on its own pull request in that cadence.
 
 - **One pull request, left open.** Merging is the user's decision, agent configuration included,
   because a doctor's edit may need more testing than one run.
