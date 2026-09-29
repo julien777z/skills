@@ -64,8 +64,7 @@ a code change is tested: against the case that motivated it, with the change and
    the parent applies nothing from a smoke run, because the run judges wording, not the code.
    Queue pairs when capacity is limited; never spawn a duplicate while a run is in flight.
 6. **Score every report** against every criterion, quoting the line that satisfies or fails it, and
-   tabulate as `## Output` shapes it: one row per run, a `Result` column reading `pass` only when
-   every criterion passed, and one column per criterion.
+   tabulate as `## Output` shapes it.
 7. **Judge the table.** The edit passes when every edited run reads `pass` and at least one control
    reads `miss`. An edited run that misses, and a table where every control passes, both go to
    step 8.
@@ -75,10 +74,10 @@ a code change is tested: against the case that motivated it, with the change and
      broad; a report that named the shape and then reasoned it away — "intentional", "not
      problematic" — is this kind, and the revision states the disposition as fixed and names those
      reasons as not reasons. The scenario cannot satisfy the criterion, such as a file missing from
-     the reading list, or its prompt never made the reader open the skill file: fix the scenario. The report shows the behaviour in words
-     the criterion did not search for: rephrase the criterion to that behaviour. A wording change
-     reruns every edited run that missed, together; a scenario change reruns every run, controls
-     included; a changed criterion rescores every report.
+     the reading list, or its prompt never made the reader open the skill file: fix the scenario.
+     The report shows the behaviour in words the criterion did not search for: rephrase the
+     criterion to that behaviour. A wording change reruns every edited run that missed, together; a
+     scenario change reruns every run, controls included; a changed criterion rescores every report.
    - **No control misses** means the scenario has not rebuilt the miss. Sharpen it until the
      original text misses — for an edit that broadens a rule, build it on a member of the class the
      original never named — and rerun every run.
@@ -86,8 +85,9 @@ a code change is tested: against the case that motivated it, with the change and
      restate the miss and start again from step 1, or drop or reshape the edit.
 9. **Report** the table itself in chat, as `## Output` shapes it, and send one file from the
    session's scratch directory with it: that same `## Output` block first, then the quoted evidence
-   behind each cell after its verdict line. Put one sentence in the pull request description naming
-   the miss the edit closes. The table is evidence and does not belong in the description.
+   behind each cell after its verdict line, grouped by run label. Put one sentence in the pull
+   request description naming the miss the edit closes. The table is evidence and does not belong
+   in the description.
 
 ## Reviewer selection
 
@@ -102,28 +102,36 @@ smoke pass as `not run`. Never treat two runs on one model as a two-tier compari
 
 ## Output
 
-Return this shape, one table per skill under test, and in chat nothing after the last verdict line:
+Return this shape, one block per skill under test, and in chat nothing after the last verdict line:
 
 ```markdown
 Smoke test: <skill name>
 
 Miss: <one sentence>
 
-| Run | Text | Result | <criterion 1> | <criterion 2> | ... |
-|---|---|---|---|---|---|
-| <model> | edited | pass | pass | pass | ... |
-| <model> | original | miss | miss | pass | ... |
+| Criterion | <Model> A | <Model> B | <Model> A | <Model> B |
+|---|---|---|---|---|
+| Result | pass | miss | pass | miss |
+| <criterion 1> | pass | miss | pass | pass |
+| <criterion 2> | pass | miss | pass | miss |
 
-Diagnoses: <one line per step 8 change: round, run, cause, change made> | None
+A reads the edited text, B the original.
+
+Diagnoses: <one line per step 8 change: round, run label, cause, change made> | None
 
 Evidence: <name of the sent evidence file>
 
 Verdict: passes (round <n>) | dropped — <reason> | not run: <reason>
 ```
 
-Every cell carries `pass` or `miss`; each row shows its latest run. A criterion's header is a short
-label of the behaviour it checks, never `Run`, `Text` or `Result` or a phrase built on them. A
-control row for a new skill reads `none` in its Text column.
+- **One column per run**, labelled with the model and a letter: A reads the edited text, B the
+  original, or no skill text for a new skill, which its legend line says. Each column shows its
+  latest run.
+- **The `Result` row comes first** and reads `pass` only when every criterion in that column passed;
+  every other row is one criterion, labelled with a short name for the behaviour it checks, never
+  `Criterion`, `Result`, a run label, or a phrase built on them. Every cell carries `pass` or `miss`.
+- **At most five columns.** More than four runs continue in further tables with the same rows, each
+  with its own legend line.
 
 ## Guardrails
 
@@ -131,6 +139,6 @@ control row for a new skill reads `none` in its Text column.
 - Follow the shared tier selection. Never omit a control or claim complete coverage when a tier was not run.
 - Never edit the skill under test between launching a pair of runs and scoring them.
 - Keep the scenario while the branch is open; every later edit of that skill reuses it.
-- Never merge with a failing row or stand with a miss: diagnose it, change what caused it, and
+- Never merge with a failing run or stand with a miss: diagnose it, change what caused it, and
   rerun. The decisions are the tester's and are never put to the user; asking holds every later
   session on the text the edit replaces.
