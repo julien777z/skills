@@ -35,8 +35,10 @@ Canonical guidance lives in `.agents/`.
   that text stays the turn's final message. A sent text file reads on its own: it opens with the
   table or summary its detail belongs to, never the detail alone. Text reports sent together go as
   one markdown file, each report's table or summary before any detail. A path alone names nothing a
-  user in a cloud or remote session can reach. The parent sends what a subagent produced. Where the
-  harness cannot send files, say so and put what fits inline.
+  user in a cloud or remote session can reach. The parent sends what a subagent produced. Open every
+  file, image and recording before sending or presenting it, whoever produced it, and check that it
+  shows what the message says it does. Where the harness cannot send files, say so and put what fits
+  inline.
 - A delegated worker's report of an outcome — tests pass, pushed, merged, deployed, fixed — is a
   claim. Check it at its source of truth before relaying it or building on it, and tell the user
   what was read, not what was reported; `execute-task`'s **Reported Outcomes** holds the procedure.
