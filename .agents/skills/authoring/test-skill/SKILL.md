@@ -50,7 +50,9 @@ a code change is tested: against the case that motivated it, with the change and
    Keep it small: slice the diff to the files the miss lives in, and give every reviewer a reading
    list — those files, their siblings, and the modules the rubric's own searches would reach — so a
    run reads what the scenario needs instead of exploring the tree. Most of a run's time is
-   exploration the scenario could have pointed at.
+   exploration the scenario could have pointed at. Beside the triggering case, build a second
+   scenario on a different member of the same class, so the result shows the edit's breadth and
+   not only its one instance.
 3. **Save both texts beside it:** the edited skill file and the original from the freshly fetched
    default branch. Reviewers read one or the other by path; nothing else about their prompt differs.
 4. **Write the pass criteria before launching anything.** Two to four statements, each answerable
@@ -84,11 +86,10 @@ a code change is tested: against the case that motivated it, with the change and
      original never named — and rerun every run.
    - **A reader no change moves** means the miss in step 1 was misstated or the edit does nothing:
      restate the miss and start again from step 1, or drop or reshape the edit.
-9. **Report** the tables in chat, as `## Output` shapes them, and send one markdown file from the
-   session's scratch directory for the whole smoke test: the `## Output` block of every skill it
-   tested first, then the quoted evidence behind each cell, grouped by skill, scenario and run
-   label. Put one sentence in the pull request description naming the miss the edit closes. The
-   tables are evidence and do not belong in the description.
+9. **Report** the tables in chat, and send one markdown file from the session's scratch directory
+   for the whole smoke test, both as `## Output` shapes them. Put one sentence in the pull request
+   description naming the miss the edit closes. The tables are evidence and do not belong in the
+   description.
 
 ## Reviewer selection
 
@@ -139,6 +140,25 @@ Verdict: passes (round <n>) | dropped — <reason> | not run: <reason>
   `Run`, `Result`, a run label, or a phrase built on them. Every cell carries `pass` or `miss`.
 - **At most five columns**, so at most three criteria per table. More criteria continue in a
   further table under the same scenario title, with the same rows and legend line.
+
+The sent file holds the block of every skill the smoke test covered, then a `---` line and the
+evidence behind every cell, one section per skill:
+
+```markdown
+## Evidence
+
+### Scenario <n>: <short name>
+
+<one sentence on what the scenario contains>
+
+#### <run label> (<edited | original> text[, round <n>])
+
+- **<criterion>, <pass | miss>:** <quoted line>
+- **Round <n>, for the record:** <what the run missed before its rerun>
+```
+
+The heading reads `## Evidence: <skill name>` when the file covers several skills; the round bullet
+appears only on a run that was rerun.
 
 ## Guardrails
 
