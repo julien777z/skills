@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: Apply target-contract constraints to every implementation and review task, including configuration, APIs, schemas, and stored data. Use it to prevent legacy paths and parallel mechanisms, to plan migrations for affected users and data, and whenever a CI job fails along the way.
+description: Apply target-contract constraints to every implementation and review task, including requested renames of user-visible states or terms. Trace owned values through UI, APIs, workflows, schemas, and retained data before changing a display label; prevent legacy paths and parallel mechanisms, plan migrations, and fix encountered CI failures.
 short_description: 'Apply target-contract constraints to implementation and review tasks.'
 ---
 
@@ -113,6 +113,9 @@ also not a reason to stop at the first file, and the section below governs how f
 - Prefer a deliberate break to an owned API, wire, schema, payload, or stored shape when it
   materially simplifies the result. Migrate affected consumers and data, then remove the old shape;
   update every consumer and generated contract in the same change.
+- For a requested rename, inventory the old term across owned writers, readers, stored values, and
+  generated contracts before editing. Before delivery, search those surfaces again and account for
+  every remaining occurrence; a display-only alias does not satisfy a rename of an owned value.
 - **An owned contract stays owned across repositories.** A consumer in a sibling repository the
   user owns makes the break multi-repository work, never somebody else's decision; only a consumer
   outside the user's control freezes a shape. **Scope Follows The Defect** holds for a break as for
