@@ -202,9 +202,7 @@ outcome, because silence reads as the guidance having been fixed.
       mirror. None of that waits to be asked: the decision was made when the edit was requested, and
       a pull request left open keeps every later session working from the guidance this change
       replaced. A source fix required by step 3 is source work: it goes onto the session's source
-      pull request in its repository under the same rule and merges as that work does. Guidance true
-      only once a still-open source pull request merges, that fix's or any other, waits for that
-      merge as the rule's merge authorization says.
+      pull request in its repository under the same rule and merges as that work does.
    2. **Run `validate_sources.py`**, which sits under `scripts/` beside this skill, before the pull request opens, and again before it
       merges when the branch changed since. Nothing on a pull request runs the sync: the workflow
       runs on the default branch after the merge, so a file it refuses is refused once every session
@@ -311,10 +309,11 @@ outcome, because silence reads as the guidance having been fixed.
       pull request under step 1 when it was — and the new head goes back through step 4. Everything
       in `.agents`, merge it through `merge-pr` with the head `acceptance-gate` accepted — but first
       ask whether any line it adds or drops is true only once a still-open source pull request
-      merges, and if so hold it until that pull request has merged, as step 1 says: a pull request
-      carrying a skill change merges once step 6 approved every example, and one carrying only rules
-      merges on sight as the GitHub rules say. A pull request a doctor run or `new-doctor` opens is
-      left for the user instead; the steps above still run, the merge does not.
+      merges, and if so hold it until that pull request has merged, as the GitHub rule's **Merge
+      Authorization** says. Otherwise a pull request carrying a skill change merges once step 6
+      approved every example, and one carrying only rules merges on sight as the GitHub rules say. A
+      pull request a doctor run or `new-doctor` opens is left for the user instead; the steps above
+      still run, the merge does not.
    8. **Nothing is copied by hand.** The skills repository is the only copy of a shared skill;
       sessions receive a merged edit through the refresh step 9 ends with, never through a copy
       placed in another repository or install. A skill that reads generically but was written into one repository's `.agents` is
