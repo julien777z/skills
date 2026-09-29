@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: Apply target-contract constraints to every implementation and review task, including configuration, APIs, schemas, and stored data. Use it to prevent legacy paths and parallel mechanisms and to plan migrations for affected users and data.
+description: Apply target-contract constraints to every implementation and review task, including configuration, APIs, schemas, and stored data. Use it to prevent legacy paths and parallel mechanisms, to plan migrations for affected users and data, and whenever a CI job fails along the way.
 short_description: 'Apply target-contract constraints to implementation and review tasks.'
 ---
 
@@ -22,6 +22,14 @@ Fix and validate every concrete issue naturally encountered during authorized wo
 predates the task or sits outside the initial file set. Follow the evidence through the affected
 callers and owners. That obligation is not a licence to audit areas the evidence never reaches; it is
 also not a reason to stop at the first file, and the section below governs how far it does reach.
+
+- **A red CI job is an encountered issue, whoever caused it.** A package index serving no candidates,
+  a registry or network timeout, a runner fault, a test that passes on a second try: each is the
+  pipeline depending on something it does not control, and that dependency is a defect in the
+  repository. Fix the input that exposes it — restore resolved dependencies from a cache keyed on the
+  lockfile, replace a live service with a fake, make the test deterministic — and push that.
+  Re-running the job is never the fix: a green re-run proves the outage ended, not that the pipeline
+  survives the next one.
 
 ## Scope Follows The Defect, Not The Request
 
@@ -73,8 +81,10 @@ also not a reason to stop at the first file, and the section below governs how f
 
 - **A behaviour change is not a blocker.** Where the cleanest result shifts behaviour — a value
   reaching a store it never reached before, a permission finally applying where it always should have,
-  a field appearing or disappearing for some caller — that is the user's decision, and the way to put
+  a value newly shown to or withheld from someone — that is the user's decision, and the way to put
   it to them is to state it plainly and carry on with the work that does not depend on the answer.
+  A shape change to an owned contract is not one of those: it is made, with every consumer, and
+  stated in the pull request.
 - **Never quietly narrow the work to avoid the conversation.** Choosing the option that changes nothing
   is choosing the sloppier result on the user's behalf while hiding that a choice existed. Silence
   reads as "there was no decision to make".
@@ -102,7 +112,12 @@ also not a reason to stop at the first file, and the section below governs how f
   browser support, empty states, and provider-failure behavior the released product needs.
 - Prefer a deliberate break to an owned API, wire, schema, payload, or stored shape when it
   materially simplifies the result. Migrate affected consumers and data, then remove the old shape;
-  update every in-repository consumer and generated contract in the same change.
+  update every consumer and generated contract in the same change.
+- **An owned contract stays owned across repositories.** A consumer in a sibling repository the
+  user owns makes the break multi-repository work, never somebody else's decision; only a consumer
+  outside the user's control freezes a shape. **Scope Follows The Defect** holds for a break as for
+  a bug: the new shape reaches every site answering the same question, never only the one the work
+  started from.
 - Do not weaken a compatibility gate to hide an intentional break. Report the exact failure and the
   contract change it detected so a reviewer can distinguish intended from accidental breakage.
 - For disposable development records, follow the repository's stated policy. A one-time conversion
@@ -112,8 +127,8 @@ also not a reason to stop at the first file, and the section below governs how f
 
 ## Owned And Third-Party Contracts
 
-- Everything above is about contracts this repository owns and can change by migrating its
-  consumers. **A third-party provider's contract is not ours and cannot change at all.**
+- Everything above is about contracts the user owns and can change by migrating every consumer
+  of them. **A third-party provider's contract is not ours and cannot change at all.**
 - So where the two must meet, only one side can move, and it is always ours. "The provider encodes it
   differently" is a statement about our model, not about theirs: our model is the one that accepts
   what the provider sends, in the shape the provider sends it.

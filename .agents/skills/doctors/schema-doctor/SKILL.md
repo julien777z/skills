@@ -29,7 +29,7 @@ affected validation.
 
 A **live consumer** is anything that reads the value, whatever language it is written in: a call
 site, another live symbol, a serializer or read mask that names the field, a wire contract, a stored
-column, a first-party front end in this repository that deserializes it, or a third-party library
+column, a first-party front end, in this repository or another the user owns, that deserializes it, or a third-party library
 reading an environment variable a settings field populates. Absence from call sites in one language
 is evidence about that language, not about consumers.
 
@@ -61,8 +61,8 @@ they are never live consumers or authoritative evidence for requiredness, nullab
 retention, duplication, or ownership. A test cannot prevent a field merge, removal, rename, or move;
 update it after deciding the contract from authoritative sources and runtime behavior.
 
-A first-party front end in this repository that deserializes a selected boundary contract **is** a
-live consumer, and the trace reaches it. Only state that never leaves the interface is outside the
+A first-party front end, in this repository or another the user owns, that deserializes a selected
+boundary contract **is** a live consumer, and the trace reaches it. Only state that never leaves the interface is outside the
 default field inventory. Read generated output and vendored definitions when they are evidence, but
 edit their canonical source or regenerate them through their owner.
 
@@ -188,7 +188,8 @@ persistence, and wire distinctions the live system actually needs.
   normalization, units, lifecycle, disclosure rules, and runtime consumers. Similar names or shapes
   are not evidence of equivalence.
 - Consolidate overlapping models when they represent the same concept with the same guarantees.
-  Update every in-repository consumer and remove superseded shapes rather than adding another adapter.
+  Update every consumer the user controls, in any repository, and remove superseded shapes rather
+  than adding another adapter.
 - Prefer an existing shared contract or model owner when multiple independent consumers need the
   same representation. Discover that owner and its dependency rules at runtime; do not assume a
   package name or force consumer-specific policy, persistence, provider, or transport dependencies
@@ -202,7 +203,7 @@ recommendation does not erase domain meaning merely to reduce the declaration co
 equivalence or ownership unresolved and make no simplification that depends on it.
 
 A provider difference is not one of those distinctions, because the two sides of that boundary are
-not equally fixed. **A contract this repository owns can change; a third-party provider's cannot.**
+not equally fixed. **A contract the user owns can change; a third-party provider's cannot.**
 Only one side can move, so a provider difference is always resolved by moving the repository's model
 toward what the provider sends — never by standing a second model beside it and converting. Calling
 such a pair "a genuine third-party boundary" describes the one thing that is not a boundary at all:
@@ -289,7 +290,7 @@ guarantee through the repository's canonical protobuf or boundary-validation mec
 current wire shape cannot express the invariant cleanly, use `pre-production` to choose the cleaner
 breaking message shape rather than preserving ambiguity.
 
-Edit protobuf source rather than generated output, update every in-repository producer and consumer,
+Edit protobuf source rather than generated output, update every producer and consumer the user controls, in any repository,
 regenerate all owned targets, and run the repository-native generation and contract checks. Never
 weaken a compatibility gate. Report the exact expected failure caused by an intentional break and
 separate it from any unintended break detected in the same run.

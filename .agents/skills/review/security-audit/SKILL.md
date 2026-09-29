@@ -75,8 +75,8 @@ Use the platform's equivalent capabilities while preserving the specified roles,
 ## What The Audit Writes
 
 The audit's output is its report and, where the session exposes Linear, an issue per approved
-finding. The report is one findings file in the session's scratch directory, linked from the chat
-summary; nothing is written inside the target repository — no report, findings, or plan file, and no
+finding. The report is one findings file in the session's scratch directory, sent to the user with the
+chat summary; nothing is written inside the target repository — no report, findings, or plan file, and no
 directory. Findings live in the session until the user decides on them, and a decision is
 recorded where the work will actually be picked up — a Linear issue, a `defer-scope` record, or the
 fix itself.
@@ -122,8 +122,7 @@ Every level runs every phase; **Effort** above says with what cohort.
    **What A Surviving Finding Has Been Put Through**.
 4. **Verify independently** — Use Phase 4 there: a fresh agent per surviving finding checks every
    factual claim against the source.
-5. **Report** — Use Phase 5 there: write every finding to the scratch findings file and give the
-   chat summary it shapes.
+5. **Report** — Use Phase 5 there.
 6. **Plan, approve, track** — Use Phase 6 there, which owns the approval gate, Linear deduplication
    and tracking, and implementation. **Never start fixing or open a fix pull request before the user
    approves that fix.**

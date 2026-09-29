@@ -79,7 +79,8 @@ This is the final quality gate. Do not skip it.
 ### Phase 5: Report
 
 Write every finding, ordered by severity, to one file in the session's scratch directory. In chat,
-give the top five by severity in one line each, the next action, and the link to that file.
+give the top five by severity in one line each and the next action, and send that file with the
+summary.
 
 For each finding the file gives its id, severity, the attack in one or two sentences, the impact, the
 conditions it rests on, the trace as file paths with line numbers, and the smallest remediation —

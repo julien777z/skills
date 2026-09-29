@@ -23,6 +23,7 @@ has reached a terminal result.
 ## Dependencies
 
 - `merge-conflict` — resolve every base incorporation this skill performs.
+- `pre-production` — the encountered-issue policy a failed check falls under.
 
 ## Inputs
 
@@ -68,10 +69,10 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    hang, push a speculative fix, cancel, re-run, or report the run stuck from a pending status alone.
 6. **A failed check is root-caused and fixed.** Read its annotations and complete log, fix the
    repository input responsible — code, test, configuration or workflow — and commit and push it.
-   Never rerun a deterministic failure without addressing its cause. Retry a diagnosed transient
-   external failure with no repository fix once the service can run it again; report a blocker only
-   when the missing coverage needs user input, unavailable credentials, or an external recovery, with
-   the check, evidence and remediation attempted.
+   A failure an external service caused is an encountered issue under `pre-production` and is
+   fixed the same way; never re-run a job to get past a failure. Report a blocker only when the
+   missing coverage needs user input or unavailable credentials, with the check, evidence and
+   remediation attempted.
 7. Never stop, restart, reconfigure or claim a local service the calling workflow did not start:
    another agent or person may be using it. When relevant validation needs local services and one it
    did not start is running, use the matching hosted check as the fallback rather than running a
@@ -84,8 +85,8 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
 When GitHub reports a conflict, or the merge is rejected for one:
 
 - Incorporate the base through `merge-conflict`; the resolution is a fix under **Check Gate** step 8.
-- Report a blocker only when a safe resolution needs a product or contract decision nobody has
-  authorized.
+- Report a blocker only when a safe resolution needs an unauthorized product decision, or a change
+  to a contract a consumer outside the user's control speaks.
 
 ## Merge
 
