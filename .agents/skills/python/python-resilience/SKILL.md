@@ -46,7 +46,7 @@ from tenacity import retry, stop_after_attempt, wait_exponential_jitter
     wait=wait_exponential_jitter(initial=1, max=10),
 )
 def call_external_service(request: dict) -> dict:
-    return httpx.post("https://api.example.com", json=request).json()
+    return httpx.post("https://api.example.com", json=request, timeout=30).json()
 ```
 
 ## Fundamental Patterns
@@ -192,6 +192,6 @@ Detailed sections (starting with `## Advanced Patterns`) live in `references/det
 5. **Log every retry** - Silent retries hide systemic problems
 6. **Use decorators** - Keep retry logic separate from business logic
 7. **Inject dependencies** - Make infrastructure testable
-8. **Set timeouts everywhere** - Every network call needs a timeout
+8. **Bound the calls you own** - A client the code builds sets its own timeout; an official SDK's timeout and retry settings stand, overridden only as the `http` rule allows
 9. **Fail gracefully** - Return cached/default values for non-critical paths
 10. **Monitor retry rates** - High retry rates indicate underlying issues
