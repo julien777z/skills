@@ -198,6 +198,11 @@ Commit the edits before pushing. A branch whose diff holds only dot-files and do
   the one CI resolves; a job left out because the diff looks unrelated to it, such as a
   generated-output drift check or a whole-tree check that every shared component has a docs page.
 
+Before that gate, list the exact adjacent line pairs where setup, a guard, transformation, side effect,
+or return meets the next phase without the blank line required by the global code-layout rule.
+Fix every listed boundary in the complete changed files; an unrelated bug or a passing formatter
+does not satisfy this spacing check.
+
 - **Push each coherent unit of work as soon as its gate is clean.** A push is what lets the user
   review and test the work, so a gated commit held locally withholds that review.
 - **The order is change, gate, push, then the slow verification**: a browser walkthrough, a full or

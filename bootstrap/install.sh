@@ -19,10 +19,12 @@ is_skills_remote() {
 
 if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
   CLOUD_HOME="${REPO_ROOT%/.local/share/agent-skills}"
+
   if [ -n "${SKILLS_CLOUD_HOME:-}" ] && [ "$SKILLS_CLOUD_HOME" != "$CLOUD_HOME" ]; then
     echo "Cloud setup clone is outside SKILLS_CLOUD_HOME: $REPO_ROOT" >&2
     exit 1
   fi
+
   [ -d "$REPO_ROOT/.git" ] || { echo "Missing skills setup clone: $REPO_ROOT" >&2; exit 1; }
 
   run_as_cloud_user() {
@@ -73,6 +75,7 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
     fetch_env=()
     ca_bundle="${GIT_SSL_CAINFO:-$(git config --get-urlmatch http.sslCAInfo "$SKILLS_REMOTE" || true)}"
     ca_bundle="${ca_bundle:-${SSL_CERT_FILE:-}}"
+
     if [ "$(id -u)" -eq 0 ] && [ -n "$ca_bundle" ] && [ -r "$ca_bundle" ]; then
       if ! run_as_cloud_user test -r "$ca_bundle"; then
         staged_ca="$(mktemp)"
@@ -104,9 +107,11 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
 
   source_checkout="$REPO_ROOT"
   search_roots=("$CLOUD_HOME")
+
   if [ "$CLOUD_HOME" = /home/claude ] && [ -d /home/user ]; then
     search_roots+=(/home/user)
   fi
+
   for search_root in "${search_roots[@]}"; do
     while IFS= read -r git_marker; do
       candidate="$(dirname "$git_marker")"
@@ -130,14 +135,17 @@ CANONICAL_SKILLS="$REPO_ROOT/.agents/skills"
 CANONICAL_AGENTS="$REPO_ROOT/.agents/agents"
 CANONICAL_RULES="$REPO_ROOT/.agents/rules"
 CANONICAL_GLOBAL="$REPO_ROOT/.agents/global.md"
+
 if [ ! -f "$CANONICAL_GLOBAL" ]; then
   CANONICAL_GLOBAL="$CANONICAL_RULES/global.md"
 fi
+
 CANONICAL_RESOURCES="$REPO_ROOT/.agents/resources"
 GENERATED_ROOT="$REPO_ROOT/.agents/.auto_generated"
 PROVIDERS=(claude codex cursor)
 found_root=0
 TARGET_HOMES=("$HOME")
+
 if [ -n "${CLOUD_HOME:-}" ]; then
   TARGET_HOMES=("$CLOUD_HOME")
 
@@ -189,13 +197,16 @@ preflight_provider() {
 
   while IFS= read -r skill; do
     name="$(basename "$skill")"
+
     check_link "$root/skills/$name" || failed=1
   done < <(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)
 
   if [ -d "$CANONICAL_RESOURCES" ]; then
     for resource in "$CANONICAL_RESOURCES"/*; do
       [ -d "$resource" ] || continue
+
       name="$(basename "$resource")"
+
       check_link "$root/resources/$name" || failed=1
     done
   fi
@@ -203,7 +214,9 @@ preflight_provider() {
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -d "$CANONICAL_AGENTS" ]; then
     for agent in "$CANONICAL_AGENTS"/*.md; do
       [ -f "$agent" ] || continue
+
       name="$(basename "$agent")"
+
       check_link "$root/agents/$name" || failed=1
     done
   fi
@@ -211,7 +224,9 @@ preflight_provider() {
   if [ -d "$CANONICAL_RULES" ]; then
     for rule in "$CANONICAL_RULES"/*.md; do
       [ -f "$rule" ] || continue
+
       name="$(basename "$rule")"
+
       if [ "$provider" = "cursor" ]; then
         name="${name%.md}.mdc"
       fi
@@ -283,6 +298,7 @@ install_provider() {
 
   while IFS= read -r skill; do
     name="$(basename "$skill")"
+
     ln -sfn "$(link_source "$provider" skills "$name" "$skill")" "$root/skills/$name"
     skills=$((skills + 1))
   done < <(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)
@@ -294,7 +310,9 @@ install_provider() {
 
     for resource in "$CANONICAL_RESOURCES"/*; do
       [ -d "$resource" ] || continue
+
       name="$(basename "$resource")"
+
       ln -sfn "$resource" "$root/resources/$name"
       resources=$((resources + 1))
     done
@@ -307,7 +325,9 @@ install_provider() {
 
     for agent in "$CANONICAL_AGENTS"/*.md; do
       [ -f "$agent" ] || continue
+
       name="$(basename "$agent")"
+
       ln -sfn "$(link_source "$provider" agents "$name" "$agent")" "$root/agents/$name"
       agents=$((agents + 1))
     done
@@ -320,7 +340,9 @@ install_provider() {
 
     for rule in "$CANONICAL_RULES"/*.md; do
       [ -f "$rule" ] || continue
+
       name="$(basename "$rule")"
+
       if [ "$provider" = "cursor" ]; then name="${name%.md}.mdc"; fi
 
       ln -sfn "$(link_source "$provider" rules "$name" "$rule")" "$root/rules/$name"
@@ -346,6 +368,7 @@ install_provider() {
 }
 
 preflight_ok=1
+
 for target_home in "${TARGET_HOMES[@]}"; do
   for provider in "${PROVIDERS[@]}"; do
     preflight_provider "$provider" "$target_home" || preflight_ok=0
