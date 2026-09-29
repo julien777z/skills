@@ -10,6 +10,10 @@ Upsert `.agents` source-of-truth files for agents, skills, or rules based on use
 every edit through the same delivery whether the user invoked this skill or the edit arose while
 doing other work. An edit that skipped this is unverified, and the report says so.
 
+An open `.agents` pull request is not a delivery result. Continue the same run through its source
+check, required review and smoke steps, merge, Agent Sync result, and verification of generated
+root instructions and provider output; stop only for a genuine gate.
+
 **A gap you notice yourself starts this skill, exactly as a request does.** Guidance that let a miss
 through, a skill whose trigger did not fire when it should have, one that says nothing about the case
 in hand, a step you found yourself doing that no skill describes: each is this skill's input, and
@@ -340,6 +344,10 @@ outcome, because silence reads as the guidance having been fixed.
       it.
       `merge-pr` then waits for the default-branch Agent Sync run and refreshes the main local
       checkout and, for the skills repository, the installed copy this session loads.
+      After that refresh, inspect every generated artifact that represents the changed source,
+      including `AGENTS.md` when the source feeds root instructions and provider trees such as
+      `.cursor/`, `.claude/`, and `.codex/` when they represent the changed package. Diagnose stale
+      or missing output through Agent Sync; never repair it by editing generated files.
 
 ## Output
 
