@@ -3,7 +3,7 @@ import re
 import subprocess
 import sys
 from pathlib import Path
-from typing import Final, NamedTuple
+from typing import Final
 
 SKILLS_DIRECTORY: Final[Path] = Path(".agents/skills")
 README_PATH: Final[Path] = Path("README.md")
@@ -14,18 +14,7 @@ START_MARKER: Final[str] = "<!-- skills:start -->"
 END_MARKER: Final[str] = "<!-- skills:end -->"
 FRONT_MATTER_KEY_PATTERN: Final[re.Pattern[str]] = re.compile(r"^([A-Za-z][\w-]*):\s*(.*)$")
 SENTENCE_PATTERN: Final[re.Pattern[str]] = re.compile(r"(?<=[.!?])\s+")
-# Long enough that a routing opener such as "Always run this." cannot stand as the summary.
-MINIMUM_SUMMARY_LENGTH: Final[int] = 40
-
-
-class Skill(NamedTuple):
-    """One skill's listing entry, read from its front matter."""
-
-    slug: str
-    path: Path
-    name: str
-    description: str
-    user_invoked_only: bool
+MAX_SUMMARY_LENGTH: Final[int] = 140
 
 
 def parse_front_matter(path: Path) -> dict[str, str]:
@@ -74,68 +63,54 @@ def parse_front_matter(path: Path) -> dict[str, str]:
     return front_matter
 
 
-def read_skills() -> list[Skill]:
-    """Read every skill in the canonical directory, sorted by name."""
+def read_skills() -> list[tuple[Path, dict[str, str]]]:
+    """Read every skill in the source directory, sorted by name."""
 
-    skills: list[Skill] = []
+    skills: list[tuple[Path, dict[str, str]]] = []
 
     for skill_file in sorted(SKILLS_DIRECTORY.glob("**/SKILL.md")):
         front_matter = parse_front_matter(skill_file)
-        slug = skill_file.parent.name
 
         for required in ("name", "description"):
             if not front_matter.get(required):
                 raise ValueError(f"{skill_file} front matter has no {required}")
 
-        skills.append(
-            Skill(
-                slug=slug,
-                path=skill_file,
-                name=front_matter["name"],
-                description=front_matter["description"],
-                user_invoked_only=front_matter.get("disable-model-invocation") == "true",
-            )
-        )
+        skills.append((skill_file, front_matter))
 
     if not skills:
         raise ValueError(f"{SKILLS_DIRECTORY} holds no SKILL.md; refusing to render an empty listing")
 
-    return sorted(skills, key=lambda skill: skill.name)
+    return sorted(skills, key=lambda skill: skill[1]["name"])
 
 
-def summarize(description: str) -> str:
-    """Return the opening sentences of a description, up to the first that says what the skill does."""
+def summarize(front_matter: dict[str, str]) -> str:
+    """Use the skill's own summary, or its opening sentence if absent."""
 
-    summary = ""
+    short_description = front_matter.get("short_description")
+    summary = short_description or SENTENCE_PATTERN.split(front_matter["description"])[0]
 
-    for sentence in SENTENCE_PATTERN.split(description):
-        summary = f"{summary} {sentence}".strip()
-
-        if len(summary) >= MINIMUM_SUMMARY_LENGTH:
-            break
-
+    if short_description and len(summary) > MAX_SUMMARY_LENGTH:
+        raise ValueError(f"{front_matter['name']} needs a shorter README description")
     return summary
 
 
-def render_table(skills: list[Skill]) -> str:
-    """Render one group of skills as a Markdown table."""
+def render_links(skills: list[tuple[Path, dict[str, str]]]) -> str:
+    """Link every skill with a brief description from its own front matter."""
 
     if not skills:
         return "_None._"
 
-    rows = "\n".join(
-        f"| [`{skill.name}`]({skill.path}) | {summarize(skill.description)} |"
-        for skill in skills
+    return "\n".join(
+        f"- [`{front_matter['name']}`]({path}) — {summarize(front_matter)}"
+        for path, front_matter in skills
     )
 
-    return f"| Skill | What it does |\n|---|---|\n{rows}"
 
-
-def render_section(skills: list[Skill]) -> str:
+def render_section(skills: list[tuple[Path, dict[str, str]]]) -> str:
     """Render both skill groups, split by how each one is invoked."""
 
-    user_invoked = [skill for skill in skills if skill.user_invoked_only]
-    model_invoked = [skill for skill in skills if not skill.user_invoked_only]
+    user_invoked = [skill for skill in skills if skill[1].get("disable-model-invocation") == "true"]
+    model_invoked = [skill for skill in skills if skill[1].get("disable-model-invocation") != "true"]
 
     return "\n".join(
         [
@@ -145,13 +120,13 @@ def render_section(skills: list[Skill]) -> str:
             "",
             "These run only when you ask for them by name, such as `/refactor`.",
             "",
-            render_table(user_invoked),
+            render_links(user_invoked),
             "",
             "### Model-Invoked",
             "",
             "An agent reaches for these on its own whenever the work calls for them.",
             "",
-            render_table(model_invoked),
+            render_links(model_invoked),
             "",
             END_MARKER,
         ]
