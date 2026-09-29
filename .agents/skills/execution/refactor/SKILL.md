@@ -109,10 +109,11 @@ that changes the approved scope returns to `plan-change`; it is not silently ado
 
 ## Verify
 
-Discover and run every applicable repository-native check that covers the changed behavior and its
-consumers, including configured formatting, static analysis, tests, builds, and generated-output
-verification. Report an absent category as not configured; do not invent a replacement or substitute
-a familiar command from another repository.
+Run the pre-push checks `execute-task`'s **Pre-Push Gate** defines, then any further
+repository-native check that covers the changed behavior and its consumers, including configured
+formatting, static analysis, tests, builds, and generated-output verification. Report an absent
+category as not configured; do not invent a replacement or substitute a familiar command from
+another repository.
 
 Then launch at least two independent read-only final reviewers. One checks completion against the
 approved scope and plan. The other independently audits the parent's completed `code-simplify` pass

@@ -14,7 +14,7 @@ Read the repository's project guidance for the local exporter, generated-file pa
 
 ## After generating
 
-Run the project's configured type check, formatter, and affected tests. Update every consumer to the generated API shape, including string-based field access that a type check can miss. Fix the upstream schema when the intended field is absent. Review the complete generated diff for unintended source or version drift.
+Run the pre-push checks `execute-task`'s **Pre-Push Gate** defines. Update every consumer to the generated API shape, including string-based field access that a type check can miss. Fix the upstream schema when the intended field is absent. Review the complete generated diff for unintended source or version drift.
 
 ## Guardrails
 

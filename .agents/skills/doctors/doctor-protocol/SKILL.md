@@ -162,9 +162,10 @@ behavior.
 
 ## Run Repository-Native Checks
 
-Run every repository-native check applicable to the changed files and their consumers, including
-formatting, static analysis, tests, builds, code generation, and contract checks. Report a check
-category that is not configured rather than inventing one.
+Run the pre-push checks `execute-task`'s **Pre-Push Gate** defines, then any further
+repository-native check applicable to the changed files and their consumers: formatting, static
+analysis, tests, builds, code generation, and contract checks. Report a check category that is not
+configured rather than inventing one.
 
 ## Review The Result
 
