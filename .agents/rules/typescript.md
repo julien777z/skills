@@ -51,9 +51,9 @@ type Status = (typeof Status)[keyof typeof Status];
   one small type, or one constant has not earned a file — merge it into the module that already owns
   its concern. Several modules that each hold one symbol of one shape are one module under several
   names.
-- **Components are the exception to both the broad-domain module and fewer files**: a component
-  module exports exactly one component, as the React rules state, and its domain becomes the folder
-  those files share.
+- **Components are the exception to the broad-domain module, the subfolder threshold and fewer
+  files**: a component module exports exactly one component, as the React rules state, and its
+  domain becomes the folder those files share, however few lines each holds.
 - A function with one caller belongs in that caller unless it is genuinely reused, genuinely
   recursive, or long enough that inlining would bury the caller's own shape.
 - **A module that only forwards is not a layer.** When every function in it is one call to the module

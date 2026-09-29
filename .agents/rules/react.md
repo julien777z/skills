@@ -14,9 +14,8 @@ paths:
   helper components it needs stay in that file, unexported, so no other module can reach them. A
   module exporting two — a navigation shell that also exports a toggle and a menu — is two modules.
 - **Components that belong together go in a folder named for their area, one file each**, published
-  through the area's index as the TypeScript rules' **Area Imports** describe. A `"use client"`
-  directive covers its whole module, so it goes on the first line of each client component's own file
-  and forces no split of its own.
+  through the area's index as the TypeScript rules' **Area Imports** describe. A client component's
+  `"use client"` directive goes on the first line of its own file.
 - Named exports for components
 - Default exports only for page components
 
@@ -263,8 +262,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 - Always provide stable `key` prop
 - Don't use array index as key (unless list is static)
-- Extract a complex list item into its own component, unexported in the list's file unless another
-  module renders it
+- Extract list items to separate components when complex
 
 ## Next.js App Router
 
