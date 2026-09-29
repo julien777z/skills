@@ -6,8 +6,9 @@ short_description: 'Refresh installed shared skills and rules from their source 
 
 # Reconcile Skills
 
-Refresh the user-level agent roots from the shared skills repository's default branch. This skill
-updates the checkout the current session loads; it never copies provider mirrors by hand.
+Refresh the user-level agent roots from the shared skills repository. An agent runs this skill
+when guidance changes during a session; cloud setup also runs the installer when a session starts.
+This skill never copies provider mirrors by hand.
 
 ## Refresh
 
@@ -16,10 +17,11 @@ updates the checkout the current session loads; it never copies provider mirrors
    README identifies `bootstrap/install.sh`. In a cloud session, use the setup clone under the
    agent's home; its installer selects any attached skills checkout.
 2. Record the checkout's current commit and working-tree status. If it is dirty, report the paths
-   and stop without discarding or stashing changes. Otherwise fetch the remote default branch,
-   switch to that branch, and fast-forward only. If the branch diverges, report the commits and
-   stop; do not reset it.
-3. Run `bash bootstrap/install.sh` from the refreshed checkout. Resolve each installed skill and
+   and stop without discarding or stashing changes. For a local checkout, fetch the remote default
+   branch, switch to that branch, and fast-forward only. If the branch diverges, report the commits
+   and stop; do not reset it. In cloud, leave the setup clone on its configured branch; the installer
+   fetches that branch once and fast-forwards it when invoked.
+3. Run `bash bootstrap/install.sh` from the checkout. Resolve each installed skill and
    rule link in every existing user-level agent root and confirm it points into the selected source
    checkout. Check Codex's global `AGENTS.md` link when Codex is installed. Preserve real files and
    foreign links; the installer's conflict preflight reports them before changing links.
