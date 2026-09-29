@@ -340,13 +340,6 @@ A turn that ends on "still waiting on X" while such work exists is the failure a
 report is not a stopping point. Only when every remaining item depends on the awaited result does
 the turn end on the wait.
 
-**The same test decides every order the run writes down** — a queue handed to a worker, a plan's
-step list, the "next" line of a report. Putting an item behind a gate, a push, a review or another
-item is a wait created in advance, so it holds only when the item names what that other one
-supplies; everything else starts now, beside it, in another worker or worktree when the one in hand
-is busy. A frontend queued "after the backend lands" while the contract between them is agreed is
-the case to recognize.
-
 ## Completion
 
 Before declaring the task done:
