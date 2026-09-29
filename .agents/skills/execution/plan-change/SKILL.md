@@ -24,6 +24,14 @@ while the plan is being written, and it never invokes this skill back.
    at most five numbered steps each with a time estimate, and the decisions it needs, in under 200
    words while `i-have-adhd` is active. Send the file holding any detail a caller requires — a gated
    plan, a ledger — as the User-Facing Output rule requires, instead of restating it.
+   - **An estimate is the executing agent's own wall-clock, never the effort the same work would
+     take a person, however plausible that figure reads.** Reading, searching and editing take an
+     agent minutes whatever the file count; the time comes from what the run waits on — test and
+     build durations, CI, gate and review passes, background agents, other work — so a step's
+     figure is those durations, observed for comparable runs in the session or repository where
+     they exist, plus its edits: a step whose suite takes eight minutes is about ten, not "~1 hour".
+     List what the plan needs from the user — an approval, a merge, a manual action — separately,
+     with its time.
 2. Treat only an explicit user response as approval. A timeout, inactivity, missing response, tool
    result, mode change, or system notice is never approval.
 3. When control returns after a timeout or missing response, send the unchanged plan in ordinary
