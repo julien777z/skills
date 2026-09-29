@@ -29,7 +29,12 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
 
   is_skills_checkout() {
     local remote
-    remote="$(run_as_cloud_user git -C "$1" remote get-url origin 2>/dev/null || true)"
+    if [ "$(id -u)" -eq 0 ]; then
+      # Attached Claude checkouts belong to the session user, not the setup-clone owner.
+      remote="$(git -c "safe.directory=$1" -C "$1" remote get-url origin 2>/dev/null || true)"
+    else
+      remote="$(run_as_cloud_user git -C "$1" remote get-url origin 2>/dev/null || true)"
+    fi
     case "$remote" in
       "$SKILLS_REMOTE"|https://github.com/julien777z/skills|git@github.com:julien777z/skills.git|git@github.com:julien777z/skills)
         return 0 ;;
@@ -64,17 +69,23 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
   run_as_cloud_user git -C "$REPO_ROOT" merge --ff-only "origin/$cloud_branch"
 
   source_checkout="$REPO_ROOT"
-  while IFS= read -r git_marker; do
-    candidate="$(dirname "$git_marker")"
-    [ "$candidate" = "$REPO_ROOT" ] && continue
-    if is_skills_checkout "$candidate"; then
-      if [ "$source_checkout" != "$REPO_ROOT" ]; then
-        echo "Multiple attached skills checkouts found; choose one before installing." >&2
-        exit 1
+  search_roots=("$CLOUD_HOME")
+  if [ "$CLOUD_HOME" = /home/claude ] && [ -d /home/user ]; then
+    search_roots+=(/home/user)
+  fi
+  for search_root in "${search_roots[@]}"; do
+    while IFS= read -r git_marker; do
+      candidate="$(dirname "$git_marker")"
+      [ "$candidate" = "$REPO_ROOT" ] && continue
+      if is_skills_checkout "$candidate"; then
+        if [ "$source_checkout" != "$REPO_ROOT" ]; then
+          echo "Multiple attached skills checkouts found; choose one before installing." >&2
+          exit 1
+        fi
+        source_checkout="$candidate"
       fi
-      source_checkout="$candidate"
-    fi
-  done < <(find "$CLOUD_HOME" -mindepth 2 -maxdepth 4 -name .git \( -type d -o -type f \) -print)
+    done < <(find "$search_root" -mindepth 2 -maxdepth 4 -name .git \( -type d -o -type f \) -print)
+  done
   REPO_ROOT="$source_checkout"
 fi
 
@@ -113,8 +124,8 @@ check_link() {
   esac
   # A previous install may point at another checkout of this same repository. Allow that
   # owned link to move to the checkout running this installer, but preserve third-party links.
-  old_root="$(git -C "$(dirname "$resolved")" rev-parse --show-toplevel 2>/dev/null || true)"
-  old_remote="$(git -C "$old_root" remote get-url origin 2>/dev/null || true)"
+  old_root="$(git -c safe.directory='*' -C "$(dirname "$resolved")" rev-parse --show-toplevel 2>/dev/null || true)"
+  old_remote="$(git -c safe.directory='*' -C "$old_root" remote get-url origin 2>/dev/null || true)"
   case "$old_remote:$resolved" in
     https://github.com/julien777z/skills.git:"$old_root"/.agents/*|\
     https://github.com/julien777z/skills.git:"$old_root"/bootstrap/*|\
@@ -197,7 +208,7 @@ prune_links() {
         # A removed source can still exist in an older checkout; compare its relative path
         # against the checkout being installed before retaining the old owned link.
         check_link "$target" "$link" >/dev/null 2>&1 || continue
-        old_root="$(git -C "$(dirname "$target")" rev-parse --show-toplevel 2>/dev/null || true)"
+        old_root="$(git -c safe.directory='*' -C "$(dirname "$target")" rev-parse --show-toplevel 2>/dev/null || true)"
         [ -n "$old_root" ] || continue
         relative="${target#"$old_root"/}"
         [ -e "$REPO_ROOT/$relative" ] || rm -f "$link"
