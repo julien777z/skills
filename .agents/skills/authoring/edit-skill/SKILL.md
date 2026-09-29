@@ -135,6 +135,21 @@ outcome, because silence reads as the guidance having been fixed.
      target entry point and its referenced files, scripts, templates, and examples. Follow supporting
      links within the package; reviewing only `SKILL.md` or the edited hunk is incomplete. Apply the
      same genericity, ownership, clarity, and evidence standards to every file.
+   - **A change to what a skill returns the user is approved as a fictional example before the
+     skill is written to produce it.** The class is any new or changed user-facing output shape — a
+     table, a report layout, a sent file, a message template, a listing — in a skill whose response
+     the user reads or acts on. It is changed when the user would notice it in the response itself: a
+     new or moved column, a different grouping, a link where there was none. A new status value or a
+     reworded label is not that, and a skill whose result is edits, a merge, a deployment, a verdict
+     another skill consumes, or a report only an agent reads has no such response. Whether an output
+     changed is the editor's call, from what the skill returns before and after. Write the example
+     for a realistic invented scenario with invented names, as one markdown file whose first line is
+     `**EXAMPLE — fictional output for approval; no smoke test was run.**`, check it as the global
+     rules' **User-Facing Output** requires, and send it as the final message of a turn that asks in
+     plain text whether to approve or reject it, one skill at a time. On a rejection, ask what must
+     change, revise the example, and ask again. Only then write the skill to produce exactly the
+     approved shape; the smoke test follows in delivery, and a smoke run is never how a format is
+     proposed.
    - Trace each miss to the instruction that produced or allowed it, including instructions for
      adding or recording guidance. Name that governing instruction and its replacement in the
      change. Removing a bad example while retaining a directive that regenerates it is incomplete.
@@ -206,8 +221,8 @@ outcome, because silence reads as the guidance having been fixed.
    and stated in the report, because a pull request confined to agent configuration has merge
    authorization under the GitHub rule after its stated gates; that authorization does not extend
    to a release workflow. A question asking for it only holds every later session on the guidance
-   the change replaces. Step 6's review of an altered example response is the one question this
-   delivery puts to the user.
+   the change replaces. The approval of a changed output's example under step 5 is the one question
+   put to the user, and it comes before delivery.
    1. **Branch and commit.** The edit goes onto the session's open agent-configuration pull request
       in the repository being edited, or onto a branch from the freshly fetched default branch with
       a new pull request, under the GitHub rule's **Branches and Pull Requests** — never onto a
@@ -269,7 +284,7 @@ outcome, because silence reads as the guidance having been fixed.
       readers the complete relevant package, including the references needed for the scenario; an
       entry-point-only test cannot prove a reference fix. An edit
       whose smoke run misses is diagnosed, changed and rerun as that skill says, never merged with
-      a failing row or on the strength of reading well.
+      a failing run or on the strength of reading well.
       A **mechanical seam edit** changes no behaviour and needs no smoke run: a dependency
       replaced by the role phrase that finds it, a path generalized, a rename, a frontmatter key, a
       reference path corrected, wording that says the same thing shorter. The report says
@@ -291,31 +306,12 @@ outcome, because silence reads as the guidance having been fixed.
       repository, checking that each one already states its answer where the skill now sends its
       reader; a repository that does not is the flag, because the merge silently gave it the other
       one's answer.
-   6. **Put an example response to the user, one skill at a time, for the skills whose response
-      the user uses and whose response this change alters.** A summary they read, a listing they
-      act on, a report they take a decision from: for each such skill the change adds, or edits in
-      a way that changes what it returns, run the edited skill yourself on real current input — the branch in flight for a skill that summarises or reviews, the request in
-      hand for one that edits, the smoke scenario only where no real input exists — and send what it
-      returned, verbatim, under the heading `Example output`, after checking it and any file sent
-      with it as the global rules' **User-Facing Output** requires (a defect found there is fixed
-      in the skill and the run repeated), as the final message of a turn that
-      asks in plain text whether to approve or reject it, as the global rules on questions require.
-      The run
-      is this session's own: a subagent's smoke report and a hand-written illustration both stand in
-      for the behaviour and neither is it. Show the next skill only after the previous one is
-      approved, never several in one question. On a rejection, ask what must change, revise the
-      skill, rerun the smoke round for the models that missed when the wording changed, run it again
-      yourself, and show the new response; loop until every such skill's example is approved. A skill
-      whose result is edits, a merge, a deployment, a verdict another skill consumes, or a report only
-      an agent reads has nothing the user would use and skips this step; so does a rule-only change,
-      and so does an edit that changes how a skill works but not what it returns — a reordered step,
-      a procedure moved to a reference, a check added on the way — since an unchanged response has
-      nothing new to review. A relocation under step 5 skips it for that same reason: the skill
-      returns what it returned before the move, so there is no altered response to put to anyone.
-      Altered means the user would notice it in the response itself: a new
-      column, a changed shape, a different grouping, a link where there was none. A new value in a
-      status line or a reworded label is not that, and asking over it spends the user's attention on
-      nothing. The decision is the editor's, from what the skill returns before and after the edit.
+   6. **Hold each changed output to its approved example.** For every skill whose output step 5
+      put to the user, compare what its smoke runs returned — and, for a skill that summarises or
+      reviews, one run of your own on the branch in flight — against the approved example: headings,
+      columns, order, file shape. A divergence is the skill's wording, fixed and rerun under
+      `test-skill`; a shape the user has not approved goes back to step 5 as a new example, never
+      into the merge.
    7. **Check the diff file list against the default branch, then merge.** The authorization covers
       a pull request carrying only `.agents` files, and the file outside them that slips in is never
       announced. Read the changed paths rather than trusting your memory of what you edited; a stray
@@ -326,10 +322,10 @@ outcome, because silence reads as the guidance having been fixed.
       ask whether any line it adds or drops is true only once a still-open source pull request
       merges, and if so hold it until that pull request has merged, as the GitHub rule's **Merge
       Authorization** says, and report it as that rule directs. Otherwise a pull request carrying a
-      skill change merges once step 6
-      approved every example, and one carrying only rules merges on sight as the GitHub rules say. A
-      pull request a doctor run or `new-doctor` opens is left for the user instead; the steps above
-      still run, the merge does not.
+      skill change merges once step 6 found every changed output matching its approved example, and
+      one carrying only rules merges on sight as the GitHub rules say. A pull request a doctor run
+      or `new-doctor` opens is left for the user instead; the steps above still run, the merge does
+      not.
    8. **Nothing is copied by hand.** The skills repository is the only copy of a shared skill;
       sessions receive a merged edit through the refresh step 9 ends with, never through a copy
       placed in another repository or install. A skill that reads generically but was written into one repository's `.agents` is
@@ -369,7 +365,7 @@ Checks
 - Simplification: <clean | findings applied>
 - Acceptance gate: <accepted | rewritten and accepted | flagged twice: <fixed | merged as it stands | dropped> — <reason>>
 - Smoke test: <passing table reported above | dropped — <reason> | not run: <reason>>
-- Example approved: <one line per skill: name — approved after <n> round(s) | skipped, no response the user uses | skipped, response unchanged | rule-only change>
+- Example approved: <one line per skill: name — approved after <n> round(s), output matches it | skipped, no response the user uses | skipped, response unchanged | rule-only change>
 - Merged text read back: <default branch head the touched skills and rules were re-read from | not merged>
 - Refresh: <main checkout and installed copy at <sha>, installer rerun | skipped: <dirty paths> | not merged>
 

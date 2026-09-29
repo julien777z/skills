@@ -18,7 +18,8 @@ a code change is tested: against the case that motivated it, with the change and
 
 - After every skill edit and before its pull request merges, whether the edit came through
   `edit-skill` or was made directly. An edit that skipped this is unverified, and the report
-  says so.
+  says so. An edit that changes what the skill returns the user runs only after the user approved a
+  fictional example of that output, as `edit-skill` requires; a smoke run never proposes a format.
 - **An edit that changes no instruction a reader follows does not run at all, and its pull request
   merges on the reading**. A term swapped for
   another, a spelling standardised, a typo corrected, a dead link repaired: the text asks a reader
