@@ -149,7 +149,7 @@ evidence behind every cell, one section per skill:
 
 ### Scenario <n>: <short name>
 
-<one sentence on what the scenario contains>
+<one line on what the scenario contains and what else it carries>
 
 #### <run label> (<edited | original> text[, round <n>])
 
@@ -157,8 +157,8 @@ evidence behind every cell, one section per skill:
 - **Round <n>, for the record:** <what the run missed before its rerun>
 ```
 
-The heading reads `## Evidence: <skill name>` when the file covers several skills; the round bullet
-appears only on a run that was rerun.
+The heading reads `## Evidence: <skill name>` when the file covers several skills; the round in a
+run heading and the round bullet appear only on a run that was rerun.
 
 ## Guardrails
 
