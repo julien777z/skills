@@ -85,8 +85,9 @@ preserve configured ports.
 Passing tests, type checks, and a clean build establish that the code compiles, never that the app
 works. A change that can alter what the app does — new or reordered UI, layout or spacing, a
 component's props or state, a hook, a route, a redirect, middleware, an auth round trip, or the shape
-of a request — is walked end to end before it is reported done, however few lines it took. An edit
-that provably cannot reach behavior — rewording text already rendered in its existing slot, a
+of a request — is walked end to end before it is reported done, however few lines it took; the
+walkthrough follows the push rather than holding it, as `execute-task`'s **Pre-Push Gate** says. An
+edit that provably cannot reach behavior — rewording text already rendered in its existing slot, a
 comment, prose in Markdown — is verified by reading it and by finding the new text in the build
 output and the old text nowhere in the tree. Judge by what the edit touches, not how small it looks:
 moving text into a shared constant stays a copy change only while every call site keeps its slot. Where a component has no surface in the running app,
