@@ -325,7 +325,8 @@ outcome, because silence reads as the guidance having been fixed.
       in `.agents`, merge it through `merge-pr` with the head `acceptance-gate` accepted — but first
       ask whether any line it adds or drops is true only once a still-open source pull request
       merges, and if so hold it until that pull request has merged, as the GitHub rule's **Merge
-      Authorization** says. Otherwise a pull request carrying a skill change merges once step 6
+      Authorization** says, and report it as that rule directs. Otherwise a pull request carrying a
+      skill change merges once step 6
       approved every example, and one carrying only rules merges on sight as the GitHub rules say. A
       pull request a doctor run or `new-doctor` opens is left for the user instead; the steps above
       still run, the merge does not.
