@@ -178,12 +178,25 @@ Read and invoke `code-simplify` as the change is made — after each meaningful 
 Before the branch is pushed, and again before each later push that carries new work, run over the
 whole branch diff against its base — committed and uncommitted work alike, with no pull request
 required — first the final `code-simplify` pass above, applying its simplifications directly, then
-`acceptance-gate`'s diff question with the change's intent statement, then the repository's fast
-checks: lint, type checks, the unit tests of the changed packages, and any check a skill in use
-requires before a push. Fix what they flag, re-run the acceptance gate once, and re-run the checks
-until they pass. Commit the edits before pushing. A branch whose diff holds only dot-files and
-dot-directories, `.github` aside, skips the simplification pass and the acceptance gate; the checks
-still run.
+`acceptance-gate`'s diff question with the change's intent statement, then the pre-push checks
+below. Fix what they flag, re-run the acceptance gate once, and re-run the checks until they pass.
+Commit the edits before pushing. A branch whose diff holds only dot-files and dot-directories,
+`.github` aside, skips the simplification pass and the acceptance gate; the checks still run.
+
+- **The pre-push checks are the ones CI runs on a pull request, run the way CI runs them.** Read
+  the workflow files that trigger on a pull request and run every checking job that can run
+  locally — lint, format, type checks, build, tests, generated-output drift, docs or coverage
+  checks — with the job's own command and scope, plus any check a skill in use requires before a
+  push. Project guidance that lists those commands is a shortcut to the workflows, never a
+  substitute; where the two disagree, the workflow is right. A job that needs a hosted service or a
+  running stack, or is too slow to run before every push, joins the slow verification below and is
+  named in the report.
+- **A local variant of a CI check is not that check**, and each of these passes locally and fails
+  in CI: lint or type checks scoped to the changed files, where CI's whole-tree run finds an import
+  another change left unused in a file the branch never touched; a formatter or linter in write
+  mode, which rewrites what CI's check mode reports; a tool at a version or with a config other than
+  the one CI resolves; a job left out because the diff looks unrelated to it, such as a
+  generated-output drift check or a whole-tree check that every shared component has a docs page.
 
 - **Push each coherent unit of work as soon as its gate is clean.** A push is what lets the user
   review and test the work, so a gated commit held locally withholds that review.

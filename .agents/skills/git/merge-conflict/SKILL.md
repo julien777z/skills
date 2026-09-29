@@ -61,7 +61,7 @@ answers to one question may now sit in one tree.
    preserving a legacy runtime path is not a way to avoid the migration.
 7. **Regenerate what is generated** — lockfiles, generated contracts, provider mirrors — from the
    resolved sources with the repository's own tooling, never by hand. Remove every conflict marker,
-   run `git diff --check`, and run the repository's fast checks.
+   run `git diff --check`, and run the pre-push checks `execute-task`'s **Pre-Push Gate** defines.
 8. **Read the changed-file list against the base before anything else.** Every path in it is either
    one the branch touched or a regression: a path the branch never edited that now differs from the
    base is the base's own work being undone. Restore it from the base and look for its siblings.
