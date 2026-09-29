@@ -41,7 +41,10 @@ type Status = (typeof Status)[keyof typeof Status];
 
 ## Module Structure
 
-- A TS/TSX module must own a broad domain, not a single feature, action, watcher, or one-shot helper. Name modules after the domain (`payments.ts`), not the feature (`paymentsRefundButton.ts`).
+- A TS/TSX module must own a broad domain, not a single feature, action, watcher, or one-shot helper. Name modules after the domain (`payments.ts`), not the feature (`refundPayment.ts`).
+  **A component module is the exception, here and in the subfolder and fewer-files bullets below**:
+  it exports exactly one component, as the React rules state, and its domain becomes the folder
+  those files share, however few lines each holds.
 - Avoid role-suffixed file names like `*Action.ts`, `*Lookup.ts`, `*Watcher.ts`, `*Extractor.ts`, `*Url.ts`, or `*Collections.ts`; the folder already conveys the role.
 - Cross-domain helpers belong in a generic `utils` or `lib` module, not in a module named after a single feature.
 - Split a domain module into a subfolder only when the single file would exceed approximately 1000 lines. Name the folder after the domain and its files after subareas.
@@ -51,9 +54,6 @@ type Status = (typeof Status)[keyof typeof Status];
   one small type, or one constant has not earned a file — merge it into the module that already owns
   its concern. Several modules that each hold one symbol of one shape are one module under several
   names.
-- **Components are the exception to the broad-domain module, the subfolder threshold and fewer
-  files**: a component module exports exactly one component, as the React rules state, and its
-  domain becomes the folder those files share, however few lines each holds.
 - A function with one caller belongs in that caller unless it is genuinely reused, genuinely
   recursive, or long enough that inlining would bury the caller's own shape.
 - **A module that only forwards is not a layer.** When every function in it is one call to the module
