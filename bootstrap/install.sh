@@ -4,6 +4,14 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SKILLS_REMOTE='https://github.com/julien777z/skills.git'
 
+is_skills_remote() {
+  case "$1" in
+    "$SKILLS_REMOTE"|https://github.com/julien777z/skills|git@github.com:julien777z/skills.git|git@github.com:julien777z/skills)
+      return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
 if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
   CLOUD_HOME="${REPO_ROOT%/.local/share/agent-skills}"
   if [ -n "${SKILLS_CLOUD_HOME:-}" ] && [ "$SKILLS_CLOUD_HOME" != "$CLOUD_HOME" ]; then
@@ -37,11 +45,7 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
       remote="$(run_as_cloud_user git -C "$1" remote get-url origin 2>/dev/null || true)"
     fi
 
-    case "$remote" in
-      "$SKILLS_REMOTE"|https://github.com/julien777z/skills|git@github.com:julien777z/skills.git|git@github.com:julien777z/skills)
-        return 0 ;;
-      *) return 1 ;;
-    esac
+    is_skills_remote "$remote"
   }
 
   is_skills_checkout "$REPO_ROOT" || { echo "Setup clone is not the skills repository: $REPO_ROOT" >&2; exit 1; }
@@ -146,15 +150,11 @@ check_link() {
   old_root="$(git -c safe.directory='*' -C "$(dirname "$resolved")" rev-parse --show-toplevel 2>/dev/null || true)"
   old_remote="$(git -c safe.directory='*' -C "$old_root" remote get-url origin 2>/dev/null || true)"
 
-  case "$old_remote:$resolved" in
-    https://github.com/julien777z/skills.git:"$old_root"/.agents/*|\
-    https://github.com/julien777z/skills.git:"$old_root"/bootstrap/*|\
-    https://github.com/julien777z/skills:"$old_root"/.agents/*|\
-    https://github.com/julien777z/skills:"$old_root"/bootstrap/*|\
-    git@github.com:julien777z/skills.git:"$old_root"/.agents/*|\
-    git@github.com:julien777z/skills.git:"$old_root"/bootstrap/*)
-      return 0 ;;
-  esac
+  if is_skills_remote "$old_remote"; then
+    case "$resolved" in
+      "$old_root"/.agents/*|"$old_root"/bootstrap/*) return 0 ;;
+    esac
+  fi
 
   echo "conflict: $link points outside $REPO_ROOT" >&2
   return 1
@@ -296,6 +296,7 @@ install_provider() {
     ln -sfn "$CANONICAL_GLOBAL" "$root/rules/$name"
     rules=$((rules + 1))
   fi
+
   if [ "$provider" = "codex" ]; then
     ln -sfn "$CANONICAL_GLOBAL" "$root/AGENTS.md"
   fi
