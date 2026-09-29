@@ -195,6 +195,14 @@ manifests, policies, provider payloads, and response schemas remain models. All 
 code-simplify opens with; the gate runs them over the diff's added lines and lists their hits before
 anything else.
 
+**An added guard is priced like a missing one.** For every guard, refusal, validation, or branch a
+diff adds, the gate opens the writers of the value it tests — every path that creates or changes it —
+and names them in the verdict. It then applies `code-simplify`'s rubric on guards: one whose writers
+already make the refused state unreachable withholds nothing from anyone under **Product State**'s
+safeguard test and is flagged as dead code with that rubric's remedy, and one guarding a reachable
+state is flagged when sibling paths answering the same question lack it. An added check is never
+accepted as a security gain on its face.
+
 **Base incorporation — what did the base bring in that the change must refactor?**
 
 - **Disposition.** The verdict names each incoming implementation matching the intent and its demonstrated

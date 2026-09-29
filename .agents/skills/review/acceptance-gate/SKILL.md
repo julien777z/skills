@@ -70,6 +70,10 @@ every hit as a finding ahead of all others, with the remedy the rubric names:
 
 A report that lists no hit for any of the five greps says so in those words.
 
+**Then it opens the writers of every value an added guard tests**, as the rubric's diff test says,
+and names them in the verdict: a guard whose writers already exclude the state it refuses is flagged
+as dead code, and one guarding a reachable state on one path but not its siblings is flagged too.
+
 It returns the verdict its question defines, shaped as `references/rubric.md` — What A Verdict Names
 requires.
 
