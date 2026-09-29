@@ -51,6 +51,7 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
     echo "Skills setup clone must be on a branch: $REPO_ROOT" >&2
     exit 1
   }
+  installer_blob="$(run_as_cloud_user git -C "$REPO_ROOT" rev-parse HEAD:bootstrap/install.sh)"
 
   # Claude's proxy may configure a CA bundle under /root that the clone owner cannot read.
   fetch_env=()
@@ -67,6 +68,13 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
   fi
   run_as_cloud_user env ${fetch_env[@]+"${fetch_env[@]}"} git -C "$REPO_ROOT" fetch origin "$cloud_branch"
   run_as_cloud_user git -C "$REPO_ROOT" merge --ff-only "origin/$cloud_branch"
+  if [ "$installer_blob" != "$(run_as_cloud_user git -C "$REPO_ROOT" rev-parse HEAD:bootstrap/install.sh)" ]; then
+    if [ -n "${staged_ca:-}" ]; then
+      rm -f "$staged_ca"
+      trap - EXIT
+    fi
+    exec bash "$REPO_ROOT/bootstrap/install.sh"
+  fi
 
   source_checkout="$REPO_ROOT"
   search_roots=("$CLOUD_HOME")
