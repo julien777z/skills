@@ -66,6 +66,7 @@ preserve configured ports.
 |---|---|---|
 | Every authenticated request returns 401 | A checked-in placeholder shadowed the real value from the session environment | Make the environment win over the dotenv layers; read the running process's environment to confirm |
 | A service starts but every query fails | The database has no schemas | Run schema provisioning before launch and read its output for the failing service |
+| A module is missing at import though the manifest names it | It is declared where the package manager does not install it | Declare it in the manifest's install list, re-lock, and install; never patch the environment by hand |
 | A setup command reports missing settings before doing anything | It imports something that builds the application config at import time | Import only what build tooling needs, and keep a test guarding it |
 | A `run`-style script reports command not found | Its entry point is registered only by an install that has not run since | Invoke bootstrap commands as modules so they need no registration |
 | A dependency service refuses connections | It is not in the started set | Start it through the launcher's service selection |
@@ -84,7 +85,8 @@ component's props or state, a hook, a route, a redirect, middleware, an auth rou
 of a request — is walked end to end before it is reported done, however few lines it took. An edit
 that provably cannot reach behavior — rewording text already rendered in its existing slot, a
 comment, prose in Markdown — is verified by reading it and by finding the new text in the build
-output and the old text nowhere in the tree. Where a component has no surface in the running app,
+output and the old text nowhere in the tree. Judge by what the edit touches, not how small it looks:
+moving text into a shared constant stays a copy change only while every call site keeps its slot. Where a component has no surface in the running app,
 say so and name what only a harness rendered.
 
 ### Sign in
@@ -135,7 +137,8 @@ agent-browser --session <name> eval -b "$B64"
 - A library doing the work is a reason to exercise it, never an exemption: the arguments handed to it
   and the state handed back belong to the change.
 - Distinguish tool success from application success: confirm the intended request happened, then read
-  its result back through the documented API or the database rows it created.
+  its result back through the documented API or the database rows it created. A health response
+  proves the process is up, never signed-in rendering or behavior.
 - Read each screen against the repository's interface rules while it is on screen; a violation is a
   defect the walkthrough found.
 - The browser daemon starts a fresh profile each time, so `state save` a signed-in session that must
