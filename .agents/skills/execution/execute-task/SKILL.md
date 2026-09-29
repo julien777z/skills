@@ -173,12 +173,25 @@ Read and invoke `code-simplify` as the change is made — after each meaningful 
 
 ## Pre-Push Gate
 
-Before the branch is pushed, and again before any later push that carries new work, run over the
+Before the branch is pushed, and again before each later push that carries new work, run over the
 whole branch diff against its base — committed and uncommitted work alike, with no pull request
 required — first the final `code-simplify` pass above, applying its simplifications directly, then
-`acceptance-gate`'s diff question with the change's intent statement. Fix what the gate flags and
-re-gate once. Commit the edits before pushing. A branch whose diff holds only dot-files and
-dot-directories, `.github` aside, skips both.
+`acceptance-gate`'s diff question with the change's intent statement, then the repository's fast
+checks: lint, type checks, the unit tests of the changed packages, and any check a skill in use
+requires before a push. Fix what they flag, re-run the acceptance gate once, and re-run the checks
+until they pass. Commit the edits before pushing. A branch whose diff holds only dot-files and
+dot-directories, `.github` aside, skips the simplification pass and the acceptance gate; the checks
+still run.
+
+- **Push each coherent unit of work as soon as its gate is clean.** A push is what lets the user
+  review and test the work, so a gated commit held locally withholds that review.
+- **The order is change, gate, push, then the slow verification**: a browser walkthrough, a full or
+  end-to-end suite, a run against a service without the change, root-causing a failure the change
+  did not cause — anything slow or needing a running stack. What it finds goes out as fix pushes,
+  each through its own gate.
+- **Pushed is not done**: the change is reported done only once that verification has passed.
+- **Never hold a gated commit** to batch it with pending work, to wait for another approval, or to
+  save a gate run. A second gate over a small later push is cheap; hours of unpushed work are not.
 
 ## Pull Requests
 
@@ -249,7 +262,8 @@ it — the user asking about something else is not the user withdrawing what the
 - **A context summary's pending list is this run's named work**, not background. The first turn
   after it moves the oldest item as well as whatever the summary's next step names.
 - **Commits a remote lacks are undelivered work**; their next step is the pre-push gate and the push,
-  whatever the gate's size.
+  whatever the gate's size. A hook or status line counting unpushed commits that have passed their
+  gate reports a push owed now, not something to explain.
 
 **The failure is a report, not a refusal.** It reads as diligence: the item appears under "still to
 do", the turn ends, the next message arrives, and the item appears again, unchanged, in the next
