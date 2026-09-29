@@ -1,6 +1,7 @@
 ---
 name: linear
 description: Create, find, and update Linear issues through the available Linear integration with dynamic team, workflow, project, and label discovery. Use when another repository workflow records or resolves work in Linear, or when the user asks to manage Linear issues.
+short_description: 'Create, find, and update Linear issues through the available Linear integration with dynamic team, workflow, project, and label discovery.'
 ---
 
 # Linear

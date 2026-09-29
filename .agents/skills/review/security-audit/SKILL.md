@@ -1,6 +1,7 @@
 ---
 name: security-audit
 description: Security audit of a codebase — web apps, APIs, services, CLI tools, libraries, daemons, and more. Accepts an effort level selecting the hunting cohort and validation depth, from a single in-process pass to repeated fan-out, and asks for it when the invocation does not state one. Reports in chat and never fixes before the user approves each fix. Use when asked to find security bugs, do a security review, audit for vulnerabilities, or pen-test the code. Focuses on exploitable issues with real impact, not theoretical concerns or industry-standard behavior.
+short_description: 'Security audit of a codebase — web apps, APIs, services, CLI tools, libraries, daemons, and more.'
 ---
 
 # Security Audit

@@ -1,6 +1,7 @@
 ---
 name: edit-skill
 description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. Deliver through simplification, the acceptance gate, and the smoke test before the pull request merges.
+short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
 # Edit Skill
@@ -115,6 +116,9 @@ outcome, because silence reads as the guidance having been fixed.
      head invalidates that replay. Do not assume a pull request automatically installs its skill.
    - `agent` -> `.agents/agents/<name>.md`
    - `rule` -> `.agents/rules/<name>.md`
+   - For a scoped rule, declare its file patterns once as `paths` in canonical frontmatter.
+     Do not duplicate them as `globs`; Agent Sync writes each provider's required scope key.
+     Use `alwaysApply: true` only when the rule belongs in every session.
    - `skill` -> `.agents/skills/<name>/SKILL.md`, or `.agents/skills/<folder>/<name>/SKILL.md`
      where the repository sorts its skills into folders; the folders group the source and never
      change the name a skill installs under.
@@ -139,24 +143,35 @@ outcome, because silence reads as the guidance having been fixed.
      incident details must not remove the lesson. Apply the preservation criteria in the quality reference.
    - Check skill shape and output against those criteria. Move inline criteria to a named reference
      when required, and add the appropriate output template or delivery report line when absent.
-     Update existing files in place and report any structural changes. Before delivery, follow the
+   - Update existing files in place and report any structural changes. Before delivery, follow the
      entry point's links again and confirm that each route loads its required guidance. References
      must not hide an essential rule or introduce an unexplained mode or dependency. Check genericity
      with a materially different instance of the same failure class; state that case and its expected
      outcome in validation. Renaming the original example or replaying only it does not establish breadth.
+   - After a dependency receives a separately authorized release, replace consumer references to
+     its branch with a maintained version tag. Use a minor release for a new capability or a patch
+     release for a bug fix; verify any moving major tag points to that release and validate the
+     consumer against it. Do not switch to an unpublished tag or the default branch.
    - If target file does not exist, create it with a concise structure matching existing style.
-   - Place new guidance under the broadest existing subject section that fits. **A heading names the
-     subject a reader looks under — Comments, Commits, Workflows — never the requirement it holds.**
-     Add a section only when no existing one covers the subject, and name it for the whole subject: a
-     heading that states one rule ("Posting As The User", "Never Skip Tests") invites the next rule on
-     that subject into a heading of its own, and the file grows a section per requirement. A
-     restriction on one subject — comments, pushes, secrets — goes under that subject's heading even
-     when it guards something; `## Guardrails`, kept at the bottom, holds only constraints that span
-     the file's subjects.
+   - Group frontmatter fields by subject. Put a field that summarizes, qualifies, or overrides
+     another immediately after the field it relates to, unless the format requires another order.
+     Place new body guidance under the broadest existing subject section that fits. A reported
+     misplaced field is a case to test this general rule, not a reason to name that field in shared
+     guidance.
+   - A heading names the subject a reader looks under — Comments, Commits, Workflows — never the
+     requirement it holds. Add a section only when no existing one covers the subject, and name it
+     for the whole subject: a heading that states one rule invites the next rule on that subject
+     into a heading of its own. A restriction on one subject goes under that subject's heading;
+     `## Guardrails`, kept at the bottom, holds only constraints that span the file's subjects.
    - Express each independent requirement once, usually as one concise bullet. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
    - Normalize the touched file's nearby structure when needed: combine narrow sections, remove redundant wording, and order foundational guidance before specialized concerns.
    - When adding a **new** restriction or rule, keep the wording **concise**—one clear statement or bullet per idea; do not pad with redundant sentences or multiple bullets that restate the same requirement.
-   - **Stable guidance:** Write at the broadest scope that remains truthful. Describe reusable roles, boundaries, and decision criteria generically even in repository-focused guidance when the pattern is not repository-specific. Keep concrete repository names only when correctness depends on that local contract, and never turn one local example into an untrue universal rule.
+   - **Stable guidance:** Write at the broadest scope that remains truthful. Treat a named field,
+     file, or section in a request as an example of its broader class unless its exact identity is
+     required by the contract. Describe reusable roles, boundaries, and decision criteria generically
+     even in repository-focused guidance when the pattern is not repository-specific. Keep concrete
+     repository names only when correctness depends on that local contract.
+   - Before adding a requirement to a shared rule, test it against a repository without the feature that prompted it. If it prescribes the current repository's documentation sections, inventory, or generation workflow, put it in `.agents/project.md`; keep the shared rule limited to guidance that still makes sense elsewhere.
    - When the user asks to add guidance from another repository, treat that repository as source material: encode transferable requirements in the owning skills and refer to those skills by name. Before delivery, audit the edited package for the source repository's name, links, paths, commands, versions, and configuration; never hard-code or cite that repository in a skill.
    - Separate temporary task, session, and pull-request directions from lasting guidance before
      writing. Apply the former to the current work only; never encode them as canonical rules or
@@ -310,7 +325,8 @@ outcome, because silence reads as the guidance having been fixed.
       in `.agents`, merge it through `merge-pr` with the head `acceptance-gate` accepted — but first
       ask whether any line it adds or drops is true only once a still-open source pull request
       merges, and if so hold it until that pull request has merged, as the GitHub rule's **Merge
-      Authorization** says. Otherwise a pull request carrying a skill change merges once step 6
+      Authorization** says, and report it as that rule directs. Otherwise a pull request carrying a
+      skill change merges once step 6
       approved every example, and one carrying only rules merges on sight as the GitHub rules say. A
       pull request a doctor run or `new-doctor` opens is left for the user instead; the steps above
       still run, the merge does not.

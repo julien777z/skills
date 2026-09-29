@@ -1,6 +1,7 @@
 ---
 name: test-fixture
 description: Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Rejects hard-coded domain test data when a canonical fixture or factory owns it, and enforces source-mirrored placement, concise parametrized cases, honest doubles, and regression-proof validation.
+short_description: 'Check test data and fixtures before changing tests or running tests after a fixture change.'
 ---
 
 # Test Fixture

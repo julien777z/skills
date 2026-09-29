@@ -1,8 +1,4 @@
 ---
-globs:
-- '**/*.py'
-- '**/*.ts'
-- '**/*.tsx'
 alwaysApply: false
 paths:
 - '**/*.py'

@@ -1,6 +1,7 @@
 ---
 name: text-highlight
 description: "Show changes as diff-shaped code blocks a reader can locate at a glance: an edited line marked + in the form it now takes, a line dropped with nothing in its place marked -, a few unchanged lines around each change, and ... where the file goes on. Every file fences with diff so the marks colour, a document as readily as a module; text mode drops to a plain fence only when asked for. Invoke as /text-highlight [code|text] [paths], or from a skill that declares it."
+short_description: 'Show code changes in small diff-shaped excerpts that are easy to locate.'
 ---
 
 # Text Highlight

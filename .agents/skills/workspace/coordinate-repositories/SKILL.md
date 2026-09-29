@@ -1,6 +1,7 @@
 ---
 name: coordinate-repositories
 description: Coordinate one authorized task across a bounded collection of local repositories and caller-selected existing user-level installations while preserving unrelated work. Use when a task spans repositories, when repository-neutral changes must remain converged, or when propagation must also update matching editable local skills.
+short_description: 'Carry one task across selected repositories and user-level installations.'
 ---
 
 # Coordinate Repositories

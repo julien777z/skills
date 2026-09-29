@@ -1,6 +1,7 @@
 ---
 name: agent-lock
 description: Coordinate exclusive use of a shared resource between agents using an exact string key. Use as a dependency when concurrent agents would conflict over one VM desktop, browser session, or other shared mutable resource. Consume ownership for a command or delegate a bounded lock for a multi-tool agent task; no heartbeats are needed.
+short_description: 'Coordinate exclusive use of a shared resource between agents using an exact string key.'
 ---
 
 # Agent Lock

@@ -1,6 +1,7 @@
 ---
 name: pre-production
 description: Apply target-contract constraints to every implementation and review task, including configuration, APIs, schemas, and stored data. Use it to prevent legacy paths and parallel mechanisms, to plan migrations for affected users and data, and whenever a CI job fails along the way.
+short_description: 'Apply target-contract constraints to implementation and review tasks.'
 ---
 
 # Pre-Production
@@ -13,7 +14,7 @@ Build the clean target contract instead of preserving transitional behavior.
   external users, which environments and records are disposable, and which surfaces are privileged;
   never infer those facts from an environment name.
 - Migrate affected users and retained data onto the target contract before removing the old one.
-  Release state changes the migration work, never the prohibition on legacy runtime paths.
+  Release state changes the migration work; it does not by itself justify a legacy runtime path.
 
 ## Encountered Issues
 
@@ -103,7 +104,7 @@ also not a reason to stop at the first file, and the section below governs how f
 
 - Implement the contract the released product should have. Do not add compatibility shims,
   transitional runtime branches, dual reads or writes, temporary feature paths, or speculative
-  handling for obsolete shapes.
+  handling for obsolete shapes unless the user explicitly requests retention for this change.
 - Treat configuration inputs as owned contracts. Replace a stale deployed value at the existing
   setting and its deployment owner; do not add another file, environment key, or fallback path to
   override it.

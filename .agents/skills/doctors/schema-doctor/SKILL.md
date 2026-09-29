@@ -1,6 +1,7 @@
 ---
 name: schema-doctor
 description: Audit and correct unjustified nullability, model complexity, primary-key design, and index design across repository API contracts, serialized schemas, persisted schemas, and the field flows connecting them. Use to review requiredness, optional fields, nullable columns, duplicated contract models, unnecessary fields, shared model ownership, missing or redundant indexes, primary keys, or schema consistency.
+short_description: 'Check models and schemas for unnecessary nulls, complexity, keys, and indexes.'
 disable-model-invocation: true
 ---
 

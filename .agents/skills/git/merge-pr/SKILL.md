@@ -1,6 +1,7 @@
 ---
 name: merge-pr
 description: Take a reviewed pull request through its exact-head check gate, resolve merge conflicts, and squash-merge it at the gated head, verifying the merge. Use when merging a specific pull request is authorized — the user naming it, or a workflow reaching its merge step, such as a review workflow, a doctor's merged batch, or a guidance change's delivery.
+short_description: 'Validate and merge an authorized pull request at its reviewed head.'
 ---
 
 # Merge Pull Request

@@ -1,6 +1,7 @@
 ---
 name: banned-terminology
 description: Owns the banned-terms list in resources/banned_words.json and enforces it. Use when naming anything, when writing a pull request or a message to the user, when reviewing a name, when the user says a term is bad, confusing, or should not be used, when they reject a replacement an entry recommends, when they lift a ban, or whenever the decision is about a word rather than one symbol.
+short_description: 'Owns the banned-terms list in resources/banned_words.json and enforces it.'
 ---
 
 # Banned Terminology

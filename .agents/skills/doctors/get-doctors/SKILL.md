@@ -1,6 +1,7 @@
 ---
 name: get-doctors
 description: List every doctor skill the skill listing declares with a one-line summary of what it audits. Use when asked which doctors exist or what each one covers.
+short_description: 'List every doctor skill the skill listing declares with a one-line summary of what it audits.'
 ---
 
 # Get Doctors

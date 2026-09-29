@@ -1,6 +1,7 @@
 ---
 name: subagent-selection
 description: Apply whenever selecting or launching sub-agents, whether directly for a task or through another skill. Resolve cheap, standard, advanced, and frontier model tiers from the current host catalogue and use the chosen tier explicitly for every delegation.
+short_description: 'Apply whenever selecting or launching sub-agents, whether directly for a task or through another skill.'
 ---
 
 # Subagent Selection

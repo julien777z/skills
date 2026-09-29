@@ -1,6 +1,7 @@
 ---
 name: storyline
 description: Create, audit, or extend a game's substantial, coherent storyline with independent narrative proposals, motivated characters, playable story beats, a connected story web, and a satisfying ending. Apply when asked to develop or improve a game story; support world and map expansion when the narrative needs it.
+short_description: 'Create or improve a coherent game story with playable beats and a satisfying ending.'
 ---
 
 # Storyline

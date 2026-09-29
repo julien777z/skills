@@ -1,6 +1,7 @@
 ---
 name: defer-execution
 description: Schedule an unrecorded scope of work on its own branch off the default branch rather than folding it into the change in flight, either after the originating pull request merges or immediately in a worktree. Use to hand over new work to do separately; use execute-defer-scope for an existing deferral record.
+short_description: 'Schedule separate work on its own branch, either now or after the current pull request merges.'
 disable-model-invocation: true
 ---
 

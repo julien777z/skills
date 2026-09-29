@@ -1,6 +1,7 @@
 ---
 name: current-changes
 description: Summarize what the current branch changes against the default branch as one paragraph and one sentence per material change, each linked to the code that makes it, with test changes folded into a single line. Use when asked what the branch or its pull request changes.
+short_description: 'Summarize the branch''s changes against the default branch with links to the code.'
 ---
 
 # Current Changes

@@ -1,6 +1,7 @@
 ---
 name: list-skills
 description: List and reconcile canonical skills across a bounded collection of local repositories. Use when the user asks which skills repositories have, where they occur, or whether a shared skill has conflicting language.
+short_description: 'List and reconcile canonical skills across a bounded collection of local repositories.'
 ---
 
 # List Skills

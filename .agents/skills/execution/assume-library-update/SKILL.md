@@ -1,6 +1,7 @@
 ---
 name: assume-library-update
 description: Write consuming code against a library change that is authored but not yet reachable, when the library is the user's own and this session cannot push to it. Use when work in a consuming repository is blocked waiting on a dependency update that is written, opened, merged, or published but not yet reachable.
+short_description: 'Write consuming code for a change in one of your libraries before the library update is available.'
 disable-model-invocation: true
 ---
 

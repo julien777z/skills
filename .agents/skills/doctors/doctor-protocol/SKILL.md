@@ -1,6 +1,7 @@
 ---
 name: doctor-protocol
 description: The audit-and-fix protocol every doctor skill runs on — scope resolution, read-only reviewer fan-out, a parent-owned ledger, an acceptance-gated remediation plan, sole-editor implementation, final review, deferral of leftovers, and the report skeleton. Read from a doctor skill that declares it; never invoked on its own.
+short_description: 'Set the audit, fix, review, and reporting process used by every doctor skill.'
 ---
 
 # Doctor Protocol

@@ -1,6 +1,7 @@
 ---
 name: list-prs
 description: List the pull request URLs for every currently open pull request changed during the entire current session, including drafts. Use when asked for links to open pull requests created or updated during the session.
+short_description: 'List the pull request URLs for every currently open pull request changed during the entire current session, including drafts.'
 ---
 
 # List Pull Requests

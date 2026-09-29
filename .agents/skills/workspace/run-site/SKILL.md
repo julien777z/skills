@@ -1,6 +1,7 @@
 ---
 name: run-site
 description: Bring a local application stack up, repair startup blockers, and prove the running site works by driving a real browser through sign-in and core functionality with screenshots and a recording. Use when a change needs verifying in a browser, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works.
+short_description: 'Start a local app, repair startup failures, and verify signed-in flows with screenshots and a recording.'
 ---
 
 # Run Site
@@ -100,20 +101,18 @@ genuinely cannot complete, report the walkthrough as not done. Drive the browser
 profile; never read the user's saved passwords, cookies, local storage, or session files.
 
 Keep a password out of argv and the transcript: read it from the file that holds it, build the
-script that fills the field, and pass it base64-encoded. Set the value through the native setter and
+script that fills the field, and pipe it to the browser command through stdin. Set the value through the native setter and
 dispatch a bubbling `input` event so a framework-controlled input registers it:
 
 ```bash
-B64=$(python3 - <<'EOF'
-import base64, json
+python3 - <<'EOF' | agent-browser --session <name> eval --stdin
+import json
 secret = open("<password-file>").read().strip()
 js = ("const el=document.querySelector('input[type=\"password\"]');"
       "Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(el,%s);"
       "el.dispatchEvent(new Event('input',{bubbles:true}));'ok'") % json.dumps(secret)
-print(base64.b64encode(js.encode()).decode())
+print(js)
 EOF
-)
-agent-browser --session <name> eval -b "$B64"
 ```
 
 ### Drive the change
