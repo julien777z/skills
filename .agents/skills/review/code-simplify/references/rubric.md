@@ -192,7 +192,9 @@ Apply the baseline prompt above, plus these explicit review rules:
      concern, not the nearest small module with room: a destination that is itself one or two symbols
      is another lone module, and moving into it changes the file name and nothing else. Keep a lone
      symbol in its own module only for a dependency boundary you can show from declared dependencies
-     and importers, or an entry point the framework or packaging looks up by path.
+     and importers, an entry point the framework or packaging looks up by path, or a UI component
+     module, which the React rules hold to exactly one exported component with its helper components
+     unexported in the same file; a folder of such modules is their area, never one module to merge.
    - Re-count after every relocation, on the source and on the target, and say both counts.
    - History is not a disposition. Count a module as it stands in scope, whatever the diff calls it —
      new, renamed, moved, generalized, or already there when the change arrived. "It held one symbol
@@ -543,7 +545,7 @@ Escalate findings when you see:
   of one enum's members is a classmethod on that enum. The enums and models in the same file stay;
   only the values move.
 - A module with one public symbol — new, renamed, moved, or already in scope — and a package where
-  several modules each hold one. The
+  several modules each hold one, outside the exemptions standard 2 names. The
   first is a file that has not earned its name; the second is one module split across several files.
   Count symbols per module rather than judging by line count.
 - Two utilities performing one operation on different shapes, or with their own separate constants and sentinels for the same idea. Collapse them into one whose parameter covers both callers.
@@ -592,7 +594,7 @@ When you identify a code-quality problem, prefer suggestions like:
 - Turn special-case logic into a simpler default flow with fewer exceptions.
 - Extract a helper or pure function.
 - Split a large file into smaller focused modules.
-- Collapse one-symbol modules into one module named for what they share, widening the existing one.
+- Collapse one-symbol modules into one module named for what they share, widening the existing one, except where standard 2 exempts them.
 - Move feature-specific logic behind a dedicated abstraction.
 - Replace condition chains with a typed model or explicit dispatcher.
 - Separate orchestration from business logic.
@@ -659,7 +661,7 @@ Treat these as presumptive blockers unless the author can justify them clearly:
 - the PR carries code written after the review — for a tool, a red check, or a reviewer — that never went through the rubric
 - the PR adds an abstraction that was never needed, or one whose guarantee is weaker than its name claims
 - the PR adds a module holding one public symbol, or a second one-symbol module beside an existing one,
-  without a demonstrated dependency boundary or entry-point requirement
+  outside the exemptions standard 2 names
 - the PR adds a declaration whose members mirror one the repository already declares, or a
   module-level constant without its type
 - the PR duplicates an existing helper, repeats a cross-consumer mechanism, or puts logic in the wrong

@@ -10,10 +10,12 @@ paths:
 
 ## Components and Props
 
-- Components follow the TypeScript rules' module structure and share the module that owns their
-  domain. A `"use client"` directive covers its whole module, so a domain's client components share
-  one client module beside it, named for the domain and what that half holds (`payments-controls.tsx`
-  beside `payments.tsx`) — the one split the directive forces beyond that structure
+- **A module exports exactly one component**, with its props type at most, and is named for it. The
+  helper components it needs stay in that file, unexported, so no other module can reach them. A
+  module exporting two — a navigation shell that also exports a toggle and a menu — is two modules.
+- **Components that belong together go in a folder named for their area, one file each**, published
+  through the area's index as the TypeScript rules' **Area Imports** describe. A client component's
+  `"use client"` directive goes on the first line of its own file.
 - Named exports for components
 - Default exports only for page components
 
@@ -28,13 +30,16 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 ```
 
 - **A component owns its structure; a call site supplies content.** A surface made of parts — a
-  card with a title, an action, a body and a footer — takes them as slots (`action={...}`,
-  `footer={...}`, `children`) and owns their spacing, alignment, dividers and type sizes through its
-  variants, so each kind of text — a name, a figure, a label — has one size across the product.
-  A slot takes the element itself — `action={<Button>…</Button>}`, never `actionLabel` and
-  `actionHref` — so each caller keeps its own content without the component growing a prop per
-  field. A call site fills slots; it never assembles the surface from its primitives, and structural
-  behavior a caller needs becomes a prop or variant. Where a surface is hand-assembled, the fix names
+  card with a title, an action, a body and a footer — is one exported component that takes them as
+  slots (`action={...}`, `footer={...}`, `children`) and owns their spacing, alignment, dividers and
+  type sizes through its variants, so each kind of text — a name, a figure, a label — has one size
+  across the product. A slot takes the element itself — `action={<Button>…</Button>}`, never
+  `actionLabel` and `actionHref` — so each caller keeps its own content without the component
+  growing a prop per field. Its parts — a header, a body, a title, an item — are unexported helpers
+  in its file: exported compound parts (`Panel`, `PanelHeader`, `PanelBody`), however common in
+  component libraries and pattern guides, are the hand-assembly this forbids. A call site fills slots;
+  it never assembles the surface from parts or primitives, and structural behavior a caller needs
+  becomes a prop or variant. Where a surface is hand-assembled or exports its parts, the fix names
   the one component that replaces it and lists each slot prop it takes.
 - **Layout and type come from primitives, never from class strings.** A feature component arranges
   its content with the shared layout and text primitives — a row, a column, a grid, a box, a text, a
@@ -237,6 +242,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 - Prefix with `handle`: `handleClick`, `handleSubmit`
 - Use `useCallback` for handlers passed to memoized children
+- **A button whose action is running is disabled, marked busy (`aria-busy`), and shows a spinner in
+  place of its label at the same width**, so it cannot be pressed twice and nothing beside it moves.
+  The label stays in the layout, transparent, holding the width and remaining the accessible name,
+  with the spinner overlaid and hidden from assistive technology. The button component owns this
+  behind one pending prop; there is no second label prop for the pending state ("Saving…").
 
 - Use ternary for simple conditions
 - Use early return for complex conditions
@@ -275,18 +285,18 @@ Apply this section only when the repository uses the Next.js App Router.
 ### Rendering and Data
 
 ```typescript
-// users.tsx - Server Components, no directive
-async function UserList() {
+// user-list.tsx - Server Component, no directive
+export async function UserList() {
   const users = await fetchUsers(); // Direct DB/API access
   return <ul>{users.map(u => <li key={u.id}>{u.name}</li>)}</ul>;
 }
 ```
 
 ```typescript
-// users-controls.tsx - Client Components, directive on the first line
+// search-input.tsx - Client Component, directive on the first line
 "use client";
 
-function SearchInput() {
+export function SearchInput() {
   const [query, setQuery] = useState("");
   return <input value={query} onChange={e => setQuery(e.target.value)} />;
 }
