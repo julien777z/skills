@@ -276,7 +276,7 @@ outcome, because silence reads as the guidance having been fixed.
       the rewrite already answered, or drop the item when neither holds, and state which and why in
       the report, as that skill's **Bounds** leave it to the caller for a change whose merge needs
       no authorization.
-   5. **Run `test-skill`** for every skill the change adds or edits, to a passing table or the
+   5. **Run `test-skill`** for every skill the change adds or edits, to passing tables or the
       waiver its **When It Runs** bounds. It runs here rather than before step 3, because a round
       run against wording the simplification pass then rewrites has tested text nobody will follow.
       That pass settles how the guidance reads; this one settles whether it changes what a reader
@@ -364,7 +364,7 @@ Checks
 - Source check: passed on <head> | failed: <report>
 - Simplification: <clean | findings applied>
 - Acceptance gate: <accepted | rewritten and accepted | flagged twice: <fixed | merged as it stands | dropped> — <reason>>
-- Smoke test: <passing table reported above | dropped — <reason> | not run: <reason>>
+- Smoke test: <passing tables reported above | dropped — <reason> | not run: <reason>>
 - Example approved: <one line per skill: name — approved after <n> round(s), output matches it | skipped, no response the user uses | skipped, response unchanged | rule-only change>
 - Merged text read back: <default branch head the touched skills and rules were re-read from | not merged>
 - Refresh: <main checkout and installed copy at <sha>, installer rerun | skipped: <dirty paths> | not merged>
