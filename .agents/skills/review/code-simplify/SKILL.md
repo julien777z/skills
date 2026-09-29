@@ -78,10 +78,9 @@ say readability and types were checked.
 
 List every guard, refusal, validation, or branch the diff adds or edits with the writers of the value
 it tests and of what its path reads next, each named by path and function. One whose refused inputs
-those writers already exclude, or a check on the path already refuses, is dead code, and its
-remedy deletes it with its message and the tests that exist only for it, as the rubric's first
-standard says. A report without that list, or one that keeps such a guard as legitimate, has not run
-the check.
+those writers already exclude, or a check on the path already refuses, is dead code under the
+rubric's standard 1 and takes that standard's remedy. A report without that list, or one that keeps
+such a guard as legitimate, has not run the check.
 
 **What a scope contains.** A scope is never the diff hunks alone. Resolving any scope — the pre-push merge-base diff or one a caller names — yields three things: the **diff** itself, the **full contents of every file it touches**, and the **sibling modules in those files' packages**. Hunks show what changed; the whole file shows what the change now sits inside; the siblings show where the logic should have lived. A code-judo move is usually only visible in the third, and `references/rubric.md` applies to everything the scope resolves to, not only to lines the diff added.
 
