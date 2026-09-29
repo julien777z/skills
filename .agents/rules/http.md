@@ -20,9 +20,11 @@ paths:
   with a guess. Override only for a reason specific to the integration — the SDK ships no timeout,
   so the call is unbounded, or this integration's calls differ from what the default assumes, such
   as a provider whose requests legitimately run long or a user-facing path that must fail sooner —
-  and write that reason in a comment beside the value, since a bare number reads as the habit this
-  rule removes. This holds over general advice to put a timeout on every network call.
-- A client the code builds itself, with no SDK behind it, sets a timeout, since nothing ships one.
+  and never leave the override a bare number: the SDK's or the provider's behaviour goes in a comment
+  beside the value, and a reason this code owns, such as a user-facing deadline, goes in the value's
+  name. This holds over general advice to put a timeout on every network call.
+- A client the code builds itself, with no SDK behind it, sets its own timeout, since no default a
+  general HTTP library ships is tuned for that service.
 - Prefer the repository's shared HTTP helper or client abstraction over spawning ad-hoc clients deep in application code.
 - If the project already centralizes retries, auth headers, or response parsing, reuse that shared layer instead of reimplementing it per call site.
 - Keep raw `response.json()` parsing at the boundary layer; do not scatter transport parsing logic across core business logic.
