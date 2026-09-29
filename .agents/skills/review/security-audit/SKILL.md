@@ -13,6 +13,7 @@ this file holds how the audit is run. Read the rubric before hunting and apply i
 
 ## Dependencies
 
+- `subagent-selection` — route every agent a level names through a subagent of the running session.
 - `linear` — deduplicate and track approved findings when the session exposes a Linear integration.
 - `defer-scope` — record a finding the user chooses to defer.
 
@@ -43,9 +44,8 @@ fallback was used.
 | `high` | 3 agents | 2 on the riskiest classes, 1 elsewhere | 1 refuter per finding | 1 verifier per finding |
 
 At `low` every phase runs in process. From `medium` upward, launch the agents each phase names in
-parallel; capacity limits force batching, never omission and never an undeclared local skim. Where
-the host has no subagent capability, run every level's phases in process and report that degraded
-mode.
+parallel; capacity limits force batching, never omission and never an undeclared local skim. Each
+agent a level names is launched as `subagent-selection`'s **Dispatch** section directs.
 
 **The rubric is the same at every level; only the cohort shrinks.** A `low` finding is held to
 exactly the bar in `references/rubric.md` — exploitable, with a concrete attack — because a thinner

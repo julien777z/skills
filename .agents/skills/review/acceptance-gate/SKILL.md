@@ -12,6 +12,7 @@ state and the change's intent, applies the repository's rubric, and answers one 
 
 ## Dependencies
 
+- `subagent-selection` — route the gate through a subagent of the running session.
 - `code-simplify` — its `references/rubric.md` defines slop and prices a mechanism. The gate borrows
   that file and never the applying-fixes workflow.
 - `security-audit` — run at its `low` effort, which is defined as a single in-process pass against
@@ -78,8 +79,8 @@ rubric's diff test flags. A verdict with no added guard says `no guard added` in
 It returns the verdict its question defines, shaped as `references/rubric.md` — What A Verdict Names
 requires.
 
-Where the host has no subagent dispatch, answer the question in process against the same four inputs
-and say in the report that the gate ran degraded.
+The gate always runs as a subagent of the running session, routed as `subagent-selection`'s
+**Dispatch** section directs.
 
 ## Questions
 
