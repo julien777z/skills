@@ -68,9 +68,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   sibling surface — the variants of one document, the create and edit of one record — whether or
   not it renders that component yet, since siblings share one structure; land the change on all of
   them together. A page left on the old shape is a defect, not a follow-up.
-- Never build a second copy of a mechanism beside the one the page already shares. Extend the
-  existing component or hook with the new behavior, parameterized where the pages differ, and let
-  every consumer pick it up. Two implementations of one mechanism drift the moment either is edited.
+- Never build a second copy of a mechanism beside the one pages or apps already share. Extend its
+  owning component or hook with the new behavior, parameterized where consumers differ. Trace the
+  actual imports and stylesheets in every consuming build, verify they use the same shared revision,
+  and compare rendered open, closed, focus, keyboard, and motion states. Matching component names or
+  static screenshots do not prove that consumers share the implementation.
 - Where a page genuinely cannot take the new shape, say which page and why in the pull request;
   silently leaving it behind is what turns a redesign into an inconsistency.
 
