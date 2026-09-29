@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once, before the first edit, at the start of every task that changes files — including one that only begins changing files because work turned up a defect — and keep it active until the task's report: it applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, simplifies as the change grows, gates the branch before it is pushed, and delivers each repository independently. Never invoke it from inside a skill it runs."
+description: "Always run this. Invoke once, before the first edit, at the start of every task that changes files — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until the task's report: it applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, simplifies as the change grows, gates the branch before it is pushed, checks every outcome it reports, whether its own action or a sub-agent's claim, at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
 short_description: 'Apply repository guidance, fix issues found along the way, validate the diff, and deliver the change.'
 ---
 
@@ -14,6 +14,7 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 - `code-simplify` — simplify each meaningful implementation batch and the complete diff before delivery.
 - `acceptance-gate` — judge the complete branch diff before it is pushed.
 - `generic-push` — keep each repository's publishing metadata independent during multi-repository changes.
+- `merge-conflict` — bring in a conflicting or moved base, found when a push is read back, before other work.
 
 ## One Run Per Task
 
@@ -23,13 +24,14 @@ Run every change the same way, whether a plan preceded it or the user asked for 
   ways it lists. Nothing in the task re-enters the skill; the run simply has not ended.
 - A skill that lists this one as a dependency — `plan-change` does — invokes it once, and the
   skills this one invokes never invoke it back: `pre-production`, `code-simplify`,
-  `acceptance-gate`, and `generic-push` are leaves of this run. A second invocation while one is
-  active does nothing more than continue the active run.
+  `acceptance-gate`, `generic-push`, and `merge-conflict` are leaves of this run. A second
+  invocation while one is active does nothing more than continue the active run.
 - This skill never invokes `plan-change`. Where a task needs a plan, `plan-change` runs first and
   invokes this skill once the plan is approved.
 - A read-only task — a question answered from the code, a listing, a report with no edit — does
-  not run this skill. It does not close an open run either: a run still holding named work stays
-  active through such a turn, and that turn moves its items.
+  not run this skill; a task whose edits sub-agents make is not read-only for the agent that
+  delegated them. A read-only turn does not close an open run either: a run still holding named
+  work stays active through such a turn, and that turn moves its items.
 
 ## Task Authorization
 
@@ -192,6 +194,32 @@ still run.
 - **Pushed is not done**: the change is reported done only once that verification has passed.
 - **Never hold a gated commit** to batch it with pending work, to wait for another approval, or to
   save a gate run. A second gate over a small later push is cheap; hours of unpushed work are not.
+
+## Reported Outcomes
+
+An outcome is what its source of truth shows, never what an action or a worker said about it.
+
+- **After any action that changes shared state, read the resulting state before reporting it or
+  starting the next item.** A push, merge, deployment, migration, or refresh reports that it ran,
+  not the state it left, so read that state where it lives. After a push, that is the pull request
+  on the pushed head: its mergeable state and its checks starting, since the base can move while
+  the push runs.
+- **Whatever that read shows wrong is the next thing done**, ahead of every queued item, and is
+  never carried to "the next push" or bundled behind other work. A conflict or a moved base is
+  brought in through `merge-conflict`, gated under the **Pre-Push Gate**, pushed, and read back.
+- **A delegated worker's report of an outcome is a claim, never evidence.** Before relaying it or
+  building on it, check it at its source: "tests pass" against the run or the CI result on that
+  commit, "pushed" or "exists" against the branch, "merged" or "refreshed" against the default
+  branch or the installed copy, "deployed" or "healthy" against the host, "fixed" by reproducing it
+  or reading the evidence, "the screenshot shows it" by looking at the image, "no references
+  remain" by searching. A claim the check contradicts is the next thing done, ahead of queued
+  work: sent back to the worker with what the read showed, or fixed here.
+- **A deferral inside a report — "I'll do X next" — is named work of this run** under **Work You
+  Have Already Named**, tracked until done; the report does not close it.
+- **A status sent to the user states what was just read and where**, never what was reported or
+  expected: conflicted, failing, running, or passing, on the head or target named. "Done" or
+  "ready" is written only when that read says so, and a file sent with it is checked first as the
+  global rules' **User-Facing Output** requires.
 
 ## Pull Requests
 

@@ -110,8 +110,9 @@ outcome, because silence reads as the guidance having been fixed.
      only to provide skills is not the editing checkout. Transfer the edit to a separate
      skills-repository session only when no writable checkout can be obtained, never by editing
      the installed clone.
-     The originating session supplies the observed miss, original task, relevant diff or small
-     file set, repository commit, original skill text, and two to four observable pass criteria.
+     The originating session supplies the observed miss and its failure class, original task,
+     relevant diff or small file set, repository commit, original skill text, and two to four
+     observable pass criteria.
      Include a sanitized fixture when the skills session cannot read the originating repository.
      The skills session tests original and proposed wording against the same case and names the
      exact proposed pull-request head. For repository-dependent behavior, the originating session
@@ -138,6 +139,21 @@ outcome, because silence reads as the guidance having been fixed.
      target entry point and its referenced files, scripts, templates, and examples. Follow supporting
      links within the package; reviewing only `SKILL.md` or the edited hunk is incomplete. Apply the
      same genericity, ownership, clarity, and evidence standards to every file.
+   - **A change to what a skill returns the user is approved as a fictional example before the
+     skill is written to produce it.** The class is any new or changed user-facing output shape — a
+     table, a report layout, a sent file, a message template, a listing — in a skill whose response
+     the user reads or acts on. It is changed when the user would notice it in the response itself: a
+     new or moved column, a different grouping, a link where there was none. A new status value or a
+     reworded label is not that, and a skill whose result is edits, a merge, a deployment, a verdict
+     another skill consumes, or a report only an agent reads has no such response. Whether an output
+     changed is the editor's call, from what the skill returns before and after. Write the example
+     for a realistic invented scenario with invented names, as one markdown file whose first line is
+     `**EXAMPLE — fictional output for approval; no smoke test was run.**`, check it as the global
+     rules' **User-Facing Output** requires, and send it as the final message of a turn that asks in
+     plain text whether to approve or reject it, one skill at a time. On a rejection, ask what must
+     change, revise the example, and ask again. Only then write the skill to produce exactly the
+     approved shape; the smoke test follows in delivery, and a smoke run is never how a format is
+     proposed.
    - Trace each miss to the instruction that produced or allowed it, including instructions for
      adding or recording guidance. Name that governing instruction and its replacement in the
      change. Removing a bad example while retaining a directive that regenerates it is incomplete.
@@ -161,30 +177,25 @@ outcome, because silence reads as the guidance having been fixed.
    - If target file does not exist, create it with a concise structure matching existing style.
    - Group frontmatter fields by subject. Put a field that summarizes, qualifies, or overrides
      another immediately after the field it relates to, unless the format requires another order.
-     Place new body guidance under the broadest existing subject section that fits. A reported
-     misplaced field is a case to test this general rule, not a reason to name that field in shared
-     guidance.
+     Place new body guidance under the broadest existing subject section that fits.
    - A heading names the subject a reader looks under — Comments, Commits, Workflows — never the
      requirement it holds. Add a section only when no existing one covers the subject, and name it
      for the whole subject: a heading that states one rule invites the next rule on that subject
      into a heading of its own. A restriction on one subject goes under that subject's heading;
      `## Guardrails`, kept at the bottom, holds only constraints that span the file's subjects.
-   - Express each independent requirement once, usually as one concise bullet. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
+   - Express each independent requirement once, as one concise statement or bullet, without padding. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
    - Normalize the touched file's nearby structure when needed: combine narrow sections, remove redundant wording, and order foundational guidance before specialized concerns.
-   - When adding a **new** restriction or rule, keep the wording **concise**—one clear statement or bullet per idea; do not pad with redundant sentences or multiple bullets that restate the same requirement.
-   - **Stable guidance:** Write at the broadest scope that remains truthful. Treat a named field,
-     file, or section in a request as an example of its broader class unless its exact identity is
-     required by the contract. Describe reusable roles, boundaries, and decision criteria generically
-     even in repository-focused guidance when the pattern is not repository-specific. Keep concrete
+   - **Prefer the broad statement, and let the request be its example.** A request arrives as one symptom, and the rule it needs names the class that symptom belongs to; the symptom stays as one illustration of it. Asked for `Final` on string constants, write `Final` for every module-level constant; asked for a walkthrough rule because a page reloaded in a loop once a back-end change was absent, write that the run is judged against intended behaviour because an API error surfaces as any unintended behaviour, and name the loop only as one instance. A rule written for the symptom is silent on the next one, and the next one is what it will be read for. A named field, file, or section is an example of its class unless the contract requires its exact identity. Broaden to the class the user plainly meant, never to a neighbouring subject. Wording handed over — rule text in the request or in a delegating agent's brief — is input to this, never the spec: name the failure class, list at least two other instances of it, and write the rule to cover them, widening narrower wording as it arrives. An agent delegating an edit passes the class and the evidence, not finished rule text for one case.
+   - Describe reusable roles, boundaries, and decision criteria generically even in
+     repository-focused guidance when the pattern is not repository-specific. Keep concrete
      repository names only when correctness depends on that local contract.
    - Before adding a requirement to a shared rule, test it against a repository without the feature that prompted it. If it prescribes the current repository's documentation sections, inventory, or generation workflow, put it in `.agents/project.md`; keep the shared rule limited to guidance that still makes sense elsewhere.
    - When the user asks to add guidance from another repository, treat that repository as source material: encode transferable requirements in the owning skills and refer to those skills by name. Before delivery, audit the edited package for the source repository's name, links, paths, commands, versions, and configuration; never hard-code or cite that repository in a skill.
    - Separate temporary task, session, and pull-request directions from lasting guidance before
      writing. Apply the former to the current work only; never encode them as canonical rules or
-     skills. State the transferable failure class and check a different instance before committing.
+     skills.
    - A skill may restate an ambient rule when it helps the reader act at the point of use; this does
      not license a second copy of a decision boundary owned by a skill that necessarily runs.
-   - **Prefer the broad statement, and let the request be its example.** A request arrives as one symptom, and the rule it needs names the class that symptom belongs to; the symptom stays as one illustration of it. Asked for `Final` on string constants, write `Final` for every module-level constant; asked for a walkthrough rule because a page reloaded in a loop once a back-end change was absent, write that the run is judged against intended behaviour because an API error surfaces as any unintended behaviour, and name the loop only as one instance. A rule written for the symptom is silent on the next one, and the next one is what it will be read for. Broaden to the class the user plainly meant, never to a neighbouring subject.
    - Keep reusable skill names, instructions, scripts, and interfaces model-agnostic. Name a client or model only in a scoped compatibility section where its behavior genuinely differs.
    - Do not add committed tests for skills or their helper scripts, inside or outside the skill directory. Keep any needed execution checks temporary and untracked.
    - **Refer to a skill, and to anything inside it, by the skill's name, never by path.** `the `code-simplify` skill's rubric reference` is right; a relative path into another skill's directory is wrong, because the directories move between repositories and user-level roots and the name is the only stable handle.
@@ -214,8 +225,8 @@ outcome, because silence reads as the guidance having been fixed.
    and stated in the report, because a pull request confined to agent configuration has merge
    authorization under the GitHub rule after its stated gates; that authorization does not extend
    to a release workflow. A question asking for it only holds every later session on the guidance
-   the change replaces. Step 6's review of an altered example response is the one question this
-   delivery puts to the user.
+   the change replaces. The approval of a changed output's fictional example, under **Upsert
+   behavior**, is the one question put to the user, and it comes before delivery.
    1. **Branch and commit.** The edit goes onto the session's open agent-configuration pull request
       in the repository being edited, or onto a branch from the freshly fetched default branch with
       a new pull request, under the GitHub rule's **Branches and Pull Requests** — never onto a
@@ -260,24 +271,24 @@ outcome, because silence reads as the guidance having been fixed.
       who has to compare a new bullet against the section it duplicates is the one already holding
       both.
    4. **Run `acceptance-gate`** with its diff question over the `.agents` diff, the request as the
-      intent statement. It judges whether the guidance answers the request at the breadth step 5
-      asks for and whether every mechanism it adds earns its place. Treat a named tool, surface, or
-      workaround in generic guidance as a finding unless the skill's contract depends on it; the
-      incident's route must not narrow the durable decision boundary. A flag gets the one rewrite that
-      skill allows, and the rewrite goes to a fresh gate. A second flag ends the rewriting: fix it
+      intent statement. It judges whether the guidance answers the request at the breadth **Upsert
+      behavior** asks for and whether every mechanism it adds earns its place. Treat a named tool,
+      surface, or workaround in generic guidance as a finding unless the skill's contract depends on
+      it; the incident's route must not narrow the durable decision boundary. A flag gets the one
+      rewrite that skill allows, and the rewrite goes to a fresh gate. A second flag ends the rewriting: fix it
       when the flag names a defect in the guidance, merge as it stands when it names a preference
       the rewrite already answered, or drop the item when neither holds, and state which and why in
       the report, as that skill's **Bounds** leave it to the caller for a change whose merge needs
       no authorization.
-   5. **Run `test-skill`** for every skill the change adds or edits, to a passing table or the
+   5. **Run `test-skill`** for every skill the change adds or edits, to passing tables or the
       waiver its **When It Runs** bounds. It runs here rather than before step 3, because a round
       run against wording the simplification pass then rewrites has tested text nobody will follow.
       That pass settles how the guidance reads; this one settles whether it changes what a reader
       does, against the miss that prompted it and with the original text as the control. Give both
       readers the complete relevant package, including the references needed for the scenario; an
       entry-point-only test cannot prove a reference fix. An edit
-      whose smoke run fails is revised and rerun within the rounds that skill bounds, never merged
-      on the strength of reading well; a spent bound is decided as that skill says.
+      whose smoke run misses is diagnosed, changed and rerun as that skill says, never merged with
+      a failing run or on the strength of reading well.
       A **mechanical seam edit** changes no behaviour and needs no smoke run: a dependency
       replaced by the role phrase that finds it, a path generalized, a rename, a frontmatter key, a
       reference path corrected, wording that says the same thing shorter. The report says
@@ -299,29 +310,12 @@ outcome, because silence reads as the guidance having been fixed.
       repository, checking that each one already states its answer where the skill now sends its
       reader; a repository that does not is the flag, because the merge silently gave it the other
       one's answer.
-   6. **Put an example response to the user, one skill at a time, for the skills whose response
-      the user uses and whose response this change alters.** A summary they read, a listing they
-      act on, a report they take a decision from: for each such skill the change adds, or edits in
-      a way that changes what it returns, run the edited skill yourself on real current input — the branch in flight for a skill that summarises or reviews, the request in
-      hand for one that edits, the smoke scenario only where no real input exists — and send what it
-      returned, verbatim, under the heading `Example output`, as the final message of a turn that
-      asks in plain text whether to approve or reject it, as the global rules on questions require.
-      The run
-      is this session's own: a subagent's smoke report and a hand-written illustration both stand in
-      for the behaviour and neither is it. Show the next skill only after the previous one is
-      approved, never several in one question. On a rejection, ask what must change, revise the
-      skill, rerun the smoke round for the models that missed when the wording changed, run it again
-      yourself, and show the new response; loop until every such skill's example is approved. A skill
-      whose result is edits, a merge, a deployment, a verdict another skill consumes, or a report only
-      an agent reads has nothing the user would use and skips this step; so does a rule-only change,
-      and so does an edit that changes how a skill works but not what it returns — a reordered step,
-      a procedure moved to a reference, a check added on the way — since an unchanged response has
-      nothing new to review. A relocation under step 5 skips it for that same reason: the skill
-      returns what it returned before the move, so there is no altered response to put to anyone.
-      Altered means the user would notice it in the response itself: a new
-      column, a changed shape, a different grouping, a link where there was none. A new value in a
-      status line or a reworded label is not that, and asking over it spends the user's attention on
-      nothing. The decision is the editor's, from what the skill returns before and after the edit.
+   6. **Hold each changed output to its approved example.** For every skill whose changed output
+      the user approved as a fictional example, compare what its smoke runs returned — and, for a skill that summarises or
+      reviews, one run of your own on the branch in flight — against the approved example: headings,
+      columns, order, file shape. A divergence is the skill's wording, fixed and rerun under
+      `test-skill`; a shape the user has not approved goes back to the user as a new fictional
+      example, never into the merge.
    7. **Check the diff file list against the default branch, then merge.** The authorization covers
       a pull request carrying only `.agents` files, and the file outside them that slips in is never
       announced. Read the changed paths rather than trusting your memory of what you edited; a stray
@@ -332,10 +326,10 @@ outcome, because silence reads as the guidance having been fixed.
       ask whether any line it adds or drops is true only once a still-open source pull request
       merges, and if so hold it until that pull request has merged, as the GitHub rule's **Merge
       Authorization** says, and report it as that rule directs. Otherwise a pull request carrying a
-      skill change merges once step 6
-      approved every example, and one carrying only rules merges on sight as the GitHub rules say. A
-      pull request a doctor run or `new-doctor` opens is left for the user instead; the steps above
-      still run, the merge does not.
+      skill change merges once step 6 found every changed output matching its approved example, and
+      one carrying only rules merges on sight as the GitHub rules say. A pull request a doctor run
+      or `new-doctor` opens is left for the user instead; the steps above still run, the merge does
+      not.
    8. **Nothing is copied by hand.** The skills repository is the only copy of a shared skill;
       sessions receive a merged edit through the refresh step 9 ends with, never through a copy
       placed in another repository or install. A skill that reads generically but was written into one repository's `.agents` is
@@ -367,7 +361,7 @@ Files
 
 Changes
 
-- <one sentence per change to the guidance>
+- <one sentence per change to the guidance: the failure class it covers first, the triggering case as one example>
 
 Underlying issue
 
@@ -378,8 +372,8 @@ Checks
 - Source check: passed on <head> | failed: <report>
 - Simplification: <clean | findings applied>
 - Acceptance gate: <accepted | rewritten and accepted | flagged twice: <fixed | merged as it stands | dropped> — <reason>>
-- Smoke test: <passing table reported above | bound spent: <stands with the miss | edited again | dropped> — <reason> | not run: <reason>>
-- Example approved: <one line per skill: name — approved after <n> round(s) | skipped, no response the user uses | skipped, response unchanged | rule-only change>
+- Smoke test: <passing tables reported above | dropped — <reason> | not run: <reason>>
+- Example approved: <one line per skill: name — approved after <n> round(s), output matches it | skipped, no response the user uses | skipped, response unchanged | rule-only change>
 - Merged text read back: <default branch head the touched skills and rules were re-read from | not merged>
 - Refresh: <main checkout and installed copy at <sha>, installer rerun | skipped: <dirty paths> | not merged>
 

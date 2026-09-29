@@ -18,7 +18,8 @@ a code change is tested: against the case that motivated it, with the change and
 
 - After every skill edit and before its pull request merges, whether the edit came through
   `edit-skill` or was made directly. An edit that skipped this is unverified, and the report
-  says so.
+  says so. An edit that changes what the skill returns the user runs only after the user approved a
+  fictional example of that output, as `edit-skill` requires; a smoke run never proposes a format.
 - **An edit that changes no instruction a reader follows does not run at all, and its pull request
   merges on the reading**. A term swapped for
   another, a spelling standardised, a typo corrected, a dead link repaired: the text asks a reader
@@ -39,9 +40,8 @@ a code change is tested: against the case that motivated it, with the change and
 
 1. **Name the miss.** State in one sentence what a reader did wrong before the edit, from the
    evidence that prompted it: a review that reported a symptom and not the shape behind it, a
-   walkthrough that skipped a check, a plan that stopped a step early. A rewording that keeps every
-   instruction has no miss; say so and still run the scenario, because the rewording may have lost
-   what worked. An edit the waiver in **When It Runs** covers never reaches this step.
+   walkthrough that skipped a check, a plan that stopped a step early. An edit the waiver in **When
+   It Runs** covers never reaches this step.
 2. **Rebuild the scenario** as something a reviewer can read with none of this conversation: for a
    review skill, a diff plus a checkout at the commit where the miss happened; for a walkthrough
    skill, the page and the change; for a planning skill, the task as it was given. Put it in a
@@ -50,7 +50,9 @@ a code change is tested: against the case that motivated it, with the change and
    Keep it small: slice the diff to the files the miss lives in, and give every reviewer a reading
    list — those files, their siblings, and the modules the rubric's own searches would reach — so a
    run reads what the scenario needs instead of exploring the tree. Most of a run's time is
-   exploration the scenario could have pointed at.
+   exploration the scenario could have pointed at. Beside the triggering case, build a second
+   scenario on a different member of the same class, so the result shows the edit's breadth and
+   not only its one instance.
 3. **Save both texts beside it:** the edited skill file and the original from the freshly fetched
    default branch. Reviewers read one or the other by path; nothing else about their prompt differs.
 4. **Write the pass criteria before launching anything.** Two to four statements, each answerable
@@ -65,47 +67,33 @@ a code change is tested: against the case that motivated it, with the change and
    the parent applies nothing from a smoke run, because the run judges wording, not the code.
    Queue pairs when capacity is limited; never spawn a duplicate while a run is in flight.
 6. **Score every report** against every criterion, quoting the line that satisfies or fails it, and
-   tabulate: one row per run, one column per criterion.
-7. **Judge the table.** The edit passes when every run reading the edited text meets every criterion
-   and at least one control run misses at least one. Both halves matter. A control that also passes
-   means one of two things and the tester says which: the words changed nothing a reader does, or
-   the scenario is too easy to separate them. Sharpen the scenario inside the same bound, and when
-   that bound is spent apply the same decision a spent bound gets below. An edited run that misses
-   names the sentence to revise: revise toward what it missed, keep the language broad, and rerun
-   that model once. Controls run in the first round only, since the original text does not change;
-   a revision reruns only the models that missed, all of them together, never one after another.
-   A run that named the shape and then reasoned it away —
-   "correctly delegates", "intentional", "not problematic" — is a wording miss of one kind: the check
-   left its disposition to judgement, so the revision states the disposition as fixed and names the
-   reasons a reader gives for keeping the shape as not reasons. Before a third round, re-read the
-   scenario and the criteria as well as the wording: a criterion the scenario cannot satisfy — a
-   file the reviewer was never given — is fixed in the scenario, and the controls need no rerun for
-   that.
-8. **Run the bounded loop.** The loop ends when every edited run meets every criterion, and the pull
-   request merges then and not before; a failing row is never merged while a round remains. **The
-   rounds are bounded, and the bound is a judgement made before the first revision**: state how
-   many rounds the miss is worth — three is usual, fewer for a one-line edit, more where each round
-   is cheap and the criterion is central —
-   and when the last one still fails, stop revising and decide: let the edit stand with the miss
-   when the failing report follows the edit in substance and misses only the words the criterion
-   looked for, make a different change to the skill when the rounds tried one shape of wording and
-   another is still untried, or drop the edit when the controls show the words changed nothing —
-   unless the edit is strictly broader than the text it replaces, a class named where only an
-   instance was, in which case let it stand. The three are the whole set, so the pull request is
-   never left open on this, and the decision is the tester's and is never put to the user; asking
-   holds every later session on the text the edit replaces. Report the table, the sentence last
-   revised, and the decision with its reason; whether the pull request then merges is the
-   delivery's call, not this skill's. A loop
-   that will not close within the bound usually means the miss in step 1 was misstated; say so when
-   it is.
-9. **Report** the table itself in chat, as `## Output` shapes it; only the quoted evidence behind
-   each `pass` goes to one file in the session's scratch directory, sent with the report. Put one
-   sentence in the pull request description naming the miss the edit closes. The table is evidence and does not belong
-   in the description.
+   tabulate as `## Output` shapes it.
+7. **Judge each scenario's table.** The edit passes when, in every scenario, every edited run reads
+   `pass` and at least one control reads `miss`. An edited run that misses, and a table where every
+   control passes, both go to step 8.
+8. **Diagnose, change, rerun, until every table passes.**
+   - **An edited run that misses has a cause**; find it in the report and record it before changing
+     anything. The wording left the reader room: revise toward what it missed, keeping the language
+     broad; a report that named the shape and then reasoned it away — "intentional", "not
+     problematic" — is this kind, and the revision states the disposition as fixed and names those
+     reasons as not reasons. The scenario cannot satisfy the criterion, such as a file missing from
+     the reading list, or its prompt never made the reader open the skill file: fix the scenario.
+     The report shows the behaviour in words the criterion did not search for: rephrase the
+     criterion to that behaviour. A wording change reruns every edited run that missed, together; a
+     scenario change reruns every run, controls included; a changed criterion rescores every report.
+   - **No control misses** means the scenario has not rebuilt the miss. Sharpen it until the
+     original text misses — for an edit that broadens a rule, build it on a member of the class the
+     original never named — and rerun every run.
+   - **A reader no change moves** means the miss in step 1 was misstated or the edit does nothing:
+     restate the miss and start again from step 1, or drop or reshape the edit.
+9. **Report** the tables in chat, and send one markdown file from the session's scratch directory
+   for the whole smoke test, both as `## Output` shapes them. Put one sentence in the pull request
+   description naming the miss the edit closes. The tables are evidence and do not belong in the
+   description.
 
 ## Reviewer selection
 
-Invoke `subagent-selection` and select **both standard and cheap**. Run one edited/control pair
+Invoke `subagent-selection` and select **standard and advanced**. Run one edited/control pair
 per available tier: four runs when both tiers are available. Use the same scenario and reading
 list across tiers, with the same resolved model and reasoning effort within each pair. Follow the
 dependency's explicit dispatch instructions and queue pairs when capacity is limited.
@@ -116,24 +104,61 @@ smoke pass as `not run`. Never treat two runs on one model as a two-tier compari
 
 ## Output
 
-Return this shape, one table per skill under test, and nothing after the last verdict line:
+Return this shape, one block per skill under test, and in chat nothing after the last verdict line:
 
 ```markdown
 Smoke test: <skill name>
 
 Miss: <one sentence>
 
-| Run | Text | <criterion 1> | <criterion 2> | ... |
+**Scenario <n>: <short name>**
+
+| Run | Result | <criterion 1> | <criterion 2> | <criterion 3> |
 |---|---|---|---|---|
-| <model> | edited | pass | miss | ... |
-| <model> | original | miss | pass | ... |
+| <Model 1> A | pass | pass | pass | pass |
+| <Model 1> B | miss | miss | pass | miss |
+| <Model 2> A | pass | pass | pass | pass |
+| <Model 2> B | miss | pass | miss | miss |
 
-Evidence: <name of the sent evidence file>
+A reads the edited text, B the original.
 
-Verdict: passes | revised and rerun (round <n>) | bound spent: <stands with the miss | edited again | dropped> — <reason> | not run: <reason>
+Diagnoses: <one line per step 8 change: scenario, round, run label, cause, change made> | None
+
+Evidence: <name of the sent file>
+
+Verdict: passes (round <n>) | dropped — <reason> | not run: <reason>
 ```
 
-Every cell carries `pass` or `miss`. A control row for a new skill reads `none` in its Text column.
+- **One titled table per scenario**, the bold `Scenario <n>: <short name>` line above it and its
+  legend line under it, repeated for each scenario the smoke test ran; Diagnoses and Verdict follow
+  the last one.
+- **One row per run**, labelled with the model and a letter: A reads the edited text, B the
+  original, or no skill text for a new skill, which its legend line says. Each row shows its latest
+  run.
+- **`Result` follows `Run`** and reads `pass` only when every criterion in that row passed; each
+  further column is one criterion, headed with a short name for the behaviour it checks, never
+  `Run`, `Result`, a run label, or a phrase built on them. Every cell carries `pass` or `miss`.
+- **At most five columns**, so at most three criteria per table. More criteria continue in a
+  further table under the same scenario title, with the same rows and legend line.
+
+The sent file holds the block of every skill the smoke test covered, then a `---` line and the
+evidence behind every cell, one section per skill:
+
+```markdown
+## Evidence
+
+### Scenario <n>: <short name>
+
+<one line on what the scenario contains and what else it carries>
+
+#### <run label> (<edited | original> text[, round <n>])
+
+- **<criterion>, <pass | miss>:** <quoted line>
+- **Round <n>, for the record:** <what the run missed before its rerun>
+```
+
+The heading reads `## Evidence: <skill name>` when the file covers several skills; the round in a
+run heading and the round bullet appear only on a run that was rerun.
 
 ## Guardrails
 
@@ -141,5 +166,6 @@ Every cell carries `pass` or `miss`. A control row for a new skill reads `none` 
 - Follow the shared tier selection. Never omit a control or claim complete coverage when a tier was not run.
 - Never edit the skill under test between launching a pair of runs and scoring them.
 - Keep the scenario while the branch is open; every later edit of that skill reuses it.
-- Never let a failing row stand before the bounded rounds are spent; after them, decide and state
-  the decision. The decision is never put to the user, before the bound or after it.
+- Never merge with a failing run or stand with a miss: diagnose it, change what caused it, and
+  rerun. The decisions are the tester's and are never put to the user; asking holds every later
+  session on the text the edit replaces.

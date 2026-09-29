@@ -33,10 +33,16 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   variants, so each kind of text — a name, a figure, a label — has one size across the product.
   A slot takes the element itself — `action={<Button>…</Button>}`, never `actionLabel` and
   `actionHref` — so each caller keeps its own content without the component growing a prop per
-  field. A call site fills slots; it never assembles the surface from its primitives or adds a one-off
-  structural Tailwind override. Structural behavior a caller needs becomes a prop or variant; simple
-  width utilities such as `w-full` are the narrow exception. Where a surface is hand-assembled, the
-  fix names the one component that replaces it and lists each slot prop it takes.
+  field. A call site fills slots; it never assembles the surface from its primitives, and structural
+  behavior a caller needs becomes a prop or variant. Where a surface is hand-assembled, the fix names
+  the one component that replaces it and lists each slot prop it takes.
+- **Layout and type come from primitives, never from class strings.** A feature component arranges
+  its content with the shared layout and text primitives — a row, a column, a grid, a box, a text, a
+  heading — through their variants (`<Flex gap="sm" justify="between">`, `<Type size="sm"
+  tone="muted">`), never a `className` spelling out flex, gap, padding, color or type size. A raw
+  utility class is allowed only for positioning, animation, an override a third-party component
+  needs, or a width. A case the primitives cannot express becomes a new variant on the primitive
+  that owns it, never a class string at the call site, so one spacing and type scale holds everywhere.
 
 ## Reference Data
 
