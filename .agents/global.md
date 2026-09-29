@@ -32,8 +32,9 @@ alwaysApply: true
   findings, rows — any gated plan a skill requires, recordings, screenshots and generated images go
   in a file sent with the harness's file-sending tool before the text that reports the result, so
   that text stays the turn's final message. A sent text file reads on its own: it opens with the
-  table or summary its detail belongs to, never the detail alone. A path alone names nothing a user
-  in a cloud or remote session can reach. The parent sends what a subagent produced. Where the
+  table or summary its detail belongs to, never the detail alone. Text reports sent together go as
+  one markdown file, each report's table or summary before any detail. A path alone names nothing a
+  user in a cloud or remote session can reach. The parent sends what a subagent produced. Where the
   harness cannot send files, say so and put what fits inline.
 - **Open and check anything you present before presenting it.** Whatever goes to the user to
   approve, review or read — an example output, a plan, a report or evidence file, a screenshot, a

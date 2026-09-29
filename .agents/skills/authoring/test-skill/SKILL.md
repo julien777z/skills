@@ -83,11 +83,11 @@ a code change is tested: against the case that motivated it, with the change and
      original never named — and rerun every run.
    - **A reader no change moves** means the miss in step 1 was misstated or the edit does nothing:
      restate the miss and start again from step 1, or drop or reshape the edit.
-9. **Report** the table itself in chat, as `## Output` shapes it, and send one file from the
-   session's scratch directory with it: that same `## Output` block first, then the quoted evidence
-   behind each cell after its verdict line, grouped by run label. Put one sentence in the pull
-   request description naming the miss the edit closes. The table is evidence and does not belong
-   in the description.
+9. **Report** the tables in chat, as `## Output` shapes them, and send one markdown file from the
+   session's scratch directory for the whole smoke test: the `## Output` block of every skill it
+   tested first, then the quoted evidence behind each cell, grouped by skill and run label. Put one
+   sentence in the pull request description naming the miss the edit closes. The table is evidence
+   and does not belong in the description.
 
 ## Reviewer selection
 
@@ -109,29 +109,30 @@ Smoke test: <skill name>
 
 Miss: <one sentence>
 
-| Criterion | <Model 1> A | <Model 1> B | <Model 2> A | <Model 2> B |
+| Run | Result | <criterion 1> | <criterion 2> | <criterion 3> |
 |---|---|---|---|---|
-| Result | pass | miss | pass | miss |
-| <criterion 1> | pass | miss | pass | pass |
-| <criterion 2> | pass | miss | pass | miss |
+| <Model 1> A | pass | pass | pass | pass |
+| <Model 1> B | miss | miss | pass | miss |
+| <Model 2> A | pass | pass | pass | pass |
+| <Model 2> B | miss | pass | miss | miss |
 
 A reads the edited text, B the original.
 
 Diagnoses: <one line per step 8 change: round, run label, cause, change made> | None
 
-Evidence: <name of the sent evidence file>
+Evidence: <name of the sent file>
 
 Verdict: passes (round <n>) | dropped — <reason> | not run: <reason>
 ```
 
-- **One column per run**, labelled with the model and a letter: A reads the edited text, B the
-  original, or no skill text for a new skill, which its legend line says. Each column shows its
-  latest run.
-- **The `Result` row comes first** and reads `pass` only when every criterion in that column passed;
-  every other row is one criterion, labelled with a short name for the behaviour it checks, never
-  `Criterion`, `Result`, a run label, or a phrase built on them. Every cell carries `pass` or `miss`.
-- **At most five columns.** More than four runs continue in further tables with the same rows, each
-  with its own legend line.
+- **One row per run**, labelled with the model and a letter: A reads the edited text, B the
+  original, or no skill text for a new skill, which its legend line says. Each row shows its latest
+  run.
+- **`Result` follows `Run`** and reads `pass` only when every criterion in that row passed; each
+  further column is one criterion, headed with a short name for the behaviour it checks, never
+  `Run`, `Result`, a run label, or a phrase built on them. Every cell carries `pass` or `miss`.
+- **At most five columns**, so at most three criteria per table. More criteria continue in a
+  further table with the same rows and legend line.
 
 ## Guardrails
 
