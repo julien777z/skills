@@ -36,13 +36,6 @@ alwaysApply: true
   one markdown file, each report's table or summary before any detail. A path alone names nothing a
   user in a cloud or remote session can reach. The parent sends what a subagent produced. Where the
   harness cannot send files, say so and put what fits inline.
-- **Open and check anything you present before presenting it.** Whatever goes to the user to
-  approve, review or read — an example output, a plan, a report or evidence file, a screenshot, a
-  diff, a pull request description, a table — is opened by the agent presenting it, a sub-agent's
-  work included, and must pass three checks: it holds what the message says it holds; it follows
-  the rules that govern its format; and nothing in it would confuse its reader, such as duplicated
-  or near-identical labels, a missing section, stale or contradictory content, or internal jargon.
-  Fix what fails before sending.
 - A delegated worker's report of an outcome — tests pass, pushed, merged, deployed, fixed — is a
   claim. Check it at its source of truth before relaying it or building on it, and tell the user
   what was read, not what was reported; `execute-task`'s **Reported Outcomes** holds the procedure.
