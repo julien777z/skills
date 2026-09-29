@@ -90,9 +90,9 @@ Effort still determines the cohort and validation depth. Rating, deduplication, 
 and writing fixes stay with the orchestrator.
 
 Use the dependency's explicit dispatch instructions. If standard is unavailable, report the
-limitation; do not silently substitute cheap or the orchestrator's model. When the host cannot
-launch subagents, use this skill's existing inline/degraded procedure and disclose missing
-independent coverage.
+limitation; do not silently substitute cheap or the orchestrator's model. Every lens, validator
+and refuter this skill hands to a subagent is routed as `subagent-selection`'s **Dispatch** section directs,
+and is never run inline in its place.
 
 ## Step 1 — Resolve the target
 
@@ -176,7 +176,7 @@ Effort selects the cohort and the validation depth:
 | `max` | 2 | 3 | 2 | 2 | Three **deep** refuters per finding, majority rules |
 | `ultra` | 2 | 3 | 2 | 2 | Three **deep** refuters per finding, majority rules |
 
-At `low` and `medium` the lenses may run inline in a single pass, and depth on the riskiest changed files beats exhaustive coverage of trivial ones. From `high` upward, launch one distinct subagent per lens in parallel; capacity limits force batching, never omission and never an undeclared local skim. When the host has no subagent dispatch, run the lenses sequentially and report that degraded mode.
+At `low` and `medium` the lenses may run inline in a single pass, and depth on the riskiest changed files beats exhaustive coverage of trivial ones. From `high` upward, launch one distinct subagent per lens in parallel; capacity limits force batching, never omission and never an undeclared local skim.
 
 `ultra` runs the `max` cohort repeatedly, stopping only after two consecutive rounds surface no new confirmed finding. Every other level runs its cohort once.
 
@@ -308,8 +308,8 @@ Lenses: <completed lens names and Security omitted when unavailable>. Head: <rev
 The chat list carries the five most severe findings. Whenever more than five remain, one file in
 the session's scratch directory holds every finding in the same shape and is sent with the report.
 The outcome arrow appears only in fix mode. If nothing remains, the list is the single line
-`No findings.` and the closing lines stay. In degraded mode, add one line stating that no
-subagent dispatch was available.
+`No findings.` and the closing lines stay. When a lens, validator or refuter was reported as not
+run under `subagent-selection`'s **Dispatch** section, add one line naming it.
 
 ## Constraints
 

@@ -11,6 +11,8 @@ run; each doctor owns only its domain.
 
 ## Dependencies
 
+- `subagent-selection` — route every read-only reviewer and final reviewer through a subagent of the
+  running session.
 - `plan-change` — present the validated remediation plan and require explicit approval before editing.
 - `code-simplify` — simplify each implementation batch and the complete result.
 - `acceptance-gate` — judge the remediation plan before it is presented and the complete diff

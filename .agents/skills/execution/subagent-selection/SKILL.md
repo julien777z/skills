@@ -1,6 +1,6 @@
 ---
 name: subagent-selection
-description: Apply whenever selecting or launching sub-agents, whether directly for a task or through another skill. Resolve cheap, standard, advanced, and frontier model tiers from the current host catalogue and use the chosen tier explicitly for every delegation.
+description: Apply whenever selecting or launching sub-agents, whether directly for a task or through another skill, and whenever a step calls for a fresh, independent or read-only subagent — a gate, a reviewer, a validator, a smoke reader — including when the host exposes no agent tool to launch one. Resolve cheap, standard, advanced, and frontier model tiers from the current host catalogue, use the chosen tier explicitly for every delegation, and route each independent step through a subagent of the running session.
 short_description: 'Apply whenever selecting or launching sub-agents, whether directly for a task or through another skill.'
 ---
 
@@ -33,6 +33,29 @@ table to the delegating agent; this skill does not launch agents or change setti
    model inheritance cannot override selection. Reuse the resolved table while the host catalogue
    is unchanged; resolve again when it changes. Preserve one resolved model and reasoning effort
    within each comparison pair.
+
+## Dispatch
+
+**Every subagent a skill calls for runs as a subagent of the running session, launched through the
+host's agent tool.** It matters most for an independent step, one whose value is a judgement the
+author does not make about its own work: an acceptance gate, a simplification or review lens, a
+finding validator, a smoke-test reader, an audit's read-only reviewer. A subagent gives it a fresh
+context and returns its verdict into the step waiting on it; nothing else does both.
+
+- **Never route one elsewhere**: not through a new remote or cloud session, a scheduled trigger or
+  routine, or a message asking any session but the delegating agent to run it. Those run outside
+  the step, can fail setup or leave branches behind, and their verdict never returns to the run
+  that waits on it.
+- **Never answer an independent step in process as a fallback.** The author answering the question
+  is exactly what the step exists to prevent, whatever label the report gives it. A skill whose own procedure puts
+  a pass in process, such as a small-scope simplification, is not handing it to a reviewer, and
+  this leaves that pass alone.
+- **A worker whose host gives it no agent tool hands the step up.** It writes the complete
+  assignment — the inputs, the question, the reading list, the output shape — to a file, asks the
+  agent that delegated to it to run that file as a subagent at the chosen tier, and waits for the
+  verdict before going past the step. The delegating agent runs it and returns the verdict
+  unedited. With no delegating agent to ask, the step is reported as not run, and whatever it
+  gates stays gated.
 
 ## Output
 
