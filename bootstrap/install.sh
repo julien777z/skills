@@ -83,6 +83,7 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
         rm -f "$staged_ca"
         trap - EXIT
       fi
+
       SKILLS_INSTALL_UPDATED=1 exec bash "$REPO_ROOT/bootstrap/install.sh"
     fi
   fi
@@ -123,6 +124,11 @@ found_root=0
 TARGET_HOMES=("$HOME")
 if [ -n "${CLOUD_HOME:-}" ]; then
   TARGET_HOMES=("$CLOUD_HOME")
+
+  if [ "$CLOUD_HOME" = /home/claude ]; then
+    mkdir -p "$CLOUD_HOME/.claude"
+  fi
+
   if [ "$(id -u)" -eq 0 ] && [ "$CLOUD_HOME" != /root ] && [ -d "$CLOUD_HOME/.claude" ]; then
     # Claude starts as root, though its setup checkout belongs to the claude user.
     mkdir -p /root/.claude
@@ -190,14 +196,20 @@ preflight_provider() {
     for rule in "$CANONICAL_RULES"/*.md; do
       [ -f "$rule" ] || continue
       name="$(basename "$rule")"
-      if [ "$provider" = "cursor" ]; then name="${name%.md}.mdc"; fi
+      if [ "$provider" = "cursor" ]; then
+        name="${name%.md}.mdc"
+      fi
+
       check_link "$root/rules/$name" || failed=1
     done
   fi
 
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ "$CANONICAL_GLOBAL" != "$CANONICAL_RULES/global.md" ]; then
     name="global.md"
-    if [ "$provider" = "cursor" ]; then name="global.mdc"; fi
+    if [ "$provider" = "cursor" ]; then
+      name="global.mdc"
+    fi
+
     check_link "$root/rules/$name" || failed=1
   fi
 
@@ -233,9 +245,11 @@ prune_links() {
         check_link "$link" >/dev/null 2>&1 || continue
 
         old_root="$(git -c safe.directory='*' -C "$(dirname "$target")" rev-parse --show-toplevel 2>/dev/null || true)"
+
         [ -n "$old_root" ] || continue
 
         relative="${target#"$old_root"/}"
+
         [ -e "$REPO_ROOT/$relative" ] || rm -f "$link"
         ;;
     esac
@@ -310,6 +324,7 @@ for target_home in "${TARGET_HOMES[@]}"; do
     preflight_provider "$provider" "$target_home" || preflight_ok=0
   done
 done
+
 if [ "$preflight_ok" -eq 0 ]; then
   echo "Resolve the listed skill conflicts before installing; no links were changed." >&2
   exit 1
