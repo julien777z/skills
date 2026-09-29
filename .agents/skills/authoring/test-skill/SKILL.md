@@ -66,10 +66,10 @@ a code change is tested: against the case that motivated it, with the change and
    Queue pairs when capacity is limited; never spawn a duplicate while a run is in flight.
 6. **Score every report** against every criterion, quoting the line that satisfies or fails it, and
    tabulate as `## Output` shapes it.
-7. **Judge the table.** The edit passes when every edited run reads `pass` and at least one control
-   reads `miss`. An edited run that misses, and a table where every control passes, both go to
-   step 8.
-8. **Diagnose, change, rerun, until the table passes.**
+7. **Judge each scenario's table.** The edit passes when, in every scenario, every edited run reads
+   `pass` and at least one control reads `miss`. An edited run that misses, and a table where every
+   control passes, both go to step 8.
+8. **Diagnose, change, rerun, until every table passes.**
    - **An edited run that misses has a cause**; find it in the report and record it before changing
      anything. The wording left the reader room: revise toward what it missed, keeping the language
      broad; a report that named the shape and then reasoned it away — "intentional", "not
