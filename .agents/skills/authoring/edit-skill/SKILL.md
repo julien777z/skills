@@ -188,23 +188,21 @@ outcome, because silence reads as the guidance having been fixed.
    - If one request contains multiple distinct items, map each item to the best existing file or a new file within the same inferred/selected type.
    - If scope is ambiguous, ask a short follow-up before editing.
 
-7. Deliver it, in this order. While the pull request carries only `.agents` files, every call
-   inside this delivery is the editor's own — a flagged gate, a smoke round that would not close —
-   made and stated in the report, because a pull request confined to agent configuration has merge
-   authorization under the GitHub rule after its stated gates; this authorization does not extend
-   to a pull request that also carries source or to a release workflow. A question asking for that
-   authorization only holds every later session on the guidance the change replaces. On a pull
-   request carrying only `.agents` files, step 6's review of an altered example response is the one
-   question this delivery puts to the user; on one that also carries source, the merge in step 7 and
-   a flag escalated in step 4 go to the user as well.
-   1. **Branch and commit.** When the session already has an open pull request in the repository
-      being edited, the edit goes onto its branch, under the GitHub rule's one pull request per
-      repository per session; otherwise branch from the freshly fetched default branch and open a
-      pull request. Commit the `.agents` files, never a provider mirror. None of that waits to be
-      asked: the decision was made when the edit was requested, and a pull request left open keeps
-      every later session working from the guidance this change replaced. A source fix required by
-      step 3 in the same repository joins that pull request, and the rest of this delivery runs on a
-      pull request carrying source as fully as on one carrying guidance alone.
+7. Deliver it, in this order. The pull request carries only `.agents` files, so every call inside
+   this delivery is the editor's own — a flagged gate, a smoke round that would not close — made
+   and stated in the report, because a pull request confined to agent configuration has merge
+   authorization under the GitHub rule after its stated gates; that authorization does not extend
+   to a release workflow. A question asking for it only holds every later session on the guidance
+   the change replaces. Step 6's review of an altered example response is the one question this
+   delivery puts to the user.
+   1. **Branch and commit.** The edit goes onto the session's open agent-configuration pull request
+      in the repository being edited, or onto a branch from the freshly fetched default branch with
+      a new pull request, under the GitHub rule's **Branches and Pull Requests** — never onto a
+      source branch, the one checked out included. Commit the `.agents` files, never a provider
+      mirror. None of that waits to be asked: the decision was made when the edit was requested, and
+      a pull request left open keeps every later session working from the guidance this change
+      replaced. A source fix required by step 3 is source work: it goes onto the session's source
+      pull request in its repository under the same rule and merges as that work does.
    2. **Run `validate_sources.py`**, which sits under `scripts/` beside this skill, before the pull request opens, and again before it
       merges when the branch changed since. Nothing on a pull request runs the sync: the workflow
       runs on the default branch after the merge, so a file it refuses is refused once every session
@@ -222,14 +220,12 @@ outcome, because silence reads as the guidance having been fixed.
       metadata such as `agents/openai.yaml` from canonical skill packages; leave generated
       mirrors to Agent Sync. A clean changed file does not make a failing tree validation pass.
       When the guidance needs a change in an unreleased tool owned by another repository, point
-      the consuming workflow at that tool's active branch and validate against it. Complete this
-      pull request's own gates and merge under step 7's authorization without waiting for the tool's
-      review loop. If that pull request changes files outside `.agents`, obtain the user authorization
-      step 7 requires. After the tool merges and receives an authorized release, open a separate pull
-      request from the latest default branch to replace the branch reference with its maintained
-      version tag and validate the tagged tool. Obtain user merge authorization for that follow-up
-      when it changes the consuming workflow outside `.agents`. The initial merge does not authorize
-      the release or the later merge.
+      the consuming workflow at that tool's active branch and validate against it, without waiting
+      for the tool's review loop. That workflow change is source work, delivered and merged under
+      step 1's source route, and this pull request's merge waits for it. After the tool merges and
+      receives an authorized release, a later source change from the latest default branch replaces
+      the branch reference with its maintained version tag, validated against the tagged tool and
+      merged on the user's authorization. No merge here authorizes the release.
    3. **Run `code-simplify`** across the branch and act on what it reports: guidance duplicated
       between peer rules or skills, including a caller and a skill it always invokes; a section grown
       around a second subject; a heading named for a category with one member; a rubric left inline
@@ -251,8 +247,7 @@ outcome, because silence reads as the guidance having been fixed.
       when the flag names a defect in the guidance, merge as it stands when it names a preference
       the rewrite already answered, or drop the item when neither holds, and state which and why in
       the report, as that skill's **Bounds** leave it to the caller for a change whose merge needs
-      no authorization. On a pull request that also carries source, a second flag escalates to the
-      user under those **Bounds** instead.
+      no authorization.
    5. **Run `test-skill`** for every skill the change adds or edits, to a passing table or the
       waiver its **When It Runs** bounds. It runs here rather than before step 3, because a round
       run against wording the simplification pass then rewrites has tested text nobody will follow.
@@ -306,17 +301,19 @@ outcome, because silence reads as the guidance having been fixed.
       column, a changed shape, a different grouping, a link where there was none. A new value in a
       status line or a reworded label is not that, and asking over it spends the user's attention on
       nothing. The decision is the editor's, from what the skill returns before and after the edit.
-   7. **Check the diff file list against the default branch, then merge.** The authorization covers a
-      pull request carrying only `.agents` files, so one file outside them withdraws it — and the
-      one that slips in is never announced. Read the changed paths rather than trusting your memory
-      of what you edited; a stray formatter run or a file picked up by `git add -A` looks identical
-      to intent. Everything in `.agents`, merge it through `merge-pr` with the head
-      `acceptance-gate` accepted: a pull request carrying a skill change merges
-      once step 6 approved every example, and one carrying only rules merges on sight as the GitHub
-      rules say. Anything outside is source the pull request carries under step 1: it merges only on
-      the user's authorization, and no file is split out to earn the merge. A pull request a doctor
-      run or `new-doctor` opens is left for the user instead; the steps above still run, the merge
-      does not.
+   7. **Check the diff file list against the default branch, then merge.** The authorization covers
+      a pull request carrying only `.agents` files, and the file outside them that slips in is never
+      announced. Read the changed paths rather than trusting your memory of what you edited; a stray
+      formatter run or a file picked up by `git add -A` looks identical to intent. A path outside
+      `.agents` leaves this branch — dropped when it was never meant, moved to the session's source
+      pull request under step 1 when it was — and the new head goes back through step 4. Everything
+      in `.agents`, merge it through `merge-pr` with the head `acceptance-gate` accepted — but first
+      ask whether any line it adds or drops is true only once a still-open source pull request
+      merges, and if so hold it until that pull request has merged, as the GitHub rule's **Merge
+      Authorization** says. Otherwise a pull request carrying a skill change merges once step 6
+      approved every example, and one carrying only rules merges on sight as the GitHub rules say. A
+      pull request a doctor run or `new-doctor` opens is left for the user instead; the steps above
+      still run, the merge does not.
    8. **Nothing is copied by hand.** The skills repository is the only copy of a shared skill;
       sessions receive a merged edit through the refresh step 9 ends with, never through a copy
       placed in another repository or install. A skill that reads generically but was written into one repository's `.agents` is
@@ -362,7 +359,7 @@ Checks
 
 Pull request
 
-- <link, with `skills repository` or `<repository>` after it>
+- <link, with `skills repository` or `<repository>` after it, and `held until <source pull request> merges` when step 7 waits on one>
 
 Skipped
 
