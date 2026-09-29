@@ -86,9 +86,9 @@ a code change is tested: against the case that motivated it, with the change and
      restate the miss and start again from step 1, or drop or reshape the edit.
 9. **Report** the tables in chat, as `## Output` shapes them, and send one markdown file from the
    session's scratch directory for the whole smoke test: the `## Output` block of every skill it
-   tested first, then the quoted evidence behind each cell, grouped by skill and run label. Put one
-   sentence in the pull request description naming the miss the edit closes. The table is evidence
-   and does not belong in the description.
+   tested first, then the quoted evidence behind each cell, grouped by skill, scenario and run
+   label. Put one sentence in the pull request description naming the miss the edit closes. The
+   tables are evidence and do not belong in the description.
 
 ## Reviewer selection
 
@@ -110,6 +110,8 @@ Smoke test: <skill name>
 
 Miss: <one sentence>
 
+**Scenario <n>: <short name>**
+
 | Run | Result | <criterion 1> | <criterion 2> | <criterion 3> |
 |---|---|---|---|---|
 | <Model 1> A | pass | pass | pass | pass |
@@ -119,13 +121,16 @@ Miss: <one sentence>
 
 A reads the edited text, B the original.
 
-Diagnoses: <one line per step 8 change: round, run label, cause, change made> | None
+Diagnoses: <one line per step 8 change: scenario, round, run label, cause, change made> | None
 
 Evidence: <name of the sent file>
 
 Verdict: passes (round <n>) | dropped — <reason> | not run: <reason>
 ```
 
+- **One titled table per scenario**, the bold `Scenario <n>: <short name>` line above it and its
+  legend line under it, repeated for each scenario the smoke test ran; Diagnoses and Verdict follow
+  the last one.
 - **One row per run**, labelled with the model and a letter: A reads the edited text, B the
   original, or no skill text for a new skill, which its legend line says. Each row shows its latest
   run.
@@ -133,7 +138,7 @@ Verdict: passes (round <n>) | dropped — <reason> | not run: <reason>
   further column is one criterion, headed with a short name for the behaviour it checks, never
   `Run`, `Result`, a run label, or a phrase built on them. Every cell carries `pass` or `miss`.
 - **At most five columns**, so at most three criteria per table. More criteria continue in a
-  further table with the same rows and legend line.
+  further table under the same scenario title, with the same rows and legend line.
 
 ## Guardrails
 
