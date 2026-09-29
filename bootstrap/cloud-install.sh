@@ -40,7 +40,21 @@ if [ -n "$(run_as_user git -C "$CACHE" status --porcelain)" ]; then
   echo "Skills setup clone has local edits; refusing to overwrite them: $CACHE" >&2
   exit 1
 fi
-run_as_user git -C "$CACHE" fetch origin main
+# A proxied session points root's git at a CA bundle under /root, which the clone's owner cannot
+# read. Fetch with that same bundle, staging a readable copy when the original is out of reach.
+fetch_env=()
+ca_bundle="${GIT_SSL_CAINFO:-$(git config --get-urlmatch http.sslCAInfo "$SKILLS_REMOTE" || true)}"
+ca_bundle="${ca_bundle:-${SSL_CERT_FILE:-}}"
+if [ "$(id -u)" -eq 0 ] && [ -n "$ca_bundle" ] && [ -r "$ca_bundle" ]; then
+  if ! run_as_user test -r "$ca_bundle"; then
+    staged_ca="$(mktemp)"
+    trap 'rm -f "$staged_ca"' EXIT
+    install -m 0644 "$ca_bundle" "$staged_ca"
+    ca_bundle="$staged_ca"
+  fi
+  fetch_env=(GIT_SSL_CAINFO="$ca_bundle" SSL_CERT_FILE="$ca_bundle")
+fi
+run_as_user env ${fetch_env[@]+"${fetch_env[@]}"} git -C "$CACHE" fetch origin main
 run_as_user git -C "$CACHE" switch main
 run_as_user git -C "$CACHE" merge --ff-only origin/main
 
