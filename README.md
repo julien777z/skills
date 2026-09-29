@@ -50,8 +50,6 @@ links at an installed path are reported before any links change.
 | `bootstrap/install.sh` | Links skills, resources, agents, and rules into user-level roots. |
 | `bootstrap/cloud-install.sh` | Selects the attached or cached checkout and installs it for Claude cloud's user. |
 
-The [rule reconciliation notes](docs/rule-reconciliation.md) record which wording was chosen from divergent consumer copies.
-
 ## Skills
 
 The two groups differ in who starts a skill: a user-invoked one carries
