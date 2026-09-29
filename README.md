@@ -4,9 +4,8 @@ Shared agent skills, agents, and reusable rules for every repository, in one pla
 
 One canonical copy of each skill lives under `.agents/skills/`. [Agent
 Sync](https://github.com/julien777z/agent-sync-action) mirrors them to Claude, Cursor and Codex,
-vendors the third-party skills and reference collections registered under `.agents/`, and `bootstrap/install.sh`
-links the result into this machine's user-level roots — so every repository's session sees the same
-skills.
+vendors the third-party skills and reference collections registered under `.agents/`, and
+`bootstrap/install.sh` links the result into user-level agent roots.
 
 ## Quick Start
 
@@ -21,14 +20,25 @@ install -d -o claude -g claude /home/claude/.local/share
 if [ ! -d /home/claude/.local/share/agent-skills/.git ]; then
   runuser -u claude -- git clone https://github.com/julien777z/skills.git /home/claude/.local/share/agent-skills
 fi
-bash /home/claude/.local/share/agent-skills/bootstrap/cloud-install.sh
+bash /home/claude/.local/share/agent-skills/bootstrap/install.sh
 ```
 
-The cloud installer uses an attached skills checkout when one is present and the setup clone
-otherwise. It links skills for `/home/claude` and the root home used by the current cloud runtime,
-and exits on clone,
-update, or installation failure. Cloud environment image caching can skip setup on later sessions;
-the previously installed skills remain available then.
+For Codex cloud, create an environment for the repository with this setup script:
+
+```bash
+set -e
+mkdir -p "$HOME/.codex" "$HOME/.local/share"
+if [ ! -d "$HOME/.local/share/agent-skills/.git" ]; then
+  git clone https://github.com/julien777z/skills.git "$HOME/.local/share/agent-skills"
+fi
+bash "$HOME/.local/share/agent-skills/bootstrap/install.sh"
+```
+
+Use `bash "$HOME/.local/share/agent-skills/bootstrap/install.sh"` as the Codex cloud maintenance
+script so a resumed container refreshes the installation. The installer fast-forwards a clean cloud
+setup clone, selects an attached Skills checkout when Claude provides one, and links the result into
+existing agent roots. In Claude cloud it also links the root home used by the runtime. It exits on
+update, conflict, or installation failure.
 
 The local installer links skills, reference collections, reusable rules, and applicable agent definitions into existing
 Claude, Codex, and Cursor user roots. Codex's global `AGENTS.md` links to the same canonical
@@ -47,8 +57,7 @@ links at an installed path are reported before any links change.
 | `.agents/resources/<name>/` | Vendored reference files, linked into each supported user-level root under `resources/<name>/`. |
 | `.agents/.auto_generated/` | Provider mirrors the workflow generates on `main`; never edited by hand. |
 | `AGENTS.md` | Repository instructions the workflow generates at the root; never edited by hand. |
-| `bootstrap/install.sh` | Links skills, resources, agents, and rules into user-level roots. |
-| `bootstrap/cloud-install.sh` | Selects the attached or cached checkout and installs it for Claude cloud's user. |
+| `bootstrap/install.sh` | Refreshes a cloud setup clone when used there, then links skills, resources, agents, and rules into user-level roots. |
 
 ## Skills
 
