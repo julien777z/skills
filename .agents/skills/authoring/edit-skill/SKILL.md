@@ -202,8 +202,9 @@ outcome, because silence reads as the guidance having been fixed.
       mirror. None of that waits to be asked: the decision was made when the edit was requested, and
       a pull request left open keeps every later session working from the guidance this change
       replaced. A source fix required by step 3 is source work: it goes onto the session's source
-      pull request in its repository under the same rule and merges as that work does, and guidance
-      true only once it lands waits for that merge as the rule's merge authorization says.
+      pull request in its repository under the same rule and merges as that work does. Guidance true
+      only once a still-open source pull request merges, that fix's or any other, waits for that
+      merge as the rule's merge authorization says.
    2. **Run `validate_sources.py`**, which sits under `scripts/` beside this skill, before the pull request opens, and again before it
       merges when the branch changed since. Nothing on a pull request runs the sync: the workflow
       runs on the default branch after the merge, so a file it refuses is refused once every session
