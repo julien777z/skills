@@ -91,8 +91,8 @@ and writing fixes stay with the orchestrator.
 
 Use the dependency's explicit dispatch instructions. If standard is unavailable, report the
 limitation; do not silently substitute cheap or the orchestrator's model. Every lens, validator
-and refuter this skill hands to a subagent is routed as `subagent-selection`'s **Dispatch** section directs,
-and is never run inline in its place.
+and refuter this skill hands to a subagent is routed as `subagent-selection`'s **Dispatch** section
+directs.
 
 ## Step 1 — Resolve the target
 

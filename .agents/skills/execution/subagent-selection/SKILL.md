@@ -47,15 +47,16 @@ context and returns its verdict into the step waiting on it; nothing else does b
   the step, can fail setup or leave branches behind, and their verdict never returns to the run
   that waits on it.
 - **Never answer an independent step in process as a fallback.** The author answering the question
-  is exactly what the step exists to prevent, whatever label the report gives it. A skill whose own procedure puts
-  a pass in process, such as a small-scope simplification, is not handing it to a reviewer, and
-  this leaves that pass alone.
+  is exactly what the step exists to prevent, whatever label the report gives it. A skill whose own
+  procedure puts a pass in process, such as a small-scope simplification, is not handing it to a
+  reviewer, and this leaves that pass alone.
 - **A worker whose host gives it no agent tool hands the step up.** It writes the complete
   assignment — the inputs, the question, the reading list, the output shape — to a file, asks the
   agent that delegated to it to run that file as a subagent at the chosen tier, and waits for the
-  verdict before going past the step. The delegating agent runs it and returns the verdict
-  unedited. With no delegating agent to ask, the step is reported as not run, and whatever it
-  gates stays gated.
+  verdict before going past the step. A worker whose only channel to that agent is its final
+  message asks by returning: it ends its turn with the file path and the request, and resumes when
+  the verdict comes back. The delegating agent runs it and returns the verdict unedited. With no
+  delegating agent to ask, the step is reported as not run, and whatever it gates stays gated.
 
 ## Output
 

@@ -10,6 +10,10 @@ Use this skill for an unusually strict review focused on implementation quality,
 
 Above all, this skill should push the reviewer to be **ambitious** about code structure. Do not merely identify local cleanup opportunities. Actively search for "code judo" moves: restructurings that make the implementation dramatically simpler, smaller, more direct, and more elegant.
 
+## Dependencies
+
+- `subagent-selection` — route each reviewer subagent through the running session.
+
 ## Applying fixes
 
 This skill does not stop at review: **apply the simplifications you identify directly to the working tree.** Restructure, extract, delete indirection, collapse branches, reuse the canonical helper, and keep those edits in the commit you are working on. The criteria — what the pass holds itself to, the reuse and ownership searches, the standards, the review questions, what to flag, the remedies, the tone and the approval bar — are `references/rubric.md`. Read it whole before the pass and apply all of it as the checklist for what to fix, not merely what to flag.

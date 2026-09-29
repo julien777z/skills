@@ -45,8 +45,7 @@ fallback was used.
 
 At `low` every phase runs in process. From `medium` upward, launch the agents each phase names in
 parallel; capacity limits force batching, never omission and never an undeclared local skim. Each
-agent a level names is launched as `subagent-selection`'s **Dispatch** section directs and is never
-replaced by an in-process pass; `low` is the level that runs in process.
+agent a level names is launched as `subagent-selection`'s **Dispatch** section directs.
 
 **The rubric is the same at every level; only the cohort shrinks.** A `low` finding is held to
 exactly the bar in `references/rubric.md` — exploitable, with a concrete attack — because a thinner

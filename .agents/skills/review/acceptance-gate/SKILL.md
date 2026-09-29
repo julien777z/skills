@@ -80,8 +80,7 @@ It returns the verdict its question defines, shaped as `references/rubric.md` â€
 requires.
 
 The gate always runs as a subagent of the running session, routed as `subagent-selection`'s
-**Dispatch** section directs. A worker without an agent tool hands the four inputs and the question
-up to the agent that delegated to it; it never answers the question itself.
+**Dispatch** section directs.
 
 ## Questions
 
