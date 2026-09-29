@@ -218,7 +218,8 @@ An outcome is what its source of truth shows, never what an action or a worker s
   Have Already Named**, tracked until done; the report does not close it.
 - **A status sent to the user states what was just read and where**, never what was reported or
   expected: conflicted, failing, running, or passing, on the head or target named. "Done" or
-  "ready" is written only when that read says so.
+  "ready" is written only when that read says so, and a file sent with it is checked first as the
+  global rules' **User-Facing Output** requires.
 
 ## Pull Requests
 
