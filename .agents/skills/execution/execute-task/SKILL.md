@@ -212,8 +212,8 @@ An outcome is what its source of truth shows, never what an action or a worker s
   commit, "pushed" or "exists" against the branch, "merged" or "refreshed" against the default
   branch or the installed copy, "deployed" or "healthy" against the host, "fixed" by reproducing it
   or reading the evidence, "the screenshot shows it" by looking at the image, "no references
-  remain" by searching. A claim the check contradicts is handled as the bullet above says: sent
-  back with what the read showed, or fixed here.
+  remain" by searching. A claim the check contradicts is the next thing done, ahead of queued
+  work: sent back to the worker with what the read showed, or fixed here.
 - **A deferral inside a report — "I'll do X next" — is named work of this run** under **Work You
   Have Already Named**, tracked until done; the report does not close it.
 - **A status sent to the user states what was just read and where**, never what was reported or

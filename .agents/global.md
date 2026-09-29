@@ -34,6 +34,9 @@ alwaysApply: true
   that text stays the turn's final message. A path alone names nothing a user in a cloud or remote
   session can reach. The parent sends what a subagent produced. Where the harness cannot send
   files, say so and put what fits inline.
+- A delegated worker's report of an outcome — tests pass, pushed, merged, deployed, fixed — is a
+  claim. Check it at its source of truth before relaying it or building on it, and tell the user
+  what was read, not what was reported; `execute-task`'s **Reported Outcomes** holds the procedure.
 
 - Run a user-triggered action skill only after the user directly invokes it in the current request.
   Do not infer authorization from implementation, validation, delivery, pull-request, merge, CI,

@@ -158,17 +158,14 @@ outcome, because silence reads as the guidance having been fixed.
    - If target file does not exist, create it with a concise structure matching existing style.
    - Group frontmatter fields by subject. Put a field that summarizes, qualifies, or overrides
      another immediately after the field it relates to, unless the format requires another order.
-     Place new body guidance under the broadest existing subject section that fits. A reported
-     misplaced field is a case to test this general rule, not a reason to name that field in shared
-     guidance.
+     Place new body guidance under the broadest existing subject section that fits.
    - A heading names the subject a reader looks under — Comments, Commits, Workflows — never the
      requirement it holds. Add a section only when no existing one covers the subject, and name it
      for the whole subject: a heading that states one rule invites the next rule on that subject
      into a heading of its own. A restriction on one subject goes under that subject's heading;
      `## Guardrails`, kept at the bottom, holds only constraints that span the file's subjects.
-   - Express each independent requirement once, usually as one concise bullet. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
+   - Express each independent requirement once, as one concise statement or bullet, without padding. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
    - Normalize the touched file's nearby structure when needed: combine narrow sections, remove redundant wording, and order foundational guidance before specialized concerns.
-   - When adding a **new** restriction or rule, keep the wording **concise**—one clear statement or bullet per idea; do not pad with redundant sentences or multiple bullets that restate the same requirement.
    - **Prefer the broad statement, and let the request be its example.** A request arrives as one symptom, and the rule it needs names the class that symptom belongs to; the symptom stays as one illustration of it. Asked for `Final` on string constants, write `Final` for every module-level constant; asked for a walkthrough rule because a page reloaded in a loop once a back-end change was absent, write that the run is judged against intended behaviour because an API error surfaces as any unintended behaviour, and name the loop only as one instance. A rule written for the symptom is silent on the next one, and the next one is what it will be read for. A named field, file, or section is an example of its class unless the contract requires its exact identity. Broaden to the class the user plainly meant, never to a neighbouring subject. Wording handed over — rule text in the request or in a delegating agent's brief — is input to this, never the spec: name the failure class, list at least two other instances of it, and write the rule to cover them, widening narrower wording as it arrives. An agent delegating an edit passes the class and the evidence, not finished rule text for one case.
    - Describe reusable roles, boundaries, and decision criteria generically even in
      repository-focused guidance when the pattern is not repository-specific. Keep concrete
