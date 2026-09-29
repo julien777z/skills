@@ -303,17 +303,18 @@ outcome, because silence reads as the guidance having been fixed.
       column, a changed shape, a different grouping, a link where there was none. A new value in a
       status line or a reworded label is not that, and asking over it spends the user's attention on
       nothing. The decision is the editor's, from what the skill returns before and after the edit.
-   7. **Check the diff file list against the default branch, then merge.** The authorization covers a
-      pull request carrying only `.agents` files, and the file outside them that slips in is never
+   7. **Check the diff file list against the default branch, then merge.** The authorization covers
+      a pull request carrying only `.agents` files, and the file outside them that slips in is never
       announced. Read the changed paths rather than trusting your memory of what you edited; a stray
       formatter run or a file picked up by `git add -A` looks identical to intent. A path outside
       `.agents` leaves this branch — dropped when it was never meant, moved to the session's source
       pull request under step 1 when it was — and the new head goes back through step 4. Everything
-      in `.agents`, merge it through `merge-pr` with the head `acceptance-gate` accepted, once any
-      source pull request it waits on under step 1 has merged: a pull request carrying a skill change
-      merges once step 6 approved every example, and one carrying only rules merges on sight as the
-      GitHub rules say. A pull request a doctor run or `new-doctor` opens is left for the user
-      instead; the steps above still run, the merge does not.
+      in `.agents`, merge it through `merge-pr` with the head `acceptance-gate` accepted — but first
+      ask whether any line it adds or drops is true only once a still-open source pull request
+      merges, and if so hold it until that pull request has merged, as step 1 says: a pull request
+      carrying a skill change merges once step 6 approved every example, and one carrying only rules
+      merges on sight as the GitHub rules say. A pull request a doctor run or `new-doctor` opens is
+      left for the user instead; the steps above still run, the merge does not.
    8. **Nothing is copied by hand.** The skills repository is the only copy of a shared skill;
       sessions receive a merged edit through the refresh step 9 ends with, never through a copy
       placed in another repository or install. A skill that reads generically but was written into one repository's `.agents` is
