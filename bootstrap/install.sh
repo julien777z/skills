@@ -32,6 +32,7 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
         return
       fi
     fi
+
     env HOME="$CLOUD_HOME" "$@"
   }
 
@@ -60,6 +61,7 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
       echo "Skills setup clone must be on a branch: $REPO_ROOT" >&2
       exit 1
     }
+
     installer_blob="$(run_as_cloud_user git -C "$REPO_ROOT" rev-parse HEAD:bootstrap/install.sh)"
 
     # Claude's proxy may configure a CA bundle under /root that the clone owner cannot read.
@@ -104,6 +106,7 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
           echo "Multiple attached skills checkouts found; choose one before installing." >&2
           exit 1
         fi
+
         source_checkout="$candidate"
       fi
     done < <(find "$search_root" -mindepth 2 -maxdepth 4 -name .git \( -type d -o -type f \) -print)
@@ -315,6 +318,7 @@ install_provider() {
 
     prune_links "$root/rules"
   fi
+
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ "$CANONICAL_GLOBAL" != "$CANONICAL_RULES/global.md" ]; then
     name="global.md"
     if [ "$provider" = "cursor" ]; then name="global.mdc"; fi
