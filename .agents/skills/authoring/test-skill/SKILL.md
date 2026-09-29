@@ -86,8 +86,8 @@ a code change is tested: against the case that motivated it, with the change and
      restate the miss and start again from step 1, or drop or reshape the edit.
 9. **Report** the table itself in chat, as `## Output` shapes it, and send one file from the
    session's scratch directory with it: that same `## Output` block first, then the quoted evidence
-   behind each cell under the table. Put one sentence in the pull request description naming the
-   miss the edit closes. The table is evidence and does not belong in the description.
+   behind each cell after its verdict line. Put one sentence in the pull request description naming
+   the miss the edit closes. The table is evidence and does not belong in the description.
 
 ## Reviewer selection
 
@@ -102,7 +102,7 @@ smoke pass as `not run`. Never treat two runs on one model as a two-tier compari
 
 ## Output
 
-Return this shape, one table per skill under test, and nothing after the last verdict line:
+Return this shape, one table per skill under test, and in chat nothing after the last verdict line:
 
 ```markdown
 Smoke test: <skill name>
