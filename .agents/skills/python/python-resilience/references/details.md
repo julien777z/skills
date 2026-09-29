@@ -59,7 +59,7 @@ def with_timeout(seconds: float):
 @with_timeout(30)
 async def fetch_with_timeout(url: str) -> dict:
     """Fetch URL with 30 second timeout."""
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=10) as client:
         response = await client.get(url)
         return response.json()
 ```
@@ -94,7 +94,8 @@ def traced(name: str | None = None):
         return wrapper
     return decorator
 
-# Stack multiple concerns
+# Stack multiple concerns on a call the code builds itself; an official SDK keeps its own
+# timeout and retry settings
 @traced("fetch_user_data")
 @with_timeout(30)
 @retry(stop=stop_after_attempt(3), wait=wait_exponential_jitter())

@@ -6,11 +6,11 @@ short_description: 'Regenerate generated API types from an OpenAPI document, usi
 
 # Build Types
 
-Treat generated API types as output of the canonical OpenAPI contract. Regenerate them instead of hand-editing a stale contract; read the generated-file path and its consumers from the repository's project guidance (`project.md`).
+Treat generated API types as output of the canonical OpenAPI contract. Regenerate them instead of hand-editing a stale contract; read the generated-file path and its consumers from the repository's project guidance, opening every `.agents/references/` file its `project.md` points to.
 
 ## Pick the source of the OpenAPI document
 
-Read the repository's project guidance (`project.md`) for the local exporter, generated-file path, deployed contract URL, and runner commands. Prefer the local API checkout when changing its branch; use the deployed source only when no relevant checkout is available.
+Read the repository's project guidance for the local exporter, generated-file path, deployed contract URL, and runner commands. Prefer the local API checkout when changing its branch; use the deployed source only when no relevant checkout is available.
 
 ## After generating
 

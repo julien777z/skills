@@ -136,6 +136,10 @@ alwaysApply: true
   repository's modules, helpers, packages, paths, or domain vocabulary.
 - `.agents/project.md` is the home for repository-specific guidance: its base classes, helpers,
   packages, layout, documentation structure, inventories, and generated sections.
+- Repository facts only some work needs — a local stack, test accounts, deployment targets, a
+  migration layout — go in `.agents/references/<name>.md`, named for their content and read on
+  demand, and `.agents/project.md` points to each file in one line. A repository's project guidance
+  is `project.md` together with the reference files it points to.
 - A rule that cannot be stated without naming something this repository owns belongs in
   `.agents/project.md`. Move it there rather than rewording it into something generic but untrue.
 

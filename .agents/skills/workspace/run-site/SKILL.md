@@ -51,8 +51,10 @@ run, and why, beside the result.
 
 ## Start and verify the stack
 
-Read each present repository's project guidance (`project.md`) for its startup and
-schema-provisioning commands, services, ports, health probes, log locations, and recovery facts.
+Read each present repository's startup and schema-provisioning commands, services, ports, health
+probes, log locations, and recovery facts from its project guidance, opening every
+`.agents/references/` file its `project.md` points to: such facts usually live there rather than in
+`project.md` itself.
 Start the backend first when both are present. Run the owning startup command with the authorized
 environment and inspect actual readiness. Reuse healthy dependencies; repair the startup owner rather
 than relying on an unrecorded workaround. Never conclude the stack is out of reach by reasoning about
@@ -93,7 +95,7 @@ say so and name what only a harness rendered.
 ### Sign in
 
 Use the repository's normal sign-in flow and the test identity, tenant, fixtures, provider modes,
-and persistence checks its project guidance (`project.md`) names. Use those facts exactly and reuse
+and persistence checks its project guidance names. Use those facts exactly and reuse
 what exists: never invent a test identity or turn a provider fixture into a generic workflow. **Never work around the sign-in wall**: a
 preview route, a stubbed page, a component mounted where it does not ship, or a widened public-route
 matcher proves the component renders and nothing about the screen a user reaches. If sign-in
