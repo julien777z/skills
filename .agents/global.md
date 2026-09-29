@@ -114,6 +114,47 @@ alwaysApply: true
   on the others validates the shared path. Never create persistent synthetic records in a stable or
   shared staging environment merely to smoke-test a deployment.
 
+## Code layout
+
+- In every language, use blank lines to separate setup, validation, transformations, side effects, and returns. Keep adjacent statements together only when they form one small operation; do not turn a function into an uninterrupted paragraph merely because a formatter permits it. Apply this to existing code in files you change.
+
+```python
+# Good: each phase is visible.
+records = load_records()
+
+if not records:
+    return []
+
+normalized = [normalize(record) for record in records]
+
+save_records(normalized)
+
+return normalized
+
+# Bad: unrelated phases run together.
+records = load_records()
+if not records:
+    return []
+normalized = [normalize(record) for record in records]
+save_records(normalized)
+return normalized
+```
+
+```typescript
+// Good: separate the request, guard, state change, and result.
+const response = await fetchRecords();
+
+if (!response.ok) {
+  throw new Error('Could not load records');
+}
+
+const records = await response.json();
+
+setRecords(records);
+
+return records;
+```
+
 ## Repository guidance
 
 - Reference external code and automation by a maintained version tag when available, or by a
