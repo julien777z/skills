@@ -2,7 +2,7 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SKILLS_REMOTE='https://github.com/julien777z/skills.git'
+readonly SKILLS_REMOTE='https://github.com/julien777z/skills.git'
 
 is_skills_remote() {
   case "$1" in
@@ -49,6 +49,7 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
   }
 
   is_skills_checkout "$REPO_ROOT" || { echo "Setup clone is not the skills repository: $REPO_ROOT" >&2; exit 1; }
+
   if [ "${SKILLS_INSTALL_UPDATED:-0}" != 1 ]; then
     if [ -n "$(run_as_cloud_user git -C "$REPO_ROOT" status --porcelain)" ]; then
       echo "Skills setup clone has local edits; refusing to overwrite them: $REPO_ROOT" >&2
@@ -96,6 +97,7 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
   for search_root in "${search_roots[@]}"; do
     while IFS= read -r git_marker; do
       candidate="$(dirname "$git_marker")"
+
       [ "$candidate" = "$REPO_ROOT" ] && continue
       if is_skills_checkout "$candidate"; then
         if [ "$source_checkout" != "$REPO_ROOT" ]; then
@@ -264,15 +266,18 @@ install_provider() {
   found_root=1
 
   mkdir -p "$root/skills"
+
   while IFS= read -r skill; do
     name="$(basename "$skill")"
     ln -sfn "$(link_source "$provider" skills "$name" "$skill")" "$root/skills/$name"
     skills=$((skills + 1))
   done < <(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)
+
   prune_links "$root/skills"
 
   if [ -d "$CANONICAL_RESOURCES" ]; then
     mkdir -p "$root/resources"
+
     for resource in "$CANONICAL_RESOURCES"/*; do
       [ -d "$resource" ] || continue
       name="$(basename "$resource")"
@@ -280,28 +285,34 @@ install_provider() {
       resources=$((resources + 1))
     done
   fi
+
   prune_links "$root/resources"
 
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -d "$CANONICAL_AGENTS" ]; then
     mkdir -p "$root/agents"
+
     for agent in "$CANONICAL_AGENTS"/*.md; do
       [ -f "$agent" ] || continue
       name="$(basename "$agent")"
       ln -sfn "$(link_source "$provider" agents "$name" "$agent")" "$root/agents/$name"
       agents=$((agents + 1))
     done
+
     prune_links "$root/agents"
   fi
 
   if [ -d "$CANONICAL_RULES" ]; then
     mkdir -p "$root/rules"
+
     for rule in "$CANONICAL_RULES"/*.md; do
       [ -f "$rule" ] || continue
       name="$(basename "$rule")"
       if [ "$provider" = "cursor" ]; then name="${name%.md}.mdc"; fi
+
       ln -sfn "$(link_source "$provider" rules "$name" "$rule")" "$root/rules/$name"
       rules=$((rules + 1))
     done
+
     prune_links "$root/rules"
   fi
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ "$CANONICAL_GLOBAL" != "$CANONICAL_RULES/global.md" ]; then
