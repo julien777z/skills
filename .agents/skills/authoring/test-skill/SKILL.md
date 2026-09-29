@@ -84,10 +84,10 @@ a code change is tested: against the case that motivated it, with the change and
      original never named — and rerun every run.
    - **A reader no change moves** means the miss in step 1 was misstated or the edit does nothing:
      restate the miss and start again from step 1, or drop or reshape the edit.
-9. **Report** the table itself in chat, as `## Output` shapes it; only the quoted evidence behind
-   each cell goes to one file in the session's scratch directory, sent with the report. Put one
-   sentence in the pull request description naming the miss the edit closes. The table is evidence and does not belong
-   in the description.
+9. **Report** the table itself in chat, as `## Output` shapes it, and send one file from the
+   session's scratch directory with it: that same `## Output` block first, then the quoted evidence
+   behind each cell under the table. Put one sentence in the pull request description naming the
+   miss the edit closes. The table is evidence and does not belong in the description.
 
 ## Reviewer selection
 
@@ -121,8 +121,9 @@ Evidence: <name of the sent evidence file>
 Verdict: passes (round <n>) | dropped — <reason> | not run: <reason>
 ```
 
-Every cell carries `pass` or `miss`; each row shows its latest run. A control row for a new skill
-reads `none` in its Text column.
+Every cell carries `pass` or `miss`; each row shows its latest run. A criterion's header is a short
+label of the behaviour it checks, never `Run`, `Text` or `Result` or a phrase built on them. A
+control row for a new skill reads `none` in its Text column.
 
 ## Guardrails
 
