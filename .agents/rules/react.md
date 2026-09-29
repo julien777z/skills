@@ -158,7 +158,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   it.** An address the viewer's role, workspace, plan or permissions never offer them redirects to
   the viewer's home. So does a multi-step flow the reader has finished — a verification, a setup,
   an onboarding — which leaves the navigation while the reader still holds its address; the
-  completion is announced once, as a dismissible success banner where the reader lands. A screen or
+  completion shows no banner where the reader lands, a toast at most. A screen or
   empty state telling the viewer the page belongs to somebody else — "this page is for …", "switch
   to … to use it", "you don't have access" — is dead code wherever it sits, in a page, a layout or a
   gate: the check becomes the redirect and the screen is deleted, never restyled, moved into a
@@ -171,6 +171,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   dialog.** A dialog is for one action taken from inside a page, however long its form —
   submitting a form outside any flow, submitting on someone's behalf, a quick edit — and one form
   serves the page and the dialog alike, inside each shell.
+- **A dialog holds one form.** When the reader chooses between several forms or documents, the
+  choice is made on the trigger before the dialog opens — a menu listing each option with a
+  one-line description — never as tabs or a switcher inside it. A field the form itself submits,
+  such as a type selector, is part of that form and stays inside.
 - **A step-by-step flow with a Back control puts it at the start of its footer and the primary
   action at the end,** apart, so the control that goes back never sits beside the one that commits.
 - **A page whose only content is a status message renders a full-page message state**, centered in
@@ -178,6 +182,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   that no longer applies. A form or list long enough to fill the page keeps its card. The message
   reports on the reader's own work; a notice that the page is for somebody else is not one, and
   redirects as the navigation bullet above says.
+- **A banner appears only when the reader has something to do or something is wrong** — terms to
+  accept, a verification to finish, a load that failed, a blocking state to resolve. A success or
+  completed state shows none, and a toast at most when the reader's own action just caused it. A
+  dismissible "approved" or "done" banner, and whatever stores its dismissal, is the defect: delete
+  both.
 - **A failure beside working content is a dismissible banner above that content.** It never
   replaces a surface's own heading or description, which keep saying what the surface is while the
   banner says what went wrong.

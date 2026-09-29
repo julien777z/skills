@@ -5,7 +5,7 @@ description: Guide for authoring, rebasing, and troubleshooting Alembic database
 
 # Database Migrations
 
-Read the operational profile named by project rules for migration layouts, runner commands, CI jobs, and fixture ownership before applying this policy. Resolve every role below through that profile; do not invent local paths.
+Read the repository's project guidance (`project.md`) for migration layouts, runner commands, CI jobs, and fixture ownership before applying this policy. Resolve every role below through it; do not invent local paths.
 
 ## Structure
 
@@ -16,7 +16,7 @@ Every chain is **replayable from an empty database**: its root revision (the pro
 
 Every chain is also replayed **populated**: the project's populated replay test fills every table with generated rows before each revision and compares an exact per-row census before and after each step. Every stored value of every row must survive byte-identical unless the revision's entry in the project's survivorship policy registry declares the change and verifies it per row. A revision that loses or corrupts any row's data without a declaration fails CI. The destructive-operation check additionally scans each revision's `upgrade()` for destructive operations (drops, type changes, UPDATE/DELETE statements, unclassifiable SQL) and requires each one to carry an exact acknowledgment in the same policy registry — missing and stale acknowledgments both fail.
 
-Shared tooling lives in the repository operational profile's shared migration package (runner, revision-graph helpers, drift comparison, file validation); the repository operational profile's migration CI entry point and the test suite both build on it.
+Shared tooling lives in the project's shared migration package (runner, revision-graph helpers, drift comparison, file validation); the project's migration CI entry point and the test suite both build on it.
 
 ## Authoring Rules
 
@@ -41,7 +41,7 @@ Shared tooling lives in the repository operational profile's shared migration pa
 - **Migration scenarios use typed fixtures for every identity.** Reuse the suite's canonical user,
   organization, and related-record fixtures instead of creating ad hoc UUIDs or synthetic rows.
   When a scenario needs a related identifier the fixtures do not model, add a typed fixture at the
-  nearest shared test boundary; promote it to the repository operational profile's shared test-utility owner only when multiple test
+  nearest shared test boundary; promote it to the project's shared test-utility owner only when multiple test
   surfaces can reuse it. Generated whole-schema population remains the sole owner of arbitrary
   values needed to exercise unknown historical tables.
 - **A destructive upgrade operation requires a policy entry.** Any `drop_column`, `drop_table`,
@@ -218,7 +218,7 @@ or
 ### How to fix it
 
 1. Identify the actual latest revision on main:
-   Inspect the revision directory identified by the operational profile.
+   Inspect the project's revision directory.
    Find which file has no other file pointing to it as `down_revision` — that is the current head.
 
 2. Update your migration's `down_revision` to that head:
