@@ -73,9 +73,9 @@ a code change is tested: against the case that motivated it, with the change and
    - **An edited run that misses has a cause**; find it in the report and record it before changing
      anything. The wording left the reader room: revise toward what it missed, keeping the language
      broad; a report that named the shape and then reasoned it away — "intentional", "not
-     problematic" — is this kind, and the revision states the disposition as fixed. The scenario
-     cannot satisfy the criterion, such as a file missing from the reading list, or its prompt never
-     made the reader open the skill file: fix the scenario. The report shows the behaviour in words
+     problematic" — is this kind, and the revision states the disposition as fixed and names those
+     reasons as not reasons. The scenario cannot satisfy the criterion, such as a file missing from
+     the reading list, or its prompt never made the reader open the skill file: fix the scenario. The report shows the behaviour in words
      the criterion did not search for: rephrase the criterion to that behaviour. A wording change
      reruns every edited run that missed, together; a scenario change reruns every run, controls
      included; a changed criterion rescores every report.
