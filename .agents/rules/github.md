@@ -48,7 +48,7 @@ alwaysApply: true
 ### After Agent Sync
 
 - After a pull request that changes agent configuration merges and its default-branch Agent Sync run finishes, update the repository's main local checkout, not a task worktree: if it is clean, check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force the refresh; report a skipped refresh and leave them untouched.
-- When the merged repository is the skills repository, update the installed copy the session loads its skills and rules from the same way, rerun the installer its README names so new skills link, and re-read the rules the merge changed. A session follows the copy it loaded until then, including rules other sessions merged after it started.
+- When the merged repository supplies the installed shared skills, invoke `reconcile-skills` instead of the checkout-only refresh above. It refreshes the installed checkout, links, and changed rules. For the skill's first merge, read it from the merged commit before invoking it. A session follows the copy it loaded until this refresh completes.
 
 ## Comments
 
