@@ -221,8 +221,8 @@ outcome, because silence reads as the guidance having been fixed.
    and stated in the report, because a pull request confined to agent configuration has merge
    authorization under the GitHub rule after its stated gates; that authorization does not extend
    to a release workflow. A question asking for it only holds every later session on the guidance
-   the change replaces. The approval of a changed output's example under step 5 is the one question
-   put to the user, and it comes before delivery.
+   the change replaces. The approval of a changed output's fictional example, under **Upsert
+   behavior**, is the one question put to the user, and it comes before delivery.
    1. **Branch and commit.** The edit goes onto the session's open agent-configuration pull request
       in the repository being edited, or onto a branch from the freshly fetched default branch with
       a new pull request, under the GitHub rule's **Branches and Pull Requests** — never onto a
@@ -267,8 +267,8 @@ outcome, because silence reads as the guidance having been fixed.
       who has to compare a new bullet against the section it duplicates is the one already holding
       both.
    4. **Run `acceptance-gate`** with its diff question over the `.agents` diff, the request as the
-      intent statement. It judges whether the guidance answers the request at the breadth step 5
-      asks for and whether every mechanism it adds earns its place. Treat a named tool, surface, or
+      intent statement. It judges whether the guidance answers the request at the breadth **Upsert
+      behavior** asks for and whether every mechanism it adds earns its place. Treat a named tool, surface, or
       workaround in generic guidance as a finding unless the skill's contract depends on it; the
       incident's route must not narrow the durable decision boundary. A flag gets the one rewrite that
       skill allows, and the rewrite goes to a fresh gate. A second flag ends the rewriting: fix it
@@ -306,12 +306,12 @@ outcome, because silence reads as the guidance having been fixed.
       repository, checking that each one already states its answer where the skill now sends its
       reader; a repository that does not is the flag, because the merge silently gave it the other
       one's answer.
-   6. **Hold each changed output to its approved example.** For every skill whose output step 5
-      put to the user, compare what its smoke runs returned — and, for a skill that summarises or
+   6. **Hold each changed output to its approved example.** For every skill whose changed output
+      the user approved as a fictional example, compare what its smoke runs returned — and, for a skill that summarises or
       reviews, one run of your own on the branch in flight — against the approved example: headings,
       columns, order, file shape. A divergence is the skill's wording, fixed and rerun under
-      `test-skill`; a shape the user has not approved goes back to step 5 as a new example, never
-      into the merge.
+      `test-skill`; a shape the user has not approved goes back to the user as a new fictional
+      example, never into the merge.
    7. **Check the diff file list against the default branch, then merge.** The authorization covers
       a pull request carrying only `.agents` files, and the file outside them that slips in is never
       announced. Read the changed paths rather than trusting your memory of what you edited; a stray
