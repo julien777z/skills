@@ -94,6 +94,7 @@ for router in (resources_router, reports_router):
 ## Parameters
 
 - Use `Depends()` for dependency injection (database sessions, auth, etc.).
+- Declare request guards such as authentication, CSRF validation, and rate limiting as FastAPI dependencies. Do not call the same guard manually inside each protected handler.
 - Use `Body(...)` for request body parameters.
 - Use `Path(...)` for path parameters.
 - Use `Query(...)` for query parameters with defaults and validation.
