@@ -1,7 +1,7 @@
 ---
 name: subagent-selection
 description: Apply when selecting a model for a live skill-verification chat or selecting and launching a subagent, including a fresh independent or read-only gate, reviewer, validator, or smoke reader. Resolve cheap, standard, advanced, and frontier tiers from the current host catalogue, select the model explicitly, and route independent steps through a subagent of the running session.
-short_description: 'Select a model tier for live verification chats or subagent delegation.' 
+short_description: 'Select a model tier for live verification chats or subagent delegation.'
 ---
 
 # Subagent Selection
@@ -26,10 +26,11 @@ agent; this skill does not launch agents or change settings itself.
    or inherit the orchestrator. Disclose missing coverage or a blocker when a required tier cannot
    run. Availability is not permission to change repository or global settings.
 4. The calling agent chooses a tier for each role or chat. Honor the user's explicit model or tier first,
-   then the calling skill's tier; otherwise use the task criteria in the table, with **standard**
-   as the default. Reserve frontier for the most demanding assignments unless specifically required.
-   An explicit user model override still must resolve to a supported host identifier; report it as
-   an override rather than relabeling it as a different tier.
+   then the calling skill's tier. For a live skill-verification chat, choose the lowest available
+   tier; otherwise use the task criteria in the table, with **standard** as the default. Reserve
+   frontier for the most demanding assignments unless specifically required. An explicit user model
+   override still must resolve to a supported host identifier; report it as an override rather than
+   relabeling it as a different tier.
 5. Select the chosen identifier explicitly when starting a verification chat or dispatching a
    sub-agent. For Codex `spawn_agent`, use
    `fork_turns: "none"` with a self-contained assignment, scope, constraints, and reading list so

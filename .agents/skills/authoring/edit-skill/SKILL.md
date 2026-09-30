@@ -368,8 +368,9 @@ container proves its maintenance path, not a fresh setup run.
    session resolve into the intended checkout in both Claude's cloud home and the runtime's home.
    If the session reused an older setup image, record that result and obtain a fresh setup run
    before claiming setup passed.
-3. After testing, restore the previous setup configuration, or switch it to the maintained branch
-   once the source change merges. Remove only stale test sessions created for this verification:
+3. After the source pull request merges and the verification task is finalized and closed, update
+   the remote setup script to check out the repository's default branch. Save the script. Remove
+   only stale test sessions created for this verification:
    right-click each session in Claude Desktop and delete it through the UI, one at a time; never
    use a script or API to delete sessions.
 
@@ -383,9 +384,10 @@ container proves its maintenance path, not a fresh setup run.
    and Codex's global `AGENTS.md`, resolve into the installed checkout at the intended commit.
    Run the installer again and verify it succeeds without changing unrelated content.
 3. Resume a cached container and verify the maintenance script ran and the same links still resolve.
-   Distinguish this result from a fresh setup result. After testing, restore the previous setup
-   configuration, or switch it to the maintained branch once the source change merges. Archive
-   test tasks created for this verification.
+   Distinguish this result from a fresh setup result.
+4. After the source pull request merges and the verification task is finalized and closed, update
+   the environment setup script to obtain the Skills checkout on the repository's default branch.
+   Save the script. Archive test tasks created for this verification.
 
 ## Output
 

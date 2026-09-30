@@ -25,11 +25,10 @@ This skill never copies provider mirrors by hand.
    rule link in every existing user-level agent root and confirm it points into the selected source
    checkout. Check Codex's global `AGENTS.md` link when Codex is installed. Preserve real files and
    foreign links; the installer's conflict preflight reports them before changing links.
-4. Read every shared rule changed between the recorded and refreshed commits. When this run follows
-   a merge, also read the merged skill and its supporting files from the refreshed commit before
-   using them in the current session.
+4. Read every shared rule and shared skill changed between the recorded and refreshed commits, with
+   each changed skill's supporting files, before using them in the current session.
 
 ## Report
 
-Report the source checkout, old and new commits, roots refreshed, link verification, and rules
-reread. State the exact blocker and untouched paths if the refresh stopped.
+Report the source checkout, old and new commits, roots refreshed, link verification, and skills and
+rules reread. State the exact blocker and untouched paths if the refresh stopped.
