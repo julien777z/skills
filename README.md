@@ -147,6 +147,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`python-testing-patterns`](.agents/skills/python/python-testing-patterns/SKILL.md) — Implement comprehensive testing strategies with pytest, fixtures, mocking, and test-driven development.
 - [`python-type-safety`](.agents/skills/python/python-type-safety/SKILL.md) — Python type safety with type hints, generics, protocols, and strict type checking.
 - [`rebuild-git-history`](.agents/skills/git/rebuild-git-history/SKILL.md) — Rework your branch into focused commits while preserving and checking its content.
+- [`reconcile-skills`](.agents/skills/workspace/reconcile-skills/SKILL.md) — Refresh installed shared skills and rules from their source checkout.
 - [`roblox-building`](.agents/skills/roblox/roblox-building/SKILL.md) — Build and improve Roblox worlds, terrain, structures, props, and assets.
 - [`roblox-gameplay`](.agents/skills/roblox/roblox-gameplay/SKILL.md) — Apply every time actively modifying a Roblox game, including mechanics, progression, rewards, controls, presentation, UI, and world content.
 - [`roblox-react`](.agents/skills/roblox/roblox-react/SKILL.md) — Design and change React-rendered Roblox interfaces, including HUDs and menus.
@@ -154,7 +155,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`run-site`](.agents/skills/workspace/run-site/SKILL.md) — Start a local app, repair startup failures, and verify signed-in flows with screenshots and a recording.
 - [`security-audit`](.agents/skills/review/security-audit/SKILL.md) — Security audit of a codebase — web apps, APIs, services, CLI tools, libraries, daemons, and more.
 - [`storyline`](.agents/skills/roblox/storyline/SKILL.md) — Create or improve a coherent game story with playable beats and a satisfying ending.
-- [`subagent-selection`](.agents/skills/execution/subagent-selection/SKILL.md) — Apply whenever selecting or launching sub-agents, whether directly for a task or through another skill.
+- [`subagent-selection`](.agents/skills/execution/subagent-selection/SKILL.md) — Select a model tier for live verification chats or subagent delegation.
 - [`tailwind-design-system`](.agents/skills/web/tailwind-design-system/SKILL.md) — Build scalable design systems with Tailwind CSS v4, design tokens, component libraries, and responsive patterns.
 - [`test-fixture`](.agents/skills/authoring/test-fixture/SKILL.md) — Check test data and fixtures before changing tests or running tests after a fixture change.
 - [`test-skill`](.agents/skills/authoring/test-skill/SKILL.md) — Compare edited and original skill guidance against the same scenario.
