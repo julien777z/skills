@@ -24,6 +24,7 @@ has reached a terminal result.
 
 - `merge-conflict` — resolve every base incorporation this skill performs.
 - `pre-production` — the encountered-issue policy a failed check falls under.
+- `reconcile-skills` — refresh installed shared guidance after its repository's Agent Sync run.
 
 ## Inputs
 

@@ -1,19 +1,21 @@
 ---
 name: subagent-selection
-description: Apply whenever selecting or launching sub-agents, whether directly for a task or through another skill, and whenever a step calls for a fresh, independent or read-only subagent — a gate, a reviewer, a validator, a smoke reader — including when the host exposes no agent tool to launch one. Resolve cheap, standard, advanced, and frontier model tiers from the current host catalogue, use the chosen tier explicitly for every delegation, and route each independent step through a subagent of the running session.
-short_description: 'Apply whenever selecting or launching sub-agents, whether directly for a task or through another skill.'
+description: Apply when selecting a model for a live skill-verification chat or selecting and launching a subagent, including a fresh independent or read-only gate, reviewer, validator, or smoke reader. Resolve cheap, standard, advanced, and frontier tiers from the current host catalogue, select the model explicitly, and route independent steps through a subagent of the running session.
+short_description: 'Select a model tier for live verification chats or subagent delegation.'
 ---
 
 # Subagent Selection
 
-Apply before every sub-agent delegation. Skills that delegate should declare `subagent-selection`
-in their dependencies, but a missing declaration does not bypass selection. Return the selection
-table to the delegating agent; this skill does not launch agents or change settings itself.
+Apply before every sub-agent delegation and when an owning skill requires a model tier for a live
+verification chat. Skills that use it should declare `subagent-selection` in their dependencies,
+but a missing declaration does not bypass selection. Return the selection table to the calling
+agent; this skill does not launch agents or change settings itself.
 
 ## Workflow
 
-1. Identify the calling skill or direct task, its assigned roles, and any explicit tier or model
-   requirement. Inspect the current host's subagent catalogue and dispatch parameters, and read
+1. Identify the calling skill or direct task, its assigned roles or verification chat, and any
+   explicit tier or model requirement. Inspect the current host's subagent catalogue and dispatch
+   parameters, or its chat model picker, and read
    [model tiers](references/model-tiers.md).
 2. Resolve all four tiers to the latest available model in each mapped family using the host's
    catalogue. Use only identifiers the host actually exposes; never store versioned IDs in skill
@@ -23,12 +25,14 @@ table to the delegating agent; this skill does not launch agents or change setti
    of explicit model selection makes that row unavailable; never silently substitute another family
    or inherit the orchestrator. Disclose missing coverage or a blocker when a required tier cannot
    run. Availability is not permission to change repository or global settings.
-4. The delegating agent chooses a tier for each role. Honor the user's explicit model or tier first,
-   then the calling skill's tier; otherwise use the task criteria in the table, with **standard**
-   as the default. Reserve frontier for the most demanding assignments unless specifically required.
-   An explicit user model override still must resolve to a supported host identifier; report it as
-   an override rather than relabeling it as a different tier.
-5. Pass the chosen identifier explicitly at dispatch. For Codex `spawn_agent`, use
+4. The calling agent chooses a tier for each role or chat. Honor the user's explicit model or tier first,
+   then the calling skill's tier. For a live skill-verification chat, choose the lowest available
+   tier; otherwise use the task criteria in the table, with **standard** as the default. Reserve
+   frontier for the most demanding assignments unless specifically required. An explicit user model
+   override still must resolve to a supported host identifier; report it as an override rather than
+   relabeling it as a different tier.
+5. Select the chosen identifier explicitly when starting a verification chat or dispatching a
+   sub-agent. For Codex `spawn_agent`, use
    `fork_turns: "none"` with a self-contained assignment, scope, constraints, and reading list so
    model inheritance cannot override selection. Reuse the resolved table while the host catalogue
    is unchanged; resolve again when it changes. Preserve one resolved model and reasoning effort
@@ -60,9 +64,9 @@ context and returns its verdict into the step waiting on it; nothing else does b
 
 ## Output
 
-Return this table to the delegating agent, using actual resolved identifiers rather than
+Return this table to the calling agent, using actual resolved identifiers rather than
 placeholders. For an unavailable row, use `unavailable` for the model and state the reason in Status.
-The delegating agent then records the selected tier per role, or the explicit user override.
+The calling agent then records the selected tier per role or chat, or the explicit user override.
 
 ```markdown
 Caller: <skill name or direct task>
