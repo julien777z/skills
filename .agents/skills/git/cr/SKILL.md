@@ -48,12 +48,18 @@ Run the complete high-effort fix review and exact-head gates for the current bra
 - `merge-conflict` — resolve every base update this run performs before `merge-pr` starts.
 - `merge-pr` — take the accepted head through the check gate, conflict resolution and the verified
   squash merge.
+- `session-ledger` — resolve an unqualified session pull request from verified task records.
 
 Invoke `subagent-selection` and use its **standard** tier for this workflow's own sub-agents.
 Delegated skills retain their explicitly selected tiers, subject to the user's model override.
 Follow the selector's dispatch and unavailable-model policy.
 
 ## Pull Request Ownership
+
+When the invocation does not name a pull-request URL, retrieve the matching current-repository
+record from `session-ledger` before verifying its branch and state with the hosting service. Ask
+when the ledger leaves more than one plausible pull request; never select one from local branch
+state alone.
 
 Once this workflow resolves the pull request under review, that pull request owns every change CR
 discovers or requires before its merge: simplification fixes, confirmed finding fixes, complete
@@ -279,7 +285,7 @@ and verified live result; a default-branch or merged artifact is not test eviden
 authorization, skip deployment and continue review. Never dispatch a workflow or mutate a provider
 to work around this gate.
 
-1. Resolve the current branch and its pull request. When no PR exists, follow `/code-review`'s branch and commit setup rules, then create the PR through REST with `draft=false`. Review an existing draft PR normally. Run **Description Refresh** above before any other phase reads the pull request. Resolve the intent statement as `acceptance-gate` defines it and record the current merge-base SHA; pass the statement and **Pull Request Ownership** rule to every subagent in the run and into `/code-review high fix`. Run **Review Thread Triage**, then the first test pass **Validation Order** requires, then immediately the complete **Simplification Gate** above; no code-review phase starts before all three are clean.
+1. Resolve the current branch and its pull request. When no PR exists, follow `/code-review`'s branch and commit setup rules, then create the PR through REST with `draft=false` and immediately record its returned canonical URL with `session-ledger`. Review an existing draft PR normally. Run **Description Refresh** above before any other phase reads the pull request. Resolve the intent statement as `acceptance-gate` defines it and record the current merge-base SHA; pass the statement and **Pull Request Ownership** rule to every subagent in the run and into `/code-review high fix`. Run **Review Thread Triage**, then the first test pass **Validation Order** requires, then immediately the complete **Simplification Gate** above; no code-review phase starts before all three are clean.
 2. Invoke `/code-review high fix <PR>` for that PR, whether it is draft or ready for review.
 3. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the run continues; see **Deferred Findings**. Stop and report only a finding that can be neither fixed nor recorded.
 4. Classify each correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean. This is the same authorized CR execution, not a new action-skill invocation.

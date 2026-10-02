@@ -14,6 +14,7 @@ and fix nothing along the way.
 
 - `list-prs` — the session-wide ledger of open pull requests the session changed.
 - `defer-scope` — record repository work consciously left undone; it runs the admission gate.
+- `session-ledger` — provides verified task artifacts outside the current repository.
 
 ## Scope
 
@@ -25,9 +26,9 @@ and fix nothing along the way.
 
 ## Workflow
 
-1. **Build the ledger.** Invoke `list-prs`, add the current branch's pull request when it is
-   missing, and record for each pull request its head, base, mergeability, latest check state, and
-   unresolved review threads using read-only tooling.
+1. **Build the ledger.** Invoke `list-prs` and retrieve additional open pull requests recorded as
+   touched from `session-ledger`. Record for each pull request its head, base, mergeability, latest
+   check state, and unresolved review threads using read-only tooling.
 2. **Sweep the session for loose ends** across the whole conversation, compacted summaries and the
    harness task list included: work stated as deferred, skipped, "later", or "follow-up"; a scope
    queued to run after a merge; a plan presented and not explicitly approved, read from wherever the

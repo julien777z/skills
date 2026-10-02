@@ -9,9 +9,13 @@ disable-model-invocation: true
 
 Monitor a pull request through the delayed-review window and act on valid feedback instead of merely reporting it.
 
+## Dependencies
+
+- `session-ledger` — resolves and records verified session pull requests.
+
 ## Workflow
 
-1. Resolve the pull request from an explicit number or URL, or from the current branch and repository. If the current branch is the repository default branch and changes are needed, create a new work branch before editing; after making and verifying changes, commit, push, create a PR if one does not already exist for that branch, then poll CI for that PR. If the current non-default branch has no PR, inspect open PRs and local branch relationships; ask only if multiple candidates remain plausible.
+1. Resolve the pull request from an explicit number or URL, or retrieve the matching current-repository record from `session-ledger` and verify its current branch and state with the hosting service. If the current branch is the repository default branch and changes are needed, create a new work branch before editing; after making and verifying changes, commit, push, create a PR if one does not already exist for that branch, record its returned canonical URL with `session-ledger`, then poll CI for that PR. If no matching record exists, ask for the target; never infer it from local branch relationships.
 2. Record a baseline containing the head SHA, review submissions, conversation comments, inline review threads, resolution state, and latest finding timestamp. Prefer thread-aware GitHub reads so duplicate, outdated, and resolved findings are distinguishable.
 3. Check and investigate existing review threads, comments, and issue/PR conversation items as part of the baseline, not only new findings. Classify each unresolved or recently-updated item as legitimate, duplicate, already fixed, stale/outdated, ambiguous, or incorrect before deciding whether the watch can be quiet.
 4. Start a 15-minute quiet timer from the most recent finding, from the latest baseline item that still needs investigation, or from the baseline check when no findings exist.
