@@ -21,6 +21,7 @@ alwaysApply: true
 ## Branches and Pull Requests
 
 - When the user asks which pull requests are open, use `list-prs` to list only currently open pull requests created during this session, including drafts. Include pre-existing pull requests only when the user explicitly asks for a broader scope.
+- Record every pull request with `session-ledger` immediately after the hosting service returns its canonical URL. A session-scoped pull-request lookup reads that ledger and verifies each recorded URL remotely; never reconstruct it from the current checkout, a branch name, a transcript, or a broad hosting-service search.
 
 - Keep pull requests focused and give them descriptive titles and descriptions; request appropriate reviewers when the repository workflow requires them.
 - A pull request description covers the changes in that pull request and nothing else. Leave out alternatives considered and rejected, work deferred to a later change, and the reasoning behind not doing something.

@@ -8,13 +8,16 @@ short_description: 'List currently open pull requests created during the entire 
 
 Return a deduplicated list of currently open pull requests created during the entire current session, not only the latest turn. Honor an explicitly requested broader scope.
 
+## Dependencies
+
+- `session-ledger` — provides the task's verified pull-request records.
+
 ## Workflow
 
-1. Build a session-wide pull-request ledger from the conversation, tool history, compacted summaries, GitHub results, and current branch associations.
-2. Include pull requests created during this session. Updating, reviewing, reopening, resolving conflicts in, or working on a pre-existing pull request does not make it session-created. Include those only when the user explicitly requests a broader scope. Verify creation from session evidence; current branch association alone is not proof.
-3. Include draft and ready-for-review pull requests only while their current state is open. Exclude merged and closed pull requests.
-4. Recover direct canonical web URLs and verify current state with read-only repository tooling. Never infer a PR number or fabricate a URL.
-5. Preserve creation order and list each pull request once. If no pull requests qualify, return `- None`.
+1. Retrieve pull-request creation records from `session-ledger` in first-recorded order.
+2. Include only records created during this session. Updating, reviewing, reopening, resolving conflicts in, or working on a pre-existing pull request does not create a session record. Include pre-existing pull requests only when the user explicitly requests a broader scope.
+3. Verify each recorded canonical URL with read-only hosting-service tooling. Include draft and ready-for-review pull requests only while their current state is open. Exclude merged and closed pull requests.
+4. Deduplicate canonical URLs while preserving creation order. If no pull requests qualify, return `- None`.
 
 ## Output
 

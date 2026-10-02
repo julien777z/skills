@@ -17,11 +17,11 @@ Resolve recorded deferrals instead of treating their proposed work as automatica
 - `code-simplify` — find the smallest coherent resolution for each legitimate problem.
 - `acceptance-gate` — judge the proposed resolution and the finished diff against the originating
   change.
+- `session-ledger` — retrieves session-created pull requests without reconstructing task history.
 
 ## Select The Records
 
-With no explicit scope, build the session ledger from conversation and tool history, compacted
-summaries, exact issue identifiers, repository paths, and pull-request associations. Query Linear
+With no explicit scope, retrieve session-created pull requests from `session-ledger`. Query Linear
 issues carrying the deferral label the repository's project guidance names using the repository and origin or resolution PR metadata
 written by `defer-scope`. Include legacy records and record pull requests created in the session.
 Never infer an issue, stable key, path, or pull-request number.
