@@ -224,6 +224,8 @@ return records;
 
 ## Branches and Pull Requests
 
+- When the user asks which pull requests are open, use `list-prs` to list only currently open pull requests created during this session, including drafts. Include pre-existing pull requests only when the user explicitly asks for a broader scope.
+
 - Keep pull requests focused and give them descriptive titles and descriptions; request appropriate reviewers when the repository workflow requires them.
 - A pull request description covers the changes in that pull request and nothing else. Leave out alternatives considered and rejected, work deferred to a later change, and the reasoning behind not doing something.
 - Treat each repository as an independent context. Write PR titles, descriptions, review comments, and issue comments using only the target repository's domain, contracts, changes, and validation. Do not import another repository's product names, domain knowledge, implementation details, or coordination history; do not name or link its PRs or post cross-repository coordination comments. Keep combined status and coordination in user chat.
