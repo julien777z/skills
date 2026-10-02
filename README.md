@@ -154,6 +154,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`roblox-studio`](.agents/skills/roblox/roblox-studio/SKILL.md) — Create, polish, and playtest Roblox games in Studio.
 - [`run-site`](.agents/skills/workspace/run-site/SKILL.md) — Start a local app, repair startup failures, and verify signed-in flows with screenshots and a recording.
 - [`security-audit`](.agents/skills/review/security-audit/SKILL.md) — Security audit of a codebase — web apps, APIs, services, CLI tools, libraries, daemons, and more.
+- [`session-ledger`](.agents/skills/workspace/session-ledger/SKILL.md) — Keep verified task artifacts available across a long session.
 - [`storyline`](.agents/skills/roblox/storyline/SKILL.md) — Create or improve a coherent game story with playable beats and a satisfying ending.
 - [`subagent-selection`](.agents/skills/execution/subagent-selection/SKILL.md) — Select a model tier for live verification chats or subagent delegation.
 - [`tailwind-design-system`](.agents/skills/web/tailwind-design-system/SKILL.md) — Build scalable design systems with Tailwind CSS v4, design tokens, component libraries, and responsive patterns.
