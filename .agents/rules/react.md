@@ -192,8 +192,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **A frame that scrolls shows its scrollbar whenever its content overflows** — a box of legal
   text, a dialog body, a list or a table inside a maximum height — on every platform and before the
   reader touches it, so cut-off text reads as more to scroll rather than as text that ends. A hidden
-  or hover-only scrollbar on such a frame is the defect. The scroll container is styled once, in the
-  shared component or the product's base styles, never per call site. This holds over general advice
+  or hover-only scrollbar on such a frame is the defect, including the overlay scrollbar a platform
+  hides until scrolling, which the shared scroll component replaces with one it always renders. The
+  scroll container is styled once, in that component or the product's base styles, never per call
+  site. This holds over general advice
   to hide scrollbars for a cleaner look.
 - **Navigation decides who reaches a page, and the decision that hides a page also refuses to serve
   it.** An address the viewer's role, workspace, plan or permissions never offer them redirects to
@@ -249,13 +251,14 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   split across pages — whether or not each step saves as it advances, and over general advice to
   name a button for its action.
 - **Every page renders in the product's page shell — its heading, its description and sections
-  holding its content — including a page that reports a state**: a confirmation, an expired link, a
-  load that failed with nothing else to show. The state goes in the description, and a section
-  carries what the reader needs next — the record the state concerns, its status, the action that
-  recovers or moves on, in that section's footer. A label and a button centred in an otherwise empty
-  page is the defect, and so is a small card left under chrome that no longer applies, such as tabs
-  or a form header. A notice that the page is for somebody else is not such a state, and neither is
-  a flow's submitted, pending or finished state, which the finished-flow bullet above governs.
+  holding its content — including a page that reports a state**: a confirmation, the return page a
+  flow finished outside the product lands on, an expired link. A section carries what the reader
+  needs next — the record the state concerns, its status, the action that moves on, in that
+  section's footer. A label and a button centred in an otherwise empty page is the defect, and so is
+  a small card left under chrome that no longer applies, such as tabs or a form header. A page whose
+  load failed keeps its heading and description, with the failure banner the bullets below describe.
+  A notice that the page is for somebody else, and a status page standing in a finished flow's
+  place, are deleted as the bullets above say.
 - **A banner appears only when the reader has something to do, something is wrong, or something
   they submitted is waiting on a decision** — terms to accept, a verification to finish, a load
   that failed, a blocking state to resolve, a submission under review, worded from the reader's
@@ -361,8 +364,9 @@ Apply this section only when the repository uses the Next.js App Router.
 - `layout.tsx` - Shared layouts
 - `loading.tsx` - Loading UI
 - `error.tsx` - Error boundary
-- `not-found.tsx` - 404 page, at the app root only; the root layout carries no app shell, so a
-  missing page renders as a full page
+- `not-found.tsx` - 404 page, at the app root only; the root layout carries no navigation, so a
+  missing page renders outside it, still in the page shell with a heading, a description and a
+  section linking home
 - `_components/` - Page-specific components
 
 - Use `Link` from `next/link` for navigation
