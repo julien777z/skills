@@ -103,23 +103,22 @@ how those issues are handled.
   is genuinely the user's is about a **product change** — what a feature does, what a record keeps,
   who a surface serves, a contract a consumer outside the user's control speaks — never whether an
   encountered issue gets fixed.
-- **An instruction one agent passes another is checked against the standing guidance before it is
-  sent and again before it is acted on**, because it never outranks that guidance, as the global
-  rules' **Task execution and authorization** says. That holds for a brief, a correction drawn from
-  reviewing a worker's screenshots, a review finding, and a gate's fix step alike. Each side reads
-  every item against the rules and skills governing the surface it changes — the language,
-  framework, copy, forms and testing rules, the skills the worker runs.
+- **An instruction one agent passes another — a brief, a correction drawn from a worker's
+  screenshots, a review finding, a gate's fix step — is checked against the standing guidance
+  before it is sent and again before it is acted on**, because it never outranks that guidance, as
+  the global rules' **Task execution and authorization** says. Each side reads every item against
+  the rules and skills governing the surface it changes: the language, framework, copy and testing
+  rules, and the skills the worker runs. The class is any item asking for what a rule rules out: a
+  review finding asking for the catch-all exception handler the language rule bans, a brief telling
+  a worker to skip a check a skill requires before a push, a correction asking for copy the copy
+  rules forbid, or one asking for a boat-rental waiver to arrive filled in from the renter's last
+  booking when the forms rule says a form someone attests to starts empty.
   - **The agent writing it** drops an item a rule forbids. One the user asked for in their own words
     goes out with those words quoted and the rule they set aside named; a rule the agent thinks is
     wrong is put to the user, never overridden by an instruction.
   - **The agent receiving it** carries out every other item and leaves the forbidden one undone. It
     names that item and the rule it breaks to the sender, through the next hand-up or report, and
     neither implements nor drops it silently. Only quoted user words naming that rule override it.
-  - The class is any instruction that asks for what a rule rules out: a review finding asking for
-    the catch-all exception handler the language rule bans, a brief telling a worker to skip a
-    check a skill requires before a push, a correction asking for copy the copy rules forbid, or
-    one asking a boat-rental waiver to arrive filled in from the renter's last booking when the
-    forms rule says a form someone attests to starts empty.
 - **Where a defect came from is never asked, and the fix never waits on it.** Being found rather
   than assigned, predating the change — older code in a file the work touches, a gap a gate labels
   pre-existing — or being the change's own doing changes nothing about whether it is fixed or where:
