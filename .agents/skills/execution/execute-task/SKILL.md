@@ -130,10 +130,9 @@ how those issues are handled.
   or simplification pass returns, is governed above and carries no such condition.
 - Delete every piece of confirmed dead code encountered during implementation, even when it sits
   outside the files or packages already being changed. Confirm that no live application or
-  library consumer, public export, or external contract still depends on it, reading consumers on
-  the branch the work merges into and the open branches it ships with, in every repository that
-  consumes it, not on the default branch alone; remove tests that
-  exist only to exercise the dead code; and validate the affected behavior. This requirement does
+  library consumer, public export, or external contract still depends on it, judged where the
+  change will land as `code-simplify`'s rubric says; remove tests that exist only to exercise the
+  dead code; and validate the affected behavior. This requirement does
   not turn implementation into a proactive dead-code audit of the whole repository.
 - Use the repository's relevant tests as the regression guardrail; do not preserve a defect solely
   because an existing test asserts the old behavior. When coverage is absent or insufficient, use

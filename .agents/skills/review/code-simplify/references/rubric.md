@@ -160,23 +160,24 @@ Apply the baseline prompt above, plus these explicit review rules:
    - Its author having also written the finding it answers is a reason to look harder, not to defer.
      Nobody else has yet asked whether the problem was real.
    - **A guard for a state no writer can produce is dead code, however small.** Before accepting a
-     guard, validation, or branch, read every writer of the value it tests and of what its path
-     reads next — each function that creates or changes them. **Reachability is judged where the
-     change will land:** on the branch it merges into and the open branches it ships with, in every
-     repository the user owns that reaches it, never on the default branch alone; a page no link in
-     its own repository opens is live when a service on the integration branch redirects to it. When
-     those writers already exclude the state, or leave a check already on the path refusing every
-     input the guard would refuse, nothing reaches the guard: delete it with its message constant
-     and the tests that exist only for it. A read-side check that the caller holds the account role
-     a linked record requires is this finding when every path that links a record refuses other
-     roles, nothing changes the role afterwards, and a caller without the role has no linked record
-     for the existing lookup to find: the role alone is reachable, the combination the guard refuses
-     is not.
+     guard, validation, or branch, read every writer of the value it tests and of what its path reads
+     next — each function that creates or changes them. When those writers already exclude the
+     state, or leave a check already on the path refusing every input the guard would refuse, nothing
+     reaches the guard: delete it with its message constant and the tests that exist only for it. A
+     read-side check that the caller holds the account role a linked record requires is this finding
+     when every path that links a record refuses other roles, nothing changes the role afterwards,
+     and a caller without the role has no linked record for the existing lookup to find: the role
+     alone is reachable, the combination the guard refuses is not.
    - "Defence in depth", "a clearer status code", "a legitimate check", and "in case a future writer
      changes" are not dispositions: each keeps a branch no input reaches, and a future writer that
      could produce the state carries the check that refuses it.
    - Where a writer can produce the state, the check is real, and it belongs on every sibling path
      answering the same question, never only on the one the diff added.
+   - **Whether code is reached is judged where the change will land:** on the branch it merges into
+     and the open branches it ships with, in every repository the user controls, never on the
+     default branch alone. That holds for a guard's writers and for anything a review calls unreached
+     — a page, a route, an export: a page no link in its own repository opens is live when code in
+     another repository, on the branch it ships with, redirects to it.
 
 2. **A module holding one symbol is a finding before anything else about it is judged.**
    - Count before you read: a module whose public surface is one function, one small class, or one

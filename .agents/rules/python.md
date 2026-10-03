@@ -348,7 +348,7 @@ def get_auth_secret(config: Settings | None = None) -> str:
 - Put the conversion on the target in a typed `from_<source>` or `build_*` classmethod that names the fields. If the copy becomes long, consolidate the models or carry the source model as a nested field instead of flattening it.
 - Reserve `model_dump()` for boundaries that leave the typed model layer, such as JSON, persistence, caches, and logs.
 
-- Application code (a function, method, property, class, constant, or field) with **zero non-test consumers** is dead code and must be deleted, along with the tests that only exist to exercise it.
+- Application code (a function, method, property, class, constant, or field) with **zero non-test consumers** is dead code and must be deleted, along with the tests that only exist to exercise it. Consumers, and the writers a guard below is checked against, are counted where the change will land — the branch it merges into and the open branches it ships with, in every repository the user controls — never on the default branch alone.
 - **Tests do not justify keeping otherwise-unused application code.** A test that asserts a symbol no other application code reads is testing a fabricated contract; delete the symbol and that test together rather than preserving the symbol "because it's covered".
 - "Consumer" means live application/library code that reads the symbol — call sites, internal use by another live symbol, serialization, or a public package export in `__all__` that external packages import. Test modules are not consumers.
 - A symbol reached only indirectly through another symbol that is itself dead is also dead; remove the whole unused chain.

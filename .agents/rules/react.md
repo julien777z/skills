@@ -123,11 +123,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Keep implementation out of the interface.** Storage, masking, hashing, background jobs, retries
   and the names of internal states belong in the code. A description says what the field is for and
   what the reader should put in it, in the words they would use themselves.
-- **Every page and every step of a flow carries a one-sentence description under its heading**,
-  saying what the reader does there or what the page holds — "Choose where your payments go", "The
-  people who can see and edit this project" — so a reader arriving from a link, a stepper or the
-  navigation knows why they are there. A heading alone, or a heading with only a badge beside it, is
-  the defect. The copy rules in this section shape that sentence; none of them removes it.
+- **Every page and every step of a flow carries a one-sentence description under its heading** —
+  two on a flow's first step, as **A flow starts at its first question** below allows — saying what
+  the reader does there or what the page holds: "Choose how you hear about new activity", "The
+  people who can see and edit this project". A reader arriving from a link, a stepper or the
+  navigation then knows why they are there. A heading alone, or a heading with only a badge beside
+  it, is the defect.
 - Say the one thing the reader needs and stop. On a field or a section, prefer no description to a
   description that repeats the label, narrates the obvious, or hedges. Where a sentence is only
   there to cover the product, cut it. That includes a paragraph explaining the mechanics around an
@@ -190,19 +191,20 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   chart, a map, media — to one the reader sized, or to a section deliberately sized to the viewport.
 - **Navigation decides who reaches a page, and the decision that hides a page also refuses to serve
   it.** An address the viewer's role, workspace, plan or permissions never offer them redirects to
-  the viewer's home. So does a multi-step flow the reader has finished — a verification, a setup, an
-  onboarding — which leaves the navigation while the reader still holds its address. A finished flow
-  whose outcome is final shows no banner where the reader lands, a toast at most; one whose
-  submission waits on someone else's decision — a review, an approval — lands the reader on the
-  product as usual, with the banner the banner bullet below describes until the decision lands. A
-  status page served at the flow's own address in its place is the defect. A page a flow finished
+  the viewer's home. A screen or empty state telling the viewer the page belongs to somebody else —
+  "this page is for …", "switch to … to use it", "you don't have access" — is dead code wherever it
+  sits, in a page, a layout or a gate: the check becomes the redirect and the screen is deleted,
+  never restyled, moved into a shared message component, or kept because a task lists it among the
+  states to restyle.
+- **A multi-step flow the reader has finished — a verification, a setup, an onboarding — leaves the
+  navigation, and its address redirects to the viewer's home.** A finished flow whose outcome is
+  final shows no banner where the reader lands, a toast at most; one whose submission waits on
+  someone else's decision — a review, an approval — lands the reader on the product as usual, with
+  the banner the banner bullet below describes until the decision lands. A status page standing in
+  the flow's place, at its own address or any other, is the defect. A page that a flow finished
   outside the product returns the reader to — a hosted checkout's return address, a provider's
-  signing or verification redirect — is that flow's last step, not a status page, and stays: it says
-  what happened and links on into the product. A screen or empty state telling the viewer the page
-  belongs to somebody else — "this page is for …", "switch to … to use it", "you don't have access"
-  — is dead code wherever it sits, in a page, a layout or a gate: the check becomes the redirect and
-  the screen is deleted, never restyled, moved into a shared message component, or kept because a
-  task lists it among the states to restyle.
+  signing or verification redirect — is that flow's last step and stays: it says what happened and
+  links on into the product.
 - **Inside a page, offer only what applies to the reader.** A choice, a document, a field or a
   status row the reader can never use — the other region's version of a document, the other account
   type's settings — is left out, decided by the same rule that decides which one applies, never
@@ -240,18 +242,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   page system that moves through steps — an onboarding, a setup, a verification, a wizard, a form
   split across pages — whether or not each step saves as it advances, and over general advice to
   name a button for its action.
-- **A button is as wide as its label and padding, wherever it sits** — under a list, in a card, a
-  footer or a dialog, at any viewport width. One stretched to its row or container by a full-width
-  class, a flex or grid child left to grow, or a block display reads as a bar rather than an action,
-  and is the defect. A button that stands alone starts its row, as the footer bullet above says; a
-  group of buttons sits together, each at its own width.
 - **A page whose only content is a status message renders a full-page message state** — an expired
   link, a load that failed with nothing else to show — centered in the page, never a small card left
   under chrome that no longer applies, such as tabs or a form header. A form or
   list long enough to fill the page keeps its card. The message reports a state the reader cannot
   get past on this page; a notice that the page is for somebody else is not one, and neither is a
-  flow's submitted, pending or finished state: both leave the page as the navigation bullet above
-  says.
+  flow's submitted, pending or finished state, which the finished-flow bullet above governs.
 - **A banner appears only when the reader has something to do, something is wrong, or something
   they submitted is waiting on a decision** — terms to accept, a verification to finish, a load
   that failed, a blocking state to resolve, a submission under review, worded from the reader's
@@ -319,6 +315,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   The call site picks a variant that reads as a button; a variant is restyled product-wide only
   where every use of it stands as such an action, and never with a class at one call site, as
   **Components and Props** says of every primitive.
+- **A button is as wide as its label and padding, wherever it sits and at any viewport width.** One
+  stretched to its row or container — a full-width class, a flex or grid child left to grow, a block
+  display — reads as a bar rather than an action and is the defect. The button component keeps its
+  own width in any parent, so no call site sets one, and buttons in a group each keep their own
+  width; where they sit is **Layout And Spacing**'s to say.
 - **A button whose action is running is disabled, marked busy (`aria-busy`), and shows a spinner in
   place of its label at the same width**, so it cannot be pressed twice and nothing beside it moves.
   The label stays in the layout, transparent, holding the width and remaining the accessible name,

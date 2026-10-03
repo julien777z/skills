@@ -264,7 +264,7 @@ function LoginForm() {
           error={errors.password?.message}
         />
       </div>
-      <Button type="submit" className="w-full">Sign In</Button>
+      <Button type="submit">Sign In</Button>
     </form>
   )
 }
