@@ -87,8 +87,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   consumers rather than copying it into a sibling application.
 
 - **A change to a shared mechanism is applied everywhere that mechanism appears, and on every
-  sibling surface, in the same change.** A widget grid, a list row, a dialog shell, an edit-mode chrome, an empty state: when a
-  design or a fix arrives for one page built on it, the other pages built on it are in scope too.
+  sibling surface, in the same change.** A widget grid, a list row, a dialog shell, an edit-mode
+  chrome, an empty state: when a fix arrives for one page built on it, the other pages built on it
+  are in scope too. A correction the user makes to how one page looks or reads stays on that page,
+  as `pre-production`'s **Scope Follows The Defect, Not The Request** says.
   Search for every surface that renders the same component or hook before editing, and every
   sibling surface — the variants of one document, the create and edit of one record, the same
   surface built for two audiences — whether or not it renders that component yet, since siblings
@@ -129,8 +131,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   up".
 - **Never write copy about the product's state that nobody has confirmed.** A page that says a
   feature is unavailable, coming soon or not yet supported, when nobody said so, misinforms the
-  reader; a page whose feature is still being built is built, or its route left out of the
-  navigation, never filled with a guess about the roadmap.
+  reader; the product's state is confirmed with the user before any copy states it.
 - **Never state what the reader takes for granted.** That data is encrypted, stored securely, kept
   private, or handled carefully is assumed of any product in this category; saying it out loud plants
   the doubt it was meant to settle. Mention a property only where the reader has to act on it or
