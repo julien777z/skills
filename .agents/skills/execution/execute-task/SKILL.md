@@ -185,10 +185,9 @@ branch diff on its first push — first the step's `code-simplify` pass above, a
 simplifications directly, then `acceptance-gate`'s diff question with the change's intent
 statement, the increment as its item and the whole branch diff as its originating diff, then the
 pre-push checks below. Fix what they flag, commit the fixes, re-run the acceptance gate once, and
-re-run the checks until they pass. An increment holding only dot-files and dot-directories,
-`.github` aside, skips the simplification pass and the acceptance gate; the checks still run. The
-complete diff still gets the final `code-simplify` pass and `acceptance-gate`'s final acceptance
-question when the pull request leaves draft, under **Completion**.
+re-run the checks until they pass. The complete diff still gets the final `code-simplify` pass
+and `acceptance-gate`'s final acceptance question when the pull request leaves draft, under
+**Completion**.
 
 - **The pre-push checks are the ones CI runs on a pull request, run the way CI runs them.** Read
   the workflow files that trigger on a pull request and run every checking job that can run
@@ -386,5 +385,5 @@ its work finished — and then close the run:
 7. Report the implementation, encountered fixes, simplification passes, validation, the pull
    request's ready state and check results, and any unresolved decision awaiting the user.
 
-A workflow that already takes the pull request through final acceptance and `merge-pr` — a review
-workflow, a guidance change's delivery — runs steps 1–3 as its own, once.
+A workflow that already runs final acceptance runs steps 1–2 as its own; one that already invokes
+`merge-pr` runs step 3 as its own.

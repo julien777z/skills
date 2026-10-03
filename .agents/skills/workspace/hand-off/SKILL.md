@@ -45,7 +45,9 @@ and fix nothing along the way.
    a message that says what state they are in, using a `wip:` prefix when they are incomplete, run
    `execute-task`'s **Pre-Push Gate** on the increment report-only, applying none of its fixes, and
    push to the branch's upstream. Every simplification finding, failing check, and acceptance flag
-   is pushed unfixed and listed under **Unfinished in this change**, the flag quoted. Apply and commit any stash, or name it as lost. Never rewrite
+   is pushed unfixed and listed under **Unfinished in this change**, the flag quoted. Convert a pull
+   request that is ready for review back to draft first — GraphQL `convertPullRequestToDraft` —
+   so the push starts no test jobs. Apply and commit any stash, or name it as lost. Never rewrite
    history or force-push. When a push is refused, report the exact blocker.
 5. **Bring each pull request body up to date** against the full diff from its merge base. Read the
    complete existing body first and keep it a description of the change, as the GitHub rules
@@ -88,7 +90,7 @@ Head `<sha>` on `<branch>` → `<base>`. Checks: <green, or red with the failing
 - Never write a checkpoint file; the pull request and its hand-off comment are the record.
 - Never arm a timer, wake-up, or subscription during the hand-off, including on a pull request the
   hand-off touches.
-- Never merge, close, convert, or re-request review on a pull request.
+- Never merge, close, mark ready, or re-request review on a pull request.
 - Never fabricate a pull request URL, an issue link, or a check state; verify each with a read.
 - Write the comment for the next reader, never in the user's voice.
 
