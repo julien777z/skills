@@ -87,7 +87,9 @@ alwaysApply: true
 
 - Use conventional commit messages when applicable and keep commits atomic and focused.
 - Commit each small coherent step and push it promptly through `execute-task`'s **Pre-Push Gate**,
-  sub-agents included; work only one machine holds is lost with it.
+  sub-agents included, and run a slow verification — a full suite, a browser walkthrough — on the
+  pushed head rather than holding pushes behind it, whoever asked for it first; work only one
+  machine holds is lost with it.
 - Do not commit generated files unless the repository explicitly requires them.
 
 ## Dependency Installation

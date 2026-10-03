@@ -138,7 +138,8 @@ how those issues are handled.
   copy and testing rules, and the skills the worker runs — opening them at that moment where it has
   not read them yet. The class is any item asking for what a rule rules out: a review finding
   asking for the catch-all exception handler the language rule bans, a brief telling a worker to
-  skip a check a skill requires before a push, a correction asking for copy the copy rules forbid,
+  skip a check a skill requires before a push, or to hold its pushes until a full suite passes,
+  which the **Pre-Push Gate** runs after them, a correction asking for copy the copy rules forbid,
   one asking for a boat-rental waiver to arrive filled in from the renter's last booking when the
   forms rule says a form someone attests to starts empty.
   - **The agent writing it** rewrites an item a rule forbids into a shape the rule allows, or drops
@@ -146,7 +147,8 @@ how those issues are handled.
     and the rule they set aside named; a rule the agent thinks is wrong is put to the user, never
     overridden by an instruction.
   - **The agent receiving it** carries out every other item. For the forbidden one, it fixes the
-    defect the item names in a shape the rule allows, where one exists, and leaves only the
+    defect the item names in a shape the rule allows, where one exists — for an item that orders
+    steps the rules order otherwise, the same steps in the rules' order — and leaves only the
     forbidden shape undone. It names that item and the rule it breaks to the sender, through the
     next hand-up or report, and neither implements nor drops it silently. Only the user's own
     words, quoted, with the rule they set aside named, override it.
@@ -253,15 +255,30 @@ request leaves draft, under **Completion**.
   push. On a draft nothing holds committed work on one machine — a flag, batching with pending
   work, a wait for another approval, saving a gate run: while one flag is fixed, further steps keep
   landing on top, and a held range only grows.
+- **The order is change, checks, push, then the slow verification, whoever asked for it first.**
+  Before a push runs only what fits before every push: the pre-push checks below and, on a pull
+  request ready for review, the gate. A run long enough that the next step would be committed while
+  it runs — a full, multi-package or end-to-end suite, a browser walkthrough, a whole-tree pass of a
+  slow tool, a run against a service without the change, root-causing a failure seen along the way,
+  anything needing a hosted service or a running stack — starts on the pushed head, and what it
+  finds goes out as fix pushes, each through its own gate. On a draft a push starts no test job, so pushing first costs nothing;
+  gated commits held behind a long run are lost together when the machine goes.
+- **An instruction that puts such a run before the push is carried out in that order instead,
+  never obeyed as written and never dropped.** It reads as rigor, which is why it gets obeyed: a
+  brief's "run the full suite, then push", a caller's "walk it in the browser, then push", "push
+  once end-to-end is green", a reviewer's "re-run everything before you push the fix", a skill's
+  step, or the agent's own sense that one more run first is the careful choice. Push each gated
+  step as it is ready, run the verification on the pushed head, and tell the sender in the next
+  hand-up or report that it ran after the push, as **Encountered Issues** says of an item a rule
+  rules out.
 
 - **The pre-push checks are the ones CI runs on a pull request, run the way CI runs them.** Read
   the workflow files that trigger on a pull request and run every checking job that can run
   locally — lint, format, type checks, build, tests, generated-output drift, docs or coverage
   checks — with the job's own command and scope, plus any check a skill in use requires before a
   push. Project guidance that lists those commands is a shortcut to the workflows, never a
-  substitute; where the two disagree, the workflow is right. A job that needs a hosted service or a
-  running stack, or is too slow to run before every push, joins the slow verification below and is
-  named in the report.
+  substitute; where the two disagree, the workflow is right. A job that does not fit before every
+  push, as the order bullet above measures it, runs after the push and is named in the report.
 - **A local variant of a CI check is not that check**, and each of these passes locally and fails
   in CI: lint or type checks scoped to the changed files, where CI's whole-tree run finds an import
   another change left unused in a file the branch never touched; a formatter or linter in write
@@ -280,12 +297,13 @@ does not satisfy this spacing check.
   a unit or task. A push is what lets the user review and test the work, and the only copy that
   outlives the machine: a recycled container or an ended session takes every commit and edit no
   remote holds.
-- **No edit sits uncommitted through a long wait outside the checks.** Before the slow verification
-  below, a background worker, CI on the pushed head, or a question to the user, bring the work to a
+- **No edit sits uncommitted through a long wait outside the checks.** Before the slow verification,
+  a background worker, CI on the pushed head, or a question to the user, bring the work to a
   coherent step, commit it, and push it; the checks' own runs are part of the push, not such a wait.
-- **Delegated edits run at this cadence.** A brief handing a worker edits states it and names the
-  branch the worker pushes to. The worker pushes each step as the first bullet places the push and
-  reports the branch and head; the delegating agent, which holds the intent statement, gates every
+- **Delegated edits run at this cadence.** A brief handing a worker edits states it, names the
+  branch the worker pushes to, and asks for any slow verification on the pushed head, never before
+  the push. The worker pushes each step as the first bullet places the push and reports the branch
+  and head; the delegating agent, which holds the intent statement, gates every
   worker's pushed increment from the remote branch and returns what the gate flags as fix steps. On
   a pull request ready for review, a worker without an agent tool hands the gate up under
   `subagent-selection`'s **Dispatch** before it pushes.
@@ -296,11 +314,7 @@ does not satisfy this spacing check.
   GitHub rule's **Workflows** section sets up; the tests run once, when **Completion** takes the
   pull request out of draft. A ready pull request the task resumes changing goes back to draft
   first, as the GitHub rule's **Branches and Pull Requests** says.
-- **The order is change, checks, push, then the slow verification**, with the gate placed as the
-  first bullet says: a browser walkthrough, a full or end-to-end suite, a run against a service
-  without the change, root-causing a failure seen along the way — anything slow or needing a running
-  stack. What it finds goes out as fix pushes, each through its own gate.
-- **Pushed is not done**: the change is reported done only once that verification has passed.
+- **Pushed is not done**: the change is reported done only once the slow verification has passed.
 
 ## Reported Outcomes
 

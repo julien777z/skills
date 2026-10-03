@@ -227,7 +227,7 @@ def create_order(order_fixture, customer_fixture, create_customer):
 - Access these values through the production typed settings object when one exists; otherwise use `os.environ` in test code.
 - For every pull request an agent creates, ensure all test-related CI jobs pass before considering delivery complete; investigate and fix any failures within the pull request's scope.
 
-- Run tests through the repository's test-runner skill, at its full scope, rather than invoking the test framework directly against a hand-picked path. A single suite is for iterating on a failure you are actively fixing, never the run a change is verified against.
+- Run tests through the repository's test-runner skill, at its full scope, rather than invoking the test framework directly against a hand-picked path. A single suite is for iterating on a failure you are actively fixing, never the run a change is verified against. That full-scope run starts on the pushed head, as `execute-task`'s **Pre-Push Gate** orders slow verification, and never holds a push.
 - Choosing which suites to run is not the author's call. Do not skip a suite because it looks unaffected, runs slowly, or needs services started — start them. If a suite genuinely cannot run, name it and say why alongside the result, because a result reported without that caveat claims coverage that was never achieved.
 - Every directory holding tests must be reachable from a runner target, and a test should assert that correspondence. A suite that no target selects is a suite nothing reports on.
 
