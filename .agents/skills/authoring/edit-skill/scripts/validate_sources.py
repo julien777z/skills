@@ -145,7 +145,7 @@ def mirror_in_scratch(python: Path, root: Path, agents_dirname: str) -> SourceCh
         shutil.copytree(root / agents_dirname, Path(scratch) / agents_dirname, symlinks=True)
         commands = ["mirror-providers"]
         if (Path(scratch) / agents_dirname / "external_resources.json").exists():
-            commands.insert(0, "vendor-resources")
+            commands.insert(0, "refresh-external-resources")
 
         for command in commands:
             arguments = [
@@ -158,7 +158,7 @@ def mirror_in_scratch(python: Path, root: Path, agents_dirname: str) -> SourceCh
                 "--agents-dir",
                 agents_dirname,
             ]
-            if command == "vendor-resources":
+            if command == "refresh-external-resources":
                 arguments.append("--dry-run")
             run = subprocess.run(arguments, check=False, capture_output=True, text=True)
             outcome = TOOL_EXIT_OUTCOMES.get(run.returncode, SourceCheckOutcome.UNAVAILABLE)
