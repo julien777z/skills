@@ -187,12 +187,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   Prefer giving that chrome its own row in a flex or grid column, where the browser reserves the
   space; reach for absolute positioning only where the overlap is the intent.
 - **A page takes the content frame of its kind, and every page of that kind takes the same one.**
-  A shell has few frames, each set once in a layout or page component — commonly a centred column
-  for a page that does one focused task, such as a multi-step flow, a single form or a
-  confirmation, and the full frame for a workspace page holding lists, tables, widgets or settings.
-  A page picks the frame its kind uses and never sets its own width, centring or outer padding.
-  Two pages of one kind whose content starts at different distances from the navigation read as
-  two products; pages of different kinds differ on purpose.
+  The product's page layout has few frames, each set once in a layout component — commonly a
+  centred column for a page that does one focused task, such as a multi-step flow, a single form or
+  a confirmation, and the full frame for a workspace page holding lists, tables, widgets or
+  settings. A page never sets its own width, centring or outer padding. Two pages of one kind whose
+  content starts at different distances from the navigation read as two products; pages of
+  different kinds differ on purpose.
 - **A surface is as tall as its content, never taller.** A card, panel, section or widget showing a
   large empty area — below its content, or between the content and the control that acts on it —
   reads as unfinished. Content flows from the top and each control sits directly after what it acts
@@ -272,12 +272,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   section carries what the reader needs next — the record the state concerns, its status, the action
   that moves on, in that section's footer. A confirmation also thanks the reader, marks the success,
   and says what they now have and what happens next — never a neutral status panel, nor a
-  placeholder for something the reader does not have yet such as "appears here" — and ends on one
+  placeholder for something the reader does not have yet such as "appears here". It ends on one
   action, which returns the reader to the page they left to start the flow, or to their home when
-  that is unknown. A label and a
-  button centred in an otherwise empty page is the defect, and so is a small card left under chrome
-  that no longer applies, such as tabs or a form header. A notice that the page is for somebody
-  else, and a status page standing in a finished flow's place, are deleted as the bullets above say.
+  that is unknown. A label and a button centred in an otherwise empty page is the defect, and so is
+  a small card left under chrome that no longer applies, such as tabs or a form header. A notice
+  that the page is for somebody else, and a status page standing in a finished flow's place, are
+  deleted as the bullets above say.
 - **A banner appears only when the reader has something to do, something is wrong, or something
   they submitted is waiting on a decision** — terms to accept, a verification to finish, a load
   that failed, a blocking state to resolve, a submission under review, worded from the reader's
