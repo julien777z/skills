@@ -278,7 +278,8 @@ outcome, because silence reads as the guidance having been fixed.
       behavior** asks for and whether every mechanism it adds earns its place. Treat a named tool,
       surface, or workaround in generic guidance as a finding unless the skill's contract depends on
       it; the incident's route must not narrow the durable decision boundary. A flag gets the one
-      rewrite that skill allows, and the rewrite goes to a fresh gate. A second flag ends the rewriting: fix it
+      rewrite that skill allows, pushed as its own increment whose **Pre-Push Gate** verdict is the
+      fresh gate. A second flag ends the rewriting: fix it
       when the flag names a defect in the guidance, merge as it stands when it names a preference
       the rewrite already answered, or drop the item when neither holds, and state which and why in
       the report, as that skill's **Bounds** leave it to the caller for a change whose merge needs

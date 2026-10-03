@@ -119,7 +119,10 @@ The repository's testing rule and `run-tests` order the suite for ordinary deliv
 end, after the push, over a tree that has stopped changing. An active run suspends that ordering,
 because the tree changes with every diagnosis and the service is down the whole time.
 
-- Before restoration: run only the tests the fix's diff reaches, and only when they finish in minutes.
+- Every fix push still goes through `execute-task`'s **Pre-Push Gate** — simplification and the
+  acceptance gate on the increment — but during recovery its pre-push checks are only the tests the
+  fix's diff reaches, and only when they finish in minutes. The rest of its checks move to the
+  ordinary delivery validation after restoration.
 - A green check run is not a gate on deploying. Deploy the branch and let the checks catch up.
 - Do not run, investigate, or fix lint, formatter, Pyright, or other static-analysis findings during
   recovery. They neither establish nor block restoration, and belong to ordinary delivery work after
