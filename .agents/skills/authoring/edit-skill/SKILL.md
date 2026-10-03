@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. Deliver through simplification, the acceptance gate, and the smoke test before the pull request merges.
+description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. Deliver through simplification, the acceptance gate, and the smoke test before the pull request merges.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 

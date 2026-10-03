@@ -177,6 +177,9 @@ setRecords(records);
 return records;
 ```
 
+- A bootstrap or setup folder holds only its entrypoint at its root, such as `setup/run.sh`; every
+  supporting script, module, or data file it uses goes in `setup/resources/`.
+
 ## Repository guidance
 
 - Reference external code and automation by a maintained version tag when available, or by a
@@ -194,9 +197,10 @@ return records;
 - Sample values follow the same rule: prefer plainly synthetic literals over ones shaped like a
   real identifier from another system's domain.
 
-- Every `.agents/rules/*.md` file states guidance that holds in any repository using that
-  technology. Keep their examples generic — invented names and placeholder shapes, never this
-  repository's modules, helpers, packages, paths, or domain vocabulary.
+- `.agents/global.md` states guidance that holds in every repository, and every `.agents/rules/*.md`
+  file guidance that holds in any repository using its technology. Keep their examples generic —
+  invented names and placeholder shapes, never this repository's modules, helpers, packages, paths,
+  or domain vocabulary, and never the product, tool, or platform whose incident prompted the change.
 - `.agents/project.md` is the home for repository-specific guidance: its base classes, helpers,
   packages, layout, documentation structure, inventories, and generated sections.
 - Repository facts only some work needs — a local stack, test accounts, deployment targets, a

@@ -54,7 +54,7 @@ Read [the multi-place reference](references/studio-workflow.md#multiple-maps-and
 
 ## Test through completion
 
-Read [Studio testing](references/testing.md) before choosing a runner or verification pass. Select the available qualified Studio environment from the project's configuration and the user's instructions. Prefer supported Studio MCP operations for editor inspection, Play orchestration, input, and viewport capture. Apply `agent-lock` before controlling a shared runner. Use an isolated runner for unattended or multiplayer launches that would obstruct the user's desktop; qualify input, capture, rendering, and window isolation separately. The testing reference includes an optional retained Tart/macOS runner and guest viewer procedure for installations that have them.
+Read [Studio testing](references/testing.md) before choosing a runner or verification pass. Select the available qualified Studio environment from the project's configuration and the user's instructions. Prefer supported Studio MCP operations for editor inspection, Play orchestration, input, and viewport capture. Apply `agent-lock` before controlling a shared runner. Use an isolated runner for unattended or multiplayer launches that would obstruct the user's desktop; qualify input, capture, rendering, and window isolation separately. The testing reference includes an optional retained Tart/macOS runner and guest viewer procedure for installations that have them, and a Linux container runner that runs Studio under Wine, signing in by a relayed Quick Sign-in code where Roblox offers it.
 
 The optional [VirtualInput helper](scripts/virtual_input.luau) converts UI coordinates across safe insets; inject it only into temporary Studio test fixtures.
 
