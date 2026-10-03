@@ -2,6 +2,7 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+INSTALLER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly SKILLS_REMOTE='https://github.com/julien777z/skills.git'
 reexecuted=0
 
@@ -390,4 +391,8 @@ if [ "$found_root" -eq 0 ]; then
   echo "No user-level agent root found (looked for .claude, .codex, .cursor); nothing linked."
 else
   echo "Installed skills from $REPO_ROOT"
+fi
+
+if [ "${CLOUD_HOME:-}" = /home/claude ]; then
+  bash "$INSTALLER_DIR/resources/install_pass_cli.sh"
 fi
