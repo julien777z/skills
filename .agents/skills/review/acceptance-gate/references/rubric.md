@@ -207,9 +207,8 @@ sibling paths lack. An added check is never accepted as a security gain on its f
    disposition: consolidated, replaced, adopted, or retained behind an actual responsibility or
    dependency boundary. **Adopted** is the incoming implementation judged the better of the two, with
    the change's own shape dropped for it; the change is not privileged because it is the caller's. A
-   retained name, filename, or origin in the base proves no boundary. Distinguish older ownership gaps
-   found in surrounding code from incoming-base findings; both keep their real origin, and both bind
-   the caller alike — the origin is reported, never a reason to leave the finding unfixed.
+   retained name, filename, or origin in the base proves no boundary. Older ownership gaps found in
+   surrounding code bind the caller exactly as incoming-base findings do.
 - **Comparison.** Where the base answered a question the change also answered, the verdict names which
    implementation was judged better and the evidence: which leaves fewer mechanisms for one concern,
    which removes duplication the other invites, which failure modes each has already produced in this

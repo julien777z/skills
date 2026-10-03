@@ -115,12 +115,12 @@ how those issues are handled.
   brief; where history would help write the fix — a lost commit to restore, the change that broke
   it — read it from version control while fixing. Origin decides one thing in this guidance: whether
   an authorized merge waits on a failing check, under the GitHub rule's **Merge Authorization**. That
-  triage stays with checks and never reaches a defect seen in the product.
+  decides only when the merge happens; the failing check is still an encountered issue, fixed under
+  `pre-production`'s red-CI rule.
 - What puts a **new** issue in that path is an act the work performed: a file it opened, a command
   it ran, a check it read, a review it received, and anything it looked at — a screenshot or
   recording, its own or a worker's, a walk through the product, a log, a report. A defect seen there
-  — a value shown altered or lost, data in the wrong place, a broken layout, an error — is found
-  exactly as a failing test is. How far the fix then reaches is a different question, and
+  is found exactly as a failing test is. How far the fix then reaches is a different question, and
   `pre-production`'s **Scope Follows The Defect, Not The Request** answers it.
 - Never reject a fix solely because it is described as high risk. Assess its expected net effect,
   concrete failure modes, and available validation instead of treating the label as a stop rule.
@@ -240,8 +240,8 @@ does not satisfy this spacing check.
   pull request out of draft. A ready pull request the task resumes changing goes back to draft
   first, as the GitHub rule's **Branches and Pull Requests** says.
 - **The order is change, gate, push, then the slow verification**: a browser walkthrough, a full or
-  end-to-end suite, a run against a service without the change, root-causing a failure the change
-  did not cause — anything slow or needing a running stack. What it finds goes out as fix pushes,
+  end-to-end suite, a run against a service without the change, root-causing a failure seen along
+  the way — anything slow or needing a running stack. What it finds goes out as fix pushes,
   each through its own gate.
 - **Pushed is not done**: the change is reported done only once that verification has passed.
 - **Never hold a gated commit** to batch it with pending work, to wait for another approval, or to

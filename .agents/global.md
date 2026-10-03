@@ -36,7 +36,7 @@ alwaysApply: true
   table or summary before any detail. A path alone names nothing a user in a cloud or remote session
   can reach. The parent sends what a subagent produced. Open every
   file, image and recording before sending or presenting it, whoever produced it, and check that it
-  shows what the message says it does; a defect it shows besides is fixed, not reported, as
+  shows what the message says it does; a defect it shows besides is fixed rather than offered, as
   `execute-task`'s **Encountered Issues** says. Where the harness cannot send files, say so and put
   what fits inline.
 - **A capture of a change reaches the user while the work is still running.** A screenshot, a
