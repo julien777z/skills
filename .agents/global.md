@@ -213,7 +213,7 @@ return records;
 - **Every document holds only what its reader needs for its purpose.** A README, project guidance, a
   skill, a rule, a design document, a pull request description, a code comment: each has one reader
   and one job, and content goes to the document whose reader acts on it. Being nearby, or already
-  covering the area, is no reason to add to a document; an operational procedure in a README, an
+  covering the area, is no reason to add to a document; an operator's runbook in a README, an
   incident timeline in a skill, and a design specification in a code comment are each content in the
   wrong document. A change adds to a document only what alters that document's reader's work.
 - Document current behavior only. Never describe what a symbol used to do, what was removed,
