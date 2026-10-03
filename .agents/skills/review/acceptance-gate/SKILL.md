@@ -43,6 +43,12 @@ earlier question about the same item. It receives four things and nothing else:
    record;
 4. exactly one question from the list below.
 
+**The gate has no shell, so every diff reaches it as content, never as a reference.** The caller
+pastes the originating diff and a diff item into the prompt, or writes each to a file the prompt
+names, with deletions intact; a commit range, a branch name, or a `git` command leaves the gate
+judging a working tree that other edits may have moved, or nothing at all. Dispatch it on the
+host's largest model, named explicitly.
+
 **Its first act on any diff is five greps.** Before reading the diff for anything else, grep its added lines for five shapes and list
 every hit as a finding ahead of all others, with the remedy the rubric names:
 
@@ -111,7 +117,7 @@ under the GitHub rules on branch ownership, and its resolved result is theirs to
    Supply both, the originating change with its intent history, and the resolved result. If the
    previous base was not recorded, reconstruct it from commit parents or reflog; do not substitute
    the current merge base and silently review an empty range.
-2. Give an independent read-only gate, on the host's largest model, the intent statement, originating diff, and an item containing
+2. Give an independent read-only gate the intent statement, originating diff, and an item containing
    the previous-to-incorporated-base diff plus the resolved tree and correction diff. Inspect cleanly
    merged code and relevant surrounding implementations as well as conflict resolutions. Exclude
    landed immutable migration revisions; their repository-owned migration procedure still applies.
