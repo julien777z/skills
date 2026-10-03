@@ -222,11 +222,26 @@ return records;
 - Environment configuration that tunes a tool — retry counts, timeouts, cache locations, path entries — belongs in the step that installs or runs that tool, not in a step of its own. A step whose whole body writes to `$GITHUB_ENV` is named for a concern rather than an action, and the reader has to look elsewhere to find out which later step it affects. Write those exports at the end of the owning step so the setting and its consumer stay together.
 - Add an explanatory comment when an edge case requires an explicit version override.
 
+- **Pull-request test jobs skip draft pull requests and run once one is marked ready for review**,
+  so the pushes a draft takes while work is in flight start no test runs. The trigger's `types` add
+  `ready_for_review` to `opened`, `synchronize`, and `reopened`, and each test job carries
+  `if: github.event.pull_request.draft == false`. When a repository's pull-request test jobs still
+  run on drafts, add this once, as a permanent workflow change in that repository's source pull
+  request; never add it and revert it within a session. Cheaper non-test checks, such as lint, may
+  keep running on drafts. This bounds what drafts cost and is never a way past a failing test: no
+  test is skipped, disabled, or quarantined to reach green.
+
 ## Branches and Pull Requests
 
 - When the user asks which pull requests are open, use `list-prs` to list only currently open pull requests created during this session, including drafts. Include pre-existing pull requests only when the user explicitly asks for a broader scope.
 - Record every pull request with `session-ledger` immediately after the hosting service returns its canonical URL. A session-scoped pull-request lookup reads that ledger and verifies each recorded URL remotely; never reconstruct it from the current checkout, a branch name, a transcript, or a broad hosting-service search.
 
+- **Open every pull request as a draft and keep it draft while work continues.** It leaves draft
+  once, when the work is finished, through `execute-task`'s **Completion** or a workflow that
+  merges it; never mark one ready early to start its tests. Work that resumes changing a pull
+  request already ready for review converts it back to draft before its first push — GraphQL
+  `convertPullRequestToDraft`, which REST does not offer — and **Completion** readies it again; a
+  skill driving a ready pull request's checks, such as `merge-pr` or `ci-watch`, keeps it ready.
 - Keep pull requests focused and give them descriptive titles and descriptions; request appropriate reviewers when the repository workflow requires them.
 - A pull request description covers the changes in that pull request and nothing else. Leave out alternatives considered and rejected, work deferred to a later change, and the reasoning behind not doing something.
 - Treat each repository as an independent context. Write PR titles, descriptions, review comments, and issue comments using only the target repository's domain, contracts, changes, and validation. Do not import another repository's product names, domain knowledge, implementation details, or coordination history; do not name or link its PRs or post cross-repository coordination comments. Keep combined status and coordination in user chat.
@@ -270,6 +285,8 @@ return records;
 ## Commits
 
 - Use conventional commit messages when applicable and keep commits atomic and focused.
+- Commit each small coherent step and push it promptly through `execute-task`'s **Pre-Push Gate**,
+  sub-agents included; work only one machine holds is lost with it.
 - Do not commit generated files unless the repository explicitly requires them.
 
 ## Dependency Installation
