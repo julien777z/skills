@@ -112,6 +112,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   is a "check" rather than a "cheque", a colour is a "color", and a person "enrolls" rather than
   "enrols". A reader meeting the other spelling reads it as a mistake, and a product that uses both
   reads as two products.
+- **Headings, labels, buttons, tabs and menu items share one capitalization across the product**,
+  sentence case unless the product has settled on another: "Save changes", "Linked accounts",
+  "Two-factor authentication". One title-case heading or button among sentence-case siblings is the
+  defect, however it arrived; a proper noun keeps its own capitals.
 
 - **Write labels, descriptions and hints for someone who already trusts the product.** Copy that
   warns the reader about their own ordinary action reads as suspicion. A person submitting a record on
