@@ -211,8 +211,7 @@ does not satisfy this spacing check.
   function and its callers updated, a test brought to pass, one finding fixed — never at the end of
   a unit or task. A push is what lets the user review and test the work, and the only copy that
   outlives the machine: a recycled container or an ended session takes every commit and edit no
-  remote holds. Hours of work, a run of unpushed commits, or edits left uncommitted through a long
-  wait are the failure this prevents.
+  remote holds.
 - **No edit sits uncommitted through a long wait.** Before a full suite, a background agent, CI, a
   build, or a question to the user, bring the work to a coherent step, commit it, and push it.
 - **Delegated edits run at this cadence.** A brief handing a worker edits states it and names the
@@ -224,7 +223,8 @@ does not satisfy this spacing check.
   each through its own gate.
 - **Pushed is not done**: the change is reported done only once that verification has passed.
 - **Never hold a gated commit** to batch it with pending work, to wait for another approval, or to
-  save a gate run. A second gate over a small later push is cheap; hours of unpushed work are not.
+  save a gate run. A second gate over a small later push is cheap; hours of work or a run of
+  commits held on one machine are not.
 
 ## Reported Outcomes
 
