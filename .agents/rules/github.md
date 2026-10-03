@@ -19,9 +19,9 @@ alwaysApply: true
 - Add an explanatory comment when an edge case requires an explicit version override.
 - **A job that runs under a GitHub environment reads each secret and variable by one plain name**,
   and the environment supplies its value for that stage: `secrets.FEED_URL`, never
-  `FEED_URL_STAGING` and `FEED_URL_PRODUCTION` selected by an expression on an input. A job
-  selecting between such names moves under `environment:` and reads the plain name, as
-  `pre-production`'s configuration rule says.
+  `FEED_URL_STAGING` and `FEED_URL_PRODUCTION` selected by an expression on an input. A job that
+  selects between such names is a defect, never a pattern to copy: it moves under `environment:`
+  and reads the plain name.
 
 - **Pull-request test jobs skip draft pull requests and run once one is marked ready for review**,
   so the pushes a draft takes while work is in flight start no test runs. The trigger's `types` add

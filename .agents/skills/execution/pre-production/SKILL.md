@@ -92,9 +92,7 @@ also not a reason to stop at the first file, and the section below governs how f
   a value newly shown to or withheld from someone — that is the user's decision, and the way to put
   it to them is to state it plainly and carry on with the work that does not depend on the answer.
   A shape change to an owned contract is not one of those: it is made, with every consumer, and
-  stated in the pull request. Neither is what a change owes the records already stored, such as
-  whether existing rows are reset, reopened or migrated onto a new rule: **Required Data** sends
-  that to the repository's project guidance, which answers it.
+  stated in the pull request.
 - **Never quietly narrow the work to avoid the conversation.** Choosing the option that changes nothing
   is choosing the sloppier result on the user's behalf while hiding that a choice existed. Silence
   reads as "there was no decision to make".
@@ -118,12 +116,6 @@ also not a reason to stop at the first file, and the section below governs how f
 - Treat configuration inputs as owned contracts. Replace a stale deployed value at the existing
   setting and its deployment owner; do not add another file, environment key, or fallback path to
   override it.
-- **A value that differs by environment has one name, and whatever already scopes values per
-  environment supplies it** — an environment's secrets, a per-environment config file, a deployment
-  registry. Never a second name per environment, nor an expression or branch choosing between
-  names, such as `FEED_URL_STAGING` beside `FEED_URL_PRODUCTION` picked by `env == "production"`.
-  Before adding a value, read how its siblings are scoped and supplied; a sibling selecting between
-  per-environment names is a defect, moved onto the one name.
 - Legitimate production resilience is not transitional fallback code. Keep the error handling,
   browser support, empty states, and provider-failure behavior the released product needs.
 - Prefer a deliberate break to an owned API, wire, schema, payload, or stored shape when it

@@ -86,7 +86,8 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 - **An environment refusal is a route to find, not a blocker to report.** A repository missing from
   the session is attached or cloned as a writable checkout; a host the environment refuses is reached
   through a path it does serve, and a tool that took the refused path is fixed to take the served
-  one. Report a blocker only once every served path has been tried and has failed.
+  one. Report a blocker only once every served path has been tried and has failed. A command a
+  permission check refuses falls under the next bullet instead, even when it targets a host.
 - **A permission check is not a route to find: what it refuses is not attempted again, and the
   decision never becomes the user's.** Use the owner's own routine tool from the start — a package
   manager's cache-clean rather than a raw delete of its cache directory — because that is the
@@ -94,9 +95,9 @@ Run every change the same way, whether a plan preceded it or the user asked for 
   whether a rule the user set or an automated safety check, that outcome is not attempted again by
   any other command, tool or wording, and every other piece of work carries on. Report the refusal
   once, plainly, as a permission the user can grant: what was refused, and that it runs once
-  allowed — "The permission check blocked `<command>`; everything else is done." Whether the action
-  is wanted was settled by the guidance before the check ran, so the report never asks it or offers
-  options: "Delete X? Yes or no" is the defect.
+  allowed — "The permission check blocked `<command>`; it runs once you allow it, and everything
+  else is done." Whether the action is wanted was settled by the guidance before the check ran, so
+  the report never asks it or offers options: "Delete X? Yes or no" is the defect.
 
 ## Product Constraints
 
@@ -107,14 +108,13 @@ contract or stored value.
 
 Before each edit, read the shared and repository rules governing every surface it reaches — its
 language, framework and package, and the kind of thing it changes, such as a form, a query, a test
-or interface copy — and nearby analogous files. Where those files disagree, the one departing from
-the rest, or from the mechanism that owns the concern, is an encountered issue to fix, never the
-pattern to copy. That holds at every point new instructions arrive, not only at the task's start:
-a correction, a fix step or a resumed brief that sends the work to a surface whose rules the run has
-not read has them read before it is acted on, and having worked in the same language or package
-earlier in the run is not having read them. Match the analogous files' code grouping and spacing in
-every new or substantially edited file; inspect the complete result beside those siblings before
-delivery. A formatter passing is not a substitute for that comparison.
+or interface copy — and nearby analogous files. That holds at every point new instructions arrive,
+not only at the task's start: a correction, a fix step or a resumed brief that sends the work to a
+surface whose rules the run has not read has them read before it is acted on, and having worked in
+the same language or package earlier in the run is not having read them. Match the analogous
+files' code grouping and spacing in every new or substantially edited file; inspect the complete
+result beside those siblings before delivery. A formatter passing is not a substitute for that
+comparison.
 
 ## Encountered Issues
 
@@ -139,8 +139,7 @@ how those issues are handled.
   asking for the catch-all exception handler the language rule bans, a brief telling a worker to
   skip a check a skill requires before a push, a correction asking for copy the copy rules forbid,
   one asking for a boat-rental waiver to arrive filled in from the renter's last booking when the
-  forms rule says a form someone attests to starts empty, or a brief copying the one sibling that
-  names a setting twice, once per environment.
+  forms rule says a form someone attests to starts empty.
   - **The agent writing it** rewrites an item a rule forbids into a shape the rule allows, or drops
     it where none exists. One the user asked for in their own words goes out with those words quoted
     and the rule they set aside named; a rule the agent thinks is wrong is put to the user, never
