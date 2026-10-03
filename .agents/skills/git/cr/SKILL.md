@@ -211,8 +211,8 @@ launching another lens or cohort.
 
 ## Incorporating The Base
 
-Run `merge-conflict` for every base update in this run. Its comparison and its
-`acceptance-gate` verdict apply before pushing the resolved result.
+Run `merge-conflict` for every base update in this run; it places its comparison and its
+`acceptance-gate` verdict.
 
 Apply required refactors in this pull request and invalidate affected review receipts under
 **Review Continuity**. Say which incoming behavior was reconciled with the change's intent in the

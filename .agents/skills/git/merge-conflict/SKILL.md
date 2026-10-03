@@ -1,6 +1,6 @@
 ---
 name: merge-conflict
-description: Incorporate the base branch into a branch — a merge, a rebase, a pull, a branch update, or a conflict Git or the hosting service reports — by comparing what each side did and keeping the better answer, with the resolved result gated before it is pushed. Use whenever the base is brought into a branch, whether or not Git reports a conflict, whenever a pull request is un-mergeable, and whenever reading a push back shows the base moved.
+description: Incorporate the base branch into a branch — a merge, a rebase, a pull, a branch update, or a conflict Git or the hosting service reports — by comparing what each side did and keeping the better answer, with the resolved result gated where `execute-task`'s Pre-Push Gate places a gate. Use whenever the base is brought into a branch, whether or not Git reports a conflict, whenever a pull request is un-mergeable, and whenever reading a push back shows the base moved.
 short_description: 'Bring the base branch into a work branch, resolve conflicts, and validate the result.'
 ---
 
@@ -12,8 +12,7 @@ answers to one question may now sit in one tree.
 
 ## Dependencies
 
-- `acceptance-gate` — its **Base incorporation** procedure judges the resolved result before it is
-  pushed.
+- `acceptance-gate` — its **Base incorporation** procedure judges the resolved result.
 - `pre-production` — apply the target-contract policy to every collision and use it to resolve
   design ties.
 
@@ -68,7 +67,9 @@ answers to one question may now sit in one tree.
 9. **Gate it.** Run `acceptance-gate`'s **Base incorporation** procedure with the previous base, the
    incorporated base, the originating change with its intent, and the resolved result; that
    procedure states what a flag obliges and what its verdict does not grant.
-10. **Push only after the verdict**, then re-query mergeability. Where the choice at step 4 is close
+10. **Push the resolved result once step 7's checks pass**, with step 9's gate placed as
+    `execute-task`'s **Pre-Push Gate** places it for the pull request's state, then re-query
+    mergeability. Where the choice at step 4 is close
     and changes an interface others build on, put it to the user with a recommendation, as
     `pre-production`'s **Trade-Offs Are Surfaced, Never Enforced** directs, rather than settling it
     silently; block only when a safe resolution needs an unauthorized product decision, or a change

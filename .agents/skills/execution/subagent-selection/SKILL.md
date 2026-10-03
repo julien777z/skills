@@ -57,11 +57,13 @@ context and returns its verdict into the step waiting on it; nothing else does b
 - **A worker whose host gives it no agent tool hands the step up.** It writes the complete
   assignment — the inputs, the question, the reading list, the output shape — to a file, asks the
   agent that delegated to it to run that file as a subagent at the chosen tier, and waits for the
-  verdict before going past the step. A worker whose only channel to that agent is its final
-  message asks by returning: it ends its turn with the file path and the request, and resumes when
-  the verdict comes back. The delegating agent runs it and returns the verdict unedited; when the
-  finished worker cannot be resumed, the delegating agent carries out what the verdict releases,
-  such as pushing an accepted increment, itself. With no
+  verdict before going past the step. A gate over a pushed increment is not such a step: the
+  delegating agent reads the increment from the branch and head the worker reports, as
+  `execute-task`'s **Pre-Push Gate** says, and the worker carries on. A worker whose only channel to
+  that agent is its final message asks by returning: it ends its turn with the file path and the
+  request, and resumes when the verdict comes back. The delegating agent runs it and returns the verdict unedited; when the
+  finished worker cannot be resumed, the delegating agent carries out what the verdict calls for,
+  such as the fix steps a flag names, itself. With no
   delegating agent to ask, the step is reported as not run, and whatever it gates stays gated.
 - **A worker that ends before its work is done is replaced, never reported as a question.** A
   crash, a lost session or a harness stop, including the stop a user's interruption of the
