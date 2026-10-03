@@ -38,6 +38,15 @@ alwaysApply: true
   file, image and recording before sending or presenting it, whoever produced it, and check that it
   shows what the message says it does. Where the harness cannot send files, say so and put what fits
   inline.
+- **A capture reaches the user while the work it shows is still running.** A screenshot, a
+  recording, or a generated image goes out as soon as the agent that made it has opened it — at a
+  screen walked, a defect reproduced or fixed, a design rendered — never held for the final report,
+  where it arrives in a pile the user can no longer follow. An agent with no file-sending tool hands
+  each capture to the agent that delegated to it as it is made, through any mid-run channel the host
+  gives it to that agent, and that agent opens and forwards each one on arrival; a worker whose only
+  channel is its final message returns at each such point with the captures made since, and is
+  resumed. A brief that asks a worker for captures asks for them this way, never as paths in its
+  final report.
 - A delegated worker's report of an outcome — tests pass, pushed, merged, deployed, fixed — is a
   claim. Check it at its source of truth before relaying it or building on it, and tell the user
   what was read, not what was reported; `execute-task`'s **Reported Outcomes** holds the procedure.
