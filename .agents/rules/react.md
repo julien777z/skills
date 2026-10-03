@@ -72,6 +72,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 ## Shared Surfaces
 
+- **Verify shared controls in the rendered surface at every supported responsive mode.** Check
+  each visible control's purpose, count, accessibility and behavior, including the computed styles
+  that make alternative controls mutually exclusive. A DOM assertion or a capture of one intended
+  change does not establish that the surrounding controls work; inspect the whole changed surface
+  before accepting it, and fix duplicated or incorrectly visible controls at their shared owner.
+
 - **One shared page section owns initial loading and the content it reveals.** Keep its single
   noninteractive skeleton visible until every request needed for the initially visible heading,
   counts, controls and content resolves. Nested loaders do not reveal successive pieces of that
