@@ -210,7 +210,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   one-line description — never as tabs or a switcher inside it. A field the form itself submits,
   such as a type selector, is part of that form and stays inside.
 - **A multi-step flow's footer puts "Back", on every step that has one, at its start and the
-  forward action at its end, apart, and labels them by position, never by the step's content:** "Next" on every step before the last
+  forward action at its end, apart; a footer holding only the forward action places it at the start,
+  as no control sits alone at the far edge of an empty footer. It labels them by position, never by
+  the step's content:** "Next" on every step before the last
   and "Submit" on the last, so the control that goes back never sits beside the one that commits.
   "Save address", "Continue", "Save and continue" or "Create profile" make each step's control look
   like a different action, and the step's heading already says what it holds. This holds for every
