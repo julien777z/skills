@@ -187,7 +187,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   it.** An address the viewer's role, workspace, plan or permissions never offer them redirects to
   the viewer's home. So does a multi-step flow the reader has finished — a verification, a setup,
   an onboarding — which leaves the navigation while the reader still holds its address; the
-  completion shows no banner where the reader lands, a toast at most. A screen or
+  completion shows no banner where the reader lands, a toast at most. While what the flow submitted
+  waits on someone else's decision — a review, an approval — the product works as usual and a
+  banner says it is pending until the decision lands; a status page standing in the flow's place is
+  the defect. A screen or
   empty state telling the viewer the page belongs to somebody else — "this page is for …", "switch
   to … to use it", "you don't have access" — is dead code wherever it sits, in a page, a layout or a
   gate: the check becomes the redirect and the screen is deleted, never restyled, moved into a
@@ -195,7 +198,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Inside a page, offer only what applies to the reader.** A choice, a document, a field or a
   status row the reader can never use — the other region's version of a document, the other account
   type's settings — is left out, decided by the same rule that decides which one applies, never
-  listed beside it.
+  listed beside it. What is left out is the field, never the step or section around it: a step
+  stays for every reader who still has fields in it to answer.
 - **A page's content offers one control per destination or action** — a button, a link, a menu item,
   an icon or a clickable row; the app's own navigation is not counted against it. Two that open the
   same form or page — a checklist step's button or linked label beside a quick link, a row that
@@ -232,8 +236,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   that no longer applies. A form or list long enough to fill the page keeps its card. The message
   reports on the reader's own work; a notice that the page is for somebody else is not one, and
   redirects as the navigation bullet above says.
-- **A banner appears only when the reader has something to do or something is wrong** — terms to
-  accept, a verification to finish, a load that failed, a blocking state to resolve. A success or
+- **A banner appears only when the reader has something to do, something is wrong, or something
+  they submitted is waiting on a decision** — terms to accept, a verification to finish, a load
+  that failed, a blocking state to resolve, a submission under review. A success or
   completed state shows none, and a toast at most when the reader's own action just caused it. A
   dismissible "approved" or "done" banner, and whatever stores its dismissal, is the defect: delete
   both.
@@ -289,6 +294,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 - Prefix with `handle`: `handleClick`, `handleSubmit`
 - Use `useCallback` for handlers passed to memoized children
+- **A button reads as a button at rest.** Every variant has a filled surface, or a border and
+  label with enough contrast against what it sits on to be seen at a glance, and a hover state;
+  one that reads as text or a faint outline beside an input is the defect. The fix is the variant
+  in the button component, product-wide, never a class at one call site.
 - **A button whose action is running is disabled, marked busy (`aria-busy`), and shows a spinner in
   place of its label at the same width**, so it cannot be pressed twice and nothing beside it moves.
   The label stays in the layout, transparent, holding the width and remaining the accessible name,
