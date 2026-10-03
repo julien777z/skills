@@ -53,6 +53,16 @@ a code change is tested: against the case that motivated it, with the change and
    exploration the scenario could have pointed at. Beside the triggering case, build a second
    scenario on a different member of the same class, so the result shows the edit's breadth and
    not only its one instance.
+   **Then build a third on the likeliest loophole**: a route by which a reader follows the edited
+   text and still commits the miss. Look for it in two places. One is an escape the wording leaves
+   open — asking instead of acting, offering the work as a choice, deferring it, calling it out of
+   scope, reporting it rather than doing it. The other is guidance the same session also loads that
+   points the other way — a global rule, an output-style skill, a caller or callee of the edited
+   skill, an example that still shows the old behaviour; search those files for the miss's own words
+   and for their opposite, and put the file that opens the route in both runs' reading lists. An
+   edit that gives the reader something new to do or look at opens a route of its own: test what
+   the reader does when that thing turns up something wrong — a capture the edit says to open
+   showing a defect, a check it adds failing, a step it adds that cannot complete.
 3. **Save both texts beside it:** the edited skill file and the original from the freshly fetched
    default branch. Reviewers read one or the other by path; nothing else about their prompt differs.
 4. **Write the pass criteria before launching anything.** Two to four statements, each answerable
@@ -81,6 +91,8 @@ a code change is tested: against the case that motivated it, with the change and
      The report shows the behaviour in words the criterion did not search for: rephrase the
      criterion to that behaviour. A wording change reruns every edited run that missed, together; a
      scenario change reruns every run, controls included; a changed criterion rescores every report.
+   - **An edited run that takes the loophole** is fixed in the file that opened it, the adjacent
+     guidance as much as the edited skill, and that file joins the change.
    - **No control misses** means the scenario has not rebuilt the miss. Sharpen it until the
      original text misses — for an edit that broadens a rule, build it on a member of the class the
      original never named — and rerun every run.

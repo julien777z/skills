@@ -1,6 +1,6 @@
 ---
 name: plan-change
-description: Present plans for explicit approval and carry approved plans to their last step. Use whenever an agent presents a plan, resumes after a plan timeout or missing response, or implements an approved plan.
+description: Present plans for explicit approval and carry approved plans to their last step. Use whenever an agent presents a plan, resumes after a plan timeout or missing response, or implements an approved plan. Never for an edit to a skill, rule, or agent definition, which edit-skill delivers without a plan.
 short_description: 'Present plans for explicit approval and carry approved plans to their last step.'
 ---
 
@@ -8,6 +8,11 @@ short_description: 'Present plans for explicit approval and carry approved plans
 
 Keep plan approval explicit, settle ownership before implementation, and run an approved plan to
 its end.
+
+**An edit to agent guidance — a skill, a rule, an agent definition — takes no plan.**
+`edit-skill` carries it from request to merge without an approval step, whatever would otherwise
+route a change here, a standing preference to plan every change included. A calling skill that
+presents its own plan, such as a doctor's remediation, still does.
 
 ## Dependencies
 
