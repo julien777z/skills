@@ -1,14 +1,16 @@
 ---
 name: proton-pass
-description: Retrieve credentials from Proton Pass with pass-cli. Use every time a task needs to log in to an account, website, service, or tool, or needs a password, API key, token, SSH key, or other secret that the session environment and the repository's project guidance do not already supply, before asking the user for it.
+description: Retrieve credentials from Proton Pass with pass-cli. Use every time a task needs to log in to an account, website, service, or tool, or needs a password, API key, token, SSH key, or other secret that neither the session environment nor the repository supplies, before asking the user for it.
 short_description: 'Retrieve credentials from Proton Pass with pass-cli.'
 ---
 
 # Proton Pass
 
-A credential the session environment already holds, or one the repository's project guidance
-names, such as an injected token or a local test identity, is used from there. Every other account
-credential comes from Proton Pass through `pass-cli`, signed in with the personal access token in
+A credential the session environment already holds, or one the repository supplies, is used from
+there: an injected token, a password file project guidance names, or a helper the repository's
+tooling uses to set or generate a local or development test identity's password. A test identity a
+local stack or dev container creates never comes from Proton Pass. Every other account credential
+comes from Proton Pass through `pass-cli`, signed in with the personal access token in
 `PROTON_PASS_PERSONAL_ACCESS_TOKEN`, before the user is asked. Never ask the user to paste a secret
 into chat.
 
