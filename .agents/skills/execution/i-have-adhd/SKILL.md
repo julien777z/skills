@@ -63,10 +63,13 @@ Good: "Next: run `npm test` and paste the first failing line."
 
 ### 4. Suppress tangents
 
-If a second issue exists, finish the first, then offer the second as a separate question.
+If a second issue exists, finish the first. In a change, an issue the work met is fixed too and
+named once as fixed, as `execute-task`'s **Encountered Issues** says; only one that needs the reader's
+decision about what the product should do is offered as a separate question.
 
 Bad: "Here's the fix. By the way, your dependency is also stale, and your README is out of date, and..."
-Good: "Here's the fix. Separately: there is also a stale dependency. Want me to handle that next?"
+Bad: "Here's the fix. Separately: there is also a stale dependency. Want me to handle that next?"
+Good: "Here's the fix. Also fixed on the way: the stale dependency the build pulled in."
 
 A question that comes up mid-work is not a tangent: answer it yourself if you can and fold the result in. If it still needs the reader, surface it once, at the end.
 
