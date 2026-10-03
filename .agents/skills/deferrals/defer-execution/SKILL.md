@@ -63,11 +63,11 @@ change in flight keeps running while this work happens beside it.
 
 2. **Delegate the work to a subagent** scoped to that worktree, so the parent session's own state
    and working directory stay where they were. Give it the scope, the worktree path, and the
-   instruction to commit there.
+   commit and push cadence `execute-task`'s **Pre-Push Gate** sets for delegated edits.
 
 3. **Validate inside the worktree** with the repository's own checks for what changed.
 
-4. **Push and open a pull request** as ready for review, titled for the work.
+4. **Push and open a pull request** as a draft, titled for the work.
 
 5. **Remove the worktree** when the branch is pushed, and confirm the original working tree is
    unchanged.
@@ -108,7 +108,7 @@ The work is owed once the originating pull request lands.
 
    Never branch from the merged working branch, and never stack the work on top of it.
 
-5. **Push and open a pull request** as ready for review, then report it.
+5. **Push and open a pull request** as a draft, then report it.
 
 ### The authorization outlives the merge
 

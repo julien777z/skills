@@ -187,9 +187,9 @@ prevents completion.
 ## Accept The Complete Diff
 
 Once review is clean, put the complete diff to `acceptance-gate`'s final-acceptance question
-against the intent statement. Fix every flag within the gate's correction bounds, then put the fix
-diff and its relevant surrounding implementation to a fresh gate; a second flag on the doctor's own
-purpose is escalated to the user as a blocker.
+against the intent statement. Fix every flag within the gate's correction bounds and push each fix
+as its own increment, whose `execute-task` **Pre-Push Gate** verdict is the fresh gate; a second
+flag on the doctor's own purpose is escalated to the user as a blocker.
 
 ## Defer Leftovers
 
@@ -219,14 +219,16 @@ on its own pull request in that cadence.
   - Before merging, the batch passes **Run Repository-Native Checks**, **Review The Result**, and
     **Accept The Complete Diff** on its own diff, gated against the run's full intent statement kept
     current with the batches already merged; the batch's entries say only what this diff must
-    complete. It then merges through `merge-pr`, which polls its checks to a terminal state, with
-    the next group implemented locally between polls and nothing pushed to the batch's branch.
+    complete. It then merges through `merge-pr`, which polls its checks to a terminal state. Between
+    polls the next group is committed and pushed, each step through `execute-task`'s **Pre-Push
+    Gate**, to the next batch's branch, stacked on the batch's branch as the GitHub rule's
+    **Branches and Pull Requests** allows; nothing more is pushed to the batch's branch.
   - Required approvals and branch protection are never bypassed. When they are all a batch waits
     on, the batch extends through the next checkpoint the plan names, re-passes these gates on the
     grown head, and re-requests the required review.
-  - After the merge, fetch the default branch, cut the next branch from it (reusing the
-    run's branch name where the environment fixes one), carry the local work onto it, open its pull
-    request, and continue. A merged batch is never the finished run.
+  - After the merge, fetch the default branch, retarget the next batch's branch onto it (reusing
+    the run's branch name where the environment fixes one), open its pull request as a draft, and
+    continue. A merged batch is never the finished run.
   - The last batch's review also confirms that every approved disposition, across all batches,
     landed.
 

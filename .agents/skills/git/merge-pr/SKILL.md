@@ -1,6 +1,6 @@
 ---
 name: merge-pr
-description: Take a reviewed pull request through its exact-head check gate, resolve merge conflicts, and squash-merge it at the gated head, verifying the merge. Use when merging a specific pull request is authorized — the user naming it, or a workflow reaching its merge step, such as a review workflow, a doctor's merged batch, or a guidance change's delivery.
+description: Take a reviewed pull request through its exact-head check gate, resolve merge conflicts, and squash-merge it at the gated head, verifying the merge. Use when merging a specific pull request is authorized — the user naming it, or a workflow reaching its merge step, such as a review workflow, a doctor's merged batch, or a guidance change's delivery — and, with merge withheld, to take a finished draft pull request ready and bring its checks to green.
 short_description: 'Validate and merge an authorized pull request at its reviewed head.'
 ---
 
@@ -35,13 +35,20 @@ each fix's diff judged the way it judged the accepted head before the gate repea
 
 ## Transport
 
-Use GitHub's REST API for every read, check query, ready-for-review transition and merge. Fall back
-to GraphQL for the ready-for-review transition only after REST fails, reporting the failed response.
+Use GitHub's REST API for every read, check query and merge. The ready-for-review transition has no
+REST endpoint — a REST update ignores `draft` and can answer 200 with the pull request still draft —
+so make it through GraphQL `markPullRequestReadyForReview` with the pull request's node id, then
+re-read the pull request over REST and require `draft` to be `false` before reading any check.
 A rate limit is waited out through the host's wait mechanism and retried on the same transport.
 
 ## Check Gate
 
-1. Make a draft pull request ready for review.
+1. **Require a pull request that is ready for review.** Mark a draft ready; the transition starts
+   the test jobs a draft skips. Every check this gate reads comes from a run triggered on the exact
+   head after the pull request left draft: a test job `skipped` on a draft run, which GitHub counts
+   as passing a required check, is no result. A pull request this gate took out of draft has never
+   run its tests, so step 3 reads its hosted test jobs to a terminal result for every affected
+   behavior, whatever local coverage the caller passed.
 2. **Classify the complete pull-request diff.** A non-runtime diff — one that changes no executable
    source, package or dependency definition, test, runtime configuration, CI workflow, generated
    runtime artifact, or other executed-behavior contract — is validated only by the checks its
@@ -71,7 +78,8 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
 6. **A failed check is root-caused and fixed.** Read its annotations and complete log, fix the
    repository input responsible — code, test, configuration or workflow — and commit and push it.
    A failure an external service caused is an encountered issue under `pre-production` and is
-   fixed the same way; never re-run a job to get past a failure. Report a blocker only when the
+   fixed the same way; never re-run a job, and never skip, disable, or quarantine a test or confine
+   its job to drafts, to get past a failure. Report a blocker only when the
    missing coverage needs user input or unavailable credentials, with the check, evidence and
    remediation attempted.
 7. Never stop, restart, reconfigure or claim a local service the calling workflow did not start:

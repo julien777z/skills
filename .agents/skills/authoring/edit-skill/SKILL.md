@@ -232,7 +232,9 @@ outcome, because silence reads as the guidance having been fixed.
       in the repository being edited, or onto a branch from the freshly fetched default branch with
       a new pull request, under the GitHub rule's **Branches and Pull Requests** — never onto a
       source branch, the one checked out included. Commit the `.agents` files, never a provider
-      mirror. None of that waits to be asked: the decision was made when the edit was requested, and
+      mirror, and push each step through `execute-task`'s **Pre-Push Gate** to a draft pull request;
+      steps 3–4 are the complete-diff pass its **Completion** runs, and step 7's `merge-pr` takes
+      the pull request out of draft. None of that waits to be asked: the decision was made when the edit was requested, and
       a pull request left open keeps every later session working from the guidance this change
       replaced. A source fix required by step 3 is source work: it goes onto the session's source
       pull request in its repository under the same rule and merges as that work does.
@@ -276,7 +278,8 @@ outcome, because silence reads as the guidance having been fixed.
       behavior** asks for and whether every mechanism it adds earns its place. Treat a named tool,
       surface, or workaround in generic guidance as a finding unless the skill's contract depends on
       it; the incident's route must not narrow the durable decision boundary. A flag gets the one
-      rewrite that skill allows, and the rewrite goes to a fresh gate. A second flag ends the rewriting: fix it
+      rewrite that skill allows, pushed as its own increment whose **Pre-Push Gate** verdict is the
+      fresh gate. A second flag ends the rewriting: fix it
       when the flag names a defect in the guidance, merge as it stands when it names a preference
       the rewrite already answered, or drop the item when neither holds, and state which and why in
       the report, as that skill's **Bounds** leave it to the caller for a change whose merge needs

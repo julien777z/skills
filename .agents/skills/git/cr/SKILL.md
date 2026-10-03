@@ -160,10 +160,10 @@ Use GitHub's REST API through `gh api` by default. Never call a `gh` subcommand 
 Use REST endpoints for every pull-request operation:
 
 - Find or inspect a PR: `GET /repos/{owner}/{repo}/pulls`, `GET /repos/{owner}/{repo}/pulls/{number}`, and `GET /repos/{owner}/{repo}/pulls/{number}/commits`.
-- Create a ready-for-review PR: `POST /repos/{owner}/{repo}/pulls` with `title`, `head`, `base`, `body`, and `draft=false`.
+- Create a draft PR: `POST /repos/{owner}/{repo}/pulls` with `title`, `head`, `base`, `body`, and `draft=true`.
 - Inspect reviews: the pull-request review endpoints.
 
-Never create a draft pull request. An existing draft pull request remains reviewable: complete the review and fix cycle without waiting for it to become ready. Review-thread resolution state and the `resolveReviewThread` mutation have no REST surface, so read thread state and resolve a thread through `gh api graphql` as well; replies to review comments stay on REST. For every GraphQL call, obtain node IDs through REST, re-read the result through REST, and return to REST for every subsequent operation. Do not use GraphQL for reads or reviews when their REST endpoints work. If a REST or required GraphQL request is rate-limited, report the response, wait until the documented reset through the host's event or wait mechanism, and retry the same transport. Treat the rate limit as a blocker only when the host cannot wait for the reset or the reset does not restore access; never switch transports to evade it.
+Create every pull request as a draft and leave the ready-for-review transition to `merge-pr`, which starts the test jobs a draft skips. A draft pull request is reviewable: complete the review and fix cycle without waiting for it to become ready. Review-thread resolution state, the `resolveReviewThread` mutation, and the `convertPullRequestToDraft` mutation have no REST surface, so read thread state, resolve a thread, and convert a ready pull request back to draft through `gh api graphql` as well; replies to review comments stay on REST. For every GraphQL call, obtain node IDs through REST, re-read the result through REST, and return to REST for every subsequent operation. Do not use GraphQL for reads or reviews when their REST endpoints work. If a REST or required GraphQL request is rate-limited, report the response, wait until the documented reset through the host's event or wait mechanism, and retry the same transport. Treat the rate limit as a blocker only when the host cannot wait for the reset or the reset does not restore access; never switch transports to evade it.
 
 Pass this transport requirement into `/code-review high fix`; it overrides that skill's generic GitHub fallback.
 
@@ -183,7 +183,7 @@ Say plainly in the pull request which fixes review surfaced rather than the orig
 
 A confirmed finding leaves this run in one of two states: fixed, or — only after `acceptance-gate` flagged its fix twice — reverted and recorded, unless the pull request is confined to agent configuration, where `acceptance-gate`'s **Bounds** leave the disposition with this run. The deferral route below is for that case and for work the repository's own rules place outside any single change, never for work that is merely inconvenient, unfamiliar, or larger than expected. A confirmed defect never reaches that route on size or on cost: whatever shape its fix takes, including a schema migration, and however correct its output while it runs too slowly to finish or holds more than anything bounds, it is fixed in this run.
 
-A fix for a finding the change did not introduce goes to `acceptance-gate` before it is committed, as `code-review`'s fix mode states; the change's own findings get no per-fix gate, and final acceptance covers them.
+Each fix is committed and pushed as its own increment, and that increment's `execute-task` **Pre-Push Gate** verdict is its gate, as `code-review`'s fix mode states.
 
 ## Deferred Findings
 
@@ -228,8 +228,8 @@ the next fix is about to change.
 Run the affected targets first, before the **Simplification Gate** opens, selecting them from the
 diff as the testing rules direct. Fix what that run reports and push, so every reviewer this run
 launches reads a tree that already passes and spends its findings on the design rather than on a
-break the suite was going to name anyway. That repair is ordinary work in this pull request; it needs
-no gate and starts no review.
+break the suite was going to name anyway. That repair is ordinary work in this pull request, pushed
+through `execute-task`'s **Pre-Push Gate** like any push; it starts no review.
 
 **Then leave the suite alone until every applicable lens is clean.** The review phases rewrite the
 tree continuously — a simplification fix, a confirmed finding, a thread repair — so a run started
@@ -285,16 +285,16 @@ and verified live result; a default-branch or merged artifact is not test eviden
 authorization, skip deployment and continue review. Never dispatch a workflow or mutate a provider
 to work around this gate.
 
-1. Resolve the current branch and its pull request. When no PR exists, follow `/code-review`'s branch and commit setup rules, then create the PR through REST with `draft=false` and immediately record its returned canonical URL with `session-ledger`. Review an existing draft PR normally. Run **Description Refresh** above before any other phase reads the pull request. Resolve the intent statement as `acceptance-gate` defines it and record the current merge-base SHA; pass the statement and **Pull Request Ownership** rule to every subagent in the run and into `/code-review high fix`. Run **Review Thread Triage**, then the first test pass **Validation Order** requires, then immediately the complete **Simplification Gate** above; no code-review phase starts before all three are clean.
+1. Resolve the current branch and its pull request. When no PR exists, follow `/code-review`'s branch and commit setup rules, then create the PR through REST with `draft=true` and immediately record its returned canonical URL with `session-ledger`. Review an existing draft PR normally. Run **Description Refresh** above before any other phase reads the pull request. Resolve the intent statement as `acceptance-gate` defines it and record the current merge-base SHA; pass the statement and **Pull Request Ownership** rule to every subagent in the run and into `/code-review high fix`. Run **Review Thread Triage**, then the first test pass **Validation Order** requires, then immediately the complete **Simplification Gate** above; no code-review phase starts before all three are clean.
 2. Invoke `/code-review high fix <PR>` for that PR, whether it is draft or ready for review.
 3. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the run continues; see **Deferred Findings**. Stop and report only a finding that can be neither fixed nor recorded.
 4. Classify each correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean. This is the same authorized CR execution, not a new action-skill invocation.
-5. Once the review is clean, put the complete pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement. Fix every flag, then put only the fix diff to a fresh gate; a second flag on the change's own work is a blocker to report to the user, unless the pull request is confined to agent configuration, where `acceptance-gate`'s **Bounds** leave the disposition with this run. The accepted head is the SHA `merge-pr` receives.
+5. Once the review is clean, put the complete pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate** verdict is the fresh gate; a second flag on the change's own work is a blocker to report to the user, unless the pull request is confined to agent configuration, where `acceptance-gate`'s **Bounds** leave the disposition with this run. The accepted head is the SHA `merge-pr` receives.
 6. Run **Description Refresh**'s second pass, then the second test pass **Validation Order** requires. Never stop, restart, reconfigure or claim a local service this run did not start.
 7. Invoke `merge-pr` with:
    - the pull request and the head step 5 accepted;
    - the affected behaviors step 6 covered locally;
    - whether the user withheld merge;
-   - the fix rule for every fix it makes — a check fix, a conflict resolution, a commit someone else pushed: first **Review Continuity** reruns the lenses the fix reopens, then `acceptance-gate`'s diff question judges the fix's diff. A fix counts only once both have passed.
+   - the fix rule for every fix it makes — a check fix, a conflict resolution, a commit someone else pushed: **Review Continuity** reruns the lenses the fix reopens, and the fix is pushed through `execute-task`'s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have passed.
 
    Base updates it performs are **Incorporating The Base** for this run. When it reports the merge, or the exact-head gates complete with merge withheld, give the **Completion Report** above and end the run; when it reports a gate that holds, report that gate.

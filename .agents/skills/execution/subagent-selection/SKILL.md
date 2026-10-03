@@ -59,7 +59,9 @@ context and returns its verdict into the step waiting on it; nothing else does b
   agent that delegated to it to run that file as a subagent at the chosen tier, and waits for the
   verdict before going past the step. A worker whose only channel to that agent is its final
   message asks by returning: it ends its turn with the file path and the request, and resumes when
-  the verdict comes back. The delegating agent runs it and returns the verdict unedited. With no
+  the verdict comes back. The delegating agent runs it and returns the verdict unedited; when the
+  finished worker cannot be resumed, the delegating agent carries out what the verdict releases,
+  such as pushing an accepted increment, itself. With no
   delegating agent to ask, the step is reported as not run, and whatever it gates stays gated.
 
 ## Output
