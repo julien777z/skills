@@ -117,23 +117,15 @@ Verify SSH host keys, the intended guest editor, and the source/place before run
 A Linux host, such as a cloud agent container, can provide the Windows Studio build under Wine on
 an Xvfb display. The environment's setup installs it; a task never installs Studio, Wine, or the
 toolchain. Start Studio through the project's launch command, or run `RobloxStudioBeta.exe` from
-its directory under `wine` with `DISPLAY` set to the Xvfb display.
+its directory under `wine` with `DISPLAY` set to the Xvfb display. A Studio window, its sign-in
+page or start page, in an X screenshot of that display shows the launch succeeded; qualify the rest
+as [Qualify input and capture](#qualify-input-and-capture) describes.
 
-Success is the Studio sign-in page in an X screenshot of that display. The prefix's
-`AppData/Local/Roblox/logs` record login state and the graphics mode Studio chose. Rendering on a
-software GPU is unqualified until a viewport capture shows the expected scene.
-
-Studio's embedded sign-in needs WebView2, which does not run under Wine; the log reports `Embedded
-Web Browser fail to load`. Sign in with Quick Sign-in instead:
-
-- Read the newest `awaitQuickSignIn via polling: code=` line from the Studio log and send that code
-  to the user to enter on a device already signed in to Roblox.
-- Codes expire after about two minutes and Studio logs each replacement, so read the code
-  immediately before sending it.
-- Roblox assigns the login page per installation. When Studio offers only **Login via Browser**,
-  report that the installation has no Quick Sign-in; a fresh Wine prefix draws a new assignment.
-- Confirm sign-in from the log's `Authenticated` line or the Studio start page before relying on
-  the runner.
+Studio's logs are in `"$WINEPREFIX/drive_c/users/$USER/AppData/Local/Roblox/logs"`. When they
+report `Embedded Web Browser fail to load` (WebView2 failed to start under Wine), the embedded
+sign-in is unavailable; sign in by code as [Authentication and user handoff](#authentication-and-user-handoff)
+describes. When Studio offers only **Login via Browser**, Roblox has not given this installation
+Quick Sign-in; report that, since only the environment's setup can provide another installation.
 
 ## Optional Tart guest capabilities
 
@@ -223,6 +215,12 @@ the already-connected viewer and explain the exact remaining step. Do not reques
 or transfer session cookies. Likewise, open the guest's actual Assistant/MCP settings when a concrete
 blocker requires user action. Continue independent work while waiting. After setup, close or minimize
 only the task's viewer so unattended guest windows stay out of the user's way.
+
+Where the user can reach no viewer, relay Quick Sign-in by code. Read the newest
+`awaitQuickSignIn via polling: code=` line from Studio's log immediately before sending it: codes
+expire after about two minutes and Studio logs each replacement. The user enters the code on a
+device already signed in to Roblox. Confirm sign-in from the Studio start page before relying on
+the runner.
 
 ## End of session for a retained VM
 
