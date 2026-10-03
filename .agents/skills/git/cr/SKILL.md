@@ -295,6 +295,6 @@ to work around this gate.
    - the pull request and the head step 5 accepted;
    - the affected behaviors step 6 covered locally;
    - whether the user withheld merge;
-   - the fix rule for every fix it makes — a check fix, a conflict resolution, a commit someone else pushed: first **Review Continuity** reruns the lenses the fix reopens, then `acceptance-gate`'s diff question judges the fix's diff. A fix counts only once both have passed.
+   - the fix rule for every fix it makes — a check fix, a conflict resolution, a commit someone else pushed: **Review Continuity** reruns the lenses the fix reopens, and the fix is pushed through `execute-task`'s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have passed.
 
    Base updates it performs are **Incorporating The Base** for this run. When it reports the merge, or the exact-head gates complete with merge withheld, give the **Completion Report** above and end the run; when it reports a gate that holds, report that gate.

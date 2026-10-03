@@ -1,6 +1,6 @@
 ---
 name: acceptance-gate
-description: Judge an issue, a finding, a proposal, or a diff against the product's state, a change's stated intent, and the repository's quality rubric through a read-only subagent that answers one question with a specific verdict. Use to triage whether work is fixed now, done, deferred, or closed as not worth doing; before recording a deferral; before and after fixing a would-be deferral or resolving a recorded one; after merging or rebasing the base branch into a change; before each push `execute-task`'s Pre-Push Gate gates, over the commits it carries; and once over the complete diff before a pull request merges.
+description: Judge an issue, a finding, a proposal, or a diff against the product's state, a change's stated intent, and the repository's quality rubric through a read-only subagent that answers one question with a specific verdict. Use to triage whether work is fixed now, done, deferred, or closed as not worth doing; before recording a deferral; before and after fixing a would-be deferral or resolving a recorded one; after merging or rebasing the base branch into a change; before each push `execute-task`'s Pre-Push Gate gates, over the commits it carries; and once over the complete diff before a pull request leaves draft or merges.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 

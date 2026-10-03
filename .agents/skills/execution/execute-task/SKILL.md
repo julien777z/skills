@@ -12,7 +12,7 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 
 - `pre-production` — the target-contract policy for every repository and its data obligations.
 - `code-simplify` — simplify each step before its push and the complete diff before delivery.
-- `acceptance-gate` — judge each push's increment, and the complete diff before the pull request merges.
+- `acceptance-gate` — judge each push's increment, and the complete diff before the pull request leaves draft or merges.
 - `generic-push` — keep each repository's publishing metadata independent during multi-repository changes.
 - `merge-conflict` — bring in a conflicting or moved base, found when a push is read back, before other work.
 - `subagent-selection` — the hand-up a worker without an agent tool uses for its push's gate.
@@ -226,7 +226,8 @@ does not satisfy this spacing check.
   report names the branch and head, which **Reported Outcomes** reads on the remote.
 - **Pull requests stay draft while the work runs**, so these pushes start no test jobs, as the
   GitHub rule's **Workflows** section sets up; the tests run once, when **Completion** takes the
-  pull request out of draft.
+  pull request out of draft. A ready pull request the task resumes changing goes back to draft
+  first, as the GitHub rule's **Branches and Pull Requests** says.
 - **The order is change, gate, push, then the slow verification**: a browser walkthrough, a full or
   end-to-end suite, a run against a service without the change, root-causing a failure the change
   did not cause — anything slow or needing a running stack. What it finds goes out as fix pushes,
@@ -374,11 +375,10 @@ its work finished — and then close the run:
 2. Put the complete pull-request diff to `acceptance-gate`'s final-acceptance question with the
    intent statement. Fix what it flags within that skill's **Bounds** and push the fixes through the
    **Pre-Push Gate**.
-3. Invoke `merge-pr` with the accepted head, no behaviors counted as locally covered — so its gate
-   reads the hosted tests for every affected behavior — merge withheld unless **Task Authorization**
-   finds that merge authorized, and `acceptance-gate`'s diff question over each fix's diff as its
-   fix rule. It marks the draft ready, which starts its test jobs once, reads them back on the exact
-   head, and fixes each failure until they pass.
+3. Invoke `merge-pr` with the accepted head, merge withheld unless **Task Authorization** finds
+   that merge authorized, and the **Pre-Push Gate** each fix is pushed through as its fix rule. It
+   marks the draft ready, which starts its test jobs once, reads them back on the exact head, and
+   fixes each failure until they pass.
 4. Verify every requested outcome and every automatic incidental fix.
 5. Confirm tests and relevant validation cover every incidental fix and simplification, and that
    intentional contract changes are reflected in the expected behavior.

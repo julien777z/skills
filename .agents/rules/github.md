@@ -34,7 +34,10 @@ alwaysApply: true
 
 - **Open every pull request as a draft and keep it draft while work continues.** It leaves draft
   once, when the work is finished, through `execute-task`'s **Completion** or a workflow that
-  merges it; never mark one ready early to start its tests.
+  merges it; never mark one ready early to start its tests. Work that resumes changing a pull
+  request already ready for review converts it back to draft before its first push — GraphQL
+  `convertPullRequestToDraft`, which REST does not offer — and **Completion** readies it again; a
+  skill driving a ready pull request's checks, such as `merge-pr` or `ci-watch`, keeps it ready.
 - Keep pull requests focused and give them descriptive titles and descriptions; request appropriate reviewers when the repository workflow requires them.
 - A pull request description covers the changes in that pull request and nothing else. Leave out alternatives considered and rejected, work deferred to a later change, and the reasoning behind not doing something.
 - Treat each repository as an independent context. Write PR titles, descriptions, review comments, and issue comments using only the target repository's domain, contracts, changes, and validation. Do not import another repository's product names, domain knowledge, implementation details, or coordination history; do not name or link its PRs or post cross-repository coordination comments. Keep combined status and coordination in user chat.

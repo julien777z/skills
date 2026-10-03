@@ -102,8 +102,8 @@ creating a record for a deferred finding. If the environment forces a fix pull r
 before approval, keep it draft and do not present it as a deliverable.
 
 The order is: audit → report → present the plan and stop → record every decision → create or reuse
-the durable issues → implement only approved fixes → open or ready the validated fix pull request →
-update issue metadata and states.
+the durable issues → implement only approved fixes → open the fix pull request as a draft and take
+it through `execute-task`'s **Completion** → update issue metadata and states.
 
 1. **Present the plan.** Preferred path: call the platform's plan-approval mechanism with one
    independently decidable item per finding, ordered by severity, each with its proposed fix and
@@ -142,10 +142,11 @@ update issue metadata and states.
    code, tests, contracts, migrations, and generated application output the fix needs, and nothing
    about the audit itself.
 
-4. **Update tracking when the validated pull request is ready.** For every finding that remains
-   confirmed and approved, replace pending resolution metadata on its Linear issue with the
-   pull-request number, add the validated result, and move it to a completed-category state. The
-   completion condition is a ready validated pull request, not its merge. Do not merge without the
+4. **Update tracking once `execute-task`'s Completion reads the fix pull request back ready, with
+   its checks passing.** For every finding that remains confirmed and approved, replace pending
+   resolution metadata on its Linear issue with the pull-request number, add the validated result,
+   and move it to a completed-category state. The completion condition is that read-back, not the
+   merge. Do not merge without the
    user's separate authorization.
 
 If Linear fails after any issue was created or reused, keep its identifier and retry or report the

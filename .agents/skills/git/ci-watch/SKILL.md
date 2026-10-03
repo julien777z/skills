@@ -33,6 +33,7 @@ Monitor a pull request through the delayed-review window and act on valid feedba
    - Stop after two consecutive counted review rounds (three at most) contain only code-simplification suggestions and no correctness bugs. Do not keep pushing cleanup solely to trigger another review round.
    - Fully investigate every finding in the final counted round and fix every legitimate one. If any correctness bug appears, reset the cleanup-only streak and review the resulting head under this rule.
    - Use the 15-minute quiet window only while checks/reviews are still not fully settled; do not apply it after the PR is green and merge-ready.
+   - **A draft pull request is never merge-ready**, because its test jobs do not run. Stop a draft's watch when the checks a draft runs are terminal and every review finding is resolved or outdated, run steps 9–10 on that basis, and report `draft: tests not run`. Never mark it ready.
 9. After the watch loop stops in a merge-ready state, run the repo-local code-simplifier/code-simplify pass across the PR diff. Investigate and fix legitimate simplification or maintainability issues it finds, preserve unrelated changes, run focused checks, then commit and push any verified fixes.
 10. After the post-watch code-simplifier push, perform one final CI/review poll for the updated PR head. Apply the counted-review-round completion rule from step 8: a pending bot review is not a final result, so keep polling until it finishes or the full 15-minute quiet window expires and a boundary poll completes. Address legitimate new failures or findings with the same rules above; if no changes were made by the code-simplifier pass, do the final poll against the existing head.
 
@@ -43,7 +44,6 @@ Monitor a pull request through the delayed-review window and act on valid feedba
 - Preserve unrelated local changes and generated artifacts.
 - Do not force-push, rewrite history, reply to comments, or dismiss findings unless the user explicitly authorizes it. Resolve threads after classifying them as fixed or not applicable.
 - Surface conflicting or ambiguous feedback instead of guessing.
-- A draft pull request's test jobs do not run, so a draft is never green or merge-ready: watch its review findings and the checks a draft runs, say in the report that tests have not run, and never mark it ready.
 - If authentication, permissions, or an unsafe concurrent branch update blocks progress, report the blocker; resume polling when it is safe to do so.
 
 ## Completion Report
