@@ -186,6 +186,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   footer takes no space, so whatever sits behind it is hidden with nothing in the markup to say so.
   Prefer giving that chrome its own row in a flex or grid column, where the browser reserves the
   space; reach for absolute positioning only where the overlap is the intent.
+- **Every page inside one shell sits in the same content frame** — the same width, alignment and
+  distance from the navigation, whether it holds a table, a form, a multi-step flow or a single
+  confirmation. A page never narrows or centres its own column to suit short or narrow content; a
+  section that reads better narrower caps its own width inside the frame, aligned to the frame's
+  start. The frame is set once, in the layout or page component, never per page. Two pages whose
+  content starts at different distances from the navigation read as two products.
 - **A surface is as tall as its content, never taller.** A card, panel, section or widget showing a
   large empty area — below its content, or between the content and the control that acts on it —
   reads as unfinished. Content flows from the top and each control sits directly after what it acts
@@ -265,7 +271,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   section carries what the reader needs next — the record the state concerns, its status, the action
   that moves on, in that section's footer. A confirmation also thanks the reader, marks the success,
   and says what they now have and what happens next — never a neutral status panel, nor a
-  placeholder for something the reader does not have yet such as "appears here". A label and a
+  placeholder for something the reader does not have yet such as "appears here" — and ends on one
+  action, which returns the reader to the page they left to start the flow, or to their home when
+  that is unknown. A label and a
   button centred in an otherwise empty page is the defect, and so is a small card left under chrome
   that no longer applies, such as tabs or a form header. A notice that the page is for somebody
   else, and a status page standing in a finished flow's place, are deleted as the bullets above say.
