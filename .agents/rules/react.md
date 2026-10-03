@@ -46,7 +46,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   heading — through their variants (`<Flex gap="sm" justify="between">`, `<Type size="sm"
   tone="muted">`), never a `className` spelling out flex, gap, padding, color or type size. A raw
   utility class is allowed only for positioning, animation, an override a third-party component
-  needs, or a width. A case the primitives cannot express becomes a new variant on the primitive
+  needs, or a width on a layout primitive; a button keeps its own, as **Rendering and Events** says.
+  A case the primitives cannot express becomes a new variant on the primitive
   that owns it, never a class string at the call site, so one spacing and type scale holds everywhere.
 
 ## Reference Data
@@ -195,8 +196,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   or hover-only scrollbar on such a frame is the defect, including the overlay scrollbar a platform
   hides until scrolling, which the shared scroll component replaces with one it always renders. The
   scroll container is styled once, in that component or the product's base styles, never per call
-  site. This holds over general advice
-  to hide scrollbars for a cleaner look.
+  site. This holds over general advice to hide scrollbars for a cleaner look.
 - **Navigation decides who reaches a page, and the decision that hides a page also refuses to serve
   it.** An address the viewer's role, workspace, plan or permissions never offer them redirects to
   the viewer's home. A screen or empty state telling the viewer the page belongs to somebody else —
@@ -211,8 +211,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   the banner the banner bullet below describes until the decision lands. A status page standing in
   the flow's place, at its own address or any other, is the defect. A page that a flow finished
   outside the product returns the reader to — a hosted checkout's return address, a provider's
-  signing or verification redirect — is that flow's last step and stays: it says what happened and
-  links on into the product.
+  signing or verification redirect — is that flow's last step and stays.
 - **Inside a page, offer only what applies to the reader.** A choice, a document, a field or a
   status row the reader can never use — the other region's version of a document, the other account
   type's settings — is left out, decided by the same rule that decides which one applies, never
@@ -251,13 +250,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   split across pages — whether or not each step saves as it advances, and over general advice to
   name a button for its action.
 - **Every page renders in the product's page shell — its heading, its description and sections
-  holding its content — including a page that reports a state**: a confirmation, the return page a
-  flow finished outside the product lands on, an expired link. A section carries what the reader
+  holding its content — including a page that reports a state**: a confirmation, such as the return
+  page a flow finished outside the product lands on, or an expired link. A section carries what the reader
   needs next — the record the state concerns, its status, the action that moves on, in that
   section's footer. A label and a button centred in an otherwise empty page is the defect, and so is
-  a small card left under chrome that no longer applies, such as tabs or a form header. A page whose
-  load failed keeps its heading and description, with the failure banner the bullets below describe.
-  A notice that the page is for somebody else, and a status page standing in a finished flow's
+  a small card left under chrome that no longer applies, such as tabs or a form header. A notice that the page is for somebody else, and a status page standing in a finished flow's
   place, are deleted as the bullets above say.
 - **A banner appears only when the reader has something to do, something is wrong, or something
   they submitted is waiting on a decision** — terms to accept, a verification to finish, a load
@@ -365,8 +362,7 @@ Apply this section only when the repository uses the Next.js App Router.
 - `loading.tsx` - Loading UI
 - `error.tsx` - Error boundary
 - `not-found.tsx` - 404 page, at the app root only; the root layout carries no navigation, so a
-  missing page renders outside it, still in the page shell with a heading, a description and a
-  section linking home
+  missing page renders outside it, still in the page shell, with a section linking home
 - `_components/` - Page-specific components
 
 - Use `Link` from `next/link` for navigation
