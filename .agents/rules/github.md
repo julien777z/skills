@@ -17,6 +17,11 @@ alwaysApply: true
 - Keep workflow files concise: merge related setup and dependency commands into one clearly named generic step when their execution order and conditions allow it. Do not split tool or package installation into separate steps merely by dependency.
 - Environment configuration that tunes a tool — retry counts, timeouts, cache locations, path entries — belongs in the step that installs or runs that tool, not in a step of its own. A step whose whole body writes to `$GITHUB_ENV` is named for a concern rather than an action, and the reader has to look elsewhere to find out which later step it affects. Write those exports at the end of the owning step so the setting and its consumer stay together.
 - Add an explanatory comment when an edge case requires an explicit version override.
+- **A job that runs under a GitHub environment reads each secret and variable by one plain name**,
+  and the environment supplies its value for that stage: `secrets.FEED_URL`, never
+  `FEED_URL_STAGING` and `FEED_URL_PRODUCTION` selected by an expression on an input. A job
+  selecting between such names moves under `environment:` and reads the plain name, as
+  `pre-production`'s configuration rule says.
 
 - **Pull-request test jobs skip draft pull requests and run once one is marked ready for review**,
   so the pushes a draft takes while work is in flight start no test runs. The trigger's `types` add
