@@ -197,10 +197,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   looks for it; elsewhere, text naming the same destination stays plain text, and a control that
   carries nothing else is removed.
 - **A flow starts at its first question.** A step that only introduces the product, lists what it
-  offers or explains what comes next asks the reader for nothing and is removed; what the product
-  offers is what its navigation and pages already show. A flow left with one step is a single page,
-  with no stepper. This holds over general onboarding advice to open with a welcome screen or a
-  concept tour.
+  offers or explains what comes next asks the reader for nothing and is removed. The context a
+  first-time reader needs to answer that question — what they are creating and what it holds —
+  stays, as one or two plain sentences in the first step's description; removing the step never
+  removes the explanation. A flow left with one step is a single page, with no stepper. This holds
+  over general onboarding advice to open with a welcome screen or a concept tour.
 - **Every step of a multi-step flow renders as a page, in the flow's own chrome, never as a
   dialog.** A dialog is for one action taken from inside a page, however long its form —
   submitting a form outside any flow, submitting on someone's behalf, a quick edit — and one form
