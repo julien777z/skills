@@ -115,19 +115,17 @@ Verify SSH host keys, the intended guest editor, and the source/place before run
 ### Linux container runner
 
 A Linux host, such as a cloud agent container, can provide the Windows Studio build under Wine on an
-Xvfb display. The environment's setup installs Studio, Wine, the Wine prefix, and the toolchain, and
-owns them: a task never installs, repairs, or recreates any of them. A launch that fails before
-Studio starts is reported to the user with its command and output as a setup change. Start Studio
-through the project's launch command, or run `RobloxStudioBeta.exe` from its directory under `wine`
-with `DISPLAY` set to the Xvfb display. A Studio window, its sign-in page or start page, in an X
-screenshot of that display shows the launch succeeded; qualify the rest as [Qualify input and
-capture](#qualify-input-and-capture) describes.
+Xvfb display. The project's setup script installs Studio, Wine, the Wine prefix, and the toolchain;
+rerun it when one is missing or broken. Start Studio through the project's launch command, or run
+`RobloxStudioBeta.exe` from its directory under `wine` with `DISPLAY` set to the Xvfb display. A
+Studio window, its sign-in page or start page, in an X screenshot of that display shows the launch
+succeeded; qualify the rest as [Qualify input and capture](#qualify-input-and-capture) describes.
 
 Studio's logs are in `"$WINEPREFIX/drive_c/users/$USER/AppData/Local/Roblox/logs"`. When they
 report `Embedded Web Browser fail to load` (WebView2 failed to start under Wine), the embedded
 sign-in is unavailable; sign in by code as [Authentication and user handoff](#authentication-and-user-handoff)
 describes. When Studio offers only **Login via Browser**, Roblox has not given this installation
-Quick Sign-in; report that, since only the environment's setup can provide another installation.
+Quick Sign-in; report that to the user.
 
 ## Optional Tart guest capabilities
 
