@@ -63,6 +63,13 @@ context and returns its verdict into the step waiting on it; nothing else does b
   finished worker cannot be resumed, the delegating agent carries out what the verdict releases,
   such as pushing an accepted increment, itself. With no
   delegating agent to ask, the step is reported as not run, and whatever it gates stays gated.
+- **A worker that ends before its work is done is replaced, never reported as a question.** A
+  crash, a lost session or a harness stop, including the stop a user's interruption of the
+  delegating agent's turn sends to every running worker, leaves the work as authorized as it was.
+  Start a new worker on the same assignment at once, briefed from what the stopped one left: its
+  branch, its commits, its uncommitted files and its last hand-up. A notice that a worker will not
+  be resumed says only that its context is gone; the user's own words withdrawing that work are
+  what stop it.
 - **A worker hands each capture the user should see up the same way, as it is made.** Through any
   mid-run channel the host gives it to the delegating agent, it sends the file path and a line on
   what the capture shows; a worker whose only channel is its final message returns with the
