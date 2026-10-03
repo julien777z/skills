@@ -65,6 +65,13 @@ outcome, because silence reads as the guidance having been fixed.
      When the owner necessarily runs before the action, remove equivalent conditions from callers;
      strengthen its trigger or invocation only if that owner would otherwise be missed. Explain the
      placement.
+   - **A file's name and description bound what it owns.** Before choosing a skill or rule, state
+     the condition its name and description set — a release stage, a technology, a mode, a kind of
+     task — and ask whether the guidance would still be true where that condition does not hold. If
+     it would, that file is too narrow, however close its neighbouring section: the guidance goes to
+     the file whose scope matches its own, and a global rule takes what holds everywhere. Neither
+     running on every task nor already holding a related rule, such as one on required fields when
+     the guidance is about required settings, makes a narrower file the owner.
    - **When the request names no target, find the guidance that let the gap through and change it
      there.** A request usually arrives as a symptom with no file attached — "that is a bad
      implementation, do not use X" — and the file to edit is the one that governs the thing X
