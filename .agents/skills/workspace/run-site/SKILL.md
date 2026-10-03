@@ -105,15 +105,18 @@ matcher proves the component renders and nothing about the screen a user reaches
 genuinely cannot complete, report the walkthrough as not done. Drive the browser automation's own
 profile; never read the user's saved passwords, cookies, local storage, or session files.
 
-Keep a password out of argv and the transcript: read it from the file project guidance names, or
-through `proton-pass` when it names none, build the
-script that fills the field, and pipe it to the browser command through stdin. Set the value through the native setter and
-dispatch a bubbling `input` event so a framework-controlled input registers it:
+Keep a password out of argv and the transcript: put it in an environment variable for the one
+command that fills the field — from the file project guidance names, or through `proton-pass` when
+it names none — build the script that fills the field, and pipe it to the browser command through
+stdin. Set the value through the native setter and dispatch a bubbling `input` event so a
+framework-controlled input registers it:
 
 ```bash
-python3 - <<'EOF' | agent-browser --session <name> eval --stdin
-import json
-secret = open("<password-file>").read().strip()
+# From proton-pass instead: SIGN_IN_PASSWORD="$(PROTON_PASS_AGENT_REASON="<why>" pass-cli item view \
+#   --vault-name "<vault>" --item-title "<title>" --field password)"
+SIGN_IN_PASSWORD="$(cat <password-file>)" python3 - <<'EOF' | agent-browser --session <name> eval --stdin
+import json, os
+secret = os.environ["SIGN_IN_PASSWORD"]
 js = ("const el=document.querySelector('input[type=\"password\"]');"
       "Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(el,%s);"
       "el.dispatchEvent(new Event('input',{bubbles:true}));'ok'") % json.dumps(secret)
