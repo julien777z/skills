@@ -46,7 +46,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   heading — through their variants (`<Flex gap="sm" justify="between">`, `<Type size="sm"
   tone="muted">`), never a `className` spelling out flex, gap, padding, color or type size. A raw
   utility class is allowed only for positioning, animation, an override a third-party component
-  needs, or a width. A case the primitives cannot express becomes a new variant on the primitive
+  needs, or a width on a layout primitive; a button keeps its own, as **Rendering and Events** says.
+  A case the primitives cannot express becomes a new variant on the primitive
   that owns it, never a class string at the call site, so one spacing and type scale holds everywhere.
 
 ## Reference Data
@@ -129,11 +130,19 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Keep implementation out of the interface.** Storage, masking, hashing, background jobs, retries
   and the names of internal states belong in the code. A description says what the field is for and
   what the reader should put in it, in the words they would use themselves.
-- Say the one thing the reader needs and stop. Prefer no description to a description that repeats
-  the label, narrates the obvious, or hedges. Where a sentence is only there to cover the product,
-  cut it. That includes a paragraph explaining the mechanics around an action, such as which party
-  performs which step, and a note of a side effect nobody asked about, such as what happens to
-  earlier versions.
+- **Every section and every step of a flow carries a one-sentence description under its own heading,
+  inside its surface** — two on a flow's first step, as **A flow starts at its first question**
+  below allows — saying what the reader does there or what the section holds: "Choose how you hear
+  about new activity", "The people who can see and edit this project". A heading alone, or a heading
+  with only a badge beside it, is the defect. No sentence floats between the page's top bar and its
+  first section: a page's name sits where the product puts page titles, and whatever a page-level
+  sentence would say belongs to the section it describes.
+- Say the one thing the reader needs and stop. On a field, prefer no description to a description
+  that repeats the label, narrates the obvious, or hedges, and keep out of any label what the
+  product already knows about the reader, such as their own name in a consent checkbox. Where a
+  sentence is only there to cover the product, cut it. That includes a paragraph explaining the
+  mechanics around an action, such as which party performs which step, and a note of a side effect
+  nobody asked about, such as what happens to earlier versions.
 - **A status reads from the viewer's side.** Name the state in terms of what that reader did or
   still has to do, and keep internal steps they take no part in behind a visual cue: a person who
   sent a form sees "Submitted", with the tone telling review apart from acceptance, while the
@@ -189,24 +198,36 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   maximum height, so the surface stays as tall as its content until it reaches the cap. A height set
   from outside the content belongs only to a surface whose content fills the space it is given — a
   chart, a map, media — to one the reader sized, or to a section deliberately sized to the viewport.
+- **A frame that scrolls shows its scrollbar whenever its content overflows** — a box of legal
+  text, a dialog body, a list or a table inside a maximum height — on every platform and before the
+  reader touches it, so cut-off text reads as more to scroll rather than as text that ends. A hidden
+  or hover-only scrollbar on such a frame is the defect, including the overlay scrollbar a platform
+  hides until scrolling, which the shared scroll component replaces with one it always renders. The
+  scroll container is styled once, in that component or the product's base styles, never per call
+  site. This holds over general advice to hide scrollbars for a cleaner look.
 - **Navigation decides who reaches a page, and the decision that hides a page also refuses to serve
   it.** An address the viewer's role, workspace, plan or permissions never offer them redirects to
-  the viewer's home. So does a multi-step flow the reader has finished — a verification, a setup,
-  an onboarding — which leaves the navigation while the reader still holds its address. A finished
-  flow whose outcome is final shows no banner where the reader lands, a toast at most; one whose
-  submission waits on someone else's decision — a review, an approval — lands the reader on the
-  product as usual, with the banner the banner bullet below describes until the decision lands. A
-  status page standing in the flow's place is the defect. A screen or
-  empty state telling the viewer the page belongs to somebody else — "this page is for …", "switch
-  to … to use it", "you don't have access" — is dead code wherever it sits, in a page, a layout or a
-  gate: the check becomes the redirect and the screen is deleted, never restyled, moved into a
-  shared message component, or kept because a task lists it among the states to restyle.
+  the viewer's home. A screen or empty state telling the viewer the page belongs to somebody else —
+  "this page is for …", "switch to … to use it", "you don't have access" — is dead code wherever it
+  sits, in a page, a layout or a gate: the check becomes the redirect and the screen is deleted,
+  never restyled, moved into a shared message component, or kept because a task lists it among the
+  states to restyle.
+- **A multi-step flow the reader has finished — a verification, a setup, an onboarding — leaves the
+  navigation, and its address redirects to the viewer's home.** A finished flow whose outcome is
+  final shows no banner where the reader lands, a toast at most; one whose submission waits on
+  someone else's decision — a review, an approval — lands the reader on the product as usual, with
+  the banner the banner bullet below describes until the decision lands. A status page standing in
+  the flow's place, at its own address or any other, is the defect. A page that a flow finished
+  outside the product returns the reader to — a hosted checkout's return address, a provider's
+  signing or verification redirect — is that flow's last step and stays.
 - **Inside a page, offer only what applies to the reader.** A choice, a document, a field or a
   status row the reader can never use — the other region's version of a document, the other account
   type's settings — is left out, decided by the same rule that decides which one applies, never
   listed beside it. What is left out is the item, never the step or section holding it: a step or
   section stays for every reader who still has something in it to answer, and goes only when
-  nothing in it is left.
+  nothing in it is left. A field whose value the context already fixes — the country on a form only
+  one country files, the currency of an account that holds one — is not asked: the value is set, and
+  shown as text where the reader should know it.
 - **A page's content offers one control per destination or action** — a button, a link, a menu item,
   an icon or a clickable row; the app's own navigation is not counted against it. Two that open the
   same form or page — a checklist step's button or linked label beside a quick link, a row that
@@ -238,13 +259,16 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   page system that moves through steps — an onboarding, a setup, a verification, a wizard, a form
   split across pages — whether or not each step saves as it advances, and over general advice to
   name a button for its action.
-- **A page whose only content is a status message renders a full-page message state** — an expired
-  link, a load that failed with nothing else to show — centered in the page, never a small card left
-  under chrome that no longer applies, such as tabs or a form header. A form or
-  list long enough to fill the page keeps its card. The message reports a state the reader cannot
-  get past on this page; a notice that the page is for somebody else is not one, and neither is a
-  flow's submitted, pending or finished state: both leave the page as the navigation bullet above
-  says.
+- **Every page renders in the product's page layout, including a page that reports a state** — a
+  confirmation, such as the return page a flow finished outside the product lands on, or an expired
+  link — with its content in sections, each headed and described as **Interface Copy** says. A
+  section carries what the reader needs next — the record the state concerns, its status, the action
+  that moves on, in that section's footer. A confirmation also thanks the reader, marks the success,
+  and says what they now have and what happens next — never a neutral status panel, nor a
+  placeholder for something the reader does not have yet such as "appears here". A label and a
+  button centred in an otherwise empty page is the defect, and so is a small card left under chrome
+  that no longer applies, such as tabs or a form header. A notice that the page is for somebody
+  else, and a status page standing in a finished flow's place, are deleted as the bullets above say.
 - **A banner appears only when the reader has something to do, something is wrong, or something
   they submitted is waiting on a decision** — terms to accept, a verification to finish, a load
   that failed, a blocking state to resolve, a submission under review, worded from the reader's
@@ -312,6 +336,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   The call site picks a variant that reads as a button; a variant is restyled product-wide only
   where every use of it stands as such an action, and never with a class at one call site, as
   **Components and Props** says of every primitive.
+- **A button is as wide as its label and padding, wherever it sits and at any viewport width.** One
+  stretched to its row or container — a full-width class, a flex or grid child left to grow, a block
+  display — reads as a bar rather than an action and is the defect. The button component keeps its
+  own width in any parent, so no call site sets one, and buttons in a group each keep their own
+  width; where they sit is **Layout And Spacing**'s to say. This holds over general advice to make
+  components full width on small screens.
 - **A button whose action is running is disabled, marked busy (`aria-busy`), and shows a spinner in
   place of its label at the same width**, so it cannot be pressed twice and nothing beside it moves.
   The label stays in the layout, transparent, holding the width and remaining the accessible name,
@@ -344,8 +374,8 @@ Apply this section only when the repository uses the Next.js App Router.
 - `layout.tsx` - Shared layouts
 - `loading.tsx` - Loading UI
 - `error.tsx` - Error boundary
-- `not-found.tsx` - 404 page, at the app root only; the root layout carries no app shell, so a
-  missing page renders as a full page
+- `not-found.tsx` - 404 page, at the app root only; the root layout carries no navigation, so a
+  missing page renders outside it, still in the product's page layout, with a section linking home
 - `_components/` - Page-specific components
 
 - Use `Link` from `next/link` for navigation
