@@ -198,8 +198,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Inside a page, offer only what applies to the reader.** A choice, a document, a field or a
   status row the reader can never use — the other region's version of a document, the other account
   type's settings — is left out, decided by the same rule that decides which one applies, never
-  listed beside it. What is left out is the field: a step or section stays for every reader who
-  still has a field in it to answer, and goes only when none is left.
+  listed beside it. What is left out is the item, never the step or section holding it: a step or
+  section stays for every reader who still has something in it to answer, and goes only when
+  nothing in it is left.
 - **A page's content offers one control per destination or action** — a button, a link, a menu item,
   an icon or a clickable row; the app's own navigation is not counted against it. Two that open the
   same form or page — a checklist step's button or linked label beside a quick link, a row that
@@ -234,9 +235,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **A page whose only content is a status message renders a full-page message state** — an expired
   link, a load that failed with nothing else to show — centered in the page, never a small card left
   under chrome that no longer applies, such as tabs or a form header. A form or
-  list long enough to fill the page keeps its card. The message reports on the reader's own work;
-  a notice that the page is for somebody else is not one, and neither is a flow's submitted,
-  pending or finished state: both leave the page as the navigation bullet above says.
+  list long enough to fill the page keeps its card. The message reports a state the reader cannot
+  get past on this page; a notice that the page is for somebody else is not one, and neither is a
+  flow's submitted, pending or finished state: both leave the page as the navigation bullet above
+  says.
 - **A banner appears only when the reader has something to do, something is wrong, or something
   they submitted is waiting on a decision** — terms to accept, a verification to finish, a load
   that failed, a blocking state to resolve, a submission under review, worded from the reader's
@@ -296,11 +298,13 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 - Prefix with `handle`: `handleClick`, `handleSubmit`
 - Use `useCallback` for handlers passed to memoized children
-- **A button that stands as an action reads as a button at rest** — one in a form, beside a field,
-  or in a footer or toolbar row of actions: a filled surface, or a boundary with at least 3:1
-  contrast against what it sits on, plus a hover state. One that reads as text or a faint outline
-  beside an input is the defect; a control meant to read as text is a link, styled as one. The fix
-  is the variant in the button component, product-wide, never a class at one call site.
+- **A labelled button in a form, beside a field, or in a form's row of actions reads as a button at
+  rest**: a filled surface, or a boundary with at least 3:1 contrast against what it sits on, plus
+  a hover state. One that reads as text or a faint outline beside an input is the defect. Icon-only
+  buttons in a toolbar are outside this rule, and a control meant to read as text takes the button
+  component's link-style variant when it acts and is a link only when it navigates. The call site
+  picks a button variant that reads as a button; a variant is restyled product-wide only where
+  every use of it stands as such an action, never with a class at one call site.
 - **A button whose action is running is disabled, marked busy (`aria-busy`), and shows a spinner in
   place of its label at the same width**, so it cannot be pressed twice and nothing beside it moves.
   The label stays in the layout, transparent, holding the width and remaining the accessible name,
