@@ -104,6 +104,12 @@ outcome, because silence reads as the guidance having been fixed.
      describes under `.agents/skills/`, at any depth; move a misplaced existing skill there.
      An agent definition that a shared skill runs on goes with that skill; every other agent, and
      every rule, is repository-owned.
+   - **A challenge to where guidance was placed is settled from these criteria, never put back to
+     the user.** Re-read the criteria against the file actually edited, named by its full `.agents`
+     path, since a skill's reference and a rule can share a file name. Then state the placement and
+     the criterion that decides it, or move the guidance when the criteria say it is misplaced. A
+     question offering the current home and another one as options is the failure this prevents;
+     ask only when the criteria leave two homes equally valid.
    - A shared target is edited in the skills repository's checkout — the one the user-level link
      resolves to or, when the session has no editing checkout, a writable checkout attached to
      or cloned into the session — on a branch and pull request in that repository, never
