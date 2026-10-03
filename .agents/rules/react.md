@@ -87,8 +87,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   consumers rather than copying it into a sibling application.
 
 - **A change to a shared mechanism is applied everywhere that mechanism appears, and on every
-  sibling surface, in the same change.** A widget grid, a list row, a dialog shell, an edit-mode chrome, an empty state: when a
-  design or a fix arrives for one page built on it, the other pages built on it are in scope too.
+  sibling surface, in the same change.** A widget grid, a list row, a dialog shell, an edit-mode
+  chrome, an empty state: when a fix arrives for one page built on it, the other pages built on it
+  are in scope too. A correction the user makes to how one page looks or reads stays on that page,
+  as `pre-production`'s **Scope Follows The Defect, Not The Request** says.
   Search for every surface that renders the same component or hook before editing, and every
   sibling surface — the variants of one document, the create and edit of one record, the same
   surface built for two audiences — whether or not it renders that component yet, since siblings
@@ -127,6 +129,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   heading is that name in a word or a short phrase — "Overview", "Contact details" — never a
   sentence or a phrase addressed to the reader, such as "What you can do here" or "Let's get you set
   up".
+- **Never write copy about the product's state that nobody has confirmed.** A page that says a
+  feature is unavailable, coming soon or not yet supported, when nobody said so, misinforms the
+  reader; the product's state is confirmed with the user before any copy states it.
 - **Never state what the reader takes for granted.** That data is encrypted, stored securely, kept
   private, or handled carefully is assumed of any product in this category; saying it out loud plants
   the doubt it was meant to settle. Mention a property only where the reader has to act on it or
@@ -279,9 +284,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   placeholder for something the reader does not have yet such as "appears here". It ends on one
   action, which returns the reader to the page they left to start the flow, or to their home when
   that is unknown. A label and a button centred in an otherwise empty page is the defect, and so is
-  a small card left under chrome that no longer applies, such as tabs or a form header. A notice
-  that the page is for somebody else, and a status page standing in a finished flow's place, are
-  deleted as the bullets above say.
+  a small card left under chrome that no longer applies, such as tabs or a form header. The page for
+  an address that does not exist is the exception: a full-page message centred in the screen,
+  outside the navigation, with one action home. A notice that the page is for somebody else, and a
+  status page standing in a finished flow's place, are deleted as the bullets above say.
 - **A banner appears only when the reader has something to do, something is wrong, or something
   they submitted is waiting on a decision** — terms to accept, a verification to finish, a load
   that failed, a blocking state to resolve, a submission under review, worded from the reader's
@@ -388,7 +394,7 @@ Apply this section only when the repository uses the Next.js App Router.
 - `loading.tsx` - Loading UI
 - `error.tsx` - Error boundary
 - `not-found.tsx` - 404 page, at the app root only; the root layout carries no navigation, so a
-  missing page renders outside it, still in the product's page layout, with a section linking home
+  missing page renders outside it, as the full-page message the page-layout bullet keeps for it
 - `_components/` - Page-specific components
 
 - Use `Link` from `next/link` for navigation

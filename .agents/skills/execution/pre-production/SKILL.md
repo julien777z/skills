@@ -41,6 +41,14 @@ also not a reason to stop at the first file, and the section below governs how f
 - **"Out of scope" is the sentence that preserves the mess.** A site left outside the fix is exactly
   where it regrows, because the guidance a later reader finds there still describes the old shape.
   Bring the similar items in, or establish concretely that they are a different concern.
+- **A correction to how one screen looks or reads is the user's decision about that screen, not a
+  defect to sweep.** A layout, a wording, a tone or a style the user changes on one page is applied
+  to that page, and other pages with the same shape are listed for the user to decide on, never
+  changed in the same pass: a choice of taste on one screen says nothing about the others. A rule
+  written from the correction governs new work; the existing pages it would reach wait for the
+  user's decision the same way. A shape a standing rule already named as a defect before the
+  correction, and a broken mechanism, a wrong value, a missing guard or a parallel implementation,
+  stay under the bullets above on every page.
 - Judge similarity by the question the code answers, not the directory it sits in or the layer it
   belongs to. Two modules deciding the same thing from different inputs are one concern wearing two
   implementations, however far apart they live.
