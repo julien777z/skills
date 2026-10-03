@@ -124,19 +124,19 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Keep implementation out of the interface.** Storage, masking, hashing, background jobs, retries
   and the names of internal states belong in the code. A description says what the field is for and
   what the reader should put in it, in the words they would use themselves.
-- **Every section and every step of a flow carries a one-sentence description under its own
-  heading, inside its surface** — two on a flow's first step, as **A flow starts at its first
-  question** below allows — saying what the reader does there or what the section holds: "Choose how
-  you hear about new activity", "The people who can see and edit this project". A heading alone, or a
-  heading with only a badge beside it, is the defect. No sentence floats between the page's top bar
-  and its first section: a page's name sits where the product puts page titles, and whatever a
-  page-level sentence would say belongs to the section it describes.
+- **Every section and every step of a flow carries a one-sentence description under its own heading,
+  inside its surface** — two on a flow's first step, as **A flow starts at its first question**
+  below allows — saying what the reader does there or what the section holds: "Choose how you hear
+  about new activity", "The people who can see and edit this project". A heading alone, or a heading
+  with only a badge beside it, is the defect. No sentence floats between the page's top bar and its
+  first section: a page's name sits where the product puts page titles, and whatever a page-level
+  sentence would say belongs to the section it describes.
 - Say the one thing the reader needs and stop. On a field, prefer no description to a description
   that repeats the label, narrates the obvious, or hedges, and keep out of any label what the
-  product already knows about the reader, such as their own name in a consent checkbox. Where a sentence is only
-  there to cover the product, cut it. That includes a paragraph explaining the mechanics around an
-  action, such as which party performs which step, and a note of a side effect nobody asked about,
-  such as what happens to earlier versions.
+  product already knows about the reader, such as their own name in a consent checkbox. Where a
+  sentence is only there to cover the product, cut it. That includes a paragraph explaining the
+  mechanics around an action, such as which party performs which step, and a note of a side effect
+  nobody asked about, such as what happens to earlier versions.
 - **A status reads from the viewer's side.** Name the state in terms of what that reader did or
   still has to do, and keep internal steps they take no part in behind a visual cue: a person who
   sent a form sees "Submitted", with the tone telling review apart from acceptance, while the
@@ -256,14 +256,13 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Every page renders in the product's page layout, including a page that reports a state** — a
   confirmation, such as the return page a flow finished outside the product lands on, or an expired
   link — with its content in sections, each headed and described as **Interface Copy** says. A
-  section carries what the reader needs next — the record the state concerns, its status, the
-  action that moves on, in that section's footer. A confirmation of something the reader finished
-  or paid for also thanks them, marks the success, and says what they now have and what happens
-  next — never a neutral status panel, nor a placeholder for something the reader does not have yet
-  such as "appears here". A label and a button centred in an otherwise empty page is the defect,
-  and so is a small card left under chrome that no longer applies, such as tabs or a form header. A
-  notice that the page is for somebody else, and a status page standing in a finished flow's place,
-  are deleted as the bullets above say.
+  section carries what the reader needs next — the record the state concerns, its status, the action
+  that moves on, in that section's footer. A confirmation also thanks the reader, marks the success,
+  and says what they now have and what happens next — never a neutral status panel, nor a
+  placeholder for something the reader does not have yet such as "appears here". A label and a
+  button centred in an otherwise empty page is the defect, and so is a small card left under chrome
+  that no longer applies, such as tabs or a form header. A notice that the page is for somebody
+  else, and a status page standing in a finished flow's place, are deleted as the bullets above say.
 - **A banner appears only when the reader has something to do, something is wrong, or something
   they submitted is waiting on a decision** — terms to accept, a verification to finish, a load
   that failed, a blocking state to resolve, a submission under review, worded from the reader's
@@ -370,7 +369,7 @@ Apply this section only when the repository uses the Next.js App Router.
 - `loading.tsx` - Loading UI
 - `error.tsx` - Error boundary
 - `not-found.tsx` - 404 page, at the app root only; the root layout carries no navigation, so a
-  missing page renders outside it, still in the page layout, with a section linking home
+  missing page renders outside it, still in the product's page layout, with a section linking home
 - `_components/` - Page-specific components
 
 - Use `Link` from `next/link` for navigation
