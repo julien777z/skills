@@ -188,11 +188,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   space; reach for absolute positioning only where the overlap is the intent.
 - **A page takes the content frame of its kind, and every page of that kind takes the same one.**
   The product's page layout has few frames, each set once in a layout component — commonly a
-  centred column for a page that does one focused task, such as a multi-step flow, a single form or
-  a confirmation, and the full frame for a workspace page holding lists, tables, widgets or
-  settings. A page never sets its own width, centring or outer padding. Two pages of one kind whose
-  content starts at different distances from the navigation read as two products; pages of
-  different kinds differ on purpose.
+  centred column for a page the reader passes through to finish one task and then leaves, such as a
+  step of a multi-step flow, a standalone form outside the navigation or a confirmation, and the
+  full-width frame for a page reached from the navigation, whatever it holds. A page never sets its
+  own width, centring or outer padding. Two pages of one kind whose content starts at different
+  distances from the navigation read as two products.
 - **A surface is as tall as its content, never taller.** A card, panel, section or widget showing a
   large empty area — below its content, or between the content and the control that acts on it —
   reads as unfinished. Content flows from the top and each control sits directly after what it acts
