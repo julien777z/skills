@@ -43,8 +43,9 @@ history is the record of what changed.
 
 ### Structure
 
-README shape against the repository's README rules, and one explanation repeated across documents
-where one home and a link would do.
+README shape against the repository's README rules, one explanation repeated across documents
+where one home and a link would do, and content whose reader is not the document's reader, such as
+a runbook or design specification in a README; move it to the document whose reader acts on it.
 
 Docstring style belongs to `code-simplify`; this doctor takes only a docstring that names a
 nonexistent thing or a retired behavior.

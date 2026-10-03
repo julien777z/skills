@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. Deliver through simplification, the acceptance gate, and the smoke test before the pull request merges.
+description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. Deliver through simplification, the acceptance gate, and the smoke test before the pull request merges.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -78,6 +78,7 @@ outcome, because silence reads as the guidance having been fixed.
      already covered merely because existing guidance forbids the failure. Find why that guidance
      did not control the run — its trigger, dependency, sequence, enforcement, visibility, or
      wording — and strengthen the owning guidance or workflow so the same path cannot bypass it.
+     Close every other path the failure's class takes, not only the one this instance used.
      When the owning skill was not invoked, harden its frontmatter description first; body text
      cannot control a run that never loads the skill.
    - When the user points out a guidance failure, trace the actual path from the request to the
@@ -186,7 +187,22 @@ outcome, because silence reads as the guidance having been fixed.
      `## Guardrails`, kept at the bottom, holds only constraints that span the file's subjects.
    - Express each independent requirement once, as one concise statement or bullet, without padding. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
    - Normalize the touched file's nearby structure when needed: combine narrow sections, remove redundant wording, and order foundational guidance before specialized concerns.
-   - **Prefer the broad statement, and let the request be its example.** A request arrives as one symptom, and the rule it needs names the class that symptom belongs to; the symptom stays as one illustration of it. Asked for `Final` on string constants, write `Final` for every module-level constant; asked for a walkthrough rule because a page reloaded in a loop once a back-end change was absent, write that the run is judged against intended behaviour because an API error surfaces as any unintended behaviour, and name the loop only as one instance. A rule written for the symptom is silent on the next one, and the next one is what it will be read for. A named field, file, or section is an example of its class unless the contract requires its exact identity. Broaden to the class the user plainly meant, never to a neighbouring subject. Wording handed over — rule text in the request or in a delegating agent's brief — is input to this, never the spec: name the failure class, list at least two other instances of it, and write the rule to cover them, widening narrower wording as it arrives. An agent delegating an edit passes the class and the evidence, not finished rule text for one case.
+   - **Prefer the broad statement, and let the request be its example.** A request arrives as
+     one symptom, and the rule it needs names the class that symptom belongs to; the symptom
+     stays as one illustration of it. Asked for `Final` on string constants, write `Final` for
+     every module-level constant; asked for a walkthrough rule because a page reloaded in a
+     loop once a back-end change was absent, write that the run is judged against intended
+     behaviour because an API error surfaces as any unintended behaviour, and name the loop
+     only as one instance. A rule written for the symptom is silent on the next one, and the
+     next one is what it will be read for. A named field, file, section, document kind, tool,
+     or step, including the place a request says to put the fix, is an example of its class and
+     a candidate home under step 2, never the limit of the rule, unless the contract requires
+     its exact identity. Broaden to the class the user plainly meant, never to a neighbouring
+     subject. Wording handed over — rule text in the request or in a delegating agent's brief —
+     is input to this, never the spec: name the failure class, list at least two other
+     instances of it, and write the rule to cover them, widening narrower wording as it
+     arrives. An agent delegating an edit passes the class and the evidence, not finished rule
+     text for one case.
    - Describe reusable roles, boundaries, and decision criteria generically even in
      repository-focused guidance when the pattern is not repository-specific. Keep concrete
      repository names only when correctness depends on that local contract.
