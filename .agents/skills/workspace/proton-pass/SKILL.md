@@ -70,7 +70,10 @@ PROTON_PASS_AGENT_REASON="<why>" pass-cli item view "pass://<share-id>/<item-id>
 
 - Read only the field the task needs with `--field`.
 - Hand a secret straight to the command or form that uses it, through an environment variable or
-  standard input. Never echo it, write it to a file, commit it, or repeat it in a message.
+  standard input, never as a command-line argument such as `--password "$secret"`, which other
+  processes can read; when writing an item, use the input mode `pass-cli item create --help` lists
+  for standard input or a template. Never echo a secret, write it to a file, commit it, or repeat it
+  in a message.
 - Create, update, or trash an item only when the user asked for that change.
 
 `pass-cli agent instructions` prints the CLI's current guidance for agents, and the
