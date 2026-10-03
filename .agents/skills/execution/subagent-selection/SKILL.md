@@ -63,6 +63,12 @@ context and returns its verdict into the step waiting on it; nothing else does b
   finished worker cannot be resumed, the delegating agent carries out what the verdict releases,
   such as pushing an accepted increment, itself. With no
   delegating agent to ask, the step is reported as not run, and whatever it gates stays gated.
+- **A worker hands each capture the user should see up the same way, as it is made.** Through any
+  mid-run channel the host gives it to the delegating agent, it sends the file path and a line on
+  what the capture shows; a worker whose only channel is its final message returns with the
+  captures made since and is resumed. A worker its brief says cannot be resumed keeps going instead
+  and returns its captures with its final report, and the delegating agent forwards them as they
+  arrive.
 
 ## Output
 

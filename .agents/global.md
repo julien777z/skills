@@ -42,14 +42,13 @@ alwaysApply: true
   recording, or a generated image that shows something the run changed — the screen after an edit,
   a before-and-after pair, a design it generated — is sent as a file as soon as the agent that made
   it has opened it, never held for the final report, where it arrives in a pile the user can no
-  longer follow. A capture that shows no change — taken while navigating, diagnosing, or recording a
-  baseline before anything changed — stays where it was saved and is not sent, except as the before
-  half of a pair once its after exists. An agent with no file-sending tool hands each capture of a
-  change to the agent that delegated to it as it is made, through any mid-run channel the host
-  gives it to that agent, and that agent opens and forwards each one on arrival; a worker whose
-  only channel is its final message returns at each change it captures with the captures made
-  since, and is resumed. A brief that asks a worker for captures asks for them this way, never as
-  paths in its final report.
+  longer follow. A capture nobody asked for that shows no change — taken while navigating,
+  diagnosing, or recording a baseline before anything changed — stays where it was saved and is not
+  sent, except as the before half of a pair once its after exists; a capture the user or the running
+  skill asked for is sent as it is made, change or not. An agent with no file-sending tool hands each
+  capture to be sent up as `subagent-selection`'s **Dispatch** describes, and the agent that
+  delegated to it opens and forwards each one on arrival. A brief that asks a worker for captures
+  asks for them this way, never as paths in its final report.
 - A delegated worker's report of an outcome — tests pass, pushed, merged, deployed, fixed — is a
   claim. Check it at its source of truth before relaying it or building on it, and tell the user
   what was read, not what was reported; `execute-task`'s **Reported Outcomes** holds the procedure.
