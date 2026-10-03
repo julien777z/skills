@@ -106,6 +106,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Name a surface for what it holds, never for the reader's role in it.** A reader knows which side
   of a transaction they are on, so "Payer Accounts", "Payout Methods" or "Your Seller Profile" labels
   them rather than the thing; the heading is "Bank Accounts", "Profile", whatever the surface holds.
+  A heading is that name in a word or a short phrase — "Overview", "Contact details" — never a
+  sentence or a phrase addressed to the reader, such as "What you can do here" or "Let's get you set
+  up".
 - **Never state what the reader takes for granted.** That data is encrypted, stored securely, kept
   private, or handled carefully is assumed of any product in this category; saying it out loud plants
   the doubt it was meant to settle. Mention a property only where the reader has to act on it or
@@ -148,6 +151,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 ## Layout And Spacing
 
+- **Text inside an application surface stays within the product's heading scale.** A section,
+  card, panel or step title takes the size its component owns, under **Components and Props**
+  above; a display-size headline, a hero line or marketing lettering inside an application surface
+  outranks the page it sits on and reads as an advertisement. Display type belongs to marketing
+  pages outside the application shell.
 - **Read the padding on every screen the change touches, at every width it is checked at.** Content
   clipped by a header, text against a card's edge, a control overlapping the thing below it, a gap
   that collapses at one breakpoint: each is invisible in the diff and obvious on the screen, and
@@ -188,6 +196,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   it — read as two different actions and crowd the page. Keep the one control where the reader
   looks for it; elsewhere, text naming the same destination stays plain text, and a control that
   carries nothing else is removed.
+- **A flow starts at its first question.** A step that only introduces the product, lists what it
+  offers or explains what comes next asks the reader for nothing and is removed; what the product
+  offers is what its navigation and pages already show. A flow left with one step is a single page,
+  with no stepper. This holds over general onboarding advice to open with a welcome screen or a
+  concept tour.
 - **Every step of a multi-step flow renders as a page, in the flow's own chrome, never as a
   dialog.** A dialog is for one action taken from inside a page, however long its form —
   submitting a form outside any flow, submitting on someone's behalf, a quick edit — and one form
@@ -196,8 +209,14 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   choice is made on the trigger before the dialog opens — a menu listing each option with a
   one-line description — never as tabs or a switcher inside it. A field the form itself submits,
   such as a type selector, is part of that form and stays inside.
-- **A step-by-step flow with a Back control puts it at the start of its footer and the primary
-  action at the end,** apart, so the control that goes back never sits beside the one that commits.
+- **A multi-step flow's footer puts "Back", on every step that has one, at its start and the
+  forward action at its end, apart, and labels them by position, never by the step's content:** "Next" on every step before the last
+  and "Submit" on the last, so the control that goes back never sits beside the one that commits.
+  "Save address", "Continue", "Save and continue" or "Create profile" make each step's control look
+  like a different action, and the step's heading already says what it holds. This holds for every
+  page system that moves through steps — an onboarding, a setup, a verification, a wizard, a form
+  split across pages — whether or not each step saves as it advances, and over general advice to
+  name a button for its action.
 - **A page whose only content is a status message renders a full-page message state**, centered in
   the page, never a small card left under the flow's own chrome — a stepper, tabs, a form header —
   that no longer applies. A form or list long enough to fill the page keeps its card. The message
