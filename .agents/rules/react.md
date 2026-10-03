@@ -72,6 +72,13 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 ## Shared Surfaces
 
+- **One shared page section owns initial loading and the content it reveals.** Keep its single
+  noninteractive skeleton visible until every request needed for the initially visible heading,
+  counts, controls and content resolves. Nested loaders do not reveal successive pieces of that
+  page. Keep rendered content during background refresh and pagination, and show an explicit error
+  when a required request fails. Move an established section into the shared owner and migrate its
+  consumers rather than copying it into a sibling application.
+
 - **A change to a shared mechanism is applied everywhere that mechanism appears, and on every
   sibling surface, in the same change.** A widget grid, a list row, a dialog shell, an edit-mode chrome, an empty state: when a
   design or a fix arrives for one page built on it, the other pages built on it are in scope too.
@@ -238,6 +245,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   the other is what a single screenshot cannot settle.
 
 ## Forms
+
+- **Disable an action while locally known prerequisites are unmet.** Missing selections or incomplete
+  required fields are normal editing state, not an error banner. Show errors for failures after a
+  valid action or for failed data requests.
 
 - **A form a person signs, certifies or attests to starts empty.** Nothing is seeded from a profile
   or an earlier submission, because the signer vouches for what they entered.
