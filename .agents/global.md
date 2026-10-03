@@ -176,6 +176,10 @@ setRecords(records);
 return records;
 ```
 
+- A bootstrap or setup folder holds only its entrypoint at its root, such as `bootstrap/install.sh`.
+  Every supporting script, module, or data file it uses goes in a `resources/` subfolder, such as
+  `bootstrap/resources/fetch_tool.py`, never beside the entrypoint.
+
 ## Repository guidance
 
 - Reference external code and automation by a maintained version tag when available, or by a

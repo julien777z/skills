@@ -112,6 +112,29 @@ export ROBLOX_STUDIO_SSH="$ROBLOX_STUDIO_SSH_USER@$("$ROBLOX_STUDIO_TART" ip "$R
 
 Verify SSH host keys, the intended guest editor, and the source/place before running tests. The no-graphics, no-clipboard, no-audio options keep the VM from opening a host window or sharing clipboard/audio. Store versions and qualification evidence outside this skill. Do not provision or reset a working retained VM as routine setup.
 
+### Linux container runner
+
+A Linux host, such as a cloud agent container, can provide the Windows Studio build under Wine on
+an Xvfb display. The environment's setup installs it; a task never installs Studio, Wine, or the
+toolchain. Start Studio through the project's launch command, or run `RobloxStudioBeta.exe` from
+its directory under `wine` with `DISPLAY` set to the Xvfb display.
+
+Success is the Studio sign-in page in an X screenshot of that display. The prefix's
+`AppData/Local/Roblox/logs` record login state and the graphics mode Studio chose. Rendering on a
+software GPU is unqualified until a viewport capture shows the expected scene.
+
+Studio's embedded sign-in needs WebView2, which does not run under Wine; the log reports `Embedded
+Web Browser fail to load`. Sign in with Quick Sign-in instead:
+
+- Read the newest `awaitQuickSignIn via polling: code=` line from the Studio log and send that code
+  to the user to enter on a device already signed in to Roblox.
+- Codes expire after about two minutes and Studio logs each replacement, so read the code
+  immediately before sending it.
+- Roblox assigns the login page per installation. When Studio offers only **Login via Browser**,
+  report that the installation has no Quick Sign-in; a fresh Wine prefix draws a new assignment.
+- Confirm sign-in from the log's `Authenticated` line or the Studio start page before relying on
+  the runner.
+
 ## Optional Tart guest capabilities
 
 For a configured Tart runner, use the official [quick start](https://tart.run/quick-start/) and the installed
