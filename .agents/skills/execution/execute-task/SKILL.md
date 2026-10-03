@@ -86,14 +86,17 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 - **An environment refusal is a route to find, not a blocker to report.** A repository missing from
   the session is attached or cloned as a writable checkout; a host the environment refuses is reached
   through a path it does serve, and a tool that took the refused path is fixed to take the served
-  one. **A command a permission boundary denies is refused, and the decision stays where the
-  guidance put it**: a denial says nothing about whether the action is wanted, and the global rules
-  have already made every local stack resource and record the agent's to repair, reset or delete.
-  Reach the same outcome through the route the resource's owner provides — a package manager's own
-  cache-clean command where a raw delete of its cache directory was refused — never through a
-  rewording of the refused command. Report a blocker only once every served path has been tried and has
-  failed, naming the refused command and what was tried; a yes-or-no question asking whether to do
-  it is never that report.
+  one. Report a blocker only once every served path has been tried and has failed.
+- **A permission check is not a route to find: what it refuses is not attempted again, and the
+  decision never becomes the user's.** Use the owner's own routine tool from the start — a package
+  manager's cache-clean rather than a raw delete of its cache directory — because that is the
+  ordinary way to do the job, not a workaround. Once a permission boundary refuses an action,
+  whether a rule the user set or an automated safety check, that outcome is not attempted again by
+  any other command, tool or wording, and every other piece of work carries on. Report the refusal
+  once, plainly, as a permission the user can grant: what was refused, and that it runs once
+  allowed — "The permission check blocked `<command>`; everything else is done." Whether the action
+  is wanted was settled by the guidance before the check ran, so the report never asks it or offers
+  options: "Delete X? Yes or no" is the defect.
 
 ## Product Constraints
 
@@ -109,10 +112,9 @@ the rest, or from the mechanism that owns the concern, is an encountered issue t
 pattern to copy. That holds at every point new instructions arrive, not only at the task's start:
 a correction, a fix step or a resumed brief that sends the work to a surface whose rules the run has
 not read has them read before it is acted on, and having worked in the same language or package
-earlier in the run is not having read them. Match the analogous
-files' code grouping and spacing in every new or substantially edited file; inspect the complete
-result beside those siblings before delivery. A formatter passing is not a substitute for that
-comparison.
+earlier in the run is not having read them. Match the analogous files' code grouping and spacing in
+every new or substantially edited file; inspect the complete result beside those siblings before
+delivery. A formatter passing is not a substitute for that comparison.
 
 ## Encountered Issues
 
@@ -133,12 +135,12 @@ how those issues are handled.
   guidance, as the global rules' **Task execution and authorization** says. Each side reads every
   item against the rules and skills governing the surface it changes — the language, framework,
   copy and testing rules, and the skills the worker runs — opening them at that moment where it has
-  not read them yet. The class is any item asking
-  for what a rule rules out: a review finding asking for the catch-all exception handler the
-  language rule bans, a brief telling a worker to skip a check a skill requires before a push, a
-  correction asking for copy the copy rules forbid, one asking for a boat-rental waiver to arrive
-  filled in from the renter's last booking when the forms rule says a form someone attests to starts
-  empty, or a brief copying the one sibling that names a setting twice, once per environment.
+  not read them yet. The class is any item asking for what a rule rules out: a review finding
+  asking for the catch-all exception handler the language rule bans, a brief telling a worker to
+  skip a check a skill requires before a push, a correction asking for copy the copy rules forbid,
+  one asking for a boat-rental waiver to arrive filled in from the renter's last booking when the
+  forms rule says a form someone attests to starts empty, or a brief copying the one sibling that
+  names a setting twice, once per environment.
   - **The agent writing it** rewrites an item a rule forbids into a shape the rule allows, or drops
     it where none exists. One the user asked for in their own words goes out with those words quoted
     and the rule they set aside named; a rule the agent thinks is wrong is put to the user, never
