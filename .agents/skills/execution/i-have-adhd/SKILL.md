@@ -65,7 +65,7 @@ Good: "Next: run `npm test` and paste the first failing line."
 
 If a second issue exists, finish the first. In a change, an issue the work met is fixed too and
 named once as fixed, as `execute-task`'s **Encountered Issues** says; only one that needs the reader's
-decision, or one met while answering without changing anything, is offered as a separate question.
+decision about what the product should do is offered as a separate question.
 
 Bad: "Here's the fix. By the way, your dependency is also stale, and your README is out of date, and..."
 Bad: "Here's the fix. Separately: there is also a stale dependency. Want me to handle that next?"

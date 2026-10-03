@@ -86,8 +86,7 @@ The gate always runs as a subagent of the running session, routed as `subagent-s
 
 Exactly one per gate, each decided by the tests in `references/rubric.md`, with nothing appended.
 Whether an item is the change's doing or predates it is never asked, since no disposition turns on
-it, and a defect the caller has already seen goes into the change under `execute-task`'s
-**Encountered Issues** rather than to triage:
+it:
 
 - **Triage — what should happen to this?** An issue, a finding or a proposed record; the answer is
   one of fix, close, defer or do.

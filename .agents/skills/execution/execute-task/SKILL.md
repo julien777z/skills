@@ -103,20 +103,20 @@ how those issues are handled.
   is genuinely the user's is about a **product change** — what a feature does, what a record keeps,
   who a surface serves, a contract a consumer outside the user's control speaks — never whether an
   encountered issue gets fixed.
-- Being found rather than assigned, or predating the change — older code in a file the work
-  touches, a gap a gate labels pre-existing — changes nothing about whether it is fixed; it changes
-  only where the fix lands, which is the branch in flight. Say in the report what was fixed and why it
-  was in the path of the work, so the reviewer sees a decision rather than a surprise.
-- **Where a defect came from is never asked, and the fix never waits on it.** "Is this the change's
-  doing or pre-existing?", "was it already there?", "is it a regression of earlier work?" — put to
-  the user, a gate, a reviewer, or a worker — have no answer that changes the disposition, so the
-  question only holds the fix behind it, and a defect reported as under investigation is reported
-  instead of fixed. The agent that sees it starts the fix in that turn, itself or through a worker's
-  brief; where history would help write the fix — a lost commit to restore, the change that broke
-  it — read it from version control while fixing. Origin decides one thing in this guidance: whether
-  an authorized merge waits on a failing check, under the GitHub rule's **Merge Authorization**. That
-  decides only when the merge happens; the failing check is still an encountered issue, fixed under
-  `pre-production`'s red-CI rule.
+- **Where a defect came from is never asked, and the fix never waits on it.** Being found rather
+  than assigned, predating the change — older code in a file the work touches, a gap a gate labels
+  pre-existing — or being the change's own doing changes nothing about whether it is fixed or where:
+  the fix lands on the branch in flight. "Is this the change's doing or pre-existing?", "was it
+  already there?", "is it a regression of earlier work?" — put to the user, a gate, a reviewer, or a
+  worker — have no answer that changes that, so the question only holds the fix behind it, and a
+  defect reported as under investigation is reported instead of fixed. The agent that sees it
+  starts the fix in that turn, itself or through a worker's brief; where history would help write
+  the fix — a lost commit to restore, the change that broke it — read it from version control while
+  fixing. Origin decides one thing in this guidance: whether an authorized merge waits on a failing
+  check, under the GitHub rule's **Merge Authorization**. That decides only when the merge happens;
+  the failing check is still an encountered issue, fixed under `pre-production`'s red-CI rule. Say
+  in the report what was fixed and why it was in the path of the work, so the reviewer sees a
+  decision rather than a surprise.
 - What puts a **new** issue in that path is an act the work performed: a file it opened, a command
   it ran, a check it read, a review it received, and anything it looked at — a screenshot or
   recording, its own or a worker's, a walk through the product, a log, a report. A defect seen there
