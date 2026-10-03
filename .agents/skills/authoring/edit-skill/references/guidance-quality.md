@@ -63,8 +63,9 @@ the skill's title.
 Where an invocation carries an argument the trigger depends on, the argument is the thing worth
 naming — a target, a scope, a mode — not the command that precedes it.
 
-Judge a description by substitution: read it without knowing which skill it belongs to. If it still says which situations
-fire the skill, it works. If the remainder names no situation, it was never a trigger.
+Judge a description by substitution: read it without knowing which skill it belongs to. If it still
+says which situations fire the skill, it works. If the remainder names no situation, it was never a
+trigger.
 
 **Output.** A skill whose result is a response the user reads — a listing, a report, a summary, a
 verdict, a draft — carries an `## Output` section as its last section before any `## Guardrails`,
