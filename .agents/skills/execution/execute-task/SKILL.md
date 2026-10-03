@@ -16,6 +16,7 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 - `generic-push` — keep each repository's publishing metadata independent during multi-repository changes.
 - `merge-conflict` — bring in a conflicting or moved base, found when a push is read back, before other work.
 - `subagent-selection` — the hand-up a worker without an agent tool uses for its push's gate.
+- `merge-pr` — mark the finished pull request ready and drive its checks to green at **Completion**.
 
 ## One Run Per Task
 
@@ -25,8 +26,9 @@ Run every change the same way, whether a plan preceded it or the user asked for 
   ways it lists. Nothing in the task re-enters the skill; the run simply has not ended.
 - A skill that lists this one as a dependency — `plan-change` does — invokes it once, and the
   skills this one invokes never invoke it back: `pre-production`, `code-simplify`,
-  `acceptance-gate`, `generic-push`, `merge-conflict`, and `subagent-selection` are leaves of this run. A second
-  invocation while one is active does nothing more than continue the active run.
+  `acceptance-gate`, `generic-push`, `merge-conflict`, `subagent-selection`, and `merge-pr` are
+  leaves of this run. A second invocation while one is active does nothing more than continue the
+  active run.
 - This skill never invokes `plan-change`. Where a task needs a plan, `plan-change` runs first and
   invokes this skill once the plan is approved.
 - A read-only task — a question answered from the code, a listing, a report with no edit — does
@@ -186,8 +188,7 @@ pre-push checks below. Fix what they flag, commit the fixes, re-run the acceptan
 re-run the checks until they pass. An increment holding only dot-files and dot-directories,
 `.github` aside, skips the simplification pass and the acceptance gate; the checks still run. The
 complete diff still gets the final `code-simplify` pass and `acceptance-gate`'s final acceptance
-question when the pull request leaves draft — through `finalize-task` when the user invokes it, or
-through the review or merge workflow that takes it there.
+question when the pull request leaves draft, under **Completion**.
 
 - **The pre-push checks are the ones CI runs on a pull request, run the way CI runs them.** Read
   the workflow files that trigger on a pull request and run every checking job that can run
@@ -224,8 +225,8 @@ does not satisfy this spacing check.
   nothing uncommitted, and nothing unpushed except an increment whose verdict it is awaiting; its
   report names the branch and head, which **Reported Outcomes** reads on the remote.
 - **Pull requests stay draft while the work runs**, so these pushes start no test jobs, as the
-  GitHub rule's **Workflows** section sets up; the tests run once, when the pull request leaves
-  draft.
+  GitHub rule's **Workflows** section sets up; the tests run once, when **Completion** takes the
+  pull request out of draft.
 - **The order is change, gate, push, then the slow verification**: a browser walkthrough, a full or
   end-to-end suite, a run against a service without the change, root-causing a failure the change
   did not cause — anything slow or needing a running stack. What it finds goes out as fix pushes,
@@ -365,11 +366,25 @@ the turn end on the wait.
 
 ## Completion
 
-Before declaring the task done:
+Before declaring the task done, take each pull request the task changed out of draft — once, with
+its work finished — and then close the run:
 
-1. Verify every requested outcome and every automatic incidental fix.
-2. Confirm tests and relevant validation cover every incidental fix and simplification, and that
+1. Run the final `code-simplify` pass across the complete pull-request diff and push its
+   simplifications through the **Pre-Push Gate**.
+2. Put the complete pull-request diff to `acceptance-gate`'s final-acceptance question with the
+   intent statement. Fix what it flags within that skill's **Bounds** and push the fixes through the
+   **Pre-Push Gate**.
+3. Invoke `merge-pr` with the accepted head, no behaviors counted as locally covered — so its gate
+   reads the hosted tests for every affected behavior — merge withheld unless **Task Authorization**
+   finds that merge authorized, and `acceptance-gate`'s diff question over each fix's diff as its
+   fix rule. It marks the draft ready, which starts its test jobs once, reads them back on the exact
+   head, and fixes each failure until they pass.
+4. Verify every requested outcome and every automatic incidental fix.
+5. Confirm tests and relevant validation cover every incidental fix and simplification, and that
    intentional contract changes are reflected in the expected behavior.
-3. Confirm multi-repository delivery artifacts describe only their owning repository.
-4. Report the implementation, encountered fixes, simplification passes, validation, and any
-   unresolved decision awaiting the user.
+6. Confirm multi-repository delivery artifacts describe only their owning repository.
+7. Report the implementation, encountered fixes, simplification passes, validation, the pull
+   request's ready state and check results, and any unresolved decision awaiting the user.
+
+A workflow that already takes the pull request through final acceptance and `merge-pr` — a review
+workflow, a guidance change's delivery — runs steps 1–3 as its own, once.
