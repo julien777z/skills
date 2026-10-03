@@ -64,7 +64,7 @@ a code change is tested: against the case that motivated it, with the change and
    that gives the reader something new to do or look at opens a route of its own, so test what the
    reader does when that thing turns up something wrong — a capture the edit says to open showing a
    defect, a check it adds failing, a step it adds that cannot complete.
-3. **Save both texts beside it** of every file the change edits that a run reads — the edited
+3. **Save both texts of every file the change edits that a run reads beside it** — the edited
    skill, and any adjacent file a loophole brought into the change under step 8: the branch copy
    and the original from the freshly fetched default branch. Edited runs read the branch copies,
    controls the originals; nothing else about their prompt differs.
@@ -91,11 +91,11 @@ a code change is tested: against the case that motivated it, with the change and
      problematic" — is this kind, and the revision states the disposition as fixed and names those
      reasons as not reasons. The scenario cannot satisfy the criterion, such as a file missing from
      the reading list, or its prompt never made the reader open the skill file: fix the scenario.
+     The run took a loophole another loaded file opens: fix it in that file, which joins the change.
      The report shows the behaviour in words the criterion did not search for: rephrase the
-     criterion to that behaviour. A wording change reruns every edited run that missed, together; a
-     scenario change reruns every run, controls included; a changed criterion rescores every report.
-   - **An edited run that takes the loophole** is fixed in the file that opened it, the adjacent
-     guidance as much as the edited skill, and that file joins the change.
+     criterion to that behaviour. A wording change in any file under test reruns every edited run
+     that missed, together; a scenario change reruns every run, controls included; a changed
+     criterion rescores every report.
    - **No control misses** means the scenario has not rebuilt the miss. Sharpen it until the
      original text misses — for an edit that broadens a rule, build it on a member of the class the
      original never named — and rerun every run.

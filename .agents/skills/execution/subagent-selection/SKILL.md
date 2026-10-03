@@ -68,8 +68,8 @@ context and returns its verdict into the step waiting on it; nothing else does b
   what the capture shows; a worker whose only channel is its final message returns with the
   captures made since and is resumed. Work that will make such captures goes to a worker the
   delegating agent can resume or hear from mid-run; where the host offers neither, the delegating
-  agent splits the work so each delegation ends at the capture of one change, and forwards each as
-  it arrives.
+  agent splits the work so each delegation ends at one such capture, and forwards each as it
+  arrives.
 
 ## Output
 
