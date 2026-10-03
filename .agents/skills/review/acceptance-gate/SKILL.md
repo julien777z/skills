@@ -43,6 +43,12 @@ earlier question about the same item. It receives four things and nothing else:
    record;
 4. exactly one question from the list below.
 
+**The gate has no shell, so every diff reaches it as content, never as a reference.** The caller
+pastes the originating diff and a diff item into the prompt, or writes each to a file the prompt
+names, with deletions intact; a commit range, a branch name, or a `git` command leaves the gate
+judging a working tree that other edits may have moved, or nothing at all. Dispatch it on the
+host's largest model, named explicitly.
+
 **Its first act on any diff is five greps.** Before reading the diff for anything else, grep its added lines for five shapes and list
 every hit as a finding ahead of all others, with the remedy the rubric names:
 

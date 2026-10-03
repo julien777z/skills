@@ -1,6 +1,6 @@
 ---
 name: acceptance-gate
-description: Read-only judgement of an issue, finding, proposal, diff, incoming base diff, or deferral record against the product state, a change's intent statement, the code-simplify rubric, and the security-audit rubric where the diff touches code. Invoked via Task with one question; returns accept or flag, or a triage disposition, as data. Uses the `acceptance-gate` skill as the complete protocol.
+description: Read-only judgement of an issue, finding, proposal, diff, incoming base diff, or deferral record against the product state, a change's intent statement, the code-simplify rubric, and the security-audit rubric where the diff touches code. Invoked via Task with one question and every diff pasted or written to a file, never a commit range, since it has no shell; returns accept or flag, or a triage disposition, as data. Uses the `acceptance-gate` skill as the complete protocol.
 skills: [acceptance-gate, code-simplify, pre-production, security-audit]
 tools: Read, Grep, Glob
 ---
