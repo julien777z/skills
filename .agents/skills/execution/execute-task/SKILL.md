@@ -372,7 +372,7 @@ its work finished — and then close the run:
 1. Run the final `code-simplify` pass across the complete pull-request diff and push its
    simplifications through the **Pre-Push Gate**.
 2. Put the complete pull-request diff to `acceptance-gate`'s final-acceptance question with the
-   intent statement. Push each fix to what it flags as its own increment, whose **Pre-Push Gate**
+   intent statement. Push the fix for each flag as its own increment, whose **Pre-Push Gate**
    verdict is the fresh gate that skill's **Bounds** require; a second flag is decided under those
    **Bounds**.
 3. Invoke `merge-pr` with the accepted head, merge withheld unless **Task Authorization** finds
