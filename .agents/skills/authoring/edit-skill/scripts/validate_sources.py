@@ -19,6 +19,7 @@ ACTION_USE_PATTERN: Final[re.Pattern[str]] = re.compile(r"uses:\s*([\w.-]+/agent
 COMMIT_PATTERN: Final[re.Pattern[str]] = re.compile(r"^[0-9a-f]{40}$")
 CACHE_DIRNAME: Final[str] = "agent-sync-action"
 INSTALL_MARKER_FILENAME: Final[str] = "installed"
+EXTERNAL_RESOURCES_FILENAME: Final[str] = "external_resources.json"
 REPOSITORY_URL_TEMPLATE: Final[str] = "https://github.com/{repository}"
 
 
@@ -142,26 +143,29 @@ def mirror_in_scratch(python: Path, root: Path, agents_dirname: str) -> SourceCh
     """Validate external resources and mirror canonical sources in a scratch copy."""
 
     with tempfile.TemporaryDirectory(prefix="agent-sync-") as scratch:
-        shutil.copytree(root / agents_dirname, Path(scratch) / agents_dirname, symlinks=True)
-        commands = ["mirror-providers"]
-        if (Path(scratch) / agents_dirname / "external_resources.json").exists():
-            commands.insert(0, "refresh-external-resources")
+        scratch_agents = Path(scratch) / agents_dirname
+
+        shutil.copytree(root / agents_dirname, scratch_agents, symlinks=True)
+
+        commands: list[list[str]] = [["mirror-providers"]]
+
+        if (scratch_agents / EXTERNAL_RESOURCES_FILENAME).exists():
+            commands.insert(0, ["refresh-external-resources", "--dry-run"])
 
         for command in commands:
             arguments = [
                 str(python),
                 "-m",
                 "agent_sync",
-                command,
+                *command,
                 "--root",
                 scratch,
                 "--agents-dir",
                 agents_dirname,
             ]
-            if command == "refresh-external-resources":
-                arguments.append("--dry-run")
             run = subprocess.run(arguments, check=False, capture_output=True, text=True)
             outcome = TOOL_EXIT_OUTCOMES.get(run.returncode, SourceCheckOutcome.UNAVAILABLE)
+
             if outcome is not SourceCheckOutcome.VALID:
                 logger.error("The sync tool reported:\n%s", (run.stdout + run.stderr).strip())
                 return outcome
