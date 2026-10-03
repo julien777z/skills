@@ -124,14 +124,16 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Keep implementation out of the interface.** Storage, masking, hashing, background jobs, retries
   and the names of internal states belong in the code. A description says what the field is for and
   what the reader should put in it, in the words they would use themselves.
-- **Every page and every step of a flow carries a one-sentence description under its heading** —
-  two on a flow's first step, as **A flow starts at its first question** below allows — saying what
-  the reader does there or what the page holds: "Choose how you hear about new activity", "The
-  people who can see and edit this project". A reader arriving from a link, a stepper or the
-  navigation then knows why they are there. A heading alone, or a heading with only a badge beside
-  it, is the defect.
-- Say the one thing the reader needs and stop. On a field or a section, prefer no description to a
-  description that repeats the label, narrates the obvious, or hedges. Where a sentence is only
+- **Every section and every step of a flow carries a one-sentence description under its own
+  heading, inside its surface** — two on a flow's first step, as **A flow starts at its first
+  question** below allows — saying what the reader does there or what the section holds: "Choose how
+  you hear about new activity", "The people who can see and edit this project". A heading alone, or a
+  heading with only a badge beside it, is the defect. No sentence floats between the page's top bar
+  and its first section: a page's name sits where the product puts page titles, and whatever a
+  page-level sentence would say belongs to the section it describes.
+- Say the one thing the reader needs and stop. On a field, prefer no description to a description
+  that repeats the label, narrates the obvious, or hedges, and keep out of any label what the product
+  already knows about the reader, such as their own name in a consent checkbox. Where a sentence is only
   there to cover the product, cut it. That includes a paragraph explaining the mechanics around an
   action, such as which party performs which step, and a note of a side effect nobody asked about,
   such as what happens to earlier versions.
@@ -217,7 +219,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   type's settings — is left out, decided by the same rule that decides which one applies, never
   listed beside it. What is left out is the item, never the step or section holding it: a step or
   section stays for every reader who still has something in it to answer, and goes only when
-  nothing in it is left.
+  nothing in it is left. A field whose value the context already fixes — the country on a form only
+  one country files, the currency of an account that holds one — is not asked: the value is set, and
+  shown as text where the reader should know it.
 - **A page's content offers one control per destination or action** — a button, a link, a menu item,
   an icon or a clickable row; the app's own navigation is not counted against it. Two that open the
   same form or page — a checklist step's button or linked label beside a quick link, a row that
@@ -249,13 +253,15 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   page system that moves through steps — an onboarding, a setup, a verification, a wizard, a form
   split across pages — whether or not each step saves as it advances, and over general advice to
   name a button for its action.
-- **Every page renders in the product's page shell — its heading, its description and sections
-  holding its content — including a page that reports a state**: a confirmation, such as the return
-  page a flow finished outside the product lands on, or an expired link. A section carries what the reader
-  needs next — the record the state concerns, its status, the action that moves on, in that
-  section's footer. A label and a button centred in an otherwise empty page is the defect, and so is
-  a small card left under chrome that no longer applies, such as tabs or a form header. A notice that the page is for somebody else, and a status page standing in a finished flow's
-  place, are deleted as the bullets above say.
+- **Every page renders in the product's page layout — its sections, each with its heading and
+  description — including a page that reports a state**: a confirmation, such as the return page a
+  flow finished outside the product lands on, or an expired link. A label and a button centred in an
+  otherwise empty page is the defect, and so is a small card left under chrome that no longer
+  applies, such as tabs or a form header. A confirmation of something the reader finished or paid
+  for reads as one: it thanks them, marks the success, says what they now have and what happens
+  next, and ends on the action that moves on, in that section's footer — never a neutral status
+  panel or an empty placeholder waiting on data. A notice that the page is for somebody else, and a
+  status page standing in a finished flow's place, are deleted as the bullets above say.
 - **A banner appears only when the reader has something to do, something is wrong, or something
   they submitted is waiting on a decision** — terms to accept, a verification to finish, a load
   that failed, a blocking state to resolve, a submission under review, worded from the reader's
@@ -362,7 +368,7 @@ Apply this section only when the repository uses the Next.js App Router.
 - `loading.tsx` - Loading UI
 - `error.tsx` - Error boundary
 - `not-found.tsx` - 404 page, at the app root only; the root layout carries no navigation, so a
-  missing page renders outside it, still in the page shell, with a section linking home
+  missing page renders outside it, still in the page layout, with a section linking home
 - `_components/` - Page-specific components
 
 - Use `Link` from `next/link` for navigation
