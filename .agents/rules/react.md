@@ -151,10 +151,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 ## Layout And Spacing
 
-- **No title on an application page outranks the page heading.** A section, card, panel or step
-  sets its title and body at the sizes the product uses for those roles; a display-size headline, a
-  hero line or marketing lettering inside an application surface outranks the page it sits on and
-  reads as an advertisement. Display type belongs to marketing pages outside the application shell.
+- **Text inside an application surface stays within the product's heading scale.** A section,
+  card, panel or step title takes the size its component owns, under **Components and Props**
+  above; a display-size headline, a hero line or marketing lettering inside an application surface
+  outranks the page it sits on and reads as an advertisement. Display type belongs to marketing
+  pages outside the application shell.
 - **Read the padding on every screen the change touches, at every width it is checked at.** Content
   clipped by a header, text against a card's edge, a control overlapping the thing below it, a gap
   that collapses at one breakpoint: each is invisible in the diff and obvious on the screen, and
@@ -198,7 +199,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **A flow starts at its first question.** A step that only introduces the product, lists what it
   offers or explains what comes next asks the reader for nothing and is removed; what the product
   offers is what its navigation and pages already show. A flow left with one step is a single page,
-  with no stepper. This holds over general onboarding advice to open with a welcome screen.
+  with no stepper. This holds over general onboarding advice to open with a welcome screen or a
+  concept tour.
 - **Every step of a multi-step flow renders as a page, in the flow's own chrome, never as a
   dialog.** A dialog is for one action taken from inside a page, however long its form —
   submitting a form outside any flow, submitting on someone's behalf, a quick edit — and one form
@@ -207,8 +209,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   choice is made on the trigger before the dialog opens — a menu listing each option with a
   one-line description — never as tabs or a switcher inside it. A field the form itself submits,
   such as a type selector, is part of that form and stays inside.
-- **A multi-step flow's footer puts "Back" at its start and the forward action at its end, apart,
-  and labels them by position, never by the step's content:** "Next" on every step before the last
+- **A multi-step flow's footer puts "Back", on every step that has one, at its start and the
+  forward action at its end, apart, and labels them by position, never by the step's content:** "Next" on every step before the last
   and "Submit" on the last, so the control that goes back never sits beside the one that commits.
   "Save address", "Continue", "Save and continue" or "Create profile" make each step's control look
   like a different action, and the step's heading already says what it holds. This holds for every
