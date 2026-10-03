@@ -108,13 +108,14 @@ contract or stored value.
 
 Before each edit, read the shared and repository rules governing every surface it reaches — its
 language, framework and package, and the kind of thing it changes, such as a form, a query, a test
-or interface copy — and nearby analogous files. That holds at every point new instructions arrive,
-not only at the task's start: a correction, a fix step or a resumed brief that sends the work to a
-surface whose rules the run has not read has them read before it is acted on, and having worked in
-the same language or package earlier in the run is not having read them. Match the analogous
-files' code grouping and spacing in every new or substantially edited file; inspect the complete
-result beside those siblings before delivery. A formatter passing is not a substitute for that
-comparison.
+or interface copy — and nearby analogous files. Where those files disagree, the one departing from
+the rest, or from the mechanism that owns the concern, is an encountered issue to fix, never the
+pattern to copy. That holds at every point new instructions arrive, not only at the task's start:
+a correction, a fix step or a resumed brief that sends the work to a surface whose rules the run has
+not read has them read before it is acted on, and having worked in the same language or package
+earlier in the run is not having read them. Match the analogous files' code grouping and spacing in
+every new or substantially edited file; inspect the complete result beside those siblings before
+delivery. A formatter passing is not a substitute for that comparison.
 
 ## Encountered Issues
 
