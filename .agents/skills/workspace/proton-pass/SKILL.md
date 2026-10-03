@@ -9,10 +9,10 @@ short_description: 'Retrieve credentials from Proton Pass with pass-cli.'
 A credential the session environment already holds, or one the repository supplies, is used from
 there: an injected token, a password file project guidance names, or a helper the repository's
 tooling uses to set or generate a local or development test identity's password. The password of a
-test identity a local stack or dev container creates never comes from Proton Pass. Every other account credential
-comes from Proton Pass through `pass-cli`, signed in with the personal access token in
-`PROTON_PASS_PERSONAL_ACCESS_TOKEN`, before the user is asked. Never ask the user to paste a secret
-into chat.
+test identity a local stack or dev container creates never comes from Proton Pass. Every other
+account credential comes from Proton Pass through `pass-cli`, signed in with the personal access
+token in `PROTON_PASS_PERSONAL_ACCESS_TOKEN`, before the user is asked. Never ask the user to paste
+a secret into chat.
 
 ## Sign In
 
