@@ -109,12 +109,12 @@ Keep a password out of argv and the transcript: put it in an environment variabl
 command that fills the field, build the script that fills the field, and pipe it to the browser
 command through stdin. The password comes from what the repository provides — the file project
 guidance names, or the helper its tooling uses to set or generate a test identity's password, run
-first when the identity has none yet — and through `proton-pass` only for an account the repository
-provides no source for, such as a deployed or third-party one. Set the value through the native setter and dispatch a bubbling `input` event so a
+first when the identity has none yet — and through `proton-pass` only for an account the
+repository provides no source for, such as a deployed or third-party one. Set the value through the native setter and dispatch a bubbling `input` event so a
 framework-controlled input registers it:
 
 ```bash
-# Or, for an account with no repository source: SIGN_IN_PASSWORD="$(PROTON_PASS_AGENT_REASON="<why>" pass-cli item view \
+# Account with no repository source: SIGN_IN_PASSWORD="$(PROTON_PASS_AGENT_REASON="<why>" pass-cli item view \
 #   --vault-name "<vault>" --item-title "<title>" --field password)"
 SIGN_IN_PASSWORD="$(cat <password-file>)" python3 - <<'EOF' | agent-browser --session <name> eval --stdin
 import json, os
