@@ -179,12 +179,14 @@ the network panel for the whole wait. A refetch loop, a blank page, a section sh
 than failed, an action enabled on data that never arrived, or a mode derived from a missing response
 is a defect in the change.
 
-### Errors
+### Defects
 
-An error the run did not ask for — a failed request, an empty section, an error boundary, an
-unwritten redirect, a console error — is a defect the walkthrough found. Diagnose it to its cause
-through the service log, the network response, and the rendering code, fix it wherever it sits, and
-re-run the step. The one exception is the failure you induced on the run above; say which kind each
+Anything the run shows that the product should not do is a defect the walkthrough found, whether or
+not the change touched it: an error the run did not ask for — a failed request, an empty section, an
+error boundary, an unwritten redirect, a console error — and wrong behaviour on screen — a value
+shown altered or lost, data in the wrong place, a broken layout. Diagnose it to its cause through the
+service log, the network response, and the rendering code, fix it wherever it sits, and re-run the
+step. The one exception is the failure you induced on the run above; say which kind each
 capture shows, since the two look identical.
 
 ### Evidence
