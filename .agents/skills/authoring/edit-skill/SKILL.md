@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. Deliver through simplification, the acceptance gate, and the smoke test before the pull request merges.
+description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. Deliver through simplification, the acceptance gate, and the smoke test before the pull request merges.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -104,12 +104,6 @@ outcome, because silence reads as the guidance having been fixed.
      describes under `.agents/skills/`, at any depth; move a misplaced existing skill there.
      An agent definition that a shared skill runs on goes with that skill; every other agent, and
      every rule, is repository-owned.
-   - **A challenge to where guidance was placed is settled from these criteria, never put back to
-     the user.** Re-read the criteria against the file actually edited, named by its full `.agents`
-     path, since a skill's reference and a rule can share a file name. Then state the placement and
-     the criterion that decides it, or move the guidance when the criteria say it is misplaced. A
-     question offering the current home and another one as options is the failure this prevents;
-     ask only when the criteria leave two homes equally valid.
    - A shared target is edited in the skills repository's checkout — the one the user-level link
      resolves to or, when the session has no editing checkout, a writable checkout attached to
      or cloned into the session — on a branch and pull request in that repository, never
