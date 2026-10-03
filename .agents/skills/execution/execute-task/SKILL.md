@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once, before the first edit, at the start of every task that changes files — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until the task's report: it applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, simplifies as the change grows, gates the branch before it is pushed, checks every outcome it reports, whether its own action or a sub-agent's claim, at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
+description: "Always run this. Invoke once, before the first edit, at the start of every task that changes files — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until the task's report: it applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, simplifies as the change grows, commits each small step and gates it before pushing it promptly, checks every outcome it reports, whether its own action or a sub-agent's claim, at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
 short_description: 'Apply repository guidance, fix issues found along the way, validate the diff, and deliver the change.'
 ---
 
@@ -153,8 +153,9 @@ compatibility, generated-output drift.
 
 ## Ongoing Simplification
 
-Read and invoke `code-simplify` as the change is made — after each meaningful implementation batch
-— and once across the complete diff before delivery. It is not a single pass held back for the end.
+Read and invoke `code-simplify` as the change is made — over each step before the **Pre-Push Gate**
+pushes it — and once across the complete diff before delivery. It is not a single pass held back
+for the end.
 
 - Every pass covers three things, never the diff hunks alone: the **changes** themselves, the
   **similar code** they resemble, and the **sibling modules** around them.
@@ -175,13 +176,16 @@ Read and invoke `code-simplify` as the change is made — after each meaningful 
 
 ## Pre-Push Gate
 
-Before the branch is pushed, and again before each later push that carries new work, run over the
-whole branch diff against its base — committed and uncommitted work alike, with no pull request
-required — first the final `code-simplify` pass above, applying its simplifications directly, then
-`acceptance-gate`'s diff question with the change's intent statement, then the pre-push checks
-below. Fix what they flag, re-run the acceptance gate once, and re-run the checks until they pass.
-Commit the edits before pushing. A branch whose diff holds only dot-files and dot-directories,
-`.github` aside, skips the simplification pass and the acceptance gate; the checks still run.
+Every push is gated, and the gate is sized to what the push carries. Before each push, with no pull
+request required, run over the commits the remote branch lacks — the push's increment, the whole
+branch diff on its first push — first the step's `code-simplify` pass above, applying its
+simplifications directly, then `acceptance-gate`'s diff question with the change's intent
+statement, the increment as its item and the whole branch diff as its originating diff, then the
+pre-push checks below. Fix what they flag, commit the fixes, re-run the acceptance gate once, and
+re-run the checks until they pass. An increment holding only dot-files and dot-directories,
+`.github` aside, skips the simplification pass and the acceptance gate; the checks still run. The
+complete diff still gets the final `code-simplify` pass before delivery, pushed as its own gated
+increment, and `acceptance-gate`'s final acceptance question before the pull request merges.
 
 - **The pre-push checks are the ones CI runs on a pull request, run the way CI runs them.** Read
   the workflow files that trigger on a pull request and run every checking job that can run
@@ -203,8 +207,17 @@ or return meets the next phase without the blank line required by the global cod
 Fix every listed boundary in the complete changed files; an unrelated bug or a passing formatter
 does not satisfy this spacing check.
 
-- **Push each coherent unit of work as soon as its gate is clean.** A push is what lets the user
-  review and test the work, so a gated commit held locally withholds that review.
+- **Commit each small coherent step and push it through this gate as soon as it is made** — a
+  function and its callers updated, a test brought to pass, one finding fixed — never at the end of
+  a unit or task. A push is what lets the user review and test the work, and the only copy that
+  outlives the machine: a recycled container or an ended session takes every commit and edit no
+  remote holds. Hours of work, a run of unpushed commits, or edits left uncommitted through a long
+  wait are the failure this prevents.
+- **No edit sits uncommitted through a long wait.** Before a full suite, a background agent, CI, a
+  build, or a question to the user, bring the work to a coherent step, commit it, and push it.
+- **Delegated edits run at this cadence.** A brief handing a worker edits states it and names the
+  branch the worker pushes to; the worker ends with nothing uncommitted or unpushed, and its report
+  names the branch and head, which **Reported Outcomes** reads on the remote.
 - **The order is change, gate, push, then the slow verification**: a browser walkthrough, a full or
   end-to-end suite, a run against a service without the change, root-causing a failure the change
   did not cause — anything slow or needing a running stack. What it finds goes out as fix pushes,

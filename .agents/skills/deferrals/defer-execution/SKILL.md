@@ -63,7 +63,8 @@ change in flight keeps running while this work happens beside it.
 
 2. **Delegate the work to a subagent** scoped to that worktree, so the parent session's own state
    and working directory stay where they were. Give it the scope, the worktree path, and the
-   instruction to commit there.
+   instruction to commit each step there and push it through `execute-task`'s **Pre-Push Gate**
+   as it goes.
 
 3. **Validate inside the worktree** with the repository's own checks for what changed.
 
