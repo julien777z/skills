@@ -127,7 +127,7 @@ alwaysApply: true
 
 - **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. Deployed and shared remote environments are not local; the following live-deployment rules govern them.
 
-- **What an environment's setup installs outside the repository belongs to that setup.** A task never installs, reinstalls, repairs, or recreates the host toolchains and applications a cloud or container setup script provides, or an application's own state such as its Wine prefix, even when it could; it reports the failing command and its output to the user as a setup change and continues the work that does not need them. The repository's own dependencies, installed by its own commands, and the local stack above, including a setup-installed service's data, stay the task's.
+- **What an environment's setup installs outside the repository belongs to that setup.** A task never installs, reinstalls, repairs, or recreates the host toolchains and applications a cloud or container setup script provides, or an application's own state such as its data directory, even when it could; it reports the failing command and its output to the user as a setup change and continues the work that does not need them. The repository's own dependencies, installed by its own commands, and the local stack above, including a setup-installed service's data, stay the task's.
 
 - Treat create, update, and delete requests against a live deployment as data mutations, not health
   checks. Run them only against a target that the repository explicitly designates for mutation
@@ -199,9 +199,10 @@ return records;
 - Sample values follow the same rule: prefer plainly synthetic literals over ones shaped like a
   real identifier from another system's domain.
 
-- Every `.agents/rules/*.md` file states guidance that holds in any repository using that
-  technology. Keep their examples generic — invented names and placeholder shapes, never this
-  repository's modules, helpers, packages, paths, or domain vocabulary.
+- `.agents/global.md` states guidance that holds in every repository, and every `.agents/rules/*.md`
+  file guidance that holds in any repository using its technology. Keep their examples generic —
+  invented names and placeholder shapes, never this repository's modules, helpers, packages, paths,
+  or domain vocabulary, and never the product, tool, or platform whose incident prompted the change.
 - `.agents/project.md` is the home for repository-specific guidance: its base classes, helpers,
   packages, layout, documentation structure, inventories, and generated sections.
 - Repository facts only some work needs — a local stack, test accounts, deployment targets, a
