@@ -93,6 +93,11 @@ alwaysApply: true
 
 ## README
 
+- A README is written for the people who use and maintain the project. Anything only an agent acts
+  on goes in the repository's rules and skills instead, with repository-specific facts in
+  `.agents/project.md` or a reference it points to: an environment variable or credential an agent
+  session reads, even one a person adds to a cloud environment for the agent; a tool installed for
+  agents; a procedure only agents follow.
 - Describe available capabilities without assuming how consumers will use the project or framing guidance as prohibitions such as "never do X."
 - Remove repeated explanations and prefer short sections, bullets, tables, and focused examples over long prose.
 - Write in plain language, as if explaining the repository to a colleague. Avoid repeating internal
