@@ -106,6 +106,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Name a surface for what it holds, never for the reader's role in it.** A reader knows which side
   of a transaction they are on, so "Payer Accounts", "Payout Methods" or "Your Seller Profile" labels
   them rather than the thing; the heading is "Bank Accounts", "Profile", whatever the surface holds.
+  A heading is that name in a word or a short noun phrase — "Overview", "Business details" — never a
+  sentence or a phrase addressed to the reader, such as "What you can do here" or "Let's get you set
+  up".
 - **Never state what the reader takes for granted.** That data is encrypted, stored securely, kept
   private, or handled carefully is assumed of any product in this category; saying it out loud plants
   the doubt it was meant to settle. Mention a property only where the reader has to act on it or
@@ -148,6 +151,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 ## Layout And Spacing
 
+- **The page heading is the largest text on an application page.** A section, card, panel or step
+  sets its title and body at the sizes the product uses for those roles; a display-size headline, a
+  hero line or marketing lettering inside an application surface outranks the page it sits on and
+  reads as an advertisement. Display type belongs to marketing pages outside the application shell.
 - **Read the padding on every screen the change touches, at every width it is checked at.** Content
   clipped by a header, text against a card's edge, a control overlapping the thing below it, a gap
   that collapses at one breakpoint: each is invisible in the diff and obvious on the screen, and
@@ -188,6 +195,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   it — read as two different actions and crowd the page. Keep the one control where the reader
   looks for it; elsewhere, text naming the same destination stays plain text, and a control that
   carries nothing else is removed.
+- **A flow starts at its first question.** A step that only introduces the product, lists what it
+  offers or explains what comes next asks the reader for nothing and is removed; what the product
+  offers is what its navigation and pages already show. A flow left with one step is a single page,
+  with no stepper.
 - **Every step of a multi-step flow renders as a page, in the flow's own chrome, never as a
   dialog.** A dialog is for one action taken from inside a page, however long its form —
   submitting a form outside any flow, submitting on someone's behalf, a quick edit — and one form
