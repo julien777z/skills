@@ -186,12 +186,13 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   footer takes no space, so whatever sits behind it is hidden with nothing in the markup to say so.
   Prefer giving that chrome its own row in a flex or grid column, where the browser reserves the
   space; reach for absolute positioning only where the overlap is the intent.
-- **Every page inside one shell sits in the same content frame** — the same width, alignment and
-  distance from the navigation, whether it holds a table, a form, a multi-step flow or a single
-  confirmation. A page never narrows or centres its own column to suit short or narrow content; a
-  section that reads better narrower caps its own width inside the frame, aligned to the frame's
-  start. The frame is set once, in the layout or page component, never per page. Two pages whose
-  content starts at different distances from the navigation read as two products.
+- **A page takes the content frame of its kind, and every page of that kind takes the same one.**
+  A shell has few frames, each set once in a layout or page component — commonly a centred column
+  for a page that does one focused task, such as a multi-step flow, a single form or a
+  confirmation, and the full frame for a workspace page holding lists, tables, widgets or settings.
+  A page picks the frame its kind uses and never sets its own width, centring or outer padding.
+  Two pages of one kind whose content starts at different distances from the navigation read as
+  two products; pages of different kinds differ on purpose.
 - **A surface is as tall as its content, never taller.** A card, panel, section or widget showing a
   large empty area — below its content, or between the content and the control that acts on it —
   reads as unfinished. Content flows from the top and each control sits directly after what it acts
