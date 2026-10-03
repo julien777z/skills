@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once, before the first edit, at the start of every task that changes files — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until the task's report: it applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, simplifies as the change grows, commits each small step and gates it before pushing it promptly, checks every outcome it reports, whether its own action or a sub-agent's claim, at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
+description: "Always run this. Invoke once, before the first edit, at the start of every task that changes files — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until the task's report: it applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, simplifies as the change grows, commits each small step and pushes it promptly through its gate, checks every outcome it reports, whether its own action or a sub-agent's claim, at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
 short_description: 'Apply repository guidance, fix issues found along the way, validate the diff, and deliver the change.'
 ---
 
@@ -192,13 +192,18 @@ for the end.
 
 ## Pre-Push Gate
 
-Every push is gated, and the gate is sized to what the push carries. Before each push, with no pull
-request required, run over the commits the remote branch lacks — the push's increment, the whole
-branch diff on its first push — first the step's `code-simplify` pass above, applying its
-simplifications directly, then `acceptance-gate`'s diff question with the change's intent
-statement, the increment as its item and the whole branch diff as its originating diff, then the
-pre-push checks below. Fix what they flag, commit the fixes, re-run the acceptance gate once, and
-re-run the checks until they pass. The complete diff still gets the final `code-simplify` pass
+Every push is gated, and the gate is sized to what the push carries. Each push runs over the
+commits the remote branch lacks — the push's increment, the whole branch diff on its first push —
+first the step's `code-simplify` pass above, applying its simplifications directly, then
+`acceptance-gate`'s diff question with the change's intent statement, the increment as its item and
+the whole branch diff as its originating diff, then the pre-push checks below. Fix what they flag,
+commit the fixes, re-run the acceptance gate once, and re-run the checks until they pass.
+
+- **On a draft pull request, or a branch with none yet, a committed step whose pre-push checks pass
+  is pushed at once, and the simplify pass and acceptance gate run over the pushed increment.** What
+  they flag goes out as the next fix pushes, each through the same order. A flag never holds
+  committed work on one machine: while one is being fixed, further steps keep landing on top, and a
+  held range only grows. A pull request ready for review takes the whole gate before its push. The complete diff still gets the final `code-simplify` pass
 and `acceptance-gate`'s final acceptance question when the pull request leaves draft, under
 **Completion**.
 
@@ -231,11 +236,11 @@ does not satisfy this spacing check.
   below, a background worker, CI on the pushed head, or a question to the user, bring the work to a
   coherent step, commit it, and push it; the gate's own runs are part of the push, not such a wait.
 - **Delegated edits run at this cadence.** A brief handing a worker edits states it and names the
-  branch the worker pushes to. A worker that cannot spawn the gate's subagents hands each
-  increment's gate up under `subagent-selection`'s **Dispatch**; the delegating agent gates each
-  increment as it arrives, and the worker pushes once the verdict returns. The worker ends with
-  nothing uncommitted, and nothing unpushed except an increment whose verdict it is awaiting; its
-  report names the branch and head, which **Reported Outcomes** reads on the remote.
+  branch the worker pushes to. The worker pushes each step once its pre-push checks pass and hands
+  the pushed increment up under `subagent-selection`'s **Dispatch**; the delegating agent gates each
+  pushed increment as it arrives and returns what the gate flags as fix steps. The worker ends with
+  nothing uncommitted and nothing unpushed, never amends or rebases a pushed commit, and its report
+  names the branch and head, which **Reported Outcomes** reads on the remote.
 - **Pull requests stay draft while the work runs**, so these pushes start no test jobs, as the
   GitHub rule's **Workflows** section sets up; the tests run once, when **Completion** takes the
   pull request out of draft. A ready pull request the task resumes changing goes back to draft
