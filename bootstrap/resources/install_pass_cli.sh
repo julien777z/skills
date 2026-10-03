@@ -15,7 +15,6 @@ trap 'rm -f "$installer"' EXIT
 
 curl -fsSL "$INSTALLER_URL" -o "$installer"
 
-# The official installer checks the binary against the SHA-256 in Proton's release manifest.
 PROTON_PASS_CLI_INSTALL_DIR="$INSTALL_DIR" bash "$installer"
 
 "$INSTALL_DIR/pass-cli" --version
