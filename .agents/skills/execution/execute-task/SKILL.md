@@ -89,7 +89,7 @@ Before each edit, read the shared and repository rules governing every surface i
 language, framework and package, and the kind of thing it changes, such as a form, a query, a test
 or interface copy — and nearby analogous files. That holds at every point new instructions arrive,
 not only at the task's start: a correction, a fix step or a resumed brief that sends the work to a
-surface the run has not read the rules for is read for before it is acted on, and having worked in
+surface whose rules the run has not read has them read before it is acted on, and having worked in
 the same language or package earlier in the run is not having read them. Match the analogous
 files' code grouping and spacing in every new or substantially edited file; inspect the complete
 result beside those siblings before delivery. A formatter passing is not a substitute for that
@@ -100,24 +100,25 @@ comparison.
 Apply `pre-production`'s encountered-issues policy while making the change. The rules below govern
 how those issues are handled.
 
-- **A bug the work turns up, or a finding a gate, review, or simplification pass returns, is fixed in
-  the change in flight, in a shape the standing guidance allows as the next bullet says, and
+- **A bug the work turns up, or a finding a gate, review, or simplification pass returns, is fixed
+  in the change in flight, in a shape the standing guidance allows as the next bullet says, and
   offering it to the user is not a disposition.** "Want this handled, or shall I leave it?" reads as
   diligence and is the failure this section exists to prevent: it spends a turn to obtain permission
   for something already required, and a no leaves a known defect in the tree with the agent's name
-  on the decision. The question that is genuinely the user's is about a **product change** — what a feature does, what a record keeps,
-  who a surface serves, a contract a consumer outside the user's control speaks — never whether an
-  encountered issue gets fixed.
+  on the decision. The question that is genuinely the user's is about a **product change** — what a
+  feature does, what a record keeps, who a surface serves, a contract a consumer outside the user's
+  control speaks — never whether an encountered issue gets fixed.
 - **An instruction one agent passes another — a brief, a correction, a review finding, a gate's fix
   step — is checked against the standing guidance before it is sent and again before it is acted
   on**, because it never outranks that guidance, as the global rules' **Task execution and
   authorization** says. Each side reads every item against the rules and skills governing the
   surface it changes — the language, framework, copy and testing rules, and the skills the worker
-  runs — opening them at that moment where it has not read them yet. The class is any item asking for what a rule rules out: a review finding asking for the
-  catch-all exception handler the language rule bans, a brief telling a worker to skip a check a
-  skill requires before a push, a correction asking for copy the copy rules forbid, or one asking for
-  a boat-rental waiver to arrive filled in from the renter's last booking when the forms rule says a
-  form someone attests to starts empty.
+  runs — opening them at that moment where it has not read them yet. The class is any item asking
+  for what a rule rules out: a review finding asking for the catch-all exception handler the
+  language rule bans, a brief telling a worker to skip a check a skill requires before a push, a
+  correction asking for copy the copy rules forbid, or one asking for a boat-rental waiver to arrive
+  filled in from the renter's last booking when the forms rule says a form someone attests to starts
+  empty.
   - **The agent writing it** rewrites an item a rule forbids into a shape the rule allows, or drops
     it where none exists. One the user asked for in their own words goes out with those words quoted
     and the rule they set aside named; a rule the agent thinks is wrong is put to the user, never
