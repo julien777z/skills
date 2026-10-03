@@ -181,6 +181,17 @@ return records;
 - A bootstrap or setup folder holds only its entrypoint at its root, such as `setup/run.sh`; every
   supporting script, module, or data file it uses goes in `setup/resources/`.
 
+## Configuration
+
+- **A configuration input is required by default.** An environment variable, secret, or setting
+  whose value only the environment can supply — a credential, a host, an account — stops the setup
+  script, build, or service that reads it when it is missing, with an error naming it; never skip
+  the step it feeds, invent a value, or carry on without it. A value a person adds to an
+  environment is easy to forget, and a run that quietly does less hides that it is missing — a
+  setup step that installs a tool only when its token is set is the usual case. A tuning setting
+  with a correct default, such as a log level, keeps that default; an input stays optional only
+  when running without it is a state the product supports.
+
 ## Repository guidance
 
 - Reference external code and automation by a maintained version tag when available, or by a
@@ -321,7 +332,11 @@ return records;
 
 - A README's reader is a person using or developing the project, so a README holds what the
   project is, how to run or use it, where a developer finds its parts, and a Local Development
-  section with the commands to install, run, and validate it locally.
+  section with the commands to install, run, and validate it locally. Anything only an agent acts on
+  goes in the repository's rules and skills instead, with repository-specific facts in
+  `.agents/project.md` or a reference it points to: an environment variable or credential an agent
+  session reads, even one a person adds to a cloud environment for the agent; a tool installed for
+  agents; a procedure only agents follow.
 - Describe available capabilities without assuming how consumers will use the project or framing guidance as prohibitions such as "never do X."
 - Remove repeated explanations and prefer short sections, bullets, tables, and focused examples over long prose.
 - Write in plain language, as if explaining the repository to a colleague. Avoid repeating internal
