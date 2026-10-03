@@ -253,9 +253,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   page system that moves through steps — an onboarding, a setup, a verification, a wizard, a form
   split across pages — whether or not each step saves as it advances, and over general advice to
   name a button for its action.
-- **Every page renders in the product's page layout — its content in sections, each headed and
-  described as **Interface Copy** says — including a page that reports a state**: a confirmation,
-  such as the return page a flow finished outside the product lands on, or an expired link. A
+- **Every page renders in the product's page layout, including a page that reports a state** — a
+  confirmation, such as the return page a flow finished outside the product lands on, or an expired
+  link — with its content in sections, each headed and described as **Interface Copy** says. A
   section carries what the reader needs next — the record the state concerns, its status, the
   action that moves on, in that section's footer. A confirmation of something the reader finished
   or paid for also thanks them, marks the success, and says what they now have and what happens
