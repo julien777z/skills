@@ -132,8 +132,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   and its first section: a page's name sits where the product puts page titles, and whatever a
   page-level sentence would say belongs to the section it describes.
 - Say the one thing the reader needs and stop. On a field, prefer no description to a description
-  that repeats the label, narrates the obvious, or hedges, and keep out of any label what the product
-  already knows about the reader, such as their own name in a consent checkbox. Where a sentence is only
+  that repeats the label, narrates the obvious, or hedges, and keep out of any label what the
+  product already knows about the reader, such as their own name in a consent checkbox. Where a sentence is only
   there to cover the product, cut it. That includes a paragraph explaining the mechanics around an
   action, such as which party performs which step, and a note of a side effect nobody asked about,
   such as what happens to earlier versions.
@@ -253,15 +253,17 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   page system that moves through steps — an onboarding, a setup, a verification, a wizard, a form
   split across pages — whether or not each step saves as it advances, and over general advice to
   name a button for its action.
-- **Every page renders in the product's page layout — its sections, each with its heading and
-  description — including a page that reports a state**: a confirmation, such as the return page a
-  flow finished outside the product lands on, or an expired link. A label and a button centred in an
-  otherwise empty page is the defect, and so is a small card left under chrome that no longer
-  applies, such as tabs or a form header. A confirmation of something the reader finished or paid
-  for reads as one: it thanks them, marks the success, says what they now have and what happens
-  next, and ends on the action that moves on, in that section's footer — never a neutral status
-  panel or an empty placeholder waiting on data. A notice that the page is for somebody else, and a
-  status page standing in a finished flow's place, are deleted as the bullets above say.
+- **Every page renders in the product's page layout — its content in sections, each headed and
+  described as **Interface Copy** says — including a page that reports a state**: a confirmation,
+  such as the return page a flow finished outside the product lands on, or an expired link. A
+  section carries what the reader needs next — the record the state concerns, its status, the
+  action that moves on, in that section's footer. A confirmation of something the reader finished
+  or paid for also thanks them, marks the success, and says what they now have and what happens
+  next — never a neutral status panel, nor a placeholder for something the reader does not have yet
+  such as "appears here". A label and a button centred in an otherwise empty page is the defect,
+  and so is a small card left under chrome that no longer applies, such as tabs or a form header. A
+  notice that the page is for somebody else, and a status page standing in a finished flow's place,
+  are deleted as the bullets above say.
 - **A banner appears only when the reader has something to do, something is wrong, or something
   they submitted is waiting on a decision** — terms to accept, a verification to finish, a load
   that failed, a blocking state to resolve, a submission under review, worded from the reader's
