@@ -93,8 +93,10 @@ alwaysApply: true
 
 ## README
 
-- A README is written for the people who use and maintain the project. Anything only an agent acts
-  on goes in the repository's rules and skills instead, with repository-specific facts in
+- A README's reader is a person using or developing the project, so a README holds what the
+  project is, how to run or use it, where a developer finds its parts, and a Local Development
+  section with the commands to install, run, and validate it locally. Anything only an agent acts on
+  goes in the repository's rules and skills instead, with repository-specific facts in
   `.agents/project.md` or a reference it points to: an environment variable or credential an agent
   session reads, even one a person adds to a cloud environment for the agent; a tool installed for
   agents; a procedure only agents follow.
@@ -115,4 +117,3 @@ alwaysApply: true
 - Introduce each example with a one- or two-line description of its purpose, followed by a small code example.
 - In cron-based examples, use a conventional schedule such as every Monday and add an inline comment translating the cron expression into that plain-language schedule.
 - For reusable GitHub Actions, include an Inputs table with the input name, default value, and purpose.
-- Include a Local Development section with the commands needed to install, run, and validate the project locally.
