@@ -200,12 +200,11 @@ first time. Fix what the gate flags, commit the fixes, and re-run it once. The c
 gets the final `code-simplify` pass and `acceptance-gate`'s final acceptance question when the pull
 request leaves draft, under **Completion**.
 
-- **When the gate runs follows the pull request's state, and the pre-push checks below always run
-  first.** On a draft, or a branch with none yet, a committed step is pushed as soon as its checks
-  pass, and the gate runs over the pushed increment; what it flags goes out as the next fix pushes.
-  On a pull request ready for review, the gate runs before the push. A flag on a draft never holds
-  committed work on one machine, and nothing else does either — not batching with pending work, a
-  wait for another approval, or saving a gate run: while one flag is fixed, further steps keep
+- **Where the gate runs follows the pull request's state; the pre-push checks below always run
+  first.** On a draft, or a branch with none yet, the gate runs over the pushed increment, and what
+  it flags goes out as the next fix pushes. On a pull request ready for review, it runs before the
+  push. On a draft nothing holds committed work on one machine — a flag, batching with pending
+  work, a wait for another approval, saving a gate run: while one flag is fixed, further steps keep
   landing on top, and a held range only grows.
 
 - **The pre-push checks are the ones CI runs on a pull request, run the way CI runs them.** Read
@@ -228,18 +227,21 @@ or return meets the next phase without the blank line required by the global cod
 Fix every listed boundary in the complete changed files; an unrelated bug or a passing formatter
 does not satisfy this spacing check.
 
-- **Commit each small coherent step and push it as soon as its checks pass** — a
+- **Commit each small coherent step and push it as soon as its checks pass**, with its gate where
+  the first bullet places it — a
   function and its callers updated, a test brought to pass, one finding fixed — never at the end of
   a unit or task. A push is what lets the user review and test the work, and the only copy that
   outlives the machine: a recycled container or an ended session takes every commit and edit no
   remote holds.
-- **No edit sits uncommitted through a long wait outside the gate.** Before the slow verification
+- **No edit sits uncommitted through a long wait outside the checks.** Before the slow verification
   below, a background worker, CI on the pushed head, or a question to the user, bring the work to a
   coherent step, commit it, and push it; the checks' own runs are part of the push, not such a wait.
 - **Delegated edits run at this cadence.** A brief handing a worker edits states it and names the
-  branch the worker pushes to. The worker pushes each step once its pre-push checks pass and
+  branch the worker pushes to. The worker pushes each step as the first bullet places the push and
   reports the branch and head; the delegating agent, which holds the intent statement, gates every
-  worker's pushed increment from the remote branch and returns what the gate flags as fix steps.
+  worker's pushed increment from the remote branch and returns what the gate flags as fix steps. On
+  a pull request ready for review, a worker without an agent tool hands the gate up under
+  `subagent-selection`'s **Dispatch** before it pushes.
   The worker ends with nothing uncommitted and nothing unpushed, never amends or rebases a pushed
   commit, and its report names the branch and head, which **Reported Outcomes** reads on the
   remote.

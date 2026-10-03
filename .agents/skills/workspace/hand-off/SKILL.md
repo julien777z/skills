@@ -42,9 +42,9 @@ and fix nothing along the way.
    item `defer-scope` refuses as a confirmed defect is not dropped: it becomes the first item of
    unfinished in-flight work on its pull request, so the next session fixes it in the same change.
 4. **Secure every branch.** In each repository with work in flight, commit uncommitted changes with
-   a message that says what state they are in, using a `wip:` prefix when they are incomplete, run
-   `execute-task`'s **Pre-Push Gate** on the increment report-only, applying none of its fixes, and
-   push to the branch's upstream. Every simplification finding, failing check, and acceptance flag
+   a message that says what state they are in, using a `wip:` prefix when they are incomplete, push
+   to the branch's upstream, and then run `execute-task`'s **Pre-Push Gate** over the pushed
+   increment report-only, applying none of its fixes. Every simplification finding, failing check, and acceptance flag
    is pushed unfixed and listed under **Unfinished in this change**, the flag quoted. Convert a pull
    request that is ready for review back to draft first — GraphQL `convertPullRequestToDraft` —
    so the push starts no test jobs. Apply and commit any stash, or name it as lost. Never rewrite
