@@ -103,13 +103,25 @@ how those issues are handled.
   is genuinely the user's is about a **product change** — what a feature does, what a record keeps,
   who a surface serves, a contract a consumer outside the user's control speaks — never whether an
   encountered issue gets fixed.
-- Being found rather than assigned, or predating the change — older code in a file the work
-  touches, a gap a gate labels pre-existing — changes nothing about whether it is fixed; it changes
-  only where the fix lands, which is the branch in flight. Say in the report what was fixed and why it
-  was in the path of the work, so the reviewer sees a decision rather than a surprise.
+- **Where a defect came from is never asked, and the fix never waits on it.** Being found rather
+  than assigned, predating the change — older code in a file the work touches, a gap a gate labels
+  pre-existing — or being the change's own doing changes nothing about whether it is fixed or where:
+  the fix lands on the branch in flight. "Is this the change's doing or pre-existing?", "was it
+  already there?", "is it a regression of earlier work?" — put to the user, a gate, a reviewer, or a
+  worker — have no answer that changes that, so the question only holds the fix behind it, and a
+  defect reported as under investigation is reported instead of fixed. The agent that sees it
+  starts the fix in that turn, itself or through a worker's brief; where history would help write
+  the fix — a lost commit to restore, the change that broke it — read it from version control while
+  fixing. Origin decides one thing in this guidance: whether an authorized merge waits on a failing
+  check, under the GitHub rule's **Merge Authorization**. That decides only when the merge happens;
+  the failing check is still an encountered issue, fixed under `pre-production`'s red-CI rule. Say
+  in the report what was fixed and why it was in the path of the work, so the reviewer sees a
+  decision rather than a surprise.
 - What puts a **new** issue in that path is an act the work performed: a file it opened, a command
-  it ran, a check it read, a review it received. How far the fix then reaches is a different
-  question, and `pre-production`'s **Scope Follows The Defect, Not The Request** answers it.
+  it ran, a check it read, a review it received, and anything it looked at — a screenshot or
+  recording, its own or a worker's, a walk through the product, a log, a report. A defect seen there
+  is found exactly as a failing test is. How far the fix then reaches is a different question, and
+  `pre-production`'s **Scope Follows The Defect, Not The Request** answers it.
 - Never reject a fix solely because it is described as high risk. Assess its expected net effect,
   concrete failure modes, and available validation instead of treating the label as a stop rule.
 - Fix and verify a non-defect improvement when the correction can be completed in one focused pass
@@ -228,8 +240,8 @@ does not satisfy this spacing check.
   pull request out of draft. A ready pull request the task resumes changing goes back to draft
   first, as the GitHub rule's **Branches and Pull Requests** says.
 - **The order is change, gate, push, then the slow verification**: a browser walkthrough, a full or
-  end-to-end suite, a run against a service without the change, root-causing a failure the change
-  did not cause — anything slow or needing a running stack. What it finds goes out as fix pushes,
+  end-to-end suite, a run against a service without the change, root-causing a failure seen along
+  the way — anything slow or needing a running stack. What it finds goes out as fix pushes,
   each through its own gate.
 - **Pushed is not done**: the change is reported done only once that verification has passed.
 - **Never hold a gated commit** to batch it with pending work, to wait for another approval, or to

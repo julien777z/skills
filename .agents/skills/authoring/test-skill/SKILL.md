@@ -53,8 +53,21 @@ a code change is tested: against the case that motivated it, with the change and
    exploration the scenario could have pointed at. Beside the triggering case, build a second
    scenario on a different member of the same class, so the result shows the edit's breadth and
    not only its one instance.
-3. **Save both texts beside it:** the edited skill file and the original from the freshly fetched
-   default branch. Reviewers read one or the other by path; nothing else about their prompt differs.
+   **Then build a third on the likeliest loophole**: a route by which a reader follows the edited
+   text and still commits the miss. Look for it in three places. One is an escape the wording leaves
+   open — asking instead of acting, offering the work as a choice, deferring it, calling it out of
+   scope, reporting it rather than doing it, deciding the case falls outside the rule, or doing the
+   step in name only. Another is guidance the same session also loads that points the other way — a
+   global rule, an output-style skill, a caller or callee of the edited skill, an example that still
+   shows the old behaviour; search those files for the miss's own words and for their opposite, and
+   put the file that opens the route in both runs' reading lists. The third is the edit itself: one
+   that gives the reader something new to do or look at opens a route of its own, so test what the
+   reader does when that thing turns up something wrong — a capture the edit says to open showing a
+   defect, a check it adds failing, a step it adds that cannot complete.
+3. **Beside the scenario, save both texts** of every file the change edits that a run reads — the edited
+   skill, and any adjacent file a loophole brought into the change under step 8: the branch copy
+   and the original from the freshly fetched default branch. Edited runs read the branch copies,
+   controls the originals; nothing else about their prompt differs.
 4. **Write the pass criteria before launching anything.** Two to four statements, each answerable
    yes or no from a report alone, naming what the report must contain — a count, a named sibling, a
    proposed structure, a check performed — never how well the report reads. A criterion the
@@ -63,7 +76,7 @@ a code change is tested: against the case that motivated it, with the change and
    reading of it.
 5. **Launch the reviewers** using **Reviewer selection** below, in parallel when
    capacity allows. Each selected model gets one run reading the edited text and one reading
-   the original. Identical prompts save for the skill path. Read-only, findings only, no edits;
+   the original. Identical prompts save for those paths. Read-only, findings only, no edits;
    the parent applies nothing from a smoke run, because the run judges wording, not the code.
    Queue pairs when capacity is limited; never spawn a duplicate while a run is in flight.
 6. **Score every report** against every criterion, quoting the line that satisfies or fails it, and
@@ -78,9 +91,11 @@ a code change is tested: against the case that motivated it, with the change and
      problematic" — is this kind, and the revision states the disposition as fixed and names those
      reasons as not reasons. The scenario cannot satisfy the criterion, such as a file missing from
      the reading list, or its prompt never made the reader open the skill file: fix the scenario.
+     The run took a loophole another loaded file opens: fix it in that file, which joins the change.
      The report shows the behaviour in words the criterion did not search for: rephrase the
-     criterion to that behaviour. A wording change reruns every edited run that missed, together; a
-     scenario change reruns every run, controls included; a changed criterion rescores every report.
+     criterion to that behaviour. A wording change in any file under test reruns every edited run
+     that reads that file, together; a scenario change reruns every run, controls included; a changed
+     criterion rescores every report.
    - **No control misses** means the scenario has not rebuilt the miss. Sharpen it until the
      original text misses — for an edit that broadens a rule, build it on a member of the class the
      original never named — and rerun every run.
@@ -164,7 +179,7 @@ run heading and the round bullet appear only on a run that was rerun.
 
 - Reviewers never see the expected answer, the criteria, or one another's reports.
 - Follow the shared tier selection. Never omit a control or claim complete coverage when a tier was not run.
-- Never edit the skill under test between launching a pair of runs and scoring them.
+- Never edit any file under test between launching a pair of runs and scoring them.
 - Keep the scenario while the branch is open; every later edit of that skill reuses it.
 - Never merge with a failing run or stand with a miss: diagnose it, change what caused it, and
   rerun. The decisions are the tester's and are never put to the user; asking holds every later

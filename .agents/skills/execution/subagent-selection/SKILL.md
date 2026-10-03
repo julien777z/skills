@@ -66,9 +66,10 @@ context and returns its verdict into the step waiting on it; nothing else does b
 - **A worker hands each capture the user should see up the same way, as it is made.** Through any
   mid-run channel the host gives it to the delegating agent, it sends the file path and a line on
   what the capture shows; a worker whose only channel is its final message returns with the
-  captures made since and is resumed. A worker its brief says cannot be resumed keeps going instead
-  and returns its captures with its final report, and the delegating agent forwards them as they
-  arrive.
+  captures made since and is resumed. Work that will make such captures goes to a worker the
+  delegating agent can resume or hear from mid-run; where the host offers neither, the delegating
+  agent splits the work so each delegation ends at one such capture, and forwards each as it
+  arrives.
 
 ## Output
 
