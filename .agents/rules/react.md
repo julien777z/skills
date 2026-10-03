@@ -308,6 +308,13 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   required fields are normal editing state, not an error banner. Show errors for failures after a
   valid action or for failed data requests.
 
+- **A page that edits saved settings saves through one floating bar, never through buttons on the
+  page.** Once any field differs from its saved value, the bar rises from the bottom edge of the
+  viewport to rest a little above it, holding a cancel action that restores the saved values and a
+  save action; it stays in view while changes are unsaved and slides away once they are saved or
+  cancelled. A reader who unticks one topic on a newsletter preferences page sees it rise, and
+  ticking the topic again sends it away. A save or reset button per section, or a row of them at the
+  end of the page, is the defect. One shared component owns the bar, under **Shared Surfaces**.
 - **A form a person signs, certifies or attests to starts empty.** Nothing is seeded from a profile
   or an earlier submission, because the signer vouches for what they entered.
 - **A form longer than a handful of fields is grouped into titled sections,** each holding the

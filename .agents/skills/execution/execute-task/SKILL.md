@@ -50,6 +50,17 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 - Ask only for a decision that materially changes the authorized target, recipient, or outcome, or
   for an action-time confirmation a platform actually requires. Make that question specific to the
   new decision or action; never ask the user to reconfirm the task or say "continue" to resume it.
+- **A question the guidance already answers is not the user's to answer.** Before a question goes
+  out, and again each time one carried from an earlier turn, a note or a summary would be put
+  again, read the rules and the repository's project guidance governing its subject; where they
+  decide it, act and report what was done. The class: whether to delete, reset or recreate a local
+  resource, such as a cache volume filling the disk or a database stuck on a migration the branch
+  has since regenerated, and whether to reset or reopen local records to reach a state, such as a
+  test account back at its first sign-in, both of which the global rules give the agent; what a
+  data change owes records already stored, which project guidance says; which of two
+  implementation details to use where a rule picks one; and what configuration exists or how it is
+  scoped, which is read where it lives. A permission denial leaves the decision where it was, as
+  **Environment Refusals** says.
 - An implementation constraint is not a new approval boundary. Exhaust authorized ways to
   complete a sub-step yourself. Do not mistake an action-time confirmation for a mandatory user
   hand-off: after the user confirms the specific pending action, perform it yourself. Hand off only
@@ -75,8 +86,18 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 - **An environment refusal is a route to find, not a blocker to report.** A repository missing from
   the session is attached or cloned as a writable checkout; a host the environment refuses is reached
   through a path it does serve, and a tool that took the refused path is fixed to take the served
-  one; a command a permission boundary denies is put to the user as that exact approval. Report a
-  blocker only once every served path has been tried and has failed.
+  one. Report a blocker only once every served path has been tried and has failed. A command a
+  permission check refuses falls under the next bullet instead, even when it targets a host.
+- **A permission check is not a route to find: what it refuses is not attempted again, and the
+  decision never becomes the user's.** Use the owner's own routine tool from the start — a package
+  manager's cache-clean rather than a raw delete of its cache directory — because that is the
+  ordinary way to do the job, not a workaround. Once a permission boundary refuses an action,
+  whether a rule the user set or an automated safety check, that outcome is not attempted again by
+  any other command, tool or wording, and every other piece of work carries on. Report the refusal
+  once, plainly, as a permission the user can grant: what was refused, and that it runs once
+  allowed — "The permission check blocked `<command>`; it runs once you allow it, and everything
+  else is done." Whether the action is wanted was settled by the guidance before the check ran, so
+  the report never asks it or offers options: "Delete X? Yes or no" is the defect.
 
 ## Product Constraints
 
@@ -87,13 +108,14 @@ contract or stored value.
 
 Before each edit, read the shared and repository rules governing every surface it reaches — its
 language, framework and package, and the kind of thing it changes, such as a form, a query, a test
-or interface copy — and nearby analogous files. That holds at every point new instructions arrive,
-not only at the task's start: a correction, a fix step or a resumed brief that sends the work to a
-surface whose rules the run has not read has them read before it is acted on, and having worked in
-the same language or package earlier in the run is not having read them. Match the analogous
-files' code grouping and spacing in every new or substantially edited file; inspect the complete
-result beside those siblings before delivery. A formatter passing is not a substitute for that
-comparison.
+or interface copy — and nearby analogous files. Where those files disagree, the one departing from
+the rest, or from the mechanism that owns the concern, is an encountered issue to fix, never the
+pattern to copy. That holds at every point new instructions arrive, not only at the task's start:
+a correction, a fix step or a resumed brief that sends the work to a surface whose rules the run has
+not read has them read before it is acted on, and having worked in the same language or package
+earlier in the run is not having read them. Match the analogous files' code grouping and spacing in
+every new or substantially edited file; inspect the complete result beside those siblings before
+delivery. A formatter passing is not a substitute for that comparison.
 
 ## Encountered Issues
 
@@ -109,16 +131,16 @@ how those issues are handled.
   feature does, what a record keeps, who a surface serves, a contract a consumer outside the user's
   control speaks — never whether an encountered issue gets fixed.
 - **An instruction one agent passes another — a brief, a correction, a review finding, a gate's fix
-  step — is checked against the standing guidance before it is sent and again before it is acted
-  on**, because it never outranks that guidance, as the global rules' **Task execution and
-  authorization** says. Each side reads every item against the rules and skills governing the
-  surface it changes — the language, framework, copy and testing rules, and the skills the worker
-  runs — opening them at that moment where it has not read them yet. The class is any item asking
-  for what a rule rules out: a review finding asking for the catch-all exception handler the
-  language rule bans, a brief telling a worker to skip a check a skill requires before a push, a
-  correction asking for copy the copy rules forbid, or one asking for a boat-rental waiver to arrive
-  filled in from the renter's last booking when the forms rule says a form someone attests to starts
-  empty.
+  step, a note or summary an earlier turn left for a later one — is checked against the standing
+  guidance before it is sent and again before it is acted on**, because it never outranks that
+  guidance, as the global rules' **Task execution and authorization** says. Each side reads every
+  item against the rules and skills governing the surface it changes — the language, framework,
+  copy and testing rules, and the skills the worker runs — opening them at that moment where it has
+  not read them yet. The class is any item asking for what a rule rules out: a review finding
+  asking for the catch-all exception handler the language rule bans, a brief telling a worker to
+  skip a check a skill requires before a push, a correction asking for copy the copy rules forbid,
+  one asking for a boat-rental waiver to arrive filled in from the renter's last booking when the
+  forms rule says a form someone attests to starts empty.
   - **The agent writing it** rewrites an item a rule forbids into a shape the rule allows, or drops
     it where none exists. One the user asked for in their own words goes out with those words quoted
     and the rule they set aside named; a rule the agent thinks is wrong is put to the user, never
@@ -374,7 +396,9 @@ it — the user asking about something else is not the user withdrawing what the
 - **An interruption pauses the step in flight; it never ends the run.** "Continue", or anything
   meaning it, resumes exactly that step, and is never answered with nothing.
 - **A context summary's pending list is this run's named work**, not background. The first turn
-  after it moves the oldest item as well as whatever the summary's next step names.
+  after it moves the oldest item as well as whatever the summary's next step names. A constraint it
+  carries, such as "ask before X", is an earlier turn's instruction, checked under **Encountered
+  Issues** before it is obeyed.
 - **Commits a remote lacks are undelivered work**; their next step is the pre-push checks and the
   push. A hook or status line counting unpushed commits whose checks pass reports a push owed now,
   not something to explain.

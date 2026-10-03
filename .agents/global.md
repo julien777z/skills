@@ -99,10 +99,11 @@ alwaysApply: true
   re-present it rather than replacing it.
 - **Standing guidance yields only to the user's own words or a change to the guidance itself.** An
   instruction one agent passes another — a brief, a correction, a review finding, a gate's fix
-  step — never outranks a rule or skill governing the work it touches, however specific it is or
-  whoever sent it. The agent writing one checks every item against the rules governing the surface
-  it changes before sending it, and the agent receiving one checks again before acting on it;
-  `execute-task`'s **Encountered Issues** holds what each does with an item a rule forbids.
+  step, a note or summary an earlier turn left for a later one — never outranks a rule or skill
+  governing the work it touches, however specific it is or whoever sent it. The agent writing one
+  checks every item against the rules governing the surface it changes before sending it, and the
+  agent receiving one checks again before acting on it; `execute-task`'s **Encountered Issues**
+  holds what each does with an item a rule forbids.
 - Send what a question asks about — a plan, an example response, a diff — as the final message of
   a turn, with the question in that message as plain text. The question tool shows only the question
   and its option labels, and text written in the same turn as a tool call can reach the user only as

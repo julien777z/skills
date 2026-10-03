@@ -116,6 +116,12 @@ also not a reason to stop at the first file, and the section below governs how f
 - Treat configuration inputs as owned contracts. Replace a stale deployed value at the existing
   setting and its deployment owner; do not add another file, environment key, or fallback path to
   override it.
+- **A value that differs by environment has one name, and whatever already scopes values per
+  environment supplies it** — an environment's secrets, a per-environment config file, a deployment
+  registry. Never a second name per environment, nor an expression or branch choosing between
+  names, such as `FEED_URL_STAGING` beside `FEED_URL_PRODUCTION` picked by `env == "production"`.
+  Before adding a value, read how its siblings are scoped and supplied; a sibling selecting between
+  per-environment names is a defect, moved onto the one name.
 - Legitimate production resilience is not transitional fallback code. Keep the error handling,
   browser support, empty states, and provider-failure behavior the released product needs.
 - Prefer a deliberate break to an owned API, wire, schema, payload, or stored shape when it
