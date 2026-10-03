@@ -104,10 +104,9 @@ how those issues are handled.
   who a surface serves, a contract a consumer outside the user's control speaks — never whether an
   encountered issue gets fixed.
 - Being found rather than assigned, or predating the change — older code in a file the work
-  touches, a gap a gate labels pre-existing, behaviour broken before this increment — changes
-  nothing about whether it is fixed; it changes only where the fix lands, which is the branch in
-  flight. Say in the report what was fixed and why it was in the path of the work, so the reviewer
-  sees a decision rather than a surprise.
+  touches, a gap a gate labels pre-existing — changes nothing about whether it is fixed; it changes
+  only where the fix lands, which is the branch in flight. Say in the report what was fixed and why it
+  was in the path of the work, so the reviewer sees a decision rather than a surprise.
 - **Where a defect came from is never asked, and the fix never waits on it.** "Is this the change's
   doing or pre-existing?", "was it already there?", "is it a regression of earlier work?" — put to
   the user, a gate, a reviewer, or a worker — have no answer that changes the disposition, so the
