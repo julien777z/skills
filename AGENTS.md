@@ -178,6 +178,9 @@ setRecords(records);
 return records;
 ```
 
+- A bootstrap or setup folder holds only its entrypoint at its root, such as `setup/run.sh`; every
+  supporting script, module, or data file it uses goes in `setup/resources/`.
+
 ## Repository guidance
 
 - Reference external code and automation by a maintained version tag when available, or by a
@@ -195,9 +198,10 @@ return records;
 - Sample values follow the same rule: prefer plainly synthetic literals over ones shaped like a
   real identifier from another system's domain.
 
-- Every `.agents/rules/*.md` file states guidance that holds in any repository using that
-  technology. Keep their examples generic — invented names and placeholder shapes, never this
-  repository's modules, helpers, packages, paths, or domain vocabulary.
+- `.agents/global.md` states guidance that holds in every repository, and every `.agents/rules/*.md`
+  file guidance that holds in any repository using its technology. Keep their examples generic —
+  invented names and placeholder shapes, never this repository's modules, helpers, packages, paths,
+  or domain vocabulary, and never the product, tool, or platform whose incident prompted the change.
 - `.agents/project.md` is the home for repository-specific guidance: its base classes, helpers,
   packages, layout, documentation structure, inventories, and generated sections.
 - Repository facts only some work needs — a local stack, test accounts, deployment targets, a
@@ -259,7 +263,7 @@ return records;
 - Treat each repository as an independent context. Write PR titles, descriptions, review comments, and issue comments using only the target repository's domain, contracts, changes, and validation. Do not import another repository's product names, domain knowledge, implementation details, or coordination history; do not name or link its PRs or post cross-repository coordination comments. Keep combined status and coordination in user chat.
 - Before publishing or updating those artifacts, check the final text against the target repository's diff and evidence. Remove foreign domain references and cross-repository PR links, even when the work shares a session or motivated this change.
 - **A session delivers at most two pull requests per repository: one for source and one for agent configuration.** Agent configuration is the canonical `.agents` tree — skills, rules, and agent definitions; everything else is source. Every later piece of work in that repository — a follow-up, a guidance change, a copy sweep, a fix found along the way — joins the open pull request of its kind, even when it could be reviewed independently or feels like a different kind of work; those two kinds are the only split. Before creating a branch, query the session's open pull requests in that repository and the current branch's. Open a second pull request of one kind only when the user asks or the first has merged; a pull request per concern leaves the user reconciling several reviews of one piece of work. One already opened is not kept: move its commits onto the pull request of its kind in flight and close it, saying where the work went.
-- **Agent configuration and source never share a branch**, even when a guidance change follows the source work checked out; a pull request found carrying both is split by moving one kind's files onto the pull request of that kind. Sharing one holds the guidance behind source review and outside the agent-configuration merge authorization below.
+- **Agent configuration and source never share a branch**, even when a guidance change follows the source work checked out; a pull request found carrying both is split by moving one kind's files onto the pull request of that kind. Sharing one holds the guidance behind source review and outside the agent-configuration merge authorization below. This rule is the user's standing permission for the second branch: when a harness or session designates one branch per repository and forbids pushing to any other without permission, the designated branch carries the first kind of work the session delivers in that repository, and, with none open for the session, the other kind's branch is that name with `-agents` or `-source` appended, created and pushed without asking.
 - A new branch starts from the default branch, or, while a pull request the user named as holding their current work stays open, from that pull request's branch when it is of the same kind; an agent-configuration branch never starts from a source branch. A skill whose contract names its own base keeps it. A branch already carrying another open pull request's unmerged commits is stacked on that pull request: keep those commits, build on top of them, and open its pull request against that pull request's branch. Restarting a stacked branch from the default branch drops the work it was built on, and nothing reports the loss.
 - Never commit or push agent-authored changes directly to the default branch. If the checkout is on the default branch, detached, or on a branch of the other kind, move to the session's open branch of the work's kind or, with none, create a descriptive non-default branch; otherwise retain the current branch and deliver through its pull request.
 
