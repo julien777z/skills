@@ -13,6 +13,7 @@ signed-in dashboard doing real work, not a claim that it started.
 
 - `agent-browser` — the browser automation CLI this skill drives.
 - `execute-task` — what happens to a defect a walkthrough finds, under its **Encountered Issues**.
+- `proton-pass` — a sign-in password project guidance does not supply.
 
 ## Principles
 
@@ -104,7 +105,8 @@ matcher proves the component renders and nothing about the screen a user reaches
 genuinely cannot complete, report the walkthrough as not done. Drive the browser automation's own
 profile; never read the user's saved passwords, cookies, local storage, or session files.
 
-Keep a password out of argv and the transcript: read it from the file that holds it, build the
+Keep a password out of argv and the transcript: read it from the file project guidance names, or
+through `proton-pass` when it names none, build the
 script that fills the field, and pipe it to the browser command through stdin. Set the value through the native setter and
 dispatch a bubbling `input` event so a framework-controlled input registers it:
 

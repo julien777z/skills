@@ -1,13 +1,15 @@
 ---
 name: proton-pass
-description: Retrieve credentials from Proton Pass with pass-cli. Use every time a task needs to log in to an account, website, service, or tool, or needs a password, API key, token, SSH key, or other secret, before asking the user for it or looking for it anywhere else.
+description: Retrieve credentials from Proton Pass with pass-cli. Use every time a task needs to log in to an account, website, service, or tool, or needs a password, API key, token, SSH key, or other secret that the session environment and the repository's project guidance do not already supply, before asking the user for it.
 short_description: 'Retrieve credentials from Proton Pass with pass-cli.'
 ---
 
 # Proton Pass
 
-Every credential a task needs comes from Proton Pass through `pass-cli`, signed in with the
-personal access token in `PROTON_PASS_PERSONAL_ACCESS_TOKEN`. Never ask the user to paste a secret
+A credential the session environment already holds, or one the repository's project guidance
+names, such as an injected token or a local test identity, is used from there. Every other account
+credential comes from Proton Pass through `pass-cli`, signed in with the personal access token in
+`PROTON_PASS_PERSONAL_ACCESS_TOKEN`, before the user is asked. Never ask the user to paste a secret
 into chat.
 
 ## Sign In
@@ -15,11 +17,12 @@ into chat.
 1. **Check the CLI.** Run `pass-cli --version`. When it is missing, install it with the official
    script from the [installation guide](https://protonpass.github.io/pass-cli/get-started/installation/)
    and put its install directory on `PATH`.
-2. **Use an isolated session directory and a key store the machine supports.** Export these in
-   every shell that runs `pass-cli`:
+2. **Use one isolated session directory and a key store the machine supports.** Choose the
+   directory name once per task and export the same values in every shell that runs `pass-cli`;
+   a new name per shell starts an empty session and forces a fresh login each time:
 
    ```sh
-   export PROTON_PASS_SESSION_DIR="/tmp/pass-agent-<unique-name>"
+   export PROTON_PASS_SESSION_DIR="/tmp/pass-agent-<task-name>"
    export PROTON_PASS_KEY_PROVIDER=fs  # only where no system keyring is available
    ```
 
