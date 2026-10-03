@@ -42,8 +42,10 @@ and fix nothing along the way.
    item `defer-scope` refuses as a confirmed defect is not dropped: it becomes the first item of
    unfinished in-flight work on its pull request, so the next session fixes it in the same change.
 4. **Secure every branch.** In each repository with work in flight, commit uncommitted changes with
-   a message that says what state they are in, using a `wip:` prefix when they are incomplete, and
-   push to the branch's upstream. Apply and commit any stash, or name it as lost. Never rewrite
+   a message that says what state they are in, using a `wip:` prefix when they are incomplete, run
+   `execute-task`'s **Pre-Push Gate** on the increment, and push to the branch's upstream. What the
+   gate flags is still pushed, unfixed, and listed under **Unfinished in this change** with the flag
+   quoted. Apply and commit any stash, or name it as lost. Never rewrite
    history or force-push. When a push is refused, report the exact blocker.
 5. **Bring each pull request body up to date** against the full diff from its merge base. Read the
    complete existing body first and keep it a description of the change, as the GitHub rules

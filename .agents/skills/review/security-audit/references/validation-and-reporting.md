@@ -137,8 +137,8 @@ update issue metadata and states.
    Where the session exposes no Linear integration, an approved finding is carried by its fix and a
    deferred one by `defer-scope`; a dropped one is recorded nowhere, which is what dropping it means.
 
-3. **Implement only approved items.** Apply the smallest correct fix and add or adjust tests. Commit
-   and push only after the approved implementation is complete. The fix pull request contains the
+3. **Implement only approved items.** Apply the smallest correct fix and add or adjust tests.
+   Commit each step and push it through `execute-task`'s **Pre-Push Gate** as it is made. The fix pull request contains the
    code, tests, contracts, migrations, and generated application output the fix needs, and nothing
    about the audit itself.
 

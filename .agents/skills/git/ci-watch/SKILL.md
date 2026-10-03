@@ -15,7 +15,7 @@ Monitor a pull request through the delayed-review window and act on valid feedba
 
 ## Workflow
 
-1. Resolve the pull request from an explicit number or URL, or retrieve the matching current-repository record from `session-ledger` and verify its current branch and state with the hosting service. If the current branch is the repository default branch and changes are needed, create a new work branch before editing; after making and verifying changes, commit, push, create a PR if one does not already exist for that branch, record its returned canonical URL with `session-ledger`, then poll CI for that PR. If no matching record exists, ask for the target; never infer it from local branch relationships.
+1. Resolve the pull request from an explicit number or URL, or retrieve the matching current-repository record from `session-ledger` and verify its current branch and state with the hosting service. If the current branch is the repository default branch and changes are needed, create a new work branch before editing; after making and verifying changes, commit, push through `execute-task`'s **Pre-Push Gate**, create a draft PR if one does not already exist for that branch, record its returned canonical URL with `session-ledger`, then poll CI for that PR. If no matching record exists, ask for the target; never infer it from local branch relationships.
 2. Record a baseline containing the head SHA, review submissions, conversation comments, inline review threads, resolution state, and latest finding timestamp. Prefer thread-aware GitHub reads so duplicate, outdated, and resolved findings are distinguishable.
 3. Check and investigate existing review threads, comments, and issue/PR conversation items as part of the baseline, not only new findings. Classify each unresolved or recently-updated item as legitimate, duplicate, already fixed, stale/outdated, ambiguous, or incorrect before deciding whether the watch can be quiet.
 4. Start a 15-minute quiet timer from the most recent finding, from the latest baseline item that still needs investigation, or from the baseline check when no findings exist.
@@ -25,8 +25,7 @@ Monitor a pull request through the delayed-review window and act on valid feedba
    - Read the cited code and relevant surrounding behavior.
    - Classify it as legitimate, duplicate, already fixed, stale/outdated, ambiguous, or incorrect.
    - Fix legitimate issues with the smallest behaviorally complete change.
-   - Run focused checks proportional to the change.
-   - Commit and push verified fixes to the PR branch promptly. Re-read remote state before pushing if the branch changed concurrently.
+   - Commit each verified fix and push it promptly to the PR branch through `execute-task`'s **Pre-Push Gate**. Re-read remote state before pushing if the branch changed concurrently.
    - Resolve review threads that are fixed, stale/outdated, duplicates, false positives, not applicable, or otherwise incorrect; leave ambiguous or still-actionable threads unresolved.
 7. After every push, restart the 15-minute quiet timer from the push time and continue polling because new automated reviews may target the new commit.
 8. Stop the watch loop when the PR is ready to merge: either all available code-review bots approve or report no findings, or the only remaining review items are unactionable, false positives, stale/outdated, or otherwise incorrect and GitHub checks are green. For cleanup-only feedback, apply the **counted-review-round completion rule**:
@@ -44,6 +43,7 @@ Monitor a pull request through the delayed-review window and act on valid feedba
 - Preserve unrelated local changes and generated artifacts.
 - Do not force-push, rewrite history, reply to comments, or dismiss findings unless the user explicitly authorizes it. Resolve threads after classifying them as fixed or not applicable.
 - Surface conflicting or ambiguous feedback instead of guessing.
+- A draft pull request's test jobs do not run, so a draft is never green or merge-ready: watch its review findings and the checks a draft runs, say in the report that tests have not run, and never mark it ready.
 - If authentication, permissions, or an unsafe concurrent branch update blocks progress, report the blocker; resume polling when it is safe to do so.
 
 ## Completion Report

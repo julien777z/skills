@@ -108,9 +108,9 @@ What happens next turns on whether the branch already carries commits of its own
 
 1. Separate the intended changes from unrelated worktree changes. If which changes are intended is ambiguous, stop and ask before staging anything.
 2. When the current branch is the default branch or HEAD is detached, create a collision-free branch named for the change, following whatever branch-naming convention the repository already uses. When already on a non-default branch, keep it.
-3. Stage only the intended changes, commit them with a concise message, and push with upstream tracking.
+3. Stage only the intended changes, commit them with a concise message, and push with upstream tracking through `execute-task`'s **Pre-Push Gate**.
 
-**When it already carries commits**, leave the worktree alone. Never stage and never commit — uncommitted work stays uncommitted and is reviewed in place. Push existing local-only commits with upstream tracking so the branch exists on the remote.
+**When it already carries commits**, leave the worktree alone. Never stage and never commit — uncommitted work stays uncommitted and is reviewed in place. Push existing local-only commits with upstream tracking, through `execute-task`'s **Pre-Push Gate**, so the branch exists on the remote.
 
 Then open a **draft** PR against the remote default branch when no open PR already has this branch as its head. Committing the first change above is what makes this always possible: a branch reaches this point with at least one commit, so there is never a state where a review runs with no PR behind it. If there is genuinely nothing to review — no commits and no uncommitted changes — stop before any of this.
 
