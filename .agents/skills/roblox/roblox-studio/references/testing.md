@@ -116,9 +116,10 @@ Verify SSH host keys, the intended guest editor, and the source/place before run
 
 A Linux host, such as a cloud agent container, can provide the Windows Studio build under Wine on an
 Xvfb display. The project's setup script installs Studio, Wine, the Wine prefix, and the toolchain;
-rerun it when one is missing or broken. Start Studio through the project's launch command, or run
-`RobloxStudioBeta.exe` from its directory under `wine` with `DISPLAY` set to the Xvfb display. A
-Studio window, its sign-in page or start page, in an X screenshot of that display shows the launch
+rerun it when one is missing or broken. Start Studio through the project's launch command; where the
+project defines none, start Xvfb and run `RobloxStudioBeta.exe` from its directory under `wine`,
+with `DISPLAY` set to that display and `WINEPREFIX` to the prefix the setup script created. A Studio
+window, its sign-in page or start page, in an X screenshot of that display shows the launch
 succeeded; qualify the rest as [Qualify input and capture](#qualify-input-and-capture) describes.
 
 Studio's logs are in `"$WINEPREFIX/drive_c/users/$USER/AppData/Local/Roblox/logs"`. When they
