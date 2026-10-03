@@ -197,6 +197,8 @@ return records;
   than borrowing the one real table the change was made for.
 - Sample values follow the same rule: prefer plainly synthetic literals over ones shaped like a
   real identifier from another system's domain.
+- Use an environment's exact domain name for both it and its tailnet; never append owner or
+  organization aliases. Name provider accounts and projects only as separate resources.
 
 - `.agents/global.md` states guidance that holds in every repository, and every `.agents/rules/*.md`
   file guidance that holds in any repository using its technology. Keep their examples generic —
@@ -211,13 +213,17 @@ return records;
 - A rule that cannot be stated without naming something this repository owns belongs in
   `.agents/project.md`. Move it there rather than rewording it into something generic but untrue.
 
+- **Every document holds only what its reader needs for its purpose.** A README, project guidance, a
+  skill, a rule, a design document, a pull request description, a code comment: each has one reader
+  and one job, and content goes to the document whose reader acts on it: an operator's runbook in a
+  README, an incident timeline in a skill, and a design specification in a code comment are each
+  content in the wrong document. A change adds to a document only what alters that document's
+  reader's work; being nearby, or already covering the area, is no reason.
 - Document current behavior only. Never describe what a symbol used to do, what was removed,
   renamed, or deprecated, and never write migration tables or upgrade notes.
 - Git history is the record of what changed; documentation describes what exists now.
 - The same applies to code comments and docstrings: no "formerly", "replaces", or "kept for
   backwards compatibility" notes.
-- Use an environment's exact domain name for both it and its tailnet; never append owner or
-  organization aliases. Name provider accounts and projects only as separate resources.
 
 - When a request replaces a route, API contract, or behavior, remove the prior alias or fallback. Retain legacy compatibility only when the user explicitly authorizes it in the current request; if retention is unclear, ask before adding it.
 
@@ -313,6 +319,9 @@ return records;
 
 ## README
 
+- A README's reader is a person using or developing the project, so a README holds what the
+  project is, how to run or use it, where a developer finds its parts, and a Local Development
+  section with the commands to install, run, and validate it locally.
 - Describe available capabilities without assuming how consumers will use the project or framing guidance as prohibitions such as "never do X."
 - Remove repeated explanations and prefer short sections, bullets, tables, and focused examples over long prose.
 - Write in plain language, as if explaining the repository to a colleague. Avoid repeating internal
@@ -330,7 +339,6 @@ return records;
 - Introduce each example with a one- or two-line description of its purpose, followed by a small code example.
 - In cron-based examples, use a conventional schedule such as every Monday and add an inline comment translating the cron expression into that plain-language schedule.
 - For reusable GitHub Actions, include an Inputs table with the input name, default value, and purpose.
-- Include a Local Development section with the commands needed to install, run, and validate the project locally.
 
 # Shared Rules
 
