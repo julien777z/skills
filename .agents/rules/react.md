@@ -300,11 +300,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - Use `useCallback` for handlers passed to memoized children
 - **A labelled button in a form, beside a field, or in a form's row of actions reads as a button at
   rest**: a filled surface, or a boundary with at least 3:1 contrast against what it sits on, plus
-  a hover state. One that reads as text or a faint outline beside an input is the defect. Icon-only
-  buttons in a toolbar are outside this rule, and a control meant to read as text takes the button
-  component's link-style variant when it acts and is a link only when it navigates. The call site
-  picks a button variant that reads as a button; a variant is restyled product-wide only where
-  every use of it stands as such an action, never with a class at one call site.
+  a hover state. One that reads as text or a faint outline beside an input is the defect. A control
+  may read as text only inside running text — a sentence, a hint, a field's description — where it
+  takes the button component's link-style variant when it acts and is a link when it navigates.
+  The call site picks a variant that reads as a button; a variant is restyled product-wide only
+  where every use of it stands as such an action, and never with a class at one call site, as
+  **Components and Props** says of every primitive.
 - **A button whose action is running is disabled, marked busy (`aria-busy`), and shows a spinner in
   place of its label at the same width**, so it cannot be pressed twice and nothing beside it moves.
   The label stays in the layout, transparent, holding the width and remaining the accessible name,
