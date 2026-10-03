@@ -94,7 +94,8 @@ alwaysApply: true
 ## README
 
 - A README's reader is a person using or developing the project: it holds what the project is, how
-  to run or use it, where its parts live, and the commands for local development.
+  to run or use it, where a developer finds its parts, and a Local Development section with the
+  commands to install, run, and validate it locally.
 - Describe available capabilities without assuming how consumers will use the project or framing guidance as prohibitions such as "never do X."
 - Remove repeated explanations and prefer short sections, bullets, tables, and focused examples over long prose.
 - Write in plain language, as if explaining the repository to a colleague. Avoid repeating internal
@@ -112,4 +113,3 @@ alwaysApply: true
 - Introduce each example with a one- or two-line description of its purpose, followed by a small code example.
 - In cron-based examples, use a conventional schedule such as every Monday and add an inline comment translating the cron expression into that plain-language schedule.
 - For reusable GitHub Actions, include an Inputs table with the input name, default value, and purpose.
-- Include a Local Development section with the commands needed to install, run, and validate the project locally.

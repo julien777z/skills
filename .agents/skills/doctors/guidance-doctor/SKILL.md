@@ -110,6 +110,7 @@ the reference, or cut what it anchored.
 Text at the wrong height for the reader: emphasis on a share of bullets above the guidance's
 example, hedges, brittle step-by-step logic where a heuristic would do, vagueness where a decision
 was needed, a menu of options where one default belongs, a heading with one bullet, banned terms,
+incident narrative or evidence that belongs in a project or verification record,
 and a description in the first or second person, or addressed to the reader as an instruction,
 where the host's guidance wants the third person — reported once as a convention when every
 description shares it, never as a finding per file. Evidence: counts per file, reported and never
