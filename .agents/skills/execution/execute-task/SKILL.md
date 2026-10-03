@@ -85,24 +85,49 @@ announce the invocation before the first edit. Listing it as a dependency is not
 Read the repository's product state from its project guidance before choosing how to change a
 contract or stored value.
 
-Before editing a language or package, read its applicable shared and repository rules and nearby
-analogous files. Match their code grouping and spacing in every new or substantially edited file;
-inspect the complete result beside those siblings before delivery. A formatter passing is not a
-substitute for that comparison.
+Before each edit, read the shared and repository rules governing every surface it reaches — its
+language, framework and package, and the kind of thing it changes, such as a form, a query, a test
+or interface copy — and nearby analogous files. That holds at every point new instructions arrive,
+not only at the task's start: a correction, a fix step or a resumed brief that sends the work to a
+surface whose rules the run has not read has them read before it is acted on, and having worked in
+the same language or package earlier in the run is not having read them. Match the analogous
+files' code grouping and spacing in every new or substantially edited file; inspect the complete
+result beside those siblings before delivery. A formatter passing is not a substitute for that
+comparison.
 
 ## Encountered Issues
 
 Apply `pre-production`'s encountered-issues policy while making the change. The rules below govern
 how those issues are handled.
 
-- **A bug the work turns up, or a finding a gate, review, or simplification pass returns, is fixed in
-  the change in flight, and offering it to the user is not a disposition.** "Want this handled, or
-  shall I leave it?" reads as diligence and is the failure this section exists to prevent: it spends
-  a turn to obtain permission for something already required, and a no leaves a known defect in the
-  tree with the agent's name on the decision. The question that
-  is genuinely the user's is about a **product change** — what a feature does, what a record keeps,
-  who a surface serves, a contract a consumer outside the user's control speaks — never whether an
-  encountered issue gets fixed.
+- **A bug the work turns up, or a finding a gate, review, or simplification pass returns, is fixed
+  in the change in flight, in a shape the standing guidance allows as the next bullet says, and
+  offering it to the user is not a disposition.** "Want this handled, or shall I leave it?" reads as
+  diligence and is the failure this section exists to prevent: it spends a turn to obtain permission
+  for something already required, and a no leaves a known defect in the tree with the agent's name
+  on the decision. The question that is genuinely the user's is about a **product change** — what a
+  feature does, what a record keeps, who a surface serves, a contract a consumer outside the user's
+  control speaks — never whether an encountered issue gets fixed.
+- **An instruction one agent passes another — a brief, a correction, a review finding, a gate's fix
+  step — is checked against the standing guidance before it is sent and again before it is acted
+  on**, because it never outranks that guidance, as the global rules' **Task execution and
+  authorization** says. Each side reads every item against the rules and skills governing the
+  surface it changes — the language, framework, copy and testing rules, and the skills the worker
+  runs — opening them at that moment where it has not read them yet. The class is any item asking
+  for what a rule rules out: a review finding asking for the catch-all exception handler the
+  language rule bans, a brief telling a worker to skip a check a skill requires before a push, a
+  correction asking for copy the copy rules forbid, or one asking for a boat-rental waiver to arrive
+  filled in from the renter's last booking when the forms rule says a form someone attests to starts
+  empty.
+  - **The agent writing it** rewrites an item a rule forbids into a shape the rule allows, or drops
+    it where none exists. One the user asked for in their own words goes out with those words quoted
+    and the rule they set aside named; a rule the agent thinks is wrong is put to the user, never
+    overridden by an instruction.
+  - **The agent receiving it** carries out every other item. For the forbidden one, it fixes the
+    defect the item names in a shape the rule allows, where one exists, and leaves only the
+    forbidden shape undone. It names that item and the rule it breaks to the sender, through the
+    next hand-up or report, and neither implements nor drops it silently. Only the user's own
+    words, quoted, with the rule they set aside named, override it.
 - **Where a defect came from is never asked, and the fix never waits on it.** Being found rather
   than assigned, predating the change — older code in a file the work touches, a gap a gate labels
   pre-existing — or being the change's own doing changes nothing about whether it is fixed or where:
