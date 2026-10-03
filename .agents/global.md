@@ -210,6 +210,14 @@ return records;
 - A rule that cannot be stated without naming something this repository owns belongs in
   `.agents/project.md`. Move it there rather than rewording it into something generic but untrue.
 
+- **Every document holds only what its reader needs for its purpose.** A README, project guidance,
+  a skill, a rule, a design document, a pull request description, a code comment: each has one
+  reader and one job, and content goes to the document whose reader acts on it. Being nearby, or
+  already covering the area, is no reason to add to a document; an operational procedure in a
+  README, an incident timeline in a skill, and a design specification in a code comment are each
+  content in the wrong document. A change
+  adds to a document only what alters that document's reader's work, and a dated observation from
+  one session belongs in none of them.
 - Document current behavior only. Never describe what a symbol used to do, what was removed,
   renamed, or deprecated, and never write migration tables or upgrade notes.
 - Git history is the record of what changed; documentation describes what exists now.

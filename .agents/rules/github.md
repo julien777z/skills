@@ -93,17 +93,8 @@ alwaysApply: true
 
 ## README
 
-- **A README is for a person using or developing the project, and holds only what they need to
-  start**: what the project is, how to run or use it, where its parts live, and the commands for
-  local development. Agent guidance — skill or rule listings, operational runbooks, verification
-  procedures, implementation pointers — belongs in the project's agent guidance. Design
-  specifications belong in the project's design documents, versions in its manifests, and how CI
-  is split up in its workflow files. A dated status note or an observation from one session belongs
-  nowhere.
-- A change adds to the README only when it adds or changes something that person does: a command,
-  a supported way to run the project, a public capability. A lesson, a fix, or a feature's internal
-  behavior goes to the guidance or document that owns it, even when the README already describes
-  that area.
+- A README's reader is a person using or developing the project: it holds what the project is, how
+  to run or use it, where its parts live, and the commands for local development.
 - Describe available capabilities without assuming how consumers will use the project or framing guidance as prohibitions such as "never do X."
 - Remove repeated explanations and prefer short sections, bullets, tables, and focused examples over long prose.
 - Write in plain language, as if explaining the repository to a colleague. Avoid repeating internal
