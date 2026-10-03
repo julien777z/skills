@@ -29,15 +29,26 @@ alwaysApply: true
   user invoked it or the running skill names it. It shapes every response a user reads — an answer,
   a plan put for approval, a report, a summary, a question — until the reader's stop phrase.
 - **A file the user should see reaches them where they read.** Per-item detail past five items —
-  findings, rows — any gated plan a skill requires, recordings, screenshots and generated images go
-  in a file sent with the harness's file-sending tool before the text that reports the result, so
-  that text stays the turn's final message. A sent text file reads on its own: it opens with the
-  table or summary its detail belongs to, never the detail alone. Text reports sent together go as
-  one markdown file, each report's table or summary before any detail. A path alone names nothing a
-  user in a cloud or remote session can reach. The parent sends what a subagent produced. Open every
+  findings, rows — and any gated plan a skill requires go in a file sent with the harness's
+  file-sending tool before the text that reports the result, so that text stays the turn's final
+  message. A sent text file reads on its own: it opens with the table or summary its detail belongs
+  to, never the detail alone. Text reports sent together go as one markdown file, each report's
+  table or summary before any detail. A path alone names nothing a user in a cloud or remote session
+  can reach. The parent sends what a subagent produced. Open every
   file, image and recording before sending or presenting it, whoever produced it, and check that it
   shows what the message says it does. Where the harness cannot send files, say so and put what fits
   inline.
+- **A capture of a change reaches the user while the work is still running.** A screenshot, a
+  recording, or a generated image that shows something the run changed — the screen after an edit,
+  a before-and-after pair, a design it generated — is sent as a file as soon as the agent that made
+  it has opened it, never held for the final report, where it arrives in a pile the user can no
+  longer follow. A capture nobody asked for that shows no change — taken while navigating,
+  diagnosing, or recording a baseline before anything changed — stays where it was saved and is not
+  sent, except as the before half of a pair once its after exists; a capture the user or the running
+  skill asked for is sent as it is made, change or not. An agent with no file-sending tool hands each
+  capture to be sent up as `subagent-selection`'s **Dispatch** describes, and the agent that
+  delegated to it opens and forwards each one on arrival. A brief that asks a worker for captures
+  asks for them this way.
 - A delegated worker's report of an outcome — tests pass, pushed, merged, deployed, fixed — is a
   claim. Check it at its source of truth before relaying it or building on it, and tell the user
   what was read, not what was reported; `execute-task`'s **Reported Outcomes** holds the procedure.
