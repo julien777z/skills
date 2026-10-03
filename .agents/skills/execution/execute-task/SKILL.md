@@ -89,9 +89,9 @@ Run every change the same way, whether a plan preceded it or the user asked for 
   one. **A command a permission boundary denies is refused, and the decision stays where the
   guidance put it**: a denial says nothing about whether the action is wanted, and the global rules
   have already made every local stack resource and record the agent's to repair, reset or delete.
-  Reach the same outcome through the route the resource's owner provides — the container runtime's
-  own prune command where a raw delete of its image store was refused — never through a rewording
-  of the refused command. Report a blocker only once every served path has been tried and has
+  Reach the same outcome through the route the resource's owner provides — a package manager's own
+  cache-clean command where a raw delete of its cache directory was refused — never through a
+  rewording of the refused command. Report a blocker only once every served path has been tried and has
   failed, naming the refused command and what was tried; a yes-or-no question asking whether to do
   it is never that report.
 
