@@ -48,7 +48,7 @@ alwaysApply: true
   skill asked for is sent as it is made, change or not. An agent with no file-sending tool hands each
   capture to be sent up as `subagent-selection`'s **Dispatch** describes, and the agent that
   delegated to it opens and forwards each one on arrival. A brief that asks a worker for captures
-  asks for them this way, never as paths in its final report.
+  asks for them this way.
 - A delegated worker's report of an outcome — tests pass, pushed, merged, deployed, fixed — is a
   claim. Check it at its source of truth before relaying it or building on it, and tell the user
   what was read, not what was reported; `execute-task`'s **Reported Outcomes** holds the procedure.
