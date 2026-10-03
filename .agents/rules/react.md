@@ -123,7 +123,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   behalf of someone in their own workspace, who has already ticked the box that says they may, does
   not need to be told that the action is logged or attributed to them.
 - **Name a surface for what it holds, never for the reader's role in it.** A reader knows which side
-  of a transaction they are on, so "Payer Accounts", "Payout Methods" or "Your Seller Profile" labels
+  of a transaction they are on, so "Payer accounts", "Payout methods" or "Your seller profile" labels
   them rather than the thing; the heading is "Bank accounts", "Profile", whatever the surface holds.
   A heading is that name in a word or a short phrase — "Overview", "Contact details" — never a
   sentence or a phrase addressed to the reader, such as "What you can do here" or "Let's get you set
