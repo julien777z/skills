@@ -92,7 +92,9 @@ also not a reason to stop at the first file, and the section below governs how f
   a value newly shown to or withheld from someone — that is the user's decision, and the way to put
   it to them is to state it plainly and carry on with the work that does not depend on the answer.
   A shape change to an owned contract is not one of those: it is made, with every consumer, and
-  stated in the pull request.
+  stated in the pull request. Neither is what a change owes the records already stored, such as
+  whether existing rows are reset, reopened or migrated onto a new rule: **Required Data** sends
+  that to the repository's project guidance, which answers it.
 - **Never quietly narrow the work to avoid the conversation.** Choosing the option that changes nothing
   is choosing the sloppier result on the user's behalf while hiding that a choice existed. Silence
   reads as "there was no decision to make".
