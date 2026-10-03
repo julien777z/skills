@@ -108,13 +108,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 ## Interface Copy
 
-- **Write interface copy in American English**, in spelling and in vocabulary alike: a paper payment
-  is a "check" rather than a "cheque", a colour is a "color", and a person "enrolls" rather than
-  "enrols". A reader meeting the other spelling reads it as a mistake, and a product that uses both
+- **Write interface copy in American English**, in spelling and in vocabulary alike: a colour is a
+  "color", a centre is a "center", and a person "enrolls" rather than "enrols". A reader meeting the other spelling reads it as a mistake, and a product that uses both
   reads as two products.
 - **Headings, labels, buttons, tabs and menu items share one capitalization across the product**,
-  sentence case unless the product has settled on another: "Save changes", "Linked accounts",
-  "Two-factor authentication". A mix is the defect; a proper noun keeps its own capitals.
+  sentence case unless the product has settled on another: "Save draft", "Shared folders",
+  "Reading list". A mix is the defect; a proper noun keeps its own capitals.
   Capitalization is the source string's: a type variant that renders text uppercase is styling, and
   the string stays written in the product's case.
 
@@ -123,8 +122,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   behalf of someone in their own workspace, who has already ticked the box that says they may, does
   not need to be told that the action is logged or attributed to them.
 - **Name a surface for what it holds, never for the reader's role in it.** A reader knows which side
-  of a transaction they are on, so "Payer accounts", "Payout methods" or "Your seller profile" labels
-  them rather than the thing; the heading is "Bank accounts", "Profile", whatever the surface holds.
+  of a transaction they are on, so "Organizer events", "Attendee tickets" or "Your speaker profile" labels
+  them rather than the thing; the heading is "Events", "Tickets", "Profile", whatever the surface holds.
   A heading is that name in a word or a short phrase — "Overview", "Contact details" — never a
   sentence or a phrase addressed to the reader, such as "What you can do here" or "Let's get you set
   up".
@@ -144,7 +143,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   sentence would say belongs to the section it describes.
 - Say the one thing the reader needs and stop. On a field, prefer no description to a description
   that repeats the label, narrates the obvious, or hedges, and keep out of any label what the
-  product already knows about the reader, such as their own name in a consent checkbox. Where a
+  product already knows about the reader, such as their own email address in a confirmation label. Where a
   sentence is only there to cover the product, cut it. That includes a paragraph explaining the
   mechanics around an action, such as which party performs which step, and a note of a side effect
   nobody asked about, such as what happens to earlier versions.
@@ -230,15 +229,15 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   someone else's decision — a review, an approval — lands the reader on the product as usual, with
   the banner the banner bullet below describes until the decision lands. A status page standing in
   the flow's place, at its own address or any other, is the defect. A page that a flow finished
-  outside the product returns the reader to — a hosted checkout's return address, a provider's
-  signing or verification redirect — is that flow's last step and stays.
+  outside the product returns the reader to — the address an external service sends the reader back
+  to once its own step is done — is that flow's last step and stays.
 - **Inside a page, offer only what applies to the reader.** A choice, a document, a field or a
   status row the reader can never use — the other region's version of a document, the other account
   type's settings — is left out, decided by the same rule that decides which one applies, never
   listed beside it. What is left out is the item, never the step or section holding it: a step or
   section stays for every reader who still has something in it to answer, and goes only when
-  nothing in it is left. A field whose value the context already fixes — the country on a form only
-  one country files, the currency of an account that holds one — is not asked: the value is set, and
+  nothing in it is left. A field whose value the context already fixes — the language of a course taught
+  in only one, the venue of an event held in only one — is not asked: the value is set, and
   shown as text where the reader should know it.
 - **A page's content offers one control per destination or action** — a button, a link, a menu item,
   an icon or a clickable row; the app's own navigation is not counted against it. Two that open the

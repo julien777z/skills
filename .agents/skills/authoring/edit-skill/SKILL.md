@@ -194,9 +194,14 @@ outcome, because silence reads as the guidance having been fixed.
      `## Guardrails`, kept at the bottom, holds only constraints that span the file's subjects.
    - Express each independent requirement once, as one concise statement or bullet, without padding. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
    - Normalize the touched file's nearby structure when needed: combine narrow sections, remove redundant wording, and order foundational guidance before specialized concerns.
-   - **Prefer the broad statement, and let the request be its example.** A request arrives as
-     one symptom, and the rule it needs names the class that symptom belongs to; the symptom
-     stays as one illustration of it. Asked for `Final` on string constants, write `Final` for
+   - **Prefer the broad statement, and let the request's shape be its example.** A request
+     arrives as one symptom, and the rule it needs names the class that symptom belongs to; the
+     symptom's shape stays as one illustration of it. In shared guidance that illustration never
+     carries the incident's own vocabulary — the labels, headings, records, screens or values of
+     the product that prompted it, however ordinary they read: a label lifted from the screen
+     under review is that screen's copy. Retell it with invented nouns from an unrelated domain, as
+     the global rules' **Repository guidance** requires, and replace any such noun already in the
+     section the edit touches. Asked for `Final` on string constants, write `Final` for
      every module-level constant; asked for a walkthrough rule because a page reloaded in a
      loop once a back-end change was absent, write that the run is judged against intended
      behaviour because an API error surfaces as any unintended behaviour, and name the loop
@@ -300,7 +305,9 @@ outcome, because silence reads as the guidance having been fixed.
       intent statement. It judges whether the guidance answers the request at the breadth **Upsert
       behavior** asks for and whether every mechanism it adds earns its place. Treat a named tool,
       surface, or workaround in generic guidance as a finding unless the skill's contract depends on
-      it; the incident's route must not narrow the durable decision boundary. A flag gets the one
+      it; the incident's route must not narrow the durable decision boundary. Give the gate the
+      incident's vocabulary — the product, its record and screen nouns, the labels the request
+      quoted — so an example carrying any of it is a finding. A flag gets the one
       rewrite that skill allows, pushed as its own increment whose **Pre-Push Gate** verdict is the
       fresh gate. A second flag ends the rewriting: fix it
       when the flag names a defect in the guidance, merge as it stands when it names a preference
