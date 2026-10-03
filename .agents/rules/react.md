@@ -189,6 +189,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   maximum height, so the surface stays as tall as its content until it reaches the cap. A height set
   from outside the content belongs only to a surface whose content fills the space it is given — a
   chart, a map, media — to one the reader sized, or to a section deliberately sized to the viewport.
+- **A frame that scrolls shows its scrollbar whenever its content overflows** — a box of legal
+  text, a dialog body, a list or a table inside a maximum height — on every platform and before the
+  reader touches it, so cut-off text reads as more to scroll rather than as text that ends. A hidden
+  or hover-only scrollbar on such a frame is the defect. The scroll container is styled once, in the
+  shared component or the product's base styles, never per call site. This holds over general advice
+  to hide scrollbars for a cleaner look.
 - **Navigation decides who reaches a page, and the decision that hides a page also refuses to serve
   it.** An address the viewer's role, workspace, plan or permissions never offer them redirects to
   the viewer's home. A screen or empty state telling the viewer the page belongs to somebody else —
@@ -242,12 +248,14 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   page system that moves through steps — an onboarding, a setup, a verification, a wizard, a form
   split across pages — whether or not each step saves as it advances, and over general advice to
   name a button for its action.
-- **A page whose only content is a status message renders a full-page message state** — an expired
-  link, a load that failed with nothing else to show — centered in the page, never a small card left
-  under chrome that no longer applies, such as tabs or a form header. A form or
-  list long enough to fill the page keeps its card. The message reports a state the reader cannot
-  get past on this page; a notice that the page is for somebody else is not one, and neither is a
-  flow's submitted, pending or finished state, which the finished-flow bullet above governs.
+- **Every page renders in the product's page shell — its heading, its description and sections
+  holding its content — including a page that reports a state**: a confirmation, an expired link, a
+  load that failed with nothing else to show. The state goes in the description, and a section
+  carries what the reader needs next — the record the state concerns, its status, the action that
+  recovers or moves on, in that section's footer. A label and a button centred in an otherwise empty
+  page is the defect, and so is a small card left under chrome that no longer applies, such as tabs
+  or a form header. A notice that the page is for somebody else is not such a state, and neither is
+  a flow's submitted, pending or finished state, which the finished-flow bullet above governs.
 - **A banner appears only when the reader has something to do, something is wrong, or something
   they submitted is waiting on a decision** — terms to accept, a verification to finish, a load
   that failed, a blocking state to resolve, a submission under review, worded from the reader's
@@ -319,7 +327,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   stretched to its row or container — a full-width class, a flex or grid child left to grow, a block
   display — reads as a bar rather than an action and is the defect. The button component keeps its
   own width in any parent, so no call site sets one, and buttons in a group each keep their own
-  width; where they sit is **Layout And Spacing**'s to say.
+  width; where they sit is **Layout And Spacing**'s to say. This holds over general advice to make
+  components full width on small screens.
 - **A button whose action is running is disabled, marked busy (`aria-busy`), and shows a spinner in
   place of its label at the same width**, so it cannot be pressed twice and nothing beside it moves.
   The label stays in the layout, transparent, holding the width and remaining the accessible name,
