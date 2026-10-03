@@ -127,6 +127,8 @@ alwaysApply: true
 
 - **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. Deployed and shared remote environments are not local; the following live-deployment rules govern them.
 
+- **What an environment's setup installs is not a local stack resource.** The toolchain, applications, and their runtime state that a cloud or container setup script provides — an application's Wine prefix, a language runtime, a system package — belong to that script. A task never installs, reinstalls, repairs, or recreates them, even when it could; it reports the failing command and its output to the user as a setup change to make, and continues the work that does not need them.
+
 - Treat create, update, and delete requests against a live deployment as data mutations, not health
   checks. Run them only against a target that the repository explicitly designates for mutation
   testing; when no such target exists, live smoke testing is read-only.
