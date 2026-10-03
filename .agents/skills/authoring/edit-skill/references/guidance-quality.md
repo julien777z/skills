@@ -47,9 +47,11 @@ needs. Provider metadata such as `agents/openai.yaml` stays outside repositories
 propagated.
 
 **Description.** The front-matter `description` is read on every turn, for every skill, to decide
-whether this one fires. Its whole job is to state **when** — the situations that should reach it,
-in the words a task actually arrives in. What it does belongs there only so far as a reader needs
-it to recognise those situations, plus any rule that must bind before the reader starts work, since a reader acts on the description before opening the body; the body says the rest.
+whether this one fires. It has two jobs. The first is to state **when** — the situations that
+should reach it, in the words a task actually arrives in. The second is to carry any rule that must
+bind before the body is read, since a reader often acts on the description first. What the skill
+does belongs there only so far as a reader needs it to recognise those situations; the body says
+the rest.
 
 So the slash command earns no space. It is the skill's own name, the listing already shows it, and
 a reader deciding whether to invoke has it in hand — `Invoke as /refactor to refactor a

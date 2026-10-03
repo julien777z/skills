@@ -93,9 +93,9 @@ alwaysApply: true
 
 ## README
 
-- A README's reader is a person using or developing the project: it holds what the project is, how
-  to run or use it, where a developer finds its parts, and a Local Development section with the
-  commands to install, run, and validate it locally.
+- A README's reader is a person using or developing the project, so a README holds what the
+  project is, how to run or use it, where a developer finds its parts, and a Local Development
+  section with the commands to install, run, and validate it locally.
 - Describe available capabilities without assuming how consumers will use the project or framing guidance as prohibitions such as "never do X."
 - Remove repeated explanations and prefer short sections, bullets, tables, and focused examples over long prose.
 - Write in plain language, as if explaining the repository to a colleague. Avoid repeating internal

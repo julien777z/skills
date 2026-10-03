@@ -126,8 +126,9 @@ Dispositions.
 
 ### Description Spends Its Budget On Nothing
 
-Every description is read on every turn, for every skill, so a clause that does not help decide
-whether this skill fires is paid for constantly and returns nothing. The shapes: the slash command
+Every description is read on every turn, for every skill, so a clause that neither helps decide
+whether this skill fires nor carries a rule that must bind before the body is read is paid for
+constantly and returns nothing. The shapes: the slash command
 or invocation name, which the listing already carries and the reader deciding already has; a
 paraphrase of the skill's own title; `Use this skill to`; and what the skill does elaborated past
 the point a reader needs to recognise the situation.

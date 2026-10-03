@@ -77,8 +77,8 @@ outcome, because silence reads as the guidance having been fixed.
    - **A violated instruction is evidence of an unresolved guidance gap.** Never close the edit as
      already covered merely because existing guidance forbids the failure. Find why that guidance
      did not control the run — its trigger, dependency, sequence, enforcement, visibility, or
-     wording — and strengthen the owning guidance or workflow so the same path cannot bypass it, and close
-     every other path the class takes, not only the one this instance used.
+     wording — and strengthen the owning guidance or workflow so the same path cannot bypass it.
+     Close every other path the failure's class takes, not only the one this instance used.
      When the owning skill was not invoked, harden its frontmatter description first; body text
      cannot control a run that never loads the skill.
    - When the user points out a guidance failure, trace the actual path from the request to the
