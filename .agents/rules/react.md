@@ -198,6 +198,13 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   such as a type selector, is part of that form and stays inside.
 - **A step-by-step flow with a Back control puts it at the start of its footer and the primary
   action at the end,** apart, so the control that goes back never sits beside the one that commits.
+- **A multi-step flow labels its footer controls by position, never by the step's content.** The
+  forward action reads "Next" on every step before the last and "Submit" on the last, and the
+  control that returns reads "Back". "Save representative", "Continue", "Save and continue" or
+  "Create profile" make each step's control look like a different action, and the step's heading
+  already says what it holds. This holds for every page system that moves through steps — an
+  onboarding, a setup, a verification, a wizard, a form split across pages — whether or not each
+  step saves as it advances.
 - **A page whose only content is a status message renders a full-page message state**, centered in
   the page, never a small card left under the flow's own chrome — a stepper, tabs, a form header —
   that no longer applies. A form or list long enough to fill the page keeps its card. The message
