@@ -180,17 +180,6 @@ return records;
 - A bootstrap or setup folder holds only its entrypoint at its root, such as `setup/run.sh`; every
   supporting script, module, or data file it uses goes in `setup/resources/`.
 
-## Configuration
-
-- **A configuration input is required by default.** An environment variable, secret, or setting
-  whose value only the environment can supply — a credential, a host, an account — stops the setup
-  script, build, or service that reads it when it is missing, with an error naming it; never skip
-  the step it feeds, invent a value, or carry on without it. A value a person adds to an
-  environment is easy to forget, and a run that quietly does less hides that it is missing — a
-  setup step that installs a tool only when its token is set is the usual case. A tuning setting
-  with a correct default, such as a log level, keeps that default; an input stays optional only
-  when running without it is a state the product supports.
-
 ## Repository guidance
 
 - Reference external code and automation by a maintained version tag when available, or by a
