@@ -114,8 +114,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   reads as two products.
 - **Headings, labels, buttons, tabs and menu items share one capitalization across the product**,
   sentence case unless the product has settled on another: "Save changes", "Linked accounts",
-  "Two-factor authentication". One title-case heading or button among sentence-case siblings is the
-  defect, however it arrived; a proper noun keeps its own capitals.
+  "Two-factor authentication". A mix is the defect; a proper noun keeps its own capitals.
+  Capitalization is the source string's: a type variant that renders text uppercase is styling, and
+  the string stays written in the product's case.
 
 - **Write labels, descriptions and hints for someone who already trusts the product.** Copy that
   warns the reader about their own ordinary action reads as suspicion. A person submitting a record on
@@ -123,7 +124,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   not need to be told that the action is logged or attributed to them.
 - **Name a surface for what it holds, never for the reader's role in it.** A reader knows which side
   of a transaction they are on, so "Payer Accounts", "Payout Methods" or "Your Seller Profile" labels
-  them rather than the thing; the heading is "Bank Accounts", "Profile", whatever the surface holds.
+  them rather than the thing; the heading is "Bank accounts", "Profile", whatever the surface holds.
   A heading is that name in a word or a short phrase — "Overview", "Contact details" — never a
   sentence or a phrase addressed to the reader, such as "What you can do here" or "Let's get you set
   up".
@@ -426,7 +427,7 @@ Export metadata for SEO:
 
 ```typescript
 export const metadata = {
-  title: "Page Title",
+  title: "Page title",
   description: "Page description",
 };
 ```
