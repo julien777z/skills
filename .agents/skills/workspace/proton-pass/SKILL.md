@@ -1,6 +1,6 @@
 ---
 name: proton-pass
-description: Retrieve credentials from Proton Pass with pass-cli. Use every time a task needs to log in to an account, website, service, or tool, or needs a password, API key, token, SSH key, or other secret that neither the session environment nor the repository supplies, before asking the user for it.
+description: Retrieve credentials from Proton Pass with pass-cli. Use every time a task needs to log in to an account, website, service, or tool, or needs a password, API key, token, SSH key, or other secret that neither the session environment nor the repository supplies, before asking the user for it. Vault availability is never a prerequisite for using an authenticated target service or completing its normal browser sign-in.
 short_description: 'Retrieve credentials from Proton Pass with pass-cli.'
 ---
 
@@ -9,10 +9,19 @@ short_description: 'Retrieve credentials from Proton Pass with pass-cli.'
 A credential the session environment already holds, or one the repository supplies, is used from
 there: an injected token, a password file project guidance names, or a helper the repository's
 tooling uses to set or generate a local or development test identity's password. The password of a
-test identity a local stack or dev container creates never comes from Proton Pass. Every other
-account credential comes from Proton Pass through `pass-cli`, signed in with the personal access
-token in `PROTON_PASS_PERSONAL_ACCESS_TOKEN`, before the user is asked. Never ask the user to paste
-a secret into chat.
+test identity a local stack or dev container creates never comes from Proton Pass.
+
+For other account credentials, try Proton Pass through `pass-cli` before asking the user.
+An unavailable vault stops that lookup, not the authorized task: use the target service’s existing
+authenticated session or normal browser sign-in with credentials already available to the session.
+When that route needs user input, ask for the specific authentication challenge or secure entry in
+the target service, and continue independent work. Do not require password-vault setup as the
+remedy for service access. Reuse or extend the existing provider credential first. When its secret
+cannot be retrieved and the task authorizes credential repair, regenerate it or create a replacement
+for the same role and required access, update its consumers, and verify the integration before
+retiring a superseded credential. A provider’s authentication challenge or required human action
+gets an exact request to the user; it never becomes a request to configure an unrelated tool.
+Never ask the user to paste a secret into chat.
 
 ## Sign In
 
@@ -31,11 +40,12 @@ a secret into chat.
    A headless container has no system keyring; `pass-cli` then fails with `Could not get local
    key from keyring` until `PROTON_PASS_KEY_PROVIDER=fs` is set.
 3. **Check the session.** `pass-cli info` exits 0 with the session details when one is active.
-4. **Log in when it is not.** Confirm `PROTON_PASS_PERSONAL_ACCESS_TOKEN` is set; when it is
-   missing, stop and tell the user to add it to the environment's variables, because the run cannot
-   sign in without it. Then run `pass-cli logout --force` to clear a stale session, and
-   `pass-cli login`, which reads the token from that variable. Never put the token on the command
-   line, in a file, or in any output.
+4. **Recover only an inactive session.** When step 3 succeeds, keep that session and continue to
+   step 5. Otherwise, when `PROTON_PASS_PERSONAL_ACCESS_TOKEN` is set, clear the stale session with
+   `pass-cli logout --force`, then run `pass-cli login`, which reads the token from that variable.
+   Never put the token on the command line, in a file, or in output. If the session is inactive and
+   no token is available, stop the vault lookup and take the target-service access route above;
+   request vault setup only when the user’s task is to configure the vault itself.
 5. **Verify.** Run `pass-cli info`, then `pass-cli vault list`; seeing the vaults confirms access.
    When the list is empty or errors, report the exact error to the user.
 
