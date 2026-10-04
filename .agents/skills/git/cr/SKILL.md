@@ -1,6 +1,6 @@
 ---
 name: cr
-description: Use when the user directly asks to run CR or says "CR" for a pull request. Triage review threads, run multi-subagent code-simplify and high-effort fix review, repair failed checks, then merge after the gates unless the user explicitly asks to finish review without merging. This dedicated CR workflow uses high effort and fix mode without asking for review options.
+description: Use when the user directly asks to run CR or says "CR" for a pull request, or when a directly user-invoked merge-post-review delegates its captured merged diffs. Triage review threads, run multi-subagent code-simplify and high-effort fix review, repair failed checks, then merge after the gates unless the user explicitly asks to finish review without merging. This dedicated CR workflow uses high effort and fix mode without asking for review options.
 disable-model-invocation: true
 ---
 
@@ -10,7 +10,7 @@ Run the complete high-effort fix review and exact-head gates for the current bra
 
 ## Invocation Authorization
 
-- Run this skill only when the user directly invokes `$cr` or directly asks to run CR in the current task.
+- Run this skill only when the user directly invokes `$cr`, directly asks to run CR in the current task, or directly invokes `merge-post-review` and that workflow delegates its captured targets. Never infer the latter from a merge or a prior run.
 - For a direct CR invocation, this instruction overrides `code-review`'s standalone argument prompt: run `code-review high fix <PR>` without comment mode; do not ask the user to select review effort or modes.
 - **A direct CR invocation authorizes the squash merge of its target pull request** at the head
   that passed final acceptance and the check gate, unless the user explicitly withholds merge. That
@@ -53,6 +53,22 @@ Run the complete high-effort fix review and exact-head gates for the current bra
 Invoke `subagent-selection` and use its **standard** tier for this workflow's own sub-agents.
 Delegated skills retain their explicitly selected tiers, subject to the user's model override.
 Follow the selector's dispatch and unavailable-model policy.
+
+## Review Targets
+
+Select the target route before resolving a working pull request:
+
+- For a merged ref range explicitly delegated by `merge-post-review`, read
+  [Merged targets](references/merged-targets.md). The immutable range is the review target; the
+  original pull request is metadata, and a working fix pull request exists only after a finding.
+- For ordinary direct CR, read [Open targets](references/open-targets.md). The resolved open pull
+  request is both the review target and the working pull request, with **Pull Request Ownership**
+  below.
+
+Use these route bindings throughout the shared workflow. All review lenses and finding validation
+apply to either review target. Description updates, fix validation, acceptance, and merge gates
+apply to the working pull request only. A clean merged-range review ends without creating or
+merging another pull request.
 
 ## Pull Request Ownership
 
@@ -150,8 +166,8 @@ every survivor under **Confirmed Findings**. Reproducing a defect on the base br
 that it is pre-existing; it never refutes the finding or creates a decision to ask the user before
 fixing it. Update affected tests and consumers, and verify that the refreshed scope meets
 `code-simplify`'s approval bar. Do not start `code-review` while a simplification finding remains
-unapplied or unresolved. Run `/code-review high fix <PR>` only against the refreshed head produced by
-this gate.
+unapplied or unresolved. Run `/code-review high fix <target>` only against the resolved review target,
+with any working fix head and the complete originating range supplied as context.
 
 ## GitHub Transport
 
@@ -285,11 +301,11 @@ and verified live result; a default-branch or merged artifact is not test eviden
 authorization, skip deployment and continue review. Never dispatch a workflow or mutate a provider
 to work around this gate.
 
-1. Resolve the current branch and its pull request. When no PR exists, follow `/code-review`'s branch and commit setup rules, then create the PR through REST with `draft=true` and immediately record its returned canonical URL with `session-ledger`. Review an existing draft PR normally. Run **Description Refresh** above before any other phase reads the pull request. Resolve the intent statement as `acceptance-gate` defines it and record the current merge-base SHA; pass the statement and **Pull Request Ownership** rule to every subagent in the run and into `/code-review high fix`. Run **Review Thread Triage**, then the first test pass **Validation Order** requires, then immediately the complete **Simplification Gate** above; no code-review phase starts before all three are clean.
-2. Invoke `/code-review high fix <PR>` for that PR, whether it is draft or ready for review.
+1. Resolve the review target and working pull request using **Review Targets**. Read the original target's intent and metadata without modifying a merged pull request; run **Description Refresh** when a working pull request exists. Record the review range and pass its intent and route-specific ownership to every subagent and into `/code-review high fix`. Run **Review Thread Triage** against the original target's discussions, with any legitimate fixes placed according to the selected route. Then run the first test pass **Validation Order** requires and the complete **Simplification Gate**; no code-review phase starts before all three are clean.
+2. Invoke `/code-review high fix <target>` using the open pull-request URL or the exact delegated ref range. For a merged range, pass the original pull request as metadata only and explicitly preserve the range through resolution and eligibility checks. Direct fixes to the working fix branch rather than changing the immutable target.
 3. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the run continues; see **Deferred Findings**. Stop and report only a finding that can be neither fixed nor recorded.
 4. Classify each correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean. This is the same authorized CR execution, not a new action-skill invocation.
-5. Once the review is clean, put the complete pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate** verdict is the fresh gate; a second flag on the change's own work is a blocker to report to the user, unless the pull request is confined to agent configuration, where `acceptance-gate`'s **Bounds** leave the disposition with this run. The accepted head is the SHA `merge-pr` receives.
+5. Once the review is clean, if a merged-range review has no working fix pull request, give the **Completion Report** and return to the invoking workflow without another merge. Otherwise put the complete working pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement, retaining the original review range as context. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate** verdict is the fresh gate; a second flag on the change's own work is a blocker to report to the user, unless the pull request is confined to agent configuration, where `acceptance-gate`'s **Bounds** leave the disposition with this run. The accepted head is the SHA `merge-pr` receives.
 6. Run **Description Refresh**'s second pass, then the second test pass **Validation Order** requires. Never stop, restart, reconfigure or claim a local service this run did not start.
 7. Invoke `merge-pr` with:
    - the pull request and the head step 5 accepted;
