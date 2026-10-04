@@ -91,7 +91,7 @@ These run only when you ask for them by name, such as `/refactor`.
 - [`merge-post-review`](.agents/skills/git/merge-post-review/SKILL.md) — Use only at the user's explicit request to merge and deploy session-created pull requests before reviewing their merged diffs with CR and delivering confirmed fixes through new pull requests.
 - [`migrations-doctor`](.agents/skills/doctors/migrations-doctor/SKILL.md) — Audit and correct a repository's database migration chains, revisions, registries, and test scaffolding.
 - [`new-doctor`](.agents/skills/doctors/new-doctor/SKILL.md) — Create a doctor skill on the shared doctor-protocol for one class of repository hygiene.
-- [`placeholder-data`](.agents/skills/workspace/placeholder-data/SKILL.md) — Turn a pasted API payload into the same shape with plausible fake values.
+- [`placeholder-data`](.agents/skills/workspace/placeholder-data/SKILL.md) — Turn a pasted API payload into the same shape with obviously fake values.
 - [`refactor`](.agents/skills/execution/refactor/SKILL.md) — Plan and carry out a repository refactor with independent structural review.
 - [`schema-doctor`](.agents/skills/doctors/schema-doctor/SKILL.md) — Check models and schemas for unnecessary nulls, complexity, keys, and indexes.
 - [`skill-gauntlet`](.agents/skills/authoring/skill-gauntlet/SKILL.md) — Audit installed agent skills and test which ones to improve, retire, or install.
