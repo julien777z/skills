@@ -451,7 +451,7 @@ Checks
 - Source check: passed on <head> | failed: <report>
 - Simplification: <clean | findings applied>
 - Acceptance gate: <accepted | rewritten and accepted | flagged twice: <fixed | merged as it stands | dropped> — <reason>>
-- Smoke test: <passing tables reported above | dropped — <reason> | not run: mechanical seam edit>
+- Smoke test: <passing tables reported above | dropped — <reason> | not run: <reason>>
 - Example approved: <one line per skill: name — approved after <n> round(s), output matches it | skipped, no response the user uses | skipped, response unchanged | rule-only change>
 - Merged text read back: <default branch head the touched skills and rules were re-read from | not merged>
 - Refresh: <main checkout and installed copy at <sha>, installer rerun | skipped: <dirty paths> | not merged>
