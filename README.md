@@ -75,6 +75,7 @@ These run only when you ask for them by name, such as `/refactor`.
 - [`assume-library-update`](.agents/skills/execution/assume-library-update/SKILL.md) — Write consuming code for a change in one of your libraries before the library update is available.
 - [`ci-watch`](.agents/skills/git/ci-watch/SKILL.md) — Watch a pull request, resolve review findings, and check that CI passes.
 - [`config-doctor`](.agents/skills/doctors/config-doctor/SKILL.md) — Find configuration names that disagree across code and deployments, or are no longer used.
+- [`continue-handoff`](.agents/skills/workspace/continue-handoff/SKILL.md) — Pick up work another session handed off.
 - [`cr`](.agents/skills/git/cr/SKILL.md) — Use when the user directly asks to run CR or says "CR" for a pull request.
 - [`defer-execution`](.agents/skills/deferrals/defer-execution/SKILL.md) — Schedule separate work on its own branch, either now or after the current pull request merges.
 - [`dependency-doctor`](.agents/skills/doctors/dependency-doctor/SKILL.md) — Reconcile declared dependencies with what the code imports and the checks invoke, for every language the repository builds.
@@ -82,7 +83,7 @@ These run only when you ask for them by name, such as `/refactor`.
 - [`execute-defer-scope`](.agents/skills/deferrals/execute-defer-scope/SKILL.md) — Review and resolve recorded deferred work for a chosen issue, path, or pull request.
 - [`grade-plans`](.agents/skills/execution/grade-plans/SKILL.md) — Compare, grade, rate, rank, or choose between two implementation plans written for the same goal or original agent prompt.
 - [`guidance-doctor`](.agents/skills/doctors/guidance-doctor/SKILL.md) — Review agent guidance for instructions to cut, clarify, or add.
-- [`handoff`](.agents/skills/workspace/handoff/SKILL.md) — Wrap up the current session so its open pull requests can be taken to another session with nothing lost.
+- [`handoff`](.agents/skills/workspace/handoff/SKILL.md) — Move the current session's work to another session with nothing lost and nothing left for the user to do.
 - [`incident`](.agents/skills/execution/incident/SKILL.md) — Restore a broken deployed service, test the fix, and merge the scoped repair.
 - [`legacy-doctor`](.agents/skills/doctors/legacy-doctor/SKILL.md) — Remove fallbacks, aliases, and duplicate paths left over from an old contract.
 - [`manage-mcps`](.agents/skills/workspace/manage-mcps/SKILL.md) — Audit and repair managed MCP connectors across Claude Desktop and Codex.
@@ -92,7 +93,6 @@ These run only when you ask for them by name, such as `/refactor`.
 - [`schema-doctor`](.agents/skills/doctors/schema-doctor/SKILL.md) — Check models and schemas for unnecessary nulls, complexity, keys, and indexes.
 - [`skill-gauntlet`](.agents/skills/authoring/skill-gauntlet/SKILL.md) — Audit installed agent skills and test which ones to improve, retire, or install.
 - [`study-games`](.agents/skills/roblox/study-games/SKILL.md) — Explicit user-invoked research of Roblox charts for the requested audience and region.
-- [`take-over-pr`](.agents/skills/git/take-over-pr/SKILL.md) — Make a pull request's branch the working checkout so its work continues in this session.
 - [`tests-doctor`](.agents/skills/doctors/tests-doctor/SKILL.md) — Audit tests for contract value, redundant proof, weak assertions, runtime, provider rate limits, and determinism.
 
 ### Model-Invoked
