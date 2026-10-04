@@ -13,4 +13,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: bash bootstrap/resources/test_install.sh
+      - run: bash .github/scripts/test-installer.sh

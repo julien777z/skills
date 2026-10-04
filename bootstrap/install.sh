@@ -109,6 +109,10 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
   source_checkout="$REPO_ROOT"
   search_roots=("$CLOUD_HOME")
 
+  if [ "$PWD" != "$CLOUD_HOME" ]; then
+    search_roots+=("$PWD")
+  fi
+
   if [ "$CLOUD_HOME" = /home/claude ] && [ -d /home/user ]; then
     search_roots+=(/home/user)
   fi
@@ -126,7 +130,7 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
 
         source_checkout="$candidate"
       fi
-    done < <(find "$search_root" -mindepth 2 -maxdepth 4 -name .git \( -type d -o -type f \) -print)
+    done < <(find "$search_root" -mindepth 1 -maxdepth 4 -name .git \( -type d -o -type f \) -print)
   done
 
   REPO_ROOT="$source_checkout"
@@ -154,10 +158,10 @@ if [ -n "${CLOUD_HOME:-}" ]; then
     mkdir -p "$CLOUD_HOME/.claude"
   fi
 
-  if [ "$(id -u)" -eq 0 ] && [ "$CLOUD_HOME" != /root ] && [ -d "$CLOUD_HOME/.claude" ]; then
+  if [ "$(id -u)" -eq 0 ] && [ "$CLOUD_HOME" != "$HOME" ] && [ -d "$CLOUD_HOME/.claude" ]; then
     # Claude starts as root, though its setup checkout belongs to the claude user.
-    mkdir -p /root/.claude
-    TARGET_HOMES+=(/root)
+    mkdir -p "$HOME/.claude"
+    TARGET_HOMES+=("$HOME")
   fi
 fi
 
@@ -195,7 +199,12 @@ check_directory() {
   local directory="$1"
 
   while [ "$directory" != / ] && [ "$directory" != . ]; do
-    if { [ -e "$directory" ] || [ -L "$directory" ]; } && [ ! -d "$directory" ]; then
+    if [ -L "$directory" ]; then
+      echo "conflict: $directory is a symlink" >&2
+      return 1
+    fi
+
+    if [ -e "$directory" ] && [ ! -d "$directory" ]; then
       echo "conflict: $directory is not a directory" >&2
       return 1
     fi
@@ -404,26 +413,36 @@ install_provider() {
 INSTALL_PROVIDERS=()
 INSTALL_ROOTS=()
 
+add_install_root() {
+  local provider="$1" root="$2" index
+
+  for index in "${!INSTALL_ROOTS[@]}"; do
+    if [ "${INSTALL_PROVIDERS[$index]}" = "$provider" ] && [ "${INSTALL_ROOTS[$index]}" = "$root" ]; then
+      return
+    fi
+  done
+
+  INSTALL_PROVIDERS+=("$provider")
+  INSTALL_ROOTS+=("$root")
+}
+
 for target_home in "${TARGET_HOMES[@]}"; do
   for provider in "${PROVIDERS[@]}"; do
     root="$target_home/.$provider"
 
     [ -d "$root" ] || continue
 
-    INSTALL_PROVIDERS+=("$provider")
-    INSTALL_ROOTS+=("$root")
+    add_install_root "$provider" "$root"
   done
 
   # Codex discovers user skills here even when its runtime home is ephemeral.
   if [ -d "$target_home/.agents" ] || [ -d "$target_home/.codex" ] || { [ -n "${CODEX_HOME:-}" ] && { [ "$target_home" = "$HOME" ] || [ "$target_home" = "${CLOUD_HOME:-}" ]; }; }; then
-    INSTALL_PROVIDERS+=(agents)
-    INSTALL_ROOTS+=("$target_home/.agents")
+    add_install_root agents "$target_home/.agents"
   fi
 done
 
-if [ -n "${CODEX_HOME:-}" ] && { [ "$CODEX_HOME" != "$HOME/.codex" ] || [ ! -d "$CODEX_HOME" ]; }; then
-  INSTALL_PROVIDERS+=(codex)
-  INSTALL_ROOTS+=("$CODEX_HOME")
+if [ -n "${CODEX_HOME:-}" ]; then
+  add_install_root codex "$CODEX_HOME"
 fi
 
 preflight_ok=1
