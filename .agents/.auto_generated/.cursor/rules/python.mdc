@@ -185,7 +185,7 @@ from myapp.http_transport import fetch
 
 ## Suppressions
 
-- **Never add an inline suppression**: no `# pylint: disable`, `# pyright: ignore`, `# type: ignore`, or `# noqa`. Fix what the checker reports about our own code — a precise annotation, a correctly typed decorator (a `ParamSpec` rather than a `Callable` that erases parameter names), the right import. A per-line disable reads the same whether its author weighed the finding or never looked, and once copied onto every sibling it hides the cause behind a pattern nobody questions.
+- **Never add an inline suppression**: no `# pylint: disable`, `# pyright: ignore`, `# type: ignore`, or `# noqa` — except on the outermost-wrapper catch-all **External APIs and Errors** allows. Fix what the checker reports about our own code — a precise annotation, a correctly typed decorator (a `ParamSpec` rather than a `Callable` that erases parameter names), the right import. A per-line disable reads the same whether its author weighed the finding or never looked, and once copied onto every sibling it hides the cause behind a pattern nobody questions.
 - **A third-party package's missing or incomplete types are that package's gap, never ours.** Delete
   any stub file, `typings/` directory, cast or wrapper written to quiet them, and write none; the
   answer is the category-wide configuration entry below, never code. A package the user owns is not
@@ -573,7 +573,7 @@ return JSONResponse(
 )
 ```
 
-- Never catch bare `Exception`; always catch specific exception types unless that broad exception is being explicitly tested in a test case.
+- Never catch bare `Exception`; always catch specific exception types, with two exceptions: a test case explicitly exercising that broad exception, and an outermost wrapper — the loop running a worker's jobs, the boundary serving a request — that logs the error with its traceback and turns it into a failure result, its broad-catch lint finding disabled on that line alone. Lint keeps flagging every other catch-all.
 - For generated or SDK-backed API clients, catch the library's documented exception type instead of broad exceptions.
 
 ```python
