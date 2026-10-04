@@ -18,13 +18,14 @@ This skill never copies provider mirrors by hand.
    agent's home; its installer selects any attached skills checkout.
 2. Record the checkout's current commit, branch, and working-tree status. A dirty working tree is
    not a refresh blocker: preserve it before changing refs, including untracked paths. When the
-   checkout is already on the default branch, create a named `git stash push --include-untracked`,
-   fetch and fast-forward that branch only, run the installer, then restore the stash and verify the
-   original paths are present. When another branch owns the work, preserve it in a separate linked
-   worktree: stash it, switch the source checkout to the default branch, create the preservation
-   worktree at the original branch, and restore the stash there. Keep the installed links on the
-   refreshed default-branch checkout and report the preservation worktree path. Never reset, drop,
-   or overwrite preserved work. In cloud, leave the setup clone on its configured branch; the
+   checkout is already on the default branch, create a named `git stash push --include-untracked`
+   and restore it after the refresh, verifying the original paths are present. When another branch
+   owns the work, preserve it in a separate linked worktree: stash it, switch the source checkout
+   to the default branch, create the preservation worktree at the original branch, and restore the
+   stash there. After either preservation path, fetch the remote default branch and fast-forward
+   the source checkout before installation. Keep installed links on that refreshed default-branch
+   checkout and report any preservation worktree path. Never reset, drop, or overwrite preserved
+   work. In cloud, leave the setup clone on its configured branch; the
    installer fetches that branch once and fast-forwards it when invoked.
 3. Run `bash bootstrap/install.sh` from the checkout. Resolve each installed skill and
    rule link in every existing user-level agent root and confirm it points into the selected source
