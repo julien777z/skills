@@ -79,12 +79,21 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   change does not establish that the surrounding controls work; inspect the whole changed surface
   before accepting it, and fix duplicated or incorrectly visible controls at their shared owner.
 
-- **One shared page section owns initial loading and the content it reveals.** Keep its single
-  noninteractive skeleton visible until every request needed for the initially visible heading,
-  counts, controls and content resolves. Nested loaders do not reveal successive pieces of that
-  page. Keep rendered content during background refresh and pagination, and show an explicit error
-  when a required request fails. Move an established section into the shared owner and migrate its
-  consumers rather than copying it into a sibling application.
+- **Find the established owner before building a repeated surface.** When the same page section,
+  navigation element, menu, input, loading state or action appears elsewhere, move the established
+  implementation into a generic shared primitive. A local wrapper around the shared primitive may
+  supply content or a documented variant; it never recreates structure, styling, fetching or
+  interaction behavior. An interface
+  that is correct in one consumer is the canonical starting point for the extraction, not a visual
+  reference to copy.
+
+- **One shared page section owns initial loading and the content it reveals.** Its single
+  noninteractive skeleton stays visible until every request needed for the initially visible
+  heading, counts, controls and content resolves; a consumer cannot add a second loader or reveal
+  structural content afterward. Keep the settled section mounted during background refresh and
+  pagination, and show an explicit error when a required request fails. Validate the shared section
+  with a cold load and a revalidation: the cold load changes directly from one complete skeleton to
+  one complete section, and revalidation does not remove or append the section's visible structure.
 
 - **A change to a shared mechanism is applied everywhere that mechanism appears, and on every
   sibling surface, in the same change.** A widget grid, a list row, a dialog shell, an edit-mode
@@ -102,9 +111,6 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   setup step shown to each role, plan or workspace kind is one surface: when one audience's version
   sits in the grid at half width with plain rows, the other's is not a full-width card with its own
   buttons. Read the existing sibling before building the new one, and build on it.
-- Never build a second copy of a mechanism beside the one the page already shares. Extend the
-  existing component or hook with the new behavior, parameterized where the pages differ, and let
-  every consumer pick it up. Two implementations of one mechanism drift the moment either is edited.
 - Where a page genuinely cannot take the new shape, say which page and why in the pull request;
   silently leaving it behind is what turns a redesign into an inconsistency.
 
