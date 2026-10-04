@@ -1,6 +1,6 @@
 ---
 name: test-skill
-description: "Prove a skill edit changes what a reader does: rebuild the miss that prompted it, run reviewers on the edited and the original text, and score both against stated criteria before the pull request merges. Runs on every edit to a skill that changes what a reader does — a step added, removed or reordered, a decision moved, a criterion changed, a new obligation — whether the edit came through edit-skill, arrived while doing other work, or was made directly, and whether or not anyone invoked it. An edit that merges without it is unverified."
+description: "Prove a skill edit changes what a reader does: rebuild the miss that prompted it, run one reader on the edited and one on the original text per scenario, and score both against stated criteria before the pull request merges. Runs only when the user asks for a skill edit to be tested; a change confined to rules never runs it."
 short_description: 'Compare edited and original skill guidance against the same scenario.'
 ---
 
@@ -16,10 +16,12 @@ a code change is tested: against the case that motivated it, with the change and
 
 ## When It Runs
 
-- After every skill edit and before its pull request merges, whether the edit came through
-  `edit-skill` or was made directly. An edit that skipped this is unverified, and the report
-  says so. An edit that changes what the skill returns the user runs only after the user approved a
-  fictional example of that output, as `edit-skill` requires; a smoke run never proposes a format.
+- **Only when the user asks for a skill edit to be tested**, and then before its pull request
+  merges, whether the edit came through `edit-skill` or was made directly. Without that request
+  the edit merges on its acceptance gate and the report says `not run: not requested`. A change
+  confined to rules never runs it, asked or not. An edit that changes what the skill returns the
+  user runs only after the user approved a fictional example of that output, as `edit-skill`
+  requires; a smoke run never proposes a format.
 - **An edit that changes no instruction a reader follows does not run at all, and its pull request
   merges on the reading**. A term swapped for
   another, a spelling standardised, a typo corrected, a dead link repaired: the text asks a reader
@@ -75,8 +77,8 @@ a code change is tested: against the case that motivated it, with the change and
    must carry — a symbol's name, a number — so scoring is a search through the report, not a
    reading of it.
 5. **Launch the reviewers** using **Reviewer selection** below, in parallel when
-   capacity allows. Each selected model gets one run reading the edited text and one reading
-   the original. Identical prompts save for those paths. Read-only, findings only, no edits;
+   capacity allows: one run reading the edited text and one reading the original, per
+   scenario. Identical prompts save for those paths. Read-only, findings only, no edits;
    the parent applies nothing from a smoke run, because the run judges wording, not the code.
    Queue pairs when capacity is limited; never spawn a duplicate while a run is in flight.
 6. **Score every report** against every criterion, quoting the line that satisfies or fails it, and
@@ -108,14 +110,10 @@ a code change is tested: against the case that motivated it, with the change and
 
 ## Reviewer selection
 
-Invoke `subagent-selection` and select **standard and advanced**. Run one edited/control pair
-per available tier: four runs when both tiers are available. Use the same scenario and reading
-list across tiers, with the same resolved model and reasoning effort within each pair. Follow the
-dependency's explicit dispatch instructions and queue pairs when capacity is limited.
-
-If a tier is unavailable, report its pair as `not run`; available pairs may still provide partial
-evidence, but do not claim complete two-tier coverage. If both tiers are unavailable, report the
-smoke pass as `not run`. Never treat two runs on one model as a two-tier comparison.
+Invoke `subagent-selection` and select the **standard** tier. Run one edited/control pair per
+scenario — two runs — with the same resolved model, reasoning effort, scenario and reading list in
+both. Follow the dependency's explicit dispatch instructions. If the tier is unavailable, report the
+smoke pass as `not run`.
 
 ## Output
 
@@ -130,10 +128,8 @@ Miss: <one sentence>
 
 | Run | Result | <criterion 1> | <criterion 2> | <criterion 3> |
 |---|---|---|---|---|
-| <Model 1> A | pass | pass | pass | pass |
-| <Model 1> B | miss | miss | pass | miss |
-| <Model 2> A | pass | pass | pass | pass |
-| <Model 2> B | miss | pass | miss | miss |
+| <Model> A | pass | pass | pass | pass |
+| <Model> B | miss | miss | pass | miss |
 
 A reads the edited text, B the original.
 
@@ -178,7 +174,7 @@ run heading and the round bullet appear only on a run that was rerun.
 ## Guardrails
 
 - Reviewers never see the expected answer, the criteria, or one another's reports.
-- Follow the shared tier selection. Never omit a control or claim complete coverage when a tier was not run.
+- Follow the shared tier selection. Never omit a control.
 - Never edit any file under test between launching a pair of runs and scoring them.
 - Keep the scenario while the branch is open; every later edit of that skill reuses it.
 - Never merge with a failing run or stand with a miss: diagnose it, change what caused it, and

@@ -1,6 +1,6 @@
 ---
 name: acceptance-gate
-description: Judge an issue, a finding, a proposal, or a diff against the product's state, a change's stated intent, and the repository's quality rubric through a read-only subagent that answers one question with a specific verdict. Use to triage whether work is fixed now, done, deferred, or closed as not worth doing; before recording a deferral; before and after fixing a would-be deferral or resolving a recorded one; after merging or rebasing the base branch into a change; on each push's increment where `execute-task`'s Pre-Push Gate places the gate; and once over the complete diff before a pull request leaves draft or merges.
+description: Judge an issue, a finding, a proposal, or a diff against the product's state, a change's stated intent, and the repository's quality rubric through a read-only subagent that answers one question with a specific verdict. Use to triage whether work is fixed now, done, deferred, or closed as not worth doing; before recording a deferral; before and after fixing a would-be deferral or resolving a recorded one; after merging or rebasing the base branch into a change; once over a finished task's complete diff before its pull request leaves draft or merges; and on the fix for a flag a gate or review raised.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 
@@ -98,8 +98,8 @@ it:
   one of fix, close, defer or do.
 - **Admission — may this work be deferred?** The triage question asked of a proposed record.
 - **Proposal — should this be written?**
-- **Diff — should this stand?** A finished diff, or a push's increment as `execute-task`'s
-  **Pre-Push Gate** defines it, read with the whole branch diff as its originating diff.
+- **Diff — should this stand?** A finished task's diff, or the increment fixing a flag, read with
+  the whole branch diff as its originating diff.
 - **Base incorporation — what did the base bring in that the change must refactor?** The procedure
   below.
 - **Final acceptance — may this merge?** The complete pull-request diff, read once after review is
@@ -123,9 +123,8 @@ under the GitHub rules on branch ownership, and its resolved result is theirs to
    landed immutable migration revisions; their repository-owned migration procedure still applies.
 3. The verdict takes the shape the rubric's base-incorporation test requires.
 4. Refactor flagged code, whether incoming or an older gap the verdict found in surrounding code,
-   through the proposal and diff questions within **Bounds**. Obtain a completed independent verdict covering the resolved result and any corrections, placed as
-   `execute-task`'s **Pre-Push Gate** places a gate for the pull request's state, before declaring
-   reconciliation complete. Record the compared commits and reviewed result with that
+   through the proposal and diff questions within **Bounds**. Obtain a completed independent verdict covering the resolved result and any corrections before
+   declaring reconciliation complete. Record the compared commits and reviewed result with that
    verdict. A missing review or unresolved flag is not acceptance; mergeability and tests are separate
    evidence, and acceptance grants no pull-request merge authorization.
 
