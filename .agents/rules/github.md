@@ -51,8 +51,8 @@ alwaysApply: true
   whichever session opened it, and never gets a pull request of its own, stacked or not.** The two
   kinds are source and agent configuration: agent configuration is the canonical `.agents` tree —
   skills, rules, and agent definitions; everything else is source. Every later piece of work in that
-  repository — a follow-up, a guidance change, a copy sweep, a fix found along the way, a parallel
-  worker's unit — joins that pull request, even when it could be reviewed independently or feels
+  repository — a follow-up, a guidance change, a copy sweep, a fix found along the way, a worker's
+  task — joins that pull request, even when it could be reviewed independently or feels
   like a different kind of work; those two kinds are the only split. Before creating a branch, list
   the repository's open pull requests, not only this session's: one an earlier session or a handoff
   opened for the work this session continues is the pull request that work joins. Work that
@@ -64,9 +64,9 @@ alwaysApply: true
   the pull request the work continues and close it, saying where the work went. A pull request the
   session did not open is never retargeted, closed or folded in, including one the continued pull
   request is stacked on: that stack and its bases are the user's structure.
-- **Parallel workers push to the branch of the pull request the work continues**, each from its own
-  worktree, fetching and rebasing its unpushed commits onto the remote branch before each push. A
-  branch per worker, integrated later, is the same split with the integration deferred.
+- **Every worker pushes to the branch of the pull request the work continues**, fetching and
+  rebasing its unpushed commits onto the remote branch before each push. A branch per worker,
+  integrated later, is the same split with the integration deferred.
 - **Agent configuration and source never share a branch**, even when a guidance change follows the
   source work checked out; a pull request found carrying both is split by moving one kind's files
   onto the pull request of that kind the work continues. Sharing one holds the guidance behind
@@ -94,7 +94,7 @@ alwaysApply: true
   applicable guidance in a rule or invoked skill for that pull request. A fix request, CI-test
   request, successful check, review, or request to implement a plan that lists a merge does not
   itself authorize merging. If neither authorization source applies, do not merge or enable auto-merge.
-- A pull request confined to canonical agent configuration, including skills, rules, and agent definitions, may be merged without a separate request after `code-simplify` has run and its findings are resolved. For substantial guidance changes or changes to executable logic, first run the relevant smoke test against the exact pull-request head. Check that the complete pull request remains confined to agent configuration before using this exception.
+- A pull request confined to canonical agent configuration, including skills, rules, and agent definitions, may be merged without a separate request after `code-simplify` has run and its findings are resolved. When the user asked for the change to be tested, first run the smoke test against the exact pull-request head; a change confined to rules is never smoke-tested. Check that the complete pull request remains confined to agent configuration before using this exception.
 - **An agent-configuration pull request whose guidance is true only once a still-open source pull request has merged is held until that merge**, whatever its other gates say: it describes behaviour that pull request introduces, drops guidance about something it removes, or needs a workflow or tool change it carries — a project guidance bullet about a helper the source branch adds is the common case. Guidance true on the default branch as it stands waits for nothing.
 - A hold does not authorize merging the source pull request or asking for its merge solely to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. After that merge, incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
 - When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request; one held for a source pull request becomes eligible once that pull request has merged. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, including one begun by another task. Do not close or leave it open merely because it is draft or conflicts with the base; close only one this session opened, and only when its change is superseded or no longer wanted.
@@ -121,8 +121,8 @@ alwaysApply: true
 ## Commits
 
 - Use conventional commit messages when applicable and keep commits atomic and focused.
-- Commit each small coherent step and push it promptly through `execute-task`'s **Pre-Push Gate**,
-  sub-agents included; work only one machine holds is lost with it.
+- Commit each small coherent step and push it promptly once the pre-push checks `execute-task`'s
+  **Pre-Push Gate** defines pass, sub-agents included; work only one machine holds is lost with it.
 - Do not commit generated files unless the repository explicitly requires them.
 
 ## Dependency Installation

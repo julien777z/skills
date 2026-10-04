@@ -42,7 +42,8 @@ or modify repositories.
    `coordinate-repositories` requires, rather than silently choosing one repository's behavior
    for all of them.
 4. Finalize the canonical skill first. Keep its paths and examples repository-neutral, validate
-   its full directory, and run the skill-edit smoke test when its behavior changes. Do not put
+   its full directory, and run the skill-edit smoke test when its behavior changes and the user
+   asked for testing. Do not put
    provider metadata such as `agents/openai.yaml` into a skill directory or edit generated
    `.claude`, `.codex`, or `.cursor` mirrors.
 5. Remove each reconciled generic directory from consumer repositories. Keep local skills and
