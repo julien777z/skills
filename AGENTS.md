@@ -288,6 +288,11 @@ return records;
   `convertPullRequestToDraft`, which REST does not offer — and **Completion** readies it again; a
   skill driving a ready pull request's checks, such as `merge-pr` or `ci-watch`, keeps it ready.
 - Keep pull requests focused and give them descriptive titles and descriptions; request appropriate reviewers when the repository workflow requires them.
+- **A description is written from what is already known, never by re-reading the history.** The
+  agent that did or coordinated the work writes it from its own record of the change, the existing
+  description, `git log --oneline` subjects and `git diff --stat` against the base. It opens a commit
+  or a file only to settle one line those leave unclear, and never walks commits one by one; a worker
+  asked to write one is handed that change list in its brief.
 - A pull request description covers the changes in that pull request and nothing else. Leave out alternatives considered and rejected, work deferred to a later change, and the reasoning behind not doing something.
 - Treat each repository as an independent context. Write PR titles, descriptions, review comments, and issue comments using only the target repository's domain, contracts, changes, and validation. Do not import another repository's product names, domain knowledge, implementation details, or coordination history; do not name or link its PRs or post cross-repository coordination comments, except a hand-off comment naming a pull request the work depends on. Keep combined status and coordination in user chat.
 - Before publishing or updating those artifacts, check the final text against the target repository's diff and evidence. Remove foreign domain references and cross-repository PR links, even when the work shares a session or motivated this change.
