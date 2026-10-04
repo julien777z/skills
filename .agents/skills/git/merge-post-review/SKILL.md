@@ -29,10 +29,13 @@ Creating or editing this skill is not an invocation.
 
 ## Targets
 
-1. Read the session ledger's creation records, excluding pull requests merely touched or adopted.
-   Freeze the batch's canonical URLs and repositories at invocation, and verify their current heads
-   and states with the hosting service. When task evidence cannot establish the session's created
-   targets, ask for the missing scope rather than including every open pull request.
+1. Reconcile the session ledger's creation records with every pull request creation artifact in
+   the current chat, excluding pull requests merely touched or adopted. A creation absent from the
+   ledger but established by the chat is recorded, then included; the ledger is evidence, never an
+   exclusion path. Freeze the batch's canonical URLs and repositories at invocation, and verify
+   their current heads and states with the hosting service. When neither source establishes the
+   session's created targets, ask for the missing scope rather than including every open pull
+   request.
 2. Include an already merged session-created pull request when its merged diff still needs this
    run's review. Skip a closed unmerged pull request. Keep later unrelated creations out of the
    batch; only confirmed-finding fix pull requests belong to its follow-up work.
