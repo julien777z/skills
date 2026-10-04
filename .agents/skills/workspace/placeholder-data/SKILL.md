@@ -57,7 +57,7 @@ This input:
 ```json
 {
   "full_name": "maria l lopez",
-  "ssn": "123-45-6789",
+  "ssn": "234-56-7890",
   "email": "maria.lopez@example.com",
   "status": "active",
   "amount": 5.0,
@@ -70,8 +70,8 @@ This input:
     "2023-11-01/2023-11-12"
   ],
   "addresses": [
-    {"line1": "9 Pine Road", "city": "Austin", "postal_code": "78701"},
-    {"line1": "9 Pine Rd", "city": "Austin", "postal_code": "78701"}
+    {"line1": "458 Pine Road", "city": "Austin", "postal_code": "78701"},
+    {"line1": "458 Pine Rd", "city": "Austin", "postal_code": "78701"}
   ]
 }
 ```
@@ -84,7 +84,7 @@ is answered with exactly:
   "ssn": "111-11-1111",
   "email": "john.smith@example.com",
   "status": "active",
-  "amount": 11.11,
+  "amount": 11.1,
   "note": "This is a test note.",
   "window": "2000-02-03/2000-07-08",
   "stops": [
