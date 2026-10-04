@@ -212,10 +212,16 @@ outcome, because silence reads as the guidance having been fixed.
      a candidate home under step 2, never the limit of the rule, unless the contract requires
      its exact identity. Broaden to the class the user plainly meant, never to a neighbouring
      subject. Wording handed over — rule text in the request or in a delegating agent's brief —
-     is input to this, never the spec: name the failure class, list at least two other
-     instances of it, and write the rule to cover them, widening narrower wording as it
-     arrives. An agent delegating an edit passes the class and the evidence, not finished rule
-     text for one case.
+     is input to this, never the spec: name the decision the examples force, list at least two
+     instances of a different kind from those examples and from each other, and write the rule
+     to cover them, widening narrower wording as it arrives. A wider label for the same examples
+     is not that decision. After the draft, apply it to one further case the request never
+     mentioned and that is a different kind of thing again; a case the draft would still handle
+     as before means the draft only renamed the examples, and it is rewritten until that case
+     changes too. Apply that decision to every instruction in the file that does the same work.
+     One section rewritten while a neighbour still does the narrow thing is the draft only half
+     done, and it is rewritten until the neighbour changes too. An agent delegating an edit
+     passes the class and the evidence, not finished rule text for one case.
    - Describe reusable roles, boundaries, and decision criteria generically even in
      repository-focused guidance when the pattern is not repository-specific. Keep concrete
      repository names only when correctness depends on that local contract.
