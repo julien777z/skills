@@ -20,6 +20,7 @@ is_skills_remote() {
 
 if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
   CLOUD_HOME="${REPO_ROOT%/.local/share/agent-skills}"
+  CLOUD_CLAUDE_HOME=""
 
   if [ -n "${SKILLS_CLOUD_HOME:-}" ] && [ "$SKILLS_CLOUD_HOME" != "$CLOUD_HOME" ]; then
     echo "Cloud setup clone is outside SKILLS_CLOUD_HOME: $REPO_ROOT" >&2
@@ -110,6 +111,12 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
   search_roots=("$CLOUD_HOME")
   declare -A seen_checkouts=()
 
+  current_checkout="$(git -c safe.directory='*' -C "$PWD" rev-parse --show-toplevel 2>/dev/null || true)"
+  if [ -n "$current_checkout" ] && [ "$current_checkout" != "$REPO_ROOT" ] && is_skills_checkout "$current_checkout"; then
+    seen_checkouts["$current_checkout"]=1
+    source_checkout="$current_checkout"
+  fi
+
   if [ "$PWD" != "$CLOUD_HOME" ]; then
     search_roots+=("$PWD")
   fi
@@ -159,12 +166,11 @@ if [ -n "${CLOUD_HOME:-}" ]; then
   TARGET_HOMES=("$CLOUD_HOME")
 
   if [ ! -d "$CLOUD_HOME/.codex" ]; then
-    mkdir -p "$CLOUD_HOME/.claude"
+    CLOUD_CLAUDE_HOME="$CLOUD_HOME"
   fi
 
-  if [ "$(id -u)" -eq 0 ] && [ "$CLOUD_HOME" != "$HOME" ] && [ -d "$CLOUD_HOME/.claude" ]; then
+  if [ -n "$CLOUD_CLAUDE_HOME" ] && [ "$(id -u)" -eq 0 ] && [ "$CLOUD_HOME" != "$HOME" ]; then
     # Claude starts as root, though its setup checkout belongs to the claude user.
-    mkdir -p "$HOME/.claude"
     TARGET_HOMES+=("$HOME")
   fi
 fi
@@ -234,9 +240,9 @@ preflight_provider() {
     return "$failed"
   fi
 
-  if [ -d "$CANONICAL_RESOURCES" ]; then
-    check_directory "$root/resources" || failed=1
+  check_directory "$root/resources" || failed=1
 
+  if [ -d "$CANONICAL_RESOURCES" ]; then
     for resource in "$CANONICAL_RESOURCES"/*; do
       [ -d "$resource" ] || continue
 
@@ -364,8 +370,9 @@ install_provider() {
       resources=$((resources + 1))
     done
 
-    prune_links "$root/resources"
   fi
+
+  prune_links "$root/resources"
 
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -d "$CANONICAL_AGENTS" ]; then
     mkdir -p "$root/agents"
@@ -438,6 +445,10 @@ for target_home in "${TARGET_HOMES[@]}"; do
 
     add_install_root "$provider" "$root"
   done
+
+  if [ -n "${CLOUD_CLAUDE_HOME:-}" ] && { [ "$target_home" = "$CLOUD_CLAUDE_HOME" ] || [ "$target_home" = "$HOME" ]; }; then
+    add_install_root claude "$target_home/.claude"
+  fi
 
   # Codex discovers user skills here even when its runtime home is ephemeral.
   if [ -d "$target_home/.agents" ] || [ -d "$target_home/.codex" ] || { [ -n "${CODEX_HOME:-}" ] && { [ "$target_home" = "$HOME" ] || [ "$target_home" = "${CLOUD_HOME:-}" ]; }; }; then

@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+cleanup() {
+  rm -rf "${fixture:-}" "${root_fixture:-}" "${rootless_runner:-}"
+}
+
+trap cleanup EXIT
+
 if [ "$(id -u)" -eq 0 ]; then
   root_fixture="$(mktemp -d)"
   root_source="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -29,10 +35,7 @@ if [ "$(id -u)" -eq 0 ]; then
   [ "$(stat -c %U "$root_home/.claude")" = root ]
   [ -L "$root_runtime/skills/code-review" ]
 
-  rm -rf "$root_fixture"
-
   rootless_runner="$(mktemp -d)"
-  trap 'rm -rf "$rootless_runner"' EXIT
 
   mkdir -p "$rootless_runner/bootstrap/resources"
   cp "$0" "$rootless_runner/bootstrap/resources/test_install.sh"
@@ -45,7 +48,6 @@ fi
 
 installer="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/install.sh"
 fixture="$(mktemp -d)"
-trap 'rm -rf "$fixture"' EXIT
 
 repo="$fixture/repo"
 mkdir -p "$repo/bootstrap" "$repo/.agents/skills/example/sample" "$repo/.agents/rules" \
@@ -113,7 +115,7 @@ git -C "$attached_checkout" init --quiet
 git -C "$attached_checkout" remote add origin https://github.com/julien777z/skills.git
 printf '%s\n' "$cloud_clone" > "$cloud_marker"
 (
-  cd "$attached_checkout"
+  cd "$attached_checkout/.agents"
   exec 9<"$cloud_marker"
   env HOME="$fixture/runtime-user" CODEX_HOME="$cloud_runtime" SKILLS_CLOUD_HOME="$cloud_clone_home" bash "$cloud_clone/bootstrap/install.sh"
 )
@@ -122,7 +124,7 @@ assert_link "$cloud_runtime/skills/sample" "$attached_checkout/.agents/.auto_gen
 
 mkdir -p "$cloud_clone_home/.codex"
 (
-  cd "$attached_checkout"
+  cd "$attached_checkout/.agents"
   exec 9<"$cloud_marker"
   env HOME="$fixture/runtime-user" CODEX_HOME="$cloud_clone_home/.codex" SKILLS_CLOUD_HOME="$cloud_clone_home" bash "$cloud_clone/bootstrap/install.sh" > "$fixture/cloud-codex-output"
 )
@@ -200,8 +202,20 @@ mkdir -p "$resources_home/.codex" "$resources_target"
 ln -s "$resources_target" "$resources_home/.codex/resources"
 ln -s "$repo/missing-resource" "$resources_target/stale"
 
-env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$resources_home" CODEX_HOME="$resources_runtime" bash "$repo/bootstrap/install.sh"
+if env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$resources_home" CODEX_HOME="$resources_runtime" bash "$repo/bootstrap/install.sh"; then
+  echo 'Expected linked resources to stop installation' >&2
+  exit 1
+fi
+
 assert_link "$resources_home/.codex/resources" "$resources_target"
 assert_link "$resources_target/stale" "$repo/missing-resource"
+
+prunable_home="$fixture/prunable-resources"
+prunable_runtime="$fixture/prunable-resources-runtime"
+mkdir -p "$prunable_home/.codex/resources"
+ln -s "$repo/missing-resource" "$prunable_home/.codex/resources/stale"
+
+env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$prunable_home" CODEX_HOME="$prunable_runtime" bash "$repo/bootstrap/install.sh"
+assert_absent "$prunable_home/.codex/resources/stale"
 
 echo 'Installer regression checks passed'
