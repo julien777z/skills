@@ -76,7 +76,7 @@ These run only when you ask for them by name, such as `/refactor`.
 - [`ci-watch`](.agents/skills/git/ci-watch/SKILL.md) — Watch a pull request, resolve review findings, and check that CI passes.
 - [`config-doctor`](.agents/skills/doctors/config-doctor/SKILL.md) — Find configuration names that disagree across code and deployments, or are no longer used.
 - [`continue-handoff`](.agents/skills/workspace/continue-handoff/SKILL.md) — Pick up work another session handed off.
-- [`cr`](.agents/skills/git/cr/SKILL.md) — Use when the user directly asks to run CR or says "CR" for a pull request.
+- [`cr`](.agents/skills/git/cr/SKILL.md) — Use when the user directly asks to run CR or says "CR" for a pull request, or when a directly user-invoked merge-post-review delegates its captured merged diffs.
 - [`defer-execution`](.agents/skills/deferrals/defer-execution/SKILL.md) — Schedule separate work on its own branch, either now or after the current pull request merges.
 - [`dependency-doctor`](.agents/skills/doctors/dependency-doctor/SKILL.md) — Reconcile declared dependencies with what the code imports and the checks invoke, for every language the repository builds.
 - [`docs-doctor`](.agents/skills/doctors/docs-doctor/SKILL.md) — Find and fix documentation that no longer matches the code.
@@ -87,6 +87,7 @@ These run only when you ask for them by name, such as `/refactor`.
 - [`incident`](.agents/skills/execution/incident/SKILL.md) — Restore a broken deployed service, test the fix, and merge the scoped repair.
 - [`legacy-doctor`](.agents/skills/doctors/legacy-doctor/SKILL.md) — Remove fallbacks, aliases, and duplicate paths left over from an old contract.
 - [`manage-mcps`](.agents/skills/workspace/manage-mcps/SKILL.md) — Audit and repair managed MCP connectors across Claude Desktop and Codex.
+- [`merge-post-review`](.agents/skills/git/merge-post-review/SKILL.md) — Use only at the user's explicit request to merge and deploy session-created pull requests before reviewing their merged diffs with CR and delivering confirmed fixes through new pull requests.
 - [`migrations-doctor`](.agents/skills/doctors/migrations-doctor/SKILL.md) — Audit and correct a repository's database migration chains, revisions, registries, and test scaffolding.
 - [`new-doctor`](.agents/skills/doctors/new-doctor/SKILL.md) — Create a doctor skill on the shared doctor-protocol for one class of repository hygiene.
 - [`refactor`](.agents/skills/execution/refactor/SKILL.md) — Plan and carry out a repository refactor with independent structural review.
