@@ -10,6 +10,22 @@ alwaysApply: false
 
 # Testing Rules
 
+## Test Runs
+
+- Finish implementing a feature, including its callers and necessary test changes, before running
+  its tests. A task containing several features may run tests after each completed feature;
+  individual edits, files, commits, and plan steps are not feature boundaries.
+- During feature implementation, run tests only when the entire planned batch is known to take
+  less than one minute of elapsed time, including setup and all selected suites. Estimate from
+  recent comparable runs; unknown duration or a total of one minute or more waits until the
+  feature is implemented. Splitting the batch into individually quick commands does not qualify.
+- Apply this cadence to parent agents and delegated workers. State feature boundaries and the
+  planned test batch in implementation briefs; pre-push checks and diagnostic runs do not create
+  an exception. This controls when tests run, not the repository's required final coverage.
+- After a completed-feature run fails, fix the reported failures together before rerunning the
+  affected suites. Reuse successful results until a subsequent change or unresolved failure
+  justifies another run; a commit, handoff, or review alone does not.
+
 ## Test Organization
 
 - Call a group of tests a suite, and unit, integration, or end-to-end its classification, in code, guidance, pull requests, and messages to the user.
