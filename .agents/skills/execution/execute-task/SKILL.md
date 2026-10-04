@@ -276,11 +276,19 @@ or return meets the next phase without the blank line required by the global cod
 Fix every listed boundary in the complete changed files; an unrelated bug or a passing formatter
 does not satisfy this spacing check.
 
-- **Commit each small coherent step and push it as soon as its checks pass** — a
-  function and its callers updated, a test brought to pass, one finding fixed — never at the end of
-  a unit or task. A push is what lets the user review and test the work, and the only copy that
+- **Commit each small coherent step and push it as soon as its checks pass**, and at least every
+  five minutes of work — a function and its callers updated, a test brought to pass, one finding
+  fixed — never at the end of a unit or task. A push is what lets the user review and test the work, and the only copy that
   outlives the machine: a recycled container or an ended session takes every commit and edit no
   remote holds.
+- **Nothing outside the change holds a push or becomes a question about pushing.** A dependency
+  still in review in another repository, an unreleased package version, a sibling pull request not
+  yet merged, CI expected to stay red until one of those lands: the branch consumes the
+  dependency's pull-request branch — in the manifest, the lockfile and any workflow checkout, as
+  the global rules' version-reference bullet allows while developing — and pushes. Its pull
+  request says which branch it consumes, a red check that dependency explains is reported rather
+  than waited on, and switching back to the released version is named work for when the
+  dependency merges.
 - **No edit sits uncommitted through a long wait outside the checks.** Before the slow verification
   below, a background worker, CI on the pushed head, or a question to the user, bring the work to a
   coherent step, commit it, and push it; the checks' own runs are part of the push, not such a wait.
