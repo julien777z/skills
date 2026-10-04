@@ -26,9 +26,9 @@ Keep every key, the nesting, and each value's kind. Do not add fields.
 
 Keep `null`, booleans, and a short categorical token that does not identify anyone: one word or code, with no digits, that names a status, type, role, or unit, such as `active`, `usd`, or `admin`. Replace every other scalar. When a value might be sensitive, replace it.
 
-A placeholder is a fictional value a person still reads the way they read the original. Match its kind, its visible format, and the distinctions inside it: how many parts it has, how those parts differ, their order, their case, and the scale a reader would guess. Values that stay next to each other keep the same relationships, so the record still reads as one plausible example. Copy no character from the paste. Decide from the value in front of you, not from its key, and not from a list of formats. A blank, a repeated character, a type label, or one stock word reused for every value of that kind fails this, whatever the value is. Where a format has a reserved fictional form, use it so the stand-in cannot be a real one. A value whose reading is none, such as zero, stays none.
+A placeholder is a fictional value a person still reads the way they read the original. Match its kind, its visible format, and the distinctions inside it: how many parts it has, how those parts differ, their order, their case, and the scale a reader would guess. Values that stay next to each other keep the same relationships, so the record still reads as one plausible example. No identifying character from the original value survives in its stand-in, beyond the format's separators and a reserved fictional form. Decide from the value in front of you, not from its key, and not from a list of formats. A blank, a repeated character, a type label, or one stock word reused for every value of that kind fails this, whatever the value is. Where a format has a reserved fictional form, use it so the stand-in cannot be a real one. A value whose reading is none, such as zero, stays none.
 
-When an object's keys are themselves data, such as emails or ids, replace those keys and keep one entry.
+When an object's keys are themselves data, such as emails or ids, replace those keys and thin the entries as **Repetition** says.
 
 ## Repetition
 
@@ -60,7 +60,7 @@ This input:
   "status": "active",
   "amount": 5.0,
   "note": "Left the package by the side door.",
-  "window": "2024-03-01/2024-03-01",
+  "window": "2024-03-01/2024-06-15",
   "stops": [
     "2024-06-01/2024-06-20",
     "2024-03-01/2024-03-14",
@@ -79,7 +79,7 @@ is answered with exactly:
 ```json
 {
   "full_name": "alex morgan",
-  "ssn": "234-56-7890",
+  "ssn": "901-23-4567",
   "email": "alex.morgan@example.com",
   "status": "active",
   "amount": 12.5,
