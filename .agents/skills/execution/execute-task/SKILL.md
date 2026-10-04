@@ -256,6 +256,10 @@ run over that fix's increment, read with the whole branch diff as its originatin
 `acceptance-gate`'s **Bounds** require; that fresh verdict is what other skills mean by an
 increment's **Pre-Push Gate** verdict.
 
+Read the shared testing rule before planning test runs or briefing an implementation worker.
+Its **Test Runs** cadence applies to pre-push checks too: a test batch deferred until feature
+completion does not hold an intermediate push, and remains required verification afterward.
+
 - **The pre-push checks are the ones CI runs on a pull request, run the way CI runs them.** Read
   the workflow files that trigger on a pull request and run every checking job that can run
   locally — lint, format, type checks, build, tests, generated-output drift, docs or coverage
