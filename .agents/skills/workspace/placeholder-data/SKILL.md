@@ -70,8 +70,8 @@ This input:
     "2023-11-01/2023-11-12"
   ],
   "addresses": [
-    {"line1": "458 Pine Road", "city": "Austin", "postal_code": "78701"},
-    {"line1": "458 Pine Rd", "city": "Austin", "postal_code": "78701"}
+    {"line1": "458 Pine Road", "city": "Austin", "postal_code": "78609"},
+    {"line1": "458 Pine Rd", "city": "Austin", "postal_code": "78609"}
   ]
 }
 ```
