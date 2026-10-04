@@ -40,7 +40,7 @@ returned records before the next action. A worker never replaces the owner's led
 - A session-scoped pull-request lookup reads the recorded pull requests first, then verifies each
   current state with the hosting service. Exclude closed and merged pull requests unless the caller
   explicitly asks for them.
-- A hand-off lookup includes open pull requests recorded as created or touched during the task.
+- A handoff lookup includes open pull requests recorded as created or touched during the task.
 - An explicit user-provided URL remains the target. Verify it directly and do not substitute a
   same-named branch or another ledger record.
 - If an existing task has no ledger entry for an artifact created before this skill was available,
