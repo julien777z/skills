@@ -284,11 +284,12 @@ does not satisfy this spacing check.
 - **Nothing outside the change holds a push or becomes a question about pushing.** A dependency
   still in review in another repository, an unreleased package version, a sibling pull request not
   yet merged, CI expected to stay red until one of those lands: the branch consumes the
-  dependency's pull-request branch — in the manifest, the lockfile and any workflow checkout, as
-  the global rules' version-reference bullet allows while developing — and pushes. Its pull
-  request says which branch it consumes, a red check that dependency explains is reported rather
-  than waited on, and switching back to the released version is named work for when the
-  dependency merges.
+  dependency's pull-request branch, or its default branch once merged — in the manifest, the
+  lockfile and any workflow checkout, as the global rules' version-reference bullet allows while
+  developing — or builds on a same-repository sibling's branch as the GitHub rule's branch bullets
+  set out, and pushes. Which branch it consumes, and a red check that dependency explains, are
+  reported in user chat rather than waited on, never in the pull-request description; switching
+  back to the released version is named work for when the dependency merges.
 - **No edit sits uncommitted through a long wait outside the checks.** Before the slow verification
   below, a background worker, CI on the pushed head, or a question to the user, bring the work to a
   coherent step, commit it, and push it; the checks' own runs are part of the push, not such a wait.
