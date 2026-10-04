@@ -78,4 +78,32 @@ assert_link "$foreign_runtime/skills/sample" "$fixture/foreign-skill"
 [ ! -e "$foreign_home/.codex/skills" ]
 [ ! -e "$foreign_home/.agents" ]
 
+for obstruction in shared-file runtime-file dangling-root blocked-parent skills-file; do
+  blocked_home="$fixture/$obstruction"
+  blocked_runtime="$fixture/$obstruction-runtime"
+  mkdir -p "$blocked_home/.codex"
+
+  case "$obstruction" in
+    shared-file) touch "$blocked_home/.agents" ;;
+    runtime-file) touch "$blocked_runtime" ;;
+    dangling-root) ln -s "$fixture/missing" "$blocked_runtime" ;;
+    blocked-parent)
+      touch "$blocked_runtime"
+      blocked_runtime="$blocked_runtime/nested"
+      ;;
+    skills-file)
+      mkdir -p "$blocked_runtime"
+      touch "$blocked_runtime/skills"
+      ;;
+  esac
+
+  if env -u SKILLS_CLOUD_HOME HOME="$blocked_home" CODEX_HOME="$blocked_runtime" bash "$repo/bootstrap/install.sh"; then
+    echo "Expected $obstruction to stop installation" >&2
+    exit 1
+  fi
+
+  [ ! -e "$blocked_home/.codex/skills" ]
+  [ ! -e "$blocked_home/.agents/skills" ]
+done
+
 echo 'Installer regression checks passed'

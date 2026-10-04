@@ -191,8 +191,23 @@ check_link() {
   return 1
 }
 
+check_directory() {
+  local directory="$1"
+
+  while [ "$directory" != / ] && [ "$directory" != . ]; do
+    if { [ -e "$directory" ] || [ -L "$directory" ]; } && [ ! -d "$directory" ]; then
+      echo "conflict: $directory is not a directory" >&2
+      return 1
+    fi
+
+    directory="$(dirname "$directory")"
+  done
+}
+
 preflight_provider() {
   local provider="$1" root="$2" skill agent rule resource name failed=0
+
+  check_directory "$root/skills" || return 1
 
   [ -d "$root" ] || return 0
 
@@ -207,6 +222,8 @@ preflight_provider() {
   fi
 
   if [ -d "$CANONICAL_RESOURCES" ]; then
+    check_directory "$root/resources" || failed=1
+
     for resource in "$CANONICAL_RESOURCES"/*; do
       [ -d "$resource" ] || continue
 
@@ -217,6 +234,8 @@ preflight_provider() {
   fi
 
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -d "$CANONICAL_AGENTS" ]; then
+    check_directory "$root/agents" || failed=1
+
     for agent in "$CANONICAL_AGENTS"/*.md; do
       [ -f "$agent" ] || continue
 
@@ -227,6 +246,8 @@ preflight_provider() {
   fi
 
   if [ -d "$CANONICAL_RULES" ]; then
+    check_directory "$root/rules" || failed=1
+
     for rule in "$CANONICAL_RULES"/*.md; do
       [ -f "$rule" ] || continue
 
@@ -241,6 +262,8 @@ preflight_provider() {
   fi
 
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ "$CANONICAL_GLOBAL" != "$CANONICAL_RULES/global.md" ]; then
+    check_directory "$root/rules" || failed=1
+
     name="global.md"
     if [ "$provider" = "cursor" ]; then
       name="global.mdc"
