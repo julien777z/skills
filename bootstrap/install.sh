@@ -108,6 +108,7 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
 
   source_checkout="$REPO_ROOT"
   search_roots=("$CLOUD_HOME")
+  declare -A seen_checkouts=()
 
   if [ "$PWD" != "$CLOUD_HOME" ]; then
     search_roots+=("$PWD")
@@ -122,6 +123,9 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
       candidate="$(dirname "$git_marker")"
 
       [ "$candidate" = "$REPO_ROOT" ] && continue
+      [ -z "${seen_checkouts[$candidate]:-}" ] || continue
+      seen_checkouts["$candidate"]=1
+
       if is_skills_checkout "$candidate"; then
         if [ "$source_checkout" != "$REPO_ROOT" ]; then
           echo "Multiple attached skills checkouts found; choose one before installing." >&2
@@ -359,9 +363,9 @@ install_provider() {
       ln -sfn "$resource" "$root/resources/$name"
       resources=$((resources + 1))
     done
-  fi
 
-  prune_links "$root/resources"
+    prune_links "$root/resources"
+  fi
 
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -d "$CANONICAL_AGENTS" ]; then
     mkdir -p "$root/agents"

@@ -23,9 +23,9 @@ if [ "$(id -u)" -eq 0 ]; then
   )
 
   [ -L "$root_cloud_home/.claude/skills/code-review" ]
-  [ "$(readlink "$root_cloud_home/.claude/skills/code-review")" = "$root_clone/.agents/skills/review/code-review" ]
+  [ "$(realpath "$root_cloud_home/.claude/skills/code-review")" = "$root_clone/.agents/skills/review/code-review" ]
   [ -L "$root_home/.claude/skills/code-review" ]
-  [ "$(readlink "$root_home/.claude/skills/code-review")" = "$root_clone/.agents/skills/review/code-review" ]
+  [ "$(realpath "$root_home/.claude/skills/code-review")" = "$root_clone/.agents/skills/review/code-review" ]
   [ "$(stat -c %U "$root_home/.claude")" = root ]
   [ -L "$root_runtime/skills/code-review" ]
 
@@ -101,7 +101,7 @@ assert_absent "$claude_home/.agents"
 
 cloud_clone_home="$fixture/cloud-clone-home"
 cloud_clone="$cloud_clone_home/.local/share/agent-skills"
-attached_checkout="$fixture/attached-skills"
+attached_checkout="$cloud_clone_home/attached-skills"
 cloud_runtime="$fixture/cloud-clone-runtime"
 cloud_marker="$fixture/cloud-clone-marker"
 mkdir -p "$(dirname "$cloud_clone")"
@@ -192,5 +192,16 @@ for obstruction in shared-file runtime-file dangling-root blocked-parent skills-
     assert_absent "$blocked_home/.agents/skills"
   fi
 done
+
+resources_home="$fixture/resources"
+resources_runtime="$fixture/resources-runtime"
+resources_target="$fixture/linked-resources"
+mkdir -p "$resources_home/.codex" "$resources_target"
+ln -s "$resources_target" "$resources_home/.codex/resources"
+ln -s "$repo/missing-resource" "$resources_target/stale"
+
+env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$resources_home" CODEX_HOME="$resources_runtime" bash "$repo/bootstrap/install.sh"
+assert_link "$resources_home/.codex/resources" "$resources_target"
+assert_link "$resources_target/stale" "$repo/missing-resource"
 
 echo 'Installer regression checks passed'

@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "bootstrap/**"
+      - ".github/scripts/test-installer.sh"
       - ".github/workflows/test-installer.yml"
     types: [opened, synchronize, reopened, ready_for_review]
 
@@ -13,4 +14,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: bash .github/scripts/test-installer.sh
+      - run: sudo bash .github/scripts/test-installer.sh
