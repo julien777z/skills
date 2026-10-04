@@ -58,8 +58,8 @@ context and returns its verdict into the step waiting on it; nothing else does b
   assignment — the inputs, the question, the reading list, the output shape — to a file, asks the
   agent that delegated to it to run that file as a subagent at the chosen tier, and waits for the
   verdict before going past the step. The gate over a finished task's diff is not such a step: the
-  delegating agent runs it from the branch and head the worker reports, under `execute-task`'s
-  **Completion**. A worker whose only channel to
+  delegating agent runs it from the branch and head the worker reports, under the delegated-edits bullet
+  of `execute-task`'s **Pre-Push Gate**. A worker whose only channel to
   that agent is its final message asks by returning: it ends its turn with the file path and the
   request, and resumes when the verdict comes back. The delegating agent runs it and returns the verdict unedited; when the
   finished worker cannot be resumed, the delegating agent carries out what the verdict calls for,

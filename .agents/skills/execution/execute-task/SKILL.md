@@ -428,6 +428,9 @@ result nor touches the files or resources the awaited work is changing. Each ite
 names what it uses that only the awaited result will supply, and one with nothing to name starts
 now: coming later in the plan, belonging to the same feature, or consuming a shape already agreed
 with the awaited work, such as a planned contract, is not such a thing, so build against that shape.
+When the awaited work is a building worker, the work started meanwhile is read-only (verification,
+review, preparing a question), never an edit, as `subagent-selection`'s **Dispatch** allows one
+builder at a time.
 A turn that ends on "still waiting on X" while such work exists is the failure above, and a status
 report is not a stopping point. Only when every remaining item depends on the awaited result does
 the turn end on the wait.

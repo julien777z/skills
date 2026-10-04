@@ -256,9 +256,9 @@ outcome, because silence reads as the guidance having been fixed.
    to a release workflow. A question asking for it only holds every later session on the guidance
    the change replaces. The approval of a changed output's fictional example, under **Upsert
    behavior**, is the one question put to the user, and it comes before delivery.
-   1. **Branch and commit.** The edit goes onto the session's open agent-configuration pull request
-      in the repository being edited, or onto a branch from the freshly fetched default branch with
-      a new pull request, under the GitHub rule's **Branches and Pull Requests** — never onto a
+   1. **Branch and commit.** The edit goes onto the open agent-configuration pull request the work
+      continues in the repository being edited, whichever session opened it, or, when it continues
+      none, onto a branch from the freshly fetched default branch with a new pull request, under the GitHub rule's **Branches and Pull Requests** — never onto a
       source branch, the one checked out included. Commit the `.agents` files, never a provider
       mirror, and push each step once `execute-task`'s **Pre-Push Gate** checks pass to a draft pull
       request; steps 3–4 are the complete-diff pass its **Completion** runs, and step 7's `merge-pr` takes
