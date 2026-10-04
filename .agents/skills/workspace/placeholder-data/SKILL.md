@@ -1,17 +1,17 @@
 ---
 name: placeholder-data
 description: >-
-  Replace a pasted API payload with plausible non-sensitive placeholders that keep
+  Replace a pasted API payload with obviously fake placeholders that keep
   its shape. Thin a repeated list to the items a reader still needs in order to
   read it the same way. Use when the user pastes an API response or payload and
   asks to sanitize, placeholder, or anonymize it for copy-paste.
-short_description: 'Turn a pasted API payload into the same shape with plausible fake values.'
+short_description: 'Turn a pasted API payload into the same shape with obviously fake values.'
 disable-model-invocation: true
 ---
 
 # Placeholder Data
 
-The user pastes a payload. The skill answers with the same shape filled with plausible placeholders.
+The user pastes a payload. The skill answers with the same shape filled with obvious placeholders.
 
 ## Workflow
 
@@ -26,7 +26,9 @@ Keep every key, the nesting, and each value's kind. Do not add fields.
 
 Keep `null`, booleans, and a short categorical token that does not identify anyone: one word or code, with no digits, that names a status, type, role, or unit, such as `active`, `usd`, or `admin`. Replace every other scalar. When a value might be sensitive, replace it.
 
-A placeholder is a fictional value a person still reads the way they read the original. Match its kind, its visible format, and the distinctions inside it: how many parts it has, how those parts differ, their order, their case, and the scale a reader would guess. Values that stay next to each other keep the same relationships, so the record still reads as one plausible example. No identifying character from the original value survives in its stand-in, beyond the format's separators and a reserved fictional form. Decide from the value in front of you, not from its key, and not from a list of formats. A blank, a repeated character, a type label, or one stock word reused for every value of that kind fails this, whatever the value is. Where a format has a reserved fictional form, use it so the stand-in cannot be a real one. A value whose reading is none, such as zero, stays none.
+A placeholder is an obvious stand-in a person still reads the way they read the original. Match its kind, its visible format, and the distinctions inside it: how many parts it has, how those parts differ, their order, their case, and the scale a reader would guess. Values that stay next to each other keep the same relationships. No identifying character from the original value survives in its stand-in, beyond the format's separators. Decide from the value in front of you, not from its key, and not from a list of formats.
+
+Prefer a stand-in the reader already recognizes as a placeholder. A realistic substitute carries the same reading and can be mistaken for a real record, so it loses. A conventional placeholder — a stock placeholder name, place, or number, or a host reserved for examples — beats a generic test label too, when both carry that reading. Use a generic test label only when no conventional placeholder carries it, as with a sentence. A blank, all zeros, or a type label fails, because it drops the reading. Distinctions still show: an extra name part stays an extra part, a decimal stays a decimal, and a range's ends still differ. A value whose reading is none, such as zero, stays none.
 
 When an object's keys are themselves data, such as emails or ids, replace those keys and thin the entries as **Repetition** says.
 
@@ -54,9 +56,9 @@ This input:
 
 ```json
 {
-  "full_name": "john smith",
+  "full_name": "maria l lopez",
   "ssn": "123-45-6789",
-  "email": "john@example.com",
+  "email": "maria.lopez@example.com",
   "status": "active",
   "amount": 5.0,
   "note": "Left the package by the side door.",
@@ -68,8 +70,8 @@ This input:
     "2023-11-01/2023-11-12"
   ],
   "addresses": [
-    {"line1": "1 Main St", "city": "Austin", "postal_code": "78701"},
-    {"line1": "2 Oak Ave", "city": "Dallas", "postal_code": "75201"}
+    {"line1": "9 Pine Road", "city": "Austin", "postal_code": "78701"},
+    {"line1": "9 Pine Rd", "city": "Austin", "postal_code": "78701"}
   ]
 }
 ```
@@ -78,22 +80,22 @@ is answered with exactly:
 
 ```json
 {
-  "full_name": "alex morgan",
-  "ssn": "901-23-4567",
-  "email": "alex.morgan@example.com",
+  "full_name": "john a smith",
+  "ssn": "111-11-1111",
+  "email": "john.smith@example.com",
   "status": "active",
-  "amount": 12.5,
-  "note": "The crate arrived before noon.",
-  "window": "2000-02-03/2000-05-21",
+  "amount": 11.11,
+  "note": "This is a test note.",
+  "window": "2000-02-03/2000-07-08",
   "stops": [
-    "2001-07-04/2001-07-23",
     "2001-04-05/2001-04-18",
-    "2001-02-06/2001-02-13"
+    "2001-03-06/2001-03-19",
+    "2001-02-07/2001-02-14"
   ],
   "addresses": [
     {
-      "line1": "18 Maple Street",
-      "city": "Springfield",
+      "line1": "123 Main Street",
+      "city": "Anytown",
       "postal_code": "12345"
     }
   ]
