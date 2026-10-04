@@ -122,6 +122,7 @@ also not a reason to stop at the first file, and the section below governs how f
   names, such as `FEED_URL_STAGING` beside `FEED_URL_PRODUCTION` picked by `env == "production"`.
   Before adding a value, read how its siblings are scoped and supplied; a sibling selecting between
   per-environment names is a defect, moved onto the one name.
+- **Identify the controller owner before changing a multi-controller topology.** A controller may own multiple environments, but an environment owned by a separate controller repository is never registered, granted, routed, or selected as a target in another controller's registry or workflow. Change the owning controller and keep each controller endpoint under the existing configuration name scoped by its owner; never bridge controllers with an alternate key or a conditional selector.
 - Legitimate production resilience is not transitional fallback code. Keep the error handling,
   browser support, empty states, and provider-failure behavior the released product needs.
 - Prefer a deliberate break to an owned API, wire, schema, payload, or stored shape when it
