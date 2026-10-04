@@ -1,7 +1,8 @@
 ---
 name: code-review
-description: Use for a standalone review of a pull request or current changes with independent reviewer lenses, validated findings, and severity-rated results. Requests that directly name CR belong to the dedicated CR workflow, which already fixes review mode and effort. This skill establishes a branch and draft pull request when needed, accepts an effort level plus optional fix or comment modes, and asks only for standalone review options that were not stated.
+description: Use for a standalone review of a pull request or current changes with independent reviewer lenses, validated findings, and severity-rated results.
 short_description: 'Code review a pull request or the current working changes with independent reviewer lenses, validated findings, and severity-rated results.'
+disable-model-invocation: true
 ---
 
 # Code Review
@@ -34,6 +35,10 @@ fixed values in that type. A receipt without the conditional list is incomplete 
 - A repository-local `security-audit`, when present — its `references/rubric.md` defines an exploitable finding and its remedy, and its attack-class catalogue supplies that lens. The review borrows both and never the audit workflow.
 - `acceptance-gate` — define the intent statement and gate the fixes the change did not itself
   introduce.
+
+## Invocation
+
+- Run this skill only when the user directly invokes it or the `cr` skill delegates under its Invocation Authorization. The `cr` skill supplies high effort and fix mode; do not ask for standalone review options on that route.
 
 ```
 /code-review [low|medium|high|xhigh|max|ultra] [fix] [comment] [<target>]
