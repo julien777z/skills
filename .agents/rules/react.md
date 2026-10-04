@@ -299,14 +299,14 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   footer or a submit row.** A load that failed, a save or submit the service refused, an action that
   could not run: each is a dismissible banner above the content it concerns, wherever the control
   that caused it sits. A refused form submit shows above the form's fields, not beside its button,
-  and a save refused from a floating save bar shows above the section holding the field, not in the
-  bar. The banner never replaces a surface's own heading or description, which keep saying what the
-  surface is while the banner says what went wrong.
-- **A state of the whole page's subject shows once, as a persistent banner at the top of the
-  page.** An account, workspace or project that is suspended, archived or read-only is not a
-  failure of any one section: no section repeats it as its own error, even when its request is
-  refused because of it, and each shows what it still can. A library card that has lapsed gets one
-  banner on the member page, not a "card lapsed" error in the loans, holds and fines sections.
+  and a save refused from the floating save panel shows above the section holding the field, not in
+  the panel. The banner never replaces a surface's own heading or description, which keep saying
+  what the surface is while the banner says what went wrong.
+- **A state of the whole page's subject shows once, as a persistent banner at the top of the page.**
+  An account, workspace or project that is suspended, archived or read-only is not a failure of any
+  one section: no section repeats it as its own error, even when its request is refused because of
+  it, and each shows what it still can. A library card that has lapsed gets one banner on the member
+  page, not a "card lapsed" error in the loans, holds and fines sections.
 - **The error tone is for errors.** Red, or whatever tone the product reserves for destructive and
   failed states, marks only a failure, a refusal, or a destructive action. A state that blocks or
   warns without being an error — something the reader must resolve, a hold, a limit reached — takes
@@ -322,17 +322,18 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   required fields are normal editing state, not an error banner. Show errors for failures after a
   valid action or for failed data requests.
 
-- **A page or form that edits saved values saves through one floating panel fixed to the bottom of
-  the viewport, never through buttons on the page** — a settings page, a profile, a record's edit
+- **A page or form that edits saved values saves through one floating save panel fixed to the bottom
+  of the viewport, never through buttons on the page** — a settings page, a profile, a record's edit
   page alike. The panel is out of view until a field differs from its saved value; then it animates
   up from below the viewport's bottom edge to rest a little above it, holding a cancel action that
-  restores the saved values and a save action. It stays in view as the reader
-  scrolls while changes are unsaved, and slides away once they are saved or cancelled. A reader who
-  unticks one topic on a newsletter preferences page sees it rise, and ticking the topic again sends
-  it away. A save or reset button per section, a row of them at the end of the page or form, and a
-  footer that sticks to the bottom of the page whether or not anything changed are the defect. A
-  form that creates a record or submits a flow step is not editing saved values and keeps its own
-  footer. One shared component owns the panel, under **Shared Surfaces**.
+  restores the saved values and a save action. It stays in view as the reader scrolls while changes
+  are unsaved, and slides away once they are saved or cancelled. A reader who unticks one topic on a
+  newsletter preferences page sees it rise, and ticking the topic again sends it away. A save or
+  reset button per section, a row of them at the end of the page or form, and a footer that sticks
+  to the bottom of the page whether or not anything changed are the defect. A form that creates a
+  record or submits a flow step is not editing saved values and keeps its own footer, and a form
+  inside a dialog saves through the dialog's own actions; the panel belongs to a page the reader
+  scrolls. One shared component owns the panel, under **Shared Surfaces**.
 - **A form a person signs, certifies or attests to starts empty.** Nothing is seeded from a profile
   or an earlier submission, because the signer vouches for what they entered.
 - **A form longer than a handful of fields is grouped into titled sections,** each holding the

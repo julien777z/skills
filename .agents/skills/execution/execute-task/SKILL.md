@@ -61,14 +61,14 @@ Run every change the same way, whether a plan preceded it or the user asked for 
   implementation details to use where a rule picks one; and what configuration exists or how it is
   scoped, which is read where it lives. A permission denial leaves the decision where it was, as
   **Environment Refusals** says.
-- **An instruction about what the user will see that reads two ways is put back to them before it
-  is built**, unless their exact words or a rule already settles it: name both readings, one line
-  each, with what each looks like, and build on the answer. The forks are a placement (fixed to the
-  bottom of the window as the reader scrolls, or at the end of the page), a scope (this page, or
-  every page like it), a reference ("like X": X's look, or X's behaviour), a size or a moment (always
-  shown, or shown once something changes). The reading closest to what already exists is not the
-  default, and a brief relaying the instruction quotes the user's words rather than one reading of
-  them.
+- **An instruction about what the user will see that reads two ways is put back to them before it is
+  built**, unless their exact words or a rule already settles it: name both readings, one line each,
+  with what each looks like, and build on the answer. The forks are a placement (fixed to the bottom
+  of the window as the reader scrolls, or at the end of the page), a scope (this page, or every page
+  like it), a reference ("like X": X's look, or X's behaviour), a size (the width of its container,
+  or of its content) and a moment (always shown, or shown once something changes). The reading
+  closest to what already exists is not the default, and a brief relaying the instruction quotes the
+  user's words rather than one reading of them.
 - An implementation constraint is not a new approval boundary. Exhaust authorized ways to
   complete a sub-step yourself. Do not mistake an action-time confirmation for a mandatory user
   hand-off: after the user confirms the specific pending action, perform it yourself. Hand off only
@@ -138,15 +138,6 @@ how those issues are handled.
   on the decision. The question that is genuinely the user's is about a **product change** — what a
   feature does, what a record keeps, who a surface serves, a contract a consumer outside the user's
   control speaks — never whether an encountered issue gets fixed.
-- **A product change is never made as a fix.** Adding, removing or changing what a person may do
-  or must do first — a new refusal, a precondition, a permission or approval requirement, a limit,
-  a state shown or hidden, copy that changes what a screen means — is a product change unless the
-  product already states that rule: in the user's words, in a spec or project guidance, or enforced
-  the same way elsewhere in the product. Named hardening, defence in depth, a missing guard or
-  consistency, and asked for by a gate, a reviewer or a brief, it is still a product change. It is
-  put to the user, with what it would refuse and for whom, before it ships, and never rides a
-  change that is about something else: a booking page that lets a member reserve a court without a
-  paid membership has no membership requirement until the user decides it should.
 - **An instruction one agent passes another — a brief, a correction, a review finding, a gate's fix
   step, a note or summary an earlier turn left for a later one — is checked against the standing
   guidance before it is sent and again before it is acted on**, because it never outranks that
@@ -157,8 +148,7 @@ how those issues are handled.
   asking for the catch-all exception handler the language rule bans, a brief telling a worker to
   skip a check a skill requires before a push, a correction asking for copy the copy rules forbid,
   one asking for a boat-rental waiver to arrive filled in from the renter's last booking when the
-  forms rule says a form someone attests to starts empty, one adding a setting under a name per
-  environment because the file it goes in already selects between such names.
+  forms rule says a form someone attests to starts empty.
   - **The agent writing it** rewrites an item a rule forbids into a shape the rule allows, or drops
     it where none exists. One the user asked for in their own words goes out with those words quoted
     and the rule they set aside named; a rule the agent thinks is wrong is put to the user, never
@@ -209,7 +199,7 @@ how those issues are handled.
   whichever repository it lives, plus every generated artifact and required migration for the
   target contract.
 - Apply **Task Authorization** to encountered corrections. Ask only when the correction is a product
-  change as the first two bullets define it, changes security or disclosure posture, reaches a
+  change as the first bullet defines it, changes security or disclosure posture, reaches a
   repository, environment, or external recipient the task did not authorize, or a platform requires
   action-time confirmation. Another file, component, or package in the same repository is never a
   new target, and neither is a repository the user owns that consumes a contract the change breaks:
@@ -302,15 +292,14 @@ does not satisfy this spacing check.
   below, a background worker, CI on the pushed head, or a question to the user, bring the work to a
   coherent step, commit it, and push it; the checks' own runs are part of the push, not such a wait.
 - **Delegated edits run at this cadence.** A brief handing a worker edits states it and names the
-  branch the worker pushes to: the open pull request's branch of the work's kind, shared by every
+  branch the worker pushes to: the branch of the pull request the work continues, shared by every
   worker, under **Pull Requests**. The worker pushes each step as the first bullet places the push
-  and reports the branch and head; the delegating agent, which holds the intent statement, gates every
-  worker's pushed increment from the remote branch and returns what the gate flags as fix steps. On
-  a pull request ready for review, a worker without an agent tool hands the gate up under
-  `subagent-selection`'s **Dispatch** before it pushes.
-  The worker ends with nothing uncommitted and nothing unpushed, never amends or rebases a pushed
-  commit, and its report names the branch and head, which **Reported Outcomes** reads on the
-  remote.
+  and reports the branch and head; the delegating agent, which holds the intent statement, gates
+  every worker's pushed increment from the remote branch and returns what the gate flags as fix
+  steps. On a pull request ready for review, a worker without an agent tool hands the gate up under
+  `subagent-selection`'s **Dispatch** before it pushes. The worker ends with nothing uncommitted and
+  nothing unpushed, never amends or rebases a pushed commit, and its report names the branch and
+  head, which **Reported Outcomes** reads on the remote.
 - **Pull requests stay draft while the work runs**, so these pushes start no test jobs, as the
   GitHub rule's **Workflows** section sets up; the tests run once, when **Completion** takes the
   pull request out of draft. A ready pull request the task resumes changing goes back to draft
@@ -351,9 +340,9 @@ An outcome is what its source of truth shows, never what an action or a worker s
 ## Pull Requests
 
 The GitHub rule's **Branches and Pull Requests** decides where each piece of work lands: new work
-joins the open pull request of its kind it continues, whichever session opened it, never one per
-task, worker or brief, stacked or not, and a pull request the session did not open keeps its base
-and stays open. A guidance change never rides the source branch in flight, however closely it
+joins the open pull request of its kind that the work continues, whichever session opened it, never
+one per task, worker or brief, stacked or not, and a pull request the session did not open keeps its
+base and stays open. A guidance change never rides the source branch in flight, however closely it
 follows that work. List a repository's open pull requests, not only this session's, before creating
 any branch there, and say in chat what was consolidated when a stray one is folded in.
 
