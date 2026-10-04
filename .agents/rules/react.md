@@ -379,6 +379,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 - Prefix with `handle`: `handleClick`, `handleSubmit`
 - Use `useCallback` for handlers passed to memoized children
+- **Every textual hyperlink has a visible, non-layout-shifting hover effect.** Its resting style
+  already signals navigation; hovering changes its color or underline treatment with sufficient
+  contrast. The shared link primitive owns that treatment where one exists; otherwise, use the
+  product's link tokens consistently across tables, cards, and inline text.
 - **A labelled button in a form, beside a field, or in a form's row of actions reads as a button at
   rest**: a filled surface, or a boundary with at least 3:1 contrast against what it sits on, plus
   a hover state. One that reads as text or a faint outline beside an input is the defect. A control
