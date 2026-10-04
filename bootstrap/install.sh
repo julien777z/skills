@@ -192,7 +192,7 @@ check_link() {
 }
 
 preflight_provider() {
-  local provider="$1" root="$2/.$provider" skill agent rule resource name failed=0
+  local provider="$1" root="$2" skill agent rule resource name failed=0
 
   [ -d "$root" ] || return 0
 
@@ -201,6 +201,10 @@ preflight_provider() {
 
     check_link "$root/skills/$name" || failed=1
   done < <(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)
+
+  if [ "$provider" = agents ]; then
+    return "$failed"
+  fi
 
   if [ -d "$CANONICAL_RESOURCES" ]; then
     for resource in "$CANONICAL_RESOURCES"/*; do
@@ -289,7 +293,7 @@ prune_links() {
 }
 
 install_provider() {
-  local provider="$1" root="$2/.$provider" skill agent rule resource name skills=0 agents=0 rules=0 resources=0
+  local provider="$1" root="$2" skill agent rule resource name skills=0 agents=0 rules=0 resources=0
 
   [ -d "$root" ] || return 0
 
@@ -305,6 +309,12 @@ install_provider() {
   done < <(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)
 
   prune_links "$root/skills"
+
+  if [ "$provider" = agents ]; then
+    echo "$root: $skills skills linked"
+
+    return
+  fi
 
   if [ -d "$CANONICAL_RESOURCES" ]; then
     mkdir -p "$root/resources"
@@ -368,12 +378,35 @@ install_provider() {
   echo "$root: $skills skills, $agents agents, $rules rules, $resources resources linked"
 }
 
-preflight_ok=1
+INSTALL_PROVIDERS=()
+INSTALL_ROOTS=()
 
 for target_home in "${TARGET_HOMES[@]}"; do
   for provider in "${PROVIDERS[@]}"; do
-    preflight_provider "$provider" "$target_home" || preflight_ok=0
+    root="$target_home/.$provider"
+
+    [ -d "$root" ] || continue
+
+    INSTALL_PROVIDERS+=("$provider")
+    INSTALL_ROOTS+=("$root")
   done
+
+  # Codex discovers user skills here even when its runtime home is ephemeral.
+  if [ -d "$target_home/.agents" ] || [ -d "$target_home/.codex" ] || { [ "$target_home" = "$HOME" ] && [ -n "${CODEX_HOME:-}" ]; }; then
+    INSTALL_PROVIDERS+=(agents)
+    INSTALL_ROOTS+=("$target_home/.agents")
+  fi
+done
+
+if [ -n "${CODEX_HOME:-}" ] && { [ "$CODEX_HOME" != "$HOME/.codex" ] || [ ! -d "$CODEX_HOME" ]; }; then
+  INSTALL_PROVIDERS+=(codex)
+  INSTALL_ROOTS+=("$CODEX_HOME")
+fi
+
+preflight_ok=1
+
+for index in "${!INSTALL_ROOTS[@]}"; do
+  preflight_provider "${INSTALL_PROVIDERS[$index]}" "${INSTALL_ROOTS[$index]}" || preflight_ok=0
 done
 
 if [ "$preflight_ok" -eq 0 ]; then
@@ -381,10 +414,9 @@ if [ "$preflight_ok" -eq 0 ]; then
   exit 1
 fi
 
-for target_home in "${TARGET_HOMES[@]}"; do
-  for provider in "${PROVIDERS[@]}"; do
-    install_provider "$provider" "$target_home"
-  done
+for index in "${!INSTALL_ROOTS[@]}"; do
+  mkdir -p "${INSTALL_ROOTS[$index]}"
+  install_provider "${INSTALL_PROVIDERS[$index]}" "${INSTALL_ROOTS[$index]}"
 done
 
 if [ "$found_root" -eq 0 ]; then
