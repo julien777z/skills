@@ -110,7 +110,7 @@ outcome, because silence reads as the guidance having been fixed.
      repository only when it reads generically without losing required behavior. If making it
      generic would remove or misstate guidance it needs to give, put it in the repository it
      describes under `.agents/skills/`, at any depth; move a misplaced existing skill there.
-     **Repository, environment, controller, provider-account, registry, and credential ownership are project facts.** A rule declaring how named projects or resources relate belongs in each affected repository's `.agents/project.md`, even when the failure class is reusable. A shared skill may teach the classification procedure, but never carry a current repository's topology or ownership boundary.
+     **Guidance whose correctness depends on a current repository's product, resources, topology, contracts, configuration, or relationships is project guidance.** It belongs in that repository's `.agents/project.md` or a repository-specific skill, regardless of the subject that exposed the gap. A shared skill may teach the classification procedure, but never carry a current repository's facts or boundaries.
      An agent definition that a shared skill runs on goes with that skill; every other agent, and
      every rule, is repository-owned.
    - A shared target is edited in the skills repository's checkout — the one the user-level link
