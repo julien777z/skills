@@ -1,6 +1,6 @@
 ---
 name: cr
-description: Use when the user directly asks to run CR or says "CR" for a pull request. Triage review threads, run multi-subagent code-simplify and high-effort fix review, repair failed checks, then merge after the gates unless the user explicitly asks to finish review without merging. This dedicated CR workflow uses high effort and fix mode without asking for review options.
+description: Use when the user directly asks to run CR or says "CR" for a pull request, or when a directly user-invoked merge-post-review delegates its captured merged diffs. Triage review threads, run multi-subagent code-simplify and high-effort fix review, repair failed checks, then merge after the gates unless the user explicitly asks to finish review without merging. This dedicated CR workflow uses high effort and fix mode without asking for review options.
 disable-model-invocation: true
 ---
 
@@ -10,7 +10,7 @@ Run the complete high-effort fix review and exact-head gates for the current bra
 
 ## Invocation Authorization
 
-- Run this skill only when the user directly invokes `$cr` or directly asks to run CR in the current task.
+- Run this skill only when the user directly invokes `$cr`, directly asks to run CR in the current task, or directly invokes `merge-post-review` and that workflow delegates its captured targets. Never infer the latter from a merge or a prior run.
 - For a direct CR invocation, this instruction overrides `code-review`'s standalone argument prompt: run `code-review high fix <PR>` without comment mode; do not ask the user to select review effort or modes.
 - **A direct CR invocation authorizes the squash merge of its target pull request** at the head
   that passed final acceptance and the check gate, unless the user explicitly withholds merge. That
@@ -53,6 +53,16 @@ Run the complete high-effort fix review and exact-head gates for the current bra
 Invoke `subagent-selection` and use its **standard** tier for this workflow's own sub-agents.
 Delegated skills retain their explicitly selected tiers, subject to the user's model override.
 Follow the selector's dispatch and unavailable-model policy.
+
+## Review Targets
+
+For the merged ref ranges explicitly delegated by `merge-post-review`, follow that workflow's
+immutable-target and new-fix-pull-request ownership. Review the recorded merge's complete delivered
+diff rather than rejecting its original pull request as merged. Keep the complete merged range as
+review context while validating the fix pull request's complete diff and each remedy increment.
+All review lenses, finding validation, acceptance, and exact-head fix gates still apply.
+
+Ordinary direct CR invocations retain the open-pull-request ownership below.
 
 ## Pull Request Ownership
 
