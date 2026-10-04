@@ -38,7 +38,7 @@ fixed values in that type. A receipt without the conditional list is incomplete 
 
 ## Invocation
 
-- Run this skill only when the user directly invokes it or the `cr` skill delegates a direct CR invocation. The `cr` skill supplies high effort and fix mode; do not ask for standalone review options on that route.
+- Run this skill only when the user directly invokes it or the `cr` skill delegates under its Invocation Authorization. The `cr` skill supplies high effort and fix mode; do not ask for standalone review options on that route.
 
 ```
 /code-review [low|medium|high|xhigh|max|ultra] [fix] [comment] [<target>]
