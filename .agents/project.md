@@ -9,7 +9,7 @@ The descriptions also cover work that file patterns alone cannot identify.
 | `biome.md` | Formatting or linting TypeScript and TSX, or changing `biome.json`. |
 | `fastapi.md` | Changing Python routes, dependencies, request handling, or responses. |
 | `github.md` | Working with Actions, pull requests, commits, or repository documentation. |
-| `http.md` | Adding or changing HTTP clients, provider calls, or response statuses. |
+| `http.md` | Designing or changing HTTP clients, provider calls, server API operations and policy, or response statuses. |
 | `poetry.md` | Changing Python dependencies, project configuration, or test setup. |
 | `pydantic.md` | Defining models and settings or changing validation and serialization. |
 | `python.md` | Editing Python typing, modules, control flow, errors, logging, or style. |

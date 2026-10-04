@@ -1,4 +1,5 @@
 ---
+description: Apply when designing or changing HTTP clients, provider calls, server API operations and policy, or response statuses.
 alwaysApply: false
 paths:
 - '**/*.py'
@@ -7,6 +8,20 @@ paths:
 ---
 
 # HTTP Rules
+
+## Server APIs
+
+- **Clients can invoke, reorder, or replay requests independently of the interface.** A UI
+  sequence, client-supplied flag, or request arriving is never authoritative proof that prerequisites
+  were met or that the caller is eligible.
+- **Expose domain operations, not generic setters for consequential state.** The operation that
+  owns a transition checks the authenticated caller's authority and resource scope, current server
+  state, and required prerequisites before applying it. A client-proposed transition never
+  substitutes for those checks, on this endpoint or any other.
+- A client may express intent or start setup through an API. Derive the resulting restrictions and
+  eligibility from that operation's meaning and authoritative server policy, rather than letting the
+  client toggle them. Reuse the policy gate in every operation it protects, so later features cannot
+  bypass it.
 
 ## Clients
 
