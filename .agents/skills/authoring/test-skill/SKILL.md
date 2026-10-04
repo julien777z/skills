@@ -1,6 +1,6 @@
 ---
 name: test-skill
-description: "Prove a skill edit changes what a reader does: rebuild the miss that prompted it, run one reader on the edited and one on the original text per scenario, and score both against stated criteria before the pull request merges. Runs only when the user asks for a skill edit to be tested; a change confined to rules never runs it."
+description: "Prove every behavior-changing skill, rule, or agent edit changes what a reader does: rebuild the miss, run one reader on edited guidance and one on the original per scenario, and score both before the pull request merges."
 short_description: 'Compare edited and original skill guidance against the same scenario.'
 ---
 
@@ -16,12 +16,11 @@ a code change is tested: against the case that motivated it, with the change and
 
 ## When It Runs
 
-- **Only when the user asks for a skill edit to be tested**, and then before its pull request
-  merges, whether the edit came through `edit-skill` or was made directly. Without that request
-  the edit merges on its acceptance gate and the report says `not run: not requested`. A change
-  confined to rules never runs it, asked or not. An edit that changes what the skill returns the
-  user runs only after the user approved a fictional example of that output, as `edit-skill`
-  requires; a smoke run never proposes a format.
+- **Run before merge for every behavior-changing skill, rule, or agent edit**, whether it came
+  through `edit-skill` or was made directly. A rule is reader guidance, so its source type never
+  exempts it. An edit that changes what the skill returns the user runs only after the user
+  approved a fictional example of that output, as `edit-skill` requires; a smoke run never
+  proposes a format.
 - **An edit that changes no instruction a reader follows does not run at all, and its pull request
   merges on the reading**. A term swapped for
   another, a spelling standardised, a typo corrected, a dead link repaired: the text asks a reader
