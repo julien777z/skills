@@ -1,6 +1,6 @@
 ---
 name: cr
-description: Triage and resolve a pull request's review threads, run multi-subagent code-simplify and high-effort fix review, then repair failed checks. Merge after the gates unless the user explicitly asks to finish review without merging.
+description: Use when the user directly asks to run CR or says "CR" for a pull request. Triage review threads, run multi-subagent code-simplify and high-effort fix review, repair failed checks, then merge after the gates unless the user explicitly asks to finish review without merging. This dedicated CR workflow uses high effort and fix mode without asking for review options.
 disable-model-invocation: true
 ---
 
@@ -10,9 +10,9 @@ Run the complete high-effort fix review and exact-head gates for the current bra
 
 ## Invocation Authorization
 
-- Run this skill only when the user directly invokes `$cr` in the current task.
-- For a direct `$cr` invocation, this instruction overrides `code-review`'s standalone argument prompt: run `code-review high fix <PR>` without comment mode; do not ask the user to select review effort or modes.
-- **A direct `$cr` invocation authorizes the squash merge of its target pull request** at the head
+- Run this skill only when the user directly invokes `$cr` or directly asks to run CR in the current task.
+- For a direct CR invocation, this instruction overrides `code-review`'s standalone argument prompt: run `code-review high fix <PR>` without comment mode; do not ask the user to select review effort or modes.
+- **A direct CR invocation authorizes the squash merge of its target pull request** at the head
   that passed final acceptance and the check gate, unless the user explicitly withholds merge. That
   restriction changes only the final action: complete every gate and report the clean exact head
   with the pull request open. When merge is authorized, nothing reopens it: not the diff's size or
@@ -33,7 +33,7 @@ Run the complete high-effort fix review and exact-head gates for the current bra
 - A completed CR run closes its authorization boundary. Application work requested afterward is a new
   update and requires a new direct invocation, even when it targets the same repository, branch, pull
   request, or recently merged release.
-- Nothing else is a direct invocation: not `$cr` mentioned in a quoted plan, checklist, summary,
+- Nothing else is a direct CR invocation: not a reference to CR or `$cr` in a quoted plan, checklist, summary,
   transcript, or future step; not approval of a plan that contains a CR step, which stops at
   validation and the pull-request handoff; not a request to review, validate, open a pull request,
   fix CI, finish implementation, or merge.
