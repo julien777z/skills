@@ -415,7 +415,7 @@ for target_home in "${TARGET_HOMES[@]}"; do
   done
 
   # Codex discovers user skills here even when its runtime home is ephemeral.
-  if [ -d "$target_home/.agents" ] || [ -d "$target_home/.codex" ] || { [ "$target_home" = "$HOME" ] && [ -n "${CODEX_HOME:-}" ]; }; then
+  if [ -d "$target_home/.agents" ] || [ -d "$target_home/.codex" ] || { [ -n "${CODEX_HOME:-}" ] && { [ "$target_home" = "$HOME" ] || [ "$target_home" = "${CLOUD_HOME:-}" ]; }; }; then
     INSTALL_PROVIDERS+=(agents)
     INSTALL_ROOTS+=("$target_home/.agents")
   fi
