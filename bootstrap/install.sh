@@ -20,6 +20,7 @@ is_skills_remote() {
 
 if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
   CLOUD_HOME="${REPO_ROOT%/.local/share/agent-skills}"
+  CLOUD_CLAUDE_HOME=""
 
   if [ -n "${SKILLS_CLOUD_HOME:-}" ] && [ "$SKILLS_CLOUD_HOME" != "$CLOUD_HOME" ]; then
     echo "Cloud setup clone is outside SKILLS_CLOUD_HOME: $REPO_ROOT" >&2
@@ -108,6 +109,17 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
 
   source_checkout="$REPO_ROOT"
   search_roots=("$CLOUD_HOME")
+  declare -A seen_checkouts=()
+
+  current_checkout="$(git -c safe.directory='*' -C "$PWD" rev-parse --show-toplevel 2>/dev/null || true)"
+  if [ -n "$current_checkout" ] && [ "$current_checkout" != "$REPO_ROOT" ] && is_skills_checkout "$current_checkout"; then
+    seen_checkouts["$current_checkout"]=1
+    source_checkout="$current_checkout"
+  fi
+
+  if [ "$PWD" != "$CLOUD_HOME" ]; then
+    search_roots+=("$PWD")
+  fi
 
   if [ "$CLOUD_HOME" = /home/claude ] && [ -d /home/user ]; then
     search_roots+=(/home/user)
@@ -118,6 +130,9 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
       candidate="$(dirname "$git_marker")"
 
       [ "$candidate" = "$REPO_ROOT" ] && continue
+      [ -z "${seen_checkouts[$candidate]:-}" ] || continue
+      seen_checkouts["$candidate"]=1
+
       if is_skills_checkout "$candidate"; then
         if [ "$source_checkout" != "$REPO_ROOT" ]; then
           echo "Multiple attached skills checkouts found; choose one before installing." >&2
@@ -126,7 +141,7 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
 
         source_checkout="$candidate"
       fi
-    done < <(find "$search_root" -mindepth 2 -maxdepth 4 -name .git \( -type d -o -type f \) -print)
+    done < <(find "$search_root" -mindepth 1 -maxdepth 4 -name .git \( -type d -o -type f \) -print)
   done
 
   REPO_ROOT="$source_checkout"
@@ -151,13 +166,12 @@ if [ -n "${CLOUD_HOME:-}" ]; then
   TARGET_HOMES=("$CLOUD_HOME")
 
   if [ ! -d "$CLOUD_HOME/.codex" ]; then
-    mkdir -p "$CLOUD_HOME/.claude"
+    CLOUD_CLAUDE_HOME="$CLOUD_HOME"
   fi
 
-  if [ "$(id -u)" -eq 0 ] && [ "$CLOUD_HOME" != /root ] && [ -d "$CLOUD_HOME/.claude" ]; then
+  if [ -n "$CLOUD_CLAUDE_HOME" ] && [ "$(id -u)" -eq 0 ] && [ "$CLOUD_HOME" != "$HOME" ]; then
     # Claude starts as root, though its setup checkout belongs to the claude user.
-    mkdir -p /root/.claude
-    TARGET_HOMES+=(/root)
+    TARGET_HOMES+=("$HOME")
   fi
 fi
 
@@ -191,8 +205,28 @@ check_link() {
   return 1
 }
 
+check_directory() {
+  local directory="$1"
+
+  while [ "$directory" != / ] && [ "$directory" != . ]; do
+    if [ -L "$directory" ]; then
+      echo "conflict: $directory is a symlink" >&2
+      return 1
+    fi
+
+    if [ -e "$directory" ] && [ ! -d "$directory" ]; then
+      echo "conflict: $directory is not a directory" >&2
+      return 1
+    fi
+
+    directory="$(dirname "$directory")"
+  done
+}
+
 preflight_provider() {
-  local provider="$1" root="$2/.$provider" skill agent rule resource name failed=0
+  local provider="$1" root="$2" skill agent rule resource name failed=0
+
+  check_directory "$root/skills" || return 1
 
   [ -d "$root" ] || return 0
 
@@ -201,6 +235,12 @@ preflight_provider() {
 
     check_link "$root/skills/$name" || failed=1
   done < <(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)
+
+  if [ "$provider" = agents ]; then
+    return "$failed"
+  fi
+
+  check_directory "$root/resources" || failed=1
 
   if [ -d "$CANONICAL_RESOURCES" ]; then
     for resource in "$CANONICAL_RESOURCES"/*; do
@@ -213,6 +253,8 @@ preflight_provider() {
   fi
 
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -d "$CANONICAL_AGENTS" ]; then
+    check_directory "$root/agents" || failed=1
+
     for agent in "$CANONICAL_AGENTS"/*.md; do
       [ -f "$agent" ] || continue
 
@@ -223,6 +265,8 @@ preflight_provider() {
   fi
 
   if [ -d "$CANONICAL_RULES" ]; then
+    check_directory "$root/rules" || failed=1
+
     for rule in "$CANONICAL_RULES"/*.md; do
       [ -f "$rule" ] || continue
 
@@ -237,6 +281,8 @@ preflight_provider() {
   fi
 
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ "$CANONICAL_GLOBAL" != "$CANONICAL_RULES/global.md" ]; then
+    check_directory "$root/rules" || failed=1
+
     name="global.md"
     if [ "$provider" = "cursor" ]; then
       name="global.mdc"
@@ -289,7 +335,7 @@ prune_links() {
 }
 
 install_provider() {
-  local provider="$1" root="$2/.$provider" skill agent rule resource name skills=0 agents=0 rules=0 resources=0
+  local provider="$1" root="$2" skill agent rule resource name skills=0 agents=0 rules=0 resources=0
 
   [ -d "$root" ] || return 0
 
@@ -306,6 +352,12 @@ install_provider() {
 
   prune_links "$root/skills"
 
+  if [ "$provider" = agents ]; then
+    echo "$root: $skills skills linked"
+
+    return
+  fi
+
   if [ -d "$CANONICAL_RESOURCES" ]; then
     mkdir -p "$root/resources"
 
@@ -317,6 +369,7 @@ install_provider() {
       ln -sfn "$resource" "$root/resources/$name"
       resources=$((resources + 1))
     done
+
   fi
 
   prune_links "$root/resources"
@@ -368,12 +421,49 @@ install_provider() {
   echo "$root: $skills skills, $agents agents, $rules rules, $resources resources linked"
 }
 
-preflight_ok=1
+INSTALL_PROVIDERS=()
+INSTALL_ROOTS=()
+
+add_install_root() {
+  local provider="$1" root="$2" index
+
+  for index in "${!INSTALL_ROOTS[@]}"; do
+    if [ "${INSTALL_PROVIDERS[$index]}" = "$provider" ] && [ "${INSTALL_ROOTS[$index]}" = "$root" ]; then
+      return
+    fi
+  done
+
+  INSTALL_PROVIDERS+=("$provider")
+  INSTALL_ROOTS+=("$root")
+}
 
 for target_home in "${TARGET_HOMES[@]}"; do
   for provider in "${PROVIDERS[@]}"; do
-    preflight_provider "$provider" "$target_home" || preflight_ok=0
+    root="$target_home/.$provider"
+
+    [ -d "$root" ] || continue
+
+    add_install_root "$provider" "$root"
   done
+
+  if [ -n "${CLOUD_CLAUDE_HOME:-}" ] && { [ "$target_home" = "$CLOUD_CLAUDE_HOME" ] || [ "$target_home" = "$HOME" ]; }; then
+    add_install_root claude "$target_home/.claude"
+  fi
+
+  # Codex discovers user skills here even when its runtime home is ephemeral.
+  if [ -d "$target_home/.agents" ] || [ -d "$target_home/.codex" ] || { [ -n "${CODEX_HOME:-}" ] && { [ "$target_home" = "$HOME" ] || [ "$target_home" = "${CLOUD_HOME:-}" ]; }; }; then
+    add_install_root agents "$target_home/.agents"
+  fi
+done
+
+if [ -n "${CODEX_HOME:-}" ]; then
+  add_install_root codex "$CODEX_HOME"
+fi
+
+preflight_ok=1
+
+for index in "${!INSTALL_ROOTS[@]}"; do
+  preflight_provider "${INSTALL_PROVIDERS[$index]}" "${INSTALL_ROOTS[$index]}" || preflight_ok=0
 done
 
 if [ "$preflight_ok" -eq 0 ]; then
@@ -381,10 +471,9 @@ if [ "$preflight_ok" -eq 0 ]; then
   exit 1
 fi
 
-for target_home in "${TARGET_HOMES[@]}"; do
-  for provider in "${PROVIDERS[@]}"; do
-    install_provider "$provider" "$target_home"
-  done
+for index in "${!INSTALL_ROOTS[@]}"; do
+  mkdir -p "${INSTALL_ROOTS[$index]}"
+  install_provider "${INSTALL_PROVIDERS[$index]}" "${INSTALL_ROOTS[$index]}"
 done
 
 if [ "$found_root" -eq 0 ]; then
