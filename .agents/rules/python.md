@@ -572,6 +572,7 @@ return JSONResponse(
 ```
 
 - Never catch bare `Exception`; always catch specific exception types unless that broad exception is being explicitly tested in a test case.
+- The one place a catch-all is allowed is an outermost wrapper — the loop running a worker's jobs, the boundary serving a request — that logs the error with its traceback and turns it into a failure result; its broad-catch lint finding is disabled on that line alone, the one exception to **Suppressions**, and lint keeps flagging every other catch-all.
 - For generated or SDK-backed API clients, catch the library's documented exception type instead of broad exceptions.
 
 ```python

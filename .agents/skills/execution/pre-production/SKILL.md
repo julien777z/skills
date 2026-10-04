@@ -47,8 +47,8 @@ also not a reason to stop at the first file, and the section below governs how f
   changed in the same pass: a choice of taste on one screen says nothing about the others. A rule
   written from the correction governs new work; the existing pages it would reach wait for the
   user's decision the same way. A shape a standing rule already named as a defect before the
-  correction, and a broken mechanism, a wrong value, a missing guard or a parallel implementation,
-  stay under the bullets above on every page.
+  correction, and a broken mechanism, a wrong value, a guard missing for a rule the product already
+  states, or a parallel implementation, stay under the bullets above on every page.
 - Judge similarity by the question the code answers, not the directory it sits in or the layer it
   belongs to. Two modules deciding the same thing from different inputs are one concern wearing two
   implementations, however far apart they live.
@@ -101,7 +101,9 @@ also not a reason to stop at the first file, and the section below governs how f
   The user may take the trade-off or refuse it; they cannot weigh what they were not told.
 - Reserve a blocking question for a decision that is genuinely theirs — a security posture, a product
   behaviour, a disclosure boundary. Where the consequence is small and the cleaner answer is obvious,
-  take it and state it in the pull request rather than stopping.
+  take it and state it in the pull request rather than stopping, except a product behaviour the
+  product does not already state, such as a new refusal or precondition: that waits for the user,
+  as `execute-task`'s **Encountered Issues** says, however small it looks.
 - Say what changed for whom. "This is a change, not a refactor" belongs at the top of the description,
   not buried among the mechanics.
 - **A measured failure is never a trade-off.** A rate, a duration, a kill or a resource trail observed
@@ -116,12 +118,16 @@ also not a reason to stop at the first file, and the section below governs how f
 - Treat configuration inputs as owned contracts. Replace a stale deployed value at the existing
   setting and its deployment owner; do not add another file, environment key, or fallback path to
   override it.
-- **A value that differs by environment has one name, and whatever already scopes values per
-  environment supplies it** — an environment's secrets, a per-environment config file, a deployment
-  registry. Never a second name per environment, nor an expression or branch choosing between
-  names, such as `FEED_URL_STAGING` beside `FEED_URL_PRODUCTION` picked by `env == "production"`.
-  Before adding a value, read how its siblings are scoped and supplied; a sibling selecting between
-  per-environment names is a defect, moved onto the one name.
+- **One deployed app runs in one environment, so each setting it reads has one name and the
+  environment supplies its value** — an environment's secrets, a per-environment config or values
+  file, a deployment registry. That holds wherever a setting is named: a workflow, a settings class,
+  a `.env` template, a deployment spec, a brief to a worker. A name carrying an environment's
+  identity — its stage or its domain, as in `FEED_URL_STAGING` beside `FEED_URL_PRODUCTION` or
+  `TRIAL_SITE_FEED_URL` beside `MAIN_SITE_FEED_URL` — and an expression or branch choosing between
+  such names are the defect. Where nothing scopes values per environment yet, adding that scope — a
+  job environment, a file per environment — is the change, never a second name. Before adding a
+  setting, read how its siblings are named and supplied; a sibling carrying per-environment names is
+  moved onto the one name in the same change, never copied.
 - Legitimate production resilience is not transitional fallback code. Keep the error handling,
   browser support, empty states, and provider-failure behavior the released product needs.
 - Prefer a deliberate break to an owned API, wire, schema, payload, or stored shape when it
