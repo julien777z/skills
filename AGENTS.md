@@ -418,7 +418,7 @@ The descriptions also cover work that file patterns alone cannot identify.
 | `biome.md` | Formatting or linting TypeScript and TSX, or changing `biome.json`. |
 | `fastapi.md` | Changing Python routes, dependencies, request handling, or responses. |
 | `github.md` | Working with Actions, pull requests, commits, or repository documentation. |
-| `http.md` | Adding or changing HTTP clients, provider calls, or response statuses. |
+| `http.md` | Designing or changing HTTP clients, provider calls, server API operations and policy, or response statuses. |
 | `poetry.md` | Changing Python dependencies, project configuration, or test setup. |
 | `pydantic.md` | Defining models and settings or changing validation and serialization. |
 | `python.md` | Editing Python typing, modules, control flow, errors, logging, or style. |
@@ -431,7 +431,7 @@ The descriptions also cover work that file patterns alone cannot identify.
 
 - Read `.agents/rules/biome.md` for files matching `**/*.ts`, `**/*.tsx`, `biome.json`: biome
 - Read `.agents/rules/fastapi.md` for files matching `**/*.py`: Use APIRouter-based route organization, validate in models, and keep response handling consistent.
-- Read `.agents/rules/http.md` for files matching `**/*.py`, `**/*.ts`, `**/*.tsx`: http
+- Read `.agents/rules/http.md` for files matching `**/*.py`, `**/*.ts`, `**/*.tsx`: Apply when designing or changing HTTP clients, provider calls, server API operations and policy, or response statuses.
 - Read `.agents/rules/poetry.md` for files matching `pyproject.toml`, `poetry.lock`, `**/requirements*.in`, `**/requirements*.lock`, `**/requirements*.txt`, `**/*.py`: poetry
 - Read `.agents/rules/pydantic.md` for files matching `**/*.py`: pydantic
 - Read `.agents/rules/python.md` for files matching `**/*.py`: Follow modern Python typing, import, formatting, error handling, and maintainability conventions.
