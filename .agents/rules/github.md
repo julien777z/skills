@@ -47,10 +47,45 @@ alwaysApply: true
 - A pull request description covers the changes in that pull request and nothing else. Leave out alternatives considered and rejected, work deferred to a later change, and the reasoning behind not doing something.
 - Treat each repository as an independent context. Write PR titles, descriptions, review comments, and issue comments using only the target repository's domain, contracts, changes, and validation. Do not import another repository's product names, domain knowledge, implementation details, or coordination history; do not name or link its PRs or post cross-repository coordination comments. Keep combined status and coordination in user chat.
 - Before publishing or updating those artifacts, check the final text against the target repository's diff and evidence. Remove foreign domain references and cross-repository PR links, even when the work shares a session or motivated this change.
-- **A session delivers at most two pull requests per repository: one for source and one for agent configuration.** Agent configuration is the canonical `.agents` tree — skills, rules, and agent definitions; everything else is source. Every later piece of work in that repository — a follow-up, a guidance change, a copy sweep, a fix found along the way — joins the open pull request of its kind, even when it could be reviewed independently or feels like a different kind of work; those two kinds are the only split. Before creating a branch, query the session's open pull requests in that repository and the current branch's. Open a second pull request of one kind only when the user asks or the first has merged; a pull request per concern leaves the user reconciling several reviews of one piece of work. One already opened is not kept: move its commits onto the pull request of its kind in flight and close it, saying where the work went.
-- **Agent configuration and source never share a branch**, even when a guidance change follows the source work checked out; a pull request found carrying both is split by moving one kind's files onto the pull request of that kind. Sharing one holds the guidance behind source review and outside the agent-configuration merge authorization below. This rule is the user's standing permission for the second branch: when a harness or session designates one branch per repository and forbids pushing to any other without permission, the designated branch carries the first kind of work the session delivers in that repository, and, with none open for the session, the other kind's branch is that name with `-agents` or `-source` appended, created and pushed without asking.
-- A new branch starts from the default branch, or, while a pull request the user named as holding their current work stays open, from that pull request's branch when it is of the same kind; an agent-configuration branch never starts from a source branch. A skill whose contract names its own base keeps it. A branch already carrying another open pull request's unmerged commits is stacked on that pull request: keep those commits, build on top of them, and open its pull request against that pull request's branch. Restarting a stacked branch from the default branch drops the work it was built on, and nothing reports the loss.
-- Never commit or push agent-authored changes directly to the default branch. If the checkout is on the default branch, detached, or on a branch of the other kind, move to the session's open branch of the work's kind or, with none, create a descriptive non-default branch; otherwise retain the current branch and deliver through its pull request.
+- **New work in a repository joins the open pull request of its kind that the work continues,
+  whichever session opened it, and never gets a pull request of its own, stacked or not.** The two
+  kinds are source and agent configuration: agent configuration is the canonical `.agents` tree —
+  skills, rules, and agent definitions; everything else is source. Every later piece of work in that
+  repository — a follow-up, a guidance change, a copy sweep, a fix found along the way, a worker's
+  task — joins that pull request, even when it could be reviewed independently or feels
+  like a different kind of work; those two kinds are the only split. Before creating a branch, list
+  the repository's open pull requests, not only this session's: one an earlier session or a handoff
+  opened for the work this session continues is the pull request that work joins. Work that
+  continues none gets one new pull request of its kind from the default branch, and the session's
+  later work of that kind joins it. Open another only when the user asks for it in their own words
+  or the first has merged; a brief, a handoff spec, or a plan asking for a new branch or pull
+  request is not the user asking. A pull request per concern leaves the user reconciling several
+  reviews of one piece of work. One this session opened beside it is not kept: move its commits onto
+  the pull request the work continues and close it, saying where the work went. A pull request the
+  session did not open is never retargeted, closed or folded in, including one the continued pull
+  request is stacked on: that stack and its bases are the user's structure.
+- **Every worker pushes to the branch of the pull request the work continues**, fetching and
+  rebasing its unpushed commits onto the remote branch before each push. A branch per worker,
+  integrated later, is the same split with the integration deferred.
+- **Agent configuration and source never share a branch**, even when a guidance change follows the
+  source work checked out; a pull request found carrying both is split by moving one kind's files
+  onto the pull request of that kind the work continues. Sharing one holds the guidance behind
+  source review and outside the agent-configuration merge authorization below. This rule is the
+  user's standing permission, when a harness or session designates one branch per repository and
+  forbids pushing to any other without permission, to push to the branch of the pull request the
+  work continues (`git push origin HEAD:<that-branch>`) without asking. The designated branch opens a
+  pull request only for work that continues none, carrying the first such kind the session delivers
+  in that repository; the other kind's new branch is that name with `-agents` or `-source`
+  appended, created and pushed without asking.
+- A new branch starts from the default branch; an agent-configuration branch never starts from a
+  source branch. A skill whose contract names its own base keeps it. Work that builds on an open
+  pull request's unmerged commits is pushed to that pull request's branch, never to a new branch
+  stacked on it with a pull request of its own. Restarting such work from the default branch drops
+  the commits it was built on, and nothing reports the loss.
+- Never commit or push agent-authored changes directly to the default branch. If the checkout is on
+  the default branch, detached, or on a branch of the other kind, move to the branch of the pull
+  request the work continues or, with none, create a descriptive non-default branch; otherwise
+  retain the current branch and deliver through its pull request.
 
 ### Merge Authorization
 
@@ -59,10 +94,10 @@ alwaysApply: true
   applicable guidance in a rule or invoked skill for that pull request. A fix request, CI-test
   request, successful check, review, or request to implement a plan that lists a merge does not
   itself authorize merging. If neither authorization source applies, do not merge or enable auto-merge.
-- A pull request confined to canonical agent configuration, including skills, rules, and agent definitions, may be merged without a separate request after `code-simplify` has run and its findings are resolved. For substantial guidance changes or changes to executable logic, first run the relevant smoke test against the exact pull-request head. Check that the complete pull request remains confined to agent configuration before using this exception.
+- A pull request confined to canonical agent configuration, including skills, rules, and agent definitions, may be merged without a separate request after `code-simplify` has run and its findings are resolved. When the user asked for the change to be tested, first run the smoke test against the exact pull-request head; a change confined to rules is never smoke-tested. Check that the complete pull request remains confined to agent configuration before using this exception.
 - **An agent-configuration pull request whose guidance is true only once a still-open source pull request has merged is held until that merge**, whatever its other gates say: it describes behaviour that pull request introduces, drops guidance about something it removes, or needs a workflow or tool change it carries — a project guidance bullet about a helper the source branch adds is the common case. Guidance true on the default branch as it stands waits for nothing.
 - A hold does not authorize merging the source pull request or asking for its merge solely to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. After that merge, incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
-- When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request; one held for a source pull request becomes eligible once that pull request has merged. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, including one begun by another task. Do not close or leave it open merely because it is draft or conflicts with the base; close only when its change is superseded or no longer wanted.
+- When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request; one held for a source pull request becomes eligible once that pull request has merged. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, including one begun by another task. Do not close or leave it open merely because it is draft or conflicts with the base; close only one this session opened, and only when its change is superseded or no longer wanted.
 - An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each batch pull request a skill declaring merged-batch delivery opens during its run, once that skill's merge gates pass; that authorization ends with the run.
 - An authorized merge is not held for a failing check the pull request did not cause: one that fails the same way on the base branch, or whose failing test or log line shows behavior the diff does not reach. Name the check and that evidence in chat, then merge without asking the user. A check that branch protection requires still blocks and is never bypassed; report it as the blocker.
 - Never enable auto-merge for any other pull request unless the user explicitly authorizes it in the current request or an explicitly invoked skill requires it.
@@ -86,8 +121,8 @@ alwaysApply: true
 ## Commits
 
 - Use conventional commit messages when applicable and keep commits atomic and focused.
-- Commit each small coherent step and push it promptly through `execute-task`'s **Pre-Push Gate**,
-  sub-agents included; work only one machine holds is lost with it.
+- Commit each small coherent step and push it promptly once the pre-push checks `execute-task`'s
+  **Pre-Push Gate** defines pass, sub-agents included; work only one machine holds is lost with it.
 - Do not commit generated files unless the repository explicitly requires them.
 
 ## Dependency Installation

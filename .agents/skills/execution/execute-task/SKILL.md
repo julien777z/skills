@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once, before the first edit, at the start of every task that changes files — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until the task's report: it applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, simplifies as the change grows, commits each small step and pushes it promptly through its gate, checks every outcome it reports, whether its own action or a sub-agent's claim, at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
+description: "Always run this. Invoke once, before the first edit, at the start of every task that changes files — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until the task's report: it applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, simplifies and gates the finished task's diff once, checks every outcome it reports, whether its own action or a sub-agent's claim, at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
 short_description: 'Apply repository guidance, fix issues found along the way, validate the diff, and deliver the change.'
 ---
 
@@ -11,8 +11,8 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 ## Dependencies
 
 - `pre-production` — the target-contract policy for every repository and its data obligations.
-- `code-simplify` — simplify each step's increment and the complete diff before delivery.
-- `acceptance-gate` — judge each push's increment, and the complete diff before the pull request leaves draft or merges.
+- `code-simplify` — simplify the finished task's complete diff before delivery.
+- `acceptance-gate` — judge the finished task's complete diff before the pull request leaves draft or merges, and each fix for a flag it raises.
 - `generic-push` — keep each repository's publishing metadata independent during multi-repository changes.
 - `merge-conflict` — bring in a conflicting or moved base, found when a push is read back, before other work.
 - `subagent-selection` — the hand-up a worker without an agent tool uses for an independent step.
@@ -61,6 +61,16 @@ Run every change the same way, whether a plan preceded it or the user asked for 
   implementation details to use where a rule picks one; and what configuration exists or how it is
   scoped, which is read where it lives. A permission denial leaves the decision where it was, as
   **Environment Refusals** says.
+- **What the user will see and did not name is put to them before it is built** — a layout or
+  placement choice, a new error, refusal or empty state, a new control, copy they did not give —
+  and so is an instruction about what they will see that reads two ways. Name the choice, or both
+  readings, one line each with what each looks like, and build on the answer; where a rule or the
+  project guidance already decides it, that settles it instead. The usual forks are a placement
+  (fixed to the bottom of the window as the reader scrolls, or at the end of the page), a scope
+  (this page, or every page like it), a reference ("like X": X's look, or X's behaviour), a size
+  (the width of its container, or of its content) and a moment (always shown, or shown once
+  something changes). The reading closest to what already exists is not the default, and a brief
+  relaying the instruction quotes the user's words rather than one reading of them.
 - An implementation constraint is not a new approval boundary. Exhaust authorized ways to
   complete a sub-step yourself. Do not mistake an action-time confirmation for a mandatory user
   hand-off: after the user confirms the specific pending action, perform it yourself. Hand off only
@@ -216,9 +226,8 @@ compatibility, generated-output drift.
 
 ## Ongoing Simplification
 
-Read and invoke `code-simplify` as the change is made — over each step's increment, as the
-**Pre-Push Gate** orders it — and once across the complete diff before delivery. It is not a single pass held back
-for the end.
+Read and invoke `code-simplify` once across the finished task's complete diff, under
+**Completion**, never per push.
 
 - Every pass covers three things, never the diff hunks alone: the **changes** themselves, the
   **similar code** they resemble, and the **sibling modules** around them.
@@ -239,20 +248,13 @@ for the end.
 
 ## Pre-Push Gate
 
-Every push is gated, and the gate is sized to what the push carries: the step's `code-simplify`
-pass, applying its simplifications directly, then `acceptance-gate`'s diff question with the
-change's intent statement, the increment as its item and the whole branch diff as its originating
-diff. The increment is the commits since the last head a gate covered — the whole branch diff the
-first time. Fix what the gate flags, commit the fixes, and re-run it once. The complete diff still
-gets the final `code-simplify` pass and `acceptance-gate`'s final acceptance question when the pull
-request leaves draft, under **Completion**.
-
-- **Where the gate runs follows the pull request's state; the pre-push checks below always run
-  first.** On a draft, or a branch with none yet, the gate runs over the pushed increment, and what
-  it flags goes out as the next fix pushes. On a pull request ready for review, it runs before the
-  push. On a draft nothing holds committed work on one machine — a flag, batching with pending
-  work, a wait for another approval, saving a gate run: while one flag is fixed, further steps keep
-  landing on top, and a held range only grows.
+Every push goes out once the pre-push checks below pass, on a draft and on a pull request ready for
+review alike; nothing holds committed work on one machine. `code-simplify` and `acceptance-gate`'s
+diff question do not run per push: they run once over the finished task's complete diff, under
+**Completion**. A fix pushed for a flag a gate or review raised gets one fresh `acceptance-gate`
+run over that fix's increment, read with the whole branch diff as its originating diff, as
+`acceptance-gate`'s **Bounds** require; that fresh verdict is what other skills mean by an
+increment's **Pre-Push Gate** verdict.
 
 - **The pre-push checks are the ones CI runs on a pull request, run the way CI runs them.** Read
   the workflow files that trigger on a pull request and run every checking job that can run
@@ -274,32 +276,39 @@ or return meets the next phase without the blank line required by the global cod
 Fix every listed boundary in the complete changed files; an unrelated bug or a passing formatter
 does not satisfy this spacing check.
 
-- **Commit each small coherent step and push it as soon as its checks pass**, with its gate where
-  the first bullet places it — a
-  function and its callers updated, a test brought to pass, one finding fixed — never at the end of
-  a unit or task. A push is what lets the user review and test the work, and the only copy that
+- **Commit each small coherent step and push it as soon as its checks pass**, and at least every
+  five minutes of work — a function and its callers updated, a test brought to pass, one finding
+  fixed — never at the end of a unit or task. A push is what lets the user review and test the work, and the only copy that
   outlives the machine: a recycled container or an ended session takes every commit and edit no
   remote holds.
+- **Nothing outside the change holds a push or becomes a question about pushing.** A dependency
+  still in review in another repository, an unreleased package version, a sibling pull request not
+  yet merged, CI expected to stay red until one of those lands: the branch consumes the
+  dependency's pull-request branch, or its default branch once merged — in the manifest, the
+  lockfile and any workflow checkout, as the global rules' version-reference bullet allows while
+  developing — or builds on a same-repository sibling's branch as the GitHub rule's branch bullets
+  set out, and pushes. Which branch it consumes, and a red check that dependency explains, are
+  reported in user chat rather than waited on, never in the pull-request description; switching
+  back to the released version is named work for when the dependency merges.
 - **No edit sits uncommitted through a long wait outside the checks.** Before the slow verification
   below, a background worker, CI on the pushed head, or a question to the user, bring the work to a
   coherent step, commit it, and push it; the checks' own runs are part of the push, not such a wait.
-- **Delegated edits run at this cadence.** A brief handing a worker edits states it and names the
-  branch the worker pushes to. The worker pushes each step as the first bullet places the push and
-  reports the branch and head; the delegating agent, which holds the intent statement, gates every
-  worker's pushed increment from the remote branch and returns what the gate flags as fix steps. On
-  a pull request ready for review, a worker without an agent tool hands the gate up under
-  `subagent-selection`'s **Dispatch** before it pushes.
-  The worker ends with nothing uncommitted and nothing unpushed, never amends or rebases a pushed
-  commit, and its report names the branch and head, which **Reported Outcomes** reads on the
-  remote.
+- **Delegated edits run at this cadence.** A brief handing a worker edits states it, names the
+  branch the worker pushes to — the branch of the pull request the work continues, under **Pull
+  Requests** — and names the exact files to change, under `subagent-selection`'s **Dispatch**. The
+  worker pushes each step once its checks pass and reports the branch and head. The delegating
+  agent, which holds the intent statement, reads that head under **Reported Outcomes** and, once
+  the worker's task is finished, runs one `code-simplify` pass and one `acceptance-gate` diff
+  question over that task's diff, returning what they flag as fix steps for the next worker. The worker ends with nothing uncommitted and
+  nothing unpushed, never amends or rebases a pushed commit, and its report names the branch and
+  head.
 - **Pull requests stay draft while the work runs**, so these pushes start no test jobs, as the
   GitHub rule's **Workflows** section sets up; the tests run once, when **Completion** takes the
   pull request out of draft. A ready pull request the task resumes changing goes back to draft
   first, as the GitHub rule's **Branches and Pull Requests** says.
-- **The order is change, checks, push, then the slow verification**, with the gate placed as the
-  first bullet says: a browser walkthrough, a full or end-to-end suite, a run against a service
-  without the change, root-causing a failure seen along the way — anything slow or needing a running
-  stack. What it finds goes out as fix pushes, each through its own gate.
+- **The order is change, checks, push, then the slow verification**: a browser walkthrough, a full
+  or end-to-end suite, a run against a service without the change, root-causing a failure seen
+  along the way — anything slow or needing a running stack. What it finds goes out as fix pushes, each once its checks pass.
 - **Pushed is not done**: the change is reported done only once that verification has passed.
 
 ## Reported Outcomes
@@ -331,12 +340,12 @@ An outcome is what its source of truth shows, never what an action or a worker s
 
 ## Pull Requests
 
-The GitHub rule's **Branches and Pull Requests** decides where each piece of work lands: per
-repository and session, one pull request for source and one for agent configuration, every later
-request joining the open one of its kind, never one per task. A guidance change never rides the
-source branch in flight, however closely it follows that work. Check the session's open pull
-requests in a repository before creating any branch there, and say in chat what was consolidated
-when a stray one is folded in.
+The GitHub rule's **Branches and Pull Requests** decides where each piece of work lands: new work
+joins the open pull request of its kind that the work continues, whichever session opened it, never
+one per task, worker or brief, stacked or not, and a pull request the session did not open keeps its
+base and stays open. A guidance change never rides the source branch in flight, however closely it
+follows that work. List a repository's open pull requests, not only this session's, before creating
+any branch there, and say in chat what was consolidated when a stray one is folded in.
 
 ## Multi-Repository Delivery
 
@@ -428,6 +437,9 @@ result nor touches the files or resources the awaited work is changing. Each ite
 names what it uses that only the awaited result will supply, and one with nothing to name starts
 now: coming later in the plan, belonging to the same feature, or consuming a shape already agreed
 with the awaited work, such as a planned contract, is not such a thing, so build against that shape.
+When the awaited work is a building worker, the work started meanwhile is read-only (verification,
+review, preparing a question), never an edit, as `subagent-selection`'s **Dispatch** allows one
+builder at a time.
 A turn that ends on "still waiting on X" while such work exists is the failure above, and a status
 report is not a stopping point. Only when every remaining item depends on the awaited result does
 the turn end on the wait.
@@ -440,9 +452,8 @@ its work finished — and then close the run:
 1. Run the final `code-simplify` pass across the complete pull-request diff and push its
    simplifications through the **Pre-Push Gate**.
 2. Put the complete pull-request diff to `acceptance-gate`'s final-acceptance question with the
-   intent statement. Push the fix for each flag as its own increment, whose **Pre-Push Gate**
-   verdict is the fresh gate that skill's **Bounds** require; a second flag is decided under those
-   **Bounds**.
+   intent statement. Push the fix for each flag as its own increment and put it to the fresh gate
+   that skill's **Bounds** require; a second flag is decided under those **Bounds**.
 3. Invoke `merge-pr` with the accepted head, merge withheld unless **Task Authorization** finds
    that merge authorized, and the **Pre-Push Gate** each fix is pushed through as its fix rule. It
    marks the draft ready, which starts its test jobs once, reads them back on the exact head, and

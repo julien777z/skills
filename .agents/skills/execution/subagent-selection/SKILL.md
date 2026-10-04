@@ -57,9 +57,9 @@ context and returns its verdict into the step waiting on it; nothing else does b
 - **A worker whose host gives it no agent tool hands the step up.** It writes the complete
   assignment — the inputs, the question, the reading list, the output shape — to a file, asks the
   agent that delegated to it to run that file as a subagent at the chosen tier, and waits for the
-  verdict before going past the step. A gate over a pushed increment is not such a step: the
-  delegating agent reads the increment from the branch and head the worker reports, as
-  `execute-task`'s **Pre-Push Gate** says, and the worker carries on. A worker whose only channel to
+  verdict before going past the step. The gate over a finished task's diff is not such a step: the
+  delegating agent runs it from the branch and head the worker reports, under the delegated-edits bullet
+  of `execute-task`'s **Pre-Push Gate**. A worker whose only channel to
   that agent is its final message asks by returning: it ends its turn with the file path and the
   request, and resumes when the verdict comes back. The delegating agent runs it and returns the verdict unedited; when the
   finished worker cannot be resumed, the delegating agent carries out what the verdict calls for,
@@ -79,6 +79,13 @@ context and returns its verdict into the step waiting on it; nothing else does b
   delegating agent can resume or hear from mid-run; where the host offers neither, the delegating
   agent splits the work so each delegation ends at one such capture, and forwards each as it
   arrives.
+- **Build work goes to one implementation worker at a time, and a fresh one for each task.** A
+  worker that edits files is started for one task and ends with it; the next task gets a new worker,
+  never one still carrying an earlier task's history, and a session never runs two building at
+  once. A short history keeps each of its steps cheap. Its brief names the exact files to change,
+  and the files to read beside them, so its steps go on the change rather than on searching.
+  Read-only steps — a gate, a reviewer, a validator — may still run beside it, at the cadence their
+  owning skill sets.
 
 ## Output
 

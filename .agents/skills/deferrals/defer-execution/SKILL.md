@@ -51,8 +51,7 @@ resolved by reading further, never by defaulting to the merge.
 
 ## Route one: execute now, in a worktree
 
-The point of the worktree is that the current branch's working tree is never touched, so the
-change in flight keeps running while this work happens beside it.
+The worktree leaves the current branch's working tree untouched.
 
 1. **Branch from the fetched default branch**, never from the current branch.
 
@@ -61,7 +60,8 @@ change in flight keeps running while this work happens beside it.
    git worktree add <path> -b claude/<slug> origin/<default-branch>
    ```
 
-2. **Delegate the work to a subagent** scoped to that worktree, so the parent session's own state
+2. **Delegate the work to a subagent** scoped to that worktree, once no other building worker is
+   running in the session, as `subagent-selection`'s **Dispatch** requires, so the parent session's own state
    and working directory stay where they were. Give it the scope, the worktree path, and the
    commit and push cadence `execute-task`'s **Pre-Push Gate** sets for delegated edits.
 

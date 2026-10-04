@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. Deliver through simplification, the acceptance gate, and the smoke test before the pull request merges.
+description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. Deliver through simplification and the acceptance gate, and the smoke test when the user asks for testing, before the pull request merges.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -11,7 +11,7 @@ every edit through the same delivery whether the user invoked this skill or the 
 doing other work. An edit that skipped this is unverified, and the report says so.
 
 An open `.agents` pull request is not a delivery result. Continue the same run through its source
-check, required review and smoke steps, merge, Agent Sync result, and verification of generated
+check, required review steps, merge, Agent Sync result, and verification of generated
 root instructions and provider output; stop only for a genuine gate.
 
 **A gap you notice yourself starts this skill, exactly as a request does.** Guidance that let a miss
@@ -44,7 +44,7 @@ outcome, because silence reads as the guidance having been fixed.
 
 - `code-simplify` — the pass over the guidance itself before it merges.
 - `acceptance-gate` — the diff question over the `.agents` change once it reads clean.
-- `test-skill` — the proof that a skill edit changes what a reader does.
+- `test-skill` — the proof that a skill edit changes what a reader does, when the user asks for it.
 - `subagent-selection` — the model tier for live verification chats.
 - `merge-pr` — the verified squash merge of the pull request step 7 clears.
 - `execute-task` — the environment-refusal policy an unreachable validator source falls under.
@@ -161,8 +161,8 @@ outcome, because silence reads as the guidance having been fixed.
      rules' **User-Facing Output** requires, and send it as the final message of a turn that asks in
      plain text whether to approve or reject it, one skill at a time. On a rejection, ask what must
      change, revise the example, and ask again. Only then write the skill to produce exactly the
-     approved shape; the smoke test follows in delivery, and a smoke run is never how a format is
-     proposed.
+     approved shape; a smoke run, when the user asks for one, follows in delivery and is never how a
+     format is proposed.
    - Trace each miss to the instruction that produced or allowed it, including instructions for
      adding or recording guidance. Name that governing instruction and its replacement in the
      change. Removing a bad example while retaining a directive that regenerates it is incomplete.
@@ -256,16 +256,16 @@ outcome, because silence reads as the guidance having been fixed.
    to a release workflow. A question asking for it only holds every later session on the guidance
    the change replaces. The approval of a changed output's fictional example, under **Upsert
    behavior**, is the one question put to the user, and it comes before delivery.
-   1. **Branch and commit.** The edit goes onto the session's open agent-configuration pull request
-      in the repository being edited, or onto a branch from the freshly fetched default branch with
-      a new pull request, under the GitHub rule's **Branches and Pull Requests** — never onto a
+   1. **Branch and commit.** The edit goes onto the open agent-configuration pull request the work
+      continues in the repository being edited, whichever session opened it, or, when it continues
+      none, onto a branch from the freshly fetched default branch with a new pull request, under the GitHub rule's **Branches and Pull Requests** — never onto a
       source branch, the one checked out included. Commit the `.agents` files, never a provider
-      mirror, and push each step through `execute-task`'s **Pre-Push Gate** to a draft pull request;
-      steps 3–4 are the complete-diff pass its **Completion** runs, and step 7's `merge-pr` takes
+      mirror, and push each step once `execute-task`'s **Pre-Push Gate** checks pass to a draft pull
+      request; steps 3–4 are the complete-diff pass its **Completion** runs, and step 7's `merge-pr` takes
       the pull request out of draft. None of that waits to be asked: the decision was made when the edit was requested, and
       a pull request left open keeps every later session working from the guidance this change
-      replaced. A source fix required by step 3 is source work: it goes onto the session's source
-      pull request in its repository under the same rule and merges as that work does.
+      replaced. A source fix required by step 3 is source work: it goes onto the source pull request
+      the work continues in its repository under the same rule and merges as that work does.
    2. **Run `validate_sources.py`**, which sits under `scripts/` beside this skill, before the pull request opens, and again before it
       merges when the branch changed since. Nothing on a pull request runs the sync: the workflow
       runs on the default branch after the merge, so a file it refuses is refused once every session
@@ -308,21 +308,21 @@ outcome, because silence reads as the guidance having been fixed.
       it; the incident's route must not narrow the durable decision boundary. Give the gate the
       incident's vocabulary — the product, its record and screen nouns, the labels the request
       quoted — so an example carrying any of it is a finding. A flag gets the one
-      rewrite that skill allows, pushed as its own increment whose **Pre-Push Gate** verdict is the
-      fresh gate. A second flag ends the rewriting: fix it
+      rewrite that skill allows, pushed as its own increment and put to a fresh gate. A second flag ends the rewriting: fix it
       when the flag names a defect in the guidance, merge as it stands when it names a preference
       the rewrite already answered, or drop the item when neither holds, and state which and why in
       the report, as that skill's **Bounds** leave it to the caller for a change whose merge needs
       no authorization.
-   5. **Run `test-skill`** for every skill the change adds or edits, to passing tables or the
-      waiver its **When It Runs** bounds. It runs here rather than before step 3, because a round
-      run against wording the simplification pass then rewrites has tested text nobody will follow.
-      That pass settles how the guidance reads; this one settles whether it changes what a reader
-      does, against the miss that prompted it and with the original text as the control. Give both
-      readers the complete relevant package, including the references needed for the scenario; an
-      entry-point-only test cannot prove a reference fix. An edit
-      whose smoke run misses is diagnosed, changed and rerun as that skill says, never merged with
-      a failing run or on the strength of reading well.
+   5. **Run `test-skill` only when the user asks for the edit to be tested**, for every skill the
+      change adds or edits. Without that request no smoke run happens and the report says
+      `not run: not requested`; a change confined to rules never gets one, asked or not. When it
+      runs, it runs here rather than before step 3, because a round run against wording the
+      simplification pass then rewrites has tested text nobody will follow. That pass settles how
+      the guidance reads; this one settles whether it changes what a reader does, against the miss
+      that prompted it and with the original text as the control. Give both readers the complete
+      relevant package, including the references needed for the scenario; an entry-point-only test
+      cannot prove a reference fix. A run that misses is diagnosed, changed and rerun as that skill
+      says, never merged with a failing run.
       A **mechanical seam edit** changes no behaviour and needs no smoke run: a dependency
       replaced by the role phrase that finds it, a path generalized, a rename, a frontmatter key, a
       reference path corrected, wording that says the same thing shorter. The report says
@@ -345,17 +345,16 @@ outcome, because silence reads as the guidance having been fixed.
       reader; a repository that does not is the flag, because the merge silently gave it the other
       one's answer.
    6. **Hold each changed output to its approved example.** For every skill whose changed output
-      the user approved as a fictional example, compare what its smoke runs returned — and, for a skill that summarises or
-      reviews, one run of your own on the branch in flight — against the approved example: headings,
-      columns, order, file shape. A divergence is the skill's wording, fixed and rerun under
-      `test-skill`; a shape the user has not approved goes back to the user as a new fictional
+      the user approved as a fictional example, compare one run of your own on the branch in flight,
+      and any smoke runs the user asked for, against the approved example: headings, columns,
+      order, file shape. A divergence is the skill's wording, fixed and rerun; a shape the user has not approved goes back to the user as a new fictional
       example, never into the merge.
    7. **Check the diff file list against the default branch, then merge.** The authorization covers
       a pull request carrying only `.agents` files, and the file outside them that slips in is never
       announced. Read the changed paths rather than trusting your memory of what you edited; a stray
       formatter run or a file picked up by `git add -A` looks identical to intent. A path outside
-      `.agents` leaves this branch — dropped when it was never meant, moved to the session's source
-      pull request under step 1 when it was — and the new head goes back through step 4. Everything
+      `.agents` leaves this branch — dropped when it was never meant, moved to the source pull
+      request the work continues under step 1 when it was — and the new head goes back through step 4. Everything
       in `.agents`, merge it through `merge-pr` with the head `acceptance-gate` accepted — but first
       ask whether any line it adds or drops is true only once a still-open source pull request
       merges, and if so hold it until that pull request has merged, as the GitHub rule's **Merge
@@ -445,7 +444,7 @@ Checks
 - Source check: passed on <head> | failed: <report>
 - Simplification: <clean | findings applied>
 - Acceptance gate: <accepted | rewritten and accepted | flagged twice: <fixed | merged as it stands | dropped> — <reason>>
-- Smoke test: <passing tables reported above | dropped — <reason> | not run: <reason>>
+- Smoke test: <passing tables reported above | dropped — <reason> | not run: not requested | not run: <reason>>
 - Example approved: <one line per skill: name — approved after <n> round(s), output matches it | skipped, no response the user uses | skipped, response unchanged | rule-only change>
 - Merged text read back: <default branch head the touched skills and rules were re-read from | not merged>
 - Refresh: <main checkout and installed copy at <sha>, installer rerun | skipped: <dirty paths> | not merged>
