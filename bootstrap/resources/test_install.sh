@@ -1,6 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if [ "$(id -u)" -eq 0 ]; then
+  rootless_runner="$(mktemp -d)"
+  trap 'rm -rf "$rootless_runner"' EXIT
+
+  mkdir -p "$rootless_runner/bootstrap/resources"
+  cp "$0" "$rootless_runner/bootstrap/resources/test_install.sh"
+  cp "$(dirname "$0")/../install.sh" "$rootless_runner/bootstrap/install.sh"
+  chown -R nobody:nogroup "$rootless_runner"
+
+  runuser -u nobody -- env PATH="$PATH" bash "$rootless_runner/bootstrap/resources/test_install.sh"
+  exit
+fi
+
 installer="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/install.sh"
 fixture="$(mktemp -d)"
 trap 'rm -rf "$fixture"' EXIT
