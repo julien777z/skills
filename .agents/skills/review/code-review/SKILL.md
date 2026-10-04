@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Code review a pull request or the current working changes with independent reviewer lenses, validated findings, and severity-rated results. Establishes a branch and a draft pull request when none exists yet. Accepts an effort level, an optional fix mode that applies the smallest complete correction for each confirmed finding, and an optional comment mode that posts inline review comments, each written with or without a leading double dash. Asks for whichever of effort or modes the invocation did not state. Reports in chat and never posts or fixes unless the matching mode is requested. Use when asked to review a PR or review current changes.
+description: Use for a standalone review of a pull request or current changes with independent reviewer lenses, validated findings, and severity-rated results. Requests that directly name CR belong to the dedicated CR workflow, which already fixes review mode and effort. This skill establishes a branch and draft pull request when needed, accepts an effort level plus optional fix or comment modes, and asks only for standalone review options that were not stated.
 short_description: 'Code review a pull request or the current working changes with independent reviewer lenses, validated findings, and severity-rated results.'
 ---
 
@@ -123,6 +123,8 @@ attention. That incremental diff supplements the full pull-request target; never
 latest commit or fix diff for it.
 
 Classify whether the target is non-runtime before choosing validation. A target is non-runtime when its complete diff does not change executable source, package or dependency definitions, tests, runtime configuration, CI workflows, generated runtime artifacts, or another contract that changes executed behavior. This is semantic rather than path-based: agent instructions, documentation, policies, static metadata, and non-executable configuration can live anywhere. Validate a non-runtime target with the checks appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests or query or wait for CI.
+
+When a runtime change names an external provider resource or permission — a tag, OAuth scope, credential identifier, repository, application, or network target — treat the provider object as a reviewed input. Read the live object using the least-privilege authorized surface and verify that its current grants accept the changed value. Source-only consistency, a previous successful run, and a green static check do not establish that contract. A reviewer may mark the change clean only after this verification passes. If verification is blocked, record the concrete blocker and leave the review incomplete.
 
 When the target is a PR, check eligibility and stop when any of these hold:
 
