@@ -35,8 +35,8 @@ For each pull request, in the order given:
   remote head instead; never stash, discard, reset, or force anything.
 - Confirm the local head equals the pull request's head.
 - Read the base, draft state, mergeability, latest check state, and unresolved review threads.
-- Read the whole body, the most recent comment whose first line is `## Hand-off`, and every queue
-  comment posted with it. Their queue, questions, decisions, constraints and dependencies are this
+- Read the whole body, the most recent comment whose first line is `## Hand-off`, and any earlier
+  `## Hand-off` comment it refers to. Their queue, questions, decisions, constraints and dependencies are this
   session's starting context, binding as the user's own words where they quote the user.
 
 ## Continuing

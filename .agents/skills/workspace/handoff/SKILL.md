@@ -20,6 +20,9 @@ skill ends with.
 
 ## Scope
 
+- Invoking this skill authorizes, on every pull request it covers, the hand-off comment, the
+  comment closing a stale pull request, and the body rewrite, as the GitHub rule's **Comments**
+  requires.
 - Cover every open pull request the session created or changed, across every repository the
   session was authorized for. Each pull request gets its own comment, written for the agent that
   continues it.
@@ -61,7 +64,8 @@ skill ends with.
    incomplete. Convert a ready pull request back to draft first — GraphQL
    `convertPullRequestToDraft` — so the push starts no test jobs. Then run the pre-push checks
    `execute-task`'s **Pre-Push Gate** defines, report-only: every failing check is pushed unfixed and
-   goes first in the queue. Apply and commit any stash. Never rewrite history or force-push.
+   goes first in the queue — the one push that does not wait on its checks, because unpushed work
+   is lost with the session. Apply and commit any stash. Never rewrite history or force-push.
 6. **Close the pull requests this session made stale.** One whose commits now live on the pull
    request the work continues, or whose change is superseded, is closed with a comment naming where
    the work went, as the GitHub rule's **Branches and Pull Requests** says. A pull request the
