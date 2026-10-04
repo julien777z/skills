@@ -69,3 +69,16 @@ Keep the run active through every captured target's review and every confirmed f
 merge, and applicable deployment. Record verified outcomes in the session ledger and report them
 with any concrete external blocker. A clean result creates no follow-up pull request or rollout.
 The authorization ends when this bounded run completes or the user stops it.
+
+## Later Work
+
+After the captured batch and its fix pull requests finish, later pull requests stay draft.
+Deploy applicable changes from their pull-request branches under the user's deployment authority
+and the repository's deployment procedure; never merge them to obtain a deployable branch.
+Only a new invocation or separate explicit merge authorization permits their merge.
+
+Deployment must accept either a pull-request branch or the default branch without changing the
+target's configuration or behavior. Resolve the selected branch to its exact commit, build or
+reuse the artifact for that commit, and verify its actual deployed provenance. Do not assume a
+default-branch checkout, event, or artifact when deploying a pull-request branch. A later branch
+deployment does not reopen this skill's CR delegation or captured batch.
