@@ -23,16 +23,20 @@ agent; this skill does not launch agents or change settings itself.
    family alias; otherwise mark the row unavailable with the ambiguity as its reason.
 3. Return all four rows even when some are unavailable. An unsupported host, absent family, or lack
    of explicit model selection makes that row unavailable; never silently substitute another family
-   or inherit the orchestrator. Disclose missing coverage or a blocker when a required tier cannot
-   run. Availability is not permission to change repository or global settings.
-4. The calling agent chooses a tier and reasoning effort for each role or chat. Honor the user's explicit model or tier first,
+   or inherit the orchestrator. Apply the fallback in step 4 when a requested tier cannot run. Availability is not permission to change repository or global settings.
+4. If the requested tier is unavailable, choose the closest available model capable of the same
+   assignment, preferring the next higher tier. Record the requested tier, unavailable family,
+   selected model and fallback reason; never relabel the selected model as belonging to the absent
+   family. Preserve any explicit user model constraint and the same model within comparison pairs.
+   Report a blocked step only when no available model can perform it.
+5. The calling agent chooses a tier and reasoning effort for each role or chat. Honor the user's explicit model or tier first,
    then the calling skill's tier. For a live skill-verification chat, choose the lowest available
    tier; otherwise use the task criteria in the table, with **standard** as the default. Reserve
    frontier for the most demanding assignments unless specifically required. Use **medium** reasoning
    for bounded checks and **high** for complex, cross-cutting work; never dispatch a subagent at any
    other reasoning effort. An explicit user model override still must resolve to a supported host
    identifier; report it as an override rather than relabeling it as a different tier.
-5. Select the chosen identifier and reasoning effort explicitly when starting a verification chat or
+6. Select the chosen identifier and reasoning effort explicitly when starting a verification chat or
    dispatching a sub-agent. For Codex `spawn_agent`, use `fork_turns: "none"` with a self-contained
    assignment, scope, constraints, and reading list so model inheritance cannot override selection.
    Reuse the resolved table while the host catalogue is unchanged; resolve again when it changes.
