@@ -11,14 +11,14 @@ disable-model-invocation: true
 
 # Placeholder Data
 
-The user pastes a payload. The reply is one fenced code block they can copy, and no other text.
+The user pastes a payload. The skill answers with the same shape filled with obvious placeholders.
 
 ## Workflow
 
 1. If the paste is an HTTP message, keep its JSON body and discard the status line and headers.
-2. Parse that body as JSON. When it does not parse, the reply is the fallback line in **Output** and nothing else. Do not echo the paste.
+2. Parse that body as JSON without writing the paste to a file or a log. When it does not parse, use the fallback in **Output**.
 3. Rewrite scalars, then collapse arrays, using the rules below.
-4. Pretty-print the result with a two-space indent and fill the block in **Output**.
+4. Pretty-print the result with a two-space indent and fill **Output**.
 
 ## Values
 
@@ -94,7 +94,3 @@ is answered with exactly:
   ]
 }
 ```
-
-## Guardrails
-
-Never copy a replaced value into the reply, a file, or a log.
