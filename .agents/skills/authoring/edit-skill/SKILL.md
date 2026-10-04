@@ -178,8 +178,9 @@ outcome, because silence reads as the guidance having been fixed.
    - Update existing files in place and report any structural changes. Before delivery, follow the
      entry point's links again and confirm that each route loads its required guidance. References
      must not hide an essential rule or introduce an unexplained mode or dependency. Check genericity
-     with a materially different instance of the same failure class; state that case and its expected
-     outcome in validation. Renaming the original example or replaying only it does not establish breadth.
+     with one further case the request never mentioned, a different kind of thing from its examples.
+     State that case and its expected outcome in validation. A case the draft would still handle as
+     before means the draft only renamed the examples, and it is rewritten until that case changes too.
    - After a dependency receives a separately authorized release, replace consumer references to
      its branch with a maintained version tag. Use a minor release for a new capability or a patch
      release for a bug fix; verify any moving major tag points to that release and validate the
@@ -212,10 +213,17 @@ outcome, because silence reads as the guidance having been fixed.
      a candidate home under step 2, never the limit of the rule, unless the contract requires
      its exact identity. Broaden to the class the user plainly meant, never to a neighbouring
      subject. Wording handed over — rule text in the request or in a delegating agent's brief —
-     is input to this, never the spec: name the failure class, list at least two other
-     instances of it, and write the rule to cover them, widening narrower wording as it
-     arrives. An agent delegating an edit passes the class and the evidence, not finished rule
-     text for one case.
+     is input to this, never the spec: name the decision the examples force, list at least two
+     instances of a different kind from those examples and from each other, and write the rule
+     to cover them, widening narrower wording as it arrives. A wider label for the same examples
+     is not that decision. The other instances are not further members of the format those examples
+     already share. The list includes one instance that format cannot express, a sentence, a
+     quantity, or a choice, and a draft that never mentions it is rewritten. The delivery
+     bullet's genericity check is what shows the draft did more than rename the examples. Apply that
+     decision to every instruction in the file that does the same work.
+     One section rewritten while a neighbour still does the narrow thing is the draft only half
+     done, and it is rewritten until the neighbour changes too. An agent delegating an edit
+     passes the class and the evidence, not finished rule text for one case.
    - Describe reusable roles, boundaries, and decision criteria generically even in
      repository-focused guidance when the pattern is not repository-specific. Keep concrete
      repository names only when correctness depends on that local contract.
