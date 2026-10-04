@@ -216,8 +216,11 @@ outcome, because silence reads as the guidance having been fixed.
      is input to this, never the spec: name the decision the examples force, list at least two
      instances of a different kind from those examples and from each other, and write the rule
      to cover them, widening narrower wording as it arrives. A wider label for the same examples
-     is not that decision. The delivery bullet's genericity check is what shows the draft did more
-     than rename the examples. Apply that decision to every instruction in the file that does the same work.
+     is not that decision. The other instances are not further members of the format those examples
+     already share. The list includes one instance that format cannot express, a sentence, a
+     quantity, or a choice, and a draft that never mentions it is rewritten. The delivery
+     bullet's genericity check is what shows the draft did more than rename the examples. Apply that
+     decision to every instruction in the file that does the same work.
      One section rewritten while a neighbour still does the narrow thing is the draft only half
      done, and it is rewritten until the neighbour changes too. An agent delegating an edit
      passes the class and the evidence, not finished rule text for one case.
