@@ -15,5 +15,5 @@ The descriptions also cover work that file patterns alone cannot identify.
 | `python.md` | Editing Python typing, modules, control flow, errors, logging, or style. |
 | `react.md` | Building components, hooks, layouts, or Next.js App Router surfaces. |
 | `sqlalchemy.md` | Defining tables or relationships, writing queries, or handling sessions. |
-| `testing.md` | Writing or moving tests, fixtures, assertions, or test configuration. |
+| `testing.md` | Planning or running tests, or writing or moving tests, fixtures, assertions, or test configuration. |
 | `typescript.md` | Editing types, modules, imports, functions, or external-data boundaries. |
