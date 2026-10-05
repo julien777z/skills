@@ -313,7 +313,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   Never use priority, a banner cap, or dismissal of one banner to conceal another unresolved
   condition. Inspect the whole surface and report conflicts with regression verification of the
   producing transitions and resulting banners.
-- **Every load, action, save or submit failure or refusal uses the standard shared error banner component,
+- **Present each failure once.** A terminal error section that replaces unavailable content owns the
+  specific reason and recovery action; do not add a banner repeating that failure or a second generic
+  failure heading. Preserve usable navigation and unrelated content. Explain what happened and the
+  next step, using the service's human-readable reason rather than vague labels such as "could not open".
+  An independent failed action on a still-usable surface keeps its own error banner.
+- **Load, action, save or submit failures and refusals on otherwise usable surfaces use the standard shared error banner component,
   with its native frame and error visual tone.** Never replace it with inline red text, field error
   messages, a toast or an unframed row, even when wrapped in another container. Each failure stays explicit
   in a dismissible banner at the top of the page or section it concerns, outside and before its
