@@ -67,6 +67,10 @@ outcome, because silence reads as the guidance having been fixed.
   coherent milestone—process the pending batch through delivery below: simplify the combined diff,
   validate the sources, run acceptance and behavior smoke tests against the final wording, then merge,
   verify Agent Sync and refresh. A standalone guidance task's completed edit is its checkpoint.
+- Processing a batch does not pause source implementation. Delegate its verification and delivery
+  separately while the source writer continues authorized work, following the local correction.
+  Coordinate shared files and handoffs; pause only work that actually depends on an unresolved
+  decision or failed gate, not unrelated implementation while guidance checks or sync run.
 - Reuse ledger scenarios as inputs to the batch's smoke tests, grouping corrections that share a
   failure class. Cover each changed behavior; batching does not remove required scenarios or gates.
   Record the results and verified delivery artifacts back into the same ledger.
@@ -116,6 +120,11 @@ outcome, because silence reads as the guidance having been fixed.
    - When the user points out a guidance failure, trace the actual path from the request to the
      missed behavior before editing: which instruction applied, whether its skill loaded, and why
      the agent's decision diverged. Correct the current work and the owning guidance in this run.
+   - Treat a named addition as the starting point, not the limit. Inspect the owning guidance,
+     related callers and dependencies for other gaps needed to solve the same issue. Before
+     applying those additional corrections, tell the user which gaps you found, what you will add
+     and why. Apply relevant guidance fixes without waiting to be invited to think more broadly;
+     product choices still follow the global authorization boundary.
    - **When no existing rule or skill governs the subject, propose a new one and ask before
      creating it.** State the recommended name and, in at most three sentences, what it would say
      and what it would change, with the question tool; create it only on a yes. An existing file
