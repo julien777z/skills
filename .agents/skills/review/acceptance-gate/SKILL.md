@@ -12,6 +12,7 @@ state and the change's intent, applies the repository's rubric, and answers one 
 
 ## Dependencies
 
+- `pre-production` — the target-contract constraints governing implementation and review.
 - `subagent-selection` — route the gate through a subagent of the running session.
 - `code-simplify` — its `references/rubric.md` defines slop and prices a mechanism. The gate borrows
   that file and never the applying-fixes workflow.
@@ -24,10 +25,12 @@ state and the change's intent, applies the repository's rubric, and answers one 
 ## The Intent Statement
 
 The caller produces the statement once per change, updates it when accepted requirements change,
-and passes it to every gate. Supply the user instructions and standing guidance that establish
-its requirements, separately from the caller's proposed remedies and prior review verdicts. A
-caller without a statement supplies those sources and history so the gate can derive it. A removed
-shape is a finding throughout the change, including corrections and base reconciliation. Pure additions and bug fixes still have requirements for the gate to evaluate.
+and passes it to every gate. Supply the user instructions and applicable governing guidance
+for its requirements and constraints, separately from the caller's proposed remedies and prior
+review verdicts. A caller without a statement supplies those sources and history so the gate can
+derive it. A removed
+shape is a finding throughout the change, including corrections and base reconciliation. Pure
+additions and bug fixes still have requirements for the gate to evaluate.
 Where no change is in flight, say so and judge the item on product state and the rubric.
 
 `references/rubric.md` states what the statement names and how its inputs are reconciled. Read product
@@ -36,7 +39,9 @@ state from the target repository's project guidance; never import another reposi
 ## The Gate Subagent
 
 The gate is read-only and distinct: not the author of the item, and not the subagent that answered an
-earlier question about the same item. It receives four things and nothing else:
+earlier question about the same item. Read `pre-production` and the governing guidance supplied
+with the intent before judging the item; project facts and a caller's summary do not replace the
+instructions that govern the decision. It receives four things and nothing else:
 
 1. the intent statement;
 2. the originating diff, with its deletions first;
