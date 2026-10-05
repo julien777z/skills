@@ -98,6 +98,34 @@ resolved scope must be fixed.
 
 The one thing that does hold a finding back is risk you have not retired. A change whose behavior you cannot yet establish — a limiter whose failure mode differs between two implementations, a shared contract whose callers you have not enumerated — is verified first and then applied, not waved through and not quietly dropped. Establish the behavior, then make the change; where the pass genuinely cannot establish it, say exactly what is unverified and why, per the written-note rule above.
 
+## Trace Changed Flows
+
+Before judging a changed operation locally, trace its complete path through construction,
+selection, mutation, persistence and reporting, even when it introduces no new helper or public
+concept. Name the producers and live consumers of each intermediate field and return value, the
+state each call changes, and the existing operation that could own the same work. This flow receipt
+is required for a clean review; a search inventory without the use trace is incomplete.
+
+- Compare an existing helper with the bespoke path by its guarantees, inputs, result and transaction
+  boundary. Reuse it when those semantics match; when they do not, name the concrete difference.
+  Separate reads and writes for one transition, or parallel updates to one result, must earn their
+  split from that comparison rather than from where the code was first written.
+- Count repeated projections, selection criteria and merges by the job they perform, including
+  repeated expressions inside one function. Derive them once at their existing owner and carry
+  that result through the flow; do not replace the duplication with flags, wrappers or a new file
+  for each step. A dense expression that combines distinct selection and transformation stages
+  becomes direct stages a reader can follow, without multiplying abstractions.
+- Delete intermediate fields and return values no live consumer reads. Distinguish an operation's
+  useful side effect from its unused result: keep the operation, remove the redundant result
+  contract. Where an owned helper both mutates a caller's accumulator and returns a different
+  result the caller discards, prefer returning the useful contribution for the caller to merge,
+  unless a callback, streaming or in-place contract actually requires mutation; name that contract
+  and its consumers before retaining it. A final output dictionary or a live registry is not dead
+  merely because it is mutable.
+- Check module-level declarations against their prerequisites and the language's layout rule,
+  including declarations added between executable definitions. Report their location as well as
+  their types; a correctly typed constant can still break the module's organization.
+
 ## Guidance Prose Is Not Code
 
 This rubric applies to `.agents` rules and skills as readily as to code — a rule stated twice in two
