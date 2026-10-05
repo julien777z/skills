@@ -113,6 +113,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   setup step shown to each role, plan or workspace kind is one surface: when one audience's version
   sits in the grid at half width with plain rows, the other's is not a full-width card with its own
   buttons. Read the existing sibling before building the new one, and build on it.
+- **A recurring interaction follows the product's established flow.** Before placing controls for
+  selecting, changing or removing related items, inspect comparable screens for where the list,
+  action and editing surface live. Keep the same division between viewing and editing unless the
+  new task needs a different one; changing labels alone is not a reason to bury the interaction in
+  an unrelated section or invent another control shape.
 - Where a page genuinely cannot take the new shape, say which page and why in the pull request;
   silently leaving it behind is what turns a redesign into an inconsistency.
 
@@ -377,6 +382,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   Surfaces** above.
 - **Related short fields sit side by side wherever the width allows,** wrapping only when it does
   not.
+- **Comparable controls use comparable widths.** Inputs with the same role in a form take the same
+  width or grid span; let the value format or available space justify a difference. A content-sized
+  control beside a fixed-width peer reads as a different kind of choice even when both collect the
+  same kind of answer.
 - **One act gets one confirmation.** A single checkbox, worded as the whole statement the reader is
   making, stands for it; a second box restating part of the first asks twice.
 - **Long fixed text a reader must accept — a certification, terms, a disclosure — is set in smaller
