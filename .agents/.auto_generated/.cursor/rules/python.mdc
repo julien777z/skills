@@ -76,12 +76,9 @@ class Report(BaseModel):
 
 ## Imports and Modules
 
-- When a module name combines an owning concept with a distinct topic, split ownership into the package: `<owner>_<topic>.py` becomes `<owner>/<topic>.py`.
-- When an existing `<owner>.py` gains another owner-specific module, convert it to an `<owner>/` package containing `<owner>.py` for the primary surface and `<topic>.py` for the additional topic.
-- Inside an owner package, do not repeat the owner in module names: use `<owner>/<topic>.py`, never `<owner>/<owner>_<topic>.py`.
-- Split at the semantic owner/topic boundary, not at every underscore. A compound noun whose words jointly name one established concept remains one module; for example, `access_control.py` is clearer than `access/control.py`.
-- When the owner package needs a primary or orchestration module, name it after the package (`<owner>/<owner>.py`) with an empty `__init__.py`; consumers import the specific submodule.
-- This rule governs Python modules only. Generated packages and source files owned by another toolchain follow that toolchain's naming conventions; do not reorganize them to satisfy it.
+- Before adding a module, inspect the existing owner and its consumers. Extend that module when the new code shares its responsibility, dependencies, and lifecycle; a new operation, small helper, record shape, or compound name does not establish a new boundary. Split only when distinct ownership, dependency direction, or independently used surfaces justify the extra navigation, and consolidate fragments that have no such distinction.
+- Use an owner package when several justified modules share that owner; do not convert a module into a package merely because it gains another function or topic. Inside the package, name modules for their responsibility without repeating the owner. Keep established compound nouns together, and keep `__init__.py` empty unless the package owns a public export surface.
+- This rule governs Python modules only. Generated packages and source files owned by another toolchain follow that toolchain's naming conventions.
 - Moving a module into a new subpackage invalidates every relative import inside it and any path it derives from `__file__`. Convert those imports to absolute imports and re-anchor the path instead of adding `.parent` until it happens to work.
 
 - Give domain-specific module-level parsers, builders, formatters, and validators domain-qualified names. A generic name such as `parse_response` or `build_payload` falsely promises that a domain helper accepts any compatible input and creates collisions when multiple domains are imported together.
@@ -154,8 +151,7 @@ mypackage/
 
 - Place generic, stateless, cross-cutting helpers in a `utils.py` module or `utils/` package.
 - Use a `utils.py` module for a small cohesive set of utilities; use a `utils/` package when separate focused utility modules are warranted.
-- Apply the owner/topic rule to owner-specific utilities: `<owner>_utils.py` becomes `<owner>/utils.py`.
-- Put cross-cutting utility topics under `utils/`: `<topic>_utils.py` becomes `utils/<topic>.py`.
+- Keep owner-specific helpers with their existing domain owner. Use its utility submodule only when the responsibility/dependency test above justifies that boundary. Place independently reusable cross-cutting topics under an existing utility owner; a filename alone never requires a move or package.
 - Give a `utils/` package topic-named modules rather than one flat module.
 - Keep `utils/__init__.py` empty or limited to imports and `__all__`; consumers import from the specific submodule.
 - Keep domain and orchestration behavior in their owning modules. Do not use utilities as a dumping ground.
@@ -221,7 +217,7 @@ class ActionConfig(BaseSettings):
 APPLICATION_CONFIG = ActionConfig()
 ```
 
-- Declare settings needed for supported operations without a safe default, including API keys and secrets, as required non-nullable Pydantic fields. Validate nonempty strings on the field and do not repeat missing-value checks in consumers. Use optional fields only when absence is supported, such as credentials with a documented ambient fallback.
+- Before declaring or reviewing a setting, read its supported operations, consumers, and example/test configuration. Settings needed for those operations without a safe default, including endpoints, API keys, and secrets, are required non-nullable Pydantic fields with nonempty field constraints. Newness, unavailable deployment credentials, and mock values do not make absence a supported mode. Use optional fields only for an explicitly supported absence contract, such as documented ambient credentials; enforce it at the owning boundary rather than adding missing-value checks or silent disablement in consumers.
 - Do not add useless config values like `DEFAULT_ENVIRONMENT`.
 - A provider's published sandbox and production hosts are constants in that provider's package, and the application's canonical environment check selects between them. Select a provider's host from that check (such as the settings object's `is_production`), never from a provider-specific environment setting or enum that restates what the deployment environment already decides.
 - Do not add helper functions like `_get_environment` when the value already exists on the shared settings object.
