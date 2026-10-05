@@ -83,13 +83,13 @@ context and returns its verdict into the step waiting on it; nothing else does b
   delegating agent can resume or hear from mid-run; where the host offers neither, the delegating
   agent splits the work so each delegation ends at one such capture, and forwards each as it
   arrives.
-- **Build work goes to one implementation worker at a time, and a fresh one for each task.** A
-  worker that edits files is started for one task and ends with it; the next task gets a new worker,
-  never one still carrying an earlier task's history, and a session never runs two building at
-  once. A short history keeps each of its steps cheap. Its brief names the exact files to change,
-  and the files to read beside them, so its steps go on the change rather than on searching.
-  Read-only steps — a gate, a reviewer, a validator — may still run beside it, at the cadence their
-  owning skill sets.
+- **Assign one implementation owner per coherent scope, and a fresh worker for each delegated
+  task.** The primary agent retains integration, dependencies and product decisions. Delegate
+  independently owned scopes with explicit files, inputs, expected result and handoff; do not split
+  a coupled feature among workers merely to increase parallelism. Workers may build in parallel
+  only when their edits and resources do not overlap and neither needs an unsettled output from the
+  other. A worker ends with its task; the next gets a fresh context. Read-only gates and reviews may
+  run alongside building at the cadence their owning skill sets.
 
 ## Output
 

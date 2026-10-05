@@ -26,18 +26,26 @@ noticing it is the whole trigger. Waiting to be told is what leaves the next ses
 the same gap, and the session that hit it is the only one holding the evidence.
 
 The tell is a sentence you are about to write to the user about your own process — that you skipped
-a step, that a check did not apply, that you should have done something earlier. Write the guidance
-change first, then the sentence; it is a finding about the guidance, not a confession.
+a step, that a check did not apply, that you should have done something earlier. Diagnose the route
+before the sentence; when it exposes a guidance gap, write the change first.
 
-**The user pointing out how you work is the same trigger, and it is never only the one fix.** "Why
-did you do it that way", "you should have done X", "don't do Y again": each names a gap in the
-guidance that let it through, and each carries two pieces of work — correct the thing in front of
-you, and change the file that would have prevented it. Doing only the first leaves the next session
-to make the same mistake and the user to point it out twice.
+**The user pointing out how you work is the same trigger.** "Why did you do it that way", "you
+should have done X", "don't do Y again": each calls for correcting the thing in front of you and
+checking whether guidance allowed the miss. When it did, change the owning file so the next
+session does not repeat it.
 
-Both start in the same turn: correct the current behavior and edit the canonical guidance locally.
-Use the batch workflow below during unfinished work; a checkpoint, not each wording change, starts
-its delivery. Neither the issue nor its verification disappears when the surrounding task resumes.
+Correct the current behavior and trace its guidance path in the same turn. Edit the canonical
+guidance locally when that trace finds a gap. Use the batch workflow below during unfinished work;
+a checkpoint, not each wording change, starts its delivery. Neither the issue nor its verification
+disappears when the surrounding task resumes.
+
+Some diagnoses are reported rather than written into a file. Where the search finds nothing that
+governs the subject, that absence is the finding and step 2's rule on proposing a new file applies.
+When the governing instruction already says it correctly and its route reached the agent, distinguish
+an observed failure to follow it from a demonstrated trigger, sequence, visibility or enforcement
+gap. Report noncompliance or an unproven process cause as such; do not restate the rule or add a
+speculative checkpoint. An evidenced bypass is edited at its owner. Name the diagnosis either way,
+because silence reads as the guidance having been fixed.
 
 ## Dependencies
 
@@ -104,20 +112,19 @@ its delivery. Neither the issue nor its verification disappears when the surroun
      read what the candidate already says about that subject, and put the change where a reader
      doing that work will meet it, at the breadth step 5 asks for. Never ask which file; the search
      is this skill's job.
-   - **A violated instruction is evidence of an unresolved guidance gap.** Never close the edit as
-     already covered merely because existing guidance forbids the failure. Find why that guidance
-     did not control the run — its trigger, dependency, sequence, enforcement, visibility, or
-     wording — and strengthen the owning guidance or workflow so the same path cannot bypass it.
-     When it already loaded, read its exceptions and stopping clauses together with its callers;
-     remove or narrow the instruction that permitted the wrong action. Reporting noncompliance or
-     successfully retrying the action does not close this correction. Preserve the correct rule
-     without duplicating it, and verify the repaired decision path against the observed failure.
-     Close every other path the failure's class takes, not only the one this instance used.
+   - **A violated instruction calls for causal diagnosis.** Do not infer a missing rule from the
+     violation alone. Trace whether the instruction was absent, its trigger or sequence kept it
+     from the decision, a conflicting instruction overrode it, or the agent simply failed to follow
+     guidance it had. When it loaded, read its exceptions and stopping clauses with its callers
+     before deciding that the route enforced it. Strengthen an evidenced gap at its owner, remove
+     conflicting permissions, and close other paths in that failure class; verify the repair against
+     the original decision. Report observed noncompliance without a redundant edit. If the path is
+     unknown, record what evidence is missing and keep the process diagnosis unproven.
      When the owning skill was not invoked, harden its frontmatter description first; body text
      cannot control a run that never loads the skill.
    - When the user points out a guidance failure, trace the actual path from the request to the
      missed behavior before editing: which instruction applied, whether its skill loaded, and why
-     the agent's decision diverged. Correct the current work and the owning guidance in this run.
+     the agent's decision diverged. Correct the current work and any evidenced guidance gap in this run.
    - Test the proposed instruction against that original decision path before writing it. If a
      reader could follow it and still repeat the miss, explain the mismatch to the user, name the
      instruction that actually caused or allowed the decision, and correct that owning path and
