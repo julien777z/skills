@@ -1,12 +1,12 @@
 ---
 name: session-ledger
-description: Record and retrieve verified external artifacts created during the current task, including pull requests across repositories. Use as a dependency whenever a workflow creates, selects, or reports session-created external artifacts.
+description: Record and retrieve verified external artifacts and pending guidance corrections during the current task. Use when a workflow creates, selects or reports task artifacts, or batches observed guidance issues and reproduction scenarios for later verification.
 short_description: 'Keep verified task artifacts available across a long session.'
 ---
 
 # Session Ledger
 
-Keep one structured ledger in the active task's state so information created early in a long
+Keep one structured ledger in the active task's state so artifacts and pending corrections recorded early in a long
 session remains available after repository changes, delegation, or conversation compaction.
 
 The task owner keeps the ledger under one `session_ledger` task-state key. A harness with native
@@ -32,6 +32,21 @@ returned records before the next action. A worker never replaces the owner's led
   secrets.
 - When delegating, give the worker the current ledger entries relevant to its task and require it to
   return every newly verified artifact record. The parent appends those records to the task ledger.
+
+## Pending Guidance Corrections
+
+- Keep pending guidance corrections under the same `session_ledger` key, distinct from externally
+  verified artifact records. Record the observed issue, evidence or user instruction, reproduction
+  scenario, intended behavior, canonical files and local branch, planned checkpoint and delivery status.
+  Include other context needed to resume accurately: settled decisions and constraints, affected
+  callers, dependencies, verification results and their validity conditions, open questions,
+  next actions and checkpoint triggers. Choose useful fields for the correction rather than
+  treating this list as a mandatory schema; never retain secrets or unrelated session details.
+- Update a correction as it is locally applied, verified and delivered. Attach its check results
+  and verified pull-request or merge observations; local work is never an external artifact claim.
+- Preserve pending corrections across delegation and handoff. Workers return their observations;
+  the task owner appends or updates them without replacing other records. Clear pending status only
+  after verified delivery or a recorded disposition, never because execution moved to another feature.
 
 ## Retrieval
 
