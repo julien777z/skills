@@ -82,6 +82,11 @@ A report that lists no hit for any of the five greps says so in those words.
 value it tests and of what its path reads next**, by path and function, and flags each one the
 rubric's diff test flags. A verdict with no added guard says `no guard added` in those words.
 
+For a diff question, also apply the `code-simplify` rubric’s **Trace Changed Flows** to the supplied
+implementations and consumers. A diff alone that cannot establish that receipt needs those contents
+from the caller before a clean verdict; a prose-only change names no executable flow. Report its
+findings in the verdict and summarize clean flow evidence under `Also read`.
+
 It returns the verdict its question defines, shaped as `references/rubric.md` — What A Verdict Names
 requires.
 

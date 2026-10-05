@@ -115,14 +115,16 @@ because silence reads as the guidance having been fixed.
    - **A violated instruction calls for causal diagnosis.** Do not infer a missing rule from the
      violation alone. Trace whether the instruction was absent, its trigger or sequence kept it
      from the decision, a conflicting instruction overrode it, or the agent simply failed to follow
-     guidance it had. Strengthen an evidenced gap at its owner and close other paths in that failure
-     class; report observed noncompliance without a redundant edit. If the path is unknown, record
-     what evidence is missing and keep the process diagnosis unproven rather than inventing a rule.
+     guidance it had. When it loaded, read its exceptions and stopping clauses with its callers
+     before deciding that the route enforced it. Strengthen an evidenced gap at its owner, remove
+     conflicting permissions, and close other paths in that failure class; verify the repair against
+     the original decision. Report observed noncompliance without a redundant edit. If the path is
+     unknown, record what evidence is missing and keep the process diagnosis unproven.
      When the owning skill was not invoked, harden its frontmatter description first; body text
      cannot control a run that never loads the skill.
    - When the user points out a guidance failure, trace the actual path from the request to the
      missed behavior before editing: which instruction applied, whether its skill loaded, and why
-     the agent's decision diverged. Correct the current work and the owning guidance in this run.
+     the agent's decision diverged. Correct the current work and any evidenced guidance gap in this run.
    - Test the proposed instruction against that original decision path before writing it. If a
      reader could follow it and still repeat the miss, explain the mismatch to the user, name the
      instruction that actually caused or allowed the decision, and correct that owning path and
@@ -220,6 +222,13 @@ because silence reads as the guidance having been fixed.
    - Apply those criteria to skill shape and output, including agent-consumed results and section
      order. Move inline criteria to a named reference when required, and add the appropriate
      hard-coded output format or delivery report line when absent.
+   - Validate every added or changed instruction for conflicts before delivery. Search the canonical
+     rules and skills by its subject, required action and opposite disposition. Read the complete
+     changed skill or rule and its supporting files, plus relevant sections in other skills, rules,
+     callers and dependencies. Apply the quality reference's conflict criteria. Resolve competing instructions
+     at their owners rather than adding a reminder beside them. Record the searches, sources read
+     and each resolution, or the evidence for a clean result. Repeat this check for later wording
+     changes before acceptance and smoke tests; an earlier clean result does not cover a new edit.
    - Update existing files in place and report any structural changes. Before delivery, follow the
      entry point's links again and confirm that each route loads its required guidance. References
      must not hide an essential rule or introduce an unexplained mode or dependency. Check genericity

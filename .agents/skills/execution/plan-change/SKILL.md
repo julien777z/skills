@@ -29,9 +29,10 @@ while the plan is being written, and it never invokes this skill back.
    at most five numbered steps each with a time estimate, and the decisions it needs, in under 200
    words while `i-have-adhd` is active. Send the file holding any detail a caller requires — a gated
    plan, a ledger — as the User-Facing Output rule requires, instead of restating it.
-   - **Building steps run one after another**, one worker at a time as `subagent-selection`'s
-     **Dispatch** requires, and the estimates count them end to end. Only a read-only step (a gate,
-     a review) is marked to run alongside the step it reads.
+   - Schedule building steps by `subagent-selection`'s **Dispatch**: keep coupled work sequential,
+     and allow independent scopes with separate owners, files and resources to overlap once their
+     inputs are settled. Estimate the resulting elapsed wall-clock, accounting for that overlap;
+     a read-only gate or review may also run beside work it can safely inspect.
    - **An estimate is the executing agent's own wall-clock, never the effort the same work would
      take a person, however plausible that figure reads.** Reading, searching and editing take an
      agent minutes whatever the file count; the time comes from what the run waits on — test and

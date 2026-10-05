@@ -31,6 +31,21 @@ and examples. A supporting file is part of the skill, not an exemption from its 
 - References carry supporting criteria and technical procedures. Moving text into one is not a fix for
   overly specific guidance, duplication, unsupported claims, or an unclear ownership boundary.
 
+## Conflicting instructions
+
+- Compare instructions by the decisions they govern, not matching words or file proximity. For each
+  changed decision, identify its applicable scope, required action, permission, refusal, exception
+  and stopping condition across the relevant guidance, including unchanged instructions in the
+  edited skill or rule and its supporting files.
+- A conflict exists when the same reachable case requires incompatible actions, or one instruction
+  allows a stop or omission another requires the reader to continue past. Check earlier clauses and
+  examples as well as the changed wording; a later correct instruction does not remove an earlier
+  escape. Distinct scopes and explicit delegations are compatible only when a reader can select the
+  applicable route before taking either action.
+- Keep one coherent decision at its owner. Remove obsolete competing language, narrow a clause that
+  applies too broadly, or make route selection explicit; preserve requirements for cases outside the
+  correction. A passing package or source validator does not establish semantic consistency.
+
 ## Shape, description, and output
 
 **Skill shape.** `SKILL.md` holds how the skill runs: its trigger, its dependencies, its

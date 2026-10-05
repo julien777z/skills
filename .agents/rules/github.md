@@ -99,7 +99,7 @@ alwaysApply: true
   applicable guidance in a rule or invoked skill for that pull request. A fix request, CI-test
   request, successful check, review, or request to implement a plan that lists a merge does not
   itself authorize merging. If neither authorization source applies, do not merge or enable auto-merge.
-- A pull request confined to canonical agent configuration, including skills, rules, and agent definitions, may be merged without a separate request after `code-simplify` has run and its findings are resolved. When the user asked for the change to be tested, first run the smoke test against the exact pull-request head; a change confined to rules is never smoke-tested. Check that the complete pull request remains confined to agent configuration before using this exception.
+- A pull request confined to canonical agent configuration, including skills, rules, and agent definitions, may be merged without a separate request after `code-simplify` has run and its findings are resolved. When the user asked for the change to be tested, first run the smoke test against the exact pull-request head. Check that the complete pull request remains confined to agent configuration before using this exception.
 - **An agent-configuration pull request whose guidance is true only once a still-open source pull request has merged is held until that merge**, whatever its other gates say: it describes behaviour that pull request introduces, drops guidance about something it removes, or needs a workflow or tool change it carries — a project guidance bullet about a helper the source branch adds is the common case. Guidance true on the default branch as it stands waits for nothing.
 - A hold does not authorize merging the source pull request or asking for its merge solely to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. After that merge, incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
 - When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request; one held for a source pull request becomes eligible once that pull request has merged. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, including one begun by another task. Do not close or leave it open merely because it is draft or conflicts with the base; close only one this session opened, and only when its change is superseded or no longer wanted.
@@ -110,8 +110,15 @@ alwaysApply: true
 
 ### After Agent Sync
 
-- After a pull request that changes agent configuration merges and its default-branch Agent Sync run finishes, update the repository's main local checkout, not a task worktree: if it is clean, check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force the refresh; report a skipped refresh and leave them untouched.
-- When the merged repository supplies the installed shared skills, invoke `reconcile-skills` instead of the checkout-only refresh above. It refreshes the installed checkout, links, and changed rules. For the skill's first merge, read it from the merged commit before invoking it. A session follows the copy it loaded until this refresh completes.
+- After a pull request that changes agent configuration merges and its default-branch Agent Sync
+  run finishes, select the refresh route before checking local changes. When the repository supplies
+  the installed shared skills, invoke `reconcile-skills`; its preservation workflow governs dirty
+  checkouts as well as clean ones. The checkout-only restriction below does not apply to this route.
+  For the skill's first merge, read it from the merged commit before invoking it. A session follows
+  the copy it loaded until this refresh completes.
+- For every other repository, refresh its main local checkout, not a task worktree: if it is clean,
+  check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force
+  this checkout-only refresh; report a skipped refresh and leave them untouched.
 
 ## Comments
 

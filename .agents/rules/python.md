@@ -225,8 +225,7 @@ APPLICATION_CONFIG = ActionConfig()
 
 ## Constants
 
-- Define constants at the top of the file, after imports.
-- Place module-level constants and enums (including type aliases like `AllowedApiClient`) directly after imports.
+- Group dependency-independent module constants, enums and type aliases after imports, before functions and classes. A declaration that needs a class or other runtime definition follows that prerequisite, before the next unrelated definition; do not scatter independent constants between functions.
 - When assembling a structured string from variable parts, define one named template and use `str.format(...)` rather than composing separate prefix and suffix constants. Use native template strings only when they are supported across the project's full Python version range.
 - Use `Final[T]` from `typing` and UPPER_SNAKE_CASE names for constants.
 - Compile regular expressions once at module scope and call methods on the compiled pattern instead of passing pattern strings repeatedly to `re.match`, `re.search`, `re.fullmatch`, or `re.sub`.
