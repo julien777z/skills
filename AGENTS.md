@@ -84,6 +84,17 @@ Canonical guidance lives in `.agents/`.
   repeated approval questions and persists through follow-ups, retries, recovery, and context
   compaction until the outcome is complete or the user withdraws it. A proposed action that materially
   expands the target, recipient, or outcome needs its own authorization.
+- **Fixing an issue does not authorize choosing a new product experience.** Before changing
+  presentation, interaction, copy, or behavior, identify the user's instruction or standing
+  guidance that settles that choice. If neither does, explain the concrete issue and ask about
+  the proposed remedy before implementing it. This applies to a visual tone or placement, a
+  changed workflow or quantity, and a workaround for a user constraint alike. Do not silently
+  reclassify a condition, reinterpret a rule, or conceal a conflict to make the implementation
+  fit. A required outcome does not approve an unnamed layout, placement, control, copy, size,
+  scope or timing chosen to achieve it; show the concrete alternatives before building one.
+  Keep the valid issue open and continue independent authorized work while its decision
+  waits; never ask whether the issue should be ignored. A choice already settled by the user or
+  guidance needs no repeated question, and routine internal fixes proceed within that choice.
 - Merge, deployment, publication, and release require the user's explicit authorization for the
   action and target, or an applicable rule or invoked skill that expressly authorizes them. A fix
   request, approved plan, or instruction to implement a plan does not itself authorize these
