@@ -89,7 +89,9 @@ alwaysApply: true
   the proposed remedy before implementing it. This applies to a visual tone or placement, a
   changed workflow or quantity, and a workaround for a user constraint alike. Do not silently
   reclassify a condition, reinterpret a rule, or conceal a conflict to make the implementation
-  fit. Keep the valid issue open and continue independent authorized work while its decision
+  fit. A required outcome does not approve an unnamed layout, placement, control, copy, size,
+  scope or timing chosen to achieve it; show the concrete alternatives before building one.
+  Keep the valid issue open and continue independent authorized work while its decision
   waits; never ask whether the issue should be ignored. A choice already settled by the user or
   guidance needs no repeated question, and routine internal fixes proceed within that choice.
 - Merge, deployment, publication, and release require the user's explicit authorization for the

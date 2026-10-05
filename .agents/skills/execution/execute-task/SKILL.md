@@ -200,9 +200,10 @@ how those issues are handled.
   repository, environment, or external recipient the task did not authorize, or a platform requires
   action-time confirmation. Another file, component, or package in the same repository is never a
   new target, and neither is a repository the user owns that consumes a contract the change breaks:
-  it is delivered under **Multi-Repository Delivery**. For a bug or a returned finding the fix
-  proceeds and is not held for an answer; what goes to the user is scope, sequencing, and where the
-  work lands, never whether it is fixed.
+  it is delivered under **Multi-Repository Delivery**. The obligation to fix a bug or returned
+  finding remains; apply **Task Authorization** to its remedy rather than treating the finding
+  as permission for an unsettled product choice. Continue independent authorized work while that
+  choice waits, and never ask whether the defect should be ignored.
 - When asking, state the trigger, impact, expected work, recommendation, and concrete choices.
 
 ## CI Gates And Deliberate Breaks

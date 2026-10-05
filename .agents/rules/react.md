@@ -196,7 +196,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Read the padding on every screen the change touches, at every width it is checked at.** Content
   clipped by a header, text against a card's edge, a control overlapping the thing below it, a gap
   that collapses at one breakpoint: each is invisible in the diff and obvious on the screen, and
-  each reaches the reader because nobody looked.
+  each reaches the reader because nobody looked. Compare neighboring banners and sections as well:
+  their content insets and the gaps between them must follow the same shared spacing scale. Fix
+  inconsistent padding or gaps in the owning component rather than adding page-specific overrides.
 - **Chrome positioned over content is the usual cause.** An absolutely positioned header, toolbar or
   footer takes no space, so whatever sits behind it is hidden with nothing in the markup to say so.
   Prefer giving that chrome its own row in a flex or grid column, where the browser reserves the
@@ -474,6 +476,13 @@ export function SearchInput() {
 
 - **Render on the server.** A page, and every section of it that shows data, is an async Server Component that loads its data and renders it. A Client Component (`"use client"`) exists only for what the browser has to own — event handlers and input, state and effect hooks, browser-only APIs, a dialog, drag-and-drop, a third-party client widget — takes its data as props, and never fetches it.
 - **Writes are Server Actions** that authenticate their caller and re-render the page when they finish. A client-side data layer for reads — SWR, React Query, a fetching hook, a fallback cache seeded from the server — is the shape this replaces, not a companion to it, and a status that has to update live refreshes the server render on an interval instead of fetching on the client.
+- **Expected refusals carry a specific, human-readable explanation of what failed and what the
+  reader can do.** Trace generic copy for a known validation or business refusal to its service
+  and fix that error contract there, rather than inventing replacement client copy. Expected
+  refusals must not escape as internal server errors. Genuine 500 responses may keep a safe,
+  generic message; diagnose and repair an unexpected 500 encountered during normal operation
+  rather than accepting the banner as a finished result. Clearly label failures deliberately
+  induced to verify failure presentation so they cannot be mistaken for normal-flow defects.
 - **Show the message the API sent.** Never key a table of your own copy off status codes for a first-party API: that is a second copy of its error vocabulary that nothing keeps in step, and it overrides the message the service chose. Wrong copy is fixed at the service that produced it.
 - Keep one status-independent fallback for a response that carries no message at all, and reject a body that is a document rather than a message so a proxy's error page cannot reach the user as one.
 
