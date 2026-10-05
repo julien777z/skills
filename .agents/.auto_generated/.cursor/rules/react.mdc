@@ -332,6 +332,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   button, and a save refused from the floating save panel shows above the section holding the field,
   not in the panel. The banner never replaces the surface's own heading or description, which keep
   saying what the surface is while the banner says what went wrong.
+  When a failure appears or changes, keep entered values and reveal its banner through the existing
+  shared failure owner if it is outside the visible scroll area, including inside a dialog. Do not
+  scroll on ordinary edits or unrelated status changes. Verify the reader can see the explanation
+  and recovery controls in the actual viewport; DOM presence or an alert role alone is not proof.
 - **A state of the whole page's subject shows once, as a persistent banner at the top of the page.**
   An account, workspace or project that is suspended, archived or read-only is not a failure of any
   one section: no section repeats the state itself, and each shows what it still can. An actual
