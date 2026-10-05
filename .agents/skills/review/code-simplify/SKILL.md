@@ -24,6 +24,17 @@ This skill does not stop at review: **apply the simplifications you identify dir
 
 **Use subagents for scopes that benefit from independent review.** Fan out when the scope is large enough to partition into two or more coherent slices, or when relationships across multiple subsystems materially benefit from a separate cross-cutting review. Partition by app, service, or package rather than arbitrary file counts, and give every reviewer the same complete rubric over its slice. When an introduced subsystem, runtime boundary, or independent consumer has analogues whose complete implementations will not fit comfortably in one review context, add one read-only cross-cutting reviewer to compare their ownership and duplication while slice reviewers cover their own areas. Skip that reviewer when one reviewer can hold the complete change and every analogous implementation at once.
 
+**After fixing a scope's findings, rescan that scope.** Return the updated complete scope and the
+fix diff to its reviewer, asking it to check both the remedies and anything else the fixes expose.
+Use the same reviewer when available, otherwise a fresh reviewer with the previous findings.
+Unaffected clean scopes do not restart. This scope rescan is not a replacement for a separate
+acceptance gate or its requirement for a fresh independent gate reviewer.
+
+For final review, assign one read-only reviewer per coherent scope, with the scopes together
+covering the complete change. Do not send the same question and scope to duplicate agents. Review
+finished features, not intermediate edits, and reuse clean scope results until their code,
+dependencies or relationships change.
+
 **Subagents run on the host's mid-sized model** — Sonnet on a Claude host, the equivalent elsewhere — named explicitly, since an unset model inherits the orchestrator's.
 
 **Subagents review; the parent applies.** When subagents are warranted, every subagent returns findings — each anchored to a path and line, with the restructuring it proposes — and edits nothing. Concurrent writers on one tree produce conflicts and half-applied restructurings, and one applier is what keeps the result a single coherent change. The parent resolves the returned findings, drops any that another slice's finding subsumes, applies the survivors itself, and remains answerable for the approval bar.

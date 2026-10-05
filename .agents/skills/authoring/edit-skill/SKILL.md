@@ -11,11 +11,11 @@ every edit through the same delivery whether the user invoked this skill or the 
 doing other work. An edit that skipped this is unverified, and the report says so.
 
 When this skill runs inside unfinished work, keep the active `execute-task` run and record its
-next step before starting this edit, under **Work You Have Already Named**. After delivery and
-refresh, apply that procedure to resume the saved work; this skill's report is an intermediate
-update, not the surrounding task's final response.
+next step under **Work You Have Already Named**. Continue that authorized work while the local
+guidance batch awaits its checkpoint. After delivery and refresh, return to its next unfinished
+step; this skill's report is an intermediate update, not the surrounding task's final response.
 
-An open `.agents` pull request is not a delivery result. Continue the same run through its source
+An open `.agents` pull request is not a delivery result. At the batch checkpoint, continue through its source
 check, required review steps, merge, Agent Sync result, and verification of generated
 root instructions and provider output; stop only for a genuine gate.
 
@@ -35,9 +35,9 @@ guidance that let it through, and each carries two pieces of work — correct th
 you, and change the file that would have prevented it. Doing only the first leaves the next session
 to make the same mistake and the user to point it out twice.
 
-Both start in the same turn: they are one piece of work, and the guidance change is never offered,
-proposed, or listed as a next step. It then runs the delivery below like any other edit, and the
-only thing that carries it past this turn is a question this skill puts to the user.
+Both start in the same turn: correct the current behavior and edit the canonical guidance locally.
+Use the batch workflow below during unfinished work; a checkpoint, not each wording change, starts
+its delivery. Neither the issue nor its verification disappears when the surrounding task resumes.
 
 Two outcomes are reported rather than written into a file. Where the search finds nothing that
 governs the subject, that absence is the finding and step 2's rule on proposing a new file applies.
@@ -53,6 +53,26 @@ outcome, because silence reads as the guidance having been fixed.
 - `subagent-selection` — the model tier for live verification chats.
 - `merge-pr` — the verified squash merge of the pull request step 7 clears.
 - `execute-task` — the environment-refusal policy an unreachable validator source falls under.
+- `session-ledger` — retain observed issues, reproduction scenarios and pending guidance delivery across the active task.
+
+## Batching During Active Work
+
+- Record each correction with `session-ledger`: the observed issue and its evidence, a reproduction
+  scenario, the intended behavior, canonical files and branch being edited, and its delivery status.
+  Add related issues to the same batch rather than opening parallel guidance deliveries.
+- Edit the canonical sources in the guidance task worktree promptly. Read and follow that worktree's
+  revised instructions for the rest of the session while their delivery is pending; do not hand-copy
+  them into installed or generated mirrors. Local use does not mean the guidance is verified or merged.
+- Keep the source task progressing. At the next substantial checkpoint—a completed feature or
+  coherent milestone—process the pending batch through delivery below: simplify the combined diff,
+  validate the sources, run acceptance and behavior smoke tests against the final wording, then merge,
+  verify Agent Sync and refresh. A standalone guidance task's completed edit is its checkpoint.
+- Reuse ledger scenarios as inputs to the batch's smoke tests, grouping corrections that share a
+  failure class. Cover each changed behavior; batching does not remove required scenarios or gates.
+  Record the results and verified delivery artifacts back into the same ledger.
+- Before the surrounding task ends or hands off, deliver every pending batch or record its concrete
+  blocking decision, failed gate or unavailable dependency. Never lose a correction, treat a local
+  edit as delivered, or end the source task merely because this batch finished.
 
 ## Behavior
 

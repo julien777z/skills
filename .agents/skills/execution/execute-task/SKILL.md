@@ -253,14 +253,17 @@ run over that fix's increment, read with the whole branch diff as its originatin
 increment's **Pre-Push Gate** verdict.
 
 Read the shared testing rule before planning test runs or briefing an implementation worker.
-Its **Test Runs** cadence applies to pre-push checks too: a test batch deferred until feature
-completion does not hold an intermediate push, and remains required verification afterward.
+Its **Verification Cadence** governs tests, builds, browser walkthroughs and reviews, including
+pre-push checks. Deferred feature verification does not hold an intermediate push and remains
+required afterward. Run the relevant batch after the feature is complete, then the required final
+checks before delivery; retain evidence that the change has not invalidated.
 
-- **The pre-push checks are the ones CI runs on a pull request, run the way CI runs them.** Read
+- **Required checks use CI’s commands and scope, at the verification checkpoints above.** Read
   the workflow files that trigger on a pull request and run every checking job that can run
   locally — lint, format, type checks, build, tests, generated-output drift, docs or coverage
-  checks — with the job's own command and scope, plus any check a skill in use requires before a
-  push. Project guidance that lists those commands is a shortcut to the workflows, never a
+  checks — with the job's own command and scope, plus any check a skill in use requires. Do not
+  restart the batch for each push; retain results whose code and inputs remain unchanged. Project
+  guidance that lists those commands is a shortcut to the workflows, never a
   substitute; where the two disagree, the workflow is right. A job that needs a hosted service or a
   running stack, or is too slow to run before every push, joins the slow verification below and is
   named in the report.
