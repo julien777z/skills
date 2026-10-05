@@ -301,13 +301,14 @@ outcome, because silence reads as the guidance having been fixed.
    - If one request contains multiple distinct items, map each item to the best existing file or a new file within the same inferred/selected type.
    - If scope is ambiguous, ask a short follow-up before editing.
 
-7. Deliver it, in this order. The pull request carries only `.agents` files, so every call inside
-   this delivery is the editor's own — a flagged gate, a smoke round that would not close — made
-   and stated in the report, because a pull request confined to agent configuration has merge
-   authorization under the GitHub rule after its stated gates; that authorization does not extend
-   to a release workflow. A question asking for it only holds every later session on the guidance
-   the change replaces. The approval of a changed output's fictional example, under **Upsert
-   behavior**, is the one question put to the user, and it comes before delivery.
+7. Deliver it, in this order. Ordinary repairs and verification remain authorized throughout this
+   delivery; resolve flagged gates under `acceptance-gate`'s **Bounds** and failing smoke runs under
+   `test-skill`. A pull request confined to agent configuration has merge authorization under the
+   GitHub rule after its stated gates; ask neither to repeat that authorization nor to continue
+   an ordinary repair. That merge authority settles no genuine unresolved product, scope, or
+   authorization choice: put that concrete choice to the user under **Bounds** while independent
+   work continues. It does not authorize a release workflow. Approval of a changed output's
+   fictional example, under **Upsert behavior**, still comes before writing that output.
    1. **Branch and commit.** The edit goes onto the open agent-configuration pull request the work
       continues in the repository being edited, whichever session opened it, or, when it continues
       none, onto a branch from the freshly fetched default branch with a new pull request, under the GitHub rule's **Branches and Pull Requests** — never onto a
