@@ -214,8 +214,9 @@ outcome, because silence reads as the guidance having been fixed.
      it as a reusable procedure, link its owning guidance, or establish why it no longer applies.
      Check that the next reader can still perform the action and recognize success; removing the
      incident details must not remove the lesson. Apply the preservation criteria in the quality reference.
-   - Check skill shape and output against those criteria. Move inline criteria to a named reference
-     when required, and add the appropriate output template or delivery report line when absent.
+   - Apply those criteria to skill shape and output, including agent-consumed results and section
+     order. Move inline criteria to a named reference when required, and add the appropriate
+     hard-coded output format or delivery report line when absent.
    - Update existing files in place and report any structural changes. Before delivery, follow the
      entry point's links again and confirm that each route loads its required guidance. References
      must not hide an essential rule or introduce an unexplained mode or dependency. Check genericity
@@ -234,7 +235,8 @@ outcome, because silence reads as the guidance having been fixed.
      requirement it holds. Add a section only when no existing one covers the subject, and name it
      for the whole subject: a heading that states one rule invites the next rule on that subject
      into a heading of its own. A restriction on one subject goes under that subject's heading;
-     `## Guardrails`, kept at the bottom, holds only constraints that span the file's subjects.
+     `## Guardrails`, always the last section when present, holds only constraints that span the
+     file's subjects.
    - Express each independent requirement once, as one concise statement or bullet, without padding. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
    - Normalize the touched file's nearby structure when needed: combine narrow sections, remove redundant wording, and order foundational guidance before specialized concerns.
    - **Prefer the broad statement, and let the request's shape be its example.** A request

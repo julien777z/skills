@@ -1,68 +1,79 @@
 ---
 name: session-ledger
-description: Record and retrieve verified external artifacts and pending guidance corrections during the current task. Use when a workflow creates, selects or reports task artifacts, or batches observed guidance issues and reproduction scenarios for later verification.
+description: Record and retrieve task context and verified external artifacts during the current task. Use when a workflow creates, selects or reports task artifacts, records decisions, or batches observed guidance issues and reproduction scenarios for later verification.
 short_description: 'Keep verified task artifacts available across a long session.'
 ---
 
 # Session Ledger
 
-Keep one structured ledger in the active task's state so artifacts and pending corrections recorded early in a long
-session remains available after repository changes, delegation, or conversation compaction.
+Keep one structured ledger in the active task's state so context recorded early in a long session
+remains available after repository changes, delegation, or conversation compaction.
 
 The task owner keeps the ledger under one `session_ledger` task-state key. A harness with native
 task state reads and writes that key directly. Otherwise, the owner keeps the same structured value
 in its active task context, includes it with each delegated assignment, and appends the worker's
 returned records before the next action. A worker never replaces the owner's ledger.
 
-## Records
+## Workflow
 
-- Record an external artifact only after its owner confirms it. Keep its canonical URL, artifact
-  kind, repository URL when applicable, creation order, and verified identifiers needed to read it
-  again, such as a pull request number, branch, head SHA, or deployment ID.
-- Pull requests are recorded immediately after the hosting service returns their canonical URL and
-  before reporting the creation or moving to another repository.
-- When the task first selects, updates, reviews, or otherwise acts on a pre-existing artifact,
-  record a verified `touched` observation with its canonical URL and provenance. That observation
-  does not make the artifact session-created.
-- Record later lifecycle facts, such as a verified merge, deployment, release, issue creation, or
-  external configuration change, as observations attached to the original artifact. Do not replace
-  its creation record.
-- Use the active harness's task-scoped state store. Do not commit a ledger file, parse a transcript,
-  or retain records after the task ends. Never record credentials, tokens, request bodies, or other
-  secrets.
-- When delegating, give the worker the current ledger entries relevant to its task and require it to
-  return every newly verified artifact record. The parent appends those records to the task ledger.
+1. Read the current ledger before recording or retrieving context. Use the Output format for every
+   entry, with record-specific facts in `data`; append new entries in first-recorded order.
+2. Record the facts and their provenance as soon as they are known.
+   - For an external artifact, require confirmation from its owner. Keep its canonical URL,
+     artifact kind, repository URL when applicable, creation order, and verified identifiers needed
+     to read it again, such as a pull request number, branch, head SHA, or deployment ID. Record a
+     pull request immediately after the hosting service returns its canonical URL, before reporting
+     creation or moving to another repository. The first observation records `created` or `touched`;
+     acting on a pre-existing artifact never makes it session-created.
+   - For a correction, keep the observed issue, evidence or user instruction, reproduction scenario,
+     intended behavior, canonical files, local branch, checkpoint and delivery status. Keep other
+     context needed to resume: decisions and constraints, affected callers, dependencies, check
+     results and their validity conditions, open questions and next actions. Choose useful `data`
+     fields for the record; local work is never an externally verified artifact claim.
+3. Update an entry's current `data` and append observations for later lifecycle facts, checks and
+   dispositions. Preserve its initial observation and provenance. Clear a correction's pending
+   status only after verified delivery or a recorded disposition, never because work moved on.
+4. Preserve the ledger across delegation, handoff and compaction. Give workers the relevant entries
+   and require new records and observations back. The task owner merges them by stable entry ID,
+   or canonical URL for an artifact, without replacing unrelated entries or reordering existing ones.
+5. Retrieve by record kind or facts such as artifact kind, repository, branch or canonical URL.
+   Deduplicate artifact URLs while preserving first-recorded order.
+   - A session-scoped pull-request lookup reads the recorded pull requests first, then verifies
+     their current state with the hosting service. Exclude closed and merged pull requests unless
+     explicitly requested. A handoff includes open pull requests recorded as created or touched.
+   - An explicit user-provided URL remains the target: verify it directly without substituting
+     another ledger record or a same-named branch.
+   - For an artifact created before this skill was available, reconstruct its missing entry from
+     verified task evidence, then use the ledger for later lookups.
 
-## Pending Guidance Corrections
+## Output
 
-- Keep pending guidance corrections under the same `session_ledger` key, distinct from externally
-  verified artifact records. Record the observed issue, evidence or user instruction, reproduction
-  scenario, intended behavior, canonical files and local branch, planned checkpoint and delivery status.
-  Include other context needed to resume accurately: settled decisions and constraints, affected
-  callers, dependencies, verification results and their validity conditions, open questions,
-  next actions and checkpoint triggers. Choose useful fields for the correction rather than
-  treating this list as a mandatory schema; never retain secrets or unrelated session details.
-- Update a correction as it is locally applied, verified and delivered. Attach its check results
-  and verified pull-request or merge observations; local work is never an external artifact claim.
-- Preserve pending corrections across delegation and handoff. Workers return their observations;
-  the task owner appends or updates them without replacing other records. Clear pending status only
-  after verified delivery or a recorded disposition, never because execution moved to another feature.
+Store and return this YAML structure to the calling workflow, not as a user-facing report. The
+native task-state value is the mapping beneath `session_ledger`, not another wrapper inside it.
+Keep every entry's envelope fixed; `kind` distinguishes records such as `artifact`,
+`guidance_correction` or `decision`, and both `data` mappings hold only the facts that record needs.
+Keep `id` stable and unique within the task. Use `observations: []` when none have been recorded.
 
-## Retrieval
+```yaml
+session_ledger:
+  entries:
+    - id: "<stable task-local identifier>"
+      kind: "<record kind>"
+      summary: "<one-sentence description>"
+      data: {}
+      observations:
+        - event: "<observed event>"
+          evidence: "<source confirming it>"
+          data: {}
+```
 
-- Retrieve records by artifact kind, repository, branch, or canonical URL. Deduplicate canonical
-  URLs while preserving their first-recorded order.
-- A session-scoped pull-request lookup reads the recorded pull requests first, then verifies each
-  current state with the hosting service. Exclude closed and merged pull requests unless the caller
-  explicitly asks for them.
-- A handoff lookup includes open pull requests recorded as created or touched during the task.
-- An explicit user-provided URL remains the target. Verify it directly and do not substitute a
-  same-named branch or another ledger record.
-- If an existing task has no ledger entry for an artifact created before this skill was available,
-  reconstruct one record from verified task evidence, then use the ledger for every later lookup.
+An empty ledger is `session_ledger: {entries: []}`. Add record-specific fields within `data`, not
+new top-level collections or an envelope per kind.
 
 ## Guardrails
 
+- Do not commit a ledger file, parse a transcript, or retain records after the task ends. Never
+  record credentials, tokens, request bodies, other secrets, or unrelated session details.
 - Never infer a record from a repository directory, local branch, remembered pull-request number,
   or search result alone.
 - A missing record is not permission to broaden a query. Ask for the target when the current task
