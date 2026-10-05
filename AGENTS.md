@@ -168,6 +168,15 @@ Canonical guidance lives in `.agents/`.
   on the others validates the shared path. Never create persistent synthetic records in a stable or
   shared staging environment merely to smoke-test a deployment.
 
+## Tailscale policy
+
+- Prefer environment-branded tags over generic role tags whenever a Tailscale resource applies to
+  a particular environment. Add a role suffix only when distinct roles within that environment need
+  separate authority; do not create tags for roles that are not in use.
+- Use groups to grant people access and to own tags. Define service and routing policy in terms of
+  environment-scoped resource tags instead of individual email addresses or broad
+  cross-environment tags.
+
 ## Code layout
 
 - In every language, use blank lines to separate setup, validation, transformations, side effects, and returns. Keep adjacent statements together only when they form one small operation; do not turn a function into an uninterrupted paragraph merely because a formatter permits it. Apply this to existing code in files you change.
