@@ -120,6 +120,13 @@ outcome, because silence reads as the guidance having been fixed.
    - When the user points out a guidance failure, trace the actual path from the request to the
      missed behavior before editing: which instruction applied, whether its skill loaded, and why
      the agent's decision diverged. Correct the current work and the owning guidance in this run.
+   - Test the proposed instruction against that original decision path before writing it. If a
+     reader could follow it and still repeat the miss, explain the mismatch to the user, name the
+     instruction that actually caused or allowed the decision, and correct that owning path and
+     its conflicting callers. Escalate a genuine unresolved choice, not permission for an already
+     authorized repair. Do not mechanically apply a requested wording change or add a general
+     reminder beside a stop rule it cannot override. The original scenario must demonstrate that
+     the causal correction changes the reader's next action.
    - Treat a named addition as the starting point, not the limit. Inspect the owning guidance,
      related callers and dependencies for other gaps needed to solve the same issue. Before
      applying those additional corrections, tell the user which gaps you found, what you will add
@@ -294,13 +301,14 @@ outcome, because silence reads as the guidance having been fixed.
    - If one request contains multiple distinct items, map each item to the best existing file or a new file within the same inferred/selected type.
    - If scope is ambiguous, ask a short follow-up before editing.
 
-7. Deliver it, in this order. The pull request carries only `.agents` files, so every call inside
-   this delivery is the editor's own — a flagged gate, a smoke round that would not close — made
-   and stated in the report, because a pull request confined to agent configuration has merge
-   authorization under the GitHub rule after its stated gates; that authorization does not extend
-   to a release workflow. A question asking for it only holds every later session on the guidance
-   the change replaces. The approval of a changed output's fictional example, under **Upsert
-   behavior**, is the one question put to the user, and it comes before delivery.
+7. Deliver it, in this order. Ordinary repairs and verification remain authorized throughout this
+   delivery; resolve flagged gates under `acceptance-gate`'s **Bounds** and failing smoke runs under
+   `test-skill`. A pull request confined to agent configuration has merge authorization under the
+   GitHub rule after its stated gates; ask neither to repeat that authorization nor to continue
+   an ordinary repair. That merge authority settles no genuine unresolved product, scope, or
+   authorization choice: put that concrete choice to the user under **Bounds** while independent
+   work continues. It does not authorize a release workflow. Approval of a changed output's
+   fictional example, under **Upsert behavior**, still comes before writing that output.
    1. **Branch and commit.** The edit goes onto the open agent-configuration pull request the work
       continues in the repository being edited, whichever session opened it, or, when it continues
       none, onto a branch from the freshly fetched default branch with a new pull request, under the GitHub rule's **Branches and Pull Requests** — never onto a
@@ -352,12 +360,11 @@ outcome, because silence reads as the guidance having been fixed.
       surface, or workaround in generic guidance as a finding unless the skill's contract depends on
       it; the incident's route must not narrow the durable decision boundary. Give the gate the
       incident's vocabulary — the product, its record and screen nouns, the labels the request
-      quoted — so an example carrying any of it is a finding. A flag gets the one
-      rewrite that skill allows, pushed as its own increment and put to a fresh gate. A second flag ends the rewriting: fix it
-      when the flag names a defect in the guidance, merge as it stands when it names a preference
-      the rewrite already answered, or drop the item when neither holds, and state which and why in
-      the report, as that skill's **Bounds** leave it to the caller for a change whose merge needs
-      no authorization.
+      quoted — so an example carrying any of it is a finding. Resolve each flag through that
+      skill's **Bounds**: repair the owning instruction, push the changed increment, and put it
+      to a fresh independent gate. Repeated flags do not permit dropping owed work or merging
+      flagged guidance; acceptance must cover the final wording before delivery.
+
    5. **Run `test-skill` for every behavior-changing skill, rule, or agent edit.** A rule's
       source type never exempts it: any changed instruction that can alter what a reader does gets
       an edited and original control run. Run it here rather than before step 3, because a round
@@ -492,7 +499,7 @@ Checks
 
 - Source check: passed on <head> | failed: <report>
 - Simplification: <clean | findings applied>
-- Acceptance gate: <accepted | rewritten and accepted | flagged twice: <fixed | merged as it stands | dropped> — <reason>>
+- Acceptance gate: <accepted on <head> | repaired and accepted on <head> | blocked — <concrete unresolved decision or unavailable compliant remedy>>
 - Smoke test: <passing tables reported above | dropped — <reason> | not run: <reason>>
 - Example approved: <one line per skill: name — approved after <n> round(s), output matches it | skipped, no response the user uses | skipped, response unchanged | rule-only change>
 - Merged text read back: <default branch head the touched skills and rules were re-read from | not merged>
