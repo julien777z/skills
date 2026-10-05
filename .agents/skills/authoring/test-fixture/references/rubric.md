@@ -71,8 +71,9 @@ canonical. Apply the global **Code layout** boundary between executable consumer
 owners: test-only setup belongs in established test support, while behavior used by applications
 and commands belongs in its existing reusable source owner. Move the definition and update all
 consumers rather than re-exporting it through a command or copying it into test support. Inspect
-the resulting import direction and search other consumers for the same executable-owned setup;
-direct tests of the command itself remain command tests.
+the resulting import direction. When executable-owned setup is found, search repository imports
+and re-exports of executable modules for other data or helper ownership violations, not only
+consumers of the moved symbol. Direct tests of the command itself remain command tests.
 
 Use the value from the fixture or factory that owns the domain object. When that canonical surface
 lacks a field the test needs, extend it and update its consumers instead of hard-coding the value,
