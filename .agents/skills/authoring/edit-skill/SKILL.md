@@ -215,6 +215,13 @@ its delivery. Neither the issue nor its verification disappears when the surroun
    - Apply those criteria to skill shape and output, including agent-consumed results and section
      order. Move inline criteria to a named reference when required, and add the appropriate
      hard-coded output format or delivery report line when absent.
+   - Validate every added or changed instruction for conflicts before delivery. Search the canonical
+     rules and skills by its subject, required action and opposite disposition. Read the complete
+     changed skill or rule and its supporting files, plus relevant sections in other skills, rules,
+     callers and dependencies. Apply the quality reference's conflict criteria. Resolve competing instructions
+     at their owners rather than adding a reminder beside them. Record the searches, sources read
+     and each resolution, or the evidence for a clean result. Repeat this check for later wording
+     changes before acceptance and smoke tests; an earlier clean result does not cover a new edit.
    - Update existing files in place and report any structural changes. Before delivery, follow the
      entry point's links again and confirm that each route loads its required guidance. References
      must not hide an essential rule or introduce an unexplained mode or dependency. Check genericity
