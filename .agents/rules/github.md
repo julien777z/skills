@@ -110,8 +110,15 @@ alwaysApply: true
 
 ### After Agent Sync
 
-- After a pull request that changes agent configuration merges and its default-branch Agent Sync run finishes, update the repository's main local checkout, not a task worktree: if it is clean, check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force the refresh; report a skipped refresh and leave them untouched.
-- When the merged repository supplies the installed shared skills, invoke `reconcile-skills` instead of the checkout-only refresh above. It refreshes the installed checkout, links, and changed rules. For the skill's first merge, read it from the merged commit before invoking it. A session follows the copy it loaded until this refresh completes.
+- After a pull request that changes agent configuration merges and its default-branch Agent Sync
+  run finishes, select the refresh route before checking local changes. When the repository supplies
+  the installed shared skills, invoke `reconcile-skills`; its preservation workflow governs dirty
+  checkouts as well as clean ones. The checkout-only restriction below does not apply to this route.
+  For the skill's first merge, read it from the merged commit before invoking it. A session follows
+  the copy it loaded until this refresh completes.
+- For every other repository, refresh its main local checkout, not a task worktree: if it is clean,
+  check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force
+  this checkout-only refresh; report a skipped refresh and leave them untouched.
 
 ## Comments
 

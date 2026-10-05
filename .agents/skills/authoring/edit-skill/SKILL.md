@@ -39,12 +39,6 @@ Both start in the same turn: correct the current behavior and edit the canonical
 Use the batch workflow below during unfinished work; a checkpoint, not each wording change, starts
 its delivery. Neither the issue nor its verification disappears when the surrounding task resumes.
 
-Two outcomes are reported rather than written into a file. Where the search finds nothing that
-governs the subject, that absence is the finding and step 2's rule on proposing a new file applies.
-Where the governing file already says it correctly, the finding is that the guidance was not
-followed — say so, and do not restate the rule beside itself. Either way the report names the
-outcome, because silence reads as the guidance having been fixed.
-
 ## Dependencies
 
 - `code-simplify` — the pass over the guidance itself before it merges.
@@ -114,6 +108,10 @@ outcome, because silence reads as the guidance having been fixed.
      already covered merely because existing guidance forbids the failure. Find why that guidance
      did not control the run — its trigger, dependency, sequence, enforcement, visibility, or
      wording — and strengthen the owning guidance or workflow so the same path cannot bypass it.
+     When it already loaded, read its exceptions and stopping clauses together with its callers;
+     remove or narrow the instruction that permitted the wrong action. Reporting noncompliance or
+     successfully retrying the action does not close this correction. Preserve the correct rule
+     without duplicating it, and verify the repaired decision path against the observed failure.
      Close every other path the failure's class takes, not only the one this instance used.
      When the owning skill was not invoked, harden its frontmatter description first; body text
      cannot control a run that never loads the skill.
