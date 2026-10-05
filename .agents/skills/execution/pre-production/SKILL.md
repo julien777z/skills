@@ -100,8 +100,10 @@ also not a reason to stop at the first file, and the section below governs how f
   which one removes the most duplication and leaves the fewest mechanisms behind**. Recommend that one.
   The user may take the trade-off or refuse it; they cannot weigh what they were not told.
 - Reserve a blocking question for a decision that is genuinely theirs — a security posture, a product
-  behaviour, a disclosure boundary. Where the consequence is small and the cleaner answer is obvious,
-  take it and state it in the pull request rather than stopping.
+  behaviour, a disclosure boundary — under the global rules' **Task execution and authorization**.
+  A change to the product experience is not exempt because its consequence seems small or its
+  remedy obvious. Routine internal changes within the settled experience proceed and are stated
+  in the pull request.
 - Say what changed for whom. "This is a change, not a refactor" belongs at the top of the description,
   not buried among the mechanics.
 - **A measured failure is never a trade-off.** A rate, a duration, a kill or a resource trail observed

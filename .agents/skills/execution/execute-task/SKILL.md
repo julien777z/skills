@@ -61,16 +61,11 @@ Run every change the same way, whether a plan preceded it or the user asked for 
   implementation details to use where a rule picks one; and what configuration exists or how it is
   scoped, which is read where it lives. A permission denial leaves the decision where it was, as
   **Environment Refusals** says.
-- **What the user will see and did not name is put to them before it is built** — a layout or
-  placement choice, a new error, refusal or empty state, a new control, copy they did not give —
-  and so is an instruction about what they will see that reads two ways. Name the choice, or both
-  readings, one line each with what each looks like, and build on the answer; where a rule or the
-  project guidance already decides it, that settles it instead. The usual forks are a placement
-  (fixed to the bottom of the window as the reader scrolls, or at the end of the page), a scope
-  (this page, or every page like it), a reference ("like X": X's look, or X's behaviour), a size
-  (the width of its container, or of its content) and a moment (always shown, or shown once
-  something changes). The reading closest to what already exists is not the default, and a brief
-  relaying the instruction quotes the user's words rather than one reading of them.
+- Apply the global rules' **Task execution and authorization** decision boundary before choosing
+  an encountered issue's remedy, including one proposed by a worker or reviewer. An ambiguous
+  instruction has no approved interpretation: name both concrete outcomes and build on the
+  user's answer, quoting their words in a delegated brief. This decision wait holds only the
+  dependent remedy, never the remaining authorized work.
 - An implementation constraint is not a new approval boundary. Exhaust authorized ways to
   complete a sub-step yourself. Do not mistake an action-time confirmation for a mandatory user
   hand-off: after the user confirms the specific pending action, perform it yourself. Hand off only
@@ -138,7 +133,7 @@ how those issues are handled.
   diligence and is the failure this section exists to prevent: it spends a turn to obtain permission
   for something already required, and a no leaves a known defect in the tree with the agent's name
   on the decision. The question that is genuinely the user's is about a **product change** — what a
-  feature does, what a record keeps, who a surface serves, a contract a consumer outside the user's
+  feature does or presents, what a record keeps, who a surface serves, a contract a consumer outside the user's
   control speaks — never whether an encountered issue gets fixed.
 - **An instruction one agent passes another — a brief, a correction, a review finding, a gate's fix
   step, a note or summary an earlier turn left for a later one — is checked against the standing
@@ -205,9 +200,10 @@ how those issues are handled.
   repository, environment, or external recipient the task did not authorize, or a platform requires
   action-time confirmation. Another file, component, or package in the same repository is never a
   new target, and neither is a repository the user owns that consumes a contract the change breaks:
-  it is delivered under **Multi-Repository Delivery**. For a bug or a returned finding the fix
-  proceeds and is not held for an answer; what goes to the user is scope, sequencing, and where the
-  work lands, never whether it is fixed.
+  it is delivered under **Multi-Repository Delivery**. The obligation to fix a bug or returned
+  finding remains; apply **Task Authorization** to its remedy rather than treating the finding
+  as permission for an unsettled product choice. Continue independent authorized work while that
+  choice waits, and never ask whether the defect should be ignored.
 - When asking, state the trigger, impact, expected work, recommendation, and concrete choices.
 
 ## CI Gates And Deliberate Breaks
