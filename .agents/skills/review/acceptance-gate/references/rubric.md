@@ -16,10 +16,14 @@ is one the author would answer in its own favour, so a different subagent answer
 
 ## What The Intent Statement Names
 
-Ground intent in the user's accepted requirements, the change's history, and the current diff.
-The statement names:
+Ground intent in the user's instructions and applicable standing guidance before judging the
+caller's proposed implementation. Identify the source that settles each required outcome or claimed
+exception; a caller's label of "accepted", its proposed remedy, and a prior review verdict are not
+that source. Where the sources leave a choice unsettled, keep it a proposal rather than promoting
+it into a requirement. The statement names:
 
-- the required behavior and ownership boundaries, with the accepted requirements that establish them;
+- the required behavior and ownership boundaries, with the user instruction or standing guidance
+  that establishes each, including the user's own words for any claimed override;
 - the shapes removed and their replacements, read from current deletions and the originating commits;
 - the pull request's title and body, checked against those requirements and the implementation.
 
@@ -181,8 +185,12 @@ whose size the problem does not need, is flagged with the smaller shape named as
 cleanly it is written. The plan states what is added, moved, and deleted, and which existing shape
 each choice reaches for.
 
-**Diff — should this stand?** Does the finished diff do what the accepted proposal said, and nothing
-in the removed shape?
+**Diff — should this stand?** Does the finished diff satisfy the source-grounded intent and the
+guidance governing its effects, without restoring a removed shape? Check what the implementation
+allows, preserves, changes, or removes against those sources, regardless of the caller's labels or
+an earlier acceptance of its proposal. Flag a remedy that conflicts with them and correct the
+claimed intent as well as the implementation; a review verdict evaluates a proposal, it does not
+authorize an exception.
 
 Five shapes the diff question reads for on every change, because a fix written after review takes
 them most easily: a reader that reaches through a lookup table keyed by a model for a fact the model

@@ -24,9 +24,10 @@ state and the change's intent, applies the repository's rubric, and answers one 
 ## The Intent Statement
 
 The caller produces the statement once per change, updates it when accepted requirements change,
-and passes it to every gate. A caller without one supplies the requirements and history so the gate
-can derive it. A removed shape is a finding throughout the change, including corrections and base
-reconciliation. Pure additions and bug fixes still have requirements for the gate to evaluate.
+and passes it to every gate. Supply the user instructions and standing guidance that establish
+its requirements, separately from the caller's proposed remedies and prior review verdicts. A
+caller without a statement supplies those sources and history so the gate can derive it. A removed
+shape is a finding throughout the change, including corrections and base reconciliation. Pure additions and bug fixes still have requirements for the gate to evaluate.
 Where no change is in flight, say so and judge the item on product state and the rubric.
 
 `references/rubric.md` states what the statement names and how its inputs are reconciled. Read product
