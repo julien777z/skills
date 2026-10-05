@@ -1,6 +1,6 @@
 ---
 name: merge-pr
-description: Take a reviewed pull request through its exact-head check gate, resolve merge conflicts, and squash-merge it at the gated head, verifying the merge. Use when merging a specific pull request is authorized — the user naming it, or a workflow reaching its merge step, such as a review workflow, a doctor's merged batch, or a guidance change's delivery — and, with merge withheld, to take a finished draft pull request ready and bring its checks to green.
+description: Take a reviewed pull request through its exact-head check gate, resolve merge conflicts, and squash-merge it at the gated head, verifying the merge. Use when merging a specific pull request is authorized — the user naming it, or a workflow reaching its merge step, such as a review workflow, a doctor's merged batch, or a guidance change's delivery — and, with merge withheld, to take a finished draft pull request ready and bring its required checks to green.
 short_description: 'Validate and merge an authorized pull request at its reviewed head.'
 ---
 
@@ -15,8 +15,9 @@ has reached a terminal result.
   instruction naming the merge and the pull request, an invoked skill that states its invocation
   authorizes the merge, or a rule that authorizes that merge. It creates no authorization of its own.
 - Once that authorization holds, never ask the user for permission to merge and never end by
-  offering the merge as the remaining step. What stops a merge is a gate: a check that is not green,
-  a head that no longer matches the accepted SHA, or a conflict still unresolved. Report that gate.
+  offering the merge as the remaining step. What stops a merge is a gate: a relevant required check
+  that is not green, a head that no longer matches the accepted SHA, or a conflict still unresolved.
+  Report that gate.
 - Dispatching a release workflow or creating a deployment is a separate action with its own
   authorization.
 
@@ -30,8 +31,10 @@ has reached a terminal result.
 
 The caller supplies the repository, the pull request, the head SHA its final acceptance passed, the
 affected behaviors its local tests already cover, whether merge was explicitly withheld, and the
-rule that decides what a fix made here reopens in its own review. A caller with no such rule has
-each fix's diff judged the way it judged the accepted head before the gate repeats.
+rule that decides what a fix made here reopens in its own review. It also supplies each validation
+exclusion: either a current-user direction to leave a named test or check alone, or evidence that
+the same failure occurs on the repository's default branch. A caller with no such rule has each
+fix's diff judged the way it judged the accepted head before the gate repeats.
 
 ## Transport
 
@@ -62,7 +65,9 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    behavior has passing local coverage, the gate is satisfied without querying GitHub. When a needed
    job has no check run or status, inspect the active workflow definitions for pull request
    triggers; if none can supply the coverage, report that blocker rather than waiting on unrelated
-   checks.
+   checks. Record and exclude each caller-supplied validation exclusion. Remove it from required
+   coverage and terminal-result gates; it never becomes a reason to repair, rerun, or wait. Every
+   other affected behavior still needs passing coverage.
 4. **Poll a relevant check until it reaches a terminal state.** Re-query the exact head on a bounded
    interval matched to how long that job takes — roughly every 30 to 60 seconds — until it is
    `success`, `failure`, `cancelled`, `timed_out`, `skipped` or `neutral`. Never poll an unrelated job
@@ -75,13 +80,15 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    job's own output — the run's jobs listing and decisively its log, which a finished job ends with
    its summary and cleanup. A log showing completion **is** the terminal result. Never diagnose a
    hang, push a speculative fix, cancel, re-run, or report the run stuck from a pending status alone.
-6. **A failed check is root-caused and fixed.** Read its annotations and complete log, fix the
-   repository input responsible — code, test, configuration or workflow — and commit and push it.
-   A failure an external service caused is an encountered issue under `pre-production` and is
-   fixed the same way; never re-run a job, and never skip, disable, or quarantine a test or confine
-   its job to drafts, to get past a failure. Report a blocker only when the
-   missing coverage needs user input or unavailable credentials, with the check, evidence and
-   remediation attempted.
+6. **Classify every failed check before repair.** A caller-supplied exclusion, a current-user waiver
+   for its named test or check, or the same failure on the default branch is excluded: record its
+   evidence, remove it from required coverage, and do not repair, rerun, or wait for it. Every other
+   failure is relevant. Read its annotations and complete log, fix the repository input responsible —
+   code, test, configuration or workflow — and commit and push it. A relevant external-service failure
+   is an encountered issue under `pre-production` and is fixed the same way; never re-run a job, or
+   skip, disable, or quarantine a test or confine its job to drafts, to get past it. Report a blocker
+   only when relevant missing coverage needs user input or unavailable credentials, with the check,
+   evidence and remediation attempted.
 7. Never stop, restart, reconfigure or claim a local service the calling workflow did not start:
    another agent or person may be using it. When relevant validation needs local services and one it
    did not start is running, use the matching hosted check as the fallback rather than running a
@@ -106,6 +113,10 @@ remains open, report the clean exact head, and stop. Otherwise squash-merge with
 refuses a concurrent head change. On a mismatch, put the commits the new head adds through the
 caller's rule from **Inputs**, then repeat the check gate. After the merge, re-read the pull request
 and require it to report merged.
+
+An excluded failed check does not prevent that ordinary authorized merge attempt. If the provider
+rejects it because branch protection requires the excluded check, leave the pull request open and
+report that actual rejection and its provider evidence; do not bypass protection.
 
 When the merged diff changes agent configuration, poll the default-branch Agent Sync run the merge
 started as **Check Gate** steps 4–5 poll a check, then run the refresh the GitHub rules' **After

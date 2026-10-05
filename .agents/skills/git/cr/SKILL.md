@@ -1,6 +1,6 @@
 ---
 name: cr
-description: Use when the user directly asks to run CR or says "CR" for a pull request, or when a directly user-invoked merge-post-review delegates its captured merged diffs. Triage review threads, run multi-subagent code-simplify and high-effort fix review, repair failed checks, then merge after the gates unless the user explicitly asks to finish review without merging. This dedicated CR workflow uses high effort and fix mode without asking for review options.
+description: Use when the user directly asks to run CR or says "CR" for a pull request, or when a directly user-invoked merge-post-review delegates its captured merged diffs. Triage review threads, run multi-subagent code-simplify and high-effort fix review, repair relevant failed checks, then merge after the gates unless the user explicitly asks to finish review without merging. This dedicated CR workflow uses high effort and fix mode without asking for review options.
 disable-model-invocation: true
 ---
 
@@ -246,6 +246,20 @@ behind.** A suite costs minutes and reports on the tree as it stood when the run
 outside those two — and outside the narrow repair loop the second one may open — is spent on a tree
 the next fix is about to change.
 
+### Failure relevance
+
+Before a failed test or hosted check can hold either pass, classify it against the reviewed target.
+An explicit current-user instruction to leave a named test or check alone is an exclusion. So is
+the same failure on the repository's default branch. Record the test or check, the instruction or
+default-branch evidence, and the exclusion in the completion report; do not repair, rerun, or wait
+for it, and do not let it prevent the review or merge gate. Pass every exclusion to `merge-pr` with
+the exact evidence. A failure that looks outside the diff but is green on the default branch is not
+an exclusion.
+
+A failure that is neither explicitly excluded nor failing on the default branch remains an encountered
+issue: trace and fix the repository input before the review proceeds. An exclusion does not waive a
+platform that rejects the merge itself; report that separate enforcement result with the provider's evidence.
+
 Run the affected targets first, before the **Simplification Gate** opens, selecting them from the
 diff as the testing rules direct. Fix what that run reports and push, so every reviewer this run
 launches reads a tree that already passes and spends its findings on the design rather than on a
@@ -306,7 +320,7 @@ and verified live result; a default-branch or merged artifact is not test eviden
 authorization, skip deployment and continue review. Never dispatch a workflow or mutate a provider
 to work around this gate.
 
-1. Resolve the review target and working pull request using **Review Targets**. Read the original target's intent and metadata without modifying a merged pull request; run **Description Refresh** when a working pull request exists. Record the review range and pass its intent and route-specific ownership to every subagent and into `/code-review high fix`. Run **Review Thread Triage** against the original target's discussions, with any legitimate fixes placed according to the selected route. Then run the first test pass **Validation Order** requires and the complete **Simplification Gate**; no code-review phase starts before all three are clean.
+1. Resolve the review target and working pull request using **Review Targets**. Read the original target's intent and metadata without modifying a merged pull request; run **Description Refresh** when a working pull request exists. Record the review range and pass its intent and route-specific ownership to every subagent and into `/code-review high fix`. Run **Review Thread Triage** against the original target's discussions, with any legitimate fixes placed according to the selected route. Then classify failures under **Failure relevance**, run the first test pass **Validation Order** requires, and complete the **Simplification Gate**; no code-review phase starts before all three are clean.
 2. Invoke `/code-review high fix <target>` using the open pull-request URL or the exact delegated ref range. For a merged range, pass the original pull request as metadata only and explicitly preserve the range through resolution and eligibility checks. Direct fixes to the working fix branch rather than changing the immutable target.
 3. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the run continues; see **Deferred Findings**. Stop and report only a finding that can be neither fixed nor recorded.
 4. Classify each correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean. This is the same authorized CR execution, not a new action-skill invocation.
@@ -315,6 +329,7 @@ to work around this gate.
 7. Invoke `merge-pr` with:
    - the pull request and the head step 5 accepted;
    - the affected behaviors step 6 covered locally;
+   - every **Failure relevance** exclusion with its evidence;
    - whether the user withheld merge;
    - the fix rule for every fix it makes — a check fix, a conflict resolution, a commit someone else pushed: **Review Continuity** reruns the lenses the fix reopens, and the fix is pushed through `execute-task`'s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have passed.
 
