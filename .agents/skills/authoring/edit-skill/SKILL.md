@@ -39,12 +39,6 @@ Both start in the same turn: correct the current behavior and edit the canonical
 Use the batch workflow below during unfinished work; a checkpoint, not each wording change, starts
 its delivery. Neither the issue nor its verification disappears when the surrounding task resumes.
 
-Two outcomes are reported rather than written into a file. Where the search finds nothing that
-governs the subject, that absence is the finding and step 2's rule on proposing a new file applies.
-Where the governing file already says it correctly, the finding is that the guidance was not
-followed — say so, and do not restate the rule beside itself. Either way the report names the
-outcome, because silence reads as the guidance having been fixed.
-
 ## Dependencies
 
 - `code-simplify` — the pass over the guidance itself before it merges.
@@ -114,6 +108,10 @@ outcome, because silence reads as the guidance having been fixed.
      already covered merely because existing guidance forbids the failure. Find why that guidance
      did not control the run — its trigger, dependency, sequence, enforcement, visibility, or
      wording — and strengthen the owning guidance or workflow so the same path cannot bypass it.
+     When it already loaded, read its exceptions and stopping clauses together with its callers;
+     remove or narrow the instruction that permitted the wrong action. Reporting noncompliance or
+     successfully retrying the action does not close this correction. Preserve the correct rule
+     without duplicating it, and verify the repaired decision path against the observed failure.
      Close every other path the failure's class takes, not only the one this instance used.
      When the owning skill was not invoked, harden its frontmatter description first; body text
      cannot control a run that never loads the skill.
@@ -217,6 +215,13 @@ outcome, because silence reads as the guidance having been fixed.
    - Apply those criteria to skill shape and output, including agent-consumed results and section
      order. Move inline criteria to a named reference when required, and add the appropriate
      hard-coded output format or delivery report line when absent.
+   - Validate every added or changed instruction for conflicts before delivery. Search the canonical
+     rules and skills by its subject, required action and opposite disposition. Read the complete
+     changed skill or rule and its supporting files, plus relevant sections in other skills, rules,
+     callers and dependencies. Apply the quality reference's conflict criteria. Resolve competing instructions
+     at their owners rather than adding a reminder beside them. Record the searches, sources read
+     and each resolution, or the evidence for a clean result. Repeat this check for later wording
+     changes before acceptance and smoke tests; an earlier clean result does not cover a new edit.
    - Update existing files in place and report any structural changes. Before delivery, follow the
      entry point's links again and confirm that each route loads its required guidance. References
      must not hide an essential rule or introduce an unexplained mode or dependency. Check genericity
