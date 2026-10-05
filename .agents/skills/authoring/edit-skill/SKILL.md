@@ -76,6 +76,10 @@ because silence reads as the guidance having been fixed.
 - Reuse ledger scenarios as inputs to the batch's smoke tests, grouping corrections that share a
   failure class. Cover each changed behavior; batching does not remove required scenarios or gates.
   Record the results and verified delivery artifacts back into the same ledger.
+- At a guidance delivery checkpoint and before reporting its state, record the complete pull-request
+  head and file list, the target repository lifecycle consulted, its current state, and its next
+  required transition. An eligible draft records `merge-pr` as its next action; only a concrete
+  documented gate may replace that action.
 - Before the surrounding task ends or hands off, deliver every pending batch or record its concrete
   blocking decision, failed gate or unavailable dependency. Never lose a correction, treat a local
   edit as delivered, or end the source task merely because this batch finished.
@@ -405,10 +409,14 @@ because silence reads as the guidance having been fixed.
       reference path corrected, wording that says the same thing shorter. The report says
       `not run: mechanical seam edit` for it, and the acceptance gate is its check.
 
-      **A draft pull request is an intermediate delivery state, never this skill's result.** After
-      the smoke, acceptance, and file-list checks pass, invoke `merge-pr` for the skill pull
-      request; do not leave it draft under an ordinary source-work default or report it as
-      delivered before its merged text and generated outputs are verified.
+      **A draft agent-configuration pull request is an intermediate delivery state, never this
+      skill's result or a turn boundary.** Before a report names its state, read the target
+      repository's agent-configuration pull-request lifecycle and take the next transition it
+      requires. Read the complete pull-request file list, not only the latest edit or its informal
+      label. After the smoke, acceptance, and file-list checks pass, invoke `merge-pr`; do not leave
+      it draft under an ordinary source-work default or report it as delivered before its merged
+      text and generated outputs are verified. The report names either the merged-and-refreshed
+      state or a concrete documented gate with its evidence; draft alone is neither.
 
       **A skill that arrives by relocation is not a skill the change adds.** Moving one between
       repositories, or generalizing local copies into one every repository can adopt, produces a new
