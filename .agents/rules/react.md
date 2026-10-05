@@ -314,8 +314,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Every load, action, save or submit failure or refusal uses the standard shared error banner component,
   with its native frame and error visual tone.** Never replace it with inline red text, field error
   messages, a toast or an unframed row, even when wrapped in another container. Each failure stays explicit
-  in a dismissible banner at the top of the page or section it concerns, above that content, never
-  near a footer or submit row. A refused form submit shows above the form's fields, not beside its
+  in a dismissible banner at the top of the page or section it concerns, outside and before its
+  content card or panel, never embedded in a card, table row, field, footer or submit row. Using
+  the shared component inside a content card still creates an inline banner. A refused form submit
+  shows above the form's fields, not beside its
   button, and a save refused from the floating save panel shows above the section holding the field,
   not in the panel. The banner never replaces the surface's own heading or description, which keep
   saying what the surface is while the banner says what went wrong.
@@ -325,7 +327,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   failed or refused request still shows its standard error banner alongside the persistent state
   banner, including when that state caused the refusal. A library card that has lapsed gets one
   status banner on the member page; a loan request refused after submission keeps its error banner.
-- **The error tone is for errors.** Red, or whatever tone the product reserves for destructive and
+- **Red is for errors and destructive actions, never required verification or another blocking status.**
+  Red, or whatever tone the product reserves for destructive and
   failed states, marks only a failure, a refusal, or a destructive action. A state that blocks or
   warns without being an error — something the reader must resolve, a hold, a limit reached — takes
   the warning tone, and a neutral status the neutral one, on a badge, a banner or a text color
