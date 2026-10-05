@@ -15,7 +15,7 @@ Before adding a test, answer four questions; a missing answer means do not add i
 
 1. What observable behavior, invariant, or independent contract does it protect?
 2. What credible regression makes it fail?
-3. Why does existing coverage of the same classification not already catch that failure? Prefer
+3. Which existing tests of the same classification were read, and why do they not already catch that failure? If they do, add nothing. Prefer
    extending a parameter table or shared fixture over a near-duplicate test; consolidate duplicated
    setup in the same change.
 4. Does it need a production seam — an export, flag, wrapper, or injection hook — that no production
@@ -124,14 +124,11 @@ Test-owned structures may follow the testing concern rather than a production pa
 - fixture, factory, shared-case, utility, snapshot, and harness packages;
 - integration or end-to-end flows that deliberately span several source modules;
 - a behavior folder that replaces one heavily tested source module with several focused test
-  modules, one class each, named for the behavior each covers rather than for the class.
+  modules named for independently maintained behaviors, when the file-boundary test below justifies a split.
 
 Place a cross-module test at the nearest shared source owner.
 
-A second class in one module is a second subject: the module name promises one thing while the
-file covers several, and a reader scrolling for the class they want passes everything else on the
-way. The folder that replaces it already carries the source file's name, so repeating that name in
-every child module is noise; each child is named for the behavior its one class covers.
+Keep one test class per file, but create a class only for a substantial coherent responsibility. Before creating a class or file, inspect the existing class that owns the source behavior and its parameter sets; extend them for small related cases. A helper, operation, boundary case, or pair of tests does not by itself earn a class. When several small classes cover one owner, merge their related cases into the broader owning class and its file, preserving independent coverage; split a substantial suite only where independently maintained responsibilities justify separate classes.
 
 Before adding or relocating model-factory machinery, discover and extend the established shared
 factory owner named by project guidance. Apply the general New Modules rule to all related

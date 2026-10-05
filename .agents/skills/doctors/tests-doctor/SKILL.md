@@ -95,13 +95,8 @@ mechanical check that finds every instance rather than the first one noticed:
   It moves under the source module it covers, as a behaviour module in a directory named for that
   module, or is named for the package it sweeps beside that package (`test_routes.py` next to
   `routes/`, for the sweep above);
-- a module holding more than one test class (count `class Test` per module; report every module
-  with its count): a second class is a second subject, and the module becomes a directory named for
-  the source module holding one behaviour module per class;
-- a test class not named for its module (for every module, compare its class name with `Test`
-  followed by the module stem in CamelCase; report every mismatch): the class is renamed for the
-  module, and a name narrower than the module because the module holds a second subject is the
-  class-count finding above;
+- a source suite fragmented into tiny classes/files, or a file with multiple test classes: apply test-fixture's class/file boundary test, map cases to the substantial owning class, and merge small related classes before deciding whether independently maintained responsibilities justify separate files; keep one class per resulting file and preserve distinct proof;
+- a test class whose name obscures the substantial responsibility it owns: name the class and its one-class module for that responsibility; a new label alone never justifies a small standalone class;
 - a support `utils/` or `fixtures/` directory that holds `test_*.py` modules: distinguish support
   from source tests by tracing the source owner. Keep all utility tests in `utils/`, move support to
   the nearest fixture or utility package that does not hide that owner, and verify runner targets
@@ -215,9 +210,7 @@ naming standard. A name coined from an abstraction or an adjective — an `-less
 a synonym for the thing — where the concrete thing it provides or lacks would name it is a finding,
 renamed for that thing.
 
-A test class is named for its module and nothing else, so an article, a verb phrase, or a synonym
-inside a class name (`TestAddingAContractor` in `test_contractors.py`) is a finding renamed to the
-module's name (`TestContractors`). A helper that builds a model in a suite's `utils/` or `fixtures/`
+A test class names its substantial coherent responsibility. Remove filler and misleading synonyms; small related cases extend their existing owning class rather than earning a separate class by being named. A helper that builds a model in a suite's `utils/` or `fixtures/`
 package is named `create_<shape>` (list every module-level `def` in those packages whose return type
 is a model, with its name; report every row): a bare noun (`flag`), a mechanics prefix
 (`stored_driver_license`), or a coinage (`flag_page`) is renamed `create_<shape>`, and the same shape

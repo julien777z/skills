@@ -425,11 +425,7 @@ Apply the baseline prompt above, plus these explicit review rules:
      machine-consumed schema metadata when a tool genuinely requires that description.
 
 16. **Hold every test module in scope to the repository's test layout, whatever its history.**
-   - Count `class Test` per test module — added, renamed, or already there when the change arrived —
-     and report every count above one as a finding in its own right, before any other observation
-     about that module: the module becomes a folder named for the source file it mirrors, holding one
-     module per class, and the finding names the folder and each module it would produce. Noting the
-     count in passing and moving on is the miss this standard exists to catch.
+   - Use the class/file criteria loaded by the entry point before proposing placement: keep one test class per file, and merge small related classes into the substantial class already owning their behavior. Flag redundant new cases and classes/files that merely isolate a small operation. Multiple classes require consolidation or a justified responsibility split, never an automatic new file for each tiny class.
    - Read the module-level statements of those modules the same way: a function, constant, or model
      beside the classes belongs in the suite's fixtures or utils package, and one that was there before
      the change is the same finding with an older date.
@@ -467,7 +463,7 @@ For every meaningful change, ask:
 - Does a branch or conditional produce a closed set of string states, including log-only statuses, that belongs on the language's canonical named finite-state type rather than inline literals?
 - Is this orchestration more sequential or less atomic than it needs to be?
 - Does any docstring the diff adds run past one line?
-- Does any test module in scope hold a second test class, or a helper beside its classes?
+- Do test additions duplicate existing coverage or introduce a small class that belongs in an existing owning class, does each file hold one class, and do helpers live with their fixture or utility owner?
 
 ## What to Flag Aggressively
 
@@ -515,7 +511,7 @@ Escalate findings when you see:
   broadened `except`, a new linter-ignore entry, a lowered threshold, a hand-written stub — outside
   generated output and the configuration entries item 9 admits; a cast or wrapper
   that quiets a dependency's types, or an entry naming one package, is still a finding. Grep for these; they do not surface from reading for structure.
-- A test module holding two or more test classes, whatever put the second one there.
+- Multiple test classes in one file; tiny classes/files that should extend an existing owning class; or new tests whose regression existing same-classification coverage already catches. Consolidate related cases before splitting by independently maintained responsibilities.
 - A docstring the diff adds that runs past one line.
 - A function, constant, or model defined in a test module beside its tests, whatever its size or
   caller count. Grep every test module the diff touches for module-level `def` and assignments;

@@ -13,12 +13,15 @@ Above all, this skill should push the reviewer to be **ambitious** about code st
 ## Dependencies
 
 - `subagent-selection` — route each reviewer subagent through the running session.
+- `test-fixture` — own test value, fixture, and class/file boundaries when the scope reaches tests.
 
 ## Applying fixes
 
 This skill does not stop at review: **apply the simplifications you identify directly to the working tree.** Restructure, extract, delete indirection, collapse branches, reuse the canonical helper, and keep those edits in the commit you are working on. The criteria — what the pass holds itself to, the reuse and ownership searches, the standards, the review questions, what to flag, the remedies, the tone and the approval bar — are `references/rubric.md`. Read it whole before the pass and apply all of it as the checklist for what to fix, not merely what to flag.
 
 ## Running the pass
+
+When the scope includes tests, fixtures, or test support, invoke `test-fixture` before inspecting or changing those surfaces; load its value, retention, and class/file criteria for the review.
 
 **Review small scopes in process.** A scope is small when one reviewer can hold the complete diff, every touched file, and the relevant siblings at once without losing context. Focused changes to one or a few files, especially documentation or configuration changes, normally qualify. Do not spawn subagents merely because the host exposes them, and do not add a cross-cutting reviewer for a small scope.
 
