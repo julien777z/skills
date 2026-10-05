@@ -219,9 +219,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   large empty area — below its content, or between the content and the control that acts on it —
   reads as unfinished. Content flows from the top and each control sits directly after what it acts
   on, never pushed to the bottom of a stretched container by a fill or a space-between, or to the
-  far edge of an otherwise empty row or footer. A section holding only short settings takes a bounded
-  column or shares a row with a peer section where space allows; full-width page framing does not
-  require every section or control to fill it. Surfaces sharing a row split its width evenly, unless
+  far edge of an otherwise empty row or footer. Keep a page section's structural frame, heading,
+  description and dividers at the width its page layout assigns. Short settings bound the interactive
+  content inside that section, not the section itself: use half the available width on desktop and
+  the available width on smaller screens. Place that width on the inner form or control group; a
+  half-width section or a new peer-section row does not satisfy it. Surfaces the established layout
+  already pairs in a row split its width evenly, unless
   one is a main area beside a narrow side rail. They end on the same line, and they get there by
   balancing what they hold — cutting a
   line that earns no place, moving a control, re-pairing the surfaces — never by stretching the
@@ -321,23 +324,27 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   Never use priority, a banner cap, or dismissal of one banner to conceal another unresolved
   condition. Inspect the whole surface and report conflicts with regression verification of the
   producing transitions and resulting banners.
-- **Present each failure once.** A terminal error section that replaces unavailable content owns the
-  specific reason and recovery action; do not add a banner repeating that failure or a second generic
-  failure heading. Preserve usable navigation and unrelated content. Explain what happened and the
-  next step, using the service's human-readable reason rather than vague labels such as "could not open".
-  Keep the section's purpose heading short; render the explanation and recovery instruction as
-  normal body text, not as a large or bold heading containing the whole error message.
-  An independent failed action on a still-usable surface keeps its own error banner.
-- **Load, action, save or submit failures and refusals on otherwise usable surfaces use the standard shared error banner component,
-  with its native frame and error visual tone.** Never replace it with inline red text, field error
-  messages, a toast or an unframed row, even when wrapped in another container. Each failure stays explicit
-  in a dismissible banner at the top of the page or section it concerns, outside and before its
-  content card or panel, never embedded in a card, table row, field, footer or submit row. Using
-  the shared component inside a content card still creates an inline banner. A refused form submit
-  shows above the form's fields, not beside its
-  button, and a save refused from the floating save panel shows above the section holding the field,
-  not in the panel. The banner never replaces the surface's own heading or description, which keep
-  saying what the surface is while the banner says what went wrong.
+- **Present each failure once.** A terminal error message replaces content only when the whole
+  page's subject is unavailable, not when one request or part of a usable page fails. This full-page
+  exception owns the specific human-readable reason and recovery action, keeps usable navigation,
+  and shows no banner repeating the same failure or second generic failure heading. Keep its purpose
+  heading short; render the explanation and recovery instruction as normal body text, not as a large
+  or bold heading containing the whole error message. Unrelated usable content stays available; its
+  presence makes a partial failure use the shared error-banner route below instead. An independent
+  failed action keeps its own error banner.
+- **Load, action, save or submit failures and refusals on otherwise usable surfaces use the standard
+  shared error banner component, with its native frame and error visual tone.** On a page, each
+  failure appears in a dismissible banner in the page's shared error area at the top, outside its
+  structural content. No feature-local or embedded partial surface renders error text, a banner or a
+  terminal-error placeholder. Moving a native shared banner outside a panel while keeping it inside
+  that feature's section, row or grid cell still violates this placement rule. Route every partial
+  failure through the page's shared failure owner, preserve
+  unrelated usable content, and identify the failed content and recovery action in that banner.
+  Never substitute field error messages, a toast or an unframed row, or put the banner in a card,
+  table row, field, footer, submit row or floating save panel. A dialog form's failure uses the native
+  shared banner at the top of the dialog, above its fields, rather than moving it to the page behind
+  the dialog. The banner never replaces the surface's own heading or description, which keep saying
+  what the surface is while the banner says what went wrong.
   When a failure appears or changes, keep entered values and reveal its banner through the existing
   shared failure owner if it is outside the visible scroll area, including inside a dialog. Do not
   scroll on ordinary edits or unrelated status changes. Verify the reader can see the explanation

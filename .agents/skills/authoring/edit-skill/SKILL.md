@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. Deliver every behavior-changing guidance edit through simplification, the acceptance gate, and `test-skill` before its pull request merges.
+description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. Deliver every behavior-changing guidance edit through simplification, the acceptance gate, and `test-skill` before its pull request merges.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -85,7 +85,17 @@ because silence reads as the guidance having been fixed.
 1. Validate input.
    - If input is missing or empty, ask: **"What should I add or update in `.agents`?"**
 
-2. Identify target type and name.
+2. Identify the failure class, then its target type and name.
+   - **Classify before proposing a remedy or editing guidance.** State the observable outcome the
+     user rejected and the invariant a correction must preserve, without using the named component,
+     format, file or tool as the boundary. Identify at least two different ways the same outcome can
+     arise, including a workaround that obeys the proposed wording but violates that invariant.
+     Include a different kind of decision, such as a sentence, quantity or choice, rather than only
+     more examples of the same format. Test the proposed scope against those routes before presenting
+     it to the user or writing it: if any still allows the rejected outcome, broaden the owning
+     decision and remove conflicting permissions first. Keep the incident and these cases in the
+     verification record; shared guidance states the invariant, not their identities. This check
+     precedes choosing the owner, because a component-specific owner can conceal a broader failure.
    - Supported types: `agent`, `skill`, `rule`.
    - If the user explicitly says the type, use it.
    - If type is not explicit, infer it only when confidence is high.
@@ -125,7 +135,7 @@ because silence reads as the guidance having been fixed.
    - When the user points out a guidance failure, trace the actual path from the request to the
      missed behavior before editing: which instruction applied, whether its skill loaded, and why
      the agent's decision diverged. Correct the current work and any evidenced guidance gap in this run.
-   - Test the proposed instruction against that original decision path before writing it. If a
+   - Test the proposed instruction against that original decision path before proposing or writing it. If a
      reader could follow it and still repeat the miss, explain the mismatch to the user, name the
      instruction that actually caused or allowed the decision, and correct that owning path and
      its conflicting callers. Escalate a genuine unresolved choice, not permission for an already
@@ -268,14 +278,8 @@ because silence reads as the guidance having been fixed.
      a candidate home under step 2, never the limit of the rule, unless the contract requires
      its exact identity. Broaden to the class the user plainly meant, never to a neighbouring
      subject. Wording handed over — rule text in the request or in a delegating agent's brief —
-     is input to this, never the spec: name the decision the examples force, list at least two
-     instances of a different kind from those examples and from each other, and write the rule
-     to cover them, widening narrower wording as it arrives. A wider label for the same examples
-     is not that decision. The other instances are not further members of the format those examples
-     already share. The list includes one instance that format cannot express, a sentence, a
-     quantity, or a choice, and a draft that never mentions it is rewritten. The delivery
-     bullet's genericity check is what shows the draft did more than rename the examples. Apply that
-     decision to every instruction in the file that does the same work.
+     remains input, not the spec: draft against the invariant and alternate routes classified in
+     step 2, then apply that decision to every instruction in the file that does the same work.
      One section rewritten while a neighbour still does the narrow thing is the draft only half
      done, and it is rewritten until the neighbour changes too. An agent delegating an edit
      passes the class and the evidence, not finished rule text for one case.
