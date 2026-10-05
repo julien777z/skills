@@ -67,15 +67,19 @@ Judge a description by substitution: read it without knowing which skill it belo
 says which situations fire the skill, it works. If the remainder names no situation, it was never a
 trigger.
 
-**Output.** A skill whose result is a response the user reads — a listing, a report, a summary, a
-verdict, a draft — carries an `## Output` section as its last section before any `## Guardrails`,
-holding a hard-coded Markdown template the response is filled into: fixed headings, fixed list
-shapes, and a stated fallback for the empty case, so two runs on the same input read the same.
-Because every user-facing response goes through `i-have-adhd` (global rule **User-Facing Output**),
-the template names the facts a response carries and puts per-item detail past five items in a
-file sent with the response; a word limit it sets binds only while `i-have-adhd` is active.
-A skill whose result is edits, a merge, a deployment, or a running system has no template to
-hold, and carries instead the report line its delivery step owes. The test is whether two
-correct runs should read the same shape; write the template when they should, and leave it out
-rather than forcing a shape onto a result that varies. That call is the editor's own, made from
-what the skill returns, never a question put to the user.
+**Output.** Prefer an `## Output` section holding a hard-coded format whenever two correct runs
+should return the same shape, whether a user reads the result or another agent or workflow consumes
+it. Choose the format the consumer needs: YAML or JSON for structured state, Markdown for a report,
+or a fixed sentence for a verdict. Define its fields or headings, order, and empty case in one
+template; record-specific facts belong inside that structure rather than a section per kind of
+thing returned. Keep procedure in the workflow and the output contract in Output.
+
+Output is the last section unless Guardrails is present, in which case Output immediately precedes
+it. Guardrails is always the final section; no workflow, report or reference section follows it.
+
+For user-facing responses, the template names the facts the response carries and puts per-item
+detail past five items in a file sent with the response, as the global rule **User-Facing Output**
+requires; a word limit it sets binds only while `i-have-adhd` is active. A skill whose result is
+edits, a merge, a deployment, or a running system carries the report line its delivery step owes,
+not a forced template for the execution result. Decide from what the skill returns, and leave out
+a template where correct results genuinely vary in shape.
