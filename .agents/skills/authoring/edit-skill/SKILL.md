@@ -10,6 +10,11 @@ Upsert `.agents` source-of-truth files for agents, skills, or rules based on use
 every edit through the same delivery whether the user invoked this skill or the edit arose while
 doing other work. An edit that skipped this is unverified, and the report says so.
 
+When this skill runs inside unfinished work, keep the active `execute-task` run and record its
+next step before starting this edit, under **Work You Have Already Named**. After delivery and
+refresh, apply that procedure to resume the saved work; this skill's report is an intermediate
+update, not the surrounding task's final response.
+
 An open `.agents` pull request is not a delivery result. Continue the same run through its source
 check, required review steps, merge, Agent Sync result, and verification of generated
 root instructions and provider output; stop only for a genuine gate.
