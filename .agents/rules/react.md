@@ -384,10 +384,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Group fields by the question the reader answers, not by how short their values are.** Fields
   answered together sit side by side wherever the width allows, wrapping when it does not; independent
   decisions keep separate rows even when both controls are short.
-- **A short setting label and its control share one compact row where they fit.** Keep the control
-  near its label and size it for its values; neither a full-width control below the label nor a
-  control at the far edge of an empty row is the default. Stack when narrow space, long labels or
-  multiline input needs it, preserving the accessible label association and readable values.
+- **A small setting that can be edited independently is edited where its value is shown.** Put the
+  control beside its label or current value where space allows, sized for its values; stack it when
+  narrow space or long labels need it, preserving readable values and the accessible label
+  association. Opening another surface solely to change that one setting adds a step without a new
+  decision. Keep a separate editing flow when coupled fields, detailed validation or sensitive-action
+  confirmation require it, and retain the product's save and cancel behavior.
 - **Comparable controls use comparable widths.** Inputs with the same role in a form take the same
   width or grid span; let the value format or available space justify a difference. A content-sized
   control beside a fixed-width peer reads as a different kind of choice even when both collect the
