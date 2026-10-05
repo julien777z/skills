@@ -318,12 +318,13 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   sections; error banners are the exception.** Error banners may coexist visibly with that status or action
   banner and with other independent error banners. For multiple non-error conditions, trace each
   to its state owner, writers and prerequisites. If they cannot legitimately coexist, fix the state
-  or transition that produced them; a display selector does not repair it. If independent non-error
-  conditions can coexist, combine all their facts and remedies in one standard shared status banner,
-  identifying what each concerns and preserving the native warning or informational presentation.
-  Never use priority, a banner cap, or dismissal of one banner to conceal another unresolved
-  condition. Inspect the whole surface and report conflicts with regression verification of the
-  producing transitions and resulting banners.
+  or transition that produced them; a display selector does not repair it. If legitimate conditions
+  coexist, surface the product or flow conflict and the concrete alternatives that would resolve it
+  for the user's decision, under the global product-experience boundary. Preserve established banner
+  rendering while that decision waits; combining messages, changing presentation, prioritizing,
+  capping, hiding or dismissing an unresolved condition is not a repair. Continue independent
+  authorized work. Verify an approved state or flow remedy at its producing transitions and on the
+  whole resulting surface.
 - **Present each failure once.** A terminal error message replaces content only when the whole
   page's subject is unavailable, not when one request or part of a usable page fails. This full-page
   exception owns the specific human-readable reason and recovery action, keeps usable navigation,
