@@ -407,7 +407,9 @@ it — the user asking about something else is not the user withdrawing what the
 - **Write it down before anything else starts.** The displaced work goes into the session's task
   list, with its next step, before the first step of whatever displaced it.
 - **An interruption pauses the step in flight; it never ends the run.** After a follow-up
-  finishes, resume the saved next step in the same run without waiting for "continue". Completing
+  finishes, restore the displaced task as the in-progress item in the session's task list and
+  execute its saved next step without waiting for "continue". A promise to resume is not that
+  step. Completing
   its own delivery — including a guidance merge and refresh, a diagnostic answer, or a local
   environment repair — does not complete the surrounding task. Report that intermediate result
   while continuing; end only when all remaining work is done, withdrawn or genuinely blocked.
