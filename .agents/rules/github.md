@@ -12,8 +12,12 @@ alwaysApply: true
   a release action even if it also runs tests.
 
 - Build, publish, and deploy through the repository's GitHub Actions workflow, never a local CLI.
-  For an authorized branch deployment, temporarily let the workflow dispatch that branch, verify the
-  exact workflow run and deployed revision, then restore the workflow's ordinary branch restriction
+  Before changing a workflow, inspect its `workflow_dispatch` trigger and the GitHub Actions **Run
+  workflow** controls. For an authorized branch deployment, use the existing workflow in its supported
+  dispatch mode: select the pull-request branch or exact ref when offered, or run the default-branch
+  workflow with its documented source-ref input when that is how it deploys a revision. Only when no
+  existing manual-dispatch path can deploy the requested ref may a temporary workflow change add the
+  smallest allowance. Verify the exact workflow run and deployed revision, then remove that allowance
   in the same pull request before reporting the result.
 
 - Keep `run` steps declarative. Invoke checked-in scripts for control flow, validation, filesystem changes, or other implementation logic instead of embedding arbitrary shell or program code in workflow YAML; place those scripts under `.github/scripts/` and prefer Python.
