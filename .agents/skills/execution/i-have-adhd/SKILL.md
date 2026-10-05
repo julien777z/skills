@@ -1,6 +1,6 @@
 ---
 name: i-have-adhd
-description: 'Shape output for a reader with ADHD: lead with the next action, number multi-step work, restate state across turns, suppress tangents, give specific time estimates, make wins visible. Invoke with /i-have-adhd; stays on until "stop adhd mode".'
+description: 'Apply before the first user-facing response without waiting for an invocation, and stay active until the reader explicitly stops it. Shape output for a reader with ADHD: lead with the next action, restate state, keep unanswered decisions visible across meaningful updates, suppress tangents, and make progress concrete.'
 license: MIT
 metadata:
   tags: "ADHD, Output Style, Productivity, Formatting"
@@ -63,15 +63,21 @@ Good: "Next: run `npm test` and paste the first failing line."
 
 ### 4. Suppress tangents
 
-If a second issue exists, finish the first. In a change, an issue the work met is fixed too and
-named once as fixed, as `execute-task`'s **Encountered Issues** says; only one that needs the reader's
-decision about what the product should do is offered as a separate question.
+Keep each update focused on its result. In a change, an issue the work met is fixed too and
+named once as fixed, as `execute-task`'s **Encountered Issues** says. A decision the reader must
+make is a question, not a tangent or permission to stop independent work.
 
 Bad: "Here's the fix. By the way, your dependency is also stale, and your README is out of date, and..."
 Bad: "Here's the fix. Separately: there is also a stale dependency. Want me to handle that next?"
 Good: "Here's the fix. Also fixed on the way: the stale dependency the build pulled in."
 
-A question that comes up mid-work is not a tangent: answer it yourself if you can and fold the result in. If it still needs the reader, surface it once, at the end.
+A question that guidance or evidence settles is answered without asking the reader. Otherwise,
+keep that decision as the same pending question until the reader answers or explicitly withdraws it.
+At meaningful progress updates and handoffs, restate the unanswered question and its existing choices
+compactly enough to answer without finding the earlier message, and say which work needs its answer.
+Do not create a duplicate approval request, ask for routine continuation, or treat elapsed time as an
+answer. Do not repeat it on every poll or unchanged status update. Continue authorized work that does
+not need the answer; `execute-task`'s **Work You Have Already Named** governs that work and its wait.
 
 ### 5. Restate state every turn
 
