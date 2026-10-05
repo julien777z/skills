@@ -1,6 +1,6 @@
 ---
 name: test-fixture
-description: Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Rejects hard-coded domain test data when a canonical fixture or factory owns it, and enforces source-mirrored placement, concise parametrized cases, honest doubles, and regression-proof validation.
+description: Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Rejects hard-coded domain test data when a canonical fixture or factory owns it, and enforces existing-coverage reuse before new tests, one class per file with small cases folded into existing owning classes, concise parametrized cases, honest doubles, and regression-proof validation.
 short_description: 'Check test data and fixtures before changing tests or running tests after a fixture change.'
 ---
 
@@ -22,14 +22,13 @@ tracing a test surface is; without one, fix what the focused pass can finish.
    factory owner, shared test utilities, runner targets, and analogous sibling tests.
 2. Apply the rubric's value gate before adding or changing a test. Name its observable
    guarantee, credible regression, distinct coverage need, and any production seam it demands.
-   Check an existing test's independent contract and collect the rubric's evidence before deleting
-   it.
+   Search and read existing coverage of the same classification first; do not add a test or file when it already catches the regression. Check an existing test's independent contract and collect the rubric's evidence before deleting it.
 3. For an application change, finish the task's implementation across every affected component and
    repository before writing or strengthening tests or test support. If an applicable authorized
    manual path exists, verify the complete behavior there first; fix and retry failures before
    writing tests. A pull-request-head test deployment requires explicit user authorization.
    Existing tests may still be run to diagnose development failures.
-4. Identify the source owner and place the test beneath its corresponding suite and classification.
+4. Identify the source owner and its existing test module beneath the corresponding suite and classification. Extend that module before creating another; apply the rubric's class/file boundary test before splitting or relocating a suite.
    Reuse the canonical fixture or factory for every domain value. When it lacks required data,
    extend that owner and update its consumers instead of spelling the value in the test.
 5. Reuse an existing case when setup, execution, and assertions match. Parametrize cases that vary
