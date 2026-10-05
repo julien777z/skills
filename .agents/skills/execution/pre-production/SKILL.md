@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: Apply target-contract constraints to every implementation and review task, including configuration, APIs, schemas, and stored data. Use it to prevent legacy paths and parallel mechanisms, to plan migrations for affected users and data, and whenever a CI job fails along the way.
+description: Apply target-contract constraints to every implementation and review task, including tooling and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply whenever a CI job fails along the way.
 short_description: 'Apply target-contract constraints to implementation and review tasks.'
 ---
 
@@ -22,6 +22,8 @@ Fix and validate every concrete issue naturally encountered during authorized wo
 predates the task or sits outside the initial file set. Follow the evidence through the affected
 callers and owners. That obligation is not a licence to audit areas the evidence never reaches; it is
 also not a reason to stop at the first file, and the section below governs how far it does reach.
+The repair must satisfy **Target Contract**; an encountered failure never authorizes compatibility
+with an obsolete owned contract or revision.
 
 - **A red CI job is an encountered issue, whoever caused it.** A package index serving no candidates,
   a registry or network timeout, a runner fault, a test that passes on a second try: each is the
@@ -112,9 +114,12 @@ also not a reason to stop at the first file, and the section below governs how f
 
 ## Target Contract
 
-- Implement the contract the released product should have. Do not add compatibility shims,
-  transitional runtime branches, dual reads or writes, temporary feature paths, or speculative
-  handling for obsolete shapes unless the user explicitly requests retention for this change.
+- Implement the contract the released product should have. Never add or retain support for an
+  obsolete owned contract or revision by any mechanism without explicit user approval for that
+  retention before implementation. This governs code, configuration, tooling, CI, data handling,
+  documentation, and instructions as well as runtime paths. An old owned consumer failing against
+  the current contract is a reason to update it, not an exception; update affected owned consumers
+  and migrate retained data onto the target contract instead.
 - Treat configuration inputs as owned contracts. Replace a stale deployed value at the existing
   setting and its deployment owner; do not add another file, environment key, or fallback path to
   override it.
@@ -124,8 +129,10 @@ also not a reason to stop at the first file, and the section below governs how f
   names, such as `FEED_URL_STAGING` beside `FEED_URL_PRODUCTION` picked by `env == "production"`.
   Before adding a value, read how its siblings are scoped and supplied; a sibling selecting between
   per-environment names is a defect, moved onto the one name.
-- Legitimate production resilience is not transitional fallback code. Keep the error handling,
-  browser support, empty states, and provider-failure behavior the released product needs.
+- Keep resilience within the current supported contract: error handling, browser support, empty
+  states, and provider-failure behavior the released product needs. Supporting an obsolete owned
+  contract or revision is compatibility, even when described as resilience or repair; it requires
+  the approval above. Third-party contracts remain governed by **Owned And Third-Party Contracts**.
 - Prefer a deliberate break to an owned API, wire, schema, payload, or stored shape when it
   materially simplifies the result. Migrate affected consumers and data, then remove the old shape;
   update every consumer and generated contract in the same change.
