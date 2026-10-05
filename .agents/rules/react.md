@@ -325,37 +325,47 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   capping, hiding or dismissing an unresolved condition is not a repair. Continue independent
   authorized work. Verify an approved state or flow remedy at its producing transitions and on the
   whole resulting surface.
+- **User-action HTTP failures use the existing bottom notification system.** A failed save,
+  submission, download or other requested action reports its human-readable reason through that
+  shared owner, including an action taken from a status or error notice. Never add a page or dialog
+  error banner, inline error or error modal for that failure, or create another notification stack.
+  Classify the operation by its intent, not its status code, HTTP method or whether a button started
+  it: loading or retrying the data a surface needs follows the resource-load rule below. Preserve
+  entered values, the original notice and its state and remedy, and independent resource errors;
+  the notification neither clears nor replaces them. Release pending protection when the action
+  settles and restore native retry controls according to their prerequisites. Keep the API's safe
+  human reason, with the established generic fallback only when no safe reason is available.
 - **Present each failure once.** A terminal error message replaces content only when the whole
   page's subject is unavailable, not when one request or part of a usable page fails. This full-page
   exception owns the specific human-readable reason and recovery action, keeps usable navigation,
   and shows no banner repeating the same failure or second generic failure heading. Keep its purpose
   heading short; render the explanation and recovery instruction as normal body text, not as a large
   or bold heading containing the whole error message. Unrelated usable content stays available; its
-  presence makes a partial failure use the shared error-banner route below instead. An independent
-  failed action keeps its own error banner.
-- **Load, action, save or submit failures and refusals on otherwise usable surfaces use the standard
-  shared error banner component, with its native frame and error visual tone.** On a page, each
-  failure appears in a dismissible banner in the page's shared error area at the top, outside its
-  structural content. No feature-local or embedded partial surface renders error text, a banner or a
+  presence makes a partial resource failure use the shared error-banner route below instead.
+  Independent action failures keep their notification route.
+- **Resource and data load failures on otherwise usable surfaces keep a persistent native error
+  banner with retry, using the standard shared component's frame and error visual tone.** On a page,
+  each failed resource appears in a dismissible banner in the page's shared error area at the top,
+  outside its structural content. No feature-local or embedded partial surface renders error text, a banner or a
   terminal-error placeholder. Moving a native shared banner outside a panel while keeping it inside
   that feature's section, row or grid cell still violates this placement rule. Route every partial
   failure through the page's shared failure owner, preserve
   unrelated usable content, and identify the failed content and recovery action in that banner.
   Never substitute field error messages, a toast or an unframed row, or put the banner in a card,
-  table row, field, footer, submit row or floating save panel. A dialog form's failure uses the native
-  shared banner at the top of the dialog, above its fields, rather than moving it to the page behind
-  the dialog. The banner never replaces the surface's own heading or description, which keep saying
+  table row, field, footer, submit row or floating save panel. A dialog's data-load failure uses the
+  native shared banner at the top of the dialog, above its fields, rather than moving it to the page
+  behind the dialog. The banner never replaces the surface's own heading or description, which keep saying
   what the surface is while the banner says what went wrong.
-  When a failure appears or changes, keep entered values and reveal its banner through the existing
-  shared failure owner if it is outside the visible scroll area, including inside a dialog. Do not
+  When a load failure appears or changes, keep entered values and reveal its banner through the
+  existing shared failure owner if it is outside the visible scroll area, including inside a dialog. Do not
   scroll on ordinary edits or unrelated status changes. Verify the reader can see the explanation
   and recovery controls in the actual viewport; DOM presence or an alert role alone is not proof.
 - **A state of the whole page's subject shows once, as a persistent banner at the top of the page.**
   An account, workspace or project that is suspended, archived or read-only is not a failure of any
   one section: no section repeats the state itself, and each shows what it still can. An actual
-  failed or refused request still shows its standard error banner alongside the persistent state
-  banner, including when that state caused the refusal. A library card that has lapsed gets one
-  status banner on the member page; a loan request refused after submission keeps its error banner.
+  failed data load still shows its standard error banner alongside the persistent state banner.
+  A refused action uses the notification owner without replacing that state. A library card that
+  has lapsed keeps its status banner when a loan request fails; the refusal appears as a notification.
 - **Red is for errors and destructive actions, never required verification or another blocking status.**
   Red, or whatever tone the product reserves for destructive and
   failed states, marks only a failure, a refusal, or a destructive action. A state that blocks or
@@ -519,7 +529,7 @@ export function SearchInput() {
   and fix that error contract there, rather than inventing replacement client copy. Expected
   refusals must not escape as internal server errors. Genuine 500 responses may keep a safe,
   generic message; diagnose and repair an unexpected 500 encountered during normal operation
-  rather than accepting the banner as a finished result. Clearly label failures deliberately
+  rather than accepting the failure feedback as a finished result. Clearly label failures deliberately
   induced to verify failure presentation so they cannot be mistaken for normal-flow defects.
 - **Show the message the API sent.** Never key a table of your own copy off status codes for a first-party API: that is a second copy of its error vocabulary that nothing keeps in step, and it overrides the message the service chose. Wrong copy is fixed at the service that produced it.
 - Keep one status-independent fallback for a response that carries no message at all, and reject a body that is a document rather than a message so a proxy's error page cannot reach the user as one.
