@@ -301,29 +301,30 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   completed state shows none, and a toast at most when the reader's own action just caused it. A
   dismissible "approved" or "done" banner, and whatever stores its dismissal, is the defect: delete
   both.
-- **Multiple banner conditions on one surface are a UX defect to investigate, never a reason to
-  hide one.** Trace each condition to its state owner, writers and prerequisites. If the conditions
-  cannot legitimately coexist, treat their coexistence as an error and fix the state or transition
-  that produced it; a display selector does not repair it. If independent conditions can coexist,
-  show all their facts and remedies together in one explicit notice, identifying what each
-  concerns. Never use priority, a banner cap, or dismissal of one notice to conceal another
-  unresolved condition.
-  For example, a rehearsal cannot be both canceled and awaiting attendance: fix the transition;
-  a failed score download and a room booking conflict can coexist, so retain both remedies.
-  Inspect the whole rendered surface, including notices from its shell and sections, and report
-  conflicts with regression verification of the producing transitions and the resulting notice.
-- **A failure or refusal shows at the top of the page, or of the section it concerns, never near a
-  footer or a submit row.** A load that failed, a save or submit the service refused, an action that
-  could not run: each failure stays explicit in a dismissible notice above the content it concerns, wherever
-  the control that caused it sits. A refused form submit shows above the form's fields, not
-  beside its button, and a save refused from the floating save panel shows above the section
-  holding the field, not in the panel. The notice never replaces a surface's own heading or
-  description, which keep saying what the surface is while the notice says what went wrong.
+- **At most one non-error banner appears on the whole rendered surface, including its shell and
+  sections; error banners are the exception.** Error banners may coexist visibly with that status or action
+  banner and with other independent error banners. For multiple non-error conditions, trace each
+  to its state owner, writers and prerequisites. If they cannot legitimately coexist, fix the state
+  or transition that produced them; a display selector does not repair it. If independent non-error
+  conditions can coexist, combine all their facts and remedies in one standard shared status banner,
+  identifying what each concerns and preserving the native warning or informational presentation.
+  Never use priority, a banner cap, or dismissal of one banner to conceal another unresolved
+  condition. Inspect the whole surface and report conflicts with regression verification of the
+  producing transitions and resulting banners.
+- **Every load, action, save or submit failure or refusal uses the standard shared error banner component,
+  with its native frame and error visual tone.** Never replace it with inline red text, field error
+  messages, a toast or an unframed row, even when wrapped in another container. Each failure stays explicit
+  in a dismissible banner at the top of the page or section it concerns, above that content, never
+  near a footer or submit row. A refused form submit shows above the form's fields, not beside its
+  button, and a save refused from the floating save panel shows above the section holding the field,
+  not in the panel. The banner never replaces the surface's own heading or description, which keep
+  saying what the surface is while the banner says what went wrong.
 - **A state of the whole page's subject shows once, as a persistent banner at the top of the page.**
   An account, workspace or project that is suspended, archived or read-only is not a failure of any
-  one section: no section repeats it as its own error, even when its request is refused because of
-  it, and each shows what it still can. A library card that has lapsed gets one banner on the member
-  page, not a "card lapsed" error in the loans, holds and fines sections.
+  one section: no section repeats the state itself, and each shows what it still can. An actual
+  failed or refused request still shows its standard error banner alongside the persistent state
+  banner, including when that state caused the refusal. A library card that has lapsed gets one
+  status banner on the member page; a loan request refused after submission keeps its error banner.
 - **The error tone is for errors.** Red, or whatever tone the product reserves for destructive and
   failed states, marks only a failure, a refusal, or a destructive action. A state that blocks or
   warns without being an error — something the reader must resolve, a hold, a limit reached — takes
