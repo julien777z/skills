@@ -12,7 +12,7 @@ makes it.
 
 ## Dependencies
 
-- `rebuild-git-history` — run only when a commit mixes changes, so the branch's commits
+- `rewrite-git-history` — run only when a commit mixes changes, so the branch's commits
   correspond to them before they are linked.
 
 ## Workflow
@@ -39,7 +39,7 @@ makes it.
    change, so on a branch that keeps them the bullets and the commits correspond one to one.
    - **Read `git log --oneline <base>..HEAD` before linking anything.** When every commit carries
      one material change, link them as they stand and rebuild nothing. When some commit mixes
-     changes and the branch is yours, run `rebuild-git-history` first, then link the commits. The
+     changes and the branch is yours, run `rewrite-git-history` first, then link the commits. The
      summary is written after the history is right, not around it.
    - When the branch is not yours to rewrite, link the diff of the one file that implements the heart
      of the change, through the pull request's files view anchored at that file,
