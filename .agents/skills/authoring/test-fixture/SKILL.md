@@ -19,15 +19,21 @@ tracing a test surface is; without one, fix what the focused pass can finish.
 
 1. Read the complete [rubric](references/rubric.md) before inspecting, reviewing, changing, or
    executing any covered test surface. Discover the repository's test roots, fixture packages,
-   factory owner, shared test utilities, runner targets, and analogous sibling tests.
+   factory owner, shared test utilities, runner targets, and analogous sibling tests. For a test of
+   shell, process, container, browser, network, or operating-system behavior, identify the runtime
+   CI or the deployment declares before writing it. That target is the only contract for the durable
+   regression test: construct, execute, and validate it there. A local host can diagnose a failure,
+   but never defines the test's contract or validates a passing regression test.
 2. Apply the rubric's value gate before adding or changing a test. Name its observable
    guarantee, credible regression, distinct coverage need, and any production seam it demands.
    Search and read existing coverage of the same classification first; do not add a test or file when it already catches the regression. Check an existing test's independent contract and collect the rubric's evidence before deleting it.
-3. For an application change, finish the task's implementation across every affected component and
-   repository before writing or strengthening tests or test support. If an applicable authorized
-   manual path exists, verify the complete behavior there first; fix and retry failures before
-   writing tests. A pull-request-head test deployment requires explicit user authorization.
-   Existing tests may still be run to diagnose development failures.
+3. For an application change, finish and validate the source implementation across every affected
+   component and repository before writing or strengthening tests or test support. If an applicable
+   authorized manual path exists, verify the complete behavior there first; fix and retry failures
+   before writing tests. A pull-request-head test deployment requires explicit user authorization.
+   After a test-only change, run the relevant test target; do not repeat source, manual, or external
+   validation unless the test exposes a source defect that changes the implementation. Existing tests
+   may still be run to diagnose development failures.
 4. Identify the source owner and its existing test module beneath the corresponding suite and classification. Extend that module before creating another; apply the rubric's class/file boundary test before splitting or relocating a suite.
    Trace reused imports to their defining owners under the rubric before treating them as canonical.
    Reuse the canonical fixture or factory for every domain value. When it lacks required data,
