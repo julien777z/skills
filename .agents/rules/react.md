@@ -301,13 +301,24 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   completed state shows none, and a toast at most when the reader's own action just caused it. A
   dismissible "approved" or "done" banner, and whatever stores its dismissal, is the defect: delete
   both.
+- **Multiple banner conditions on one surface are a UX defect to investigate, never a reason to
+  hide one.** Trace each condition to its state owner, writers and prerequisites. If the conditions
+  cannot legitimately coexist, treat their coexistence as an error and fix the state or transition
+  that produced it; a display selector does not repair it. If independent conditions can coexist,
+  show all their facts and remedies together in one explicit notice, identifying what each
+  concerns. Never use priority, a banner cap, or dismissal of one notice to conceal another
+  unresolved condition.
+  For example, a rehearsal cannot be both canceled and awaiting attendance: fix the transition;
+  a failed score download and a room booking conflict can coexist, so retain both remedies.
+  Inspect the whole rendered surface, including notices from its shell and sections, and report
+  conflicts with regression verification of the producing transitions and the resulting notice.
 - **A failure or refusal shows at the top of the page, or of the section it concerns, never near a
   footer or a submit row.** A load that failed, a save or submit the service refused, an action that
-  could not run: each is a dismissible banner above the content it concerns, wherever the control
-  that caused it sits. A refused form submit shows above the form's fields, not beside its button,
-  and a save refused from the floating save panel shows above the section holding the field, not in
-  the panel. The banner never replaces a surface's own heading or description, which keep saying
-  what the surface is while the banner says what went wrong.
+  could not run: each failure stays explicit in a dismissible notice above the content it concerns, wherever
+  the control that caused it sits. A refused form submit shows above the form's fields, not
+  beside its button, and a save refused from the floating save panel shows above the section
+  holding the field, not in the panel. The notice never replaces a surface's own heading or
+  description, which keep saying what the surface is while the notice says what went wrong.
 - **A state of the whole page's subject shows once, as a persistent banner at the top of the page.**
   An account, workspace or project that is suspended, archived or read-only is not a failure of any
   one section: no section repeats it as its own error, even when its request is refused because of
