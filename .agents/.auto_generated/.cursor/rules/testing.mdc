@@ -10,21 +10,26 @@ alwaysApply: false
 
 # Testing Rules
 
-## Test Runs
+## Verification Cadence
 
-- Finish implementing a feature, including its callers and necessary test changes, before running
-  its tests. A task containing several features may run tests after each completed feature;
-  individual edits, files, commits, and plan steps are not feature boundaries.
-- During feature implementation, run tests only when the entire planned batch is known to take
-  less than one minute of elapsed time, including setup and all selected suites. Estimate from
-  recent comparable runs; unknown duration or a total of one minute or more waits until the
-  feature is implemented. Splitting the batch into individually quick commands does not qualify.
-- Apply this cadence to parent agents and delegated workers. State feature boundaries and the
-  planned test batch in implementation briefs; pre-push checks and diagnostic runs do not create
-  an exception. This controls when tests run, not the repository's required final coverage.
-- After a completed-feature run fails, fix the reported failures together before rerunning the
-  affected suites. Reuse successful results until a subsequent change or unresolved failure
-  justifies another run; a commit, handoff, or review alone does not.
+- During implementation, edit and inspect the code. Run a diagnostic check only when it answers
+  a specific uncertainty and the entire planned batch is known to finish in less than one minute,
+  including setup and every selected suite or tool. Use recent comparable runs to estimate it;
+  an unknown duration or a total of one minute or more waits. Splitting a batch into individually
+  quick commands does not qualify.
+- Finish a feature, including its callers and necessary tests, before running its relevant tests,
+  build, browser walkthrough and review once. A task with several features may verify each completed
+  feature; an edit, file, commit, push, handoff or plan step is not a feature boundary.
+- Fix a completed-feature batch's failures together, then repeat only the checks the fixes affect.
+  Reuse successful evidence for unchanged code and inputs. A new commit or reviewer is not itself
+  a reason to repeat verification; a changed dependency, relevant input or unresolved concern is.
+- Before delivery, complete the required repository checks and review the combined pull-request
+  diff. Reuse still-valid completed-feature results; run the full required checks where the final
+  repository state or integration needs them. This cadence changes when verification runs, never
+  its required coverage or the exact-head evidence a delivery gate requires.
+- Apply the same cadence to the parent and delegated workers. Brief the feature boundary and its
+  planned verification batch. Batch related guidance edits before their source validation, review
+  and behavior smoke tests; verify the final wording rather than each intermediate revision.
 
 ## Test Organization
 
