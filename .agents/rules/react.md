@@ -317,6 +317,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   specific reason and recovery action; do not add a banner repeating that failure or a second generic
   failure heading. Preserve usable navigation and unrelated content. Explain what happened and the
   next step, using the service's human-readable reason rather than vague labels such as "could not open".
+  Keep the section's purpose heading short; render the explanation and recovery instruction as
+  normal body text, not as a large or bold heading containing the whole error message.
   An independent failed action on a still-usable surface keeps its own error banner.
 - **Load, action, save or submit failures and refusals on otherwise usable surfaces use the standard shared error banner component,
   with its native frame and error visual tone.** Never replace it with inline red text, field error
