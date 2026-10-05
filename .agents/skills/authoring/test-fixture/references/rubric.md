@@ -66,6 +66,14 @@ and analogous tests in sibling services or projects. Read sibling tests for plac
 setup, parametrization, and assertion conventions, but never import from a sibling test suite. Move
 genuinely shared support to the nearest common test owner instead.
 
+Trace each reused fixture, sample, or helper import to its defining module before treating it as
+canonical. Apply the global **Code layout** boundary between executable consumers and reusable
+owners: test-only setup belongs in established test support, while behavior used by applications
+and commands belongs in its existing reusable source owner. Move the definition and update all
+consumers rather than re-exporting it through a command or copying it into test support. Inspect
+the resulting import direction and search other consumers for the same executable-owned setup;
+direct tests of the command itself remain command tests.
+
 Use the value from the fixture or factory that owns the domain object. When that canonical surface
 lacks a field the test needs, extend it and update its consumers instead of hard-coding the value,
 adding a parallel fixture, or constructing a second representation in the test.
@@ -86,7 +94,7 @@ Provider request and response bodies remain domain data when a test uses them as
 Build them from the canonical fixture or response model rather than reproducing their names,
 addresses, identifiers, or other field values inline.
 
-A helper has three possible homes, and how many readers it has decides which. A trivial predicate
+A test-only helper has three possible homes, and how many test readers it has decides which. A trivial predicate
 or formatter that one module reads may stay in that module. A helper one suite reads goes in that
 suite's `utils` module. A helper more than one suite reads goes in the tests' `utils/` package,
 under a topic-named module. Reaching into a sibling suite instead is what turns one suite's helper

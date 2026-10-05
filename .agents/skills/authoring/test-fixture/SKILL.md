@@ -29,6 +29,7 @@ tracing a test surface is; without one, fix what the focused pass can finish.
    writing tests. A pull-request-head test deployment requires explicit user authorization.
    Existing tests may still be run to diagnose development failures.
 4. Identify the source owner and its existing test module beneath the corresponding suite and classification. Extend that module before creating another; apply the rubric's class/file boundary test before splitting or relocating a suite.
+   Trace reused imports to their defining owners under the rubric before treating them as canonical.
    Reuse the canonical fixture or factory for every domain value. When it lacks required data,
    extend that owner and update its consumers instead of spelling the value in the test.
 5. Reuse an existing case when setup, execution, and assertions match. Parametrize cases that vary
