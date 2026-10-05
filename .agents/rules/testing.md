@@ -28,8 +28,10 @@ paths:
   repository state or integration needs them. This cadence changes when verification runs, never
   its required coverage or the exact-head evidence a delivery gate requires.
 - Apply the same cadence to the parent and delegated workers. Brief the feature boundary and its
-  planned verification batch. Batch related guidance edits before their source validation, review
-  and behavior smoke tests; verify the final wording rather than each intermediate revision.
+  planned verification batch. Cleanup follows the same completed-scope batch and affected-check
+  rerun rule; its presence does not add a test run per edit. Batch related guidance edits before
+  their source validation, review and behavior smoke tests; verify the final wording rather than
+  each intermediate revision.
 
 ## Test Organization
 

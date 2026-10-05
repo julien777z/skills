@@ -225,6 +225,16 @@ compatibility, generated-output drift.
 Read and invoke `code-simplify` once across the finished task's complete diff, under
 **Completion**, never per push.
 
+Own each coherent feature through integration: the primary agent settles dependencies, product
+decisions and the combined result. Simplify a feature as it is built; the final `code-simplify` pass
+still covers the complete diff. Assign a worker an independently owned scope with a concrete
+boundary and return condition, not an arbitrary slice of the primary agent's feature. Keep cleanup
+found in a feature with that feature; schedule independent cleanup beside other work when ownership
+does not overlap. When cleanup crosses an interface or repository, bring its producer and consumers
+to a coordinated checkpoint, verify compatibility at both ends, and keep the cleanup named until
+that check passes. Neither a slower dependency nor unrelated work drops an encountered issue from
+the task.
+
 - Every pass covers three things, never the diff hunks alone: the **changes** themselves, the
   **similar code** they resemble, and the **sibling modules** around them.
   - **Changes**: the full contents of every file the task has touched so far, not only the lines
@@ -447,9 +457,9 @@ result nor touches the files or resources the awaited work is changing. Each ite
 names what it uses that only the awaited result will supply, and one with nothing to name starts
 now: coming later in the plan, belonging to the same feature, or consuming a shape already agreed
 with the awaited work, such as a planned contract, is not such a thing, so build against that shape.
-When the awaited work is a building worker, the work started meanwhile is read-only (verification,
-review, preparing a question), never an edit, as `subagent-selection`'s **Dispatch** allows one
-builder at a time.
+When the awaited work is a building worker, another edit starts only in an independently owned
+scope with separate files and resources, under `subagent-selection`'s **Dispatch**; otherwise do
+read-only verification, review or question preparation while it runs.
 A turn that ends on "still waiting on X" while such work exists is the failure above, and a status
 report is not a stopping point. Only when every remaining item depends on the awaited result does
 the turn end on the wait.
@@ -458,6 +468,12 @@ the turn end on the wait.
 
 Before declaring the task done, take each pull request the task changed out of draft — once, with
 its work finished — and then close the run:
+
+When the task uses several independent final reviewers outside `code-review`, assign distinct
+concerns across the complete result rather than asking each the same question. After a repair,
+rescan the affected ownership area and consumers, retain valid evidence for unchanged areas, and
+return only invalidated review scopes to their reviewers. `code-review` owns this assignment and
+rescan within its own invocation.
 
 1. Run the final `code-simplify` pass across the complete pull-request diff and push its
    simplifications through the **Pre-Push Gate**.

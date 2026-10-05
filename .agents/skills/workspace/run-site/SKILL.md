@@ -151,8 +151,9 @@ EOF
   proves the process is up, never signed-in rendering or behavior.
 - Read the whole changed screen against the repository's interface rules while it is on screen:
   judge the headings, labels and hints as rendered, whether related controls belong together, and
-  whether controls with comparable roles have a consistent shape. Open a comparable existing flow
-  for each recurring interaction the change adds or moves, including how related items are selected,
+  whether controls with comparable roles have a consistent shape, spacing and recovery from errors.
+  Open a comparable existing flow for each recurring interaction the change adds or moves,
+  including how related items are selected,
   changed and removed; compare the placement and editing path as well as the result. A violation is
   a defect the walkthrough found.
 - The browser daemon starts a fresh profile each time, so `state save` a signed-in session that must

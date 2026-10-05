@@ -30,6 +30,11 @@ returned records before the next action. A worker never replaces the owner's led
      context needed to resume: decisions and constraints, affected callers, dependencies, check
      results and their validity conditions, open questions and next actions. Choose useful `data`
      fields for the record; local work is never an externally verified artifact claim.
+   - For active work, record its owner, next action, dependencies and concrete blockers so a handoff
+     can resume it without reconstructing the task. Preserve reusable check evidence with the input
+     or head it covers, and invalidate only what a change affects. When tracking delay, distinguish
+     a duration measured from observed start and end times from an estimate inferred from status;
+     record the basis rather than turning an estimate into an elapsed-time claim.
 3. Update an entry's current `data` and append observations for later lifecycle facts, checks and
    dispositions. Preserve its initial observation and provenance. Clear a correction's pending
    status only after verified delivery or a recorded disposition, never because work moved on.
