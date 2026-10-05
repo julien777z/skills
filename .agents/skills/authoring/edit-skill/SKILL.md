@@ -245,6 +245,14 @@ because silence reads as the guidance having been fixed.
      with one further case the request never mentioned, a different kind of thing from its examples.
      State that case and its expected outcome in validation. A case the draft would still handle as
      before means the draft only renamed the examples, and it is rewritten until that case changes too.
+   - Treat a missing tool required to run, build, test, or review a repository as source work. First
+     use a standard-library or already-provided equivalent when it fully serves the task; remove any
+     existing repository dependency, bootstrap installation, and repository references it displaces,
+     rather than leaving obsolete tooling behind. Do not add a dependency for an incidental harness.
+     When the tool is essential, install it through the repository's shared `bootstrap/install.sh`:
+     create that entry point when it is absent, or extend it when it exists, and verify a fresh
+     bootstrap provides the tool. Keep that bootstrap repository-neutral — it serves every developer
+     and agent, so its name, behavior, and messages must not be Claude- or Codex-branded.
    - After a dependency receives a separately authorized release, replace consumer references to
      its branch with a maintained version tag. Use a minor release for a new capability or a patch
      release for a bug fix; verify any moving major tag points to that release and validate the

@@ -32,9 +32,10 @@ has reached a terminal result.
 The caller supplies the repository, the pull request, the head SHA its final acceptance passed, the
 affected behaviors its local tests already cover, whether merge was explicitly withheld, and the
 rule that decides what a fix made here reopens in its own review. It also supplies each validation
-exclusion: either a current-user direction to leave a named test or check alone, or evidence that
-the same failure occurs on the repository's default branch. A caller with no such rule has each
-fix's diff judged the way it judged the accepted head before the gate repeats.
+exclusion: a current-user direction to leave a named test or check alone, evidence that the same
+failure occurs on the repository's default branch, or evidence that a hosted runner or provider
+cancellation meets the GitHub rule's pre-validation and local-coverage conditions. A caller with no
+such rule has each fix's diff judged the way it judged the accepted head before the gate repeats.
 
 ## Transport
 
@@ -62,8 +63,10 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    behaviors the caller's local tests do not cover, query check runs and legacy statuses only for a
    job that supplies that missing coverage — unavailable credentials, provider-only or
    runner-specific behavior, or a dependency the local environment cannot host. When every affected
-   behavior has passing local coverage, the gate is satisfied without querying GitHub. When a needed
-   job has no check run or status, inspect the active workflow definitions for pull request
+   behavior has passing local coverage, the gate is satisfied without querying GitHub. A qualified
+   pre-validation runner-infrastructure cancellation is skipped under the GitHub rule; other hosted
+   results remain subject to step 6. When a needed job has no check run or status, inspect the active
+   workflow definitions for pull request
    triggers; if none can supply the coverage, report that blocker rather than waiting on unrelated
    checks. Record and exclude each caller-supplied validation exclusion. Remove it from required
    coverage and terminal-result gates; it never becomes a reason to repair, rerun, or wait. Every
@@ -80,15 +83,17 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    job's own output — the run's jobs listing and decisively its log, which a finished job ends with
    its summary and cleanup. A log showing completion **is** the terminal result. Never diagnose a
    hang, push a speculative fix, cancel, re-run, or report the run stuck from a pending status alone.
-6. **Classify every failed check before repair.** A caller-supplied exclusion, a current-user waiver
-   for its named test or check, or the same failure on the default branch is excluded: record its
-   evidence, remove it from required coverage, and do not repair, rerun, or wait for it. Every other
-   failure is relevant. Read its annotations and complete log, fix the repository input responsible —
-   code, test, configuration or workflow — and commit and push it. A relevant external-service failure
-   is an encountered issue under `pre-production` and is fixed the same way; never re-run a job, or
-   skip, disable, or quarantine a test or confine its job to drafts, to get past it. Report a blocker
-   only when relevant missing coverage needs user input or unavailable credentials, with the check,
-   evidence and remediation attempted.
+6. **Classify every unsuccessful check before repair.** A caller-supplied exclusion, a current-user
+   waiver for its named test or check, or the same failure on the default branch is excluded: record
+   its evidence, remove it from required coverage, and do not repair, rerun, or wait for it. Apply the
+   GitHub rule's runner-infrastructure exclusion automatically: record a qualified check as skipped
+   and do not rerun or wait for a green hosted result. Every other failure is relevant. Read its
+   annotations and complete log, fix the repository
+   input responsible — code, test, configuration or workflow — and commit and push it. A relevant
+   external-service failure is an encountered issue under `pre-production` and is fixed the same way;
+   never re-run a job, or skip, disable, or quarantine a test or confine its job to drafts, to get
+   past it. Report a blocker only when relevant missing coverage needs user input or unavailable
+   credentials, with the check, evidence and remediation attempted.
 7. Never stop, restart, reconfigure or claim a local service the calling workflow did not start:
    another agent or person may be using it. When relevant validation needs local services and one it
    did not start is running, use the matching hosted check as the fallback rather than running a

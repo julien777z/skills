@@ -256,9 +256,12 @@ for it, and do not let it prevent the review or merge gate. Pass every exclusion
 the exact evidence. A failure that looks outside the diff but is green on the default branch is not
 an exclusion.
 
-A failure that is neither explicitly excluded nor failing on the default branch remains an encountered
-issue: trace and fix the repository input before the review proceeds. An exclusion does not waive a
-platform that rejects the merge itself; report that separate enforcement result with the provider's evidence.
+Apply the GitHub rule's runner-infrastructure exclusion independently of a user waiver: record a
+qualified check as skipped and do not repair, rerun, or wait for a green hosted run. Pass its required
+evidence to `merge-pr` with the other exclusions. A failure not covered by a qualified exclusion
+remains an encountered issue: trace and fix the repository input before the review proceeds. An
+exclusion does not waive a platform that rejects the merge itself; report that separate enforcement
+result with the provider's evidence.
 
 Run the affected targets first, before the **Simplification Gate** opens, selecting them from the
 diff as the testing rules direct. Fix what that run reports and push, so every reviewer this run
