@@ -1,7 +1,7 @@
 ---
 name: list-prs
-description: Use when asked which pull requests are open or for links to them. By default, list currently open pull requests created during the entire current session, including drafts; widen the scope only when the user explicitly requests it.
-short_description: 'List currently open pull requests created during the entire current session, including drafts.'
+description: Before a repository-wide pull-request query, use when a user asks to list, show, or link pull requests — including "list the open PRs", "open PRs", "current PRs", and "what PRs are open". By default, use the session ledger and list only session-created PRs still open, including drafts; widen to pre-existing or repository-wide PRs only when the user explicitly asks.
+short_description: 'List the current session’s open PRs.'
 ---
 
 # List Pull Requests
