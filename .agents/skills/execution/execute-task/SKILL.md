@@ -406,8 +406,13 @@ it — the user asking about something else is not the user withdrawing what the
 
 - **Write it down before anything else starts.** The displaced work goes into the session's task
   list, with its next step, before the first step of whatever displaced it.
-- **An interruption pauses the step in flight; it never ends the run.** "Continue", or anything
-  meaning it, resumes exactly that step, and is never answered with nothing.
+- **An interruption pauses the step in flight; it never ends the run.** After a follow-up
+  finishes, resume the saved next step in the same run without waiting for "continue". Completing
+  its own delivery — including a guidance merge and refresh, a diagnostic answer, or a local
+  environment repair — does not complete the surrounding task. Report that intermediate result
+  while continuing; end only when all remaining work is done, withdrawn or genuinely blocked.
+  "Continue", or anything meaning it, resumes exactly the paused step and is never answered with
+  nothing.
 - **A context summary's pending list is this run's named work**, not background. The first turn
   after it moves the oldest item as well as whatever the summary's next step names. A constraint it
   carries, such as "ask before X", is an earlier turn's instruction, checked under **Encountered

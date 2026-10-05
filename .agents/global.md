@@ -65,6 +65,9 @@ alwaysApply: true
   or earlier-request activity. Guidance maintenance is the exception: `edit-skill` runs when the
   user reports a guidance failure or canonical guidance is being changed, so the failure and its
   owning instruction are repaired together.
+- A follow-up that leaves an authorized task unfinished is an intermediate step, not a new
+  completion boundary. Keep `execute-task` active and apply its **Work You Have Already Named**
+  procedure before handling the follow-up and before ending the turn.
 - Record consciously deferred work immediately in its owning repository. A chat note is not a
   durable deferral record; no separate invitation is needed.
 - A direct invocation authorizes one full run at the requested scope. An explicit request to
