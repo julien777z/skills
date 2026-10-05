@@ -222,6 +222,13 @@ return records;
 - A bootstrap or setup folder holds only its entrypoint at its root, such as `setup/run.sh`; every
   supporting script, module, or data file it uses goes in `setup/resources/`.
 
+- Executable scripts and command entrypoints are consumers, never reusable data or helper owners.
+  Application code, test setup, and other commands must import shared behavior from its existing
+  application, utility, test-support, or bootstrap-resource owner, not from an executable module.
+  Move reusable definitions and all their consumers to that owner; keep command orchestration in
+  the entrypoint. A test may import a command to exercise that command itself, but not to obtain
+  unrelated setup or sample data. Classify the module by its role, not merely its directory name.
+
 ## Repository guidance
 
 - Reference external code and automation by a maintained version tag when available, or by a
