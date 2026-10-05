@@ -16,8 +16,10 @@ paths:
   an unknown duration or a total of one minute or more waits. Splitting a batch into individually
   quick commands does not qualify.
 - Finish a feature, including its callers and necessary tests, before running its relevant tests,
-  build, browser walkthrough and review once. A task with several features may verify each completed
-  feature; an edit, file, commit, push, handoff or plan step is not a feature boundary.
+  build, browser walkthrough and review once. For a UI feature, inspect its rendered screen and
+  comparable existing interactions at this checkpoint, and fix design or copy defects before moving
+  to unrelated work or the final combined checks. A task with several features may verify each
+  completed feature; an edit, file, commit, push, handoff or plan step is not a feature boundary.
 - Fix a completed-feature batch's failures together, then repeat only the checks the fixes affect.
   Reuse successful evidence for unchanged code and inputs. A new commit or reviewer is not itself
   a reason to repeat verification; a changed dependency, relevant input or unresolved concern is.
