@@ -219,8 +219,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   large empty area — below its content, or between the content and the control that acts on it —
   reads as unfinished. Content flows from the top and each control sits directly after what it acts
   on, never pushed to the bottom of a stretched container by a fill or a space-between, or to the
-  far edge of an otherwise empty row or footer. Surfaces sharing a row split its width evenly,
-  unless one is a main area beside a narrow side rail. They end on the same line, and they get there by balancing what they hold — cutting a
+  far edge of an otherwise empty row or footer. A section holding only short settings takes a bounded
+  column or shares a row with a peer section where space allows; full-width page framing does not
+  require every section or control to fill it. Surfaces sharing a row split its width evenly, unless
+  one is a main area beside a narrow side rail. They end on the same line, and they get there by
+  balancing what they hold — cutting a
   line that earns no place, moving a control, re-pairing the surfaces — never by stretching the
   shorter one; where content cannot be balanced, the shorter keeps its own height. An empty state is
   sized like any other content. Content that can outgrow its surface scrolls inside a
@@ -378,8 +381,13 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **A form longer than a handful of fields is grouped into titled sections,** each holding the
   fields that answer one question; sibling forms share one section layout, under **Shared
   Surfaces** above.
-- **Related short fields sit side by side wherever the width allows,** wrapping only when it does
-  not.
+- **Group fields by the question the reader answers, not by how short their values are.** Fields
+  answered together sit side by side wherever the width allows, wrapping when it does not; independent
+  decisions keep separate rows even when both controls are short.
+- **A short setting label and its control share one compact row where they fit.** Keep the control
+  near its label and size it for its values; neither a full-width control below the label nor a
+  control at the far edge of an empty row is the default. Stack when narrow space, long labels or
+  multiline input needs it, preserving the accessible label association and readable values.
 - **Comparable controls use comparable widths.** Inputs with the same role in a form take the same
   width or grid span; let the value format or available space justify a difference. A content-sized
   control beside a fixed-width peer reads as a different kind of choice even when both collect the
