@@ -11,6 +11,11 @@ alwaysApply: true
   and triggers before dispatching it; a workflow that builds and publishes artifacts or deploys is
   a release action even if it also runs tests.
 
+- Build, publish, and deploy through the repository's GitHub Actions workflow, never a local CLI.
+  For an authorized branch deployment, temporarily let the workflow dispatch that branch, verify the
+  exact workflow run and deployed revision, then restore the workflow's ordinary branch restriction
+  in the same pull request before reporting the result.
+
 - Keep `run` steps declarative. Invoke checked-in scripts for control flow, validation, filesystem changes, or other implementation logic instead of embedding arbitrary shell or program code in workflow YAML; place those scripts under `.github/scripts/` and prefer Python.
 - Do not hard-code runtime versions when a shared action, reusable workflow, or repository version file supplies them; omit `python-version` when shared Python automation provides it, and use `node-version-file: ".nvmrc"` for Node.js workflows.
 - Do not add glue steps that only read versions or forward setup data. Pass repository-owned version files and inputs directly to the action that uses them whenever supported.
