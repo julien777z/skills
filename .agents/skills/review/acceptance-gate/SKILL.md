@@ -132,23 +132,30 @@ under the GitHub rules on branch ownership, and its resolved result is theirs to
 
 The gate is never advisory; the rubric says what each disposition binds the caller to.
 
-Each item gets one rewrite against the objection, and the rewritten item goes to a fresh gate. Never
-argue one item through the same gate twice, and never re-run a gate until one passes. The second flag
-ends the item, and its disposition is the caller's, from these:
+A flag blocks the flagged proposal or diff, not an ordinary repair the task already authorizes.
+Read its concrete objection and remedy against the intent and standing guidance, make the smallest
+coherent repair using the existing owner or mechanism, and send the changed increment with the
+whole originating diff to a fresh independent gate. Continue that repair-and-review path while an
+in-scope remedy remains; a second or later flag is not a stop rule or a new approval boundary.
 
-- **revert and record** — undo the item and record the work through the repository's deferral
-  mechanism with both flags as its reason;
-- **re-scope** — solve the part that can be solved cleanly and re-state the record or task for the
-  rest;
-- **escalate** — put the conflict to the user with the flag quoted, as a blocker. Escalation is for
-  a change whose merge needs an authorization only the user holds; it is never how a caller avoids
-  a decision.
-- **let it stand** — keep the item with the flag's reason answered in the caller's own report. This
-  is available only where the change's merge needs no authorization — a pull request confined to
-  agent configuration — and there escalate is not: nothing is put to the user.
+Never rerun an unchanged item hoping for acceptance, argue it through the same gate, rename it to
+reset its history, or keep flagged code because the caller can authorize its merge. Carry unresolved
+objections and previous remedies into the next review. If evidence refutes an objection, send that
+evidence to a fresh gate for an explicit disposition; the caller cannot dismiss it unilaterally.
 
-Work that is the change's own purpose is never reverted and recorded; a second flag on it escalates
-where escalate is available, and is otherwise the caller's to fix, let stand, or drop.
+When no compliant repair is available, name the conflict and the smallest native repair examined.
+Apply the rubric's triage and admission tests before reverting, recording, or re-scoping any work;
+flag count alone satisfies none of them. A non-defect may be deferred only on those tests' evidence,
+including when its simplest compliant repair still requires substantial irreducible complexity or
+mechanisms its gain cannot carry. A confirmed defect remains owed under the fix test. A hypothetical
+safeguard or compatibility concern is judged against the target repository's product state and
+contract, not promoted to a defect merely because a reviewer flagged it.
+
+Escalate only a genuine unresolved product, scope, or authorization choice, stating the concrete
+fork and why authorized remedies cannot settle it. Repair authority and merge authority are separate:
+a source pull request awaiting merge permission continues through authorized repairs and reviews.
+Keep unrelated authorized work moving while a real decision waits. No flagged diff stands or merges
+without an independent acceptance covering its resolution.
 
 ## Reporting
 

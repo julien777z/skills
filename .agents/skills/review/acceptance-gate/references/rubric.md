@@ -170,8 +170,9 @@ that applies: fix and do send the work into the change in flight, and close reco
 cancelled record with its reason and reconsideration criterion. An explicit user instruction to
 defer settles the defer test's justification; the gate still answers the fix test, confirms the problem
 is real from the current tree or measured evidence, and checks that the criteria describe an end
-state. A record whose attempted fix carries two gate flags is admitted on that evidence with no
-further question.
+state. Repeated flags are evidence about the attempted fixes, never admission by themselves. The
+record must show why the smallest compliant repair still meets the defer test; a gate naming an
+available native remedy sends the work back to repair, not into a record.
 
 **Proposal — should this be written?** Does the plan solve the problem without reintroducing what
 the change removed, without a shape the repository's rules or the rubric ban, and at a cost its gain
@@ -221,8 +222,7 @@ statement and the rubric, read once after review is clean and before any check g
 
 ## The Gate Is Never Advisory
 
-The gate is never advisory. A proposal it flags is not written; a diff it flags does not stand,
-except that a second flag on a change confined to agent configuration leaves the disposition with
-the caller, as **Bounds** says; a disposition is carried out by the caller — a fix or do goes into
-the change, a defer is recorded, a close is recorded cancelled. What a disposition names as the
+The gate is never advisory. A proposal it flags is not written; a diff it flags does not stand.
+Repeated flags follow **Bounds**, with no exception for agent configuration; a disposition is
+carried out by the caller — a fix or do goes into the change, a defer is recorded, a close is recorded cancelled. What a disposition names as the
 user's — an open fork the gate found unasked — is put to the user, and nothing else about it is.

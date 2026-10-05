@@ -197,7 +197,12 @@ This widens the pull request on purpose, and that is the intended trade. Keep ea
 
 Say plainly in the pull request which fixes review surfaced rather than the original task requiring, so a reviewer can see why the diff is wider than the title suggests.
 
-A confirmed finding leaves this run in one of two states: fixed, or — only after `acceptance-gate` flagged its fix twice — reverted and recorded, unless the pull request is confined to agent configuration, where `acceptance-gate`'s **Bounds** leave the disposition with this run. The deferral route below is for that case and for work the repository's own rules place outside any single change, never for work that is merely inconvenient, unfamiliar, or larger than expected. A confirmed defect never reaches that route on size or on cost: whatever shape its fix takes, including a schema migration, and however correct its output while it runs too slowly to finish or holds more than anything bounds, it is fixed in this run.
+A confirmed finding is repaired under `acceptance-gate`'s **Bounds** until accepted, or remains
+blocked on the genuine decision those bounds identify. Deferral requires the repository's own
+admission tests; repeat flags do not supply a separate route. A confirmed defect never reaches
+that route on size or cost: whatever shape its fix takes, including a schema migration, it is
+fixed in this run. Work that is merely inconvenient, unfamiliar, or larger than expected is not a
+deferral justification.
 
 Each fix is committed and pushed as its own increment, and that increment's `execute-task` **Pre-Push Gate** verdict is its gate, as `code-review`'s fix mode states.
 
@@ -305,7 +310,7 @@ to work around this gate.
 2. Invoke `/code-review high fix <target>` using the open pull-request URL or the exact delegated ref range. For a merged range, pass the original pull request as metadata only and explicitly preserve the range through resolution and eligibility checks. Direct fixes to the working fix branch rather than changing the immutable target.
 3. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the run continues; see **Deferred Findings**. Stop and report only a finding that can be neither fixed nor recorded.
 4. Classify each correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean. This is the same authorized CR execution, not a new action-skill invocation.
-5. Once the review is clean, if a merged-range review has no working fix pull request, give the **Completion Report** and return to the invoking workflow without another merge. Otherwise put the complete working pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement, retaining the original review range as context. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate** verdict is the fresh gate; a second flag on the change's own work is a blocker to report to the user, unless the pull request is confined to agent configuration, where `acceptance-gate`'s **Bounds** leave the disposition with this run. The accepted head is the SHA `merge-pr` receives.
+5. Once the review is clean, if a merged-range review has no working fix pull request, give the **Completion Report** and return to the invoking workflow without another merge. Otherwise put the complete working pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement, retaining the original review range as context. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate** verdict is the fresh gate; resolve repeated flags under `acceptance-gate`'s **Bounds**, which distinguishes authorized repair from a genuine user decision and never admits a deferral by flag count. The accepted head is the SHA `merge-pr` receives.
 6. Run **Description Refresh**'s second pass, then the second test pass **Validation Order** requires. Never stop, restart, reconfigure or claim a local service this run did not start.
 7. Invoke `merge-pr` with:
    - the pull request and the head step 5 accepted;
