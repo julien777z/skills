@@ -64,10 +64,13 @@ proposing a new file applies.
 - Edit the canonical sources in the guidance task worktree promptly. Read and follow that worktree's
   revised instructions for the rest of the session while their delivery is pending; do not hand-copy
   them into installed or generated mirrors. Local use does not mean the guidance is verified or merged.
-- Keep the source task progressing. At the next substantial checkpoint—a completed feature or
-  coherent milestone—process the pending batch through delivery below: simplify the combined diff,
-  validate the sources, run acceptance and behavior smoke tests against the final wording, then merge,
-  verify Agent Sync and refresh. A standalone guidance task's completed edit is its checkpoint.
+- Keep the source task progressing. Its owner records the next substantial checkpoint—a completed
+  feature or coherent milestone—and readiness of the whole pending guidance batch before starting
+  delivery below: simplify the combined diff, validate the sources, run acceptance and behavior smoke
+  tests against the final wording, then merge, verify Agent Sync and refresh. A guidance task is
+  standalone only when no surrounding authorized task remains active; a separate worker, worktree
+  or completed local correction does not create a checkpoint. A delegated worker waits for that
+  recorded batch readiness rather than starting verification from its own edit completion.
 - Processing a batch does not pause source implementation. Delegate its verification and delivery
   separately while the source writer continues authorized work, following the local correction.
   Coordinate shared files and handoffs; pause only work that actually depends on an unresolved
@@ -334,7 +337,7 @@ proposing a new file applies.
    - If one request contains multiple distinct items, map each item to the best existing file or a new file within the same inferred/selected type.
    - If scope is ambiguous, ask a short follow-up before editing.
 
-7. Deliver it, in this order. Ordinary repairs and verification remain authorized throughout this
+7. At the recorded whole-batch checkpoint, deliver it in this order. Ordinary repairs and verification remain authorized throughout this
    delivery; resolve flagged gates under `acceptance-gate`'s **Bounds** and failing smoke runs under
    `test-skill`. A pull request confined to agent configuration has merge authorization under the
    GitHub rule after its stated gates; ask neither to repeat that authorization nor to continue

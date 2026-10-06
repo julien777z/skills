@@ -326,6 +326,11 @@ does not satisfy this spacing check.
   or end-to-end suite, a run against a service without the change, root-causing a failure seen
   along the way — anything slow or needing a running stack. What it finds goes out as fix pushes, each once its checks pass.
 - **Pushed is not done**: the change is reported done only once that verification has passed.
+- **A failed requested flow remains the verification target after its repair.** Publish the fix and
+  deploy or otherwise exercise its branch within the authorized scope, including reachable dependency
+  branches, then repeat the complete flow that failed until its requested outcome is verified. A
+  narrower health check or passing component test cannot replace that flow. Missing merge approval
+  holds merging, never branch validation; check the available branch route before declaring a gate.
 
 ## Reported Outcomes
 
