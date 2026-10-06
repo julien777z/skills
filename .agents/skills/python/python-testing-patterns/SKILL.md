@@ -22,6 +22,12 @@ Comprehensive guide to implementing robust testing strategies in Python using py
 - Testing database operations
 - Debugging failing tests
 
+## Dependencies
+
+Invoke `test-fixture` before choosing or applying the patterns below to tests, data, fixtures or
+support. Its full rubric owns coverage reuse, support placement and regression-proof validation;
+the examples here demonstrate Python testing techniques within those boundaries.
+
 ## Core Concepts
 
 ### 1. Test Types
@@ -79,7 +85,8 @@ Detailed pattern documentation lives in `references/details.md`. Read that file 
 ```python
 # tests/
 #   __init__.py
-#   conftest.py           # Shared fixtures
+#   conftest.py           # Lifecycle and fixture registration
+#   fixtures/             # Topic-owned domain and scenario fixtures
 #   test_unit/            # Unit tests
 #     test_models.py
 #     test_utils.py

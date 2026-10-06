@@ -64,11 +64,12 @@ def test_division_by_zero():
 
 ### Pattern 2: Fixtures for Setup and Teardown
 
-```python
-# test_database.py
-import pytest
-from typing import Generator
+Use the suite's existing session-scoped configuration fixture, registered from its topic owner. The following
+example separates the application class, resource lifecycle wiring and consuming tests; fixture
+scope follows the lifetime of the resource.
 
+```python
+# myapp/database.py
 class Database:
     """Simple database class."""
 
@@ -89,53 +90,58 @@ class Database:
         if not self.connected:
             raise RuntimeError("Not connected")
         return [{"id": 1, "name": "Test"}]
+```
+
+```python
+# tests/conftest.py
+from collections.abc import Iterator
+
+import httpx
+import pytest
+from myapp.config import AppConfig
+from myapp.database import Database
+from tests.fixtures.configuration import app_config
 
 
 @pytest.fixture
-def db() -> Generator[Database, None, None]:
-    """Fixture that provides connected database."""
-    # Setup
-    database = Database("sqlite:///:memory:")
+def db(app_config: AppConfig) -> Iterator[Database]:
+    """Provide a connected database for one test."""
+    database = Database(app_config.database_url)
     database.connect()
 
-    # Provide to test
-    yield database
+    try:
+        yield database
+    finally:
+        database.disconnect()
 
-    # Teardown
-    database.disconnect()
+
+@pytest.fixture(scope="module")
+def api_client(app_config: AppConfig) -> Iterator[httpx.Client]:
+    """Provide an HTTP client for one test module."""
+    with httpx.Client(base_url=app_config.api_base_url) as client:
+        yield client
+```
+
+```python
+# tests/test_database.py
+from myapp.database import Database
 
 
-def test_database_query(db):
-    """Test database query with fixture."""
+def test_database_query(db: Database) -> None:
+    """Test that a connected database accepts a query."""
     results = db.query("SELECT * FROM users")
+
     assert len(results) == 1
     assert results[0]["name"] == "Test"
 
 
-@pytest.fixture(scope="session")
-def app_config():
-    """Session-scoped fixture - created once per test session."""
-    return {
-        "database_url": "postgresql://localhost/test",
-        "api_key": "test-key",
-        "debug": True
-    }
+# tests/test_api_client.py
+import httpx
 
 
-@pytest.fixture(scope="module")
-def api_client(app_config):
-    """Module-scoped fixture - created once per test module."""
-    # Setup expensive resource
-    client = {"config": app_config, "session": "active"}
-    yield client
-    # Cleanup
-    client["session"] = "closed"
-
-
-def test_api_client(api_client):
-    """Test using api client fixture."""
-    assert api_client["session"] == "active"
-    assert api_client["config"]["debug"] is True
+def test_api_client(api_client: httpx.Client) -> None:
+    """Test that the configured client is open during the test."""
+    assert not api_client.is_closed
 ```
 
 ### Pattern 3: Parameterized Tests

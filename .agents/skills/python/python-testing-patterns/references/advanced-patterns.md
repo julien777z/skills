@@ -150,61 +150,34 @@ def test_multiple_files(tmp_path):
         assert load_data(filepath) == expected_content
 ```
 
-## Pattern 9: Custom Fixtures and Conftest
+## Pattern 9: Fixture Registration and Parameterization
+
+Register fixtures from their established topic owners; keep the existing session, database,
+event-loop and autouse environment lifecycles in the suite's lifecycle wiring.
 
 ```python
-# conftest.py
-"""Shared fixtures for all tests."""
-import pytest
-
-@pytest.fixture(scope="session")
-def database_url():
-    """Provide database URL for all tests."""
-    return "postgresql://localhost/test_db"
-
-
-@pytest.fixture(autouse=True)
-def reset_database(database_url):
-    """Auto-use fixture that runs before each test."""
-    # Setup: Clear database
-    print(f"Clearing database: {database_url}")
-    yield
-    # Teardown: Clean up
-    print("Test completed")
-
-
-@pytest.fixture
-def sample_user():
-    """Provide sample user data."""
-    return {
-        "id": 1,
-        "name": "Test User",
-        "email": "test@example.com"
-    }
-
-
-@pytest.fixture
-def sample_users():
-    """Provide list of sample users."""
-    return [
-        {"id": 1, "name": "User 1"},
-        {"id": 2, "name": "User 2"},
-        {"id": 3, "name": "User 3"},
-    ]
-
-
-# Parametrized fixture
-@pytest.fixture(params=["sqlite", "postgresql", "mysql"])
-def db_backend(request):
-    """Fixture that runs tests with different database backends."""
-    return request.param
-
-
-def test_with_db_backend(db_backend):
-    """This test will run 3 times with different backends."""
-    print(f"Testing with {db_backend}")
-    assert db_backend in ["sqlite", "postgresql", "mysql"]
+# tests/conftest.py
+from tests.fixtures.users import sample_user, sample_users
 ```
+
+Those fixtures bind the canonical user root and shared generation mechanism, rather than copying
+model constructors into registration. Parametrize a topic fixture with the application's existing
+finite family when a test must exercise every supported option:
+
+```python
+# tests/fixtures/database.py
+import pytest
+from myapp.database import DatabaseBackend
+
+
+@pytest.fixture(params=tuple(DatabaseBackend))
+def db_backend(request: pytest.FixtureRequest) -> DatabaseBackend:
+    """Provide each supported database backend."""
+    return DatabaseBackend(request.param)
+```
+
+Consumers use this fixture through the suite's registration, composing it with the existing
+database setup and asserting the behavior under test for each backend.
 
 ## Pattern 10: Property-Based Testing
 
