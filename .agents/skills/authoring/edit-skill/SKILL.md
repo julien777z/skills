@@ -17,7 +17,8 @@ step; this skill's report is an intermediate update, not the surrounding task's 
 
 An open `.agents` pull request is not a delivery result. At the batch checkpoint, continue through its source
 check, required review steps, merge, Agent Sync result, and verification of generated
-root instructions and provider output; stop only for a genuine gate.
+root instructions and provider output. A genuine gate holds its dependent step while repair or
+resolution remains active under the global rules' **Tools and environments** boundary.
 
 **A gap you notice yourself starts this skill, exactly as a request does.** Guidance that let a miss
 through, a skill whose trigger did not fire when it should have, one that says nothing about the case
@@ -222,8 +223,8 @@ proposing a new file applies.
      for a realistic invented scenario with invented names, as one markdown file whose first line is
      `**EXAMPLE — fictional output for approval; no smoke test was run.**`, check it as the global
      rules' **User-Facing Output** requires, and present it for approval under the global rules'
-     **Task execution and authorization** question route, one skill at a time. On a rejection, ask what must
-     change, revise the example, and ask again. Only then write the skill to produce exactly the
+     **Task execution and authorization** question route, one skill at a time. On a rejection, ask
+     what must change, revise the example, and ask again. Only then write the skill to produce exactly the
      approved shape; the required smoke run follows in delivery and is never how a format is
      proposed.
    - Trace each miss to the instruction that produced or allowed it, including instructions for
