@@ -27,7 +27,7 @@ identity, never a second authoritative copy of its records.
 - Keep local evidence needed to resume work or reuse a verdict in private task storage with the
   ledger's restart and handoff durability. Before recording a local locator, retain and read back
   its required scenarios, frozen inputs, reports or logs there, recording their provenance and
-  covered revision. Disposable working copies may remain temporary; a durable record must not
+  covered inputs or revision. Disposable working copies may remain temporary; a durable record must not
   depend on their survival. The task owner supplies workers distinct evidence destinations and
   verifies their returned artifacts before recording them.
 - A readable ledger with missing referenced evidence is incomplete retrieval. Recover the artifact
