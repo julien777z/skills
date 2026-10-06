@@ -175,6 +175,8 @@ alwaysApply: true
 
 ## Tailscale policy
 
+- Before changing Tailscale authority or its consumers, invoke `reconcile-tailscale`; it owns
+  affected-consumer discovery, execution cutover and verification across repositories and environments.
 - Prefer environment-branded tags over generic role tags whenever a Tailscale resource applies to
   a particular environment. Add a role suffix only when distinct roles within that environment need
   separate authority; do not create tags for roles that are not in use.
