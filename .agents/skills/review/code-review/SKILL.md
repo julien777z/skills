@@ -157,7 +157,7 @@ Guidance is written for agents authoring code, so not every instruction applies 
 
 Rule and skill files are review criteria, never review targets. Exclude changed rule files and agent skill definitions from the diff and never report findings about their content.
 
-Summarize the changed files and produce the intent statement as `acceptance-gate` defines it, unless the caller supplied one. Give every reviewer the target's title, description, and change summary so they understand author intent.
+Summarize the changed files and produce the intent statement as `acceptance-gate` defines it, unless the caller supplied one. Before assigning lenses, resolve the affected-repository map required by `code-simplify`'s **Trace Changed Flows** and give it to every reviewer. Give every reviewer the target's title, description, and change summary so they understand author intent.
 
 ## Step 3 — Run reviewer lenses
 
@@ -200,9 +200,9 @@ for the current target, so the two stay one source of truth. Borrow the *rubric*
 or apply its remediation-approval gate. This lens applies the local rubric to the review scope and
 returns ordinary review findings.
 
-The **Simplification** lens does not carry its own rubric: dispatch it to the `code-simplify` agent, whose `references/rubric.md` is the complete rubric, so the two stay one source of truth rather than two drifting copies. Give it the same target, and one instruction this skill adds — `code-simplify` resolves a scope to the diff *plus* whole files *plus* sibling modules, and it should keep reading all three, but every finding it returns must still anchor to a line this target added or removed. Reading a sibling is how it sees that a new module is misnamed, sits in a package that does not own it, or models a value the codebase already models another way; unrelated sibling debt is not this review's finding. However, related behavior left behind by a newly introduced or promoted owner is an incomplete ownership move: anchor the finding to the new boundary, and include the unchanged implementations and consumers needed to complete it.
+The **Simplification** lens does not carry its own rubric: dispatch it to the `code-simplify` agent, whose `references/rubric.md` is the complete rubric, so the two stay one source of truth rather than two drifting copies. Give it the same target and its affected-repository map, then one instruction this skill adds — `code-simplify` resolves a scope to the diff *plus* whole files *plus* sibling modules, and it should keep reading all three, but every finding it returns must still anchor to a line this target added or removed. Reading a sibling is how it sees that a new module is misnamed, sits in a package that does not own it, or models a value the codebase already models another way; unrelated sibling debt is not this review's finding. However, related behavior left behind by a newly introduced or promoted owner is an incomplete ownership move: anchor the finding to the new boundary, and include the unchanged implementations and consumers needed to complete it.
 
-Require the Simplification receipt to satisfy the `code-simplify` rubric’s **Trace Changed Flows** for each changed operation, including one that adds no named abstraction. Reject and rerun an otherwise clean receipt that omits that evidence or leaves a related implementation outside its claimed owner; an inventory alone is incomplete.
+Require the Simplification receipt to satisfy the `code-simplify` rubric’s **Trace Changed Flows** for each changed operation, including its affected-repository map and one disposition per candidate. Reject and rerun an otherwise clean receipt that omits that evidence, leaves a related implementation outside its claimed owner, or assumes the reviewed repository is the complete system; an inventory alone is incomplete.
 
 When the target introduces a public concept, require the Simplification receipt to compare its
 interface and owner with existing public concepts serving the same purpose, and to say whether it

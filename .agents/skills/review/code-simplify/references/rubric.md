@@ -106,6 +106,22 @@ concept. Name the producers and live consumers of each intermediate field and re
 state each call changes, and the existing operation that could own the same work. This flow receipt
 is required for a clean review; a search inventory without the use trace is incomplete.
 
+Resolve the affected-repository context before treating that path as local. Read the repository's
+project guidance and available workspace or repository inventory, then provide an
+**affected-repository map**. It names the current repository and every candidate that may share the
+operation, contract, generated artifact, deployment path, template, or a parallel implementation.
+For each candidate, give the evidence for the relationship, the relevant owner or paths, and the
+disposition: inspect and consolidate, update as an owned consumer, or exclude with the concrete
+semantic difference. Search evidence that finds no candidate is still part of the map. A map that
+names only the current repository without that search is incomplete.
+
+Compare every inspected parallel implementation against the candidate canonical owner under the
+rubric's existing reuse, ownership, and retention criteria. The map records the responsibility or
+contract the candidates share and the concrete dependency or consumer evidence for any retained
+boundary; different product vocabulary, directories, or deployment targets are not that evidence.
+The affected-repository map is part of the flow receipt, so a clean local path without it is not a
+clean review.
+
 - Compare an existing helper with the bespoke path by its guarantees, inputs, result and transaction
   boundary. Reuse it when those semantics match; when they do not, name the concrete difference.
   Separate reads and writes for one transition, or parallel updates to one result, must earn their
