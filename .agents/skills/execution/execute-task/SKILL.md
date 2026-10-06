@@ -463,9 +463,12 @@ with the awaited work, such as a planned contract, is not such a thing, so build
 When the awaited work is a building worker, another edit starts only in an independently owned
 scope with separate files and resources, under `subagent-selection`'s **Dispatch**; otherwise do
 read-only verification, review or question preparation while it runs.
-A turn that ends on "still waiting on X" while such work exists is the failure above, and a status
-report is not a stopping point. Only when every remaining item depends on the awaited result does
-the turn end on the wait.
+A status report is not a stopping point. When every remaining item depends on an awaited result,
+apply the global rules' **Tools and environments** pending-result boundary: keep the available
+wait or event route active and resume the saved next action when it resolves. An unresolved user
+choice holds its dependent remedy; it does not close the run or cancel independent work. A guidance
+correction is an intermediate checkpoint under the same boundary, never a reason to end the
+surrounding task. Report a blocker only on that boundary's concrete evidence.
 
 ## Completion
 

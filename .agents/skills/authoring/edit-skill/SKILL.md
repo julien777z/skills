@@ -79,8 +79,10 @@ proposing a new file applies.
   required transition. An eligible draft records `merge-pr` as its next action; only a concrete
   documented gate may replace that action.
 - Before the surrounding task ends or hands off, deliver every pending batch or record its concrete
-  blocking decision, failed gate or unavailable dependency. Never lose a correction, treat a local
-  edit as delivered, or end the source task merely because this batch finished.
+  blocking decision, failed gate or unavailable dependency under the global rules' **Tools and
+  environments** pending-result boundary. Pending recovery or verification remains active work,
+  not an unavailable-dependency disposition. Never lose a correction, treat a local edit as
+  delivered, or end the source task merely because this batch finished.
 
 ## Behavior
 
