@@ -64,15 +64,22 @@ After writing new or materially strengthened behavioral tests, prove each distin
 1. Select the nearest editable canonical first-party implementation. Never mutate generated or
    vendored output, run generation for proof, or mutate the test itself. Mutate test support only
    when that support is genuinely the subject under test.
-2. Record the target's exact content plus staged and unstaged state. Apply the smallest unstaged
-   mutation that violates only the intended behavior.
-3. Run the narrowest repository-native selection containing the relevant cases. Require an
+2. Apply the global rules' **Tools and environments** experimental-isolation boundary before
+   selecting the mutation route. Record the canonical target's content hash, staged and unstaged
+   state, and the candidate's baseline. In a private candidate, verify the actual loaded source and
+   dependency paths, and preserve the native runner's partitions, environment and lifecycle. An
+   isolated file that the process never imports is not a proof target. If isolation cannot retain
+   that contract, record the demonstrated limitation and coordinate an exclusive window before
+   touching shared state; never substitute a different execution contract to make isolation work.
+3. Apply the smallest mutation that violates only the intended behavior. Run the narrowest
+   repository-native selection containing the relevant cases. Require an
    assertion or observed-outcome failure that demonstrates the intended regression; a setup,
    collection, import, or syntax failure is not proof. For parametrized coverage, confirm the newly
    added case detects its corresponding mutation.
-4. Reverse only the temporary mutation. Verify content and version-control state match the recorded
-   baseline exactly without reset or checkout, preserve unrelated work, then rerun the affected
-   tests successfully.
+4. Reverse only the temporary mutation and rerun the affected tests successfully through the same
+   route. Verify the canonical content hash and version-control state match the recorded baseline
+   exactly, including when proof used a private candidate. Preserve unrelated work without reset
+   or checkout, and release an exclusive window only after restoration and the passing control.
 
 Never commit or push while a mutation is present. Pure placement, naming, or prose changes that
 claim no new behavior do not need mutation proof. If no canonical owned source can be mutated

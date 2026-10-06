@@ -152,6 +152,20 @@ alwaysApply: true
 
 ## Tools and environments
 
+- Before combining, reordering or parallelizing verification, read its owning runner and lifecycle
+  declarations. Preserve their process, session, environment, dependency and resource isolation,
+  including setup and cleanup order; related inputs or one verification checkpoint do not establish
+  that checks can share an execution context. Keep the declared partitions unless their actual
+  contract supports the proposed optimization. Classify a failure against that invocation first:
+  correct an unsupported invocation and reproduce through the native route before blaming or
+  changing application code. A failure that persists there is investigated at its actual owner.
+- Isolate experimental faults from working state other writers, readers or checks can observe.
+  Use a private candidate built from the canonical implementation under its native execution contract;
+  establish which implementation and dependencies the experiment actually loads and that shared
+  state remains unchanged. If that route cannot preserve the contract, establish the concrete
+  limitation before arranging an exclusive window with the affected writers, readers and check
+  owners. Hold that window through exact restoration and the successful control; a short mutation or later restore
+  does not make concurrent exposure safe. Never claim isolation is impossible without checking it.
 - Treat an inventory or availability error as scoped to the surface it names. A native-app lock or failure does not block browser automation, and a browser failure does not block terminal or API work.
 - Before reporting a task blocked by a surface warning, inspect the requested surface directly and retry its normal recovery path. For a browser, refresh the tab inventory and reopen an authenticated task tab when the prior agent-owned tab has closed.
 - Create a new task-owned browser tab before reading page content, navigating or interacting.
