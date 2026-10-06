@@ -73,11 +73,7 @@ of that proof; agreement in one never establishes agreement in another.
    local credential test cannot establish their cutover. Use authorized read-only checks or the
    repository's designated mutation target as appropriate. A green workflow, an active deployment,
    a policy check or a health endpoint bypassing the boundary is insufficient alone. Record each
-   result with its client ID, target, operation and observed execution revision or run. After
-   validating the repair, extend existing policy tests for its permitted paths and forbidden
-   cross-boundary paths. Keep routing tests distinct from device connectivity, and retain real
-   runner verification for route visibility, selection and the request that needs it. A node
-   joining successfully is not evidence that these later operations are authorized.
+   result with its client ID, target, operation and observed execution revision or run.
 8. Re-read the complete manifest and live references after cutover. Reconcile stale references,
    missing consumers and changed runtime identities; repeat the affected verification when new
    evidence invalidates it. Revoke an old client or remove old authority only after every affected
