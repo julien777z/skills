@@ -297,8 +297,9 @@ current review cohort before closing its review phase or reporting a result.
 Likewise, a monitoring loop remains nonterminal until the monitored operation reaches its documented
 terminal state and this workflow has performed the next required action. Do not abandon a loop because
 the first wait returns, output capture ends, a status is unchanged, or another task arrives. Re-enter
-the same wait or poll loop, preserving its state, until it resolves or reaches a genuine blocker under
-this skill.
+the same wait or poll loop, preserving its state, until it resolves or a concrete gate requires
+repair or resolution under the global rules' **Tools and environments** boundary. That transition
+preserves the saved next action and does not close CR.
 
 Before any terminal report or merge, explicitly confirm that the current cohort has no running or
 queued delegated agents and that every required review, validation, check, and deployment loop has a
@@ -313,7 +314,12 @@ Carry the run's state throughout: the current workflow step, repository and PR, 
 
 Hold that state in the session; never write it to a checkpoint file. The pull request is the durable record: its commits, its pushed head, its checks, and its comments are what a resumed turn reads to find the run, and they cannot drift from it the way a separate file can.
 
-GitHub head lag, a retryable rate limit, and any state `merge-pr` is still waiting on are nonterminal. Only conclude the session after the PR is verified merged, after the exact-head review and check gates complete when the user withheld merge, or after reporting a genuine blocker that cannot be safely resolved without user input or an external-state change that the host cannot wait for. A question already recorded as a deferral is not such a blocker: it has been answered by being written down, and the run continues without it.
+GitHub head lag, a retryable rate limit, and any state `merge-pr` is still waiting on are nonterminal.
+Conclude only after the PR is verified merged, after the exact-head review and check gates complete
+when the user withheld merge, or on the user's explicit stop or handoff. A concrete failed gate or
+needed user decision remains active work under the global rules' **Tools and environments**
+pending-result boundary; reporting it does not close CR. A question already recorded as an admitted
+deferral is answered by that record, and the run continues without it.
 
 ## Workflow
 
@@ -327,7 +333,7 @@ to work around this gate.
 
 1. Resolve the review target and working pull request using **Review Targets**. Read the original target's intent and metadata without modifying a merged pull request; run **Description Refresh** when a working pull request exists. Record the review range and pass its intent and route-specific ownership to every subagent and into `/code-review high fix`. Run **Review Thread Triage** against the original target's discussions, with any legitimate fixes placed according to the selected route. Then classify failures under **Failure relevance**, run the first test pass **Validation Order** requires, and complete the **Simplification Gate**; no code-review phase starts before all three are clean.
 2. Invoke `/code-review high fix <target>` using the open pull-request URL or the exact delegated ref range. For a merged range, pass the original pull request as metadata only and explicitly preserve the range through resolution and eligibility checks. Direct fixes to the working fix branch rather than changing the immutable target.
-3. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the run continues; see **Deferred Findings**. Stop and report only a finding that can be neither fixed nor recorded.
+3. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the run continues; see **Deferred Findings**. A finding that can be neither fixed nor recorded remains an active gate: surface the needed resolution under the global rules' pending-result boundary and continue independent work; do not conclude CR on that report.
 4. Classify each correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean. This is the same authorized CR execution, not a new action-skill invocation.
 5. Once the review is clean, if a merged-range review has no working fix pull request, give the **Completion Report** and return to the invoking workflow without another merge. Otherwise put the complete working pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement, retaining the original review range as context. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate** verdict is the fresh gate; resolve repeated flags under `acceptance-gate`'s **Bounds**, which distinguishes authorized repair from a genuine user decision and never admits a deferral by flag count. The accepted head is the SHA `merge-pr` receives.
 6. Run **Description Refresh**'s second pass, then the second test pass **Validation Order** requires. Never stop, restart, reconfigure or claim a local service this run did not start.

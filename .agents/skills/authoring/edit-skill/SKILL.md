@@ -17,7 +17,8 @@ step; this skill's report is an intermediate update, not the surrounding task's 
 
 An open `.agents` pull request is not a delivery result. At the batch checkpoint, continue through its source
 check, required review steps, merge, Agent Sync result, and verification of generated
-root instructions and provider output; stop only for a genuine gate.
+root instructions and provider output. A genuine gate holds its dependent step while repair or
+resolution remains active under the global rules' **Tools and environments** boundary.
 
 **A gap you notice yourself starts this skill, exactly as a request does.** Guidance that let a miss
 through, a skill whose trigger did not fire when it should have, one that says nothing about the case
@@ -39,13 +40,11 @@ guidance locally when that trace finds a gap. Use the batch workflow below durin
 a checkpoint, not each wording change, starts its delivery. Neither the issue nor its verification
 disappears when the surrounding task resumes.
 
-Some diagnoses are reported rather than written into a file. Where the search finds nothing that
-governs the subject, that absence is the finding and step 2's rule on proposing a new file applies.
-When the governing instruction already says it correctly and its route reached the agent, distinguish
-an observed failure to follow it from a demonstrated trigger, sequence, visibility or enforcement
-gap. Report noncompliance or an unproven process cause as such; do not restate the rule or add a
-speculative checkpoint. An evidenced bypass is edited at its owner. Name the diagnosis either way,
-because silence reads as the guidance having been fixed.
+A correct instruction does not close a reported failure to follow it. Step 2 traces and repairs the
+application step that admitted the rejected decision, then verifies that repair against the miss.
+Keep an unknown historical cause unproven; do not replace that repair with a noncompliance report or
+another copy of the substantive rule. Where no guidance governs the subject, step 2's rule on
+proposing a new file applies.
 
 ## Dependencies
 
@@ -81,8 +80,10 @@ because silence reads as the guidance having been fixed.
   required transition. An eligible draft records `merge-pr` as its next action; only a concrete
   documented gate may replace that action.
 - Before the surrounding task ends or hands off, deliver every pending batch or record its concrete
-  blocking decision, failed gate or unavailable dependency. Never lose a correction, treat a local
-  edit as delivered, or end the source task merely because this batch finished.
+  blocking decision, failed gate or unavailable dependency under the global rules' **Tools and
+  environments** pending-result boundary. Pending recovery or verification remains active work,
+  not an unavailable-dependency disposition. Never lose a correction, treat a local edit as
+  delivered, or end the source task merely because this batch finished.
 
 ## Behavior
 
@@ -126,16 +127,18 @@ because silence reads as the guidance having been fixed.
      read what the candidate already says about that subject, and put the change where a reader
      doing that work will meet it, at the breadth step 5 asks for. Never ask which file; the search
      is this skill's job.
-   - **A violated instruction calls for causal diagnosis.** Do not infer a missing rule from the
-     violation alone. Trace whether the instruction was absent, its trigger or sequence kept it
-     from the decision, a conflicting instruction overrode it, or the agent simply failed to follow
-     guidance it had. When it loaded, read its exceptions and stopping clauses with its callers
-     before deciding that the route enforced it. Strengthen an evidenced gap at its owner, remove
-     conflicting permissions, and close other paths in that failure class; verify the repair against
-     the original decision. Report observed noncompliance without a redundant edit. If the path is
-     unknown, record what evidence is missing and keep the process diagnosis unproven.
-     When the owning skill was not invoked, harden its frontmatter description first; body text
-     cannot control a run that never loads the skill.
+   - **A violated instruction calls for causal diagnosis and an application repair.** Trace whether
+     the instruction was absent, its trigger or sequence kept it from the decision, a conflicting
+     instruction overrode it, or the agent failed to apply guidance it had. Read exceptions and
+     stopping clauses with its callers. When the substantive rule is already correct, inspect the
+     step that produced the rejected recommendation, triage, brief or action: what instruction and
+     review evidence it used, what next action those required, and how its chosen action differed.
+     Repair that decision step at its owner rather than restating the substantive rule or ending
+     with a noncompliance report. Remove conflicting permissions and test other routes in the same
+     failure class, then replay the original decision under the repair before closing the issue.
+     Record missing historical evidence without inventing a cause; it does not prevent repairing
+     the observed decision path. When the owning skill was not invoked, harden its frontmatter
+     description first; body text cannot control a run that never loads the skill.
    - When the user points out a guidance failure, trace the actual path from the request to the
      missed behavior before editing: which instruction applied, whether its skill loaded, and why
      the agent's decision diverged. Correct the current work and any evidenced guidance gap in this run.
@@ -219,9 +222,9 @@ because silence reads as the guidance having been fixed.
      changed is the editor's call, from what the skill returns before and after. Write the example
      for a realistic invented scenario with invented names, as one markdown file whose first line is
      `**EXAMPLE — fictional output for approval; no smoke test was run.**`, check it as the global
-     rules' **User-Facing Output** requires, and send it as the final message of a turn that asks in
-     plain text whether to approve or reject it, one skill at a time. On a rejection, ask what must
-     change, revise the example, and ask again. Only then write the skill to produce exactly the
+     rules' **User-Facing Output** requires, and present it for approval under the global rules'
+     **Task execution and authorization** question route, one skill at a time. On a rejection, ask
+     what must change, revise the example, and ask again. Only then write the skill to produce exactly the
      approved shape; the required smoke run follows in delivery and is never how a format is
      proposed.
    - Trace each miss to the instruction that produced or allowed it, including instructions for

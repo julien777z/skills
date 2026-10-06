@@ -24,6 +24,17 @@ identity, never a second authoritative copy of its records.
   report the incomplete retrieval; never create an empty replacement or claim a complete result.
   Only a successfully read valid file with `entries: []`, or a genuinely new task's initialized
   file, establishes an empty ledger.
+- Keep local evidence needed to resume work or reuse a verdict in private task storage with the
+  ledger's restart and handoff durability. Before recording a local locator, retain and read back
+  its required scenarios, frozen inputs, reports or logs there, recording their provenance and
+  covered inputs or revision. Disposable working copies may remain temporary; a durable record must not
+  depend on their survival. The task owner supplies workers distinct evidence destinations and
+  verifies their returned artifacts before recording them.
+- A readable ledger with missing referenced evidence is incomplete retrieval. Recover the artifact
+  from its verified source or retained copy; if neither exists, preserve the prior observation as
+  such, mark its proof unavailable and rerun only the verification that needs it. Reconstructing
+  inputs does not reconstruct a past result. Never invent a replacement report or silently treat
+  its absence as an empty or completed task.
 - The task owner is the sole writer. Workers receive the locator and relevant entries and return
   new records and observations; they never write the owner's file or replace it with their
   snapshots. Serialize owner updates, reread the current file for each merge, and preserve all
@@ -64,11 +75,12 @@ identity, never a second authoritative copy of its records.
    unrelated entries or reordering existing ones. Carry the locator in agent-consumed task metadata
    and continuation context so the next reader can resolve the existing file.
    - A receiver in the same environment must read and validate the existing file before taking over.
-   - Across environments, transfer the file through an authorized private artifact channel; the
-     receiver saves it outside checkouts, validates its full contents against the source, and records
-     its own absolute locator. An old absolute path is not portable. Keep the source until receipt,
-     content verification and ownership transfer succeed; report a genuine transfer blocker when no
-     authorized private channel exists. Never publish ledger contents in pull-request comments.
+   - Across environments, transfer the file and its required local evidence through an authorized
+     private artifact channel. The receiver saves them outside checkouts, validates their contents
+     against the source, and records the new ledger and evidence locators. An old absolute path is
+     not portable. Keep the source until receipt, content verification and ownership transfer
+     succeed; report a genuine transfer blocker when no authorized private channel exists. Never
+     publish ledger contents or private evidence in pull-request comments.
 5. Retrieve by record kind or facts such as artifact kind, repository, branch or canonical URL.
    Deduplicate artifact URLs while preserving first-recorded order.
    - A task-scoped pull-request lookup reads the recorded pull requests first, then verifies
@@ -105,10 +117,10 @@ new top-level collections or an envelope per kind.
 
 ## Guardrails
 
-- Do not commit a ledger file or parse a transcript. Never record credentials, tokens, request
-  bodies, other secrets, or unrelated session details. Remove task ledger files and transfer copies
-  after the task ends and no receiver or active worker still needs them; a handoff continues the
-  task and is not its end.
+- Do not commit a ledger file or its private evidence, or parse a transcript. Never record
+  credentials, tokens, request bodies, other secrets, or unrelated session details. Remove task
+  ledger files, retained evidence and transfer copies after the task ends and no receiver or active
+  worker still needs them; a handoff continues the task and is not its end.
 - Never infer a record from a repository directory, local branch, remembered pull-request number,
   or search result alone.
 - A missing record is not permission to broaden a query. Ask for the target when the current task

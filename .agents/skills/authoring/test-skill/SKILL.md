@@ -13,6 +13,7 @@ a code change is tested: against the case that motivated it, with the change and
 
 - `subagent-selection` — return model tiers for explicit reviewer dispatch.
 - `code-simplify` — the pass every skill pull request gets before it merges; this skill runs after it.
+- `session-ledger` — resolve retained private evidence storage and preserve verification inputs and results.
 
 ## When It Runs
 
@@ -46,7 +47,9 @@ a code change is tested: against the case that motivated it, with the change and
 2. **Rebuild the scenario** as something a reviewer can read with none of this conversation: for a
    review skill, a diff plus a checkout at the commit where the miss happened; for a walkthrough
    skill, the page and the change; for a planning skill, the task as it was given. Put it in a
-   scratch directory outside every repository and never commit it. The scenario must not name the
+   private task evidence directory resolved with `session-ledger`, outside every repository, and
+   never commit it. Use that directory for this run's frozen packages, dispatch inputs, reader
+   reports and score tables too. The scenario must not name the
    expected answer anywhere a reviewer reads.
    Keep it small: slice the diff to the files the miss lives in, and give every reviewer a reading
    list — those files, their siblings, and the modules the rubric's own searches would reach — so a
@@ -102,7 +105,7 @@ a code change is tested: against the case that motivated it, with the change and
      original never named — and rerun every run.
    - **A reader no change moves** means the miss in step 1 was misstated or the edit does nothing:
      restate the miss and start again from step 1, or drop or reshape the edit.
-9. **Report** the tables in chat, and send one markdown file from the session's scratch directory
+9. **Report** the tables in chat, and send one markdown file from the task's evidence directory
    for the whole smoke test, both as `## Output` shapes them. Put one sentence in the pull request
    description naming the miss the edit closes. The tables are evidence and do not belong in the
    description.
