@@ -76,15 +76,18 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 
 ## Browser Access
 
-- Use the user's `@Chrome` browser for browser work. Open a new, agent-owned tab in that same browser
-  and keep it in the background when the browser supports that; tab isolation does not mean using a
-  different browser, profile, or account. Do not inspect, focus, reuse, or close the user's existing
-  tabs. If the user explicitly names a different browser or an existing tab for the task, follow
-  that direction instead.
-- If `@Chrome` tab control is unavailable, use regular Chrome as the fallback and open a new
-  agent-owned tab there. It may come to the foreground; keep the user's existing tabs untouched.
-  Continue through an appropriate API or CLI when that is more direct. Report a browser-specific
-  blocker only if neither Chrome path can complete the required interaction.
+- Use the user's `@Chrome` browser for browser work unless the user names another browser. When
+  the user explicitly selects an existing tab or window, use only that authorized surface;
+  otherwise create a new task-owned tab before any page read or action. Retain its handle or stable
+  ID and keep actions bound to it under the global rules' tab-ownership procedure. Keep a new tab
+  in the background when supported; tab isolation does not require another profile or account.
+- When attaching a browser CLI to an existing browser, create and select the task tab first, or
+  select the existing surface the user explicitly authorized, before commands that navigate or
+  inspect the current page. A named CLI session alone does not establish tab ownership.
+- For the default Chrome route, if connected tab control is unavailable, use regular Chrome with
+  the same surface-selection requirement above. It may come to the foreground. Continue through an
+  appropriate API or CLI when that is more direct. Report a browser-specific blocker only when the
+  authorized browser's normal recovery paths cannot complete the required interaction.
 
 ## Environment Refusals
 

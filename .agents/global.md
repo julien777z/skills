@@ -145,9 +145,15 @@ alwaysApply: true
 
 - Treat an inventory or availability error as scoped to the surface it names. A native-app lock or failure does not block browser automation, and a browser failure does not block terminal or API work.
 - Before reporting a task blocked by a surface warning, inspect the requested surface directly and retry its normal recovery path. For a browser, refresh the tab inventory and reopen an authenticated task tab when the prior agent-owned tab has closed.
-- Prefer an isolated agent-owned browser tab. When the user explicitly directs use of an existing
-  browser tab or window for the current task, that instruction overrides the isolation preference;
-  use only the authorized surface and leave every other user-owned surface untouched.
+- Create a new task-owned browser tab before reading page content, navigating or interacting.
+  When the user explicitly directs use of an existing tab or window for this task, use only that
+  authorized surface. Leave every other user-owned or agent-owned tab untouched.
+- Retain the task tab's handle or stable ID and bind subsequent actions to it. With tools that
+  act on a selected tab, explicitly select that ID and verify it before each action batch and after
+  reconnecting or switching tabs. A matching URL, active tab, browser profile or session label is
+  not evidence of ownership. If the owned tab has closed, create a replacement; never fall back to
+  the browser's current tab. Inventory metadata may be read to locate the owned tab, without
+  inspecting other tabs' page content.
 - Report a block only when the requested surface itself cannot complete the next required action and safe alternatives have been exhausted.
 
 - **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The records a local stack holds are the same: create, edit, reset, reopen or convert them whenever the work needs them in a given state — a test account to sign in with, a submission held in review to show a banner, a record a new rule no longer accepts — as the repository's data policy says, report what was done, and never put the choice to the user. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. Deployed and shared remote environments are not local; the following live-deployment rules govern them.
