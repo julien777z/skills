@@ -292,31 +292,9 @@ introducing a `models.py`, `helpers.py`, or `utils.py` catch-all where a focused
 natural home.
 
 When several tests need the same configuration overrides, expose one fixture helper in the suite's
-fixture package instead of repeating `monkeypatch.setattr(...)` in each test:
-
-```python
-@pytest.fixture
-def mock_config(monkeypatch):
-    """Create a reusable config override helper for tests."""
-
-    def _mock_config(**overrides) -> None:
-        defaults = {
-            "FEATURE_FLAG_ENABLED": False,
-            "API_KEY": "test-api-key",
-        }
-        for key, value in {**defaults, **overrides}.items():
-            monkeypatch.setattr(f"app.config.CONFIG.{key}", value)
-
-    _mock_config()
-    return _mock_config
-
-
-async def test_extracts_tenant_from_token(mock_config):
-    mock_config(
-        ENVIRONMENT="development",
-        ALLOWED_TEST_ENVIRONMENTS=("development", "staging"),
-    )
-```
+fixture package instead of repeating patches in each test. Read baseline values from the existing
+typed settings and test configuration; apply only the scenario's explicit overrides, preserving the
+fixture's setup, teardown and restoration scope when its registration moves.
 
 For HTTP endpoint tests, build request payloads from the request models the application's routes
 and services use, then serialize them through the suite's shared serialization helper, which owns

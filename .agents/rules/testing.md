@@ -104,7 +104,6 @@ paths:
 - Keep `conftest.py` focused on session/event-loop setup, autouse environment lifecycle and plugin
   or fixture registration, importing domain fixtures from their owners.
 - Helper functions that appear in multiple test files must be extracted to the shared support owner selected by the rubric.
-- When several tests need the same configuration overrides, expose one reusable helper in the suite’s fixture package, using canonical settings and test configuration. Keep its setup/teardown reach unchanged when registration moves.
 - Put common structured payload creation in the canonical factory for the real request model. Extend its owner when the required model or binding is missing.
 - Keep `conftest.py` at shared test boundaries instead of scattering many topic-local `conftest.py` files.
 - If tests need additional properties that belong to shared fixture models, add the missing field in the shared fixture or factory instead of hardcoding literals in test payloads.
