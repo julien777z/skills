@@ -300,12 +300,20 @@ the first wait returns, output capture ends, a status is unchanged, or another t
 the same wait or poll loop, preserving its state, until it resolves or reaches a genuine blocker under
 this skill.
 
-Before any terminal report or merge, explicitly confirm that the current cohort has no running or
-queued delegated agents and that every required review, validation, check, and deployment loop has a
-terminal receipt for the exact gated head. If any work remains, return to its wait loop; never use a
-final response as a handoff for unfinished CR work.
+Before any terminal report or merge, query the host's live delegation state and reconcile every
+receipt with the current phase's outstanding findings and gates. A completed worker is not a
+completed phase: validate its findings, repair confirmed ones, and enter the next required lens or
+gate. Successful completion or merge requires no running or queued cohort worker, no finding
+awaiting disposition or repair, and a terminal receipt for every required review, validation,
+check, and deployment loop on the exact gated head. A genuine blocked result instead reports the
+reconciled outstanding work and the decision or unavailable external dependency that prevents its
+next action. Continue unrelated authorized work where possible. Otherwise take the next action or
+return to its wait loop; never infer eligibility from a summary saying the agents finished or use
+a final response as a handoff.
 
-An unfinished phase is never a final result. Do not answer with "still in progress," ask the user to say "continue," or rely on another user turn to resume work. Use commentary only for progress updates, and use the host's event, webhook, or wait mechanism for pending external state. An additional user request does not close the active run unless it explicitly stops, pauses, or replaces it. Complete the added work in its owning branch, invalidate affected receipts under **Review Continuity**, then resume CR at the first nonterminal phase before a final response.
+An unfinished phase is never a final result. Do not answer with "still in progress," ask the user to say "continue," or rely on another user turn to resume work. Use commentary only for progress updates, and use the host's event, webhook, or wait mechanism for pending external state. An additional user request does not close the active run unless it explicitly stops, pauses, or replaces it.
+
+When the added work does not modify the CR target or any reviewed input, continue the active CR loop while that work proceeds. Delegate the unrelated work to an available worker, or queue it when capacity is unavailable; do not serially wait for it before advancing a review, validation, check, or provider-poll phase. State the current CR phase in progress updates so an active loop is observable. Only work that changes the target or reviewed input invalidates receipts under **Review Continuity** and returns CR to its first nonterminal phase.
 
 Carry the run's state throughout: the current workflow step, repository and PR, exact head SHA, the intent statement and recorded merge-base SHA, review-thread dispositions, reviewed-input digests, completed review receipts and lens-retirement counters, `acceptance-gate` verdicts keyed by head SHA, fixes and validation already completed, and the pending gate. At the start of every resumed turn and after context compaction, re-establish that state, verify the recorded head and inputs against GitHub and the worktree, then resume from the first nonterminal phase.
 
