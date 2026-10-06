@@ -110,7 +110,14 @@ parallel creator per variant.
 
 ## Mirror Source Ownership
 
-Discover the repository's source roots, test roots, suites, and existing ownership conventions.
+Discover the repository's source roots, test roots, distribution roots, build configuration, release
+artifacts, suites, and existing ownership conventions. Test suites, fixtures, test helpers, and test
+data belong outside every independently built or distributed package root unless that root is the
+repository itself. In a multi-package repository, use the repository-level test surface and make its
+runner, lint, type-check, CI, test imports, and package-source resolution explicit. A package that
+currently excludes nested tests from its artifact still has the wrong ownership boundary; exclusion
+does not justify test-only code inside a distributable package.
+
 Mirror source directly beneath the test classification directory. Utility tests, including tests of
 test-only source helpers, live in `utils/`; keep test support in the nearest fixture or utility
 package that does not hide a source owner. Preserve a repository's revision-support convention for

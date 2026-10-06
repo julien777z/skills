@@ -18,12 +18,13 @@ tracing a test surface is; without one, fix what the focused pass can finish.
 ## Workflow
 
 1. Read the complete [rubric](references/rubric.md) before inspecting, reviewing, changing, or
-   executing any covered test surface. Discover the repository's test roots, fixture packages,
-   factory owner, shared test utilities, runner targets, and analogous sibling tests. For a test of
-   shell, process, container, browser, network, or operating-system behavior, identify the runtime
-   CI or the deployment declares before writing it. That target is the only contract for the durable
-   regression test: construct, execute, and validate it there. A local host can diagnose a failure,
-   but never defines the test's contract or validates a passing regression test.
+   executing any covered test surface. Discover the repository's test roots, distribution and build
+   roots, artifact boundaries, fixture packages, factory owner, shared test utilities, runner
+   targets, and analogous sibling tests. For a test of shell, process, container, browser, network,
+   or operating-system behavior, identify the runtime CI or the deployment declares before writing
+   it. That target is the only contract for the durable regression test: construct, execute, and
+   validate it there. A local host can diagnose a failure, but never defines the test's contract or
+   validates a passing regression test.
 2. Apply the rubric's value gate before adding or changing a test. Name its observable
    guarantee, credible regression, distinct coverage need, and any production seam it demands.
    Search and read existing coverage of the same classification first; do not add a test or file when it already catches the regression. Check an existing test's independent contract and collect the rubric's evidence before deleting it.
