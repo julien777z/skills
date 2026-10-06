@@ -275,6 +275,27 @@ provides or lacks, never a coined adjective — when each test needs one standar
 instance, and prefer one that returns a real ORM instance for ORM-heavy tests. Add a callable
 creation fixture only when tests genuinely need arbitrary independently configured instances.
 
+```python
+# Good: a domain-named persisted creation fixture in the suite's fixture package
+@pytest.fixture
+def create_order(order_fixture, customer_fixture, create_customer):
+    """Build Order ORM instances with a nested real Customer relation."""
+
+    def _build(**overrides):
+        customer = create_customer()
+        order = Orders(
+            id=order_fixture.id,
+            customer_id=customer_fixture.id,
+            status=OrderStatus.PENDING,
+        )
+        order.customer = customer
+        for key, value in overrides.items():
+            setattr(order, key, value)
+        return order
+
+    return _build
+```
+
 A fixture is never defined in a test module either. A fixture beside the tests that use it is
 invisible to every other module, so the next suite needing the same setup writes its own copy, and
 one concept ends up with three implementations. Move it to the suite's fixture package, and where it
@@ -292,9 +313,31 @@ introducing a `models.py`, `helpers.py`, or `utils.py` catch-all where a focused
 natural home.
 
 When several tests need the same configuration overrides, expose one fixture helper in the suite's
-fixture package instead of repeating patches in each test. Read baseline values from the existing
-typed settings and test configuration; apply only the scenario's explicit overrides, preserving the
-fixture's setup, teardown and restoration scope when its registration moves.
+fixture package instead of repeating `monkeypatch.setattr(...)` in each test:
+
+```python
+@pytest.fixture
+def mock_config(monkeypatch):
+    """Create a reusable config override helper for tests."""
+
+    def _mock_config(**overrides) -> None:
+        defaults = {
+            "FEATURE_FLAG_ENABLED": False,
+            "API_KEY": "test-api-key",
+        }
+        for key, value in {**defaults, **overrides}.items():
+            monkeypatch.setattr(f"app.config.CONFIG.{key}", value)
+
+    _mock_config()
+    return _mock_config
+
+
+async def test_extracts_tenant_from_token(mock_config):
+    mock_config(
+        ENVIRONMENT="development",
+        ALLOWED_TEST_ENVIRONMENTS=("development", "staging"),
+    )
+```
 
 For HTTP endpoint tests, build request payloads from the request models the application's routes
 and services use, then serialize them through the suite's shared serialization helper, which owns

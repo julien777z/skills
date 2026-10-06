@@ -51,7 +51,7 @@ paths:
 
 - Use pytest async tests (`async def test_...`).
 - Group tests in classes named `TestXxx`.
-- Use fixtures for setup under the ownership boundaries in **Fixtures and Test Data** below.
+- Use fixtures for setup (defined in `conftest.py` or fixture modules).
 - Register custom pytest markers in `pyproject.toml` under `[tool.pytest.ini_options].markers` instead of adding them dynamically in `pytest_configure(...)` inside `conftest.py`.
 - Add a single-line docstring to every test class and test function.
 - Test docstrings must start with `Test that ...` (example: `"""Test that when no credentials are provided an exception is raised"""`).
@@ -70,18 +70,16 @@ paths:
 
 ## Fixtures and Test Data
 
-- Invoke `test-fixture` and read its complete rubric before selecting test-support owners; the
-  Python techniques and examples below apply those boundaries.
 - Use clearly synthetic data that is unique to each test or parametrized case unless an exact protocol or catalog literal is the contract under test; never paste exact user-provided examples into tests, and preserve only the shape or edge case being verified when inventing replacements.
 - Define test helper functions at module level.
 - Keep helper docstrings to a single line.
-- Use Polyfactory for structured Pydantic and SQLAlchemy test data. Define concrete `ModelFactory` or `SQLAlchemyFactory` classes in the shared test-utilities owner selected by the rubric, set `__model__`, provide deterministic domain defaults, and call `.build(**overrides)` directly from tests.
+- Use Polyfactory for structured Pydantic and SQLAlchemy test data. Define concrete `ModelFactory` or `SQLAlchemyFactory` classes in the nearest shared `factories.py`, set `__model__`, provide deterministic domain defaults, and call `.build(**overrides)` directly from tests.
 - Let Polyfactory generate incidental valid values. Express domain constraints and cross-field relationships without replacing its generation with a large manual `build()` implementation.
 - Do not wrap Polyfactory classes in callable pytest fixtures solely for dependency injection, and do not use `Protocol` to describe them.
-- Use pytest factory fixtures for setup or construction that Polyfactory does not cover, including persisted flows, filesystem materialization, dependency lifecycles, and multi-object scenarios. Put reusable builders in the fixture owner selected by the rubric, not in test modules.
+- Use pytest factory fixtures for setup or construction that Polyfactory does not cover, including persisted flows, filesystem materialization, dependency lifecycles, and multi-object scenarios. Put reusable pytest builders in the nearest shared `conftest.py`, not in test modules.
 - Keep pytest factory names domain-focused. Name ORM persistence fixtures for their action, such as `create_order` or `create_customer`; never use an `*_orm_factory` suffix or encode persistence mechanics in the name.
 - Use explicit shared materialization helpers for filesystem and other I/O artifacts; accept typed factory-built models and explicit target paths.
-- Module-level helpers are allowed only for trivial, non-construction utilities scoped to one file (predicates, small formatters, `to_comparable_string`-style assertion adapters). Apply the rubric’s helper placement when the operation exceeds that exception.
+- Module-level helpers are allowed only for trivial, non-construction utilities scoped to one file (predicates, small formatters, `to_comparable_string`-style assertion adapters). When in doubt, move it to `conftest.py`.
 
 - Treat the suite's canonical root fixtures as the roots of test data. Put reusable subordinate data on typed fixture models instead of creating parallel fixtures.
 - Keep variant-only fields on typed subclasses of the canonical root. Use one canonical aggregate creator with a typed variant selector instead of parallel variant helpers.
@@ -99,19 +97,19 @@ paths:
 - Do not add helpers that only format one URL or return one fixture/model field. Inline one-off values or reuse an existing shared boundary when the operation is repeated or nontrivial.
 - Construct typed models when a model exists for sample, request, response, or provider data. Do not maintain a parallel hand-written dictionary representation of that contract.
 
-- Do not create module-level helper factories inside test files, including for the first call site. Use the canonical factory or fixture owner selected by the rubric.
+- Do not create module-level helper factories inside test files, including for the first call site. Add a concrete Polyfactory class to `factories.py` or a pytest fixture to `conftest.py` according to the boundary it owns.
 - A pytest factory fixture returns a keyword-only inner builder named `_build` or for its specific action. Do not use a bare inner name such as `factory`.
-- Keep `conftest.py` focused on session/event-loop setup, autouse environment lifecycle and plugin
-  or fixture registration, importing domain fixtures from their owners.
-- Helper functions that appear in multiple test files must be extracted to the shared support owner selected by the rubric.
-- Put common structured payload creation in the canonical factory for the real request model. Extend its owner when the required model or binding is missing.
+- Keep `conftest.py` focused on pytest-managed setup, teardown, dependency lifecycles, persisted flows, and non-Polyfactory construction.
+- Helper functions that appear in multiple test files must be extracted to the nearest shared `conftest.py` or a `utils.py` in the test service folder.
+- When multiple tests in a suite need the same config overrides, expose a reusable fixture helper (for example, `mock_config` returning `_mock_config(**overrides)`) in `conftest.py` instead of repeating `monkeypatch.setattr(...)` in each test.
+- Put common structured payload creation in a Polyfactory class for the real request model. When no model or Polyfactory path exists, use a service-specific pytest fixture in `conftest.py`.
 - Keep `conftest.py` at shared test boundaries instead of scattering many topic-local `conftest.py` files.
 - If tests need additional properties that belong to shared fixture models, add the missing field in the shared fixture or factory instead of hardcoding literals in test payloads.
 - Prefer shared fixtures and domain-named creation fixtures over ad-hoc object setup in test modules.
-- Reuse fixture helpers from their canonical fixture owner instead of duplicating setup in tests.
+- Keep reusable fixture helpers in shared `conftest.py` instead of duplicating setup in each test.
 - Use fixture-backed values instead of hardcoded IDs/names/emails/tax IDs when fixtures provide them.
 - Do not hardcode domain-specific values when a shared fixture or factory can provide them; extend the shared fixture first when needed.
-- Do not declare reusable request, response, persistence-payload or fixture models inside test modules or lifecycle wiring. Use the production boundary model when available; otherwise put the typed declaration in its shared fixture/model owner.
+- Do not declare reusable request, response, persistence-payload, or fixture models inside one test module. Use the production boundary model when it exists; otherwise place the shared test contract in the nearest fixture module or `conftest.py`.
 - Name shared test modules for the domain or boundary they own. Do not introduce generic `models.py`, `helpers.py`, or `utils.py` catch-alls when a focused fixture module is the natural home.
 
 ```python
@@ -138,6 +136,34 @@ async def create_entity(
         CreateEntityResponse,
     )
     return response_data
+```
+
+```python
+# Good: centralize repeated config overrides in conftest.py
+@pytest.fixture
+def mock_config(monkeypatch):
+    """Create a reusable config override helper for tests."""
+
+    def _mock_config(**overrides) -> None:
+        defaults = {
+            "FEATURE_FLAG_ENABLED": False,
+            "API_KEY": "test-api-key",
+        }
+        for key, value in {**defaults, **overrides}.items():
+            monkeypatch.setattr(f"app.config.CONFIG.{key}", value)
+
+    _mock_config()
+    return _mock_config
+```
+
+```python
+# Good: use fixture helper in tests instead of repeated monkeypatch lines
+async def test_extracts_tenant_from_token(mock_config):
+    mock_config(
+        ENVIRONMENT="development",
+        ALLOWED_TEST_ENVIRONMENTS=("development", "staging"),
+    )
+    # ...
 ```
 
 - Combine similar test cases with `@pytest.mark.parametrize` instead of duplicating tests.
@@ -174,9 +200,30 @@ class TreeNode(BaseModel):
     children: list["TreeNode"] = Field(default_factory=list)
 ```
 
-- Use Polyfactory's `SQLAlchemyFactory` for non-persisted ORM models. Keep concrete classes in the shared test-utilities owner selected by the rubric, use realistic defaults, accept `.build(**overrides)`, and construct real nested relationships.
+- Use Polyfactory's `SQLAlchemyFactory` for non-persisted ORM models. Keep concrete classes in shared `factories.py`, use realistic defaults, accept `.build(**overrides)`, and construct real nested relationships.
 - Prefer ready fixtures for standard persisted ORM instances. Use domain-named creation fixtures such as `create_user`, `create_account`, `create_order`, or `create_subscription` only when tests need multiple independently configured persisted roots.
 - Build relationship rows and nested values through their owning root fixture instead of giving them standalone factories.
+
+```python
+# Good: domain-named persisted creation fixture in conftest.py
+@pytest.fixture
+def create_order(order_fixture, customer_fixture, create_customer):
+    """Build Order ORM instances with nested real Customer relation."""
+
+    def _build(**overrides):
+        customer = create_customer()
+        order = Orders(
+            id=order_fixture.id,
+            customer_id=customer_fixture.id,
+            status=OrderStatus.PENDING,
+        )
+        order.customer = customer
+        for key, value in overrides.items():
+            setattr(order, key, value)
+        return order
+
+    return _build
+```
 
 ## Assertions and Mocking
 
@@ -248,7 +295,7 @@ done
   - `email="test@example.com"` -> `email=user_fixture.email`
 - **SimpleNamespace as fake domain model** - Do not build test entities with `SimpleNamespace`; use ready fixture-backed models, domain-qualified creation fixtures, or test-only `BaseModel` types.
 - **Local duplicate fixtures/builders** - Do not define ad-hoc helper constructors in test modules when a shared fixture or factory already covers the use case.
-- **Inline aggregate/scenario builders in test files** - Put reusable construction in the factory or fixture owner selected by the rubric. Test files compose fixtures instead of defining builders.
+- **Inline aggregate/scenario builders in test files** - Reusable domain aggregate, persisted-root, public-boundary, and multi-object scenario construction belongs in `conftest.py`. Test files should compose fixtures, not define builders.
 - **Duplicate domain-object setup** - If the same construction appears in multiple tests, extract one ready fixture at the nearest shared boundary. Add a callable creation fixture only when arbitrary instance counts are required.
 
 - Do not duplicate helper models or utility types across multiple test files. Put shared models in a shared test helper module instead.

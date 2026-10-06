@@ -22,12 +22,6 @@ Comprehensive guide to implementing robust testing strategies in Python using py
 - Testing database operations
 - Debugging failing tests
 
-## Dependencies
-
-Invoke `test-fixture` before choosing or applying the patterns below to tests, data, fixtures or
-support. Its full rubric owns coverage reuse, support placement and regression-proof validation;
-the examples here demonstrate Python testing techniques within those boundaries.
-
 ## Core Concepts
 
 ### 1. Test Types
@@ -58,27 +52,20 @@ the examples here demonstrate Python testing techniques within those boundaries.
 ## Quick Start
 
 ```python
-# myapp/arithmetic.py
+# test_example.py
 def add(a, b):
     return a + b
-```
-
-```python
-# tests/test_arithmetic.py
-from myapp.arithmetic import add
-
 
 def test_add():
     """Basic test example."""
     result = add(2, 3)
-
     assert result == 5
 
 def test_add_negative():
     """Test with negative numbers."""
     assert add(-1, 1) == 0
 
-# Run with the repository's native test command for tests/test_arithmetic.py
+# Run with: pytest test_example.py
 ```
 
 ## Detailed patterns and worked examples
@@ -92,15 +79,14 @@ Detailed pattern documentation lives in `references/details.md`. Read that file 
 ```python
 # tests/
 #   __init__.py
-#   conftest.py           # Lifecycle and fixture registration
-#   fixtures/             # Topic-owned domain and scenario fixtures
-#   unit/            # Unit tests
+#   conftest.py           # Shared fixtures
+#   test_unit/            # Unit tests
 #     test_models.py
 #     test_utils.py
-#   integration/     # Integration tests
+#   test_integration/     # Integration tests
 #     test_api.py
 #     test_database.py
-#   e2e/            # End-to-end tests
+#   test_e2e/            # End-to-end tests
 #     test_workflows.py
 ```
 
@@ -128,7 +114,7 @@ def test_login_fails_with_invalid_password():
     """Name describes expected behavior."""
     pass
 
-def test_api_returns_not_found_for_missing_resource():
+def test_api_returns_404_for_missing_resource():
     """Specific about inputs and expected outcomes."""
     pass
 

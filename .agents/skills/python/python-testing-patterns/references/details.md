@@ -5,7 +5,9 @@
 ### Pattern 1: Basic pytest Tests
 
 ```python
-# myapp/calculator.py
+# test_calculator.py
+import pytest
+
 class Calculator:
     """Simple calculator for testing."""
 
@@ -21,14 +23,7 @@ class Calculator:
     def divide(self, a: float, b: float) -> float:
         if b == 0:
             raise ValueError("Cannot divide by zero")
-
         return a / b
-```
-
-```python
-# tests/test_calculator.py
-import pytest
-from myapp.calculator import Calculator
 
 
 def test_addition():
@@ -69,12 +64,11 @@ def test_division_by_zero():
 
 ### Pattern 2: Fixtures for Setup and Teardown
 
-Use the suite's existing session-scoped configuration fixture, registered from its topic owner.
-The following example separates the application class, resource lifecycle wiring and consuming tests; fixture
-scope follows the lifetime of the resource.
-
 ```python
-# myapp/database.py
+# test_database.py
+import pytest
+from typing import Generator
+
 class Database:
     """Simple database class."""
 
@@ -95,76 +89,64 @@ class Database:
         if not self.connected:
             raise RuntimeError("Not connected")
         return [{"id": 1, "name": "Test"}]
-```
-
-```python
-# tests/conftest.py
-from collections.abc import Iterator
-
-import httpx
-import pytest
-from myapp.config import AppConfig
-from myapp.database import Database
-from tests.fixtures.configuration import app_config
 
 
 @pytest.fixture
-def db(app_config: AppConfig) -> Iterator[Database]:
-    """Provide a connected database for one test."""
-    database = Database(app_config.database_url)
+def db() -> Generator[Database, None, None]:
+    """Fixture that provides connected database."""
+    # Setup
+    database = Database("sqlite:///:memory:")
     database.connect()
 
-    try:
-        yield database
-    finally:
-        database.disconnect()
+    # Provide to test
+    yield database
+
+    # Teardown
+    database.disconnect()
 
 
-@pytest.fixture(scope="module")
-def api_client(app_config: AppConfig) -> Iterator[httpx.Client]:
-    """Provide an HTTP client for one test module."""
-    with httpx.Client(base_url=app_config.api_base_url) as client:
-        yield client
-```
-
-```python
-# tests/test_database.py
-from myapp.database import Database
-
-
-def test_database_query(db: Database) -> None:
-    """Test that a connected database accepts a query."""
+def test_database_query(db):
+    """Test database query with fixture."""
     results = db.query("SELECT * FROM users")
-
     assert len(results) == 1
     assert results[0]["name"] == "Test"
 
 
-# tests/test_api_client.py
-import httpx
+@pytest.fixture(scope="session")
+def app_config():
+    """Session-scoped fixture - created once per test session."""
+    return {
+        "database_url": "postgresql://localhost/test",
+        "api_key": "test-key",
+        "debug": True
+    }
 
 
-def test_api_client(api_client: httpx.Client) -> None:
-    """Test that the configured client is open during the test."""
-    assert not api_client.is_closed
+@pytest.fixture(scope="module")
+def api_client(app_config):
+    """Module-scoped fixture - created once per test module."""
+    # Setup expensive resource
+    client = {"config": app_config, "session": "active"}
+    yield client
+    # Cleanup
+    client["session"] = "closed"
+
+
+def test_api_client(api_client):
+    """Test using api client fixture."""
+    assert api_client["session"] == "active"
+    assert api_client["config"]["debug"] is True
 ```
 
 ### Pattern 3: Parameterized Tests
 
 ```python
-# myapp/validation.py
+# test_validation.py
+import pytest
+
 def is_valid_email(email: str) -> bool:
     """Check if email is valid."""
-    local_part, separator, domain = email.partition("@")
-
-    return bool(local_part and separator and "." in domain)
-```
-
-```python
-# tests/test_validation.py
-import pytest
-from myapp.calculator import Calculator
-from myapp.validation import is_valid_email
+    return "@" in email and "." in email.split("@")[1]
 
 
 @pytest.mark.parametrize("email,expected", [
@@ -189,6 +171,7 @@ def test_email_validation(email, expected):
 ])
 def test_addition_parameterized(a, b, expected):
     """Test addition with multiple parameter sets."""
+    from test_calculator import Calculator
     calc = Calculator()
     assert calc.add(a, b) == expected
 
@@ -207,9 +190,10 @@ def test_is_positive(value, expected):
 ### Pattern 4: Mocking with unittest.mock
 
 ```python
-# myapp/api_client.py
+# test_api_client.py
+import pytest
+from unittest.mock import Mock, patch, MagicMock
 import requests
-
 
 class APIClient:
     """Simple API client."""
@@ -228,91 +212,66 @@ class APIClient:
         response = requests.post(f"{self.base_url}/users", json=data)
         response.raise_for_status()
         return response.json()
-```
-
-The following tests consume the suite's established topic fixtures for `AppConfig`,
-`UserResponse` and `CreateUserRequest`. The request and response fixtures bind the same canonical
-user root through shared generation; `absent_user` is the root for an identity absent at the
-provider. The boundary models supply their own JSON serialization.
-
-```python
-# tests/test_api_client.py
-from unittest.mock import Mock, patch
-
-import pytest
-import requests
-from myapp.api_client import APIClient
-from myapp.config import AppConfig
-from myapp.models.users import CreateUserRequest, UserResponse
 
 
-def test_get_user_success(app_config: AppConfig, user_response: UserResponse) -> None:
-    """Test that fetching a user returns the provider's result."""
-    client = APIClient(app_config.api_base_url)
+def test_get_user_success():
+    """Test successful API call with mock."""
+    client = APIClient("https://api.example.com")
+
     mock_response = Mock()
-    mock_response.json.return_value = user_response.model_dump(mode="json")
+    mock_response.json.return_value = {"id": 1, "name": "John Doe"}
     mock_response.raise_for_status.return_value = None
 
     with patch("requests.get", return_value=mock_response) as mock_get:
-        user = client.get_user(user_response.id)
+        user = client.get_user(1)
 
-        assert user["id"] == user_response.id
-        assert user["name"] == user_response.name
-        mock_get.assert_called_once_with(f"{app_config.api_base_url}/users/{user_response.id}")
+        assert user["id"] == 1
+        assert user["name"] == "John Doe"
+        mock_get.assert_called_once_with("https://api.example.com/users/1")
 
 
-def test_get_user_not_found(app_config: AppConfig, absent_user: UserResponse) -> None:
-    """Test that a missing user raises the provider's HTTP error."""
-    client = APIClient(app_config.api_base_url)
+def test_get_user_not_found():
+    """Test API call with 404 error."""
+    client = APIClient("https://api.example.com")
+
     mock_response = Mock()
     mock_response.raise_for_status.side_effect = requests.HTTPError("404 Not Found")
 
     with patch("requests.get", return_value=mock_response):
         with pytest.raises(requests.HTTPError):
-            client.get_user(absent_user.id)
+            client.get_user(999)
 
 
 @patch("requests.post")
-def test_create_user(
-    mock_post: Mock,
-    app_config: AppConfig,
-    create_user_request: CreateUserRequest,
-    user_response: UserResponse,
-) -> None:
-    """Test that creating a user sends the request and returns the provider's result."""
-    client = APIClient(app_config.api_base_url)
-    mock_post.return_value.json.return_value = user_response.model_dump(mode="json")
-    mock_post.return_value.raise_for_status.return_value = None
-    user_data = create_user_request.model_dump(mode="json")
+def test_create_user(mock_post):
+    """Test user creation with decorator syntax."""
+    client = APIClient("https://api.example.com")
 
+    mock_post.return_value.json.return_value = {"id": 2, "name": "Jane Doe"}
+    mock_post.return_value.raise_for_status.return_value = None
+
+    user_data = {"name": "Jane Doe", "email": "jane@example.com"}
     result = client.create_user(user_data)
 
-    assert result["id"] == user_response.id
+    assert result["id"] == 2
     mock_post.assert_called_once()
     call_args = mock_post.call_args
-
     assert call_args.kwargs["json"] == user_data
 ```
 
 ### Pattern 5: Testing Exceptions
 
 ```python
-# myapp/arithmetic.py
+# test_exceptions.py
+import pytest
+
 def divide(a: float, b: float) -> float:
     """Divide a by b."""
     if b == 0:
         raise ZeroDivisionError("Division by zero")
-
     if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):
         raise TypeError("Arguments must be numbers")
-
     return a / b
-```
-
-```python
-# tests/test_arithmetic.py
-import pytest
-from myapp.arithmetic import divide
 
 
 def test_zero_division():
@@ -348,86 +307,43 @@ For advanced patterns including async testing, monkeypatching, temporary files, 
 ### One Behavior Per Test
 
 Each test should verify exactly one behavior. This makes failures easy to diagnose and tests easy to maintain.
-The paired examples use the same established service and topic request/scenario fixtures; their
-difference is the number of behaviors each test checks.
 
 ```python
-from myapp.models.users import CreateUserRequest, UpdateUserRequest
-from myapp.services.users import UserService
-
-
 # BAD - testing multiple behaviors
-def test_user_service(
-    service: UserService,
-    create_user_request: CreateUserRequest,
-    update_user_request: UpdateUserRequest,
-) -> None:
-    user = service.create_user(create_user_request.model_dump(mode="json"))
-
+def test_user_service():
+    user = service.create_user(data)
     assert user.id is not None
-    assert user.email == create_user_request.email
-
-    updated = service.update_user(user.id, update_user_request.model_dump(mode="json"))
-
-    assert updated.name == update_user_request.name
-
+    assert user.email == data["email"]
+    updated = service.update_user(user.id, {"name": "New"})
+    assert updated.name == "New"
 
 # GOOD - focused tests
-def test_create_user_assigns_id(
-    service: UserService,
-    create_user_request: CreateUserRequest,
-) -> None:
-    user = service.create_user(create_user_request.model_dump(mode="json"))
-
+def test_create_user_assigns_id():
+    user = service.create_user(data)
     assert user.id is not None
 
+def test_create_user_stores_email():
+    user = service.create_user(data)
+    assert user.email == data["email"]
 
-def test_create_user_stores_email(
-    service: UserService,
-    create_user_request: CreateUserRequest,
-) -> None:
-    user = service.create_user(create_user_request.model_dump(mode="json"))
-
-    assert user.email == create_user_request.email
-
-
-def test_update_user_changes_name(
-    service: UserService,
-    create_user_request: CreateUserRequest,
-    update_user_request: UpdateUserRequest,
-) -> None:
-    user = service.create_user(create_user_request.model_dump(mode="json"))
-
-    updated = service.update_user(user.id, update_user_request.model_dump(mode="json"))
-
-    assert updated.name == update_user_request.name
+def test_update_user_changes_name():
+    user = service.create_user(data)
+    updated = service.update_user(user.id, {"name": "New"})
+    assert updated.name == "New"
 ```
 
 ### Test Error Paths
 
-Always test failure cases, not just happy paths. Use the topic fixture's absent identity, and derive
-malformed input from a valid boundary payload, changing only the field under test.
+Always test failure cases, not just happy paths.
 
 ```python
-import pytest
-from myapp.models.users import CreateUserRequest, UserResponse
-from myapp.services.users import UserNotFoundError, UserService
-
-
-def test_get_user_raises_not_found(service: UserService, absent_user: UserResponse) -> None:
+def test_get_user_raises_not_found():
     with pytest.raises(UserNotFoundError) as exc_info:
-        service.get_user(absent_user.id)
+        service.get_user("nonexistent-id")
 
-    assert str(absent_user.id) in str(exc_info.value)
+    assert "nonexistent-id" in str(exc_info.value)
 
-
-def test_create_user_rejects_invalid_email(
-    service: UserService,
-    create_user_request: CreateUserRequest,
-) -> None:
-    payload = create_user_request.model_dump(mode="json")
-    payload["email"] = "not-an-email"
-
+def test_create_user_rejects_invalid_email():
     with pytest.raises(ValueError, match="Invalid email format"):
-        service.create_user(payload)
+        service.create_user({"email": "not-an-email"})
 ```
