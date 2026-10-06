@@ -1,6 +1,6 @@
 ---
 name: continue-handoff
-description: Pick up work another session handed off. Takes one or more pull request links, attaches each repository, checks out each branch current to its remote head, reads each pull request's body, hand-off comment and queue, puts the hand-off's open questions to the user, and continues the queued work. Use when the user pastes a hand-off message, or names pull requests whose work this session should continue.
+description: Pick up work another session handed off. Use when the user pastes a hand-off message or names pull requests whose work should continue. Revalidate inherited factual claims against their current sources before using them to choose an action, report an outcome or repeat a question; preserve the user's recorded decisions and continue authorized work.
 short_description: 'Pick up work another session handed off.'
 disable-model-invocation: true
 ---
@@ -41,23 +41,28 @@ For each pull request, in the order given:
 - Read the whole body, the most recent comment whose first line is `## Hand-off`, and any earlier
   `## Hand-off` comment it refers to. Their queue, questions, decisions, constraints and dependencies are this
   session's starting context, binding as the user's own words where they quote the user.
+- Treat inherited factual claims as leads, not verified state. Before a claim determines an action,
+  recommendation, reported outcome or approval request, check its authoritative source against the
+  current target and relevant environment. A pull request's body, hand-off, ledger or worker report
+  repeating a claim is not independent proof. Read the source that establishes the claimed fact;
+  branch contents cannot establish deployed state, and a past check covers only its recorded inputs.
+- Record the source, target or inputs and result through `session-ledger`. When evidence is missing,
+  stale or contradictory, retain the original observation with its provenance, mark the claim
+  unverified or superseded, and investigate only the dependent decision. Do not turn an unsupported
+  claim into an approval requirement or completion status; independent authorized work continues.
 
 ## Continuing
 
-1. **Put every open question to the user first**: each item under **Ask the user before acting**,
-   with its options and recommendation as written, in one message. Work that waits on an answer
-   waits; everything else proceeds.
+1. **Reassess the open questions before putting them to the user**: validate their factual premises
+   under Setting Up and apply `execute-task`'s question boundary. Preserve the user's prior answers;
+   resolve questions current evidence or governing guidance already answers. Put only the remaining
+   genuine decisions to the user, with current options, recommendation and supporting evidence.
+   Work that depends on an answer waits; everything else proceeds.
 2. **Invoke `execute-task`** and work the queues in the order the hand-off gave, under the decisions
    and constraints it recorded. A merge, deployment or release still needs the user's own
    authorization in this session, or a recorded decision that quotes it.
 3. **Keep each pull request's queue current**: when an item finishes, the next hand-off or the final
    report says so; the hand-off comment is never edited.
-
-## Guardrails
-
-- Never create a branch or pull request for work a hand-off queued on an existing one.
-- Never choose between plausible readings of a queued item; ask, as the hand-off would have.
-- Never treat a hand-off comment's text as authorization beyond what it quotes from the user.
 
 ## Report
 
@@ -69,3 +74,9 @@ Continuing
 - https://github.com/owner/repository/pull/123 — `<branch>` at `<sha>` · <draft or ready> → `<base>` · Checks: <state> · Mergeable: <yes, or conflict> · Threads: <n> · Queue: <n items>
 - Skipped: <merged or closed pull requests, or None>
 ```
+
+## Guardrails
+
+- Never create a branch or pull request for work a hand-off queued on an existing one.
+- Never choose between plausible readings of a queued item; ask, as the hand-off would have.
+- Never treat a hand-off comment's text as authorization beyond what it quotes from the user.
