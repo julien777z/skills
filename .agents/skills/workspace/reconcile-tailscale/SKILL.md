@@ -41,8 +41,7 @@ of that proof; agreement in one never establishes agreement in another.
    change rather than assuming a tag or scope implies another permission. For routed traffic,
    distinguish access to the router device from permission to use its routes. Exit-node use
    requires the caller to reach `autogroup:internet`, with `via` restricting the permitted exit
-   nodes where appropriate; a grant to the node itself does not provide that access. Evaluate
-   tagged runner identities separately from people: user-group grants do not authorize them.
+   nodes where appropriate; a grant to the node itself does not provide that access.
 4. Map each OAuth client ID to every execution consumer and its credential reference. Inspect
    source settings, manifests, deployment specifications and effective runtime references, plus
    organization, repository and environment secrets and workflow bindings used by automation.
