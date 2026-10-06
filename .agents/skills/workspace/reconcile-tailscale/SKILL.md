@@ -51,11 +51,6 @@ of that proof; agreement in one never establishes agreement in another.
    use provider metadata or minimal private credential access through `proton-pass` to establish
    identity when needed. An unreadable consumer or unknown identity remains unverified, never
    absent. Do not dump complete environments, secret stores or credential-bearing payloads.
-   Resolve each execution consumer through the helpers, adapters and dependencies it actually
-   calls, including defaults and omitted inputs; an input at the outer entrypoint does not prove
-   what the inner consumer uses. Match every authority declaration and reference found in that
-   execution graph to an inventory row and a cutover receipt. An unmatched reference keeps
-   reconciliation open, even when the already-listed consumers pass.
 5. Choose the target authority from each consumer's required operations and environment boundary.
    One shared OAuth client and separate clients per environment are both valid when their scopes
    and permitted tags provide least privilege for the authority they hold. Use separate clients
