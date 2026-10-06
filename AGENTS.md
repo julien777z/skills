@@ -433,7 +433,11 @@ return records;
 - Run project-level installation commands such as `poetry install` or `npm install` in workflows.
 - Do not install individual project packages or embed their versions directly in workflow commands.
 
-## README
+## Documentation
+
+- Do not turn user exchanges, questions, clarifications, or explanations of a misunderstanding into README or other documentation content unless the user explicitly asks to document them. Apply settled instructions to the work; update independently required setup and configuration facts without narrating the exchange that prompted them.
+
+### README
 
 - A README's reader is a person using or developing the project, so a README holds what the
   project is, how to run or use it, where a developer finds its parts, and a Local Development
@@ -450,7 +454,7 @@ return records;
 - Write the top-level heading in every `README.md` in title case.
 - Convert slug-style project names into readable words, such as `example-service` becoming `Example Service`.
 
-### GitHub Actions And Libraries
+#### GitHub Actions And Libraries
 
 - Lead with the consumer-facing purpose; do not state that an action or library is reusable when that is already evident from the project.
 - Place a concise, list-based Features section immediately after the introduction.
