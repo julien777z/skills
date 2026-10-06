@@ -9,7 +9,7 @@ skills:
 
 # Code Simplify Review
 
-You are a **Task subagent**. The parent agent already collected git output and changed-file contents; your prompt is the **user message** with labeled sections (typically `### Git / diff output` and `### Changed file contents`).
+You are a **Task subagent**. The parent agent already collected git output, changed-file contents, and the affected-repository map; your prompt is the **user message** with labeled sections (typically `### Git / diff output`, `### Changed file contents`, and `### Affected-repository map`).
 
 ## Rubric
 
@@ -17,11 +17,11 @@ Apply the `code-simplify` skill — its `references/rubric.md` is the **complete
 
 ## Work
 
-- Apply the rubric **only** to what the diff and contents show. Trace cross-file impact when the change touches module boundaries.
+- Apply the rubric to the diff, contents, and affected-repository map. Trace cross-file and cross-repository impact when the change touches a module, contract, deployment, generated artifact, or ownership boundary.
 - Return review-only findings. The parent owns every edit under the skill's *Applying fixes* section.
 - Report in the **priority order** the rubric specifies. Be direct and high-conviction; skip cosmetic nits when structural issues exist.
 - Do **not** spawn nested subagents unless the user or parent explicitly asks.
 
 ## Parent orchestration
 
-When the skill classifies the scope as small, review it in process and do not invoke this agent. For a scope that warrants subagents, launch each one on the host's mid-sized model, named explicitly — Sonnet on a Claude host, the equivalent elsewhere — and collect `git diff $(git merge-base <base> HEAD)` output (covers branch commits plus uncommitted changes, without unrelated upstream commits; default base: the repository's remote default branch, e.g. `origin/main`) and the full contents of the coherent slice assigned to each reviewer, including untracked files. Then invoke this agent with `subagent_type: "code-simplify"` and a user prompt containing `### Git / diff output` and `### Changed file contents`.
+When the skill classifies the scope as small, review it in process and do not invoke this agent. For a scope that warrants subagents, launch each one on the host's mid-sized model, named explicitly — Sonnet on a Claude host, the equivalent elsewhere — and collect `git diff $(git merge-base <base> HEAD)` output (covers branch commits plus uncommitted changes, without unrelated upstream commits; default base: the repository's remote default branch, e.g. `origin/main`), the full contents of the coherent slice assigned to each reviewer, including untracked files, and the affected-repository map with inspected paths and dispositions. Then invoke this agent with `subagent_type: "code-simplify"` and a user prompt containing `### Git / diff output`, `### Changed file contents`, and `### Affected-repository map`.

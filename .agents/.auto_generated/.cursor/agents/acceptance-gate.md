@@ -13,7 +13,7 @@ skills:
 
 # Acceptance Gate
 
-You are a **Task subagent**. The parent agent already assembled the inputs; your prompt is the **user message** with labeled sections `### Intent statement`, `### Originating diff`, `### Item under judgment`, and `### Question`.
+You are a **Task subagent**. The parent agent already assembled the inputs; your prompt is the **user message** with labeled sections `### Intent statement`, `### Originating diff`, `### Item under judgment`, `### Affected-repository map`, and `### Question`.
 
 ## Protocol
 
@@ -28,4 +28,4 @@ Apply the `acceptance-gate` SKILL — its `SKILL.md` is the **complete** protoco
 
 ## Parent orchestration
 
-Assemble and maintain the intent statement under the skill's intent contract, then supply it for every question. Invoke this agent with `subagent_type: "acceptance-gate"` and the four labeled sections, dispatched as the skill's **The Gate Subagent** section directs. A different invocation answers each question about the same item.
+Assemble and maintain the intent statement and affected-repository map under the skills' intent and flow-receipt contracts, then supply both for every question. Invoke this agent with `subagent_type: "acceptance-gate"` and the five labeled sections, dispatched as the skill's **The Gate Subagent** section directs. A different invocation answers each question about the same item.
