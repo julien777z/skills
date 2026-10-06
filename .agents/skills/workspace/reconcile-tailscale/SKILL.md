@@ -35,9 +35,13 @@ of that proof; agreement in one never establishes agreement in another.
 3. Read current tailnet policy and live resource and OAuth metadata. Trace both directions from
    each changed dependency: its producers and every consumer it authorizes, and each consumer's
    required operations back to the authority supplying them. Record groups, tag owners, grants or
-   ACLs, service and route permissions, OAuth scopes and permitted tags, and the credential identity
-   each operation actually uses. Check current provider documentation for the operations under
-   change rather than assuming a tag or scope implies another permission.
+   ACLs, service and route permissions, each credential's complete granted scopes and tags, and
+   the identity and request parameters each required operation actually uses. Compare that full
+   authority with the consumer's required authority; a client label or its consumer's requested
+   tags never establishes what the credential can grant. Include authentication, provisioning and
+   renewal requirements, not only operations an established connection performs. Check current
+   provider documentation for those requests rather than assuming tag membership or a scope
+   implies permission.
 4. Map each OAuth client ID to every execution consumer and its credential reference. Inspect
    source settings, manifests, deployment specifications and effective runtime references, plus
    organization, repository and environment secrets and workflow bindings used by automation.
@@ -62,10 +66,16 @@ of that proof; agreement in one never establishes agreement in another.
    deployed cutover. Keep every affected consumer on the manifest until its resulting execution
    state is read back and verified.
 7. Verify both ends using the identities and environments that will execute after the change.
-   Exercise the producer operation that needs the changed authority, such as node provisioning,
-   service publication or route approval, and the real consumer service or request path through
-   that boundary. Verify automated jobs with their actual runner identity and secret scope; a
-   local credential test cannot establish their cutover. Use authorized read-only checks or the
+   Exercise every required producer operation, such as node provisioning, service publication
+   or route approval, and the real consumer service or request path through that boundary.
+   Prove fresh authentication and provisioning or renewal wherever the consumer lifecycle needs
+   them, using each configured identity and every distinct configured request, including tag sets
+   and key options. For auth-key provisioning, read
+   [OAuth provisioning](references/oauth-provisioning.md) and validate those requests with their
+   actual credentials. Existing node health, cached credentials or a different successful producer
+   operation never substitutes for that lifecycle proof. Verify automated jobs with their actual
+   runner identity and secret scope; a local credential test cannot establish their cutover.
+   Use authorized read-only checks or the
    repository's designated mutation target as appropriate. A green workflow, an active deployment,
    a policy check or a health endpoint bypassing the boundary is insufficient alone. Record each
    result with its client ID, target, operation and observed execution revision or run.
