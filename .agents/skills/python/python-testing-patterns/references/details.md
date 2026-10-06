@@ -3,6 +3,7 @@
 ## Fundamental Patterns
 
 ### Pattern 1: Basic pytest Tests
+
 ```python
 # myapp/calculator.py
 class Calculator:
@@ -23,6 +24,7 @@ class Calculator:
 
         return a / b
 ```
+
 ```python
 # tests/test_calculator.py
 import pytest
@@ -70,6 +72,7 @@ def test_division_by_zero():
 Use the suite's existing session-scoped configuration fixture, registered from its topic owner.
 The following example separates the application class, resource lifecycle wiring and consuming tests; fixture
 scope follows the lifetime of the resource.
+
 ```python
 # myapp/database.py
 class Database:
@@ -93,6 +96,7 @@ class Database:
             raise RuntimeError("Not connected")
         return [{"id": 1, "name": "Test"}]
 ```
+
 ```python
 # tests/conftest.py
 from collections.abc import Iterator
@@ -122,6 +126,7 @@ def api_client(app_config: AppConfig) -> Iterator[httpx.Client]:
     with httpx.Client(base_url=app_config.api_base_url) as client:
         yield client
 ```
+
 ```python
 # tests/test_database.py
 from myapp.database import Database
@@ -145,12 +150,16 @@ def test_api_client(api_client: httpx.Client) -> None:
 ```
 
 ### Pattern 3: Parameterized Tests
+
 ```python
 # myapp/validation.py
 def is_valid_email(email: str) -> bool:
     """Check if email is valid."""
-    return "@" in email and "." in email.split("@")[1]
+    local_part, separator, domain = email.partition("@")
+
+    return bool(local_part and separator and "." in domain)
 ```
+
 ```python
 # tests/test_validation.py
 import pytest
@@ -196,6 +205,7 @@ def test_is_positive(value, expected):
 ```
 
 ### Pattern 4: Mocking with unittest.mock
+
 ```python
 # myapp/api_client.py
 import requests
@@ -219,6 +229,12 @@ class APIClient:
         response.raise_for_status()
         return response.json()
 ```
+
+The following tests consume the suite's established topic fixtures for `AppConfig`,
+`UserResponse` and `CreateUserRequest`. The request and response fixtures bind the same canonical
+user root through shared generation; `absent_user` is the root for an identity absent at the
+provider. The boundary models supply their own JSON serialization.
+
 ```python
 # tests/test_api_client.py
 from unittest.mock import Mock, patch
@@ -226,54 +242,60 @@ from unittest.mock import Mock, patch
 import pytest
 import requests
 from myapp.api_client import APIClient
+from myapp.config import AppConfig
+from myapp.models.users import CreateUserRequest, UserResponse
 
 
-def test_get_user_success():
-    """Test successful API call with mock."""
-    client = APIClient("https://api.example.com")
-
+def test_get_user_success(app_config: AppConfig, user_response: UserResponse) -> None:
+    """Test that fetching a user returns the provider's result."""
+    client = APIClient(app_config.api_base_url)
     mock_response = Mock()
-    mock_response.json.return_value = {"id": 1, "name": "John Doe"}
+    mock_response.json.return_value = user_response.model_dump(mode="json")
     mock_response.raise_for_status.return_value = None
 
     with patch("requests.get", return_value=mock_response) as mock_get:
-        user = client.get_user(1)
+        user = client.get_user(user_response.id)
 
-        assert user["id"] == 1
-        assert user["name"] == "John Doe"
-        mock_get.assert_called_once_with("https://api.example.com/users/1")
+        assert user["id"] == user_response.id
+        assert user["name"] == user_response.name
+        mock_get.assert_called_once_with(f"{app_config.api_base_url}/users/{user_response.id}")
 
 
-def test_get_user_not_found():
-    """Test API call with 404 error."""
-    client = APIClient("https://api.example.com")
-
+def test_get_user_not_found(app_config: AppConfig, absent_user: UserResponse) -> None:
+    """Test that a missing user raises the provider's HTTP error."""
+    client = APIClient(app_config.api_base_url)
     mock_response = Mock()
     mock_response.raise_for_status.side_effect = requests.HTTPError("404 Not Found")
 
     with patch("requests.get", return_value=mock_response):
         with pytest.raises(requests.HTTPError):
-            client.get_user(999)
+            client.get_user(absent_user.id)
 
 
 @patch("requests.post")
-def test_create_user(mock_post):
-    """Test user creation with decorator syntax."""
-    client = APIClient("https://api.example.com")
-
-    mock_post.return_value.json.return_value = {"id": 2, "name": "Jane Doe"}
+def test_create_user(
+    mock_post: Mock,
+    app_config: AppConfig,
+    create_user_request: CreateUserRequest,
+    user_response: UserResponse,
+) -> None:
+    """Test that creating a user sends the request and returns the provider's result."""
+    client = APIClient(app_config.api_base_url)
+    mock_post.return_value.json.return_value = user_response.model_dump(mode="json")
     mock_post.return_value.raise_for_status.return_value = None
+    user_data = create_user_request.model_dump(mode="json")
 
-    user_data = {"name": "Jane Doe", "email": "jane@example.com"}
     result = client.create_user(user_data)
 
-    assert result["id"] == 2
+    assert result["id"] == user_response.id
     mock_post.assert_called_once()
     call_args = mock_post.call_args
+
     assert call_args.kwargs["json"] == user_data
 ```
 
 ### Pattern 5: Testing Exceptions
+
 ```python
 # myapp/arithmetic.py
 def divide(a: float, b: float) -> float:
@@ -286,6 +308,7 @@ def divide(a: float, b: float) -> float:
 
     return a / b
 ```
+
 ```python
 # tests/test_arithmetic.py
 import pytest
@@ -325,41 +348,86 @@ For advanced patterns including async testing, monkeypatching, temporary files, 
 ### One Behavior Per Test
 
 Each test should verify exactly one behavior. This makes failures easy to diagnose and tests easy to maintain.
+The paired examples use the same established service and topic request/scenario fixtures; their
+difference is the number of behaviors each test checks.
+
 ```python
+from myapp.models.users import CreateUserRequest, UpdateUserRequest
+from myapp.services.users import UserService
+
+
 # BAD - testing multiple behaviors
-def test_user_service():
-    user = service.create_user(data)
+def test_user_service(
+    service: UserService,
+    create_user_request: CreateUserRequest,
+    update_user_request: UpdateUserRequest,
+) -> None:
+    user = service.create_user(create_user_request.model_dump(mode="json"))
+
     assert user.id is not None
-    assert user.email == data["email"]
-    updated = service.update_user(user.id, {"name": "New"})
-    assert updated.name == "New"
+    assert user.email == create_user_request.email
+
+    updated = service.update_user(user.id, update_user_request.model_dump(mode="json"))
+
+    assert updated.name == update_user_request.name
+
 
 # GOOD - focused tests
-def test_create_user_assigns_id():
-    user = service.create_user(data)
+def test_create_user_assigns_id(
+    service: UserService,
+    create_user_request: CreateUserRequest,
+) -> None:
+    user = service.create_user(create_user_request.model_dump(mode="json"))
+
     assert user.id is not None
 
-def test_create_user_stores_email():
-    user = service.create_user(data)
-    assert user.email == data["email"]
 
-def test_update_user_changes_name():
-    user = service.create_user(data)
-    updated = service.update_user(user.id, {"name": "New"})
-    assert updated.name == "New"
+def test_create_user_stores_email(
+    service: UserService,
+    create_user_request: CreateUserRequest,
+) -> None:
+    user = service.create_user(create_user_request.model_dump(mode="json"))
+
+    assert user.email == create_user_request.email
+
+
+def test_update_user_changes_name(
+    service: UserService,
+    create_user_request: CreateUserRequest,
+    update_user_request: UpdateUserRequest,
+) -> None:
+    user = service.create_user(create_user_request.model_dump(mode="json"))
+
+    updated = service.update_user(user.id, update_user_request.model_dump(mode="json"))
+
+    assert updated.name == update_user_request.name
 ```
 
 ### Test Error Paths
 
-Always test failure cases, not just happy paths.
+Always test failure cases, not just happy paths. Use the topic fixture's absent identity, and derive
+malformed input from a valid boundary payload, changing only the field under test.
+
 ```python
-def test_get_user_raises_not_found():
+import pytest
+from myapp.models.users import CreateUserRequest, UserResponse
+from myapp.services.users import UserNotFoundError, UserService
+
+
+def test_get_user_raises_not_found(service: UserService, absent_user: UserResponse) -> None:
     with pytest.raises(UserNotFoundError) as exc_info:
-        service.get_user("nonexistent-id")
+        service.get_user(absent_user.id)
 
-    assert "nonexistent-id" in str(exc_info.value)
+    assert str(absent_user.id) in str(exc_info.value)
 
-def test_create_user_rejects_invalid_email():
+
+def test_create_user_rejects_invalid_email(
+    service: UserService,
+    create_user_request: CreateUserRequest,
+) -> None:
+    payload = create_user_request.model_dump(mode="json")
+    payload["email"] = "not-an-email"
+
     with pytest.raises(ValueError, match="Invalid email format"):
-        service.create_user({"email": "not-an-email"})
+        service.create_user(payload)
 ```

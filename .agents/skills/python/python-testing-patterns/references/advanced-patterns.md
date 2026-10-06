@@ -3,6 +3,7 @@
 Advanced testing patterns including async code, monkeypatching, temporary files, conftest setup, property-based testing, database testing, CI/CD integration, and configuration.
 
 ## Pattern 6: Testing Async Code
+
 ```python
 # myapp/network.py
 import asyncio
@@ -13,6 +14,7 @@ async def fetch_data(url: str) -> dict:
     await asyncio.sleep(0.1)
     return {"url": url, "data": "result"}
 ```
+
 ```python
 # tests/conftest.py
 from collections.abc import AsyncIterator
@@ -29,6 +31,7 @@ async def async_client(app_config: AppConfig) -> AsyncIterator[httpx.AsyncClient
     async with httpx.AsyncClient(base_url=app_config.api_base_url) as client:
         yield client
 ```
+
 ```python
 # tests/test_network.py
 import asyncio
@@ -65,6 +68,7 @@ async def test_with_async_fixture(async_client: httpx.AsyncClient) -> None:
 ```
 
 ## Pattern 7: Monkeypatch for Testing
+
 ```python
 # myapp/config.py
 import os
@@ -74,6 +78,7 @@ def get_database_url() -> str:
     """Get database URL from environment."""
     return os.environ.get("DATABASE_URL", "sqlite:///:memory:")
 ```
+
 ```python
 # tests/test_config.py
 import pytest
@@ -111,6 +116,7 @@ def test_monkeypatch_attribute(
 ```
 
 ## Pattern 8: Temporary Files and Directories
+
 ```python
 # myapp/file_operations.py
 from pathlib import Path
@@ -125,6 +131,7 @@ def load_data(filepath: Path) -> str:
     """Load data from file."""
     return filepath.read_text()
 ```
+
 ```python
 # tests/test_file_operations.py
 from myapp.file_operations import load_data, save_data
@@ -171,6 +178,7 @@ def test_multiple_files(tmp_path):
 
 Register fixtures from their established topic owners; keep the existing session, database,
 event-loop and autouse environment lifecycles in the suite's lifecycle wiring.
+
 ```python
 # tests/conftest.py
 from tests.fixtures.users import sample_user, sample_users
@@ -179,6 +187,7 @@ from tests.fixtures.users import sample_user, sample_users
 Those fixtures bind the canonical user root and shared generation mechanism, rather than copying
 model constructors into registration. Parametrize a topic fixture with the application's existing
 finite family when a test must exercise every supported option:
+
 ```python
 # tests/fixtures/database.py
 import pytest
@@ -195,12 +204,14 @@ Consumers use this fixture through the suite's registration, composing it with t
 database setup and asserting the behavior under test for each backend.
 
 ## Pattern 10: Property-Based Testing
+
 ```python
 # myapp/text.py
 def reverse_string(s: str) -> str:
     """Reverse a string."""
     return s[::-1]
 ```
+
 ```python
 # tests/test_properties.py
 from hypothesis import given, strategies as st
@@ -249,6 +260,7 @@ instances from the configured shared generation mechanism and canonical roots: `
 database assign its ID, `users` provides two distinct users, and `duplicate_email_users` provides
 distinct users with the same email for the constraint case. Register those fixtures without moving
 their construction into the session lifecycle.
+
 ```python
 # tests/conftest.py
 from collections.abc import Iterator
@@ -274,6 +286,7 @@ def db_session(app_config: AppConfig) -> Iterator[Session]:
     finally:
         engine.dispose()
 ```
+
 ```python
 # tests/test_database_models.py
 import pytest
@@ -320,6 +333,7 @@ def test_unique_email_constraint(
 ```
 
 ## CI/CD Integration
+
 ```yaml
 # .github/workflows/test.yml
 name: Tests
@@ -358,6 +372,7 @@ jobs:
 ```
 
 ## Configuration Files
+
 ```ini
 # pytest.ini
 [pytest]
@@ -377,6 +392,7 @@ markers =
     unit: marks unit tests
     e2e: marks end-to-end tests
 ```
+
 ```toml
 # pyproject.toml
 [tool.pytest.ini_options]
