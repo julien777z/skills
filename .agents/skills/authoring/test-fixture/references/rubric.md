@@ -275,27 +275,6 @@ provides or lacks, never a coined adjective — when each test needs one standar
 instance, and prefer one that returns a real ORM instance for ORM-heavy tests. Add a callable
 creation fixture only when tests genuinely need arbitrary independently configured instances.
 
-```python
-# Good: a domain-named persisted creation fixture in the suite's fixture package
-@pytest.fixture
-def create_order(order_fixture, customer_fixture, create_customer):
-    """Build Order ORM instances with a nested real Customer relation."""
-
-    def _build(**overrides):
-        customer = create_customer()
-        order = Orders(
-            id=order_fixture.id,
-            customer_id=customer_fixture.id,
-            status=OrderStatus.PENDING,
-        )
-        order.customer = customer
-        for key, value in overrides.items():
-            setattr(order, key, value)
-        return order
-
-    return _build
-```
-
 A fixture is never defined in a test module either. A fixture beside the tests that use it is
 invisible to every other module, so the next suite needing the same setup writes its own copy, and
 one concept ends up with three implementations. Move it to the suite's fixture package, and where it
