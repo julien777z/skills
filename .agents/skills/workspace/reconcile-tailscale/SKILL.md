@@ -1,6 +1,6 @@
 ---
 name: reconcile-tailscale
-description: Reconcile all affected consumers when changing Tailscale policy, tags, services, routes, OAuth clients, credentials, or their runtime and automation references. Run before mutation; the repository where a symptom appears never bounds the consumer inventory. Verify every affected execution surface before retiring shared authority.
+description: Reconcile all affected consumers when changing Tailscale policy, tags, services, routes, OAuth clients, credentials, or their runtime and automation references. Run before mutation; the repository where a symptom appears never bounds the consumer inventory. Verify every affected execution surface before retiring shared authority. Every encountered Tailscale failure triggers causal guidance diagnosis through edit-skill while the operational repair continues.
 short_description: Reconcile Tailscale authority and every affected execution consumer.
 ---
 
@@ -14,6 +14,7 @@ of that proof; agreement in one never establishes agreement in another.
 
 - `coordinate-repositories` — discover and deduplicate the bounded repository collection, preserve
   unrelated work, and deliver each applicable repository.
+- `edit-skill` — diagnose every encountered Tailscale failure while operational repair continues.
 - `proton-pass` — retrieve only the credential fields a required operation needs without exposing them.
 
 ## Workflow
@@ -75,6 +76,17 @@ of that proof; agreement in one never establishes agreement in another.
    consumer has verified cutover and no live or automated reference still depends on it. An
    unresolved consumer blocks retirement and overall completion, even when the original symptom
    is fixed. Read back retirement and recheck the required producer and consumer operations.
+
+## Encountered Failures
+
+Every Tailscale failure encountered during the task starts `edit-skill` for its guidance diagnosis
+alongside the operational repair. Record the failing execution, consumer identity, required
+operation, effective authority and missing validation in the active private ledger. Repair an
+evidenced guidance gap at its canonical owner; let `edit-skill` determine the disposition when no
+gap is established rather than inferring noncompliance from existing text. Generalize the failure class,
+never the current environment or resource names. Follow `edit-skill`’s active-work batching: local
+corrections apply immediately, and source repair continues while guidance verification and delivery
+wait for the recorded coherent checkpoint.
 
 ## Output
 
