@@ -1,6 +1,6 @@
 ---
 name: reconcile-tailscale
-description: Reconcile all affected consumers when changing Tailscale policy, tags, services, routes, OAuth clients, credentials, or their runtime and automation references. Run before mutation; the repository where a symptom appears never bounds the consumer inventory. Verify every affected execution surface before retiring shared authority.
+description: Reconcile all affected consumers when changing Tailscale policy, tags, services, routes, OAuth clients, credentials, or their runtime and automation references. Run before mutation; the repository where a symptom appears never bounds the consumer inventory. Verify every affected execution surface before retiring shared authority. Every encountered Tailscale failure triggers causal guidance diagnosis through edit-skill while the operational repair continues.
 short_description: Reconcile Tailscale authority and every affected execution consumer.
 ---
 
@@ -14,6 +14,7 @@ of that proof; agreement in one never establishes agreement in another.
 
 - `coordinate-repositories` — discover and deduplicate the bounded repository collection, preserve
   unrelated work, and deliver each applicable repository.
+- `edit-skill` — diagnose every encountered Tailscale failure while operational repair continues.
 - `proton-pass` — retrieve only the credential fields a required operation needs without exposing them.
 
 ## Workflow
@@ -37,7 +38,11 @@ of that proof; agreement in one never establishes agreement in another.
    required operations back to the authority supplying them. Record groups, tag owners, grants or
    ACLs, service and route permissions, OAuth scopes and permitted tags, and the credential identity
    each operation actually uses. Check current provider documentation for the operations under
-   change rather than assuming a tag or scope implies another permission.
+   change rather than assuming a tag or scope implies another permission. For routed traffic,
+   distinguish access to the router device from permission to use its routes. Exit-node use
+   requires the caller to reach `autogroup:internet`, with `via` restricting the permitted exit
+   nodes where appropriate; a grant to the node itself does not provide that access. Evaluate
+   tagged runner identities separately from people: user-group grants do not authorize them.
 4. Map each OAuth client ID to every execution consumer and its credential reference. Inspect
    source settings, manifests, deployment specifications and effective runtime references, plus
    organization, repository and environment secrets and workflow bindings used by automation.
@@ -46,6 +51,11 @@ of that proof; agreement in one never establishes agreement in another.
    use provider metadata or minimal private credential access through `proton-pass` to establish
    identity when needed. An unreadable consumer or unknown identity remains unverified, never
    absent. Do not dump complete environments, secret stores or credential-bearing payloads.
+   Resolve each execution consumer through the helpers, adapters and dependencies it actually
+   calls, including defaults and omitted inputs; an input at the outer entrypoint does not prove
+   what the inner consumer uses. Match every authority declaration and reference found in that
+   execution graph to an inventory row and a cutover receipt. An unmatched reference keeps
+   reconciliation open, even when the already-listed consumers pass.
 5. Choose the target authority from each consumer's required operations and environment boundary.
    One shared OAuth client and separate clients per environment are both valid when their scopes
    and permitted tags provide least privilege for the authority they hold. Use separate clients
@@ -68,13 +78,28 @@ of that proof; agreement in one never establishes agreement in another.
    local credential test cannot establish their cutover. Use authorized read-only checks or the
    repository's designated mutation target as appropriate. A green workflow, an active deployment,
    a policy check or a health endpoint bypassing the boundary is insufficient alone. Record each
-   result with its client ID, target, operation and observed execution revision or run.
+   result with its client ID, target, operation and observed execution revision or run. After
+   validating the repair, extend existing policy tests for its permitted paths and forbidden
+   cross-boundary paths. Keep routing tests distinct from device connectivity, and retain real
+   runner verification for route visibility, selection and the request that needs it. A node
+   joining successfully is not evidence that these later operations are authorized.
 8. Re-read the complete manifest and live references after cutover. Reconcile stale references,
    missing consumers and changed runtime identities; repeat the affected verification when new
    evidence invalidates it. Revoke an old client or remove old authority only after every affected
    consumer has verified cutover and no live or automated reference still depends on it. An
    unresolved consumer blocks retirement and overall completion, even when the original symptom
    is fixed. Read back retirement and recheck the required producer and consumer operations.
+
+## Encountered Failures
+
+Every Tailscale failure encountered during the task starts `edit-skill` for its guidance diagnosis
+alongside the operational repair. Record the failing execution, consumer identity, required
+operation, effective authority and missing validation in the active private ledger. Repair an
+evidenced guidance gap at its canonical owner; when existing guidance already forbids the miss,
+record that noncompliance rather than duplicating the instruction. Generalize the failure class,
+never the current environment or resource names. Follow `edit-skill`’s active-work batching: local
+corrections apply immediately, and source repair continues while guidance verification and delivery
+wait for the recorded coherent checkpoint.
 
 ## Output
 
