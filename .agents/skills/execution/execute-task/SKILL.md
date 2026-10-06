@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once, before the first edit, at the start of every task that changes files — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until the task's report: it applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, keeps session-created source work to one pull request per repository, simplifies and gates the finished task's diff once, checks every outcome it reports, whether its own action or a sub-agent's claim, at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
+description: "Always run this. Invoke once, before the first edit, at the start of every task that changes files — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until verified completion or explicit user stop or handoff: it applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, keeps session-created source work to one pull request per repository, simplifies and gates the finished task's diff once, checks every outcome it reports, whether its own action or a sub-agent's claim, at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
 short_description: 'Apply repository guidance, fix issues found along the way, validate the diff, and deliver the change.'
 ---
 
@@ -21,9 +21,9 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 ## One Run Per Task
 
 - Invoke this skill once, at the start of a task, before the first edit. A run stays active until
-  the task's report, and past it while that report names outstanding work: **Work You Have Already
-  Named** keeps the run open until every named item is done or has left that state one of the three
-  ways it lists. Nothing in the task re-enters the skill; the run simply has not ended.
+  the task's outcome is verified complete or the user explicitly stops or hands it off. **Work You
+  Have Already Named** retains outstanding items and their next actions through reports, gates and
+  interruptions. Nothing in the task re-enters the skill; the run simply has not ended.
 - A skill that lists this one as a dependency — `plan-change` does — invokes it once, and the
   skills this one invokes never invoke it back: `pre-production`, `code-simplify`,
   `acceptance-gate`, `generic-push`, `merge-conflict`, `subagent-selection`, and `merge-pr` are
@@ -424,7 +424,9 @@ it — the user asking about something else is not the user withdrawing what the
   step. Completing
   its own delivery — including a guidance merge and refresh, a diagnostic answer, or a local
   environment repair — does not complete the surrounding task. Report that intermediate result
-  while continuing; end only when all remaining work is done, withdrawn or genuinely blocked.
+  while continuing. A held item keeps its saved next action; repair, resolution and waiting follow
+  the global rules' **Tools and environments** boundary. End only when the task is verified
+  complete or the user explicitly stops or hands it off.
   "Continue", or anything meaning it, resumes exactly the paused step and is never answered with
   nothing.
 - **A context summary's pending list is this run's named work**, not background. The first turn
@@ -445,13 +447,16 @@ the line the last report carried for it. **A line that has not changed means the
 this turn, before the report is sent** — not moved a little, and not dropped from the list, which
 is the same failure with the evidence removed.
 
-An item may leave that state three ways, and each is stated in its own line:
+Each item's line records its current disposition:
 
 - it is done;
-- a blocker holds it, named — and a question put to the user and not yet answered is a blocker, as
-  is an authorization this session does not hold;
+- a named gate holds its dependent action — including an unanswered question or missing
+  authorization — with its evidence, saved next action and live repair, resolution or wait route;
 - it is no longer work, because the user withdrew it or a later request superseded it, said with
   that reason.
+
+A held item remains outstanding; naming its gate or reporting it does not end the run. Withdrawal
+or supersession removes only the work the user's instruction actually cancels.
 
 **A wait blocks only the work that depends on what is awaited.** While one item waits on something
 outside the run's hands — a background agent, CI, a review, a build, the user's answer to one

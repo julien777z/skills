@@ -297,8 +297,9 @@ current review cohort before closing its review phase or reporting a result.
 Likewise, a monitoring loop remains nonterminal until the monitored operation reaches its documented
 terminal state and this workflow has performed the next required action. Do not abandon a loop because
 the first wait returns, output capture ends, a status is unchanged, or another task arrives. Re-enter
-the same wait or poll loop, preserving its state, until it resolves or reaches a genuine blocker under
-this skill.
+the same wait or poll loop, preserving its state, until it resolves or a concrete gate requires
+repair or resolution under the global rules' **Tools and environments** boundary. That transition
+preserves the saved next action and does not close CR.
 
 Before any terminal report or merge, explicitly confirm that the current cohort has no running or
 queued delegated agents and that every required review, validation, check, and deployment loop has a

@@ -72,12 +72,14 @@ alwaysApply: true
 - Record consciously deferred work immediately in its owning repository. A chat note is not a
   durable deferral record; no separate invitation is needed.
 - A direct invocation authorizes one full run at the requested scope. An explicit request to
-  continue a loop authorizes repeated runs only within that loop until its outcome, a user stop,
-  or a genuine blocker. Start the invoked skill and ask before narrowing its scope.
+  continue a loop authorizes repeated runs only within that loop until its outcome or the user's
+  explicit stop or handoff. A genuine gate holds its dependent operation under **Tools and
+  environments** while the task stays active. Start the invoked skill and ask before narrowing its scope.
 - For an invoked skill, do not decline, defer, or drop a finding, fix, or validation step because
   the work looks large, difficult, or likely to exceed a guessed time, context, or token budget.
-  Only the user declares a budget spent. Work until complete or actually blocked; if an interruption
-  ends the run, report what finished and record precisely what the next session needs to resume.
+  Only the user declares a budget spent. Work until complete; a concrete gate follows **Tools and
+  environments** for live repair or resolution. On an explicit user stop or handoff, report what
+  finished and record precisely what resumption needs.
 
 - An authorized task, including a fix request or approved plan, covers ordinary implementation,
   verification, and scoped external mutations. That authorization covers intermediate steps without
