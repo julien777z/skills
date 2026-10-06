@@ -9,12 +9,13 @@ disable-model-invocation: true
 
 Continue this session elsewhere. Everything the next agent needs — the work left, the order, the
 files, the user's decisions and words, the questions still open — goes onto the pull requests,
-because the next session starts with nothing else. The user's only part is pasting the message this
+because the next session starts with nothing else. The private task ledger transfers separately
+through `session-ledger`; its contents never go into those published comments. The user's only part is pasting the message this
 skill ends with.
 
 ## Dependencies
 
-- `list-prs` — the session-wide ledger of open pull requests the session changed.
+- `list-prs` — the task’s verified open pull-request list.
 - `defer-scope` — record repository work consciously left undone; it runs the admission gate.
 - `session-ledger` — provides verified task artifacts outside the current repository.
 
@@ -26,9 +27,10 @@ skill ends with.
 - Cover every open pull request the session created or changed, across every repository the
   session was authorized for. Each pull request gets its own comment, written for the agent that
   continues it.
-- A hand-off is never incomplete: an incomplete one leaves the user to finish it, which is the work
-  it exists to remove. A step that meets an obstacle is worked through by the routes `execute-task`'s
-  **Environment Refusals** gives, and the report never reads "incomplete".
+- Complete every hand-off step, working through obstacles by `execute-task`'s **Environment
+  Refusals**. When private-ledger recovery or verified transfer is genuinely unavailable, preserve
+  the source and report the concrete blocker. Use the completion template only after all steps,
+  including ledger transfer and ownership verification, succeed.
 - Nothing in the hand-off or its report is addressed to the user as a task. An action that needs the
   user — a decision, an approval, a merge they have not authorized — is written in the hand-off
   comment as an instruction to the next agent to put that question to the user and wait, exactly as
@@ -36,8 +38,10 @@ skill ends with.
 
 ## Workflow
 
-1. **Build the ledger.** Invoke `list-prs` and retrieve additional open pull requests recorded as
-   touched from `session-ledger`. Record for each its head, base, mergeability, latest check state,
+1. **Build the ledger.** Invoke `list-prs`. Resolve the private task ledger through `session-ledger`,
+   retain its exact locator and task identity in agent-consumed continuation context, and keep
+   source writing ownership while workers finish and final records are merged. Record for each
+   pull request its head, base, mergeability, latest check state,
    and unresolved review threads using read-only tooling.
 2. **Stop every running worker after its work is out.** Tell each sub-agent or worker still running
    to finish only the step in hand, commit it, push it to the pull request the work continues, and
@@ -79,11 +83,15 @@ skill ends with.
    user's words. Where the work depends on another pull request — another repository's included —
    the comment names and links it; that is the one comment a pull request carries about another
    repository. Never put a secret, credential or token in it.
-9. **Release everything the session holds:** every pull-request activity subscription, every watch
+9. **Transfer the finalized private ledger.** After all workers' receipts and final hand-off facts
+   are recorded, follow `session-ledger` to verify the receiver's complete file, exact locator and
+   writing-ownership takeover. Retain the source until that verification succeeds; never release
+   source context or declare completion with recovery or transfer still blocked.
+10. **Release everything the session holds:** every pull-request activity subscription, every watch
    on an external resource, every scheduled wake-up, reminder, or routine the session created, and
    every background monitor, loop, or long-running task. Confirm each release with the matching
    listing read where one exists.
-10. **Report** with the completion template.
+11. **Report** with the completion template.
 
 ## Hand-Off Comment
 
@@ -118,7 +126,8 @@ Head `<sha>` on `<branch>` → `<base>`. Checks: <green, or red with the failing
 
 - Do no new work. A red check, a review finding, or a lint report goes into the queue, never into a
   fix; completing the hand-off's own steps is not new work.
-- Never write a checkpoint file; the pull requests and their hand-off comments are the record.
+- Keep published project handoff context on the pull requests; the private task ledger is owned
+  and transferred by `session-ledger`. Do not create a separate checkpoint file.
 - Never arm a timer, wake-up, or subscription during the hand-off.
 - Never merge, mark ready, or re-request review on a pull request.
 - Never fabricate a pull request URL, a record link, or a check state; verify each with a read.

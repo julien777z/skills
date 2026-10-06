@@ -1,23 +1,44 @@
 ---
 name: session-ledger
-description: Record and retrieve task context and verified external artifacts during the current task. Use when a workflow creates, selects or reports task artifacts, records decisions, or batches observed guidance issues and reproduction scenarios for later verification.
-short_description: 'Keep verified task artifacts available across a long session.'
+description: Persist and retrieve verified task context in one private file across chats, delegation, compaction, and handoffs. Use when a workflow creates, selects or reports task artifacts, records decisions, batches guidance corrections, or resumes task work. Resolve the task’s exact ledger locator before reading or writing; missing or unreadable storage is not an empty ledger.
+short_description: 'Keep verified task artifacts in one private task file.'
 ---
 
 # Session Ledger
 
-Keep one structured ledger in the active task's state so context recorded early in a long session
-remains available after repository changes, delegation, or conversation compaction.
+Keep one structured ledger in a private task file outside repository checkouts. The file is the
+source of truth; chat context and native task state carry its exact absolute locator and task
+identity, never a second authoritative copy of its records.
 
-The task owner keeps the ledger under one `session_ledger` task-state key. A harness with native
-task state reads and writes that key directly. Otherwise, the owner keeps the same structured value
-in its active task context, includes it with each delegated assignment, and appends the worker's
-returned records before the next action. A worker never replaces the owner's ledger.
+## Storage
+
+- Resolve the locator from the active task's metadata before every retrieval or update. For a new
+  task with no prior ledger, choose a task-specific file in the harness's private task-state
+  directory; when none is provided, use the user's private state directory. Record the absolute
+  locator and stable task identity in task context before using it. Keep the directory private to
+  its owner and the file owner-readable and writable only.
+- An established task's missing locator, absent file, unreadable file, or invalid content is a
+  recovery condition, not an empty ledger. Reconcile available canonical artifact receipts,
+  continuation records and worker returns for that task. Recover or reconstruct the file from
+  verified evidence, preserving provenance and existing records. If evidence remains unavailable,
+  report the incomplete retrieval; never create an empty replacement or claim a complete result.
+  Only a successfully read valid file with `entries: []`, or a genuinely new task's initialized
+  file, establishes an empty ledger.
+- The task owner is the sole writer. Workers receive the locator and relevant entries and return
+  new records and observations; they never write the owner's file or replace it with their
+  snapshots. Serialize owner updates, reread the current file for each merge, and preserve all
+  unrelated entries. Transfer writing ownership only after the previous writer has stopped and
+  the receiving owner has read the current file. Overlapping owners must settle that transfer
+  before either writes.
+- Write the complete validated document to a private temporary file beside the ledger, then
+  atomically replace the ledger and read it back before reporting persistence or continuing.
+  Preserve the previous valid file when validation or writing fails; a failed write remains owed.
 
 ## Workflow
 
-1. Read the current ledger before recording or retrieving context. Use the Output format for every
-   entry, with record-specific facts in `data`; append new entries in first-recorded order.
+1. Resolve and read the task file under Storage before recording or retrieving context. Use the
+   Output format for every entry, with record-specific facts in `data`; append new entries in
+   first-recorded order. Persist each record or update through the owner’s atomic write procedure.
 2. Record the facts and their provenance as soon as they are known.
    - For an external artifact, require confirmation from its owner. Keep its canonical URL,
      artifact kind, repository URL when applicable, creation order, and verified identifiers needed
@@ -38,12 +59,19 @@ returned records before the next action. A worker never replaces the owner's led
 3. Update an entry's current `data` and append observations for later lifecycle facts, checks and
    dispositions. Preserve its initial observation and provenance. Clear a correction's pending
    status only after verified delivery or a recorded disposition, never because work moved on.
-4. Preserve the ledger across delegation, handoff and compaction. Give workers the relevant entries
-   and require new records and observations back. The task owner merges them by stable entry ID,
-   or canonical URL for an artifact, without replacing unrelated entries or reordering existing ones.
+4. Preserve the file locator, task identity and ownership across delegation, handoff and compaction.
+   Merge worker receipts by stable entry ID, or canonical URL for an artifact, without replacing
+   unrelated entries or reordering existing ones. Carry the locator in agent-consumed task metadata
+   and continuation context so the next reader can resolve the existing file.
+   - A receiver in the same environment must read and validate the existing file before taking over.
+   - Across environments, transfer the file through an authorized private artifact channel; the
+     receiver saves it outside checkouts, validates its full contents against the source, and records
+     its own absolute locator. An old absolute path is not portable. Keep the source until receipt,
+     content verification and ownership transfer succeed; report a genuine transfer blocker when no
+     authorized private channel exists. Never publish ledger contents in pull-request comments.
 5. Retrieve by record kind or facts such as artifact kind, repository, branch or canonical URL.
    Deduplicate artifact URLs while preserving first-recorded order.
-   - A session-scoped pull-request lookup reads the recorded pull requests first, then verifies
+   - A task-scoped pull-request lookup reads the recorded pull requests first, then verifies
      their current state with the hosting service. Exclude closed and merged pull requests unless
      explicitly requested. A handoff includes open pull requests recorded as created or touched.
    - An explicit user-provided URL remains the target: verify it directly without substituting
@@ -53,8 +81,8 @@ returned records before the next action. A worker never replaces the owner's led
 
 ## Output
 
-Store and return this YAML structure to the calling workflow, not as a user-facing report. The
-native task-state value is the mapping beneath `session_ledger`, not another wrapper inside it.
+Store this YAML document in the private task file and return its records to the calling workflow,
+not as a user-facing report. Task metadata carries only the locator and task identity.
 Keep every entry's envelope fixed; `kind` distinguishes records such as `artifact`,
 `guidance_correction` or `decision`, and both `data` mappings hold only the facts that record needs.
 Keep `id` stable and unique within the task. Use `observations: []` when none have been recorded.
@@ -77,8 +105,10 @@ new top-level collections or an envelope per kind.
 
 ## Guardrails
 
-- Do not commit a ledger file, parse a transcript, or retain records after the task ends. Never
-  record credentials, tokens, request bodies, other secrets, or unrelated session details.
+- Do not commit a ledger file or parse a transcript. Never record credentials, tokens, request
+  bodies, other secrets, or unrelated session details. Remove task ledger files and transfer copies
+  after the task ends and no receiver or active worker still needs them; a handoff continues the
+  task and is not its end.
 - Never infer a record from a repository directory, local branch, remembered pull-request number,
   or search result alone.
 - A missing record is not permission to broaden a query. Ask for the target when the current task

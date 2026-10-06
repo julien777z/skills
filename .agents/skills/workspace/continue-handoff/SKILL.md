@@ -13,7 +13,7 @@ down, and carry on where it stopped, so the user does nothing but paste the mess
 ## Dependencies
 
 - `execute-task` — the run the continued work goes through.
-- `session-ledger` — record each pull request taken over as touched.
+- `session-ledger` — recover the private task ledger and record each pull request taken over as touched.
 
 ## Resolving The Targets
 
@@ -23,7 +23,10 @@ down, and carry on where it stopped, so the user does nothing but paste the mess
 - A repository missing from the session is attached or cloned, as `execute-task`'s **Environment
   Refusals** says; it is never a reason to skip a pull request.
 - A merged or closed pull request is reported and skipped; the rest continue.
-- Record every pull request taken over in `session-ledger` as touched.
+- Before recording a takeover, resolve the existing task ledger from agent-consumed continuation
+  context through `session-ledger`, verify any cross-environment transfer and take over its writing
+  ownership. An unavailable locator or file requires its recovery procedure, not a new empty ledger.
+  Record every pull request taken over as touched.
 
 ## Setting Up
 
