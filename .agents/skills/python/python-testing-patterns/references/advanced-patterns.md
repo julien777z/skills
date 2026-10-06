@@ -3,22 +3,46 @@
 Advanced testing patterns including async code, monkeypatching, temporary files, conftest setup, property-based testing, database testing, CI/CD integration, and configuration.
 
 ## Pattern 6: Testing Async Code
-
 ```python
-# test_async.py
-import pytest
+# myapp/network.py
 import asyncio
+
 
 async def fetch_data(url: str) -> dict:
     """Fetch data asynchronously."""
     await asyncio.sleep(0.1)
     return {"url": url, "data": "result"}
+```
+```python
+# tests/conftest.py
+from collections.abc import AsyncIterator
+
+import httpx
+import pytest_asyncio
+from myapp.config import AppConfig
+from tests.fixtures.configuration import app_config
+
+
+@pytest_asyncio.fixture
+async def async_client(app_config: AppConfig) -> AsyncIterator[httpx.AsyncClient]:
+    """Provide an HTTP client for one async test."""
+    async with httpx.AsyncClient(base_url=app_config.api_base_url) as client:
+        yield client
+```
+```python
+# tests/test_network.py
+import asyncio
+
+import httpx
+import pytest
+from myapp.network import fetch_data
 
 
 @pytest.mark.asyncio
 async def test_fetch_data():
     """Test async function."""
     result = await fetch_data("https://api.example.com")
+
     assert result["url"] == "https://api.example.com"
     assert "data" in result
 
@@ -34,36 +58,33 @@ async def test_concurrent_fetches():
     assert all("data" in r for r in results)
 
 
-@pytest.fixture
-async def async_client():
-    """Async fixture."""
-    client = {"connected": True}
-    yield client
-    client["connected"] = False
-
-
 @pytest.mark.asyncio
-async def test_with_async_fixture(async_client):
-    """Test using async fixture."""
-    assert async_client["connected"] is True
+async def test_with_async_fixture(async_client: httpx.AsyncClient) -> None:
+    """Test that the async client is open during the test."""
+    assert not async_client.is_closed
 ```
 
 ## Pattern 7: Monkeypatch for Testing
-
 ```python
-# test_environment.py
+# myapp/config.py
 import os
-import pytest
+
 
 def get_database_url() -> str:
     """Get database URL from environment."""
     return os.environ.get("DATABASE_URL", "sqlite:///:memory:")
+```
+```python
+# tests/test_config.py
+import pytest
+from myapp.config import AppConfig, get_database_url
 
 
 def test_database_url_default():
     """Test default database URL."""
     # Will use actual environment variable if set
     url = get_database_url()
+
     assert url
 
 
@@ -79,29 +100,21 @@ def test_database_url_not_set(monkeypatch):
     assert get_database_url() == "sqlite:///:memory:"
 
 
-class Config:
-    """Configuration class."""
+def test_monkeypatch_attribute(
+    monkeypatch: pytest.MonkeyPatch,
+    app_config: AppConfig,
+) -> None:
+    """Test that monkeypatch overrides an attribute of the configured object."""
+    monkeypatch.setattr(app_config, "api_key", "test-key")
 
-    def __init__(self):
-        self.api_key = "production-key"
-
-    def get_api_key(self):
-        return self.api_key
-
-
-def test_monkeypatch_attribute(monkeypatch):
-    """Test monkeypatching object attributes."""
-    config = Config()
-    monkeypatch.setattr(config, "api_key", "test-key")
-    assert config.get_api_key() == "test-key"
+    assert app_config.api_key == "test-key"
 ```
 
 ## Pattern 8: Temporary Files and Directories
-
 ```python
-# test_file_operations.py
-import pytest
+# myapp/file_operations.py
 from pathlib import Path
+
 
 def save_data(filepath: Path, data: str):
     """Save data to file."""
@@ -111,6 +124,10 @@ def save_data(filepath: Path, data: str):
 def load_data(filepath: Path) -> str:
     """Load data from file."""
     return filepath.read_text()
+```
+```python
+# tests/test_file_operations.py
+from myapp.file_operations import load_data, save_data
 
 
 def test_file_operations(tmp_path):
@@ -154,7 +171,6 @@ def test_multiple_files(tmp_path):
 
 Register fixtures from their established topic owners; keep the existing session, database,
 event-loop and autouse environment lifecycles in the suite's lifecycle wiring.
-
 ```python
 # tests/conftest.py
 from tests.fixtures.users import sample_user, sample_users
@@ -163,7 +179,6 @@ from tests.fixtures.users import sample_user, sample_users
 Those fixtures bind the canonical user root and shared generation mechanism, rather than copying
 model constructors into registration. Parametrize a topic fixture with the application's existing
 finite family when a test must exercise every supported option:
-
 ```python
 # tests/fixtures/database.py
 import pytest
@@ -180,15 +195,16 @@ Consumers use this fixture through the suite's registration, composing it with t
 database setup and asserting the behavior under test for each backend.
 
 ## Pattern 10: Property-Based Testing
-
 ```python
-# test_properties.py
-from hypothesis import given, strategies as st
-import pytest
-
+# myapp/text.py
 def reverse_string(s: str) -> str:
     """Reverse a string."""
     return s[::-1]
+```
+```python
+# tests/test_properties.py
+from hypothesis import given, strategies as st
+from myapp.text import reverse_string
 
 
 @given(st.text())
@@ -227,79 +243,83 @@ def test_sorted_list_properties(lst):
 
 ## Testing Database Code
 
+Use the application's established model and metadata registry, the suite's existing in-memory
+SQLite configuration, and its topic user fixtures. The user fixtures supply non-persisted ORM
+instances from the configured shared generation mechanism and canonical roots: `user` lets the
+database assign its ID, `users` provides two distinct users, and `duplicate_email_users` provides
+distinct users with the same email for the constraint case. Register those fixtures without moving
+their construction into the session lifecycle.
 ```python
-# test_database_models.py
+# tests/conftest.py
+from collections.abc import Iterator
+
 import pytest
-from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Session
-
-Base = declarative_base()
-
-
-class User(Base):
-    """User model."""
-    __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String(50))
-    email = Column(String(100), unique=True)
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
+from myapp.config import AppConfig
+from myapp.models import Base
+from tests.fixtures.configuration import app_config
+from tests.fixtures.users import duplicate_email_users, user, users
 
 
 @pytest.fixture(scope="function")
-def db_session() -> Session:
-    """Create in-memory database for testing."""
-    engine = create_engine("sqlite:///:memory:")
-    Base.metadata.create_all(engine)
+def db_session(app_config: AppConfig) -> Iterator[Session]:
+    """Provide an isolated database session for one test."""
+    engine = create_engine(app_config.database_url)
 
-    SessionLocal = sessionmaker(bind=engine)
-    session = SessionLocal()
+    try:
+        Base.metadata.create_all(engine)
+        with Session(engine) as session:
+            yield session
+    finally:
+        engine.dispose()
+```
+```python
+# tests/test_database_models.py
+import pytest
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
+from myapp.models.users import User
 
-    yield session
 
-    session.close()
+def test_create_user(db_session: Session, user: User) -> None:
+    """Test that creating a user preserves its name and assigns an ID."""
+    expected_name = user.name
 
-
-def test_create_user(db_session):
-    """Test creating a user."""
-    user = User(name="Test User", email="test@example.com")
     db_session.add(user)
     db_session.commit()
 
     assert user.id is not None
-    assert user.name == "Test User"
+    assert user.name == expected_name
 
 
-def test_query_user(db_session):
-    """Test querying users."""
-    user1 = User(name="User 1", email="user1@example.com")
-    user2 = User(name="User 2", email="user2@example.com")
-
-    db_session.add_all([user1, user2])
+def test_query_user(db_session: Session, users: tuple[User, User]) -> None:
+    """Test that querying users returns both inserted rows."""
+    db_session.add_all(users)
     db_session.commit()
 
-    users = db_session.query(User).all()
-    assert len(users) == 2
+    stored_users = db_session.query(User).all()
+
+    assert len(stored_users) == 2
 
 
-def test_unique_email_constraint(db_session):
-    """Test unique email constraint."""
-    from sqlalchemy.exc import IntegrityError
+def test_unique_email_constraint(
+    db_session: Session,
+    duplicate_email_users: tuple[User, User],
+) -> None:
+    """Test that inserting another user with the same email fails."""
+    first_user, second_user = duplicate_email_users
 
-    user1 = User(name="User 1", email="same@example.com")
-    user2 = User(name="User 2", email="same@example.com")
-
-    db_session.add(user1)
+    db_session.add(first_user)
     db_session.commit()
 
-    db_session.add(user2)
+    db_session.add(second_user)
 
     with pytest.raises(IntegrityError):
         db_session.commit()
 ```
 
 ## CI/CD Integration
-
 ```yaml
 # .github/workflows/test.yml
 name: Tests
@@ -338,7 +358,6 @@ jobs:
 ```
 
 ## Configuration Files
-
 ```ini
 # pytest.ini
 [pytest]
@@ -358,7 +377,6 @@ markers =
     unit: marks unit tests
     e2e: marks end-to-end tests
 ```
-
 ```toml
 # pyproject.toml
 [tool.pytest.ini_options]

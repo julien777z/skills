@@ -3,11 +3,8 @@
 ## Fundamental Patterns
 
 ### Pattern 1: Basic pytest Tests
-
 ```python
-# test_calculator.py
-import pytest
-
+# myapp/calculator.py
 class Calculator:
     """Simple calculator for testing."""
 
@@ -23,7 +20,13 @@ class Calculator:
     def divide(self, a: float, b: float) -> float:
         if b == 0:
             raise ValueError("Cannot divide by zero")
+
         return a / b
+```
+```python
+# tests/test_calculator.py
+import pytest
+from myapp.calculator import Calculator
 
 
 def test_addition():
@@ -64,10 +67,9 @@ def test_division_by_zero():
 
 ### Pattern 2: Fixtures for Setup and Teardown
 
-Use the suite's existing session-scoped configuration fixture, registered from its topic owner. The following
-example separates the application class, resource lifecycle wiring and consuming tests; fixture
+Use the suite's existing session-scoped configuration fixture, registered from its topic owner.
+The following example separates the application class, resource lifecycle wiring and consuming tests; fixture
 scope follows the lifetime of the resource.
-
 ```python
 # myapp/database.py
 class Database:
@@ -91,7 +93,6 @@ class Database:
             raise RuntimeError("Not connected")
         return [{"id": 1, "name": "Test"}]
 ```
-
 ```python
 # tests/conftest.py
 from collections.abc import Iterator
@@ -121,7 +122,6 @@ def api_client(app_config: AppConfig) -> Iterator[httpx.Client]:
     with httpx.Client(base_url=app_config.api_base_url) as client:
         yield client
 ```
-
 ```python
 # tests/test_database.py
 from myapp.database import Database
@@ -145,14 +145,17 @@ def test_api_client(api_client: httpx.Client) -> None:
 ```
 
 ### Pattern 3: Parameterized Tests
-
 ```python
-# test_validation.py
-import pytest
-
+# myapp/validation.py
 def is_valid_email(email: str) -> bool:
     """Check if email is valid."""
     return "@" in email and "." in email.split("@")[1]
+```
+```python
+# tests/test_validation.py
+import pytest
+from myapp.calculator import Calculator
+from myapp.validation import is_valid_email
 
 
 @pytest.mark.parametrize("email,expected", [
@@ -177,7 +180,6 @@ def test_email_validation(email, expected):
 ])
 def test_addition_parameterized(a, b, expected):
     """Test addition with multiple parameter sets."""
-    from test_calculator import Calculator
     calc = Calculator()
     assert calc.add(a, b) == expected
 
@@ -194,12 +196,10 @@ def test_is_positive(value, expected):
 ```
 
 ### Pattern 4: Mocking with unittest.mock
-
 ```python
-# test_api_client.py
-import pytest
-from unittest.mock import Mock, patch, MagicMock
+# myapp/api_client.py
 import requests
+
 
 class APIClient:
     """Simple API client."""
@@ -218,6 +218,14 @@ class APIClient:
         response = requests.post(f"{self.base_url}/users", json=data)
         response.raise_for_status()
         return response.json()
+```
+```python
+# tests/test_api_client.py
+from unittest.mock import Mock, patch
+
+import pytest
+import requests
+from myapp.api_client import APIClient
 
 
 def test_get_user_success():
@@ -266,18 +274,22 @@ def test_create_user(mock_post):
 ```
 
 ### Pattern 5: Testing Exceptions
-
 ```python
-# test_exceptions.py
-import pytest
-
+# myapp/arithmetic.py
 def divide(a: float, b: float) -> float:
     """Divide a by b."""
     if b == 0:
         raise ZeroDivisionError("Division by zero")
+
     if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):
         raise TypeError("Arguments must be numbers")
+
     return a / b
+```
+```python
+# tests/test_arithmetic.py
+import pytest
+from myapp.arithmetic import divide
 
 
 def test_zero_division():
@@ -313,7 +325,6 @@ For advanced patterns including async testing, monkeypatching, temporary files, 
 ### One Behavior Per Test
 
 Each test should verify exactly one behavior. This makes failures easy to diagnose and tests easy to maintain.
-
 ```python
 # BAD - testing multiple behaviors
 def test_user_service():
@@ -341,7 +352,6 @@ def test_update_user_changes_name():
 ### Test Error Paths
 
 Always test failure cases, not just happy paths.
-
 ```python
 def test_get_user_raises_not_found():
     with pytest.raises(UserNotFoundError) as exc_info:

@@ -56,22 +56,27 @@ the examples here demonstrate Python testing techniques within those boundaries.
 - Each test should clean up after itself
 
 ## Quick Start
-
 ```python
-# test_example.py
+# myapp/arithmetic.py
 def add(a, b):
     return a + b
+```
+```python
+# tests/test_arithmetic.py
+from myapp.arithmetic import add
+
 
 def test_add():
     """Basic test example."""
     result = add(2, 3)
+
     assert result == 5
 
 def test_add_negative():
     """Test with negative numbers."""
     assert add(-1, 1) == 0
 
-# Run with: pytest test_example.py
+# Run with the repository's native test command for tests/test_arithmetic.py
 ```
 
 ## Detailed patterns and worked examples
@@ -81,7 +86,6 @@ Detailed pattern documentation lives in `references/details.md`. Read that file 
 ## Testing Best Practices
 
 ### Test Organization
-
 ```python
 # tests/
 #   __init__.py
@@ -100,7 +104,6 @@ Detailed pattern documentation lives in `references/details.md`. Read that file 
 ### Test Naming Convention
 
 A common pattern: `test_<unit>_<scenario>_<expected_outcome>`. Adapt to your team's preferences.
-
 ```python
 # Pattern: test_<unit>_<scenario>_<expected>
 def test_create_user_with_valid_data_returns_user():
@@ -139,7 +142,6 @@ def test_function():  # Doesn't explain what's tested
 ### Testing Retry Behavior
 
 Verify that retry logic works correctly using mock side effects.
-
 ```python
 from unittest.mock import Mock
 
@@ -188,7 +190,6 @@ def test_does_not_retry_on_permanent_error():
 ### Mocking Time with Freezegun
 
 Use freezegun to control time in tests for predictable time-dependent behavior.
-
 ```python
 from freezegun import freeze_time
 from datetime import datetime, timedelta
@@ -223,7 +224,6 @@ def test_with_time_travel():
 ```
 
 ### Test Markers
-
 ```python
 # test_markers.py
 import pytest
@@ -266,7 +266,6 @@ def test_known_bug():
 ```
 
 ### Coverage Reporting
-
 ```bash
 # Install coverage
 pip install pytest-cov
