@@ -36,11 +36,7 @@ tracing a test surface is; without one, fix what the focused pass can finish.
    validation unless the test exposes a source defect that changes the implementation. Existing tests
    may still be run to diagnose development failures.
 4. Identify the source owner and its existing test module beneath the corresponding suite and classification. Extend that module before creating another; apply the rubric's class/file boundary test before splitting or relocating a suite.
-   Before choosing a support destination, classify what each definition actually does: model generation,
-   domain/scenario or I/O setup, pure utility work, or lifecycle registration. Search by that operation,
-   including constructors and nested builders, and trace owners, dependencies and consumers. Apply the
-   rubric’s placement to that responsibility; a decorator, re-export or return type does not establish
-   a separate owner.
+   Trace reused imports to their defining owners under the rubric before treating them as canonical.
    Reuse the canonical fixture or factory for every domain value. When it lacks required data,
    extend that owner and update its consumers instead of spelling the value in the test.
 5. Reuse an existing case when setup, execution, and assertions match. Parametrize cases that vary

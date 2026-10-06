@@ -70,23 +70,18 @@ paths:
 
 ## Fixtures and Test Data
 
+- Invoke `test-fixture` and read its complete rubric before selecting test-support owners; the
+  Python techniques and examples below apply those boundaries.
 - Use clearly synthetic data that is unique to each test or parametrized case unless an exact protocol or catalog literal is the contract under test; never paste exact user-provided examples into tests, and preserve only the shape or edge case being verified when inventing replacements.
-- Define helper functions at module level in their owning support module; keep only the local
-  trivial-utility exception below beside tests.
+- Define test helper functions at module level.
 - Keep helper docstrings to a single line.
-- Use the repository’s configured factory mechanism for structured model generation in its shared
-  test-utilities owner. For Polyfactory, keep concrete `ModelFactory` and `SQLAlchemyFactory`
-  classes there, never under `tests/`; set `__model__`, deterministic domain defaults, and build
-  through `.build(**overrides)`. Inject application model types where needed to preserve dependency
-  direction. Suite fixtures bind model types and scenario inputs rather than recreating generation.
+- Use Polyfactory for structured Pydantic and SQLAlchemy test data. Define concrete `ModelFactory` or `SQLAlchemyFactory` classes in the shared test-utilities owner selected by the rubric, set `__model__`, provide deterministic domain defaults, and call `.build(**overrides)` directly from tests.
 - Let Polyfactory generate incidental valid values. Express domain constraints and cross-field relationships without replacing its generation with a large manual `build()` implementation.
 - Do not wrap Polyfactory classes in callable pytest fixtures solely for dependency injection, and do not use `Protocol` to describe them.
-- Put domain fixtures, persisted flows, filesystem materialization and multi-object scenario wiring
-  in the suite’s topic-named fixture package. These compose canonical model generation with actual
-  I/O or scenario work.
+- Use pytest factory fixtures for setup or construction that Polyfactory does not cover, including persisted flows, filesystem materialization, dependency lifecycles, and multi-object scenarios. Put reusable builders in the fixture owner selected by the rubric, not in test modules.
 - Keep pytest factory names domain-focused. Name ORM persistence fixtures for their action, such as `create_order` or `create_customer`; never use an `*_orm_factory` suffix or encode persistence mechanics in the name.
 - Use explicit shared materialization helpers for filesystem and other I/O artifacts; accept typed factory-built models and explicit target paths.
-- A trivial predicate or formatter used by one test module may stay there. A pure helper used by one suite belongs in its utilities owner; one used by several suites belongs in the tests’ shared topic-named utilities package. Consumer count never moves domain construction or model-generation machinery into a test module.
+- Module-level helpers are allowed only for trivial, non-construction utilities scoped to one file (predicates, small formatters, `to_comparable_string`-style assertion adapters). Apply the rubric’s helper placement when the operation exceeds that exception.
 
 - Treat the suite's canonical root fixtures as the roots of test data. Put reusable subordinate data on typed fixture models instead of creating parallel fixtures.
 - Keep variant-only fields on typed subclasses of the canonical root. Use one canonical aggregate creator with a typed variant selector instead of parallel variant helpers.
@@ -104,13 +99,13 @@ paths:
 - Do not add helpers that only format one URL or return one fixture/model field. Inline one-off values or reuse an existing shared boundary when the operation is repeated or nontrivial.
 - Construct typed models when a model exists for sample, request, response, or provider data. Do not maintain a parallel hand-written dictionary representation of that contract.
 
-- Before placing support, classify the operation it performs and search for its existing owner by that operation, including constructors and nested builders. A fixture decorator, first consumer or convenient registration file does not establish ownership. Extend canonical generation, fixture, model or utility owners; do not duplicate them behind a new name.
+- Do not create module-level helper factories inside test files, including for the first call site. Use the canonical factory or fixture owner selected by the rubric.
 - A pytest factory fixture returns a keyword-only inner builder named `_build` or for its specific action. Do not use a bare inner name such as `factory`.
 - Keep `conftest.py` focused on session/event-loop setup, autouse environment lifecycle and plugin
   or fixture registration, importing domain fixtures from their owners.
-- Trace reused helpers to their defining owners. A re-export through another suite’s fixture or utility package is not a shared owner; update every consumer to the owner at their common boundary.
+- Helper functions that appear in multiple test files must be extracted to the shared support owner selected by the rubric.
 - When several tests need the same configuration overrides, expose one reusable helper in the suite’s fixture package, using canonical settings and test configuration. Keep its setup/teardown reach unchanged when registration moves.
-- Build structured payloads from the real boundary model through canonical factory machinery. If the configured mechanism lacks the shape, extend its owner; absence of a local factory is not permission for parallel construction in a suite fixture.
+- Put common structured payload creation in the canonical factory for the real request model. Extend its owner when the required model or binding is missing.
 - Keep `conftest.py` at shared test boundaries instead of scattering many topic-local `conftest.py` files.
 - If tests need additional properties that belong to shared fixture models, add the missing field in the shared fixture or factory instead of hardcoding literals in test payloads.
 - Prefer shared fixtures and domain-named creation fixtures over ad-hoc object setup in test modules.
@@ -180,7 +175,7 @@ class TreeNode(BaseModel):
     children: list["TreeNode"] = Field(default_factory=list)
 ```
 
-- Use the configured shared factory for non-persisted ORM models and real nested relationships. A function that only constructs and returns a model performs generation, even when decorated as a fixture or labelled as persistence.
+- Use Polyfactory's `SQLAlchemyFactory` for non-persisted ORM models. Keep concrete classes in the shared test-utilities owner selected by the rubric, use realistic defaults, accept `.build(**overrides)`, and construct real nested relationships.
 - Prefer ready fixtures for standard persisted ORM instances. Use domain-named creation fixtures such as `create_user`, `create_account`, `create_order`, or `create_subscription` only when tests need multiple independently configured persisted roots.
 - Build relationship rows and nested values through their owning root fixture instead of giving them standalone factories.
 
@@ -254,7 +249,7 @@ done
   - `email="test@example.com"` -> `email=user_fixture.email`
 - **SimpleNamespace as fake domain model** - Do not build test entities with `SimpleNamespace`; use ready fixture-backed models, domain-qualified creation fixtures, or test-only `BaseModel` types.
 - **Local duplicate fixtures/builders** - Do not define ad-hoc helper constructors in test modules when a shared fixture or factory already covers the use case.
-- **Inline aggregate/scenario builders in test files** - Apply the construction, scenario and lifecycle ownership distinctions above. Test files compose canonical fixtures instead of defining builders.
+- **Inline aggregate/scenario builders in test files** - Put reusable construction in the factory or fixture owner selected by the rubric. Test files compose fixtures instead of defining builders.
 - **Duplicate domain-object setup** - If the same construction appears in multiple tests, extract one ready fixture at the nearest shared boundary. Add a callable creation fixture only when arbitrary instance counts are required.
 
 - Do not duplicate helper models or utility types across multiple test files. Put shared models in a shared test helper module instead.
