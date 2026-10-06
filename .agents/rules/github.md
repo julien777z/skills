@@ -43,8 +43,8 @@ alwaysApply: true
 
 ## Branches and Pull Requests
 
-- When the user asks which pull requests are open, use `list-prs` to list only currently open pull requests created during this session, including drafts. Include pre-existing pull requests only when the user explicitly asks for a broader scope.
-- Record every pull request with `session-ledger` immediately after the hosting service returns its canonical URL. A session-scoped pull-request lookup reads that ledger and verifies each recorded URL remotely; never reconstruct it from the current checkout, a branch name, a transcript, or a broad hosting-service search.
+- When the user asks to list pull requests, use `list-prs`; its default scope is open pull requests created or worked on for the ongoing task, including handoffs and drafts across chats. Honor explicit scope and state requests.
+- Record every pull request with `session-ledger` immediately after the hosting service returns its canonical URL. A task-scoped pull-request lookup reconciles verified task records through that ledger and verifies each selected URL remotely; never infer task membership from the current checkout, a branch name, a transcript, or a broad hosting-service search.
 
 - **Open every pull request as a draft and keep it draft while work continues.** It leaves draft
   once, when the work is finished, through `execute-task`'s **Completion** or a workflow that
