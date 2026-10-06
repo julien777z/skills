@@ -477,8 +477,15 @@ surrounding task. Report a blocker only on that boundary's concrete evidence.
 
 ## Completion
 
-Before declaring the task done, take each pull request the task changed out of draft — once, with
-its work finished — and then close the run:
+Before the final delivery steps below, verify the requested behavior on the change's branch within
+the authorized scope, including reachable dependency branches. When a requested flow failed, repair
+and push the fix, exercise that branch, and repeat the complete failed flow until its requested
+outcome is verified. A narrower health check or passing component test cannot replace that flow.
+Missing merge approval holds merging, never this branch verification; check the available branch
+route before declaring a gate. Merge is delivery after verification, never its prerequisite.
+
+Then take each pull request the task changed out of draft — once, with its work finished — and close
+the run:
 
 When the task uses several independent final reviewers outside `code-review`, assign distinct
 concerns across the complete result rather than asking each the same question. After a repair,
