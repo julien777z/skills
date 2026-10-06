@@ -132,7 +132,7 @@ the files it did name do not transfer to the ones it did not.
 The questions a briefing asks steer emphasis, never scope: a file no question mentions is reviewed
 and reported like every other, and answering the questions is not the review.
 
-Report the flow receipt required by the rubric’s **Trace Changed Flows**, including the repository-wide reuse searches and canonical candidates inspected. Apply it to changed existing operations as well as newly introduced abstractions; a clean result without this evidence is incomplete.
+Report the flow receipt required by the rubric’s **Trace Changed Flows**, including the affected-repository map, repository-wide reuse searches, and canonical candidates inspected. Apply it to changed existing operations as well as newly introduced abstractions; a clean result without this evidence is incomplete.
 
 For every new public concept, list the existing peer interfaces and owners inspected, state whether
 the new behavior is a variant under one of them or needs an independent contract, and verify the

@@ -35,13 +35,14 @@ state from the target repository's project guidance; never import another reposi
 ## The Gate Subagent
 
 The gate is read-only and distinct: not the author of the item, and not the subagent that answered an
-earlier question about the same item. It receives four things and nothing else:
+earlier question about the same item. It receives five things and nothing else:
 
 1. the intent statement;
 2. the originating diff, with its deletions first;
 3. the item under judgement — an issue or finding, a proposal, a diff, an incoming base diff, or a
    record;
-4. exactly one question from the list below.
+4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**;
+5. exactly one question from the list below.
 
 **The gate has no shell, so every diff reaches it as content, never as a reference.** The caller
 pastes the originating diff and a diff item into the prompt, or writes each to a file the prompt
@@ -83,8 +84,10 @@ value it tests and of what its path reads next**, by path and function, and flag
 rubric's diff test flags. A verdict with no added guard says `no guard added` in those words.
 
 For a diff question, also apply the `code-simplify` rubric’s **Trace Changed Flows** to the supplied
-implementations and consumers. A diff alone that cannot establish that receipt needs those contents
-from the caller before a clean verdict; a prose-only change names no executable flow. Report its
+implementations, consumers, and affected-repository map. A diff alone that cannot establish that
+receipt needs those contents from the caller before a clean verdict; a prose-only change names no
+executable flow but still receives a map of affected guidance owners. Flag a missing, unsupported,
+or incomplete map rather than treating the reviewed checkout as the complete system. Report its
 findings in the verdict and summarize clean flow evidence under `Also read`.
 
 It returns the verdict its question defines, shaped as `references/rubric.md` — What A Verdict Names
