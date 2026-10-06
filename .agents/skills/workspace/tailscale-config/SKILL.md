@@ -1,10 +1,10 @@
 ---
-name: reconcile-tailscale
+name: tailscale-config
 description: Reconcile all affected consumers when changing Tailscale policy, tags, services, routes, OAuth clients, credentials, or their runtime and automation references. Run before mutation; the repository where a symptom appears never bounds the consumer inventory. Verify every affected execution surface before retiring shared authority. Every encountered Tailscale failure triggers causal guidance diagnosis through edit-skill while the operational repair continues.
 short_description: Reconcile Tailscale authority and every affected execution consumer.
 ---
 
-# Reconcile Tailscale
+# Tailscale Config
 
 A shared security dependency is changed only with its affected consumers accounted for. Source
 configuration, credential identity, deployed environment and automated runner are separate parts
