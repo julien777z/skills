@@ -38,10 +38,7 @@ of that proof; agreement in one never establishes agreement in another.
    required operations back to the authority supplying them. Record groups, tag owners, grants or
    ACLs, service and route permissions, OAuth scopes and permitted tags, and the credential identity
    each operation actually uses. Check current provider documentation for the operations under
-   change rather than assuming a tag or scope implies another permission. For routed traffic,
-   distinguish access to the router device from permission to use its routes. Exit-node use
-   requires the caller to reach `autogroup:internet`, with `via` restricting the permitted exit
-   nodes where appropriate; a grant to the node itself does not provide that access.
+   change rather than assuming a tag or scope implies another permission.
 4. Map each OAuth client ID to every execution consumer and its credential reference. Inspect
    source settings, manifests, deployment specifications and effective runtime references, plus
    organization, repository and environment secrets and workflow bindings used by automation.
@@ -85,8 +82,8 @@ of that proof; agreement in one never establishes agreement in another.
 Every Tailscale failure encountered during the task starts `edit-skill` for its guidance diagnosis
 alongside the operational repair. Record the failing execution, consumer identity, required
 operation, effective authority and missing validation in the active private ledger. Repair an
-evidenced guidance gap at its canonical owner; when existing guidance already forbids the miss,
-record that noncompliance rather than duplicating the instruction. Generalize the failure class,
+evidenced guidance gap at its canonical owner; let `edit-skill` determine the disposition when no
+gap is established rather than inferring noncompliance from existing text. Generalize the failure class,
 never the current environment or resource names. Follow `edit-skill`’s active-work batching: local
 corrections apply immediately, and source repair continues while guidance verification and delivery
 wait for the recorded coherent checkpoint.
