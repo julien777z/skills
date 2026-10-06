@@ -65,9 +65,10 @@ alwaysApply: true
   or earlier-request activity. Guidance maintenance is the exception: `edit-skill` runs when the
   user reports a guidance failure or canonical guidance is being changed, so the failure and its
   owning instruction are repaired together.
-- A follow-up that leaves an authorized task unfinished is an intermediate step, not a new
-  completion boundary. Keep `execute-task` active and apply its **Work You Have Already Named**
-  procedure before handling the follow-up and before ending the turn.
+- An authorized task stays active until its outcome is verified complete or the user explicitly
+  stops or hands it off. A follow-up, guidance correction, completed milestone, pending decision or
+  reported gate does not close it. Keep `execute-task` active and apply its **Work You Have Already
+  Named** procedure before handling the interruption and before any final response.
 - Record consciously deferred work immediately in its owning repository. A chat note is not a
   durable deferral record; no separate invitation is needed.
 - A direct invocation authorizes one full run at the requested scope. An explicit request to
@@ -126,10 +127,12 @@ alwaysApply: true
   A brief, correction, review finding, gate's fix step or continuation note never outranks the
   guidance governing its subject. Its sender checks before sending and its receiver before acting;
   `execute-task`'s **Encountered Issues** holds what each does with an item a rule forbids.
-- Send what a question asks about — a plan, an example response, a diff — as the final message of
-  a turn, with the question in that message as plain text. The question tool shows only the question
-  and its option labels, and text written in the same turn as a tool call can reach the user only as
-  a collapsed summary, so content placed in a preview, a description, or before a tool call is lost.
+- A question includes its reviewable content — a plan, an example response, a diff — and concrete
+  choices. During unfinished authorized work, present it through an available input channel and
+  retain it as a pending decision while independent work continues; it is not a final task report.
+  For a standalone question with no surrounding authorized work, send that content and the question
+  as the final message. A question tool may show only its question and option labels; send required
+  review content as a file rather than relying on a collapsed preamble, preview or description.
 - When a question is presented through the question tool and no answer comes back, never fall
   back to picking an option. Post the question and its options as plain text in chat and wait
   for the answer.
@@ -163,10 +166,11 @@ alwaysApply: true
   current unavailability, a quiet interval or a bounded wait yielding without a result is not
   failure. Continue independent authorized work, and when none remains, use the available host
   wait or event route until the result arrives, then resume its saved next action. A genuine
-  unresolved choice holds its dependent work, not the whole run. Report an unavailable dependency
-  only after its recovery and safe alternatives have failed, or the host cannot wait for the
-  required result; name that concrete limit rather than ending on a pending state. Completing
-  incidental guidance work does not make the surrounding task's pending result terminal.
+  unresolved choice holds its dependent work, not the whole run. A terminal failure, exhausted
+  recovery or missing host wait route is a concrete gate to surface for repair or resolution,
+  with its evidence and saved next action; it is not completion or permission to end unfinished
+  work. Completing incidental guidance work does not make the surrounding task's pending result
+  terminal. Keep the task active under **Task execution and authorization** while resolving its gate.
 
 - **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The records a local stack holds are the same: create, edit, reset, reopen or convert them whenever the work needs them in a given state — a test account to sign in with, a submission held in review to show a banner, a record a new rule no longer accepts — as the repository's data policy says, report what was done, and never put the choice to the user. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. Deployed and shared remote environments are not local; the following live-deployment rules govern them.
 

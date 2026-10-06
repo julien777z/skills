@@ -313,7 +313,12 @@ Carry the run's state throughout: the current workflow step, repository and PR, 
 
 Hold that state in the session; never write it to a checkpoint file. The pull request is the durable record: its commits, its pushed head, its checks, and its comments are what a resumed turn reads to find the run, and they cannot drift from it the way a separate file can.
 
-GitHub head lag, a retryable rate limit, and any state `merge-pr` is still waiting on are nonterminal. Only conclude the session after the PR is verified merged, after the exact-head review and check gates complete when the user withheld merge, or after reporting a genuine blocker that cannot be safely resolved without user input or an external-state change that the host cannot wait for. A question already recorded as a deferral is not such a blocker: it has been answered by being written down, and the run continues without it.
+GitHub head lag, a retryable rate limit, and any state `merge-pr` is still waiting on are nonterminal.
+Conclude only after the PR is verified merged, after the exact-head review and check gates complete
+when the user withheld merge, or on the user's explicit stop or handoff. A concrete failed gate or
+needed user decision remains active work under the global rules' **Tools and environments**
+pending-result boundary; reporting it does not close CR. A question already recorded as an admitted
+deferral is answered by that record, and the run continues without it.
 
 ## Workflow
 
