@@ -13,6 +13,7 @@ state and the change's intent, applies the repository's rubric, and answers one 
 ## Dependencies
 
 - `subagent-selection` — route the gate through a subagent of the running session.
+- `list-prs` — the caller supplies verified task-work pull requests for cross-repository context.
 - `code-simplify` — its `references/rubric.md` defines slop and prices a mechanism. The gate borrows
   that file and never the applying-fixes workflow.
 - `security-audit` — run at its `low` effort, which is defined as a single in-process pass against
@@ -33,6 +34,12 @@ Where no change is in flight, say so and judge the item on product state and the
 state from the target repository's project guidance; never import another repository's assumptions.
 
 ## The Gate Subagent
+
+Before dispatch, the caller reconciles the ongoing task through `list-prs` or reuses its still-current
+verified result. The affected-repository map includes the current heads and relevant code of
+applicable task pull requests, not only default-branch or local checkout comparisons. The gate
+checks analogous implementations and the evidence for retained differences; missing applicable
+pull-request context is a flag to obtain that context, not permission to assume consistency.
 
 The gate is read-only and distinct: not the author of the item, and not the subagent that answered an
 earlier question about the same item. It receives five things and nothing else:

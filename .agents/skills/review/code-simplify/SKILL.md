@@ -14,12 +14,20 @@ Above all, this skill should push the reviewer to be **ambitious** about code st
 
 - `subagent-selection` — route each reviewer subagent through the running session.
 - `test-fixture` — own test value, fixture, and class/file boundaries when the scope reaches tests.
+- `list-prs` — reconcile task-work pull requests for the affected-repository comparison.
 
 ## Applying fixes
 
 This skill does not stop at review: **apply the simplifications you identify directly to the working tree.** Restructure, extract, delete indirection, collapse branches, reuse the canonical helper, and keep those edits in the commit you are working on. The criteria — what the pass holds itself to, the reuse and ownership searches, the standards, the review questions, what to flag, the remedies, the tone and the approval bar — are `references/rubric.md`. Read it whole before the pass and apply all of it as the checklist for what to fix, not merely what to flag.
 
 ## Running the pass
+
+Before resolving the rubric's affected-repository map, invoke `list-prs` for the ongoing task.
+Inspect the current heads and relevant implementations of applicable task pull requests, including
+unmerged work in other repositories; a default-branch checkout alone can miss the comparison.
+Record which related implementations were compared, the shared convention, and the concrete reason
+for any retained difference. Exclude unrelated task artifacts with their reason. Reuse a caller's
+verified lookup when its scope and heads are still current; discovery grants no new mutation authority.
 
 When the scope includes tests, fixtures, or test support, invoke `test-fixture` before inspecting or changing those surfaces; load its value, retention, and class/file criteria for the review.
 
