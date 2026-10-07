@@ -128,8 +128,8 @@ Dispositions.
 
 Every description is read on every turn, for every skill, so a clause that neither helps decide
 whether this skill fires nor carries a rule that must bind before the body is read is paid for
-constantly and returns nothing. The shapes: the slash command or invocation name, which the listing
-already carries and the reader deciding already has; a paraphrase of the skill's own title;
+constantly and returns nothing. The shapes: a slash command or invocation name that already identifies
+the task, because the listing carries it and the reader deciding already has it; a paraphrase of the skill's own title;
 `Use this skill to`; and what the skill does elaborated past the point a reader needs to recognise
 the situation.
 
@@ -138,7 +138,8 @@ no situation and no file names the skill either, it is a finding under **Unreach
 
 Evidence: the description, quoted, with the clause that earns nothing marked and its length. Remedy:
 cut the marked clause, keeping the trigger, any argument it depends on — a target, a scope, a mode —
-and any rule that must bind before the body is read; drop the command that precedes the argument.
+and any rule that must bind before the body is read. Retain a literal slash alias that is too opaque to
+identify the task by itself, because it is then part of the trigger rather than duplicate naming.
 
 ### Missing
 
