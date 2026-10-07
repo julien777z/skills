@@ -62,13 +62,6 @@ identity, never a second authoritative copy of its records.
      context needed to resume: decisions and constraints, affected callers, dependencies, check
      results and their validity conditions, open questions and next actions. Choose useful `data`
      fields for the record; local work is never an externally verified artifact claim.
-   - For a question, retain a stable decision ID, its actual wording and choices, recommendation or
-     trade-off, whether it is optional, dependent work and the source that asked it. Record an agent
-     assumption or action separately from the user's answer. Update its disposition only with the
-     answer, withdrawal, governing evidence or later instruction that resolves or supersedes it;
-     keep any unresolved part. Silence, optional status or elapsed time supplies no selection.
-     Before returning pending decisions, reconcile the latest user message and retain all unresolved
-     choices, including assumptions awaiting confirmation; exclude only evidenced resolutions.
    - For active work, record its owner, next action, dependencies and concrete blockers so a handoff
      can resume it without reconstructing the task. Preserve reusable check evidence with the input
      or head it covers, and invalidate only what a change affects. When tracking delay, distinguish
