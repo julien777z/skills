@@ -259,7 +259,7 @@ Avoid trivial wrapper functions that add no value. A function that just returns 
 
 - **A function whose body is one call to the canonical function is banned**, whether it forwards the arguments unchanged or supplies a fixed value for one of them. Call the canonical function directly at the use site and name the argument there. Partial application does not earn a name: `send_welcome_email()` wrapping `send_email(template=WELCOME)` reads as a layer while adding none, and the wrapper has to be opened to learn what it does.
 - The pressure to write one usually comes from several call sites passing the same constant, which is not a defect on its own. Where the argument genuinely must not vary, encode that in the callee's signature or its type — do not station a wrapper in front of it to hold the value.
-- **That remedy assumes the callee is ours.** A third-party constructor or function has a signature we cannot change, so a named helper is the only place its fixed arguments can live once; one such helper is allowed and beats repeating those arguments at every call site. It may only name the intent and supply the fixed arguments — any of our own logic in its body makes it an ordinary function subject to the rule above.
+- The same rule applies to third-party constructors and functions: call their native operation directly with the required arguments. An external signature does not justify a fixed-argument forwarding helper.
 - Return `bool` for binary domain outcomes; never return integer `0` or `1` as a boolean substitute. Translate booleans into process exit codes only at the CLI boundary.
 - Return an enum for an outcome with more than two states or states whose names carry meaning. Never return bare integers as application status codes.
 - A subprocess return code is an external value and may remain an `int` at that boundary. Convert it into the domain outcome enum before carrying it through the application.
@@ -301,9 +301,8 @@ def notify_owner(account: Account) -> None:
 send_notification(account, channel=Channel.EMAIL)
 
 
-# Good: the fixed arguments belong to a third-party signature we cannot change
-def audited_timestamp(column_name: str) -> ExternalColumn:
-    return ExternalColumn(column_name, ExternalTimestamp(with_zone=True), track_history=True)
+# Good: call the third-party constructor directly
+ExternalColumn(column_name, ExternalTimestamp(with_zone=True), track_history=True)
 
 
 # Bad: useless wrapper
