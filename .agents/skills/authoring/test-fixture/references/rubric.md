@@ -295,9 +295,10 @@ When several tests need the same configuration overrides, expose one fixture hel
 fixture package instead of repeating `monkeypatch.setattr(...)` in each test.
 
 For HTTP endpoint tests, build request payloads from the request models the application's routes
-and services use, then serialize them through the suite's shared serialization helper, which owns
-the repository's standard dump options; call `model_dump(...)` directly only where an endpoint
-contract genuinely needs different options. Use enum members rather than hard-coded strings, derive
+and services use, and use their native serialization with explicit contract-required options, such
+as `model_dump(mode="json")`. Share serialization behavior only when it adds a transformation or
+contract decision beyond the model's native options; repeated calls with the same options do not
+justify a fixed-argument forwarding helper. Use enum members rather than hard-coded strings, derive
 an invalid payload from a valid one and mutate it deliberately, and serialize mocked response bodies
 from the application's response models rather than hand-rolled dictionaries. A test-only
 `BaseModel` mirroring a contract is the fallback where no application model exists; a

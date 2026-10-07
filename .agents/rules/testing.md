@@ -88,8 +88,8 @@ paths:
 - Give factories domain-qualified names. Do not use generic names such as `record_factory`, numbered names, or setup-mechanics prefixes such as `persisted_*`.
 - Factory inputs should be typed aggregates or boundary models rather than positional identity scalars, nested override dictionaries, relationship rows, or payload fragments.
 
-- For HTTP endpoint tests, build request payloads from the same request models used by application routes/services, then serialize them through the suite's shared serialization helper.
-- Keep the repository's standard dump options inside that one helper instead of repeating them at each call site. When an endpoint contract genuinely needs different options, call `model_dump(...)` directly there.
+- For HTTP endpoint tests, build request payloads from the same request models used by application routes/services and use their native serialization with explicit contract-required options, such as `model_dump(mode="json")`.
+- Share serialization behavior only when it adds a transformation or contract decision beyond the model's native options. Repeated calls with the same options do not justify a fixed-argument forwarding helper.
 - Do not pass ad-hoc inline dictionaries directly to `json=` when an application request model exists.
 - For mocked HTTP response bodies, prefer application response models (or shared contract response models) and serialize them instead of hand-rolled response dictionaries.
 - Use enum members in model payloads instead of hardcoded enum strings.
