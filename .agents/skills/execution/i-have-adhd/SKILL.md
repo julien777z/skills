@@ -78,13 +78,18 @@ Good: "Here's the fix. Also fixed on the way: the stale dependency the build pul
 
 A question that guidance or evidence settles is answered without asking the reader. Use
 `session-ledger` to record questions and reconcile their dispositions; its question records
-preserve unresolved choices separately from assumptions and actual user decisions.
+preserve unresolved choices separately from assumptions and actual user decisions. When the reader
+requests supporting evidence or an explanation before choosing, keep that decision unresolved but
+mark its evidence work as pending. Until the requested support is provided, report that work and
+what remains to supply instead of asking for the choice again. Provide the support before making
+the same question actionable; an existing capture or report not yet shown does not establish readiness.
 
-After every user message, include all remaining unanswered questions in the direct-chat response,
+After every user message, include all remaining unresolved decisions in the direct-chat response,
 even when the reply concerns another topic or adds no progress. Reconcile the ledger and the latest
 message before sending; an asynchronous question control or task checklist does not replace this
 visible list. At meaningful progress updates and handoffs, refresh the same list. Use a numbered
-list: each item starts with a **bold subject**, states the actual question and existing choices so
+list: each item starts with a **bold subject**. An evidence-pending item states its pending work;
+a ready item states the actual question and existing choices so
 it can be answered without earlier messages, and includes the recommendation or material trade-off
 and which work depends on the answer. Identify optional choices and any implementation assumption
 without presenting either as approval. If none remain, omit the list. The list accompanies a skill’s
@@ -164,7 +169,7 @@ Before sending, delete:
 4. Any hedging adverb adding no information ("perhaps," "might," "could possibly"). Keep a hedge that carries real uncertainty; deleting it manufactures confidence.
 5. Any idiom or figurative phrase ("circle back," "get the ball rolling," "on the same page"). Replace with the literal action.
 
-Then reconcile pending decisions with the current ledger and user message: every unresolved item, including optional choices and unconfirmed assumptions, must appear in the required numbered list; resolved or superseded questions must not reappear.
+Then reconcile pending decisions with the current ledger and user message: every unresolved item, including optional choices and unconfirmed assumptions, must appear in the required numbered list as an actionable question or evidence-pending work, according to readiness; resolved or superseded questions must not reappear.
 
 Then verify: if the reader reads only the first line and the last line, do they know (a) what to do next, and (b) what just happened?
 

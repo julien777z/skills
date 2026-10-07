@@ -5,9 +5,7 @@
 ### Pattern 1: Basic pytest Tests
 
 ```python
-# test_calculator.py
-import pytest
-
+# app/calculator.py
 class Calculator:
     """Simple calculator for testing."""
 
@@ -24,6 +22,13 @@ class Calculator:
         if b == 0:
             raise ValueError("Cannot divide by zero")
         return a / b
+```
+
+```python
+# tests/test_calculator.py
+import pytest
+
+from app.calculator import Calculator
 
 
 def test_addition():
@@ -141,12 +146,19 @@ def test_api_client(api_client):
 ### Pattern 3: Parameterized Tests
 
 ```python
-# test_validation.py
-import pytest
-
+# app/validation.py
 def is_valid_email(email: str) -> bool:
     """Check if email is valid."""
-    return "@" in email and "." in email.split("@")[1]
+    local_part, separator, domain = email.partition("@")
+
+    return bool(local_part and separator and "." in domain)
+```
+
+```python
+# tests/test_validation.py
+import pytest
+
+from app.validation import is_valid_email
 
 
 @pytest.mark.parametrize("email,expected", [
