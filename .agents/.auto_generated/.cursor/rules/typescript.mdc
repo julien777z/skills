@@ -88,9 +88,9 @@ type Status = (typeof Status)[keyof typeof Status];
   arguments unchanged or supplies a fixed value for one of them. Call the canonical function at the
   use site and name the argument there. Several call sites passing the same constant is not a defect
   and does not earn a wrapper to hold it.
-- That remedy assumes the callee is ours. A third-party signature cannot be changed, so one named
-  helper holding its fixed arguments is allowed and beats repeating them everywhere — but any logic
-  of our own in its body makes it an ordinary function subject to the rule above.
+- The same rule applies to third-party functions and constructors: call their native operation
+  directly with the required arguments. An external signature does not justify a fixed-argument
+  forwarding helper.
 - Name a guard for the condition it asserts rather than the outcome it prevents, so the call site
   reads as the rule that must hold. Keep the name truthful to what the guard actually checks.
 - Do not rebind a parameter to a second local name when the value is unchanged; name the parameter
