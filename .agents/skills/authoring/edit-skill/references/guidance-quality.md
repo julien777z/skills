@@ -68,12 +68,17 @@ bind before the body is read, since a reader often acts on the description first
 does belongs there only so far as a reader needs it to recognise those situations; the body says
 the rest.
 
-So the slash command earns no space. It is the skill's own name, the listing already shows it, and
-a reader deciding whether to invoke has it in hand — `Invoke as /refactor to refactor a
+So the slash command normally earns no space. It is the skill's own name, the listing normally shows
+it, and a reader deciding whether to invoke has it in hand — `Invoke as /refactor to refactor a
 repository` spends its opening clause telling the reader something they used to get here. Keep the
 trigger and drop the command: `Use to refactor a repository, change request, branch, path, symbol,
 or concern.` The same goes for a phrase naming the skill, `Use this skill to`, and a restatement of
 the skill's title.
+
+An opaque short alias is the exception. When a user can send only that alias and it does not itself
+identify the task, name its literal slash form in the description with the action it triggers. That
+gives the dispatcher a match without replacing the natural-language trigger; “Use when a user enters
+`/qx` to reconcile an inventory” identifies both.
 
 Where an invocation carries an argument the trigger depends on, the argument is the thing worth
 naming — a target, a scope, a mode — not the command that precedes it.
