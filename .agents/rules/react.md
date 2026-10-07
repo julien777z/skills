@@ -319,8 +319,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   banners and with other independent error banners. For simultaneous non-error conditions, trace each
   to its state owner, writers and prerequisites. If they cannot legitimately coexist, fix the state
   or transition that produced them; a display selector does not repair it. If more than two legitimate
-  non-error conditions require banners, surface the product or flow conflict and the concrete alternatives that would resolve it
-  for the user's decision, under the global product-experience boundary. Preserve established banner
+  non-error conditions require banners, surface the product or flow conflict and the concrete alternatives
+  that would resolve it for the user's decision, under the global product-experience boundary. Preserve established banner
   rendering while that decision waits; combining messages, changing presentation, prioritizing,
   capping, hiding or dismissing an unresolved condition is not a repair. Continue independent
   authorized work. Verify an approved state or flow remedy at its producing transitions and on the
