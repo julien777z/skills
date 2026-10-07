@@ -271,6 +271,15 @@ pre-push checks. Deferred feature verification does not hold an intermediate pus
 required afterward. Run the relevant batch after the feature is complete, then the required final
 checks before delivery; retain evidence that the change has not invalidated.
 
+**A check's report starts a repair decision, not a design specification.** Before choosing or
+accepting a remedy, name the underlying defect, its existing owner, and the guidance governing that
+owner. Compare the proposed remedy with fixing that owner directly: what cause disappears, what
+behavior remains verified, and what structure the remedy adds. Reject a remedy whose only benefit
+is changing what the check sees while leaving the cause in place; choose the compliant root-cause
+repair instead. Apply this comparison to a worker's fix, a configuration or validation change, and
+a proposed completion claim as well as code. A passing check does not close the issue until the
+repair satisfies that comparison; keep it open under **Encountered Issues** when it does not.
+
 - **Required checks use CI’s commands and scope, at the verification checkpoints above.** Read
   the workflow files that trigger on a pull request and run every checking job that can run
   locally — lint, format, type checks, build, tests, generated-output drift, docs or coverage
