@@ -382,7 +382,7 @@ register_task(task_type=TaskType.PROCESS_RESOURCE, handler_name=handler.__name__
 - When multiple functions compute the same derived state (for example completion/missing stage lists), centralize that logic in one helper.
 - Reuse the helper across read paths to avoid behavior drift.
 
-- Keep explicit wrapper/helper functions for external dependencies so tests can patch clear module boundaries.
+- Keep external calls at their owning dependency boundary; tests patch the binding that boundary already reads rather than adding a forwarding helper solely as a patch target.
 - **Patch the consuming module's own binding, not the module that defines the symbol.** A symbol import binds the object at import time, so the consumer holds its own reference: patching the defining module rebinds a name the consumer never reads again. Nothing raises, the mock never fires, and the test passes while asserting nothing.
 - Patch the shallowest seam the consumer actually reads, rather than an internal several calls below it.
 
