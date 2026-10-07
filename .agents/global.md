@@ -258,8 +258,9 @@ setRecords(records);
 return records;
 ```
 
-- A bootstrap or setup folder holds only its entrypoint at its root, such as `setup/run.sh`; every
-  supporting script, module, or data file it uses goes in `setup/resources/`.
+- A bootstrap or setup folder holds its entrypoint and, when needed, its configuration file at
+  its root. Supporting scripts, modules, and data files go in its `resources/` folder; configuration
+  stays beside the entrypoint rather than among those helpers.
 
 - Executable scripts and command entrypoints are consumers, never reusable data or helper owners.
   Application code, test setup, and other commands must import shared behavior from its existing

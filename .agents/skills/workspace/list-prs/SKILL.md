@@ -23,8 +23,11 @@ including work continued from a handoff or earlier chat. Honor explicit scope an
    returning a complete list or `- None`.
 2. Select pull requests created or worked on for this task, whether recorded as created or touched.
    Include pre-existing pull requests the task continued, updated, reviewed, reopened, or resolved
-   conflicts in. A reference or example alone does not make a pull request task work. Do not infer
-   task membership from a directory, branch, author, date, or repository-wide search. Broaden scope
+   conflicts in. Require the recorded task action and receipt for each membership decision before
+   checking its hosting state. A reference, attachment, incidental read, or related automation output alone does
+   not make a pull request task work; neither does a reconstructed `touched` label without that
+   action's evidence. Keep unsupported candidates excluded and correct their attribution through
+   `session-ledger`. Do not infer task membership from a directory, branch, author, date, or repository-wide search. Broaden scope
    beyond the task only when explicitly requested.
 3. Verify each selected canonical URL with read-only hosting-service tooling. Default to currently
    open pull requests, including drafts and ready-for-review pull requests. Include closed or

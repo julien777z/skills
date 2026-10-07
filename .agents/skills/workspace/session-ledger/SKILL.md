@@ -55,8 +55,11 @@ identity, never a second authoritative copy of its records.
      artifact kind, repository URL when applicable, creation order, and verified identifiers needed
      to read it again, such as a pull request number, branch, head SHA, or deployment ID. Record a
      pull request immediately after the hosting service returns its canonical URL, before reporting
-     creation or moving to another repository. The first observation records `created` or `touched`;
-     acting on a pre-existing artifact never makes it session-created.
+     creation or moving to another repository. The first observation records `created`, `touched`,
+     or `reference`, supported by a receipt naming the task action. `created` requires this task's creation receipt; `touched` requires
+     concrete work the task performed on the artifact. Discovery, attachment, status verification,
+     or observing an automated output establishes only a reference, never task work. Acting on a
+     pre-existing artifact never makes it session-created.
    - For a correction, keep the observed issue, evidence or user instruction, reproduction scenario,
      intended behavior, canonical files, local branch, checkpoint and delivery status. Keep other
      context needed to resume: decisions and constraints, affected callers, dependencies, check
@@ -84,8 +87,11 @@ identity, never a second authoritative copy of its records.
 5. Retrieve by record kind or facts such as artifact kind, repository, branch or canonical URL.
    Deduplicate artifact URLs while preserving first-recorded order.
    - A task-scoped pull-request lookup reads the recorded pull requests first, then verifies
-     their current state with the hosting service. Exclude closed and merged pull requests unless
-     explicitly requested. A handoff includes open pull requests recorded as created or touched.
+     their current state with the hosting service. Check the recorded action and its evidence before
+     selecting task work, including reconstructed records; an asserted relation without that receipt is not proof. Preserve mistaken or disputed
+     attribution with a correction observation and its exclusion, rather than promoting a reference
+     or erasing its history. Exclude references, closed and merged pull requests unless the requested
+     scope includes them. A handoff includes open pull requests with verified creation or touch receipts.
    - An explicit user-provided URL remains the target: verify it directly without substituting
      another ledger record or a same-named branch.
    - For an artifact created before this skill was available, reconstruct its missing entry from
