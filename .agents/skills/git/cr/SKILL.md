@@ -1,6 +1,6 @@
 ---
 name: cr
-description: Use when the user directly asks to run CR or says "CR" for a pull request, or when a directly user-invoked merge-post-review delegates its captured merged diffs. Triage review threads, run multi-subagent code-simplify and high-effort fix review, repair relevant failed checks, then merge after the gates unless the user explicitly asks to finish review without merging. This dedicated CR workflow uses high effort and fix mode without asking for review options.
+description: Run the full review-and-fix workflow for a pull request when a user enters `/cr`, asks to run CR, or says "CR". Also use when a directly user-invoked merge-post-review delegates its captured merged diffs.
 ---
 
 # CR
