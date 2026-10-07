@@ -78,7 +78,7 @@ the skill's title.
 An opaque short alias is the exception. When a user can send only that alias and it does not itself
 identify the task, name its literal slash form in the description with the action it triggers. That
 gives the dispatcher a match without replacing the natural-language trigger; “Use when a user enters
-`/cr` to run the full pull-request review workflow” identifies both.
+`/qx` to reconcile an inventory” identifies both.
 
 Where an invocation carries an argument the trigger depends on, the argument is the thing worth
 naming — a target, a scope, a mode — not the command that precedes it.
