@@ -63,13 +63,20 @@ of that proof; agreement in one never establishes agreement in another.
    deployed cutover. Keep every affected consumer on the manifest until its resulting execution
    state is read back and verified.
 7. Verify both ends using the identities and environments that will execute after the change.
+   Before changing an execution reference, compare the revision being activated with the revision
+   actually verified. A working validation branch does not verify the default branch or another
+   artifact. Establish that every required authority correction is reachable in the selected
+   revision before switching a consumer to it. Keep dependent consumers on the verified revision
+   until that condition holds, and account for outstanding delivery dependencies explicitly.
    Exercise the producer operation that needs the changed authority, such as node provisioning,
    service publication or route approval, and the real consumer service or request path through
    that boundary. Verify automated jobs with their actual runner identity and secret scope; a
    local credential test cannot establish their cutover. Use authorized read-only checks or the
    repository's designated mutation target as appropriate. A green workflow, an active deployment,
    a policy check or a health endpoint bypassing the boundary is insufficient alone. Record each
-   result with its client ID, target, operation and observed execution revision or run.
+   result with its client ID, target, operation and observed execution revision or run. Include
+   separately executed success and failure reporting paths; one path's identity or revision does
+   not establish another's.
 8. Re-read the complete manifest and live references after cutover. Reconcile stale references,
    missing consumers and changed runtime identities; repeat the affected verification when new
    evidence invalidates it. Revoke an old client or remove old authority only after every affected
