@@ -217,14 +217,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   distances from the navigation read as two products.
 - **A surface is as tall as its content, never taller.** A card, panel, section or widget showing a
   large empty area — below its content, or between the content and the control that acts on it —
-  reads as unfinished. Content flows from the top and each control sits directly after what it acts
-  on, never pushed to the bottom of a stretched container by a fill or a space-between, or to the
-  far edge of an otherwise empty row or footer. Keep a page section's structural frame, heading,
-  description and dividers at the width its page layout assigns. Short settings bound the interactive
-  content inside that section, not the section itself: use half the available width on desktop and
-  the available width on smaller screens. Place that width on the inner form or control group; a
-  half-width section or a new peer-section row does not satisfy it. Surfaces the established layout
-  already pairs in a row split its width evenly, unless
+  reads as unfinished. Content flows from the top; artificial filler never pushes a control to the
+  bottom of a stretched container or the far edge of an otherwise empty row or footer. Surfaces the
+  established layout already pairs in a row split its width evenly, unless
   one is a main area beside a narrow side rail. They end on the same line, and they get there by
   balancing what they hold — cutting a
   line that earns no place, moving a control, re-pairing the surfaces — never by stretching the
@@ -233,6 +228,18 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   maximum height, so the surface stays as tall as its content until it reaches the cap. A height set
   from outside the content belongs only to a surface whose content fills the space it is given — a
   chart, a map, media — to one the reader sized, or to a section deliberately sized to the viewport.
+- **Size interactive content for its values, relationships and task, not a fixed fraction of the
+  page.** Keep a page section's structural frame, heading, description and dividers at the width its
+  page layout assigns. Bound simple control groups inside that frame so short values and their
+  actions stay together; give structured content the room its columns and relationships need.
+  Compact controls do not require a narrow container, and a wide container does not require
+  stretched controls. Use the product's established layout and control sizes, preserving comparable
+  widths under **Forms**, rather than shrinking the section or creating a new peer-section row.
+- **Place actions by what they affect and the product's established interaction pattern.** An
+  action on a whole surface belongs in its shared action slot; an action on one item stays associated
+  with that item. Do not move a contextual action into a detached row merely to satisfy a width or
+  proximity rule. At narrower widths, wrap or stack related content and controls while preserving
+  readable values, visible context, accessible labels and a clear association with their actions.
 - **A frame that scrolls shows its scrollbar whenever its content overflows** — a box of legal
   text, a dialog body, a list or a table inside a maximum height — on every platform and before the
   reader touches it, so cut-off text reads as more to scroll rather than as text that ends. A hidden
