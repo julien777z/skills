@@ -120,6 +120,11 @@ with an obsolete owned contract or revision.
   documentation, and instructions as well as runtime paths. An old owned consumer failing against
   the current contract is a reason to update it, not an exception; update affected owned consumers
   and migrate retained data onto the target contract instead.
+- Judge support by the values and representations a reader accepts, not by whether it has a
+  legacy-specific branch. Widening a schema, type, validator, or reader so a retired owned value
+  remains accepted preserves the obsolete contract. Choose the target representation and its
+  constraints first, then migrate retained facts into its supported semantic fields; do not
+  weaken those constraints to keep the old representation readable.
 - Treat configuration inputs as owned contracts. Replace a stale deployed value at the existing
   setting and its deployment owner; do not add another file, environment key, or fallback path to
   override it.
