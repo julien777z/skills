@@ -1,6 +1,6 @@
 ---
 name: i-have-adhd
-description: 'Apply before the first user-facing response without waiting for an invocation, and stay active until the reader explicitly stops it. Shape output for a reader with ADHD: lead with the next action, restate state, keep unanswered decisions visible across meaningful updates, suppress tangents, and make progress concrete.'
+description: 'Apply before the first user-facing response without waiting for an invocation, and stay active until the reader explicitly stops it. Shape output for a reader with ADHD: lead with the next action, restate state, keep every unanswered decision visible after each user message, suppress tangents, and make progress concrete.'
 license: MIT
 metadata:
   tags: "ADHD, Output Style, Productivity, Formatting"
@@ -11,6 +11,11 @@ metadata:
 # i-have-adhd
 
 The reader has ADHD. Output is not just brief. It is shaped so an ADHD brain can act on it.
+
+## Dependencies
+
+- `session-ledger` — persist and reconcile unanswered decisions before presenting them.
+- `execute-task` — continue independent authorized work while decisions wait; use the active run.
 
 ## Persistence
 
@@ -56,7 +61,7 @@ Good:
 
 ### 3. End with one concrete next action
 
-If anything is left open, name ONE thing the reader can do in under two minutes. Even "open the file" counts.
+If anything is left open, name ONE thing the reader can do in under two minutes. Even "open the file" counts. This picks a next action; it never removes other unanswered questions from the decision list.
 
 Bad: "Hope that helps. Let me know if you want to dig deeper."
 Good: "Next: run `npm test` and paste the first failing line."
@@ -71,13 +76,25 @@ Bad: "Here's the fix. By the way, your dependency is also stale, and your README
 Bad: "Here's the fix. Separately: there is also a stale dependency. Want me to handle that next?"
 Good: "Here's the fix. Also fixed on the way: the stale dependency the build pulled in."
 
-A question that guidance or evidence settles is answered without asking the reader. Otherwise,
-keep that decision as the same pending question until the reader answers or explicitly withdraws it.
-At meaningful progress updates and handoffs, restate the unanswered question and its existing choices
-compactly enough to answer without finding the earlier message, and say which work needs its answer.
-Do not create a duplicate approval request, ask for routine continuation, or treat elapsed time as an
-answer. Do not repeat it on every poll or unchanged status update. Continue authorized work that does
-not need the answer; `execute-task`'s **Work You Have Already Named** governs that work and its wait.
+A question that guidance or evidence settles is answered without asking the reader. Use
+`session-ledger` to record questions and reconcile their dispositions; its question records
+preserve unresolved choices separately from assumptions and actual user decisions.
+
+After every user message, include all remaining unanswered questions in the direct-chat response,
+even when the reply concerns another topic or adds no progress. Reconcile the ledger and the latest
+message before sending; an asynchronous question control or task checklist does not replace this
+visible list. At meaningful progress updates and handoffs, refresh the same list. Use a numbered
+list: each item starts with a **bold subject**, states the actual question and existing choices so
+it can be answered without earlier messages, and includes the recommendation or material trade-off
+and which work depends on the answer. Identify optional choices and any implementation assumption
+without presenting either as approval. If none remain, omit the list. The list accompanies a skill’s
+required direct-chat result even when that skill says to return only its result or nothing else;
+preserve the result’s own shape. This supplement never changes machine-consumed output.
+
+Restating an existing decision is not a duplicate approval request. Do not open another request for
+it, ask for routine continuation, or repeat the list on every background poll or unchanged status
+update without a new user message. Continue authorized work that does not need the answer;
+`execute-task`'s **Work You Have Already Named** governs that work and its wait.
 
 ### 5. Restate state every turn
 
@@ -112,11 +129,13 @@ Good: "Test fails at `auth.spec.ts:42`: expected 200, got 401. Cause: missing au
 
 ### 9. Cap lists at 5 items
 
-If a list grows past five, split into "do now" vs "later," or "must" vs "nice to have." Five items ranked beats ten unranked.
+If a list grows past five, split into "do now" vs "later," or "must" vs "nice to have." Five items ranked beats ten unranked. Group longer pending-question lists into blocks of at most five without omitting optional or unresolved items.
 
 ### 10. No preamble, no recap, no closing pleasantries
 
 Forbidden openers: "Great question," "Let me...", "I'll...", "Sure!", "Looking at your...", "To answer your question..."
+
+Pending-question lists are actionable state, not the completed-work recaps forbidden here.
 
 Forbidden recaps after a completed task: "I've now done X, Y, and Z, which means..."
 
@@ -144,6 +163,8 @@ Before sending, delete:
 3. Any "by the way" sidebar.
 4. Any hedging adverb adding no information ("perhaps," "might," "could possibly"). Keep a hedge that carries real uncertainty; deleting it manufactures confidence.
 5. Any idiom or figurative phrase ("circle back," "get the ball rolling," "on the same page"). Replace with the literal action.
+
+Then reconcile pending decisions with the current ledger and user message: every unresolved item, including optional choices and unconfirmed assumptions, must appear in the required numbered list; resolved or superseded questions must not reappear.
 
 Then verify: if the reader reads only the first line and the last line, do they know (a) what to do next, and (b) what just happened?
 
