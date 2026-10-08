@@ -80,8 +80,10 @@ proposing a new file applies.
   Record the results and verified delivery artifacts back into the same ledger.
 - At a guidance delivery checkpoint and before reporting its state, record the complete pull-request
   head and file list, the target repository lifecycle consulted, its current state, and its next
-  required transition. An eligible draft records `merge-pr` as its next action; only a concrete
-  documented gate may replace that action.
+  required transition and authorization selection. After the GitHub rule classifies every path as
+  canonical, non-executable agent configuration, an eligible draft records
+  `agent-configuration exception` and `merge-pr` as its next action; only a concrete documented
+  gate may replace that action. It never records `await user authorization` for that pull request.
 - Before the surrounding task ends or hands off, deliver every pending batch or record its concrete
   blocking decision, failed gate or unavailable dependency under the global rules' **Tools and
   environments** pending-result boundary. Pending recovery or verification remains active work,
@@ -423,6 +425,13 @@ proposing a new file applies.
       it draft under an ordinary source-work default or report it as delivered before its merged
       text and generated outputs are verified. The report names either the merged-and-refreshed
       state or a concrete documented gate with its evidence; draft alone is neither.
+
+      **The agent-configuration merge exception decides the conflict with the ordinary merge
+      default.** When the GitHub rule classifies every changed path as canonical, non-executable
+      agent configuration, the required gates pass, and no still-open source pull request makes the
+      guidance conditional, `merge-pr` is the next action in this run. Do not record, report, or ask
+      for a permission hold by citing the ordinary default; that is not a documented gate for this
+      pull request.
 
       **A skill that arrives by relocation is not a skill the change adds.** Moving one between
       repositories, or generalizing local copies into one every repository can adopt, produces a new
