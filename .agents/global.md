@@ -208,6 +208,19 @@ alwaysApply: true
   on the others validates the shared path. Never create persistent synthetic records in a stable or
   shared staging environment merely to smoke-test a deployment.
 
+## Suppressions
+
+- Before adding any diagnostic suppression — inline, file-wide, in tool configuration, or in a
+  check's filter — present the exact finding, affected scope and proposed suppression for the
+  user's explicit approval. An unanswered or declined request leaves it absent. Complete the
+  implementation instead of adding casts, wrappers, changed data shapes or other workarounds
+  merely to hide the same finding.
+- The exception is a verified third-party-owned diagnostic: it may receive a targeted one-line
+  suppression at that boundary without another approval, naming the exact diagnostic. Never
+  disable its category globally or suppress our own incomplete implementation under that
+  exception. User-owned dependencies are repaired at their source; generated directives remain
+  the generator's responsibility.
+
 ## Tailscale policy
 
 - Before changing Tailscale authority or its consumers, invoke `tailscale-config`; it owns

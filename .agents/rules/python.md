@@ -179,16 +179,9 @@ from myapp.http_transport import fetch
 
 ## Suppressions
 
-- Suppressions require the user's explicit approval before they are added, whether inline,
-  file-wide, in tool configuration, or in a lint-gate filter. Present the exact diagnostic,
-  affected scope, and suppression proposed; an unanswered or declined request leaves it absent.
-  Complete the implementation instead of introducing casts, wrappers, changed data shapes, or
-  other workarounds merely to hide the same finding.
-- A diagnostic caused by a third-party dependency may receive a targeted one-line suppression
-  at that boundary without another approval. Verify the dependency owns the cause and name the
-  exact diagnostic; never disable its category globally or suppress our own incomplete code.
-  A package the user owns is repaired at its source, wherever it lives. Do not add stubs, casts or
-  wrappers to quiet missing dependency types. Code a generator emits keeps its own directives.
+- Follow the global **Suppressions** policy for every diagnostic exclusion. Verify dependency
+  ownership before applying its third-party exception; repair user-owned packages at their source.
+  Never add stubs, casts or wrappers to quiet missing dependency types.
 
 ## Configuration
 
