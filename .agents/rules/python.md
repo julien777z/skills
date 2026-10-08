@@ -181,7 +181,7 @@ from myapp.http_transport import fetch
 
 - Follow the global **Suppressions** policy for every diagnostic exclusion. Verify dependency
   ownership before applying its third-party exception; repair user-owned packages at their source.
-  Never add stubs, casts or wrappers to quiet missing dependency types.
+  Never add stub files, a `typings/` directory, casts or wrappers to quiet missing dependency types.
 
 ## Configuration
 

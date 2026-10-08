@@ -215,11 +215,12 @@ alwaysApply: true
   user's explicit approval. An unanswered or declined request leaves it absent. Complete the
   implementation instead of adding casts, wrappers, changed data shapes or other workarounds
   merely to hide the same finding.
-- The exception is a verified third-party-owned diagnostic: it may receive a targeted one-line
-  suppression at that boundary without another approval, naming the exact diagnostic. Never
-  disable its category globally or suppress our own incomplete implementation under that
-  exception. User-owned dependencies are repaired at their source; generated directives remain
-  the generator's responsibility.
+- The exception is a verified defect in a third-party declaration at an external boundary: it
+  may receive a targeted one-line suppression there without another approval, naming the exact
+  diagnostic. Using a third-party library does not make our construction, validation, argument
+  choices or invariants third-party code; diagnostics on those still require approval, including
+  suspected false positives. Never disable a category globally. User-owned dependencies are
+  repaired at their source; generated directives remain the generator's responsibility.
 
 ## Tailscale policy
 
