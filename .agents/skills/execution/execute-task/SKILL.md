@@ -114,6 +114,14 @@ announce the invocation before the first edit. Listing it as a dependency is not
 Read the repository's product state from its project guidance before choosing how to change a
 contract or stored value.
 
+Before recommending an approach, delegating a remedy, or choosing an implementation, trace the
+requested behavior from its caller to the component that owns the decision and inspect its existing
+capabilities. Compare reusing or extending that owner with a caller-local fix, and choose the
+boundary from the actual contract, consumers, and failure semantics. State the owner and relevant
+primitive behind the choice; a recommendation made before editing still owes this check. A shared
+wrapper around duplicated policy does not satisfy it, and reuse does not require a new abstraction
+when the existing boundary already serves the need.
+
 Before each edit, read the shared and repository rules governing every surface it reaches — its
 language, framework and package, and the kind of thing it changes, such as a form, a query, a test
 or interface copy — and nearby analogous files. Where those files disagree, the one departing from
