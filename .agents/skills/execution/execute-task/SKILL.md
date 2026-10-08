@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once, before the first edit, at the start of every task that changes files — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until verified completion or explicit user stop or handoff: it applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, keeps session-created source work to one pull request per repository, simplifies and gates the finished task's diff once, checks every outcome it reports, whether its own action or a sub-agent's claim, at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
+description: "Always run this. Invoke once at the start of every task authorized to change files, before recommending an implementation, delegating edits, or editing — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until verified completion or explicit user stop or handoff: it applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, keeps session-created source work to one pull request per repository, simplifies and gates the finished task's diff once, checks every outcome it reports, whether its own action or a sub-agent's claim, at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
 short_description: 'Apply repository guidance, fix issues found along the way, validate the diff, and deliver the change.'
 ---
 
@@ -20,7 +20,8 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 
 ## One Run Per Task
 
-- Invoke this skill once, at the start of a task, before the first edit. A run stays active until
+- Invoke this skill once when a task is authorized to change files, before its implementation
+  recommendation, delegated edits, or first edit. A run stays active until
   the task's outcome is verified complete or the user explicitly stops or hands it off. **Work You
   Have Already Named** retains outstanding items and their next actions through reports, gates and
   interruptions. Nothing in the task re-enters the skill; the run simply has not ended.
@@ -114,13 +115,9 @@ announce the invocation before the first edit. Listing it as a dependency is not
 Read the repository's product state from its project guidance before choosing how to change a
 contract or stored value.
 
-Before recommending an approach, delegating a remedy, or choosing an implementation, trace the
-requested behavior from its caller to the component that owns the decision and inspect its existing
-capabilities. Compare reusing or extending that owner with a caller-local fix, and choose the
-boundary from the actual contract, consumers, and failure semantics. State the owner and relevant
-primitive behind the choice; a recommendation made before editing still owes this check. A shared
-wrapper around duplicated policy does not satisfy it, and reuse does not require a new abstraction
-when the existing boundary already serves the need.
+Before recommending an implementation or delegating its edits, trace the requested behavior from
+the caller to its owner and inspect that owner's existing capabilities. Apply the guidance and
+analogous implementations below to that choice, not only to the later edit.
 
 Before each edit, read the shared and repository rules governing every surface it reaches — its
 language, framework and package, and the kind of thing it changes, such as a form, a query, a test
