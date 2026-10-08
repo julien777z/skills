@@ -12,7 +12,7 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 
 - `pre-production` — the target-contract policy for every repository and its data obligations.
 - `code-simplify` — simplify the finished task's complete diff before delivery.
-- `acceptance-gate` — judge the finished task's complete diff before the pull request leaves draft or merges, and each fix for a flag it raises.
+- `acceptance-gate` — judge the finished task's complete diff before local completion or the pull request leaves draft or merges, and each fix for a flag it raises.
 - `generic-push` — keep each repository's publishing metadata independent during multi-repository changes.
 - `merge-conflict` — bring in a conflicting or moved base, found when a push is read back, before other work.
 - `subagent-selection` — the hand-up a worker without an agent tool uses for an independent step.
@@ -130,6 +130,14 @@ delivery. A formatter passing is not a substitute for that comparison.
 Apply `pre-production`'s encountered-issues policy while making the change. The rules below govern
 how those issues are handled.
 
+- When local validation fails before exercising the changed behavior, trace the failing setup
+  operation under `code-simplify`'s **Trace Changed Flows** before choosing a remedy or reporting
+  a limitation. Include that inherited operation in the affected-repository map, compare its
+  prerequisites with applicable parallel implementations, and repair its repository-owned inputs
+  at their owner. A caller-supplied workaround is not verification of the repaired native route;
+  rerun that route before completion. Preserve a required prerequisite whose concrete contract
+  differs, and apply **Environment Refusals** and **Task Authorization** to an actual external or
+  permission boundary.
 - **A bug the work turns up, or a finding a gate, review, or simplification pass returns, is fixed
   in the change in flight, in a shape the standing guidance allows as the next bullet says, and
   offering it to the user is not a disposition.** "Want this handled, or shall I leave it?" reads as
@@ -477,6 +485,12 @@ surrounding task. Report a blocker only on that boundary's concrete evidence.
 
 ## Completion
 
+Run this checkpoint before reporting a change complete, including a local-only result with no
+pull request. In that case, steps 1–2 review the complete task diff and its validation prerequisites;
+step 3 applies only when a pull request exists. A failed local setup operation remains encountered
+work under **Encountered Issues**, not an unverified-completion caveat. The independent gate
+receives its affected-repository map and comparison evidence along with the diff.
+
 Before the final delivery steps below, verify the requested behavior on the change's branch within
 the authorized scope, including reachable dependency branches. When a requested flow failed, repair
 and push the fix, exercise that branch, and repeat the complete failed flow until its requested
@@ -484,8 +498,8 @@ outcome is verified. A narrower health check or passing component test cannot re
 Missing merge approval holds merging, never this branch verification; check the available branch
 route before declaring a gate. Merge is delivery after verification, never its prerequisite.
 
-Then take each pull request the task changed out of draft — once, with its work finished — and close
-the run:
+Then complete the review below and take each pull request the task changed out of draft — once,
+with its work finished — before closing the run:
 
 When the task uses several independent final reviewers outside `code-review`, assign distinct
 concerns across the complete result rather than asking each the same question. After a repair,
@@ -493,11 +507,12 @@ rescan the affected ownership area and consumers, retain valid evidence for unch
 return only invalidated review scopes to their reviewers. `code-review` owns this assignment and
 rescan within its own invocation.
 
-1. Run the final `code-simplify` pass across the complete pull-request diff and push its
+1. Run the final `code-simplify` pass across the complete task diff and push its
    simplifications through the **Pre-Push Gate**.
-2. Put the complete pull-request diff to `acceptance-gate`'s final-acceptance question with the
-   intent statement. Push the fix for each flag as its own increment and put it to the fresh gate
-   that skill's **Bounds** require; a second flag is decided under those **Bounds**.
+2. Put the complete task diff to `acceptance-gate`'s final-acceptance question, or its diff question
+   when no pull request exists, with the intent statement. Push the fix for each flag as its own
+   increment and put it to the fresh gate that skill's **Bounds** require; a second flag is decided
+   under those **Bounds**.
 3. Invoke `merge-pr` with the accepted head, merge withheld unless **Task Authorization** finds
    that merge authorized, and the **Pre-Push Gate** each fix is pushed through as its fix rule. It
    marks the draft ready, which starts its test jobs once, reads them back on the exact head, and

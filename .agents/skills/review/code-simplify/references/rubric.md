@@ -110,6 +110,9 @@ Resolve the affected-repository context before treating that path as local. Read
 project guidance and available workspace or repository inventory, then provide an
 **affected-repository map**. It names the current repository and every candidate that may share the
 operation, contract, generated artifact, deployment path, template, or a parallel implementation.
+Include the setup and validation operations the change relies on, even when inherited unchanged
+or encountered through a failed check. Compare their prerequisites and native execution paths;
+a map of runtime behavior alone does not establish that the change follows shared conventions.
 For each candidate, give the evidence for the relationship, the relevant owner or paths, and the
 disposition: inspect and consolidate, update as an owned consumer, or exclude with the concrete
 semantic difference. Search evidence that finds no candidate is still part of the map. A map that
