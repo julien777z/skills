@@ -1,13 +1,14 @@
 ---
 name: merge-pr
-description: Take a reviewed pull request through its exact-head check gate, resolve merge conflicts, and squash-merge it at the gated head, verifying the merge and following any delivery it automatically starts to its actual result. Use when merging a specific pull request is authorized — the user naming it, or a workflow reaching its merge step, such as a review workflow, a doctor's merged batch, or a guidance change's delivery — and, with merge withheld, to take a finished draft pull request ready and bring its required checks to green.
+description: Take a reviewed pull request through its exact-head check gate, resolve merge conflicts, and squash-merge it at the gated head, verifying the merge. Use when merging a specific pull request is authorized — the user naming it, or a workflow reaching its merge step, such as a review workflow, a doctor's merged batch, or a guidance change's delivery — and, with merge withheld, to take a finished draft pull request ready and bring its required checks to green.
 short_description: 'Validate and merge an authorized pull request at its reviewed head.'
 ---
 
 # Merge Pull Request
 
 Merge one pull request at the head its caller accepted, and only after every check that head needs
-has reached a terminal result. A completed merge does not complete delivery that the merge itself starts.
+has reached a terminal result. A verified merge completes this skill, except for required Agent Sync
+handling after an agent-configuration change.
 
 ## Authorization
 
@@ -123,21 +124,8 @@ An excluded failed check does not prevent that ordinary authorized merge attempt
 rejects it because branch protection requires the excluded check, leave the pull request open and
 report that actual rejection and its provider evidence; do not bypass protection.
 
-After verifying the merge, inspect the repository's active workflow triggers and the runs tied to
-the actual merge commit for automatic publication or deployment. Follow each delivery carrying
-this change to its terminal result using the same bounded polling and stale-status checks as
-**Check Gate** steps 4–5. A successful validation job, accepted merge, queued rollout or artifact
-publication is not evidence that the deployed service passed. Read the repository's deployment
-procedure and verify the actual artifact revision and live read-only behavior it requires before
-returning delivery as successful. A merge with no automatic delivery needs no dispatch.
-
-This follow-through observes the delivery already started; it does not authorize dispatching
-another workflow or creating a deployment. A failed automatic delivery remains unfinished work:
-read its complete logs, identify the responsible repository input, and return the failure and
-needed repair to the calling task's encountered-issue procedure. Preserve that task's existing
-repair and deployment authority; a replacement pull request's merge still follows its own
-authorization. Report the verified merge and the actual delivery result separately, never a
-successful merge as a successful deployment.
+Do not inspect or follow merge-triggered release, publication, artifact, or deployment workflows.
+A separate direct delivery or release task owns that work and its verification.
 
 When the merged diff changes agent configuration, poll the default-branch Agent Sync run the merge
 started as **Check Gate** steps 4–5 poll a check, then run the refresh the GitHub rules' **After

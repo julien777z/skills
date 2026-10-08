@@ -85,8 +85,9 @@ Creating or editing this skill is not an invocation.
    branch deployment and the full affected flows before merging.
 8. Once the follow-up batch is verified and temporary changes are cleared, use `merge-pr` on each
    accepted final head with the same dependency scheduling: merge ready independent targets
-   concurrently and hold only their dependent consumers. Verify any automatic rollout the merges start and
-   report the artifact's real commit and digest. Do not automatically start another post-merge
+   concurrently and hold only their dependent consumers. After each merge, use the repository's
+   deployment skill to verify an applicable automatic rollout or perform the authorized deployment,
+   then report the artifact's real commit and digest. Do not automatically start another post-merge
    review cycle for the fix pull requests or extend this exception to later work.
 
 ## Completion
