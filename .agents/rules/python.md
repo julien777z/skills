@@ -179,19 +179,16 @@ from myapp.http_transport import fetch
 
 ## Suppressions
 
-- **Never add an inline suppression**: no `# pylint: disable`, `# pyright: ignore`, `# type: ignore`, or `# noqa` — except on the outermost-wrapper catch-all **External APIs and Errors** allows. Fix what the checker reports about our own code — a precise annotation, a correctly typed decorator (a `ParamSpec` rather than a `Callable` that erases parameter names), the right import. A per-line disable reads the same whether its author weighed the finding or never looked, and once copied onto every sibling it hides the cause behind a pattern nobody questions.
-- **A third-party package's missing or incomplete types are that package's gap, never ours.** Delete
-  any stub file, `typings/` directory, cast or wrapper written to quiet them, and write none; the
-  answer is the category-wide configuration entry below, never code. A package the user owns is not
-  third-party wherever it lives: its types are published at its source — a `py.typed` marker and the
-  annotations its public surface needs. Read ownership from whose repository it is.
-- A category is turned off once in the tool's configuration, or filtered once by the repository's
-  lint gate, with its reason beside it, in two cases: it reports a third-party package's missing or
-  unknown types, or it misreads a construct the codebase deliberately relies on everywhere —
-  coroutines implementing a generated synchronous base, say. It applies to every package and every
-  file, never to one named package. A category turned off for dependencies is off for our own code
-  too; the checks that stay on, such as argument types and annotations on our own functions, keep
-  our own errors reported. Code a generator emits keeps whatever directives its generator writes.
+- Suppressions require the user's explicit approval before they are added, whether inline,
+  file-wide, in tool configuration, or in a lint-gate filter. Present the exact diagnostic,
+  affected scope, and suppression proposed; an unanswered or declined request leaves it absent.
+  Complete the implementation instead of introducing casts, wrappers, changed data shapes, or
+  other workarounds merely to hide the same finding.
+- A diagnostic caused by a third-party dependency may receive a targeted one-line suppression
+  at that boundary without another approval. Verify the dependency owns the cause and name the
+  exact diagnostic; never disable its category globally or suppress our own incomplete code.
+  A package the user owns is repaired at its source, wherever it lives. Do not add stubs, casts or
+  wrappers to quiet missing dependency types. Code a generator emits keeps its own directives.
 
 ## Configuration
 
@@ -565,7 +562,7 @@ return JSONResponse(
 )
 ```
 
-- Never catch bare `Exception`; always catch specific exception types, with two exceptions: a test case explicitly exercising that broad exception, and an outermost wrapper — the loop running a worker's jobs, the boundary serving a request — that logs the error with its traceback and turns it into a failure result, its broad-catch lint finding disabled on that line alone. Lint keeps flagging every other catch-all.
+- Never catch bare `Exception`; always catch specific exception types, with two exceptions: a test case explicitly exercising that broad exception, and an outermost wrapper — the loop running a worker's jobs, the boundary serving a request — that logs the error with its traceback and turns it into a failure result. Any suppression of its lint finding follows **Suppressions**; this exception authorizes the catch, not the suppression.
 - For generated or SDK-backed API clients, catch the library's documented exception type instead of broad exceptions.
 
 ```python

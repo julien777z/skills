@@ -40,12 +40,6 @@ if not policy.can_access_admin:
 
 ## Validation and Configuration
 
-- Required configuration is a required field on its owning settings model, with no nullable type,
-  placeholder default, or fallback that makes absence valid. Express conditional requirements in
-  that model's validation. Application consumers use the validated value directly; never check
-  whether an environment-backed setting is present or rebuild its validation at the use site.
-  When a consumer needs such a guard, repair the settings declaration and its startup tests instead.
-
 - Use `model_config = ConfigDict(...)` for model configuration.
 - Use `model_dump()` instead of deprecated `dict()`.
 - Use `model_validator` decorator for custom validation.

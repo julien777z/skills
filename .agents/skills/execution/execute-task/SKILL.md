@@ -116,6 +116,12 @@ announce the invocation before the first edit. Listing it as a dependency is not
 Read the repository's product state from its project guidance before choosing how to change a
 contract or stored value.
 
+Before proposing a new guard or fallback, trace the tested value to its declaring model,
+configuration owner, and native validation. Read the applicable rule at that decision point;
+repair an incomplete declaration instead of duplicating its invariant in a consumer. A lint or
+type error is evidence to inspect that owner, never permission to weaken the contract or hide
+the finding. Apply the governing suppression-approval rule before choosing any suppression.
+
 Before recommending an implementation or delegating its edits, trace the requested behavior from
 the caller to its owner and inspect that owner's existing capabilities. Apply the guidance and
 analogous implementations below to that choice, not only to the later edit.
