@@ -30,6 +30,12 @@ can derive it. A removed shape is a finding throughout the change, including cor
 reconciliation. Pure additions and bug fixes still have requirements for the gate to evaluate.
 Where no change is in flight, say so and judge the item on product state and the rubric.
 
+When work changes an owned boundary, the statement quotes the applicable target-contract instruction,
+names the one canonical representation, and identifies every retained or candidate representation of
+that boundary. The gate cannot accept an abstract summary in place of that receipt; a second consumer
+layout, branch, probe, fallback, or compatibility helper is a flag unless the user explicitly approved
+retaining it.
+
 `references/rubric.md` states what the statement names and how its inputs are reconciled. Read product
 state from the target repository's project guidance; never import another repository's assumptions.
 
@@ -88,7 +94,9 @@ A report that lists no hit for any of the five greps says so in those words.
 
 **Then it lists every guard, refusal, validation, or branch the diff adds with the writers of the
 value it tests and of what its path reads next**, by path and function, and flags each one the
-rubric's diff test flags. A verdict with no added guard says `no guard added` in those words.
+rubric's diff test flags. For an owned boundary, it also names every representation each path reads
+or writes and flags a second representation, including one hidden behind a helper. A verdict with no
+added guard says `no guard added` in those words.
 
 For a diff question, also apply the `code-simplify` rubric’s **Trace Changed Flows** to the supplied
 implementations, consumers, and affected-repository map. A diff alone that cannot establish that

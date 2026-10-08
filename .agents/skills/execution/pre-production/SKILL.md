@@ -123,6 +123,11 @@ with an obsolete owned contract or revision.
 - Treat configuration inputs as owned contracts. Replace a stale deployed value at the existing
   setting and its deployment owner; do not add another file, environment key, or fallback path to
   override it.
+- An owned workflow boundary has one canonical representation. Normalize a provider's layout,
+  cardinality, or revision at the owned adapter where it enters the workflow; every downstream
+  consumer reads that one representation. A branch, probe, fallback, or helper that accepts an
+  earlier representation downstream is compatibility: replace it by updating the adapter and its
+  consumers.
 - **A value that differs by environment has one name, and whatever already scopes values per
   environment supplies it** — an environment's secrets, a per-environment config file, a deployment
   registry. Never a second name per environment, nor an expression or branch choosing between
