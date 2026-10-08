@@ -68,8 +68,11 @@ Canonical guidance lives in `.agents/`.
   owning instruction are repaired together.
 - An authorized task stays active until its outcome is verified complete or the user explicitly
   stops or hands it off. A follow-up, guidance correction, completed milestone, pending decision or
-  reported gate does not close it. Keep `execute-task` active and apply its **Work You Have Already
-  Named** procedure before handling the interruption and before any final response.
+  reported gate does not close it. For every task authorized to change files, start `execute-task`
+  before recommending an implementation, delegating edits, or editing: discover and read its
+  complete entry point rather than waiting for an edit to load it. This execution workflow does
+  not authorize user-triggered action skills. Keep its run active and apply its **Work You Have
+  Already Named** procedure before handling the interruption and before any final response.
 - Record consciously deferred work immediately in its owning repository. A chat note is not a
   durable deferral record; no separate invitation is needed.
 - A direct invocation authorizes one full run at the requested scope. An explicit request to
