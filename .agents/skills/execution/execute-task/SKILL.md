@@ -11,6 +11,7 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 ## Dependencies
 
 - `pre-production` — the target-contract policy for every repository and its data obligations.
+- `database-migrations` — the population-wide repair procedure for incorrect persisted data.
 - `code-simplify` — simplify the finished task's complete diff before delivery.
 - `acceptance-gate` — judge the finished task's complete diff before local completion or the pull request leaves draft or merges, and each fix for a flag it raises.
 - `generic-push` — keep each repository's publishing metadata independent during multi-repository changes.
