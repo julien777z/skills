@@ -287,7 +287,7 @@ Keep the invoking session active until this CR workflow reaches a terminal resul
 
 ### Delegated Work And Loop Closure
 
-Do not treat delegating a review lens, fix, validation, CI check, deployment check, or provider poll as
+Do not treat delegating a review lens, fix, validation, or CI check as
 completing that work. A delegated agent remains nonterminal until it sends its terminal result; a
 progress update, an empty mailbox, a quiet interval, or a tool call that yielded is never evidence of
 completion. Keep the invoking CR session active and wait for every delegated agent that belongs to the
@@ -301,13 +301,13 @@ repair or resolution under the global rules' **Tools and environments** boundary
 preserves the saved next action and does not close CR.
 
 Before any terminal report or merge, explicitly confirm that the current cohort has no running or
-queued delegated agents and that every required review, validation, check, and deployment loop has a
+queued delegated agents and that every required review, validation, and check loop has a
 terminal receipt for the exact gated head. If any work remains, return to its wait loop; never use a
 final response as a handoff for unfinished CR work.
 
 An unfinished phase is never a final result. Do not answer with "still in progress," ask the user to say "continue," or rely on another user turn to resume work. Use commentary only for progress updates, and use the host's event, webhook, or wait mechanism for pending external state. An additional user request does not close the active run unless it explicitly stops, pauses, or replaces it.
 
-When the added work does not modify the CR target or any reviewed input, continue the active CR loop while that work proceeds. Delegate the unrelated work to an available worker, or queue it when capacity is unavailable; do not serially wait for it before advancing a review, validation, check, or provider-poll phase. State the current CR phase in progress updates so an active loop is observable. Only work that changes the target or reviewed input invalidates receipts under **Review Continuity** and returns CR to its first nonterminal phase.
+When the added work does not modify the CR target or any reviewed input, continue the active CR loop while that work proceeds. Delegate the unrelated work to an available worker, or queue it when capacity is unavailable; do not serially wait for it before advancing a review, validation, or check phase. State the current CR phase in progress updates so an active loop is observable. Only work that changes the target or reviewed input invalidates receipts under **Review Continuity** and returns CR to its first nonterminal phase.
 
 Carry the run's state throughout: the current workflow step, repository and PR, exact head SHA, the intent statement and recorded merge-base SHA, review-thread dispositions, reviewed-input digests, completed review receipts and lens-retirement counters, `acceptance-gate` verdicts keyed by head SHA, fixes and validation already completed, and the pending gate. At the start of every resumed turn and after context compaction, re-establish that state, verify the recorded head and inputs against GitHub and the worktree, then resume from the first nonterminal phase.
 
