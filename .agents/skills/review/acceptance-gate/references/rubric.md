@@ -20,6 +20,8 @@ Ground intent in the user's accepted requirements, the change's history, and the
 The statement names:
 
 - the required behavior and ownership boundaries, with the accepted requirements that establish them;
+- the applicable target-contract instruction, the one canonical representation of each owned boundary
+  it changes, and every prior or candidate representation the change removes or rejects;
 - the shapes removed and their replacements, read from current deletions and the originating commits;
 - the pull request's title and body, checked against those requirements and the implementation.
 
