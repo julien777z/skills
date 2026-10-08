@@ -537,10 +537,9 @@ Escalate findings when you see:
 - A complicated implementation where a cleaner reframing could delete whole categories of complexity.
 - Refactors that move code around but fail to reduce the number of concepts a reader must hold in their head.
 - A file over 1000 lines anywhere in scope, whatever put it there.
-- Any suppression the diff adds — `pyright: ignore`, `type: ignore`, `noqa`, `pylint: disable`, a
-  broadened `except`, a new linter-ignore entry, a lowered threshold, a hand-written stub — outside
-  generated output and the configuration entries item 9 admits; a cast or wrapper
-  that quiets a dependency's types, or an entry naming one package, is still a finding. Grep for these; they do not surface from reading for structure.
+- Any diagnostic exclusion without authority under the global **Suppressions** policy, or a
+  stub, cast, wrapper or changed shape that hides the same finding. Grep for these; they do not
+  surface from reading for structure.
 - Multiple test classes in one file; tiny classes/files that should extend an existing owning class; or new tests whose regression existing same-classification coverage already catches. Consolidate related cases before splitting by independently maintained responsibilities.
 - A docstring the diff adds that runs past one line.
 - A function, constant, or model defined in a test module beside its tests, whatever its size or
@@ -686,8 +685,7 @@ Treat these as presumptive blockers unless the author can justify them clearly:
 - the PR adds, anywhere in its diff, the shape its own deletions remove
 - the PR preserves a lot of incidental complexity when there is a plausible code-judo move that would delete it
 - a file in scope is over 1000 lines and was not decomposed
-- the PR silences a linter or type checker anywhere outside generated output and the
-  configuration entries item 9 admits
+- the PR silences a check without authority under the global **Suppressions** policy
 - the PR adds ad-hoc branching that makes an existing flow more tangled
 - the PR solves a local problem by scattering feature checks across shared code
 - the PR adds an unnecessary abstraction, wrapper, or cast-heavy contract that makes the design more indirect
