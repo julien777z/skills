@@ -135,6 +135,12 @@ delivery. A formatter passing is not a substitute for that comparison.
 Apply `pre-production`'s encountered-issues policy while making the change. The rules below govern
 how those issues are handled.
 
+- Before choosing a remedy for incorrect persisted data, identify the writer, its historical
+  outputs, and the affected population. Load `database-migrations` for the data-repair procedure
+  even when the current writer no longer reproduces the defect or the remedy changes no schema.
+  A successful example repair or current-code test is evidence for that case, never the completion
+  criterion for the population.
+
 - **A bug the work turns up, or a finding a gate, review, or simplification pass returns, is fixed
   in the change in flight, in a shape the standing guidance allows as the next bullet says, and
   offering it to the user is not a disposition.** "Want this handled, or shall I leave it?" reads as

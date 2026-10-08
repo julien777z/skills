@@ -1,6 +1,6 @@
 ---
 name: database-migrations
-description: Guide for authoring, rebasing, and troubleshooting Alembic database migrations, including how to avoid and fix branched migration graphs.
+description: Use for schema migrations, migration-chain repairs, and incorrect persisted data, including historical defects that current code no longer reproduces. Repair the affected population through a repeatable data migration even when no schema changes.
 short_description: 'Guide for authoring, rebasing, and troubleshooting Alembic database migrations, including how to avoid and fix branched migration graphs.'
 ---
 
@@ -53,7 +53,17 @@ Shared tooling lives in the project's shared migration package (runner, revision
   population into the eligible, ineligible, and boundary cases the migration must handle.
 - **A migration that enqueues background jobs declares their execution contract.** Use the project's job-migration contract and validation registry to specify payload shape, initial status, and handler compatibility. Test the persisted payload against the real job registry. If migration and worker activation are separate release phases, keep jobs unclaimable by the old worker and verify activation through the real persistence boundary.
 
-## What A Change Owes The Rows It Breaks
+## Stored Data
+
+- A persisted-data defect is repaired for its affected population, not just the example that
+  exposed it. Establish that population from the writer's history and retained evidence; compare
+  stored results with that evidence even when the current writer is correct. Missing or uncertain
+  evidence stays observable and prevents claiming that population repaired.
+- Use the repository's repeatable migration or backfill route to recover historical omissions or
+  incorrect values, with progress, retry, verification and recovery appropriate to that route.
+  A one-record patch, a manual bulk update, or a passing current-code reproduction cannot replace
+  this delivery. Preserve valid stored values and manual corrections; ambiguous evidence is an
+  unresolved repair, never permission to invent, erase or silently skip data.
 
 - **A migration converts what a change would otherwise strand.** When a change leaves stored values
   unreadable or invalid under the new contract — a retyped column, a re-keyed encryption context, a
