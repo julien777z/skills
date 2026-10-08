@@ -219,8 +219,8 @@ alwaysApply: true
   may receive a targeted one-line suppression there without another approval, naming the exact
   diagnostic. Using a third-party library does not make our construction, validation, argument
   choices or invariants third-party code; diagnostics on those still require approval, including
-  suspected false positives. Never disable a category globally. User-owned dependencies are
-  repaired at their source; generated directives remain the generator's responsibility.
+  suspected false positives. Never use this exception to disable a category globally. User-owned
+  dependencies are repaired at their source; generated directives remain the generator's responsibility.
 
 ## Tailscale policy
 
