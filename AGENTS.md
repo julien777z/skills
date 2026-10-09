@@ -15,6 +15,11 @@ Canonical guidance lives in `.agents/`.
   supported harnesses where the same change reaches them.
 - Read the other shared rules relevant to the current repository and task. If a harness does not
   load them automatically, open the applicable files from its user-level rules directory.
+- A skill catalogue is one discovery surface, not proof that a directly requested skill is absent.
+  Before reporting a named skill unavailable, inspect the active harness's installed user-level
+  skill roots and the current repository's local skills, then read the resolved `SKILL.md` from its
+  canonical source. Report it missing only when those sources do not contain it; never substitute a
+  manual approximation for an installed action skill.
 
 - Never add `agents/openai.yaml` to a repository skill. Repository skills contain `SKILL.md` and
   only supporting files required by the skill; provider UI metadata stays outside repositories
