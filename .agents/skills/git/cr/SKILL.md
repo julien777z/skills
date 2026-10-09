@@ -336,7 +336,10 @@ to work around this gate.
 4. Classify each correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean. This is the same authorized CR execution, not a new action-skill invocation.
 5. Once the review is clean, if a merged-range review has no working fix pull request, give the **Completion Report** and return to the invoking workflow without another merge. Otherwise put the complete working pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement, retaining the original review range as context. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate** verdict is the fresh gate; resolve repeated flags under `acceptance-gate`'s **Bounds**, which distinguishes authorized repair from a genuine user decision and never admits a deferral by flag count. The accepted head is the SHA `merge-pr` receives.
 6. Run **Description Refresh**'s second pass, then the second test pass **Validation Order** requires. Never stop, restart, reconfigure or claim a local service this run did not start.
-7. Invoke `merge-pr` with:
+7. Before invoking `merge-pr`, assemble its check handoff from every unsuccessful result seen in
+   this run: exact head, relevance disposition, and the evidence for each exclusion. An exclusion
+   stays in the handoff until `merge-pr` has attempted the authorized merge; never replace that
+   invocation with a final report because a check is red. Invoke `merge-pr` with:
    - the pull request and the head step 5 accepted;
    - the affected behaviors step 6 covered locally;
    - every **Failure relevance** exclusion with its evidence;
