@@ -1,12 +1,12 @@
 ---
 name: merge-post-review
-description: Use only at the user's explicit request to merge and deploy session-created pull requests before reviewing their merged diffs with CR and delivering confirmed fixes through new pull requests. This bounded exception never becomes the default order for later work.
+description: Use only at the user's explicit request to merge and deploy all task-relevant pull requests, including adopted work and required delivery dependencies, before reviewing their merged diffs with CR and delivering confirmed fixes through new pull requests. This bounded exception never becomes the default order for later work.
 disable-model-invocation: true
 ---
 
 # Merge Post Review
 
-Merge and deploy the session's pull requests before their CR review, for this invocation only.
+Merge and deploy the task's relevant pull requests before their CR review, for this invocation only.
 Creating or editing this skill is not an invocation.
 
 ## Authorization
@@ -24,6 +24,7 @@ Creating or editing this skill is not an invocation.
 ## Dependencies
 
 - `session-ledger` — identify and retain verified session-created pull requests and outcomes.
+- `list-prs` — reconcile task-work pull requests before freezing or correcting the delivery batch.
 - `merge-pr` — verify each exact-head merge; its pre-merge validation gates apply to reviewed
   follow-up fixes, not this workflow's initial cohort or immediate deployment-repair PRs.
 - `cr` — review the captured merged diffs in high-effort fix mode, including its fix gates.
@@ -32,16 +33,20 @@ Creating or editing this skill is not an invocation.
 
 ## Targets
 
-1. Reconcile the session ledger's creation records with every pull request creation artifact in
-   the current chat, excluding pull requests merely touched or adopted. A creation absent from the
-   ledger but established by the chat is recorded, then included; the ledger is evidence, never an
-   exclusion path. Freeze the batch's canonical URLs and repositories at invocation, and verify
-   their current heads and states with the hosting service. When neither source establishes the
-   session's created targets, ask for the missing scope rather than including every open pull
-   request.
-2. Include an already merged session-created pull request when its merged diff still needs this
+1. Reconcile the task ledger, chat artifacts, continued work and actual delivery dependencies.
+   Include task-relevant pull requests created, adopted or worked on in the task, and existing
+   pull requests required for its delivered outcome, regardless of author or creation chat.
+   Establish each membership from a recorded task action or a concrete dependency; a reference,
+   incidental read or merely sharing a repository is insufficient. Use `list-prs` to reconcile
+   task records, then inspect the delivery's producers and consumers for omitted dependencies.
+   Freeze and verify the batch's canonical URLs, repositories, current heads and states. A missing
+   ledger entry is repaired from evidence, never used to exclude relevant work. Ask only when the
+   evidence leaves the requested scope genuinely unresolved.
+2. Include an already merged task-relevant pull request when its merged diff still needs this
    run's review. Skip a closed unmerged pull request. Keep later unrelated creations out of the
    batch; only deployment-repair and confirmed-finding fix pull requests belong to its follow-up work.
+   Reconcile a newly discovered required dependency into the recorded batch before advancing its
+   consumer; freezing the initial list never permits delivering an incomplete outcome.
 3. For each merge, record the actual merge commit and its first parent. Their ref range is the
    delivered diff, including the merge's actual reconciliation, rather than a closed pull request
    substituted with whatever now occupies its branch.
