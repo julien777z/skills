@@ -11,6 +11,7 @@ Run every change the same way, whether a plan preceded it or the user asked for 
 ## Dependencies
 
 - `pre-production` — the target-contract policy for every repository and its data obligations.
+- `database-migrations` — the population-wide repair procedure for incorrect persisted data.
 - `code-simplify` — simplify the finished task's complete diff before delivery.
 - `acceptance-gate` — judge the finished task's complete diff before local completion or the pull request leaves draft or merges, and each fix for a flag it raises.
 - `generic-push` — keep each repository's publishing metadata independent during multi-repository changes.
@@ -115,6 +116,12 @@ announce the invocation before the first edit. Listing it as a dependency is not
 Read the repository's product state from its project guidance before choosing how to change a
 contract or stored value.
 
+Before proposing a new guard or fallback, trace the tested value to its declaring model,
+configuration owner, and native validation. Read the applicable rule at that decision point;
+repair an incomplete declaration instead of duplicating its invariant in a consumer. A lint or
+type error is evidence to inspect that owner, never permission to weaken the contract or hide
+the finding. Apply the governing suppression-approval rule before choosing any suppression.
+
 Before recommending an implementation or delegating its edits, trace the requested behavior from
 the caller to its owner and inspect that owner's existing capabilities. Apply the guidance and
 analogous implementations below to that choice, not only to the later edit.
@@ -134,6 +141,12 @@ delivery. A formatter passing is not a substitute for that comparison.
 
 Apply `pre-production`'s encountered-issues policy while making the change. The rules below govern
 how those issues are handled.
+
+- Before choosing a remedy for incorrect persisted data, identify the writer, its historical
+  outputs, and the affected population. Load `database-migrations` for the data-repair procedure
+  even when the current writer no longer reproduces the defect or the remedy changes no schema.
+  A successful example repair or current-code test is evidence for that case, never the completion
+  criterion for the population.
 
 - **A bug the work turns up, or a finding a gate, review, or simplification pass returns, is fixed
   in the change in flight, in a shape the standing guidance allows as the next bullet says, and
@@ -431,17 +444,25 @@ it — the user asking about something else is not the user withdrawing what the
 
 - **Write it down before anything else starts.** The displaced work goes into the session's task
   list, with its next step, before the first step of whatever displaced it.
+- **Check a saved step against current source before executing it.** On resumption or a scope
+  expansion, read unpublished changes, local commits and the remote head, then compare the retained
+  next action with its exact increment and still-valid check receipts. Name which producers and
+  consumers must change together and which check actually holds their delivery. Select that
+  increment’s next due check or checked push under **Pre-Push Gate** before an independent edit;
+  retain every other repair as active named work. A saved combined batch is not evidence of coupling,
+  and sharing a file establishes none. Preserve remaining edits when materializing an exact candidate.
+  This source-state check changes no verification cadence or required coverage.
 - **An interruption pauses the step in flight; it never ends the run.** After a follow-up
   finishes, restore the displaced task as the in-progress item in the session's task list and
-  execute its saved next step without waiting for "continue". A promise to resume is not that
-  step. Completing
+  select and execute its next step through the source-state check above without waiting for
+  "continue". A promise to resume is not that step. Completing
   its own delivery — including a guidance merge and refresh, a diagnostic answer, or a local
   environment repair — does not complete the surrounding task. Report that intermediate result
   while continuing. A held item keeps its saved next action; repair, resolution and waiting follow
   the global rules' **Tools and environments** boundary. End only when the task is verified
   complete or the user explicitly stops or hands it off.
-  "Continue", or anything meaning it, resumes exactly the paused step and is never answered with
-  nothing.
+  "Continue", or anything meaning it, restores the paused work through that same source-state check
+  and is never answered with nothing.
 - **A context summary's pending list is this run's named work**, not background. The first turn
   after it moves the oldest item as well as whatever the summary's next step names. A constraint it
   carries, such as "ask before X", is an earlier turn's instruction, checked under **Encountered
