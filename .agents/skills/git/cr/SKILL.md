@@ -248,12 +248,12 @@ the next fix is about to change.
 ### Failure relevance
 
 Before a failed test or hosted check can hold either pass, classify it against the reviewed target.
-An explicit current-user instruction to leave a named test or check alone is an exclusion. So is
-the same failure on the repository's default branch. Record the test or check, the instruction or
-default-branch evidence, and the exclusion in the completion report; do not repair, rerun, or wait
-for it, and do not let it prevent the review or merge gate. Pass every exclusion to `merge-pr` with
-the exact evidence. A failure that looks outside the diff but is green on the default branch is not
-an exclusion.
+An explicit current-user instruction to leave a named test or check alone is an exclusion.
+Preserve established baseline classifications; classify a newly encountered possible baseline
+under `execute-task`'s **Encountered Issues**, without reentering that skill's active run. Record the
+test or check, its evidence and exclusion in the completion report; do not repair, rerun, or wait
+for an excluded failure, and do not let it prevent the review or merge gate. Pass every exclusion
+to `merge-pr` with the exact evidence.
 
 Apply the GitHub rule's runner-infrastructure exclusion independently of a user waiver: record a
 qualified check as skipped and do not repair, rerun, or wait for a green hosted run. Pass its required

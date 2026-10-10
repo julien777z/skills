@@ -121,8 +121,23 @@ alwaysApply: true
 - A hold does not authorize merging the source pull request or asking for its merge solely to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. After that merge, incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
 - When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request; one held for a source pull request becomes eligible once that pull request has merged. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, including one begun by another task. Do not close or leave it open merely because it is draft or conflicts with the base; close only one this session opened, and only when its change is superseded or no longer wanted.
 - An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each batch pull request a skill declaring merged-batch delivery opens during its run, once that skill's merge gates pass; that authorization ends with the run.
-- An authorized merge is not held for a failing check the current user explicitly waives or for the same failure on the repository's default branch. Name the check and the user instruction or default-branch evidence in chat, then attempt the authorized merge without asking the user. A failure that appears outside the diff but is green on the default branch is not exempt.
-- A hosted check stopped by runner or provider infrastructure before its test, lint, or other validation command begins is skipped automatically when the applicable locally runnable validation has passed. Record the run, the log signal proving validation did not begin (or the provider infrastructure error), and the local commands that cover it; do not rerun or wait merely to get a green hosted result. This exception applies only to hosted checks: a locally run validation failure caused by setup, dependency, checkout, proxy or certificate trust, or container build configuration is an encountered repository issue. Repair its canonical bootstrap or container build configuration and rerun it. A cancellation after validation begins, a log naming a product or test failure, or behavior without passing local coverage remains a blocker. Only an actual provider rejection because branch protection requires an excluded or skipped check holds the pull request; report that rejection and its evidence and never bypass it.
+- An authorized merge is not held for a failing check the current user explicitly waives or an
+  established baseline exclusion under `execute-task`'s **Encountered Issues** classification.
+  Name the check and its exclusion evidence in chat, then attempt the authorized merge without
+  asking the user. Preserve that classification rather than excluding a required repair merely
+  because the same failure also appears on the default branch.
+- Apply established validation exclusions before repairing failures. A hosted check stopped by
+  runner or provider infrastructure before its test, lint, or other validation command begins is
+  skipped automatically when the applicable locally runnable validation has passed. Record the run,
+  the log signal proving validation did not begin (or the provider infrastructure error), and the
+  local commands that cover it; do not rerun or wait merely to get a green hosted result. This
+  exception applies only to hosted checks: a locally run validation failure caused by setup,
+  dependency, checkout, proxy or certificate trust, or container build configuration is an
+  encountered repository issue. Repair its canonical bootstrap or container build configuration and
+  rerun it. A cancellation after validation begins, a log naming a product or test failure, or
+  behavior without passing local coverage remains a blocker. Only an actual provider rejection
+  because branch protection requires an excluded or skipped check holds the pull request; report
+  that rejection and its evidence and never bypass it.
 - Never enable auto-merge for any other pull request unless the user explicitly authorizes it in the current request or an explicitly invoked skill requires it.
 - If an agent mistakenly merges a pull request, it may auto-merge the focused revert pull request that corrects that erroneous merge without separate authorization.
 
