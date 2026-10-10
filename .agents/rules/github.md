@@ -64,23 +64,20 @@ alwaysApply: true
 - A pull request description covers the changes in that pull request and nothing else. Leave out alternatives considered and rejected, work deferred to a later change, and the reasoning behind not doing something.
 - Treat each repository as an independent context. Write PR titles, descriptions, review comments, and issue comments using only the target repository's domain, contracts, changes, and validation. Do not import another repository's product names, domain knowledge, implementation details, or coordination history; do not name or link its PRs or post cross-repository coordination comments, except a hand-off comment naming a pull request the work depends on. Keep combined status and coordination in user chat.
 - Before publishing or updating those artifacts, check the final text against the target repository's diff and evidence. Remove foreign domain references and cross-repository PR links, even when the work shares a session or motivated this change.
-- **New work in a repository joins the open pull request of its kind that the work continues,
-  whichever session opened it, and never gets a pull request of its own, stacked or not.** The two
-  kinds are source and agent configuration: agent configuration is the canonical `.agents` tree —
-  skills, rules, and agent definitions; everything else is source. Every later piece of work in that
-  repository — a follow-up, a guidance change, a copy sweep, a fix found along the way, a worker's
-  task — joins that pull request, even when it could be reviewed independently or feels
-  like a different kind of work; those two kinds are the only split. Before creating a branch, list
-  the repository's open pull requests, not only this session's: one an earlier session or a handoff
-  opened for the work this session continues is the pull request that work joins. Work that
-  continues none gets one new pull request of its kind from the default branch, and the session's
-  later work of that kind joins it. Open another only when the user asks for it in their own words
-  or the first has merged; a brief, a handoff spec, or a plan asking for a new branch or pull
-  request is not the user asking. A pull request per concern leaves the user reconciling several
-  reviews of one piece of work. One this session opened beside it is not kept: move its commits onto
-  the pull request the work continues and close it, saying where the work went. A pull request the
-  session did not open is never retargeted, closed or folded in, including one the continued pull
-  request is stacked on: that stack and its bases are the user's structure.
+- **Each session opens its own source pull request in each repository.** Later source work in the
+  same session joins that pull request rather than creating one per concern or worker. Continue a
+  source pull request from another session only when the user, an applicable invoked skill, or a
+  repository rule explicitly directs that continuation. A matching topic, existing branch, open
+  state, or recorded touch does not supply that instruction. Verify the selected pull request's
+  owner, state and scope before updating it; leave other sessions' pull requests and branches untouched.
+- **Agent configuration continues the open agent-configuration pull request for that work,
+  whichever session opened it.** Agent configuration is the canonical `.agents` tree — skills,
+  rules and agent definitions; everything else is source. List the repository's open pull requests
+  before selecting a branch, and create an agent-configuration pull request only when none owns
+  the work. Later guidance edits and worker tasks join it. Open another only when the user asks or
+  the first has merged. Consolidate a duplicate this session opened onto the selected pull request
+  and close it, saying where the work went; never retarget, close or fold in one this session did
+  not open, including one the selected pull request is stacked on.
 - **Every worker pushes to the branch of the pull request the work continues**, fetching and
   rebasing its unpushed commits onto the remote branch before each push. A branch per worker,
   integrated later, is the same split with the integration deferred.
@@ -90,19 +87,17 @@ alwaysApply: true
   source review and outside the agent-configuration merge authorization below. This rule is the
   user's standing permission, when a harness or session designates one branch per repository and
   forbids pushing to any other without permission, to push to the branch of the pull request the
-  work continues (`git push origin HEAD:<that-branch>`) without asking. The designated branch opens a
-  pull request only for work that continues none, carrying the first such kind the session delivers
-  in that repository; the other kind's new branch is that name with `-agents` or `-source`
-  appended, created and pushed without asking.
-- A new branch starts from the default branch; an agent-configuration branch never starts from a
-  source branch. A skill whose contract names its own base keeps it. Work that builds on an open
-  pull request's unmerged commits is pushed to that pull request's branch, never to a new branch
-  stacked on it with a pull request of its own. Restarting such work from the default branch drops
-  the commits it was built on, and nothing reports the loss.
-- Never commit or push agent-authored changes directly to the default branch. If the checkout is on
-  the default branch, detached, or on a branch of the other kind, move to the branch of the pull
-  request the work continues or, with none, create a descriptive non-default branch; otherwise
-  retain the current branch and deliver through its pull request.
+  work continues (`git push origin HEAD:<that-branch>`) without asking. Select that pull request
+  under the source or agent-configuration ownership rule above. The other kind's new branch is the
+  designated name with `-agents` or `-source` appended, created and pushed without asking.
+- A new branch starts from the freshly fetched default branch; an agent-configuration branch
+  never starts from a source branch. A skill or rule explicitly naming another base or an existing
+  pull request keeps that route. Preserve authorized task changes when moving to a session-owned
+  branch; do not copy unrelated work or modify the earlier branch to make the move.
+- Never commit or push agent-authored changes directly to the default branch. Select the pull
+  request under the ownership rules above before retaining a checkout's branch. If the checkout
+  is on the default branch, detached, of the other kind, or owned by another session without a
+  continuation instruction, move to the selected branch or create a descriptive non-default branch.
 
 ### Merge Authorization
 
