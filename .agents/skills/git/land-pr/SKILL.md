@@ -1,0 +1,152 @@
+---
+name: land-pr
+description: Take a pull request out of draft through its exact-head check gate, resolve merge conflicts, and, when its caller is authorized, squash-merge it at the gated head and verify the merge. Use when a workflow reaches a pull request's ready or merge step — `execute-task`'s Completion, a guidance batch's delivery, `cr`, a doctor's merged batch, or a user-invoked `merge-pr` — and, with merge withheld, to take a finished draft ready and bring its required checks to green.
+short_description: 'Ready a pull request, gate its exact head, and merge it when authorized.'
+---
+
+# Land Pull Request
+
+Merge one pull request at the head its caller accepted, and only after every check that head needs
+has reached a terminal result. A verified merge completes this skill, except for required Agent Sync
+handling after an agent-configuration change.
+
+## Authorization
+
+- This skill merges only a pull request whose merge its caller is authorized to perform: a user
+  instruction naming the merge and the pull request, an invoked skill that states its invocation
+  authorizes the merge, or a rule that authorizes that merge. It creates no authorization of its own.
+- Once that authorization holds, never ask the user for permission to merge and never end by
+  offering the merge as the remaining step. What stops a merge is a gate: a relevant required check
+  that is not green, a head that no longer matches the accepted SHA, or a conflict still unresolved.
+  Report that gate.
+- Dispatching a release workflow or creating a deployment is a separate action with its own
+  authorization.
+
+## Dependencies
+
+- `merge-conflict` — resolve every base incorporation this skill performs.
+- `pre-production` — the encountered-issue policy a failed check falls under.
+- `reconcile-skills` — refresh installed shared guidance after its repository's Agent Sync run.
+
+## Inputs
+
+The caller supplies the repository, the pull request, the head SHA its final acceptance passed, the
+affected behaviors its local tests already cover, whether merge was explicitly withheld, and the
+rule that decides what a fix made here reopens in its own review, whether every hosted check on
+the head is required rather than only the coverage local tests could not establish, and any message
+to send the user the moment the pull request is ready. It also supplies each validation
+exclusion: a current-user direction to leave a named test or check alone, a baseline exclusion
+established by `execute-task`'s **Encountered Issues** classification with its default-branch
+evidence, or evidence that a hosted runner or provider cancellation meets the GitHub rule's
+pre-validation and local-coverage conditions. A caller with no
+such rule has each fix's diff judged the way it judged the accepted head before the gate repeats.
+
+## Transport
+
+Use GitHub's REST API for every read, check query and merge. The ready-for-review transition has no
+REST endpoint — a REST update ignores `draft` and can answer 200 with the pull request still draft —
+so make it through GraphQL `markPullRequestReadyForReview` with the pull request's node id, then
+re-read the pull request over REST and require `draft` to be `false` before reading any check.
+A rate limit is waited out through the host's wait mechanism and retried on the same transport.
+
+## Check Gate
+
+1. **Require a pull request that is ready for review.** Mark a draft ready; the transition starts
+   the test jobs a draft skips. Every check this gate reads comes from a run triggered on the exact
+   head after the pull request left draft: a test job `skipped` on a draft run, which GitHub counts
+   as passing a required check, is no result. A pull request this gate took out of draft has never
+   run its tests, so step 3 reads its hosted test jobs to a terminal result for every affected
+   behavior, whatever local coverage the caller passed. Send the caller's ready message, when it
+   supplied one, right after the read-back shows `draft` false and before any polling.
+2. **Classify the complete pull-request diff.** A non-runtime diff — one that changes no executable
+   source, package or dependency definition, test, runtime configuration, CI workflow, generated
+   runtime artifact, or other executed-behavior contract — is validated only by the checks its
+   artifacts need, its exact contents, and `git diff --check`; application tests, check runs and CI
+   are not consulted. The classification is semantic rather than path-based: instructions,
+   documentation, policies, static metadata and non-executable configuration live anywhere.
+3. **For a runtime diff, gate only the coverage local tests could not establish**, unless the caller
+   requires every hosted check, in which case every check on the head reaches a terminal result and
+   only the exclusions below are set aside. For the affected
+   behaviors the caller's local tests do not cover, query check runs and legacy statuses only for a
+   job that supplies that missing coverage — unavailable credentials, provider-only or
+   runner-specific behavior, or a dependency the local environment cannot host. When every affected
+   behavior has passing local coverage, the gate is satisfied without querying GitHub. A qualified
+   pre-validation runner-infrastructure cancellation is skipped under the GitHub rule; other hosted
+   results remain subject to step 6. When a needed job has no check run or status, inspect the active
+   workflow definitions for pull request
+   triggers; if none can supply the coverage, report that blocker rather than waiting on unrelated
+   checks. Record and exclude each caller-supplied validation exclusion. Remove it from required
+   coverage and terminal-result gates; it never becomes a reason to repair, rerun, or wait. Every
+   other affected behavior still needs passing coverage.
+4. **Poll a relevant check until it reaches a terminal state.** Re-query the exact head on a bounded
+   interval matched to how long that job takes — roughly every 30 to 60 seconds — until it is
+   `success`, `failure`, `cancelled`, `timed_out`, `skipped` or `neutral`. Never poll an unrelated job
+   or wait on a whole workflow whose other jobs cover nothing affected. Do not end the turn, report
+   "still running", or hand back to the user while a relevant check is pending; the poll loop is the
+   work. The caller's ready message from step 1 is neither such a report nor a hand-back.
+5. **A pending status is a cache, not evidence.** Status endpoints keep reporting `in_progress` after
+   a job has finished, sometimes for an hour or more. Learn what the job normally costs from the same
+   job on an earlier head or on the base branch; once a check is pending well past that, read the
+   job's own output — the run's jobs listing and decisively its log, which a finished job ends with
+   its summary and cleanup. A log showing completion **is** the terminal result. Never diagnose a
+   hang, push a speculative fix, cancel, re-run, or report the run stuck from a pending status alone.
+6. **Classify every unsuccessful check before repair.** A caller-supplied exclusion, a current-user
+   waiver for its named test or check is excluded. Preserve established baseline classifications;
+   classify a newly encountered possible baseline under `execute-task`'s **Encountered Issues**,
+   without reentering that skill's active run. Record an exclusion's evidence, remove it from
+   required coverage, and do not repair, rerun, or wait for it. Apply the
+   GitHub rule's runner-infrastructure exclusion automatically: record a qualified check as skipped
+   and do not rerun or wait for a green hosted result. Every other failure is relevant. Read its
+   annotations and complete log, fix the repository
+   input responsible — code, test, configuration or workflow — and commit and push it. A relevant
+   external-service failure is an encountered issue under `pre-production` and is fixed the same way;
+   never re-run a job, or skip, disable, or quarantine a test or confine its job to drafts, to get
+   past it. Report a blocker only when relevant missing coverage needs user input or unavailable
+   credentials, with the check, evidence and remediation attempted.
+7. Never stop, restart, reconfigure or claim a local service the calling workflow did not start:
+   another agent or person may be using it. When relevant validation needs local services and one it
+   did not start is running, use the matching hosted check as the fallback rather than running a
+   competing service-managed test.
+8. Every fix made here goes through the caller's rule from **Inputs**, and the gate repeats on the
+   new head.
+
+## Merge Conflicts
+
+When GitHub reports a conflict, or the merge is rejected for one:
+
+- Incorporate the base through `merge-conflict`; the resolution is a fix under **Check Gate** step 8.
+- Report a blocker only when a safe resolution needs an unauthorized product decision, or a change
+  to a contract a consumer outside the user's control speaks.
+
+## Merge
+
+Re-read the pull request after the check gate and require its head SHA to equal the head that
+passed acceptance and the check gate. If merge was explicitly withheld, confirm the pull request
+remains open, report the clean exact head, and stop. Otherwise squash-merge with that SHA in the request —
+`PUT /repos/{owner}/{repo}/pulls/{number}/merge` with `merge_method=squash` and `sha` — so GitHub
+refuses a concurrent head change. On a mismatch, put the commits the new head adds through the
+caller's rule from **Inputs**, then repeat the check gate. After the merge, re-read the pull request
+and require it to report merged.
+
+An excluded failed check does not prevent that ordinary authorized merge attempt. If the provider
+rejects it because branch protection requires the excluded check, leave the pull request open and
+report that actual rejection and its provider evidence; do not bypass protection.
+
+Do not inspect or follow merge-triggered release, publication, artifact, or deployment workflows.
+A separate direct delivery or release task owns that work and its verification.
+
+When the merged diff changes agent configuration, poll the default-branch Agent Sync run the merge
+started as **Check Gate** steps 4–5 poll a check, then run the refresh the GitHub rules' **After
+Agent Sync** section describes. A run ending in anything but success is diagnosed from its log and
+reported, and the refresh still runs.
+
+## Report
+
+```markdown
+Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only | names of hosted checks and results> — sync: <run result | not agent configuration>; refresh: <done at <sha> | skipped: <dirty paths> | not run>
+```
+
+Or, when a gate holds: `Not merged: <link> — <gate>: <evidence>`. The evidence includes each
+relevant check's terminal result, read from its log where its status was stale.
+
+When merge was withheld: `Reviewed: <link> at <short sha> — checks: <local only | names of hosted checks and results>; pull request open`.
