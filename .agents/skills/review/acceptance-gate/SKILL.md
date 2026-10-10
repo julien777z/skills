@@ -19,8 +19,7 @@ state and the change's intent, applies the repository's rubric, and answers one 
 - `security-audit` — run at its `low` effort, which is defined as a single in-process pass against
   its `references/rubric.md` and names no delegated agents, because a read-only gate cannot spawn
   one. The rubric defines what counts as an exploitable finding, what it is worth, and in what order
-  to look for the smallest remedy; the gate takes the verdict into its own and never that skill's
-  approval gate, tracking, or fixes.
+  to look for the smallest remedy; the gate takes the findings into its own verdict.
 
 ## The Intent Statement
 

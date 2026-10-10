@@ -94,7 +94,6 @@ The other agents are hunting for subtle bugs. This agent checks the dumb stuff t
 - Is there a `/debug`, `/admin`, `/test`, `/status`, `/health`, `/metrics`, `/env`, `/.env`, `/config` endpoint that's unprotected?
 - Are there any `.env`, `.env.local`, `credentials.json`, `*.pem`, `*.key` files checked into the repo?
 - Does the `.gitignore` actually cover secrets, uploads, and local config?
-- Are dependencies pinned? Are there known CVEs in the dependency tree? (check lockfiles)
 - Are there any `eval()`, `exec()`, `child_process`, `Function()`, `vm.runInContext`, `import()` with dynamic input?
 - Are CORS headers set to `*` or overly permissive? Is `Access-Control-Allow-Credentials` combined with a wildcard origin?
 - Are cookies missing `HttpOnly`, `Secure`, or `SameSite` attributes?

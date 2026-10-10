@@ -32,7 +32,7 @@ fixed values in that type. A receipt without the conditional list is incomplete 
 - `subagent-selection` — return model tiers for explicit reviewer dispatch.
 - `code-simplify` — its `references/rubric.md` is the complete simplification rubric for that review lens.
 - `pre-production` — supply the repository's target-contract and staging-data policy.
-- A repository-local `security-audit`, when present — its `references/rubric.md` defines an exploitable finding and its remedy, and its attack-class catalogue supplies that lens. The review borrows both and never the audit workflow.
+- `security-audit` — its `references/rubric.md` defines an exploitable finding, its precedents and its remedy, and its attack-class catalogue supplies the Security lens. The review borrows both and never the audit workflow.
 - `acceptance-gate` — define the intent statement and gate the fixes the change did not itself
   introduce.
 
@@ -64,10 +64,10 @@ So a bare `/code-review` asks both, `/code-review high` asks only about modes, `
 When asking for effort, list every accepted value explicitly and describe its actual coverage and validation depth:
 
 - `low` — Run one Rules and one Bugs lens with inline validation for a quick review of small, low-risk changes.
-- `medium` — Run one Rules, one Bugs, and one Simplification lens, plus one Security lens when the reviewed repository provides its own `security-audit` skill, with inline validation.
-- `high` — Run one Rules, two independent Bugs, and one Simplification lens, plus one repository-local Security lens when available, then have one standard validator try to refute every finding.
-- `xhigh` — Run two independent Rules and Bugs lenses plus one Simplification lens and one repository-local Security lens when available, then use two standard validators per finding with majority rule.
-- `max` — Run two Rules, three Bugs, two Simplification, and two repository-local Security lenses when available in one pass, then use three deep refuters per finding with majority rule.
+- `medium` — Run one Rules, one Bugs, and one Simplification lens, plus one Security lens, with inline validation.
+- `high` — Run one Rules, two independent Bugs, and one Simplification lens, plus one Security lens, then have one standard validator try to refute every finding.
+- `xhigh` — Run two independent Rules and Bugs lenses plus one Simplification lens and one Security lens, then use two standard validators per finding with majority rule.
+- `max` — Run two Rules, three Bugs, two Simplification, and two Security lenses in one pass, then use three deep refuters per finding with majority rule.
 - `ultra` — Repeat the `max` cohort until two consecutive rounds find nothing new, using the same three deep refuters per finding.
 
 Keep each description to one or two sentences. Never summarize the effort values as a range such as `low`–`ultra` or replace the concrete descriptions with vague labels such as "quick," "thorough," or "broad."
@@ -166,15 +166,11 @@ Summarize the changed files and produce the intent statement as `acceptance-gate
 | **Rules** | standard | Check every applicable rule against the changed lines and produce a ledger of rule → files checked → violation or clean |
 | **Bugs** | deep | Find correctness, data-loss, security and authz, performance, and user-facing behavior defects, each with a concrete trigger |
 | **Simplification** | deep | Run the `code-simplify` skill as its rubric over the scope — redundancy, a module named or placed wrong, a file past a healthy size, a value modelled one way here and another way in a sibling |
-| **Security** | deep | When the reviewed repository defines its own `security-audit` skill, apply that skill's rubric and attack-class catalogue over the changed lines — injection, authentication and authorization defeats, sensitive data reaching a log or response, unsafe deserialization, secrets in source |
-
-Discover Security only under the reviewed repository's `.agents/skills/` tree. An installed shared
-skill or a skill from another repository does not qualify. Omit Security without failure when the
-reviewed repository has no local `security-audit` skill, and name the omission in the report.
+| **Security** | deep | Apply `security-audit`'s rubric and attack-class catalogue over the changed lines — injection, authentication and authorization defeats, sensitive data reaching a log or response, unsafe deserialization, secrets in source |
 
 Effort selects the cohort and the validation depth:
 
-| Effort | Rules | Bugs | Simplification | Security, if local | Validation |
+| Effort | Rules | Bugs | Simplification | Security | Validation |
 |---|---|---|---|---|---|
 | `low` | 1 | 1 | – | – | Inline |
 | `medium` | 1 | 1 | 1 | 1 | Inline |
@@ -193,12 +189,10 @@ A confirmed finding from a lens resets its counter to zero, so a lens that goes 
 
 Name the retired lenses and their round counts in the report, so a reader can tell a lens that found nothing twice from one that never ran. Persist the counters with the logical review's receipts. A new target or an invocation unrelated to the active fix loop starts every lens at zero; a follow-up invocation required by fixes to the same target does not.
 
-The **Security** lens does not carry its own rubric: when the reviewed repository has a local
-`security-audit` skill, give it that skill's complete core principles and attack-class catalogue
-for the current target, so the two stay one source of truth. Borrow the *rubric*, not the
-*workflow* — do not run the audit skill's own phases, write its findings files or report artifacts,
-or apply its remediation-approval gate. This lens applies the local rubric to the review scope and
-returns ordinary review findings.
+The **Security** lens does not carry its own rubric: give it `security-audit`'s complete rubric and
+attack-class catalogue for the current target, so the two stay one source of truth. Borrow the
+*rubric*, not the *workflow* — do not run the audit skill's own phases or write its findings file.
+This lens applies the rubric to the review scope and returns ordinary review findings.
 
 The **Simplification** lens does not carry its own rubric: dispatch it to the `code-simplify` agent, whose `references/rubric.md` is the complete rubric, so the two stay one source of truth rather than two drifting copies. Give it the same target and its affected-repository map, then one instruction this skill adds — `code-simplify` resolves a scope to the diff *plus* whole files *plus* sibling modules, and it should keep reading all three, but every finding it returns must still anchor to a line this target added or removed. Reading a sibling is how it sees that a new module is misnamed, sits in a package that does not own it, or models a value the codebase already models another way; unrelated sibling debt is not this review's finding. However, related behavior left behind by a newly introduced or promoted owner is an incomplete ownership move: anchor the finding to the new boundary, and include the unchanged implementations and consumers needed to complete it.
 
@@ -314,7 +308,7 @@ The chat report takes this shape and nothing else:
   Concrete trigger, impact, and the expected correction. → Fixed | → Not fixed: <reason>
 
 Findings: <count by severity>. Fixed: <count>. Deferred: <count, each with its record>.
-Lenses: <completed lens names and Security omitted when unavailable>. Head: <reviewed SHA>. Rules: <ledger summary>.
+Lenses: <completed lens names>. Head: <reviewed SHA>. Rules: <ledger summary>.
 ```
 
 The chat list carries the five most severe findings. Whenever more than five remain, one file in

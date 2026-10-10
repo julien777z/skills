@@ -14,7 +14,8 @@ Each validation agent prompt should:
 1. State the specific finding being validated (title, claimed attack, claimed impact)
 2. Ask the agent to read the exact code paths and verify each step of the trace
 3. Ask it to apply the five tests in the rubric's **What A Surviving Finding Has Been Put Through** —
-   exploitation, impact, baseline, mitigation, and parser or runtime behaviour
+   exploitation, impact, baseline, mitigation, and parser or runtime behaviour, and the rubric's
+   **Precedents**
 
 Tell each validation agent:
 
@@ -26,14 +27,14 @@ Your job is to DISPROVE this finding. Read the actual source code at every step.
 
 Kill false positives on the rubric's terms — its **What A Surviving Finding Has Been Put Through** closes on what that costs and what it must not cost.
 
-For each finding that survives, hold in the session everything the report and any later issue will
-need — the session is the only carrier, so a field nobody writes down is a field the later phases
-cannot check. That is: its id, severity, the attack, the impact, the conditions it rests on, the
-trace as file paths, line numbers and the enclosing scope of each step, the root cause, and the
-smallest remediation under the rubric's **Find The Smallest Fix Before Proposing One**. Hold each
-hardening note the hunt produced the same way, under its own id; Phase 5 reports them and Phase 6
-takes a decision on each. A finding whose trace cannot be stated as real paths and line numbers
-verified against the source is not sufficiently verified — verify it or reject it.
+For each finding that survives, hold in the session everything the report will need — the session
+is the only carrier, so a field nobody writes down is a field the later phases cannot check. That
+is: its id, severity, the attack, the impact, the conditions it rests on, the trace as file paths,
+line numbers and the enclosing scope of each step, the root cause, and the smallest remediation
+under the rubric's **Find The Smallest Fix Before Proposing One**. Hold each hardening note the hunt
+produced the same way, under its own id; Phase 5 reports them. A finding whose trace cannot be
+stated as real paths and line numbers verified against the source is not sufficiently verified —
+verify it or reject it.
 
 ### Phase 4: Independent verification
 
@@ -90,64 +91,3 @@ The chat summary then gives, briefly, the baseline comparable the severities wer
 with their own ids, what the codebase does well, and the coverage statement recommending another run.
 
 Keep it short. A report longer than the codebase deserves is padding.
-
-### Phase 6: Remediation plan and approval
-
-The audit's job does not end at a report. Get the user's explicit decision on every finding, then
-implement only what they approve.
-
-**Do not create a fix pull request until the user has approved at least one fix.** That pull request
-is the vehicle for approved fixes, never for findings alone. This does not prevent `defer-scope` from
-creating a record for a deferred finding. If the environment forces a fix pull request to exist
-before approval, keep it draft and do not present it as a deliverable.
-
-The order is: audit → report → present the plan and stop → record every decision → create or reuse
-the durable issues → implement only approved fixes → open the fix pull request as a draft and take
-it through `execute-task`'s **Completion** → update issue metadata and states.
-
-1. **Present the plan.** Preferred path: call the platform's plan-approval mechanism with one
-   independently decidable item per finding, ordered by severity, each with its proposed fix and
-   blast radius, each accepting **Fix / Defer / Drop**. Then stop and wait. Do not edit application
-   code or mark a pull request ready before every finding has a decision.
-
-   **Fallback when no plan mechanism is available** (a headless run, or an agent without one): the
-   Phase 5 report has already put every item in front of the user, so walk the findings **one at a
-   time** — a **single question per finding** (through the platform's structured-question tool if it
-   has one, otherwise a plain chat question) offering **Fix / Defer / Drop**, plus any per-finding
-   options such as enforce-versus-remove. Wait for the answer, then ask the next. **Never batch
-   several findings into one prompt** — the user should never have to answer five at once. Ask about
-   higher-severity findings first. Hardening notes come after the confirmed findings at the same
-   cadence; offering to skip the whole hardening batch in one question first is fine.
-
-2. **Record the decisions where the work is picked up.** On the Linear route:
-   - For each approved finding, require the security label the repository's project guidance names
-     and invoke `linear` to search before creating. Search active, completed, canceled, and archived issues using the label,
-     repository metadata, origin pull request, affected surface, and root cause. Reuse only a
-     confident match.
-   - Create one issue when no match exists. Include the finding id, severity, attack, impact,
-     conditions, verified trace, smallest approved remediation, and the `linear` metadata block with
-     `Source: security-audit`. Apply other existing labels only when `linear` finds a confident match.
-   - Route each deferred finding through `defer-scope`. Retain the security label beside the
-     deferral label because the deferred work remains a security concern. A dropped finding
-     creates no issue.
-   - If an approved issue is later rejected or declined, add the evidence and move it to a
-     canceled-category state. Say in the report which it was, and why. Do not delete the issue or
-     claim to archive it manually.
-
-   Where the session exposes no Linear integration, an approved finding is carried by its fix and a
-   deferred one by `defer-scope`; a dropped one is recorded nowhere, which is what dropping it means.
-
-3. **Implement only approved items.** Apply the smallest correct fix and add or adjust tests.
-   Commit each step and push it through `execute-task`'s **Pre-Push Gate** as it is made. The fix pull request contains the
-   code, tests, contracts, migrations, and generated application output the fix needs, and nothing
-   about the audit itself.
-
-4. **Update tracking once `execute-task`'s Completion reads the fix pull request back ready, with
-   its checks passing.** For every finding that remains confirmed and approved, replace pending
-   resolution metadata on its Linear issue with the pull-request number, add the validated result,
-   and move it to a completed-category state. The completion condition is that read-back, not the
-   merge. Do not merge without the
-   user's separate authorization.
-
-If Linear fails after any issue was created or reused, keep its identifier and retry or report the
-blocked update. Do not create a second record for that finding.
