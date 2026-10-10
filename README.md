@@ -155,7 +155,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`roblox-gameplay`](.agents/skills/roblox/roblox-gameplay/SKILL.md) — Apply every time actively modifying a Roblox game, including mechanics, progression, rewards, controls, presentation, UI, and world content.
 - [`roblox-react`](.agents/skills/roblox/roblox-react/SKILL.md) — Design and change React-rendered Roblox interfaces, including HUDs and menus.
 - [`roblox-studio`](.agents/skills/roblox/roblox-studio/SKILL.md) — Create, polish, and playtest Roblox games in Studio.
-- [`run-site`](.agents/skills/workspace/run-site/SKILL.md) — Start a local app, repair startup failures, and verify signed-in flows with screenshots and a recording.
+- [`run-site`](.agents/skills/workspace/run-site/SKILL.md) — Start an application stack and perform browser verification where applicable.
 - [`security-audit`](.agents/skills/review/security-audit/SKILL.md) — Security audit of a codebase — web apps, APIs, services, CLI tools, libraries, daemons, and more.
 - [`session-ledger`](.agents/skills/workspace/session-ledger/SKILL.md) — Keep verified task artifacts in one private task file.
 - [`storyline`](.agents/skills/roblox/storyline/SKILL.md) — Create or improve a coherent game story with playable beats and a satisfying ending.
