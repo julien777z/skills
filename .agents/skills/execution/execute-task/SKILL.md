@@ -19,6 +19,8 @@ built; **Execution** builds it and hands the user a pull request to review.
 - `subagent-selection` — the hand-up a worker without an agent tool uses for an independent step.
 - `land-pr` — mark the finished pull request ready and drive its checks to green at **Completion**.
 - `test-fixture` — the sweep over the task's tests at **Completion**.
+- `security-audit` — **Building It Safely** while writing code that crosses a trust boundary, and
+  its **Diff Review** of such a change at **Completion**.
 - `rewrite-git-history` — one commit per material change before the pull request is sent for review.
 - `edit-skill` — process the task's recorded guidance corrections at **Completion**.
 - `list-prs` — the task's pull requests for the ready-for-review message.
@@ -211,6 +213,9 @@ contract or stored value.
 Before recommending an implementation or delegating its edits, trace the requested behavior from
 the caller to its owner and inspect that owner's existing capabilities. Apply the guidance and
 analogous implementations below to that choice, not only to the later edit.
+
+Before an edit that crosses a trust boundary `security-audit` names, invoke it and apply its
+**While Writing Code**.
 
 Before each edit, read the shared and repository rules governing every surface it reaches — its
 language, framework and package, and the kind of thing it changes, such as a form, a query, a test
@@ -622,7 +627,9 @@ side by side from here: the guidance stream and the source stream.
 
 1. Run `code-simplify` across the pull request's complete diff, under `pre-production`'s size
    budget, and push its simplifications through the **Pre-Push Gate**.
-2. Run `test-fixture`'s **Sweep** over the tests the task added or changed, and push its fixes.
+2. Run `test-fixture`'s **Sweep** over the tests the task added or changed and, when the diff
+   crosses a trust boundary `security-audit` names, run `security-audit`'s **Diff Review** at
+   `medium`; push their fixes.
 3. Bring in a base that moved since the branch was cut or last incorporated, through
    `merge-conflict`. Then put the complete diff to `acceptance-gate`'s final-acceptance question, or
    its diff question when no pull request exists, with the intent statement. Push the fix for each

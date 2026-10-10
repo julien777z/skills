@@ -118,11 +118,11 @@ having no users of its own does not mean it has no attackers.
 **A clean read here is not an audit, and never reports as one.** The gate reads a diff with three
 read-only tools and answers one question; it cannot fan out, follow a data flow across a codebase, or
 try to disprove its own finding. A verdict that raises nothing says the diff's added lines carried no
-exploitable finding the gate could see. Only the `security-audit` skill, run at a level that fans
-out, says anything about the codebase.
+exploitable finding the gate could see. Only a `security-audit` run at a level that fans out, or a
+`security-doctor` run, says anything about the codebase.
 
 So a shape the gate can see but cannot chase to an attacker is not dropped: name it under `Also read`
-and recommend a `security-audit` run over the surface it sits on. That is the gate declining to guess,
+and recommend a `security-doctor` run over the surface it sits on. That is the gate declining to guess,
 not the gate finding nothing.
 
 ## The Tests Behind Each Question

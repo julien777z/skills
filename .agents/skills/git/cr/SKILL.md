@@ -212,12 +212,11 @@ This widens the pull request on purpose, and that is the intended trade. Keep ea
 
 Say plainly in the pull request which fixes review surfaced rather than the original task requiring, so a reviewer can see why the diff is wider than the title suggests.
 
-A confirmed finding is repaired under `acceptance-gate`'s **Bounds** until accepted, or remains
-blocked on the genuine decision those bounds identify. Deferral requires the repository's own
-admission tests; repeat flags do not supply a separate route. A confirmed defect never reaches
-that route on size or cost: whatever shape its fix takes, including a schema migration, it is
-fixed in this run. Work that is merely inconvenient, unfamiliar, or larger than expected is not a
-deferral justification.
+A confirmed finding is repaired under `acceptance-gate`'s **Bounds** and stays open until an
+independent gate accepts it. Deferral requires the repository's own admission tests; repeat flags
+do not supply a separate route. A confirmed defect never reaches that route on size or cost:
+whatever shape its fix takes, including a schema migration, it is fixed in this run. Work that is
+merely inconvenient, unfamiliar, or larger than expected is not a deferral justification.
 
 Each fix is committed and pushed as its own increment, and that increment's `execute-task` **Pre-Push Gate** verdict is its gate, as `code-review`'s fix mode states.
 
@@ -350,7 +349,7 @@ to work around this gate.
 2. Invoke `/code-review high fix <target>` for each unit using the open pull-request URL or the exact delegated ref range. For a merged range, pass the original pull request as metadata only and explicitly preserve the range through resolution and eligibility checks. Direct fixes to the matching working fix branch rather than changing the immutable target.
 3. For the current unit, apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the run continues; see **Deferred Findings**. A finding that can be neither fixed nor recorded remains an active gate: surface the needed resolution under the global rules' pending-result boundary and continue independent work; do not conclude CR on that report.
 4. Classify each current-unit correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean. This is the same authorized CR execution, not a new action-skill invocation.
-5. Once the current unit's review is clean, if a merged-range review has no working fix pull request, record it for the **Completion Report** and continue to the next unit without another merge. Otherwise put the complete working pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement, retaining the original review range as context. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate** verdict is the fresh gate; resolve repeated flags under `acceptance-gate`'s **Bounds**, which distinguishes authorized repair from a genuine user decision and never admits a deferral by flag count. The accepted head is the SHA `land-pr` receives.
+5. Once the current unit's review is clean, if a merged-range review has no working fix pull request, record it for the **Completion Report** and continue to the next unit without another merge. Otherwise put the complete working pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement, retaining the original review range as context. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate** verdict is the fresh gate; resolve each flag under `acceptance-gate`'s **Bounds**. The accepted head is the SHA `land-pr` receives.
 6. Run **Description Refresh**'s second pass, then the second test pass **Validation Order** requires for the current unit. Never stop, restart, reconfigure or claim a local service this run did not start.
 7. Invoke `land-pr` with:
    - the pull request and the head step 5 accepted;

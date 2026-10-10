@@ -2,8 +2,8 @@
 
 What a review judges by: what anchors a finding, how a finding is validated, how it is rated, and
 what fix mode owes each confirmed finding. `SKILL.md` says how the review is run. Simplification
-borrows the `code-simplify` skill's rubric; Security borrows the reviewed repository's local
-`security-audit` rubric when that skill exists. Neither borrows the other skill's workflow.
+borrows the `code-simplify` skill's rubric; Security borrows `security-audit`'s rubric. Neither
+borrows the other skill's workflow.
 
 ## Scope
 

@@ -102,7 +102,7 @@ auth — report it. Don't ignore a bug because it's "not your area." Attackers d
 respect category boundaries.
 
 ## Validation rules — apply before reporting ANY finding
-Read `references/rubric.md` and apply **Only Report What You Can Exploit** and the five tests in
-**What A Surviving Finding Has Been Put Through**. Return ONLY findings that survive all five, each
+Read `references/rubric.md` and apply **Only Report What You Can Exploit**, **Precedents**, and the
+five tests in **What A Surviving Finding Has Been Put Through**. Return ONLY findings that survive all five, each
 with its concrete attack, or "No exploitable vulnerabilities found" if that is honest.
 ```

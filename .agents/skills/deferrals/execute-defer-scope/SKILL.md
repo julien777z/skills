@@ -96,12 +96,11 @@ from which to judge whether its fix reintroduces what the originating change rem
 
 Put the proposed implementation to the **proposal** question before writing it, with the record, the
 originating change's diff, and the plan. Put the finished diff to the **diff** question, with the
-same record and change, through a different gate. Resolve flags under `acceptance-gate`'s **Bounds**:
-continue compliant repairs and fresh reviews while a native remedy remains, and keep the record
-active until the finished resolution is accepted. A repeat flag alone never justifies re-scoping,
-marking the record **Blocked**, or abandoning the resolution; those require the concrete decision
-or admission evidence that **Bounds** names. Never keep a flagged diff merely because it satisfies
-the record's criteria.
+same record and change, through a different gate. Resolve flags under `acceptance-gate`'s **Bounds**
+and keep the record active until the finished resolution is accepted. A repeat flag alone never
+justifies re-scoping, marking the record **Blocked**, or abandoning the resolution; those require
+the concrete decision or admission evidence that **Bounds** names. Never keep a flagged diff merely
+because it satisfies the record's criteria.
 
 **What merges is what the gates govern.** A resolution that reaches the default branch carrying the
 shape its originating change deleted has undone that change, and the record it closed is no longer

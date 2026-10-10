@@ -115,8 +115,9 @@ and check their completion against the change history and final diff.
 If no justified correction remains, report the completed coverage and stop.
 
 Otherwise write a decision-complete remediation plan and put it to `acceptance-gate`'s proposal
-question as one item. A flag names the entries to rewrite; the rewritten plan goes to a fresh gate.
-An entry flagged twice becomes a user decision stated in the plan, never a silent drop.
+question as one item. A flag names the entries to rewrite, and the rewritten plan goes to a fresh
+gate under `acceptance-gate`'s **Bounds**; a flag that section sends to the user is reported in the
+plan as it directs, never silently dropped.
 
 Check each entry against the doctor's change boundary before presenting it. Exclude entries whose
 required exception evidence is absent; approval of a generated plan cannot supply that evidence.
@@ -188,9 +189,8 @@ prevents completion.
 ## Accept The Complete Diff
 
 Once review is clean, put the complete diff to `acceptance-gate`'s final-acceptance question
-against the intent statement. Fix every flag within the gate's correction bounds and push each fix
-as its own increment, whose `execute-task` **Pre-Push Gate** verdict is the fresh gate; a second
-flag on the doctor's own purpose is escalated to the user as a blocker.
+against the intent statement. Fix every flag under `acceptance-gate`'s **Bounds** and push each fix
+as its own increment, whose `execute-task` **Pre-Push Gate** verdict is the fresh gate.
 
 ## Defer Leftovers
 

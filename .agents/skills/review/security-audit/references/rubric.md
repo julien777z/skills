@@ -1,9 +1,9 @@
 # Security Audit Rubric
 
-What counts as a finding, what it is worth, and what its remedy costs. This file is the judgement;
-the workflow that applies it lives in `SKILL.md` and the other references. Another skill may borrow
-this file on its own — `acceptance-gate` reads it to judge a diff — so it states criteria and never
-procedure.
+What counts as a finding, what it is worth, which precedents rule one out, how code that crosses a
+trust boundary is built, and what a remedy costs. This file is the judgement; the workflow that
+applies it lives in `SKILL.md` and the other references. Another skill may borrow this file on its
+own — `acceptance-gate` reads it to judge a diff — so it states criteria and never procedure.
 
 ## Only Report What You Can Exploit
 
@@ -18,6 +18,33 @@ you cannot; if you need the word, you have not researched it far enough.
 Where one layer already prevents the attack, the absence of a second is a hardening note, not a
 finding, and never inflated to carry a severity. "Missing validation where the query builder already
 quotes identifiers" is a note.
+
+## Precedents
+
+These settle findings that look real and are not. A finding that rests on one of them is rejected,
+unless its trace shows the precedent's own condition broken.
+
+- **Trusted inputs.** Environment variables, CLI flags and deployment configuration are set by
+  operators; an attack that needs to control one is not a finding.
+- **Identifiers.** A random UUID is unguessable and needs no further guard against enumeration.
+- **Framework escaping.** React, Angular and templating engines with auto-escaping on escape output;
+  cross-site scripting there needs a bypass such as `dangerouslySetInnerHTML`,
+  `bypassSecurityTrustHtml`, a raw or `safe` filter, or escaping turned off.
+- **Client code.** Missing authorization or validation in client-side code is not a finding: the
+  server owns both, and the server is where the finding lives if either is missing.
+- **Logging.** Logging URLs or non-sensitive data is not a finding; logging a secret, a credential or
+  personal data is.
+- **Outbound requests.** Server-side request forgery needs control of the host or protocol;
+  controlling only the path is not a finding.
+- **Model prompts.** User content placed in a model's prompt is not a finding on its own; what the
+  model's output is then allowed to do is.
+- **Patterns.** Untrusted input in a regular expression, and regular-expression denial of service,
+  are not findings.
+- **Out of scope.** Test-only code, except a live secret or credential committed in it;
+  documentation; outdated or vulnerable third-party dependencies; and memory-safety issues in
+  memory-safe languages.
+- **Scripts and workflows.** Command injection in a shell script, and injection in a CI workflow,
+  need a concrete path by which untrusted input reaches them.
 
 ## Severity Requires Impact
 
@@ -107,6 +134,30 @@ State the condition the exploit rests on in the finding itself, and keep it atta
 retelling. A finding whose conditions include "the provider must permit X" is describing a guarantee
 the code does not assert — usually both the honest severity **and** the smallest fix, and both are
 lost the moment the condition is dropped.
+
+## Building It Safely
+
+The checks a change follows while it writes code that crosses a trust boundary. Each is the
+smallest-fix order above, applied before there is anything to fix.
+
+- **Use the guard that already exists.** Authentication, authorization, input validation and output
+  escaping go through the repository's existing owner of each — its middleware, dependency, policy,
+  schema or framework default — never a check hand-written beside it. A route, handler or job added
+  without the guard its siblings carry is a defect of the change that adds it, fixed there; in
+  existing code it is a finding only when its trace reaches an attack, and a hardening note
+  otherwise.
+- **Assert what a provider already tells you.** A token's signature, expiry, audience and scope; a
+  webhook's signature; a payment's or identity's verified state. Read the provider's guarantee and
+  refuse what it does not vouch for, rather than trusting the payload's own claims.
+- **Keep data and code apart.** Parameterized queries and the query builder's binding for every
+  value; an allow-list for every identifier, path segment, command, URL host and deserialized type
+  built from input; no `eval`, shell string, or unsafe deserializer fed from outside.
+- **Authorize the object, not only the route.** Every read or write of a record checks the caller may
+  act on that record, scoped by the owner the store already holds.
+- **Keep secrets where they belong.** No secret, token or credential in source, fixtures, logs, error
+  messages or client bundles; each comes from the configuration owner the repository already uses.
+- **Add no surface the request does not need.** No debug route, permissive fallback, wildcard
+  origin, optional bypass or unused mode. A surface that does not exist needs no guard.
 
 ## Anti-Patterns
 

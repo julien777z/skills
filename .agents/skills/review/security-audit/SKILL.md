@@ -1,29 +1,50 @@
 ---
 name: security-audit
-description: Security audit of a codebase — web apps, APIs, services, CLI tools, libraries, daemons, and more. Accepts an effort level selecting the hunting cohort and validation depth, from a single in-process pass to repeated fan-out, and asks for it when the invocation does not state one. Reports in chat and never fixes before the user approves each fix. Use when asked to find security bugs, do a security review, audit for vulnerabilities, or pen-test the code. Focuses on exploitable issues with real impact, not theoretical concerns or industry-standard behavior.
-short_description: 'Security audit of a codebase — web apps, APIs, services, CLI tools, libraries, daemons, and more.'
+description: Must be used before writing or changing code that crosses a trust boundary — input handling, authentication, authorization, sessions, secrets, cryptography, deserialization, file paths, subprocesses, outbound requests, templates — and for any security review of a branch, pull request or pending changes, or security audit of a codebase at a stated effort level. Its rubric owns what counts as an exploitable finding, the precedents that rule false positives out, how code is built safely, and the smallest fix; the skill reports, and its caller owns what happens to each finding. Use when asked to find security bugs, do a security review, audit for vulnerabilities, or pen-test the code.
+short_description: 'Security guidance for writing code, reviewing a change, and auditing a codebase.'
 ---
 
 # Security Audit
 
 You are a security auditor. Your job is to find **exploitable vulnerabilities with real impact**.
 
-`references/rubric.md` holds what counts as a finding, what it is worth, and what its remedy costs;
-this file holds how the audit is run. Read the rubric before hunting and apply it throughout.
+`references/rubric.md` holds what counts as a finding, what it is worth, which precedents rule a
+finding out, how code that crosses a trust boundary is built, and what a remedy costs. This file
+holds how that judgement is applied: while writing code, over a change, and over a codebase. Read
+the rubric whole before any of them and apply it throughout.
 
 ## Dependencies
 
 - `subagent-selection` — route every agent a level names through a subagent of the running session.
-- `linear` — deduplicate and track approved findings when the session exposes a Linear integration.
-- `defer-scope` — record a finding the user chooses to defer.
+
+## While Writing Code
+
+Before writing or changing code that crosses a trust boundary — input handling, authentication,
+authorization, sessions, secrets, cryptography, deserialization, file paths, subprocesses,
+outbound requests, templates — read the rubric and apply **Building It Safely** to every line the
+change writes. A finding in those lines is the change's own defect: it is fixed in the change, as
+`code-simplify` fixes its findings, never reported for a later decision.
+
+## Diff Review
+
+A security review of a branch, a pull request or pending changes reviews the change, not the
+codebase. Its target is the merge-base diff against the repository's default branch plus any
+untracked files the branch adds, read with the callers, sinks and trust boundaries each changed line
+reaches, so a trace can run past the hunk. It reports only what the change adds or makes reachable,
+never a pre-existing finding the change does not touch.
+
+It runs every phase at the effort stated, over the changed lines and what they reach. A finding in
+lines the running task wrote is fixed in that task's change; any other finding is reported to the
+caller.
 
 ## Effort
 
-An invocation may state an effort level and a target: `/security-audit high`, `/security-audit low
-src/api`. A token matching an effort level sets the effort; anything else is the target, which falls
+A **Diff Review** or codebase audit may state an effort level and a target: `/security-audit high`,
+`/security-audit low src/api`. A token matching an effort level sets the effort; anything else is
+the target — a path, or a branch, pull request or pending changes for **Diff Review** — which falls
 back to the current working directory.
 
-When effort is not stated, ask, listing every accepted value with its actual coverage:
+When a review or audit states no effort, ask, listing every accepted value with its actual coverage:
 
 - `low` — One pass over the target against the rubric, with no delegated agents at all.
 - `medium` — Recon inline, one hunter per attack class recon surfaced, one validator per finding.
@@ -56,10 +77,8 @@ and never reports as a codebase audit; only a level that fans out over the targe
 about the target as a whole. `acceptance-gate` runs this skill at `low` against a diff, which is why
 `low` names no agents: a read-only gate cannot spawn one.
 
-**A skill that borrows this one runs Phases 1-5 and stops.** Phase 6 — the approval gate, the
-tracking, the fixes — belongs to a caller the user invoked to audit something, not to one that
-borrowed the rubric to judge its own item; that caller takes the findings into its own verdict,
-writes no findings file, and owns what happens next.
+**A skill that borrows this one takes the findings into its own verdict.** It writes no findings
+file and owns what happens to each finding.
 
 ## Platform terminology
 
@@ -74,39 +93,15 @@ Use the platform's equivalent capabilities while preserving the specified roles,
 
 ## What The Audit Writes
 
-The audit's output is its report and, where the session exposes Linear, an issue per approved
-finding. The report is one findings file in the session's scratch directory, sent to the user with the
-chat summary; nothing is written inside the target repository — no report, findings, or plan file, and no
-directory. Findings live in the session until the user decides on them, and a decision is
-recorded where the work will actually be picked up — a Linear issue, a `defer-scope` record, or the
-fix itself.
+The output is a report: one findings file in the session's scratch directory, sent to the user with
+the chat summary. Nothing is written inside the target repository, and the audit changes no code.
+What happens to a finding is its caller's: a task fixes a finding in its own change, and
+`security-doctor` fixes a codebase's findings through the remediation plan the user approves.
 
-Beyond its findings file in the session's scratch directory, the only files an audit run writes are
-the ones an **approved fix** changes: code, tests, and whatever the fix's own contracts require.
-
-That bounds what the audit can claim. A report is what this run found; it never asserts a codebase is
-clean, because no single run establishes that — see **Coverage** below.
-
-## Setup
-
-Before starting, invoke `linear` in read-only preflight when the session exposes a Linear
-integration, and establish the **target**: the codebase to audit, from the user's request or the
-current working directory.
-
-Where the session exposes no Linear integration, the audit still runs and still reports; an approved
-finding is then carried by the fix, and a deferred one by `defer-scope` through whatever route that
-skill selects.
-
-### Coverage
-
-Each run explores different code paths depending on which agents find what and where they dig. No
-single run finds everything: the best single run finds roughly half the vulnerabilities that surface
-across several. Say so in the report and recommend another run.
-
-Where the session exposes Linear, search it for findings earlier runs recorded against this
-repository before hunting, and use them to skip known findings, to weight this run toward ground
-earlier runs did not cover, and to settle any finding earlier runs disagreed about. Mention them in
-the report and spend the hunting effort on new ground.
+A report is what this run found; it never asserts a codebase is clean. Each run explores different
+code paths depending on which agents find what and where they dig, and the best single run finds
+roughly half the vulnerabilities that surface across several. Say so in the report and recommend
+another run.
 
 ## Workflow
 
@@ -122,11 +117,8 @@ Every level runs every phase; **Effort** above says with what cohort.
    **What A Surviving Finding Has Been Put Through**.
 4. **Verify independently** — Use Phase 4 there: a fresh agent per surviving finding checks every
    factual claim against the source.
-5. **Report** — Use Phase 5 there.
-6. **Plan, approve, track** — Use Phase 6 there, which owns the approval gate, Linear deduplication
-   and tracking, and implementation. **Never start fixing or open a fix pull request before the user
-   approves that fix.**
+5. **Report** — Use Phase 5 there, then stop: the report is the audit's result.
 
 Give each finding a stable id (`F1`, `F2`, …) and each hardening note its own (`H1`, `H2`, …) when the
-report is first presented, and refer to it by that id everywhere afterwards — in chat, in a Linear
-issue, in a commit. A title or a position in a list changes; an id does not.
+report is first presented, and refer to it by that id everywhere afterwards — in chat, in a plan,
+in a commit. A title or a position in a list changes; an id does not.
