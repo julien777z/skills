@@ -13,13 +13,14 @@ run; each doctor owns only its domain.
 
 - `subagent-selection` — route every read-only reviewer and final reviewer through a subagent of the
   running session.
-- `plan-change` — present the validated remediation plan and require explicit approval before editing.
+- `execute-task` — present the validated remediation plan through its **Plan** and require explicit
+  approval before editing, then implement it under its **Execution**.
 - `code-simplify` — simplify each implementation batch and the complete result.
 - `acceptance-gate` — judge the remediation plan before it is presented and the complete diff
   before it lands.
 - `defer-scope` — record work consciously left undone; it runs the gate's admission question itself.
 - `pre-production` — apply the encountered-issue and target-contract policy while implementing.
-- `merge-pr` — for a doctor that delivers in merged batches, the check gate, conflict resolution and
+- `land-pr` — for a doctor that delivers in merged batches, the check gate, conflict resolution and
   verified squash merge of each batch pull request its run opens.
 
 Read the applicable dependencies before beginning. Apply their approval, compatibility, migration,
@@ -135,7 +136,7 @@ delivers in merged batches names each checkpoint in its plan — the groups it c
 batch is substantial enough to merge on its own — so the user approves the checkpoints with the
 plan.
 
-Then invoke `plan-change`. The audit and its ledger are read-only; neither authorizes an edit. A
+Then present it through `execute-task`'s **Plan**. The audit and its ledger are read-only; neither authorizes an edit. A
 user decision a disposition produces — a test to cut, a flag whose removal changes behavior — is
 presented as options with each consequence and a recommendation.
 
@@ -151,12 +152,12 @@ never the absence of a retired implementation.
 
 After explicit plan approval, the parent implements the complete approved plan and is the only
 editor. Apply `code-simplify` after each meaningful implementation batch and across the final
-result. Return to `plan-change` for a newly discovered decision that changes the approved outcome;
+result. Return to `execute-task`'s **Plan** for a newly discovered decision that changes the approved outcome;
 do not silently narrow the correction.
 
 The plan is implemented to its last entry in one continuous run, into the branch in flight.
 A finished group is not a finished plan, and neither is a pushed commit or a green suite; go into
-the next group in the same turn. `plan-change` owns what may and may not stop that run.
+the next group in the same turn. `execute-task` owns what may and may not stop that run.
 
 Do not add source comments that narrate the change, its previous shape, or why something was added,
 removed, merged, or tightened. Make the result express the current state; tests validate that
@@ -219,7 +220,7 @@ on its own pull request in that cadence.
   - Before merging, the batch passes **Run Repository-Native Checks**, **Review The Result**, and
     **Accept The Complete Diff** on its own diff, gated against the run's full intent statement kept
     current with the batches already merged; the batch's entries say only what this diff must
-    complete. It then merges through `merge-pr`, which polls its checks to a terminal state. Between
+    complete. It then merges through `land-pr`, which polls its checks to a terminal state. Between
     polls the next group is committed and pushed, each step through `execute-task`'s **Pre-Push
     Gate**, to the next batch's branch, stacked on the batch's branch as the GitHub rule's
     **Branches and Pull Requests** allows; nothing more is pushed to the batch's branch.
