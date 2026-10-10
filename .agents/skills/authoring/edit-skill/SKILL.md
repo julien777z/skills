@@ -223,16 +223,22 @@ so the user's review of the source pull request overlaps it.
      target entry point and its referenced files, scripts, templates, and examples. Follow supporting
      links within the package; reviewing only `SKILL.md` or the edited hunk is incomplete. Apply the
      same genericity, ownership, clarity, and evidence standards to every file.
-   - **A change to what a skill returns the user is approved as a fictional example before the
-     skill is written to produce it.** The class is any new or changed user-facing output shape — a
+   - **A change to what a skill returns the user is approved as an example before the skill is
+     written to produce it.** The class is any new or changed user-facing output shape — a
      table, a report layout, a sent file, a message template, a listing — in a skill whose response
      the user reads or acts on. It is changed when the user would notice it in the response itself: a
      new or moved column, a different grouping, a link where there was none. A new status value or a
      reworded label is not that, and a skill whose result is edits, a merge, a deployment, a verdict
      another skill consumes, or a report only an agent reads has no such response. Whether an output
-     changed is the editor's call, from what the skill returns before and after. Write the example
-     for a realistic invented scenario with invented names, as one markdown file whose first line is
-     `**EXAMPLE — fictional output for approval; no smoke test was run.**`, check it as the global
+     changed is the editor's call, from what the skill returns before and after. **Model the example
+     on a small slice of the work in hand**, so the user judges the shape against something they
+     recognise: the session's real repository, subject and files, cut to a scope read in a minute,
+     with every value the run would produce — numbers, hashes, findings — stated as made up. Write
+     it as one markdown file whose first line is `**EXAMPLE — for approval, modelled on a small slice
+     of the current work; no smoke test was run.**`. Only where the work in hand gives the output
+     nothing to show does the example use an invented scenario with invented names, first line
+     `**EXAMPLE — fictional output for approval; no smoke test was run.**`. The example is chat
+     content: the skill text it leads to still keeps its own examples generic. Check it as the global
      rules' **User-Facing Output** requires, and present it for approval under the global rules'
      **Task execution and authorization** question route, one skill at a time. On a rejection, ask
      what must change, revise the example, and ask again. Only then write the skill to produce exactly the
@@ -457,9 +463,9 @@ so the user's review of the source pull request overlaps it.
       reader; a repository that does not is the flag, because the merge silently gave it the other
       one's answer.
    6. **Hold each changed output to its approved example.** For every skill whose changed output
-      the user approved as a fictional example, compare one run of your own on the branch in flight
+      the user approved as an example, compare one run of your own on the branch in flight
       and every required smoke run against the approved example: headings, columns, order, file
-      shape. A divergence is the skill's wording, fixed and rerun; a shape the user has not approved goes back to the user as a new fictional
+      shape. A divergence is the skill's wording, fixed and rerun; a shape the user has not approved goes back to the user as a new
       example, never into the merge.
    7. **Check the diff file list against the default branch, then merge.** The authorization covers
       a pull request carrying only `.agents` files, and the file outside them that slips in is never
