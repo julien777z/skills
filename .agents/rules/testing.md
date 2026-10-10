@@ -16,10 +16,11 @@ paths:
   an unknown duration or a total of one minute or more waits. Splitting a batch into individually
   quick commands does not qualify.
 - Finish a feature, including its callers and necessary tests, before running its relevant tests,
-  build, browser walkthrough and review once. For a UI feature, inspect its rendered screen and
-  comparable existing interactions at this checkpoint, and fix design or copy defects before moving
-  to unrelated work or the final combined checks. A task with several features may verify each
-  completed feature; an edit, file, commit, push, handoff or plan step is not a feature boundary.
+  build, applicable browser verification and review once. Select browser verification under
+  **Environments** before planning its prerequisites. Where it applies to a UI feature, inspect its
+  rendered screen and comparable existing interactions at this checkpoint, and fix design or copy
+  defects before moving to unrelated work or the final combined checks. A task with several features
+  may verify each completed feature; an edit, file, commit, push, handoff or plan step is not a feature boundary.
 - Classify validation failures under `execute-task`'s **Encountered Issues** before expanding
   repair work. Fix a completed-feature batch's relevant failures together, then repeat only the
   checks the fixes affect.
@@ -231,6 +232,8 @@ class TreeNode(BaseModel):
 
 ## Environments
 
+- Before planning browser walkthroughs or rendered UI inspections, read `run-site`'s **Principles**
+  and select its environment applicability. Required automated tests and builds still run.
 - A cloud workspace snapshot restores files, not running processes. A failing `docker info` at session start means the daemon may need to be started; it does not by itself prove Docker is unavailable.
 - Prefer the repository's service-startup helper or skill. Otherwise start the daemon explicitly and wait for `docker info` to succeed:
 

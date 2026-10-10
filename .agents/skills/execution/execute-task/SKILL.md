@@ -501,10 +501,12 @@ step 3 applies only when a pull request exists. A failed local setup operation r
 work under **Encountered Issues**, not an unverified-completion caveat. The independent gate
 receives its affected-repository map and comparison evidence along with the diff.
 
-Before the final delivery steps below, verify the requested behavior on the change's branch within
-the authorized scope, including reachable dependency branches. When a requested flow failed, repair
-and push the fix, exercise that branch, and repeat the complete failed flow until its requested
-outcome is verified. A narrower health check or passing component test cannot replace that flow.
+Before the final delivery steps below, select the applicable verification route under the shared
+testing rule's **Environments** section, then verify the requested behavior on the change's branch
+within the authorized scope, including reachable dependency branches. When a requested flow failed,
+repair and push the fix, exercise that branch through the applicable route, and repeat the complete
+failed flow until its requested outcome is verified. A narrower health check or passing component
+test cannot replace that flow.
 Missing merge approval holds merging, never this branch verification; check the available branch
 route before declaring a gate. Merge is delivery after verification, never its prerequisite.
 
