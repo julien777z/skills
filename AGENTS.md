@@ -71,6 +71,10 @@ Canonical guidance lives in `.agents/`.
   or earlier-request activity. Guidance maintenance is the exception: `edit-skill` runs when the
   user reports a guidance failure or canonical guidance is being changed, so the failure and its
   owning instruction are repaired together.
+  Determine a user-only restriction from the skill's entry point, not from the fact that it
+  performs work. Required checks and independent gates declared by an authorized workflow run
+  as dependencies without a separate invocation; an omitted review request is not a waiver.
+  This does not authorize a restricted action, merging, or deployment.
 - An authorized task stays active until its outcome is verified complete or the user explicitly
   stops or hands it off. A follow-up, guidance correction, completed milestone, pending decision or
   reported gate does not close it. For every task authorized to change files, start `execute-task`
