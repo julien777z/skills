@@ -1,6 +1,6 @@
 ---
 name: database-migrations
-description: Guide for authoring, rebasing, and troubleshooting Alembic database migrations, including how to avoid and fix branched migration graphs.
+description: "Apply before changing persisted database schema or stored representations, including repositories without a migration runner and startup schema reconciliation. Use versioned Alembic revisions, never ad hoc runtime migrations; guide authoring, rebasing, and troubleshooting their canonical chain."
 short_description: 'Guide for authoring, rebasing, and troubleshooting Alembic database migrations, including how to avoid and fix branched migration graphs.'
 ---
 
@@ -9,6 +9,16 @@ short_description: 'Guide for authoring, rebasing, and troubleshooting Alembic d
 Read the repository's migration layouts, runner commands, CI jobs, and fixture ownership from its project guidance, opening every `.agents/references/` file its `project.md` points to, before applying this policy. Resolve every role below through it; do not invent local paths.
 
 ## Structure
+
+Schema and stored-data evolution belongs to the canonical versioned migration chain, never to
+application startup, ordinary reads or writes, or a helper that inspects a database and conditionally
+changes its shape or rewrites legacy values. An existing reconciler is the same defect, not an
+exception: remove it and establish the revision chain when none exists. A runtime version check may
+require operators to migrate; it must not infer a revision from inspected objects, stamp a baseline,
+or silently accept an unversioned database. Adopting a chain for an existing database requires an
+explicit operational baseline procedure that verifies the known starting schema before recording
+its revision. Keep retained-data transformations in revisions; disposable-data resets remain explicit
+operational actions under the repository's data policy.
 
 Migrations live under the project's revision directory. Each service has one canonical migration
 chain shared by every configured deployment domain.
