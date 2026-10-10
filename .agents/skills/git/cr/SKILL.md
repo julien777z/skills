@@ -73,6 +73,9 @@ or merging another pull request.
 
 ## Pull Request Ownership
 
+An explicit pull-request URL or recognized identifier is the sole review set: verify and resolve it
+directly. Only an unqualified direct CR uses the ledger selection below.
+
 When the invocation does not name a pull-request URL, retrieve every matching current-repository
 record from `session-ledger`, retain each open pull request with a verified task-created or touched
 receipt, and verify every retained branch and state with the hosting service. Do not ask the user
