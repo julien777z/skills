@@ -299,6 +299,9 @@ return records;
   suffix, substitute a bare apex or product label, or append owner or organization aliases. Use
   the exact domain name for an environment's tailnet too. Repository and service IDs, provider
   accounts, and projects identify separate resources, not environment aliases.
+- Apply that rule only when a name denotes an environment. Product branding, company names, service
+  names, and their visual marks retain their own canonical terminology even when it shares an apex
+  label with an environment.
 
 - `.agents/global.md` states guidance that holds in every repository, and every `.agents/rules/*.md`
   file guidance that holds in any repository using its technology. Keep their examples generic —
