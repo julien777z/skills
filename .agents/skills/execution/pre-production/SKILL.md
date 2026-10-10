@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: Apply target-contract constraints to every implementation and review task, including tooling and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply whenever a CI job fails along the way.
+description: Apply target-contract constraints to every implementation and review task, including tooling and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply to relevant CI failures after validation classification.
 short_description: 'Apply target-contract constraints to implementation and review tasks.'
 ---
 
@@ -18,14 +18,15 @@ Build the clean target contract instead of preserving transitional behavior.
 
 ## Encountered Issues
 
-Fix and validate every concrete issue naturally encountered during authorized work, even when it
-predates the task or sits outside the initial file set. Follow the evidence through the affected
-callers and owners. That obligation is not a licence to audit areas the evidence never reaches; it is
-also not a reason to stop at the first file, and the section below governs how far it does reach.
+Apply `execute-task`'s **Encountered Issues** validation classification before choosing work from a
+failed check. Fix and validate every issue that remains in the task, even when it predates the task
+or sits outside the initial file set. Follow the evidence through affected callers and owners.
+That obligation is not a licence to audit areas the evidence never reaches; it is also not a reason
+to stop at the first file, and the section below governs how far it does reach.
 The repair must satisfy **Target Contract**; an encountered failure never authorizes compatibility
 with an obsolete owned contract or revision.
 
-- **A red CI job is an encountered issue, whoever caused it.** A package index serving no candidates,
+- **A relevant red CI job is an encountered issue.** A package index serving no candidates,
   a registry or network timeout, a runner fault, a test that passes on a second try: each is the
   pipeline depending on something it does not control, and that dependency is a defect in the
   repository. Fix the input that exposes it — restore resolved dependencies from a cache keyed on the

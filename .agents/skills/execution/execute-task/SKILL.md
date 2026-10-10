@@ -135,6 +135,21 @@ delivery. A formatter passing is not a substitute for that comparison.
 Apply `pre-production`'s encountered-issues policy while making the change. The rules below govern
 how those issues are handled.
 
+- **Classify validation failures before expanding the task.** When existing run evidence or a
+  reproduction through the native check on the default branch establishes the same failure under
+  comparable inputs, and the change neither introduces nor worsens it, report the check and that
+  evidence as a baseline failure. Continue the requested work and its relevant validation; do not
+  repair, rerun, investigate further, ask a product question, or record a deferral for that failure
+  merely because validation encountered it. Keep the failed result visible and never report the
+  whole check as passing. This exclusion does not cover a defect the user assigned, a failure of
+  the behavior the task must establish, or a confirmed finding independently established by a
+  review or source inspection apart from diagnosis of the excluded check. Do not reopen an
+  exclusion by relabeling that same failure as a review or source finding. Assigned defects and
+  independent findings remain fix responsibilities even when older code caused them.
+  Missing comparison evidence is not a baseline exclusion; inspect the failure at its native owner
+  before choosing its disposition. Pass established exclusions and their evidence to every later
+  validation or merge gate.
+
 - **A bug the work turns up, or a finding a gate, review, or simplification pass returns, is fixed
   in the change in flight, in a shape the standing guidance allows as the next bullet says, and
   offering it to the user is not a disposition.** "Want this handled, or shall I leave it?" reads as
@@ -171,20 +186,10 @@ how those issues are handled.
   rerun that route before completion. Preserve a required prerequisite whose concrete contract
   differs, and apply **Environment Refusals** and **Task Authorization** to an actual external or
   permission boundary.
-- **Where a defect came from is never asked, and the fix never waits on it.** Being found rather
-  than assigned, predating the change — older code in a file the work touches, a gap a gate labels
-  pre-existing — or being the change's own doing changes nothing about whether it is fixed or where:
-  the fix lands on the branch in flight. "Is this the change's doing or pre-existing?", "was it
-  already there?", "is it a regression of earlier work?" — put to the user, a gate, a reviewer, or a
-  worker — have no answer that changes that, so the question only holds the fix behind it, and a
-  defect reported as under investigation is reported instead of fixed. The agent that sees it
-  starts the fix in that turn, itself or through a worker's brief; where history would help write
-  the fix — a lost commit to restore, the change that broke it — read it from version control while
-  fixing. Origin decides one thing in this guidance: whether an authorized merge waits on a failing
-  check, under the GitHub rule's **Merge Authorization**. That decides only when the merge happens;
-  the failing check is still an encountered issue, fixed under `pre-production`'s red-CI rule. Say
-  in the report what was fixed and why it was in the path of the work, so the reviewer sees a
-  decision rather than a surprise.
+- **An encountered defect that remains in the task is fixed where the work is in flight.** Its
+  origin changes neither that responsibility nor its priority. Read history when it helps write
+  the fix, rather than asking the user whether it predates the change. Say what was fixed and why
+  it was in the path of the work.
 - What puts a **new** issue in that path is an act the work performed: a file it opened, a command
   it ran, a check it read, a review it received, and anything it looked at — a screenshot or
   recording, its own or a worker's, a walk through the product, a log, a report. A defect seen there
