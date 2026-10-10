@@ -1,13 +1,14 @@
 ---
 name: reconcile-skills
-description: Refresh the installed shared skills and rules after their repository merges and Agent Sync finishes, or when the user asks to bring local agent guidance up to date.
+description: Refresh the installed shared skills and rules when the GitHub rules' After Agent Sync section calls for it, or when the user asks to bring local agent guidance up to date.
 short_description: 'Refresh installed shared skills and rules from their source checkout.'
 ---
 
 # Reconcile Skills
 
 Refresh the user-level agent roots from the shared skills repository. An agent runs this skill
-when guidance changes during a session; cloud setup also runs the installer when a session starts.
+when the GitHub rules' **After Agent Sync** section calls for it; cloud setup also runs the
+installer when a session starts.
 This skill never copies provider mirrors by hand.
 
 ## Refresh

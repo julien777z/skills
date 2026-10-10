@@ -139,9 +139,18 @@ alwaysApply: true
 
 ### After Agent Sync
 
-- After a pull request that changes agent configuration merges and its default-branch Agent Sync
-  run finishes, select the refresh route before checking local changes. When the repository supplies
-  the installed shared skills, invoke `reconcile-skills`; its preservation workflow governs dirty
+- **The refresh runs before the next work, never on the merge alone.** After a pull request that
+  changes agent configuration merges and its default-branch Agent Sync run finishes, the refresh
+  below waits for the session's next work: a remaining step of an active task, a follow-up, or the
+  user's next request. The merge's own delivery is not that work: the Agent Sync poll, the
+  merged-text read-back, the generated-output check and the merge's report. The refresh runs
+  before that next work reads any skill or rule.
+  A merge that is the session's last work ends with no refresh, and its report reads `refresh:
+  deferred to the next request`. The next request, in this session or a later one, runs the refresh
+  first unless the installed copy already carries the merge, as one a cloud session installs at
+  start does.
+- Select the refresh route before checking local changes. When the repository supplies the
+  installed shared skills, invoke `reconcile-skills`; its preservation workflow governs dirty
   checkouts as well as clean ones. The checkout-only restriction below does not apply to this route.
   For the skill's first merge, read it from the merged commit before invoking it. A session follows
   the copy it loaded until this refresh completes.
