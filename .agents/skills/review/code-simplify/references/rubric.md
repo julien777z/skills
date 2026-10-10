@@ -5,6 +5,14 @@ to run the pass; this file says what it judges, and other skills that borrow the
 
 ## What The Pass Holds Itself To
 
+For the standards below, implementation scope is the requested change, admitted repairs and
+simplifications, and their necessary consumer updates. Full-file and sibling reading establishes
+context; it does not make every unchanged declaration a redesign target. Apply all standards to
+new or substantively changed implementation, verify mechanical updates and their effects, and use
+comparison code to identify existing owners and duplicate mechanisms. Confirmed defects remain
+subject to complete repair wherever found. An explicit broad refactor or audit supplies its own
+implementation scope instead of the default change boundary.
+
 **What the pass writes after the review is reviewed too.** A finding fixed during the pass meets the
 rubric by construction. The code written *afterwards* — to satisfy a checker, to turn a red check
 green, to answer a reviewer — does not, because the review that would have caught it is already over,
@@ -16,19 +24,14 @@ passed, never that the code earned its shape.
 
 **Preserve what a consumer outside the user's control observes — including on the default pre-push pass.** A third-party provider, a released client the change cannot update, and data persisted without a migration freeze their shapes: public routes and their request/response shapes, durable identifiers (handler, event, queue, and state keys), and on-disk and on-the-wire formats. A contract whose every consumer the change can update is simplification scope, whichever repository each consumer lives in: an owned route, response shape, shared DTO, or configuration changes deliberately, every consumer is updated in the same coordinated change, and the new shape reaches every other site of the same shape rather than one endpoint of it. Crossing a repository or breaking an owned contract is never a reason to leave a worthwhile simplification as a note or a question, and never a reason for a pass-through or compatibility shim — adjust the real call sites instead.
 
-**Where a defect lives and when it arrived are never dispositions, for any standard in this rubric.**
-Code the diff inherits, exposes, or merely sits beside is code the next reader meets, and stepping
-over it hands them a known problem plus the knowledge that somebody already saw it and moved on. A
-defect in a package the diff never touched is the same problem seen from further away, and the
-reviewer who saw it is the one who fixes it. Every finding the pass makes is fixed in it, at the
-priority its kind earns and never a lower one for having arrived earlier or lived elsewhere.
-
-The phrases this takes out of the reviewer's hands are the ones that sound most reasonable:
-"pre-existing", "not introduced by this diff", "predates this branch", "only lightly brushed", "out
-of scope", "a different package", "informational", "not blocking", "low priority, since the diff did
-not cause it", "worth a follow-up", "worth a separate pass", "left for the author to decide". None of
-them appears against a finding, and a heading that says one of them over a group of findings is the
-same disposition written once instead of six times. Report what is wrong, and fix it.
+**Classify the issue before prescribing its scope.** `pre-production` owns that decision.
+Confirmed defects are repaired wherever their mechanism and necessary consumers live, regardless
+of age. The changed design must meet the rubric: moving or introducing a declaration is no excuse
+for retaining a flaw in its resulting ownership. Independent structural improvements found while
+reading unchanged surroundings are candidates, not automatic findings against the task. Include
+one only when the complete correction earns the bounded local-refactoring scope; do not recursively
+clean every file it touches. Reading broadly remains required, and required repairs are never
+replaced by wrappers or partial consumer updates to reduce the diff.
 
 The pass's priority order ranks findings by **what kind of problem each is** — structural, then
 simplification, then branching, and so on. It does not rank them by who caused them or by which
@@ -96,7 +99,7 @@ importers justify shared ownership, not an extra directory hop.
 The diff narrows where to start looking, not which concrete issue naturally encountered in that
 resolved scope must be fixed.
 
-The one thing that does hold a finding back is risk you have not retired. A change whose behavior you cannot yet establish — a limiter whose failure mode differs between two implementations, a shared contract whose callers you have not enumerated — is verified first and then applied, not waved through and not quietly dropped. Establish the behavior, then make the change; where the pass genuinely cannot establish it, say exactly what is unverified and why, per the written-note rule above.
+For a repair admitted under the scope decision, retire behavioral risk before applying it. A change whose behavior you cannot yet establish — a limiter whose failure mode differs between two implementations, a shared contract whose callers you have not enumerated — is verified first and then applied, not waved through and not quietly dropped. Establish the behavior, then make the change; where the pass genuinely cannot establish it, say exactly what is unverified and why, per the written-note rule above.
 
 ## Trace Changed Flows
 

@@ -53,12 +53,35 @@ and one of triage's four dispositions there. Every verdict is specific. Acceptan
 addition whose kind matches a removed shape, the addition, the shape it takes, and why that is
 neither the removed shape nor a finding under the rubric; additions of other kinds are summarised.
 "Looks reasonable" is not acceptance. A flag names the lines, the shape they take, the intent item or
-rubric item they violate, and the remedy the change itself would take — narrow the model rather than
-subtract from it, derive the set from the declaration that carries it, extend the mechanism the
-change introduced. A disposition names the test that decided it and the fact it rests on.
+rubric item they violate, or the independent judgment concern, and the remedy the change itself
+would take — narrow the model rather than subtract from it, derive the set from the declaration
+that carries it, extend the mechanism the change introduced. A disposition names the test that decided it and the fact it rests on.
 
 A finding confirmed by a review that refutes everything it can is evidence that the problem is real;
 the gate does not re-validate it.
+
+## Independent Judgment
+
+Use your own engineering judgment as well as the explicit checks. Ask whether the result makes
+sense for the user's intent: does its cumulative scope fit the problem, do its responsibilities
+and dependencies form a coherent design, and does its complexity earn its cost? An unusual shape,
+an unexplained detour, or a surprising amount of unrelated work deserves scrutiny even when each
+edit individually follows a rule and all checks pass. The checklist is a floor, not the limits of
+what the gate may notice.
+
+Flag a concern that leaves you unconvinced the change should stand; you need not find an existing
+rule that names it or prove a bug first. Name the observed shape or decision, why it seems wrong,
+the consequence or uncertainty, and the smallest repair or investigation that would resolve it.
+"Weird" alone is not a finding, and an unfamiliar but justified design is not a defect. Investigate
+the available evidence before flagging; unresolved suspicion is stated as uncertainty, never as a
+proven failure. Acceptance explains why any material surprise is justified.
+
+Judge the whole result, not a succession of locally reasonable edits. Apply `pre-production`'s
+scope decision: necessary consumer updates or migrations can justify a wide diff; a chain of
+incidental cleanups cannot justify itself by the files it has already touched. Existing user
+approval to retain a broad change settles retention, not whether its remaining design is sound.
+Do not reject work solely for file count, personal taste, or a large required repair, and do not
+waive correctness or security findings because the overall change appears simple.
 
 ## Exploitable Findings
 
