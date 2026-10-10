@@ -15,6 +15,14 @@ handling after an agent-configuration change.
 - This skill merges only a pull request whose merge its caller is authorized to perform: a user
   instruction naming the merge and the pull request, an invoked skill that states its invocation
   authorizes the merge, or a rule that authorizes that merge. It creates no authorization of its own.
+- Verify a caller's authorization or merge-withheld flag against the current user instruction
+  and the target repository's pull-request lifecycle before accepting it. Read the complete changed
+  paths and the base and default branches; an agent-configuration exception is judged against the
+  default branch, not a stacked base that hides source changes. Inspect whether the guidance depends
+  on an unmerged source change. Record the applicable rule, its evidence, and the next transition
+  for this pull request. A caller's ordinary source-work default is not an explicit user hold:
+  apply the eligible exception and continue its authorized merge, or name the concrete dependency
+  that holds it. A user instruction that explicitly withholds this merge remains binding.
 - Once that authorization holds, never ask the user for permission to merge and never end by
   offering the merge as the remaining step. What stops a merge is a gate: a relevant required check
   that is not green, a head that no longer matches the accepted SHA, or a conflict still unresolved.

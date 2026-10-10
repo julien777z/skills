@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once at the start of every task authorized to change files, before recommending an implementation, delegating edits, or editing — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until verified completion or explicit user stop or handoff: it applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, keeps session-created source work to one pull request per repository, simplifies and gates the finished task's diff once, assigns one independent check watcher per task pull request while implementation continues, checks every outcome it reports, whether its own action or a sub-agent's claim, at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
+description: "Always run this. Invoke once at the start of every task authorized to change files, before recommending an implementation, delegating edits, or editing — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until verified completion or explicit user stop or handoff: it applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, keeps session-created source work to one pull request per repository, simplifies and gates the finished task's diff once, assigns one independent check watcher per task pull request while implementation continues, resolves each pull request's merge authorization through merge-pr before reporting its delivery state, checks every outcome it reports, whether its own action or a sub-agent's claim, at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
 short_description: 'Apply repository guidance, fix issues found along the way, validate the diff, and deliver the change.'
 ---
 
@@ -549,8 +549,10 @@ rescan within its own invocation.
    when no pull request exists, with the intent statement. Push the fix for each flag as its own
    increment and put it to the fresh gate that skill's **Bounds** require; a second flag is decided
    under those **Bounds**.
-3. Invoke `merge-pr` with the accepted head, merge withheld unless **Task Authorization** finds
-   that merge authorized, and the **Pre-Push Gate** each fix is pushed through as its fix rule. It
+3. Invoke `merge-pr` for each pull request at its accepted head, supplying the current user
+   instruction and that target's applicable lifecycle instead of a caller-inferred blanket merge
+   hold. Its authorization step resolves the next transition for that pull request; pass the
+   **Pre-Push Gate** each fix is pushed through as its fix rule. It
    marks the draft ready and drives the validation its complete-diff classification requires through
    its exact-head gate. Coordinate its watcher with that gate, preserving established exclusions and
    fixing every remaining failure until its validation passes.
