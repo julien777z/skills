@@ -202,5 +202,8 @@ with an obsolete owned contract or revision.
   wrong repository destroys data or ships a migration nobody wanted.
 - Whichever answer the repository gives, never overwrite a known value, never fabricate a placeholder
   in runtime code, and never keep a permanent schema default solely to make a migration convenient.
-- Where the repository names a migrations skill for that role, invoke it for the mechanics,
-  what it owes the rows it breaks, and validation.
+- Before selecting an implementation for a schema or stored-representation change, invoke the
+  database-migration skill for that role, including when the repository has no migration runner or
+  uses startup reconciliation. Resolve its local commands and layout through project guidance;
+  missing infrastructure is work to establish, not permission to bypass that owner. It governs the
+  mechanics, what the change owes existing rows, and validation.
