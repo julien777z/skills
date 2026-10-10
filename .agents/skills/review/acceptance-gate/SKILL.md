@@ -105,6 +105,10 @@ executable flow but still receives a map of affected guidance owners. Flag a mis
 or incomplete map rather than treating the reviewed checkout as the complete system. Report its
 findings in the verdict and summarize clean flow evidence under `Also read`.
 
+After the explicit checks, apply the rubric's independent judgment to the complete result. A
+checklist pass is not acceptance: assess whether the change makes sense for its intent and flag
+concrete concerns even when no named rule anticipated them.
+
 It returns the verdict its question defines, shaped as `references/rubric.md` — What A Verdict Names
 requires.
 

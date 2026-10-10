@@ -41,9 +41,22 @@ with an obsolete owned contract or revision.
   appears beside it — a second implementation of the mechanism, a sibling path answering the same
   question from a different input, a parallel copy nobody reconciled — that is one piece of work, and
   splitting it leaves the half that stays behind as the version the next person extends.
-- **"Out of scope" is the sentence that preserves the mess.** A site left outside the fix is exactly
-  where it regrows, because the guidance a later reader finds there still describes the old shape.
-  Bring the similar items in, or establish concretely that they are a different concern.
+- Establish the defect's boundary from the failed behavior, violated invariant, and mechanism that
+  produces it. Repair every affected implementation and consumer of that mechanism, including
+  necessary generated contracts and retained-data migrations. Sharing a directory, a naming
+  convention, or a general quality rule does not make separate mechanisms the same defect.
+- Useful local refactoring belongs with the repair when it simplifies the affected owner and its
+  necessary consumers. Before applying it, trace the complete change it requires and judge the
+  cumulative scope against its gain. An import update, a moved declaration, or a file opened for
+  comparison does not start another cleanup of that consumer or its siblings. Choose the smallest
+  coherent repair, not the fewest lines at the expense of a complete contract.
+- Distinguish required repairs from optional structural improvements before widening the work.
+  Fix confirmed broken behavior and defects introduced by the change; assess independent cleanup
+  against the bounded local-refactoring test above. Do not turn a sequence of individually useful
+  cleanups into an unrequested redesign, or invent an umbrella concern to make them one defect.
+  An explicitly requested broad refactor still receives its stated scope. File counts are evidence
+  of spread, not a cap: a necessary migration may be wide, while a small unrelated rewrite may
+  already be disproportionate.
 - **A correction to how one screen looks or reads is the user's decision about that screen, not a
   defect to sweep.** A layout, a wording, a tone or a style the user changes on one page is applied
   to that page, and other pages with the same shape are listed for the user to decide on, never
@@ -55,10 +68,8 @@ with an obsolete owned contract or revision.
 - Judge similarity by the question the code answers, not the directory it sits in or the layer it
   belongs to. Two modules deciding the same thing from different inputs are one concern wearing two
   implementations, however far apart they live.
-- **Propose the broad version first.** A narrow patch offered as the whole answer costs the reviewer
-  the chance to ask for the clean one, because they cannot ask for what they were never shown.
-  Surveying the surrounding code for the same defect is part of answering the request, not a favour
-  added to it.
+- Inspect the complete mechanism before choosing its repair. Prefer the clean result that solves
+  that defect throughout its affected paths; do not equate a broader cleanup with a better fix.
 - The bar is what the cleanest result requires, not what the smallest diff permits. Existing users
   and data may require migration work; effort alone is never a reason to keep parallel mechanisms.
 - **A derivative class, a flag, a parallel helper, or a second declaration added to avoid touching

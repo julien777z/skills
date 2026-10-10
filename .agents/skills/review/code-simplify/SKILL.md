@@ -1,6 +1,6 @@
 ---
 name: code-simplify
-description: Strictly review the branch's changes for reuse, simplification, abstraction quality, and maintainability, then fix the issues. An ambitious code-quality pass that hunts for structural simplifications (code-judo moves), giant files, and spaghetti-condition growth.
+description: Strictly review the requested change and its required dependencies for reuse, simplification, abstraction quality, and maintainability, then fix admitted issues. Seek substantial simplifications within that objective; necessary consumer edits and comparison reads do not authorize unrelated cleanup.
 short_description: 'Strictly review the branch''s changes for reuse, simplification, abstraction quality, and maintainability, then fix the issues.'
 ---
 
@@ -8,17 +8,18 @@ short_description: 'Strictly review the branch''s changes for reuse, simplificat
 
 Use this skill for an unusually strict review focused on implementation quality, maintainability, abstraction quality, and codebase health.
 
-Above all, this skill should push the reviewer to be **ambitious** about code structure. Do not merely identify local cleanup opportunities. Actively search for "code judo" moves: restructurings that make the implementation dramatically simpler, smaller, more direct, and more elegant.
+Be ambitious about simplifying the implementation under judgment: seek restructurings that remove complexity from its actual mechanism. Judge their complete dependency updates and cumulative scope before applying them; a new cleanup objective does not become relevant merely because the pass discovered it.
 
 ## Dependencies
 
+- `pre-production` — classify required repairs and bounded local refactoring before widening edits.
 - `subagent-selection` — route each reviewer subagent through the running session.
 - `test-fixture` — own test value, fixture, and class/file boundaries when the scope reaches tests.
 - `list-prs` — reconcile task-work pull requests for the affected-repository comparison.
 
 ## Applying fixes
 
-This skill does not stop at review: **apply the simplifications you identify directly to the working tree.** Restructure, extract, delete indirection, collapse branches, reuse the canonical helper, and keep those edits in the commit you are working on. The criteria — what the pass holds itself to, the reuse and ownership searches, the standards, the review questions, what to flag, the remedies, the tone and the approval bar — are `references/rubric.md`. Read it whole before the pass and apply all of it as the checklist for what to fix, not merely what to flag.
+Apply `pre-production`'s scope decision to the observations before prescribing edits. This skill does not stop at review: **apply admitted repairs and simplifications directly to the working tree.** Restructure, extract, delete indirection, collapse branches, reuse the canonical helper, and keep those edits in the commit you are working on. The criteria — what the pass holds itself to, the reuse and ownership searches, the standards, the review questions, what to flag, the remedies, the tone and the approval bar — are `references/rubric.md`. Read it whole before the pass and apply all of it as the checklist for what to fix, not merely what to flag.
 
 ## Running the pass
 
@@ -111,11 +112,12 @@ such a guard as legitimate, has not run the check.
 
 **What a scope contains.** A scope is never the diff hunks alone. Resolving any scope — the pre-push merge-base diff or one a caller names — yields three things: the **diff** itself, the **full contents of every file it touches**, and the **sibling modules in those files' packages**. Hunks show what changed; the whole file shows what the change now sits inside; the siblings show where the logic should have lived. A code-judo move is usually only visible in the third, and `references/rubric.md` applies to everything the scope resolves to, not only to lines the diff added.
 
-**The scope says what must be read, never what may be reported.** It is a floor on the reading, so a
-reviewer who read less than it resolves to has not finished; it is not a boundary a finding has to
-sit inside. A defect that reading leads to outside those three things — in another package, in a file
-the diff never opened — is a finding like any other, and the reviewer who saw it is the one who fixes
-it.
+**Reading scope and editing scope differ.** Read the complete files and relevant siblings to
+understand ownership and verify the change. Apply `pre-production`'s scope decision before turning
+an observation into a required edit: a confirmed defect and a flaw in the changed design require a
+complete repair, including consumers outside the starting files; an independent structural
+improvement must earn inclusion as a bounded local refactor. A newly touched consumer does not
+become another cleanup frontier. Explicitly requested broad reviews retain their stated scope.
 
 The rubric's reuse, ownership and deletions section says what to search for across the resolved scope,
 and what holds a finding back; its section on dispositions says what may never hold one back, where

@@ -150,7 +150,7 @@ how those issues are handled.
   before choosing its disposition. Pass established exclusions and their evidence to every later
   validation or merge gate.
 
-- **A bug the work turns up, or a finding a gate, review, or simplification pass returns, is fixed
+- **A confirmed defect the work turns up, or a finding against the task's changed design, is fixed
   in the change in flight, in a shape the standing guidance allows as the next bullet says, and
   offering it to the user is not a disposition.** "Want this handled, or shall I leave it?" reads as
   diligence and is the failure this section exists to prevent: it spends a turn to obtain permission
@@ -197,10 +197,11 @@ how those issues are handled.
   `pre-production`'s **Scope Follows The Defect, Not The Request** answers it.
 - Never reject a fix solely because it is described as high risk. Assess its expected net effect,
   concrete failure modes, and available validation instead of treating the label as a stop rule.
-- Fix and verify a non-defect improvement when the correction can be completed in one focused pass
-  and produces an overall net gain: removing a code smell, simplifying the implementation, or
-  applying the target-contract policy from `pre-production`. A defect, or a finding a gate, review,
-  or simplification pass returns, is governed above and carries no such condition.
+- Apply `pre-production`'s scope decision before treating a review observation as mandatory work.
+  Fix confirmed defects and findings against the changed design. A non-defect improvement earns
+  inclusion only as a bounded local refactor whose complete consumer updates fit one focused pass
+  and produce an overall net gain. A review naming it does not turn independent cleanup into a
+  defect or authorize recursive expansion.
 - Delete every piece of confirmed dead code encountered during implementation, even when it sits
   outside the files or packages already being changed. Confirm that no live application or
   library consumer, public export, or external contract still depends on it, judged where the
@@ -249,10 +250,10 @@ Read and invoke `code-simplify` once across the finished task's complete diff, u
 Own each coherent feature through integration: the primary agent settles dependencies, product
 decisions and the combined result. Simplify a feature as it is built; the final `code-simplify` pass
 still covers the complete diff. Assign a worker an independently owned scope with a concrete
-boundary and return condition, not an arbitrary slice of the primary agent's feature. Keep cleanup
-found in a feature with that feature; schedule independent cleanup beside other work when ownership
-does not overlap. When cleanup crosses an interface or repository, bring its producer and consumers
-to a coordinated checkpoint, verify compatibility at both ends, and keep the cleanup named until
+boundary and return condition, not an arbitrary slice of the primary agent's feature. Keep admitted
+cleanup with its feature; an independently selected cleanup follows its own stated scope and
+ownership. When cleanup crosses an interface or repository, bring its producer and consumers to a
+coordinated checkpoint, verify compatibility at both ends, and keep the cleanup named until
 that check passes. Neither a slower dependency nor unrelated work drops an encountered issue from
 the task.
 
@@ -267,11 +268,14 @@ the task.
     change and the code it resembles should be one thing, make them one thing.
   - **Sibling modules**: the other modules in each changed file's package, which is where a
     misplaced piece of logic and its rightful home become visible together.
-- When simplification or dead-code deletion changes another file, add that file's full contents,
-  its similar code, and its sibling modules to the scope recursively before continuing.
-- Resolve the final pass the same way, from the complete diff.
-- Apply every simplification that produces an overall net improvement, using `pre-production` for
-  contract decisions; ask only about one that meets **Encountered Issues**' condition for asking.
+- When a repair changes another file, inspect its complete contents and relevant owners to verify
+  that repair and its necessary consumer updates. This expands validation, not permission for a
+  new cleanup frontier; use `pre-production`'s scope decision before adding another correction.
+- Resolve the final pass the same way, from the complete diff. Check the combined scope against
+  the requested outcome, including all incidental changes; individually useful edits can add up
+  to a disproportionate change.
+- Apply complete defect repairs and bounded local simplifications under `pre-production`; ask
+  only about a genuine decision **Encountered Issues** reserves for the user.
 
 ## Pre-Push Gate
 
