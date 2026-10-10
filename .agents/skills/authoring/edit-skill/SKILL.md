@@ -436,8 +436,8 @@ so the user's review of the source pull request overlaps it.
       requires. Read the complete pull-request file list, not only the latest edit or its informal
       label. After the smoke, acceptance, and file-list checks pass, invoke `land-pr`; do not leave
       it draft under an ordinary source-work default or report it as delivered before its merged
-      text and generated outputs are verified. The report names either the merged-and-refreshed
-      state or a concrete documented gate with its evidence; draft alone is neither.
+      text and generated outputs are verified. The report names either the merged state or a
+      concrete documented gate with its evidence; draft alone is neither.
 
       **The agent-configuration merge exception decides the conflict with the ordinary merge
       default.** When the GitHub rule classifies every changed path as canonical, non-executable
@@ -483,7 +483,7 @@ so the user's review of the source pull request overlaps it.
       its batch with it — and so is one a doctor run opens: the steps above still run, the merge
       does not, and the report names it held for the user's review.
    8. **Nothing is copied by hand.** The skills repository is the only copy of a shared skill;
-      sessions receive a merged edit through the refresh step 9 ends with, never through a copy
+      sessions receive a merged edit through the refresh **After Agent Sync** runs, never through a copy
       placed in another repository or install. A skill that reads generically but was written into one repository's `.agents` is
       moved to the skills repository in the same change rather than left as a second copy.
    9. **Read the merged text back before using it.** A merge changes the default branch, not the
@@ -494,12 +494,13 @@ so the user's review of the source pull request overlaps it.
       from that text for the rest of the session. A skill invoked while its change is still open
       is read the same way from the branch that carries it, never from a checkout that predates
       it.
-      `land-pr` then waits for the default-branch Agent Sync run and refreshes the main local
-      checkout and, for the skills repository, the installed copy this session loads.
-      After that refresh, inspect every generated artifact that represents the changed source,
-      including `AGENTS.md` when the source feeds root instructions and provider trees such as
-      `.cursor/`, `.claude/`, and `.codex/` when they represent the changed package. Diagnose stale
-      or missing output through Agent Sync; never repair it by editing generated files.
+      `land-pr` then waits for the default-branch Agent Sync run; the GitHub rules' **After Agent
+      Sync** section says when the installed copy is refreshed.
+      Once the run finishes, inspect every generated artifact on the default branch that represents
+      the changed source, including `AGENTS.md` when the source feeds root instructions and
+      provider trees such as `.cursor/`, `.claude/`, and `.codex/` when they represent the changed
+      package. Diagnose stale or missing output through Agent Sync; never repair it by editing
+      generated files.
 
 ## Manual verification
 
@@ -566,7 +567,7 @@ Checks
 - Smoke test: <passing tables reported above | dropped — <reason> | not run: <reason>>
 - Example approved: <one line per skill: name — approved after <n> round(s), output matches it | skipped, no response the user uses | skipped, response unchanged | rule-only change>
 - Merged text read back: <default branch head the touched skills and rules were re-read from | not merged>
-- Refresh: <main checkout and installed copy at <sha>, installer rerun | skipped: <dirty paths> | not merged>
+- Refresh: <deferred to the next request | not merged>
 
 Pull request
 
