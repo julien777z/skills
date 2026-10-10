@@ -5,16 +5,18 @@ description: Run the full review-and-fix workflow for a pull request when a user
 
 # CR
 
-Run the complete high-effort fix review and exact-head gates for the current branch's pull request.
+Run the complete high-effort fix review and exact-head gates for every pull request the direct CR
+invocation selects.
 
 ## Invocation Authorization
 
 - Run this skill only when the user directly invokes `$cr`, directly asks to run CR in the current task, or directly invokes `merge-post-review` and that workflow delegates its captured targets. Never infer the latter from a merge or a prior run.
 - For a direct CR invocation, this instruction overrides `code-review`'s standalone argument prompt: run `code-review high fix <PR>` without comment mode; do not ask the user to select review effort or modes.
-- **A direct CR invocation authorizes the squash merge of its target pull request** at the head
-  that passed final acceptance and the check gate, unless the user explicitly withholds merge. That
-  restriction changes only the final action: complete every gate and report the clean exact head
-  with the pull request open. When merge is authorized, nothing reopens it: not the diff's size or
+- **A direct CR invocation authorizes the squash merge of every selected target pull request** at
+  the head that passed that pull request's final acceptance and check gate, unless the user
+  explicitly withholds merge. That
+  restriction changes only the final action: complete every gate and report each clean exact head
+  with its pull request open. When merge is authorized, nothing reopens it: not the diff's size or
   reach, not that review widened it, and not this run's own unease about how much it changes.
 - Dispatching a release workflow or creating a test deployment is a separate action and requires
   its own authorization.
@@ -26,7 +28,7 @@ Run the complete high-effort fix review and exact-head gates for the current bra
 - The one gate this run holds before step 7 is an unresolved `acceptance-gate` flag; every later
   gate is `merge-pr`'s, and the run reports the one it names.
 - The same invocation authorizes the declared `code-simplify`, `code-review`, `merge-conflict`, and
-  `merge-pr` dependencies for this pull request. It does not authorize an independent review,
+  `merge-pr` dependencies for every selected pull request. It does not authorize an independent review,
   release workflow, deployment, or unrelated provider mutation.
 - A new task starts a new authorization boundary. An invocation from an earlier task does not carry forward, including after context compaction or when the new task continues work on the same branch or pull request.
 - A completed CR run closes its authorization boundary. Application work requested afterward is a new
@@ -60,23 +62,34 @@ Select the target route before resolving a working pull request:
 - For a merged ref range explicitly delegated by `merge-post-review`, read
   [Merged targets](references/merged-targets.md). The immutable range is the review target; the
   original pull request is metadata, and a working fix pull request exists only after a finding.
-- For ordinary direct CR, read [Open targets](references/open-targets.md). The resolved open pull
-  request is both the review target and the working pull request, with **Pull Request Ownership**
+- For ordinary direct CR, read [Open targets](references/open-targets.md). Every resolved open pull
+  request is both a review target and its own working pull request, with **Pull Request Ownership**
   below.
 
 Use these route bindings throughout the shared workflow. All review lenses and finding validation
-apply to either review target. Description updates, fix validation, acceptance, and merge gates
-apply to the working pull request only. A clean merged-range review ends without creating or
-merging another pull request.
+apply to every review target. Description updates, fix validation, acceptance, and merge gates
+apply to that target's working pull request only. A clean merged-range review ends without creating
+or merging another pull request.
 
 ## Pull Request Ownership
 
-When the invocation does not name a pull-request URL, retrieve the matching current-repository
-record from `session-ledger` before verifying its branch and state with the hosting service. Ask
-when the ledger leaves more than one plausible pull request; never select one from local branch
-state alone.
+An explicit pull-request URL or recognized identifier is the sole review set: verify and resolve it
+directly. Only an unqualified direct CR uses the ledger selection below.
 
-Once this workflow resolves the pull request under review, that pull request owns every change CR
+When the invocation does not name a pull-request URL, retrieve every matching current-repository
+record from `session-ledger`, retain each open pull request with a verified task-created or touched
+receipt, and verify every retained branch and state with the hosting service. Do not ask the user
+to select one or select only the current branch: the complete retained set is the direct CR review
+set.
+
+Review each pull request as an independent unit with its own range, intent, threads, validation,
+acceptance, and exact-head merge gate. A compact agent-configuration unit may run in the same review
+sequence as its related selected source unit only when its complete diff changes one non-executable
+`.agents` Markdown file and documents behavior the source unit introduces. Grouping changes only
+the scheduling: review and merge the source unit first, then complete the unblocked guidance unit's
+own gates. Every other selected pull request is reviewed through its own complete unit.
+
+Once this workflow resolves a pull request under review, that pull request owns every change CR
 discovers or requires before its merge: simplification fixes, confirmed finding fixes, complete
 repeated-site sweeps, base-incorporation refactors, validation repairs, and acceptance-gate repairs.
 Their file count, diff size, or reach across the tests does not reopen that decision. Never ask the
@@ -314,11 +327,11 @@ Carry the run's state throughout: the current workflow step, repository and PR, 
 Hold that state in the session; never write it to a checkpoint file. The pull request is the durable record: its commits, its pushed head, its checks, and its comments are what a resumed turn reads to find the run, and they cannot drift from it the way a separate file can.
 
 GitHub head lag, a retryable rate limit, and any state `merge-pr` is still waiting on are nonterminal.
-Conclude only after the PR is verified merged, after the exact-head review and check gates complete
-when the user withheld merge, or on the user's explicit stop or handoff. A concrete failed gate or
-needed user decision remains active work under the global rules' **Tools and environments**
-pending-result boundary; reporting it does not close CR. A question already recorded as an admitted
-deferral is answered by that record, and the run continues without it.
+Conclude only after every selected pull request is verified merged, after each exact-head review and
+check gate completes when the user withheld merge, or on the user's explicit stop or handoff. A
+concrete failed gate or needed user decision remains active work under the global rules' **Tools and
+environments** pending-result boundary; reporting it does not close CR. A question already recorded
+as an admitted deferral is answered by that record, and the run continues without it.
 
 ## Workflow
 
@@ -330,12 +343,12 @@ and verified live result; a default-branch or merged artifact is not test eviden
 authorization, skip deployment and continue review. Never dispatch a workflow or mutate a provider
 to work around this gate.
 
-1. Resolve the review target and working pull request using **Review Targets**. Read the original target's intent and metadata without modifying a merged pull request; run **Description Refresh** when a working pull request exists. Record the review range and pass its intent and route-specific ownership to every subagent and into `/code-review high fix`. Run **Review Thread Triage** against the original target's discussions, with any legitimate fixes placed according to the selected route. Then classify failures under **Failure relevance**, run the first test pass **Validation Order** requires, and complete the **Simplification Gate**; no code-review phase starts before all three are clean.
-2. Invoke `/code-review high fix <target>` using the open pull-request URL or the exact delegated ref range. For a merged range, pass the original pull request as metadata only and explicitly preserve the range through resolution and eligibility checks. Direct fixes to the working fix branch rather than changing the immutable target.
-3. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the run continues; see **Deferred Findings**. A finding that can be neither fixed nor recorded remains an active gate: surface the needed resolution under the global rules' pending-result boundary and continue independent work; do not conclude CR on that report.
-4. Classify each correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean. This is the same authorized CR execution, not a new action-skill invocation.
-5. Once the review is clean, if a merged-range review has no working fix pull request, give the **Completion Report** and return to the invoking workflow without another merge. Otherwise put the complete working pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement, retaining the original review range as context. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate** verdict is the fresh gate; resolve repeated flags under `acceptance-gate`'s **Bounds**, which distinguishes authorized repair from a genuine user decision and never admits a deferral by flag count. The accepted head is the SHA `merge-pr` receives.
-6. Run **Description Refresh**'s second pass, then the second test pass **Validation Order** requires. Never stop, restart, reconfigure or claim a local service this run did not start.
+1. Resolve every review target and working pull request using **Review Targets**. Process each independent unit through the remaining steps before starting the next, except a compact guidance unit follows its related source unit. Read each original target's intent and metadata without modifying a merged pull request; run **Description Refresh** when a working pull request exists. Record every review range and pass each target's intent and route-specific ownership to every subagent and into `/code-review high fix`. Run **Review Thread Triage** against each original target's discussions, with legitimate fixes placed according to that target's route. Then classify failures under **Failure relevance**, run the first test pass **Validation Order** requires, and complete the **Simplification Gate**; no code-review phase starts for a unit before all three are clean.
+2. Invoke `/code-review high fix <target>` for each unit using the open pull-request URL or the exact delegated ref range. For a merged range, pass the original pull request as metadata only and explicitly preserve the range through resolution and eligibility checks. Direct fixes to the matching working fix branch rather than changing the immutable target.
+3. For the current unit, apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the run continues; see **Deferred Findings**. A finding that can be neither fixed nor recorded remains an active gate: surface the needed resolution under the global rules' pending-result boundary and continue independent work; do not conclude CR on that report.
+4. Classify each current-unit correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean. This is the same authorized CR execution, not a new action-skill invocation.
+5. Once the current unit's review is clean, if a merged-range review has no working fix pull request, record it for the **Completion Report** and continue to the next unit without another merge. Otherwise put the complete working pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement, retaining the original review range as context. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate** verdict is the fresh gate; resolve repeated flags under `acceptance-gate`'s **Bounds**, which distinguishes authorized repair from a genuine user decision and never admits a deferral by flag count. The accepted head is the SHA `merge-pr` receives.
+6. Run **Description Refresh**'s second pass, then the second test pass **Validation Order** requires for the current unit. Never stop, restart, reconfigure or claim a local service this run did not start.
 7. Invoke `merge-pr` with:
    - the pull request and the head step 5 accepted;
    - the affected behaviors step 6 covered locally;
@@ -343,4 +356,4 @@ to work around this gate.
    - whether the user withheld merge;
    - the fix rule for every fix it makes — a check fix, a conflict resolution, a commit someone else pushed: **Review Continuity** reruns the lenses the fix reopens, and the fix is pushed through `execute-task`'s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have passed.
 
-   Base updates it performs are **Incorporating The Base** for this run. When it reports the merge, or the exact-head gates complete with merge withheld, give the **Completion Report** above and end the run; when it reports a gate that holds, report that gate.
+   Base updates it performs are **Incorporating The Base** for this run. When it reports the merge, or the exact-head gates complete with merge withheld, continue to the next selected unit. Give the **Completion Report** and end the run only after every selected unit reaches that state; when it reports a gate that holds, report that gate.
