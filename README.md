@@ -92,6 +92,7 @@ These run only when you ask for them by name, such as `/refactor`.
 - [`placeholder-data`](.agents/skills/workspace/placeholder-data/SKILL.md) — Turn a pasted API payload into the same shape with obviously fake values.
 - [`refactor`](.agents/skills/execution/refactor/SKILL.md) — Plan and carry out a repository refactor with independent structural review.
 - [`schema-doctor`](.agents/skills/doctors/schema-doctor/SKILL.md) — Check models and schemas for unnecessary nulls, complexity, keys, and indexes.
+- [`security-doctor`](.agents/skills/doctors/security-doctor/SKILL.md) — Find and fix the exploitable vulnerabilities in a codebase, each proven by a concrete attack.
 - [`skill-gauntlet`](.agents/skills/authoring/skill-gauntlet/SKILL.md) — Audit installed agent skills and test which ones to improve, retire, or install.
 - [`study-games`](.agents/skills/roblox/study-games/SKILL.md) — Explicit user-invoked research of Roblox charts for the requested audience and region.
 - [`tests-doctor`](.agents/skills/doctors/tests-doctor/SKILL.md) — Audit tests for contract value, redundant proof, weak assertions, runtime, provider rate limits, and determinism.
@@ -154,7 +155,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`roblox-react`](.agents/skills/roblox/roblox-react/SKILL.md) — Design and change React-rendered Roblox interfaces, including HUDs and menus.
 - [`roblox-studio`](.agents/skills/roblox/roblox-studio/SKILL.md) — Create, polish, and playtest Roblox games in Studio.
 - [`run-site`](.agents/skills/workspace/run-site/SKILL.md) — Start an application stack and perform browser verification where applicable.
-- [`security-audit`](.agents/skills/review/security-audit/SKILL.md) — Security audit of a codebase — web apps, APIs, services, CLI tools, libraries, daemons, and more.
+- [`security-audit`](.agents/skills/review/security-audit/SKILL.md) — Security guidance for writing code, reviewing a change, and auditing a codebase.
 - [`session-ledger`](.agents/skills/workspace/session-ledger/SKILL.md) — Keep verified task artifacts in one private task file.
 - [`storyline`](.agents/skills/roblox/storyline/SKILL.md) — Create or improve a coherent game story with playable beats and a satisfying ending.
 - [`subagent-selection`](.agents/skills/execution/subagent-selection/SKILL.md) — Select a model tier for live verification chats or subagent delegation.
