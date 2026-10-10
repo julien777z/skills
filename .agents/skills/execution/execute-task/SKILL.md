@@ -587,15 +587,16 @@ A status report is not a stopping point. When every remaining item depends on an
 apply the global rules' **Tools and environments** pending-result boundary: keep the available
 wait or event route active and resume the saved next action when it resolves. An unresolved user
 choice holds its dependent remedy; it does not close the run or cancel independent work. A guidance
-correction is an intermediate checkpoint under the same boundary, never a reason to end the
-surrounding task. Report a blocker only on that boundary's concrete evidence.
+correction is recorded and the run carries on; it is processed at **Completion**, never a reason to
+end or pause the surrounding task. Report a blocker only on that boundary's concrete evidence.
 
-## Completion
+### Completion
 
 Run this checkpoint before reporting a change complete, including a local-only result with no
-pull request. In that case, steps 1–2 review the complete task diff and its validation prerequisites;
-step 3 applies only when a pull request exists. A failed local setup operation remains encountered
-work under **Encountered Issues**, not an unverified-completion caveat. The independent gate
+pull request. In that case, source-stream steps 1–3 and step 5's verification review the complete
+task diff and its validation prerequisites, and the history, the message and `land-pr` apply only
+when a pull request exists. A failed local setup
+operation remains encountered work under **Encountered Issues**, not an unverified-completion caveat. The independent gate
 receives its affected-repository map and comparison evidence along with the diff.
 
 Before the final delivery steps below, select the applicable verification route under the shared

@@ -108,7 +108,8 @@ alwaysApply: true
   itself authorize merging. If neither authorization source applies, do not merge or enable auto-merge.
 - A pull request confined to canonical, non-executable agent configuration, including Markdown skills,
   rules, agent definitions, and static metadata, may be merged without a separate request after
-  `code-simplify` has run and its findings are resolved. An executable script, workflow, installer,
+  `code-simplify` has run and its findings are resolved, except one that adds a doctor skill, which
+  waits for the user's review together with everything in its batch. An executable script, workflow, installer,
   or runtime code is source work even when it sits under `.agents`. When the user asked for the
   change to be tested, first run the smoke test against the exact pull-request head. Check that the
   complete pull request remains confined to this agent configuration before using this exception.

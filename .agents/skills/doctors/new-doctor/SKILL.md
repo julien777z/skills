@@ -45,7 +45,8 @@ not a dependency this skill runs, so it is named here and not below.
    existing skill; confirm no heading restates a protocol section; run `get-doctors` and see the
    new doctor listed with the intended summary.
 7. **Smoke-test it** as the section below states, and rewrite any lens a reviewer missed.
-8. **Deliver** through `edit-skill`.
+8. **Deliver** through `edit-skill`, whose step 7.7 holds a pull request adding a doctor for the
+   user's review; the report hands the user its link.
 
 ## Smoke Test The Doctor
 
