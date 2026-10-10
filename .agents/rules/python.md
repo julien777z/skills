@@ -76,7 +76,7 @@ class Report(BaseModel):
 
 - Before adding a module, inspect the existing owner and its consumers. Extend that module when the new code shares its responsibility, dependencies, and lifecycle; a new operation, small helper, record shape, or compound name does not establish a new boundary. Split only when distinct ownership, dependency direction, or independently used surfaces justify the extra navigation, and consolidate fragments that have no such distinction.
 - Use an owner package when several justified modules share that owner; do not convert a module into a package merely because it gains another function or topic. Inside the package, name modules for their responsibility without repeating the owner. Keep established compound nouns together.
-- When choosing a module's location or reviewing changed Python files, inspect every affected `__init__.py` against its export role, including in test packages. Leave it empty when no public exports are needed; otherwise allow only explicit re-export imports and a literal `__all__`. Definitions, data declarations, computation, and side effects belong in ordinary modules under their responsible owner. Never put them in an initializer to avoid a module or satisfy a package-layout rule.
+- Keep every `__init__.py` empty or limited to explicit re-export imports and a literal `__all__`, including in test packages. Never add definitions, data declarations, computation, or side effects there; they belong in ordinary modules under their responsible owner. A package's public export surface and module-layout rules do not permit implementation in its initializer.
 - This rule governs Python modules only. Generated packages and source files owned by another toolchain follow that toolchain's naming conventions.
 - Moving a module into a new subpackage invalidates every relative import inside it and any path it derives from `__file__`. Convert those imports to absolute imports and re-anchor the path instead of adding `.parent` until it happens to work.
 
@@ -720,7 +720,7 @@ def ensure_tenant_member(user: User) -> None:
 ## Logging
 
 - Use the `logging` module instead of `print()` for debugging, status, progress, or diagnostics in any code, including scripts and CLI tools.
-- Configure a logger at the top of each ordinary module that emits logs: `logger = logging.getLogger(__name__)`.
+- Configure a logger at the top of each ordinary module: `logger = logging.getLogger(__name__)`.
 - Treat logger instances as runtime collaborators: name them `logger`, never `LOGGER`, and do not annotate them as `Final`.
 - Use appropriate log levels: `debug`, `info`, `warning`, `error`, `critical`.
 
