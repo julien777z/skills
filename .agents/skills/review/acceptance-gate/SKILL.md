@@ -161,9 +161,15 @@ The gate is never advisory; the rubric says what each disposition binds the call
 A flag blocks the flagged proposal or diff, not an ordinary repair the task already authorizes.
 Read its concrete objection and remedy against the intent and standing guidance, make the smallest
 coherent repair using the existing owner or mechanism, and send the changed increment with the
-whole originating diff to a fresh independent gate. A flag gets at most two such repair rounds;
-when the gate still flags it after the second, the caller puts it to the user with the open flags,
-each remedy tried and its evidence, and continues every other authorized item meanwhile.
+whole originating diff to a fresh independent gate.
+
+**Repair rounds are counted per objection.** A flag gets at most two repair rounds of its own; one a
+fresh gate raises for the first time starts at zero and is repaired like any other, whatever round
+the change as a whole has reached. A flag the gate still raises after its own second repair goes to
+the user as a report, never as a choice about whether to fix it or leave it in place: the open flag,
+each remedy tried and its evidence, the gate's proposed remedy and the recommended next step. Every
+other flag keeps its own repair and gate meanwhile, and the user's reply directs only the flag the
+report names.
 
 Never rerun an unchanged item hoping for acceptance, argue it through the same gate, rename it to
 reset its history, or keep flagged code because the caller can authorize its merge. Carry unresolved

@@ -44,8 +44,8 @@ depends on to merge.
 
 1. **Acceptance.** Reuse `acceptance-gate`'s final-acceptance verdict when the head it accepted is
    the current head, or a rewrite whose tree is identical to it. Otherwise put the head to the
-   final-acceptance question. A flag is fixed and gated under that skill's **Bounds**; one still
-   standing after them holds the target with the open flags.
+   final-acceptance question. A flag is fixed and gated under that skill's **Bounds**; the
+   target waits while one stands.
 2. **CI.** Invoke `land-pr` with the accepted head, merge authorized, and every hosted check on
    the head required. A failing check that fails the same way on the default branch's latest run
    is a baseline: pass it to `land-pr` as an exclusion with that run as evidence, and it does not
