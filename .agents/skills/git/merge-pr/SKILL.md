@@ -61,24 +61,21 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    artifacts need, its exact contents, and `git diff --check`; application tests, check runs and CI
    are not consulted. The classification is semantic rather than path-based: instructions,
    documentation, policies, static metadata and non-executable configuration live anywhere.
-3. **For a runtime diff, gate only the coverage local tests could not establish.** For the affected
-   behaviors the caller's local tests do not cover, query check runs and legacy statuses only for a
-   job that supplies that missing coverage — unavailable credentials, provider-only or
-   runner-specific behavior, or a dependency the local environment cannot host. When every affected
-   behavior has passing local coverage, the gate is satisfied without querying GitHub. A qualified
-   pre-validation runner-infrastructure cancellation is skipped under the GitHub rule; other hosted
-   results remain subject to step 6. When a needed job has no check run or status, inspect the active
-   workflow definitions for pull request
-   triggers; if none can supply the coverage, report that blocker rather than waiting on unrelated
-   checks. Record and exclude each caller-supplied validation exclusion. Remove it from required
-   coverage and terminal-result gates; it never becomes a reason to repair, rerun, or wait. Every
-   other affected behavior still needs passing coverage.
-4. **Poll a relevant check until it reaches a terminal state.** Re-query the exact head on a bounded
-   interval matched to how long that job takes — roughly every 30 to 60 seconds — until it is
-   `success`, `failure`, `cancelled`, `timed_out`, `skipped` or `neutral`. Never poll an unrelated job
-   or wait on a whole workflow whose other jobs cover nothing affected. Do not end the turn, report
-   "still running", or hand back to the user while a relevant check is pending; the poll loop is the
-   work.
+3. **For a runtime diff, inventory every check on the exact head.** Read all check runs and
+   legacy statuses, including every workflow job, rather than only required checks or jobs selected
+   by the changed files. Inspect the active workflow triggers and job conditions to account for
+   missing jobs. Passing local tests never replaces this inventory or a hosted job's result. Record
+   each job's run, head, state and conclusion, and each caller-supplied exclusion with its evidence.
+   A skipped or neutral job supplies no coverage: establish whether its native condition makes it
+   inapplicable, or required validation is missing. Draft skips never supply test coverage. A job
+   without a check run or status needs the same applicability decision, not an assumed pass.
+4. **Drive the complete inventory to terminal results.** Re-query the exact head on a bounded
+   interval matched to job duration — roughly every 30 to 60 seconds — until every applicable,
+   non-excluded job is terminal. Local coverage, a green selected job or a branch-protection summary
+   does not permit omitting another job. Classify failures under step 6 and account for missing or
+   skipped required validation before clearing the gate. A new head rebuilds the inventory; a moved
+   base requires rechecking mergeability and validation inputs before reusing evidence. Do not end
+   the turn or hand back while the gate is pending; its poll loop is the work.
 5. **A pending status is a cache, not evidence.** Status endpoints keep reporting `in_progress` after
    a job has finished, sometimes for an hour or more. Learn what the job normally costs from the same
    job on an earlier head or on the base branch; once a check is pending well past that, read the
@@ -91,9 +88,8 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    without reentering that skill's active run. Record an exclusion's evidence, remove it from
    required coverage, and do not repair, rerun, or wait for it. Apply the
    GitHub rule's runner-infrastructure exclusion automatically: record a qualified check as skipped
-   and do not rerun or wait for a green hosted result. Every other failure is relevant. Read its
-   annotations and complete log, fix the repository
-   input responsible — code, test, configuration or workflow — and commit and push it. A relevant
+   and do not rerun or wait for a green hosted result. Every other failure in the applicable
+   inventory is relevant. Read its annotations and complete log, fix the repository input responsible — code, test, configuration or workflow — and commit and push it. A relevant
    external-service failure is an encountered issue under `pre-production` and is fixed the same way;
    never re-run a job, or skip, disable, or quarantine a test or confine its job to drafts, to get
    past it. Report a blocker only when relevant missing coverage needs user input or unavailable

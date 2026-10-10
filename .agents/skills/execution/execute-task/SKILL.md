@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once at the start of every task authorized to change files, before recommending an implementation, delegating edits, or editing — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until verified completion or explicit user stop or handoff: it applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, keeps session-created source work to one pull request per repository, simplifies and gates the finished task's diff once, checks every outcome it reports, whether its own action or a sub-agent's claim, at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
+description: "Always run this. Invoke once at the start of every task authorized to change files, before recommending an implementation, delegating edits, or editing — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until verified completion or explicit user stop or handoff: it applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, keeps session-created source work to one pull request per repository, simplifies and gates the finished task's diff once, assigns one independent check watcher per task pull request while implementation continues, checks every outcome it reports, whether its own action or a sub-agent's claim, at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
 short_description: 'Apply repository guidance, fix issues found along the way, validate the diff, and deliver the change.'
 ---
 
@@ -385,6 +385,32 @@ base and stays open. A guidance change never rides the source branch in flight, 
 follows that work. List a repository's open pull requests, not only this session's, before creating
 any branch there, and say in chat what was consolidated when a stray one is folded in.
 
+Once a task pull request exists, assign one independent read-only subagent to its validation while
+source work continues; use `subagent-selection` for dispatch. Each watcher owns one pull request,
+never a selected suite or the whole collection. Its scope follows `merge-pr`'s **Check Gate**
+complete-diff classification: runtime changes require every hosted check run and legacy status;
+non-runtime changes track artifact validation without consulting or waiting for application CI.
+Give it the URL, current head and base, workflow definitions, validation receipts and established
+exclusions. For a runtime inventory it accounts for every workflow job and returns run links, exact
+revisions, conclusions, full failure-log evidence and missing or skipped coverage. It classifies
+failures at their native owner under **Encountered Issues**, without assuming that a red job is an
+application regression.
+The implementation owner applies and verifies repairs; the watcher changes no source or shared
+services and has no merge authority.
+
+Keep each assignment active through the finished pull request's final check gate and the parent's
+verified readback, or until the user stops or hands off the task. A draft's terminal checks do not
+finish the assignment. During implementation it consumes delivered pull-request activity without
+timed background polling; `merge-pr` owns polling during its active final check
+gate. Preserve draft readiness under **Pre-Push Gate**: draft test skips remain unrun validation,
+never completion. On a new head, recheck the complete-diff classification and rebuild that pull
+request's validation scope; on a moved base, recheck its mergeability and validation inputs. Retain
+only evidence whose revision and inputs remain valid.
+The parent reads the actual check sources before reporting the watcher's claim. A result for one
+pull request never establishes another's checks, and selected green jobs never establish all CI
+as green. Pending inventories remain named work under **Work You Have Already Named** while
+independent implementation continues.
+
 ## Multi-Repository Delivery
 
 When one change spans multiple repositories, treat each repository as an independent delivery
@@ -531,8 +557,9 @@ rescan within its own invocation.
    under those **Bounds**.
 3. Invoke `merge-pr` with the accepted head, merge withheld unless **Task Authorization** finds
    that merge authorized, and the **Pre-Push Gate** each fix is pushed through as its fix rule. It
-   marks the draft ready, which starts its test jobs once, reads them back on the exact head, and
-   fixes each failure until they pass.
+   marks the draft ready and drives the validation its complete-diff classification requires through
+   its exact-head gate. Coordinate its watcher with that gate, preserving established exclusions and
+   fixing every remaining failure until its validation passes.
 4. Verify every requested outcome and every automatic incidental fix.
 5. Confirm tests and relevant validation cover every incidental fix and simplification, and that
    intentional contract changes are reflected in the expected behavior.
