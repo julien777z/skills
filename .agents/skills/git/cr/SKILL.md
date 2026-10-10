@@ -92,14 +92,17 @@ own gates. Every other selected pull request is reviewed through its own complet
 Once this workflow resolves a pull request under review, that pull request owns every change CR
 discovers or requires before its merge: simplification fixes, confirmed finding fixes, complete
 repeated-site sweeps, base-incorporation refactors, validation repairs, and acceptance-gate repairs.
-Their file count, diff size, or reach across the tests does not reopen that decision. Never ask the
+Their file count, diff size, or reach across the tests does not reopen that decision; cleanup beyond
+confirmed findings stays within `pre-production`'s size budget, with the rest listed in the report.
+Never ask the
 user or `acceptance-gate` whether any of that work belongs in another pull request.
 
 Treat that placement as settled in every CR subagent instruction and pass this rule into
 `/code-review high fix`. For every `acceptance-gate` invocation, ask only the selected canonical
 question about whether the proposal or diff is correct, follows the repository rubric, and preserves
 the intent's removed shapes. The gate may flag how the work is implemented; it may not flag the work
-solely because it widened the pull request, recommend splitting it, or decide where it should land.
+solely because it widened the pull request, apart from incidental cleanup past `pre-production`'s
+size budget, recommend splitting it, or decide where it should land.
 Repair a flag in the pull request under review.
 
 The independent pull requests already required for an admitted deferral or a change in another

@@ -296,11 +296,11 @@ how those issues are handled.
   and produce an overall net gain. A review naming it does not turn independent cleanup into a
   defect or authorize recursive expansion.
 - Delete every piece of confirmed dead code encountered during implementation, even when it sits
-  outside the files or packages already being changed. Confirm that no live application or
-  library consumer, public export, or external contract still depends on it, judged where the
-  change will land as `code-simplify`'s rubric says; remove tests that exist only to exercise the
-  dead code; and validate the affected behavior. This requirement does
-  not turn implementation into a proactive dead-code audit of the whole repository.
+  outside the files or packages already being changed, within `pre-production`'s size budget.
+  Confirm that no live application or library consumer, public export, or external contract still
+  depends on it, judged where the change will land as `code-simplify`'s rubric says; remove tests
+  that exist only to exercise the dead code; and validate the affected behavior. This requirement
+  does not turn implementation into a proactive dead-code audit of the whole repository.
 - Use the repository's relevant tests as the regression guardrail; do not preserve a defect solely
   because an existing test asserts the old behavior. When coverage is absent or insufficient, use
   the strongest available validation and account explicitly for the uncovered behavior.
@@ -358,7 +358,8 @@ the task.
     shape, or operation as the changed code — a near-duplicate helper, a parallel implementation,
     a second representation of one value. Search by concept and by key operation, not by filename;
     a sibling-only read cannot find the canonical implementation another package owns. Where the
-    change and the code it resembles should be one thing, make them one thing.
+    change and the code it resembles should be one thing, make them one thing, within
+    `pre-production`'s size budget.
   - **Sibling modules**: the other modules in each changed file's package, which is where a
     misplaced piece of logic and its rightful home become visible together.
 - When a repair changes another file, inspect its complete contents and relevant owners to verify
@@ -404,8 +405,9 @@ checks before delivery; retain evidence that the change has not invalidated.
 
 Before each push, list the exact adjacent line pairs where setup, a guard, transformation, side effect,
 or return meets the next phase without the blank line required by the global code-layout rule.
-Fix every listed boundary in the complete changed files; an unrelated bug or a passing formatter
-does not satisfy this spacing check.
+Fix every listed boundary in the lines the change writes or edits, and elsewhere in the changed files
+within `pre-production`'s incidental size budget, as the global code-layout rule says; an unrelated
+bug or a passing formatter does not satisfy this spacing check.
 
 - **Commit each small coherent step and push it as soon as its checks pass**, and at least every
   five minutes of work — a function and its callers updated, a test brought to pass, one finding
@@ -453,8 +455,9 @@ An outcome is what its source of truth shows, never what an action or a worker s
   checks that run for its state starting — a draft starts no test jobs — since the base can move
   while the push runs.
 - **Whatever that read shows wrong is the next thing done**, ahead of every queued item, and is
-  never carried to "the next push" or bundled behind other work. A conflict or a moved base is
-  brought in through `merge-conflict`, delivered under the **Pre-Push Gate**, and read back.
+  never carried to "the next push" or bundled behind other work. A conflict is brought in
+  through `merge-conflict`, delivered under the **Pre-Push Gate**, and read back. A base that only
+  moved, with no conflict, is brought in once, at **Completion**, before the final acceptance.
 - **A delegated worker's report of an outcome is a claim, never evidence.** Before relaying it or
   building on it, check it at its source: "tests pass" against the run or the CI result on that
   commit, "pushed" or "exists" against the branch, "merged" or "refreshed" against the default
