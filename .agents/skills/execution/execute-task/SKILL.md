@@ -381,13 +381,16 @@ base and stays open. A guidance change never rides the source branch in flight, 
 follows that work. List a repository's open pull requests, not only this session's, before creating
 any branch there, and say in chat what was consolidated when a stray one is folded in.
 
-Once a task pull request exists, assign one independent read-only subagent to its complete check
-inventory while source work continues; use `subagent-selection` for dispatch. Each watcher owns one
-pull request, never a selected suite or the whole collection. Give it the URL, current head and base,
-workflow definitions, validation receipts and established exclusions. It reads every check run and
-legacy status, accounts for every workflow job, and returns run links, exact revisions, conclusions,
-full failure-log evidence and missing or skipped coverage. It classifies failures at their native
-owner under **Encountered Issues**, without assuming that a red job is an application regression.
+Once a task pull request exists, assign one independent read-only subagent to its validation while
+source work continues; use `subagent-selection` for dispatch. Each watcher owns one pull request,
+never a selected suite or the whole collection. Its scope follows `merge-pr`'s **Check Gate**
+complete-diff classification: runtime changes require every hosted check run and legacy status;
+non-runtime changes track artifact validation without consulting or waiting for application CI.
+Give it the URL, current head and base, workflow definitions, validation receipts and established
+exclusions. For a runtime inventory it accounts for every workflow job and returns run links, exact
+revisions, conclusions, full failure-log evidence and missing or skipped coverage. It classifies
+failures at their native owner under **Encountered Issues**, without assuming that a red job is an
+application regression.
 The implementation owner applies and verifies repairs; the watcher changes no source or shared
 services and has no merge authority.
 
@@ -396,8 +399,9 @@ verified readback, or until the user stops or hands off the task. A draft's term
 finish the assignment. During implementation it consumes delivered pull-request activity without
 timed background polling; `merge-pr` owns polling during its active final check
 gate. Preserve draft readiness under **Pre-Push Gate**: draft test skips remain unrun validation,
-never completion. On a new head, rebuild that pull request's inventory; on a moved base, recheck its
-mergeability and validation inputs. Retain only evidence whose revision and inputs remain valid.
+never completion. On a new head, recheck the complete-diff classification and rebuild that pull
+request's validation scope; on a moved base, recheck its mergeability and validation inputs. Retain
+only evidence whose revision and inputs remain valid.
 The parent reads the actual check sources before reporting the watcher's claim. A result for one
 pull request never establishes another's checks, and selected green jobs never establish all CI
 as green. Pending inventories remain named work under **Work You Have Already Named** while
@@ -547,9 +551,9 @@ rescan within its own invocation.
    under those **Bounds**.
 3. Invoke `merge-pr` with the accepted head, merge withheld unless **Task Authorization** finds
    that merge authorized, and the **Pre-Push Gate** each fix is pushed through as its fix rule. It
-   marks the draft ready, which starts its test jobs once, and drives that pull request's complete
-   inventory through its exact-head gate. Coordinate its watcher with that gate, preserving
-   established exclusions and fixing every remaining failure until its validation passes.
+   marks the draft ready and drives the validation its complete-diff classification requires through
+   its exact-head gate. Coordinate its watcher with that gate, preserving established exclusions and
+   fixing every remaining failure until its validation passes.
 4. Verify every requested outcome and every automatic incidental fix.
 5. Confirm tests and relevant validation cover every incidental fix and simplification, and that
    intentional contract changes are reflected in the expected behavior.
