@@ -75,6 +75,7 @@ These run only when you ask for them by name, such as `/refactor`.
 - [`assume-library-update`](.agents/skills/execution/assume-library-update/SKILL.md) — Write consuming code for a change in one of your libraries before the library update is available.
 - [`ci-watch`](.agents/skills/git/ci-watch/SKILL.md) — Watch a pull request, resolve review findings, and check that CI passes.
 - [`code-review`](.agents/skills/review/code-review/SKILL.md) — Code review a pull request or the current working changes with independent reviewer lenses, validated findings, and severity-rated results.
+- [`code-slop-doctor`](.agents/skills/doctors/code-slop-doctor/SKILL.md) — Remove unneeded layers, abstractions, duplicates, divergent structure and legacy paths across a repository.
 - [`config-doctor`](.agents/skills/doctors/config-doctor/SKILL.md) — Find configuration names that disagree across code and deployments, or are no longer used.
 - [`continue-handoff`](.agents/skills/workspace/continue-handoff/SKILL.md) — Pick up work another session handed off.
 - [`defer-execution`](.agents/skills/deferrals/defer-execution/SKILL.md) — Schedule separate work on its own branch, either now or after the current pull request merges.
@@ -85,10 +86,8 @@ These run only when you ask for them by name, such as `/refactor`.
 - [`guidance-doctor`](.agents/skills/doctors/guidance-doctor/SKILL.md) — Review agent guidance for instructions to cut, clarify, or add.
 - [`handoff`](.agents/skills/workspace/handoff/SKILL.md) — Move the current session's work to another session with nothing lost and nothing left for the user to do.
 - [`incident`](.agents/skills/execution/incident/SKILL.md) — Restore a broken deployed service, test the fix, and merge the scoped repair.
-- [`legacy-doctor`](.agents/skills/doctors/legacy-doctor/SKILL.md) — Remove fallbacks, aliases, and duplicate paths left over from an old contract.
 - [`manage-mcps`](.agents/skills/workspace/manage-mcps/SKILL.md) — Audit and repair managed MCP connectors across Claude Desktop and Codex.
-- [`merge-post-review`](.agents/skills/git/merge-post-review/SKILL.md) — Use only at the user's explicit request to merge and deploy session-created pull requests before reviewing their merged diffs with CR and delivering confirmed fixes through new pull requests.
-- [`migrations-doctor`](.agents/skills/doctors/migrations-doctor/SKILL.md) — Audit and correct a repository's database migration chains, revisions, registries, and test scaffolding.
+- [`merge-pr`](.agents/skills/git/merge-pr/SKILL.md) — Merge finished pull requests after acceptance and CI, then CR what merged.
 - [`new-doctor`](.agents/skills/doctors/new-doctor/SKILL.md) — Create a doctor skill on the shared doctor-protocol for one class of repository hygiene.
 - [`placeholder-data`](.agents/skills/workspace/placeholder-data/SKILL.md) — Turn a pasted API payload into the same shape with obviously fake values.
 - [`refactor`](.agents/skills/execution/refactor/SKILL.md) — Plan and carry out a repository refactor with independent structural review.
@@ -117,13 +116,14 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`design-taste-frontend`](.agents/skills/web/design-taste-frontend/SKILL.md) — Anti-slop frontend skill for landing pages, portfolios, and redesigns.
 - [`doctor-protocol`](.agents/skills/doctors/doctor-protocol/SKILL.md) — Set the audit, fix, review, and reporting process used by every doctor skill.
 - [`edit-skill`](.agents/skills/authoring/edit-skill/SKILL.md) — Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.
-- [`execute-task`](.agents/skills/execution/execute-task/SKILL.md) — Apply repository guidance, fix issues found along the way, validate the diff, and deliver the change.
+- [`execute-task`](.agents/skills/execution/execute-task/SKILL.md) — Plan the change for approval, then apply repository guidance, fix issues found along the way, and deliver a reviewable pull request.
 - [`frontend-design`](.agents/skills/web/frontend-design/SKILL.md) — Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one.
 - [`generic-push`](.agents/skills/git/generic-push/SKILL.md) — Keep repository publishing metadata generic and isolated.
 - [`get-doctors`](.agents/skills/doctors/get-doctors/SKILL.md) — List every doctor skill the skill listing declares with a one-line summary of what it audits.
 - [`i-have-adhd`](.agents/skills/execution/i-have-adhd/SKILL.md) — Apply before the first user-facing response without waiting for an invocation, and stay active until the reader explicitly stops it.
 - [`image-to-code`](.agents/skills/web/image-to-code/SKILL.md) — Elite website image-to-code skill for Codex.
 - [`impeccable`](.agents/skills/web/impeccable/SKILL.md) — Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or otherwise improve a frontend interface.
+- [`land-pr`](.agents/skills/git/land-pr/SKILL.md) — Ready a pull request, gate its exact head, and merge it when authorized.
 - [`linear`](.agents/skills/workspace/linear/SKILL.md) — Create, find, and update Linear issues through the available Linear integration with dynamic team, workflow, project, and label discovery.
 - [`list-prs`](.agents/skills/workspace/list-prs/SKILL.md) — List the ongoing task’s open PRs.
 - [`list-repos`](.agents/skills/workspace/list-repos/SKILL.md) — List the repository web URLs for every repository changed during the entire current session.
@@ -131,9 +131,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`list-skills`](.agents/skills/workspace/list-skills/SKILL.md) — List and reconcile canonical skills across a bounded collection of local repositories.
 - [`luau`](.agents/skills/roblox/luau/SKILL.md) — Apply Roblox Luau conventions when reading or changing game code and tooling.
 - [`merge-conflict`](.agents/skills/git/merge-conflict/SKILL.md) — Bring the base branch into a work branch, resolve conflicts, and validate the result.
-- [`merge-pr`](.agents/skills/git/merge-pr/SKILL.md) — Validate and merge an authorized pull request at its reviewed head.
 - [`no-text-ai-slop`](.agents/skills/review/no-text-ai-slop/SKILL.md) — Edit drafts into sharper, more human writing while preserving the writer's personal voice, or detect AI-slop patterns without rewriting.
-- [`plan-change`](.agents/skills/execution/plan-change/SKILL.md) — Present plans for explicit approval and carry approved plans to their last step.
 - [`pre-production`](.agents/skills/execution/pre-production/SKILL.md) — Apply target-contract constraints to implementation and review tasks.
 - [`prisma-client-api`](.agents/skills/web/prisma-client-api/SKILL.md) — Prisma Client API reference covering model queries, filters, operators, and client methods.
 - [`propagate-skill`](.agents/skills/workspace/propagate-skill/SKILL.md) — Reconcile skills across the user's repository collection.
