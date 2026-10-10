@@ -378,12 +378,12 @@ An outcome is what its source of truth shows, never what an action or a worker s
 
 ## Pull Requests
 
-The GitHub rule's **Branches and Pull Requests** decides where each piece of work lands: new work
-joins the open pull request of its kind that the work continues, whichever session opened it, never
-one per task, worker or brief, stacked or not, and a pull request the session did not open keeps its
-base and stays open. A guidance change never rides the source branch in flight, however closely it
-follows that work. List a repository's open pull requests, not only this session's, before creating
-any branch there, and say in chat what was consolidated when a stray one is folded in.
+The GitHub rule's **Branches and Pull Requests** owns pull-request selection: source work defaults
+to this session's pull request, while agent configuration follows its shared batching route.
+Apply that ownership decision before preserving a checked-out branch or updating an existing pull
+request. A guidance change never rides the source branch in flight. Verify selected pull requests
+remotely, and leave another session's branch and pull request untouched unless the selected route
+explicitly directs continuing it.
 
 ## Multi-Repository Delivery
 
