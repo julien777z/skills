@@ -35,7 +35,7 @@ paths:
 
 ## Test Organization
 
-- Call a group of tests a suite, and unit, integration, or end-to-end its classification, in code, guidance, pull requests, and messages to the user.
+- Call a group of tests a suite, and unit, integration, smoke, or end-to-end its classification, in code, guidance, pull requests, and messages to the user.
 - Test directories should mirror the source code structure.
 - If the source has `core/`, `models/`, `routes/`, or `services/`, keep the corresponding `unit/` and `integration/` folders aligned with those boundaries.
 - Place tests next to the source subdomain they verify, not in a loosely related folder.
@@ -48,6 +48,17 @@ paths:
   because there it is not a marker. `test_cases/` holds the scenarios other modules import, and
   `test_utils/` covers a source package named that, so the name is the subject rather than a label.
 - Proto conversion round-trip tests are unit tests. Keep tests of the serialization layer itself in a dedicated `proto/` test folder; gateway, runtime, and servicer tests that merely consume proto messages stay beside their owning source subdomain.
+
+- Keep smoke tests in a `smoke_tests/` classification folder beside `unit/` and `integration/`,
+  mirroring the source boundaries within it. Run that folder through a separate reusable workflow
+  called by the main test workflow; selecting the suite selects its execution contract.
+- Smoke tests always exercise the real configured service; never mock service calls or responses.
+  Remove live-mode flags, opt-in markers,
+  conditional skips and fixture branches that choose between real and simulated execution. Missing
+  credentials or an unavailable required service fail the suite; neither turns it into a skipped or
+  mocked success. Fixtures may own real client setup, scenario construction and cleanup.
+- Apply the global **Tools and environments** live-deployment mutation rules. Always-live
+  execution grants no additional mutation authority.
 
 - Use pytest async tests (`async def test_...`).
 - Group tests in classes named `TestXxx`.
@@ -140,7 +151,7 @@ async def create_entity(
 ```
 
 - Combine similar test cases with `@pytest.mark.parametrize` instead of duplicating tests.
-- **Redundancy is judged within one classification — unit, integration, or end-to-end — never across
+- **Redundancy is judged within one classification — unit, integration, smoke, or end-to-end — never across
   them.** End-to-end tests run the real services, integration tests replace some of them with
   doubles, and unit tests replace all of them, so an assertion one of them makes never makes
   another's redundant. Consolidate duplicates inside a classification; never delete a test because a
