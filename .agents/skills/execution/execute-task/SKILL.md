@@ -517,6 +517,12 @@ route before declaring a gate. Merge is delivery after verification, never its p
 Then complete the review below and take each pull request the task changed out of draft — once,
 with its work finished — before closing the run:
 
+Before local completion, draft readiness or a completion report, read the independent acceptance
+verdict and record its reviewer, reviewed revision and complete file list. Verify that they cover
+the result being delivered; later edits invalidate the affected acceptance. A missing verdict,
+a request sent without a returned verdict, a green check or the author's assessment leaves this
+checkpoint pending. Run its next required step; never mark the result ready or complete instead.
+
 When the task uses several independent final reviewers outside `code-review`, assign distinct
 concerns across the complete result rather than asking each the same question. After a repair,
 rescan the affected ownership area and consumers, retain valid evidence for unchanged areas, and

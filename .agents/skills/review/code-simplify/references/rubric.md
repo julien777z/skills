@@ -207,6 +207,17 @@ Apply the baseline prompt above, plus these explicit review rules:
      is the stated one times the number of processes: each protects far less than it advertises, and
      the name is what stops anyone noticing. Where the guarantee is weaker than the name, say so in
      those terms.
+   - **Timing is not ownership or ordering.** When correctness requires one operation to finish
+     before another reads or acts, name that dependency and the mechanism that enforces it across
+     the supported processes, replicas and restarts. A sleep, repeated read, fallback or enlarged
+     attempt budget that merely hopes the prerequisite becomes visible is a finding: repair the
+     publication, transaction, lock, queue or completion handoff at its owner and remove the
+     compensating paths. Changing the delay, adding backoff, naming the limit or moving the loop
+     into a shared helper does not establish the missing guarantee. For an external contract with
+     documented eventual consistency or transient failures, retain only the retry policy that
+     contract requires; distinguish it from an owned ordering defect with evidence. Verify the
+     repaired dependency by forcing the adverse operation order, not by choosing delays under
+     which the test happens to pass.
    - Its author having also written the finding it answers is a reason to look harder, not to defer.
      Nobody else has yet asked whether the problem was real.
    - **A guard for a state no writer can produce is dead code, however small.** Before accepting a
