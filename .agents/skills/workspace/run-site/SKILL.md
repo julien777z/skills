@@ -1,13 +1,13 @@
 ---
 name: run-site
-description: Bring a local application stack up, repair startup blockers, and prove the running site works by driving a real browser through sign-in and core functionality with screenshots and a recording. Use when a change needs verifying in a browser, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works.
-short_description: 'Start a local app, repair startup failures, and verify signed-in flows with screenshots and a recording.'
+description: Bring an application stack up and repair startup blockers. Guidance-required browser walkthroughs apply only in cloud execution environments; explicit user requests for browser work apply in either environment. Use when a change needs applicable browser verification, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works.
+short_description: 'Start an application stack and perform browser verification where applicable.'
 ---
 
 # Run Site
 
-The deliverable is evidence: a reader should finish with screenshots and a recording showing a
-signed-in dashboard doing real work, not a claim that it started.
+Start and verify the stack within the requested scope. When browser verification applies under
+**Principles**, its deliverable includes screenshots and a recording showing signed-in functionality.
 
 ## Dependencies
 
@@ -17,6 +17,14 @@ signed-in dashboard doing real work, not a claim that it started.
 
 ## Principles
 
+- Select browser verification applicability before starting its stack, browser or sign-in
+  prerequisites. Guidance-required walkthroughs and rendered UI inspections apply only when the
+  agent executes in a cloud environment. Classify the agent's execution environment, not the
+  application's address: a cloud agent checking a service on localhost still follows the cloud
+  requirement. In a local execution environment, mark this verification not applicable; do not
+  recreate it under another validation label or hold completion for its prerequisites. Browser
+  work the user explicitly requests, including debugging or verification, applies in either
+  environment. Stack startup and non-browser validation required by the task still apply.
 - Setup is agent-agnostic. Any agent must be able to run it, so never hard-code an absolute path,
   a home directory, a machine-specific port, or an assumption about which agent is running.
   Resolve the repository root from the script's own location and read every other path from there.
@@ -45,8 +53,8 @@ and scale the work to match:
 | Present | What to do |
 |---|---|
 | Backend only | Start the services, verify the health endpoints and `/docs`, exercise the API directly |
-| Frontend only | Serve the site and drive the UI as far as it goes without a live API |
-| Both | The full walkthrough below, browser included |
+| Frontend only | Serve the site; when browser verification applies, drive the UI as far as it goes without a live API |
+| Both | Start and verify both; when browser verification applies, perform the full walkthrough below |
 
 Never assume the other repository exists, and never fail because it does not. Name whatever did not
 run, and why, beside the result.
@@ -84,9 +92,10 @@ preserve configured ports.
 
 ### When a walkthrough is owed
 
-Passing tests, type checks, and a clean build establish that the code compiles, never that the app
-works. A change that can alter what the app does — new or reordered UI, layout or spacing, a
-component's props or state, a hook, a route, a redirect, middleware, an auth round trip, or the shape
+After selecting browser verification applicability under **Principles**, perform the following
+walkthrough only when it applies. Passing tests, type checks, and a clean build do not replace an
+applicable walkthrough. A change that can alter what the app does — new or reordered UI, layout or
+spacing, a component's props or state, a hook, a route, a redirect, middleware, an auth round trip, or the shape
 of a request — is walked end to end before it is reported done, however few lines it took; the
 walkthrough follows the push rather than holding it, as `execute-task`'s **Pre-Push Gate** says. An
 edit that provably cannot reach behavior — rewording text already rendered in its existing slot, a
