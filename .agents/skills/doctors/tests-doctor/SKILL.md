@@ -14,8 +14,9 @@ reach it.
 ## Dependencies
 
 - `doctor-protocol` — own the run.
-- `test-fixture` — the value and retention rubric applied to every existing test, and the standard
-  every added or rewritten test meets for data, placement, doubles, and mutation proof.
+- `test-fixture` — every per-test check this doctor runs — value and dispositions, naming, factory
+  contents, doubles — and the standard every added or rewritten test meets for data, placement,
+  doubles, and mutation proof.
 
 Also read the repository's test-runner skill when the skill listing declares one, found by its
 description rather than assumed by name. Its locking, service, and pacing rules hold for every run
@@ -134,23 +135,9 @@ mechanical check that finds every instance rather than the first one noticed:
 
 ### Audit Test Value And Repair Weak Proof
 
-Apply `test-fixture`'s value and retention rubric to every test declaration in scope, including
-parameter rows that need different dispositions. Read the complete test and owner, then record the
-rubric's candidate evidence before proposing a deletion. Mark each declaration retain, repair,
-consolidate, or delete, with its actual assertion and the contract it protects. Judge assertions,
-not names or deletion counts. A skip, xfail, or commented-out test whose condition no longer holds
-is revived or deleted.
-
-Duplication is judged inside one classification — unit, integration, or end-to-end — and never
-across them: two tests of the same classification asserting one contract are consolidated, and a
-test is never deleted, merged away, or moved out because a test of another classification reaches
-the same assertion. A test of another classification is never the keeper: an end-to-end test
-whose assertion an integration test repeats is retained, not consolidated into it. For each
-duplicated contract within a classification, pick the keeper and carry every unique assertion into
-it before removing the replay. Repair vacuous assertions and negative controls that pass for the wrong reason; verify new or strengthened
-guarantees through `test-fixture`'s mutation proof. Retain independently valuable static and slow
-tests under the rubric's retention bar. A failing baseline test is investigated as a possible
-product defect, not treated as cleanup by default.
+Apply `test-fixture`'s **Test Value And Retention**, its dispositions included, to every test
+declaration in scope, parameter rows that need different dispositions included, and record each
+declaration's disposition, actual assertion and the contract it protects.
 
 ### Find Repeated Blocks With A Detector
 
@@ -189,41 +176,9 @@ widening the tool's threshold or disabling the check.
 
 ### Name Cases As Labels
 
-A name identifies the case; the docstring carries the behavior sentence. Run every check below
-over every `def test_` in the scope and report each result, an empty result included; each is a
-finding at any length, and each names the mechanical check that finds every instance:
-
-- a name whose first word after `test_` is `a`, `an`, or `the` (regex `def test_(a|an|the)_` over
-  every test module);
-- a name past eight words (split on `_` and count);
-- a numeric status token in a name (a `_`-delimited token that is a member of the runtime's HTTP
-  status enumeration);
-- a word restating a noun the enclosing class or module already states (tokenize the class name,
-  stem singular and plural, intersect with the name's words).
-
-Cut in the order `test-fixture` states: the article and connective prose first, then every noun
-the class already states, then the numeric code. A name that clears all four checks is finished;
-one that fails any is a finding whatever its length.
-
-A fixture or factory is named for the domain role or state it provides, per `test-fixture`'s
-naming standard. A name coined from an abstraction or an adjective — an `-less` word, a mechanism,
-a synonym for the thing — where the concrete thing it provides or lacks would name it is a finding,
-renamed for that thing.
-
-A test class names its substantial coherent responsibility. Remove filler and misleading synonyms; small related cases extend their existing owning class rather than earning a separate class by being named. A helper that builds a model in a suite's `utils/` or `fixtures/`
-package is named `create_<shape>` (list every module-level `def` in those packages whose return type
-is a model, with its name; report every row): a bare noun (`flag`), a mechanics prefix
-(`stored_driver_license`), or a coinage (`flag_page`) is renamed `create_<shape>`, and the same shape
-built under two names in two files or two suites is one name across all of them. Every other
-module-level `def` in those packages is named for the domain act it performs, per `test-fixture`
-(list each with its first word; report every row whose first word is `post`, `put`, `patch`, a
-transport verb, or a word saying how its value was made): `post_order` is renamed for what it asks
-the application to do, and a `stored_customer` fixture for the role that customer plays.
-Read names across
-sibling files and sibling suites before settling one: a suite's vocabulary is its source's, and the
-word the sibling suite already uses for the same shape wins over a new one.
-
-Every naming and structural check in this section is a finding the run fixes. A check that reports its rows and leaves them
+Run `test-fixture`'s **Naming Checks** over every `def test_`, fixture, factory and test helper in
+the scope and report each check's result, an empty result included. Every naming and structural
+check in this section is a finding the run fixes. A check that reports its rows and leaves them
 standing, or a row admitted as an observation, is the miss this doctor exists to close.
 
 ### Bring Every Suite Under Budget
@@ -296,46 +251,8 @@ unit test added for a flow whose integration or end-to-end path is untested is i
 ### Make Doubles Honest
 
 The inventory's table of doubles — target, owner, boundary, declared seam — is the evidence. Run
-every check below over it and report each check's result, an empty result included:
-
-- a repository-owned callable patched whose real implementation is deterministic and in-process:
-  it runs as itself, per `test-fixture`, and the fixture that arranges its input usually exists;
-- a repository-owned persistence call patched — an ORM class method, a repository function, a
-  service that reads rows — or a persistence method assigned onto a real row: `test-fixture`'s
-  test rule applies, and a conflict is produced by the conflicting row;
-- a double in place of a repository-owned object where a fixture, factory, or constructor exists:
-  the real instance;
-- the subject under test patched, a method patched on its class so every subclass sees it, or a
-  guard the surface exists to enforce replaced by a pass-through: the real path with its input
-  arranged;
-- a patch one layer above the seam the application declares: moved to the seam;
-- a provider override, fake, or configuration fixture the application or suite already declares
-  while the test patches a module path instead: the seam is used, and a declared seam no test uses
-  is reported;
-- a configuration attribute patched inline in more than one test, or in two spellings across a
-  suite: one fixture helper in the suite's fixture package, per `test-fixture`;
-- a module whose doubles outnumber its `assert` statements, or whose only outcomes are
-  `assert_called` or `assert_awaited` on its own doubles, an identity assertion against the value
-  a double returned, or a string match on rendered SQL (count doubles and assertions per module
-  and report the ratio): it proves wiring, not behavior, and is rewritten against the real path
-  or cut;
-- a fixture-package member that installs doubles of repository-owned code for every consumer: the
-  finding is the fixture, and fixing it counts once for every module it serves;
-- a suite whose autouse session fixture is a double: it is the root of every persistence patch
-  beneath it, reported once as such, and its persistence-shaped modules move to the suite with the
-  real database;
-- a patch target that no longer binds where the consumer reads it, a literal where a fixture
-  provides the value, and data shaped like a real person's.
-
-Left alone, and named so a reviewer does not go hunting: the consuming module's binding of a
-gateway function, the seam `test-fixture` names for a hop to another service; a third-party function
-imported into a repository module and patched at that binding; a repository wrapper that is the
-last hop before the HTTP client; a replacement that calls through to the real function after
-arranging an interleaving the database would not produce on its own; a fault injected to prove
-the surrounding write still commits; a fake that raises the library's real exception to simulate
-an outage; a double container installed through the lifecycle override that carries real wire
-messages; a private attribute of a third-party object; a settings module tested as its own
-subject; a same-module symbol that constructs a third-party client.
+`test-fixture`'s **Auditing Existing Doubles** checks over it and report each check's result, an
+empty result included, and name each double it leaves alone with its reason.
 
 ### Keep Construction Out Of Test Modules
 
@@ -347,47 +264,8 @@ Apply the general New Modules ownership-completion rule: inspect every related i
 consumer, and flag a partial move even when the factory left behind was already there. Generic
 lifecycle helpers retain their own owners; a shared word does not establish shared responsibility.
 
-Four checks read what a factory contains rather than where it lives. A provider is whatever fills
-a field: a plain class attribute, a `Use(...)`, a `PostGenerated(...)`, or a classmethod named for
-the field; a `PostGenerated` assignment is a provider like any other and takes its own inventory
-row, never a footnote about the generator it wraps. Before any of
-the four is judged, the report carries an inventory: one row per provider on every factory in the
-module, subclasses included, with the columns factory, base, provider, and body — the body being
-the one expression it is (a `return` line, or the value a `Use` or a `PostGenerated` wraps, the
-docstring left out) or the word `multi` when it is longer. The four checks are read off that inventory, each as rows with
-the columns check, factory, symbol, this side, other side, equal, and the report carries those rows
-too. A row whose last column is yes is a finding, stated as a finding and never as an exception;
-the reasons a reader reaches for to keep the copy are named under each check, and none of them is a
-reason.
-
-1. **Restated override** — every inventory row whose provider is a classmethod and whose name the
-   factory's base also declares. This side: the subclass body. Other side: the base body.
-   `return cls.address()` on the base and again on a subclass is the shape. Inside an inherited
-   classmethod `cls` is already the subclass, so an equal row changes nothing but its annotation
-   and goes. That the body delegates to another method, that the subclass defines the method it
-   delegates to, and that the annotation or the docstring differ are each true of every instance
-   of this shape; none keeps it.
-2. **Restated default** — every inventory row on a factory whose `__use_defaults__` is true, and on
-   no other. This side: the value the provider returns. Other side: the field's declared default,
-   read from the model the factory builds — following the import when that model lives in a
-   dependency — so an empty mapping meets an empty-mapping default factory and `None` meets a
-   `None` default. An equal row repeats the model and goes.
-3. **Repeated provider** — every provider name that two inventory rows on factories sharing a base
-   carry with a one-expression body. Find those names with one search over the module for lines
-   indented four spaces that begin `def ` or that assign a name (`name = `), attribute each hit to
-   the class above it, carry that list in the report, and keep every name that appears under more
-   than one sibling — the `def` hits as much as the assignments; a name kept this way is a row even
-   when its body is a single `return` line, and the largest method on the class is not the place
-   to look. This side: one sibling's expression with its faker instance,
-   locale, and constants blanked. Other side: the other sibling's expression blanked the same way.
-   A phone number built from a faker's number generator once with the default faker and once with
-   a localized one is the shape. An equal row is one module-level generator taking the value that
-   varied, bound on each factory with `Use`. That each copy names its own locale, country, or
-   constant is the shape itself and not a justification: two expressions that differ only there
-   are one generator, however deliberate the variation.
-4. **Constant behind `Use`** — every inventory row whose body is `Use(callable, constant)`. This
-   side: what the call returns. Other side: the constant. `Use(SomeEnum, SomeEnum.MEMBER)` is the
-   usual shape, and an equal row is a plain class attribute holding the member.
+Run `test-fixture`'s **Factory Contents** checks over every factory module in the suite, with
+the inventory and check rows that section requires in the report.
 
 Every placement check below runs over the whole suite; each names the mechanical check that finds
 every instance:

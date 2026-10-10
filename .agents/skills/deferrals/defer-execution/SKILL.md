@@ -26,7 +26,7 @@ Every invocation resolves to one of two routes. Make the call explicitly and say
 taken and why.
 
 **Execute now, in a worktree.** Take this route whenever the scope cannot conflict with the change
-in flight, whatever its size. A scope that needs a plan gets one through `plan-change` and still
+in flight, whatever its size. A scope that needs a plan gets one through `execute-task`'s **Plan** and still
 runs now, beside the change.
 
 **Execute after the merge.** Take this route only when the merge supplies something the scope

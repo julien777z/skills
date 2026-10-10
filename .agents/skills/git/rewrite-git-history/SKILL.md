@@ -78,6 +78,11 @@ Stop and say so when any of these fails; none is worked around.
 
 ## Fixing up one commit afterwards
 
+**A branch whose pull request is already out for review is rebuilt once, never again.** After that
+first rebuild, a later change either goes into the commit it amends, through the route below, or
+lands as a new commit when it is a new material change. Another rebuild reshuffles commits the
+reviewer has already read.
+
 A hunk that belongs in an existing commit — an import the docs commit needed, a fixture the feature
 commit forgot — is a rewrite of the same branch, and it takes the same guardrails as a rebuild.
 Commit the hunk with `git commit --fixup=<that commit>`, then:

@@ -12,7 +12,8 @@ the term, what to use instead, why the term fails, and any replacement already r
 Never use vague, cute, or placeholder terminology in identifiers, docstrings, comments, or test
 names, or in any other surface an entry's `applies_to` names, such as pull requests and messages to
 the user. Name things for the behavior they actually have. This holds for **new and pre-existing
-code**: touching a file that still uses a banned term means renaming it.
+code** in every line a change writes or edits; a banned term elsewhere in a file the change touches
+is renamed within `pre-production`'s size budget.
 
 If you reach for a placeholder-ish term a future reader could not decode from the name alone, pick a
 more intuitive name rather than adding it to the list.

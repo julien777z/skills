@@ -1,6 +1,6 @@
 ---
 name: test-fixture
-description: Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Rejects hard-coded domain test data when a canonical fixture or factory owns it, and enforces existing-coverage reuse before new tests, one class per file with small cases folded into existing owning classes, concise parametrized cases, honest doubles, and regression-proof validation.
+description: Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Rejects hard-coded domain test data when a canonical fixture or factory owns it, and enforces existing-coverage reuse before new tests, one class per file with small cases folded into existing owning classes, concise parametrized cases, honest doubles, and regression-proof validation. Its rubric owns what makes a test worth keeping, changing or removing, and its Sweep applies that to a finished change's tests and their neighbours.
 short_description: 'Check test data and fixtures before changing tests or running tests after a fixture change.'
 ---
 
@@ -86,6 +86,27 @@ claim no new behavior do not need mutation proof. If no canonical owned source c
 safely, report the exact blocker and do not claim the test was proven effective.
 
 Report each mutation, the intended regression failure it demonstrated, and the restored passing run.
+
+## Sweep
+
+Run once a change is otherwise finished — `execute-task`'s **Completion** calls it — over a scope
+fixed before it starts:
+
+- every test the change added or edited;
+- the whole of every test file that gained a test, the tests already in it included;
+- the adjacent test files: the other test modules in each such file's test package that mirror the
+  same source package. One hop only: a file the sweep edits brings no further neighbours in.
+
+Apply the complete rubric to every test in that scope — **Test Value And Retention** with its
+dispositions, the **Naming Checks**, **Factory Contents**, **Auditing Existing Doubles**, and the
+**Literal Sweep** — and fix what it finds: repair or rewrite a weak test, fold a duplicate into its
+keeper, and delete one that proves nothing once the rubric's deletion evidence is recorded. A
+repaired or strengthened guarantee takes its mutation proof. The fixes count toward the
+product-constraints skill's size budget like any other incidental change; past it, list what is left
+in the change's report. Runtime and suite budgets are not part of the sweep.
+
+Report each test in scope with its disposition, and for each deletion the evidence the rubric asks
+for.
 
 ## Completion
 

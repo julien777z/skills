@@ -12,7 +12,8 @@ provider, validation command, or branch convention.
 
 ## Dependencies
 
-- `plan-change` — govern the separate plan approval and its complete implementation.
+- `execute-task` — govern the separate plan approval through its **Plan** and the complete
+  implementation through its **Execution**.
 - `code-simplify` — supply the review rubric and implementation-time simplification pass.
 
 ## Resolve The Scope
@@ -65,8 +66,8 @@ Before launching reviewers, writing an implementation plan, or changing files, p
 - its base and head or equivalent revisions, or the concrete explicit selection;
 - a short description of included ownership areas and exclusions, plus the individual disposition
   of every untracked path;
-- that multiple read-only reviewers will identify structural simplifications before `plan-change`
-  presents a separate implementation plan.
+- that multiple read-only reviewers will identify structural simplifications before `execute-task`'s
+  **Plan** presents a separate implementation plan.
 
 End the message exactly with:
 
@@ -91,7 +92,7 @@ compare its area with siblings and consumers, returns evidence-backed findings, 
 
 The parent verifies each finding against the current tree, deduplicates overlapping remedies, and
 rejects unsupported churn. If no validated refactor remains, report that result and stop without an
-implementation plan. Otherwise invoke `plan-change` to present one decision-complete plan covering
+implementation plan. Otherwise present one decision-complete plan through `execute-task`'s **Plan**, covering
 the validated findings, affected consumers, validation, and publishing behavior. Scope approval does
 not approve that plan; wait for its separate explicit approval.
 
@@ -105,7 +106,7 @@ or add a compatibility layer merely to keep the refactor local.
 The parent invokes and applies `code-simplify` after each meaningful implementation batch and once
 over the complete result. Its scope starts from the approved refactor and expands only through files
 required to complete and validate an accepted finding. A newly discovered architectural decision
-that changes the approved scope returns to `plan-change`; it is not silently adopted.
+that changes the approved scope returns to `execute-task`'s **Plan**; it is not silently adopted.
 
 ## Verify
 

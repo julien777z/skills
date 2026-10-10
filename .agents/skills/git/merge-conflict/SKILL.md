@@ -1,6 +1,6 @@
 ---
 name: merge-conflict
-description: Incorporate the base branch into a branch — a merge, a rebase, a pull, a branch update, or a conflict Git or the hosting service reports — by comparing what each side did and keeping the better answer, with the resolved result put to `acceptance-gate`'s base-incorporation question. Use whenever the base is brought into a branch, whether or not Git reports a conflict, whenever a pull request is un-mergeable, and whenever reading a push back shows the base moved.
+description: Incorporate the base branch into a branch — a merge, a rebase, a pull, a branch update, or a conflict Git or the hosting service reports — by comparing what each side did and keeping the better answer, with the resolved result put to `acceptance-gate`'s base-incorporation question. Use whenever the base is brought into a branch, whether or not Git reports a conflict, whenever a pull request is un-mergeable, and when a finished change's base has moved before its final acceptance.
 short_description: 'Bring the base branch into a work branch, resolve conflicts, and validate the result.'
 ---
 

@@ -55,8 +55,19 @@ with an obsolete owned contract or revision.
   against the bounded local-refactoring test above. Do not turn a sequence of individually useful
   cleanups into an unrequested redesign, or invent an umbrella concern to make them one defect.
   An explicitly requested broad refactor still receives its stated scope. File counts are evidence
-  of spread, not a cap: a necessary migration may be wide, while a small unrelated rewrite may
-  already be disproportionate.
+  of spread, not a cap on the repair itself: a necessary migration may be wide, while a small
+  unrelated rewrite may already be disproportionate.
+- **Incidental work goes one hop, never further.** What the work notices while making the requested
+  change — in a file it opened, a check it ran, a capture it read — is fixed. A file opened or edited
+  only to make such an incidental fix is never itself a source of more incidental work: what else it
+  holds is listed, not chased.
+- **Incidental work has a size budget.** The incidental part of a change — everything the request
+  did not ask for, apart from a confirmed bug in the path of the requested behaviour, which is always
+  fixed — stays about the size of the requested part, or within 150 changed lines across 10 files
+  when the requested part is smaller. Inside the budget, everything noticed is fixed. Once the next
+  incidental fix would pass it, the rest is listed under **Noticed, not changed** in the change's
+  report, one line each, and is neither fixed, deferred, nor put to the user as a question. An
+  explicitly requested broad refactor and a doctor run set their own scope and carry no budget.
 - **A correction to how one screen looks or reads is the user's decision about that screen, not a
   defect to sweep.** A layout, a wording, a tone or a style the user changes on one page is applied
   to that page, and other pages with the same shape are listed for the user to decide on, never
@@ -65,9 +76,6 @@ with an obsolete owned contract or revision.
   user's decision the same way. A shape a standing rule already named as a defect before the
   correction, and a broken mechanism, a wrong value, a missing guard or a parallel implementation,
   stay under the bullets above on every page.
-- Judge similarity by the question the code answers, not the directory it sits in or the layer it
-  belongs to. Two modules deciding the same thing from different inputs are one concern wearing two
-  implementations, however far apart they live.
 - Inspect the complete mechanism before choosing its repair. Prefer the clean result that solves
   that defect throughout its affected paths; do not equate a broader cleanup with a better fix.
 - The bar is what the cleanest result requires, not what the smallest diff permits. Existing users

@@ -179,7 +179,9 @@ ends the question.
    preserve, never a mechanical condition a relocated shape could satisfy.
    Size is not that arguability and never stands in for it. The test is a question somebody could
    answer differently, so a conversion repeated across a hundred call sites is long rather than
-   arguable and the number of files it touches decides nothing. Nor are the size and shape of the
+   arguable and the number of files it touches decides nothing. Incidental work past
+   `pre-production`'s size budget never reaches this test: it is listed in the change's report, not
+   deferred or done. Nor are the size and shape of the
    work inputs the gate may take on trust: "large", "not mechanical", "each site needs its own
    judgement" and "it spans suites the change does not touch" are the asker's characterisation of
    the asker's own record. Check the count against the tree and open enough of the actual call sites
