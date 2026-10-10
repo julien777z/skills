@@ -294,8 +294,12 @@ return records;
   than borrowing the one real table the change was made for.
 - Sample values follow the same rule: prefer plainly synthetic literals over ones shaped like a
   real identifier from another system's domain.
-- Use an environment's exact domain name for both it and its tailnet; never append owner or
-  organization aliases. Name provider accounts and projects only as separate resources.
+- Identify environments by their full domain name throughout code, configuration, documentation,
+  and user-facing labels, including enum and constant names. Code identifiers may encode the whole
+  domain with separators, such as `garden.example` becoming `GARDEN_EXAMPLE`. Never drop the domain
+  suffix, substitute a bare apex or product label, or append owner or organization aliases. Use
+  the exact domain name for an environment's tailnet too. Repository and service IDs, provider
+  accounts, and projects identify separate resources, not environment aliases.
 
 - `.agents/global.md` states guidance that holds in every repository, and every `.agents/rules/*.md`
   file guidance that holds in any repository using its technology. Keep their examples generic —
