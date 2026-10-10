@@ -51,9 +51,11 @@ paths:
   `test_utils/` covers a source package named that, so the name is the subject rather than a label.
 - Proto conversion round-trip tests are unit tests. Keep tests of the serialization layer itself in a dedicated `proto/` test folder; gateway, runtime, and servicer tests that merely consume proto messages stay beside their owning source subdomain.
 
-- Keep smoke tests in a `smoke_tests/` classification folder beside `unit/` and `integration/`,
-  mirroring the source boundaries within it. Run that folder through a separate reusable workflow
-  called by the main test workflow; selecting the suite selects its execution contract.
+- Keep smoke tests in a `smoke_tests/` classification folder beside `unit/` and `integration/`.
+  Source-mirroring rules do not apply inside `smoke_tests/`: put a single smoke module directly in
+  that folder, and add a subject folder only when it holds multiple smoke modules. Run that folder
+  through a separate reusable workflow called by the main test workflow; selecting the suite
+  selects its execution contract.
 - Smoke tests always exercise the real configured service; never mock service calls or responses.
   Remove live-mode flags, opt-in markers,
   conditional skips and fixture branches that choose between real and simulated execution. Missing
