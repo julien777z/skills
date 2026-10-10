@@ -33,9 +33,10 @@ handling after an agent-configuration change.
 The caller supplies the repository, the pull request, the head SHA its final acceptance passed, the
 affected behaviors its local tests already cover, whether merge was explicitly withheld, and the
 rule that decides what a fix made here reopens in its own review. It also supplies each validation
-exclusion: a current-user direction to leave a named test or check alone, evidence that the same
-failure occurs on the repository's default branch, or evidence that a hosted runner or provider
-cancellation meets the GitHub rule's pre-validation and local-coverage conditions. A caller with no
+exclusion: a current-user direction to leave a named test or check alone, a baseline exclusion
+established by `execute-task`'s **Encountered Issues** classification with its default-branch
+evidence, or evidence that a hosted runner or provider cancellation meets the GitHub rule's
+pre-validation and local-coverage conditions. A caller with no
 such rule has each fix's diff judged the way it judged the accepted head before the gate repeats.
 
 ## Transport
@@ -85,8 +86,10 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    its summary and cleanup. A log showing completion **is** the terminal result. Never diagnose a
    hang, push a speculative fix, cancel, re-run, or report the run stuck from a pending status alone.
 6. **Classify every unsuccessful check before repair.** A caller-supplied exclusion, a current-user
-   waiver for its named test or check, or the same failure on the default branch is excluded: record
-   its evidence, remove it from required coverage, and do not repair, rerun, or wait for it. Apply the
+   waiver for its named test or check is excluded. Preserve established baseline classifications;
+   classify a newly encountered possible baseline under `execute-task`'s **Encountered Issues**,
+   without reentering that skill's active run. Record an exclusion's evidence, remove it from
+   required coverage, and do not repair, rerun, or wait for it. Apply the
    GitHub rule's runner-infrastructure exclusion automatically: record a qualified check as skipped
    and do not rerun or wait for a green hosted result. Every other failure is relevant. Read its
    annotations and complete log, fix the repository
