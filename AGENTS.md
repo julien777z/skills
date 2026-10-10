@@ -231,7 +231,7 @@ Canonical guidance lives in `.agents/`.
 
 ## Code layout
 
-- In every language, use blank lines to separate setup, validation, transformations, side effects, and returns. Keep adjacent statements together only when they form one small operation; do not turn a function into an uninterrupted paragraph merely because a formatter permits it. Apply this to existing code in files you change.
+- In every language, use blank lines to separate setup, validation, transformations, side effects, and returns. Keep adjacent statements together only when they form one small operation; do not turn a function into an uninterrupted paragraph merely because a formatter permits it. Apply this to every line you write or edit, and elsewhere in a file you change within `pre-production`'s incidental size budget.
 - Use current language syntax for simple operations. For one-off Python interpolation, use f-strings instead of string concatenation or `.format()`, and keep spacing in the final string rather than a fragment with a hidden leading space. Follow the Python rule for reusable structured templates.
 
 ```python
@@ -388,7 +388,7 @@ return records;
   merges it; never mark one ready early to start its tests. Work that resumes changing a pull
   request already ready for review converts it back to draft before its first push — GraphQL
   `convertPullRequestToDraft`, which REST does not offer — and **Completion** readies it again; a
-  skill driving a ready pull request's checks, such as `merge-pr` or `ci-watch`, keeps it ready.
+  skill driving a ready pull request's checks, such as `land-pr` or `ci-watch`, keeps it ready.
 - Keep pull requests focused and give them descriptive titles and descriptions; request appropriate reviewers when the repository workflow requires them.
 - **A description is written from what is already known, never by re-reading the history.** The
   agent that did or coordinated the work writes it from its own record of the change, the existing
@@ -442,14 +442,15 @@ return records;
   itself authorize merging. If neither authorization source applies, do not merge or enable auto-merge.
 - A pull request confined to canonical, non-executable agent configuration, including Markdown skills,
   rules, agent definitions, and static metadata, may be merged without a separate request after
-  `code-simplify` has run and its findings are resolved. An executable script, workflow, installer,
+  `code-simplify` has run and its findings are resolved, except one that adds a doctor skill, which
+  waits for the user's review together with everything in its batch. An executable script, workflow, installer,
   or runtime code is source work even when it sits under `.agents`. When the user asked for the
   change to be tested, first run the smoke test against the exact pull-request head. Check that the
   complete pull request remains confined to this agent configuration before using this exception.
 - **An agent-configuration pull request whose guidance is true only once a still-open source pull request has merged is held until that merge**, whatever its other gates say: it describes behaviour that pull request introduces, drops guidance about something it removes, or needs a workflow or tool change it carries — a project guidance bullet about a helper the source branch adds is the common case. Guidance true on the default branch as it stands waits for nothing.
 - A hold does not authorize merging the source pull request or asking for its merge solely to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. After that merge, incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
 - When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request; one held for a source pull request becomes eligible once that pull request has merged. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, including one begun by another task. Do not close or leave it open merely because it is draft or conflicts with the base; close only one this session opened, and only when its change is superseded or no longer wanted.
-- An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each batch pull request a skill declaring merged-batch delivery opens during its run, once that skill's merge gates pass; that authorization ends with the run.
+- An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each batch pull request a skill declaring merged-batch delivery opens during its run, and each fix pull request a directly user-invoked skill's own authorization names, once that skill's merge gates pass; that authorization ends with the run.
 - An authorized merge is not held for a failing check the current user explicitly waives or an
   established baseline exclusion under `execute-task`'s **Encountered Issues** classification.
   Name the check and its exclusion evidence in chat, then attempt the authorized merge without

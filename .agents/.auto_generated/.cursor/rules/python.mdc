@@ -588,7 +588,7 @@ except Exception as exc:
 
 ## Formatting and Documentation
 
-- Never use vague, cute, or placeholder terminology in identifiers, docstrings, comments, or test names. Name things for the behavior they actually have. This applies to **new and pre-existing code** — if you touch a file that still uses a banned term, rename it.
+- Never use vague, cute, or placeholder terminology in identifiers, docstrings, comments, or test names. Name things for the behavior they actually have. This applies to **new and pre-existing code** in every line you write or edit; elsewhere in a touched file, rename within the change's incidental size budget.
 - Banned terms and what to use instead:
   - **"best effort"** — state the real contract. A function that swallows failures and reports the outcome should say so: name it `try_<verb>` (for example `try_send_email`) and document it as "returning whether it succeeded", not "best-effort".
   - **"seed" / "seeds" / "seeding"** (for test data or sample records) — name the helper for what it builds: a `<noun>_*_factory` fixture, `create_*`, or "sample data". Do not call setup data a "seed".
