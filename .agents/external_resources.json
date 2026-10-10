@@ -136,7 +136,7 @@
       "repo": "wshobson/agents",
       "skill": "python-project-structure",
       "category": "python",
-      "update_on_sync": true
+      "update_on_sync": false
     },
     {
       "kind": "skill",

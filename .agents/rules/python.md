@@ -720,7 +720,7 @@ def ensure_tenant_member(user: User) -> None:
 ## Logging
 
 - Use the `logging` module instead of `print()` for debugging, status, progress, or diagnostics in any code, including scripts and CLI tools.
-- Configure a logger at the top of each module: `logger = logging.getLogger(__name__)`.
+- Configure a logger at the top of each ordinary module that emits logs: `logger = logging.getLogger(__name__)`.
 - Treat logger instances as runtime collaborators: name them `logger`, never `LOGGER`, and do not annotate them as `Final`.
 - Use appropriate log levels: `debug`, `info`, `warning`, `error`, `critical`.
 
