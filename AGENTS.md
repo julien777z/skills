@@ -481,9 +481,15 @@ return records;
 - Run project-level installation commands such as `poetry install` or `npm install` in workflows.
 - Do not install individual project packages or embed their versions directly in workflow commands.
 
-## Documentation
+## Repository Artifact Text
 
-- Do not turn user exchanges, questions, clarifications, or explanations of a misunderstanding into README or other documentation content unless the user explicitly asks to document them. Apply settled instructions to the work; update independently required setup and configuration facts without narrating the exchange that prompted them.
+- Write repository artifact text for its reader: describe behavior, configuration, contracts and
+  validation, without narrating the task that produced it. This includes action and workflow
+  metadata, configuration descriptions, code comments, documentation, commit messages and
+  pull-request text. Do not add attribution to user requests, approvals or agent compliance, such
+  as “as requested” or “per your instructions”; apply the instruction to the result itself.
+  Record an exchange only when the user explicitly asks to document that exchange, in a document
+  whose purpose is that record.
 
 ### README
 
