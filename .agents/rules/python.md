@@ -75,7 +75,8 @@ class Report(BaseModel):
 ## Imports and Modules
 
 - Before adding a module, inspect the existing owner and its consumers. Extend that module when the new code shares its responsibility, dependencies, and lifecycle; a new operation, small helper, record shape, or compound name does not establish a new boundary. Split only when distinct ownership, dependency direction, or independently used surfaces justify the extra navigation, and consolidate fragments that have no such distinction.
-- Use an owner package when several justified modules share that owner; do not convert a module into a package merely because it gains another function or topic. Inside the package, name modules for their responsibility without repeating the owner. Keep established compound nouns together, and keep `__init__.py` empty unless the package owns a public export surface.
+- Use an owner package when several justified modules share that owner; do not convert a module into a package merely because it gains another function or topic. Inside the package, name modules for their responsibility without repeating the owner. Keep established compound nouns together.
+- When choosing a module's location or reviewing changed Python files, inspect every affected `__init__.py` against its export role, including in test packages. Leave it empty when no public exports are needed; otherwise allow only explicit re-export imports and a literal `__all__`. Definitions, data declarations, computation, and side effects belong in ordinary modules under their responsible owner. Never put them in an initializer to avoid a module or satisfy a package-layout rule.
 - This rule governs Python modules only. Generated packages and source files owned by another toolchain follow that toolchain's naming conventions.
 - Moving a module into a new subpackage invalidates every relative import inside it and any path it derives from `__file__`. Convert those imports to absolute imports and re-anchor the path instead of adding `.parent` until it happens to work.
 
@@ -105,13 +106,12 @@ async def pay_invoice(invoice_id: UUID) -> Payment:
     return await pay_invoice_in_ledger(invoice_id=invoice_id)
 ```
 
-- Do not start Python files with module docstrings. Begin with imports, or leave package `__init__.py` files empty when they have no public surface.
+- Do not start Python files with module docstrings. Begin with imports.
 - Keep ALL imports at the top of the file.
 - Never import inside functions, methods, or test cases.
 - Group imports: stdlib, third-party, local (separated by blank lines).
 - Prefer **absolute imports** from the top-level package (for example `from application.routes.resources import router`) over **relative imports** with parent segments (for example `from ....routes.resources import router`). Absolute imports are stable when modules move, easier to grep, and avoid brittle `..` depth. Same rule applies to other installable packages: always anchor imports on the package name, not on the file’s directory depth.
 - Never use import aliases for project modules; import the canonical symbol/module name and update call sites to that name instead of aliasing. The one form that is not a rename is the explicit re-export marker `from pkg.module import Name as Name`, which PEP 484 defines as a package declaring `Name` part of its own public surface. Use it only in a package's `__init__.py` alongside `__all__`, never to give a symbol a second name.
-- Use `__all__` exports in module `__init__.py` files.
 - Never define variables or call functions in between import statements; all imports must be contiguous at the top of the file.
 - Never create shim modules that only re-export symbols from another package for backwards compatibility; update all consumers to import from the canonical source instead.
 - **A folder holding one module is not a folder.** `thing/thing.py` costs every reader a directory
@@ -151,7 +151,7 @@ mypackage/
 - Use a `utils.py` module for a small cohesive set of utilities; use a `utils/` package when separate focused utility modules are warranted.
 - Keep owner-specific helpers with their existing domain owner. Use its utility submodule only when the responsibility/dependency test above justifies that boundary. Place independently reusable cross-cutting topics under an existing utility owner; a filename alone never requires a move or package.
 - Give a `utils/` package topic-named modules rather than one flat module.
-- Keep `utils/__init__.py` empty or limited to imports and `__all__`; consumers import from the specific submodule.
+- Consumers of a `utils/` package import from the specific submodule.
 - Keep domain and orchestration behavior in their owning modules. Do not use utilities as a dumping ground.
 - Narrow exception: `__main__.py` entrypoints may use same-package relative imports for bootstrap (for example `from .runtime import main`), and `__init__.py` may use explicit relative imports when assembling the package’s public surface.
 
@@ -659,7 +659,7 @@ ALLOWED_STATES: Final[frozenset[str]] = frozenset({"ready", "complete"})
 ```
 
 - Add a blank line before multi-line assert statements.
-- Do NOT put docstrings or comments at the top of files (no module-level docstrings, no module-level comments, and no encoding header comments like `# coding: utf-8`); `__init__.py` files should either be empty or contain only imports and `__all__`.
+- Do NOT put docstrings or comments at the top of files (no module-level docstrings, no module-level comments, and no encoding header comments like `# coding: utf-8`).
 
 - Every **function**, **method**, and **class** should have a one-line docstring (purpose or role). Include `main()` and nested helpers the same way unless the file’s existing style omits docstrings on tiny locals—when in doubt, add one line.
 - Keep docstrings to a single line. Do not include Args, Returns, or Raises sections.

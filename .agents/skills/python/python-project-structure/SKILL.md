@@ -152,15 +152,14 @@ Benefits: Clean separation between production and test code. Standard for larger
 
 ### Pattern 5: Package Initialization
 
-Use `__init__.py` to provide a clean public interface for package consumers.
+Apply the Python rule's initializer boundary when choosing package contents: use `__init__.py`
+only for a public interface assembled from ordinary modules, and leave it empty otherwise.
 
 ```python
 # mypackage/__init__.py
-"""MyPackage - A library for doing useful things."""
-
-from .core import MainClass, HelperClass
-from .exceptions import PackageError, ConfigError
-from .config import Settings
+from .core import MainClass as MainClass, HelperClass as HelperClass
+from .exceptions import PackageError as PackageError, ConfigError as ConfigError
+from .config import Settings as Settings
 
 __all__ = [
     "MainClass",
@@ -169,8 +168,6 @@ __all__ = [
     "ConfigError",
     "Settings",
 ]
-
-__version__ = "1.0.0"
 ```
 
 Consumers can then import directly from the package:

@@ -73,7 +73,7 @@ async def get_report_summary(
   needs a prefix, tag, or guard the existing one cannot carry. A different verb, a different response
   model, or being the newest thing added is not that, and neither is expecting more handlers later —
   move it when the second one arrives.
-- Where one router mounts another — a stage surface carrying an extra dependency, for example — do that `include_router` call in the package `__init__.py` beside the imports, not inside either router's own module.
+- Where one router mounts another — a stage surface carrying an extra dependency, for example — compose them in the application's ordinary composition module, outside package initializers and either router's handler module.
 - Name handlers for the domain action they perform: use `create_<resource>`, `update_<resource>`, and `leave_<resource>`, never HTTP-verb names or persistence-mechanics suffixes.
 - Do not name route modules or routers `write`; name the domain topic they serve, such as `stages` or `invitations`. This does not apply to rate-limit configuration.
 - Public routes expose reversible membership changes such as leaving an organization, not deletion of organizations or members; lifecycle deletion remains available only through the library surface that owns it.
