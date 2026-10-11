@@ -197,7 +197,7 @@ from myapp.http_transport import fetch
 
 - Define each configuration owner's settings in one descriptively named `BaseSettings` class such as `ActionConfig` in its `config.py`. A repository may have distinct application, worker, or script configuration owners; do not combine unrelated settings merely to produce one repository-wide class. Keep each config module declarative: instantiate its settings once at that owner's composition boundary, then pass or import that validated object wherever settings are needed.
 - Put a value in that settings class when, and only when, its owner is likely to change it on its own — per deployment, per environment, per release, or while running the system — without changing the code that reads it. What kind of value it is never decides this: a timeout, retry count, or batch size the owner expects to revisit is configuration exactly as a credential, a host the deployment chooses, or a feature switch is. Every other value — one nobody expects to change except together with the code that reads it, including every value that code's correctness fixes, such as a pattern it parses with or a format or limit a protocol defines — is a typed module constant beside that code. Where the evidence settles neither side, the value stays where its owner put it.
-- Give configurable values typed defaults when the repository has a safe default, and let `pydantic-settings` provide namespaced environment overrides.
+- Give configurable values typed defaults when the repository has a safe default, and let `pydantic-settings` load environment values using the settings names governed by the Pydantic rule.
 - Use `TypedDict` only for static structured data that is not configuration.
 
 ```python
@@ -205,10 +205,10 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class ActionConfig(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="APPLICATION_", frozen=True)
+    model_config = SettingsConfigDict(frozen=True)
 
-    tool_cli_version: str = "1.2.3"
-    service_base_url: str = "https://api.example.com"
+    application_tool_cli_version: str = "1.2.3"
+    application_service_base_url: str = "https://api.example.com"
 
 
 # application.py or another composition boundary

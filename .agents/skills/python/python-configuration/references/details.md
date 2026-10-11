@@ -43,7 +43,7 @@ Use an environment enum to switch behavior.
 ```python
 from enum import Enum
 from pydantic_settings import BaseSettings
-from pydantic import Field, computed_field
+from pydantic import computed_field
 
 class Environment(str, Enum):
     LOCAL = "local"
@@ -51,13 +51,10 @@ class Environment(str, Enum):
     PRODUCTION = "production"
 
 class Settings(BaseSettings):
-    environment: Environment = Field(
-        default=Environment.LOCAL,
-        alias="ENVIRONMENT",
-    )
+    environment: Environment = Environment.LOCAL
 
     # Settings that vary by environment
-    log_level: str = Field(default="DEBUG", alias="LOG_LEVEL")
+    log_level: str = "DEBUG"
 
     @computed_field
     @property
@@ -123,12 +120,11 @@ For container environments, read secrets from mounted files.
 
 ```python
 from pydantic_settings import BaseSettings
-from pydantic import Field
 from pathlib import Path
 
 class Settings(BaseSettings):
     # Read from environment variable or file
-    db_password: str = Field(alias="DB_PASSWORD")
+    db_password: str
 
     model_config = {
         "secrets_dir": "/run/secrets",  # Docker secrets location
@@ -143,13 +139,13 @@ Add custom validation for complex requirements.
 
 ```python
 from pydantic_settings import BaseSettings
-from pydantic import Field, model_validator
+from pydantic import model_validator
 
 class Settings(BaseSettings):
-    db_host: str = Field(alias="DB_HOST")
-    db_port: int = Field(alias="DB_PORT")
-    read_replica_host: str | None = Field(default=None, alias="READ_REPLICA_HOST")
-    read_replica_port: int = Field(default=5432, alias="READ_REPLICA_PORT")
+    db_host: str
+    db_port: int
+    read_replica_host: str | None = None
+    read_replica_port: int = 5432
 
     @model_validator(mode="after")
     def validate_replica_settings(self):
