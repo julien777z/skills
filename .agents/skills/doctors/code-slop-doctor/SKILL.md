@@ -412,10 +412,6 @@ re-derives the matrix for every retained mismatch, re-reads the deployment colum
 kept as a local-development tool, confirms each regenerated lockfile resolves its constraints, and
 confirms that the repository's tests pass on each batch.
 
-## Delivery
-
-Merged batches, one per phase, each checkpoint named in the approved plan.
-
 ## Report Additions
 
 - per phase and lens: findings and dispositions by package and language;
