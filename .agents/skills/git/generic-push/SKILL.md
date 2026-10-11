@@ -18,5 +18,7 @@ short_description: 'Keep repository publishing metadata generic and isolated.'
 - Prefer an informative generic description over a one-sentence body that omits distinct change categories or validation performed.
 - Preserve an existing non-default branch when repository rules require it, while keeping new commit and pull request metadata generic.
 - When multiple repositories are involved and this skill applies to any of them, keep every repository's publishing metadata independent and isolated.
-- Never mention another involved repository, its branch, pull request, implementation, or coordination context in a repository's branch name, commit message, pull request title, pull request body, or other publishing metadata.
+- Apply the GitHub rule's dependency-reference exception; otherwise omit another involved
+  repository, its branch, pull request, implementation, or coordination context from publishing
+  metadata.
 - Leave automation-owned branch and pull request metadata unchanged.
