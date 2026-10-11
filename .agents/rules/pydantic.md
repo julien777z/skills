@@ -41,6 +41,7 @@ if not policy.can_access_admin:
 ## Validation and Configuration
 
 - Use `model_config = ConfigDict(...)` for model configuration.
+- Give each setting one canonical name across its typed declaration, environment writers, explicit construction, readers and documentation. Do not add configuration aliases, alternate names, or remapping through validators or custom sources, even for a single alternate spelling; update the owning declaration and consumers together. Native environment case handling does not create another name, and a namespace belongs in the declared field name.
 - Use `model_dump()` instead of deprecated `dict()`.
 - Use `model_validator` decorator for custom validation.
 - Do not add `field_validator` or `model_validator` just to coerce enum strings that should be represented by the enum itself; update the enum values to match the real contract instead.
@@ -79,9 +80,9 @@ class TShirtOrderBad(BaseModel):
 ## Fields and Serialization
 
 - Do not use `Field(...)` when only providing a description; field names should be self-explanatory.
-- Only use `Field(...)` when applying actual constraints (for example, `min_length`, `max_length`, `ge`, `le`, `pattern`).
+- Use `Field(...)` for actual constraints (for example, `min_length`, `max_length`, `ge`, `le`, `pattern`) or the external-payload mapping below.
 - Use `snake_case` for all Pydantic field names, even when an external API returns `camelCase`.
-- When an external payload uses a different key style, keep the Python attribute in `snake_case` and map the external key with `Field(alias=...)` instead of mirroring the external casing in the model.
+- For external API payloads on `BaseModel`, when a payload uses a different key style, keep the Python attribute in `snake_case` and map the external key with `Field(alias=...)` instead of mirroring the external casing in the model.
 
 ```python
 from datetime import date
