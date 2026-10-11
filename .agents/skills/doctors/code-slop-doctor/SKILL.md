@@ -177,12 +177,17 @@ Code spread over more files and folders than its responsibilities need.
   several folders;
 - every catch-all module mixing unrelated owners, and every `lib`/`utils`-style pair with no rule
   for what goes where;
-- every file or folder whose name says something other than what it holds.
+- every file or folder whose name says something other than what it holds;
+- every declaration list ordered by when its entries were added rather than by what they describe
+  — the fields of a message or model, an enum's members, a configuration's keys — so one concept's
+  entries sit apart, and every owned wire contract whose field numbers record that history.
 
 The remedy is restructuring, done without hesitation: merge modules of similar scope into one,
 collapse one-symbol modules into their owner, split a catch-all by owner, move code to where its
-consumers expect it, and rename files and folders for what they hold — every importer updated in the
-same change, no re-export left behind. Left alone: a module boundary a framework prescribes, a
+consumers expect it, rename files and folders for what they hold, and regroup each declaration list
+by concept, renumbering an owned wire contract's fields to match — every importer, producer and
+consumer updated and every generated target regenerated in the same change, no re-export left
+behind. Left alone: a module boundary a framework prescribes, a
 package boundary a build or distribution artifact needs.
 
 ### Repeated Literal
@@ -321,8 +326,9 @@ budgets, cross-suite layout and coverage maps are `tests-doctor`'s and are named
 
 ## Dispositions
 
-- Restructuring is ordinary work here: merges, moves, renames and collapses land with every importer
-  updated in the same change and nothing left to resolve the old path.
+- Restructuring is ordinary work here: merges, moves, renames, collapses and regroupings land with
+  every importer updated in the same change and nothing left to resolve the old path. No finding is
+  too small: one regrouped message or one renamed file is fixed like a merged package.
 - **Breaking an owned contract to remove slop is ordinary work, never a question.** An owned API,
   wire message, schema, payload, stored shape, module path or export changes with every consumer
   the user owns, in any repository, with its generated artifacts and migrations, in the same run,
