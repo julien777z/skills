@@ -30,11 +30,12 @@ packages, read build or release provenance linking the artifact to its source re
 label alone cannot establish that a testing artifact is deliverable. Missing access or provenance
 is an unresolved dependency, never a clean inventory.
 
-While the consumer is draft, its body names each unresolved provider change with a direct PR link
-when one exists, the consumed reference and resolved revision, its effect on delivery, and the
-required transition. Retain the resolved revision and validation evidence when that transition
-finishes, and remove obsolete blocker wording. This is dependency disclosure within the consumer's
-own contract; unrelated cross-repository coordination stays in chat.
+While the consumer is draft, disclose each unresolved provider change, its direct PR link when
+available, the consumed reference and resolved revision, delivery impact and required transition
+in user chat and private task evidence. The consumer body describes its own interface requirement
+and delivery limitation without foreign repository or PR references, under the GitHub rule's
+independent publishing context. Once the transition finishes, retain provenance and validation
+evidence in the private record and remove obsolete blocker wording from the consumer body.
 
 The maintained target follows the user's explicit reference choice, then applicable repository
 guidance: a default branch, published release tag, or another permitted maintained reference.
