@@ -1,9 +1,3 @@
-var CHANGE_STYLES = {
-  added: { label: "Added", token: "--good", text: "--ink", width: "2px" },
-  changed: { label: "Changed", token: "--accent", text: "--ink", width: "2px" },
-  removed: { label: "Removed", token: "--critical", text: "--muted", width: "1.5px", dashed: true },
-  same: { label: "Unchanged", token: "--line", swatch: "--muted", text: "--ink-2", width: "1.5px" }
-};
 var PALETTE_TOKENS = ["--bg", "--surface", "--ink", "--ink-2", "--muted", "--line", "--good", "--accent", "--critical", "--font-sans"];
 var MERMAID_SCRIPT = {
   src: "https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js",

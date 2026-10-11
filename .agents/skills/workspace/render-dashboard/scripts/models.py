@@ -29,6 +29,7 @@ class SectionType(StrEnum):
     NOTES = "notes"
     DIAGRAM = "diagram"
     OUTLINE = "outline"
+    CHANGES = "changes"
 
 
 class PageLayout(StrEnum):
@@ -39,7 +40,7 @@ class PageLayout(StrEnum):
 
 
 class Change(StrEnum):
-    """What a pull request does to one box or arrow of a diagram."""
+    """What a pull request does to one part of the system."""
 
     ADDED = "added"
     CHANGED = "changed"

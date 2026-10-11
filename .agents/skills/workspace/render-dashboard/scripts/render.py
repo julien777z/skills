@@ -219,6 +219,10 @@ LINK_SHAPE: Final[ObjectShape] = ObjectShape(
     fields={"label": check_text, "url": check_text, "detail": check_text, "status": check_text, "tone": CHECK_TONE},
     required=frozenset({"label", "url"}),
 )
+CHANGE_ITEM_SHAPE: Final[ObjectShape] = ObjectShape(
+    fields={"name": check_text, "change": CHECK_CHANGE, "detail": check_text},
+    required=frozenset({"name", "change"}),
+)
 PULL_REQUEST_SHAPE: Final[ObjectShape] = ObjectShape(
     fields={"ref": check_text, "url": check_text},
     required=frozenset({"ref", "url"}),
@@ -249,6 +253,7 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
     SectionType.QUESTIONS: section_shape({"items": partial(check_objects, shape=QUESTION_SHAPE)}, frozenset({"items"})),
     SectionType.LINKS: section_shape({"items": partial(check_objects, shape=LINK_SHAPE)}, frozenset({"items"})),
     SectionType.NOTES: section_shape({"items": check_texts}, frozenset({"items"})),
+    SectionType.CHANGES: section_shape({"items": partial(check_objects, shape=CHANGE_ITEM_SHAPE)}, frozenset({"items"})),
     SectionType.OUTLINE: section_shape(
         {"groups": partial(check_objects, shape=OUTLINE_GROUP_SHAPE)},
         frozenset({"groups"}),
