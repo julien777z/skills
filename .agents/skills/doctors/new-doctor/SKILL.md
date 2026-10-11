@@ -36,7 +36,9 @@ not a dependency this skill runs, so it is named here and not below.
    settles — breaking an owned contract, what stored data owes, which product changes are the
    user's — is cited by its section in Dispositions, never restated or reclassified. A reviewer
    partition the domain dictates may take its own heading; nothing that restates a protocol
-   section may.
+   section may. Declare no delivery cadence: the protocol's default leaves the run's one pull
+   request open for the user, and a new doctor merges only what the user's request or another rule
+   authorizes, never through a merged-batch cadence of its own.
 4. **Keep it generic.** Discover layouts, tools, frameworks, and budgets at runtime. Never name the
    current repository's paths, packages, products, commands, or thresholds. State a default
    threshold as one the repository's configuration overrides. Refer to a repository-specific skill

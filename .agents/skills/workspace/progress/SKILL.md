@@ -20,7 +20,9 @@ and deliver the same dashboard again on every request so the user keeps one page
 1. **Read the ledger.** Resolve and read the task's ledger through `session-ledger`. A plan or
    question the task has put to the user that the ledger lacks is reconstructed and recorded first,
    from verified task evidence, as that skill's recovery rules say; the dashboard never shows a step
-   the ledger does not hold.
+   the ledger does not hold. An active or blocked step that `execute-task`'s **Progress Record**
+   records with parts, held in the ledger without them, gets them recorded the same way, with the
+   parts already finished marked done.
 2. **Find the task's pull requests** with `list-prs`, then read each one's current state from its
    host: open, draft, merged or closed, the checks on its head, and review state.
 3. **Write the Architecture page** once the task has a pull request. The `dashboard` entry records
@@ -32,7 +34,7 @@ and deliver the same dashboard again on every request so the user keeps one page
    this task's dashboard, update that same page; otherwise record a `dashboard` entry with the page
    path and any published link, so the next request finds it.
 6. **Reply** with the link or file and one line: percent complete, time remaining, and how many
-   questions wait on the user.
+   questions wait on the user, each the figure the dashboard shows.
 
 ## Spec
 
@@ -41,16 +43,21 @@ and deliver the same dashboard again on every request so the user keeps one page
   is open, which covers a step an open question blocks; `Blocked` (`critical`) while a step is
   blocked on anything else; `Done` (`good`) once every plan is complete; otherwise `On track`
   (`good`).
-- **Progress.** `value`: done steps over all steps that are not skipped, across every plan that is
-  not withdrawn. `detail`: "<done> of <total> steps done", adding "across <n> plans" when there are
-  several. `segments`: one per step that is not skipped, in plan order, labelled "<plan title>:
-  <step title>", toned `good` when done, `accent` when active, `critical` when blocked, and neutral
-  otherwise.
-- **Metrics,** in this order: **Time remaining**, the estimates of steps neither done nor skipped,
-  totalled as `execute-task` totals a plan, prefixed `~` because it is an estimate, with any time
-  the user owes in `detail` and outside the figure; **Waiting on you**, the count of open
-  questions; **Pull requests**, the count with their states in `detail`; **Elapsed**, measured
-  from the first plan's recorded approval time.
+- **Progress.** A step's work is its estimate, or for a step with parts the estimates of its parts
+  not skipped; a skipped step has none. `value`: finished work over all work, across every plan
+  that is not withdrawn, where finished work is each done step's work and each done part of a step
+  neither done nor skipped. `detail`: "<done> of <total> steps done", counting steps with work,
+  adding "across <n> plans" when there are several.
+  `segments`: one per step with work, in plan order, labelled "<plan title>: <step title>",
+  `weight` that work in minutes, toned `good` when done, `accent` when active, `critical` when
+  blocked, and neutral otherwise. A step neither done nor skipped with done parts takes them as a
+  first segment, toned `good`, then its remaining work as a second, toned by the step's status as
+  above, when any remains, so the bar fills as the percentage does.
+- **Metrics,** in this order: **Time remaining**, the work not yet finished, totalled as
+  `execute-task` totals a plan, prefixed `~` because it is an estimate, with any time the user owes
+  in `detail` and outside the figure; **Waiting on you**, the count of open questions; **Pull
+  requests**, the count with their states in `detail`; **Elapsed**, measured from the first plan's
+  recorded approval time.
 - **Pull request names.** The page names each pull request "PR #<number> - <short title>": a few
   words saying what it does, not necessarily its title, such as `PR #1337 - Migrate admin to
   Tailscale`.
@@ -63,7 +70,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 | Column | `tone` | Cards |
 | --- | --- | --- |
 | Waiting on you | `warning` | Each open question: `title` the question, `detail` "Recommended: <recommendation>", `tag` "Question". |
-| In progress | `accent` | Active and blocked steps: `detail` the step's note, `tag` "<plan title>" plus " · blocked" when blocked, `meta` its estimate. Each question whose evidence is still owed: `title` the question, `detail` the evidence being gathered, `tag` "Question". |
+| In progress | `accent` | Active and blocked steps: `detail` the step's note, `tag` "<plan title>" plus " · blocked" when blocked, `meta` its estimate, adding "· <done> of <n> parts" for a step with parts, counting parts not skipped. Each question whose evidence is still owed: `title` the question, `detail` the evidence being gathered, `tag` "Question". |
 | Up next | — | Steps not started, in plan order, with `tag` and `meta` as above. |
 | Done | `good` | Finished steps, `meta` their measured duration. |
 

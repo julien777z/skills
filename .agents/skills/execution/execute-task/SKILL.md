@@ -65,8 +65,9 @@ Every task that changes files starts here, and so does every follow-up that arri
   ledger — as a file, as the global rules' **User-Facing Output** says, instead of restating it.
 - **An estimate is the executing agent's own wall-clock, never the effort the same work would
   take a person.** Build it from what the run does and waits on, never from how big the change
-  feels, round each step to the nearest minute, and list what the plan needs from the user — an
-  approval, a merge, a manual action — separately, with its time, outside the total:
+  feels, round each step to the nearest whole minute, never below 1, and list what the plan needs
+  from the user — an approval, a merge, a manual action — separately, with its time, outside the
+  total:
   - an edit step — read, edit, commit, push — is 2–3 minutes whatever the file count;
   - each run of a local check, test suite or build is its observed duration, counted once per run
     the plan makes;
@@ -78,8 +79,8 @@ Every task that changes files starts here, and so does every follow-up that arri
   - CI, a deployment or a merge with its follow-up is the observed duration of that job.
 - Schedule steps by `subagent-selection`'s **Dispatch**: coupled work stays sequential, and
   independent scopes with separate owners, files and resources overlap once their inputs are
-  settled. Estimate the elapsed time with that overlap, counting overlapping work once at its
-  longest part.
+  settled. Estimate the elapsed time with that overlap, counting overlapping work once at the
+  longest of the overlapping steps.
 - **Settle ownership before the plan is final.** For a plan that introduces a subsystem, runtime
   boundary, or independent consumer, apply `code-simplify`'s ownership analysis to the proposed
   shape and the analogous implementations already in the repository, with one read-only subagent
@@ -145,6 +146,10 @@ A follow-up is planned on its own, and only the work it changes waits for it.
   state changes, not when a report is due: approval, a step starting, finishing, blocking or being
   skipped, a follow-up's plan. A resumed session, a handoff and a progress view all read this
   record rather than reconstructing it.
+- **A step estimated over 30 minutes is recorded with its parts**: bounded pieces of that step's
+  work, each with its own estimate in whole minutes, at least 1, together adding up to the step's.
+  Mark each part done as it finishes, so recorded progress moves while a long step runs. The plan
+  the user approves keeps its numbered steps; the parts live in the record.
 
 ## Execution
 

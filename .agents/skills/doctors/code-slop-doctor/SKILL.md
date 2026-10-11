@@ -1,14 +1,15 @@
 ---
 name: code-slop-doctor
-description: Strip the complexity a codebase does not need — pass-through layers, one-case abstractions, duplicates, divergent siblings, legacy paths, and surplus migrations, build files, configuration names and dependencies. Use to deslop a repository or one of its phases, lenses or paths.
-short_description: 'Remove unneeded layers, abstractions, duplicates, legacy paths, configuration names and dependencies across a repository.'
+description: Strip the complexity a codebase does not need and the code a reviewer reads as generated slop — pass-through layers, one-case abstractions, duplicates, divergent siblings, legacy paths, tangled or padded code, and surplus migrations, build files, configuration names and dependencies. Use to deslop a repository or one of its phases, lenses or paths.
+short_description: 'Remove unneeded layers, abstractions, duplicates, legacy paths, code that reads as slop, configuration names and dependencies across a repository.'
 disable-model-invocation: true
 ---
 
 # Code Slop Doctor
 
 Every layer, abstraction, copy and branch a reader has to get through must earn its place by
-something it does; this doctor finds the ones that do nothing and takes them out.
+something it does, and every line should read as a careful author wrote it; this doctor finds what
+does nothing or makes a reader wince, and takes it out.
 
 ## Dependencies
 
@@ -198,6 +199,47 @@ One meaning spelled out many times.
 
 The remedy is one owned definition — a component or style token, the existing helper, one
 configuration source, the enum itself — and every site reading it.
+
+### Reads As Slop
+
+Code a reviewer recognizes as generated: correct, and still a shape no careful author writes. The
+test is the reader's: would someone opening this file wince? Every check below makes that test
+concrete, and a shape the test catches that no check names is still a finding.
+
+- **Tangled control flow** — nesting deeper than the repository's lint configuration allows,
+  three levels by default; nested loops that a lookup map, a set or one pass replaces; an if/else
+  ladder that a table, a match or early returns flatten; a boolean parameter that switches a
+  function between two behaviors.
+- **Narrating comments and docs** — a comment restating the line below it; a comment justifying a
+  choice whose reason lives in code the repository controls; a comment narrating what a branch,
+  guard or invariant does or protects against; a docstring listing the parameters, return or raised
+  types the signature already declares, or running past the line the repository's language rules
+  require; a comment on an external quirk running past two lines; banner or section-divider
+  comments; a comment explaining what a better name would show.
+- **Ceremony** — a temporary assigned and returned on the next line; a branch returning `True` or
+  `False` to restate its own condition; comparing to `True`, `False` or `None` with `==`; a
+  hand-written loop that a comprehension, builtin or standard-library call already does; a helper
+  re-implementing the standard library.
+- **Defensive noise** — a try/except around code that cannot raise what it catches; catch, log and
+  re-raise repeated at each layer.
+- **Placeholder names** — `data`, `result`, `temp`, `info`, `helper`, `manager` or `handler` naming
+  something specific; `_new`, `_v2`, `_final` or `_fixed` suffixes; a name saying how rather than
+  what.
+- **Padding** — a function past the length the repository's configuration sets, about sixty lines by
+  default, doing several separable phases; log lines restating the step the code just took; emoji or
+  exclamation in comments and logs.
+
+The remedy is the plain shape a careful author writes: flatten, look up, return early, inline,
+delete the comment and let the code or a better name carry it, cut a docstring to the line the
+language rules require and delete it only where they require none, cut a quirk comment to the
+external behavior in one or two lines, split the function at its phases. A rewrite of executable
+code keeps its behavior exactly, and the repository's tests prove it before and after; executable
+code no test covers gets one first. A comment stating a behavior the code must keep is replaced by a
+test that fails when that behavior regresses, never deleted on its own. Left alone: a nested loop
+over small fixed sets; a comment of one or two lines recording behavior outside the repository — a
+third-party or protocol quirk — that the code cannot show; a log line reporting an outcome, status,
+progress or failure an operator reads; a long function whose phases share state a split would have
+to pass around.
 
 ### Tolerated Past
 
@@ -412,10 +454,6 @@ re-derives the matrix for every retained mismatch, re-reads the deployment colum
 kept as a local-development tool, confirms each regenerated lockfile resolves its constraints, and
 confirms that the repository's tests pass on each batch.
 
-## Delivery
-
-Merged batches, one per phase, each checkpoint named in the approved plan.
-
 ## Report Additions
 
 - per phase and lens: findings and dispositions by package and language;
@@ -432,5 +470,7 @@ Merged batches, one per phase, each checkpoint named in the approved plan.
   the reason; the readers traced for each removal; for every field no deployment sets, its outcome;
 - per manifest: declarations removed, added and re-ranged; each lockfile regenerated with its
   command; audit tools wired in or removed;
+- each shape **Reads As Slop** rewrote, by check, with the test proving each executable rewrite's
+  behavior unchanged and the test that carries each deleted comment's behavioral guarantee;
 - each test removed or repaired with the layer it exercised;
 - each finding another doctor owns, named with that doctor.
