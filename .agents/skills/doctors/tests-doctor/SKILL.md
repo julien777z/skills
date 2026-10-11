@@ -405,7 +405,8 @@ before delivery and verify that none enters the delivered diff.
   condition the name lost moves into the docstring, and a rename that would leave fewer than two
   words takes a hand-chosen label rather than the mechanical residue.
 - A layout finding moves to the pattern `test-fixture`'s ownership rules select; an even split
-  between equally valid patterns is a user decision.
+  between equally valid patterns goes to the one leaving the fewest mechanisms, stated in the pull
+  request, under `pre-production`'s **Trade-Offs Are Surfaced, Never Enforced**.
 - A coverage gap is closed by the test that proves it, and a misplaced test moves between suites.
   Every added or rewritten test follows `test-fixture`, including its mutation proof per batch.
 - A construction finding moves the construction to the suite's shared home and reads identities

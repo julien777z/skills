@@ -16,8 +16,8 @@ something it does; this doctor finds the ones that do nothing and takes them out
 - `pre-production` — the target contract is the authority for every removal; nothing is kept for an
   obsolete owned contract, and a removal that changes behavior is a surfaced trade-off. A doctor run
   sets its own scope, so `pre-production`'s incidental size budget does not apply to it.
-- `code-simplify` — the ownership analysis that decides where shared code lives, and the merge rubric
-  when two implementations collapse into one.
+- `code-simplify` — the ownership analysis that decides where shared code lives, and its **Reuse,
+  Ownership And Deletions** rubric when two implementations collapse into one.
 - `test-fixture` — the per-test checks the test phase runs.
 - `defer-scope` — report a migration-test deferral record whose path no longer exists.
 
@@ -34,8 +34,9 @@ The run works in five phases, in this order, and each phase is one batch:
 3. **Migrations** — every migration chain, its registries, backfills and tooling.
 4. **Build, CI and repository root** — container files, workflows, scripts, tool configuration and
    root files.
-5. **Tests** — after the code they test has settled, because removing a layer removes or moves the
-   tests that only exercised it.
+5. **Tests** — after the code they test has settled. A test an earlier phase's change breaks — one
+   importing a moved path, one exercising only a removed layer — is repaired or deleted in that
+   phase's batch under **Test Slop**'s remedy, so every batch passes; this phase audits the rest.
 
 A phase the repository has nothing for is skipped and reported. A scope argument selects phases,
 lenses, or paths; a run scoped to one lens or phase applies only that lens or phase.
@@ -147,8 +148,7 @@ One question answered twice.
 The remedy is one owner, placed by `code-simplify`'s ownership analysis — the shared package every
 consumer reads where more than one deployable needs it — with the copies and the bridge deleted and
 generated types used directly or derived from. Left alone: a generated mirror; a demonstrated
-dependency, domain or contract boundary; a provider's boundary model where the provider's shape genuinely differs and `pre-production`'s third-party rule
-keeps it; two contract models, which are `schema-doctor`'s.
+dependency, domain or contract boundary; two contract models, which are `schema-doctor`'s.
 
 ### Divergent Siblings
 
@@ -165,8 +165,8 @@ Things of one kind built in different shapes.
 
 The remedy is one structure per kind: the shared shape lives in the shared package and each sibling
 supplies only what differs, its name, port, servicers or routes. The slot's best existing
-implementation becomes the shared one under `code-simplify`'s merge rubric. Left alone: a slot whose
-difference a contract requires, with the contract named.
+implementation becomes the shared one under `code-simplify`'s **Reuse, Ownership And Deletions**.
+Left alone: a slot whose difference a contract requires, with the contract named.
 
 ### Scattered Structure
 
@@ -177,13 +177,18 @@ Code spread over more files and folders than its responsibilities need.
   several folders;
 - every catch-all module mixing unrelated owners, and every `lib`/`utils`-style pair with no rule
   for what goes where;
-- every file or folder whose name says something other than what it holds.
+- every file or folder whose name says something other than what it holds;
+- every declaration list ordered by when its entries were added rather than by what they describe
+  — the fields of a message or model, an enum's members, a configuration's keys — so one concept's
+  entries sit apart, and every owned wire contract whose field numbers record that history.
 
 The remedy is restructuring, done without hesitation: merge modules of similar scope into one,
 collapse one-symbol modules into their owner, split a catch-all by owner, move code to where its
-consumers expect it, and rename files and folders for what they hold — every importer updated in the
-same change, no re-export left behind. Left alone: a module boundary a framework prescribes, a
-package boundary a build or distribution artifact needs.
+consumers expect it, rename files and folders for what they hold, and regroup each declaration list
+by concept, renumbering an owned wire contract's fields to match — every importer, producer and
+consumer updated and every generated target regenerated in the same change, no re-export left
+behind. Left alone: a module boundary a framework prescribes, a package boundary a build or
+distribution artifact needs.
 
 ### Repeated Literal
 
@@ -321,21 +326,25 @@ budgets, cross-suite layout and coverage maps are `tests-doctor`'s and are named
 
 ## Dispositions
 
-- Restructuring is ordinary work here: merges, moves, renames and collapses land with every importer
-  updated in the same change and nothing left to resolve the old path.
-- Behavior is preserved. A removal that changes what a user, a stored row or an external consumer
-  sees is a user decision, put with each consequence and the option that leaves the fewest
-  mechanisms recommended.
-- An owned contract changes with every consumer in the same run; a contract a consumer outside the
-  user's control speaks is a user decision.
+- Restructuring is ordinary work here: merges, moves, renames, collapses and regroupings land with
+  every importer updated in the same change and nothing left to resolve the old path. No finding is
+  too small: one regrouped message or one renamed file is fixed like a merged package.
+- **Breaking an owned contract to remove slop is ordinary work, never a question**, made as
+  `pre-production`'s **Target Contract** says; a removal is never narrowed, shimmed or dropped to
+  keep an owned shape stable.
+- Data a removal leaves in the old shape — a flag whose retirement backfill has not run, a chain to
+  collapse — follows `pre-production`'s **Product State** and **Target Contract** and the
+  repository's database-migration skill, never a question.
+- The user decides what `pre-production`'s **Trade-Offs Are Surfaced, Never Enforced** reserves
+  for them. A contract a consumer outside the user's control speaks stays as it is and is reported,
+  under its **Target Contract**.
 - Fix the reader or the writer, never both. A tolerance that hides a wiring defect is a confirmed
   defect and is fixed. An unsupported historical record is never a finding and never receives a
-  fallback. Where a flag's retirement backfill has not run, its removal is a user
-  decision naming the data still in the old shape.
+  fallback.
 - A migration correction is made in place or stacked according to applied state, stacked when that
-  state cannot be established; a data-loss path with no recovery is a blocker to report. Collapsing
-  a chain is a user decision wherever any environment keeps data.
-- An even split between two sibling structures equally fit for the kind is a user decision.
+  state cannot be established; a data-loss path with no recovery is a blocker to report.
+- An even split between two sibling structures equally fit for the kind goes to the one leaving the
+  fewest mechanisms and moving the fewest importers, stated in the pull request.
 - A finding another doctor owns — a dependency, a configuration name, documentation, a contract
   model, a deep test audit — is not fixed here; the report names it with that doctor.
 
@@ -346,7 +355,7 @@ reviewer tries to reach each removed layer, branch and alias from a live caller,
 of a moved or renamed module still points at its old path, replays every chain the run touched,
 confirms a stacked migration correction did not narrow the approved downgrade or survivorship
 coverage, challenges every revision kept as applied without version-table evidence, and confirms
-that the repository's tests pass on each batch with behavior unchanged.
+that the repository's tests pass on each batch.
 
 ## Delivery
 

@@ -34,8 +34,10 @@ review what merged afterwards.
 1. The pull requests the user names, or else every open pull request `list-prs` returns for the
    task. Freeze that set at invocation and verify each head and state on the host.
 2. Leave out a pull request confined to agent configuration; guidance delivery merges those.
-3. A pull request still in draft is finished first: its task's `execute-task` **Completion** runs,
-   unless the user named it, in which case it is taken as it stands.
+3. A pull request whose task's `execute-task` **Completion** has not sent its review message is
+   finished first: that **Completion** runs, unless the user named the pull request, in which case
+   it is taken as it stands. Every pull request is a draft until `land-pr` merges it, so being a
+   draft says nothing about whether it is finished.
 
 ## Merge
 
@@ -46,7 +48,7 @@ depends on to merge.
    the current head, or a rewrite whose tree is identical to it. Otherwise put the head to the
    final-acceptance question. A flag is fixed and gated under that skill's **Bounds**; the
    target waits while one stands.
-2. **CI.** Invoke `land-pr` with the accepted head, merge authorized, and every hosted check on
+2. **CI.** Invoke `land-pr` with the accepted head and every hosted check on
    the head required. A failing check that fails the same way on the default branch's latest run
    is a baseline: pass it to `land-pr` as an exclusion with that run as evidence, and it does not
    block. Every other failure is fixed and the gate repeats on the new head.

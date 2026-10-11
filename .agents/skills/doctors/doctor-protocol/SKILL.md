@@ -35,7 +35,7 @@ cadence under **Deliver**:
 1. an **inventory** — what it enumerates and where each item is discovered at runtime;
 2. **lenses** — each a defect shape, the evidence that establishes it, and the remedy;
 3. **dispositions** in order, declaring the permitted changes and evidence required for exceptions,
-   and naming which outcomes are the user's decision;
+   and naming the user decisions the domain adds beyond those its dependencies already settle;
 4. **domain dependencies** — the skills whose policy it applies and never restates;
 5. **report additions** — the rows it appends to the skeleton below.
 
