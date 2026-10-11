@@ -394,17 +394,17 @@ return records;
   or a file only to settle one line those leave unclear, and never walks commits one by one; a worker
   asked to write one is handed that change list in its brief.
 - A pull request description covers the changes in that pull request and nothing else. Leave out alternatives considered and rejected, work deferred to a later change, and the reasoning behind not doing something.
-- Treat each repository as an independent context. Write PR titles, descriptions, review comments,
-  and issue comments using the target repository's domain, contracts, changes, and validation.
-  **Dependency-reference exception:** a pull request's body must disclose an unresolved dependency
-  it consumes or requires, including the provider's direct PR link when available, reference,
-  resolved revision, delivery impact and required transition. A hand-off comment may name that
-  dependency too. Keep unrelated cross-repository domain vocabulary, implementation details,
-  coordination history and combined status in user chat. `land-pr` owns the readiness inventory
-  and dependency gate.
+- Treat each repository as an independent publishing context. PR titles, descriptions, comments,
+  issue text, branch names and commit messages use the target repository's domain, contracts,
+  changes and validation. Never cross-reference another repository's pull request or issue there,
+  including by URL, qualified identifier, shorthand number, hand-off note or dependency disclosure.
+  Dependencies create no exception. Keep cross-repository links, identities, implementation details,
+  coordination and combined status in user chat and private task evidence.
 - Before publishing or updating those artifacts, check the final text against the target
-  repository's diff and evidence. Preserve required dependency disclosures; remove unrelated
-  foreign domain references and cross-repository links.
+  repository's diff and evidence. Remove foreign references, including from dependency and delivery
+  notes. Describe a consumed interface or unresolved delivery requirement in terms of this
+  repository's own contract; disclose provider PR links and merge ordering to the user in chat.
+  `land-pr` still owns the complete dependency inventory and readiness gate.
 - **Each session opens its own source pull request in each repository.** Later source work in the
   same session joins that pull request rather than creating one per concern or worker. Continue a
   source pull request from another session only when the user, an applicable invoked skill, or a
