@@ -133,6 +133,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`no-text-ai-slop`](.agents/skills/review/no-text-ai-slop/SKILL.md) — Edit drafts into sharper, more human writing while preserving the writer's personal voice, or detect AI-slop patterns without rewriting.
 - [`pre-production`](.agents/skills/execution/pre-production/SKILL.md) — Apply target-contract constraints to implementation and review tasks.
 - [`prisma-client-api`](.agents/skills/web/prisma-client-api/SKILL.md) — Prisma Client API reference covering model queries, filters, operators, and client methods.
+- [`progress`](.agents/skills/workspace/progress/SKILL.md) — Show the task’s progress as a dashboard.
 - [`propagate-skill`](.agents/skills/workspace/propagate-skill/SKILL.md) — Reconcile skills across the user's repository collection.
 - [`proton-pass`](.agents/skills/workspace/proton-pass/SKILL.md) — Retrieve credentials from Proton Pass with pass-cli.
 - [`python-anti-patterns`](.agents/skills/python/python-anti-patterns/SKILL.md) — Use this skill when reviewing Python code for common anti-patterns to avoid.
@@ -147,6 +148,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`python-testing-patterns`](.agents/skills/python/python-testing-patterns/SKILL.md) — Implement comprehensive testing strategies with pytest, fixtures, mocking, and test-driven development.
 - [`python-type-safety`](.agents/skills/python/python-type-safety/SKILL.md) — Python type safety with type hints, generics, protocols, and strict type checking.
 - [`reconcile-skills`](.agents/skills/workspace/reconcile-skills/SKILL.md) — Refresh installed shared skills and rules from their source checkout.
+- [`render-dashboard`](.agents/skills/workspace/render-dashboard/SKILL.md) — Turn a dashboard spec into the shared HTML page and deliver it.
 - [`rewrite-git-history`](.agents/skills/git/rewrite-git-history/SKILL.md) — Rework your branch into focused commits while preserving and checking its content.
 - [`roblox-building`](.agents/skills/roblox/roblox-building/SKILL.md) — Build and improve Roblox worlds, terrain, structures, props, and assets.
 - [`roblox-gameplay`](.agents/skills/roblox/roblox-gameplay/SKILL.md) — Apply every time actively modifying a Roblox game, including mechanics, progression, rewards, controls, presentation, UI, and world content.
