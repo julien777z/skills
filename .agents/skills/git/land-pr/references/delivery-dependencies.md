@@ -9,8 +9,10 @@ reference. A test-only fixture that cannot enter the consumer's delivery is not 
 a testing revision used to build, validate or package that delivery is.
 
 The consumer's proposed source and outputs built from that head are the review subject, not
-prerequisite provider inputs. Still inventory independent inputs inside those outputs, including
-separate prerequisite changes in the same repository.
+prerequisite provider inputs. This includes an earlier validated output of the same proposed change
+when equivalence to the accepted head is established under the standing artifact policy. Still
+inventory independent inputs inside those outputs, including separate prerequisite changes in the
+same repository.
 
 For each input, retain its consuming location, provider, configured reference, resolved immutable
 revision and evidence for its delivery state. Resolve the provider's actual default branch and
