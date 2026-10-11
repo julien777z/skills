@@ -207,11 +207,12 @@ test is the reader's: would someone opening this file wince? Every check below m
 concrete, and a shape the test catches that no check names is still a finding.
 
 - **Tangled control flow** — nesting deeper than the repository's lint configuration allows,
-  three levels by default; nested loops that a lookup map, a
-  set or one pass replaces; an if/else ladder that a table, a match or early returns flatten; a
-  boolean parameter that switches a function between two behaviors.
-- **Narrating comments and docs** — a comment restating the line below it; a docstring listing the
-  parameters, return or raised types the signature already declares, or running past the line the
+  three levels by default; nested loops that a lookup map, a set or one pass replaces; an if/else
+  ladder that a table, a match or early returns flatten; a boolean parameter that switches a
+  function between two behaviors.
+- **Narrating comments and docs** — a comment restating the line below it; a comment justifying a
+  choice whose reason lives in code the repository controls; a docstring listing the parameters,
+  return or raised types the signature already declares, or running past the line the
   repository's language rules require; banner or section-divider comments; a comment explaining
   what a better name would show.
 - **Ceremony** — a temporary assigned and returned on the next line; a branch returning `True` or
@@ -224,15 +225,16 @@ concrete, and a shape the test catches that no check names is still a finding.
   something specific; `_new`, `_v2`, `_final` or `_fixed` suffixes; a name saying how rather than
   what.
 - **Padding** — a function past the length the repository's configuration sets, about sixty lines
-  by default, doing several separable phases; log lines
-  narrating normal flow; emoji or exclamation in comments and logs.
+  by default, doing several separable phases; log lines narrating normal flow; emoji or
+  exclamation in comments and logs.
 
 The remedy is the plain shape a careful author writes: flatten, look up, return early, inline,
-delete the comment and rename instead, cut a docstring to the line the language rules require and
-delete it only where they require none, split the function at its phases. Behavior stays exactly as
-it was, and the repository's tests prove it before and after; a shape no test covers gets one
-first. Left alone: a nested loop over small fixed sets; a comment recording a third-party quirk or
-a reason the code cannot show; a long function whose phases share state a split would have to
+delete the comment and let the code or a better name carry it, cut a docstring to the line the
+language rules require and delete it only where they require none, split the function at its
+phases. A rewrite of executable code keeps its behavior exactly, and the repository's tests prove
+it before and after; executable code no test covers gets one first. Left alone: a nested loop over
+small fixed sets; a comment recording behavior outside the repository — a third-party or protocol
+quirk — that the code cannot show; a long function whose phases share state a split would have to
 pass around.
 
 ### Tolerated Past
