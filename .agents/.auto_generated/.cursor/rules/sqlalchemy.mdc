@@ -61,7 +61,7 @@ Prefer the project's shared ORM helpers for common reads, pagination, counts, in
 - Do not manually mutate ORM entity attributes and flush when the repository provides a persistence helper for that operation.
 - Avoid manual `session.execute(...)` query construction in service code for standard CRUD/filter flows (including hand-built `select(...).join(...).where(...)` statements).
 - Prefer adding or extending reusable query helpers on the project's shared ORM base when a new operation is needed (for example, join-aware lookup helpers) and then consume that helper from services.
-- Use direct/manual `session.execute(...)` only for advanced operations that are not practical to express via existing shared helpers.
+- Use direct `Session` or `Connection` execution only for advanced operations not practical through existing shared helpers. Before selecting or reusing that path, trace statement construction through its helpers and verify it uses native ORM/Core or Alembic constructs; wrapping handwritten SQL in `text()` or `exec_driver_sql()` does not satisfy that check. For unsupported syntax, use a typed SQLAlchemy expression or DDL extension with dialect compilation and dialect identifier quoting.
 
 ## Session and Transaction Boundaries
 
