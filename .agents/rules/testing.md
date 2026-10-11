@@ -26,6 +26,10 @@ paths:
   checks the fixes affect.
   Reuse successful evidence for unchanged code and inputs. A new commit or reviewer is not itself
   a reason to repeat verification; a changed dependency, relevant input or unresolved concern is.
+  Formatting, import ordering, comments, documentation, and an equivalent non-executable change
+  preserve behavioral evidence once the diff establishes that they cannot affect the tested
+  behavior. Run the formatter, linter, type checker, or other focused check that owns the edit;
+  do not rerun a behavioral suite solely because its head changed.
 - Before delivery, complete the required repository checks and review the combined pull-request
   diff. Reuse still-valid completed-feature results; run the full required checks where the final
   repository state or integration needs them. This cadence changes when verification runs, never

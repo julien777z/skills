@@ -244,6 +244,12 @@ product behavior, dependency or API/deployment contract, or review rubric. Wheth
 check gate found it, apply it, run its focused validation, and return to the check gate without
 launching another lens or cohort.
 
+When the user makes residual lint-only diagnostics non-blocking, they do not hold a behavior-complete
+source pull request. Retain any useful lint repair already in that pull request. Open a fresh
+post-merge follow-up for the remaining diagnostics only when the user also explicitly requests that
+cleanup; its own acceptance and check gates govern it. A focused repair there reruns behavioral
+validation only when its diff changes behavior, a dependency, configuration, or a tested input.
+
 ## Incorporating The Base
 
 Run `merge-conflict` for every base update in this run; it places its comparison and its

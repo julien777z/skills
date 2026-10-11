@@ -612,7 +612,10 @@ testing rule's **Environments** section, then verify the requested behavior on t
 within the authorized scope, including reachable dependency branches. When a requested flow failed,
 repair and push the fix, exercise that branch through the applicable route, and repeat the complete
 failed flow until its requested outcome is verified. A narrower health check or passing component
-test cannot replace that flow.
+test cannot replace that flow. When a deployment entrypoint consumes configuration, its verification
+also proves that entrypoint receives the required settings and reads values in the deployed
+representation; a local fixture using different settings or a different representation does not
+establish the deployed route.
 Missing merge approval holds merging, never this branch verification; check the available branch
 route before declaring a gate. Merge is delivery after verification, never its prerequisite.
 
