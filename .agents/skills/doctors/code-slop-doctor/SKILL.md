@@ -212,10 +212,10 @@ concrete, and a shape the test catches that no check names is still a finding.
   function between two behaviors.
 - **Narrating comments and docs** — a comment restating the line below it; a comment justifying a
   choice whose reason lives in code the repository controls; a comment narrating what a branch,
-  guard or invariant does or protects against; a docstring listing the parameters,
-  return or raised types the signature already declares, or running past the line the
-  repository's language rules require; banner or section-divider comments; a comment explaining
-  what a better name would show.
+  guard or invariant does or protects against; a docstring listing the parameters, return or raised
+  types the signature already declares, or running past the line the repository's language rules
+  require; a comment on an external quirk running past two lines; banner or section-divider
+  comments; a comment explaining what a better name would show.
 - **Ceremony** — a temporary assigned and returned on the next line; a branch returning `True` or
   `False` to restate its own condition; comparing to `True`, `False` or `None` with `==`; a
   hand-written loop that a comprehension, builtin or standard-library call already does; a helper
@@ -231,11 +231,12 @@ concrete, and a shape the test catches that no check names is still a finding.
 
 The remedy is the plain shape a careful author writes: flatten, look up, return early, inline,
 delete the comment and let the code or a better name carry it, cut a docstring to the line the
-language rules require and delete it only where they require none, split the function at its phases.
-A rewrite of executable code keeps its behavior exactly, and the repository's tests prove it before
-and after; executable code no test covers gets one first. A comment stating a behavior the code must
-keep is replaced by a test that fails when that behavior regresses, never deleted on its own. Left
-alone: a nested loop over small fixed sets; a comment recording behavior outside the repository — a
+language rules require and delete it only where they require none, cut a quirk comment to the
+external behavior in one or two lines, split the function at its phases. A rewrite of executable
+code keeps its behavior exactly, and the repository's tests prove it before and after; executable
+code no test covers gets one first. A comment stating a behavior the code must keep is replaced by a
+test that fails when that behavior regresses, never deleted on its own. Left alone: a nested loop
+over small fixed sets; a comment of one or two lines recording behavior outside the repository — a
 third-party or protocol quirk — that the code cannot show; a long function whose phases share state
 a split would have to pass around.
 
