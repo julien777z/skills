@@ -93,9 +93,14 @@ an invocation name.
 Two statements the reader cannot both follow: two files that disagree, a rule and a skill that
 disagree, a description that disagrees with a frontmatter flag, a rule that bans what another
 prescribes. A disagreement between path-scoped rules with disjoint globs is a finding only for a
-host that loads both, and its remedy there is scoping. Evidence: both sentences and which hosts
-co-load them. Remedy: one wins under current intent; unclear intent is a user decision naming both
-readings.
+host that loads both, and its remedy there is scoping. Read each skill decision by decision, not
+sentence by sentence: list what it decides — who decides, act or ask, keep or remove, stop or
+continue — and read beside each the section of the dependency or rule that owns that decision. A
+paraphrase that narrows, widens or reclassifies the owner's decision is a finding even when no
+sentence in it negates the owner, such as a skill that makes the user decide a change its
+dependency says is made without asking. Evidence: both sentences and which hosts co-load them.
+Remedy: one wins under current intent, and a paraphrase of an owner becomes a citation of the
+owner's section; unclear intent is a user decision naming both readings.
 
 ### Stale
 
