@@ -1,0 +1,772 @@
+<title>__DASHBOARD_TITLE__</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #111317;
+    --surface: #191c21;
+    --ink: #eef0f3;
+    --ink-2: #bcc2cc;
+    --muted: #8b93a2;
+    --line: #2b3038;
+    --accent: #3987e5;
+    --accent-track: #1d3a60;
+    --good: #2fbf3a;
+    --warning: #fab219;
+    --critical: #e66767;
+    --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    color-scheme: dark;
+  }
+
+  :root[data-theme="light"] {
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --ink: #14171c;
+    --ink-2: #474e5c;
+    --muted: #6a7282;
+    --line: #e1e4ea;
+    --accent: #2a78d6;
+    --accent-track: #cde2fb;
+    --good: #0ca30c;
+    --warning: #c98500;
+    --critical: #d03b3b;
+    color-scheme: light;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 15px/1.5 var(--font-sans);
+  }
+
+  main {
+    width: 100%;
+    max-width: 1480px;
+    margin: 0 auto;
+    padding-inline: 24px;
+    padding-block: 24px 48px;
+    display: grid;
+    gap: 20px;
+  }
+
+  h1, h2, h3, p { margin: 0; }
+  a { color: var(--accent); text-underline-offset: 2px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+  .updated { font-size: 13px; color: var(--muted); }
+
+  header { display: grid; gap: 8px; }
+  .title-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+  h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 700; letter-spacing: -.02em; text-wrap: balance; }
+  .subtitle { color: var(--ink-2); max-width: 65ch; }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    font: 500 13px/1.4 var(--font-sans);
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex: none; }
+  .tone-good .dot { background: var(--good); }
+  .tone-warning .dot { background: var(--warning); }
+  .tone-critical .dot { background: var(--critical); }
+  .tone-accent .dot { background: var(--accent); }
+
+  .panel { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+
+  .summary {
+    display: grid;
+    grid-template-columns: minmax(240px, 340px) minmax(0, 1fr);
+    align-items: center;
+    gap: 24px 48px;
+    padding: 20px 24px;
+  }
+
+  .hero { display: grid; gap: 8px; align-content: start; }
+  .hero-value { font-size: 48px; font-weight: 600; line-height: 1; letter-spacing: -.03em; }
+  .hero-detail { color: var(--ink-2); }
+
+  .meter { height: 10px; border-radius: 5px; background: var(--accent-track); overflow: hidden; }
+  .meter > span { display: block; height: 100%; border-radius: 5px; background: var(--accent); }
+  .meter.segmented { display: flex; gap: 3px; background: none; border-radius: 0; }
+  .meter.segmented > span { flex: 1; border-radius: 2px; background: var(--accent-track); }
+  .meter.segmented > .tone-good { background: var(--good); }
+  .meter.segmented > .tone-accent { background: var(--accent); }
+  .meter.segmented > .tone-warning { background: var(--warning); }
+  .meter.segmented > .tone-critical { background: var(--critical); }
+
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(var(--metric-columns, 4), minmax(0, 1fr));
+    gap: 16px 32px;
+    align-content: start;
+  }
+
+  .metric { display: grid; gap: 2px; min-width: 0; }
+  .metric-label { color: var(--muted); font-size: 13px; }
+  .metric-value { font-size: 24px; font-weight: 600; letter-spacing: -.01em; overflow-wrap: anywhere; }
+  .metric-detail { color: var(--ink-2); font-size: 13px; }
+
+  .sections {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+    align-items: start;
+    gap: 20px;
+  }
+
+  .sections.rows { grid-template-columns: minmax(0, 1fr); }
+
+  .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); overflow-x: auto; }
+
+  .tab {
+    appearance: none;
+    background: none;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    padding: 10px 14px;
+    color: var(--muted);
+    font: 500 15px/1.4 var(--font-sans);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .tab:hover { color: var(--ink); }
+  .tab[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+  .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 4px; }
+
+  section { display: grid; gap: 10px; min-width: 0; }
+  .section-wide { grid-column: 1 / -1; }
+  .section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; }
+  h2 { font-size: 17px; font-weight: 600; }
+  .count { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  .list { list-style: none; margin: 0; padding: 0; }
+
+  .list > li {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr) auto;
+    gap: 2px 10px;
+    padding: 10px 14px;
+    border-top: 1px solid var(--line);
+  }
+
+  .list > li:first-child { border-top: 0; }
+  .link-row > .glyph { margin-top: 1px; }
+  .list > li > .pill { align-self: start; }
+
+  .glyph {
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1.5px solid var(--muted);
+    color: var(--muted);
+    font: 700 11px/1 var(--font-sans);
+  }
+
+  .glyph.tone-good { border-color: var(--good); background: var(--good); color: var(--surface); }
+  .glyph.tone-accent { border-color: var(--accent); color: var(--accent); }
+  .glyph.tone-critical { border-color: var(--critical); background: var(--critical); color: var(--surface); }
+  .glyph.tone-warning { border-color: var(--warning); color: var(--warning); }
+
+  .item-body { display: grid; gap: 2px; min-width: 0; }
+  .item-title { font-weight: 500; overflow-wrap: anywhere; }
+  .item-detail { color: var(--ink-2); font-size: 13px; overflow-wrap: anywhere; }
+  .item-meta { font-size: 13px; color: var(--muted); white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; }
+  .status-label { font-size: 13px; color: var(--ink-2); }
+  .is-open .status-label { color: var(--ink); font-weight: 500; }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .options { margin: 4px 0 0; padding-left: 18px; color: var(--ink-2); font-size: 14px; }
+  .options li + li { margin-top: 2px; }
+  .recommend { font-size: 14px; color: var(--ink-2); }
+  .recommend b, .answer b { color: var(--ink); font-weight: 600; }
+
+  .answer {
+    margin-top: 4px;
+    padding: 8px 12px;
+    border-left: 2px solid var(--line);
+    font-size: 14px;
+    color: var(--ink-2);
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+    gap: 12px;
+  }
+
+  .board-column { display: grid; align-content: start; gap: 8px; padding: 12px; }
+
+  .board-head { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; }
+  .board-head .count { margin-left: auto; }
+
+  .card {
+    display: grid;
+    gap: 4px;
+    padding: 10px 12px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+
+  .card-title { font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }
+  .card-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; }
+  .tag { font-size: 12px; color: var(--muted); }
+
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 14px; border-top: 1px solid var(--line); vertical-align: top; }
+  thead th { border-top: 0; color: var(--muted); font-size: 13px; font-weight: 500; }
+  td { font-variant-numeric: tabular-nums; }
+
+  .notes { margin: 0; padding-left: 20px; color: var(--ink-2); display: grid; gap: 6px; }
+  .empty { color: var(--muted); font-size: 14px; padding: 14px 16px; }
+  .error { color: var(--critical); font-weight: 500; }
+
+  .diagram {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .diagram.split { grid-template-columns: auto minmax(300px, 1fr); align-items: start; }
+  .diagram-canvas { display: grid; gap: 12px; min-width: 0; align-content: start; }
+  .diagram-figure { display: grid; justify-items: center; min-height: 120px; overflow-x: auto; }
+  .diagram-figure svg { justify-self: safe center; height: auto; }
+  .diagram-figure .cluster-label foreignObject { overflow: visible; }
+  .diagram-figure .cluster-label div {
+    width: max-content !important;
+    max-width: none !important;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap !important;
+  }
+  .diagram-fallback { margin: 0; padding-left: 18px; color: var(--ink-2); font-size: 14px; }
+  .key-row { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); }
+  .key-row > span { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 12px; height: 12px; border-radius: 3px; border-width: 1.5px; }
+
+  .diagram-steps {
+    list-style: none;
+    margin: 0;
+    padding: 16px 0 0;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: 12px 28px;
+  }
+
+  .diagram.split .diagram-steps { grid-template-columns: minmax(0, 1fr); padding: 0 0 0 28px; border-top: 0; border-left: 1px solid var(--line); }
+  .diagram-steps li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; font-size: 14px; color: var(--ink-2); }
+  .diagram-steps .glyph { border-color: var(--accent); color: var(--accent); }
+
+  .outline { align-items: start; }
+  .outline-group { display: grid; gap: 2px; padding: 12px; }
+  .outline-group h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .outline-group details { border-top: 1px solid var(--line); padding: 8px 2px; }
+  .outline-group details:first-of-type { border-top: 0; }
+  .outline-group summary { cursor: pointer; font-size: 14px; font-weight: 500; margin-left: 16px; }
+  .outline-group summary.tone-good::marker { color: var(--good); }
+  .outline-group summary.tone-warning::marker { color: var(--warning); }
+  .outline-group summary.tone-critical::marker { color: var(--critical); }
+  .outline-group summary.tone-accent::marker { color: var(--accent); }
+  .outline-group details p { margin: 6px 0 0 16px; color: var(--ink-2); font-size: 13px; }
+
+  footer { color: var(--muted); font-size: 13px; }
+
+  @media (max-width: 1000px) {
+    .summary { grid-template-columns: minmax(0, 1fr); }
+    .diagram.split { grid-template-columns: minmax(0, 1fr); }
+    .diagram.split .diagram-steps { padding: 16px 0 0; border-left: 0; border-top: 1px solid var(--line); }
+  }
+
+  @media (max-width: 720px) {
+    main { padding-inline: 16px; padding-block: 20px 48px; }
+    .summary { grid-template-columns: minmax(0, 1fr); padding: 18px; }
+    .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .list > li:not(:has(> .pill)) { grid-template-columns: 22px minmax(0, 1fr); }
+    .item-meta { grid-column: 2; text-align: left; white-space: normal; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .meter > span { transition: width .4s ease-out; }
+  }
+</style>
+
+<main id="dashboard">
+  <header>
+    <p class="updated" id="updated"></p>
+    <div class="title-row">
+      <h1 id="title"></h1>
+      <span id="status"></span>
+    </div>
+    <p class="subtitle" id="subtitle" hidden></p>
+  </header>
+  <nav class="tabs" id="tabs" aria-label="Dashboard pages" hidden></nav>
+  <div class="summary panel" id="summary" hidden>
+    <div class="hero" id="hero" hidden></div>
+    <div class="metrics" id="metrics"></div>
+  </div>
+  <div id="pages"></div>
+  <footer id="footer"></footer>
+</main>
+
+<script type="application/json" id="dashboard-data">__DASHBOARD_DATA__</script>
+<script>
+  (function () {
+    var QUESTION_STATES = {
+      open: { glyph: "?", tone: "warning", label: "Waiting on you" },
+      answered: { glyph: "✓", tone: "good", label: "Answered", quiet: true }
+    };
+    var OUTLINE_OPEN_LIMIT = 2;
+    var REFERENCE_BOUNDARY = "A-Za-z0-9_/-";
+    var HTML_NAMESPACE = "http://www.w3.org/1999/xhtml";
+    var referenceLinks = null;
+
+    function el(tag, className, text) {
+      var node = document.createElement(tag);
+
+      if (className) node.className = className;
+      if (text !== undefined && text !== null && text !== "") node.textContent = String(text);
+
+      return node;
+    }
+
+    function safeUrl(value) {
+      try {
+        var url = new URL(String(value));
+
+        return url.protocol === "https:" || url.protocol === "http:" ? url.href : null;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function link(label, url) {
+      var href = safeUrl(url);
+
+      if (!href) return el("span", "", label);
+
+      var anchor = el("a", "", label);
+
+      anchor.href = href;
+      anchor.target = "_blank";
+      anchor.rel = "noopener noreferrer";
+
+      return anchor;
+    }
+
+    function pill(label, tone) {
+      var node = el("span", "pill" + (tone ? " tone-" + tone : ""));
+
+      node.append(el("span", "dot"), el("span", "", label));
+
+      return node;
+    }
+
+    function relativeTime(iso) {
+      var then = new Date(iso);
+
+      if (isNaN(then)) return "";
+
+      var minutes = Math.round((Date.now() - then.getTime()) / 60000);
+
+      if (minutes < 1) return "Updated just now";
+      if (minutes < 60) return "Updated " + minutes + " min ago";
+      if (minutes < 1440) return "Updated " + Math.round(minutes / 60) + " h ago";
+
+      return "Updated " + then.toLocaleDateString();
+    }
+
+    function statusLabel(state) {
+      return el("span", state.quiet ? "visually-hidden" : "status-label", state.label);
+    }
+
+    function row(state, extraClass) {
+      var item = el("li", extraClass || "");
+      var glyph = el("span", "glyph" + (state.tone ? " tone-" + state.tone : ""), state.glyph);
+
+      glyph.setAttribute("aria-hidden", "true");
+      item.append(glyph);
+
+      return item;
+    }
+
+    function questionRow(question) {
+      var state = QUESTION_STATES[question.status];
+      var item = row(state, "is-" + question.status);
+      var body = el("div", "item-body");
+
+      body.append(el("span", "item-title", question.question), statusLabel(state));
+
+      if (question.context) body.append(el("span", "item-detail", question.context));
+
+      if (question.options && question.status !== "answered") {
+        var options = el("ol", "options");
+
+        question.options.forEach(function (option) { options.append(el("li", "", option)); });
+        body.append(options);
+      }
+
+      if (question.recommendation && question.status !== "answered") {
+        var recommend = el("p", "recommend");
+
+        recommend.append(el("b", "", "Recommended: "), document.createTextNode(question.recommendation));
+        body.append(recommend);
+      }
+
+      if (question.answer) {
+        var answer = el("p", "answer");
+
+        answer.append(el("b", "", "Your answer: "), document.createTextNode(question.answer));
+        body.append(answer);
+      }
+
+      item.append(body);
+
+      if (question.meta) item.append(el("span", "item-meta", question.meta));
+
+      return item;
+    }
+
+    function linkRow(entry) {
+      var item = row({ glyph: "↗", tone: "" }, "link-row");
+      var body = el("div", "item-body");
+      var title = el("span", "item-title");
+
+      title.append(link(entry.label, entry.url));
+      body.append(title);
+
+      if (entry.detail) body.append(el("span", "item-detail", entry.detail));
+
+      item.append(body);
+
+      if (entry.status) item.append(pill(entry.status, entry.tone));
+
+      return item;
+    }
+
+    function listSection(items, renderItem) {
+      var list = el("ul", "list panel");
+
+      items.forEach(function (entry) { list.append(renderItem(entry)); });
+
+      return list;
+    }
+
+    function tableSection(section) {
+      var wrap = el("div", "table-wrap panel");
+      var table = el("table");
+      var head = el("thead");
+      var headRow = el("tr");
+      var tbody = el("tbody");
+
+      section.columns.forEach(function (column) { headRow.append(el("th", "", column)); });
+      head.append(headRow);
+
+      section.rows.forEach(function (cells) {
+        var tr = el("tr");
+
+        cells.forEach(function (cell) { tr.append(el("td", "", cell)); });
+        tbody.append(tr);
+      });
+
+      table.append(head, tbody);
+      wrap.append(table);
+
+      return wrap;
+    }
+
+    function boardSection(section) {
+      var board = el("div", "card-grid");
+
+      section.columns.forEach(function (column) {
+        var node = el("div", "panel board-column");
+        var head = el("div", "board-head" + (column.tone ? " tone-" + column.tone : ""));
+
+        head.append(el("span", "dot"), el("span", "", column.title), el("span", "count", column.items.length));
+        node.append(head);
+
+        if (!column.items.length) node.append(el("p", "empty", "Nothing here."));
+
+        column.items.forEach(function (entry) {
+          var card = el("div", "card");
+          var title = el("span", "card-title");
+
+          title.append(entry.url ? link(entry.title, entry.url) : document.createTextNode(entry.title));
+          card.append(title);
+
+          if (entry.detail) card.append(el("span", "item-detail", entry.detail));
+
+          if (entry.tag || entry.meta) {
+            var foot = el("div", "card-foot");
+
+            foot.append(el("span", "tag", entry.tag), el("span", "item-meta", entry.meta));
+            card.append(foot);
+          }
+
+          node.append(card);
+        });
+
+        board.append(node);
+      });
+
+      return board;
+    }
+
+    __DIAGRAM_SCRIPT__
+
+    function escapeRegExp(text) {
+      return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    function compileReferences(entries) {
+      var urls = Object.create(null);
+
+      entries.forEach(function (entry) {
+        if (safeUrl(entry.url)) urls[entry.text] = entry.url;
+      });
+
+      var texts = Object.keys(urls).sort(function (first, second) { return second.length - first.length; });
+
+      if (!texts.length) return null;
+
+      var alternatives = texts.map(escapeRegExp).join("|");
+
+      return {
+        urls: urls,
+        pattern: new RegExp("(?<![" + REFERENCE_BOUNDARY + "])(?:" + alternatives + ")(?![" + REFERENCE_BOUNDARY + "])", "g")
+      };
+    }
+
+    function linkReferences(root) {
+      if (!referenceLinks) return;
+
+      var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      var textNodes = [];
+
+      while (walker.nextNode()) {
+        var parent = walker.currentNode.parentElement;
+
+        if (parent.namespaceURI === HTML_NAMESPACE && !parent.closest("a, button")) textNodes.push(walker.currentNode);
+      }
+
+      textNodes.forEach(function (node) {
+        var text = node.nodeValue;
+        var parts = [];
+        var start = 0;
+
+        Array.from(text.matchAll(referenceLinks.pattern)).forEach(function (match) {
+          parts.push(document.createTextNode(text.slice(start, match.index)), link(match[0], referenceLinks.urls[match[0]]));
+          start = match.index + match[0].length;
+        });
+
+        if (!parts.length) return;
+
+        parts.push(document.createTextNode(text.slice(start)));
+        node.replaceWith.apply(node, parts);
+      });
+    }
+
+    function renderPages(pages, summary) {
+      var tabs = document.getElementById("tabs");
+      var holder = document.getElementById("pages");
+      var panels = [];
+      var buttons = [];
+
+      function show(position) {
+        panels.forEach(function (panel, index) { panel.node.hidden = index !== position; });
+        buttons.forEach(function (button, index) { button.setAttribute("aria-pressed", String(index === position)); });
+
+        if (summary) summary.hidden = position !== 0;
+
+        panels[position].draws.splice(0).forEach(function (draw) { draw(); });
+      }
+
+      pages.forEach(function (page, position) {
+        var panel = { node: el("div", "sections " + (page.layout || "columns")), draws: [] };
+        var button = el("button", "tab", page.title);
+
+        page.sections.forEach(function (section) { panel.node.append(renderSection(section, panel.draws)); });
+
+        panels.push(panel);
+        holder.append(panel.node);
+
+        button.type = "button";
+        button.addEventListener("click", function () { show(position); });
+
+        buttons.push(button);
+        tabs.append(button);
+      });
+
+      tabs.hidden = pages.length < 2;
+      show(0);
+    }
+
+    function questionCount(section) {
+      var open = section.items.filter(function (question) { return question.status !== "answered"; }).length;
+
+      return open ? open + " waiting on you" : "all answered";
+    }
+
+    function notesSection(section) {
+      var notes = el("ul", "notes");
+
+      section.items.forEach(function (note) { notes.append(el("li", "", note)); });
+
+      return notes;
+    }
+
+    function outlineSection(section) {
+      var outline = el("div", "card-grid outline");
+
+      section.groups.forEach(function (group) {
+        var node = el("div", "panel outline-group");
+
+        node.append(el("h3", "", group.title));
+
+        group.items.forEach(function (item) {
+          var details = el("details");
+
+          details.open = group.items.length <= OUTLINE_OPEN_LIMIT;
+          details.append(el("summary", item.tone ? "tone-" + item.tone : "", item.title), el("p", "", item.detail));
+          node.append(details);
+        });
+
+        outline.append(node);
+      });
+
+      return outline;
+    }
+
+    var SECTIONS = {
+      board: { wide: true, render: boardSection },
+      table: { wide: true, render: tableSection },
+      diagram: { wide: true, render: diagramSection },
+      questions: { render: function (section) { return listSection(section.items, questionRow); }, count: questionCount },
+      links: { render: function (section) { return listSection(section.items, linkRow); } },
+      notes: { render: notesSection },
+      outline: { wide: true, render: outlineSection }
+    };
+
+    function renderSection(section, draws) {
+      var kind = SECTIONS[section.type];
+      var node = el("section", kind.wide ? "section-wide" : "");
+      var head = el("div", "section-head");
+
+      head.append(el("h2", "", section.title), el("span", "count", kind.count ? kind.count(section) : ""));
+      node.append(head, kind.render(section, draws));
+
+      return node;
+    }
+
+    function render(data) {
+      document.getElementById("title").textContent = data.title;
+
+      var updated = document.getElementById("updated");
+
+      function tick() { updated.textContent = relativeTime(data.updated_at); }
+
+      tick();
+      setInterval(tick, 60000);
+
+      if (data.status) document.getElementById("status").append(pill(data.status.label, data.status.tone));
+
+      if (data.subtitle) {
+        var subtitle = document.getElementById("subtitle");
+
+        subtitle.textContent = data.subtitle;
+        subtitle.hidden = false;
+      }
+
+      var metrics = data.metrics || [];
+
+      if (data.progress) {
+        var hero = document.getElementById("hero");
+        var percent = Math.round(data.progress.value * 100);
+        var segments = data.progress.segments;
+        var meter = el("div", segments ? "meter segmented" : "meter");
+
+        if (segments) {
+          segments.forEach(function (segment) {
+            var block = el("span", segment.tone ? "tone-" + segment.tone : "");
+
+            block.title = segment.label;
+            meter.append(block);
+          });
+        } else {
+          var fill = el("span");
+
+          fill.style.width = percent + "%";
+          meter.append(fill);
+        }
+
+        meter.setAttribute("role", "meter");
+        meter.setAttribute("aria-valuemin", "0");
+        meter.setAttribute("aria-valuemax", "100");
+        meter.setAttribute("aria-valuenow", String(percent));
+        meter.setAttribute("aria-label", data.progress.label);
+
+        hero.append(el("span", "metric-label", data.progress.label), el("span", "hero-value", percent + "%"), meter);
+
+        if (data.progress.detail) hero.append(el("span", "hero-detail", data.progress.detail));
+
+        hero.hidden = false;
+      }
+
+      var metricsNode = document.getElementById("metrics");
+
+      metricsNode.style.setProperty("--metric-columns", String(Math.max(1, Math.min(metrics.length, 4))));
+
+      metrics.forEach(function (metric) {
+        var node = el("div", "metric");
+
+        node.append(el("span", "metric-label", metric.label), el("span", "metric-value", metric.value));
+
+        if (metric.detail) node.append(el("span", "metric-detail", metric.detail));
+
+        metricsNode.append(node);
+      });
+
+      referenceLinks = compileReferences(data.references || []);
+
+      renderPages(data.pages, data.progress || metrics.length ? document.getElementById("summary") : null);
+
+      if (data.footer) document.getElementById("footer").textContent = data.footer;
+
+      linkReferences(document.getElementById("dashboard"));
+    }
+
+    try {
+      render(JSON.parse(document.getElementById("dashboard-data").textContent));
+    } catch (error) {
+      var main = document.getElementById("dashboard");
+
+      main.replaceChildren(el("p", "error", "This dashboard's data could not be read: " + error.message));
+    }
+  })();
+</script>

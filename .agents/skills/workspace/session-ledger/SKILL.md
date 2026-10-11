@@ -65,6 +65,16 @@ identity, never a second authoritative copy of its records.
      context needed to resume: decisions and constraints, affected callers, dependencies, check
      results and their validity conditions, open questions and next actions. Choose useful `data`
      fields for the record; local work is never an externally verified artifact claim.
+   - For a plan put to the user, record a `plan` entry: its title, goal, status (`proposed`,
+     `approved`, `complete` or `withdrawn`) with the time it was approved, which steps overlap,
+     what it needs from the user with its time, and its ordered steps, each with a title, status
+     (`next`, `active`, `done`, `blocked` or `skipped`), wall-clock estimate, and the observed
+     start and finish times once known. Change a step's status when the work changes it, with an
+     observation for the transition; a follow-up plan is an entry of its own.
+   - For a question put to the user, record a `question` entry: the question, its options, the
+     recommendation, the work that depends on it, its status (`open`, `evidence_pending`,
+     `answered` or `withdrawn`), and the user's answer in their words with when it was given.
+     Keep an assumption made without the user as an assumption, never as an answer.
    - For active work, record its owner, next action, dependencies and concrete blockers so a handoff
      can resume it without reconstructing the task. Preserve reusable check evidence with the input
      or head it covers, and invalidate only what a change affects. When tracking delay, distinguish
@@ -101,8 +111,8 @@ identity, never a second authoritative copy of its records.
 
 Store this YAML document in the private task file and return its records to the calling workflow,
 not as a user-facing report. Task metadata carries only the locator and task identity.
-Keep every entry's envelope fixed; `kind` distinguishes records such as `artifact`,
-`guidance_correction` or `decision`, and both `data` mappings hold only the facts that record needs.
+Keep every entry's envelope fixed; `kind` distinguishes records such as `artifact`, `plan`,
+`question`, `guidance_correction` or `decision`, and both `data` mappings hold only the facts that record needs.
 Keep `id` stable and unique within the task. Use `observations: []` when none have been recorded.
 
 ```yaml

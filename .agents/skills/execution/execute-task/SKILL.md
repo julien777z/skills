@@ -24,6 +24,7 @@ built; **Execution** builds it and hands the user a pull request to review.
 - `rewrite-git-history` — one commit per material change before the pull request is sent for review.
 - `edit-skill` — process the task's recorded guidance corrections at **Completion**.
 - `list-prs` — the task's pull requests for the ready-for-review message.
+- `session-ledger` — keep the plan and its steps' status current as they change.
 
 ## One Run Per Task
 
@@ -135,6 +136,15 @@ A follow-up is planned on its own, and only the work it changes waits for it.
 - A follow-up on a pull request already sent for review pushes to the same draft, and its
   **Completion** folds each change into the history under `rewrite-git-history` rather than
   rebuilding it.
+
+### Progress Record
+
+- **The ledger holds the plan's current state, so nothing about progress depends on what the chat
+  still remembers.** When a plan goes to the user, record it with `session-ledger` as a `plan`
+  entry with its steps, estimates, overlaps and what it needs from the user. Update it when the
+  state changes, not when a report is due: approval, a step starting, finishing, blocking or being
+  skipped, a follow-up's plan. A resumed session, a handoff and a progress view all read this
+  record rather than reconstructing it.
 
 ## Execution
 
