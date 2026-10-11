@@ -108,7 +108,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`clerk-nextjs-patterns`](.agents/skills/web/clerk-nextjs-patterns/SKILL.md) — Advanced Next.js patterns - middleware, Server Actions, caching with Clerk.
 - [`code-simplify`](.agents/skills/review/code-simplify/SKILL.md) — Strictly review the branch's changes for reuse, simplification, abstraction quality, and maintainability, then fix the issues.
 - [`coordinate-repositories`](.agents/skills/workspace/coordinate-repositories/SKILL.md) — Carry one task across selected repositories and user-level installations.
-- [`cr`](.agents/skills/git/cr/SKILL.md) — Run the full review-and-fix workflow for a pull request when a user enters `/cr`, asks to run CR, or says "CR".
+- [`cr`](.agents/skills/git/cr/SKILL.md) — Run the full review-and-fix workflow only on a fresh explicit CR invocation or a fresh scoped delegation from user-invoked merge-pr or active edit-skill Ledger Processing.
 - [`current-changes`](.agents/skills/git/current-changes/SKILL.md) — Summarize the branch's changes against the default branch with links to the code.
 - [`database-migrations`](.agents/skills/python/database-migrations/SKILL.md) — Guide for authoring, rebasing, and troubleshooting Alembic database migrations, including how to avoid and fix branched migration graphs.
 - [`defer-scope`](.agents/skills/deferrals/defer-scope/SKILL.md) — Record unfinished work in the repository it affects, or read its active records.
