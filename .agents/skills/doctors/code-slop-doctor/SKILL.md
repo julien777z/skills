@@ -16,7 +16,7 @@ something it does; this doctor finds the ones that do nothing and takes them out
 - `pre-production` — the target contract is the authority for every removal; nothing is kept for an
   obsolete owned contract, and a removal that changes behavior is a surfaced trade-off. A doctor run
   sets its own scope, so `pre-production`'s incidental size budget does not apply to it.
-- `code-simplify` — the ownership analysis that decides where shared code lives, and the merge rubric
+- `code-simplify` — the ownership analysis that decides where shared code lives, and its **Reuse, Ownership And Deletions** rubric
   when two implementations collapse into one.
 - `test-fixture` — the per-test checks the test phase runs.
 - `defer-scope` — report a migration-test deferral record whose path no longer exists.
@@ -34,8 +34,9 @@ The run works in five phases, in this order, and each phase is one batch:
 3. **Migrations** — every migration chain, its registries, backfills and tooling.
 4. **Build, CI and repository root** — container files, workflows, scripts, tool configuration and
    root files.
-5. **Tests** — after the code they test has settled, because removing a layer removes or moves the
-   tests that only exercised it.
+5. **Tests** — after the code they test has settled. A test an earlier phase's change breaks — one
+   importing a moved path, one exercising only a removed layer — is repaired or deleted in that
+   phase's batch, so every batch passes; this phase audits the rest.
 
 A phase the repository has nothing for is skipped and reported. A scope argument selects phases,
 lenses, or paths; a run scoped to one lens or phase applies only that lens or phase.
@@ -147,8 +148,7 @@ One question answered twice.
 The remedy is one owner, placed by `code-simplify`'s ownership analysis — the shared package every
 consumer reads where more than one deployable needs it — with the copies and the bridge deleted and
 generated types used directly or derived from. Left alone: a generated mirror; a demonstrated
-dependency, domain or contract boundary; a provider's boundary model where the provider's shape genuinely differs and `pre-production`'s third-party rule
-keeps it; two contract models, which are `schema-doctor`'s.
+dependency, domain or contract boundary; two contract models, which are `schema-doctor`'s.
 
 ### Divergent Siblings
 
@@ -165,7 +165,7 @@ Things of one kind built in different shapes.
 
 The remedy is one structure per kind: the shared shape lives in the shared package and each sibling
 supplies only what differs, its name, port, servicers or routes. The slot's best existing
-implementation becomes the shared one under `code-simplify`'s merge rubric. Left alone: a slot whose
+implementation becomes the shared one under `code-simplify`'s **Reuse, Ownership And Deletions**. Left alone: a slot whose
 difference a contract requires, with the contract named.
 
 ### Scattered Structure
@@ -336,13 +336,15 @@ budgets, cross-suite layout and coverage maps are `tests-doctor`'s and are named
   collapse — follows `pre-production`'s **Product State** and **Target Contract** and the
   repository's database-migration skill, never a question.
 - The user decides what `pre-production`'s **Trade-Offs Are Surfaced, Never Enforced** reserves
-  for them, and a contract a consumer outside the user's control speaks.
+  for them. A contract a consumer outside the user's control speaks stays as it is and is reported,
+  under its **Target Contract**.
 - Fix the reader or the writer, never both. A tolerance that hides a wiring defect is a confirmed
   defect and is fixed. An unsupported historical record is never a finding and never receives a
   fallback.
 - A migration correction is made in place or stacked according to applied state, stacked when that
   state cannot be established; a data-loss path with no recovery is a blocker to report.
-- An even split between two sibling structures equally fit for the kind is a user decision.
+- An even split between two sibling structures equally fit for the kind goes to the one leaving the
+  fewest mechanisms and moving the fewest importers, stated in the pull request.
 - A finding another doctor owns — a dependency, a configuration name, documentation, a contract
   model, a deep test audit — is not fixed here; the report names it with that doctor.
 
@@ -353,7 +355,7 @@ reviewer tries to reach each removed layer, branch and alias from a live caller,
 of a moved or renamed module still points at its old path, replays every chain the run touched,
 confirms a stacked migration correction did not narrow the approved downgrade or survivorship
 coverage, challenges every revision kept as applied without version-table evidence, and confirms
-that the repository's tests pass on each batch with behavior unchanged.
+that the repository's tests pass on each batch.
 
 ## Delivery
 

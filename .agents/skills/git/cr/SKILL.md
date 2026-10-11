@@ -336,7 +336,7 @@ Hold that state in the session; never write it to a checkpoint file. The pull re
 
 GitHub head lag, a retryable rate limit, and any state `land-pr` is still waiting on are nonterminal.
 Conclude only after every selected pull request is verified merged, after each exact-head review
-completes and its draft is left for the user when merge is withheld, or on the user's explicit stop or handoff. A
+completes and its unit ended at its accepted head, its pull request left draft, when merge is withheld, or on the user's explicit stop or handoff. A
 concrete failed gate or needed user decision remains active work under the global rules' **Tools and
 environments** pending-result boundary; reporting it does not close CR. A question already recorded
 as an admitted deferral is answered by that record, and the run continues without it.
