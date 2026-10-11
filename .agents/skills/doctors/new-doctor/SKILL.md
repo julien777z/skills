@@ -31,8 +31,8 @@ not a dependency this skill runs, so it is named here and not below.
    policy it applies, then any repository-specific skill referred to by role); `## Inventory`,
    naming any measurement the protocol takes once before fan-out; `## Lenses`, one `###` per lens
    stating the defect shape, the evidence that establishes it, and the remedy; `## Dispositions`,
-   in order, naming the user decisions this domain adds and what the cross-cutting reviewer
-   compares; `## Report Additions`. A decision a dependency already settles — breaking an owned
+   in order, naming the user decisions this domain adds, what the cross-cutting reviewer compares
+   and what the final reviewer challenges; `## Report Additions`. A decision a dependency already settles — breaking an owned
    contract, what stored data owes, which product changes are the user's — is cited by its
    section in Dispositions, never restated or reclassified. A reviewer partition the domain dictates may take its own
    heading; nothing that restates a protocol section may.
