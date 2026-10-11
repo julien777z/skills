@@ -1,6 +1,6 @@
 ---
 name: code-slop-doctor
-description: Strip the complexity a codebase does not need — pass-through layers, one-case abstractions, duplicates, divergent siblings, legacy paths, and surplus migrations, build files, configuration names and dependencies. Use to deslop a repository or one of its phases, lenses or paths.
+description: Strip the complexity a codebase does not need and the code a reviewer reads as generated slop — pass-through layers, one-case abstractions, duplicates, divergent siblings, legacy paths, tangled or padded code, and surplus migrations, build files, configuration names and dependencies. Use to deslop a repository or one of its phases, lenses or paths.
 short_description: 'Remove unneeded layers, abstractions, duplicates, legacy paths, configuration names and dependencies across a repository.'
 disable-model-invocation: true
 ---
@@ -8,7 +8,8 @@ disable-model-invocation: true
 # Code Slop Doctor
 
 Every layer, abstraction, copy and branch a reader has to get through must earn its place by
-something it does; this doctor finds the ones that do nothing and takes them out.
+something it does, and every line should read as a careful author wrote it; this doctor finds what
+does nothing or makes a reader wince, and takes it out.
 
 ## Dependencies
 
@@ -198,6 +199,38 @@ One meaning spelled out many times.
 
 The remedy is one owned definition — a component or style token, the existing helper, one
 configuration source, the enum itself — and every site reading it.
+
+### Reads As Slop
+
+Code a reviewer recognizes as generated: correct, and still a shape no careful author writes. The
+test is the reader's: would someone opening this file wince? Every check below makes that test
+concrete, and a shape the test catches that no check names is still a finding.
+
+- **Tangled control flow** — nesting three or more levels deep; nested loops that a lookup map, a
+  set or one pass replaces; an if/else ladder that a table, a match or early returns flatten; a
+  boolean parameter that switches a function between two behaviors.
+- **Narrating comments and docs** — a comment restating the line below it; a docstring repeating
+  the signature; banner or section-divider comments; a comment explaining what a better name would
+  show.
+- **Ceremony** — a temporary assigned and returned on the next line; a branch returning `True` or
+  `False` to restate its own condition; comparing to `True`, `False` or `None` with `==`; a
+  hand-written loop that a comprehension, builtin or standard-library call already does; a helper
+  re-implementing the standard library.
+- **Defensive noise** — a try/except around code that cannot raise what it catches; catch, log and
+  re-raise repeated at each layer.
+- **Placeholder names** — `data`, `result`, `temp`, `info`, `helper`, `manager` or `handler` naming
+  something specific; `_new`, `_v2`, `_final` or `_fixed` suffixes; a name saying how rather than
+  what.
+- **Padding** — a function past about sixty lines doing several separable phases; log lines
+  narrating normal flow; emoji or exclamation in comments and logs; a to-do placeholder in shipped
+  code.
+
+The remedy is the plain shape a careful author writes: flatten, look up, return early, inline,
+delete the comment and rename instead, split the function at its phases. Behavior stays exactly as
+it was, and the repository's tests prove it before and after; a shape no test covers gets one
+first. Left alone: a nested loop over small fixed sets; a comment recording a third-party quirk or
+a reason the code cannot show; a long function whose phases share state a split would have to
+pass around.
 
 ### Tolerated Past
 
@@ -428,5 +461,6 @@ confirms that the repository's tests pass on each batch.
   the reason; the readers traced for each removal; for every field no deployment sets, its outcome;
 - per manifest: declarations removed, added and re-ranged; each lockfile regenerated with its
   command; audit tools wired in or removed;
+- each shape **Reads As Slop** rewrote, by check, with the test proving its behavior unchanged;
 - each test removed or repaired with the layer it exercised;
 - each finding another doctor owns, named with that doctor.
