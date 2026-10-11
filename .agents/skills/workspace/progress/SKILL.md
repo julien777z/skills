@@ -14,6 +14,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 - `session-ledger` — read the task's records and keep the dashboard's own.
 - `list-prs` — find the task's pull requests.
 - `render-dashboard` — render the spec this skill builds and deliver the page.
+- `execute-task` — its already-active run owns the saved next action after reporting; standalone reporting does not start a run.
 
 ## Workflow
 
@@ -30,11 +31,17 @@ and deliver the same dashboard again on every request so the user keeps one page
    reuse them while every head is unchanged; otherwise read the pull requests' diffs, write them
    again, and record them with the new heads.
 4. **Build the spec** in the shape below, with `updated_at` set to now.
-5. **Render and deliver** through `render-dashboard`. When the ledger records an earlier delivery of
-   this task's dashboard, update that same page; otherwise record a `dashboard` entry with the page
-   path and any published link, so the next request finds it.
-6. **Reply** with the link or file and one line: percent complete, time remaining, and how many
-   questions wait on the user, each the figure the dashboard shows.
+5. **Select the delivery route, then render.** Before invoking `render-dashboard`, choose the
+   host's ongoing-work channel when authorized work remains, or the normal reply route for
+   standalone reporting. Pass that route to the renderer for its delivery. When the ledger records
+   an earlier delivery of this task's dashboard, update that same page; otherwise record a
+   `dashboard` entry with the page path and any published link, so the next request finds it.
+6. **Report and return to the caller.** Through the selected route, send the link or file and one
+   line: percent complete, time remaining, and how many questions wait on the user, each the figure
+   the dashboard shows. When reporting interrupts unfinished authorized work, carry out the active
+   run's saved next action under `execute-task`'s **Work You Have Already Named**. A report without
+   that action does not complete this step; when an awaited result holds the action, retain that
+   owner's wait and resume route.
 
 ## Spec
 
