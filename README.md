@@ -75,11 +75,9 @@ These run only when you ask for them by name, such as `/refactor`.
 - [`assume-library-update`](.agents/skills/execution/assume-library-update/SKILL.md) — Write consuming code for a change in one of your libraries before the library update is available.
 - [`ci-watch`](.agents/skills/git/ci-watch/SKILL.md) — Watch a pull request, resolve review findings, and check that CI passes.
 - [`code-review`](.agents/skills/review/code-review/SKILL.md) — Code review a pull request or the current working changes with independent reviewer lenses, validated findings, and severity-rated results.
-- [`code-slop-doctor`](.agents/skills/doctors/code-slop-doctor/SKILL.md) — Remove unneeded layers, abstractions, duplicates, divergent structure and legacy paths across a repository.
-- [`config-doctor`](.agents/skills/doctors/config-doctor/SKILL.md) — Find configuration names that disagree across code and deployments, or are no longer used.
+- [`code-slop-doctor`](.agents/skills/doctors/code-slop-doctor/SKILL.md) — Remove unneeded layers, abstractions, duplicates, legacy paths, configuration names and dependencies across a repository.
 - [`continue-handoff`](.agents/skills/workspace/continue-handoff/SKILL.md) — Pick up work another session handed off.
 - [`defer-execution`](.agents/skills/deferrals/defer-execution/SKILL.md) — Schedule separate work on its own branch, either now or after the current pull request merges.
-- [`dependency-doctor`](.agents/skills/doctors/dependency-doctor/SKILL.md) — Reconcile declared dependencies with what the code imports and the checks invoke, for every language the repository builds.
 - [`docs-doctor`](.agents/skills/doctors/docs-doctor/SKILL.md) — Find and fix documentation that no longer matches the code.
 - [`execute-defer-scope`](.agents/skills/deferrals/execute-defer-scope/SKILL.md) — Review and resolve recorded deferred work for a chosen issue, path, or pull request.
 - [`grade-plans`](.agents/skills/execution/grade-plans/SKILL.md) — Compare, grade, rate, rank, or choose between two implementation plans written for the same goal or original agent prompt.
