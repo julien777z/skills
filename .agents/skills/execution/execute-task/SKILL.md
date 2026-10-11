@@ -145,6 +145,10 @@ A follow-up is planned on its own, and only the work it changes waits for it.
   state changes, not when a report is due: approval, a step starting, finishing, blocking or being
   skipped, a follow-up's plan. A resumed session, a handoff and a progress view all read this
   record rather than reconstructing it.
+- **A step estimated over 30 minutes is recorded with its parts**: bounded pieces of that step's
+  work, each with its own estimate, together adding up to the step's. Mark each part done as it
+  finishes, so recorded progress moves while a long step runs. The plan the user approves keeps
+  its numbered steps; the parts live in the record.
 
 ## Execution
 
