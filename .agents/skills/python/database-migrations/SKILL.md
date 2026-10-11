@@ -8,19 +8,21 @@ short_description: 'Guide for authoring, rebasing, and troubleshooting Alembic d
 
 Read the repository's migration layouts, runner commands, CI jobs, and fixture ownership from its project guidance, opening every `.agents/references/` file its `project.md` points to, before applying this policy. Resolve every role below through it; do not invent local paths.
 
+## Dependencies
+
+- `pre-production` — owns affected-data retention classification before migration planning.
+
 ## Data Scope
 
-- Before choosing a backfill, recovery store, or stored-format transition, establish which affected
-  values must survive from the user's explicit instructions and repository data policy. Schemas,
-  audit columns, and generated migration-test rows do not establish real users or retained evidence.
+Read and apply `pre-production`'s **Product State** before selecting migration mechanisms, including
+on direct invocation. Reuse an already-established affected-data scope without restarting its
+migration workflow.
+
 - When affected data is explicitly nonexistent or disposable, implement and validate the target
   schema without inventing a preservation backfill, recovery store, or legacy reader. Any needed
   reset remains an explicit operational action under that policy; it is not runtime reconciliation.
   Keep the revision chain, destructive-operation declarations, and configured replay tests.
-- Apply the retained-data requirements below when affected values must survive. An environment
-  label, a small row count, or an assumption that records are dummy data never settles that choice.
-  If retention is unresolved or concrete evidence conflicts with the stated scope, resolve that
-  issue before discarding values; do not query an invented environment or reopen a settled choice.
+- When affected values must survive, apply the retained-data requirements below.
 
 ## Structure
 
@@ -276,7 +278,7 @@ or
       have no application consumers
 - [ ] A temporary table's cleanup migration removes its ORM metadata registration in the same change
 - [ ] `downgrade()` reverses every `upgrade()` step in the correct order (indexes before columns)
-- [ ] No manual edits to auto-generated migration files
+- [ ] Corrections to auto-generated revisions follow **Applied Is What Makes History**
 - [ ] Destructive operations, rewrites, and backfills are declared in
       the project's survivorship policy registry with per-row verifiers and exact acknowledgments
 - [ ] Every inserted background job has the declared migration contract; a phased release holds it until a compatible worker activates it
