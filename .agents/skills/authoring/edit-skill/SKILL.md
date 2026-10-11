@@ -260,7 +260,11 @@ so the user's review of the source pull request overlaps it.
      rules and skills by its subject, required action and opposite disposition. Read the complete
      changed skill or rule and its supporting files, plus relevant sections in other skills, rules,
      callers and dependencies. Apply the quality reference's conflict criteria. Resolve competing instructions
-     at their owners rather than adding a reminder beside them. Record the searches, sources read
+     at their owners rather than adding a reminder beside them. A new skill or section is checked
+     decision by decision, not as one instruction: list each decision it makes — who decides, act or
+     ask, keep or remove, stop or continue — and read the section of the dependency or rule that
+     owns that decision beside it. Where they differ, or the new text paraphrases the owner, replace
+     it with a citation of the owner's section. Record the searches, sources read
      and each resolution, or the evidence for a clean result. Repeat this check for later wording
      changes before acceptance and smoke tests; an earlier clean result does not cover a new edit.
    - Update existing files in place and report any structural changes. Before delivery, follow the
@@ -365,8 +369,8 @@ so the user's review of the source pull request overlaps it.
       none, onto a branch from the freshly fetched default branch with a new pull request, under the GitHub rule's **Branches and Pull Requests** — never onto a
       source branch, the one checked out included. Commit the `.agents` files, never a provider
       mirror, and push each step once `execute-task`'s **Pre-Push Gate** checks pass to a draft pull
-      request; steps 3–4 are the complete-diff pass its **Completion** runs, and step 7's `land-pr` takes
-      the pull request out of draft. None of that waits to be asked: the decision was made when the edit was requested, and
+      request; steps 3–4 are the complete-diff pass its **Completion** runs, and step 7's `land-pr` merges it,
+      taking it out of draft as the merge's first step. None of that waits to be asked: the decision was made when the edit was requested, and
       a pull request left open keeps every later session working from the guidance this change
       replaced. A source fix required by step 3 is source work: it goes onto the source pull request
       the work continues in its repository under the same rule and merges as that work does.
