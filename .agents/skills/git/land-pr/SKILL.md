@@ -34,10 +34,10 @@ The caller supplies the repository, the pull request, the head SHA its final acc
 affected behaviors its local tests already cover, the rule that decides what a fix made here
 reopens in its own review, and whether every hosted check on the head is required rather than
 only the coverage local tests could not establish. It also supplies each validation exclusion: a
-current-user direction to leave a named test or check alone, a baseline exclusion established by `execute-task`'s **Encountered Issues** classification with its default-branch
-evidence, or evidence that a hosted runner or provider cancellation meets the GitHub rule's
-pre-validation and local-coverage conditions. A caller with no
-such rule has each fix's diff judged the way it judged the accepted head before the gate repeats.
+current-user direction to leave a named test or check alone, a baseline exclusion established by
+`execute-task`'s **Encountered Issues** classification with its default-branch evidence, or
+evidence that a hosted runner or provider cancellation meets the GitHub rule's pre-validation and
+local-coverage conditions. A caller with no such rule has each fix's diff judged the way it judged the accepted head before the gate repeats.
 
 ## Transport
 

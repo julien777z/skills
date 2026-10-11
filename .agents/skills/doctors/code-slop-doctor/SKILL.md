@@ -16,8 +16,8 @@ something it does; this doctor finds the ones that do nothing and takes them out
 - `pre-production` — the target contract is the authority for every removal; nothing is kept for an
   obsolete owned contract, and a removal that changes behavior is a surfaced trade-off. A doctor run
   sets its own scope, so `pre-production`'s incidental size budget does not apply to it.
-- `code-simplify` — the ownership analysis that decides where shared code lives, and its **Reuse, Ownership And Deletions** rubric
-  when two implementations collapse into one.
+- `code-simplify` — the ownership analysis that decides where shared code lives, and its **Reuse,
+  Ownership And Deletions** rubric when two implementations collapse into one.
 - `test-fixture` — the per-test checks the test phase runs.
 - `defer-scope` — report a migration-test deferral record whose path no longer exists.
 
@@ -36,7 +36,7 @@ The run works in five phases, in this order, and each phase is one batch:
    root files.
 5. **Tests** — after the code they test has settled. A test an earlier phase's change breaks — one
    importing a moved path, one exercising only a removed layer — is repaired or deleted in that
-   phase's batch, so every batch passes; this phase audits the rest.
+   phase's batch under **Test Slop**'s remedy, so every batch passes; this phase audits the rest.
 
 A phase the repository has nothing for is skipped and reported. A scope argument selects phases,
 lenses, or paths; a run scoped to one lens or phase applies only that lens or phase.
@@ -165,7 +165,8 @@ Things of one kind built in different shapes.
 
 The remedy is one structure per kind: the shared shape lives in the shared package and each sibling
 supplies only what differs, its name, port, servicers or routes. The slot's best existing
-implementation becomes the shared one under `code-simplify`'s **Reuse, Ownership And Deletions**. Left alone: a slot whose
+implementation becomes the shared one under `code-simplify`'s **Reuse, Ownership And
+Deletions**. Left alone: a slot whose
 difference a contract requires, with the contract named.
 
 ### Scattered Structure
