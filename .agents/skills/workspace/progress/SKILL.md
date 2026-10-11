@@ -43,20 +43,20 @@ and deliver the same dashboard again on every request so the user keeps one page
   is open, which covers a step an open question blocks; `Blocked` (`critical`) while a step is
   blocked on anything else; `Done` (`good`) once every plan is complete; otherwise `On track`
   (`good`).
-- **Progress.** `value`: the estimated time of finished work over the estimated time of all work
-  not skipped, across every plan that is not withdrawn, where finished work is each done step and
-  each done part of a step not yet done. `detail`: "<done> of <total> steps done", adding "across
-  <n> plans" when there are several. `segments`: one per step with work not skipped, in plan order,
-  labelled "<plan title>: <step title>", `weight` the estimate of that work in minutes (its parts
-  not skipped, for a step with parts), toned `good` when done, `accent` when active, `critical`
-  when blocked, and neutral otherwise. A step not yet done that has both finished parts and parts
-  neither done nor skipped takes two: its finished parts, toned `good`, then those remaining parts,
-  toned as above, each weighted by its parts' estimates, so the bar fills as the percentage does.
-- **Metrics,** in this order: **Time remaining**, the estimates of steps neither done nor skipped,
-  counting only the unfinished parts of a step that has parts, totalled as `execute-task` totals a
-  plan, prefixed `~` because it is an estimate, with any time the user owes in `detail` and outside
-  the figure; **Waiting on you**, the count of open questions; **Pull requests**, the count with
-  their states in `detail`; **Elapsed**, measured from the first plan's recorded approval time.
+- **Progress.** A step's work is its estimate, or for a step with parts the estimates of its parts
+  not skipped; a skipped step has none. `value`: finished work over all work, across every plan
+  that is not withdrawn, where finished work is each done step's work and each done part.
+  `detail`: "<done> of <total> steps done", adding "across <n> plans" when there are several.
+  `segments`: one per step with work, in plan order, labelled "<plan title>: <step title>",
+  `weight` that work in minutes, toned `good` when done, `accent` when active, `critical` when
+  blocked, and neutral otherwise. A step not yet done with done parts takes them as a first
+  segment, toned `good`, then its remaining work as a second, toned as above, when any remains, so
+  the bar fills as the percentage does.
+- **Metrics,** in this order: **Time remaining**, the work not yet finished, totalled as
+  `execute-task` totals a plan, prefixed `~` because it is an estimate, with any time the user owes
+  in `detail` and outside the figure; **Waiting on you**, the count of open questions; **Pull
+  requests**, the count with their states in `detail`; **Elapsed**, measured from the first plan's
+  recorded approval time.
 - **Pull request names.** The page names each pull request "PR #<number> - <short title>": a few
   words saying what it does, not necessarily its title, such as `PR #1337 - Migrate admin to
   Tailscale`.
