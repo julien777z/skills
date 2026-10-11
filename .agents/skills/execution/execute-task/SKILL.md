@@ -13,11 +13,11 @@ built; **Execution** builds it and hands the user a pull request to review.
 
 - `pre-production` — the target-contract policy for every repository and its data obligations.
 - `code-simplify` — simplify the finished task's complete diff before delivery.
-- `acceptance-gate` — judge the finished task's complete diff before local completion or the pull request leaves draft or merges, and each fix for a flag it raises.
+- `acceptance-gate` — judge the finished task's complete diff before local completion, before the pull request is sent for review and before it merges, and each fix for a flag it raises.
 - `generic-push` — keep each repository's publishing metadata independent during multi-repository changes.
 - `merge-conflict` — bring in a conflicting base as soon as a push read-back shows it, and a moved one once at **Completion**.
 - `subagent-selection` — the hand-up a worker without an agent tool uses for an independent step.
-- `land-pr` — mark the finished pull request ready and drive its checks to green at **Completion**.
+- `land-pr` — at **Completion**, when the merge is authorized, ready the pull request, drive its checks to green and merge it.
 - `test-fixture` — the sweep over the task's tests at **Completion**.
 - `security-audit` — **Building It Safely** while writing code that crosses a trust boundary, and
   its **Diff Review** of such a change at **Completion**.
@@ -124,9 +124,9 @@ A follow-up is planned on its own, and only the work it changes waits for it.
 - **One that changes what is being built** pauses only the work it affects. Write that work and its
   next step down under **Work You Have Already Named**, put the amended plan in the full shape
   above, and resume it on approval. Unaffected work keeps running while the user decides.
-- A follow-up on a pull request already sent for review converts it back to draft before its first
-  push, as the GitHub rule says, and its **Completion** folds each change into the history under
-  `rewrite-git-history` rather than rebuilding it.
+- A follow-up on a pull request already sent for review pushes to the same draft, and its
+  **Completion** folds each change into the history under `rewrite-git-history` rather than
+  rebuilding it.
 
 ## Execution
 
@@ -440,10 +440,10 @@ bug or a passing formatter does not satisfy this spacing check.
   question over that task's diff, returning what they flag as fix steps for the next worker. The worker ends with nothing uncommitted and
   nothing unpushed, never amends or rebases a pushed commit, and its report names the branch and
   head.
-- **Pull requests stay draft while the work runs**, so these pushes start no test jobs, as the
-  GitHub rule's **Workflows** section sets up; the tests run once, when **Completion** takes the
-  pull request out of draft. A ready pull request the task resumes changing goes back to draft
-  first, as the GitHub rule's **Branches and Pull Requests** says.
+- **Pull requests stay draft until they merge**, so these pushes start no test jobs, as the
+  GitHub rule's **Workflows** section sets up; the tests run once, when an authorized merge takes
+  the pull request out of draft, as the GitHub rule's **Branches and Pull Requests** says. The
+  local checks above are what stand between a push and that one hosted run.
 - **The order is change, checks, push, then the slow verification**: a browser walkthrough, a full
   or end-to-end suite, a run against a service without the change, root-causing a failure seen
   along the way — anything slow or needing a running stack. What it finds goes out as fix pushes, each once its checks pass.
@@ -648,13 +648,12 @@ side by side from here: the guidance stream and the source stream.
    in the expected behavior, and confirm multi-repository delivery artifacts describe only their
    owning repository. Then build this pull request's ready-for-review message, in the shape below,
    from `list-prs` and what the run did.
-6. Invoke `land-pr` with the accepted head, merge withheld unless **Task Authorization** finds that
-   merge authorized, as its fix rule the **Pre-Push Gate** with each fix folded into its commit
-   through `rewrite-git-history`'s fixup route, and step 5's message as its ready message. It marks
-   the draft ready, which starts its test jobs once, sends that message before its checks finish,
-   then reads the jobs back on the exact head and fixes each failure until they pass. When it
-   returns, send one line with the result it read: the checks green on the head, or the gate that
-   holds them.
+6. Send step 5's message; the pull request stays draft. Only when **Task Authorization** finds
+   the merge authorized, invoke `land-pr` with the accepted head and, as its fix rule, the
+   **Pre-Push Gate** with each fix folded into its commit through `rewrite-git-history`'s fixup
+   route. It readies the pull request, which starts its test jobs once, fixes what they report and
+   merges; when it returns, send one line with the result it read: the merge, or the gate that
+   holds it.
 
 When the task uses several independent final reviewers outside `code-review`, assign distinct
 concerns across the complete result rather than asking each the same question. After a repair,
@@ -673,13 +672,13 @@ The ready-for-review message takes exactly this shape, one message per pull requ
 - **Fixed on the way:** <each incidental fix, or none>
 - **Noticed, not changed** (over the size budget):
   1. <item>
-- **Still running:** <CI on the ready pull request (~<n> min) | the guidance fixes from this task (<n> correction(s), own pull request) | nothing>
+- **Still running:** <the guidance fixes from this task (<n> correction(s), own pull request) | nothing>
 
 **Next:** review the pull request; send follow-ups here, or `/merge-pr` when you're happy.
 ```
 
-The run stays open until both streams finish: the source stream when `land-pr` returns, the guidance
-stream when **Ledger Processing** reports its pull request merged or held for the user.
+The run stays open until both streams finish: the source stream when its message is sent, or when
+`land-pr` returns from an authorized merge; the guidance stream when **Ledger Processing** reports its pull request merged or held for the user.
 
 A workflow that already runs final acceptance runs step 3 as its own; one that already invokes
 `land-pr` runs step 6 as its own.

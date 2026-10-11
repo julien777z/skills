@@ -49,12 +49,10 @@ alwaysApply: true
 - When the user asks to list pull requests, use `list-prs`; its default scope is open pull requests created or worked on for the ongoing task, including handoffs and drafts across chats. Honor explicit scope and state requests.
 - Record every pull request with `session-ledger` immediately after the hosting service returns its canonical URL. A task-scoped pull-request lookup reconciles verified task records through that ledger and verifies each selected URL remotely; never infer task membership from the current checkout, a branch name, a transcript, or a broad hosting-service search.
 
-- **Open every pull request as a draft and keep it draft while work continues.** It leaves draft
-  once, when the work is finished, through `execute-task`'s **Completion** or a workflow that
-  merges it; never mark one ready early to start its tests. Work that resumes changing a pull
-  request already ready for review converts it back to draft before its first push — GraphQL
-  `convertPullRequestToDraft`, which REST does not offer — and **Completion** readies it again; a
-  skill driving a ready pull request's checks, such as `land-pr` or `ci-watch`, keeps it ready.
+- **Open every pull request as a draft and keep it draft until it merges.** The user reviews it as
+  a draft; it leaves draft once, as the first step of an authorized merge through `land-pr`, so its
+  test jobs run once, on the head about to merge. Never mark one ready to start its tests, to show
+  it finished, or to hand it to the user; a follow-up keeps pushing to the draft.
 - Keep pull requests focused and give them descriptive titles and descriptions; request appropriate reviewers when the repository workflow requires them.
 - **A description is written from what is already known, never by re-reading the history.** The
   agent that did or coordinated the work writes it from its own record of the change, the existing

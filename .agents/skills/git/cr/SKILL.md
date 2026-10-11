@@ -194,7 +194,7 @@ Use REST endpoints for every pull-request operation:
 - Create a draft PR: `POST /repos/{owner}/{repo}/pulls` with `title`, `head`, `base`, `body`, and `draft=true`.
 - Inspect reviews: the pull-request review endpoints.
 
-Create every pull request as a draft and leave the ready-for-review transition to `land-pr`, which starts the test jobs a draft skips. A draft pull request is reviewable: complete the review and fix cycle without waiting for it to become ready. Review-thread resolution state, the `resolveReviewThread` mutation, and the `convertPullRequestToDraft` mutation have no REST surface, so read thread state, resolve a thread, and convert a ready pull request back to draft through `gh api graphql` as well; replies to review comments stay on REST. For every GraphQL call, obtain node IDs through REST, re-read the result through REST, and return to REST for every subsequent operation. Do not use GraphQL for reads or reviews when their REST endpoints work. If a REST or required GraphQL request is rate-limited, report the response, wait until the documented reset through the host's event or wait mechanism, and retry the same transport. Treat the rate limit as a blocker only when the host cannot wait for the reset or the reset does not restore access; never switch transports to evade it.
+Create every pull request as a draft; it leaves draft only inside an authorized merge through `land-pr`, which starts the test jobs a draft skips. A draft pull request is reviewable: complete the review and fix cycle on the draft. Review-thread resolution state and the `resolveReviewThread` mutation have no REST surface, so read thread state and resolve a thread through `gh api graphql` as well; replies to review comments stay on REST. For every GraphQL call, obtain node IDs through REST, re-read the result through REST, and return to REST for every subsequent operation. Do not use GraphQL for reads or reviews when their REST endpoints work. If a REST or required GraphQL request is rate-limited, report the response, wait until the documented reset through the host's event or wait mechanism, and retry the same transport. Treat the rate limit as a blocker only when the host cannot wait for the reset or the reset does not restore access; never switch transports to evade it.
 
 Pass this transport requirement into `/code-review high fix`; it overrides that skill's generic GitHub fallback.
 
@@ -335,8 +335,8 @@ Carry the run's state throughout: the current workflow step, repository and PR, 
 Hold that state in the session; never write it to a checkpoint file. The pull request is the durable record: its commits, its pushed head, its checks, and its comments are what a resumed turn reads to find the run, and they cannot drift from it the way a separate file can.
 
 GitHub head lag, a retryable rate limit, and any state `land-pr` is still waiting on are nonterminal.
-Conclude only after every selected pull request is verified merged, after each exact-head review and
-check gate completes when the user withheld merge, or on the user's explicit stop or handoff. A
+Conclude only after every selected pull request is verified merged, after each exact-head review
+completes and its draft is left for the user when merge is withheld, or on the user's explicit stop or handoff. A
 concrete failed gate or needed user decision remains active work under the global rules' **Tools and
 environments** pending-result boundary; reporting it does not close CR. A question already recorded
 as an admitted deferral is answered by that record, and the run continues without it.
@@ -357,11 +357,11 @@ to work around this gate.
 4. Classify each current-unit correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean. This is the same authorized CR execution, not a new action-skill invocation.
 5. Once the current unit's review is clean, if a merged-range review has no working fix pull request, record it for the **Completion Report** and continue to the next unit without another merge. Otherwise put the complete working pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement, retaining the original review range as context. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate** verdict is the fresh gate; resolve each flag under `acceptance-gate`'s **Bounds**. The accepted head is the SHA `land-pr` receives.
 6. Run **Description Refresh**'s second pass, then the second test pass **Validation Order** requires for the current unit. Never stop, restart, reconfigure or claim a local service this run did not start.
-7. Invoke `land-pr` with:
+7. When the user withheld merge, the unit ends here at the head step 5 accepted, its pull request
+   left draft. Otherwise invoke `land-pr` with:
    - the pull request and the head step 5 accepted;
    - the affected behaviors step 6 covered locally;
    - every **Failure relevance** exclusion with its evidence;
-   - whether the user withheld merge;
    - the fix rule for every fix it makes — a check fix, a conflict resolution, a commit someone else pushed: **Review Continuity** reruns the lenses the fix reopens, and the fix is pushed through `execute-task`'s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have passed.
 
-   Base updates it performs are **Incorporating The Base** for this run. When it reports the merge, or the exact-head gates complete with merge withheld, continue to the next selected unit. Give the **Completion Report** and end the run only after every selected unit reaches that state; when it reports a gate that holds, report that gate.
+   Base updates it performs are **Incorporating The Base** for this run. When it reports the merge, or the unit ended at its accepted head with merge withheld, continue to the next selected unit. Give the **Completion Report** and end the run only after every selected unit reaches that state; when it reports a gate that holds, report that gate.

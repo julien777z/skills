@@ -1,7 +1,7 @@
 ---
 name: land-pr
-description: Take a pull request out of draft through its exact-head check gate, resolve merge conflicts, and, when its caller is authorized, squash-merge it at the gated head and verify the merge. Use when a workflow reaches a pull request's ready or merge step — `execute-task`'s Completion, a guidance batch's delivery, `cr`, a doctor's merged batch, or a user-invoked `merge-pr` — and, with merge withheld, to take a finished draft ready and bring its required checks to green.
-short_description: 'Ready a pull request, gate its exact head, and merge it when authorized.'
+description: Merge a pull request its caller is authorized to merge — take it out of draft, gate its exact head, resolve merge conflicts, squash-merge at the gated head and verify the merge. Use when a workflow reaches an authorized merge — `execute-task`'s Completion, a guidance batch's delivery, `cr`, a doctor's merged batch, or a user-invoked `merge-pr`; a pull request leaves draft only here, as the first step of that merge.
+short_description: 'Ready a pull request for its authorized merge, gate its exact head, and merge it.'
 ---
 
 # Land Pull Request
@@ -14,7 +14,8 @@ handling after an agent-configuration change.
 
 - This skill merges only a pull request whose merge its caller is authorized to perform: a user
   instruction naming the merge and the pull request, an invoked skill that states its invocation
-  authorizes the merge, or a rule that authorizes that merge. It creates no authorization of its own.
+  authorizes the merge, or a rule that authorizes that merge. It creates no authorization of its own,
+  and without one it is not invoked: the pull request stays draft.
 - Once that authorization holds, never ask the user for permission to merge and never end by
   offering the merge as the remaining step. What stops a merge is a gate: a relevant required check
   that is not green, a head that no longer matches the accepted SHA, or a conflict still unresolved.
@@ -30,10 +31,9 @@ handling after an agent-configuration change.
 ## Inputs
 
 The caller supplies the repository, the pull request, the head SHA its final acceptance passed, the
-affected behaviors its local tests already cover, whether merge was explicitly withheld, and the
+affected behaviors its local tests already cover, and the
 rule that decides what a fix made here reopens in its own review, whether every hosted check on
-the head is required rather than only the coverage local tests could not establish, and any message
-to send the user the moment the pull request is ready. It also supplies each validation
+the head is required rather than only the coverage local tests could not establish. It also supplies each validation
 exclusion: a current-user direction to leave a named test or check alone, a baseline exclusion
 established by `execute-task`'s **Encountered Issues** classification with its default-branch
 evidence, or evidence that a hosted runner or provider cancellation meets the GitHub rule's
@@ -55,8 +55,7 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    head after the pull request left draft: a test job `skipped` on a draft run, which GitHub counts
    as passing a required check, is no result. A pull request this gate took out of draft has never
    run its tests, so step 3 reads its hosted test jobs to a terminal result for every affected
-   behavior, whatever local coverage the caller passed. Send the caller's ready message, when it
-   supplied one, right after the read-back shows `draft` false and before any polling.
+   behavior, whatever local coverage the caller passed.
 2. **Classify the complete pull-request diff.** A non-runtime diff — one that changes no executable
    source, package or dependency definition, test, runtime configuration, CI workflow, generated
    runtime artifact, or other executed-behavior contract — is validated only by the checks its
@@ -82,7 +81,7 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    `success`, `failure`, `cancelled`, `timed_out`, `skipped` or `neutral`. Never poll an unrelated job
    or wait on a whole workflow whose other jobs cover nothing affected. Do not end the turn, report
    "still running", or hand back to the user while a relevant check is pending; the poll loop is the
-   work. The caller's ready message from step 1 is neither such a report nor a hand-back.
+   work.
 5. **A pending status is a cache, not evidence.** Status endpoints keep reporting `in_progress` after
    a job has finished, sometimes for an hour or more. Learn what the job normally costs from the same
    job on an earlier head or on the base branch; once a check is pending well past that, read the
@@ -97,7 +96,11 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    GitHub rule's runner-infrastructure exclusion automatically: record a qualified check as skipped
    and do not rerun or wait for a green hosted result. Every other failure is relevant. Read its
    annotations and complete log, fix the repository
-   input responsible — code, test, configuration or workflow — and commit and push it. A relevant
+   input responsible — code, test, configuration or workflow — and commit it. **Every relevant
+   failure on the head goes into one push**: read all of them before fixing any, reproduce each
+   with the job's own command where it can run locally, and push only once each reproduced failure
+   passes locally, so the next hosted run is the last. Only a failure that cannot run locally —
+   a hosted service, credentials, runner-specific behavior — is pushed without local proof. A relevant
    external-service failure is an encountered issue under `pre-production` and is fixed the same way;
    never re-run a job, or skip, disable, or quarantine a test or confine its job to drafts, to get
    past it. Report a blocker only when relevant missing coverage needs user input or unavailable
@@ -120,8 +123,7 @@ When GitHub reports a conflict, or the merge is rejected for one:
 ## Merge
 
 Re-read the pull request after the check gate and require its head SHA to equal the head that
-passed acceptance and the check gate. If merge was explicitly withheld, confirm the pull request
-remains open, report the clean exact head, and stop. Otherwise squash-merge with that SHA in the request —
+passed acceptance and the check gate, then squash-merge with that SHA in the request —
 `PUT /repos/{owner}/{repo}/pulls/{number}/merge` with `merge_method=squash` and `sha` — so GitHub
 refuses a concurrent head change. On a mismatch, put the commits the new head adds through the
 caller's rule from **Inputs**, then repeat the check gate. After the merge, re-read the pull request
@@ -147,5 +149,3 @@ Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only 
 
 Or, when a gate holds: `Not merged: <link> — <gate>: <evidence>`. The evidence includes each
 relevant check's terminal result, read from its log where its status was stale.
-
-When merge was withheld: `Reviewed: <link> at <short sha> — checks: <local only | names of hosted checks and results>; pull request open`.
