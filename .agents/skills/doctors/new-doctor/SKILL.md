@@ -32,10 +32,11 @@ not a dependency this skill runs, so it is named here and not below.
    naming any measurement the protocol takes once before fan-out; `## Lenses`, one `###` per lens
    stating the defect shape, the evidence that establishes it, and the remedy; `## Dispositions`,
    in order, naming the user decisions this domain adds, what the cross-cutting reviewer compares
-   and what the final reviewer challenges; `## Report Additions`. A decision a dependency already settles — breaking an owned
-   contract, what stored data owes, which product changes are the user's — is cited by its
-   section in Dispositions, never restated or reclassified. A reviewer partition the domain dictates may take its own
-   heading; nothing that restates a protocol section may.
+   and what the final reviewer challenges; `## Report Additions`. A decision a dependency already
+   settles — breaking an owned contract, what stored data owes, which product changes are the
+   user's — is cited by its section in Dispositions, never restated or reclassified. A reviewer
+   partition the domain dictates may take its own heading; nothing that restates a protocol
+   section may.
 4. **Keep it generic.** Discover layouts, tools, frameworks, and budgets at runtime. Never name the
    current repository's paths, packages, products, commands, or thresholds. State a default
    threshold as one the repository's configuration overrides. Refer to a repository-specific skill
