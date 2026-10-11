@@ -64,7 +64,8 @@ Every task that changes files starts here, and so does every follow-up that arri
   ledger — as a file, as the global rules' **User-Facing Output** says, instead of restating it.
 - **An estimate is the executing agent's own wall-clock, never the effort the same work would
   take a person.** Build it from what the run does and waits on, never from how big the change
-  feels:
+  feels, round each step to the nearest minute, and list what the plan needs from the user — an
+  approval, a merge, a manual action — separately, with its time, outside the total:
   - an edit step — read, edit, commit, push — is 2–3 minutes whatever the file count;
   - each run of a local check, test suite or build is its observed duration, counted once per run
     the plan makes;
@@ -73,13 +74,11 @@ Every task that changes files starts here, and so does every follow-up that arri
     trivial one;
   - a round of parallel readers or reviewers is about a minute, and a round of auditing reviewers
     over a tree is 5–10 minutes;
-  - CI, a deployment or a merge with its follow-up is the observed duration of that job;
-  - work that overlaps counts once, at its longest part.
-  Round each step to the nearest minute. List what the plan needs from the user — an approval, a
-  merge, a manual action — separately, with its time, outside the total.
+  - CI, a deployment or a merge with its follow-up is the observed duration of that job.
 - Schedule steps by `subagent-selection`'s **Dispatch**: coupled work stays sequential, and
   independent scopes with separate owners, files and resources overlap once their inputs are
-  settled. Estimate the elapsed time with that overlap.
+  settled. Estimate the elapsed time with that overlap, counting overlapping work once at its
+  longest part.
 - **Settle ownership before the plan is final.** For a plan that introduces a subsystem, runtime
   boundary, or independent consumer, apply `code-simplify`'s ownership analysis to the proposed
   shape and the analogous implementations already in the repository, with one read-only subagent

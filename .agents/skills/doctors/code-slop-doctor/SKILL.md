@@ -192,9 +192,9 @@ One meaning spelled out many times.
 - count every class-name or style string literal across the components in scope — extract each
   `className`, `class`, style-token or `cn(...)` argument string and tally identical values — and
   report every value that appears in three or more places with its count and locations;
-- every error-to-message conversion written inline beside a helper that does it; every port, host
-  or URL declared in more than one place; every message template spelled out at more than one site;
-every list restating an enum's members.
+- every error-to-message conversion written inline beside a helper that does it; every port, host or
+  URL declared in more than one place; every message template spelled out at more than one site;
+  every list restating an enum's members.
 
 The remedy is one owned definition — a component or style token, the existing helper, one
 configuration source, the enum itself — and every site reading it.
@@ -282,10 +282,10 @@ A chain, its registries and its tooling, held to one shape and no more machinery
 
 The remedy is the one shape: re-pointed parents, regenerated headers and the shared helper in place
 of per-revision idioms, each only where **Applied Is What Makes History** allows editing that
-revision; the missing policy, hook or downgrade added; code moved to its owner,
-tooling the library makes redundant deleted with its callers switched to the library, and the
-repository's migration skill followed for every correction. Where project guidance says no
-environment keeps data, a chain grown long is collapsed into one baseline revision.
+revision; the missing policy, hook or downgrade added; code moved to its owner, tooling the library
+makes redundant deleted with its callers switched to the library, and the repository's migration
+skill followed for every correction. Where project guidance says no environment keeps data, a chain
+grown long is collapsed into one baseline revision.
 
 ### Build And Root
 
@@ -330,8 +330,8 @@ mismatch reconciled toward the typed model's declaration, a per-environment over
 reason; one declaration the processes needing it share, on the shared base or on a model scoped to
 the capability that the processes without it never load, and a subclass that deliberately narrows
 the shared declaration saying so on the field rather than restating it; a bypassed read routed
-through the typed model; and, where the repository can derive an
-example file or test block from the models, that derivation proposed as the guard.
+through the typed model; and, where the repository can derive an example file or test block from the
+models, that derivation proposed as the guard.
 
 ### Dependency Drift
 
@@ -388,10 +388,9 @@ budgets, cross-suite layout and coverage maps are `tests-doctor`'s and are named
 - A configuration default its reader refuses is declared nowhere until the disagreement is settled:
   the reader is wrong when nothing that ships can use the value, the declaration and deployment are
   wrong when something can, and where the target contract does not show which, both fixes go to the
-  user. A field nothing deployed sets takes one of three outcomes the plan names: a deployment should
-  carry it, it is a local-development tool retained with the tool and the branch named in the
-  ledger, or it is deleted with the
-  branch its value selects.
+  user. A field nothing deployed sets takes one of three outcomes the plan names: a deployment
+  should carry it, it is a local-development tool retained with the tool and the branch named in the
+  ledger, or it is deleted with the branch its value selects.
 - An even split between two sibling structures equally fit for the kind goes to the one leaving the
   fewest mechanisms and moving the fewest importers, stated in the pull request.
 - A finding another doctor owns — documentation, a contract model, a deep test audit — is not fixed
