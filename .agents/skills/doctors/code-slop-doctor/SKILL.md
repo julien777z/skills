@@ -323,18 +323,24 @@ budgets, cross-suite layout and coverage maps are `tests-doctor`'s and are named
 
 - Restructuring is ordinary work here: merges, moves, renames and collapses land with every importer
   updated in the same change and nothing left to resolve the old path.
-- Behavior is preserved. A removal that changes what a user, a stored row or an external consumer
-  sees is a user decision, put with each consequence and the option that leaves the fewest
-  mechanisms recommended.
-- An owned contract changes with every consumer in the same run; a contract a consumer outside the
-  user's control speaks is a user decision.
+- **Breaking an owned contract to remove slop is ordinary work, never a question.** An owned API,
+  wire message, schema, payload, stored shape, module path or export changes with every consumer
+  the user owns, in any repository, with its generated artifacts and migrations, in the same run,
+  and the pull request states the break, as `pre-production`'s **Target Contract** says. A removal
+  is never narrowed, shimmed or dropped to keep an owned shape stable.
+- What stored data owes a removal — a flag whose retirement backfill has not run, a chain to
+  collapse — is the repository's project guidance under `pre-production`'s **Required Data**,
+  never a question: disposable environments are reset, and data an environment keeps gets the
+  migration that carries it.
+- The user decides only what that skill's **Trade-Offs Are Surfaced, Never Enforced** reserves for
+  them — a change to what an end user sees or can do — and a contract a consumer outside the user's
+  control speaks. Each is put with its consequences and the option leaving the fewest mechanisms
+  recommended, while the rest of the run continues.
 - Fix the reader or the writer, never both. A tolerance that hides a wiring defect is a confirmed
   defect and is fixed. An unsupported historical record is never a finding and never receives a
-  fallback. Where a flag's retirement backfill has not run, its removal is a user
-  decision naming the data still in the old shape.
+  fallback.
 - A migration correction is made in place or stacked according to applied state, stacked when that
-  state cannot be established; a data-loss path with no recovery is a blocker to report. Collapsing
-  a chain is a user decision wherever any environment keeps data.
+  state cannot be established; a data-loss path with no recovery is a blocker to report.
 - An even split between two sibling structures equally fit for the kind is a user decision.
 - A finding another doctor owns — a dependency, a configuration name, documentation, a contract
   model, a deep test audit — is not fixed here; the report names it with that doctor.
