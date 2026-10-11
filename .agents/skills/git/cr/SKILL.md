@@ -64,7 +64,7 @@ lands it separately after smoke runs. An earlier delegation cannot be reused for
 - `merge-conflict` — resolve every base update this run performs before `land-pr` starts.
 - `land-pr` — take the accepted head through the check gate, conflict resolution and the verified
   squash merge.
-- `session-ledger` — resolve an unqualified session pull request from verified task records.
+- `list-prs` — resolve every open pull request the ongoing task worked on before selecting review targets.
 
 Invoke `subagent-selection` and use its **standard** tier for this workflow's own sub-agents.
 Delegated skills retain their explicitly selected tiers, subject to the user's model override.
@@ -77,9 +77,9 @@ Select the target route before resolving a working pull request:
 - For a merged ref range explicitly delegated by `merge-pr`, read
   [Merged targets](references/merged-targets.md). The immutable range is the review target; the
   original pull request is metadata, and a working fix pull request exists only after a finding.
-- For ordinary direct CR, read [Open targets](references/open-targets.md). Every resolved open pull
-  request is both a review target and its own working pull request, with **Pull Request Ownership**
-  below.
+- For ordinary direct CR, invoke `list-prs`, then read [Open targets](references/open-targets.md).
+  Every URL it returns is both a review target and its own working pull request, with **Pull Request
+  Ownership** below.
 
 Use these route bindings throughout the shared workflow. All review lenses and finding validation
 apply to every review target. Description updates, fix validation, acceptance, and merge gates
@@ -89,13 +89,12 @@ or merging another pull request.
 ## Pull Request Ownership
 
 An explicit pull-request URL or recognized identifier is the sole review set: verify and resolve it
-directly. Only an unqualified direct CR uses the ledger selection below.
+directly. Only an unqualified direct CR resolves its review set through `list-prs`.
 
-When the invocation does not name a pull-request URL, retrieve every matching current-repository
-record from `session-ledger`, retain each open pull request with a verified task-created or touched
-receipt, and verify every retained branch and state with the hosting service. Do not ask the user
-to select one or select only the current branch: the complete retained set is the direct CR review
-set.
+When the invocation does not name a pull-request URL, use every open pull-request URL returned by
+`list-prs`, including task work in other repositories. Verify each listed branch and state with its
+hosting service. Do not ask the user to select one or select only the current repository or branch:
+the complete list is the direct CR review set.
 
 Review each pull request as an independent unit with its own range, intent, threads, validation,
 acceptance, and exact-head merge gate. A compact agent-configuration unit may run in the same review
