@@ -31,9 +31,10 @@ and deliver the same dashboard again on every request so the user keeps one page
    reuse them while every head is unchanged; otherwise read the pull requests' diffs, write them
    again, and record them with the new heads.
 4. **Build the spec** in the shape below, with `updated_at` set to now.
-5. **Render and deliver** through `render-dashboard`, using step 6's active-work delivery route.
-   When the ledger records an earlier delivery of
-   this task's dashboard, update that same page; otherwise record a `dashboard` entry with the page
+5. **Select the delivery route, then render.** Before invoking `render-dashboard`, choose the
+   host's ongoing-work channel when authorized work remains, or the normal reply route for
+   standalone reporting. Pass that route to the renderer for its delivery. When the ledger records
+   an earlier delivery of this task's dashboard, update that same page; otherwise record a `dashboard` entry with the page
    path and any published link, so the next request finds it.
 6. **Report and return to the caller.** Send the link or file and one line: percent complete, time
    remaining, and how many questions wait on the user, each the figure the dashboard shows. When
