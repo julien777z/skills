@@ -57,8 +57,8 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    alone proves neither. A pull-request or testing dependency, or missing provenance, keeps the
    consumer draft and blocks both readiness and merge, even with passing tests. Convert an
    already-ready consumer back to draft through GraphQL `convertPullRequestToDraft` and verify
-   `draft` true over REST. Surface the dependency and its evidence in the body under the GitHub
-   rule's dependency-reference exception. Draft validation and review may continue. After the
+   `draft` true over REST. Surface the provider dependency and its evidence in user chat under the GitHub
+   rule's independent publishing context; the body states only the consumer's own delivery requirement. Draft validation and review may continue. After the
    dependency merges, update every consuming reference to the maintained target chosen by the
    user or repository guidance, revalidate the consumer's new head through the caller's fix rule,
    and repeat this inventory before taking it ready. This gate authorizes no dependency merge
