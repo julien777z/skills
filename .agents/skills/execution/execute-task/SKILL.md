@@ -63,11 +63,20 @@ Every task that changes files starts here, and so does every follow-up that arri
   words while `i-have-adhd` is active, and send any detail a caller requires — a gated plan, a
   ledger — as a file, as the global rules' **User-Facing Output** says, instead of restating it.
 - **An estimate is the executing agent's own wall-clock, never the effort the same work would
-  take a person.** Reading, searching and editing take an agent minutes whatever the file count;
-  the time comes from what the run waits on — test and build durations, CI, gate and review
-  passes, background agents — so a step's figure is those durations, observed for comparable runs
-  where they exist, plus its edits. List what the plan needs from the user — an approval, a merge,
-  a manual action — separately, with its time.
+  take a person.** Build it from what the run does and waits on, never from how big the change
+  feels:
+  - an edit step — read, edit, commit, push — is 2–3 minutes whatever the file count;
+  - each run of a local check, test suite or build is its observed duration, counted once per run
+    the plan makes;
+  - an independent gate or review dispatch is 2–4 minutes, and each repair round after it about 3
+    more; plan two or three rounds for a change other files restate or depend on, none for a
+    trivial one;
+  - a round of parallel readers or reviewers is about a minute, and a round of auditing reviewers
+    over a tree is 5–10 minutes;
+  - CI, a deployment or a merge with its follow-up is the observed duration of that job;
+  - work that overlaps counts once, at its longest part.
+  Round each step to the nearest minute. List what the plan needs from the user — an approval, a
+  merge, a manual action — separately, with its time, outside the total.
 - Schedule steps by `subagent-selection`'s **Dispatch**: coupled work stays sequential, and
   independent scopes with separate owners, files and resources overlap once their inputs are
   settled. Estimate the elapsed time with that overlap.
