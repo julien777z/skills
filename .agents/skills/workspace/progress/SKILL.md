@@ -1,6 +1,6 @@
 ---
 name: progress
-description: Show the current task's progress as a dashboard built from the session ledger — its plans, which steps are done, running, next or blocked, percent complete, estimated time remaining, questions waiting on the user, the answers already given, the task's pull requests, and an Architecture page with a diagram of how they work, what each changes, and what to keep in mind. Use whenever the user asks for progress, status, a dashboard, what is left or what is waiting on them, at any point in a task.
+description: Show the current task's progress as a dashboard built from the session ledger — its plans, which steps are done, running, next or blocked, percent complete, estimated time remaining, questions waiting on the user, the answers already given, the task's pull requests, and an Architecture page with a diagram of how they work, what each changes, the settings they add, change or remove, and what to keep in mind. Use whenever the user asks for progress, status, a dashboard, what is left or what is waiting on them, at any point in a task.
 short_description: 'Show the task’s progress as a dashboard.'
 ---
 
@@ -57,7 +57,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **Pages.** `Progress` holds the board, the pull requests, the answered questions, the notes and
   any table, in that order. Once the task has a pull request, `Architecture` follows it, with
   `layout` `rows`: the diagram, then an `outline` "What changed in <pull request name>" for each
-  pull request, then an `outline` "Keep in mind".
+  pull request, then `changes` "Config changes", then an `outline` "Keep in mind".
 - **`board` "Work"**, four columns:
 
 | Column | `tone` | Cards |
@@ -89,6 +89,11 @@ and deliver the same dashboard again on every request so the user keeps one page
   they touch, such as `Admin sign-in` or `Admin site`, with moves and renames last under
   `No behaviour change`. Each item's `title` says in a few words what now happens, and its `detail`
   how and why it matters in one or two sentences a reader follows without the diff.
+- **`changes` "Config changes"**: each setting a pull request adds, changes or removes — an
+  environment variable, a settings field or its default, a feature flag, a secret, a deployment or
+  CI variable, a key in a configuration file. `name` the name a reader sets, `change`, and `detail`
+  "<pull request name> · <its default or new value> · <what the user has to do, or Nothing>". A
+  secret is named, never its value.
 - **`outline` "Keep in mind"**: what a reviewer or the user needs before relying on the change —
   risks, limits, the order the pull requests merge in, anything a merge or deploy needs from the
   user — grouped by when it applies, such as `Before merge`, `Before deploy` and `After deploy`.

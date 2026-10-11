@@ -164,6 +164,7 @@
   }
 
   .list > li:first-child { border-top: 0; }
+  .list > .change-row { grid-template-columns: minmax(0, 1fr) auto; }
   .link-row > .glyph { margin-top: 1px; }
   .list > li > .pill { align-self: start; }
 
@@ -339,6 +340,12 @@
       open: { glyph: "?", tone: "warning", label: "Waiting on you" },
       answered: { glyph: "✓", tone: "good", label: "Answered", quiet: true }
     };
+    var CHANGE_STYLES = {
+      added: { label: "Added", tone: "good", token: "--good", text: "--ink", width: "2px" },
+      changed: { label: "Changed", tone: "accent", token: "--accent", text: "--ink", width: "2px" },
+      removed: { label: "Removed", tone: "critical", token: "--critical", text: "--muted", width: "1.5px", dashed: true },
+      same: { label: "Unchanged", token: "--line", swatch: "--muted", text: "--ink-2", width: "1.5px" }
+    };
     var OUTLINE_OPEN_LIMIT = 2;
     var REFERENCE_BOUNDARY = "A-Za-z0-9_/-";
     var HTML_NAMESPACE = "http://www.w3.org/1999/xhtml";
@@ -463,6 +470,20 @@
       item.append(body);
 
       if (entry.status) item.append(pill(entry.status, entry.tone));
+
+      return item;
+    }
+
+    function changeRow(entry) {
+      var item = el("li", "change-row");
+      var body = el("div", "item-body");
+      var style = CHANGE_STYLES[entry.change];
+
+      body.append(el("span", "item-title", entry.name));
+
+      if (entry.detail) body.append(el("span", "item-detail", entry.detail));
+
+      item.append(body, pill(style.label, style.tone));
 
       return item;
     }
@@ -666,6 +687,7 @@
       diagram: { wide: true, render: diagramSection },
       questions: { render: function (section) { return listSection(section.items, questionRow); }, count: questionCount },
       links: { render: function (section) { return listSection(section.items, linkRow); } },
+      changes: { render: function (section) { return listSection(section.items, changeRow); } },
       notes: { render: notesSection },
       outline: { wide: true, render: outlineSection }
     };

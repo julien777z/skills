@@ -39,6 +39,7 @@ out.
 | `links` | `title`, `items` | `label`, `url`, `detail?`, `status?`, `tone?` |
 | `table` | `title`, `columns`, `rows` | each row a list of strings, one per column |
 | `notes` | `title`, `items` | each item a string |
+| `changes` | `title`, `items` | `name`, `change` (`added`, `changed`, `removed`), `detail?`: a named part with its change as a colored badge |
 | `outline` | `title`, `groups: [{title, items}]` | `title`, `detail`, `tone?`: a headline that opens to its detail; a group of one or two items shows them open |
 | `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?` | node: `id`, `label`, `detail?`, `pr?`, `change?`; edge: `from`, `to`, `label?`, `step?`, `change?`; pr: `ref`, `url`; each step a string |
 
