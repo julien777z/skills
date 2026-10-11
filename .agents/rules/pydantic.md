@@ -41,7 +41,7 @@ if not policy.can_access_admin:
 ## Validation and Configuration
 
 - Use `model_config = ConfigDict(...)` for model configuration.
-- Give each setting one canonical name across its typed declaration, environment writers, explicit construction, readers and documentation. Do not add configuration aliases, alternate names, or remapping through validators or custom sources, even for a single alternate spelling; update the owning declaration and consumers together. Native environment case handling does not create another name, and a namespace belongs in the declared field name.
+- Give each setting one canonical name across its typed declaration, environment writers, explicit construction, readers and documentation. Do not add configuration aliases, alternate names, or remapping through validators or custom sources, even for a single alternate spelling; update the owning declaration and consumers together. Native environment case handling and structural encoding of a declared nested field path do not create another name; a namespace belongs in the declared field name or nested path.
 - Use `model_dump()` instead of deprecated `dict()`.
 - Use `model_validator` decorator for custom validation.
 - Do not add `field_validator` or `model_validator` just to coerce enum strings that should be represented by the enum itself; update the enum values to match the real contract instead.

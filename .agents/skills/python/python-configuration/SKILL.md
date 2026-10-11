@@ -40,12 +40,11 @@ Provide reasonable defaults for local development while requiring explicit value
 
 ```python
 from pydantic_settings import BaseSettings
-from pydantic import Field
 
 class Settings(BaseSettings):
-    database_url: str = Field(alias="DATABASE_URL")
-    api_key: str = Field(alias="API_KEY")
-    debug: bool = Field(default=False, alias="DEBUG")
+    database_url: str
+    api_key: str
+    debug: bool = False
 
 settings = Settings()  # Loads from environment
 ```
@@ -58,27 +57,27 @@ Create a central settings class that loads and validates all configuration.
 
 ```python
 from pydantic_settings import BaseSettings
-from pydantic import Field, PostgresDsn, ValidationError
+from pydantic import ValidationError
 import sys
 
 class Settings(BaseSettings):
     """Application configuration loaded from environment variables."""
 
     # Database
-    db_host: str = Field(alias="DB_HOST")
-    db_port: int = Field(default=5432, alias="DB_PORT")
-    db_name: str = Field(alias="DB_NAME")
-    db_user: str = Field(alias="DB_USER")
-    db_password: str = Field(alias="DB_PASSWORD")
+    db_host: str
+    db_port: int = 5432
+    db_name: str
+    db_user: str
+    db_password: str
 
     # Redis
-    redis_url: str = Field(default="redis://localhost:6379", alias="REDIS_URL")
+    redis_url: str = "redis://localhost:6379"
 
     # API Keys
-    api_secret_key: str = Field(alias="API_SECRET_KEY")
+    api_secret_key: str
 
     # Feature flags
-    enable_new_feature: bool = Field(default=False, alias="ENABLE_NEW_FEATURE")
+    enable_new_feature: bool = False
 
     model_config = {
         "env_file": ".env",
@@ -112,16 +111,16 @@ Required settings should crash the application immediately with a clear error.
 
 ```python
 from pydantic_settings import BaseSettings
-from pydantic import Field, ValidationError
+from pydantic import ValidationError
 import sys
 
 class Settings(BaseSettings):
     # Required - no default means it must be set
-    api_key: str = Field(alias="API_KEY")
-    database_url: str = Field(alias="DATABASE_URL")
+    api_key: str
+    database_url: str
 
     # Optional with defaults
-    log_level: str = Field(default="INFO", alias="LOG_LEVEL")
+    log_level: str = "INFO"
 
 try:
     settings = Settings()
@@ -145,15 +144,15 @@ Provide sensible defaults for local development while requiring explicit values 
 ```python
 class Settings(BaseSettings):
     # Has local default, but prod will override
-    db_host: str = Field(default="localhost", alias="DB_HOST")
-    db_port: int = Field(default=5432, alias="DB_PORT")
+    db_host: str = "localhost"
+    db_port: int = 5432
 
     # Always required - no default for secrets
-    db_password: str = Field(alias="DB_PASSWORD")
-    api_secret_key: str = Field(alias="API_SECRET_KEY")
+    db_password: str
+    api_secret_key: str
 
     # Development convenience
-    debug: bool = Field(default=False, alias="DEBUG")
+    debug: bool = False
 
     model_config = {"env_file": ".env"}
 ```
