@@ -23,8 +23,8 @@ of that proof; agreement in one never establishes agreement in another.
    Tailscale policy for naming, groups and tag ownership. Discover each repository's deployment
    procedure and configuration owner from its project guidance. This procedure reconciles a
    Tailscale change; a general configuration audit remains owned by `code-slop-doctor`'s
-   **Configuration Drift** lens, which runs only when that doctor is directly invoked. Reading a deployment procedure supplies its read-only inspection
-   route and never authorizes a rollout.
+   **Configuration Drift** lens, which runs only when that doctor is directly invoked. Reading a
+   deployment procedure supplies its read-only inspection route and never authorizes a rollout.
 2. Invoke `coordinate-repositories` for its bounded discovery and normalized-remote manifest.
    Inspect every unique repository's current remote configuration before deciding applicability;
    include consumers beyond the repository where the symptom occurred. Retain multiple execution
