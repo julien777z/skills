@@ -48,9 +48,10 @@ and deliver the same dashboard again on every request so the user keeps one page
   each done part of a step not yet done. `detail`: "<done> of <total> steps done", adding "across
   <n> plans" when there are several. `segments`: one per step that is not skipped, in plan order,
   labelled "<plan title>: <step title>", `weight` its estimate in minutes, toned `good` when done,
-  `accent` when active, `critical` when blocked, and neutral otherwise. A step not yet done with
-  finished parts takes two: its finished parts, toned `good`, then the rest of the step, toned as
-  above, each weighted by its parts' estimates, so the bar fills as the percentage does.
+  `accent` when active, `critical` when blocked, and neutral otherwise. A step not yet done that
+  has both finished parts and parts neither done nor skipped takes two: its finished parts, toned
+  `good`, then those remaining parts, toned as above, each weighted by its parts' estimates, so the
+  bar fills as the percentage does.
 - **Metrics,** in this order: **Time remaining**, the estimates of steps neither done nor skipped,
   counting only the unfinished parts of a step that has parts, totalled as `execute-task` totals a
   plan, prefixed `~` because it is an estimate, with any time the user owes in `detail` and outside
