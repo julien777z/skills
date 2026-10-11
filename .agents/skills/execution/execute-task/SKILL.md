@@ -678,7 +678,8 @@ The ready-for-review message takes exactly this shape, one message per pull requ
 ```
 
 The run stays open until both streams finish: the source stream when its message is sent, or when
-`land-pr` returns from an authorized merge; the guidance stream when **Ledger Processing** reports its pull request merged or held for the user.
+`land-pr` returns from an authorized merge; the guidance stream when **Ledger Processing** reports
+its pull request merged or held for the user.
 
 A workflow that already runs final acceptance runs step 3 as its own; one that already invokes
 `land-pr` runs step 6 as its own.

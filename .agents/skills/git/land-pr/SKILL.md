@@ -33,8 +33,8 @@ handling after an agent-configuration change.
 The caller supplies the repository, the pull request, the head SHA its final acceptance passed, the
 affected behaviors its local tests already cover, and the
 rule that decides what a fix made here reopens in its own review, whether every hosted check on
-the head is required rather than only the coverage local tests could not establish. It also supplies each validation
-exclusion: a current-user direction to leave a named test or check alone, a baseline exclusion
+the head is required rather than only the coverage local tests could not establish. It also
+supplies each validation exclusion: a current-user direction to leave a named test or check alone, a baseline exclusion
 established by `execute-task`'s **Encountered Issues** classification with its default-branch
 evidence, or evidence that a hosted runner or provider cancellation meets the GitHub rule's
 pre-validation and local-coverage conditions. A caller with no
