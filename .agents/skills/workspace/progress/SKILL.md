@@ -13,7 +13,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 
 - `session-ledger` — read the task's records and keep the dashboard's own.
 - `list-prs` — find the task's pull requests.
-- `render-dashboard` — render the spec this skill builds and deliver the page.
+- `use-dashboard` — render the spec this skill builds and deliver the page.
 - `execute-task` — its already-active run owns the saved next action after reporting; standalone reporting does not start a run.
 
 ## Workflow
@@ -31,7 +31,7 @@ and deliver the same dashboard again on every request so the user keeps one page
    reuse them while every head is unchanged; otherwise read the pull requests' diffs, write them
    again, and record them with the new heads.
 4. **Build the spec** in the shape below, with `updated_at` set to now.
-5. **Select the delivery route, then render.** Before invoking `render-dashboard`, choose the
+5. **Select the delivery route, then render.** Before invoking `use-dashboard`, choose the
    host's ongoing-work channel when authorized work remains, or the normal reply route for
    standalone reporting. Pass that route to the renderer for its delivery. When the ledger records
    an earlier delivery of this task's dashboard, update that same page; otherwise record a
