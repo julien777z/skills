@@ -225,8 +225,8 @@ concrete, and a shape the test catches that no check names is still a finding.
 - **Placeholder names** — `data`, `result`, `temp`, `info`, `helper`, `manager` or `handler` naming
   something specific; `_new`, `_v2`, `_final` or `_fixed` suffixes; a name saying how rather than
   what.
-- **Padding** — a function past the length the repository's configuration sets, about sixty lines
-  by default, doing several separable phases; log lines narrating normal flow; emoji or
+- **Padding** — a function past the length the repository's configuration sets, about sixty lines by
+  default, doing several separable phases; log lines restating the step the code just took; emoji or
   exclamation in comments and logs.
 
 The remedy is the plain shape a careful author writes: flatten, look up, return early, inline,
@@ -237,8 +237,9 @@ code keeps its behavior exactly, and the repository's tests prove it before and 
 code no test covers gets one first. A comment stating a behavior the code must keep is replaced by a
 test that fails when that behavior regresses, never deleted on its own. Left alone: a nested loop
 over small fixed sets; a comment of one or two lines recording behavior outside the repository — a
-third-party or protocol quirk — that the code cannot show; a long function whose phases share state
-a split would have to pass around.
+third-party or protocol quirk — that the code cannot show; a log line reporting an outcome, status,
+progress or failure an operator reads; a long function whose phases share state a split would have
+to pass around.
 
 ### Tolerated Past
 
