@@ -1,7 +1,7 @@
 ---
 name: code-slop-doctor
 description: Strip the complexity a codebase does not need and the code a reviewer reads as generated slop — pass-through layers, one-case abstractions, duplicates, divergent siblings, legacy paths, tangled or padded code, and surplus migrations, build files, configuration names and dependencies. Use to deslop a repository or one of its phases, lenses or paths.
-short_description: 'Remove unneeded layers, abstractions, duplicates, legacy paths, code that reads as slop, configuration names and dependencies across a repository.'
+short_description: 'Remove unneeded layers, abstractions, duplicates, legacy paths, code that reads as slop, configuration names and dependencies.'
 disable-model-invocation: true
 ---
 
