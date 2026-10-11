@@ -25,7 +25,7 @@ Return only this heading and Markdown list, with no status summary or extra pros
 ```markdown
 Doctors
 
-- code-slop-doctor — Strip the complexity a codebase does not need — pass-through layers, one-case abstractions, duplicates, divergent siblings, legacy paths, and surplus migrations, build files, configuration names and dependencies.
+- code-slop-doctor — Strip the complexity a codebase does not need and the code a reviewer reads as generated slop — pass-through layers, one-case abstractions, duplicates, divergent siblings, legacy paths, tangled or padded code, and surplus migrations, build files, configuration names and dependencies.
 ```
 
 If no doctor exists, return `- None` under `Doctors`.

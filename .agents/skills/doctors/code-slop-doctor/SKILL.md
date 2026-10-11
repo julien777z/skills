@@ -206,12 +206,14 @@ Code a reviewer recognizes as generated: correct, and still a shape no careful a
 test is the reader's: would someone opening this file wince? Every check below makes that test
 concrete, and a shape the test catches that no check names is still a finding.
 
-- **Tangled control flow** — nesting three or more levels deep; nested loops that a lookup map, a
+- **Tangled control flow** — nesting deeper than the repository's lint configuration allows,
+  three levels by default; nested loops that a lookup map, a
   set or one pass replaces; an if/else ladder that a table, a match or early returns flatten; a
   boolean parameter that switches a function between two behaviors.
-- **Narrating comments and docs** — a comment restating the line below it; a docstring repeating
-  the signature; banner or section-divider comments; a comment explaining what a better name would
-  show.
+- **Narrating comments and docs** — a comment restating the line below it; a docstring listing the
+  parameters, return or raised types the signature already declares, or running past the line the
+  repository's language rules require; banner or section-divider comments; a comment explaining
+  what a better name would show.
 - **Ceremony** — a temporary assigned and returned on the next line; a branch returning `True` or
   `False` to restate its own condition; comparing to `True`, `False` or `None` with `==`; a
   hand-written loop that a comprehension, builtin or standard-library call already does; a helper
@@ -221,11 +223,13 @@ concrete, and a shape the test catches that no check names is still a finding.
 - **Placeholder names** — `data`, `result`, `temp`, `info`, `helper`, `manager` or `handler` naming
   something specific; `_new`, `_v2`, `_final` or `_fixed` suffixes; a name saying how rather than
   what.
-- **Padding** — a function past about sixty lines doing several separable phases; log lines
+- **Padding** — a function past the length the repository's configuration sets, about sixty lines
+  by default, doing several separable phases; log lines
   narrating normal flow; emoji or exclamation in comments and logs.
 
 The remedy is the plain shape a careful author writes: flatten, look up, return early, inline,
-delete the comment and rename instead, split the function at its phases. Behavior stays exactly as
+delete the comment and rename instead, cut a docstring to the line the language rules require and
+delete it only where they require none, split the function at its phases. Behavior stays exactly as
 it was, and the repository's tests prove it before and after; a shape no test covers gets one
 first. Left alone: a nested loop over small fixed sets; a comment recording a third-party quirk or
 a reason the code cannot show; a long function whose phases share state a split would have to

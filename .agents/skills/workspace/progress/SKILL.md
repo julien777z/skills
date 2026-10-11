@@ -46,8 +46,8 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **Progress.** A step's work is its estimate, or for a step with parts the estimates of its parts
   not skipped; a skipped step has none. `value`: finished work over all work, across every plan
   that is not withdrawn, where finished work is each done step's work and each done part of a step
-  neither done nor skipped. `detail`: "<done> of <total> steps done", counting steps with work, adding "across
-  <n> plans" when there are several.
+  neither done nor skipped. `detail`: "<done> of <total> steps done", counting steps with work,
+  adding "across <n> plans" when there are several.
   `segments`: one per step with work, in plan order, labelled "<plan title>: <step title>",
   `weight` that work in minutes, toned `good` when done, `accent` when active, `critical` when
   blocked, and neutral otherwise. A step neither done nor skipped with done parts takes them as a
