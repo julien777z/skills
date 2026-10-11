@@ -13,6 +13,12 @@ Build the clean target contract instead of preserving transitional behavior.
 - Apply this skill in every repository. Read its project guidance to determine which contracts have
   external users, which environments and records are disposable, and which surfaces are privileged;
   never infer those facts from an environment name.
+- **Establish retention obligations before proposing preservation work.** Use the user's explicit
+  instructions and repository facts to identify the affected users and records that must survive.
+  A schema, an audit field, or generated test rows prove a supported shape, not that real users or
+  valuable stored evidence exist. Apply an explicit statement that affected data is nonexistent or
+  disposable; ask only about a concrete conflicting fact or a genuinely unresolved retention choice.
+  Do not invent a production environment or require queries against one to confirm that statement.
 - Migrate affected users and retained data onto the target contract before removing the old one.
   Release state changes the migration work; it does not by itself justify a legacy runtime path.
 
@@ -159,8 +165,8 @@ with an obsolete owned contract or revision.
   contract or revision is compatibility, even when described as resilience or repair; it requires
   the approval above. Third-party contracts remain governed by **Owned And Third-Party Contracts**.
 - Prefer a deliberate break to an owned API, wire, schema, payload, or stored shape when it
-  materially simplifies the result. Migrate affected consumers and data, then remove the old shape;
-  update every consumer and generated contract in the same change.
+  materially simplifies the result. Update affected consumers and migrate retained data, then remove
+  the old shape; update every consumer and generated contract in the same change.
 - **An owned contract stays owned across repositories.** A consumer in a sibling repository the
   user owns makes the break multi-repository work, never somebody else's decision; only a consumer
   outside the user's control freezes a shape. **Scope Follows The Defect** holds for a break as for
@@ -201,15 +207,12 @@ with an obsolete owned contract or revision.
   and the wire and the model follow that column, never the other way round. The shape to recognise:
   a validation error at a read site answered by widening the reader instead of asking what the store
   allows.
-- **What a requiredness change owes the rows already stored is the repository's call, not this
-  skill's.** Read its project guidance before writing anything that touches them. Two answers are
-  both coherent and they are opposites: a repository whose environments are disposable resets the
-  data as an operational action and writes no data migration at all, while one that keeps its
-  environments preserves every known value, takes it from its authoritative source where one exists,
-  and writes a type-valid placeholder only where no source has it. Assuming either answer in the
-  wrong repository destroys data or ships a migration nobody wanted.
-- Whichever answer the repository gives, never overwrite a known value, never fabricate a placeholder
-  in runtime code, and never keep a permanent schema default solely to make a migration convenient.
+- For a requiredness change, establish the affected data's retention scope under **Product State**
+  before selecting a migration or reset. The database-migration owner below applies that scope;
+  required columns do not themselves create an obligation to preserve disposable or nonexistent rows.
+- For retained values, use the authoritative source where one exists and a type-valid placeholder
+  only where none exists. Never overwrite a known retained value, fabricate a placeholder in runtime
+  code, or keep a permanent schema default solely to make a migration convenient.
 - Before selecting an implementation for a schema or stored-representation change, invoke the
   database-migration skill for that role, including when the repository has no migration runner or
   uses startup reconciliation. Resolve its local commands and layout through project guidance;

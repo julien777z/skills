@@ -8,6 +8,20 @@ short_description: 'Guide for authoring, rebasing, and troubleshooting Alembic d
 
 Read the repository's migration layouts, runner commands, CI jobs, and fixture ownership from its project guidance, opening every `.agents/references/` file its `project.md` points to, before applying this policy. Resolve every role below through it; do not invent local paths.
 
+## Data Scope
+
+- Before choosing a backfill, recovery store, or stored-format transition, establish which affected
+  values must survive from the user's explicit instructions and repository data policy. Schemas,
+  audit columns, and generated migration-test rows do not establish real users or retained evidence.
+- When affected data is explicitly nonexistent or disposable, implement and validate the target
+  schema without inventing a preservation backfill, recovery store, or legacy reader. Any needed
+  reset remains an explicit operational action under that policy; it is not runtime reconciliation.
+  Keep the revision chain, destructive-operation declarations, and configured replay tests.
+- Apply the retained-data requirements below when affected values must survive. An environment
+  label, a small row count, or an assumption that records are dummy data never settles that choice.
+  If retention is unresolved or concrete evidence conflicts with the stated scope, resolve that
+  issue before discarding values; do not query an invented environment or reopen a settled choice.
+
 ## Structure
 
 Schema and stored-data evolution belongs to the canonical versioned migration chain, never to
@@ -25,7 +39,8 @@ chain shared by every configured deployment domain.
 
 Every chain is **replayable from an empty database**: its root revision (the project's initial-schema revision name pattern) creates the service schema and all objects, and `alembic upgrade head` on an empty database must always succeed. The migration suite replays all chains from empty on every PR and verifies the result matches the current SQLAlchemy metadata — a migration that cannot deploy fails CI before merge.
 
-Every chain is also replayed **populated**: the project's populated replay test fills every table with generated rows before each revision and compares an exact per-row census before and after each step. Every stored value of every row must survive byte-identical unless the revision's entry in the project's survivorship policy registry declares the change and verifies it per row. A revision that loses or corrupts any row's data without a declaration fails CI. The destructive-operation check additionally scans each revision's `upgrade()` for destructive operations (drops, type changes, UPDATE/DELETE statements, unclassifiable SQL) and requires each one to carry an exact acknowledgment in the same policy registry — missing and stale acknowledgments both fail.
+Generated replay rows test the declared migration behavior; they do not expand **Data Scope** into
+a retention obligation for deployed data. Every chain is also replayed **populated**: the project's populated replay test fills every table with generated rows before each revision and compares an exact per-row census before and after each step. Every stored value of every row must survive byte-identical unless the revision's entry in the project's survivorship policy registry declares the change and verifies it per row. A revision that loses or corrupts any row's data without a declaration fails CI. The destructive-operation check additionally scans each revision's `upgrade()` for destructive operations (drops, type changes, UPDATE/DELETE statements, unclassifiable SQL) and requires each one to carry an exact acknowledgment in the same policy registry — missing and stale acknowledgments both fail.
 
 Shared tooling lives in the project's shared migration package (runner, revision-graph helpers, drift comparison, file validation); the project's migration CI entry point and the test suite both build on it.
 
@@ -65,14 +80,11 @@ Shared tooling lives in the project's shared migration package (runner, revision
 
 ## What A Change Owes The Rows It Breaks
 
-- **A migration converts what a change would otherwise strand.** When a change leaves stored values
-  unreadable or invalid under the new contract — a retyped column, a re-keyed encryption context, a
-  reshaped payload — those values are part of the change, and the revision carries them across.
-- **Never write a migration on the assumption that the data can be thrown away.** "It is only dummy
-  data" describes today, stops being true without announcement, and is invisible in the revision
-  afterwards. The migration that assumed it is the one that runs against real rows later, and by then
-  nobody is reading its body to check.
-- Reach for these in order, and take the first that reaches the new shape:
+- **A migration converts retained values a change would otherwise strand.** When a change leaves
+  them unreadable or invalid under the new contract — a retyped column, a re-keyed encryption
+  context, a reshaped payload — those values are part of the change, and the revision carries them
+  across. **Data Scope** decides whether this obligation applies before the mechanisms below do.
+- For retained values, reach for these in order, and take the first that reaches the new shape:
   1. **A cast**, where the stored values are already valid in the new type — `postgresql_using` retypes
      the column and keeps every row.
   2. **A conversion**, where they are not: read each value, transform it, write it back. This is the
@@ -88,12 +100,16 @@ Shared tooling lives in the project's shared migration package (runner, revision
 - A conversion that needs a live external service — a key service to re-encrypt through, an API to
   re-resolve against — is still a migration. Say in the pull request what it needs and what happens to
   a row it cannot convert; never let it silently skip one.
-- **An acknowledgment documents destruction; it does not make data loss safe.** Before a destructive
-  operation discards a stored value, either carry that value into the new shape or retain enough exact
-  recovery material for `downgrade()` to restore it. A revision with neither a backfill nor a tested
-  restoration path does not pass finalization.
+- **An acknowledgment documents destruction; it does not waive retained-data protection.** Before
+  discarding a retained value, either carry it into the new shape or retain enough exact recovery
+  material for `downgrade()` to restore it. A revision with neither a backfill nor a tested
+  restoration path does not pass finalization when **Data Scope** requires those values to survive.
 
 ## Stored-Format Transitions
+
+Apply this section when a revision transforms values retained under **Data Scope**. A schema-only
+change still tests its schema upgrade and downgrade; generated rows do not require a value-preserving
+format transition or recovery mechanism for data explicitly declared disposable or nonexistent.
 
 - A migration reads the representation stored by the revision immediately before it, not the ORM or
   decoder as they exist after the application change. Prepare tests with raw pre-revision values so an
@@ -124,8 +140,10 @@ Shared tooling lives in the project's shared migration package (runner, revision
   to preserve, so correct the revision itself rather than layering a second one on top to undo it.
   This holds whatever the mistake is: a destructive body, a wrong constraint name, a missing index. Say
   in the pull request that you edited it.
-- Establish "not applied yet" from the real `alembic_version` row in every environment, never from
-  assumption. That fact is the whole basis for editing rather than adding.
+- Establish "not applied yet" from the real `alembic_version` row in every existing environment that
+  may have applied it. An explicit user statement or repository fact that no such environment exists
+  establishes that scope without inventing a database to query. Data being disposable alone does
+  not establish that a revision is unapplied; that fact decides editing rather than adding.
 - Once any environment has applied it, a later revision is the only route, and for a destructive body
   it is not a repair: that database lost the values and will never re-run the corrected body, a fresh
   one keeps them, and both land on an identical schema — so drift detection stays silent about the
@@ -262,11 +280,11 @@ or
 - [ ] Destructive operations, rewrites, and backfills are declared in
       the project's survivorship policy registry with per-row verifiers and exact acknowledgments
 - [ ] Every inserted background job has the declared migration contract; a phased release holds it until a compatible worker activates it
-- [ ] Every discarded value is converted or recoverable through a tested downgrade path
-- [ ] Stored-format changes test old-to-new upgrade and new-to-old downgrade with raw stored values
+- [ ] Data scope is established; every discarded retained value is converted or recoverable through a tested downgrade path
+- [ ] Retained stored-format changes test old-to-new upgrade and new-to-old downgrade with raw stored values
 - [ ] Resumable or mixed-format rewrites recognize already-converted rows and pass retry coverage
 - [ ] The configured migration suite passes — the chain must replay from an empty database,
-      preserve every populated row, and downgrade cleanly at every revision
+      verify its declared populated-row policy, and downgrade cleanly at every revision
 
 ## Debugging CI Failures
 
