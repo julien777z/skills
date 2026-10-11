@@ -165,9 +165,8 @@ Things of one kind built in different shapes.
 
 The remedy is one structure per kind: the shared shape lives in the shared package and each sibling
 supplies only what differs, its name, port, servicers or routes. The slot's best existing
-implementation becomes the shared one under `code-simplify`'s **Reuse, Ownership And
-Deletions**. Left alone: a slot whose
-difference a contract requires, with the contract named.
+implementation becomes the shared one under `code-simplify`'s **Reuse, Ownership And Deletions**.
+Left alone: a slot whose difference a contract requires, with the contract named.
 
 ### Scattered Structure
 
@@ -188,8 +187,8 @@ collapse one-symbol modules into their owner, split a catch-all by owner, move c
 consumers expect it, rename files and folders for what they hold, and regroup each declaration list
 by concept, renumbering an owned wire contract's fields to match — every importer, producer and
 consumer updated and every generated target regenerated in the same change, no re-export left
-behind. Left alone: a module boundary a framework prescribes, a
-package boundary a build or distribution artifact needs.
+behind. Left alone: a module boundary a framework prescribes, a package boundary a build or
+distribution artifact needs.
 
 ### Repeated Literal
 
