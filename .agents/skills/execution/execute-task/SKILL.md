@@ -79,8 +79,8 @@ Every task that changes files starts here, and so does every follow-up that arri
   - CI, a deployment or a merge with its follow-up is the observed duration of that job.
 - Schedule steps by `subagent-selection`'s **Dispatch**: coupled work stays sequential, and
   independent scopes with separate owners, files and resources overlap once their inputs are
-  settled. Estimate the elapsed time with that overlap, counting overlapping work once at its
-  longest part.
+  settled. Estimate the elapsed time with that overlap, counting overlapping work once at the
+  longest of the overlapping steps.
 - **Settle ownership before the plan is final.** For a plan that introduces a subsystem, runtime
   boundary, or independent consumer, apply `code-simplify`'s ownership analysis to the proposed
   shape and the analogous implementations already in the repository, with one read-only subagent

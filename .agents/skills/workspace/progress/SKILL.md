@@ -50,9 +50,9 @@ and deliver the same dashboard again on every request so the user keeps one page
   <n> plans" when there are several.
   `segments`: one per step with work, in plan order, labelled "<plan title>: <step title>",
   `weight` that work in minutes, toned `good` when done, `accent` when active, `critical` when
-  blocked, and neutral otherwise. A step not yet done with done parts takes them as a first
-  segment, toned `good`, then its remaining work as a second, toned by the step's status as above,
-  when any remains, so the bar fills as the percentage does.
+  blocked, and neutral otherwise. A step neither done nor skipped with done parts takes them as a
+  first segment, toned `good`, then its remaining work as a second, toned by the step's status as
+  above, when any remains, so the bar fills as the percentage does.
 - **Metrics,** in this order: **Time remaining**, the work not yet finished, totalled as
   `execute-task` totals a plan, prefixed `~` because it is an estimate, with any time the user owes
   in `detail` and outside the figure; **Waiting on you**, the count of open questions; **Pull

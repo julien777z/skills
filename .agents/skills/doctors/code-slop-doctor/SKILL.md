@@ -222,8 +222,7 @@ concrete, and a shape the test catches that no check names is still a finding.
   something specific; `_new`, `_v2`, `_final` or `_fixed` suffixes; a name saying how rather than
   what.
 - **Padding** — a function past about sixty lines doing several separable phases; log lines
-  narrating normal flow; emoji or exclamation in comments and logs; a to-do placeholder in shipped
-  code.
+  narrating normal flow; emoji or exclamation in comments and logs.
 
 The remedy is the plain shape a careful author writes: flatten, look up, return early, inline,
 delete the comment and rename instead, split the function at its phases. Behavior stays exactly as
