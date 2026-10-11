@@ -1,6 +1,6 @@
 ---
 name: land-pr
-description: Merge a pull request its caller is authorized to merge — take it out of draft, gate its exact head, resolve merge conflicts, squash-merge at the gated head and verify the merge. Use when a workflow reaches an authorized merge — `execute-task`'s Completion, a guidance batch's delivery, `cr`, a doctor's merged batch, or a user-invoked `merge-pr`; a pull request leaves draft only here, as the first step of that merge.
+description: Merge a pull request its caller is authorized to merge — verify its delivery dependencies before taking it out of draft, gate its exact head, resolve merge conflicts, squash-merge and verify the merge. Use when a workflow reaches an authorized merge — `execute-task`'s Completion, a guidance batch's delivery, `cr`, a doctor's merged batch, or a user-invoked `merge-pr`. A pull request leaves draft only here; an unresolved or testing dependency blocks that transition and merge.
 short_description: 'Ready a pull request for its authorized merge, gate its exact head, and merge it.'
 ---
 
@@ -50,19 +50,32 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
 
 ## Check Gate
 
-1. **Require a pull request that is ready for review.** Mark a draft ready; the transition starts
+1. **Verify delivery dependencies before readiness.** Inventory what the complete consumer head
+   resolves for its build, validation, packaging and delivered behavior, following the
+   [delivery dependency criteria](references/delivery-dependencies.md). Verify each provider's
+   merged state and each resolved revision's provenance; a branch label or immutable identifier
+   alone proves neither. A pull-request or testing dependency, or missing provenance, keeps the
+   consumer draft and blocks both readiness and merge, even with passing tests. Convert an
+   already-ready consumer back to draft through GraphQL `convertPullRequestToDraft` and verify
+   `draft` true over REST. Surface the dependency and its evidence in the body under the GitHub
+   rule's dependency-reference exception. Draft validation and review may continue. After the
+   dependency merges, update every consuming reference to the maintained target chosen by the
+   user or repository guidance, revalidate the consumer's new head through the caller's fix rule,
+   and repeat this inventory before taking it ready. This gate authorizes no dependency merge
+   or release; never take a blocked consumer ready to start tests or send a ready message.
+2. **Require a pull request that is ready for review.** Mark a draft ready; the transition starts
    the test jobs a draft skips. Every check this gate reads comes from a run triggered on the exact
    head after the pull request left draft: a test job `skipped` on a draft run, which GitHub counts
    as passing a required check, is no result. A pull request this gate took out of draft has never
-   run its tests, so step 3 reads its hosted test jobs to a terminal result for every affected
+   run its tests, so step 4 reads its hosted test jobs to a terminal result for every affected
    behavior, whatever local coverage the caller passed.
-2. **Classify the complete pull-request diff.** A non-runtime diff — one that changes no executable
+3. **Classify the complete pull-request diff.** A non-runtime diff — one that changes no executable
    source, package or dependency definition, test, runtime configuration, CI workflow, generated
    runtime artifact, or other executed-behavior contract — is validated only by the checks its
    artifacts need, its exact contents, and `git diff --check`; application tests, check runs and CI
    are not consulted. The classification is semantic rather than path-based: instructions,
    documentation, policies, static metadata and non-executable configuration live anywhere.
-3. **For a runtime diff, gate only the coverage local tests could not establish**, unless the caller
+4. **For a runtime diff, gate only the coverage local tests could not establish**, unless the caller
    requires every hosted check, in which case every check on the head reaches a terminal result and
    only the exclusions below are set aside. For the affected
    behaviors the caller's local tests do not cover, query check runs and legacy statuses only for a
@@ -70,25 +83,25 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    runner-specific behavior, or a dependency the local environment cannot host. When every affected
    behavior has passing local coverage, the gate is satisfied without querying GitHub. A qualified
    pre-validation runner-infrastructure cancellation is skipped under the GitHub rule; other hosted
-   results remain subject to step 6. When a needed job has no check run or status, inspect the active
+   results remain subject to step 7. When a needed job has no check run or status, inspect the active
    workflow definitions for pull request
    triggers; if none can supply the coverage, report that blocker rather than waiting on unrelated
    checks. Record and exclude each caller-supplied validation exclusion. Remove it from required
    coverage and terminal-result gates; it never becomes a reason to repair, rerun, or wait. Every
    other affected behavior still needs passing coverage.
-4. **Poll a relevant check until it reaches a terminal state.** Re-query the exact head on a bounded
+5. **Poll a relevant check until it reaches a terminal state.** Re-query the exact head on a bounded
    interval matched to how long that job takes — roughly every 30 to 60 seconds — until it is
    `success`, `failure`, `cancelled`, `timed_out`, `skipped` or `neutral`. Never poll an unrelated job
    or wait on a whole workflow whose other jobs cover nothing affected. Do not end the turn, report
    "still running", or hand back to the user while a relevant check is pending; the poll loop is the
    work.
-5. **A pending status is a cache, not evidence.** Status endpoints keep reporting `in_progress` after
+6. **A pending status is a cache, not evidence.** Status endpoints keep reporting `in_progress` after
    a job has finished, sometimes for an hour or more. Learn what the job normally costs from the same
    job on an earlier head or on the base branch; once a check is pending well past that, read the
    job's own output — the run's jobs listing and decisively its log, which a finished job ends with
    its summary and cleanup. A log showing completion **is** the terminal result. Never diagnose a
    hang, push a speculative fix, cancel, re-run, or report the run stuck from a pending status alone.
-6. **Classify every unsuccessful check before repair.** A caller-supplied exclusion, a current-user
+7. **Classify every unsuccessful check before repair.** A caller-supplied exclusion, a current-user
    waiver for its named test or check is excluded. Preserve established baseline classifications;
    classify a newly encountered possible baseline under `execute-task`'s **Encountered Issues**,
    without reentering that skill's active run. Record an exclusion's evidence, remove it from
@@ -105,24 +118,25 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    never re-run a job, or skip, disable, or quarantine a test or confine its job to drafts, to get
    past it. Report a blocker only when relevant missing coverage needs user input or unavailable
    credentials, with the check, evidence and remediation attempted.
-7. Never stop, restart, reconfigure or claim a local service the calling workflow did not start:
+8. Never stop, restart, reconfigure or claim a local service the calling workflow did not start:
    another agent or person may be using it. When relevant validation needs local services and one it
    did not start is running, use the matching hosted check as the fallback rather than running a
    competing service-managed test.
-8. Every fix made here goes through the caller's rule from **Inputs**, and the gate repeats on the
+9. Every fix made here goes through the caller's rule from **Inputs**, and the gate repeats on the
    new head.
 
 ## Merge Conflicts
 
 When GitHub reports a conflict, or the merge is rejected for one:
 
-- Incorporate the base through `merge-conflict`; the resolution is a fix under **Check Gate** step 8.
+- Incorporate the base through `merge-conflict`; the resolution is a fix under **Check Gate** step 9.
 - Report a blocker only when a safe resolution needs an unauthorized product decision, or a change
   to a contract a consumer outside the user's control speaks.
 
 ## Merge
 
-Re-read the pull request after the check gate and require its head SHA to equal the head that
+Recheck delivery dependency state and resolved revisions, then re-read the pull request after the
+check gate and require its head SHA to equal the head that
 passed acceptance and the check gate, then squash-merge with that SHA in the request —
 `PUT /repos/{owner}/{repo}/pulls/{number}/merge` with `merge_method=squash` and `sha` — so GitHub
 refuses a concurrent head change. On a mismatch, put the commits the new head adds through the
@@ -137,7 +151,7 @@ Do not inspect or follow merge-triggered release, publication, artifact, or depl
 A separate direct delivery or release task owns that work and its verification.
 
 When the merged diff changes agent configuration, poll the default-branch Agent Sync run the merge
-started as **Check Gate** steps 4–5 poll a check. A run ending in anything but success is diagnosed
+started as **Check Gate** steps 5–6 poll a check. A run ending in anything but success is diagnosed
 from its log and reported. The refresh is not this skill's; the GitHub rules' **After Agent Sync**
 section says when it runs.
 

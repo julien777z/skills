@@ -434,8 +434,8 @@ bug or a passing formatter does not satisfy this spacing check.
   lockfile and any workflow checkout, as the global rules' version-reference bullet allows while
   developing — or builds on a same-repository sibling's branch as the GitHub rule's branch bullets
   set out, and pushes. Which branch it consumes, and a red check that dependency explains, are
-  reported in user chat rather than waited on, never in the pull-request description; switching
-  back to the released version is named work for when the dependency merges.
+  surfaced under the GitHub rule's dependency-reference exception rather than waited on; adopting
+  its maintained delivery target is named work for when the dependency merges.
 - **No edit sits uncommitted through a long wait outside the checks.** Before the slow verification
   below, a background worker, CI on the pushed head, or a question to the user, bring the work to a
   coherent step, commit it, and push it; the checks' own runs are part of the push, not such a wait.
@@ -502,8 +502,8 @@ context, with **Pull Requests** applying inside each of them.
 - Invoke `generic-push` separately for each repository before committing or publishing.
 - Write every branch name, commit message, pull-request title, pull-request description, review
   comment, code comment, and repository-local report solely from that repository's perspective.
-- Do not name, link, describe, or explain another involved repository, its branch, pull request,
-  implementation, or coordination context in those artifacts.
+- Apply the GitHub rule's dependency-reference exception to those artifacts; omit unrelated
+  references to another repository's implementation or coordination context.
 - Keep cross-repository coordination and combined status reporting in user chat.
 
 ### Each Repository Speaks Only Its Own Vocabulary

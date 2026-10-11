@@ -277,10 +277,12 @@ so the user's review of the source pull request overlaps it.
      create that entry point when it is absent, or extend it when it exists, and verify a fresh
      bootstrap provides the tool. Keep that bootstrap repository-neutral — it serves every developer
      and agent, so its name, behavior, and messages must not be Claude- or Codex-branded.
-   - After a dependency receives a separately authorized release, replace consumer references to
-     its branch with a maintained version tag. Use a minor release for a new capability or a patch
+   - Follow the user's explicit consumer-reference choice; otherwise, after a dependency receives
+     a separately authorized release, replace its branch reference with a maintained version tag.
+     Use a minor release for a new capability or a patch
      release for a bug fix; verify any moving major tag points to that release and validate the
-     consumer against it. Do not switch to an unpublished tag or the default branch.
+     consumer against it. Never use an unpublished tag; use the default branch when the user chose it
+     or applicable reference guidance permits it.
    - If target file does not exist, create it with a concise structure matching existing style.
    - Group frontmatter fields by subject. Put a field that summarizes, qualifies, or overrides
      another immediately after the field it relates to, unless the format requires another order.
@@ -387,12 +389,12 @@ so the user's review of the source pull request overlaps it.
       metadata such as `agents/openai.yaml` from canonical skill packages; leave generated
       mirrors to Agent Sync. A clean changed file does not make a failing tree validation pass.
       When the guidance needs a change in an unreleased tool owned by another repository, point
-      the consuming workflow at that tool's active branch and validate against it, without waiting
-      for the tool's review loop. That workflow change is source work, delivered and merged under
-      step 1's source route, and this pull request's merge waits for it. After the tool merges and
-      receives an authorized release, a later source change from the latest default branch replaces
-      the branch reference with its maintained version tag, validated against the tagged tool and
-      merged on the user's authorization. No merge here authorizes the release.
+      the draft consuming workflow at that tool's active branch and validate against it, without
+      waiting for the tool's review loop. That workflow change is source work under step 1's source
+      route; its delivery follows `land-pr`'s dependency gate rather than merging a testing reference.
+      This guidance pull request's merge waits for the required source changes. After the tool
+      merges, the consumer adopts and validates its maintained target under the reference guidance
+      above. No merge here authorizes a release.
    3. **Run `code-simplify`** across the branch and act on what it reports: guidance duplicated
       between peer rules or skills, including a caller and a skill it always invokes; a section grown
       around a second subject; a heading named for a category with one member; a rubric left inline
