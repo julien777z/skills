@@ -1,7 +1,7 @@
 ---
 name: code-slop-doctor
-description: Strip the complexity a codebase does not need — layers that only forward, abstractions with one case, duplicate models and types, siblings built in different shapes, scattered or tiny modules, code kept for a past the repository no longer has, migration chains and tooling grown past their job, and build, CI and root files nobody needs. It restructures freely, merging, moving and renaming modules, and works through application code, frontend, migrations, build and repository root, then tests. Use to deslop a repository or one of its phases, lenses or paths.
-short_description: 'Remove unneeded layers, abstractions, duplicates, divergent structure and legacy paths across a repository.'
+description: Strip the complexity a codebase does not need — pass-through layers, one-case abstractions, duplicates, divergent siblings, legacy paths, and surplus migrations, build files, configuration names and dependencies. Use to deslop a repository or one of its phases, lenses or paths.
+short_description: 'Remove unneeded layers, abstractions, duplicates, legacy paths, configuration names and dependencies across a repository.'
 disable-model-invocation: true
 ---
 
@@ -21,9 +21,12 @@ something it does; this doctor finds the ones that do nothing and takes them out
 - `test-fixture` — the per-test checks the test phase runs.
 - `defer-scope` — report a migration-test deferral record whose path no longer exists.
 
-Also read the repository's database-migration skill and its test-runner skill when the skill listing
-declares them, found by their descriptions. Their authoring, survivorship, history, locking and
-validation rules govern every correction in their areas and are never restated here.
+Also read, when the skill listing declares them and found by their descriptions, the repository's
+database-migration skill, its test-runner skill, its checklist for adding a configuration value and
+its deployment skill, and follow its packaging rules for each language it builds. Their rules govern
+every correction in their areas and are cited here, never restated; the deployment skill's
+read-only guidance is how a deployment's environment is read, and reading activates nothing else it
+offers.
 
 ## Phases
 
@@ -32,8 +35,8 @@ The run works in five phases, in this order, and each phase is one batch:
 1. **Application code** — services, apps, workers, shared packages and libraries.
 2. **Frontend** — web and mobile apps, their components, hooks, stores, styles and API types.
 3. **Migrations** — every migration chain, its registries, backfills and tooling.
-4. **Build, CI and repository root** — container files, workflows, scripts, tool configuration and
-   root files.
+4. **Build, configuration and dependencies** — container files, workflows, scripts, tool and root
+   configuration, every place a configuration name is declared or read, manifests and lockfiles.
 5. **Tests** — after the code they test has settled. A test an earlier phase's change breaks — one
    importing a moved path, one exercising only a removed layer — is repaired or deleted in that
    phase's batch under **Test Slop**'s remedy, so every batch passes; this phase audits the rest.
@@ -43,53 +46,44 @@ lenses, or paths; a run scoped to one lens or phase applies only that lens or ph
 
 ## Inventory
 
-Discover languages, source roots, deployables, generators and tools at runtime, and exclude
-generated code by the repository's own markers. Then enumerate, per phase in scope:
+Exclude generated code by the repository's own markers. Enumerate, per phase in scope, every item a
+lens's checks name, and build these tables before judging anything:
 
-- every function, method, class, component and hook whose body forwards to one call with the same
-  or renamed arguments, and every barrel, re-export and second name bound to one value;
-- every interface, Protocol, abstract base and base class with its implementations or subclasses;
-  every factory with the products it builds; every configuration field, option or prop with the
-  places that set it; every context, provider or store with its consumers;
-- every data declaration — model, dataclass, record, TypedDict, TypeScript type or interface,
-  validation schema — with its field set, and every generated contract source the repository
-  produces (an OpenAPI or protobuf output, generated client types);
 - the deployables, grouped by kind — RPC server, HTTP app, worker, CLI, frontend app — with a
   **slot table** per kind: one row per structural slot (entrypoint, server or app construction,
   startup and shutdown lifecycle, health and readiness, configuration, middleware or interceptors,
   logging, dependency wiring, data fetching for a frontend) and one column per deployable naming
   the file and symbol that fills it, or `none`;
-- every module with its public symbol count, every catch-all module (`utils`, `helpers`, `common`,
-  `misc`), and every pair of modules or folders whose names or symbols answer the same question;
-- repeated literal clusters: class-name strings, message templates, error-to-message conversions,
-  ports, hosts and URLs, and constant lists that restate an enum;
-- every defaulted, coerced or guarded read; every configuration field whose branch selects a former
-  behavior; every name accepted under two spellings; every catch, suppress, suppression comment,
-  type-ignore, rule disabled in tool configuration and pipeline step whose failure is ignored; every
-  wire field kept for a former reader; every comment, constant or message carrying a compatibility
-  word — legacy, compat, fallback, deprecated, kept for, formerly, transitional, temporary, old
-  format — as a search key pointing at code, never removing an existing to-do note unprompted;
-- per migration chain: its revisions with identifier, parent, header, file name, body and the
-  generator template behind them; the model metadata it must match; every registry or manifest
-  naming revisions, and every registered backfill with the callable behind each hook in a table;
-  revisions sharing a name across chains, paired; the shared mechanics, per-revision packages,
-  runtime and environment modules; the migration tests; which environments have applied which
-  revisions, read from the real version table where reachable and treated as applied where not; and
-  the repository's own tooling around the migration library, with what each piece adds to it;
-- every container file, workflow job with its steps, script with its callers, and root or tool
-  configuration file with the tool that reads it.
+- every module with its public symbol count, and every catch-all module (`utils`, `helpers`,
+  `common`, `misc`);
+- every comment, constant or message carrying a compatibility word — legacy, compat, fallback,
+  deprecated, kept for, formerly, transitional, temporary, old format — as a search key pointing at
+  code, never removing an existing to-do note unprompted;
+- per migration chain: its revisions, registries and registered backfills with the callable behind
+  each hook, revisions sharing a name across chains, and which environments have applied which
+  revisions, read from the real version table where reachable and treated as applied where not;
+- a **configuration matrix**: every configuration name by every place it is declared or read —
+  typed settings models with each field's type, default and required-ness, environment example
+  files, test environment blocks, container, CI and deployment manifests, workspace and cloud-agent
+  environment files, documentation, and every reader — names only, never values. A deployment whose
+  environment lives on a hosting platform is one column, read by name through the deployment skill;
+  one that cannot be read is recorded unread, never empty. For every field whose default is absence,
+  record whether its reader refuses it, branches on it, or passes it through;
+- per language and project: every manifest and its sections, every lockfile, tools a workflow
+  installs outside a manifest, first-party imports across source, tests, scripts and workflow
+  helpers, and every tool invocation in CI, scripts and hooks.
 
 The measurements taken once before fan-out: the repository's configured lint and type checks over
 the scope with no changed-lines filter; its cross-file duplication detector over each phase's trees
 at the tool's default similarity; and the chain replay and drift check its migration tooling
-defines. A measurement that cannot be taken is recorded unmeasured with the reason.
+defines.
 
 ## Lenses
 
 Each lens states its defect shape, the checks that find every instance, the remedy, and what is
 left alone so a reviewer does not go hunting. Every lens applies in every phase, read in that
-phase's language; **Migration Chain** and **Build And Root** belong to their own phases, and
-**Test Slop** to the test phase.
+phase's language; **Migration Chain** belongs to the migrations phase, **Build And Root**, **Configuration Drift** and
+**Dependency Drift** to the build phase, and **Test Slop** to the test phase.
 
 ### Pass-Through Layer
 
@@ -253,30 +247,26 @@ A chain, its registries and its tooling, held to one shape and no more machinery
 - **Downgrade** — every upgrade step reversed in the right order; an empty downgrade only where the
   policy mechanism records the loss with recovery material; a downgrade a fraction of its upgrade's
   size is read.
-- **Survivorship** — every revision carries a policy entry or a no-rows classification; verify and
-  reverse hooks that resolve to unconditional success verify nothing; a row-reading migration has a
-  preparation hook for eligible, ineligible and boundary rows; discarded values are converted or
-  recoverable; stored-format transitions are tested in both directions; resumable rewrites
-  recognise already-converted rows; an exactness check the tests already enforce is verified to
-  run, never re-implemented.
+- **Survivorship** — every revision meets the migration skill's **What A Change Owes The Rows It
+  Breaks** and **Stored-Format Transitions**; verify and reverse hooks that resolve to unconditional
+  success verify nothing; an exactness check the tests already enforce is verified to run, never
+  re-implemented.
 - **Parity** — replay from empty matches the current models; a model change without a revision, a
   revision changing what no model declares, and a historical revision importing a current model are
   each a finding.
-- **Placement** — revision-specific logic in its own package and shared mechanics in the shared one;
-  a backfill module whose one consumer is its revision folds into that revision; a value list a
+- **Placement** — revision code, backfill packages and temporary tables where the migration skill's
+  **Migration Support Packages** and **Temporary Backfill Tables** place them; a value list a
   revision repeats is read from the migration package's own declaration where one holds it, and a
-  historical revision never imports a current application model to get it; finished one-time data
-  fixes kept as code are gone; a temporary table is registered and cleaned up in one lifecycle.
+  historical revision never imports a current application model to get it.
 - **Environment and CI** — per-chain environment modules differ only in the service they name; no
   hand-maintained path filter or table beside the manifest that derives it; every documented
   migration command exists.
-- **Tests** — lifecycle wiring only in the shared test setup; revision-specific fixtures in the
-  revision package; durable helpers name no table or column, and a schema-independent helper is not
-  filed as revision-specific; a revision-to-test pairing rule the repository states holds; a
+- **Tests** — fixtures and helpers where the migration skill's **Where A Revision's Test Scaffolding
+  Lives** puts them; a revision-to-test pairing rule the repository states holds; a
   migration-test deferral record pointing at a path that no longer exists is reported to
   `defer-scope`.
-- **History** — an unapplied revision is corrected in place, an applied one only by stacking; a
-  create-then-rename across unapplied revisions collapses; a merge-of-main revision carrying unrelated
+- **History** — the migration skill's **Applied Is What Makes History** decides whether a revision
+  is corrected in place or by stacking; a create-then-rename across unapplied revisions collapses; a merge-of-main revision carrying unrelated
   operations is split or rebaselined; a hand edit to a generated revision is stated in the change.
 - **Tooling** — each piece of repository tooling around the migration library is weighed against
   what the library already does and what its extension points can do: a rewriter, renderer or
@@ -286,8 +276,9 @@ A chain, its registries and its tooling, held to one shape and no more machinery
   use of them before keeping the pass. A runner that wraps the library's command with nothing added
   is a finding too.
 
-The remedy is the one shape: re-pointed parents and regenerated headers, the shared helper in place
-of per-revision idioms, the missing policy, hook or downgrade added, code moved to its owner,
+The remedy is the one shape: re-pointed parents, regenerated headers and the shared helper in place
+of per-revision idioms, each only where **Applied Is What Makes History** allows editing that
+revision; the missing policy, hook or downgrade added; code moved to its owner,
 tooling the library makes redundant deleted with its callers switched to the library, and the
 repository's migration skill followed for every correction. Where project guidance says no
 environment keeps data, a chain grown long is collapsed into one baseline revision.
@@ -309,6 +300,48 @@ Build, CI and root files carrying more than they need.
 The remedy is one parameterized file, a shared composite action or reusable workflow, one script,
 one source for each value, and deletion of what nothing reads. Left alone: a difference a
 deployment target requires, with the target named.
+
+### Configuration Drift
+
+A configuration name that the matrix shows out of step:
+
+- **Missing** — a field a settings model declares that an environment booting that model does not
+  supply, test environment included, or a default its reader refuses while no deployment sets it;
+- **Orphaned** — a name an example file, manifest or environment block supplies that no model
+  declares and no reader reads;
+- **Mismatched** — one name with different types, defaults, placeholder styles or required-ness
+  across locations, or an override present in one sibling environment and absent from another;
+- **Misdeclared** — one name declared on several models with the same type and default, or a name
+  a process receives and reads that no model it owns declares;
+- **Unused** — a field with no reader, or one whose default is absence that no deployment sets while
+  its reader branches on it; tests are not readers, and a test block or local example file is not a
+  setter;
+- **Bypassed** — an environment read in application code outside the typed model.
+
+The remedy: a missing value declared wherever its siblings are, with a placeholder in test and
+example locations; an orphaned or unused name deleted with every vestige; a mismatch reconciled
+toward the typed model's declaration, a per-environment override stating its reason; one
+declaration the processes needing it share, on the shared base or on a model scoped to the
+capability; a bypassed read routed through the typed model; and, where the repository can derive an
+example file or test block from the models, that derivation proposed as the guard.
+
+### Dependency Drift
+
+Declared dependencies out of step with what the code imports and the checks invoke.
+
+- every package no first-party module imports and no check invokes, including an audit tool never
+  wired into a check;
+- every import satisfied only transitively;
+- one package pinned with different floors or ranges across manifests, or a shared floor below a
+  sibling's;
+- a lockfile older than its manifest, a lock entry the manifest no longer declares, or two
+  lockfiles resolving overlapping sets from different floors;
+- two libraries declared for one job, or a package the platform, framework or runtime provides.
+
+The remedy: the unused declaration removed with its lock entries; an audit tool wired into an
+existing check or removed; an undeclared import declared in the project that imports it; one range
+chosen from actual usage; a lockfile regenerated only through the package manager's own command; one
+library for one job, the one the rest of the repository uses.
 
 ### Test Slop
 
@@ -341,21 +374,31 @@ budgets, cross-suite layout and coverage maps are `tests-doctor`'s and are named
 - Fix the reader or the writer, never both. A tolerance that hides a wiring defect is a confirmed
   defect and is fixed. An unsupported historical record is never a finding and never receives a
   fallback.
-- A migration correction is made in place or stacked according to applied state, stacked when that
-  state cannot be established; a data-loss path with no recovery is a blocker to report.
+- A migration correction follows the migration skill's **Applied Is What Makes History**, stacked
+  when applied state cannot be established; a data-loss path with no recovery is a blocker to
+  report.
+- A configuration default its reader refuses is declared nowhere until the disagreement is settled:
+  the reader is wrong when nothing that ships can use the value, the declaration and deployment are
+  wrong when something can, and where the target contract does not show which, both fixes go to the
+  user. A field nothing deployed sets takes one of three outcomes the plan names: a deployment should
+  carry it, it is a local-development tool retained with the tool named, or it is deleted with the
+  branch its value selects.
 - An even split between two sibling structures equally fit for the kind goes to the one leaving the
   fewest mechanisms and moving the fewest importers, stated in the pull request.
-- A finding another doctor owns — a dependency, a configuration name, documentation, a contract
-  model, a deep test audit — is not fixed here; the report names it with that doctor.
+- A finding another doctor owns — documentation, a contract model, a deep test audit — is not fixed
+  here; the report names it with that doctor.
 
 The cross-cutting reviewer compares each kind's slot table across its deployables, one shape across
 packages, apps and languages, and every value defaulted in one package against its producer in
-another; and compares migration chains and registries with each other. The final adversarial
+another; compares migration chains and registries with each other; reads each deployment column
+against the settings model its process loads and one name declared on two models; and compares
+manifests for one package pinned differently across projects or languages. The final adversarial
 reviewer tries to reach each removed layer, branch and alias from a live caller, confirms no import
 of a moved or renamed module still points at its old path, replays every chain the run touched,
 confirms a stacked migration correction did not narrow the approved downgrade or survivorship
-coverage, challenges every revision kept as applied without version-table evidence, and confirms
-that the repository's tests pass on each batch.
+coverage, challenges every revision kept as applied without version-table evidence, confirms each
+removed configuration name and package has no surviving reader or importer and each regenerated
+lockfile resolves its constraints, and confirms that the repository's tests pass on each batch.
 
 ## Delivery
 
@@ -373,5 +416,9 @@ Merged batches, one per phase, each checkpoint named in the approved plan.
 - per migration chain: heads, revisions checked by lens, corrections, policy coverage before and
   after, and the evidence for applied state;
 - each build, CI and root file consolidated or deleted;
+- the configuration matrix with every changed cell, and each deployment column read or unread with
+  the reason; for every field no deployment sets, its outcome;
+- per manifest: declarations removed, added and re-ranged; each lockfile regenerated with its
+  command; audit tools wired in or removed;
 - each test removed or repaired with the layer it exercised;
 - each finding another doctor owns, named with that doctor.

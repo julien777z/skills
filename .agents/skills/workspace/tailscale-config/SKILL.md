@@ -22,8 +22,8 @@ of that proof; agreement in one never establishes agreement in another.
 1. Establish the authorized outcome, environments and mutation boundaries. Apply the global
    Tailscale policy for naming, groups and tag ownership. Discover each repository's deployment
    procedure and configuration owner from its project guidance. This procedure reconciles a
-   Tailscale change; a general configuration audit remains owned by `config-doctor`, which runs
-   only when directly invoked. Reading a deployment procedure supplies its read-only inspection
+   Tailscale change; a general configuration audit remains owned by `code-slop-doctor`'s
+   **Configuration Drift** lens, which runs only when that doctor is directly invoked. Reading a deployment procedure supplies its read-only inspection
    route and never authorizes a rollout.
 2. Invoke `coordinate-repositories` for its bounded discovery and normalized-remote manifest.
    Inspect every unique repository's current remote configuration before deciding applicability;
