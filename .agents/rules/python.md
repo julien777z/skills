@@ -265,6 +265,7 @@ Avoid trivial wrapper functions that add no value. A function that just returns 
 - A subprocess return code is an external value and may remain an `int` at that boundary. Convert it into the domain outcome enum before carrying it through the application.
 - Do not rebind function arguments to a second local name when the value is unchanged (for example, `profile = obj`); name the parameter correctly at the signature instead.
 - Do not add passthrough function or method parameters when every call site provides the value from one shared source (for example, forwarding `service_base_url` from `APPLICATION_CONFIG` in every call); read from that source directly where the value is used.
+- A controlled API owns its configuration-backed default. Its callers omit that argument instead of forwarding the same configuration value at every call site. When omission and an explicit `None` have different meanings, use one reusable `Undefined` sentinel from a neutral shared owner; do not define a database-, transport-, or feature-specific sentinel for a general presence distinction.
 - Give domain-specific parsers and converters domain-qualified names so imports from multiple domains cannot silently shadow one another. Keep unqualified names only for genuinely domain-independent transformations.
 - **Name a guard for the condition it asserts, not for the outcome it prevents.** A function that
   raises when an invariant is broken is named `assert_<invariant>`, so the call site reads as the
