@@ -29,7 +29,6 @@ out.
 | `metrics` | `[{label, value, detail?}]`: up to four figures beside the progress. |
 | `pages` | `[{title, layout?, sections}]`: with more than one, a tab bar switches between them, and the progress and metrics show on the first. `sections` render in order; with `layout` `columns`, the default, boards, tables and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
 | `references` | `[{text, url}]`: every whole-word occurrence of `text` in the page's own text becomes a link to `url`. |
-| `footer` | One muted line at the bottom. |
 
 `tone` is `good`, `warning`, `critical` or `accent`; omit it for neutral. Section types:
 

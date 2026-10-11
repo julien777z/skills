@@ -303,7 +303,6 @@ DASHBOARD_SHAPE: Final[ObjectShape] = ObjectShape(
         ),
         "pages": partial(check_objects, shape=PAGE_SHAPE),
         "references": partial(check_objects, shape=REFERENCE_SHAPE, unique="text"),
-        "footer": check_text,
     },
     required=frozenset({"title", "updated_at", "pages"}),
 )

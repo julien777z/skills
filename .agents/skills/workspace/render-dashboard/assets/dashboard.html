@@ -114,7 +114,7 @@
     align-content: start;
   }
 
-  .metric { display: grid; gap: 2px; min-width: 0; }
+  .metric { display: grid; gap: 2px; align-content: start; min-width: 0; }
   .metric-label { color: var(--muted); font-size: 13px; }
   .metric-value { font-size: 24px; font-weight: 600; letter-spacing: -.01em; overflow-wrap: anywhere; }
   .metric-detail { color: var(--ink-2); font-size: 13px; }
@@ -255,7 +255,7 @@
 
   .diagram.split { grid-template-columns: auto minmax(300px, 1fr); align-items: start; }
   .diagram-canvas { display: grid; gap: 12px; min-width: 0; align-content: start; }
-  .diagram-figure { display: grid; justify-items: center; min-height: 120px; overflow-x: auto; }
+  .diagram-figure { display: grid; justify-items: center; align-content: start; min-height: 120px; overflow-x: auto; }
   .diagram-figure svg { justify-self: safe center; height: auto; }
   .diagram-figure .cluster-label foreignObject { overflow: visible; }
   .diagram-figure .cluster-label div {
@@ -296,8 +296,6 @@
   .outline-group summary.tone-accent::marker { color: var(--accent); }
   .outline-group details p { margin: 6px 0 0 16px; color: var(--ink-2); font-size: 13px; }
 
-  footer { color: var(--muted); font-size: 13px; }
-
   @media (max-width: 1000px) {
     .summary { grid-template-columns: minmax(0, 1fr); }
     .diagram.split { grid-template-columns: minmax(0, 1fr); }
@@ -332,7 +330,6 @@
     <div class="metrics" id="metrics"></div>
   </div>
   <div id="pages"></div>
-  <footer id="footer"></footer>
 </main>
 
 <script type="application/json" id="dashboard-data">__DASHBOARD_DATA__</script>
@@ -755,8 +752,6 @@
       referenceLinks = compileReferences(data.references || []);
 
       renderPages(data.pages, data.progress || metrics.length ? document.getElementById("summary") : null);
-
-      if (data.footer) document.getElementById("footer").textContent = data.footer;
 
       linkReferences(document.getElementById("dashboard"));
     }
