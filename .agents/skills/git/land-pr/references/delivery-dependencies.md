@@ -8,6 +8,10 @@ Include a prerequisite change whose behavior the consumer assumes even without a
 reference. A test-only fixture that cannot enter the consumer's delivery is not a delivery input;
 a testing revision used to build, validate or package that delivery is.
 
+The consumer's proposed source and outputs built from that head are the review subject, not
+prerequisite provider inputs. Still inventory independent inputs inside those outputs, including
+separate prerequisite changes in the same repository.
+
 For each input, retain its consuming location, provider, configured reference, resolved immutable
 revision and evidence for its delivery state. Resolve the provider's actual default branch and
 current release metadata from the provider, rather than assuming a branch name or trusting a PR
