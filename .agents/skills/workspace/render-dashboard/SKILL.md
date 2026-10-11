@@ -25,7 +25,7 @@ out.
 | --- | --- |
 | `subtitle` | One line under the title. |
 | `status` | `{label, tone?}`: the pill beside the title. |
-| `progress` | `{value: 0–1, label, detail?, segments?}`: the large percentage and its bar. `segments` is `[{label, tone?}]`, one block per unit of work in order; without it the bar is a plain fill. |
+| `progress` | `{value: 0–1, label, detail?, segments?}`: the large percentage and its bar. `segments` is `[{label, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number, relative to the others, a missing weight counting as 1; without `segments` the bar is a plain fill. |
 | `metrics` | `[{label, value, detail?}]`: up to four figures beside the progress. |
 | `pages` | `[{title, layout?, sections}]`: with more than one, a tab bar switches between them, and the progress and metrics show on the first. `sections` render in order; with `layout` `columns`, the default, boards, tables and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
 | `references` | `[{text, url}]`: every whole-word occurrence of `text` in the page's own text becomes a link to `url`. |

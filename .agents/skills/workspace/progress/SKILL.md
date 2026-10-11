@@ -20,9 +20,9 @@ and deliver the same dashboard again on every request so the user keeps one page
 1. **Read the ledger.** Resolve and read the task's ledger through `session-ledger`. A plan or
    question the task has put to the user that the ledger lacks is reconstructed and recorded first,
    from verified task evidence, as that skill's recovery rules say; the dashboard never shows a step
-   the ledger does not hold. An active step that `execute-task`'s **Progress Record** records with
-   parts, held in the ledger without them, gets them recorded the same way, with the parts already
-   finished marked done.
+   the ledger does not hold. An active or blocked step that `execute-task`'s **Progress Record**
+   records with parts, held in the ledger without them, gets them recorded the same way, with the
+   parts already finished marked done.
 2. **Find the task's pull requests** with `list-prs`, then read each one's current state from its
    host: open, draft, merged or closed, the checks on its head, and review state.
 3. **Write the Architecture page** once the task has a pull request. The `dashboard` entry records
