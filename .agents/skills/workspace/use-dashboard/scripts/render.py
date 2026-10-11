@@ -359,7 +359,7 @@ def main() -> int:
         page = render_dashboard(loads(arguments.input.read_text(encoding="utf-8")), arguments.fragment)
         encoded_page = page.encode("utf-8")
     except (OSError, JSONDecodeError, UnicodeError, DashboardSpecError) as error:
-        logger.error("render-dashboard: %s", error)
+        logger.error("use-dashboard: %s", error)
 
         return 1
 

@@ -1,10 +1,10 @@
 ---
-name: render-dashboard
+name: use-dashboard
 description: Render a dashboard spec into the shared HTML dashboard page and deliver it to the user. Use as a dependency whenever a skill delivers a dashboard page built from its data, so those dashboards share one look and the caller writes data, never HTML.
 short_description: 'Turn a dashboard spec into the shared HTML page and deliver it.'
 ---
 
-# Render Dashboard
+# Use Dashboard
 
 A caller describes its dashboard as a JSON spec; [scripts/render.py](scripts/render.py) validates it
 and fills [assets/dashboard.html](assets/dashboard.html), with
