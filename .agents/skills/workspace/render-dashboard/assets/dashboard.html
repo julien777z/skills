@@ -735,6 +735,9 @@
             var block = el("span", segment.tone ? "tone-" + segment.tone : "");
 
             block.title = segment.label;
+
+            if (segment.weight) block.style.flexGrow = String(segment.weight);
+
             meter.append(block);
           });
         } else {

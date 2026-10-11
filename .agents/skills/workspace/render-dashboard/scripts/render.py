@@ -78,7 +78,7 @@ def check_fraction(value: object, path: str) -> None:
         raise DashboardSpecError(f"{path} must be a number from 0 to 1")
 
 
-def check_step(value: object, path: str) -> None:
+def check_whole_number(value: object, path: str) -> None:
     """Require a positive whole number."""
 
     if isinstance(value, bool) or not isinstance(value, int) or value < 1:
@@ -199,6 +199,10 @@ CHECK_CHANGE: Final[Callable[[object, str], object]] = partial(check_choice, cho
 CHECK_LAYOUT: Final[Callable[[object, str], object]] = partial(check_choice, choices=PageLayout)
 
 LABEL_SHAPE: Final[ObjectShape] = ObjectShape(fields={"label": check_text, "tone": CHECK_TONE}, required=frozenset({"label"}))
+SEGMENT_SHAPE: Final[ObjectShape] = ObjectShape(
+    fields={"label": check_text, "tone": CHECK_TONE, "weight": check_whole_number},
+    required=frozenset({"label"}),
+)
 CARD_SHAPE: Final[ObjectShape] = ObjectShape(
     fields={"title": check_text, "detail": check_text, "meta": check_text, "tag": check_text, "url": check_text},
     required=frozenset({"title"}),
@@ -232,7 +236,7 @@ NODE_SHAPE: Final[ObjectShape] = ObjectShape(
     required=frozenset({"id", "label"}),
 )
 EDGE_SHAPE: Final[ObjectShape] = ObjectShape(
-    fields={"from": check_text, "to": check_text, "label": check_text, "step": check_step, "change": CHECK_CHANGE},
+    fields={"from": check_text, "to": check_text, "label": check_text, "step": check_whole_number, "change": CHECK_CHANGE},
     required=frozenset({"from", "to"}),
 )
 OUTLINE_ITEM_SHAPE: Final[ObjectShape] = ObjectShape(
@@ -294,7 +298,7 @@ DASHBOARD_SHAPE: Final[ObjectShape] = ObjectShape(
                     "value": check_fraction,
                     "label": check_text,
                     "detail": check_text,
-                    "segments": partial(check_objects, shape=LABEL_SHAPE),
+                    "segments": partial(check_objects, shape=SEGMENT_SHAPE),
                 },
                 required=frozenset({"value", "label"}),
             ),
