@@ -672,9 +672,9 @@ The ready-for-review message takes exactly this shape, one message per pull requ
 - **Fixed on the way:** <each incidental fix, or none>
 - **Noticed, not changed** (over the size budget):
   1. <item>
-- **Still running:** <the guidance fixes from this task (<n> correction(s), own pull request) | nothing>
+- **Still running:** <the authorized merge through `land-pr` (CI ~<n> min) | the guidance fixes from this task (<n> correction(s), own pull request) | nothing>
 
-**Next:** review the pull request; send follow-ups here, or `/merge-pr` when you're happy.
+**Next:** <review the pull request; send follow-ups here, or `/merge-pr` when you're happy | review the pull request; it merges once its checks pass>
 ```
 
 The run stays open until both streams finish: the source stream when its message is sent, or when

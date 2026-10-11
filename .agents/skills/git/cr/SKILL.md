@@ -15,8 +15,8 @@ invocation selects.
 - **A direct CR invocation authorizes the squash merge of every selected target pull request** at
   the head that passed that pull request's final acceptance and check gate, unless the user
   explicitly withholds merge. That
-  restriction changes only the final action: complete every gate and report each clean exact head
-  with its pull request open. When merge is authorized, nothing reopens it: not the diff's size or
+  restriction ends each unit at the head its final acceptance passed, its pull request left draft
+  for the user, as step 7 says. When merge is authorized, nothing reopens it: not the diff's size or
   reach, not that review widened it, and not this run's own unease about how much it changes.
 - Dispatching a release workflow or creating a test deployment is a separate action and requires
   its own authorization.

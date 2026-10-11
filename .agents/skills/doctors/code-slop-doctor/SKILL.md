@@ -329,19 +329,14 @@ budgets, cross-suite layout and coverage maps are `tests-doctor`'s and are named
 - Restructuring is ordinary work here: merges, moves, renames, collapses and regroupings land with
   every importer updated in the same change and nothing left to resolve the old path. No finding is
   too small: one regrouped message or one renamed file is fixed like a merged package.
-- **Breaking an owned contract to remove slop is ordinary work, never a question.** An owned API,
-  wire message, schema, payload, stored shape, module path or export changes with every consumer
-  the user owns, in any repository, with its generated artifacts and migrations, in the same run,
-  and the pull request states the break, as `pre-production`'s **Target Contract** says. A removal
-  is never narrowed, shimmed or dropped to keep an owned shape stable.
-- What stored data owes a removal — a flag whose retirement backfill has not run, a chain to
-  collapse — is the repository's project guidance under `pre-production`'s **Required Data**,
-  never a question: disposable environments are reset, and data an environment keeps gets the
-  migration that carries it.
-- The user decides only what that skill's **Trade-Offs Are Surfaced, Never Enforced** reserves for
-  them — a change to what an end user sees or can do — and a contract a consumer outside the user's
-  control speaks. Each is put with its consequences and the option leaving the fewest mechanisms
-  recommended, while the rest of the run continues.
+- **Breaking an owned contract to remove slop is ordinary work, never a question**, made as
+  `pre-production`'s **Target Contract** says; a removal is never narrowed, shimmed or dropped to
+  keep an owned shape stable.
+- Data a removal leaves in the old shape — a flag whose retirement backfill has not run, a chain to
+  collapse — follows `pre-production`'s **Product State** and **Target Contract** and the
+  repository's database-migration skill, never a question.
+- The user decides what `pre-production`'s **Trade-Offs Are Surfaced, Never Enforced** reserves
+  for them, and a contract a consumer outside the user's control speaks.
 - Fix the reader or the writer, never both. A tolerance that hides a wiring defect is a confirmed
   defect and is fixed. An unsupported historical record is never a finding and never receives a
   fallback.
