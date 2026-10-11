@@ -229,8 +229,15 @@ Read the repository's product state from its project guidance before choosing ho
 contract or stored value.
 
 Before recommending an implementation or delegating its edits, trace the requested behavior from
-the caller to its owner and inspect that owner's existing capabilities. Apply the guidance and
-analogous implementations below to that choice, not only to the later edit.
+the caller to its owner and inspect that owner's existing capabilities. Reconcile the complete
+accepted target with the user's instructions, approved plan, repository guidance and observed
+mechanism; record each settled outcome or constraint with its source and the evidence the proposed
+implementation will need to satisfy it. Identify unresolved facts rather than silently replacing
+them with an assumption. Compare the proposal against every part of this receipt before selecting
+it: resolving the reported symptom or passing a component check cannot excuse violating another
+settled requirement. A proposal that fails one is repaired before implementation; a genuinely
+unresolved user decision follows **Task Authorization**. Apply the guidance and analogous
+implementations below to that choice, not only to the later edit.
 
 Before an edit that crosses a trust boundary `security-audit` names, invoke it and apply its
 **While Writing Code**.
@@ -661,7 +668,8 @@ side by side from here: the guidance stream and the source stream.
    fixup route, or adds a new commit for a new material change, and never rebuilds it again, so the
    commits the user already reviewed keep their shape. A rewrite whose tree proof shows an
    identical tree keeps the acceptance verdict.
-5. Verify every requested outcome and every incidental fix, confirm tests and relevant validation
+5. Reconcile the result with **Product Constraints**' target receipt, updating its sources when
+   accepted requirements changed. Verify every requested outcome and every incidental fix, confirm tests and relevant validation
    cover each of them and every simplification, confirm intentional contract changes are reflected
    in the expected behavior, and confirm multi-repository delivery artifacts describe only their
    owning repository. Then build this pull request's ready-for-review message, in the shape below,
