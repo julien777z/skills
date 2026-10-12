@@ -1,6 +1,6 @@
 ---
 name: doctor-protocol
-description: The audit-and-fix protocol every doctor skill runs on — scope resolution, read-only reviewer fan-out, a parent-owned ledger, an acceptance-gated remediation plan, sole-editor implementation, final review, deferral of leftovers, and the report skeleton. Read from a doctor skill that declares it; never invoked on its own.
+description: The audit-and-fix protocol every doctor skill runs on — scope resolution, read-only reviewer fan-out, a parent-owned ledger, an acceptance-gated remediation plan, implementation in waves of parallel workers, final review, deferral of leftovers, and the report skeleton. Read from a doctor skill that declares it; never invoked on its own.
 short_description: 'Set the audit, fix, review, and reporting process used by every doctor skill.'
 ---
 
@@ -11,11 +11,11 @@ run; each doctor owns only its domain.
 
 ## Dependencies
 
-- `subagent-selection` — route every read-only reviewer and final reviewer through a subagent of the
-  running session.
+- `subagent-selection` — route every reviewer, final reviewer and implementation worker through a
+  subagent of the running session.
 - `execute-task` — present the validated remediation plan through its **Plan** and require explicit
   approval before editing, then implement it under its **Execution**.
-- `code-simplify` — simplify each implementation batch and the complete result.
+- `code-simplify` — simplify each wave and the complete result.
 - `acceptance-gate` — judge the remediation plan before it is presented and the complete diff
   before it lands.
 - `defer-scope` — record work consciously left undone; it runs the gate's admission question itself.
@@ -73,8 +73,7 @@ measurement that cannot be taken is recorded as unmeasured with the reason.
 
 ## Delegate The Audit
 
-Use multiple read-only subagents for every run. The parent remains the sole editor and owns the
-unified ledger.
+Use multiple read-only subagents for every run. The parent owns the unified ledger.
 
 1. Launch at least two independent reviewers. Partition a multi-domain scope by coherent ownership
    boundaries discovered from the repository. For a narrow single-domain scope, give two reviewers
@@ -128,7 +127,8 @@ Requests** makes — whatever lens found it and however unrelated two entries lo
 a group "its own branch" has split one approved instruction into several deliveries, and the ones
 after the first are what get dropped: the run reports the branch it opened, the user reads that as
 the work, and the rest survives only in a chat log. Say which entries go first and why the order
-matters; never say where they go.
+matters; never say where they go. Name the files each group changes and the wave it runs in, as
+**Implement In Waves** sets out, so the user sees what runs at once.
 
 That holds for a group large enough to deserve its own review, too. Size is an argument for
 sequencing it late and describing it clearly in the pull request, not for a second branch. Beyond
@@ -149,16 +149,42 @@ on the shape, a lint rule, a generator template corrected at its source. A docto
 up what it finds runs forever; a guard is what lets a lens retire. A guard asserts the convention,
 never the absence of a retired implementation.
 
-## Implement As Sole Editor
+## Implement In Waves
 
-After explicit plan approval, the parent implements the complete approved plan and is the only
-editor. Apply `code-simplify` after each meaningful implementation batch and across the final
-result. Return to `execute-task`'s **Plan** for a newly discovered decision that changes the approved outcome;
+After explicit plan approval, workers implement the complete approved plan side by side, under
+`subagent-selection`'s **Dispatch**. The parent keeps the ledger, the plan's order, every judgement
+over the combined result, and the full suite and every check that needs a shared resource; the
+edits fan out.
+
+- **A wave is the groups that can run at once:** groups whose files do not overlap and none of which
+  needs what another group in flight produces. A group that reaches into other groups' files — a
+  rename across the scope, a shared module, a lockfile, generated output, a migration, a guard the
+  others rely on — runs alone, before every group that needs what it produces. Under merged batches
+  a wave never spans a checkpoint.
+- **At most four workers run at once**, unless the repository's project guidance sets another limit;
+  as one finishes, the next group in the wave starts.
+- **Each worker gets one group.** Its brief carries the group's entries and files, the remedies the
+  lenses state, the intent statement and the branch it pushes to: the run's branch, or under merged
+  batches the batch's branch. It works in its own git worktree detached at that branch's remote
+  head, changes only its group's files, runs the pre-push checks `execute-task`'s **Pre-Push Gate**
+  defines, and pushes each step with `git push origin HEAD:<branch>` after fetching and rebasing,
+  as the GitHub rule's **Branches and Pull Requests** says.
+- **A shared resource is never used by two workers at once** — a database, a port, a running stack.
+  The full suite runs in the parent, once per wave, after the wave's pushes land, and what it finds
+  goes back out as fix steps.
+- **A worker that finds work outside its group reports it instead of editing it.** The parent
+  records it in the ledger and schedules it into a later wave.
+- **Each wave's combined diff is the finished task** `execute-task`'s delegated-edits bullet gates:
+  the parent reads each worker's reported head under its **Reported Outcomes**, runs one
+  `code-simplify` pass and one `acceptance-gate` diff question over the wave, and returns what they
+  flag as fix steps in the next wave. `code-simplify` runs again across the final result.
+
+Return to `execute-task`'s **Plan** for a newly discovered decision that changes the approved outcome;
 do not silently narrow the correction.
 
 The plan is implemented to its last entry in one continuous run, into the branch in flight.
-A finished group is not a finished plan, and neither is a pushed commit or a green suite; go into
-the next group in the same turn. `execute-task` owns what may and may not stop that run.
+A finished wave is not a finished plan, and neither is a pushed commit or a green suite; start the
+next wave in the same turn. `execute-task` owns what may and may not stop that run.
 
 Do not add source comments that narrate the change, its previous shape, or why something was added,
 removed, merged, or tightened. Make the result express the current state; tests validate that
@@ -221,15 +247,16 @@ on its own pull request in that cadence.
     **Accept The Complete Diff** on its own diff, gated against the run's full intent statement kept
     current with the batches already merged; the batch's entries say only what this diff must
     complete. It then merges through `land-pr`, which polls its checks to a terminal state. Between
-    polls the next group is committed and pushed, each step through `execute-task`'s **Pre-Push
-    Gate**, to the next batch's branch, stacked on the batch's branch as the GitHub rule's
+    polls the next batch's first wave runs, its workers pushing each step through `execute-task`'s
+    **Pre-Push Gate** to the next batch's branch, stacked on the batch's branch as the GitHub rule's
     **Branches and Pull Requests** allows; nothing more is pushed to the batch's branch.
   - Required approvals and branch protection are never bypassed. When they are all a batch waits
     on, the batch extends through the next checkpoint the plan names, re-passes these gates on the
     grown head, and re-requests the required review.
-  - After the merge, fetch the default branch, retarget the next batch's branch onto it (reusing
-    the run's branch name where the environment fixes one), open its pull request as a draft, and
-    continue. A merged batch is never the finished run.
+  - After the merge, once the in-flight wave's workers have finished and their heads are read back,
+    fetch the default branch, retarget the next batch's branch onto it (reusing the run's branch
+    name where the environment fixes one), open its pull request as a draft, and continue. A merged
+    batch is never the finished run.
   - The last batch's review also confirms that every approved disposition, across all batches,
     landed.
 
