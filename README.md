@@ -70,7 +70,7 @@ name it. Generated from each skill's front matter — edit the skill, not the ta
 
 ### User-Invoked
 
-These run only when you ask for them by name, such as `/refactor`.
+These run only when you ask for them by name, such as `/code-slop-doctor`.
 
 - [`assume-library-update`](.agents/skills/execution/assume-library-update/SKILL.md) — Write consuming code for a change in one of your libraries before the library update is available.
 - [`ci-watch`](.agents/skills/git/ci-watch/SKILL.md) — Watch a pull request, resolve review findings, and check that CI passes.
