@@ -118,7 +118,7 @@ def render_section(skills: list[tuple[Path, dict[str, str]]]) -> str:
             "",
             "### User-Invoked",
             "",
-            "These run only when you ask for them by name, such as `/refactor`.",
+            "These run only when you ask for them by name, such as `/code-slop-doctor`.",
             "",
             render_links(user_invoked),
             "",
