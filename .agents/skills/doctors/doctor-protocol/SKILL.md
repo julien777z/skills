@@ -152,27 +152,32 @@ never the absence of a retired implementation.
 ## Implement In Waves
 
 After explicit plan approval, workers implement the complete approved plan side by side, under
-`subagent-selection`'s **Dispatch**. The parent keeps the ledger, the
-plan's order, every judgement over the combined result and the checks that need the whole tree; the
+`subagent-selection`'s **Dispatch**. The parent keeps the ledger, the plan's order, every judgement
+over the combined result, and the full suite and every check that needs a shared resource; the
 edits fan out.
 
 - **A wave is the groups that can run at once:** groups whose files do not overlap and none of which
   needs what another group in flight produces. A group that reaches into other groups' files — a
   rename across the scope, a shared module, a lockfile, generated output, a migration, a guard the
-  others rely on — runs alone, before or after the groups that depend on it.
+  others rely on — runs alone, never alongside a group whose files it touches, and before every
+  group that needs what it produces. Under merged batches a wave never spans a checkpoint.
 - **At most four workers run at once**, unless the repository's project guidance sets another limit;
   as one finishes, the next group in the wave starts.
 - **Each worker gets one group.** Its brief carries the group's entries and files, the remedies the
-  lenses state and the intent statement. It works in its own git worktree of the run's branch,
-  changes only its group's files, runs the repository's fast checks on them and pushes each step
-  to the run's branch, rebasing first, as the GitHub rule's **Branches and Pull Requests** says.
+  lenses state, the intent statement and the branch it pushes to: the run's branch, or under merged
+  batches the batch's branch. It works in its own git worktree detached at that branch's remote
+  head, changes only its group's files, runs the pre-push checks `execute-task`'s **Pre-Push Gate**
+  defines, and pushes each step with `git push origin HEAD:<branch>` after fetching and rebasing,
+  as the GitHub rule's **Branches and Pull Requests** says.
 - **A shared resource is never used by two workers at once** — a database, a port, a running stack.
   The full suite runs in the parent, once per wave, after the wave's pushes land, and what it finds
   goes back out as fix steps.
 - **A worker that finds work outside its group reports it instead of editing it.** The parent
   records it in the ledger and schedules it into a later wave.
-- The parent reads each worker's reported head under `execute-task`'s **Reported Outcomes**, and
-  applies `code-simplify` to each wave's combined result and across the final result.
+- **Each wave's combined diff is the finished task** `execute-task`'s delegated-edits bullet gates:
+  the parent reads each worker's reported head under its **Reported Outcomes**, runs one
+  `code-simplify` pass and one `acceptance-gate` diff question over the wave, and returns what they
+  flag as fix steps in the next wave. `code-simplify` runs again across the final result.
 
 Return to `execute-task`'s **Plan** for a newly discovered decision that changes the approved outcome;
 do not silently narrow the correction.
@@ -242,8 +247,8 @@ on its own pull request in that cadence.
     **Accept The Complete Diff** on its own diff, gated against the run's full intent statement kept
     current with the batches already merged; the batch's entries say only what this diff must
     complete. It then merges through `land-pr`, which polls its checks to a terminal state. Between
-    polls the next group is committed and pushed, each step through `execute-task`'s **Pre-Push
-    Gate**, to the next batch's branch, stacked on the batch's branch as the GitHub rule's
+    polls the next batch's first wave runs, its workers pushing each step through `execute-task`'s
+    **Pre-Push Gate** to the next batch's branch, stacked on the batch's branch as the GitHub rule's
     **Branches and Pull Requests** allows; nothing more is pushed to the batch's branch.
   - Required approvals and branch protection are never bypassed. When they are all a batch waits
     on, the batch extends through the next checkpoint the plan names, re-passes these gates on the

@@ -76,8 +76,9 @@ the rest.
 So the slash command normally earns no space. It is the skill's own name, the listing normally shows
 it, and a reader deciding whether to invoke has it in hand — `Invoke as /code-slop-doctor to deslop
 a repository` spends its opening clause telling the reader something they used to get here. Keep the
-trigger and drop the command: `Use to deslop a repository or one of its phases, lenses or paths.` The same goes for a phrase naming the skill, `Use this skill to`, and a restatement of
-the skill's title.
+trigger and drop the command: `Use to deslop a repository or one of its phases, lenses or paths.`
+The same goes for a phrase naming the skill, `Use this skill to`, and a restatement of the skill's
+title.
 
 An opaque short alias is the exception. When a user can send only that alias and it does not itself
 identify the task, name its literal slash form in the description with the action it triggers. That
