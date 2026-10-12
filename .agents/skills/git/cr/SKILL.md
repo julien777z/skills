@@ -1,6 +1,6 @@
 ---
 name: cr
-description: Run the full review-and-fix workflow only on a fresh explicit CR invocation or a fresh scoped delegation from user-invoked merge-pr or active edit-skill Ledger Processing. Never start or restart it from an earlier invocation, an unfinished run, or saved task authorization.
+description: Run the full review-and-fix workflow when a user explicitly invokes CR or an active edit-skill Ledger Processing run delegates it. One invocation remains active for each selected pull request through its merge or documented merge-withheld end; changes to that selected pull request rerun the affected review scope without a new invocation. A different pull request needs its own explicit invocation.
 ---
 
 # CR
@@ -10,15 +10,18 @@ invocation selects.
 
 ## Invocation Authorization
 
-**Check the invocation before resolving targets or launching reviewers.** Starting or restarting CR
-requires a fresh invocation: the current user request directly asks for CR, or a currently
-user-invoked `merge-pr` explicitly delegates a new CR run, or active `edit-skill` Ledger Processing
-issues a fresh guidance-only delegation under its own contract.
-Identify that request or delegation and bind its selected targets before proceeding. A prior
-invocation, unfinished run, saved plan, ledger entry, conversation history, or unchanged repository,
-branch or pull request never supplies this entry authorization. Without a fresh invocation, do not
-start CR or inherit its merge authorization; continue the separately requested work through its own
-implementation, validation and handoff.
+**Check the invocation before resolving targets or launching reviewers.** A new CR target needs a
+fresh invocation: the current user request directly asks for CR, a currently user-invoked `merge-pr`
+explicitly delegates a new CR run, or active `edit-skill` Ledger Processing issues a new guidance-only
+delegation under its own contract. Identify that request or delegation and bind its selected targets
+before proceeding.
+
+That entry authorization remains active for each selected pull request until that pull request merges
+or this workflow reaches its documented merge-withheld end. A commit to a selected pull request,
+whether it follows a review finding or a later implementation request, invalidates only the affected
+receipts and keeps the review in this run. Rerun the scopes **Review Continuity** identifies; never
+ask for or require a new CR invocation for that selected pull request. A prior invocation never adds
+another pull request to its review set: a different pull request requires its own explicit invocation.
 
 A fresh delegation authorizes exactly what its current caller states: `merge-pr` delegates the
 ranges it itself merged; `edit-skill` delegates its guidance pull request with merge withheld and
@@ -43,12 +46,11 @@ lands it separately after smoke runs. An earlier delegation cannot be reused for
 - The same invocation authorizes the declared `code-simplify`, `code-review`, `merge-conflict`, and
   `land-pr` dependencies for every selected pull request. It does not authorize an independent review,
   release workflow, deployment, or unrelated provider mutation.
-- One invocation covers the run it starts and that run's required review fixes and gates. Once the
-  run completes, pauses, stops, or yields to separately requested implementation, its invocation
-  cannot start or restart CR. Require a fresh invocation even if the earlier run was unfinished or
-  the new implementation still belongs to the same conversation, repository, branch or pull request.
-  A progress question during an actively running CR does not start another run; a generic request
-  to continue implementation does not reinvoke CR.
+- One invocation covers the selected pull request through its required review fixes, later commits,
+  receipt invalidations, and gates. A progress question does not start another run, and a generic
+  request to continue implementation does not reinvoke CR. A user may explicitly stop the run; after
+  that stop, or after the workflow has reached its merge-withheld end, a later review requires a new
+  invocation.
 - Nothing else is a direct CR invocation: not a reference to CR or `$cr` in a quoted plan, checklist, summary,
   transcript, or future step; not approval of a plan that contains a CR step, which stops at
   validation and the pull-request handoff; not a request to review, validate, open a pull request,
@@ -250,11 +252,12 @@ Keep a review cohort running when a new user task does not change the reviewed t
 
 Treat fetching, pulling, or rebasing only to incorporate commits from the reviewed base as continuity-preserving. Do not restart the full cohort solely because that operational update changes a branch SHA, base SHA, or commit ancestry. Verify that the reviewed codebase diff is unchanged and that no conflict resolution altered a reviewed hunk, then retain the existing receipts and resume the cohort. A conflict resolution that changes a reviewed hunk, and every refactor made under **Incorporating The Base** below, are new reviewed hunks: handle them like a step 5 fix, rerunning the lenses whose receipts they invalidate, never as a full restart.
 
-When separately requested implementation changes the reviewed codebase, target, or reviewed diff,
-pause CR under **Invocation Authorization** and invalidate affected receipts. Receipt invalidation
-identifies review work a fresh invocation must perform; it never authorizes restarting CR. Internal
-review fixes remain phases of the active run. Pass this continuity rule into `/code-review high fix`;
-it overrides that skill's generic restart-on-any-new-task instruction.
+When separately requested implementation changes a selected pull request's reviewed codebase, target,
+or reviewed diff, keep CR active and invalidate the affected receipts. Rerun the scopes those receipts
+cover within this same invocation; receipt invalidation never requires a fresh CR request for that
+selected pull request. Internal review fixes follow the same route. Work for a different pull request
+does not join this review set and needs its own explicit invocation. Pass this continuity rule into
+`/code-review high fix`; it overrides that skill's generic restart-on-any-new-task instruction.
 
 A mechanically bounded follow-up confined to formatting, lint compliance, a type-only annotation,
 or the validation/check harness does not invalidate review receipts when it changes no shipped
@@ -344,11 +347,11 @@ queued delegated agents and that every required review, validation, and check lo
 terminal receipt for the exact gated head. If any work remains, return to its wait loop; never use a
 final response as a handoff for unfinished CR work.
 
-An unfinished phase is never a final result. Do not answer with "still in progress," ask the user to say "continue," or rely on another user turn to resume work. Use commentary only for progress updates, and use the host's event, webhook, or wait mechanism for pending external state. An additional user request does not close the active run unless it explicitly stops, pauses, or replaces it. A shift into separately requested implementation pauses CR under **Invocation Authorization**; finishing that work does not restart the review.
+An unfinished phase is never a final result. Do not answer with "still in progress," ask the user to say "continue," or rely on another user turn to resume work. Use commentary only for progress updates, and use the host's event, webhook, or wait mechanism for pending external state. An additional user request does not close the active run unless it explicitly stops or replaces it. A separately requested implementation change to a selected pull request stays inside this run: invalidate and rerun its affected scopes under **Review Continuity**.
 
-When the added work does not modify the CR target or any reviewed input, continue the active CR loop while that work proceeds. Delegate the unrelated work to an available worker, or queue it when capacity is unavailable; do not serially wait for it before advancing a review, validation, or check phase. State the current CR phase in progress updates so an active loop is observable. Work that changes the target or reviewed input invalidates receipts under **Review Continuity**. Returning to a review phase remains subject to **Invocation Authorization**.
+When added work does not modify the CR target or any reviewed input, continue the active CR loop while that work proceeds. Delegate the unrelated work to an available worker, or queue it when capacity is unavailable; do not serially wait for it before advancing a review, validation, or check phase. State the current CR phase in progress updates so an active loop is observable. Work that changes a selected target or reviewed input invalidates receipts under **Review Continuity** and resumes the affected review scope within the same invocation. Work on another pull request needs a separate invocation.
 
-Carry the run's state throughout: the current workflow step, repository and PR, exact head SHA, the intent statement and recorded merge-base SHA, review-thread dispositions, reviewed-input digests, completed review receipts and lens-retirement counters, `acceptance-gate` verdicts keyed by head SHA, fixes and validation already completed, and the pending gate. At the start of every resumed turn and after context compaction, re-establish that state and verify the recorded head and inputs against GitHub and the worktree. Apply **Invocation Authorization** before using that state: an actively running CR resumes from its first nonterminal phase, while a paused or stopped run requires a fresh invocation.
+Carry the run's state throughout: the current workflow step, repository and PR, exact head SHA, the intent statement and recorded merge-base SHA, review-thread dispositions, reviewed-input digests, completed review receipts and lens-retirement counters, `acceptance-gate` verdicts keyed by head SHA, fixes and validation already completed, and the pending gate. At the start of every resumed turn and after context compaction, re-establish that state and verify the recorded head and inputs against GitHub and the worktree. An active CR resumes from its first nonterminal phase, including after a later commit to its selected pull request; an explicitly stopped run or a different pull request requires a fresh invocation.
 
 Hold that state in the session; never write it to a checkpoint file. The pull request is the durable record: its commits, its pushed head, its checks, and its comments are what a resumed turn reads to find the run, and they cannot drift from it the way a separate file can.
 
