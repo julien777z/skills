@@ -151,8 +151,8 @@ never the absence of a retired implementation.
 
 ## Implement In Waves
 
-After explicit plan approval, the complete approved plan is implemented by implementation workers
-running side by side under `subagent-selection`'s **Dispatch**. The parent keeps the ledger, the
+After explicit plan approval, workers implement the complete approved plan side by side, under
+`subagent-selection`'s **Dispatch**. The parent keeps the ledger, the
 plan's order, every judgement over the combined result and the checks that need the whole tree; the
 edits fan out.
 
