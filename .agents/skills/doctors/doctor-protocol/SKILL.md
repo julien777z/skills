@@ -159,8 +159,8 @@ edits fan out.
 - **A wave is the groups that can run at once:** groups whose files do not overlap and none of which
   needs what another group in flight produces. A group that reaches into other groups' files — a
   rename across the scope, a shared module, a lockfile, generated output, a migration, a guard the
-  others rely on — runs alone, never alongside a group whose files it touches, and before every
-  group that needs what it produces. Under merged batches a wave never spans a checkpoint.
+  others rely on — runs alone, before every group that needs what it produces. Under merged batches
+  a wave never spans a checkpoint.
 - **At most four workers run at once**, unless the repository's project guidance sets another limit;
   as one finishes, the next group in the wave starts.
 - **Each worker gets one group.** Its brief carries the group's entries and files, the remedies the
@@ -253,9 +253,10 @@ on its own pull request in that cadence.
   - Required approvals and branch protection are never bypassed. When they are all a batch waits
     on, the batch extends through the next checkpoint the plan names, re-passes these gates on the
     grown head, and re-requests the required review.
-  - After the merge, fetch the default branch, retarget the next batch's branch onto it (reusing
-    the run's branch name where the environment fixes one), open its pull request as a draft, and
-    continue. A merged batch is never the finished run.
+  - After the merge, once the in-flight wave's workers have finished and their heads are read back,
+    fetch the default branch, retarget the next batch's branch onto it (reusing the run's branch
+    name where the environment fixes one), open its pull request as a draft, and continue. A merged
+    batch is never the finished run.
   - The last batch's review also confirms that every approved disposition, across all batches,
     landed.
 
