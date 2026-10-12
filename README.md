@@ -88,7 +88,6 @@ These run only when you ask for them by name, such as `/code-slop-doctor`.
 - [`merge-pr`](.agents/skills/git/merge-pr/SKILL.md) — Merge finished pull requests after acceptance and CI, then CR what merged.
 - [`new-doctor`](.agents/skills/doctors/new-doctor/SKILL.md) — Create a doctor skill on the shared doctor-protocol for one class of repository hygiene.
 - [`placeholder-data`](.agents/skills/workspace/placeholder-data/SKILL.md) — Turn a pasted API payload into the same shape with obviously fake values.
-- [`refactor`](.agents/skills/execution/refactor/SKILL.md) — Plan and carry out a repository refactor with independent structural review.
 - [`schema-doctor`](.agents/skills/doctors/schema-doctor/SKILL.md) — Check models and schemas for unnecessary nulls, complexity, keys, and indexes.
 - [`security-doctor`](.agents/skills/doctors/security-doctor/SKILL.md) — Find and fix the exploitable vulnerabilities in a codebase, each proven by a concrete attack.
 - [`skill-gauntlet`](.agents/skills/authoring/skill-gauntlet/SKILL.md) — Audit installed agent skills and test which ones to improve, retire, or install.
