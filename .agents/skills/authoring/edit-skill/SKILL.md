@@ -77,11 +77,13 @@ so the user's review of the source pull request overlaps it.
 1. Read every `pending` `guidance_correction` entry and apply its edits under **Behavior** steps 5
    and 6, on the agent-configuration branch step 7.1 selects.
 2. Run step 7.2's source check.
+   From here the batch is verified as one change: one simplification pass, one acceptance gate
+   per round and one smoke round, each over the batch's complete diff, never one per correction.
 3. Delegate the pull request to `cr` with merge withheld. Give it the user's request and the
    recorded evidence as the intent statement, the incident vocabulary for its acceptance gate as
    step 7.4 describes, and step 7.3's prose-duplication checks for its simplification gate.
-4. Run step 7.5's `test-skill` smoke runs on the head `cr` accepted, with each entry's
-   reproduction scenario as an input and entries that share a failure class grouped into one
+4. Run step 7.5's `test-skill` smoke round on the head `cr` accepted, with every entry's
+   reproduction scenario in that one round and entries that share a failure class grouped into one
    scenario, then steps 7.6–7.9.
 5. Record the pull request, its head, the smoke results and the merge or hold in each entry, and
    clear `pending` only once the merge is verified or the hold is reported.
@@ -407,9 +409,10 @@ so the user's review of the source pull request overlaps it.
       fanned out to subagents: a guidance diff is a scope one reviewer holds whole, and the reviewer
       who has to compare a new bullet against the section it duplicates is the one already holding
       both.
-   4. **Run `acceptance-gate`** with its diff question over the `.agents` diff, the request as the
-      intent statement. It judges whether the guidance answers the request at the breadth **Upsert
-      behavior** asks for and whether every mechanism it adds earns its place. Treat a named tool,
+   4. **Run `acceptance-gate`** with its diff question over the batch's complete `.agents` diff, one
+      gate per round, the request as the intent statement. It judges whether the guidance answers
+      the request at the breadth **Upsert behavior** asks for and whether every mechanism it adds
+      earns its place. Treat a named tool,
       surface, or workaround in generic guidance as a finding unless the skill's contract depends on
       it; the incident's route must not narrow the durable decision boundary. Give the gate the
       incident's vocabulary — the product, its record and screen nouns, the labels the request
@@ -418,9 +421,9 @@ so the user's review of the source pull request overlaps it.
       to a fresh independent gate. Repeated flags do not permit dropping owed work or merging
       flagged guidance; acceptance must cover the final wording before delivery.
 
-   5. **Run `test-skill` for every behavior-changing skill, rule, or agent edit.** A rule's
-      source type never exempts it: any changed instruction that can alter what a reader does gets
-      an edited and original control run. Run it here rather than before step 3, because a round
+   5. **Run one `test-skill` round over the batch, covering every behavior-changing skill, rule,
+      or agent edit in it.** A rule's source type never exempts it: any changed instruction that can
+      alter what a reader does gets an edited and original control run. Run it here rather than before step 3, because a round
       run against wording the simplification pass then rewrites has tested text nobody will follow.
       That pass settles how the guidance reads; this one settles whether it changes what a reader
       does, against the miss that prompted it and with the original text as the control. Give both

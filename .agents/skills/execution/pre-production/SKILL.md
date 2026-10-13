@@ -126,12 +126,15 @@ with an obsolete owned contract or revision.
   reads as "there was no decision to make".
 - When a genuine fork appears, present it as options, state each consequence concretely, and **say
   which one removes the most duplication and leaves the fewest mechanisms behind**. Recommend that one.
+  A fork between designs of what the reader sees is ranked by what serves the reader and the flow
+  instead, as the global rules' standing-guidance bullet says of design rules.
   The user may take the trade-off or refuse it; they cannot weigh what they were not told.
 - Reserve a blocking question for a decision that is genuinely theirs — a security posture, a product
   behaviour, a disclosure boundary — under the global rules' **Task execution and authorization**.
   A change to the product experience is not exempt because its consequence seems small or its
-  remedy obvious. Routine internal changes within the settled experience proceed and are stated
-  in the pull request.
+  remedy obvious, but a routine presentation or interaction detail is not such a change: it is
+  decided and reported as that section says. Routine internal changes within the settled
+  experience proceed and are stated in the pull request.
 - Say what changed for whom. "This is a change, not a refactor" belongs at the top of the description,
   not buried among the mechanics.
 - **A measured failure is never a trade-off.** A rate, a duration, a kill or a resource trail observed

@@ -58,6 +58,11 @@ context and returns its verdict into the step waiting on it; nothing else does b
   is exactly what the step exists to prevent, whatever label the report gives it. A skill whose own
   procedure puts a pass in process, such as a small-scope simplification, is not handing it to a
   reviewer, and this leaves that pass alone.
+- **An independent step gets a newly launched subagent for every question it answers.** A gate,
+  finding validator or smoke reader that has answered about an item is never resumed, messaged or
+  reused for a later round on it — not to judge the repair of its own flag, not to rescore — since
+  its answer would then rest on its own earlier verdict. A skill whose procedure reuses a reviewer
+  on purpose, such as a simplification rescan, says so where it does.
 - **A worker whose host gives it no agent tool hands the step up.** It writes the complete
   assignment — the inputs, the question, the reading list, the output shape — to a file, asks the
   agent that delegated to it to run that file as a subagent at the chosen tier, and waits for the

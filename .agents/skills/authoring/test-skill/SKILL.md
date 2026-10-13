@@ -33,6 +33,9 @@ a code change is tested: against the case that motivated it, with the change and
   it looks: read each changed line against the line it replaces and confirm the instruction is
   identical. A line that gains, loses, sharpens or reorders one is an ordinary edit however few
   words moved, and the whole edit is smoke-tested.
+- **A batch of edits on one pull request is tested in one round.** The round carries every edit's
+  scenarios, each run reads the whole batch's edited or original package, and after a miss only
+  the scenarios that missed run again.
 - A new skill has no original to run against. Its control runs carry no skill text at all, which
   shows what the skill adds over the model alone.
 - `skill-gauntlet` asks whether a skill is worth keeping; this skill asks whether one edit does
@@ -97,12 +100,12 @@ a code change is tested: against the case that motivated it, with the change and
      the reading list, or its prompt never made the reader open the skill file: fix the scenario.
      The run took a loophole another loaded file opens: fix it in that file, which joins the change.
      The report shows the behaviour in words the criterion did not search for: rephrase the
-     criterion to that behaviour. A wording change in any file under test reruns every edited run
-     that reads that file, together; a scenario change reruns every run, controls included; a changed
-     criterion rescores every report.
+     criterion to that behaviour. A wording change reruns the edited runs of every scenario that
+     missed, together; a scenario change reruns that scenario's runs, controls included; a changed
+     criterion rescores every report it applies to. A scenario that passed does not run again.
    - **No control misses** means the scenario has not rebuilt the miss. Sharpen it until the
      original text misses — for an edit that broadens a rule, build it on a member of the class the
-     original never named — and rerun every run.
+     original never named — and rerun that scenario's runs.
    - **A reader no change moves** means the miss in step 1 was misstated or the edit does nothing:
      restate the miss and start again from step 1, or drop or reshape the edit.
 9. **Report** the tables in chat, and send one markdown file from the task's evidence directory
