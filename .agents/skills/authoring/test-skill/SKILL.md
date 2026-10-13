@@ -34,8 +34,7 @@ a code change is tested: against the case that motivated it, with the change and
   identical. A line that gains, loses, sharpens or reorders one is an ordinary edit however few
   words moved, and the whole edit is smoke-tested.
 - **A batch of edits on one pull request is tested in one round.** The round carries every edit's
-  scenarios, each run reads the whole batch's edited or original package, and after a miss only
-  the scenarios that missed run again.
+  scenarios, and each run reads the whole batch's edited or original package.
 - A new skill has no original to run against. Its control runs carry no skill text at all, which
   shows what the skill adds over the model alone.
 - `skill-gauntlet` asks whether a skill is worth keeping; this skill asks whether one edit does

@@ -365,7 +365,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   heading short; render the explanation and recovery instruction as normal body text, not as a large
   or bold heading containing the whole error message. Unrelated usable content stays available; its
   presence makes a partial resource failure use the shared error-banner route below instead.
-  Independent action failures keep their notification route.
+  Independent action failures report as the user-action bullet above says.
 - **Resource and data load failures on otherwise usable surfaces keep a persistent native error
   banner with retry, using the standard shared component's frame and error visual tone.** On a page,
   each failed resource appears in a dismissible banner in the page's shared error area at the top,

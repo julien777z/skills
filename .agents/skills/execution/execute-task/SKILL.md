@@ -464,8 +464,8 @@ bug or a passing formatter does not satisfy this spacing check.
   its maintained delivery target is named work for when the dependency merges.
 - **Nothing in the run's own review sequence holds a push either.** A gate or review pending on
   the step, a simplification pass, an integration merge, and a plan or execution model that orders
-  any of them first run over what is already pushed, and their fixes go out as increments of their
-  own.
+  any of them before the push hold nothing: they run over what is already pushed, and their fixes
+  go out as increments of their own.
 - **No edit sits uncommitted through a long wait outside the checks.** Before the slow verification
   below, a background worker, CI on the pushed head, or a question to the user, bring the work to a
   coherent step, commit it, and push it; the checks' own runs are part of the push, not such a wait.
@@ -594,8 +594,8 @@ it — the user asking about something else is not the user withdrawing what the
   read from the record, never from the summary.** After a compaction or handoff, and before
   starting, delegating or reporting any plan work, read each step's state from the plan entry in
   `session-ledger` and from the repository — merged commits, pushed heads — and let them overrule
-  the summary: a step either shows done is not started again, and one the summary left out is still
-  owed. The first turn then moves the oldest item still open as well as whatever the summary's next
+  the summary: a step that the ledger entry or the repository shows done is not started again, and
+  one the summary left out is still owed. The first turn then moves the oldest item still open as well as whatever the summary's next
   step names. A constraint it carries, such as "ask before X", is an earlier turn's instruction,
   checked under **Encountered Issues** before it is obeyed.
 - **Commits a remote lacks are undelivered work**; their next step is the pre-push checks and the

@@ -77,8 +77,6 @@ so the user's review of the source pull request overlaps it.
 1. Read every `pending` `guidance_correction` entry and apply its edits under **Behavior** steps 5
    and 6, on the agent-configuration branch step 7.1 selects.
 2. Run step 7.2's source check.
-   From here the batch is verified as one change: one simplification pass, one acceptance gate
-   per round and one smoke round, each over the batch's complete diff, never one per correction.
 3. Delegate the pull request to `cr` with merge withheld. Give it the user's request and the
    recorded evidence as the intent statement, the incident vocabulary for its acceptance gate as
    step 7.4 describes, and step 7.3's prose-duplication checks for its simplification gate.
@@ -412,24 +410,24 @@ so the user's review of the source pull request overlaps it.
    4. **Run `acceptance-gate`** with its diff question over the batch's complete `.agents` diff, one
       gate per round, the request as the intent statement. It judges whether the guidance answers
       the request at the breadth **Upsert behavior** asks for and whether every mechanism it adds
-      earns its place. Treat a named tool,
-      surface, or workaround in generic guidance as a finding unless the skill's contract depends on
-      it; the incident's route must not narrow the durable decision boundary. Give the gate the
-      incident's vocabulary — the product, its record and screen nouns, the labels the request
-      quoted — so an example carrying any of it is a finding. Resolve each flag through that
-      skill's **Bounds**: repair the owning instruction, push the changed increment, and put it
-      to a fresh independent gate. Repeated flags do not permit dropping owed work or merging
-      flagged guidance; acceptance must cover the final wording before delivery.
+      earns its place. Treat a named tool, surface, or workaround in generic guidance as a finding
+      unless the skill's contract depends on it; the incident's route must not narrow the durable
+      decision boundary. Give the gate the incident's vocabulary — the product, its record and
+      screen nouns, the labels the request quoted — so an example carrying any of it is a finding.
+      Resolve each flag through that skill's **Bounds**: repair the owning instruction, push the
+      changed increment, and put it to a fresh independent gate. Repeated flags do not permit
+      dropping owed work or merging flagged guidance; acceptance must cover the final wording before
+      delivery.
 
-   5. **Run one `test-skill` round over the batch, covering every behavior-changing skill, rule,
-      or agent edit in it.** A rule's source type never exempts it: any changed instruction that can
-      alter what a reader does gets an edited and original control run. Run it here rather than before step 3, because a round
-      run against wording the simplification pass then rewrites has tested text nobody will follow.
-      That pass settles how the guidance reads; this one settles whether it changes what a reader
-      does, against the miss that prompted it and with the original text as the control. Give both
-      readers the complete relevant package, including the references needed for the scenario; an
-      entry-point-only test cannot prove a reference fix. A run that misses is diagnosed, changed
-      and rerun as that skill says, never merged with a failing run.
+   5. **Run one `test-skill` round over the batch, covering every behavior-changing skill, rule, or
+      agent edit in it.** A rule's source type never exempts it: any changed instruction that can
+      alter what a reader does gets an edited and original control run. Run it here rather than
+      before step 3, because a round run against wording the simplification pass then rewrites has
+      tested text nobody will follow. That pass settles how the guidance reads; this one settles
+      whether it changes what a reader does, against the miss that prompted it and with the original
+      text as the control. Give both readers the complete relevant package, including the references
+      needed for the scenario; an entry-point-only test cannot prove a reference fix. A run that
+      misses is diagnosed, changed and rerun as that skill says, never merged with a failing run.
       A **mechanical seam edit** changes no behaviour and needs no smoke run: a dependency
       replaced by the role phrase that finds it, a path generalized, a rename, a frontmatter key, a
       reference path corrected, wording that says the same thing shorter. The report says

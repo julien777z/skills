@@ -25,10 +25,11 @@ state and the change's intent, applies the repository's rubric, and answers one 
 
 The caller produces the statement once per change, updates it when accepted requirements or the
 user's scope change, and passes it to every gate. The gate judges within the scope the statement
-records: a concern outside it is reported as out of scope, never flagged as work the change owes.
-A caller without one supplies the requirements and history so the gate can derive it. A removed shape is a finding throughout the change, including corrections and base
-reconciliation. Pure additions and bug fixes still have requirements for the gate to evaluate.
-Where no change is in flight, say so and judge the item on product state and the rubric.
+records: a concern outside it is reported as out of scope, never flagged as work the change owes. A
+caller without one supplies the requirements and history so the gate can derive it. A removed shape
+is a finding throughout the change, including corrections and base reconciliation. Pure additions
+and bug fixes still have requirements for the gate to evaluate. Where no change is in flight, say so
+and judge the item on product state and the rubric.
 
 When work changes an owned boundary, the statement quotes the applicable target-contract instruction,
 names the one canonical representation, and identifies every retained or candidate representation of
