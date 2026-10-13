@@ -77,10 +77,10 @@ Select the target route before resolving a working pull request:
 - For a merged ref range explicitly delegated by `merge-pr`, read
   [Merged targets](references/merged-targets.md). The immutable range is the review target; the
   original pull request is metadata, and a working fix pull request exists only after a finding.
-- For ordinary direct CR, invoke `list-prs` before reading a current checkout, a PR body, a review,
-  or a validation result. Record and freeze its complete canonical URL list, then read [Open
-  targets](references/open-targets.md). Every URL it returns is both a review target and its own
-  working pull request, with **Pull Request Ownership** below. Never substitute the current
+- For an unqualified ordinary direct CR, invoke `list-prs` before reading a current checkout, a PR
+  body, a review, or a validation result. Record and freeze its complete canonical URL list, then
+  read [Open targets](references/open-targets.md). Every URL it returns is both a review target and
+  its own working pull request, with **Pull Request Ownership** below. Never substitute the current
   checkout, the most recently discussed PR, or a partial ledger entry for that list. If the task
   ledger cannot establish the complete list, keep the target-resolution gate open and repair that
   evidence before starting a target-specific review.
@@ -263,10 +263,10 @@ hold. Internal review fixes follow the same route. Pass this continuity rule int
 fix`.
 
 A mechanically bounded follow-up confined to formatting, lint compliance, a type-only annotation,
-or the validation/check harness does not invalidate review receipts when it changes no shipped
-product behavior, dependency or API/deployment contract, or review rubric. Whether review or the
-check gate found it, apply it, run its focused validation, and return to the check gate without
-launching another lens or cohort.
+or the validation/check harness retains only receipts whose reviewed inputs it leaves unchanged.
+When that repair changes an input a lens reviewed, including test code, rerun that affected lens
+before returning to the check gate. File category, shipped-product impact, and the source of the
+finding never bypass reviewed-input comparison.
 
 When the user makes residual lint-only diagnostics non-blocking, they do not hold a behavior-complete
 source pull request. Retain any useful lint repair already in that pull request. Open a fresh
