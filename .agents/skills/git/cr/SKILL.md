@@ -77,9 +77,13 @@ Select the target route before resolving a working pull request:
 - For a merged ref range explicitly delegated by `merge-pr`, read
   [Merged targets](references/merged-targets.md). The immutable range is the review target; the
   original pull request is metadata, and a working fix pull request exists only after a finding.
-- For ordinary direct CR, invoke `list-prs`, then read [Open targets](references/open-targets.md).
-  Every URL it returns is both a review target and its own working pull request, with **Pull Request
-  Ownership** below.
+- For ordinary direct CR, invoke `list-prs` before reading a current checkout, a PR body, a review,
+  or a validation result. Record and freeze its complete canonical URL list, then read [Open
+  targets](references/open-targets.md). Every URL it returns is both a review target and its own
+  working pull request, with **Pull Request Ownership** below. Never substitute the current
+  checkout, the most recently discussed PR, or a partial ledger entry for that list. If the task
+  ledger cannot establish the complete list, keep the target-resolution gate open and repair that
+  evidence before starting a target-specific review.
 
 Use these route bindings throughout the shared workflow. All review lenses and finding validation
 apply to every review target. Description updates, fix validation, acceptance, and merge gates
@@ -94,7 +98,10 @@ directly. Only an unqualified direct CR resolves its review set through `list-pr
 When the invocation does not name a pull-request URL, use every open pull-request URL returned by
 `list-prs`, including task work in other repositories. Verify each listed branch and state with its
 hosting service. Do not ask the user to select one or select only the current repository or branch:
-the complete list is the direct CR review set.
+the complete list is the direct CR review set. Before a target merges or the CR reports completion,
+re-read the frozen list and account for every still-open target; a target already merged may be
+recorded as complete, but it may not be silently omitted because another target became the current
+worktree.
 
 Review each pull request as an independent unit with its own range, intent, threads, validation,
 acceptance, and exact-head merge gate. A compact agent-configuration unit may run in the same review

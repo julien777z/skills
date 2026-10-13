@@ -90,6 +90,12 @@ with an obsolete owned contract or revision.
   something is not a smaller change; it is the same change plus a new thing to delete later.** When the
   narrow option requires inventing structure the clean option would remove, the narrow option is the
   more expensive one.
+- **Do not restore, retain, or route through an obsolete contract merely to make a partial change
+  appear safe.** An interim pull request either leaves the existing behavior untouched or completes
+  one owned switch with its consumers. A compatibility field, adapter, fallback, or duplicate path
+  is not an interim safety measure; it is production behavior without a retirement owner. Put every
+  consumer and removal needed for one switch in that change. Staging retained data is separate from
+  retaining an obsolete runtime contract.
 
 ## Execution Ownership
 
