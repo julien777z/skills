@@ -320,9 +320,9 @@ slice, or a fix is not a reason to run.
 
 Run the affected targets once more against the refreshed head the loops leave behind. Fix what that
 run reports, rerun only the lenses whose receipts the repair invalidates under **Review Continuity**,
-and run the affected targets again. A repair confined to tests invalidates no receipt and restarts no
-review. Repeat only that narrow loop until one clean lens pass and one green run describe the same
-head.
+and run the affected targets again. A repair confined to tests retains only receipts whose reviewed
+inputs it did not change; rerun every affected lens. Repeat only that narrow loop until one clean
+lens pass and one green run describe the same head.
 
 Run the full repository suite only when every test is relevant to the pull request.
 
