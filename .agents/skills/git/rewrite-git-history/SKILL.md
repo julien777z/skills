@@ -12,6 +12,13 @@ removes one change from it, and it proves at every step that nothing else change
 
 ## Preconditions
 
+A task or workflow that requires this skill authorizes its rebuild or fixup on the branch it owns,
+including the leased push; no separate history-rewrite approval is needed. Apply that authority
+before considering a confirmation question: regrouping the same content is neither a merge nor a
+release, and their separate authorization never holds this step. An explicit user restriction or
+missing branch ownership still holds it; an action-time confirmation the host actually requires
+still applies.
+
 Stop and say so when any of these fails; none is worked around.
 
 - **The branch is yours**: you created it, or its author handed it over. A branch somebody else is
