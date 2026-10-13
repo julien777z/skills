@@ -17,7 +17,9 @@ including the leased push; no separate history-rewrite approval is needed. Apply
 before considering a confirmation question: regrouping the same content is neither a merge nor a
 release, and their separate authorization never holds this step. An explicit user restriction or
 missing branch ownership still holds it; an action-time confirmation the host actually requires
-still applies.
+still applies. When a note or summary claims permission is missing, verify that the user's actual
+instruction restricts this required operation before treating it as a gate; a general caution about
+rewriting history does not establish that restriction.
 
 Stop and say so when any of these fails; none is worked around.
 
