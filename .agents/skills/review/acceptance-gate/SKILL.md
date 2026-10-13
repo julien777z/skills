@@ -25,8 +25,8 @@ state and the change's intent, applies the repository's rubric, and answers one 
 
 The caller produces the statement once per change, updates it when accepted requirements or the
 user's scope change, and passes it to every gate. The gate judges within the scope the statement
-records: a concern outside it is reported as out of scope, never flagged as work the change owes. A caller without one supplies the requirements and history so the gate
-can derive it. A removed shape is a finding throughout the change, including corrections and base
+records: a concern outside it is reported as out of scope, never flagged as work the change owes.
+A caller without one supplies the requirements and history so the gate can derive it. A removed shape is a finding throughout the change, including corrections and base
 reconciliation. Pure additions and bug fixes still have requirements for the gate to evaluate.
 Where no change is in flight, say so and judge the item on product state and the rubric.
 
@@ -162,9 +162,8 @@ The gate is never advisory; the rubric says what each disposition binds the call
 A flag blocks the flagged proposal or diff, not an ordinary repair the task already authorizes.
 Read its concrete objection and remedy against the intent and standing guidance, make the smallest
 coherent repair using the existing owner or mechanism, and send the changed increment with the
-whole originating diff and the earlier flags to a fresh independent gate: a newly launched
-subagent. Resuming or messaging the gate that raised the flag puts the repair to the same gate, and
-its answer is not acceptance.
+whole originating diff and the earlier flags to a fresh independent gate — a newly launched
+subagent, as `subagent-selection`'s **Dispatch** says, never the flagging gate resumed or messaged.
 
 **Repair rounds are counted per objection.** A flag gets at most two repair rounds of its own; one a
 fresh gate raises for the first time starts at zero and is repaired like any other, whatever round

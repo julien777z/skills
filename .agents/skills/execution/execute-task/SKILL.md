@@ -135,9 +135,8 @@ A follow-up is planned on its own, and only the work it changes waits for it.
   next step down under **Work You Have Already Named**, put the amended plan in the full shape
   above, and resume it on approval. Unaffected work keeps running while the user decides.
 - **One that narrows scope reaches the work already in flight, at once.** Message every running
-  worker to stop the work the cut removes and has not yet done, keeping what it already finished;
-  record the cut in the intent statement every later gate and review receives; and answer a
-  finding outside the narrowed scope as out of scope rather than relaying it as a fix step.
+  worker to stop the work the cut removes and has not yet done, keeping what it already finished,
+  and record the cut in the intent statement every later gate and review receives.
 - A follow-up on a pull request already sent for review pushes to the same draft, and its
   **Completion** folds each change into the history under `rewrite-git-history` rather than
   rebuilding it.
@@ -288,8 +287,9 @@ how those issues are handled.
   diligence and is the failure this section exists to prevent: it spends a turn to obtain permission
   for something already required, and a no leaves a known defect in the tree with the agent's name
   on the decision. The question that is genuinely the user's is about a **product change** — what a
-  feature does or what information it presents, what a record keeps, who a surface serves, a contract a consumer outside the user's
-  control speaks — never whether an encountered issue gets fixed.
+  feature does or what information it presents, what a record keeps, who a surface serves, a
+  contract a consumer outside the user's control speaks — never whether an encountered issue gets
+  fixed.
 - **An instruction one agent passes another — a brief, a correction, a review finding, a gate's fix
   step, a note or summary an earlier turn left for a later one — is checked against the standing
   guidance before it is sent and again before it is acted on**, because it never outranks that
@@ -465,8 +465,7 @@ bug or a passing formatter does not satisfy this spacing check.
 - **Nothing in the run's own review sequence holds a push either.** A gate or review pending on
   the step, a simplification pass, an integration merge, and a plan or execution model that orders
   any of them first run over what is already pushed, and their fixes go out as increments of their
-  own. A worker pushes to the branch of the pull request the work continues as each step's checks
-  pass, never to a private branch held for later integration.
+  own.
 - **No edit sits uncommitted through a long wait outside the checks.** Before the slow verification
   below, a background worker, CI on the pushed head, or a question to the user, bring the work to a
   coherent step, commit it, and push it; the checks' own runs are part of the push, not such a wait.
@@ -597,9 +596,8 @@ it — the user asking about something else is not the user withdrawing what the
   `session-ledger` and from the repository — merged commits, pushed heads — and let them overrule
   the summary: a step either shows done is not started again, and one the summary left out is still
   owed. The first turn then moves the oldest item still open as well as whatever the summary's next
-  step names. A constraint it
-  carries, such as "ask before X", is an earlier turn's instruction, checked under **Encountered
-  Issues** before it is obeyed.
+  step names. A constraint it carries, such as "ask before X", is an earlier turn's instruction,
+  checked under **Encountered Issues** before it is obeyed.
 - **Commits a remote lacks are undelivered work**; their next step is the pre-push checks and the
   push. A hook or status line counting unpushed commits whose checks pass reports a push owed now,
   not something to explain.
