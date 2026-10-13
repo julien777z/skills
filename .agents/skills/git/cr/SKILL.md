@@ -95,13 +95,12 @@ or merging another pull request.
 An explicit pull-request URL or recognized identifier is the sole review set: verify and resolve it
 directly. Only an unqualified direct CR resolves its review set through `list-prs`.
 
-When the invocation does not name a pull-request URL, use every open pull-request URL returned by
-`list-prs`, including task work in other repositories. Verify each listed branch and state with its
-hosting service. Do not ask the user to select one or select only the current repository or branch:
-the complete list is the direct CR review set. Before a target merges or the CR reports completion,
-re-read the frozen list and account for every still-open target; a target already merged may be
-recorded as complete, but it may not be silently omitted because another target became the current
-worktree.
+When the direct CR is unqualified, use every open pull-request URL returned by `list-prs`, including
+task work in other repositories. Verify each listed branch and state with its hosting service. Do
+not ask the user to select one or select only the current repository or branch: the complete list is
+the direct CR review set. Before a target merges or the CR reports completion, re-read the frozen
+list and account for every still-open target; a target already merged may be recorded as complete,
+but it may not be silently omitted because another target became the current worktree.
 
 Review each pull request as an independent unit with its own range, intent, threads, validation,
 acceptance, and exact-head merge gate. A compact agent-configuration unit may run in the same review
