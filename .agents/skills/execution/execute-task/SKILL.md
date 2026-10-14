@@ -249,6 +249,12 @@ settled requirement. A proposal that fails one is repaired before implementation
 unresolved user decision follows **Task Authorization**. Apply the guidance and analogous
 implementations below to that choice, not only to the later edit.
 
+For an ownership or scope change, build `acceptance-gate`'s owned-boundary receipt before selecting
+the implementation. Follow the runtime binding as well as the source owner: who executes the
+operation, which resources it may reach, and which destinations must not receive its components,
+data or authority. Carry this receipt into review and deployment verification; a component check
+or an internally consistent configuration does not replace it.
+
 Before an edit that crosses a trust boundary `security-audit` names, invoke it and apply its
 **While Writing Code**.
 

@@ -38,6 +38,14 @@ that boundary. The gate cannot accept an abstract summary in place of that recei
 layout, branch, probe, fallback, or compatibility helper is a flag unless the user explicitly approved
 retaining it.
 
+The owned-boundary receipt distinguishes the actor or execution owner from its destination and
+names the permitted resources and prohibited placements, disclosures or writes. Trace the actual
+selectors, configuration and lifecycle to the resolved identities and scopes, with evidence that
+they match the accepted contract and one counterexample the implementation must reject. A name,
+alias, package move, permission grant or test fixture repeating the implementation's assumption
+does not prove ownership or isolation. Missing evidence holds a clean verdict; it does not turn
+the implementation into the specification.
+
 `references/rubric.md` states what the statement names and how its inputs are reconciled. Read product
 state from the target repository's project guidance; never import another repository's assumptions.
 

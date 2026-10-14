@@ -17,7 +17,7 @@ Deduplicate findings describing the same underlying issue, then validate each on
 
 So when a validator cannot decide from the diff, it keeps going until it can: read the full file and every caller, read the library or SDK source the finding depends on, check the lock file for the resolved version, read the rule the finding cites in full, search the history for when the line was introduced, and run the code — construct the input, execute the branch, and observe the result. Uncertainty is a signal to look at something specific that has not been looked at yet. Name that thing and look at it.
 
-Only one situation ends validation undecided, and it is never uncertainty about the code: the answer turns on intent that exists nowhere in the repository — which of two contracts the author meant, whether a behavior change is wanted. Do not invent a verdict for that and do not report it as a finding with a hedge. Ask the user, in the shape step 8 uses for an ambiguous fix.
+Only one situation ends validation undecided, and it is never uncertainty about the code: the answer turns on intent absent from the supplied user instructions, accepted decisions and repository guidance — which of two contracts was wanted, whether a behavior change is wanted. Read the supplied intent statement before asking; a decision already present there does not become ambiguous because the code or pull-request description disagrees. Do not invent a verdict for a genuinely unresolved choice or report it as a finding with a hedge. Ask the user, in the shape step 8 uses for an ambiguous fix.
 
 Drop anything refuted, including anything a full investigation leaves unsupported. A finding that survives only because nobody finished checking it is not evidence of a defect.
 
@@ -30,9 +30,9 @@ Drop these outright:
 - Failures a linter, typechecker, compiler, or formatter would catch. Assume CI runs them; do not run them here.
 - General code-quality gaps such as missing tests, weak documentation, or generic security hardening, unless a rule requires them.
 - Rule violations explicitly silenced in the code, for example by an ignore comment.
-- Deliberate configuration or design choices with no demonstrable failure.
+- Configuration or design choices supported by the intent statement with no demonstrable failure. Being deliberate or internally consistent does not refute a violation of the accepted contract.
 - Self-resolving transitional states and speculative compound failures.
-- Behavior changes that are intentional and part of the change's purpose.
+- Behavior changes established by the intent statement as part of the accepted change's purpose, rather than asserted only by its implementation or description.
 
 Missing visual separation between logical code stages is a readability finding when the formatter
 leaves it unchanged; formatter success does not refute it. A conditional selecting a fixed set of
