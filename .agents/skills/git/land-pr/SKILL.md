@@ -1,6 +1,6 @@
 ---
 name: land-pr
-description: Merge a pull request its caller is authorized to merge — verify its delivery dependencies before taking it out of draft, gate its exact head, resolve merge conflicts, squash-merge and verify the merge. Use when a workflow reaches an authorized merge — `execute-task`'s Completion, a guidance batch's delivery, `cr`, a doctor's merged batch, or a user-invoked `merge-pr`. A pull request leaves draft only here; an unresolved or testing dependency blocks that transition and merge.
+description: Merge a pull request its caller is authorized to merge — verify its delivery dependencies before taking it out of draft, gate its exact head, resolve merge conflicts, squash-merge and verify the merge. Use when a workflow reaches an authorized merge — `execute-task`'s Completion, a guidance batch's delivery, `cr`, a doctor's merged batch, or a user-invoked `merge-pr`. A pull request leaves draft only here; newly introduced PR or testing dependencies block that transition and merge. Unchanged references already on the default branch are exempt from that dependency gate.
 short_description: 'Ready a pull request for its authorized merge, gate its exact head, and merge it.'
 ---
 
@@ -52,9 +52,14 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
 
 1. **Verify delivery dependencies before readiness.** Inventory what the complete consumer head
    resolves for its build, validation, packaging and delivered behavior, following the
-   [delivery dependency criteria](references/delivery-dependencies.md). Verify each provider's
-   merged state and each resolved revision's provenance; a branch label or immutable identifier
-   alone proves neither. A pull-request or testing dependency, or missing provenance, keeps the
+   [delivery dependency criteria](references/delivery-dependencies.md). Compare every consuming
+   location, configured reference and resolved revision with the freshly fetched default branch;
+   retain that comparison with the admission verdict. Newly introduced or changed PR/testing
+   references in workflows, application code, manifests or lockfiles block readiness and merge.
+   Exempt only the same input already present unchanged at that location on the default branch;
+   a new location or changed resolution is not inherited. For nonexempt inputs, verify each
+   provider's merged state and each resolved revision's provenance; a branch label or immutable
+   identifier alone proves neither. A testing dependency, or missing provenance, keeps the
    consumer draft and blocks both readiness and merge, even with passing tests. Convert an
    already-ready consumer back to draft through GraphQL `convertPullRequestToDraft` and verify
    `draft` true over REST. Surface the provider dependency and its evidence in user chat under the GitHub
@@ -135,7 +140,8 @@ When GitHub reports a conflict, or the merge is rejected for one:
 
 ## Merge
 
-Recheck delivery dependency state and resolved revisions, then re-read the pull request after the
+Recheck delivery dependency state, resolved revisions and the recorded default-branch comparison,
+then re-read the pull request after the
 check gate and require its head SHA to equal the head that
 passed acceptance and the check gate, then squash-merge with that SHA in the request —
 `PUT /repos/{owner}/{repo}/pulls/{number}/merge` with `merge_method=squash` and `sha` — so GitHub

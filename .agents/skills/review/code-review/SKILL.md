@@ -131,7 +131,7 @@ latest commit or fix diff for it.
 
 Classify whether the target is non-runtime before choosing validation. A target is non-runtime when its complete diff does not change executable source, package or dependency definitions, tests, runtime configuration, CI workflows, generated runtime artifacts, or another contract that changes executed behavior. This is semantic rather than path-based: agent instructions, documentation, policies, static metadata, and non-executable configuration can live anywhere. Validate a non-runtime target with the checks appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests or query or wait for CI.
 
-When a runtime change names an external provider resource or permission — a tag, OAuth scope, credential identifier, repository, application, or network target — treat the provider object as a reviewed input. Read the live object using the least-privilege authorized surface and verify that its current grants accept the changed value. Source-only consistency, a previous successful run, and a green static check do not establish that contract. A reviewer may mark the change clean only after this verification passes. If verification is blocked, record the concrete blocker and leave the review incomplete.
+When a runtime change names an external provider resource or permission — a tag, OAuth scope, credential identifier, repository, application, or network target — treat the provider object as a reviewed input. Read the live object using the least-privilege authorized surface and compare its resolved identity, owner and grants with the intent statement. Permission to mutate a resource does not establish that it is the intended resource. Trace selectors and configuration through to the actual account, application, datastore or recipient; a label, alias, package location or successful access check does not prove that binding. Source-only consistency, a previous successful run, and a green static check do not establish that contract. A reviewer may mark the change clean only after this verification passes. If verification is blocked, record the concrete blocker and leave the review incomplete.
 
 When the target is a PR, check eligibility and stop when any of these hold:
 
@@ -161,7 +161,7 @@ Rule and skill files are review criteria unless the selected target changes cano
 In that case, review those changed files as non-runtime content against their owning guidance. Exclude
 rules and skill definitions outside the selected target, and do not report unrelated guidance.
 
-Summarize the changed files and produce the intent statement as `acceptance-gate` defines it, unless the caller supplied one. Before assigning lenses, resolve the affected-repository map required by `code-simplify`'s **Trace Changed Flows** and give it to every reviewer. Give every reviewer the target's title, description, and change summary so they understand author intent.
+Summarize the changed files and produce the intent statement as `acceptance-gate` defines it, unless the caller supplied one. Reconcile it with the user's instructions, accepted decisions and repository guidance independently of the implementation and pull-request description; neither an author's claim nor tests agreeing with the code approve a different contract. Before assigning lenses, resolve the affected-repository map required by `code-simplify`'s **Trace Changed Flows**. Give every reviewer and validator that map and the complete intent statement, including its owned-boundary receipt, alongside the target's title, description and change summary. Missing intent or binding evidence is incomplete review context, never permission to infer the intended design from the diff.
 
 ## Step 3 — Run reviewer lenses
 
@@ -218,6 +218,12 @@ a cross-boundary defect, and reviewers do not see one another's output. A second
 same undifferentiated question adds no coverage receipt.
 
 Require each Rules receipt to include its complete rule ledger. A clean Rules receipt without the applicable rules, checked files, and disposition for each rule is incomplete and must be rerun.
+For a changed ownership, lifecycle or scope boundary, assign a Bugs reviewer to compare the
+owned-boundary receipt with the actual selectors, configuration, permissions and affected tests.
+Its coverage receipt names the evidence for each constraint and the counterexample it checked;
+tests mirroring an incorrect configuration do not establish the intended boundary. Reject a clean
+receipt that omits this comparison or substitutes the author's design claim for an accepted user
+requirement.
 From `high` upward, each reviewer returns a coverage receipt with its lens, the reviewed head SHA, the reviewed changed-file list, the exact rule and rubric inputs it used, its completion status, and a flat list of findings. Each finding carries path, line, anchor (`RIGHT` for added or current changed lines, `LEFT` for removed or base changed lines, or `OUTSIDE_DIFF` for an exact current line with no faithful diff anchor), a concrete trigger, and its reasoning.
 
 For `ultra`, deduplicate each round against every finding seen so far, not only against confirmed ones, or rejected findings resurface every round and the loop never converges.
@@ -228,7 +234,7 @@ Do not classify validity by file extension or category. A lock file can change e
 
 ## Step 4 — Validate findings
 
-Deduplicate findings describing the same underlying issue, then validate each one against the diff as `references/rubric.md` — Validation directs: validators are told to refute, every finding resolves to CONFIRMED or refuted, the rubric lists what is dropped outright, and the one undecidable case — intent that exists nowhere in the repository — goes to the user in the shape step 8 uses for an ambiguous fix.
+Deduplicate findings describing the same underlying issue, then validate each one against the diff as `references/rubric.md` — Validation directs: validators are told to refute, every finding resolves to CONFIRMED or refuted, the rubric lists what is dropped outright, and the one undecidable case — intent absent from the supplied instructions, accepted decisions and repository guidance — goes to the user in the shape step 8 uses for an ambiguous fix.
 
 Require each validator to state the full pull-request range it inspected and, on a later round, the
 incremental range it checked for the latest fixes. Reject a validation based only on the latest
