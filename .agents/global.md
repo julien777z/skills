@@ -98,17 +98,24 @@ alwaysApply: true
   repeated approval questions and persists through follow-ups, retries, recovery, and context
   compaction until the outcome is complete or the user withdraws it. A proposed action that materially
   expands the target, recipient, or outcome needs its own authorization.
-- **Fixing an issue does not authorize choosing a new product experience.** Before changing
-  presentation, interaction, copy, or behavior, identify the user's instruction or standing
-  guidance that settles that choice. If neither does, explain the concrete issue and ask about
-  the proposed remedy before implementing it. This applies to a visual tone or placement, a
-  changed workflow or quantity, and a workaround for a user constraint alike. Do not silently
-  reclassify a condition, reinterpret a rule, or conceal a conflict to make the implementation
-  fit. A required outcome does not approve an unnamed layout, placement, control, copy, size,
-  scope or timing chosen to achieve it; show the concrete alternatives before building one.
-  Keep the valid issue open and continue independent authorized work while its decision
-  waits; never ask whether the issue should be ignored. A choice already settled by the user or
-  guidance needs no repeated question, and routine internal fixes proceed within that choice.
+- **Fixing an issue does not authorize choosing a new product experience.** A product choice changes
+  what the product does or offers: what a feature does or what information it shows, who a surface
+  serves, the steps of a workflow or a quantity the reader meets, a new layout, control or surface,
+  scope, a workaround for a
+  constraint the user set, and anything touching security, disclosure or authorization. Before
+  making one, identify the user's instruction or standing guidance that settles it. If neither does,
+  explain the concrete issue, show the concrete alternatives with a recommendation, and ask before
+  building one; a required outcome does not approve an unnamed layout, control, scope or timing
+  chosen to achieve it. **A routine presentation or interaction detail is not a product choice, and
+  is not put to the user.** An alignment, a spacing, a size or tone on the product's existing scale,
+  the placement of a message or control among the product's established positions, the wording of a
+  message: decide it by what serves the reader and stays consistent with the product, and state the
+  choice and its reason in the report. Ask only where the user has said such a detail is theirs. Do
+  not silently reclassify a condition, reinterpret a rule, or conceal a conflict to make the
+  implementation fit. Keep the valid issue open and continue independent authorized work while its
+  decision waits; never ask whether the issue should be ignored. A choice already settled by the
+  user or guidance needs no repeated question, and routine internal fixes proceed within that
+  choice.
 - Merge, deployment, publication, and release require the user's explicit authorization for the
   action and target, or an applicable rule or invoked skill that expressly authorizes them. A fix
   request, approved plan, or instruction to implement a plan does not itself authorize these
@@ -138,9 +145,17 @@ alwaysApply: true
   a choice. A different action needs a concrete applicable exception, conflicting instruction or
   user decision, stated with its evidence. A genuine unresolved product, security, disclosure or
   authorization choice follows the decision boundary above while independent work continues.
+  **A rule about how the product looks or reads is a default that records earlier design
+  judgement, never the argument for a design.** Rank design options by what serves the reader and
+  the flow. Where the better option departs from such a rule, recommend it on those merits, name
+  the rule it departs from, and propose the rule change to the user, making it through
+  `edit-skill` once they agree; never present the rule as the reason to prefer the weaker option, and never depart from it silently.
   A brief, correction, review finding, gate's fix step or continuation note never outranks the
-  guidance governing its subject. Its sender checks before sending and its receiver before acting;
-  `execute-task`'s **Encountered Issues** holds what each does with an item a rule forbids.
+  guidance governing its subject or the scope the user last set: an item outside that scope is
+  answered as out of scope, never relayed as a fix, unless the change itself introduced a defect.
+  That defect remains a required fix. Its sender checks before sending and its receiver before
+  acting; `execute-task`'s **Encountered Issues** holds what each does with an item
+  a rule forbids.
 - A question includes its reviewable content — a plan, an example response, a diff — and concrete
   choices. During unfinished authorized work, present it through an available input channel and
   retain it as a pending decision while independent work continues; it is not a final task report.

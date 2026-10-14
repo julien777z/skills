@@ -164,7 +164,10 @@ EOF
   Open a comparable existing flow for each recurring interaction the change adds or moves,
   including how related items are selected,
   changed and removed; compare the placement and editing path as well as the result. A violation is
-  a defect the walkthrough found.
+  a defect the walkthrough found unless the user has approved the departure or the guidance already
+  permits it. Where a departure would serve the reader better, recommend it, name the rule, and
+  propose its change; keep the departure pending until the user agrees, as the global rules'
+  standing-guidance bullet says of design rules.
 - The browser daemon starts a fresh profile each time, so `state save` a signed-in session that must
   survive a restart.
 

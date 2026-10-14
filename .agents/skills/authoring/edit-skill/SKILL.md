@@ -51,7 +51,7 @@ proposing a new file applies.
 - `code-simplify` — the pass over the guidance itself before it merges.
 - `acceptance-gate` — the diff question over the `.agents` change once it reads clean.
 - `test-skill` — the proof that every behavior-changing guidance edit changes what a reader does before it merges.
-- `subagent-selection` — the model tier for live verification chats.
+- `subagent-selection` — the model capability level for live verification chats.
 - `cr` — the delegated review of the guidance pull request **Ledger Processing** opens, merge withheld.
 - `land-pr` — the verified squash merge of the pull request step 7 clears.
 - `session-ledger` — retain observed issues, reproduction scenarios and pending guidance delivery across the active task.
@@ -80,7 +80,7 @@ so the user's review of the source pull request overlaps it.
 3. Delegate the pull request to `cr` with merge withheld. Give it the user's request and the
    recorded evidence as the intent statement, the incident vocabulary for its acceptance gate as
    step 7.4 describes, and step 7.3's prose-duplication checks for its simplification gate.
-4. Run step 7.5's `test-skill` smoke runs on the head `cr` accepted, with each entry's
+4. Run step 7.5's `test-skill` smoke round on the head `cr` accepted, with every entry's
    reproduction scenario as an input and entries that share a failure class grouped into one
    scenario, then steps 7.6–7.9.
 5. Record the pull request, its head, the smoke results and the merge or hold in each entry, and
@@ -407,30 +407,23 @@ so the user's review of the source pull request overlaps it.
       fanned out to subagents: a guidance diff is a scope one reviewer holds whole, and the reviewer
       who has to compare a new bullet against the section it duplicates is the one already holding
       both.
-   4. **Run `acceptance-gate`** with its diff question over the `.agents` diff, the request as the
-      intent statement. It judges whether the guidance answers the request at the breadth **Upsert
-      behavior** asks for and whether every mechanism it adds earns its place. Treat a named tool,
-      surface, or workaround in generic guidance as a finding unless the skill's contract depends on
-      it; the incident's route must not narrow the durable decision boundary. Give the gate the
-      incident's vocabulary — the product, its record and screen nouns, the labels the request
-      quoted — so an example carrying any of it is a finding. Resolve each flag through that
-      skill's **Bounds**: repair the owning instruction, push the changed increment, and put it
-      to a fresh independent gate. Repeated flags do not permit dropping owed work or merging
-      flagged guidance; acceptance must cover the final wording before delivery.
+   4. **Run `acceptance-gate`** with its diff question over the batch's complete `.agents` diff, one
+      gate per round, the request as the intent statement. It judges whether the guidance answers
+      the request at the breadth **Upsert behavior** asks for and whether every mechanism it adds
+      earns its place. Treat a named tool, surface, or workaround in generic guidance as a finding
+      unless the skill's contract depends on it; the incident's route must not narrow the durable
+      decision boundary. Give the gate the incident's vocabulary — the product, its record and
+      screen nouns, the labels the request quoted — so an example carrying any of it is a finding.
+      Resolve each flag through that skill's **Bounds**: repair the owning instruction, push the
+      changed increment, and put it to a fresh independent gate. Repeated flags do not permit
+      dropping owed work or merging flagged guidance; acceptance must cover the final wording before
+      delivery.
 
-   5. **Run `test-skill` for every behavior-changing skill, rule, or agent edit.** A rule's
-      source type never exempts it: any changed instruction that can alter what a reader does gets
-      an edited and original control run. Run it here rather than before step 3, because a round
-      run against wording the simplification pass then rewrites has tested text nobody will follow.
-      That pass settles how the guidance reads; this one settles whether it changes what a reader
-      does, against the miss that prompted it and with the original text as the control. Give both
-      readers the complete relevant package, including the references needed for the scenario; an
-      entry-point-only test cannot prove a reference fix. A run that misses is diagnosed, changed
-      and rerun as that skill says, never merged with a failing run.
-      A **mechanical seam edit** changes no behaviour and needs no smoke run: a dependency
-      replaced by the role phrase that finds it, a path generalized, a rename, a frontmatter key, a
-      reference path corrected, wording that says the same thing shorter. The report says
-      `not run: mechanical seam edit` for it, and the acceptance gate is its check.
+   5. **Run one `test-skill` round over the batch on the head `cr` accepted.** Give it every
+      entry's reproduction scenario, grouping entries that share a failure class. `test-skill` owns
+      the coverage, package, control, scoring, and rerun procedure.
+      Record an entry whose run `test-skill` does not require as `not run: <test-skill reason>`;
+      the acceptance gate is its check.
 
       **A draft agent-configuration pull request is an intermediate delivery state, never this
       skill's result or a turn boundary.** Before a report names its state, read the target
@@ -506,9 +499,9 @@ so the user's review of the source pull request overlaps it.
 
 ## Manual verification
 
-When skill behavior needs a live agent chat, use `subagent-selection` to resolve the host's tiers
-and choose its lowest available tier for that chat. Select the resolved model in the chat UI;
-record it with the tested branch, exact commit, session type, and observed result. A resumed
+When skill behavior needs a live agent chat, use `subagent-selection` to resolve the host's model
+capabilities and choose its least-capable available model for that chat. Select the resolved model
+in the chat UI; record it with the tested branch, exact commit, session type, and observed result. A resumed
 container proves its maintenance path, not a fresh setup run.
 
 ### Claude Desktop

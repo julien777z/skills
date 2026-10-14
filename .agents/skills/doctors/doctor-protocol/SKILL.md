@@ -176,8 +176,9 @@ edits fan out.
   records it in the ledger and schedules it into a later wave.
 - **Each wave's combined diff is the finished task** `execute-task`'s delegated-edits bullet gates:
   the parent reads each worker's reported head under its **Reported Outcomes**, runs one
-  `code-simplify` pass and one `acceptance-gate` diff question over the wave, and returns what they
-  flag as fix steps in the next wave. `code-simplify` runs again across the final result.
+  `code-simplify` pass and one `acceptance-gate` diff question over the wave's pushed heads, and
+  returns what they flag as fix steps in the next wave. Neither pass, nor a merge the parent makes
+  of the wave, holds a worker's push. `code-simplify` runs again across the final result.
 
 Return to `execute-task`'s **Plan** for a newly discovered decision that changes the approved outcome;
 do not silently narrow the correction.

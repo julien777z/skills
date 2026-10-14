@@ -1,12 +1,12 @@
 ---
 name: subagent-selection
-description: Apply when selecting a model for a live skill-verification chat or selecting and launching a subagent, including a fresh independent or read-only gate, reviewer, validator, or smoke reader. Resolve cheap, standard, advanced, and frontier tiers from the current host catalogue, select the model explicitly, and route independent steps through a subagent of the running session.
-short_description: 'Select a model tier for live verification chats or subagent delegation.'
+description: Apply when selecting a model for a live skill-verification chat or selecting and launching a subagent, including a fresh independent or read-only gate, reviewer, validator, or smoke reader. Resolve cheap, standard, advanced, and frontier capability levels from the current host catalogue, select the model explicitly, and route independent steps through a subagent of the running session.
+short_description: 'Select a model capability level for live verification chats or subagent delegation.'
 ---
 
 # Subagent Selection
 
-Apply before every sub-agent delegation and when an owning skill requires a model tier for a live
+Apply before every sub-agent delegation and when an owning skill requires a model capability level for a live
 verification chat. Skills that use it should declare `subagent-selection` in their dependencies,
 but a missing declaration does not bypass selection. Return the selection table to the calling
 agent; this skill does not launch agents or change settings itself.
@@ -14,28 +14,28 @@ agent; this skill does not launch agents or change settings itself.
 ## Workflow
 
 1. Identify the calling skill or direct task, its assigned roles or verification chat, and any
-   explicit tier or model requirement. Inspect the current host's subagent catalogue and dispatch
+   explicit capability-level or model requirement. Inspect the current host's subagent catalogue and dispatch
    parameters, or its chat model picker, and read
-   [model tiers](references/model-tiers.md).
-2. Resolve all four tiers to the latest available model in each mapped family using the host's
+   [model capabilities](references/model-capabilities.md).
+2. Resolve all four capability levels to the latest available model in each mapped family using the host's
    catalogue. Use only identifiers the host actually exposes; never store versioned IDs in skill
    guidance or invent an identifier. When catalogue ordering is ambiguous, use a documented current
    family alias; otherwise mark the row unavailable with the ambiguity as its reason.
 3. Return all four rows even when some are unavailable. An unsupported host, absent family, or lack
    of explicit model selection makes that row unavailable; never silently substitute another family
-   or inherit the orchestrator. Apply the fallback in step 4 when a requested tier cannot run. Availability is not permission to change repository or global settings.
-4. If the requested tier is unavailable, choose the closest available model capable of the same
-   assignment, preferring the next higher tier. Record the requested tier, unavailable family,
+   or inherit the orchestrator. Apply the fallback in step 4 when a requested capability level cannot run. Availability is not permission to change repository or global settings.
+4. If the requested capability level is unavailable, choose the closest available model capable of the same
+   assignment, preferring the next stronger model. Record the requested capability level, unavailable family,
    selected model and fallback reason; never relabel the selected model as belonging to the absent
    family. Preserve any explicit user model constraint and the same model within comparison pairs.
    Report a blocked step only when no available model can perform it.
-5. The calling agent chooses a tier and reasoning effort for each role or chat. Honor the user's explicit model or tier first,
-   then the calling skill's tier. For a live skill-verification chat, choose the lowest available
-   tier; otherwise use the task criteria in the table, with **standard** as the default. Reserve
+5. The calling agent chooses a capability level and reasoning effort for each role or chat. Honor the user's explicit model or capability-level constraint first,
+   then the calling skill's capability level. For a live skill-verification chat, choose the least-capable available
+   model; otherwise use the task criteria in the table, with **standard** as the default. Reserve
    frontier for the most demanding assignments unless specifically required. Use **medium** reasoning
    for bounded checks and **high** for complex, cross-cutting work; never dispatch a subagent at any
    other reasoning effort. An explicit user model override still must resolve to a supported host
-   identifier; report it as an override rather than relabeling it as a different tier.
+   identifier; report it as an override rather than relabeling it as a different capability level.
 6. Select the chosen identifier and reasoning effort explicitly when starting a verification chat or
    dispatching a sub-agent. For Codex `spawn_agent`, use `fork_turns: "none"` with a self-contained
    assignment, scope, constraints, and reading list so model inheritance cannot override selection.
@@ -58,9 +58,14 @@ context and returns its verdict into the step waiting on it; nothing else does b
   is exactly what the step exists to prevent, whatever label the report gives it. A skill whose own
   procedure puts a pass in process, such as a small-scope simplification, is not handing it to a
   reviewer, and this leaves that pass alone.
+- **An independent step gets a newly launched subagent for every question it answers.** A gate,
+  finding validator or smoke reader that has answered about an item is never resumed, messaged or
+  reused for a later round on it — not to judge the repair of its own flag or a revised item — since
+  its answer would then rest on its own earlier verdict. A skill whose procedure reuses a reviewer
+  on purpose, such as a simplification rescan, says so where it does.
 - **A worker whose host gives it no agent tool hands the step up.** It writes the complete
   assignment — the inputs, the question, the reading list, the output shape — to a file, asks the
-  agent that delegated to it to run that file as a subagent at the chosen tier, and waits for the
+  agent that delegated to it to run that file as a subagent at the chosen capability level, and waits for the
   verdict before going past the step. The gate over a finished task's diff is not such a step: the
   delegating agent runs it from the branch and head the worker reports, under the delegated-edits bullet
   of `execute-task`'s **Pre-Push Gate**. A worker whose only channel to
@@ -95,14 +100,14 @@ context and returns its verdict into the step waiting on it; nothing else does b
 
 Return this table to the calling agent, using actual resolved identifiers rather than
 placeholders. For an unavailable row, use `unavailable` for the model and state the reason in Status.
-The calling agent then records the selected tier per role or chat, or the explicit user override.
+The calling agent then records the selected capability level per role or chat, or the explicit user override.
 
 ```markdown
 Caller: <skill name or direct task>
 Host: <current host>
 
-| Tier     | Resolved model              | Status                |
-| -------- | --------------------------- | --------------------- |
+| Capability | Resolved model              | Status                |
+| ---------- | --------------------------- | --------------------- |
 | cheap    | <identifier or unavailable> | available or <reason> |
 | standard | <identifier or unavailable> | available or <reason> |
 | advanced | <identifier or unavailable> | available or <reason> |

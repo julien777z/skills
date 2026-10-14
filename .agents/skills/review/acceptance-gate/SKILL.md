@@ -23,11 +23,14 @@ state and the change's intent, applies the repository's rubric, and answers one 
 
 ## The Intent Statement
 
-The caller produces the statement once per change, updates it when accepted requirements change,
-and passes it to every gate. A caller without one supplies the requirements and history so the gate
-can derive it. A removed shape is a finding throughout the change, including corrections and base
-reconciliation. Pure additions and bug fixes still have requirements for the gate to evaluate.
-Where no change is in flight, say so and judge the item on product state and the rubric.
+The caller produces the statement once per change, updates it when accepted requirements or the
+user's scope change, and passes it to every gate. The gate judges within the scope the user set,
+as the statement records it: work the user cut is reported as out of scope, never flagged as work
+the change owes; a defect the change itself introduces is never outside it. A
+caller without one supplies the requirements and history so the gate can derive it. A removed shape
+is a finding throughout the change, including corrections and base reconciliation. Pure additions
+and bug fixes still have requirements for the gate to evaluate. Where no change is in flight, say so
+and judge the item on product state and the rubric.
 
 When work changes an owned boundary, the statement quotes the applicable target-contract instruction,
 names the one canonical representation, and identifies every retained or candidate representation of
@@ -46,8 +49,8 @@ applicable task pull requests, not only default-branch or local checkout compari
 checks analogous implementations and the evidence for retained differences; missing applicable
 pull-request context is a flag to obtain that context, not permission to assume consistency.
 
-The gate is read-only and distinct: not the author of the item, and not the subagent that answered an
-earlier question about the same item. It receives five things and nothing else:
+The gate is read-only and distinct: not the author of the item. Its reader freshness follows
+`subagent-selection`'s **Dispatch**. It receives five things and nothing else:
 
 1. the intent statement;
 2. the originating diff, with its deletions first;
@@ -161,7 +164,7 @@ The gate is never advisory; the rubric says what each disposition binds the call
 A flag blocks the flagged proposal or diff, not an ordinary repair the task already authorizes.
 Read its concrete objection and remedy against the intent and standing guidance, make the smallest
 coherent repair using the existing owner or mechanism, and send the changed increment with the
-whole originating diff to a fresh independent gate.
+whole originating diff to a fresh independent gate, following `subagent-selection`'s **Dispatch**.
 
 **Repair rounds are counted per objection.** A flag gets at most two repair rounds of its own; one a
 fresh gate raises for the first time starts at zero and is repaired like any other, whatever round

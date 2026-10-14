@@ -11,7 +11,7 @@ a code change is tested: against the case that motivated it, with the change and
 
 ## Dependencies
 
-- `subagent-selection` — return model tiers for explicit reviewer dispatch.
+- `subagent-selection` — return model capabilities for explicit reviewer dispatch.
 - `code-simplify` — the pass every skill pull request gets before it merges; this skill runs after it.
 - `session-ledger` — resolve retained private evidence storage and preserve verification inputs and results.
 
@@ -33,6 +33,9 @@ a code change is tested: against the case that motivated it, with the change and
   it looks: read each changed line against the line it replaces and confirm the instruction is
   identical. A line that gains, loses, sharpens or reorders one is an ordinary edit however few
   words moved, and the whole edit is smoke-tested.
+- **A batch of edits on one pull request is tested in one round.** The round carries every edit's
+  scenarios, and each run reads the whole batch's edited or original package. Its reading list
+  records every file in that package.
 - A new skill has no original to run against. Its control runs carry no skill text at all, which
   shows what the skill adds over the model alone.
 - `skill-gauntlet` asks whether a skill is worth keeping; this skill asks whether one edit does
@@ -97,12 +100,12 @@ a code change is tested: against the case that motivated it, with the change and
      the reading list, or its prompt never made the reader open the skill file: fix the scenario.
      The run took a loophole another loaded file opens: fix it in that file, which joins the change.
      The report shows the behaviour in words the criterion did not search for: rephrase the
-     criterion to that behaviour. A wording change in any file under test reruns every edited run
-     that reads that file, together; a scenario change reruns every run, controls included; a changed
-     criterion rescores every report.
+     criterion to that behaviour. A wording change reruns every edited run together; a scenario
+     change reruns that scenario's runs, controls included; a changed criterion rescores
+     every report it applies to.
    - **No control misses** means the scenario has not rebuilt the miss. Sharpen it until the
      original text misses — for an edit that broadens a rule, build it on a member of the class the
-     original never named — and rerun every run.
+     original never named — and rerun that scenario's runs.
    - **A reader no change moves** means the miss in step 1 was misstated or the edit does nothing:
      restate the miss and start again from step 1, or drop or reshape the edit.
 9. **Report** the tables in chat, and send one markdown file from the task's evidence directory
@@ -112,10 +115,10 @@ a code change is tested: against the case that motivated it, with the change and
 
 ## Reviewer selection
 
-Invoke `subagent-selection` and select the **standard** tier. Run one edited/control pair per
+Invoke `subagent-selection` and select the **standard** capability level. Run one edited/control pair per
 scenario — two runs — with the same resolved model, reasoning effort, scenario and reading list in
 both. Follow the dependency's explicit dispatch instructions, including its equivalent-model
-fallback when the requested tier is unavailable. Report `not run` only when no available model
+fallback when the requested capability level is unavailable. Report `not run` only when no available model
 can perform the comparison.
 
 ## Output
@@ -177,7 +180,7 @@ run heading and the round bullet appear only on a run that was rerun.
 ## Guardrails
 
 - Reviewers never see the expected answer, the criteria, or one another's reports.
-- Follow the shared tier selection. Never omit a control.
+- Follow the shared capability selection. Never omit a control.
 - Never edit any file under test between launching a pair of runs and scoring them.
 - Keep the scenario while the branch is open; every later edit of that skill reuses it.
 - Never merge with a failing run or stand with a miss: diagnose it, change what caused it, and

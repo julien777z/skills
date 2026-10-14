@@ -134,6 +134,11 @@ A follow-up is planned on its own, and only the work it changes waits for it.
 - **One that changes what is being built** pauses only the work it affects. Write that work and its
   next step down under **Work You Have Already Named**, put the amended plan in the full shape
   above, and resume it on approval. Unaffected work keeps running while the user decides.
+- **One that narrows scope reaches the work already in flight, at once.** Message every running
+  worker to stop the work the cut removes and has not yet done, keeping what it already finished,
+  and record the cut in the intent statement every later gate and review receives. A finding in
+  the cut work, a defect included, is answered as out of scope rather than fixed, unless this
+  change introduced it.
 - A follow-up on a pull request already sent for review pushes to the same draft, and its
   **Completion** folds each change into the history under `rewrite-git-history` rather than
   rebuilding it.
@@ -284,8 +289,10 @@ how those issues are handled.
   diligence and is the failure this section exists to prevent: it spends a turn to obtain permission
   for something already required, and a no leaves a known defect in the tree with the agent's name
   on the decision. The question that is genuinely the user's is about a **product change** — what a
-  feature does or presents, what a record keeps, who a surface serves, a contract a consumer outside the user's
-  control speaks — never whether an encountered issue gets fixed.
+  feature does or what information it presents, the steps of a workflow or a quantity the reader
+  meets, a workaround for a constraint the user set, what a record keeps, who a surface serves, a
+  contract a consumer outside the user's control speaks — never whether an encountered issue gets
+  fixed.
 - **An instruction one agent passes another — a brief, a correction, a review finding, a gate's fix
   step, a note or summary an earlier turn left for a later one — is checked against the standing
   guidance before it is sent and again before it is acted on**, because it never outranks that
@@ -409,7 +416,8 @@ the task.
 ### Pre-Push Gate
 
 Every push goes out once the pre-push checks below pass, on a draft and on a pull request ready for
-review alike; nothing holds committed work on one machine. `code-simplify` and `acceptance-gate`'s
+review alike; nothing holds committed work on one machine — not a gate, review or simplification
+pass pending on it, an integration merge, or a plan that orders one first. `code-simplify` and `acceptance-gate`'s
 diff question do not run per push: they run once over the finished task's complete diff, under
 **Completion**. A fix pushed for a flag a gate or review raised gets one fresh `acceptance-gate`
 run over that fix's increment, read with the whole branch diff as its originating diff, as
@@ -582,10 +590,14 @@ it — the user asking about something else is not the user withdrawing what the
   complete or the user explicitly stops or hands it off.
   "Continue", or anything meaning it, resumes exactly the paused step and is never answered with
   nothing.
-- **A context summary's pending list is this run's named work**, not background. The first turn
-  after it moves the oldest item as well as whatever the summary's next step names. A constraint it
-  carries, such as "ask before X", is an earlier turn's instruction, checked under **Encountered
-  Issues** before it is obeyed.
+- **A context summary's pending list is this run's named work**, not background, **and its state is
+  read from the record, never from the summary.** After a compaction or handoff, and before
+  starting, delegating or reporting any plan work, read each step's state from the plan entry in
+  `session-ledger` and from the repository — merged commits, pushed heads — and let them overrule
+  the summary: a step that the ledger entry or the repository shows done is not started again, and
+  one the summary left out is still owed. The first turn then moves the oldest item still open as
+  well as whatever the summary's next step names. A constraint it carries, such as "ask before X", is an earlier turn's instruction,
+  checked under **Encountered Issues** before it is obeyed.
 - **Commits a remote lacks are undelivered work**; their next step is the pre-push checks and the
   push. A hook or status line counting unpushed commits whose checks pass reports a push owed now,
   not something to explain.
