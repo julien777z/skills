@@ -115,10 +115,8 @@ visible.
 
 ## Tests And Checks
 
-`execute-task`'s **Priority** keeps ordinary tests, review gates, guidance delivery and cleanup
-paused until the failed operation works on the fix branch in every affected environment. New
-follow-ups retain their recorded priority rather than preempting recovery on arrival. After that
-live checkpoint, complete **One Review Round** and ordinary delivery validation before an authorized
+Apply `execute-task`'s **Priority** to recovery and follow-ups. After its branch checkpoint,
+complete **One Review Round** and ordinary delivery validation before an authorized
 merge; **Restore Deployment Sources** then verifies the default-source deployment. A failure there
 resumes recovery and pauses ordinary work again.
 

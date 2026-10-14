@@ -122,13 +122,13 @@ work in hand unless the user explicitly reprioritizes it, evidence establishes g
 that work completes. State and record the reason before switching, preserving the displaced step.
 
 Restoring an authorized broken deployed operation takes priority over ordinary tests, review gates,
-guidance delivery and cleanup. Pause those activities while recovery is incomplete; use only the
-reproduction, diagnosis and repairs needed to restore the operation, respecting any narrower user
-restriction. Deploy an authorized fix from its pull-request branch and repeat the actual failed
-operation in every affected environment. A successful child task, health response or merge is not
-restoration. After an authorized merge, repeat the operation from the default-source deployment;
-if it fails, resume recovery before ordinary delivery work. This order grants no deployment or
-merge authority: **Task Authorization** still governs both. An invoked `incident` supplies its own
+guidance delivery and cleanup. Pause those activities until the actual failed operation succeeds
+on the fix branch in every affected environment; use only the reproduction, diagnosis and repairs
+needed for that checkpoint, respecting any narrower user restriction. Deploy through the authorized
+branch route, then resume required delivery checks after that live proof. A successful child task,
+health response or merge does not establish it. After an authorized merge, repeat the operation
+from the default-source deployment; if it fails, resume recovery and pause ordinary delivery work
+again. This order grants no deployment or merge authority: **Task Authorization** still governs both. An invoked `incident` supplies its own
 recovery, review and source-restoration procedure.
 
 ### Follow-Ups
@@ -689,9 +689,9 @@ end or pause the surrounding task. Report a blocker only on that boundary's conc
 
 ### Completion
 
-First reconcile **Priority** against the actual deployed operation. Incomplete recovery keeps this
-checkpoint paused; a completed diagnostic or implementation substep does not start either delivery
-stream.
+First reconcile **Priority** against the actual deployed operation. Its unmet branch checkpoint
+or failed default-source retry keeps this checkpoint paused; a completed diagnostic or implementation
+substep does not start either delivery stream.
 
 Run this checkpoint before reporting a change complete, including a local-only result with no
 pull request. In that case, source-stream steps 1–3 and step 5's verification review the complete
