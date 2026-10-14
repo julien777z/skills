@@ -17,7 +17,9 @@ at their owners.
 
 ## Workflow
 
-1. Resolve and read the active task's ledger through `session-ledger`. Verify each entry's evidence
+1. Resolve and read the active task's ledger through `session-ledger`. Honor `execute-task`'s
+   **Priority** before starting permanent guidance delivery; retain its saved next action while
+   recovery holds that work. Verify each entry's evidence
    before acting; a missing, invalid, or incomplete ledger is a recovery condition, not an empty
    result.
 2. Classify each entry by `kind`, then follow its owning workflow.

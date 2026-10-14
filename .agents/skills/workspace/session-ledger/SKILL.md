@@ -76,8 +76,11 @@ identity, never a second authoritative copy of its records.
      recommendation, the work that depends on it, its status (`open`, `evidence_pending`,
      `answered` or `withdrawn`), and the user's answer in their words with when it was given.
      Keep an assumption made without the user as an assumption, never as an answer.
-   - For active work, record its owner, next action, dependencies and concrete blockers so a handoff
-     can resume it without reconstructing the task. Preserve reusable check evidence with the input
+   - For active work, record its owner, priority, status, next action, dependencies and concrete
+     blockers so a handoff can resume it without reconstructing the task. Record a priority change
+     with its user instruction or urgency evidence and preserve the displaced step. Follow-ups keep
+     their own status while waiting for the active higher-priority work; recording one does not
+     change the execution order. Preserve reusable check evidence with the input
      or head it covers, and invalidate only what a change affects. When tracking delay, distinguish
      a duration measured from observed start and end times from an estimate inferred from status;
      record the basis rather than turning an estimate into an elapsed-time claim.

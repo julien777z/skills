@@ -114,6 +114,13 @@ alwaysApply: true
   applicable guidance in a rule or invoked skill for that pull request. A fix request, CI-test
   request, successful check, review, or request to implement a plan that lists a merge does not
   itself authorize merging. If neither authorization source applies, do not merge or enable auto-merge.
+- A focused pull request may merge without a separate request when it repairs a lockfile defect
+  demonstrated on the current default branch, or corrects a non-default testing reference to the
+  maintained target selected by the user or repository guidance. Verify the complete diff consists
+  only of that repair and its necessary manifest, lockfile or reference updates. Unrelated source
+  changes need their own merge authorization; including a lockfile does not authorize a mixed
+  pull request. Required validation and dependency admission still apply, subject to current user
+  pauses and exclusions; this permission authorizes no deployment or release.
 - A pull request confined to canonical, non-executable agent configuration, including Markdown skills,
   rules, agent definitions, and static metadata, may be merged without a separate request after
   `code-simplify` has run and its findings are resolved, except one that adds a doctor skill, which

@@ -115,20 +115,26 @@ visible.
 
 ## Tests And Checks
 
+`execute-task`'s **Priority** keeps ordinary tests, review gates, guidance delivery and cleanup
+paused until the failed operation works on the fix branch in every affected environment. New
+follow-ups retain their recorded priority rather than preempting recovery on arrival. After that
+live checkpoint, complete **One Review Round** and ordinary delivery validation before an authorized
+merge; **Restore Deployment Sources** then verifies the default-source deployment. A failure there
+resumes recovery and pauses ordinary work again.
+
 The repository's testing rule and `run-tests` order the suite for ordinary delivery: one run at the
 end, after the push, over a tree that has stopped changing. An active run suspends that ordering,
 because the tree changes with every diagnosis and the service is down the whole time.
 
-- Every fix push still goes through `execute-task`'s **Pre-Push Gate**, but during recovery its
-  pre-push checks are only the tests the fix's diff reaches, and only when they finish in minutes. The rest of its checks move to the
-  ordinary delivery validation after restoration.
-- A green check run is not a gate on deploying. Deploy the branch and let the checks catch up.
-- Do not run, investigate, or fix lint, formatter, Pyright, or other static-analysis findings during
-  recovery. They neither establish nor block restoration, and belong to ordinary delivery work after
-  the incident ends.
-- A red test the diff does not touch is noted in one line and left alone.
-- After restoration, declare the incident complete from the live restoration checks. Resume ordinary
-  delivery validation afterward; it does not delay recovery or its report.
+- During active recovery, a fix push uses the applicable source and whitespace checks from
+  `execute-task`'s **Pre-Push Gate**, without waiting for tests, static analysis or independent
+  review. Preserve current-user validation pauses. The original failed operation, repeated on the
+  deployed branch, is the recovery check; a green check run never gates that deployment.
+- Do not run, investigate or fix ordinary test, lint, formatter or type-check findings during
+  recovery. Resume their required delivery coverage after the branch's live checkpoint.
+- Neither that checkpoint nor a passing review closes the invocation. Closure still requires
+  **Restore Deployment Sources** and **Closing The Run**; report intermediate recovery in
+  commentary while those steps remain.
 
 ## Deploy From The Branch
 
@@ -137,8 +143,9 @@ component's original repository, branch or image source, and any temporary setti
 it. Keep credentials out of that record.
 
 Build and publish release images through the repository's GitHub Actions workflow, never locally.
-Use the exact fix branch and only the authorized environments. Add scoped preview publication to
-the workflow when needed, keeping publication separate from deployment submission for testing.
+Use the exact fix branch and only the authorized environments through the designated entrypoint
+and its supported source selection. Follow the GitHub rule's **Workflows** recovery boundary;
+never add a temporary workflow mode or wrapper to bypass identity, permission or ref selection.
 Verify the workflow's terminal result and image revision before deploying.
 
 Point Git-backed components at the testing branch and image-backed components at the GHA images built
@@ -155,6 +162,7 @@ pull request's complete diff; when recovery changes only live settings, review t
 and after configuration and the operations performed. Do not invent a code change or pull request
 for an operation with no repository change.
 
+Start this round only after the branch's live restoration checkpoint in **Tests And Checks**.
 Use `code-review`'s finding validation and the full `code-simplify` rubric. Apply `acceptance-gate`'s
 filtering and fix dispositions without duplicating its rubric here. Both lenses must finish; resolve
 accepted findings, verify the corrections, and run affected checks. Apply final acceptance when

@@ -114,13 +114,31 @@ Every task that changes files starts here, and so does every follow-up that arri
   start the next group" hands back an instruction the user gave once. Ask only for a decision that
   is genuinely the user's, and put it in the question rather than in the plan's continuation.
 
+### Priority
+
+Record each active task's priority, status and saved next action through `session-ledger`. A
+follow-up joins that record; arrival order does not give it priority. Keep the active higher-priority
+work in hand unless the user explicitly reprioritizes it, evidence establishes greater urgency, or
+that work completes. State and record the reason before switching, preserving the displaced step.
+
+Restoring an authorized broken deployed operation takes priority over ordinary tests, review gates,
+guidance delivery and cleanup. Pause those activities while recovery is incomplete; use only the
+reproduction, diagnosis and repairs needed to restore the operation, respecting any narrower user
+restriction. Deploy an authorized fix from its pull-request branch and repeat the actual failed
+operation in every affected environment. A successful child task, health response or merge is not
+restoration. After an authorized merge, repeat the operation from the default-source deployment;
+if it fails, resume recovery before ordinary delivery work. This order grants no deployment or
+merge authority: **Task Authorization** still governs both. An invoked `incident` supplies its own
+recovery, review and source-restoration procedure.
+
 ### Follow-Ups
 
-A follow-up is planned on its own, and only the work it changes waits for it.
+A follow-up is planned on its own. **Priority** decides when it runs and whether affected work
+pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
 
 - **One that touches nothing in flight** — other files, another outcome — leaves the running work
-  going. It gets its own plan, or none when trivial, and runs beside that work once approved, under
-  `subagent-selection`'s **Dispatch**. Send:
+  going. It gets its own plan, or none when trivial, and runs beside that work once approved and
+  **Priority** permits, under `subagent-selection`'s **Dispatch**. Send:
 
 ```markdown
 **Running work keeps going:** <step in flight> doesn't touch <what the follow-up changes>.
@@ -131,9 +149,11 @@ A follow-up is planned on its own, and only the work it changes waits for it.
 <No decisions needed. | **Decision needed:** …>
 ```
 
-- **One that changes what is being built** pauses only the work it affects. Write that work and its
-  next step down under **Work You Have Already Named**, put the amended plan in the full shape
-  above, and resume it on approval. Unaffected work keeps running while the user decides.
+- **One that changes what is being built** records the affected work and its saved next step
+  under **Work You Have Already Named**, then puts the amended plan in the full shape above.
+  Pause affected work when **Priority** brings the amendment into execution; otherwise retain it
+  for after the active work. Resume on approval when its priority permits. Unaffected work keeps
+  running while the user decides.
 - **One that narrows scope reaches the work already in flight, at once.** Message every running
   worker to stop the work the cut removes and has not yet done, keeping what it already finished,
   and record the cut in the intent statement every later gate and review receives. A finding in
@@ -589,6 +609,10 @@ back. A borrowed name is invisible to the author precisely because it was famili
 
 ### Work You Have Already Named
 
+**Priority** decides which named work runs now; lower-priority work retains its saved step and
+paused status until that boundary permits it. Recording a commitment never advances it ahead of
+active recovery.
+
 **Naming work as next is a commitment, and it stays this run's obligation across every later turn**
 — including a turn whose own request changes no files, which would otherwise not run this skill at
 all. The run that named the work owns it until it is done, and naming it is what keeps the run open
@@ -630,9 +654,10 @@ report. Nothing was declined and nothing was done, and each repetition makes the
 because the item now looks like a standing note rather than work somebody is waiting for.
 
 So the test is the item's own line. Before a report goes out, compare each outstanding item against
-the line the last report carried for it. **A line that has not changed means the item is finished in
-this turn, before the report is sent** — not moved a little, and not dropped from the list, which
-is the same failure with the evidence removed.
+the line the last report carried for it. A line that has not changed means the item is finished in
+this turn, before the report is sent, when **Priority** permits it; otherwise record the active
+higher-priority task that holds it and its saved next action. Moving it a little or dropping it
+from the list does not satisfy that obligation.
 
 Each item's line records its current disposition:
 
@@ -647,10 +672,10 @@ or supersession removes only the work the user's instruction actually cancels.
 
 **A wait blocks only the work that depends on what is awaited.** While one item waits on something
 outside the run's hands — a background agent, CI, a review, a build, the user's answer to one
-question or confirmation — start the authorized, already-named work that neither needs the awaited
-result nor touches the files or resources the awaited work is changing. Each item held for the wait
-names what it uses that only the awaited result will supply, and one with nothing to name starts
-now: coming later in the plan, belonging to the same feature, or consuming a shape already agreed
+question or confirmation — start the authorized, already-named work that **Priority** permits and that neither needs the
+awaited result nor touches the files or resources the awaited work is changing. Each item held for the wait
+names what it uses that only the awaited result will supply; absent that dependency or a hold under
+**Priority**, it starts now: coming later in the plan, belonging to the same feature, or consuming a shape already agreed
 with the awaited work, such as a planned contract, is not such a thing, so build against that shape.
 When the awaited work is a building worker, another edit starts only in an independently owned
 scope with separate files and resources, under `subagent-selection`'s **Dispatch**; otherwise do
@@ -663,6 +688,10 @@ correction is recorded and the run carries on; it is processed at **Completion**
 end or pause the surrounding task. Report a blocker only on that boundary's concrete evidence.
 
 ### Completion
+
+First reconcile **Priority** against the actual deployed operation. Incomplete recovery keeps this
+checkpoint paused; a completed diagnostic or implementation substep does not start either delivery
+stream.
 
 Run this checkpoint before reporting a change complete, including a local-only result with no
 pull request. In that case, source-stream steps 1–3 and step 5's verification review the complete
