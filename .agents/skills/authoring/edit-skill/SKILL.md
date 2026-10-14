@@ -81,7 +81,7 @@ so the user's review of the source pull request overlaps it.
    recorded evidence as the intent statement, the incident vocabulary for its acceptance gate as
    step 7.4 describes, and step 7.3's prose-duplication checks for its simplification gate.
 4. Run step 7.5's `test-skill` smoke round on the head `cr` accepted, with every entry's
-   reproduction scenario in that one round and entries that share a failure class grouped into one
+   reproduction scenario as an input and entries that share a failure class grouped into one
    scenario, then steps 7.6–7.9.
 5. Record the pull request, its head, the smoke results and the merge or hold in each entry, and
    clear `pending` only once the merge is verified or the hold is reported.

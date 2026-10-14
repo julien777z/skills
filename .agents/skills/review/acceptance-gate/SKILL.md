@@ -24,8 +24,9 @@ state and the change's intent, applies the repository's rubric, and answers one 
 ## The Intent Statement
 
 The caller produces the statement once per change, updates it when accepted requirements or the
-user's scope change, and passes it to every gate. The gate judges within the scope the statement
-records: a concern outside it is reported as out of scope, never flagged as work the change owes. A
+user's scope change, and passes it to every gate. The gate judges within the scope the user set,
+as the statement records it: work the user cut is reported as out of scope, never flagged as work
+the change owes; a defect the change itself introduces is never outside it. A
 caller without one supplies the requirements and history so the gate can derive it. A removed shape
 is a finding throughout the change, including corrections and base reconciliation. Pure additions
 and bug fixes still have requirements for the gate to evaluate. Where no change is in flight, say so
@@ -163,7 +164,7 @@ The gate is never advisory; the rubric says what each disposition binds the call
 A flag blocks the flagged proposal or diff, not an ordinary repair the task already authorizes.
 Read its concrete objection and remedy against the intent and standing guidance, make the smallest
 coherent repair using the existing owner or mechanism, and send the changed increment with the
-whole originating diff and the earlier flags to a fresh independent gate — a newly launched
+whole originating diff to a fresh independent gate — a newly launched
 subagent, as `subagent-selection`'s **Dispatch** says, never the flagging gate resumed or messaged.
 
 **Repair rounds are counted per objection.** A flag gets at most two repair rounds of its own; one a

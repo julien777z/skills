@@ -338,12 +338,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   authorized work. Verify an approved state or flow remedy at its producing transitions and on the
   whole resulting surface.
 - **A refused or failed user action reports its reason beside what the reader is acting on, or
-  through the existing bottom notification system.** A refusal of a value the reader entered or
-  chose, or of the control they are operating — a code that does not match, a choice the field
-  cannot take, an amount over its limit — is that field's or control's inline error, in the page or
-  dialog where they acted, and clears when they change it. Every other failed save, submission,
-  download or requested action, including one taken from a status or error notice, reports its
-  human-readable reason through the shared notification owner. Never add a page or dialog error
+  through the existing bottom notification system.** A refusal that concerns what the reader
+  entered or chose in a field or control — a choice the field cannot take, an amount over its limit
+  — is that field's or control's inline error, in the page or dialog where they acted, and clears
+  when they change it. Every other failed or refused save, submission, download or requested
+  action, including one refused because of the account's or record's state or one taken from a
+  status or error notice, reports its human-readable reason through the shared notification owner. Never add a page or dialog error
   banner or an error modal for a user-action failure, or create another notification stack.
   Classify the operation by its intent, not its status code, HTTP method or whether a button started
   it: loading or retrying the data a surface needs follows the resource-load rule below. Preserve

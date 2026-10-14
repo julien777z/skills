@@ -100,7 +100,8 @@ alwaysApply: true
   expands the target, recipient, or outcome needs its own authorization.
 - **Fixing an issue does not authorize choosing a new product experience.** A product choice changes
   what the product does or offers: what a feature does or what information it shows, who a surface
-  serves, the steps of a workflow or a quantity the reader meets, scope, a workaround for a
+  serves, the steps of a workflow or a quantity the reader meets, a new layout, control or surface,
+  scope, a workaround for a
   constraint the user set, and anything touching security, disclosure or authorization. Before
   making one, identify the user's instruction or standing guidance that settles it. If neither does,
   explain the concrete issue, show the concrete alternatives with a recommendation, and ask before
@@ -147,8 +148,8 @@ alwaysApply: true
   **A rule about how the product looks or reads is a default that records earlier design
   judgement, never the argument for a design.** Rank design options by what serves the reader and
   the flow. Where the better option departs from such a rule, recommend it on those merits, name
-  the rule it departs from, and propose changing the rule through `edit-skill`; never present the
-  rule as the reason to prefer the weaker option, and never depart from it silently.
+  the rule it departs from, and propose the rule change to the user, making it through
+  `edit-skill` once they agree; never present the rule as the reason to prefer the weaker option, and never depart from it silently.
   A brief, correction, review finding, gate's fix step or continuation note never outranks the
   guidance governing its subject or the scope the user last set: an item outside that scope is
   answered as out of scope, never relayed as a fix. Its sender checks before sending and its
