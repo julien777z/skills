@@ -100,9 +100,8 @@ a code change is tested: against the case that motivated it, with the change and
      the reading list, or its prompt never made the reader open the skill file: fix the scenario.
      The run took a loophole another loaded file opens: fix it in that file, which joins the change.
      The report shows the behaviour in words the criterion did not search for: rephrase the
-     criterion to that behaviour. A wording change reruns, together, the edited runs of every
-     scenario that missed and of every passed scenario whose reading list holds a changed file; a
-     scenario change reruns that scenario's runs, controls included; a changed criterion rescores
+     criterion to that behaviour. A wording change reruns every edited run together; a scenario
+     change reruns that scenario's runs, controls included; a changed criterion rescores
      every report it applies to.
    - **No control misses** means the scenario has not rebuilt the miss. Sharpen it until the
      original text misses — for an edit that broadens a rule, build it on a member of the class the

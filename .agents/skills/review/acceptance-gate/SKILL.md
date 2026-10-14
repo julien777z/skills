@@ -164,8 +164,7 @@ The gate is never advisory; the rubric says what each disposition binds the call
 A flag blocks the flagged proposal or diff, not an ordinary repair the task already authorizes.
 Read its concrete objection and remedy against the intent and standing guidance, make the smallest
 coherent repair using the existing owner or mechanism, and send the changed increment with the
-whole originating diff to a fresh independent gate — a newly launched
-subagent, as `subagent-selection`'s **Dispatch** says, never the flagging gate resumed or messaged.
+whole originating diff to a fresh independent gate, following `subagent-selection`'s **Dispatch**.
 
 **Repair rounds are counted per objection.** A flag gets at most two repair rounds of its own; one a
 fresh gate raises for the first time starts at zero and is repaired like any other, whatever round

@@ -422,10 +422,8 @@ so the user's review of the source pull request overlaps it.
    5. **Run one `test-skill` round over the batch on the head `cr` accepted.** Give it every
       entry's reproduction scenario, grouping entries that share a failure class. `test-skill` owns
       the coverage, package, control, scoring, and rerun procedure.
-      A **mechanical seam edit** changes no behaviour and needs no smoke run: a dependency
-      replaced by the role phrase that finds it, a path generalized, a rename, a frontmatter key, a
-      reference path corrected, wording that says the same thing shorter. The report says
-      `not run: mechanical seam edit` for it, and the acceptance gate is its check.
+      Record an entry whose run `test-skill` does not require as `not run: <test-skill reason>`;
+      the acceptance gate is its check.
 
       **A draft agent-configuration pull request is an intermediate delivery state, never this
       skill's result or a turn boundary.** Before a report names its state, read the target
