@@ -51,7 +51,7 @@ proposing a new file applies.
 - `code-simplify` — the pass over the guidance itself before it merges.
 - `acceptance-gate` — the diff question over the `.agents` change once it reads clean.
 - `test-skill` — the proof that every behavior-changing guidance edit changes what a reader does before it merges.
-- `subagent-selection` — the model tier for live verification chats.
+- `subagent-selection` — the model capability level for live verification chats.
 - `cr` — the delegated review of the guidance pull request **Ledger Processing** opens, merge withheld.
 - `land-pr` — the verified squash merge of the pull request step 7 clears.
 - `session-ledger` — retain observed issues, reproduction scenarios and pending guidance delivery across the active task.
@@ -419,15 +419,9 @@ so the user's review of the source pull request overlaps it.
       dropping owed work or merging flagged guidance; acceptance must cover the final wording before
       delivery.
 
-   5. **Run one `test-skill` round over the batch, covering every behavior-changing skill, rule, or
-      agent edit in it.** A rule's source type never exempts it: any changed instruction that can
-      alter what a reader does gets an edited and original control run. Run it here rather than
-      before step 3, because a round run against wording the simplification pass then rewrites has
-      tested text nobody will follow. That pass settles how the guidance reads; this one settles
-      whether it changes what a reader does, against the miss that prompted it and with the original
-      text as the control. Give both readers the complete relevant package, including the references
-      needed for the scenario; an entry-point-only test cannot prove a reference fix. A run that
-      misses is diagnosed, changed and rerun as that skill says, never merged with a failing run.
+   5. **Run one `test-skill` round over the batch on the head `cr` accepted.** Give it every
+      entry's reproduction scenario, grouping entries that share a failure class. `test-skill` owns
+      the coverage, package, control, scoring, and rerun procedure.
       A **mechanical seam edit** changes no behaviour and needs no smoke run: a dependency
       replaced by the role phrase that finds it, a path generalized, a rename, a frontmatter key, a
       reference path corrected, wording that says the same thing shorter. The report says
@@ -507,9 +501,9 @@ so the user's review of the source pull request overlaps it.
 
 ## Manual verification
 
-When skill behavior needs a live agent chat, use `subagent-selection` to resolve the host's tiers
-and choose its lowest available tier for that chat. Select the resolved model in the chat UI;
-record it with the tested branch, exact commit, session type, and observed result. A resumed
+When skill behavior needs a live agent chat, use `subagent-selection` to resolve the host's model
+capabilities and choose its least-capable available model for that chat. Select the resolved model
+in the chat UI; record it with the tested branch, exact commit, session type, and observed result. A resumed
 container proves its maintenance path, not a fresh setup run.
 
 ### Claude Desktop

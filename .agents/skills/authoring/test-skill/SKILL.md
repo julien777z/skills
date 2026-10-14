@@ -11,7 +11,7 @@ a code change is tested: against the case that motivated it, with the change and
 
 ## Dependencies
 
-- `subagent-selection` — return model tiers for explicit reviewer dispatch.
+- `subagent-selection` — return model capabilities for explicit reviewer dispatch.
 - `code-simplify` — the pass every skill pull request gets before it merges; this skill runs after it.
 - `session-ledger` — resolve retained private evidence storage and preserve verification inputs and results.
 
@@ -116,10 +116,10 @@ a code change is tested: against the case that motivated it, with the change and
 
 ## Reviewer selection
 
-Invoke `subagent-selection` and select the **standard** tier. Run one edited/control pair per
+Invoke `subagent-selection` and select the **standard** capability level. Run one edited/control pair per
 scenario — two runs — with the same resolved model, reasoning effort, scenario and reading list in
 both. Follow the dependency's explicit dispatch instructions, including its equivalent-model
-fallback when the requested tier is unavailable. Report `not run` only when no available model
+fallback when the requested capability level is unavailable. Report `not run` only when no available model
 can perform the comparison.
 
 ## Output
@@ -181,7 +181,7 @@ run heading and the round bullet appear only on a run that was rerun.
 ## Guardrails
 
 - Reviewers never see the expected answer, the criteria, or one another's reports.
-- Follow the shared tier selection. Never omit a control.
+- Follow the shared capability selection. Never omit a control.
 - Never edit any file under test between launching a pair of runs and scoring them.
 - Keep the scenario while the branch is open; every later edit of that skill reuses it.
 - Never merge with a failing run or stand with a miss: diagnose it, change what caused it, and

@@ -29,7 +29,7 @@ fixed values in that type. A receipt without the conditional list is incomplete 
 
 ## Dependencies
 
-- `subagent-selection` — return model tiers for explicit reviewer dispatch.
+- `subagent-selection` — return model capabilities for explicit reviewer dispatch.
 - `code-simplify` — its `references/rubric.md` is the complete simplification rubric for that review lens.
 - `pre-production` — supply the repository's target-contract and staging-data policy.
 - `security-audit` — its `references/rubric.md` defines an exploitable finding, its precedents and its remedy, and its attack-class catalogue supplies the Security lens. The review borrows both and never the audit workflow.
@@ -88,14 +88,16 @@ State these verbatim to every subagent launched:
 
 ## Subagent selection
 
-Invoke `subagent-selection` and choose its **standard** tier for every reviewer, validator, and
-refuter. The `fast`, `standard`, and `deep` labels elsewhere describe assignment depth, not separate
-model tiers: mechanical lookup, contextual review, and adversarial investigation respectively.
+Invoke `subagent-selection` and choose its **standard** capability level for every reviewer,
+validator, and refuter. The `fast`, `standard`, and `deep` labels elsewhere describe assignment
+depth, not model capability levels: mechanical lookup, contextual review, and adversarial
+investigation respectively.
 Effort still determines the cohort and validation depth. Rating, deduplication, fix decisions,
 and writing fixes stay with the orchestrator.
 
-Use the dependency's explicit dispatch instructions. If standard is unavailable, report the
-limitation; do not silently substitute cheap or the orchestrator's model. Every lens, validator
+Use the dependency's explicit dispatch instructions. If the standard capability level is
+unavailable, report the limitation; do not silently substitute a weaker model or the orchestrator's
+model. Every lens, validator
 and refuter this skill hands to a subagent is routed as `subagent-selection`'s **Dispatch** section
 directs.
 
@@ -155,7 +157,9 @@ When a repository publishes a canonical source and generated per-tool mirrors of
 
 Guidance is written for agents authoring code, so not every instruction applies during review. Identify the guidance that applies to each changed file from its front matter, scope, or always-apply status. Give the Rules lens the applicable rules and provide them as context to the other lenses and to fix mode.
 
-Rule and skill files are review criteria, never review targets. Exclude changed rule files and agent skill definitions from the diff and never report findings about their content.
+Rule and skill files are review criteria unless the selected target changes canonical definitions.
+In that case, review those changed files as non-runtime content against their owning guidance. Exclude
+rules and skill definitions outside the selected target, and do not report unrelated guidance.
 
 Summarize the changed files and produce the intent statement as `acceptance-gate` defines it, unless the caller supplied one. Before assigning lenses, resolve the affected-repository map required by `code-simplify`'s **Trace Changed Flows** and give it to every reviewer. Give every reviewer the target's title, description, and change summary so they understand author intent.
 
