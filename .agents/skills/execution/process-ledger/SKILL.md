@@ -33,9 +33,13 @@ at their owners.
 3. A failed, blocked, unavailable, or unverified requested action is not a `guidance_correction`
    to process. Keep its evidence in the task's verification record, continue recovery or escalate
    the live task as needed, and do not create, amend, or deliver permanent guidance from it.
-4. Remove every entry whose durable outcome is verified, whose work was fixed, or whose evidence
-   proves it invalid. Keep only entries that may still be valid and name the concrete unresolved
-   dependency, uncertainty, or next action. A ledger is fully processed only when it has no entries.
+4. Judge terminality against each record's complete owning outcome, including its required delivery
+   and verification. Remove it only when that outcome is verified complete or evidence proves the
+   record invalid. Current-work success alone does not complete a pending guidance delivery; retain
+   that entry with its concrete hold and next action until the required delivery is verified
+   complete or withdrawn. Reporting a hold does not complete that delivery. Keep every other
+   unresolved dependency, uncertainty or next action the same way.
+   A ledger is fully processed only when it has no entries.
 
 ## Output
 
