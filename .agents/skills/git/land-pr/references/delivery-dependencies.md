@@ -1,8 +1,9 @@
 # Delivery dependencies
 
 Read the complete consumer head, not only changed lines. Inventory references that determine code
-or artifacts it consumes: checkouts, actions and reusable workflows, dependency manifests and
-lockfiles, build inputs, image tags or digests, package sources and generated artifacts. Follow
+or artifacts it consumes: workflow checkouts, actions and reusable workflows, application-code
+references, dependency manifests and lockfiles, build inputs, image tags or digests, package sources
+and generated artifacts. Follow
 indirection through variables, scripts and provider configuration to the actual resolved input.
 Include a prerequisite change whose behavior the consumer assumes even without a direct source
 reference. A test-only fixture that cannot enter the consumer's delivery is not a delivery input;
@@ -17,10 +18,16 @@ same repository.
 For each input, retain its consuming location, provider, configured reference, resolved immutable
 revision and evidence for its delivery state. Resolve the provider's actual default branch and
 current release metadata from the provider, rather than assuming a branch name or trusting a PR
-description. A maintained default branch or published release is eligible only when it includes
+description. Record the freshly fetched consumer default-branch revision and compare the input at
+the same consuming location: its provider, configured reference and resolved revision. A PR/testing
+input already present there unchanged is exempt from this dependency admission gate, not from
+ordinary validation of the proposed change. A new consuming location, changed reference or changed
+resolved revision needs its own admission; another input's exemption never covers it.
+
+A maintained default branch or published release is eligible only when it includes
 the behavior the consumer needs and contains no outstanding prerequisite change.
 
-A pull-request ref, testing branch or artifact built from an unmerged revision remains a draft
+A nonexempt pull-request ref, testing branch or artifact built from an unmerged revision remains a draft
 dependency. Replacing its branch name with a commit, image digest or package version does not
 change that state. Establish ancestry against the freshly fetched provider default branch for
 resolved commits (`git merge-base --is-ancestor <revision> <provider-default>`), or equivalent
@@ -40,7 +47,7 @@ evidence in the private record and remove obsolete blocker wording from the cons
 The maintained target follows the user's explicit reference choice, then applicable repository
 guidance: a default branch, published release tag, or another permitted maintained reference.
 Recorded commits establish provenance; they do not override the standing version-reference policy.
-An explicitly permitted immutable reference still needs merged or released provenance. A dependency
+An explicitly permitted nonexempt immutable reference still needs merged or released provenance. A dependency
 merge does not authorize a release or make the consumer's old testing reference suitable for
-delivery. Verify all consuming locations have moved and validate what they now resolve before
+delivery. Verify all nonexempt consuming locations have moved and validate what they now resolve before
 readiness; recheck mutable targets before merging.
