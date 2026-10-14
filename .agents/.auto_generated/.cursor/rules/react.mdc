@@ -142,6 +142,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   heading is that name in a word or a short phrase — "Overview", "Contact details" — never a
   sentence or a phrase addressed to the reader, such as "What you can do here" or "Let's get you set
   up".
+- **A refusal is a short, friendly request for the reader's next step**, such as "Please choose a
+  date after today." It says what to do rather than passing a verdict on what was done, and it
+  never repeats back what the reader just entered or chose — a file name, a typed value, a picked
+  item — which they already know. This holds wherever the message is written, an API's error
+  message the interface shows included.
 - **Never write copy about the product's state that nobody has confirmed.** A page that says a
   feature is unavailable, coming soon or not yet supported, when nobody said so, misinforms the
   reader; the product's state is confirmed with the user before any copy states it.
@@ -334,16 +339,27 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   capping, hiding or dismissing an unresolved condition is not a repair. Continue independent
   authorized work. Verify an approved state or flow remedy at its producing transitions and on the
   whole resulting surface.
-- **User-action HTTP failures use the existing bottom notification system.** A failed save,
-  submission, download or other requested action reports its human-readable reason through that
-  shared owner, including an action taken from a status or error notice. Never add a page or dialog
-  error banner, inline error or error modal for that failure, or create another notification stack.
+- **A refused or failed user action reports its reason beside what the reader is acting on, or
+  through the existing bottom notification system.** A refusal that concerns what the reader
+  entered or chose in a field or control — a choice the field cannot take, an amount over its limit
+  — is that field's or control's inline error, in the page or dialog where they acted, and clears
+  when they change it. Every other failed or refused save, submission, download or requested
+  action, including one refused because of the account's or record's state or one taken from a
+  status or error notice, reports its human-readable reason through the shared notification owner. Never add a page or dialog error
+  banner or an error modal for a user-action failure, or create another notification stack.
   Classify the operation by its intent, not its status code, HTTP method or whether a button started
   it: loading or retrying the data a surface needs follows the resource-load rule below. Preserve
   entered values, the original notice and its state and remedy, and independent resource errors;
-  the notification neither clears nor replaces them. Release pending protection when the action
+  the report neither clears nor replaces them. Release pending protection when the action
   settles and restore native retry controls according to their prerequisites. Keep the API's safe
   human reason, with the established generic fallback only when no safe reason is available.
+- **One message carries one error.** A banner, an inline error and a notification each state a
+  single problem; several problems are never joined into one string, list or summary in one
+  surface. A field or control shows at most one inline error at a time — the first, when one action
+  leaves it with several — while other fields each show their own. A form whose submission fails
+  on several fields reports each on its field, never in one combined banner, and independent
+  failures that each need a banner or notification get one each. A remedy that shows two problems
+  by joining their messages is the same defect.
 - **Present each failure once.** A terminal error message replaces content only when the whole
   page's subject is unavailable, not when one request or part of a usable page fails. This full-page
   exception owns the specific human-readable reason and recovery action, keeps usable navigation,
@@ -351,7 +367,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   heading short; render the explanation and recovery instruction as normal body text, not as a large
   or bold heading containing the whole error message. Unrelated usable content stays available; its
   presence makes a partial resource failure use the shared error-banner route below instead.
-  Independent action failures keep their notification route.
+  Independent action failures report as the user-action bullet above says.
 - **Resource and data load failures on otherwise usable surfaces keep a persistent native error
   banner with retry, using the standard shared component's frame and error visual tone.** On a page,
   each failed resource appears in a dismissible banner in the page's shared error area at the top,
@@ -373,8 +389,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   An account, workspace or project that is suspended, archived or read-only is not a failure of any
   one section: no section repeats the state itself, and each shows what it still can. An actual
   failed data load still shows its standard error banner alongside the persistent state banner.
-  A refused action uses the notification owner without replacing that state. A library card that
-  has lapsed keeps its status banner when a loan request fails; the refusal appears as a notification.
+  A refused action reports as the user-action bullet above says, without replacing that state. A
+  library card that has lapsed keeps its status banner when a loan request fails; the refusal
+  appears as a notification.
 - **Red is for errors and destructive actions, never required verification or another blocking status.**
   Red, or whatever tone the product reserves for destructive and
   failed states, marks only a failure, a refusal, or a destructive action. A state that blocks or
@@ -533,8 +550,8 @@ export function SearchInput() {
 
 - **Render on the server.** A page, and every section of it that shows data, is an async Server Component that loads its data and renders it. A Client Component (`"use client"`) exists only for what the browser has to own — event handlers and input, state and effect hooks, browser-only APIs, a dialog, drag-and-drop, a third-party client widget — takes its data as props, and never fetches it.
 - **Writes are Server Actions** that authenticate their caller and re-render the page when they finish. A client-side data layer for reads — SWR, React Query, a fetching hook, a fallback cache seeded from the server — is the shape this replaces, not a companion to it, and a status that has to update live refreshes the server render on an interval instead of fetching on the client.
-- **Expected refusals carry a specific, human-readable explanation of what failed and what the
-  reader can do.** Trace generic copy for a known validation or business refusal to its service
+- **Expected refusals carry a specific, human-readable message the reader can act on**, worded as
+  **Interface Copy** says. Trace generic copy for a known validation or business refusal to its service
   and fix that error contract there, rather than inventing replacement client copy. Expected
   refusals must not escape as internal server errors. Genuine 500 responses may keep a safe,
   generic message; diagnose and repair an unexpected 500 encountered during normal operation
