@@ -360,14 +360,15 @@ return records;
   and triggers before dispatching it; a workflow that builds and publishes artifacts or deploys is
   a release action even if it also runs tests.
 
-- Build, publish, and deploy through the repository's GitHub Actions workflow, never a local CLI.
-  Before changing a workflow, inspect its `workflow_dispatch` trigger and the GitHub Actions **Run
-  workflow** controls. For an authorized branch deployment, use the existing workflow in its supported
-  dispatch mode: select the pull-request branch or exact ref when offered, or run the default-branch
-  workflow with its documented source-ref input when that is how it deploys a revision. Only when no
-  existing manual-dispatch path can deploy the requested ref may a temporary workflow change add the
-  smallest allowance. Verify the exact workflow run and deployed revision, then remove that allowance
-  in the same pull request before reporting the result.
+- Build, publish, and deploy through the repository's existing entrypoint and supported ref
+  selection. Use its GitHub Actions workflow when that is the designated route; a native CLI the
+  user explicitly authorizes remains available. Inspect the entrypoint's supported inputs before
+  invoking it, and verify the resulting run, artifact and deployed revision.
+- An authentication, permission or ref-selection failure is repaired at that entrypoint's identity,
+  credential, grants or owned configuration. Grant only the authority the authorized operation
+  requires. Never add a temporary input, mode, wrapper or alternate workflow to bypass the failure,
+  even with a promise to remove it. A genuinely missing durable capability is source work under the
+  task's scope and authorization, never an incidental recovery allowance.
 
 - Keep `run` steps declarative. Invoke checked-in scripts for control flow, validation, filesystem changes, or other implementation logic instead of embedding arbitrary shell or program code in workflow YAML; place those scripts under `.github/scripts/` and prefer Python.
 - Do not hard-code runtime versions when a shared action, reusable workflow, or repository version file supplies them; omit `python-version` when shared Python automation provides it, and use `node-version-file: ".nvmrc"` for Node.js workflows.
