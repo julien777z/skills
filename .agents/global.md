@@ -152,8 +152,9 @@ alwaysApply: true
   `edit-skill` once they agree; never present the rule as the reason to prefer the weaker option, and never depart from it silently.
   A brief, correction, review finding, gate's fix step or continuation note never outranks the
   guidance governing its subject or the scope the user last set: an item outside that scope is
-  answered as out of scope, never relayed as a fix. Its sender checks before sending and its
-  receiver before acting; `execute-task`'s **Encountered Issues** holds what each does with an item
+  answered as out of scope, never relayed as a fix, unless the change itself introduced a defect.
+  That defect remains a required fix. Its sender checks before sending and its receiver before
+  acting; `execute-task`'s **Encountered Issues** holds what each does with an item
   a rule forbids.
 - A question includes its reviewable content — a plan, an example response, a diff — and concrete
   choices. During unfinished authorized work, present it through an available input channel and
