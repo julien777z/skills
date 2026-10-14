@@ -82,8 +82,9 @@ identity, never a second authoritative copy of its records.
      a duration measured from observed start and end times from an estimate inferred from status;
      record the basis rather than turning an estimate into an elapsed-time claim.
 3. Update an entry's current `data` and append observations for later lifecycle facts, checks and
-   dispositions. Preserve its initial observation and provenance. Clear a correction's pending
-   status only after verified delivery or a recorded disposition, never because work moved on.
+   dispositions. Preserve its initial observation and provenance while the entry remains active.
+   `process-ledger` removes an entry after verified delivery, a verified fix, or an invalidation;
+   it retains an entry only for a concrete unresolved next action, dependency, or uncertainty.
 4. Preserve the file locator, task identity and ownership across delegation, handoff and compaction.
    Merge worker receipts by stable entry ID, or canonical URL for an artifact, without replacing
    unrelated entries or reordering existing ones. Carry the locator in agent-consumed task metadata

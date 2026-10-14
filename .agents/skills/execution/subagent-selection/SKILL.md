@@ -23,12 +23,12 @@ agent; this skill does not launch agents or change settings itself.
    family alias; otherwise mark the row unavailable with the ambiguity as its reason.
 3. Return all four rows even when some are unavailable. An unsupported host, absent family, or lack
    of explicit model selection makes that row unavailable; never silently substitute another family
-   or inherit the orchestrator. Apply the fallback in step 4 when a requested capability level cannot run. Availability is not permission to change repository or global settings.
-4. If the requested capability level is unavailable, choose the closest available model capable of the same
-   assignment, preferring the next stronger model. Record the requested capability level, unavailable family,
-   selected model and fallback reason; never relabel the selected model as belonging to the absent
-   family. Preserve any explicit user model constraint and the same model within comparison pairs.
-   Report a blocked step only when no available model can perform it.
+   or inherit the orchestrator. Availability is not permission to change repository or global settings.
+4. If a requested capability level, model family, or explicit model/version is unavailable, stop the
+   dependent step and report the unavailable request, host capability, and waiting work to the
+   caller. Do not select a stronger, weaker, newer, older, closest, equivalent, inherited, or next
+   available model. The caller either follows its own in-process route or retains the concrete hold
+   for the user. Preserve the same approved model within comparison pairs.
 5. The calling agent chooses a capability level and reasoning effort for each role or chat. Honor the user's explicit model or capability-level constraint first,
    then the calling skill's capability level. For a live skill-verification chat, choose the least-capable available
    model; otherwise use the task criteria in the table, with **standard** as the default. Reserve

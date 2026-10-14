@@ -96,8 +96,8 @@ Effort still determines the cohort and validation depth. Rating, deduplication, 
 and writing fixes stay with the orchestrator.
 
 Use the dependency's explicit dispatch instructions. If the standard capability level is
-unavailable, report the limitation; do not silently substitute a weaker model or the orchestrator's
-model. Every lens, validator
+unavailable, report the limitation; do not silently substitute another tier, model version, or the
+orchestrator's model. Every lens, validator
 and refuter this skill hands to a subagent is routed as `subagent-selection`'s **Dispatch** section
 directs.
 

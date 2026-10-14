@@ -80,13 +80,13 @@ of that proof; agreement in one never establishes agreement in another.
 ## Encountered Failures
 
 Every Tailscale failure encountered during the task starts `edit-skill` for its guidance diagnosis
-alongside the operational repair. Record the failing execution, consumer identity, required
-operation, effective authority and missing validation in the active private ledger. Repair an
+alongside the operational repair. Keep the failing execution, consumer identity, required operation,
+effective authority and missing validation in the task's private verification evidence. Repair an
 evidenced guidance gap at its canonical owner; let `edit-skill` determine the disposition when no
 gap is established rather than inferring noncompliance from existing text. Generalize the failure class,
 never the current environment or resource names. Follow `edit-skill`'s **Recording During A Task**:
-the current work is corrected immediately, the guidance correction is recorded, and source repair
-continues while its edit and delivery wait for **Ledger Processing** at the task's completion.
+the current work is corrected immediately, and only a verified successful correction is recorded
+for `process-ledger` to deliver at task completion.
 
 ## Output
 

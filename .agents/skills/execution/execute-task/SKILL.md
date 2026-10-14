@@ -22,7 +22,7 @@ built; **Execution** builds it and hands the user a pull request to review.
 - `security-audit` — **Building It Safely** while writing code that crosses a trust boundary, and
   its **Diff Review** of such a change at **Completion**.
 - `rewrite-git-history` — one commit per material change before the pull request is sent for review.
-- `edit-skill` — process the task's recorded guidance corrections at **Completion**.
+- `process-ledger` — process the task's private ledger at **Completion**, including verified guidance corrections.
 - `list-prs` — the task's pull requests for the ready-for-review message.
 - `session-ledger` — keep the plan and its steps' status current as they change.
 
@@ -53,8 +53,8 @@ Every task that changes files starts here, and so does every follow-up that arri
   trivial change has no design choice in it: a typo, a one-line fix, a rename the user named. It
   goes straight to **Execution**.
 - Work the approved plan already covers takes no new plan: an encountered issue, a gate's or a
-  review's flag, a failing check. Neither does a guidance correction, which `edit-skill` records
-  during the run and processes at **Completion**. A guidance edit the user asks for directly is a
+  review's flag, a failing check. Neither does a verified successful correction, which `edit-skill`
+  records during the run and `process-ledger` processes at **Completion**. A guidance edit the user asks for directly is a
   change like any other, planned unless trivial.
 
 ### What The Plan Holds
@@ -664,9 +664,10 @@ route before declaring a gate. Merge is delivery after verification, never its p
 Then finish each pull request the task changed, once, with its work finished. Two streams run
 side by side from here: the guidance stream and the source stream.
 
-- **Guidance stream.** Hand the task's recorded `guidance_correction` entries to `edit-skill`'s
-  **Ledger Processing**, on its own agent-configuration branch, delegated so it never waits on the
-  source stream. A task with none has no guidance stream.
+- **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends only verified
+  successful `guidance_correction` entries to `edit-skill`'s **Guidance Delivery** route on its own
+  agent-configuration branch, delegated so it never waits on the source stream. A task with none
+  has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:
 
@@ -721,8 +722,8 @@ The ready-for-review message takes exactly this shape, one message per pull requ
 ```
 
 The run stays open until both streams finish: the source stream when its message is sent, or when
-`land-pr` returns from an authorized merge; the guidance stream when **Ledger Processing** reports
-its pull request merged or held for the user.
+`land-pr` returns from an authorized merge; the guidance stream when `process-ledger` reports no
+remaining entries or a concrete retained hold.
 
 A workflow that already runs final acceptance runs step 3 as its own; one that already invokes
 `land-pr` runs step 6 as its own.

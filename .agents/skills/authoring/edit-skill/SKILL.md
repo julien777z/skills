@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. While another task runs, record the correction in the session ledger and correct the current work; the guidance edit and its delivery run when that task completes. Deliver every behavior-changing guidance edit through CR, the acceptance gate, and `test-skill` before its pull request merges.
+description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. First carry out the requested action; only a verified success is recorded in the session ledger and delivered as a guidance edit. Deliver every behavior-changing guidance edit through CR, the acceptance gate, and `test-skill` before its pull request merges.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -10,11 +10,12 @@ Upsert `.agents` source-of-truth files for agents, skills, or rules based on use
 every edit through the same delivery whether the user invoked this skill or the edit arose while
 doing other work. An edit that skipped this is unverified, and the report says so.
 
-**While another task runs, this skill only records.** Each correction goes into the session ledger
-under **Recording During A Task**, the current work is corrected on the spot, and the guidance files
-stay untouched until that task reaches `execute-task`'s **Completion**, which starts **Ledger
-Processing**. With no other task running, the request is the task: its processing starts once
-`execute-task`'s plan for it is approved, or at once when the edit is trivial.
+**First perform the requested action.** While another task runs, correct the current work before
+recording a guidance correction. Record only a verified success under **Recording During A Task**;
+the guidance files stay untouched until that task reaches `execute-task`'s **Completion**, which
+starts `process-ledger`. A failed, blocked, or unavailable action is task evidence only: it
+does not create a ledger correction or a guidance edit. With no other task running, first perform
+the requested action and record it only after it succeeds.
 
 An open `.agents` pull request is not a delivery result. Processing continues through its source
 check, required review steps, merge or hold, Agent Sync result, and verification of generated root
@@ -29,16 +30,16 @@ the same gap, and the session that hit it is the only one holding the evidence.
 
 The tell is a sentence you are about to write to the user about your own process — that you skipped
 a step, that a check did not apply, that you should have done something earlier. Diagnose the route
-before the sentence; when it exposes a guidance gap, write the change first.
+before the sentence; when it exposes a guidance gap, first perform and verify the requested action.
 
 **The user pointing out how you work is the same trigger.** "Why did you do it that way", "you
 should have done X", "don't do Y again": each calls for correcting the thing in front of you and
-checking whether guidance allowed the miss. When it did, change the owning file so the next
-session does not repeat it.
+checking whether guidance allowed the miss. When the correction succeeds, record the owning file
+for permanent guidance so the next session does not repeat it.
 
-Correct the current behavior and trace its guidance path in the same turn. When that trace finds a
-gap during another task, record it; **Ledger Processing** edits the canonical guidance. Neither the
-issue nor its verification disappears when the surrounding task resumes.
+Correct the current behavior and trace its guidance path in the same turn. When a successful
+correction exposes a gap during another task, record it; `process-ledger` routes it into canonical
+guidance. Neither the issue nor its verification disappears when the surrounding task resumes.
 
 A correct instruction does not close a reported failure to follow it. Step 2 traces and repairs the
 application step that admitted the rejected decision, then verifies that repair against the miss.
@@ -52,30 +53,37 @@ proposing a new file applies.
 - `acceptance-gate` — the diff question over the `.agents` change once it reads clean.
 - `test-skill` — the proof that every behavior-changing guidance edit changes what a reader does before it merges.
 - `subagent-selection` — the model capability level for live verification chats.
-- `cr` — the delegated review of the guidance pull request **Ledger Processing** opens, merge withheld.
+- `cr` — the delegated review of the guidance pull request **Guidance Delivery** opens, merge withheld.
 - `land-pr` — the verified squash merge of the pull request step 7 clears.
 - `session-ledger` — retain observed issues, reproduction scenarios and pending guidance delivery across the active task.
 
 ## Recording During A Task
 
-- Record each correction as a `guidance_correction` entry with `session-ledger`: the observed issue
-  and its evidence or the user's words, a reproduction scenario, the intended behavior, the
-  canonical files it will change, and `pending` as its delivery status. Steps 1–4 of **Behavior**
-  run now, while the evidence is fresh, and their result goes into the entry; step 5 onwards waits.
-- Correct the current work immediately as the correction says. Do not edit the guidance files, open
-  a guidance branch, or start a worker for it while the task runs.
+- Carry out the user's requested action in the current work first and verify that it achieved the
+  requested result. Do not make a ledger entry merely because the user proposed a method or a
+  reusable lesson.
+- After verified success, record the correction as a `guidance_correction` entry with
+  `session-ledger`: the successful action and its evidence, a reproduction scenario, the intended
+  behavior, the canonical files it will change, and `pending` as its delivery status. Steps 1–4 of
+  **Behavior** run now, while the evidence is fresh, and their result goes into the entry; step 5
+  onwards waits.
+- When the action fails, is blocked, or cannot be verified, keep its evidence in the task's
+  verification record and continue its recovery or escalation. Do not create, amend, or process a
+  `guidance_correction` entry, and do not edit canonical guidance from that outcome.
+- Do not edit the guidance files, open a guidance branch, or start a worker for a successful
+  correction while the task runs.
 - A related correction joins the same entry or sits beside it in the same batch; the batch is one
   pull request.
 - The task's next step is never held by a correction: record it and carry on.
 
-## Ledger Processing
+## Guidance Delivery
 
-`execute-task`'s **Completion** starts this as its guidance stream, beside the source stream, and
-nothing in it waits on the source pull request. Run it as a delegated worker when the session can,
-so the user's review of the source pull request overlaps it.
+`process-ledger` invokes this route only for a verified successful `guidance_correction`, beside the
+source stream. Nothing in it waits on the source pull request. Run it as a delegated worker when
+the session can, so the user's review of the source pull request overlaps it.
 
-1. Read every `pending` `guidance_correction` entry and apply its edits under **Behavior** steps 5
-   and 6, on the agent-configuration branch step 7.1 selects.
+1. Read every `pending` `guidance_correction` entry whose recorded action succeeded and apply its
+   edits under **Behavior** steps 5 and 6, on the agent-configuration branch step 7.1 selects.
 2. Run step 7.2's source check.
 3. Delegate the pull request to `cr` with merge withheld. Give it the user's request and the
    recorded evidence as the intent statement, the incident vocabulary for its acceptance gate as
@@ -354,7 +362,7 @@ so the user's review of the source pull request overlaps it.
    - If one request contains multiple distinct items, map each item to the best existing file or a new file within the same inferred/selected type.
    - If scope is ambiguous, ask a short follow-up before editing.
 
-7. **Ledger Processing** delivers the batch in this order, with `cr` carrying steps 3–4. Ordinary
+7. **Guidance Delivery** delivers the batch in this order, with `cr` carrying steps 3–4. Ordinary
    repairs and verification remain authorized throughout this delivery; resolve flagged gates under `acceptance-gate`'s **Bounds** and failing smoke runs under
    `test-skill`. A pull request confined to agent configuration has merge authorization under the
    GitHub rule after its stated gates; ask neither to repeat that authorization nor to continue
