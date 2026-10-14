@@ -90,6 +90,29 @@ with an obsolete owned contract or revision.
   something is not a smaller change; it is the same change plus a new thing to delete later.** When the
   narrow option requires inventing structure the clean option would remove, the narrow option is the
   more expensive one.
+- **Do not restore, retain, or route through an obsolete contract merely to make a partial change
+  appear safe.** An interim pull request either leaves the existing behavior untouched or completes
+  one owned switch with its consumers. A compatibility field, adapter, fallback, or duplicate path
+  is not an interim safety measure; it is production behavior without a retirement owner. Put every
+  consumer and removal needed for one switch in that change. Staging retained data is separate from
+  retaining an obsolete runtime contract.
+
+## Execution Ownership
+
+- Decide whether an operation must outlive the process that starts it before changing its timeout,
+  retry, or runner configuration. When an operation must survive a CI job ending, a platform's
+  execution limit, a runner restart, or a disconnected caller, a persistent service or component
+  owns the process, its durable progress, and its authoritative outcome. CI may submit work,
+  observe it, or publish evidence; it is not the execution owner.
+- Increasing, removing, or repeatedly retrying a CI timeout does not repair work that has the wrong
+  owner. Move the process to its persistent owner and make the caller retain pending status until
+  that owner reports success, a genuine failure, or an explicit cancellation.
+- Preserve exclusive ownership and restart recovery at the persistent boundary. A restart or caller
+  timeout must not duplicate the operation, discard durable progress, or report failure merely
+  because the observing job ended. Bounded transport waits and leases for crash recovery remain
+  distinct from a deadline that declares the operation itself failed.
+- Keep ordinary bounded checks in CI when their outcome belongs to that job. This boundary applies
+  only when the product contract requires work to continue independently of the job that launched it.
 
 ## The Deployment's Size Is Not The Design
 
