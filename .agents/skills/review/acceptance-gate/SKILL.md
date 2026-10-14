@@ -49,8 +49,8 @@ applicable task pull requests, not only default-branch or local checkout compari
 checks analogous implementations and the evidence for retained differences; missing applicable
 pull-request context is a flag to obtain that context, not permission to assume consistency.
 
-The gate is read-only and distinct: not the author of the item, and not the subagent that answered an
-earlier question about the same item. It receives five things and nothing else:
+The gate is read-only and distinct: not the author of the item. Its reader freshness follows
+`subagent-selection`'s **Dispatch**. It receives five things and nothing else:
 
 1. the intent statement;
 2. the originating diff, with its deletions first;
