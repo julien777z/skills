@@ -41,7 +41,10 @@ retaining it.
 The owned-boundary receipt distinguishes the actor or execution owner from its destination and
 names the permitted resources and prohibited placements, disclosures or writes. Trace the actual
 selectors, configuration and lifecycle to the resolved identities and scopes, with evidence that
-they match the accepted contract and one counterexample the implementation must reject. A name,
+they match the accepted contract and one counterexample the implementation must reject. For a
+runtime connection, follow each affected process's actual client construction, endpoint and
+transport through startup to the observed connection; a credential or another component's listener
+establishes capability, not that process's route. A name,
 alias, package move, permission grant or test fixture repeating the implementation's assumption
 does not prove ownership or isolation. Missing evidence holds a clean verdict; it does not turn
 the implementation into the specification.
