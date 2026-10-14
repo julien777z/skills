@@ -218,8 +218,13 @@ Execution starts once the plan is approved, or straight away for a trivial chang
 - **An environment refusal is a route to find, not a blocker to report.** A repository missing from
   the session is attached or cloned as a writable checkout; a host the environment refuses is reached
   through a path it does serve, and a tool that took the refused path is fixed to take the served
-  one. Report a blocker only once every served path has been tried and has failed. A command a
-  permission check refuses falls under the next bullet instead, even when it targets a host.
+  one. Failed routes alone do not establish an external blocker: diagnose the refused contract
+  at its owner and check whether owned code, configuration, credentials or lifecycle can satisfy
+  it through the supported route. Report an external gate only with the concrete unavailable
+  capability, evidence that supported recovery and authorized owned repairs are exhausted, and
+  the saved next action when it returns. Repeating the same rejection is not that evidence.
+  A command a permission check refuses falls under the next bullet instead, even when it targets
+  a host; never bypass that boundary as recovery.
 - **A permission check is not a route to find: what it refuses is not attempted again, and the
   decision never becomes the user's.** Use the owner's own routine tool from the start — a package
   manager's cache-clean rather than a raw delete of its cache directory — because that is the
@@ -248,6 +253,12 @@ it: resolving the reported symptom or passing a component check cannot excuse vi
 settled requirement. A proposal that fails one is repaired before implementation; a genuinely
 unresolved user decision follows **Task Authorization**. Apply the guidance and analogous
 implementations below to that choice, not only to the later edit.
+
+For an ownership or scope change, build `acceptance-gate`'s owned-boundary receipt before selecting
+the implementation. Follow the runtime binding as well as the source owner: who executes the
+operation, which resources it may reach, and which destinations must not receive its components,
+data or authority. Carry this receipt into review and deployment verification; a component check
+or an internally consistent configuration does not replace it.
 
 Before an edit that crosses a trust boundary `security-audit` names, invoke it and apply its
 **While Writing Code**.
@@ -454,7 +465,12 @@ bug or a passing formatter does not satisfy this spacing check.
 
 - **Commit each small coherent step and push it as soon as its checks pass**, and at least every
   five minutes of work — a function and its callers updated, a test brought to pass, one finding
-  fixed — never at the end of a unit or task. A push is what lets the user review and test the work, and the only copy that
+  fixed — never at the end of a unit or task. Define coherence against `pre-production`'s
+  complete target boundary, not the latest edited files: required consumer updates, superseded
+  owners and declarations, generated contracts and retained-data migration are implementation,
+  never later cleanup. An intermediate push may preserve ongoing work; it neither narrows the
+  remaining obligation nor qualifies that feature for completion, review delivery or rollout.
+  A push is what lets the user review and test the work, and the only copy that
   outlives the machine: a recycled container or an ended session takes every commit and edit no
   remote holds.
 - **Nothing outside the change holds a push or becomes a question about pushing.** A dependency
@@ -510,6 +526,12 @@ An outcome is what its source of truth shows, never what an action or a worker s
   work: sent back to the worker with what the read showed, or fixed here.
 - **A deferral inside a report — "I'll do X next" — is named work of this run** under **Work You
   Have Already Named**, tracked until done; the report does not close it.
+- Before a milestone report, gate classification or final response, read the authorized outcome's
+  current state and owning diagnostics, then reconcile every required step with the task record.
+  A successful substep does not establish the parent outcome: resume its saved next action when
+  that outcome remains unmet. Report intermediate results in commentary while an authorized
+  remedy remains; a gate must meet **Environment Refusals** or **Task Authorization**, not merely
+  repeat the last failed attempt.
 - **A status sent to the user states what was just read and where**, never what was reported or
   expected: conflicted, failing, running, or passing, on the head or target named. "Done" or
   "ready" is written only when that read says so, and a file sent with it is checked first as the
