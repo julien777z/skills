@@ -375,8 +375,7 @@ the session can, so the user's review of the source pull request overlaps it.
    GitHub rule after its stated gates; ask neither to repeat that authorization nor to continue
    an ordinary repair. That merge authority settles no genuine unresolved product, scope, or
    authorization choice: put that concrete choice to the user under **Bounds** while independent
-   work continues. It does not authorize a release workflow. Approval of a changed output's
-   example, under **Upsert behavior**, still comes before writing that output.
+   work continues. It does not authorize a release workflow. A changed output's concrete example, under **Upsert behavior**, is task evidence before writing that output; it does not wait for approval.
    1. **Branch and commit.** The edit goes onto the open agent-configuration pull request the work
       continues in the repository being edited, whichever session opened it, or, when it continues
       none, onto a branch from the freshly fetched default branch with a new pull request, under the GitHub rule's **Branches and Pull Requests** — never onto a
@@ -574,7 +573,7 @@ Checks
 - Simplification: <clean | findings applied>
 - Acceptance gate: <accepted on <head> | repaired and accepted on <head> | blocked — <concrete unresolved decision or unavailable compliant remedy>>
 - Smoke test: <passing tables reported above | dropped — <reason> | not run: <reason>>
-- Example approved: <one line per skill: name — approved after <n> round(s), output matches it | skipped, no response the user uses | skipped, response unchanged | rule-only change>
+- Example validation: <one line per skill: name — output matches concrete example after <n> round(s) | skipped, no response the user uses | skipped, response unchanged | rule-only change>
 - Merged text read back: <default branch head the touched skills and rules were re-read from | not merged>
 - Refresh: <deferred to the next request | not merged>
 

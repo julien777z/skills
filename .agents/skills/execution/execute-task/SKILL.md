@@ -140,11 +140,10 @@ recovery, review and source-restoration procedure.
 
 ### Follow-Ups
 
-A follow-up is planned on its own. **Priority** decides when it runs and whether affected work
-pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
+A source or product follow-up is planned on its own. A canonical guidance correction follows **When A Plan Is Needed** and does not wait for approval. **Priority** decides when other follow-ups run and whether affected work pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
 
 - **One that touches nothing in flight** — other files, another outcome — leaves the running work
-  going. It gets its own plan, or none when trivial, and runs beside that work once approved and
+  going. It gets its own plan, or none when trivial or a canonical guidance correction, and runs beside that work once approved when approval is required and
   **Priority** permits, under `subagent-selection`'s **Dispatch**. Send:
 
 ```markdown
@@ -185,7 +184,7 @@ pauses now; none of the routes below makes arrival order a reason to preempt act
 
 ## Execution
 
-Execution starts once the plan is approved, or straight away for a trivial change.
+Execution starts once a required plan is approved, or straight away for a trivial change or canonical guidance correction.
 
 ### Task Authorization
 
