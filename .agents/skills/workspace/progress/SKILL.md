@@ -93,7 +93,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   the arrows it describes. Keep to the boxes the explanation needs, a dozen at most.
 - **`links` "Pull requests"**: `label` its name, `url`, `detail` "<owner>/<repo>" and the checks and
   review state just read, `state` its `open`, `draft`, `merged` or `closed`, and `status` and
-  `tone`: In review `good`, Draft neutral, Merged `done`, Failing checks and Closed `critical`.
+  `tone`: Open `good`, Draft neutral, Merged `done`, Failing checks and Closed `critical`.
 - **`questions` "Answered"**: each answered question with the user's `answer` in their words and
   `meta` the time it was given.
 - **`notes` "Decisions and notes"**: each recorded decision and each assumption made without the
