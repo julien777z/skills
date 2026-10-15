@@ -91,8 +91,9 @@ task is active, preserve its execution and follow **Recording During A Task** fo
 source stream. Nothing in it waits on the source pull request. Run it as a delegated worker when
 the session can, so the user's review of the source pull request overlaps it.
 
-1. Read every `pending` `guidance_correction` entry whose recorded action succeeded and apply its
-   edits under **Behavior** steps 5 and 6, on the agent-configuration branch step 7.1 selects.
+1. Read every `pending` `guidance_correction` entry whose recorded action succeeded and resume at
+   its recorded first nonterminal stage. Only an entry with no stage receipt applies its edits under
+   **Behavior** steps 5 and 6, on the agent-configuration branch step 7.1 selects.
 2. Run step 7.2's source check.
 3. Delegate the pull request to `cr` with merge withheld. Give it the user's request and the
    recorded evidence as the intent statement, the incident vocabulary for its acceptance gate as
@@ -185,10 +186,10 @@ the session can, so the user's review of the source pull request overlaps it.
      applying those additional corrections, tell the user which gaps you found, what you will add
      and why. Apply relevant guidance fixes without waiting to be invited to think more broadly;
      product choices still follow the global authorization boundary.
-   - **When no existing rule or skill governs the subject, create the new owner under Guidance
-     Changes Proceed Automatically.** Record its recommended name, scope, and behavior in the
-     correction evidence; do not ask for approval. An existing file that governs the subject is
-     always edited instead, however thin its current text.
+   - **When no existing file of the inferred or selected type governs the subject, create the new
+     owner under Guidance Changes Proceed Automatically.** Record its recommended name, scope, and
+     behavior in the correction evidence; do not ask for approval. An existing file of that type
+     that governs the subject is always edited instead, however thin its current text.
 
 3. Include the underlying issue.
    - When the user raises a concrete issue or provides evidence such as screenshots while requesting agent guidance, update the guidance and implement the underlying product or code fix in the same task.
