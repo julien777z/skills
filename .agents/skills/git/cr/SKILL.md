@@ -1,6 +1,6 @@
 ---
 name: cr
-description: Run the full review-and-fix workflow only on a fresh explicit CR invocation or a fresh scoped delegation from user-invoked merge-pr or active edit-skill Ledger Processing. Never start or restart it from an earlier invocation, an unfinished run, or saved task authorization.
+description: Run the full review-and-fix workflow only on a fresh explicit CR invocation or a fresh scoped delegation from user-invoked merge-pr or active process-ledger guidance delivery. Never start or restart it from an earlier invocation, an unfinished run, or saved task authorization.
 ---
 
 # CR
@@ -12,7 +12,7 @@ invocation selects.
 
 **Check the invocation before resolving targets or launching reviewers.** Starting or restarting CR
 requires a fresh invocation: the current user request directly asks for CR, or a currently
-user-invoked `merge-pr` explicitly delegates a new CR run, or active `edit-skill` Ledger Processing
+user-invoked `merge-pr` explicitly delegates a new CR run, or active `process-ledger` guidance delivery
 issues a fresh guidance-only delegation under its own contract.
 Identify that request or delegation and bind its selected targets before proceeding. A prior
 invocation, unfinished run, saved plan, ledger entry, conversation history, or unchanged repository,
@@ -21,8 +21,8 @@ start CR or inherit its merge authorization; continue the separately requested w
 implementation, validation and handoff.
 
 A fresh delegation authorizes exactly what its current caller states: `merge-pr` delegates the
-ranges it itself merged; `edit-skill` delegates its guidance pull request with merge withheld and
-lands it separately after smoke runs. An earlier delegation cannot be reused for another entry.
+ranges it itself merged; `process-ledger` delegates its guidance pull request with merge withheld
+and lands it separately after smoke runs. An earlier delegation cannot be reused for another entry.
 
 - For a direct CR invocation, this instruction overrides `code-review`'s standalone argument prompt: run `code-review high fix <PR>` without comment mode; do not ask the user to select review effort or modes.
 - **A direct CR invocation authorizes the squash merge of every selected target pull request** at
@@ -69,6 +69,13 @@ lands it separately after smoke runs. An earlier delegation cannot be reused for
 Invoke `subagent-selection` and use its **standard** tier for this workflow's own sub-agents.
 Delegated skills retain their explicitly selected tiers, subject to the user's model override.
 Follow the selector's dispatch and unavailable-model policy.
+
+When the required tier cannot be spawned after the selector's documented routes are exhausted, do
+not substitute a model or hold the CR review loop. The primary agent performs the complete CR
+analysis and fix sequence in process, reading and applying the same `code-simplify` and
+`code-review` rubrics, target scope, receipts, and validation requirements that the cohort would
+have covered. This route does not replace the independent `acceptance-gate`; that gate remains a
+separate required checkpoint.
 
 ## Review Targets
 
@@ -177,11 +184,14 @@ Code simplification is the first analysis and mutation phase. Before `code-revie
 file, the sibling modules in their packages, and related code including
 callers, callees, consumers, analogous implementations, and candidate canonical owners.
 
-Always fan this CR simplification pass out to multiple read-only subagents, even when
-`code-simplify` would ordinarily keep a small scope in process. Partition the pull request into
-coherent app, service, package, or cross-cutting slices that collectively cover the entire scope;
-never divide it by arbitrary file counts. Give every subagent the complete `code-simplify` rubric
-for its slice and require findings anchored to paths and lines with the proposed restructuring.
+When the standard tier can spawn, always fan this CR simplification pass out to multiple read-only
+subagents, even when `code-simplify` would ordinarily keep a small scope in process. Partition the
+pull request into coherent app, service, package, or cross-cutting slices that collectively cover
+the entire scope; never divide it by arbitrary file counts. Give every subagent the complete
+`code-simplify` rubric for its slice and require findings anchored to paths and lines with the
+proposed restructuring. When the required tier cannot spawn, the primary agent performs that same
+complete simplification pass in process and records the slices, rubric checks, findings, and clean
+results before the code-review phase.
 When the pull request adds public concepts across slices, assign one reviewer the cross-cutting
 interfaces and their existing peers as a coherent slice. Require its receipt to assess whether the
 new concepts are variants of existing ones; do not accept a clean simplification gate until that
@@ -370,12 +380,12 @@ authorization, skip deployment and continue review. Never dispatch a workflow or
 to work around this gate.
 
 1. Resolve every review target and working pull request using **Review Targets**. Process each independent unit through the remaining steps before starting the next, except a compact guidance unit follows its related source unit. Read each original target's intent and metadata without modifying a merged pull request; run **Description Refresh** when a working pull request exists. Record every review range and pass each target's intent and route-specific ownership to every subagent and into `/code-review high fix`. Run **Review Thread Triage** against each original target's discussions, with legitimate fixes placed according to that target's route. Then classify failures under **Failure relevance**, run the first test pass **Validation Order** requires, and complete the **Simplification Gate**; no code-review phase starts for a unit before all three are clean.
-2. Invoke `/code-review high fix <target>` for each unit using the open pull-request URL or the exact delegated ref range. For a merged range, pass the original pull request as metadata only and explicitly preserve the range through resolution and eligibility checks. Direct fixes to the matching working fix branch rather than changing the immutable target.
+2. Invoke `/code-review high fix <target>` for each unit using the open pull-request URL or the exact delegated ref range. When the required tier cannot spawn, the primary agent performs the complete high fix review in process instead, with the same lenses, required searches, target scope, finding validation, and receipts. For a merged range, pass the original pull request as metadata only and explicitly preserve the range through resolution and eligibility checks. Direct fixes to the matching working fix branch rather than changing the immutable target.
 3. For the current unit, apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the run continues; see **Deferred Findings**. A finding that can be neither fixed nor recorded remains an active gate: surface the needed resolution under the global rules' pending-result boundary and continue independent work; do not conclude CR on that report.
 4. Classify each current-unit correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean. This is the same authorized CR execution, not a new action-skill invocation.
 5. Once the current unit's review is clean, if a merged-range review has no working fix pull request, record it for the **Completion Report** and continue to the next unit without another merge. Otherwise put the complete working pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement, retaining the original review range as context. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate** verdict is the fresh gate; resolve each flag under `acceptance-gate`'s **Bounds**. The accepted head is the SHA `land-pr` receives.
 6. Run **Description Refresh**'s second pass, then the second test pass **Validation Order** requires for the current unit. Never stop, restart, reconfigure or claim a local service this run did not start.
-7. When merge is withheld — by the user, or by `edit-skill`'s delegation — the unit ends here at
+7. When merge is withheld — by the user, or by `process-ledger`'s delegation — the unit ends here at
    the head step 5 accepted, its pull request left draft. Otherwise invoke `land-pr` with:
    - the pull request and the head step 5 accepted;
    - the affected behaviors step 6 covered locally;

@@ -50,6 +50,8 @@ Shared tooling lives in the project's shared migration package (runner, revision
 
 - **Autogenerate is the default for a schema change** — the CI workflow generates the revision.
   Correct an existing revision only under **Applied Is What Makes History** below.
+- Review handwritten and generated revision docstrings under the shared Python rule's **Formatting
+  and Documentation** migration-revision exception before accepting the revision.
 - **A column rename is always hand-written.** Autogenerate compares two schema snapshots, in which a
   rename is indistinguishable from a drop plus an add, so it renders every rename as `drop_column` +
   `add_column` and discards the column's data. Write `op.alter_column(table, old_name,

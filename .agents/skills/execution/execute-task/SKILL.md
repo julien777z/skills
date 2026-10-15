@@ -22,7 +22,7 @@ built; **Execution** builds it and hands the user a pull request to review.
 - `security-audit` — **Building It Safely** while writing code that crosses a trust boundary, and
   its **Diff Review** of such a change at **Completion**.
 - `rewrite-git-history` — one commit per material change before the pull request is sent for review.
-- `edit-skill` — process the task's recorded guidance corrections at **Completion**.
+- `process-ledger` — process the task's private ledger at **Completion**, including verified guidance corrections.
 - `list-prs` — the task's pull requests for the ready-for-review message.
 - `session-ledger` — keep the plan and its steps' status current as they change.
 
@@ -53,8 +53,8 @@ Every task that changes files starts here, and so does every follow-up that arri
   trivial change has no design choice in it: a typo, a one-line fix, a rename the user named. It
   goes straight to **Execution**.
 - Work the approved plan already covers takes no new plan: an encountered issue, a gate's or a
-  review's flag, a failing check. Neither does a guidance correction, which `edit-skill` records
-  during the run and processes at **Completion**. A guidance edit the user asks for directly is a
+  review's flag, a failing check. Neither does a verified successful correction, which `edit-skill`
+  records during the run and `process-ledger` processes at **Completion**. A guidance edit the user asks for directly is a
   change like any other, planned unless trivial.
 
 ### What The Plan Holds
@@ -114,13 +114,35 @@ Every task that changes files starts here, and so does every follow-up that arri
   start the next group" hands back an instruction the user gave once. Ask only for a decision that
   is genuinely the user's, and put it in the question rather than in the plan's continuation.
 
+### Priority
+
+Record each active task's priority, status and saved next action through `session-ledger`. A
+follow-up joins that record; arrival order does not give it priority. Keep the active higher-priority
+work in hand unless the user explicitly reprioritizes it, evidence establishes greater urgency, or
+that work completes. State and record the reason before switching, preserving the displaced step.
+
+Restoring an authorized broken deployed operation takes priority over ordinary tests, review gates,
+guidance delivery and cleanup. Pause those activities until the actual failed operation succeeds
+on the fix branch in every affected environment; use only the reproduction, diagnosis and repairs
+needed for that checkpoint, respecting any narrower user restriction. This pause includes ordinary
+checks and task-owned workers already running, even on separate files or resources. Pause them at
+the runner's next safe boundary, honoring its interruption and cleanup contract; preserve completed
+evidence, frozen inputs and the saved next action. An already-started independent cohort is not an
+exception permitting continued ordinary work. Deploy through the authorized branch route, then
+resume required delivery checks after that live proof. A successful child task,
+health response or merge does not establish it. After an authorized merge, repeat the operation
+from the default-source deployment; if it fails, resume recovery and pause ordinary delivery work
+again. This order grants no deployment or merge authority: **Task Authorization** still governs both. An invoked `incident` supplies its own
+recovery, review and source-restoration procedure.
+
 ### Follow-Ups
 
-A follow-up is planned on its own, and only the work it changes waits for it.
+A follow-up is planned on its own. **Priority** decides when it runs and whether affected work
+pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
 
 - **One that touches nothing in flight** — other files, another outcome — leaves the running work
-  going. It gets its own plan, or none when trivial, and runs beside that work once approved, under
-  `subagent-selection`'s **Dispatch**. Send:
+  going. It gets its own plan, or none when trivial, and runs beside that work once approved and
+  **Priority** permits, under `subagent-selection`'s **Dispatch**. Send:
 
 ```markdown
 **Running work keeps going:** <step in flight> doesn't touch <what the follow-up changes>.
@@ -131,9 +153,11 @@ A follow-up is planned on its own, and only the work it changes waits for it.
 <No decisions needed. | **Decision needed:** …>
 ```
 
-- **One that changes what is being built** pauses only the work it affects. Write that work and its
-  next step down under **Work You Have Already Named**, put the amended plan in the full shape
-  above, and resume it on approval. Unaffected work keeps running while the user decides.
+- **One that changes what is being built** records the affected work and its saved next step
+  under **Work You Have Already Named**, then puts the amended plan in the full shape above.
+  Pause affected work when **Priority** brings the amendment into execution; otherwise retain it
+  for after the active work. Resume on approval when its priority permits. Unaffected work keeps
+  running while the user decides.
 - **One that narrows scope reaches the work already in flight, at once.** Message every running
   worker to stop the work the cut removes and has not yet done, keeping what it already finished,
   and record the cut in the intent statement every later gate and review receives. A finding in
@@ -242,6 +266,12 @@ Execution starts once the plan is approved, or straight away for a trivial chang
 announce the invocation before the first edit. Listing it as a dependency is not an invocation.
 Read the repository's product state from its project guidance before choosing how to change a
 contract or stored value.
+
+Resolve broad words in the context of the outcome the user named before selecting or inventorying
+implementation targets. State the operational category covered by the request, then check each
+candidate's actual role against it. A shared filename, label, directory or provider does not make
+unrelated automation part of that scope. Expand to a required dependency or an explicitly broader
+user instruction, never to everything a text search happens to return.
 
 Before recommending an implementation or delegating its edits, trace the requested behavior from
 the caller to its owner and inspect that owner's existing capabilities. Reconcile the complete
@@ -589,6 +619,10 @@ back. A borrowed name is invisible to the author precisely because it was famili
 
 ### Work You Have Already Named
 
+**Priority** decides which named work runs now; lower-priority work retains its saved step and
+paused status until that boundary permits it. Recording a commitment never advances it ahead of
+active recovery.
+
 **Naming work as next is a commitment, and it stays this run's obligation across every later turn**
 — including a turn whose own request changes no files, which would otherwise not run this skill at
 all. The run that named the work owns it until it is done, and naming it is what keeps the run open
@@ -630,9 +664,10 @@ report. Nothing was declined and nothing was done, and each repetition makes the
 because the item now looks like a standing note rather than work somebody is waiting for.
 
 So the test is the item's own line. Before a report goes out, compare each outstanding item against
-the line the last report carried for it. **A line that has not changed means the item is finished in
-this turn, before the report is sent** — not moved a little, and not dropped from the list, which
-is the same failure with the evidence removed.
+the line the last report carried for it. A line that has not changed means the item is finished in
+this turn, before the report is sent, when **Priority** permits it; otherwise record the active
+higher-priority task that holds it and its saved next action. Moving it a little or dropping it
+from the list does not satisfy that obligation.
 
 Each item's line records its current disposition:
 
@@ -647,10 +682,10 @@ or supersession removes only the work the user's instruction actually cancels.
 
 **A wait blocks only the work that depends on what is awaited.** While one item waits on something
 outside the run's hands — a background agent, CI, a review, a build, the user's answer to one
-question or confirmation — start the authorized, already-named work that neither needs the awaited
-result nor touches the files or resources the awaited work is changing. Each item held for the wait
-names what it uses that only the awaited result will supply, and one with nothing to name starts
-now: coming later in the plan, belonging to the same feature, or consuming a shape already agreed
+question or confirmation — start the authorized, already-named work that **Priority** permits and that neither needs the
+awaited result nor touches the files or resources the awaited work is changing. Each item held for the wait
+names what it uses that only the awaited result will supply; absent that dependency or a hold under
+**Priority**, it starts now: coming later in the plan, belonging to the same feature, or consuming a shape already agreed
 with the awaited work, such as a planned contract, is not such a thing, so build against that shape.
 When the awaited work is a building worker, another edit starts only in an independently owned
 scope with separate files and resources, under `subagent-selection`'s **Dispatch**; otherwise do
@@ -663,6 +698,10 @@ correction is recorded and the run carries on; it is processed at **Completion**
 end or pause the surrounding task. Report a blocker only on that boundary's concrete evidence.
 
 ### Completion
+
+First reconcile **Priority** against the actual deployed operation. Its unmet branch checkpoint
+or failed default-source retry keeps this checkpoint paused; a completed diagnostic or implementation
+substep does not start either delivery stream.
 
 Run this checkpoint before reporting a change complete, including a local-only result with no
 pull request. In that case, source-stream steps 1–3 and step 5's verification review the complete
@@ -680,15 +719,24 @@ test cannot replace that flow. When a deployment entrypoint consumes configurati
 also proves that entrypoint receives the required settings and reads values in the deployed
 representation; a local fixture using different settings or a different representation does not
 establish the deployed route.
-Missing merge approval holds merging, never this branch verification; check the available branch
-route before declaring a gate. Merge is delivery after verification, never its prerequisite.
+Trace the verification route to the code it actually loads before treating its result as proof or
+proposing a merge: record the exact pull-request head, changed entrypoint and relevant event-specific
+paths. Selecting an application's branch does not prove that the workflow, publisher or other
+changed command ran from that branch. Use the authorized selected-branch route and verify that its
+workflow identity and executed code agree; never assume a trusted workflow must execute default-
+branch code. Where an actual security contract prevents live branch execution, first exercise an
+equivalent native isolated branch route preserving authentication, permissions and input contracts,
+and state precisely which live behavior remains unverified. Do not add a temporary workflow bypass.
+Missing merge approval holds merging, never available branch verification. Merge is delivery after
+verification, never a substitute for an available branch test.
 
 Then finish each pull request the task changed, once, with its work finished. Two streams run
 side by side from here: the guidance stream and the source stream.
 
-- **Guidance stream.** Hand the task's recorded `guidance_correction` entries to `edit-skill`'s
-  **Ledger Processing**, on its own agent-configuration branch, delegated so it never waits on the
-  source stream. A task with none has no guidance stream.
+- **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends only verified
+  successful `guidance_correction` entries to `edit-skill`'s **Guidance Delivery** route on its own
+  agent-configuration branch, delegated so it never waits on the source stream. A task with none
+  has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:
 
@@ -743,8 +791,8 @@ The ready-for-review message takes exactly this shape, one message per pull requ
 ```
 
 The run stays open until both streams finish: the source stream when its message is sent, or when
-`land-pr` returns from an authorized merge; the guidance stream when **Ledger Processing** reports
-its pull request merged or held for the user.
+`land-pr` returns from an authorized merge; the guidance stream when `process-ledger` reports no
+remaining entries or a concrete retained hold.
 
 A workflow that already runs final acceptance runs step 3 as its own; one that already invokes
 `land-pr` runs step 6 as its own.

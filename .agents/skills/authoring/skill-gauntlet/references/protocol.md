@@ -95,18 +95,16 @@ the harness cannot guarantee sufficient separation, stop and report the integrit
 Run equivalent tasks under four conditions:
 
 1. An explicitly exposed model one capability level below the current model with the original
-   skill. If the harness exposes no unambiguously weaker model, use a fresh current-model run and
-   record that fallback.
+   skill. If the harness exposes no unambiguously weaker model, retain this condition as unavailable
+   and report the integrity blocker.
 2. The current model without the skill.
 3. The current model with the immutable original skill.
 4. The current model with the proposed candidate skill.
 
 Do not interpret lower reasoning effort as a weaker model. Obtain model identity from harness
 metadata or another authoritative runtime surface. If the current model cannot be verified, stop.
-If a weaker model cannot be verified, use the documented current-model fallback rather than guessing.
-Keep fallback condition 1 and condition 3 as separately generated samples with their original
-labels. Treat their comparison only as a repeatability control; never present it as cross-model
-evidence or reduce either condition's frozen sample budget.
+If a weaker model cannot be verified, stop and report the integrity blocker rather than guessing or
+substituting another model. Do not relabel a current-model run as a weaker-model condition.
 
 ## Trials and Judging
 

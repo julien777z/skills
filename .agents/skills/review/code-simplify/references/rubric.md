@@ -462,13 +462,14 @@ Apply the baseline prompt above, plus these explicit review rules:
    - Keep a comment only for externally owned behavior the code cannot make evident, such as a
      surprising third-party or protocol constraint. Make it factual and one physical line when
      possible, with two lines as the absolute maximum.
-   - Keep every docstring to one physical line that identifies the symbol rather than narrating its
-     implementation. Shorten a multiline docstring instead of moving its prose into a comment.
-   - Grep the diff's added lines for a docstring opener that does not close on the same line, and
-     report each one as a finding. Reading for structure does not surface a docstring that grew a
-     second paragraph, and the paragraph is usually the rationale a test should carry instead. The
-     report lists every docstring the diff adds with its line count; a report that declares the
-     docstrings clean without that list has not run the check.
+   - Keep ordinary docstrings to one physical line that identifies the symbol rather than narrating
+     its implementation. A migration revision file's `upgrade()` and `downgrade()` docstrings may
+     use a few concise lines only when needed to name the concrete transformation and its purpose.
+   - Grep the diff's added lines for every docstring opener that does not close on the same line.
+     Report each ordinary multiline docstring as a finding. For a migration revision file's
+     `upgrade()` or `downgrade()`, instead check that its concise multiline text names the concrete
+     transformation and why it is needed. The report lists every docstring the diff adds with its
+     line count; a report that declares the docstrings clean without that list has not run the check.
    - A docstring is the first statement of the module, class, function, or method it documents.
      Treat a standalone string literal between class fields or other members as an explanatory
      pseudo-docstring: remove it, refactor the surrounding model, or use the repository's canonical
@@ -512,7 +513,9 @@ For every meaningful change, ask:
 - Does this represent a value differently from how a sibling already represents the same thing — a bare string where an enum exists, a fresh constant where a canonical type is the established shape?
 - Does a branch or conditional produce a closed set of string states, including log-only statuses, that belongs on the language's canonical named finite-state type rather than inline literals?
 - Is this orchestration more sequential or less atomic than it needs to be?
-- Does any docstring the diff adds run past one line?
+- Does any added docstring outside a migration revision file's `upgrade()` or `downgrade()` run
+  past one line? Judge those migration docstrings against the Python rule's concise
+  transformation-and-purpose requirement instead.
 - Do test additions duplicate existing coverage or introduce a small class that belongs in an existing owning class, does each file hold one class, and do helpers live with their fixture or utility owner?
 
 ## What to Flag Aggressively
@@ -562,7 +565,9 @@ Escalate findings when you see:
   generated output and the configuration entries item 9 admits; a cast or wrapper
   that quiets a dependency's types, or an entry naming one package, is still a finding. Grep for these; they do not surface from reading for structure.
 - Multiple test classes in one file; tiny classes/files that should extend an existing owning class; or new tests whose regression existing same-classification coverage already catches. Consolidate related cases before splitting by independently maintained responsibilities.
-- A docstring the diff adds that runs past one line.
+- An added docstring outside a migration revision file's `upgrade()` or `downgrade()` that runs
+  past one line. For those migration docstrings, flag generic, excessively long, or
+  transformation-free text under the Python rule instead.
 - A function, constant, or model defined in a test module beside its tests, whatever its size or
   caller count. Grep every test module the diff touches for module-level `def` and assignments;
   reading the tests does not surface them.

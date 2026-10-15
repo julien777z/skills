@@ -11,6 +11,13 @@ alwaysApply: true
   and triggers before dispatching it; a workflow that builds and publishes artifacts or deploys is
   a release action even if it also runs tests.
 
+- Support authorized selected branches in workflows that build, test, publish, migrate or deploy
+  application code whenever the operation supports branch execution. Provide native manual dispatch
+  where needed for that branch route, and execute the selected branch's workflow and checked-in
+  entrypoint. Preserve scheduled and default-branch automatic behavior and repository, environment
+  and source authorization bindings. Default-branch-only execution or merging is never a substitute
+  for an available selected-branch route.
+
 - Build, publish, and deploy through the repository's existing entrypoint and supported ref
   selection. Use its GitHub Actions workflow when that is the designated route; a native CLI the
   user explicitly authorizes remains available. Inspect the entrypoint's supported inputs before
@@ -122,6 +129,21 @@ alwaysApply: true
   applicable guidance in a rule or invoked skill for that pull request. A fix request, CI-test
   request, successful check, review, or request to implement a plan that lists a merge does not
   itself authorize merging. If neither authorization source applies, do not merge or enable auto-merge.
+- Before asking for merge permission, classify the complete actual diff against the standing
+  permissions below. A filename, extension, line count or change label is not a behavioral
+  classification. Preserve genuine edits; never remove them merely to qualify for an exception.
+- A pull request limited to minor type, lint, import, formatting or text corrections may merge
+  without a separate request when it preserves intended product, security and contract behavior.
+  Aligning types with an existing canonical contract qualifies. Mixed substantive changes require
+  their existing explicit merge authority. Required checks and dependency admission remain; this
+  permission grants no new product, credential, security or trust change and no deployment or release.
+- A focused pull request may merge without a separate request when it repairs a lockfile defect
+  demonstrated on the current default branch, or corrects a non-default testing reference to the
+  maintained target selected by the user or repository guidance. Verify the complete diff consists
+  only of that repair and its necessary manifest, lockfile or reference updates. Unrelated source
+  changes need their own merge authorization; including a lockfile does not authorize a mixed
+  pull request. Required validation and dependency admission still apply, subject to current user
+  pauses and exclusions; this permission authorizes no deployment or release.
 - A pull request confined to canonical, non-executable agent configuration, including Markdown skills,
   rules, agent definitions, and static metadata, may be merged without a separate request after
   `code-simplify` has run and its findings are resolved, except one that adds a doctor skill, which

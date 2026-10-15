@@ -117,9 +117,9 @@ a code change is tested: against the case that motivated it, with the change and
 
 Invoke `subagent-selection` and select the **standard** capability level. Run one edited/control pair per
 scenario — two runs — with the same resolved model, reasoning effort, scenario and reading list in
-both. Follow the dependency's explicit dispatch instructions, including its equivalent-model
-fallback when the requested capability level is unavailable. Report `not run` only when no available model
-can perform the comparison.
+both. Follow the dependency's explicit dispatch instructions. If the requested capability level or
+model is unavailable, report `not run` with the unavailable request and retain the concrete hold;
+do not use an equivalent model, another tier, another version, or the orchestrator's model.
 
 ## Output
 
