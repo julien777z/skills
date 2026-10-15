@@ -147,12 +147,12 @@ alwaysApply: true
   pauses and exclusions; this permission authorizes no deployment or release.
 - A pull request confined to agent configuration — skills with their own scripts, assets and
   templates; rules; agent definitions; and static metadata — may be merged without a separate
-  request, except one that adds a doctor skill, which waits for the user's review together with
-  everything in its batch, once `code-simplify` has run and its findings are resolved and a skill's
-  changed scripts pass the checks they own, such as a type check or a test render. A workflow,
-  installer, or repository tooling outside a skill's folder is source work even when it sits under
-  `.agents`. When the user asked for the change to be tested, first run the smoke test against the
-  exact pull-request head. Check that the complete pull request remains confined to this agent
+  request once `code-simplify` has run and its findings are resolved and a skill's changed scripts
+  pass the checks they own, such as a type check or a test render. One that adds a doctor skill
+  waits instead for the user's review together with everything in its batch. A workflow, installer,
+  or repository tooling outside a skill's folder is source work even when it sits under `.agents`.
+  When the user asked for the change to be tested, first run the smoke test against the exact
+  pull-request head. Check that the complete pull request remains confined to this agent
   configuration before using this exception.
 - **An agent-configuration pull request whose guidance is true only once a still-open source pull request has merged is held until that merge**, whatever its other gates say: it describes behaviour that pull request introduces, drops guidance about something it removes, or needs a workflow or tool change it carries — a project guidance bullet about a helper the source branch adds is the common case. Guidance true on the default branch as it stands waits for nothing.
 - A hold does not authorize merging the source pull request or asking for its merge solely to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. After that merge, incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
