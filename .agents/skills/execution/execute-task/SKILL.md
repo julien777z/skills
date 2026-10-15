@@ -268,8 +268,9 @@ Read the repository's product state from its project guidance before choosing ho
 contract or stored value.
 
 Resolve broad words in the context of the outcome the user named before selecting or inventorying
-implementation targets. State the operational category covered by the request, then check each
-candidate's actual role against it. A shared filename, label, directory or provider does not make
+implementation targets. For a contextual follow-up, derive the operational category from the purpose
+of the work being changed, not the implementation mechanism shared by candidates. State that purpose,
+then check each candidate's actual role against it. A shared filename, label, directory or provider does not make
 unrelated automation part of that scope. Broad words such as "every" or "anywhere" quantify that
 category; they do not add unrelated categories. Expand only for a required dependency or a user
 instruction naming an additional operational category or outcome, never for a broad quantifier
