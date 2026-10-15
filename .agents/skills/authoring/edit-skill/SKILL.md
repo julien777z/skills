@@ -102,7 +102,7 @@ the session can, so the user's review of the source pull request overlaps it.
   delivered, or hold the source pull request for it.
 - At a checkpoint and before reporting its state, record the complete pull-request head and file
   list, the target repository's lifecycle, its current state, and its next transition. A draft
-  confined to canonical, non-executable agent configuration records `agent-configuration exception`
+  confined to canonical agent configuration records `agent-configuration exception`
   and `land-pr` as its next action unless step 7.7 holds it for the user; it never records `await
   user authorization` otherwise.
 
