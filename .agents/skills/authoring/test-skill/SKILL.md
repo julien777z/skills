@@ -121,6 +121,11 @@ never move upward or inherit the orchestrator's model. This fallback applies to 
 default, never against the user's explicit model or capability constraint. If no permitted model is
 available, report `not run` with the unavailable request and retain the concrete hold.
 
+Treat a rejected reader dispatch as unavailable for that attempt. Record its rejected receipt in a
+`not run` evidence entry, then apply the permitted lower-tier fallback to a fresh full pair. If no
+permitted fallback remains, report `not run` with the unavailable request and rejection evidence,
+and retain the concrete hold.
+
 Run one edited/control pair per scenario — two runs — with the same resolved model, reasoning
 effort, scenario and reading list in both. Record catalogue availability and its resolved model, then the
 requested capability and model plus the dispatch receipt that accepted or rejected it in each run's evidence
@@ -176,7 +181,7 @@ evidence behind every cell, one section per skill:
 
 <one line on what the scenario contains and what else it carries>
 
-#### <run label> (<edited | original> text[, round <n>])
+#### <run label> (<edited | original | not run> text[, round <n>])
 
 - **Catalogue availability:** <capability> / <model> — <available | unavailable>
 - **Requested selection:** <capability> / <model>
