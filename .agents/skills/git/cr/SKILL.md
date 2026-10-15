@@ -37,7 +37,6 @@ and lands it separately after smoke runs. An earlier delegation cannot be reused
 - The same invocation authorizes the declared `code-simplify`, `code-review`, `merge-conflict`, and
   `land-pr` dependencies for every selected pull request. It does not authorize an independent review,
   release workflow, deployment, or unrelated provider mutation.
-- One invocation covers the run it starts and that run's required review fixes and gates. An ordinary interruption or separately requested implementation preserves an active nonterminal run and its authorization. When the added work changes reviewed inputs, invalidate the affected receipts and resume the required phase; do not ask for a new CR invocation. A fresh invocation is required only after the run reaches a terminal result or the user explicitly pauses, stops, hands off, or replaces it. A progress question during an actively running CR does not start another run.
 - Nothing else is a direct CR invocation: not a reference to CR or `$cr` in a quoted plan, checklist, summary,
   transcript, or future step; not approval of a plan that contains a CR step, which stops at
   validation and the pull-request handoff; not a request to review, validate, open a pull request,
