@@ -144,7 +144,8 @@ A source or product follow-up is planned on its own. A canonical guidance correc
 
 - **One that touches nothing in flight** — other files, another outcome — leaves the running work
   going. It gets its own plan, or none when trivial or a canonical guidance correction, and runs beside that work once approved when approval is required and
-  **Priority** permits, under `subagent-selection`'s **Dispatch**. Send:
+  **Priority** permits, under `subagent-selection`'s **Dispatch**. Send this template only for a
+  follow-up that needs a plan:
 
 ```markdown
 **Running work keeps going:** <step in flight> doesn't touch <what the follow-up changes>.
@@ -155,8 +156,9 @@ A source or product follow-up is planned on its own. A canonical guidance correc
 <No decisions needed. | **Decision needed:** …>
 ```
 
-- **One that changes what is being built** records the affected work and its saved next step
-  under **Work You Have Already Named**, then puts the amended plan in the full shape above.
+- **One that changes what is being built** — a source or product follow-up — records the affected
+  work and its saved next step under **Work You Have Already Named**, then puts the amended plan in
+  the full shape above.
   Pause affected work when **Priority** brings the amendment into execution; otherwise retain it
   for after the active work. Resume on approval when its priority permits. Unaffected work keeps
   running while the user decides.
