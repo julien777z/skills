@@ -16,14 +16,20 @@ agent; this skill does not launch agents or change settings itself.
 1. Identify the calling skill or direct task, its assigned roles or verification chat, and any
    explicit capability-level or model requirement. Inspect the current host's subagent catalogue and dispatch
    parameters, or its chat model picker, and read
-   [model capabilities](references/model-capabilities.md).
+   [model capabilities](references/model-capabilities.md). Keep catalogue discovery, an accepted dispatch,
+   and a worker's self-reported runtime identity as separate evidence.
 2. Resolve all four capability levels to the latest available model in each mapped family using the host's
-   catalogue. Use only identifiers the host actually exposes; never store versioned IDs in skill
-   guidance or invent an identifier. When catalogue ordering is ambiguous, use a documented current
-   family alias; otherwise mark the row unavailable with the ambiguity as its reason.
+   catalogue. Use only identifiers the host exposes through its catalogue, picker, or a successful explicit
+   dispatch in the current host session; never store versioned IDs in skill guidance or invent an identifier.
+   When catalogue ordering is ambiguous, use a documented current family alias; otherwise mark the row
+   unavailable with the ambiguity as its reason.
 3. Return all four rows even when some are unavailable. An unsupported host, absent family, or lack
    of explicit model selection makes that row unavailable; never silently substitute another family
-   or inherit the orchestrator. Availability is not permission to change repository or global settings.
+   or inherit the orchestrator. A successful explicit dispatch establishes that its requested identifier
+   was accepted for that launch. It does not establish the worker's runtime identifier: record that only
+   when the host exposes the exact value. Generic provider or product branding, or no runtime identifier,
+   is neither confirmation nor a contradiction of the accepted selection. Availability is not permission
+   to change repository or global settings.
 4. When a requested capability level or model is unavailable, apply a fallback only when the
    calling skill explicitly declares its direction and limits and it respects the user's explicit
    model or capability constraint. Report the original request as unavailable and name the actual

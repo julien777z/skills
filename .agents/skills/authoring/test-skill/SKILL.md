@@ -122,8 +122,11 @@ default, never against the user's explicit model or capability constraint. If no
 available, report `not run` with the unavailable request and retain the concrete hold.
 
 Run one edited/control pair per scenario — two runs — with the same resolved model, reasoning
-effort, scenario and reading list in both. Record the requested and actual capability and model,
-including any fallback or explicit user override, and follow the selector's dispatch instructions.
+effort, scenario and reading list in both. Record the requested capability and model plus the dispatch
+receipt that accepted or rejected it, including any fallback or explicit user override. Record a runtime
+model only when the host exposes its exact identifier; otherwise mark that evidence `not exposed`.
+Generic provider or product branding is not a runtime model identifier and neither confirms nor downgrades
+an accepted selection. Follow the selector's dispatch instructions.
 
 ## Output
 
