@@ -121,16 +121,19 @@ never move upward or inherit the orchestrator's model. This fallback applies to 
 default, never against the user's explicit model or capability constraint. If no permitted model is
 available, report `not run` with the unavailable request and retain the concrete hold.
 
-Treat a rejected reader dispatch as unavailable for that attempt. Record the dispatch attempt
-separately from reader-run evidence, including both pair-member receipts; do not score an incomplete
-pair as a reader result. Then apply the permitted lower-tier fallback to a fresh full pair. If no
-permitted fallback remains, record the terminal hold with the unavailable request and rejection
+Classify a rejected reader dispatch from the host receipt. Only a receipt establishing that the
+requested capability or model is unsupported makes it unavailable for that attempt and permits the
+lower-tier fallback. Retry a transient, concurrency, timeout, or unknown rejection with the same
+resolved pair; do not lower the comparison tier. Record every failed attempt separately from
+reader-run evidence, including both pair-member receipts; do not score an incomplete pair as a
+reader result. When an unsupported request has a permitted fallback, launch a fresh full pair. When
+no permitted fallback remains, record the terminal hold with the unsupported request and rejection
 evidence.
 
 Run one edited/control pair per scenario — two runs — with the same resolved model, reasoning
 effort, scenario and reading list in both. Record catalogue availability and its resolved model, then the
-requested capability and model, selector resolution, and dispatch receipt that accepted or rejected
-it in each run's evidence entry. Selector resolution retains an unavailable requested capability and
+requested capability and model, resolved reasoning effort, selector resolution, and dispatch receipt that accepted or rejected
+it with those explicit parameters in each run's evidence entry. Selector resolution retains an unavailable requested capability and
 model, the exact fallback capability and its resolved model, why that fallback was selected, and any
 explicit user override. Record the runtime-identity and runtime-label evidence as
 `subagent-selection`'s Workflow step 3 defines. Follow the selector's dispatch instructions.
@@ -186,6 +189,7 @@ evidence behind every cell, one section per skill:
 
 - **Catalogue availability:** <capability> / <model> — <available | unavailable>
 - **Requested selection:** <capability> / <model>
+- **Reasoning effort:** <requested and resolved effort>
 - **Selector resolution:** <unavailable requested capability/model; exact selected capability/model; fallback or override>
 - **Dispatch receipt, <accepted | rejected>:** <source>
 - **Runtime identity, <model | not exposed>:** <host evidence>
@@ -197,6 +201,7 @@ evidence behind every cell, one section per skill:
 
 - **Catalogue availability:** <capability> / <model> — <available | unavailable>
 - **Requested selection:** <capability> / <model>
+- **Reasoning effort:** <requested and resolved effort>
 - **Selector resolution:** <requested capability/model unavailable for this attempt; exact selected fallback capability/model or none>
 - **Reader A dispatch, <accepted | rejected | not attempted>:** <receipt or reason>
 - **Reader B dispatch, <accepted | rejected | not attempted>:** <receipt or reason>

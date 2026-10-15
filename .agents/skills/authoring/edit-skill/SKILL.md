@@ -265,7 +265,8 @@ the session can, so the user's review of the source pull request overlaps it.
      test was run.**`. The example is task evidence: the skill text it leads to still keeps its own
      examples generic. Check it as the global rules' **User-Facing Output** requires, write the
      skill to produce that shape, then validate it through the required smoke run, review, and
-     acceptance gate. A guidance-output format is routine guidance design, not a user approval gate.
+     acceptance gate. A guidance-output format is routine guidance design, not a user approval gate; a change to the product
+     a skill operates still follows the global product-decision boundary.
    - Trace each miss to the instruction that produced or allowed it, including instructions for
      adding or recording guidance. Name that governing instruction and its replacement in the
      change. Removing a bad example while retaining a directive that regenerates it is incomplete.
