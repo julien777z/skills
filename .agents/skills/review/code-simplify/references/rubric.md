@@ -462,13 +462,14 @@ Apply the baseline prompt above, plus these explicit review rules:
    - Keep a comment only for externally owned behavior the code cannot make evident, such as a
      surprising third-party or protocol constraint. Make it factual and one physical line when
      possible, with two lines as the absolute maximum.
-   - Keep every docstring to one physical line that identifies the symbol rather than narrating its
-     implementation. Shorten a multiline docstring instead of moving its prose into a comment.
-   - Grep the diff's added lines for a docstring opener that does not close on the same line, and
-     report each one as a finding. Reading for structure does not surface a docstring that grew a
-     second paragraph, and the paragraph is usually the rationale a test should carry instead. The
-     report lists every docstring the diff adds with its line count; a report that declares the
-     docstrings clean without that list has not run the check.
+   - Keep ordinary docstrings to one physical line that identifies the symbol rather than narrating
+     its implementation. A migration revision file's `upgrade()` and `downgrade()` docstrings may
+     use a few concise lines only when needed to name the concrete transformation and its purpose.
+   - Grep the diff's added lines for every docstring opener that does not close on the same line.
+     Report each ordinary multiline docstring as a finding. For a migration revision file's
+     `upgrade()` or `downgrade()`, instead check that its concise multiline text names the concrete
+     transformation and why it is needed. The report lists every docstring the diff adds with its
+     line count; a report that declares the docstrings clean without that list has not run the check.
    - A docstring is the first statement of the module, class, function, or method it documents.
      Treat a standalone string literal between class fields or other members as an explanatory
      pseudo-docstring: remove it, refactor the surrounding model, or use the repository's canonical
