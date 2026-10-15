@@ -100,20 +100,10 @@ the session can, so the user's review of the source pull request overlaps it.
 4. Run step 7.5's `test-skill` smoke round on the head `cr` accepted, with every entry's
    reproduction scenario as an input and entries that share a failure class grouped into one
    scenario, then steps 7.6–7.9.
-5. After every stage, record its exact head, result, and first nonterminal next stage in each
-   entry. When that next stage has no external decision or unavailable dependency, start it in the
-   same delivery turn; a partial-stage status report never pauses the route. Retain delivery
-   `pending` only with the current stage's concrete hold and saved next action. When it resolves,
-   resume that stage without repeating completed stages. `process-ledger` owns the record's
-   terminal disposition after the complete delivery outcome is verified.
-6. **Reconcile the delivery sequence before reporting completion.** A source check, a
-   simplification result, an acceptance verdict, a smoke result, or a pushed pull request is one
-   stage, never the delivery outcome. Read the entry and record the exact head and state of branch
-   creation, source check, completed `cr` review-and-fix cycle, final acceptance, smoke round,
-   output-example comparison, file-list check, and merge or documented hold. Continue with the
-   first unfinished stage. A final report names that stage and leaves delivery `pending` unless
-   every required stage reached its terminal state.
-
+5. Record the pull request, its head, the smoke results and the merge or hold in each entry. Keep
+   delivery `pending` while a hold remains, with its concrete dependency and saved next action.
+   When it resolves, resume that stage without repeating completed stages. `process-ledger` owns
+   the record's terminal disposition after the complete delivery outcome is verified.
 - Before the surrounding task ends or hands off, every `pending` entry is processed, or carries its
   concrete blocking decision, failed gate or unavailable dependency under the global rules' **Tools
   and environments** pending-result boundary. Never lose a correction, treat a recorded one as
@@ -193,10 +183,10 @@ the session can, so the user's review of the source pull request overlaps it.
      applying those additional corrections, tell the user which gaps you found, what you will add
      and why. Apply relevant guidance fixes without waiting to be invited to think more broadly;
      product choices still follow the global authorization boundary.
-   - **When no existing rule or skill governs the subject, propose a new one and ask before
-     creating it.** State the recommended name and, in at most three sentences, what it would say
-     and what it would change, with the question tool; create it only on a yes. An existing file
-     that governs the subject is always edited instead, however thin its current text.
+   - **When no existing rule or skill governs the subject, create the new owner under Guidance
+     Changes Proceed Automatically.** Record its recommended name, scope, and behavior in the
+     correction evidence; do not ask for approval. An existing file that governs the subject is
+     always edited instead, however thin its current text.
 
 3. Include the underlying issue.
    - When the user raises a concrete issue or provides evidence such as screenshots while requesting agent guidance, update the guidance and implement the underlying product or code fix in the same task.

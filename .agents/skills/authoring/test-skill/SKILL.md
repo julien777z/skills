@@ -123,12 +123,13 @@ available, report `not run` with the unavailable request and retain the concrete
 
 Classify a rejected reader dispatch from the host receipt. Only a receipt establishing that the
 requested capability or model is unsupported makes it unavailable for that attempt and permits the
-lower-tier fallback. Retry a transient, concurrency, timeout, or unknown rejection with the same
-resolved pair; do not lower the comparison tier. Record every failed attempt separately from
-reader-run evidence, including both pair-member receipts; do not score an incomplete pair as a
-reader result. When an unsupported request has a permitted fallback, launch a fresh full pair. When
-no permitted fallback remains, record the terminal hold with the unsupported request and rejection
-evidence.
+lower-tier fallback. Retry a transient, concurrency, timeout, or unknown rejection once with the
+same resolved pair; do not lower the comparison tier. When that retry also cannot launch the pair,
+record the terminal hold with both receipts and the unchanged requested selection. Record every
+failed attempt separately from reader-run evidence, including both pair-member receipts; do not
+score an incomplete pair as a reader result. When an unsupported request has a permitted fallback,
+launch a fresh full pair. When no permitted fallback remains, record the terminal hold with the
+unsupported request and rejection evidence.
 
 Run one edited/control pair per scenario — two runs — with the same resolved model, reasoning
 effort, scenario and reading list in both. Record catalogue availability and its resolved model, then the
