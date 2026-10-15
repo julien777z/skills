@@ -44,8 +44,8 @@ guidance. Neither the issue nor its verification disappears when the surrounding
 A correct instruction does not close a reported failure to follow it. Step 2 traces and repairs the
 application step that admitted the rejected decision, then verifies that repair against the miss.
 Keep an unknown historical cause unproven; do not replace that repair with a noncompliance report or
-another copy of the substantive rule. Where no guidance governs the subject, step 2's rule on
-proposing a new file applies.
+another copy of the substantive rule. Where no guidance governs the subject, step 2 creates its
+new owner under **Guidance Changes Proceed Automatically**.
 
 ## Guidance Changes Proceed Automatically
 
@@ -100,10 +100,12 @@ the session can, so the user's review of the source pull request overlaps it.
 4. Run step 7.5's `test-skill` smoke round on the head `cr` accepted, with every entry's
    reproduction scenario as an input and entries that share a failure class grouped into one
    scenario, then steps 7.6–7.9.
-5. Record the pull request, its head, the smoke results and the merge or hold in each entry. Keep
-   delivery `pending` while a hold remains, with its concrete dependency and saved next action.
-   When it resolves, resume that stage without repeating completed stages. `process-ledger` owns
-   the record's terminal disposition after the complete delivery outcome is verified.
+5. After each completed or failed stage, record its exact head, stage result, and first
+   nonterminal next stage in each entry. Resume from that stage without repeating completed work.
+   After the smoke round, record the pull request, its head, the smoke results and the merge or
+   hold. Keep delivery `pending` while a hold remains, with its concrete dependency and saved next
+   action. `process-ledger` owns the record's terminal disposition after the complete delivery
+   outcome is verified.
 - Before the surrounding task ends or hands off, every `pending` entry is processed, or carries its
   concrete blocking decision, failed gate or unavailable dependency under the global rules' **Tools
   and environments** pending-result boundary. Never lose a correction, treat a recorded one as
@@ -365,7 +367,7 @@ the session can, so the user's review of the source pull request overlaps it.
    - Apply multi-target updates for `agents`, `skills`, and `rules`.
    - When the inferred/selected type is singular (for example `skill`), distribute requested items across multiple files of that type as needed.
    - Update existing files when they already fit part of the request (for example update skill A and skill B).
-   - Create a new file of that type when no existing file governs a requested item's subject (for example create skill C), after the question step 2 requires.
+   - Create a new file of that type when no existing file governs a requested item's subject (for example create skill C), under **Guidance Changes Proceed Automatically**.
    - If one request contains multiple distinct items, map each item to the best existing file or a new file within the same inferred/selected type.
    - If scope is ambiguous, ask a short follow-up before editing.
 
