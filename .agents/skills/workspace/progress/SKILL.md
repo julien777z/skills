@@ -27,11 +27,12 @@ and deliver the same dashboard again on every request so the user keeps one page
 2. **Find the task's pull requests** with `list-prs`, requesting every state, then read each one's
    current state from its host: open, draft, merged or closed, the checks on its head, and review
    state.
-3. **Write the Architecture page** once the task has a pull request. It covers the task's pull
-   requests except those closed without merging; a closed one appears only in the Pull requests
-   list. The `dashboard` entry records the page's sections as last written and the head of each pull
-   request they were written from: reuse them while every head is unchanged; otherwise read the pull
-   requests' diffs, write them again, and record them with the new heads.
+3. **Write the Architecture page** once the task has a pull request the page covers. It covers the
+   task's pull requests except those closed without merging; a closed one appears only in the Pull
+   requests list. The `dashboard` entry records the page's sections as last written and the head of
+   each pull request they were written from: reuse them while the page covers the same pull requests
+   and every head is unchanged; otherwise read the diffs of the pull requests it covers, write them
+   again, and record them with the new heads.
 4. **Build the spec** in the shape below, with `updated_at` set to now.
 5. **Select the delivery route, then render.** Before invoking `use-dashboard`, choose the
    host's ongoing-work channel when authorized work remains, or the normal reply route for
