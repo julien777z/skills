@@ -130,7 +130,8 @@ unattempted counterpart, never a duplicate of the accepted reader. When that ret
 the pair, record the terminal hold with both receipts and the unchanged requested selection. Record
 every failed attempt separately from reader-run evidence, including both pair-member receipts; do
 not score an incomplete pair as a reader result. When an unsupported request has a permitted
-fallback, launch a fresh full pair. When no permitted fallback remains, record the terminal hold
+fallback, wait for any accepted counterpart's terminal report, record the incomplete attempt, then
+launch a fresh full pair. When no permitted fallback remains, record the terminal hold
 with the unsupported request and rejection evidence.
 
 Run one edited/control pair per scenario — two runs — with the same resolved model, reasoning
