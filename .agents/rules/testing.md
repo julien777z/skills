@@ -232,6 +232,16 @@ class TreeNode(BaseModel):
 - Choosing which suites to run is not the author's call. Do not skip a suite because it looks unaffected, runs slowly, or needs services started — start them. If a suite genuinely cannot run, name it and say why alongside the result, because a result reported without that caveat claims coverage that was never achieved.
 - Every directory holding tests must be reachable from a runner target, and a test should assert that correspondence. A suite that no target selects is a suite nothing reports on.
 
+- **Every job that runs a test suite declares `timeout-minutes` of at most 15**, so a hung suite
+  fails instead of holding a runner until the platform's six-hour default. A job that calls a
+  reusable workflow cannot carry the key, so it goes on the job inside the reusable workflow that
+  runs the suite. A local runner that wraps the suites bounds each suite's run at the same 15 minutes.
+- **A suite that needs longer than 15 minutes is a defect, never a reason to raise its timeout.**
+  Find what made it slow — a test that waits on a real clock, an immutable resource (a schema, a
+  compiled artifact, a client) rebuilt per test where it could be built once per session, work
+  repeated across parametrized cases, a suite that lost its parallelism — and fix that cause until
+  the suite fits. Splitting the suite across jobs only to stay under the limit, or
+  giving any suite a timeout above 15 minutes, hides the same defect.
 - When CI tests fail and you cannot access the logs directly, ask the user to provide the failure output before attempting fixes.
 
 ## Environments
