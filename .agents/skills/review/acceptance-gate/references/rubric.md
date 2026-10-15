@@ -62,12 +62,21 @@ the gate does not re-validate it.
 
 ## Independent Judgment
 
-Use your own engineering judgment as well as the explicit checks. Ask whether the result makes
-sense for the user's intent: does its cumulative scope fit the problem, do its responsibilities
-and dependencies form a coherent design, and does its complexity earn its cost? An unusual shape,
-an unexplained detour, or a surprising amount of unrelated work deserves scrutiny even when each
-edit individually follows a rule and all checks pass. The checklist is a floor, not the limits of
-what the gate may notice.
+Compare the prior design, the proposed or resulting design, and the simplest viable alternative
+against the accepted requirements and the borrowed code-simplify rubric. Exercise a concrete change
+or growth case the contract supports, and trace what each design would require: where decisions
+live, what must change together, and how the work or maintenance cost grows. This applies to any
+artifact that carries a decision, including a document's instructions. Name the material regression
+or the evidence that the new design improves the trade-off; merely listing the designs is not a
+comparison.
+
+Matching current outputs, passing tests, fewer files or lines, and the author's description of a
+choice as deliberate do not establish design quality. Check those claims against the actual owners
+and consumers. In particular, today's callers or sample values do not establish an invariant; removing
+supported variation needs an owning contract or an accepted requirement that retires it. Conversely,
+retain no abstraction or capability merely because it existed: a proven invariant or retired
+requirement can justify its removal. The comparison judges the target design, never preservation for
+its own sake.
 
 Flag a concern that leaves you unconvinced the change should stand; you need not find an existing
 rule that names it or prove a bug first. Name the observed shape or decision, why it seems wrong,
