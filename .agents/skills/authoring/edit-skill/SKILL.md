@@ -47,6 +47,13 @@ Keep an unknown historical cause unproven; do not replace that repair with a non
 another copy of the substantive rule. Where no guidance governs the subject, step 2's rule on
 proposing a new file applies.
 
+## Guidance Changes Proceed Automatically
+
+A user request or an encountered guidance gap authorizes the canonical `.agents` correction. Do not
+ask for a plan or for approval of a guidance-output example. The example is task evidence; the
+required smoke test, review, and acceptance gate validate the correction. When a separate source
+task is active, preserve its execution and follow **Recording During A Task** for the edit's timing.
+
 ## Dependencies
 
 - `code-simplify` — the pass over the guidance itself before it merges.
@@ -233,27 +240,23 @@ the session can, so the user's review of the source pull request overlaps it.
      target entry point and its referenced files, scripts, templates, and examples. Follow supporting
      links within the package; reviewing only `SKILL.md` or the edited hunk is incomplete. Apply the
      same genericity, ownership, clarity, and evidence standards to every file.
-   - **A change to what a skill returns the user is approved as an example before the skill is
-     written to produce it.** The class is any new or changed user-facing output shape — a
+   - **A change to what a skill returns the user is specified with a concrete example before the
+     skill is written to produce it.** The class is any new or changed user-facing output shape — a
      table, a report layout, a sent file, a message template, a listing — in a skill whose response
      the user reads or acts on. It is changed when the user would notice it in the response itself: a
      new or moved column, a different grouping, a link where there was none. A new status value or a
      reworded label is not that, and a skill whose result is edits, a merge, a deployment, a verdict
      another skill consumes, or a report only an agent reads has no such response. Whether an output
      changed is the editor's call, from what the skill returns before and after. **Model the example
-     on a small slice of the work in hand**, so the user judges the shape against something they
-     recognise: the session's real repository, subject and files, cut to a scope read in a minute,
-     with every value the run would produce — numbers, hashes, findings — stated as made up. Write
-     it as one markdown file whose first line is `**EXAMPLE — for approval, modelled on a small slice
-     of the current work; no smoke test was run.**`. Only where the work in hand gives the output
-     nothing to show does the example use an invented scenario with invented names, first line
-     `**EXAMPLE — fictional output for approval; no smoke test was run.**`. The example is chat
-     content: the skill text it leads to still keeps its own examples generic. Check it as the global
-     rules' **User-Facing Output** requires, and present it for approval under the global rules'
-     **Task execution and authorization** question route, one skill at a time. On a rejection, ask
-     what must change, revise the example, and ask again. Only then write the skill to produce exactly the
-     approved shape; the required smoke run follows in delivery and is never how a format is
-     proposed.
+     on a small slice of the work in hand**, cut to a scope read in a minute, with every value the run
+     would produce — numbers, hashes, findings — stated as made up. Write it as one markdown file
+     whose first line is `**EXAMPLE — modelled on a small slice of the current work; no smoke test
+     was run.**`. Only where the work in hand gives the output nothing to show does the example use
+     an invented scenario with invented names, first line `**EXAMPLE — fictional output; no smoke
+     test was run.**`. The example is task evidence: the skill text it leads to still keeps its own
+     examples generic. Check it as the global rules' **User-Facing Output** requires, write the
+     skill to produce that shape, then validate it through the required smoke run, review, and
+     acceptance gate. A guidance-output format is routine guidance design, not a user approval gate.
    - Trace each miss to the instruction that produced or allowed it, including instructions for
      adding or recording guidance. Name that governing instruction and its replacement in the
      change. Removing a bad example while retaining a directive that regenerates it is incomplete.
@@ -467,11 +470,10 @@ the session can, so the user's review of the source pull request overlaps it.
       repository, checking that each one already states its answer where the skill now sends its
       reader; a repository that does not is the flag, because the merge silently gave it the other
       one's answer.
-   6. **Hold each changed output to its approved example.** For every skill whose changed output
-      the user approved as an example, compare one run of your own on the branch in flight
-      and every required smoke run against the approved example: headings, columns, order, file
-      shape. A divergence is the skill's wording, fixed and rerun; a shape the user has not approved goes back to the user as a new
-      example, never into the merge.
+   6. **Hold each changed output to its concrete example.** For every skill whose output changed,
+      compare one run of your own on the branch in flight and every required smoke run against that
+      example: headings, columns, order, file shape. A divergence is the skill's wording, fixed and
+      rerun; review and the acceptance gate validate the replacement shape before merge.
    7. **Check the diff file list against the default branch, then merge.** The authorization covers
       a pull request carrying only `.agents` files, and the file outside them that slips in is never
       announced. Read the changed paths rather than trusting your memory of what you edited; a stray
@@ -482,7 +484,7 @@ the session can, so the user's review of the source pull request overlaps it.
       ask whether any line it adds or drops is true only once a still-open source pull request
       merges, and if so hold it until that pull request has merged, as the GitHub rule's **Merge
       Authorization** says, and report it as that rule directs. Otherwise a pull request carrying a
-      skill change merges once step 6 found every changed output matching its approved example, and
+      skill change merges once step 6 found every changed output matching its concrete example, and
       one carrying only rules merges on sight as the GitHub rules say. **A pull request that adds a
       doctor skill is left for the user as a whole** — every other skill, rule and agent file in
       its batch with it — and so is one a doctor run opens: the steps above still run, the merge

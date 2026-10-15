@@ -19,9 +19,9 @@ a code change is tested: against the case that motivated it, with the change and
 
 - **Run before merge for every behavior-changing skill, rule, or agent edit**, whether it came
   through `edit-skill` or was made directly. A rule is reader guidance, so its source type never
-  exempts it. An edit that changes what the skill returns the user runs only after the user
-  approved a fictional example of that output, as `edit-skill` requires; a smoke run never
-  proposes a format.
+  exempts it. An edit that changes what the skill returns the user runs against the concrete example
+  `edit-skill` records before the edit; a smoke run validates that format without proposing or
+  awaiting approval for it.
 - **An edit that changes no instruction a reader follows does not run at all, and its pull request
   merges on the reading**. A term swapped for
   another, a spelling standardised, a typo corrected, a dead link repaired: the text asks a reader
@@ -123,8 +123,10 @@ available, report `not run` with the unavailable request and retain the concrete
 
 Run one edited/control pair per scenario — two runs — with the same resolved model, reasoning
 effort, scenario and reading list in both. Record catalogue availability and its resolved model, then the
-requested capability and model plus the dispatch receipt that accepted or rejected it in each run's evidence
-entry, including any fallback or explicit user override. Record a runtime model only when the host exposes
+requested capability and model, selector resolution, and dispatch receipt that accepted or rejected
+it in each run's evidence entry. Selector resolution retains an unavailable requested capability and
+model, the exact fallback capability and its resolved model, why that fallback was selected, and any
+explicit user override. Record a runtime model only when the host exposes
 its exact identifier; otherwise mark that evidence `not exposed`. Generic provider or product branding is
 not a runtime model identifier and neither confirms nor downgrades an accepted selection. Follow the
 selector's dispatch instructions.
@@ -180,6 +182,7 @@ evidence behind every cell, one section per skill:
 
 - **Catalogue availability:** <capability> / <model> — <available | unavailable>
 - **Requested selection:** <capability> / <model>
+- **Selector resolution:** <unavailable requested capability/model; exact selected capability/model; fallback or override>
 - **Dispatch receipt, <accepted | rejected>:** <source>
 - **Runtime identity, <model | not exposed>:** <host evidence>
 - **Runtime label:** <verbatim generic label | not exposed>

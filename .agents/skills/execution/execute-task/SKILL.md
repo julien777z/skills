@@ -1,13 +1,14 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once at the start of every task authorized to change files, before recommending an implementation, delegating edits, or editing — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until verified completion or explicit user stop or handoff. It plans first: it puts a plan to the user and waits for approval before editing, except for a trivial change, and plans each follow-up the same way. It then applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, keeps session-created source work to one pull request per repository, finishes each pull request with a simplification pass, a test sweep, an acceptance gate and a history rewrite before sending it for review, checks every outcome it reports at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
-short_description: 'Plan the change for approval, then apply repository guidance, fix issues found along the way, and deliver a reviewable pull request.'
+description: "Always run this. Invoke once at the start of every task authorized to change files, before recommending an implementation, delegating edits, or editing — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until verified completion or explicit user stop or handoff. It plans source and product changes first, except for trivial changes; canonical guidance changes run directly through their evidence, smoke-test, review, and acceptance gates. It then applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, keeps session-created source work to one pull request per repository, finishes each pull request with a simplification pass, a test sweep, an acceptance gate and a history rewrite before sending it for review, checks every outcome it reports at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
+short_description: 'Plan source and product changes for approval; validate canonical guidance changes through their delivery gates.'
 ---
 
 # Execute Task
 
-Plan the change, get it approved, then run it the same way every time. **Plan** decides what will be
-built; **Execution** builds it and hands the user a pull request to review.
+Plan source and product changes, get them approved, then run them the same way every time.
+**Plan** decides what will be built; canonical guidance changes enter **Execution** directly and
+are validated by their evidence, smoke-test, review, and acceptance gates.
 
 ## Dependencies
 
@@ -49,13 +50,15 @@ Every task that changes files starts here, and so does every follow-up that arri
 
 ### When A Plan Is Needed
 
-- **Every change gets a plan put to the user before its first edit, except a trivial one.** A
-  trivial change has no design choice in it: a typo, a one-line fix, a rename the user named. It
-  goes straight to **Execution**.
+- **Every source or product change gets a plan put to the user before its first edit, except a
+  trivial one.** A trivial change has no design choice in it: a typo, a one-line fix, a rename the
+  user named. It goes straight to **Execution**. Canonical guidance changes under `.agents` do not
+  wait for a plan or an output-format approval: their request or an encountered guidance gap starts
+  the guidance-correction workflow, and their evidence, smoke-test, review, and acceptance gates
+  verify it. `edit-skill` sequences its canonical edit around any active source task.
 - Work the approved plan already covers takes no new plan: an encountered issue, a gate's or a
-  review's flag, a failing check. Neither does a verified successful correction, which `edit-skill`
-  records during the run and `process-ledger` processes at **Completion**. A guidance edit the user asks for directly is a
-  change like any other, planned unless trivial.
+  review's flag, a failing check, or a guidance correction discovered during the run. `edit-skill`
+  records verified guidance corrections and `process-ledger` processes them at **Completion**.
 
 ### What The Plan Holds
 
