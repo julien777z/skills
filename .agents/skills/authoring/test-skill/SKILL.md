@@ -122,11 +122,12 @@ default, never against the user's explicit model or capability constraint. If no
 available, report `not run` with the unavailable request and retain the concrete hold.
 
 Run one edited/control pair per scenario — two runs — with the same resolved model, reasoning
-effort, scenario and reading list in both. Record the requested capability and model plus the dispatch
-receipt that accepted or rejected it in each run's evidence entry, including any fallback or explicit user
-override. Record a runtime model only when the host exposes its exact identifier; otherwise mark that
-evidence `not exposed`. Generic provider or product branding is not a runtime model identifier and neither
-confirms nor downgrades an accepted selection. Follow the selector's dispatch instructions.
+effort, scenario and reading list in both. Record catalogue availability and its resolved model, then the
+requested capability and model plus the dispatch receipt that accepted or rejected it in each run's evidence
+entry, including any fallback or explicit user override. Record a runtime model only when the host exposes
+its exact identifier; otherwise mark that evidence `not exposed`. Generic provider or product branding is
+not a runtime model identifier and neither confirms nor downgrades an accepted selection. Follow the
+selector's dispatch instructions.
 
 ## Output
 
@@ -177,6 +178,7 @@ evidence behind every cell, one section per skill:
 
 #### <run label> (<edited | original> text[, round <n>])
 
+- **Catalogue availability:** <capability> / <model> — <available | unavailable>
 - **Requested selection:** <capability> / <model>
 - **Dispatch receipt, <accepted | rejected>:** <source>
 - **Runtime identity, <model | not exposed>:** <host evidence>
