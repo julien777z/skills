@@ -83,6 +83,12 @@ approval to retain a broad change settles retention, not whether its remaining d
 Do not reject work solely for file count, personal taste, or a large required repair, and do not
 waive correctness or security findings because the overall change appears simple.
 
+A diff that adds or changes tests arrives with the runner's per-test durations for them. Flag a test
+that `test-fixture`'s rubric calls disproportionate under its cost question, and flag a runner,
+timeout or job change that absorbs a slow test rather than removing its cost; the remedy is the one
+that rubric and `pre-production` name, never a retuned runner. Durations missing for an added test
+hold a clean verdict.
+
 ## Exploitable Findings
 
 Every question that reads a diff — diff, final acceptance, base incorporation — also reads it for

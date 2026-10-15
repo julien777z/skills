@@ -40,6 +40,12 @@ with an obsolete owned contract or revision.
   Re-running the job is never the fix: a green re-run proves the outage ended, not that the pipeline
   survives the next one.
 
+- **A test that costs far more than it covers is removed.** When one test or parametrized family
+  is disproportionate under `test-fixture`'s cost question and cannot be made cheap by its own setup,
+  delete it with the rubric's deletion record, and keep or extend a cheaper test of the same
+  classification where the contract needs one. With no users to protect, every run paying for one
+  test's minutes costs more than the coverage it alone adds; never keep it by retuning the runner.
+
 ## Scope Follows The Defect, Not The Request
 
 - **The scope of a change is the whole shape of the problem, not the files the request happened to
