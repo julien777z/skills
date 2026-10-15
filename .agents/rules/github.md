@@ -26,6 +26,13 @@ alwaysApply: true
 - Name repository-owned Boolean action and workflow inputs `use-<capability>`, so the name states
   what the toggle enables. Update declarations, conditions and callers together; do not retain a
   bare capability name or an old alias. Preserve external actions' input contracts.
+- **A package the user owns is part of every job's setup, never a toggle.** The setup action checks
+  out, installs or builds each one unconditionally, at the same path the local bootstrap uses, and
+  requires the credentials that read it. Never add an input that opts a job into one of them, a
+  condition that skips it when credentials are absent, or a second path for CI: one layout every job
+  shares costs less than a matrix of variants, and a job that does not need the package still gets
+  it. A toggle is for a capability that genuinely varies between jobs, never for the repository's
+  own dependencies.
 - Do not add glue steps that only read versions or forward setup data. Pass repository-owned version files and inputs directly to the action that uses them whenever supported.
 - Keep workflow files concise: merge related setup and dependency commands into one clearly named generic step when their execution order and conditions allow it. Do not split tool or package installation into separate steps merely by dependency.
 - Environment configuration that tunes a tool — retry counts, timeouts, cache locations, path entries — belongs in the step that installs or runs that tool, not in a step of its own. A step whose whole body writes to `$GITHUB_ENV` is named for a concern rather than an action, and the reader has to look elsewhere to find out which later step it affects. Write those exports at the end of the owning step so the setting and its consumer stay together.
