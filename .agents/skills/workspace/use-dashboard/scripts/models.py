@@ -10,6 +10,16 @@ class Tone(StrEnum):
     WARNING = "warning"
     CRITICAL = "critical"
     ACCENT = "accent"
+    DONE = "done"
+
+
+class PullRequestState(StrEnum):
+    """States of the pull request a `links` item stands for."""
+
+    OPEN = "open"
+    DRAFT = "draft"
+    MERGED = "merged"
+    CLOSED = "closed"
 
 
 class QuestionStatus(StrEnum):

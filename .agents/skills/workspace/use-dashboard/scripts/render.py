@@ -10,7 +10,7 @@ from pathlib import Path
 from textwrap import indent
 from typing import Final, cast
 
-from models import Change, ObjectShape, PageLayout, QuestionStatus, SectionType, Tone
+from models import Change, ObjectShape, PageLayout, PullRequestState, QuestionStatus, SectionType, Tone
 
 logger = logging.getLogger(__name__)
 
@@ -220,7 +220,14 @@ QUESTION_SHAPE: Final[ObjectShape] = ObjectShape(
     required=frozenset({"question", "status"}),
 )
 LINK_SHAPE: Final[ObjectShape] = ObjectShape(
-    fields={"label": check_text, "url": check_text, "detail": check_text, "status": check_text, "tone": CHECK_TONE},
+    fields={
+        "label": check_text,
+        "url": check_text,
+        "detail": check_text,
+        "status": check_text,
+        "tone": CHECK_TONE,
+        "state": partial(check_choice, choices=PullRequestState),
+    },
     required=frozenset({"label", "url"}),
 )
 CHANGE_ITEM_SHAPE: Final[ObjectShape] = ObjectShape(
