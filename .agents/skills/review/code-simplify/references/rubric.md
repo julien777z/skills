@@ -512,7 +512,9 @@ For every meaningful change, ask:
 - Does this represent a value differently from how a sibling already represents the same thing — a bare string where an enum exists, a fresh constant where a canonical type is the established shape?
 - Does a branch or conditional produce a closed set of string states, including log-only statuses, that belongs on the language's canonical named finite-state type rather than inline literals?
 - Is this orchestration more sequential or less atomic than it needs to be?
-- Does any docstring the diff adds run past one line?
+- Does any added docstring outside a migration revision file's `upgrade()` or `downgrade()` run
+  past one line? Judge those migration docstrings against the Python rule's concise
+  transformation-and-purpose requirement instead.
 - Do test additions duplicate existing coverage or introduce a small class that belongs in an existing owning class, does each file hold one class, and do helpers live with their fixture or utility owner?
 
 ## What to Flag Aggressively
@@ -562,7 +564,9 @@ Escalate findings when you see:
   generated output and the configuration entries item 9 admits; a cast or wrapper
   that quiets a dependency's types, or an entry naming one package, is still a finding. Grep for these; they do not surface from reading for structure.
 - Multiple test classes in one file; tiny classes/files that should extend an existing owning class; or new tests whose regression existing same-classification coverage already catches. Consolidate related cases before splitting by independently maintained responsibilities.
-- A docstring the diff adds that runs past one line.
+- An added docstring outside a migration revision file's `upgrade()` or `downgrade()` that runs
+  past one line. For those migration docstrings, flag generic, excessively long, or
+  transformation-free text under the Python rule instead.
 - A function, constant, or model defined in a test module beside its tests, whatever its size or
   caller count. Grep every test module the diff touches for module-level `def` and assignments;
   reading the tests does not surface them.
