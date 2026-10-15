@@ -135,8 +135,8 @@ with the unsupported request and rejection evidence.
 
 Run one edited/control pair per scenario — two runs — with the same resolved model, reasoning
 effort, scenario and reading list in both. Record catalogue availability and its resolved model, then the
-requested capability and model, resolved reasoning effort, selector resolution, and dispatch receipt that accepted or rejected
-it with those explicit parameters in each run's evidence entry. Selector resolution retains an unavailable requested capability and
+requested capability and model, resolved reasoning effort, selector resolution, and accepted dispatch receipt
+with those explicit parameters in each run's evidence entry. Selector resolution retains an unavailable requested capability and
 model, the exact fallback capability and its resolved model, why that fallback was selected, and any
 explicit user override. Record the runtime-identity and runtime-label evidence as
 `subagent-selection`'s Workflow step 3 defines. Follow the selector's dispatch instructions.
@@ -194,7 +194,7 @@ evidence behind every cell, one section per skill:
 - **Requested selection:** <capability> / <model>
 - **Reasoning effort:** <requested and resolved effort>
 - **Selector resolution:** <unavailable requested capability/model; exact selected capability/model; fallback or override>
-- **Dispatch receipt, <accepted | rejected>:** <source>
+- **Dispatch receipt, accepted:** <source>
 - **Runtime identity, <model | not exposed>:** <host evidence>
 - **Runtime label:** <verbatim generic label | not exposed>
 - **<criterion>, <pass | miss>:** <quoted line>
