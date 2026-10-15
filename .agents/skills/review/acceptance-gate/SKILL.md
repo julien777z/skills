@@ -77,13 +77,15 @@ names, with deletions intact; a commit range, a branch name, or a `git` command 
 judging a working tree that other edits may have moved, or nothing at all. Dispatch it on the
 host's largest model, named explicitly.
 
-**Start with the design comparison.** Inventory the responsibilities and decisions the diff moves,
+**Start any diff review with the design comparison.** Inventory the responsibilities and decisions the diff moves,
 duplicates, specializes, removes or introduces, reading both sides independently of the caller's
-rationale. Trace each to its prior and resulting owners and consumers, then apply the rubric's
-**Independent Judgment** comparison, including for prose and configuration. An earlier flag does not
-end this work: complete the comparisons the evidence supports, and name the exact missing input and
-investigation for any remaining choice. Return the comparisons and deciding evidence in the existing
-verdict fields; a checklist or first-objection report without this reconstruction is incomplete.
+rationale. Follow each prior selected or computed answer to every resulting use, counting independent
+selections, copies and repeated work even inside one file; a canonical file is not proof of canonical
+decision ownership. Apply the rubric's **Independent Judgment** comparison to those owners and
+consumers, including for prose and configuration. Complete the comparisons despite earlier flags,
+and name the exact missing input and investigation for any remaining choice. Return the comparisons
+and deciding evidence in the existing verdict fields; a checklist or stage inventory alone is
+incomplete.
 
 **Then run five greps.** Grep the diff's added lines for five shapes and list every hit as a finding
 ahead of all others, with the remedy the rubric names:

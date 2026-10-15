@@ -69,8 +69,9 @@ the gate does not re-validate it.
 ## Independent Judgment
 
 Compare the prior design, the proposed or resulting design, and the simplest viable alternative
-against the accepted requirements and the borrowed code-simplify rubric. Exercise a concrete change
-or growth case the contract supports, and trace what each design would require: where decisions
+against the accepted requirements and the borrowed code-simplify rubric. Exercise a concrete
+maintenance, extension or supported growth case without inventing product requirements, and trace
+what each design would require: where decisions
 live, what must change together, and how the work or maintenance cost grows. This applies to any
 artifact that carries a decision, including a document's instructions. Name the material regression
 or the evidence that the new design improves the trade-off; merely listing the designs is not a
@@ -81,8 +82,10 @@ choice as deliberate do not establish design quality. Check those claims against
 and consumers. In particular, today's callers or sample values do not establish an invariant; removing
 supported variation needs an owning contract or an accepted requirement that retires it. Conversely,
 retain no abstraction or capability merely because it existed: a proven invariant or retired
-requirement can justify its removal. The comparison judges the target design, never preservation for
-its own sake.
+requirement can justify its removal. An invariant can retire a selection interface; it does not make
+copies of one owned fact independent facts or justify repeated work. Price their maintenance and
+extension cost even when varying the answer is outside the current contract. The comparison judges
+the target design, never preservation for its own sake.
 
 Flag a concern that leaves you unconvinced the change should stand; you need not find an existing
 rule that names it or prove a bug first. Name the observed shape or decision, why it seems wrong,
