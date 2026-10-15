@@ -273,7 +273,7 @@ done
 
 ## Agent Configuration Changes
 
-- A pull request confined to canonical agent configuration and generated provider mirrors contains no application or package behavior change. Validate the Markdown and synchronization contract; do not run application suites or gate the pull request on them.
+- A pull request confined to canonical agent configuration and generated provider mirrors contains no application or package behavior change. Validate the Markdown, the synchronization contract, and the checks a changed skill script owns, such as its type check or a test render; do not run application suites or gate the pull request on them.
 - Keep CI change-detection paths scoped to application, package, dependency, test, or runtime files so an agent-configuration-only pull request selects no application test job.
 - The exemption applies to the complete pull request, not individual files. If a pull request also changes application code, package source, dependencies, tests, runtime configuration, or CI behavior, run its normal validation.
 

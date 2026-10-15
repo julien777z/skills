@@ -445,11 +445,11 @@ the session can, so the user's review of the source pull request overlaps it.
       concrete documented gate with its evidence; draft alone is neither.
 
       **The agent-configuration merge exception decides the conflict with the ordinary merge
-      default.** When the GitHub rule classifies every changed path as canonical, non-executable
-      agent configuration, the required gates pass, and no still-open source pull request makes the
-      guidance conditional, `land-pr` is the next action in this run. Do not record, report, or ask
-      for a permission hold by citing the ordinary default; that is not a documented gate for this
-      pull request.
+      default.** When the GitHub rule classifies every changed path as canonical agent
+      configuration, the required gates pass, a skill's changed scripts' own checks included, and no
+      still-open source pull request makes the guidance conditional, `land-pr` is the next action in
+      this run. Do not record, report, or ask for a permission hold by citing the ordinary default;
+      that is not a documented gate for this pull request.
 
       **A skill that arrives by relocation is not a skill the change adds.** Moving one between
       repositories, or generalizing local copies into one every repository can adopt, produces a new

@@ -95,7 +95,7 @@ alwaysApply: true
   owner, state and scope before updating it; leave other sessions' pull requests and branches untouched.
 - **Agent configuration continues the open agent-configuration pull request for that work, whichever
   session opened it.** Agent configuration is the canonical `.agents` tree — skills, each with its
-  own scripts, assets and templates, rules and agent definitions; everything else is source. List
+  own scripts, assets and templates; rules; and agent definitions; everything else is source. List
   the repository's open pull requests before selecting a branch, and create an agent-configuration
   pull request only when none owns the work. Later guidance edits and worker tasks join it. Open
   another only when the user asks or the first has merged. Consolidate a duplicate this session
@@ -146,10 +146,10 @@ alwaysApply: true
   pull request. Required validation and dependency admission still apply, subject to current user
   pauses and exclusions; this permission authorizes no deployment or release.
 - A pull request confined to agent configuration — skills with their own scripts, assets and
-  templates, rules, agent definitions, and static metadata — may be merged without a separate
-  request after `code-simplify` has run and its findings are resolved, and after a skill's scripts
-  pass the checks they own, such as a type check or a test render, except one that adds a doctor
-  skill, which waits for the user's review together with everything in its batch. A workflow,
+  templates; rules; agent definitions; and static metadata — may be merged without a separate
+  request, except one that adds a doctor skill, which waits for the user's review together with
+  everything in its batch, once `code-simplify` has run and its findings are resolved and a skill's
+  changed scripts pass the checks they own, such as a type check or a test render. A workflow,
   installer, or repository tooling outside a skill's folder is source work even when it sits under
   `.agents`. When the user asked for the change to be tested, first run the smoke test against the
   exact pull-request head. Check that the complete pull request remains confined to this agent
