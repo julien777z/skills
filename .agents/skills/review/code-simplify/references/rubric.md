@@ -221,7 +221,10 @@ Apply the baseline prompt above, plus these explicit review rules:
    - "Defence in depth", "a clearer status code", "a legitimate check", and "in case a future writer
      changes" are not dispositions: each keeps a branch no input reaches, and a future writer that
      could produce the state carries the check that refuses it.
-   - A concurrent writer is a writer. A check made after acquiring a lock, entering the transaction that serializes the change, or crossing an `await` is not a duplicate of an earlier check on the path when the value can change between them; judge it against what can happen in that window.
+   - A concurrent writer is a writer. A check made after acquiring a lock, entering the transaction
+     that serializes the change, or crossing an `await` is not a duplicate of an earlier check on
+     the path when the value can change between them; judge it against what can happen in that
+     window.
    - Where a writer can produce the state, the check is real, and it belongs on every sibling path
      answering the same question, never only on the one the diff added.
    - **Whether code is reached is judged where the change will land:** on the branch it merges into
