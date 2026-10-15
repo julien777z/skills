@@ -183,15 +183,16 @@ from myapp.http_transport import fetch
 - **A third-party package's missing or incomplete types are that package's gap, never ours.** Delete
   any stub file, `typings/` directory, cast or wrapper written to quiet them, and write none; the
   answer is the category-wide configuration entry below, never code. A checker plugin, inference
-  transform or lint script that teaches a tool about a third-party construct is the same code under
-  another name, and so are its tests; where another checker already covers the category, turn the
-  misreading one's category off rather than maintaining tooling to repair it. A package the user owns is not
+  transform or script that teaches a tool a third-party construct it lacks types for or misreads is
+  the same code under another name, and so are its tests: delete them, write none, and turn the
+  category off as below. A package the user owns is not
   third-party wherever it lives: its types are published at its source — a `py.typed` marker and the
   annotations its public surface needs. Read ownership from whose repository it is.
 - A category is turned off once in the tool's configuration, or filtered once by the repository's
   lint gate, with its reason beside it, in two cases: it reports a third-party package's missing or
-  unknown types, or it misreads a construct the codebase deliberately relies on everywhere —
-  coroutines implementing a generated synchronous base, say. It applies to every package and every
+  unknown types, or it misreads a construct the codebase deliberately relies on everywhere — a
+  third-party library's generic annotations on the codebase's models, or coroutines implementing a
+  generated synchronous base, say. It applies to every package and every
   file, never to one named package. A category turned off for dependencies is off for our own code
   too; the checks that stay on, such as argument types and annotations on our own functions, keep
   our own errors reported. Code a generator emits keeps whatever directives its generator writes.
