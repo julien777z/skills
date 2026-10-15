@@ -709,8 +709,16 @@ test cannot replace that flow. When a deployment entrypoint consumes configurati
 also proves that entrypoint receives the required settings and reads values in the deployed
 representation; a local fixture using different settings or a different representation does not
 establish the deployed route.
-Missing merge approval holds merging, never this branch verification; check the available branch
-route before declaring a gate. Merge is delivery after verification, never its prerequisite.
+Trace the verification route to the code it actually loads before treating its result as proof or
+proposing a merge: record the exact pull-request head, changed entrypoint and relevant event-specific
+paths. Selecting an application's branch does not prove that the workflow, publisher or other
+changed command ran from that branch. Use the authorized selected-branch route and verify that its
+workflow identity and executed code agree; never assume a trusted workflow must execute default-
+branch code. Where an actual security contract prevents live branch execution, first exercise an
+equivalent native isolated branch route preserving authentication, permissions and input contracts,
+and state precisely which live behavior remains unverified. Do not add a temporary workflow bypass.
+Missing merge approval holds merging, never available branch verification. Merge is delivery after
+verification, never a substitute for an available branch test.
 
 Then finish each pull request the task changed, once, with its work finished. Two streams run
 side by side from here: the guidance stream and the source stream.

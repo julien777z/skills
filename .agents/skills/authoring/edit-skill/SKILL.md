@@ -91,8 +91,10 @@ the session can, so the user's review of the source pull request overlaps it.
 4. Run step 7.5's `test-skill` smoke round on the head `cr` accepted, with every entry's
    reproduction scenario as an input and entries that share a failure class grouped into one
    scenario, then steps 7.6–7.9.
-5. Record the pull request, its head, the smoke results and the merge or hold in each entry, and
-   clear `pending` only once the merge is verified or the hold is reported.
+5. Record the pull request, its head, the smoke results and the merge or hold in each entry. Keep
+   delivery `pending` while a hold remains, with its concrete dependency and saved next action.
+   When it resolves, resume that stage without repeating completed stages. `process-ledger` owns
+   the record's terminal disposition after the complete delivery outcome is verified.
 
 - Before the surrounding task ends or hands off, every `pending` entry is processed, or carries its
   concrete blocking decision, failed gate or unavailable dependency under the global rules' **Tools

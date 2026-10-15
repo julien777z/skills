@@ -142,7 +142,9 @@ it. Keep credentials out of that record.
 
 Build and publish release images through the repository's GitHub Actions workflow, never locally.
 Use the exact fix branch and only the authorized environments through the designated entrypoint
-and its supported source selection. Follow the GitHub rule's **Workflows** recovery boundary;
+and its supported source selection. Apply `execute-task`'s **Completion** check of the actual loaded
+branch code, event path and workflow identity before accepting that run as fix verification; its
+isolated fallback cannot establish this skill's required live restoration. Follow the GitHub rule's **Workflows** recovery boundary;
 never add a temporary workflow mode or wrapper to bypass identity, permission or ref selection.
 Verify the workflow's terminal result and image revision before deploying.
 
