@@ -133,9 +133,9 @@ exceptions permits moving active-run fixes out of the pull request under review.
 
 ## Description Refresh
 
-Read the pull request's description against its current head as the run's first action, and rewrite
-whatever no longer describes the branch. Every reviewer this run launches, and every person who opens
-the pull request while it runs, reads that body as the statement of what the change does, so a
+Read the pull request's title and description against its current head as the run's first action, and
+rewrite either one when it no longer describes the branch. Every reviewer this run launches, and every
+person who opens the pull request, reads that prose as the statement of what the change does, so a
 paragraph describing a mechanism the last few commits removed sends a reviewer looking for code that
 is not there and lends a removed shape the authority of the author's own summary.
 
@@ -150,9 +150,10 @@ even when it explains the change accurately. Remove it and describe the target b
 contract instead; keep cross-repository coordination in user chat and private task evidence. Make
 this ownership check during the first refresh and again before the final gate.
 
-Rewrite it at the branch rules' own bar rather than patching the stale sentences, and never from a
-partial read of a body a tool truncated. Then refresh it once more before the final gate, because the
-run's own simplification and finding fixes change what the branch does after this first pass.
+Rewrite either artifact at the branch rules' own bar rather than patching stale sentences, and never
+from a partial read of a body a tool truncated. Then refresh both once more before the final gate,
+because the run's own simplification and finding fixes change what the branch does after this first
+pass.
 
 ## Review Thread Triage
 
@@ -222,6 +223,7 @@ Use REST endpoints for every pull-request operation:
 
 - Find or inspect a PR: `GET /repos/{owner}/{repo}/pulls`, `GET /repos/{owner}/{repo}/pulls/{number}`, and `GET /repos/{owner}/{repo}/pulls/{number}/commits`.
 - Create a draft PR: `POST /repos/{owner}/{repo}/pulls` with `title`, `head`, `base`, `body`, and `draft=true`.
+- Refresh title or description prose: `PATCH /repos/{owner}/{repo}/pulls/{number}` with `title` or `body`.
 - Inspect reviews: the pull-request review endpoints.
 
 Create every pull request as a draft; it leaves draft only inside an authorized merge through `land-pr`, which starts the test jobs a draft skips. A draft pull request is reviewable: complete the review and fix cycle on the draft. Review-thread resolution state and the `resolveReviewThread` mutation have no REST surface, so read thread state and resolve a thread through `gh api graphql` as well; replies to review comments stay on REST. For every GraphQL call, obtain node IDs through REST, re-read the result through REST, and return to REST for every subsequent operation. Do not use GraphQL for reads or reviews when their REST endpoints work. If a REST or required GraphQL request is rate-limited, report the response, wait until the documented reset through the host's event or wait mechanism, and retry the same transport. Treat the rate limit as a blocker only when the host cannot wait for the reset or the reset does not restore access; never switch transports to evade it.
