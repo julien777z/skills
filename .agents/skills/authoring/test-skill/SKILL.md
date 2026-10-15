@@ -202,10 +202,10 @@ evidence behind every cell, one section per skill:
 - **Catalogue availability:** <capability> / <model> — <available | unavailable>
 - **Requested selection:** <capability> / <model>
 - **Reasoning effort:** <requested and resolved effort>
-- **Selector resolution:** <requested capability/model unavailable for this attempt; exact selected fallback capability/model or none>
+- **Selector resolution:** <rejection classification; retained requested capability/model or exact selected fallback capability/model>
 - **Reader A dispatch, <accepted | rejected | not attempted>:** <receipt or reason>
 - **Reader B dispatch, <accepted | rejected | not attempted>:** <receipt or reason>
-- **Outcome:** <fresh fallback pair launched | terminal hold>
+- **Outcome:** <same-selection pair retried | fresh fallback pair launched | terminal hold>
 ```
 
 The heading reads `## Evidence: <skill name>` when the file covers several skills; the round in a
