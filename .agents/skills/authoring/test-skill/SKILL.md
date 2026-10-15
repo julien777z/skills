@@ -195,7 +195,7 @@ evidence behind every cell, one section per skill:
 
 - **Catalogue availability:** <capability> / <model> — <available | unavailable>
 - **Requested selection:** <capability> / <model>
-- **Dispatch receipt, rejected:** <source>
+- **Dispatch receipt, rejected | not attempted:** <receipt or reason>
 - **Runtime identity, not exposed:** <host evidence>
 - **Runtime label:** <verbatim generic label | not exposed>
 - **Hold:** <unavailable request and permitted fallback, or no permitted fallback>
