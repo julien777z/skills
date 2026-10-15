@@ -144,6 +144,12 @@ named that was taken back out, a shape the change replaced, a contract the diff 
 Check each claim against the head rather than against the memory of writing it, because the sentences
 most likely to be wrong are the ones that were true when they were written.
 
+Check repository ownership separately from factual freshness. A foreign repository name, URL,
+qualified identifier, product identity, or delivery status is a defect in a title or description
+even when it explains the change accurately. Remove it and describe the target branch's own
+contract instead; keep cross-repository coordination in user chat and private task evidence. Make
+this ownership check during the first refresh and again before the final gate.
+
 Rewrite it at the branch rules' own bar rather than patching the stale sentences, and never from a
 partial read of a body a tool truncated. Then refresh it once more before the final gate, because the
 run's own simplification and finding fixes change what the branch does after this first pass.
