@@ -132,10 +132,8 @@ effort, scenario and reading list in both. Record catalogue availability and its
 requested capability and model, selector resolution, and dispatch receipt that accepted or rejected
 it in each run's evidence entry. Selector resolution retains an unavailable requested capability and
 model, the exact fallback capability and its resolved model, why that fallback was selected, and any
-explicit user override. Record a runtime model only when the host exposes
-its exact identifier; otherwise mark that evidence `not exposed`. Generic provider or product branding is
-not a runtime model identifier and neither confirms nor downgrades an accepted selection. Follow the
-selector's dispatch instructions.
+explicit user override. Record the runtime-identity and runtime-label evidence as
+`subagent-selection`'s Workflow step 3 defines. Follow the selector's dispatch instructions.
 
 ## Output
 
