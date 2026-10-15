@@ -11,6 +11,13 @@ alwaysApply: true
   and triggers before dispatching it; a workflow that builds and publishes artifacts or deploys is
   a release action even if it also runs tests.
 
+- Support authorized branches in repository-owned workflows whenever their operation supports branch
+  execution. Provide native manual dispatch when automatic triggers do not reach those branches,
+  and execute the selected branch's workflow and checked-in entrypoint. Preserve scheduled and
+  default-branch automatic behavior and the repository, environment and source authorization
+  bindings. Default-branch-only execution or merging is never a substitute for an available
+  selected-branch route.
+
 - Build, publish, and deploy through the repository's existing entrypoint and supported ref
   selection. Use its GitHub Actions workflow when that is the designated route; a native CLI the
   user explicitly authorizes remains available. Inspect the entrypoint's supported inputs before

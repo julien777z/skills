@@ -124,8 +124,12 @@ that work completes. State and record the reason before switching, preserving th
 Restoring an authorized broken deployed operation takes priority over ordinary tests, review gates,
 guidance delivery and cleanup. Pause those activities until the actual failed operation succeeds
 on the fix branch in every affected environment; use only the reproduction, diagnosis and repairs
-needed for that checkpoint, respecting any narrower user restriction. Deploy through the authorized
-branch route, then resume required delivery checks after that live proof. A successful child task,
+needed for that checkpoint, respecting any narrower user restriction. This pause includes ordinary
+checks and task-owned workers already running, even on separate files or resources. Pause them at
+the runner's next safe boundary, honoring its interruption and cleanup contract; preserve completed
+evidence, frozen inputs and the saved next action. An already-started independent cohort is not an
+exception permitting continued ordinary work. Deploy through the authorized branch route, then
+resume required delivery checks after that live proof. A successful child task,
 health response or merge does not establish it. After an authorized merge, repeat the operation
 from the default-source deployment; if it fails, resume recovery and pause ordinary delivery work
 again. This order grants no deployment or merge authority: **Task Authorization** still governs both. An invoked `incident` supplies its own
