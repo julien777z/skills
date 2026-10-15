@@ -114,7 +114,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`design-taste-frontend`](.agents/skills/web/design-taste-frontend/SKILL.md) — Anti-slop frontend skill for landing pages, portfolios, and redesigns.
 - [`doctor-protocol`](.agents/skills/doctors/doctor-protocol/SKILL.md) — Set the audit, fix, review, and reporting process used by every doctor skill.
 - [`edit-skill`](.agents/skills/authoring/edit-skill/SKILL.md) — Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.
-- [`execute-task`](.agents/skills/execution/execute-task/SKILL.md) — Plan the change for approval, then apply repository guidance, fix issues found along the way, and deliver a reviewable pull request.
+- [`execute-task`](.agents/skills/execution/execute-task/SKILL.md) — Plan source and product changes for approval; validate canonical guidance changes through their delivery gates.
 - [`frontend-design`](.agents/skills/web/frontend-design/SKILL.md) — Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one.
 - [`generic-push`](.agents/skills/git/generic-push/SKILL.md) — Keep repository publishing metadata generic and isolated.
 - [`get-doctors`](.agents/skills/doctors/get-doctors/SKILL.md) — List every doctor skill the skill listing declares with a one-line summary of what it audits.
