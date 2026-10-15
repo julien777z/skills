@@ -181,7 +181,7 @@ evidence behind every cell, one section per skill:
 
 <one line on what the scenario contains and what else it carries>
 
-#### <run label> (<edited | original | not run> text[, round <n>])
+#### <run label> (<edited | original> text[, round <n>])
 
 - **Catalogue availability:** <capability> / <model> — <available | unavailable>
 - **Requested selection:** <capability> / <model>
@@ -190,10 +190,20 @@ evidence behind every cell, one section per skill:
 - **Runtime label:** <verbatim generic label | not exposed>
 - **<criterion>, <pass | miss>:** <quoted line>
 - **Round <n>, for the record:** <what the run missed before its rerun>
+
+#### <run label> (not run)
+
+- **Catalogue availability:** <capability> / <model> — <available | unavailable>
+- **Requested selection:** <capability> / <model>
+- **Dispatch receipt, rejected:** <source>
+- **Runtime identity, not exposed:** <host evidence>
+- **Runtime label:** <verbatim generic label | not exposed>
+- **Hold:** <unavailable request and permitted fallback, or no permitted fallback>
 ```
 
 The heading reads `## Evidence: <skill name>` when the file covers several skills; the round in a
-run heading and the round bullet appear only on a run that was rerun.
+reader-run heading and the round bullet appear only on a run that was rerun. A `not run` entry omits
+criterion scoring because no reader report exists.
 
 ## Guardrails
 
