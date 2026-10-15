@@ -237,9 +237,10 @@ class TreeNode(BaseModel):
   reusable workflow cannot carry the key, so it goes on the job inside the reusable workflow that
   runs the suite. A local runner that wraps the suites bounds each suite's run at the same 15 minutes.
 - **A suite that needs longer than 15 minutes is a defect, never a reason to raise its timeout.**
-  Find what made it slow — a test that waits on a real clock, an immutable resource — a schema, a
-  compiled artifact, a client — rebuilt per test where it could be built once per session, work repeated across parametrized cases, a suite that lost its parallelism — and fix
-  that cause until the suite fits. Splitting the suite across jobs only to stay under the limit, or
+  Find what made it slow — a test that waits on a real clock, an immutable resource (a schema, a
+  compiled artifact, a client) rebuilt per test where it could be built once per session, work
+  repeated across parametrized cases, a suite that lost its parallelism — and fix that cause until
+  the suite fits. Splitting the suite across jobs only to stay under the limit, or
   giving any suite a timeout above 15 minutes, hides the same defect.
 - When CI tests fail and you cannot access the logs directly, ask the user to provide the failure output before attempting fixes.
 
