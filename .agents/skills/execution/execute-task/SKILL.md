@@ -267,6 +267,12 @@ announce the invocation before the first edit. Listing it as a dependency is not
 Read the repository's product state from its project guidance before choosing how to change a
 contract or stored value.
 
+Resolve broad words in the context of the outcome the user named before selecting or inventorying
+implementation targets. State the operational category covered by the request, then check each
+candidate's actual role against it. A shared filename, label, directory or provider does not make
+unrelated automation part of that scope. Expand to a required dependency or an explicitly broader
+user instruction, never to everything a text search happens to return.
+
 Before recommending an implementation or delegating its edits, trace the requested behavior from
 the caller to its owner and inspect that owner's existing capabilities. Reconcile the complete
 accepted target with the user's instructions, approved plan, repository guidance and observed
