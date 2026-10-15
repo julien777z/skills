@@ -30,13 +30,14 @@ out.
 | `pages` | `[{title, layout?, sections}]`: with more than one, a tab bar switches between them, and the progress and metrics show on the first. `sections` render in order; with `layout` `columns`, the default, boards, tables and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
 | `references` | `[{text, url}]`: every whole-word occurrence of `text` in the page's own text becomes a link to `url`. |
 
-`tone` is `good`, `warning`, `critical` or `accent`; omit it for neutral. Section types:
+`tone` is `good`, `warning`, `critical`, `accent` or `done`, a purple for finished work; omit it
+for neutral. Section types:
 
 | `type` | Fields | Item fields |
 | --- | --- | --- |
 | `board` | `title`, `columns: [{title, tone?, items}]` | `title`, `detail?`, `meta?`, `tag?`, `url?` |
 | `questions` | `title`, `items` | `question`, `status` (`open`, `answered`), `context?`, `options?`, `recommendation?`, `answer?`, `meta?` |
-| `links` | `title`, `items` | `label`, `url`, `detail?`, `status?`, `tone?` |
+| `links` | `title`, `items` | `label`, `url`, `detail?`, `status?`, `tone?`, `state?`: a pull request's `open`, `draft`, `merged` or `closed`, drawn with GitHub's icon for it in place of the arrow |
 | `table` | `title`, `columns`, `rows` | each row a list of strings, one per column |
 | `notes` | `title`, `items` | each item a string |
 | `changes` | `title`, `items` | `name`, `change` (`added`, `changed`, `removed`), `detail?`: a named part with its change as a colored badge |

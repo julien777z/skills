@@ -63,8 +63,8 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **Metrics,** in this order: **Time remaining**, the work not yet finished, totalled as
   `execute-task` totals a plan, prefixed `~` because it is an estimate, with any time the user owes
   in `detail` and outside the figure; **Waiting on you**, the count of open questions; **Pull
-  requests**, the count with their states in `detail`; **Elapsed**, measured from the first plan's
-  recorded approval time.
+  requests**, the count of open and draft pull requests, with "<n> open · <n> draft" in `detail`;
+  **Elapsed**, measured from the first plan's recorded approval time.
 - **Pull request names.** The page names each pull request "PR #<number> - <short title>": a few
   words saying what it does, not necessarily its title, such as `PR #1337 - Migrate admin to
   Tailscale`.
@@ -91,9 +91,9 @@ and deliver the same dashboard again on every request so the user keeps one page
   that pass between them, `label` what passes and `change` when a pull request adds or removes the
   connection. `steps`: how the change works, in order, one sentence each, with each step's number on
   the arrows it describes. Keep to the boxes the explanation needs, a dozen at most.
-- **`links` "Pull requests"**: `label` its name, `url`, `detail` "<owner>/<repo>" and the checks
-  and review state just read, `status` and `tone`: Merged `good`, In review `accent`, failing
-  checks `critical`, Draft neutral.
+- **`links` "Pull requests"**: `label` its name, `url`, `detail` "<owner>/<repo>" and the checks and
+  review state just read, `state` its `open`, `draft`, `merged` or `closed`, and `status` and
+  `tone`: In review `good`, Draft neutral, Merged `done`, Failing checks and Closed `critical`.
 - **`questions` "Answered"**: each answered question with the user's `answer` in their words and
   `meta` the time it was given.
 - **`notes` "Decisions and notes"**: each recorded decision and each assumption made without the
