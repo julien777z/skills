@@ -442,14 +442,15 @@ return records;
   repository rule explicitly directs that continuation. A matching topic, existing branch, open
   state, or recorded touch does not supply that instruction. Verify the selected pull request's
   owner, state and scope before updating it; leave other sessions' pull requests and branches untouched.
-- **Agent configuration continues the open agent-configuration pull request for that work,
-  whichever session opened it.** Agent configuration is the canonical `.agents` tree — skills,
-  rules and agent definitions; everything else is source. List the repository's open pull requests
-  before selecting a branch, and create an agent-configuration pull request only when none owns
-  the work. Later guidance edits and worker tasks join it. Open another only when the user asks or
-  the first has merged. Consolidate a duplicate this session opened onto the selected pull request
-  and close it, saying where the work went; never retarget, close or fold in one this session did
-  not open, including one the selected pull request is stacked on.
+- **Agent configuration continues the open agent-configuration pull request for that work, whichever
+  session opened it.** Agent configuration is the canonical `.agents` tree — skills, each with its
+  own scripts, assets and templates; rules; and agent definitions; everything else is source. List
+  the repository's open pull requests before selecting a branch, and create an agent-configuration
+  pull request only when none owns the work. Later guidance edits and worker tasks join it. Open
+  another only when the user asks or the first has merged. Consolidate a duplicate this session
+  opened onto the selected pull request and close it, saying where the work went; never retarget,
+  close or fold in one this session did not open, including one the selected pull request is stacked
+  on.
 - **Every worker pushes to the branch of the pull request the work continues**, fetching and
   rebasing its unpushed commits onto the remote branch before each push. A branch per worker,
   integrated later, is the same split with the integration deferred.
@@ -493,13 +494,15 @@ return records;
   changes need their own merge authorization; including a lockfile does not authorize a mixed
   pull request. Required validation and dependency admission still apply, subject to current user
   pauses and exclusions; this permission authorizes no deployment or release.
-- A pull request confined to canonical, non-executable agent configuration, including Markdown skills,
-  rules, agent definitions, and static metadata, may be merged without a separate request after
-  `code-simplify` has run and its findings are resolved, except one that adds a doctor skill, which
-  waits for the user's review together with everything in its batch. An executable script, workflow, installer,
-  or runtime code is source work even when it sits under `.agents`. When the user asked for the
-  change to be tested, first run the smoke test against the exact pull-request head. Check that the
-  complete pull request remains confined to this agent configuration before using this exception.
+- A pull request confined to agent configuration — skills with their own scripts, assets and
+  templates; rules; agent definitions; and static metadata — may be merged without a separate
+  request once `code-simplify` has run and its findings are resolved and a skill's changed scripts
+  pass the checks they own, such as a type check or a test render. One that adds a doctor skill
+  waits instead for the user's review together with everything in its batch. A workflow, installer,
+  or repository tooling outside a skill's folder is source work even when it sits under `.agents`.
+  When the user asked for the change to be tested, first run the smoke test against the exact
+  pull-request head. Check that the complete pull request remains confined to this agent
+  configuration before using this exception.
 - **An agent-configuration pull request whose guidance is true only once a still-open source pull request has merged is held until that merge**, whatever its other gates say: it describes behaviour that pull request introduces, drops guidance about something it removes, or needs a workflow or tool change it carries — a project guidance bullet about a helper the source branch adds is the common case. Guidance true on the default branch as it stands waits for nothing.
 - A hold does not authorize merging the source pull request or asking for its merge solely to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. After that merge, incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
 - When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request; one held for a source pull request becomes eligible once that pull request has merged. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, including one begun by another task. Do not close or leave it open merely because it is draft or conflicts with the base; close only one this session opened, and only when its change is superseded or no longer wanted.
