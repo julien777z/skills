@@ -85,8 +85,10 @@ Select the target route before resolving a working pull request:
   [Merged targets](references/merged-targets.md). The immutable range is the review target; the
   original pull request is metadata, and a working fix pull request exists only after a finding.
 - For ordinary direct CR, invoke `list-prs`, then read [Open targets](references/open-targets.md).
-  Every URL it returns is both a review target and its own working pull request, with **Pull Request
-  Ownership** below.
+  If it returns URLs, every URL is both a review target and its own working pull request. If it
+  returns no URLs, create and record draft pull requests for the task's local changes before
+  continuing; an empty list is never a terminal result while reviewable task work exists. Follow
+  **Pull Request Ownership** below after that bootstrap.
 
 Use these route bindings throughout the shared workflow. All review lenses and finding validation
 apply to every review target. Description updates, fix validation, acceptance, and merge gates
@@ -99,9 +101,11 @@ An explicit pull-request URL or recognized identifier is the sole review set: ve
 directly. Only an unqualified direct CR resolves its review set through `list-prs`.
 
 When the invocation does not name a pull-request URL, use every open pull-request URL returned by
-`list-prs`, including task work in other repositories. Verify each listed branch and state with its
-hosting service. Do not ask the user to select one or select only the current repository or branch:
-the complete list is the direct CR review set.
+`list-prs`, including task work in other repositories. If none exist and reviewable task work is
+local, bootstrap the required draft pull requests through **Review Targets**, then use every URL it
+created. Verify each listed or created branch and state with its hosting service. Do not ask the
+user to select one or select only the current repository or branch: the complete list is the direct
+CR review set.
 
 Review each pull request as an independent unit with its own range, intent, threads, validation,
 acceptance, and exact-head merge gate. A compact agent-configuration unit may run in the same review
