@@ -669,8 +669,10 @@ ALLOWED_STATES: Final[frozenset[str]] = frozenset({"ready", "complete"})
 - Every **function**, **method**, and **class** should have a concise docstring (purpose or role). Include `main()` and nested helpers the same way unless the file’s existing style omits docstrings on tiny locals—when in doubt, add one line.
 - Keep ordinary docstrings to a single line. Do not include Args, Returns, or Raises sections.
 - **Migration revision files are the only exception:** their `upgrade()` and `downgrade()` docstrings
-  name the concrete schema or data transformation and why it is needed. Use a few concise lines
-  when both do not fit clearly on one; never an essay. Generic text such as “Apply this schema
+  name the concrete schema or data transformation and why it is needed. Before drafting, identify
+  the resulting or restored shape or constraint and the requirement it serves; a recovery step's
+  purpose does not explain why another transformation is needed. Use a few concise lines when
+  both do not fit clearly on one; never an essay. Generic text such as “Apply this schema
   revision” or “Restore the preceding schema revision” does not identify the operation or its
   purpose. The exception does not extend to ordinary application functions or migration helpers
   outside revision files, and it permits no Args, Returns, or Raises sections.
