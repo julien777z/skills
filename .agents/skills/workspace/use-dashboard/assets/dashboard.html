@@ -187,7 +187,6 @@
   .glyph.tone-accent { border-color: var(--accent); color: var(--accent); }
   .glyph.tone-critical { border-color: var(--critical); background: var(--critical); color: var(--surface); }
   .glyph.tone-warning { border-color: var(--warning); color: var(--warning); }
-  .glyph.tone-done { border-color: var(--done); background: var(--done); color: var(--surface); }
   .glyph.pull-request { border: 0; }
   .glyph.pull-request > svg { width: 16px; height: 16px; fill: currentColor; }
   .glyph.pull-request.is-open { color: var(--good); }
@@ -476,7 +475,8 @@
       return item;
     }
 
-    function pullRequestGlyph(state) {
+    function pullRequestRow(state) {
+      var item = el("li", "link-row");
       var glyph = el("span", "glyph pull-request is-" + state);
       var icon = document.createElementNS(SVG_NAMESPACE, "svg");
       var path = document.createElementNS(SVG_NAMESPACE, "path");
@@ -486,15 +486,13 @@
       icon.append(path);
       glyph.append(icon);
       glyph.setAttribute("aria-hidden", "true");
+      item.append(glyph);
 
-      return glyph;
+      return item;
     }
 
     function linkRow(entry) {
-      var item = entry.state ? el("li", "link-row") : row({ glyph: "↗", tone: "" }, "link-row");
-
-      if (entry.state) item.append(pullRequestGlyph(entry.state));
-
+      var item = entry.state ? pullRequestRow(entry.state) : row({ glyph: "↗", tone: "" }, "link-row");
       var body = el("div", "item-body");
       var title = el("span", "item-title");
 

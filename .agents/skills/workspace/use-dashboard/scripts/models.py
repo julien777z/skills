@@ -14,7 +14,7 @@ class Tone(StrEnum):
 
 
 class PullRequestState(StrEnum):
-    """States of a pull request a `links` item stands for, each drawn with its own icon."""
+    """States of the pull request a `links` item stands for."""
 
     OPEN = "open"
     DRAFT = "draft"
