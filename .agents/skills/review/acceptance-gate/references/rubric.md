@@ -57,17 +57,35 @@ rubric item they violate, or the independent judgment concern, and the remedy th
 would take — narrow the model rather than subtract from it, derive the set from the declaration
 that carries it, extend the mechanism the change introduced. A disposition names the test that decided it and the fact it rests on.
 
+The existing `Also read` field carries the **Independent Judgment** comparisons, including for
+choices that do not produce flags. Name the prior, resulting and simplest viable designs, the
+concrete change or growth case, and the consequence deciding the trade-off. A source inventory or
+an assertion that existing stages were preserved is not that receipt; name the exact unavailable
+evidence when a comparison cannot be completed.
+
 A finding confirmed by a review that refutes everything it can is evidence that the problem is real;
 the gate does not re-validate it.
 
 ## Independent Judgment
 
-Use your own engineering judgment as well as the explicit checks. Ask whether the result makes
-sense for the user's intent: does its cumulative scope fit the problem, do its responsibilities
-and dependencies form a coherent design, and does its complexity earn its cost? An unusual shape,
-an unexplained detour, or a surprising amount of unrelated work deserves scrutiny even when each
-edit individually follows a rule and all checks pass. The checklist is a floor, not the limits of
-what the gate may notice.
+Compare the prior design, the proposed or resulting design, and the simplest viable alternative
+against the accepted requirements and the borrowed code-simplify rubric. Exercise a concrete
+maintenance, extension or supported growth case without inventing product requirements, and trace
+what each design would require: where decisions
+live, what must change together, and how the work or maintenance cost grows. This applies to any
+artifact that carries a decision, including a document's instructions. Name the material regression
+or the evidence that the new design improves the trade-off; merely listing the designs is not a
+comparison.
+
+Matching current outputs, passing tests, fewer files or lines, and the author's description of a
+choice as deliberate do not establish design quality. Check those claims against the actual owners
+and consumers. In particular, today's callers or sample values do not establish an invariant; removing
+supported variation needs an owning contract or an accepted requirement that retires it. Conversely,
+retain no abstraction or capability merely because it existed: a proven invariant or retired
+requirement can justify its removal. An invariant can retire a selection interface; it does not make
+copies of one owned fact independent facts or justify repeated work. Price their maintenance and
+extension cost even when varying the answer is outside the current contract. The comparison judges
+the target design, never preservation for its own sake.
 
 Flag a concern that leaves you unconvinced the change should stand; you need not find an existing
 rule that names it or prove a bug first. Name the observed shape or decision, why it seems wrong,
