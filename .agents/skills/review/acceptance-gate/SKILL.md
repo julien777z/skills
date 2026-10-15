@@ -232,5 +232,5 @@ Verdict: accept | flag | fix | close | defer | do
 
 Writers read: <each guard the diff adds with the writers it read, or `no guard added`>
 
-Also read: <additions of other kinds, summarised in one line, or `none`>
+Also read: <the Independent Judgment comparison receipt, plus additions of other kinds>
 ```

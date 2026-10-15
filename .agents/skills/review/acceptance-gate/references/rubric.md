@@ -57,6 +57,12 @@ rubric item they violate, or the independent judgment concern, and the remedy th
 would take — narrow the model rather than subtract from it, derive the set from the declaration
 that carries it, extend the mechanism the change introduced. A disposition names the test that decided it and the fact it rests on.
 
+The existing `Also read` field carries the **Independent Judgment** comparisons, including for
+choices that do not produce flags. Name the prior, resulting and simplest viable designs, the
+concrete change or growth case, and the consequence deciding the trade-off. A source inventory or
+an assertion that existing stages were preserved is not that receipt; name the exact unavailable
+evidence when a comparison cannot be completed.
+
 A finding confirmed by a review that refutes everything it can is evidence that the problem is real;
 the gate does not re-validate it.
 
