@@ -104,6 +104,13 @@ the session can, so the user's review of the source pull request overlaps it.
    delivery `pending` while a hold remains, with its concrete dependency and saved next action.
    When it resolves, resume that stage without repeating completed stages. `process-ledger` owns
    the record's terminal disposition after the complete delivery outcome is verified.
+6. **Reconcile the delivery sequence before reporting completion.** A source check, a
+   simplification result, an acceptance verdict, a smoke result, or a pushed pull request is one
+   stage, never the delivery outcome. Read the entry and record the exact head and state of branch
+   creation, source check, completed `cr` review-and-fix cycle, final acceptance, smoke round,
+   output-example comparison, file-list check, and merge or documented hold. Continue with the
+   first unfinished stage. A final report names that stage and leaves delivery `pending` unless
+   every required stage reached its terminal state.
 
 - Before the surrounding task ends or hands off, every `pending` entry is processed, or carries its
   concrete blocking decision, failed gate or unavailable dependency under the global rules' **Tools
