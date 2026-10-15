@@ -24,8 +24,9 @@ and deliver the same dashboard again on every request so the user keeps one page
    the ledger does not hold. An active or blocked step that `execute-task`'s **Progress Record**
    records with parts, held in the ledger without them, gets them recorded the same way, with the
    parts already finished marked done.
-2. **Find the task's pull requests** with `list-prs`, then read each one's current state from its
-   host: open, draft, merged or closed, the checks on its head, and review state.
+2. **Find the task's pull requests** with `list-prs`, requesting every state, then read each one's
+   current state from its host: open, draft, merged or closed, the checks on its head, and review
+   state.
 3. **Write the Architecture page** once the task has a pull request. The `dashboard` entry records
    the page's sections as last written and the head of each pull request they were written from:
    reuse them while every head is unchanged; otherwise read the pull requests' diffs, write them
@@ -93,7 +94,8 @@ and deliver the same dashboard again on every request so the user keeps one page
   the arrows it describes. Keep to the boxes the explanation needs, a dozen at most.
 - **`links` "Pull requests"**: `label` its name, `url`, `detail` "<owner>/<repo>" and the checks and
   review state just read, `state` its `open`, `draft`, `merged` or `closed`, and `status` and
-  `tone`: Open `good`, Draft neutral, Merged `done`, Failing checks and Closed `critical`.
+  `tone`: Open `good`, Draft neutral, Merged `done`, Closed `critical`, and Failing checks
+  `critical` in place of Open or Draft when the head's checks fail.
 - **`questions` "Answered"**: each answered question with the user's `answer` in their words and
   `meta` the time it was given.
 - **`notes` "Decisions and notes"**: each recorded decision and each assumption made without the
