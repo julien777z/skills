@@ -302,7 +302,10 @@ Preserve established baseline classifications; classify a newly encountered poss
 under `execute-task`'s **Encountered Issues**, without reentering that skill's active run. Record the
 test or check, its evidence and exclusion in the completion report; do not repair, rerun, or wait
 for an excluded failure, and do not let it prevent the review or merge gate. Pass every exclusion
-to `land-pr` with the exact evidence.
+to `land-pr` with the exact evidence. Before any progress or completion report mentions the result,
+classify it: an excluded result is reported as excluded, never as a CI or merge block, and the run
+continues to `land-pr`. Only a provider rejection after `land-pr` attempts the authorized merge is
+a merge block.
 
 Apply the GitHub rule's runner-infrastructure exclusion independently of a user waiver: record a
 qualified check as skipped and do not repair, rerun, or wait for a green hosted run. Pass its required
