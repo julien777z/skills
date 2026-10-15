@@ -72,10 +72,10 @@ and deliver the same dashboard again on every request so the user keeps one page
   words saying what it does, not necessarily its title, such as `PR #1337 - Migrate admin to
   Tailscale`.
 - **Pages.** `Progress` holds the board, the pull requests, the answered questions, the notes and
-  any table, in that order. Once the task has a pull request, `Architecture` follows it, with
-  `layout` `rows`: the diagram, then `changes` "Config changes", then `changes` "Migration changes",
-  then an `outline` "What changed in <pull request name>" for each pull request, then an `outline`
-  "Keep in mind".
+  any table, in that order. Once step 3 gives the page a pull request to cover, `Architecture`
+  follows it, with `layout` `rows`: the diagram, then `changes` "Config changes", then `changes`
+  "Migration changes", then an `outline` "What changed in <pull request name>" for each pull request
+  it covers, then an `outline` "Keep in mind".
 - **`board` "Work"**, four columns:
 
 | Column | `tone` | Cards |
