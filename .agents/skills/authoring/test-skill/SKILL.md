@@ -19,9 +19,9 @@ a code change is tested: against the case that motivated it, with the change and
 
 - **Run before merge for every behavior-changing skill, rule, or agent edit**, whether it came
   through `edit-skill` or was made directly. A rule is reader guidance, so its source type never
-  exempts it. An edit that changes what the skill returns the user runs only after the user
-  approved a fictional example of that output, as `edit-skill` requires; a smoke run never
-  proposes a format.
+  exempts it. An edit that changes what the skill returns the user runs against the concrete example
+  `edit-skill` records before the edit; a smoke run validates that format without proposing or
+  awaiting approval for it.
 - **An edit that changes no instruction a reader follows does not run at all, and its pull request
   merges on the reading**. A term swapped for
   another, a spelling standardised, a typo corrected, a dead link repaired: the text asks a reader
@@ -121,9 +121,26 @@ never move upward or inherit the orchestrator's model. This fallback applies to 
 default, never against the user's explicit model or capability constraint. If no permitted model is
 available, report `not run` with the unavailable request and retain the concrete hold.
 
+Classify a rejected reader dispatch from the host receipt. Only a receipt establishing that the
+requested capability or model is unsupported makes it unavailable for that attempt and permits the
+lower-tier fallback. Retry a transient, concurrency, timeout, or unknown rejection once with the
+same resolved selection; do not lower the comparison tier. When neither reader launched, retry the
+full pair. When one reader launched, wait for its terminal report and retry only the rejected or
+unattempted counterpart, never a duplicate of the accepted reader. When that retry cannot complete
+the pair, record the terminal hold with both receipts and the unchanged requested selection. Record
+every failed attempt separately from reader-run evidence, including both pair-member receipts; do
+not score an incomplete pair as a reader result. When an unsupported request has a permitted
+fallback, wait for any accepted counterpart's terminal report, record the incomplete attempt, then
+launch a fresh full pair. When no permitted fallback remains, record the terminal hold
+with the unsupported request and rejection evidence.
+
 Run one edited/control pair per scenario — two runs — with the same resolved model, reasoning
-effort, scenario and reading list in both. Record the requested and actual capability and model,
-including any fallback or explicit user override, and follow the selector's dispatch instructions.
+effort, scenario and reading list in both. Record catalogue availability and its resolved model, then the
+requested capability and model, resolved reasoning effort, selector resolution, and accepted dispatch receipt
+with those explicit parameters in each run's evidence entry. Selector resolution retains an unavailable requested capability and
+model, the exact fallback capability and its resolved model, why that fallback was selected, and any
+explicit user override. Record the runtime-identity and runtime-label evidence as
+`subagent-selection`'s Workflow step 3 defines. Follow the selector's dispatch instructions.
 
 ## Output
 
@@ -174,12 +191,30 @@ evidence behind every cell, one section per skill:
 
 #### <run label> (<edited | original> text[, round <n>])
 
+- **Catalogue availability:** <capability> / <model> — <available | unavailable>
+- **Requested selection:** <capability> / <model>
+- **Reasoning effort:** <requested and resolved effort>
+- **Selector resolution:** <unavailable requested capability/model; exact selected capability/model; fallback or override>
+- **Dispatch receipt, accepted:** <source>
+- **Runtime identity, <model | not exposed>:** <host evidence>
+- **Runtime label:** <verbatim generic label | not exposed>
 - **<criterion>, <pass | miss>:** <quoted line>
 - **Round <n>, for the record:** <what the run missed before its rerun>
+
+#### Dispatch attempt <n> (incomplete pair)
+
+- **Catalogue availability:** <capability> / <model> — <available | unavailable>
+- **Requested selection:** <capability> / <model>
+- **Reasoning effort:** <requested and resolved effort>
+- **Selector resolution:** <rejection classification; retained requested capability/model or exact selected fallback capability/model>
+- **Reader A dispatch, <accepted | rejected | not attempted>:** <receipt or reason>
+- **Reader B dispatch, <accepted | rejected | not attempted>:** <receipt or reason>
+- **Outcome:** <same-selection pair retried | missing member retried | fresh fallback pair launched | terminal hold>
 ```
 
 The heading reads `## Evidence: <skill name>` when the file covers several skills; the round in a
-run heading and the round bullet appear only on a run that was rerun.
+reader-run heading and the round bullet appear only on a run that was rerun. An incomplete-pair
+dispatch attempt omits criterion scoring because it produced no comparable reader pair.
 
 ## Guardrails
 

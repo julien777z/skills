@@ -65,6 +65,7 @@ and lands it separately after smoke runs. An earlier delegation cannot be reused
 - `land-pr` — take the accepted head through the check gate, conflict resolution and the verified
   squash merge.
 - `list-prs` — resolve every open pull request the ongoing task worked on before selecting review targets.
+- `execute-task` — apply the repository-local delivery ownership rule when refreshing pull-request prose.
 
 Invoke `subagent-selection` and use its **standard** tier for this workflow's own sub-agents.
 Delegated skills retain their explicitly selected tiers, subject to the user's model override.
@@ -133,9 +134,9 @@ exceptions permits moving active-run fixes out of the pull request under review.
 
 ## Description Refresh
 
-Read the pull request's description against its current head as the run's first action, and rewrite
-whatever no longer describes the branch. Every reviewer this run launches, and every person who opens
-the pull request while it runs, reads that body as the statement of what the change does, so a
+Read the pull request's title and description against its current head as the run's first action, and
+rewrite either one when it no longer describes the branch. Every reviewer this run launches, and every
+person who opens the pull request, reads that prose as the statement of what the change does, so a
 paragraph describing a mechanism the last few commits removed sends a reviewer looking for code that
 is not there and lends a removed shape the authority of the author's own summary.
 
@@ -144,9 +145,14 @@ named that was taken back out, a shape the change replaced, a contract the diff 
 Check each claim against the head rather than against the memory of writing it, because the sentences
 most likely to be wrong are the ones that were true when they were written.
 
-Rewrite it at the branch rules' own bar rather than patching the stale sentences, and never from a
-partial read of a body a tool truncated. Then refresh it once more before the final gate, because the
-run's own simplification and finding fixes change what the branch does after this first pass.
+Apply `execute-task`'s **Multi-Repository Delivery** when rewriting. The title and description
+describe the target branch's own contract; make that ownership check during the first refresh and
+again before the final gate.
+
+Rewrite either artifact at the branch rules' own bar rather than patching stale sentences, and never
+from a partial read of a body a tool truncated. Then refresh both once more before the final gate,
+because the run's own simplification and finding fixes change what the branch does after this first
+pass.
 
 ## Review Thread Triage
 
@@ -216,6 +222,7 @@ Use REST endpoints for every pull-request operation:
 
 - Find or inspect a PR: `GET /repos/{owner}/{repo}/pulls`, `GET /repos/{owner}/{repo}/pulls/{number}`, and `GET /repos/{owner}/{repo}/pulls/{number}/commits`.
 - Create a draft PR: `POST /repos/{owner}/{repo}/pulls` with `title`, `head`, `base`, `body`, and `draft=true`.
+- Refresh title or description prose: `PATCH /repos/{owner}/{repo}/pulls/{number}` with `title` or `body`.
 - Inspect reviews: the pull-request review endpoints.
 
 Create every pull request as a draft; it leaves draft only inside an authorized merge through `land-pr`, which starts the test jobs a draft skips. A draft pull request is reviewable: complete the review and fix cycle on the draft. Review-thread resolution state and the `resolveReviewThread` mutation have no REST surface, so read thread state and resolve a thread through `gh api graphql` as well; replies to review comments stay on REST. For every GraphQL call, obtain node IDs through REST, re-read the result through REST, and return to REST for every subsequent operation. Do not use GraphQL for reads or reviews when their REST endpoints work. If a REST or required GraphQL request is rate-limited, report the response, wait until the documented reset through the host's event or wait mechanism, and retry the same transport. Treat the rate limit as a blocker only when the host cannot wait for the reset or the reset does not restore access; never switch transports to evade it.
@@ -383,8 +390,8 @@ to work around this gate.
 2. Invoke `/code-review high fix <target>` for each unit using the open pull-request URL or the exact delegated ref range. When the required tier cannot spawn, the primary agent performs the complete high fix review in process instead, with the same lenses, required searches, target scope, finding validation, and receipts. For a merged range, pass the original pull request as metadata only and explicitly preserve the range through resolution and eligibility checks. Direct fixes to the matching working fix branch rather than changing the immutable target.
 3. For the current unit, apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the run continues; see **Deferred Findings**. A finding that can be neither fixed nor recorded remains an active gate: surface the needed resolution under the global rules' pending-result boundary and continue independent work; do not conclude CR on that report.
 4. Classify each current-unit correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean. This is the same authorized CR execution, not a new action-skill invocation.
-5. Once the current unit's review is clean, if a merged-range review has no working fix pull request, record it for the **Completion Report** and continue to the next unit without another merge. Otherwise put the complete working pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement, retaining the original review range as context. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate** verdict is the fresh gate; resolve each flag under `acceptance-gate`'s **Bounds**. The accepted head is the SHA `land-pr` receives.
-6. Run **Description Refresh**'s second pass, then the second test pass **Validation Order** requires for the current unit. Never stop, restart, reconfigure or claim a local service this run did not start.
+5. Once the current unit's review is clean, if a merged-range review has no working fix pull request, record it for the **Completion Report** and continue to the next unit without another merge. Otherwise run **Description Refresh**'s second pass, then put the complete working pull-request diff and refreshed prose to `acceptance-gate`'s final-acceptance question against the intent statement, retaining the original review range as context. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate** verdict is the fresh gate; resolve each flag under `acceptance-gate`'s **Bounds**. Before each fresh acceptance gate, repeat **Description Refresh** for the repaired head. The accepted head is the SHA `land-pr` receives.
+6. Run the second test pass **Validation Order** requires for the current unit. Never stop, restart, reconfigure or claim a local service this run did not start.
 7. When merge is withheld — by the user, or by `process-ledger`'s delegation — the unit ends here at
    the head step 5 accepted, its pull request left draft. Otherwise invoke `land-pr` with:
    - the pull request and the head step 5 accepted;

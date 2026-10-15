@@ -44,8 +44,17 @@ guidance. Neither the issue nor its verification disappears when the surrounding
 A correct instruction does not close a reported failure to follow it. Step 2 traces and repairs the
 application step that admitted the rejected decision, then verifies that repair against the miss.
 Keep an unknown historical cause unproven; do not replace that repair with a noncompliance report or
-another copy of the substantive rule. Where no guidance governs the subject, step 2's rule on
-proposing a new file applies.
+another copy of the substantive rule. Where no guidance governs the subject, step 2 creates its
+new owner under **Guidance Changes Proceed Automatically**.
+
+## Guidance Changes Proceed Automatically
+
+A user request or an encountered guidance gap authorizes the canonical `.agents` correction. Do not
+ask for a plan or for approval of a guidance-output example. An example renders the settled
+instruction and is task evidence, not a new product experience because a user reads it. A guidance
+edit that intentionally changes the product still follows the global product-decision boundary. The
+required smoke test, review, and acceptance gate validate the correction. When a separate source
+task is active, preserve its execution and follow **Recording During A Task** for the edit's timing.
 
 ## Dependencies
 
@@ -82,8 +91,9 @@ proposing a new file applies.
 source stream. Nothing in it waits on the source pull request. Run it as a delegated worker when
 the session can, so the user's review of the source pull request overlaps it.
 
-1. Read every `pending` `guidance_correction` entry whose recorded action succeeded and apply its
-   edits under **Behavior** steps 5 and 6, on the agent-configuration branch step 7.1 selects.
+1. Read every `pending` `guidance_correction` entry whose recorded action succeeded and resume at
+   its recorded first nonterminal stage. Only an entry with no stage receipt applies its edits under
+   **Behavior** steps 5 and 6, on the agent-configuration branch step 7.1 selects.
 2. Run step 7.2's source check.
 3. Delegate the pull request to `cr` with merge withheld. Give it the user's request and the
    recorded evidence as the intent statement, the incident vocabulary for its acceptance gate as
@@ -91,11 +101,12 @@ the session can, so the user's review of the source pull request overlaps it.
 4. Run step 7.5's `test-skill` smoke round on the head `cr` accepted, with every entry's
    reproduction scenario as an input and entries that share a failure class grouped into one
    scenario, then steps 7.6–7.9.
-5. Record the pull request, its head, the smoke results and the merge or hold in each entry. Keep
-   delivery `pending` while a hold remains, with its concrete dependency and saved next action.
-   When it resolves, resume that stage without repeating completed stages. `process-ledger` owns
-   the record's terminal disposition after the complete delivery outcome is verified.
-
+5. After each completed or failed stage, record its exact head, stage result, and first
+   nonterminal next stage in each entry. Resume from that stage without repeating completed work.
+   After the smoke round, record the pull request, its head, the smoke results and the merge or
+   hold. Keep delivery `pending` while a hold remains, with its concrete dependency and saved next
+   action. `process-ledger` owns the record's terminal disposition after the complete delivery
+   outcome is verified.
 - Before the surrounding task ends or hands off, every `pending` entry is processed, or carries its
   concrete blocking decision, failed gate or unavailable dependency under the global rules' **Tools
   and environments** pending-result boundary. Never lose a correction, treat a recorded one as
@@ -175,9 +186,9 @@ the session can, so the user's review of the source pull request overlaps it.
      applying those additional corrections, tell the user which gaps you found, what you will add
      and why. Apply relevant guidance fixes without waiting to be invited to think more broadly;
      product choices still follow the global authorization boundary.
-   - **When no existing rule or skill governs the subject, propose a new one and ask before
-     creating it.** State the recommended name and, in at most three sentences, what it would say
-     and what it would change, with the question tool; create it only on a yes. An existing file
+   - **When no existing file of the inferred or selected type governs the subject, create the new
+     owner under Guidance Changes Proceed Automatically.** Record its recommended name, scope, and
+     behavior in the correction evidence; do not ask for approval. An existing file of that type
      that governs the subject is always edited instead, however thin its current text.
 
 3. Include the underlying issue.
@@ -233,27 +244,24 @@ the session can, so the user's review of the source pull request overlaps it.
      target entry point and its referenced files, scripts, templates, and examples. Follow supporting
      links within the package; reviewing only `SKILL.md` or the edited hunk is incomplete. Apply the
      same genericity, ownership, clarity, and evidence standards to every file.
-   - **A change to what a skill returns the user is approved as an example before the skill is
-     written to produce it.** The class is any new or changed user-facing output shape — a
+   - **A change to what a skill returns the user is specified with a concrete example before the
+     skill is written to produce it.** The class is any new or changed user-facing output shape — a
      table, a report layout, a sent file, a message template, a listing — in a skill whose response
      the user reads or acts on. It is changed when the user would notice it in the response itself: a
      new or moved column, a different grouping, a link where there was none. A new status value or a
      reworded label is not that, and a skill whose result is edits, a merge, a deployment, a verdict
      another skill consumes, or a report only an agent reads has no such response. Whether an output
      changed is the editor's call, from what the skill returns before and after. **Model the example
-     on a small slice of the work in hand**, so the user judges the shape against something they
-     recognise: the session's real repository, subject and files, cut to a scope read in a minute,
-     with every value the run would produce — numbers, hashes, findings — stated as made up. Write
-     it as one markdown file whose first line is `**EXAMPLE — for approval, modelled on a small slice
-     of the current work; no smoke test was run.**`. Only where the work in hand gives the output
-     nothing to show does the example use an invented scenario with invented names, first line
-     `**EXAMPLE — fictional output for approval; no smoke test was run.**`. The example is chat
-     content: the skill text it leads to still keeps its own examples generic. Check it as the global
-     rules' **User-Facing Output** requires, and present it for approval under the global rules'
-     **Task execution and authorization** question route, one skill at a time. On a rejection, ask
-     what must change, revise the example, and ask again. Only then write the skill to produce exactly the
-     approved shape; the required smoke run follows in delivery and is never how a format is
-     proposed.
+     on a small slice of the work in hand**, cut to a scope read in a minute, with every value the run
+     would produce — numbers, hashes, findings — stated as made up. Write it as one markdown file
+     whose first line is `**EXAMPLE — modelled on a small slice of the current work; no smoke test
+     was run.**`. Only where the work in hand gives the output nothing to show does the example use
+     an invented scenario with invented names, first line `**EXAMPLE — fictional output; no smoke
+     test was run.**`. The example is task evidence: the skill text it leads to still keeps its own
+     examples generic. Check it as the global rules' **User-Facing Output** requires, write the
+     skill to produce that shape, then validate it through the required smoke run, review, and
+     acceptance gate. A guidance-output format is routine guidance design, not a user approval gate; a change to the product
+     a skill operates still follows the global product-decision boundary.
    - Trace each miss to the instruction that produced or allowed it, including instructions for
      adding or recording guidance. Name that governing instruction and its replacement in the
      change. Removing a bad example while retaining a directive that regenerates it is incomplete.
@@ -360,7 +368,7 @@ the session can, so the user's review of the source pull request overlaps it.
    - Apply multi-target updates for `agents`, `skills`, and `rules`.
    - When the inferred/selected type is singular (for example `skill`), distribute requested items across multiple files of that type as needed.
    - Update existing files when they already fit part of the request (for example update skill A and skill B).
-   - Create a new file of that type when no existing file governs a requested item's subject (for example create skill C), after the question step 2 requires.
+   - Create a new file of that type when no existing file governs a requested item's subject (for example create skill C), under **Guidance Changes Proceed Automatically**.
    - If one request contains multiple distinct items, map each item to the best existing file or a new file within the same inferred/selected type.
    - If scope is ambiguous, ask a short follow-up before editing.
 
@@ -370,8 +378,7 @@ the session can, so the user's review of the source pull request overlaps it.
    GitHub rule after its stated gates; ask neither to repeat that authorization nor to continue
    an ordinary repair. That merge authority settles no genuine unresolved product, scope, or
    authorization choice: put that concrete choice to the user under **Bounds** while independent
-   work continues. It does not authorize a release workflow. Approval of a changed output's
-   example, under **Upsert behavior**, still comes before writing that output.
+   work continues. It does not authorize a release workflow. A changed output's concrete example, under **Upsert behavior**, is task evidence before writing that output; it does not wait for approval.
    1. **Branch and commit.** The edit goes onto the open agent-configuration pull request the work
       continues in the repository being edited, whichever session opened it, or, when it continues
       none, onto a branch from the freshly fetched default branch with a new pull request, under the GitHub rule's **Branches and Pull Requests** — never onto a
@@ -467,11 +474,10 @@ the session can, so the user's review of the source pull request overlaps it.
       repository, checking that each one already states its answer where the skill now sends its
       reader; a repository that does not is the flag, because the merge silently gave it the other
       one's answer.
-   6. **Hold each changed output to its approved example.** For every skill whose changed output
-      the user approved as an example, compare one run of your own on the branch in flight
-      and every required smoke run against the approved example: headings, columns, order, file
-      shape. A divergence is the skill's wording, fixed and rerun; a shape the user has not approved goes back to the user as a new
-      example, never into the merge.
+   6. **Hold each changed output to its concrete example.** For every skill whose output changed,
+      compare one run of your own on the branch in flight and every required smoke run against that
+      example: headings, columns, order, file shape. A divergence is the skill's wording, fixed and
+      rerun; review and the acceptance gate validate the replacement shape before merge.
    7. **Check the diff file list against the default branch, then merge.** The authorization covers
       a pull request carrying only `.agents` files, and the file outside them that slips in is never
       announced. Read the changed paths rather than trusting your memory of what you edited; a stray
@@ -482,7 +488,7 @@ the session can, so the user's review of the source pull request overlaps it.
       ask whether any line it adds or drops is true only once a still-open source pull request
       merges, and if so hold it until that pull request has merged, as the GitHub rule's **Merge
       Authorization** says, and report it as that rule directs. Otherwise a pull request carrying a
-      skill change merges once step 6 found every changed output matching its approved example, and
+      skill change merges once step 6 found every changed output matching its concrete example, and
       one carrying only rules merges on sight as the GitHub rules say. **A pull request that adds a
       doctor skill is left for the user as a whole** — every other skill, rule and agent file in
       its batch with it — and so is one a doctor run opens: the steps above still run, the merge
@@ -570,7 +576,7 @@ Checks
 - Simplification: <clean | findings applied>
 - Acceptance gate: <accepted on <head> | repaired and accepted on <head> | blocked — <concrete unresolved decision or unavailable compliant remedy>>
 - Smoke test: <passing tables reported above | dropped — <reason> | not run: <reason>>
-- Example approved: <one line per skill: name — approved after <n> round(s), output matches it | skipped, no response the user uses | skipped, response unchanged | rule-only change>
+- Example validation: <one line per skill: name — output matches concrete example after <n> round(s) | skipped, no response the user uses | skipped, response unchanged | rule-only change>
 - Merged text read back: <default branch head the touched skills and rules were re-read from | not merged>
 - Refresh: <deferred to the next request | not merged>
 
