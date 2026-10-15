@@ -100,10 +100,12 @@ the session can, so the user's review of the source pull request overlaps it.
 4. Run step 7.5's `test-skill` smoke round on the head `cr` accepted, with every entry's
    reproduction scenario as an input and entries that share a failure class grouped into one
    scenario, then steps 7.6–7.9.
-5. Record the pull request, its head, the smoke results and the merge or hold in each entry. Keep
-   delivery `pending` while a hold remains, with its concrete dependency and saved next action.
-   When it resolves, resume that stage without repeating completed stages. `process-ledger` owns
-   the record's terminal disposition after the complete delivery outcome is verified.
+5. After every stage, record its exact head, result, and first nonterminal next stage in each
+   entry. When that next stage has no external decision or unavailable dependency, start it in the
+   same delivery turn; a partial-stage status report never pauses the route. Retain delivery
+   `pending` only with the current stage's concrete hold and saved next action. When it resolves,
+   resume that stage without repeating completed stages. `process-ledger` owns the record's
+   terminal disposition after the complete delivery outcome is verified.
 6. **Reconcile the delivery sequence before reporting completion.** A source check, a
    simplification result, an acceptance verdict, a smoke result, or a pushed pull request is one
    stage, never the delivery outcome. Read the entry and record the exact head and state of branch
