@@ -121,6 +121,11 @@ never move upward or inherit the orchestrator's model. This fallback applies to 
 default, never against the user's explicit model or capability constraint. If no permitted model is
 available, report `not run` with the unavailable request and retain the concrete hold.
 
+Treat a rejected reader dispatch as unavailable for that attempt. Record its rejected receipt in a
+`not run` evidence entry, then apply the permitted lower-tier fallback to a fresh full pair. If no
+permitted fallback remains, report `not run` with the unavailable request and rejection evidence,
+and retain the concrete hold.
+
 Run one edited/control pair per scenario — two runs — with the same resolved model, reasoning
 effort, scenario and reading list in both. Record catalogue availability and its resolved model, then the
 requested capability and model, selector resolution, and dispatch receipt that accepted or rejected
@@ -188,10 +193,20 @@ evidence behind every cell, one section per skill:
 - **Runtime label:** <verbatim generic label | not exposed>
 - **<criterion>, <pass | miss>:** <quoted line>
 - **Round <n>, for the record:** <what the run missed before its rerun>
+
+#### <run label> (not run)
+
+- **Catalogue availability:** <capability> / <model> — <available | unavailable>
+- **Requested selection:** <capability> / <model>
+- **Dispatch receipt, rejected | not attempted:** <receipt or reason>
+- **Runtime identity, not exposed:** <host evidence>
+- **Runtime label:** <verbatim generic label | not exposed>
+- **Hold:** <unavailable request and permitted fallback, or no permitted fallback>
 ```
 
 The heading reads `## Evidence: <skill name>` when the file covers several skills; the round in a
-run heading and the round bullet appear only on a run that was rerun.
+reader-run heading and the round bullet appear only on a run that was rerun. A `not run` entry omits
+criterion scoring because no reader report exists.
 
 ## Guardrails
 
