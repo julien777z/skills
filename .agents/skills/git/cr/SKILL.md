@@ -21,8 +21,8 @@ start CR or inherit its merge authorization; continue the separately requested w
 implementation, validation and handoff.
 
 A fresh delegation authorizes exactly what its current caller states: `merge-pr` delegates the
-ranges it itself merged; `edit-skill` delegates its guidance pull request with merge withheld and
-lands it separately after smoke runs. An earlier delegation cannot be reused for another entry.
+ranges it itself merged; `process-ledger` delegates its guidance pull request with merge withheld
+and lands it separately after smoke runs. An earlier delegation cannot be reused for another entry.
 
 - For a direct CR invocation, this instruction overrides `code-review`'s standalone argument prompt: run `code-review high fix <PR>` without comment mode; do not ask the user to select review effort or modes.
 - **A direct CR invocation authorizes the squash merge of every selected target pull request** at
@@ -385,7 +385,7 @@ to work around this gate.
 4. Classify each current-unit correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean. This is the same authorized CR execution, not a new action-skill invocation.
 5. Once the current unit's review is clean, if a merged-range review has no working fix pull request, record it for the **Completion Report** and continue to the next unit without another merge. Otherwise put the complete working pull-request diff to `acceptance-gate`'s final-acceptance question against the intent statement, retaining the original review range as context. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate** verdict is the fresh gate; resolve each flag under `acceptance-gate`'s **Bounds**. The accepted head is the SHA `land-pr` receives.
 6. Run **Description Refresh**'s second pass, then the second test pass **Validation Order** requires for the current unit. Never stop, restart, reconfigure or claim a local service this run did not start.
-7. When merge is withheld — by the user, or by `edit-skill`'s delegation — the unit ends here at
+7. When merge is withheld — by the user, or by `process-ledger`'s delegation — the unit ends here at
    the head step 5 accepted, its pull request left draft. Otherwise invoke `land-pr` with:
    - the pull request and the head step 5 accepted;
    - the affected behaviors step 6 covered locally;
