@@ -83,12 +83,6 @@ approval to retain a broad change settles retention, not whether its remaining d
 Do not reject work solely for file count, personal taste, or a large required repair, and do not
 waive correctness or security findings because the overall change appears simple.
 
-A diff that adds or changes tests arrives with the runner's per-test durations for them. Flag a test
-that `test-fixture`'s rubric calls disproportionate under its cost question, and flag a runner,
-timeout or job change that absorbs a slow test rather than removing its cost; the remedy is the one
-that rubric and `pre-production` name, never a retuned runner. Durations missing for an added test
-hold a clean verdict.
-
 ## Exploitable Findings
 
 Every question that reads a diff — diff, final acceptance, base incorporation — also reads it for
@@ -228,6 +222,11 @@ outside a model-owned module, and a typed parameter built as a dict literal inst
 manifests, policies, provider payloads, and response schemas remain models. All five are the greps
 code-simplify opens with; the gate runs them over the diff's added lines and lists their hits before
 anything else.
+
+**A test is priced by what it costs to run.** Flag a test the diff adds or changes that
+`test-fixture`'s cost question calls disproportionate, and any change that absorbs a slow test in a
+way the testing rules list; the remedy is making it cheap or removing it, as that rubric and
+`pre-production` decide. Durations missing for an added test hold a clean verdict.
 
 **An added guard is priced like a missing one.** For every guard, refusal, validation, or branch a
 diff adds, the gate opens the writers `code-simplify`'s standard 1 says to read and names them in the

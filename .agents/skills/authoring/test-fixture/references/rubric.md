@@ -11,7 +11,7 @@ each: an end-to-end test that an integration test also reaches stays, and so doe
 test a unit test also reaches. When adding coverage, write the end-to-end test wherever one can
 reach the contract.
 
-Before adding a test, answer four questions; a missing answer means do not add it yet:
+Before adding a test, answer five questions; a missing answer means do not add it yet:
 
 1. What observable behavior, invariant, or independent contract does it protect?
 2. What credible regression makes it fail?
@@ -20,11 +20,10 @@ Before adding a test, answer four questions; a missing answer means do not add i
    setup in the same change.
 4. Does it need a production seam — an export, flag, wrapper, or injection hook — that no production
    caller needs? If so, move the test to the real boundary instead.
-5. What does it cost to run? Read the runner's per-test durations for it. A test or parametrized
-   family whose cases together run longer than a minute, or add more than a tenth to their suite's
-   wall-clock time, is disproportionate: make its setup cheap — build an immutable resource once,
-   cut the cases to the ones that differ — or do not add it. Changing how the runner distributes,
-   groups or orders tests to absorb it is not making it cheap.
+5. What does it cost to run? Read the runner's per-test durations for it. A test, or one
+   parametrized family, whose durations sum to more than a minute is disproportionate: make its
+   setup cheap — build an immutable resource once, cut the cases to the ones that differ — or do not
+   add it. None of the ways of absorbing a slow test that the testing rules list makes it cheap.
 
 Check new and existing tests against these low-value patterns:
 
@@ -54,7 +53,7 @@ package, release, or architecture contract. Also keep observable call ordering a
 a credible failure mode. Source inspection can be the cheapest independent guard when it fails as
 the user-facing key, byte, or path changes and survives an identifier-only refactor. Static is not
 a deletion reason, and neither is ordinary slowness; a disproportionate cost under question 5 is,
-when the repository's product-constraints skill trades that test's coverage for the suite's time. A baseline failure may expose a product bug; reproduce it and repair the
+as the repository's product-constraints skill decides. A baseline failure may expose a product bug; reproduce it and repair the
 owner rather than deleting its test.
 
 Before deleting an existing test, record its exact name and location, the failure it can detect,

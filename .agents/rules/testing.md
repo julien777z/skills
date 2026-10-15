@@ -242,12 +242,12 @@ class TreeNode(BaseModel):
   repeated across parametrized cases — and fix that cause until the suite fits. Splitting the suite
   across jobs only to stay under the limit, or giving any suite a timeout above 15 minutes, hides
   the same defect.
-- **One test that dominates its suite's runtime is the cause, not the suite around it.** A single
-  test, or one parametrized family, whose cases together run longer than a minute or add more than a
-  tenth to its suite's wall-clock time is made cheap or removed, as `test-fixture`'s rubric and the
-  repository's product-constraints skill decide. Retuning the runner to absorb it — its distribution
-  mode, worker count, ordering, grouping or a dedicated job — keeps the cost and hides it, exactly as
-  a raised timeout does.
+- **One test that dominates its suite's runtime is the cause, not the suite around it.** A test
+  disproportionate under `test-fixture`'s cost question is made cheap or removed, as that rubric and
+  `pre-production` decide. Absorbing it instead keeps the cost and hides it, exactly as a raised
+  timeout does: retuning the runner's distribution mode, worker count, ordering or grouping, giving
+  it a job of its own, skipping it, marking it for a run pull requests deselect, or moving it to a
+  scheduled workflow.
 - When CI tests fail and you cannot access the logs directly, ask the user to provide the failure output before attempting fixes.
 
 ## Environments

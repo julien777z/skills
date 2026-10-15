@@ -194,18 +194,20 @@ would catch, so the question is what a reader loses if it goes, not whether it p
 asserts little for a large share of the suite's wall time is folded into a case of the same
 classification that is already paying that setup, or made cheaper where it stands. In a
 pre-production repository folding and speeding up cases is ordinary rather than a last resort: a
-suite nobody will wait for is coverage nobody runs.
+suite nobody will wait for is coverage nobody runs. A case disproportionate under `test-fixture`'s
+cost question that cannot be made cheap is removed, as `pre-production` says.
 
-**No budget removes a test because a test of another classification makes the same assertion.** An
+**No budget removes a test as redundant because a test of another classification makes the same
+assertion.** A disproportionate cost is a separate reason, decided above. An
 end-to-end test that an integration or unit test also reaches stays, however far over budget its
 suite is and whatever stage the repository is in: its worth is that it runs the real services, which
 the cheaper test does not. Being over budget, being pre-production, and the cheaper test being
 "sufficient" are not reasons to cut it; bring the suite under budget by making its cases cheaper or
 folding them into cases of the same classification.
 
-Preserve every unique guarantee while doing it. Cutting a case whose assertion nothing else in its
-classification makes is a coverage loss wearing a timing win, so name what each cut proved and where
-that fact now lives.
+Preserve every unique guarantee while doing it, except where a disproportionate case is removed
+for its cost. Cutting a case whose assertion nothing else in its classification makes is otherwise a
+coverage loss wearing a timing win, so name what each cut proved and where that fact now lives.
 
 ### Stay Inside Third-Party Limits
 
@@ -373,7 +375,7 @@ generated plan does not substitute for this evidence.
 After implementation, repeat the same suite workload, verify its budget outcome and correctness,
 and report the before/after evidence. The improvement must exceed measurement noise. Preserve every
 coverage guarantee unique within its classification; never cut tests solely to achieve a timing
-target. A missed budget or unverified improvement remains unresolved rather than being reported as a successful performance fix.
+target, apart from removing a disproportionate case as **Bring Every Suite Under Budget** says. A missed budget or unverified improvement remains unresolved rather than being reported as a successful performance fix.
 
 Reviewers check every application performance change against this exception at proposal and final
 review, including changes introduced during conflict resolution. Temporary application mutations used to
@@ -386,8 +388,10 @@ before delivery and verify that none enters the delivered diff.
   built once for the tests that share it rather than per test; fold the cases whose runtime is out of
   proportion to what they prove into a case of the same classification already paying that setup,
   or make them cheaper where they stand; fix the remaining test-side causes; admit a focused
-  application fix only through the performance exception; parallelize where the runner and shared
-  resources allow, never across a shared database or lock. Re-time after implementation against the
+  application fix only through the performance exception; remove a disproportionate case that cannot
+  be made cheap; parallelize independent work where the runner and shared resources allow, never
+  across a shared database or lock and never in a way the testing rules list as absorbing a slow
+  test. Re-time after implementation against the
   same workload. A suite still over budget is unfinished work, not a line in the report: carry on
   with the next disposition, or put the remaining cause and its cost to the user in the current
   request.

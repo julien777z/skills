@@ -42,9 +42,9 @@ with an obsolete owned contract or revision.
 
 - **A test that costs far more than it covers is removed.** When one test or parametrized family
   is disproportionate under `test-fixture`'s cost question and cannot be made cheap by its own setup,
-  delete it with the rubric's deletion record, and keep or extend a cheaper test of the same
-  classification where the contract needs one. With no users to protect, every run paying for one
-  test's minutes costs more than the coverage it alone adds; never keep it by retuning the runner.
+  delete it with the deletion record `test-fixture`'s rubric asks for, and keep or extend a cheaper
+  test of the same classification where the contract needs one. Never keep it in any of the ways the
+  testing rules list for absorbing a slow test.
 
 ## Scope Follows The Defect, Not The Request
 
