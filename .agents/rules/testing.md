@@ -239,9 +239,15 @@ class TreeNode(BaseModel):
 - **A suite that needs longer than 15 minutes is a defect, never a reason to raise its timeout.**
   Find what made it slow — a test that waits on a real clock, an immutable resource (a schema, a
   compiled artifact, a client) rebuilt per test where it could be built once per session, work
-  repeated across parametrized cases, a suite that lost its parallelism — and fix that cause until
-  the suite fits. Splitting the suite across jobs only to stay under the limit, or
-  giving any suite a timeout above 15 minutes, hides the same defect.
+  repeated across parametrized cases — and fix that cause until the suite fits. Splitting the suite
+  across jobs only to stay under the limit, or giving any suite a timeout above 15 minutes, hides
+  the same defect.
+- **One test that dominates its suite's runtime is the cause, not the suite around it.** A test
+  disproportionate under `test-fixture`'s cost question is made cheap or removed, as that rubric and
+  `pre-production` decide. Absorbing it instead keeps the cost and hides it, exactly as a raised
+  timeout does: retuning the runner's distribution mode, worker count, ordering or grouping, giving
+  it a job of its own, skipping it, marking it for a run pull requests deselect, or moving it to a
+  scheduled workflow.
 - When CI tests fail and you cannot access the logs directly, ask the user to provide the failure output before attempting fixes.
 
 ## Environments

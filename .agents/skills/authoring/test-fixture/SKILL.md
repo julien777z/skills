@@ -55,7 +55,9 @@ tracing a test surface is; without one, fix what the focused pass can finish.
    ownerless local-control values. A review is incomplete until each family is listed with one of the
    rubric's dispositions, even when that disposition permits it.
 9. Prove every distinct new behavioral guarantee through the mutation workflow below, restore the
-   exact baseline, and run the affected repository targets once on the completed tree.
+   exact baseline, and run the affected repository targets once on the completed tree with the
+   runner's per-test durations reported. Apply the rubric's cost question to every test added or
+   changed before reporting it done, and report each one's duration.
 
 ## Mutation Proof
 
@@ -103,7 +105,9 @@ dispositions, the **Naming Checks**, **Factory Contents**, **Auditing Existing D
 keeper, and delete one that proves nothing once the rubric's deletion evidence is recorded. A
 repaired or strengthened guarantee takes its mutation proof. The fixes count toward the
 product-constraints skill's size budget like any other incidental change; past it, list what is left
-in the change's report. Runtime and suite budgets are not part of the sweep.
+in the change's report. The rubric's cost question is part of the sweep: read the per-test durations
+from the run that verified the change, and a disproportionate test in scope is made cheap or removed
+as the product-constraints skill decides.
 
 Report each test in scope with its disposition, and for each deletion the evidence the rubric asks
 for.
