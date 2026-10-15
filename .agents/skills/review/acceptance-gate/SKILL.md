@@ -119,12 +119,13 @@ executable flow but still receives a map of affected guidance owners. Flag a mis
 or incomplete map rather than treating the reviewed checkout as the complete system. Report its
 findings in the verdict and summarize clean flow evidence under `Also read`.
 
-After the explicit checks, independently reconstruct the design decision from the supplied
-requirements, prior implementation, consumers and resulting design before adopting the caller's
-rationale. Apply the rubric's **Independent Judgment** comparison to the complete result, including
-prose and configuration changes. Put the concrete comparison and the evidence resolving its material
-trade-offs in the existing verdict fields; when supplied contents cannot establish them, flag the
-missing evidence and name the investigation needed. A checklist pass is not acceptance.
+Before returning any verdict, independently reconstruct the material design decisions from the
+supplied requirements, prior implementation, consumers and resulting design before adopting the
+caller's rationale. Apply the rubric's **Independent Judgment** comparison to each of them, including
+prose and configuration changes. An earlier flag does not complete this step: finish the comparisons
+the available evidence supports, and name the exact missing input and investigation for any that
+remain unjudged. Put the concrete comparisons and evidence resolving their trade-offs in the existing
+verdict fields. A verdict that merely reports checklist results or its first objection is incomplete.
 
 It returns the verdict its question defines, shaped as `references/rubric.md` — What A Verdict Names
 requires.
