@@ -50,7 +50,9 @@ proposing a new file applies.
 ## Guidance Changes Proceed Automatically
 
 A user request or an encountered guidance gap authorizes the canonical `.agents` correction. Do not
-ask for a plan or for approval of a guidance-output example. The example is task evidence; the
+ask for a plan or for approval of a guidance-output example. An example renders the settled
+instruction and is task evidence, not a new product experience because a user reads it. A guidance
+edit that intentionally changes the product still follows the global product-decision boundary. The
 required smoke test, review, and acceptance gate validate the correction. When a separate source
 task is active, preserve its execution and follow **Recording During A Task** for the edit's timing.
 
