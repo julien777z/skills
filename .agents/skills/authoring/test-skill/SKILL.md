@@ -115,11 +115,15 @@ a code change is tested: against the case that motivated it, with the change and
 
 ## Reviewer selection
 
-Invoke `subagent-selection` and select the **standard** capability level. Run one edited/control pair per
-scenario — two runs — with the same resolved model, reasoning effort, scenario and reading list in
-both. Follow the dependency's explicit dispatch instructions. If the requested capability level or
-model is unavailable, report `not run` with the unavailable request and retain the concrete hold;
-do not use an equivalent model, another tier, another version, or the orchestrator's model.
+Invoke `subagent-selection` and request **standard** by default. If that level is unavailable,
+select the first available lower capability in the selector's ordering without asking the user;
+never move upward or inherit the orchestrator's model. This fallback applies to this skill's
+default, never against the user's explicit model or capability constraint. If no permitted model is
+available, report `not run` with the unavailable request and retain the concrete hold.
+
+Run one edited/control pair per scenario — two runs — with the same resolved model, reasoning
+effort, scenario and reading list in both. Record the requested and actual capability and model,
+including any fallback or explicit user override, and follow the selector's dispatch instructions.
 
 ## Output
 

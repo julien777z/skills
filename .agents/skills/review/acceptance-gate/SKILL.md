@@ -15,7 +15,7 @@ state and the change's intent, applies the repository's rubric, and answers one 
 - `subagent-selection` — route the gate through a subagent of the running session.
 - `list-prs` — the caller supplies verified task-work pull requests for cross-repository context.
 - `code-simplify` — its `references/rubric.md` defines slop and prices a mechanism. The gate borrows
-  that file and never the applying-fixes workflow.
+  that file and never the applying-fixes workflow; this gate owns the review order.
 - `security-audit` — run at its `low` effort, which is defined as a single in-process pass against
   its `references/rubric.md` and names no delegated agents, because a read-only gate cannot spawn
   one. The rubric defines what counts as an exploitable finding, what it is worth, and in what order
@@ -77,8 +77,18 @@ names, with deletions intact; a commit range, a branch name, or a `git` command 
 judging a working tree that other edits may have moved, or nothing at all. Dispatch it on the
 host's largest model, named explicitly.
 
-**Its first act on any diff is five greps.** Before reading the diff for anything else, grep its added lines for five shapes and list
-every hit as a finding ahead of all others, with the remedy the rubric names:
+**Start any diff review with the design comparison.** Inventory the responsibilities and decisions the diff moves,
+duplicates, specializes, removes or introduces, reading both sides independently of the caller's
+rationale. Follow each prior selected or computed answer to every resulting use, counting independent
+selections, copies and repeated work even inside one file; a canonical file is not proof of canonical
+decision ownership. Apply the rubric's **Independent Judgment** comparison to those owners and
+consumers, including for prose and configuration. Complete the comparisons despite earlier flags,
+and name the exact missing input and investigation for any remaining choice. Return the comparisons
+and deciding evidence in the existing verdict fields; a checklist or stage inventory alone is
+incomplete.
+
+**Then run five greps.** Grep the diff's added lines for five shapes and list every hit as a finding
+ahead of all others, with the remedy the rubric names:
 
 1. **A reader reaching through a table keyed by a model, class or type for a fact about the key**
    — the pattern `[A-Z_]+\[` followed by a model, record, class, `type(` or `cls` expression, as in
@@ -118,10 +128,6 @@ receipt needs those contents from the caller before a clean verdict; a prose-onl
 executable flow but still receives a map of affected guidance owners. Flag a missing, unsupported,
 or incomplete map rather than treating the reviewed checkout as the complete system. Report its
 findings in the verdict and summarize clean flow evidence under `Also read`.
-
-After the explicit checks, apply the rubric's independent judgment to the complete result. A
-checklist pass is not acceptance: assess whether the change makes sense for its intent and flag
-concrete concerns even when no named rule anticipated them.
 
 It returns the verdict its question defines, shaped as `references/rubric.md` — What A Verdict Names
 requires.
@@ -228,5 +234,5 @@ Verdict: accept | flag | fix | close | defer | do
 
 Writers read: <each guard the diff adds with the writers it read, or `no guard added`>
 
-Also read: <additions of other kinds, summarised in one line, or `none`>
+Also read: <the Independent Judgment comparison receipt, plus additions of other kinds>
 ```
