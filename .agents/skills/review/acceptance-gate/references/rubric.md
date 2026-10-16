@@ -23,12 +23,28 @@ The statement names:
 - the applicable target-contract instruction, the one canonical representation of each owned boundary
   it changes, and every prior or candidate representation the change removes or rejects;
 - the shapes removed and their replacements, read from current deletions and the originating commits;
-- the pull request's title and body, checked against those requirements and the implementation.
+- the pull request's title and body, checked against those requirements and the implementation;
+- the target repository's purpose and scope, as its README and project guidance state them;
+- for each kind of convention-bearing artifact the diff adds, renames or reshapes — a CI job or
+  workflow, a script or command, a package or module layout, a configuration key — how the owner's
+  other repositories in the task already shape the same kind of artifact.
 
 Read deletions before additions, but do not treat an empty deletion set as an empty intent. A file
 added and removed within the branch disappears from its final diff without cancelling the ownership
 decision that removed it. Preserve that decision until the user changes it. When inputs disagree,
 resolve them against the accepted requirements and history instead of silently narrowing the scope.
+
+## Repository Purpose And Conventions
+
+A name or shape is judged against what the repository is for, not only against what the diff
+touches today. Flag one scoped narrower than the artifact's role in the repository: a test job,
+script or module named for the one language, package or suite the repository holds now, where the
+repository's purpose says it holds or will hold several, as in a shared library repository that
+names its test job for one of its two languages. Flag a shape that departs from the convention the
+owner's other repositories use for the same kind of artifact, such as a job naming or matrix scheme
+those repositories share, unless the intent states why this repository differs. The remedy names
+the convention and the repository-wide name. A missing purpose or sibling convention for an
+artifact the diff names holds a clean verdict, as a missing input.
 
 ## Product State
 
