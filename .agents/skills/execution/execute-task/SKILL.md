@@ -739,8 +739,10 @@ side by side from here: the guidance stream and the source stream.
 
 - **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends only verified
   successful `guidance_correction` entries to `edit-skill`'s **Guidance Delivery** route, delegated
-  so it never waits on the source stream; guidance the GitHub rule's **Branches and Pull Requests**
-  puts on this task's source pull request rides it instead. A task with none has no guidance stream.
+  so it never waits on the source stream. Edits the GitHub rule's **Branches and Pull Requests**
+  puts on this task's source pull request are applied and pushed to it before that pull request's
+  source-stream step 1, so its simplification, final acceptance, history and ready message cover
+  them, and the source stream waits only for that push. A task with none has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:
 
@@ -789,7 +791,7 @@ The ready-for-review message takes exactly this shape, one message per pull requ
 - **Fixed on the way:** <each incidental fix, or none>
 - **Noticed, not changed** (over the size budget):
   1. <item>
-- **Still running:** <the authorized merge through `land-pr` (CI ~<n> min) | the guidance fixes from this task (<n> correction(s), own pull request) | nothing>
+- **Still running:** <the authorized merge through `land-pr` (CI ~<n> min) | the guidance fixes from this task that have their own pull request (<n> correction(s)) | nothing>
 
 **Next:** <review the pull request; send follow-ups here, or `/merge-pr` when you're happy | review the pull request; it merges once its checks pass>
 ```

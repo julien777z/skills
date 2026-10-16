@@ -88,14 +88,18 @@ task is active, preserve its execution and follow **Recording During A Task** fo
 ## Guidance Delivery
 
 `process-ledger` invokes this route only for a verified successful `guidance_correction`, beside the
-source stream. Nothing in it waits on the source pull request. Run it as a delegated worker when
-the session can, so the user's review of the source pull request overlaps it.
+source stream. It runs beside the source stream and never holds the source pull request; only an
+edit on that pull request, or one the GitHub rule's **Merge Authorization** holds for a source pull
+request in another repository, waits for that merge. Run it as a delegated worker when the session
+can, so the user's review of the source pull request overlaps it.
 
 1. Read every `pending` `guidance_correction` entry whose recorded action succeeded and resume at
    its recorded first nonterminal stage. Only an entry with no stage receipt applies its edits under
    **Behavior** steps 5 and 6, on the branch step 7.1 selects. An edit step 7.1 puts on a source
-   pull request is delivered with that pull request after step 7.2's source check, and the steps
-   below cover the agent-configuration pull request.
+   pull request is delivered with that pull request after step 7.2's source check. It carries step
+   7.3's prose-duplication checks and step 7.4's incident vocabulary into that pull request's final
+   acceptance, and step 7.5's smoke round runs on that pull request's accepted head before it
+   merges. The steps below cover the agent-configuration pull request.
 2. Run step 7.2's source check.
 3. Delegate the pull request to `cr` with merge withheld. Give it the user's request and the
    recorded evidence as the intent statement, the incident vocabulary for its acceptance gate as
@@ -412,8 +416,9 @@ the session can, so the user's review of the source pull request overlaps it.
       the draft consuming workflow at that tool's active branch and validate against it, without
       waiting for the tool's review loop. That workflow change is source work under step 1's source
       route; its delivery follows `land-pr`'s dependency gate rather than merging a testing reference.
-      This guidance pull request's merge waits for the required source changes. After the tool
-      merges, the consumer adopts and validates its maintained target under the reference guidance
+      The guidance rides that workflow's source pull request, as the GitHub rule's **Branches and
+      Pull Requests** says, and merges with it; that pull request waits for the tool through the
+      same gate. After the tool merges, the consumer adopts and validates its maintained target under the reference guidance
       above. No merge here authorizes a release.
    3. **Run `code-simplify`** across the branch and act on what it reports: guidance duplicated
       between peer rules or skills, including a caller and a skill it always invokes; a section grown
