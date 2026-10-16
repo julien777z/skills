@@ -82,13 +82,14 @@ task is active, preserve its execution and follow **Recording During A Task** fo
 - Do not edit the guidance files, open a guidance branch, or start a worker for a successful
   correction while the task runs.
 - A related correction joins the same entry or sits beside it in the same batch; the batch is one
-  pull request.
+  pull request, apart from edits the GitHub rule puts on a source pull request or holds for another
+  repository.
 - The task's next step is never held by a correction: record it and carry on.
 
 ## Guidance Delivery
 
 `process-ledger` invokes this route only for a verified successful `guidance_correction`, beside the
-source stream. It runs beside the source stream and never holds the source pull request; only an
+source stream. It never holds the source pull request; only an
 edit on that pull request, or one the GitHub rule's **Merge Authorization** holds for a source pull
 request in another repository, waits for that merge. Run it as a delegated worker when the session
 can, so the user's review of the source pull request overlaps it.
@@ -96,10 +97,13 @@ can, so the user's review of the source pull request overlaps it.
 1. Read every `pending` `guidance_correction` entry whose recorded action succeeded and resume at
    its recorded first nonterminal stage. Only an entry with no stage receipt applies its edits under
    **Behavior** steps 5 and 6, on the branch step 7.1 selects. An edit step 7.1 puts on a source
-   pull request is delivered with that pull request after step 7.2's source check. It carries step
-   7.3's prose-duplication checks and step 7.4's incident vocabulary into that pull request's final
-   acceptance, and step 7.5's smoke round runs on that pull request's accepted head before it
-   merges. The steps below cover the agent-configuration pull request.
+   pull request this session drives is delivered with that pull request after step 7.2's source
+   check. It carries step 7.3's prose-duplication checks into that pull request's simplification and
+   step 7.4's incident vocabulary into its final acceptance, and step 7.5's smoke round runs on that
+   pull request's accepted head before it merges. An edit on another session's source pull request
+   runs steps 7.2 to 7.5 here on the head it pushed, stays `pending` until that pull request merges,
+   and the delivery report says the push moved that pull request's head past its owner's
+   acceptance. The steps below cover the agent-configuration pull request.
 2. Run step 7.2's source check.
 3. Delegate the pull request to `cr` with merge withheld. Give it the user's request and the
    recorded evidence as the intent statement, the incident vocabulary for its acceptance gate as
@@ -495,8 +499,8 @@ can, so the user's review of the source pull request overlaps it.
       in `.agents`, merge it through `land-pr` with the head `acceptance-gate` accepted — but first
       ask whether any line it adds or drops is true only once a still-open source pull request
       merges. A line depending on one in this repository moves onto it under step 1; one depending
-      on another repository's holds this pull request, as the GitHub rule's **Merge Authorization**
-      says, and is reported as that rule directs. Otherwise a pull request carrying a
+      on another repository's moves to its own agent-configuration pull request, held as the GitHub
+      rule's **Merge Authorization** says, and is reported as that rule directs. Otherwise a pull request carrying a
       skill change merges once step 6 found every changed output matching its concrete example, and
       one carrying only rules merges on sight as the GitHub rules say. **A pull request that adds a
       doctor skill is left for the user as a whole** — every other skill, rule and agent file in
