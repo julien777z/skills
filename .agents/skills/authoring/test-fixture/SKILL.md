@@ -51,7 +51,8 @@ tracing a test surface is; without one, fix what the focused pass can finish.
    model's permissive internal-field input stand in for the boundary contract. Before selecting
    cases, trace every field and cardinality condition that can change the decision; cover its
    observable outcomes through the rubric's decision matrix rather than stopping at the reported
-   input shape.
+   input shape. Record the boundary reader, emitted representation, behavior-changing conditions,
+   and expected observable outcome in the test plan before writing or modifying the cases.
 8. Before completion, inspect every literal added or changed in tests and test support.
    Replace domain data, sample identities, addresses, names, identifiers, payload fields, and fixture
    facts with values read from the canonical fixture or factory. A provider request or response body
