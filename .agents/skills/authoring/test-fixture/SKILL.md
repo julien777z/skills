@@ -56,11 +56,13 @@ tracing a test surface is; without one, fix what the focused pass can finish.
    observable outcomes through the rubric's decision matrix rather than stopping at the reported
    input shape. When the production path filters, selects, stops, retries, falls back, merges, or
    persists based on those inputs, return a `Boundary matrix` to the task owner before modifying
-   cases. The task owner writes it in the task's `session-ledger` plan entry; when the task has no
-   plan entry, the owner creates a `test-fixture` evidence record in that same private ledger
-   instead. Each row names the boundary reader, emitted representation, behavior-changing
-   condition, and expected observable outcome. In the completion report, cite the ledger entry,
-   matrix rows, and test cases that exercise them.
+   cases and wait for that owner’s persistence receipt. The task owner writes it in the task's
+   `session-ledger` plan entry; when the task has no plan entry, the owner creates a `test-fixture`
+   evidence record in that same private ledger instead. Each row names the boundary reader, emitted
+   representation, behavior-changing condition, and expected observable outcome. In the completion
+   report, reproduce safe matrix rows — field names, shape, and outcome rather than raw payload
+   values — and their test-case mapping, then cite the private ledger entry that established them
+   before implementation.
 8. Before completion, inspect every literal added or changed in tests and test support.
    Replace domain data, sample identities, addresses, names, identifiers, payload fields, and fixture
    facts with values read from the canonical fixture or factory. A provider request or response body
