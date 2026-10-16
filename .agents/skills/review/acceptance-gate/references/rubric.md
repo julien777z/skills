@@ -44,8 +44,9 @@ repository's purpose says it holds or will hold several, as in a shared library 
 names its test job for one of its two languages. Flag a shape that departs from the convention the
 owner's other repositories use for the same kind of artifact, such as a job naming or matrix scheme
 those repositories share, unless the intent states why this repository differs. The remedy names
-the convention and the repository-wide name. A missing purpose or sibling convention for an
-artifact the diff adds, renames or reshapes holds a clean verdict, as a missing input.
+the convention and the repository-wide name. A missing purpose or sibling convention for a
+convention-bearing artifact the diff adds, renames or reshapes holds a clean verdict, as a missing
+input.
 
 ## Product State
 
