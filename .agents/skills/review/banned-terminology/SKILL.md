@@ -18,6 +18,13 @@ is renamed within `pre-production`'s size budget.
 If you reach for a placeholder-ish term a future reader could not decode from the name alone, pick a
 more intuitive name rather than adding it to the list.
 
+**Name the concrete thing in the words its reader already uses for it.** An abstraction coined one
+level above it — a "source" for a git repository, an "entity" for a customer, a "target" for a
+server — is the same vague term even when it is accurate, because the reader has to be told what it
+stands for. Before a new package, module, type, step or document heading takes a name, ask whether
+the user would say that word for the thing; if they would say something more concrete, that is the
+name.
+
 ## Enforcing the list
 
 Read `resources/banned_words.json`, and the **Banned Terms** table in the repository's project

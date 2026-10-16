@@ -67,6 +67,20 @@
       "why": "\"Lease\" blurs the handoff with the lock that protects it."
     },
     {
+      "applies_to": "repository-owned identifiers, package and module names, docstrings, comments, test names, file and directory names, workflow step names, documentation, and the pull requests and messages written to the user",
+      "term": "private source",
+      "use_instead": "\"private git repo\": `private-git-repos`, `checkout_private_git_repos`, `PrivateGitRepo`, \"Checkout Private Repos\".",
+      "variants": [
+        "private sources",
+        "private_source",
+        "private_sources",
+        "private-sources",
+        "PrivateSource",
+        "PrivateSources"
+      ],
+      "why": "\"Source\" is an abstraction coined one level above the thing it names, so a reader cannot tell it means a git repository checked out beside the project rather than source code, a data source, or a package index."
+    },
+    {
       "term": "require",
       "variants": [
         "required",
