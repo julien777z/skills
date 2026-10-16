@@ -220,8 +220,12 @@ Execution starts once a required plan is approved, or straight away for a trivia
   has since regenerated, and whether to reset or reopen local records to reach a state, such as a
   test account back at its first sign-in, both of which the global rules give the agent; what a
   data change owes records already stored, which project guidance says; which of two
-  implementation details to use where a rule picks one; and what configuration exists or how it is
-  scoped, which is read where it lives. A permission denial leaves the decision where it was, as
+  implementation details to use where a rule picks one; how to remove duplication the guidance
+  treats as a defect — which repository or package owns shared behavior and which mechanism replaces
+  parallel copies — which `pre-production` and `code-simplify` settle; and what configuration exists
+  or how it is scoped, which is read where it lives. A worker's or reviewer's label calling something
+  an open decision or the user's call is a claim checked against this class, never the
+  classification. A permission denial leaves the decision where it was, as
   **Environment Refusals** says.
 - Apply the global rules' **Task execution and authorization** decision boundary before choosing
   an encountered issue's remedy, including one proposed by a worker or reviewer. An ambiguous
