@@ -46,6 +46,12 @@ tracing a test surface is; without one, fix what the focused pass can finish.
    asserting behavior.
 7. Run real deterministic application code and real domain models. Double only boundaries the
    process cannot cross or faults the real path cannot produce, using the shallowest declared seam.
+   At an external, serialized, or persisted boundary, construct values from the canonical model or
+   fixture and then emit the exact representation the production consumer receives. Do not let a
+   model's permissive internal-field input stand in for the boundary contract. Before selecting
+   cases, trace every field and cardinality condition that can change the decision; cover its
+   observable outcomes through the rubric's decision matrix rather than stopping at the reported
+   input shape.
 8. Before completion, inspect every literal added or changed in tests and test support.
    Replace domain data, sample identities, addresses, names, identifiers, payload fields, and fixture
    facts with values read from the canonical fixture or factory. A provider request or response body
