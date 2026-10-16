@@ -27,7 +27,8 @@ The statement names:
 - the target repository's purpose and scope, as its README and project guidance state them;
 - for each kind of convention-bearing artifact the diff adds, renames or reshapes — a CI job or
   workflow, a script or command, a package or module layout, a configuration key — how the owner's
-  other repositories in the task already shape the same kind of artifact.
+  other repositories that hold the same kind of artifact shape it, read from their current default
+  branches whether or not the task touches them.
 
 Read deletions before additions, but do not treat an empty deletion set as an empty intent. A file
 added and removed within the branch disappears from its final diff without cancelling the ownership
@@ -44,7 +45,7 @@ names its test job for one of its two languages. Flag a shape that departs from 
 owner's other repositories use for the same kind of artifact, such as a job naming or matrix scheme
 those repositories share, unless the intent states why this repository differs. The remedy names
 the convention and the repository-wide name. A missing purpose or sibling convention for an
-artifact the diff names holds a clean verdict, as a missing input.
+artifact the diff adds, renames or reshapes holds a clean verdict, as a missing input.
 
 ## Product State
 
