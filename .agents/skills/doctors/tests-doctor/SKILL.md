@@ -40,9 +40,8 @@ instrumentation only when the runner cannot report durations, and keep it only w
 it. Record baseline pass/fail state, wall time per suite, and the slowest cases and fixtures. A suite
 that cannot run locally is recorded unmeasured with its CI duration when one is available.
 
-The budget is the testing rules' five-minute suite budget, or a tighter one the repository
-configures, and within it no test, parametrized family or module is disproportionate under
-`test-fixture`'s cost question.
+The budget is the suite budget the testing rules set, and within it no test, parametrized family
+or module is disproportionate under `test-fixture`'s cost question.
 
 **The budget binds the run, and a breach is never an end state.** A suite measured over it is worked
 until it is under, by the dispositions below — the run is not finished while one stands. Reporting a
