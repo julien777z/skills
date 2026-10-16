@@ -115,9 +115,10 @@ uses one answer as another without an owning contract establishing that derivati
 across and within layers: an observation, a parsed result, a historical record, permission to act
 and presentation state can each answer a different question. Distinct meanings need distinct names
 at the declarations and their consumers; qualify them by the question or authority they represent,
-not merely by location. Renaming alone does not fix a consumer that still substitutes one for
-another. Conversely, preserve one owner and name for one meaning rather than splitting genuine
-aliases by layer. Show the deciding source and lifetime evidence in the verdict; comments, matching
+not merely by location. Separate containing classes or independent consumers do not excuse a
+repeated state term that answers different questions. Renaming alone does not fix a consumer that
+still substitutes one for another. Conversely, preserve one owner and name for one meaning rather
+than splitting genuine aliases by layer. Show the deciding source and lifetime evidence in the verdict; comments, matching
 sample values and the author's intent cannot substitute for it.
 
 ## Exploitable Findings
