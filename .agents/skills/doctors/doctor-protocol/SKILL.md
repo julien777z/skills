@@ -235,7 +235,8 @@ stated only in chat, the plan, or the report is not recorded.
 
 The result goes out on the repository's delivery path in the cadence the doctor names; a doctor
 that names none uses the first. A run that changes both agent configuration and source carries each
-on its own pull request in that cadence.
+on its own pull request in that cadence, except guidance the GitHub rule puts on the source pull
+request it depends on.
 
 - **One pull request, left open.** Merging is the user's decision, agent configuration included,
   because a doctor's edit may need more testing than one run.

@@ -384,9 +384,8 @@ the session can, so the user's review of the source pull request overlaps it.
    1. **Branch and commit.** The edit goes onto the open agent-configuration pull request the work
       continues in the repository being edited, whichever session opened it, or, when it continues
       none, onto a branch from the freshly fetched default branch with a new pull request, under the GitHub rule's **Branches and Pull Requests** — never onto a
-      source branch, the one checked out included, except that guidance true only once a still-open
-      source pull request in the same repository merges goes onto that pull request, as the same
-      rule says, and merges with it. Commit the `.agents` files, never a provider
+      source branch, the one checked out included, except guidance that rule puts on the source pull
+      request it depends on, which merges with it. Commit the `.agents` files, never a provider
       mirror, and push each step once `execute-task`'s **Pre-Push Gate** checks pass to a draft pull
       request; steps 3–4 are the complete-diff pass its **Completion** runs, and step 7's `land-pr` merges it,
       taking it out of draft as the merge's first step. None of that waits to be asked: the decision was made when the edit was requested, and
@@ -490,10 +489,9 @@ the session can, so the user's review of the source pull request overlaps it.
       request the work continues under step 1 when it was — and the new head goes back through step 4. Everything
       in `.agents`, merge it through `land-pr` with the head `acceptance-gate` accepted — but first
       ask whether any line it adds or drops is true only once a still-open source pull request
-      merges. A line depending on one in the same repository moves onto that pull request under
-      step 1; one depending on a pull request in another repository holds this one until that merge,
-      as the GitHub rule's **Merge Authorization** says, and is reported as that rule directs.
-      Otherwise a pull request carrying a
+      merges. A line depending on one in this repository moves onto it under step 1; one depending
+      on another repository's holds this pull request, as the GitHub rule's **Merge Authorization**
+      says, and is reported as that rule directs. Otherwise a pull request carrying a
       skill change merges once step 6 found every changed output matching its concrete example, and
       one carrying only rules merges on sight as the GitHub rules say. **A pull request that adds a
       doctor skill is left for the user as a whole** — every other skill, rule and agent file in

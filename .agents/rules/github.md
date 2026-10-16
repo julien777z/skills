@@ -110,20 +110,19 @@ alwaysApply: true
   request**: it describes behaviour that pull request introduces, drops guidance about something it
   removes, or needs a workflow or tool change it carries — a project guidance bullet about a helper
   the source branch adds is the common case. It merges with the change that makes it true, so it is
-  never held on a pull request of its own waiting to be remembered. Fold a separate
-  agent-configuration pull request this session opened for such guidance into the source pull
-  request and close it, saying where the work went. Guidance in one repository that depends on a
-  source pull request in another cannot share it, and is held as **Merge Authorization** says.
+  never held on a pull request of its own. Fold a separate agent-configuration pull request this
+  session opened for such guidance into the source pull request and close it, saying where the work
+  went. Guidance in one repository that depends on a source pull request in another cannot share it,
+  and is held as **Merge Authorization** says.
 - **Every other agent configuration and source never share a branch**, even when a guidance change
   follows the source work checked out; a pull request found carrying both is split by moving one
-  kind's files onto the pull request of that kind the work continues. Guidance true on the default
-  branch as it stands then merges under the agent-configuration exception below without waiting on
-  source review. This rule is the user's standing permission, when a harness or session designates
-  one branch per repository and forbids pushing to any other without permission, to push to the
-  branch of the pull request the work continues (`git push origin HEAD:<that-branch>`) without
-  asking. Select that pull request under the source or agent-configuration ownership rule above. The
-  other kind's new branch is the designated name with `-agents` or `-source` appended, created and
-  pushed without asking.
+  kind's files onto the pull request of that kind the work continues. Sharing one holds the guidance
+  behind source review and outside the agent-configuration merge authorization below. This rule is
+  the user's standing permission, when a harness or session designates one branch per repository and
+  forbids pushing to any other without permission, to push to the branch of the pull request the
+  work continues (`git push origin HEAD:<that-branch>`) without asking. Select that pull request
+  under the source or agent-configuration ownership rule above. The other kind's new branch is the
+  designated name with `-agents` or `-source` appended, created and pushed without asking.
 - A new branch starts from the freshly fetched default branch; an agent-configuration branch
   never starts from a source branch. A skill or rule explicitly naming another base or an existing
   pull request keeps that route. Preserve authorized task changes when moving to a session-owned

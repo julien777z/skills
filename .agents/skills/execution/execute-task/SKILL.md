@@ -576,9 +576,9 @@ An outcome is what its source of truth shows, never what an action or a worker s
 The GitHub rule's **Branches and Pull Requests** owns pull-request selection: source work defaults
 to this session's pull request, while agent configuration follows its shared batching route.
 Apply that ownership decision before preserving a checked-out branch or updating an existing pull
-request. A guidance change never rides the source branch in flight. Verify selected pull requests
-remotely, and leave another session's branch and pull request untouched unless the selected route
-explicitly directs continuing it.
+request. A guidance change rides the source branch in flight only where that rule puts it there.
+Verify selected pull requests remotely, and leave another session's branch and pull request
+untouched unless the selected route explicitly directs continuing it.
 
 ### Multi-Repository Delivery
 
@@ -739,9 +739,8 @@ side by side from here: the guidance stream and the source stream.
 
 - **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends only verified
   successful `guidance_correction` entries to `edit-skill`'s **Guidance Delivery** route, delegated
-  so it never waits on the source stream; guidance true only once this task's source pull request
-  merges rides that pull request instead, as the GitHub rule's **Branches and Pull Requests** says. A task with none
-  has no guidance stream.
+  so it never waits on the source stream; guidance the GitHub rule's **Branches and Pull Requests**
+  puts on this task's source pull request rides it instead. A task with none has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:
 
