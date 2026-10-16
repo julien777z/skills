@@ -104,11 +104,14 @@ task is active, preserve its execution and follow **Recording During A Task** fo
 - **Every `guidance_correction` entry keeps one backup comment on the pull request that carries its
   edit**, so a lost or truncated ledger can be rebuilt from the host. This skill authorizes that
   comment and its edits under the GitHub rule's **Comments**.
-- The comment opens with the line `Ledger entry: <entry id>` and holds the entry in the target
-  repository's terms: the user's words, the failure class and invariant, the reproduction scenario,
-  the intended behavior, the canonical files and commits, and the delivery status with its current
-  stage and next action. It follows the GitHub rule's independent publishing context: no other
-  repository's name, pull request, product vocabulary or environment value, and no secret.
+- **The comment is a fallback for resuming delivery, written for a public reader, never a copy of
+  the entry.** It opens with the line `Ledger entry: <entry id>` and holds only what resuming needs,
+  stated generically: the failure class and the invariant, the intended behavior, the canonical
+  files and commits, and the delivery status with its current stage and next action. The user's
+  words, the exact reproduction scenario, the incident that exposed the gap, and anything else
+  about the task stay in the private ledger; the comment paraphrases them as the class they
+  belong to. It follows the GitHub rule's independent publishing context: no other repository's
+  name, pull request, product vocabulary or environment value, and no secret.
 - Edit that one comment whenever its entry changes — a new commit, a stage result, a terminal
   disposition — rather than posting another, and record its URL in the entry.
 
