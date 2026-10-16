@@ -576,9 +576,9 @@ An outcome is what its source of truth shows, never what an action or a worker s
 The GitHub rule's **Branches and Pull Requests** owns pull-request selection: source work defaults
 to this session's pull request, while agent configuration follows its shared batching route.
 Apply that ownership decision before preserving a checked-out branch or updating an existing pull
-request. A guidance change never rides the source branch in flight. Verify selected pull requests
-remotely, and leave another session's branch and pull request untouched unless the selected route
-explicitly directs continuing it.
+request. A guidance change rides the source branch in flight only where that rule puts it there.
+Verify selected pull requests remotely, and leave another session's branch and pull request
+untouched unless the selected route explicitly directs continuing it.
 
 ### Multi-Repository Delivery
 
@@ -738,9 +738,12 @@ Then finish each pull request the task changed, once, with its work finished. Tw
 side by side from here: the guidance stream and the source stream.
 
 - **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends only verified
-  successful `guidance_correction` entries to `edit-skill`'s **Guidance Delivery** route on its own
-  agent-configuration branch, delegated so it never waits on the source stream. A task with none
-  has no guidance stream.
+  successful `guidance_correction` entries to `edit-skill`'s **Guidance Delivery** route, delegated
+  so it never waits on the source stream. Edits the GitHub rule's **Branches and Pull Requests**
+  puts on this task's source pull request pass their source check and smoke round, as **Guidance
+  Delivery** step 1 says, and are pushed to it before that pull request's
+  source-stream step 1, so its simplification, final acceptance, history and ready message cover
+  them, and the source stream waits only for that push. A task with none has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:
 
@@ -789,7 +792,7 @@ The ready-for-review message takes exactly this shape, one message per pull requ
 - **Fixed on the way:** <each incidental fix, or none>
 - **Noticed, not changed** (over the size budget):
   1. <item>
-- **Still running:** <the authorized merge through `land-pr` (CI ~<n> min) | the guidance fixes from this task (<n> correction(s), own pull request) | nothing>
+- **Still running:** <the authorized merge through `land-pr` (CI ~<n> min) | the guidance fixes from this task that have their own pull request (<n> correction(s)) | nothing>
 
 **Next:** <review the pull request; send follow-ups here, or `/merge-pr` when you're happy | review the pull request; it merges once its checks pass>
 ```
