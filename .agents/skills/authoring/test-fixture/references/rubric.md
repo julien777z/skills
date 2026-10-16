@@ -146,10 +146,11 @@ candidates where each applies. Cover interactions only when the production predi
 them; this is a decision matrix, not an arbitrary cross-product. Each row asserts the externally
 observable result — for example, early completion versus a fallback request — rather than only the
 decoded intermediate model. Before implementation, record the same rows in a `Boundary matrix` in
-the task's persisted test-plan entry. Each row names the boundary reader, exact emitted
+the task's `session-ledger` plan entry. When there is no plan entry, create a `test-fixture`
+evidence record in that same private ledger. Each row names the boundary reader, exact emitted
 representation, behavior-changing condition, and expected observable outcome. The completion
-report cites the matrix rows and their exercising test cases, so review can find a missing state or
-an internal representation substituted for the consumer contract.
+report cites the ledger entry, matrix rows, and their exercising test cases, so review can find a
+missing state or an internal representation substituted for the consumer contract.
 
 After strengthening one such boundary test, inspect the sibling tests and shared fixtures that emit
 the same representation. Update every one that simulates the same production boundary with internal
