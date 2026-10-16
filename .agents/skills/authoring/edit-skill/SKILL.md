@@ -97,10 +97,11 @@ can, so the user's review of the source pull request overlaps it.
 1. Read every `pending` `guidance_correction` entry whose recorded action succeeded and resume at
    its recorded first nonterminal stage. Only an entry with no stage receipt applies its edits under
    **Behavior** steps 5 and 6, on the branch step 7.1 selects. An edit step 7.1 puts on a source
-   pull request this session drives is delivered with that pull request after step 7.2's source
-   check. It carries step 7.3's prose-duplication checks into that pull request's simplification and
-   step 7.4's incident vocabulary into its final acceptance, and step 7.5's smoke round runs on that
-   pull request's accepted head before it merges. An edit on another session's source pull request
+   pull request this session drives runs step 7.2's source check and step 7.5's smoke round on the
+   head carrying it, and is pushed only once both pass; that push is the one the source stream waits
+   for. It carries step 7.3's prose-duplication checks into that pull request's simplification and
+   step 7.4's incident vocabulary into its final acceptance, so both gates read wording the smoke
+   round has already checked. An edit on another session's source pull request
    runs steps 7.2 to 7.5 here on the head it pushed, stays `pending` until that pull request merges,
    and the delivery report says the push moved that pull request's head past its owner's
    acceptance. The steps below cover the agent-configuration pull request.
@@ -120,12 +121,12 @@ can, so the user's review of the source pull request overlaps it.
 - Before the surrounding task ends or hands off, every `pending` entry is processed, or carries its
   concrete blocking decision, failed gate or unavailable dependency under the global rules' **Tools
   and environments** pending-result boundary. Never lose a correction, treat a recorded one as
-  delivered, or hold the source pull request for it.
+  delivered, or hold the source pull request for it beyond the push its ridden edits need.
 - At a checkpoint and before reporting its state, record the complete pull-request head and file
   list, the target repository's lifecycle, its current state, and its next transition. A draft
   confined to canonical agent configuration records `agent-configuration exception`
-  and `land-pr` as its next action unless step 7.7 holds it for the user; it never records `await
-  user authorization` otherwise.
+  and `land-pr` as its next action unless step 7.7 holds it for the user or for a source pull request
+  in another repository; it never records `await user authorization` otherwise.
 
 ## Behavior
 
