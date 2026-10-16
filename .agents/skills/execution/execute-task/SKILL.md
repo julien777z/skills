@@ -124,6 +124,15 @@ follow-up joins that record; arrival order does not give it priority. Keep the a
 work in hand unless the user explicitly reprioritizes it, evidence establishes greater urgency, or
 that work completes. State and record the reason before switching, preserving the displaced step.
 
+Pending application source work ranks above test-only work — test cleanup, test refactors, suite
+runtime or coverage work, a sweep's test fixes — whichever was requested or queued first. Finish
+every source change the task owes, in every repository, before starting or delegating test-only
+work, and order a batch plan or a worker's brief the same way: within one change, the source edits
+come first and the test edits they require follow. Test updates a source change needs travel with
+that change, and running tests to verify it is verification, not test work. A test-only item
+already in flight when source work is available pauses at its next safe boundary with its next
+action recorded.
+
 Restoring an authorized broken deployed operation takes priority over ordinary tests, review gates,
 guidance delivery and cleanup. Pause those activities until the actual failed operation succeeds
 on the fix branch in every affected environment; use only the reproduction, diagnosis and repairs
