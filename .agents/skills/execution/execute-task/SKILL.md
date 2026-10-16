@@ -55,7 +55,9 @@ Every task that changes files starts here, and so does every follow-up that arri
   user named. It goes straight to **Execution**. Canonical guidance changes under `.agents` do not
   wait for a plan or an output-format approval: their request or an encountered guidance gap starts
   the guidance-correction workflow, and their evidence, smoke-test, review, and acceptance gates
-  verify it. `edit-skill` sequences its canonical edit around any active source task.
+  verify it. While another task is active, that workflow writes and commits the edit locally and
+  records it, and its delivery runs in bulk at **Completion**, as `edit-skill`'s **Recording During
+  A Task** says, whether the user asked for the correction directly or the run noticed it.
 - Work the approved plan already covers takes no new plan: an encountered issue, a gate's or a
   review's flag, a failing check, or a guidance correction discovered during the run. `edit-skill`
   records verified guidance corrections and `process-ledger` processes them at **Completion**.
@@ -151,7 +153,7 @@ recovery, review and source-restoration procedure.
 A source or product follow-up is planned on its own. A canonical guidance correction follows **When A Plan Is Needed** and does not wait for approval. **Priority** decides when other follow-ups run and whether affected work pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
 
 - **One that touches nothing in flight** — other files, another outcome — leaves the running work
-  going. It gets its own plan, or none when trivial or a canonical guidance correction, and runs beside that work once approved when approval is required and
+  going. It gets its own plan, or none when trivial, and runs beside that work once approved when approval is required and
   **Priority** permits, under `subagent-selection`'s **Dispatch**. Send this template only for a
   follow-up that needs a plan:
 
@@ -194,7 +196,7 @@ A source or product follow-up is planned on its own. A canonical guidance correc
 
 ## Execution
 
-Execution starts once a required plan is approved, or straight away for a trivial change or canonical guidance correction.
+Execution starts once a required plan is approved, or straight away for a trivial change or for a canonical guidance correction with no other task active.
 
 ### Task Authorization
 
