@@ -89,7 +89,7 @@ task is active, preserve its execution and follow **Recording During A Task** fo
 ## Guidance Delivery
 
 `process-ledger` invokes this route only for a verified successful `guidance_correction`, beside the
-source stream. It never holds the source pull request; only an
+source stream. It holds the source pull request only for the push its ridden edits need; only an
 edit on that pull request, or one the GitHub rule's **Merge Authorization** holds for a source pull
 request in another repository, waits for that merge. Run it as a delegated worker when the session
 can, so the user's review of the source pull request overlaps it.
@@ -101,7 +101,8 @@ can, so the user's review of the source pull request overlaps it.
    head carrying it, and is pushed only once both pass; that push is the one the source stream waits
    for. It carries step 7.3's prose-duplication checks into that pull request's simplification and
    step 7.4's incident vocabulary into its final acceptance, so both gates read wording the smoke
-   round has already checked. An edit on another session's source pull request
+   round has already checked; a later repair to that wording repeats the smoke round before its
+   push. An edit on another session's source pull request
    runs steps 7.2 to 7.5 here on the head it pushed, stays `pending` until that pull request merges,
    and the delivery report says the push moved that pull request's head past its owner's
    acceptance. The steps below cover the agent-configuration pull request.
