@@ -263,16 +263,17 @@ When separately requested implementation changes the reviewed codebase, target, 
 invalidate affected receipts under **Review Continuity** and resume the active CR at its first nonterminal phase. Internal review fixes remain phases of the active run. Pass this continuity rule into `/code-review high fix`;
 it overrides that skill's generic restart-on-any-new-task instruction.
 
-A mechanically bounded, behavior-preserving follow-up does not restart a CR loop or invalidate
-product-review receipts merely because it changes a test, fixture, documentation, CI or check
+A mechanically bounded, behavior-preserving follow-up does not restart a CR loop or invalidate any
+completed reviewer receipt merely because it changes a test, fixture, documentation, CI or check
 harness, formatting, lint compliance, or a type-only annotation. Classify it from what it changes,
 never from its path: it may change validation inputs, but must leave shipped product behavior,
 dependencies, effective runtime or deployment configuration, API and deployment contracts, and
-generated contracts unchanged. Retain the cohort's completed receipts and loop counters, run the
-focused validation and any artifact-specific gate the follow-up needs, then run the one fresh
-exact-head acceptance and check gate without launching another product lens or cohort. A change to a
-review rubric or reviewer instruction reruns only the lenses that use it; a supposedly non-source
-change that affects shipped behavior or a contract invalidates only the affected receipts under this
+generated contracts unchanged. A prior reviewer having read the changed non-source artifact does
+not reopen that lens. Retain the cohort's completed receipts and loop counters, run the focused
+validation and any artifact-specific gate the follow-up needs, then run the one fresh exact-head
+acceptance and check gate without launching another reviewer lens or cohort. A change to a review
+rubric or reviewer instruction reruns only the lenses that use it; a supposedly non-source change
+that affects shipped behavior or a contract invalidates only the affected receipts under this
 section.
 
 When the user makes residual lint-only diagnostics non-blocking, they do not hold a behavior-complete
@@ -327,11 +328,11 @@ slice, or a fix is not a reason to run.
 
 Run the affected targets once more against the refreshed head the loops leave behind. Fix what that
 run reports, rerun only the lenses whose receipts the repair invalidates under **Review Continuity**,
-and run the affected targets again. A test-only repair retains the product-review cohort and its
-loop state, even when it changes validation inputs; it reruns its focused validation and any test
-artifact gate instead. A repair that also changes shipped behavior, a contract, or review guidance
-invalidates the affected receipts. Repeat only that narrow loop until one clean lens pass and one
-green run describe the same head.
+and run the affected targets again. A test-only repair retains the review cohort, every completed
+reviewer receipt, and loop state, even when it changes validation inputs; it reruns its focused
+validation and any test artifact gate instead. A repair that also changes shipped behavior, a
+contract, or review guidance invalidates the affected receipts. Repeat only that narrow loop until
+one clean lens pass and one green run describe the same head.
 
 Run the full repository suite only when every test is relevant to the pull request.
 
