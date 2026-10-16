@@ -31,8 +31,9 @@ runner's targets and the CI jobs that run tests; every double — each `patch`, 
 `monkeypatch.setattr` target and each `Mock`, `AsyncMock`, and `MagicMock` construction — with the
 owner of its target, whether the real implementation crosses a process boundary, and the seam the
 application declares for that dependency when one exists; each third party a suite calls for real,
-with the calls one run makes to it per account and per destination; and any configured budget,
-whether a runner timeout, a CI limit, or a documented target.
+with the calls one run makes to it per account and per destination; and any tighter suite budget
+the repository configures, such as a documented target, with runner and CI timeouts recorded as
+hang bounds rather than budgets.
 
 The measurement taken once before fan-out is the timing of every runner target through the
 runner's own per-test and per-fixture duration reporting, serialized as the runner requires. Add
@@ -40,8 +41,8 @@ instrumentation only when the runner cannot report durations, and keep it only w
 it. Record baseline pass/fail state, wall time per suite, and the slowest cases and fixtures. A suite
 that cannot run locally is recorded unmeasured with its CI duration when one is available.
 
-The budget is what the repository configures. Absent one, a suite finishes within five minutes of
-wall time, and no single case takes more than a small fraction of that.
+The budget is the suite budget the testing rules set, and within it no test, parametrized family
+or module is disproportionate under `test-fixture`'s cost question.
 
 **The budget binds the run, and a breach is never an end state.** A suite measured over it is worked
 until it is under, by the dispositions below — the run is not finished while one stands. Reporting a
@@ -194,16 +195,18 @@ would catch, so the question is what a reader loses if it goes, not whether it p
 asserts little for a large share of the suite's wall time is folded into a case of the same
 classification that is already paying that setup, or made cheaper where it stands. In a
 pre-production repository folding and speeding up cases is ordinary rather than a last resort: a
-suite nobody will wait for is coverage nobody runs. A case disproportionate under `test-fixture`'s
-cost question that cannot be made cheap is removed, as `pre-production` says.
+suite nobody will wait for is coverage nobody runs. A case or module disproportionate under
+`test-fixture`'s cost question that cannot be made cheap as that question allows is removed, as
+`pre-production` says.
 
 **No budget removes a test as redundant because a test of another classification makes the same
 assertion.** A disproportionate cost is a separate reason, decided above. An
-end-to-end test that an integration or unit test also reaches stays, however far over budget its
-suite is and whatever stage the repository is in: its worth is that it runs the real services, which
-the cheaper test does not. Being over budget, being pre-production, and the cheaper test being
-"sufficient" are not reasons to cut it; bring the suite under budget by making its cases cheaper or
-folding them into cases of the same classification.
+end-to-end test that an integration or unit test also reaches is not cut as redundant, however
+far over budget its suite is and whatever stage the repository is in: its worth is that it runs the
+real services, which the cheaper test does not. Being over budget, being pre-production, and the
+cheaper test being "sufficient" are not reasons to cut it as redundant; bring the suite under budget
+by making its cases cheaper, folding them into cases of the same classification, or removing a
+disproportionate one as above.
 
 Preserve every unique guarantee while doing it, except where a disproportionate case is removed
 for its cost. Cutting a case whose assertion nothing else in its classification makes is otherwise a
@@ -360,7 +363,7 @@ outside this doctor's boundary and are reported with evidence.
 
 Before proposing an application change, establish all three conditions:
 
-1. A repository-native suite exceeds its configured wall-time budget, or the five-minute default.
+1. A repository-native suite exceeds its wall-time budget.
 2. Profiling or repeated measurements attribute the overrun to an application path. First address
    test-side causes such as fixture setup, repeated startup, excessive data, and timing sleeps.
 3. The focused application fix is necessary to bring that suite within budget, alone or alongside

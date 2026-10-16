@@ -57,7 +57,8 @@ tracing a test surface is; without one, fix what the focused pass can finish.
 9. Prove every distinct new behavioral guarantee through the mutation workflow below, restore the
    exact baseline, and run the affected repository targets once on the completed tree with the
    runner's per-test durations reported. Apply the rubric's cost question to every test added or
-   changed before reporting it done, and report each one's duration.
+   changed, and to the module holding it, before reporting it done, and report each one's duration
+   and that module's total.
 
 ## Mutation Proof
 
@@ -106,8 +107,8 @@ keeper, and delete one that proves nothing once the rubric's deletion evidence i
 repaired or strengthened guarantee takes its mutation proof. The fixes count toward the
 product-constraints skill's size budget like any other incidental change; past it, list what is left
 in the change's report. The rubric's cost question is part of the sweep: read the per-test durations
-from the run that verified the change, and a disproportionate test in scope is made cheap or removed
-as the product-constraints skill decides.
+from the run that verified the change, and a disproportionate test, parametrized family or module
+in scope is made cheap or removed as the product-constraints skill decides.
 
 Report each test in scope with its disposition, and for each deletion the evidence the rubric asks
 for.

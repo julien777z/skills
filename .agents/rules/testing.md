@@ -236,18 +236,20 @@ class TreeNode(BaseModel):
   fails instead of holding a runner until the platform's six-hour default. A job that calls a
   reusable workflow cannot carry the key, so it goes on the job inside the reusable workflow that
   runs the suite. A local runner that wraps the suites bounds each suite's run at the same 15 minutes.
-- **A suite that needs longer than 15 minutes is a defect, never a reason to raise its timeout.**
-  Find what made it slow — a test that waits on a real clock, an immutable resource (a schema, a
-  compiled artifact, a client) rebuilt per test where it could be built once per session, work
-  repeated across parametrized cases — and fix that cause until the suite fits. Splitting the suite
-  across jobs only to stay under the limit, or giving any suite a timeout above 15 minutes, hides
-  the same defect.
-- **One test that dominates its suite's runtime is the cause, not the suite around it.** A test
-  disproportionate under `test-fixture`'s cost question is made cheap or removed, as that rubric and
-  `pre-production` decide. Absorbing it instead keeps the cost and hides it, exactly as a raised
-  timeout does: retuning the runner's distribution mode, worker count, ordering or grouping, giving
-  it a job of its own, skipping it, marking it for a run pull requests deselect, or moving it to a
-  scheduled workflow.
+- **Every suite finishes within five minutes of wall time**, or within a tighter budget the
+  repository configures. The 15-minute timeout only stops a hung run; a suite that needs longer than
+  its budget is a defect, never a reason to raise the timeout or the budget. Find what made it slow
+  — a test that waits on a real clock, an immutable resource (a schema, a compiled artifact, a
+  client) rebuilt per test where it could be built once per session, work repeated across
+  parametrized cases — and fix that cause, or remove what cannot be made cheap, until the suite
+  fits. Splitting the suite across jobs only to stay under the budget, or giving any suite a timeout
+  above 15 minutes, hides the same defect.
+- **A test, parametrized family or module that dominates its suite's runtime is the cause, not the
+  suite around it.** One disproportionate under `test-fixture`'s cost question is made cheap or
+  removed, as that rubric and `pre-production` decide. Absorbing it instead keeps the cost and hides
+  it, exactly as a raised timeout does: retuning the runner's distribution mode, worker count,
+  ordering or grouping, giving it a job of its own, skipping it, marking it for a run pull requests
+  deselect, or moving it to a scheduled workflow.
 - When CI tests fail and you cannot access the logs directly, ask the user to provide the failure output before attempting fixes.
 
 ## Environments
