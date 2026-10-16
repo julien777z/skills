@@ -62,9 +62,11 @@ Follow the selector's dispatch and unavailable-model policy.
 When the required tier cannot be spawned after the selector's documented routes are exhausted, do
 not substitute a model or hold the CR review loop. The primary agent performs the complete CR
 analysis and fix sequence in process, reading and applying the same `code-simplify` and
-`code-review` rubrics, target scope, receipts, and validation requirements that the cohort would
-have covered. This route does not replace the independent `acceptance-gate`; that gate remains a
-separate required checkpoint.
+`code-review` rubrics, target scope and receipts. This includes finding validation and refutation;
+the standalone review's unavailable-reviewer and independent-validator requirements do not hold
+this CR-only route. Verify fixes through the required checks. Independent `acceptance-gate` and
+`test-skill` comparisons keep their own model and independence requirements; neither is performed
+in process or waived by this route.
 
 ## Review Targets
 
