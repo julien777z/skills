@@ -93,7 +93,9 @@ the session can, so the user's review of the source pull request overlaps it.
 
 1. Read every `pending` `guidance_correction` entry whose recorded action succeeded and resume at
    its recorded first nonterminal stage. Only an entry with no stage receipt applies its edits under
-   **Behavior** steps 5 and 6, on the agent-configuration branch step 7.1 selects.
+   **Behavior** steps 5 and 6, on the branch step 7.1 selects. An edit step 7.1 puts on a source
+   pull request is delivered with that pull request after step 7.2's source check, and the steps
+   below cover the agent-configuration pull request.
 2. Run step 7.2's source check.
 3. Delegate the pull request to `cr` with merge withheld. Give it the user's request and the
    recorded evidence as the intent statement, the incident vocabulary for its acceptance gate as
@@ -382,7 +384,9 @@ the session can, so the user's review of the source pull request overlaps it.
    1. **Branch and commit.** The edit goes onto the open agent-configuration pull request the work
       continues in the repository being edited, whichever session opened it, or, when it continues
       none, onto a branch from the freshly fetched default branch with a new pull request, under the GitHub rule's **Branches and Pull Requests** — never onto a
-      source branch, the one checked out included. Commit the `.agents` files, never a provider
+      source branch, the one checked out included, except that guidance true only once a still-open
+      source pull request in the same repository merges goes onto that pull request, as the same
+      rule says, and merges with it. Commit the `.agents` files, never a provider
       mirror, and push each step once `execute-task`'s **Pre-Push Gate** checks pass to a draft pull
       request; steps 3–4 are the complete-diff pass its **Completion** runs, and step 7's `land-pr` merges it,
       taking it out of draft as the merge's first step. None of that waits to be asked: the decision was made when the edit was requested, and
@@ -454,7 +458,7 @@ the session can, so the user's review of the source pull request overlaps it.
       **The agent-configuration merge exception decides the conflict with the ordinary merge
       default.** When the GitHub rule classifies every changed path as canonical agent
       configuration, the required gates pass, a skill's changed scripts' own checks included, and no
-      still-open source pull request makes the guidance conditional, `land-pr` is the next action in
+      still-open source pull request in another repository holds it, `land-pr` is the next action in
       this run. Do not record, report, or ask for a permission hold by citing the ordinary default;
       that is not a documented gate for this pull request.
 
@@ -486,8 +490,10 @@ the session can, so the user's review of the source pull request overlaps it.
       request the work continues under step 1 when it was — and the new head goes back through step 4. Everything
       in `.agents`, merge it through `land-pr` with the head `acceptance-gate` accepted — but first
       ask whether any line it adds or drops is true only once a still-open source pull request
-      merges, and if so hold it until that pull request has merged, as the GitHub rule's **Merge
-      Authorization** says, and report it as that rule directs. Otherwise a pull request carrying a
+      merges. A line depending on one in the same repository moves onto that pull request under
+      step 1; one depending on a pull request in another repository holds this one until that merge,
+      as the GitHub rule's **Merge Authorization** says, and is reported as that rule directs.
+      Otherwise a pull request carrying a
       skill change merges once step 6 found every changed output matching its concrete example, and
       one carrying only rules merges on sight as the GitHub rules say. **A pull request that adds a
       doctor skill is left for the user as a whole** — every other skill, rule and agent file in

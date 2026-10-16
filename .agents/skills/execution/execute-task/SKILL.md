@@ -738,8 +738,9 @@ Then finish each pull request the task changed, once, with its work finished. Tw
 side by side from here: the guidance stream and the source stream.
 
 - **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends only verified
-  successful `guidance_correction` entries to `edit-skill`'s **Guidance Delivery** route on its own
-  agent-configuration branch, delegated so it never waits on the source stream. A task with none
+  successful `guidance_correction` entries to `edit-skill`'s **Guidance Delivery** route, delegated
+  so it never waits on the source stream; guidance true only once this task's source pull request
+  merges rides that pull request instead, as the GitHub rule's **Branches and Pull Requests** says. A task with none
   has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:
