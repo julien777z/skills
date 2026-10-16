@@ -145,14 +145,15 @@ contradictory value, omitted optional evidence, absent required evidence, and on
 candidates where each applies. Cover interactions only when the production predicates combine
 them; this is a decision matrix, not an arbitrary cross-product. Each row asserts the externally
 observable result — for example, early completion versus a fallback request — rather than only the
-decoded intermediate model. Before implementation, return the same rows to the task owner in a
-`Boundary matrix` and wait for the owner’s persistence receipt. The owner writes it in the task's
-`session-ledger` plan entry; when there is no plan entry, the owner creates a `test-fixture`
-evidence record in that same private ledger. Each row names the boundary reader, exact emitted
-representation, behavior-changing condition, and expected observable outcome. The completion
-report reproduces safe matrix rows — field names, shape, and outcome rather than raw payload
-values — and their exercising test cases, then cites the private ledger entry that established them
-before implementation, so review can find a missing state or an
+decoded intermediate model. Before implementation, prepare the same rows in a `Boundary matrix`.
+A task owner writes and reads back that matrix in the task's `session-ledger` plan entry; when there
+is no plan entry, the owner creates and reads back a `test-fixture` evidence record in that same
+private ledger. A worker returns proposed rows to the owner and waits for the owner's persistence
+receipt. Each row names the boundary reader, exact emitted representation, behavior-changing
+condition, and expected observable outcome. The completion report reproduces safe matrix rows —
+field names, shape, and outcome rather than raw payload values — and their exercising test cases,
+then cites the private ledger entry that established them before implementation, so review can find
+a missing state or an
 internal representation substituted for the consumer contract.
 
 After strengthening one such boundary test, inspect the sibling tests and shared fixtures that emit
