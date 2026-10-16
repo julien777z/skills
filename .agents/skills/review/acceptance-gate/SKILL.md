@@ -66,8 +66,8 @@ The gate is read-only and distinct: not the author of the item. Its reader fresh
 1. the intent statement;
 2. the originating diff, with its deletions first;
 3. the item under judgement — an issue or finding, a proposal, a diff, an incoming base diff, or a
-   record; a diff that adds or changes tests carries their per-test durations from the run that
-   verified it;
+   record; a diff that adds or changes tests carries their per-test durations, and the total for
+   each module holding one, from the run that verified it;
 4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**;
 5. exactly one question from the list below.
 

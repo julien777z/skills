@@ -106,8 +106,8 @@ keeper, and delete one that proves nothing once the rubric's deletion evidence i
 repaired or strengthened guarantee takes its mutation proof. The fixes count toward the
 product-constraints skill's size budget like any other incidental change; past it, list what is left
 in the change's report. The rubric's cost question is part of the sweep: read the per-test durations
-from the run that verified the change, and a disproportionate test in scope is made cheap or removed
-as the product-constraints skill decides.
+from the run that verified the change, and a disproportionate test, parametrized family or module
+in scope is made cheap or removed as the product-constraints skill decides.
 
 Report each test in scope with its disposition, and for each deletion the evidence the rubric asks
 for.

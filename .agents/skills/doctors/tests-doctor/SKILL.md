@@ -203,9 +203,10 @@ suite nobody will wait for is coverage nobody runs. A case or module disproporti
 assertion.** A disproportionate cost is a separate reason, decided above. An
 end-to-end test that an integration or unit test also reaches is not cut as redundant, however
 far over budget its suite is and whatever stage the repository is in: its worth is that it runs the
-real services, which the cheaper test does not. Being over budget, being pre-production, and the cheaper test being
-"sufficient" are not reasons to cut it; bring the suite under budget by making its cases cheaper or
-folding them into cases of the same classification.
+real services, which the cheaper test does not. Being over budget, being pre-production, and the
+cheaper test being "sufficient" are not reasons to cut it as redundant; bring the suite under budget
+by making its cases cheaper, folding them into cases of the same classification, or removing a
+disproportionate one as above.
 
 Preserve every unique guarantee while doing it, except where a disproportionate case is removed
 for its cost. Cutting a case whose assertion nothing else in its classification makes is otherwise a

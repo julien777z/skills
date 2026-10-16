@@ -241,10 +241,11 @@ manifests, policies, provider payloads, and response schemas remain models. All 
 code-simplify opens with; the gate runs them over the diff's added lines and lists their hits before
 anything else.
 
-**A test is priced by what it costs to run.** Flag a test the diff adds or changes that
-`test-fixture`'s cost question calls disproportionate, and any change that absorbs a slow test in a
-way the testing rules list; the remedy is making it cheap or removing it, as that rubric and
-`pre-production` decide. Durations missing for an added or changed test hold a clean verdict.
+**A test is priced by what it costs to run.** Flag a test the diff adds or changes, or the module
+holding it, that `test-fixture`'s cost question calls disproportionate, and any change that absorbs
+a slow test in a way the testing rules list; the remedy is making it cheap or removing it, as that
+rubric and `pre-production` decide. Durations missing for an added or changed test, or its module's
+total, hold a clean verdict.
 
 **An added guard is priced like a missing one.** For every guard, refusal, validation, or branch a
 diff adds, the gate opens the writers `code-simplify`'s standard 1 says to read and names them in the

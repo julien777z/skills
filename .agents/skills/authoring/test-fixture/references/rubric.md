@@ -25,11 +25,11 @@ Before adding a test, answer five questions; a missing answer means do not add i
    together take two minutes or more, is disproportionate. Make it cheap through its own setup —
    build an immutable resource once, cut the cases to the ones that differ — or remove the tests
    that still cost more than they prove, keeping a cheaper test of the same classification where
-   the contract still needs one. A speedup that needs
-   code existing only for tests — a production seam, flag, shortened timer or test-only branch —
-   does not make it cheap, and neither does any way of absorbing a slow test that the testing rules
-   list. Below those lines the same trade still applies: a test whose runtime is large beside the
-   failure it could catch is folded into a case already paying that setup, or cut.
+   the contract still needs one. A speedup that needs code existing only for tests — a production
+   seam, flag, shortened timer or test-only branch — does not make it cheap, and neither does any
+   way of absorbing a slow test that the testing rules list. Below those lines the same trade still
+   applies: a test whose runtime is large beside the failure it could catch is folded into a case
+   already paying that setup, or cut.
 
 Check new and existing tests against these low-value patterns:
 
