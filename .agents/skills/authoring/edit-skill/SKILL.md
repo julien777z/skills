@@ -105,13 +105,25 @@ task is active, preserve its execution and follow **Recording During A Task** fo
   edit**, so a lost or truncated ledger can be rebuilt from the host. This skill authorizes that
   comment and its edits under the GitHub rule's **Comments**.
 - **The comment is a fallback for resuming delivery, written for a public reader, never a copy of
-  the entry.** It opens with the line `Ledger entry: <entry id>` and holds only what resuming needs,
-  stated generically: the failure class and the invariant, the intended behavior, the canonical
+  the entry.** It holds only what resuming needs, stated generically: the failure class and the invariant, the intended behavior, the canonical
   files and commits, and the delivery status with its current stage and next action. The user's
   words, the exact reproduction scenario, the incident that exposed the gap, and anything else
   about the task stay in the private ledger; the comment paraphrases them as the class they
   belong to. It follows the GitHub rule's independent publishing context: no other repository's
   name, pull request, product vocabulary or environment value, and no secret.
+- Write it in Markdown, in this shape, so a reader and a recovery search both find it:
+
+```markdown
+## Ledger entry
+`<entry id>`
+
+- **Failure class:** <the class of miss, stated generically>
+- **Invariant:** <what must hold>
+- **Intended behavior:** <what the guidance now says>
+- **Canonical files:** <files>
+- **Commits:** <short SHAs>
+- **Delivery:** <status> — <current stage and next action>
+```
 - Edit that one comment whenever its entry changes — a new commit, a stage result, a terminal
   disposition — rather than posting another, and record its URL in the entry.
 
