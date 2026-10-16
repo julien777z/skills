@@ -19,7 +19,8 @@ identity, never a second authoritative copy of its records.
   its owner and the file owner-readable and writable only.
 - An established task's missing locator, absent file, unreadable file, or invalid content is a
   recovery condition, not an empty ledger. Reconcile available canonical artifact receipts,
-  continuation records and worker returns for that task. Recover or reconstruct the file from
+  continuation records, worker returns and the ledger backup comments `edit-skill` keeps on
+  guidance pull requests for that task. Recover or reconstruct the file from
   verified evidence, preserving provenance and existing records. If evidence remains unavailable,
   report the incomplete retrieval; never create an empty replacement or claim a complete result.
   Only a successfully read valid file with `entries: []`, or a genuinely new task's initialized

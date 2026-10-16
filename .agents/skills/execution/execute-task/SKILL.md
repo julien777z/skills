@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once at the start of every task authorized to change files, before recommending an implementation, delegating edits, or editing — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until verified completion or explicit user stop or handoff. It plans source and product changes first, except for trivial changes; canonical guidance changes skip the plan and, while another task is active, are written locally, recorded, and delivered in bulk at its completion. It then applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, keeps session-created source work to one pull request per repository, finishes each pull request with a simplification pass, a test sweep, an acceptance gate and a history rewrite before sending it for review, checks every outcome it reports at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
+description: "Always run this. Invoke once at the start of every task authorized to change files, before recommending an implementation, delegating edits, or editing — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until verified completion or explicit user stop or handoff. It plans source and product changes first, except for trivial changes; canonical guidance changes skip the plan and, while another task is active, are pushed to a draft pull request, recorded, and delivered in bulk at its completion. It then applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, keeps session-created source work to one pull request per repository, finishes each pull request with a simplification pass, a test sweep, an acceptance gate and a history rewrite before sending it for review, checks every outcome it reports at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
 short_description: 'Plan source and product changes for approval; validate canonical guidance changes through their delivery gates.'
 ---
 
@@ -55,8 +55,8 @@ Every task that changes files starts here, and so does every follow-up that arri
   user named. It goes straight to **Execution**. Canonical guidance changes under `.agents` do not
   wait for a plan or an output-format approval: their request or an encountered guidance gap starts
   the guidance-correction workflow, and their evidence, smoke-test, review, and acceptance gates
-  verify it. While another task is active, that workflow writes and commits the edit locally and
-  records it, and its delivery runs in bulk at **Completion**, as `edit-skill`'s **Recording During
+  verify it. While another task is active, that workflow pushes the edit to its draft pull request
+  and records it, and the rest of its delivery runs in bulk at **Completion**, as `edit-skill`'s **Recording During
   A Task** says, whether the user asked for the correction directly or the run noticed it.
 - Work the approved plan already covers takes no new plan: an encountered issue, a gate's or a
   review's flag, a failing check, or a guidance correction discovered during the run. `edit-skill`

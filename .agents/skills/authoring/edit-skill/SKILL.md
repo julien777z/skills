@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. First carry out the requested action; only a verified success is recorded in the session ledger and delivered as a guidance edit. While another task is active, every correction, a direct request to edit guidance included, is written and committed locally and recorded, and its delivery runs in bulk when that task completes. Deliver every behavior-changing guidance edit through CR, the acceptance gate, and `test-skill` before its pull request merges.
+description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. First carry out the requested action; only a verified success is recorded in the session ledger and delivered as a guidance edit. While another task is active, every correction, a direct request to edit guidance included, is pushed to a draft guidance pull request and recorded, with its ledger entry backed up as a comment there, and the rest of its delivery runs in bulk when that task completes. Deliver every behavior-changing guidance edit through CR, the acceptance gate, and `test-skill` before its pull request merges.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -12,8 +12,8 @@ doing other work. An edit that skipped this is unverified, and the report says s
 
 **First perform the requested action.** While another task runs, correct the current work before
 recording a guidance correction. Record only a verified success under **Recording During A Task**;
-its edit is written and committed locally, and nothing is pushed, reviewed, smoke-tested or merged
-until that task reaches `execute-task`'s **Completion**, which starts `process-ledger`. A direct
+its edit is pushed to a draft pull request with the entry backed up beside it, and nothing is
+reviewed, smoke-tested or merged until that task reaches `execute-task`'s **Completion**, which starts `process-ledger`. A direct
 request to change guidance made while another task runs, such as "use edit-skill to reflect that",
 is recorded the same way: the requested action is the behavior it describes, applied to the
 current work, and the guidance edit is its record. A failed, blocked, or unavailable action is task evidence only: it
@@ -86,9 +86,11 @@ task is active, preserve its execution and follow **Recording During A Task** fo
 - When the action fails, is blocked, or cannot be verified, keep its evidence in the task's
   verification record and continue its recovery or escalation. Do not create, amend, or process a
   `guidance_correction` entry, and do not edit canonical guidance from that outcome.
-- Write the edit in the checkout step 4 resolves, on the branch step 7.1 selects, and commit it
-  there without pushing; record the branch and commit in the entry. Nothing else of delivery runs
-  while the task does: no push, pull request, review, gate, smoke round, merge or worker. A standing
+- Write the edit in the checkout step 4 resolves, on the branch step 7.1 selects, commit it, and
+  push it to that branch's draft pull request once the **Pre-Push Gate** passes, opening the draft
+  when the branch has none; record the branch, commit and pull request in the entry, then back the
+  entry up as **Ledger Backup** says. Nothing else of delivery runs while the task does: no review,
+  gate, smoke round, merge or worker. A standing
   instruction about how guidance pull requests are reviewed or merged governs that delivery when it
   runs, never when. A gate result that arrives for a guidance pull request already open is recorded
   as its entry's stage result, and its repair waits with the rest.
@@ -96,6 +98,19 @@ task is active, preserve its execution and follow **Recording During A Task** fo
   pull request, apart from edits the GitHub rule puts on a source pull request or holds for another
   repository.
 - The task's next step is never held by a correction: record it and carry on.
+
+### Ledger Backup
+
+- **Every `guidance_correction` entry keeps one backup comment on the pull request that carries its
+  edit**, so a lost or truncated ledger can be rebuilt from the host. This skill authorizes that
+  comment and its edits under the GitHub rule's **Comments**.
+- The comment opens with the line `Ledger entry: <entry id>` and holds the entry in the target
+  repository's terms: the user's words, the failure class and invariant, the reproduction scenario,
+  the intended behavior, the canonical files and commits, and the delivery status with its current
+  stage and next action. It follows the GitHub rule's independent publishing context: no other
+  repository's name, pull request, product vocabulary or environment value, and no secret.
+- Edit that one comment whenever its entry changes — a new commit, a stage result, a terminal
+  disposition — rather than posting another, and record its URL in the entry.
 
 ## Guidance Delivery
 
@@ -106,9 +121,9 @@ request in another repository, waits for that merge. Run it as a delegated worke
 can, so the user's review of the source pull request overlaps it.
 
 1. Read every `pending` `guidance_correction` entry whose recorded action succeeded and resume at
-   its recorded first nonterminal stage. An entry with no local commit applies its edits under
-   **Behavior** steps 5 and 6, on the branch step 7.1 selects; one recorded with a local commit
-   pushes it there. An edit step 7.1 puts on a source
+   its recorded first nonterminal stage, rebuilding a lost or truncated entry from its **Ledger
+   Backup** comment. An entry with no recorded commit applies its edits under **Behavior** steps 5
+   and 6, on the branch step 7.1 selects; one with a pushed commit resumes from that head. An edit step 7.1 puts on a source
    pull request this session drives runs step 7.2's source check and step 7.5's smoke round on the
    head carrying it, and is pushed only once both pass; that push is the one the source stream waits
    for. It carries step 7.3's prose-duplication checks into that pull request's simplification and

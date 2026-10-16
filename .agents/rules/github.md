@@ -232,8 +232,6 @@ alwaysApply: true
 - Use conventional commit messages when applicable and keep commits atomic and focused.
 - Commit each small coherent step and push it promptly once the pre-push checks `execute-task`'s
   **Pre-Push Gate** defines pass, sub-agents included; work only one machine holds is lost with it.
-  A guidance edit recorded during another task is the exception: it stays a local commit until
-  `edit-skill`'s delivery runs, and its ledger entry carries what is needed to write it again.
 - Do not commit generated files unless the repository explicitly requires them.
 
 ## Dependency Installation
