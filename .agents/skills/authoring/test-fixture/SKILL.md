@@ -57,7 +57,7 @@ tracing a test surface is; without one, fix what the focused pass can finish.
 9. Prove every distinct new behavioral guarantee through the mutation workflow below, restore the
    exact baseline, and run the affected repository targets once on the completed tree with the
    runner's per-test durations reported. Apply the rubric's cost question to every test added or
-   changed before reporting it done, and report each one's duration.
+   changed, and to the module holding it, before reporting it done, and report each one's duration.
 
 ## Mutation Proof
 

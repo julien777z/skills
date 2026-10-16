@@ -40,9 +40,9 @@ with an obsolete owned contract or revision.
   Re-running the job is never the fix: a green re-run proves the outage ended, not that the pipeline
   survives the next one.
 
-- **A test that costs far more than it covers is removed.** When one test or parametrized family
-  is disproportionate under `test-fixture`'s cost question and cannot be made cheap by its own setup,
-  delete it with the deletion record `test-fixture`'s rubric asks for, and keep or extend a cheaper
+- **A test that costs far more than it covers is removed.** When one test, parametrized family or
+  module is disproportionate under `test-fixture`'s cost question and cannot be made cheap as that
+  question allows, delete it with the deletion record `test-fixture`'s rubric asks for, and keep or extend a cheaper
   test of the same classification where the contract needs one. Never keep it in any of the ways the
   testing rules list for absorbing a slow test.
 
