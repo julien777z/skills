@@ -31,8 +31,9 @@ runner's targets and the CI jobs that run tests; every double — each `patch`, 
 `monkeypatch.setattr` target and each `Mock`, `AsyncMock`, and `MagicMock` construction — with the
 owner of its target, whether the real implementation crosses a process boundary, and the seam the
 application declares for that dependency when one exists; each third party a suite calls for real,
-with the calls one run makes to it per account and per destination; and any configured budget,
-whether a runner timeout, a CI limit, or a documented target.
+with the calls one run makes to it per account and per destination; and any tighter suite budget
+the repository configures, such as a documented target, with runner and CI timeouts recorded as
+hang bounds rather than budgets.
 
 The measurement taken once before fan-out is the timing of every runner target through the
 runner's own per-test and per-fixture duration reporting, serialized as the runner requires. Add
