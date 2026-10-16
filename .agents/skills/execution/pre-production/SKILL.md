@@ -53,6 +53,12 @@ with an obsolete owned contract or revision.
   appears beside it — a second implementation of the mechanism, a sibling path answering the same
   question from a different input, a parallel copy nobody reconciled — that is one piece of work, and
   splitting it leaves the half that stays behind as the version the next person extends.
+- **A parallel copy is reconciled by giving the mechanism one owner, never by keeping the copies in
+  step.** Making copies identical, a test that they match, or a note to update both leaves the
+  second mechanism in place. Pick the owner by the fewest-mechanisms test, across repositories as
+  within one, move every consumer onto it and delete the copies. A parallel copy of a mechanism the
+  change touches is that change's scope, never incidental work under the size budget, and never an
+  item reported as left for later.
 - Establish the defect's boundary from the failed behavior, violated invariant, and mechanism that
   produces it. Repair every affected implementation and consumer of that mechanism, including
   necessary generated contracts and retained-data migrations. Sharing a directory, a naming
@@ -132,6 +138,9 @@ with an obsolete owned contract or revision.
   reads as "there was no decision to make".
 - When a genuine fork appears, present it as options, state each consequence concretely, and **say
   which one removes the most duplication and leaves the fewest mechanisms behind**. Recommend that one.
+  A fork only in how the code is built — where shared behavior lives, which mechanism replaces
+  parallel copies — is decided by that same test and stated in the pull request, never put to the
+  user.
   A fork between designs of what the reader sees is ranked by what serves the reader and the flow
   instead, as the global rules' standing-guidance bullet says of design rules.
   The user may take the trade-off or refuse it; they cannot weigh what they were not told.
