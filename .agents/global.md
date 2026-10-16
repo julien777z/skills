@@ -312,6 +312,10 @@ return records;
 - Name things for the shape being exercised, not for whichever caller happened to prompt the work.
   A test needing a table with a secret column names it for that — a record with a secret — rather
   than borrowing the one real table the change was made for.
+- A library owns the vocabulary of the protocol or provider it wraps. That protocol's field names
+  and naming conventions, such as how it spells a permission or a capability, are the library's own,
+  never a consumer's domain vocabulary: a helper encoding such a convention belongs in the library
+  even when one consumer prompted it, and the library's owned API gains it.
 - Sample values follow the same rule: prefer plainly synthetic literals over ones shaped like a
   real identifier from another system's domain.
 - Identify environments by their full domain name throughout code, configuration, documentation,
