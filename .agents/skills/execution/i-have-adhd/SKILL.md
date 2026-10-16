@@ -96,6 +96,12 @@ without presenting either as approval. If none remain, omit the list. The list a
 required direct-chat result even when that skill says to return only its result or nothing else;
 preserve the result’s own shape. This supplement never changes machine-consumed output.
 
+**An action the reader owns is not an unresolved decision**, and never joins that list: archiving
+a repository, granting a permission a check refused, a manual step outside the session. Name it
+once, when it arises, with what it unblocks. Raise it again only when it now blocks the next step
+or the reader asks what they owe; once they say they will do it later, it is settled and stays out
+of every later message.
+
 Restating an existing decision is not a duplicate approval request. Do not open another request for
 it, ask for routine continuation, or repeat the list on every background poll or unchanged status
 update without a new user message. Continue authorized work that does not need the answer;
