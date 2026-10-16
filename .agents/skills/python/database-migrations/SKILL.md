@@ -144,6 +144,13 @@ format transition or recovery mechanism for data explicitly declared disposable 
   to preserve, so correct the revision itself rather than layering a second one on top to undo it.
   This holds whatever the mistake is: a destructive body, a wrong constraint name, a missing index. Say
   in the pull request that you edited it.
+- **A pull request adds at most one revision to each chain.** While no environment has applied it,
+  every later schema or stored-data change the pull request makes to that chain's database goes into
+  that revision — regenerated or extended, never a second revision on top — with its backfill steps
+  inside it in dependency order and its survivorship and destructive-operation entries merged into
+  that revision's own. A pull request that already carries several unapplied revisions on one chain
+  folds them into one before review, and a base update that adds revisions re-parents it onto the
+  new head.
 - Establish "not applied yet" from the real `alembic_version` row in every existing environment that
   may have applied it. An explicit user statement or repository fact that no such environment exists
   establishes that scope without inventing a database to query. Data being disposable alone does
