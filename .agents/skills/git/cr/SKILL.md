@@ -56,8 +56,9 @@ and lands it separately after smoke runs. An earlier delegation cannot be reused
 - `execute-task` — apply the repository-local delivery ownership rule when refreshing pull-request prose.
 
 Invoke `subagent-selection` and use its **standard** tier for this workflow's own sub-agents.
-Delegated skills retain their explicitly selected tiers, subject to the user's model override.
-Follow the selector's dispatch and unavailable-model policy.
+Delegated skills retain their explicitly selected tiers, subject to the user's model override. Record each
+launched worker's catalogue state, exact dispatch identifier, assignment state and host receipt in the CR
+ledger. Follow the selector's dispatch and unavailable-model policy.
 
 Only after the host explicitly rejects the required tier's exact identifier as unsupported may CR
 perform its review and fix sequence in process. It does not substitute a model: the primary agent

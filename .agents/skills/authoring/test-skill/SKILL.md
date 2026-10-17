@@ -115,12 +115,13 @@ a code change is tested: against the case that motivated it, with the change and
 
 ## Reviewer selection
 
-Invoke `subagent-selection` and request **standard** by default. Select the first available lower
-capability in the selector's ordering only after a host receipt explicitly rejects the standard tier's
-exact identifier as unsupported; never move upward or inherit the orchestrator's model. This fallback
-applies to this skill's default, never against the user's explicit model or capability constraint. A
-`dispatch required` or `identifier required` result, and every rejection not explicitly unsupported,
-reports `not run` with the concrete hold.
+Invoke `subagent-selection` and request **standard** by default. Only after a host receipt explicitly
+rejects the standard tier's exact identifier as unsupported, select the next permitted lower mapped capability,
+resolve its exact identifier, and launch the actual reader assignment. Advance again only after that candidate
+receives its own explicit unsupported receipt; never move upward or inherit the orchestrator's model. This
+fallback applies to this skill's default, never against the user's explicit model or capability constraint. A
+`dispatch required` or `identifier required` result, and every rejection not explicitly unsupported, reports
+`not run` with the concrete hold.
 
 Classify a rejected reader dispatch from the host receipt. Only a receipt establishing that the
 requested capability or model is unsupported makes it unavailable for that attempt and permits the

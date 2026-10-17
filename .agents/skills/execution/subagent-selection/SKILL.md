@@ -43,12 +43,14 @@ agent; the calling agent launches the actual assignment with the selected model.
    resolved model within comparison pairs.
 5. The calling agent chooses a capability level and reasoning effort for each role or chat. Honor the user's
    explicit model or capability-level constraint first, then the calling skill's capability level. For a live
-   skill-verification chat, choose the least-capable available model; otherwise use the task criteria in the
-   table, with **standard** as the default. Reserve frontier for the most demanding assignments unless
-   specifically required. Use **medium** reasoning for bounded checks and **high** for complex, cross-cutting
-   work; never dispatch a subagent at any other reasoning effort. An explicit user model override is the exact
-   dispatch candidate even when the catalogue omits it; report it as an override rather than relabeling it as a
-   different capability level.
+   skill-verification chat, choose the least-capable suitable mapped family, resolve its exact candidate, and
+   launch the actual chat assignment; never skip that family because the catalogue omits it. Advance to another
+   family only after an explicit unsupported receipt and only as the caller's fallback policy permits. Otherwise
+   use the task criteria in the table, with **standard** as the default. Reserve frontier for the most demanding
+   assignments unless specifically required. Use **medium** reasoning for bounded checks and **high** for
+   complex, cross-cutting work; never dispatch a subagent at any other reasoning effort. An explicit user model
+   override is the exact dispatch candidate even when the catalogue omits it; report it as an override rather
+   than relabeling it as a different capability level.
 6. Select the chosen identifier and reasoning effort explicitly when starting a verification chat or
    dispatching a sub-agent. For Codex `spawn_agent`, use `fork_turns: "none"` with a self-contained
    assignment, scope, constraints, and reading list so model inheritance cannot override selection. Reuse a
@@ -132,3 +134,6 @@ Host: <current host>
 | advanced | catalogue-confirmed or catalogue-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, or unavailable: <reason> |
 | frontier | catalogue-confirmed or catalogue-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, or unavailable: <reason> |
 ```
+
+A calling skill that launches selected work retains the catalogue state, exact identifier, assignment state, and
+host receipt in its own evidence. Runtime identity is additional evidence only when the host exposes it.
