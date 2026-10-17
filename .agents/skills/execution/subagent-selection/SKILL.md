@@ -18,15 +18,16 @@ agent; the calling agent launches the actual assignment with the selected model.
    parameters, or its chat model picker, and read
    [model capabilities](references/model-capabilities.md). Keep catalogue discovery, an accepted dispatch,
    and host-exposed runtime identity as separate evidence; a worker-reported label is only a label.
-2. Resolve all four capability levels to their mapped model families. Use the user's exact model override
-   when present; otherwise prefer the latest matching identifier from the host's model-selection surface.
-   If the family is absent there, read the host's documented candidates in **model capabilities** and use
-   that family's candidate for the actual assignment. A family label is not a dispatch identifier, and a
-   documented candidate is not a claim of support. Mark a resolved catalogue-hidden candidate `dispatch
+2. Resolve all four capability levels to their mapped model families. Use an exact user override only for
+   the role, chat, and capability row it expressly governs; one explicitly scoped to every assignment governs
+   every row. For every other row, prefer the latest matching identifier from the host's model-selection
+   surface. If the family is absent there, read the host's documented candidates in **model capabilities**
+   and use that family's candidate for the actual assignment. A family label is not a dispatch identifier,
+   and a documented candidate is not a claim of support. Mark a resolved catalogue-hidden candidate `dispatch
    required` and proceed to step 3; never turn catalogue omission into an identifier hold or an override
-   question while that candidate exists. Only when neither the host nor the reference nor an exact user
-   override supplies a candidate, or the host has no explicit model-selection mechanism, record an
-   identifier-resolution hold. Do not invent versions or aliases or silently substitute another family.
+   question while that candidate exists. Only when neither the host nor the reference nor an exact override
+   for that assignment supplies a candidate, or the host has no explicit model-selection mechanism, record
+   an identifier-resolution hold. Do not invent versions or aliases or silently substitute another family.
 3. Before a caller marks a requested capability level or explicit model unavailable, follows an
    unavailable-model fallback, or takes an in-process route, launch the actual assigned work once with its exact
    candidate identifier and explicit reasoning effort. A successful dispatch establishes that the host accepted
