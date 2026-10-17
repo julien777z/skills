@@ -172,6 +172,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   reader pressed "Add item" to open the dialog and read "Add item" as its title; a third "Add item"
   on the button says nothing new. The commit names the act in the fewest words: "Save" for a form
   that adds or changes something, the bare verb for a confirmation — "Delete" under "Delete role".
+  When that verb is also the word the product's dialogs use to dismiss, such as "Cancel", the
+  commit adds what it acts on — "Cancel subscription" — so one word never means both doing the
+  act and backing out of it.
 - **A status reads from the viewer's side.** Name the state in terms of what that reader did or
   still has to do, and keep internal steps they take no part in behind a visual cue: a person who
   sent a form sees "Submitted", with the tone telling review apart from acceptance, while the
