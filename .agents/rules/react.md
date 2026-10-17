@@ -429,6 +429,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Disable an action while locally known prerequisites are unmet.** Missing selections or incomplete
   required fields are normal editing state, not an error banner. Show errors for failures after a
   valid action or for failed data requests.
+- **An action that would change nothing is disabled.** "Reset to defaults" while every value is
+  already its default, "Select all" while everything is selected, "Clear" on an empty field: each
+  offers a press with no effect, and enabling it suggests the state is something other than it is.
 
 - **A page or form that edits saved values saves through one floating save panel fixed to the bottom
   of the viewport, never through buttons on the page** — a settings page, a profile, a record's edit
@@ -446,8 +449,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   or an earlier submission, because the signer vouches for what they entered.
 - **A form where the signed-in person enters someone else's details turns browser autofill off on
   every field, selects included** — a record made on another person's behalf, a person they add or
-  invite — so the browser never fills the reader's own name, address or email into a stranger's
-  record. One boundary around the form sets it for every control inside, including those a shared
+  invite, a business or other record they name — so the browser never fills the reader's own name,
+  address, email or saved company into a record that is not the reader. One boundary around the form sets it for every control inside, including those a shared
   field component renders, never a token per field that the next added field forgets. "Off" means
   what the browser and the common password managers actually honour, which a bare
   `autocomplete="off"` is not for name, email and address fields. A search or picker box opts out
