@@ -267,6 +267,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   sits, in a page, a layout or a gate: the check becomes the redirect and the screen is deleted,
   never restyled, moved into a shared message component, or kept because a task lists it among the
   states to restyle.
+- **Settings is the last group in the primary navigation, and the reader's own account is the last
+  item within it.** The work the product exists for comes first; settings about the shared
+  workspace come before settings about the reader themselves.
 - **A multi-step flow the reader has finished — a verification, a setup, an onboarding — leaves the
   navigation, and its address redirects to the viewer's home.** A finished flow whose outcome is
   final shows no banner where the reader lands, a toast at most; one whose submission waits on
@@ -447,6 +450,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   record. One boundary around the form sets it for every control inside, including those a shared
   field component renders, never a token per field that the next added field forgets. A form for
   the person's own details keeps accurate autocomplete tokens on each field.
+- **A search box that picks a consequential record — a person, an account, a payee — shows no
+  suggestions and makes no request until the reader types.** A list on focus invites a pick by
+  proximity rather than intent, and offers records the reader never asked to see. A picker over a
+  low-stakes vocabulary, such as tags, may suggest on focus. The shared search component makes each
+  caller declare which kind it picks rather than defaulting to either.
 - **A form longer than a handful of fields is grouped into titled sections,** each holding the
   fields that answer one question; sibling forms share one section layout, under **Shared
   Surfaces** above.
@@ -499,6 +507,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   already signals navigation; hovering changes its color or underline treatment with sufficient
   contrast. The shared link primitive owns that treatment where one exists; otherwise, use the
   product's link tokens consistently across tables, cards, and inline text.
+- **Text on a clickable card, row or label stays selectable, and selecting it never activates the
+  control.** A drag, double-click or triple-click that selects text leaves the checkbox or option as
+  it was; only a plain click toggles it. Disabling selection to avoid the accidental toggle is the
+  defect. The shared label component owns this, so every card and row built on it behaves the same.
 - **A labelled button in a form, beside a field, or in a form's row of actions reads as a button at
   rest**: a filled surface, or a boundary with at least 3:1 contrast against what it sits on, plus
   a hover state. One that reads as text or a faint outline beside an input is the defect. A control
