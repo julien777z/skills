@@ -123,6 +123,33 @@ repository remain exceptions. Separately
 requested work after the CR run completes remains outside this run's authorization. None of those
 exceptions permits moving active-run fixes out of the pull request under review.
 
+## Dependent Pull Requests
+
+A selected pull request whose build or behavior resolves another pull request's branch — through a
+manifest, lockfile, submodule or checkout reference — that this session is also changing is a
+dependent unit. Its dependency gates its merge, never its review:
+
+- Review the dependency's unit first, and review the dependent once against the dependency's
+  accepted head. When a later fix to the dependency changes what the dependent consumes, adapting
+  the dependent is a fix under **Review Continuity**. A dependency that merged before the
+  dependent's step 1 is repointed first, as below, and the dependent is then reviewed once on that
+  head.
+- The dependent completes step 6 at its accepted head and holds there, draft, while the dependency
+  is unmerged, so `land-pr` later receives step 6's coverage. The hold is not a withheld merge and
+  does not end the run: other selected units proceed while it waits for the dependency's merge
+  through the host's event route, and the run ends only once it lands or reaches the gate below. A
+  dependency closed without merging, or whose merge is neither authorized nor pending, is a
+  concrete gate: the unit stays at its accepted head, draft, and the **Completion Report** names
+  the gate and the saved next action.
+- Once the dependency merges, repoint every consuming reference as `land-pr`'s delivery-dependency
+  gate says, regenerating any lockfile with the repository's tooling. The repoint's diff holds only
+  those reference edits and the lockfile entries they change; it passes only the validation it
+  affects, the pre-push checks and `land-pr`'s check gate, and `land-pr` receives the repointed head
+  as the head to merge, with the repoint named as the sole commit past the accepted head. Any other
+  change in that push, another lockfile entry included, follows **Review Continuity**.
+- Then land the dependent under the same invocation's merge authorization. A user's explicit
+  withholding of merge still ends the unit at its accepted head.
+
 ## Description Refresh
 
 Read the pull request's title and description against its current head as the run's first action, and
@@ -262,6 +289,10 @@ When separately requested implementation changes the reviewed codebase, target, 
 invalidate affected receipts under **Review Continuity** and resume the active CR at its first nonterminal phase. Internal review fixes remain phases of the active run. Pass this continuity rule into `/code-review high fix`;
 it overrides that skill's generic restart-on-any-new-task instruction.
 
+A dependent unit's repoint under **Dependent Pull Requests**, confined to its reference edits and
+the lockfile entries they change, retains every receipt: it reopens no lens and needs no second
+acceptance gate.
+
 A mechanically bounded follow-up confined to formatting, lint compliance, a type-only annotation,
 or the validation/check harness does not invalidate review receipts when it changes no shipped
 product behavior, dependency or API/deployment contract, or review rubric. Whether review or the
@@ -382,8 +413,10 @@ to work around this gate.
 5. Once the current unit's review is clean, if a merged-range review has no working fix pull request, record it for the **Completion Report** and continue to the next unit without another merge. Otherwise run **Description Refresh**'s second pass, then put the complete working pull-request diff and refreshed prose to `acceptance-gate`'s final-acceptance question against the intent statement, retaining the original review range as context. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate** verdict is the fresh gate; resolve each flag under `acceptance-gate`'s **Bounds**. Before each fresh acceptance gate, repeat **Description Refresh** for the repaired head. The accepted head is the SHA `land-pr` receives.
 6. Run the second test pass **Validation Order** requires for the current unit. Never stop, restart, reconfigure or claim a local service this run did not start.
 7. When merge is withheld — by the user, or by `process-ledger`'s delegation — the unit ends here at
-   the head step 5 accepted, its pull request left draft. Otherwise invoke `land-pr` with:
-   - the pull request and the head step 5 accepted;
+   the head step 5 accepted, its pull request left draft. A dependent unit holds at that head until
+   its dependency merges and then repoints, as **Dependent Pull Requests** says. Otherwise invoke
+   `land-pr` with:
+   - the pull request and the head step 5 accepted, or a dependent unit's repointed head;
    - the affected behaviors step 6 covered locally;
    - every **Failure relevance** exclusion with its evidence;
    - the fix rule for every fix it makes — a check fix, a conflict resolution, a commit someone else pushed: **Review Continuity** reruns the lenses the fix reopens, and the fix is pushed through `execute-task`'s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have passed.

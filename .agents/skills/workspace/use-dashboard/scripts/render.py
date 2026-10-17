@@ -10,7 +10,15 @@ from pathlib import Path
 from textwrap import indent
 from typing import Final, cast
 
-from models import Change, ObjectShape, PageLayout, PullRequestState, QuestionStatus, SectionType, Tone
+from models import (
+    Change,
+    ObjectShape,
+    PageLayout,
+    PullRequestState,
+    QuestionStatus,
+    SectionType,
+    Tone,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -173,7 +181,7 @@ def check_sections(value: object, path: str) -> None:
         section_type = section.get("type") if isinstance(section, dict) else None
 
         check_choice(section_type, f"{section_path}.type", SectionType)
-        check_object(section, section_path, SECTION_SHAPES[SectionType(section_type)])
+        check_object(section, section_path, SECTION_SHAPES[SectionType(cast(str, section_type))])
 
 
 def section_shape(
@@ -192,6 +200,12 @@ def section_shape(
         shape["relations"] = relations
 
     return shape
+
+
+def paged_items_section(shape: ObjectShape) -> ObjectShape:
+    """Return the shape of a section listing items of one shape, optionally a page at a time."""
+
+    return section_shape({"items": partial(check_objects, shape=shape), "page_size": check_whole_number}, frozenset({"items"}))
 
 
 CHECK_TONE: Final[Callable[[object, str], object]] = partial(check_choice, choices=Tone)
@@ -256,15 +270,20 @@ OUTLINE_GROUP_SHAPE: Final[ObjectShape] = ObjectShape(
 )
 REFERENCE_SHAPE: Final[ObjectShape] = ObjectShape(fields={"text": check_text, "url": check_text}, required=frozenset({"text", "url"}))
 COLUMN_SHAPE: Final[ObjectShape] = ObjectShape(
-    fields={"title": check_text, "tone": CHECK_TONE, "items": partial(check_objects, shape=CARD_SHAPE, allow_empty=True)},
+    fields={
+        "title": check_text,
+        "tone": CHECK_TONE,
+        "page_size": check_whole_number,
+        "items": partial(check_objects, shape=CARD_SHAPE, allow_empty=True),
+    },
     required=frozenset({"title", "items"}),
 )
 SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
     SectionType.BOARD: section_shape({"columns": partial(check_objects, shape=COLUMN_SHAPE)}, frozenset({"columns"})),
-    SectionType.QUESTIONS: section_shape({"items": partial(check_objects, shape=QUESTION_SHAPE)}, frozenset({"items"})),
-    SectionType.LINKS: section_shape({"items": partial(check_objects, shape=LINK_SHAPE)}, frozenset({"items"})),
+    SectionType.QUESTIONS: paged_items_section(QUESTION_SHAPE),
+    SectionType.LINKS: paged_items_section(LINK_SHAPE),
     SectionType.NOTES: section_shape({"items": check_texts}, frozenset({"items"})),
-    SectionType.CHANGES: section_shape({"items": partial(check_objects, shape=CHANGE_ITEM_SHAPE)}, frozenset({"items"})),
+    SectionType.CHANGES: paged_items_section(CHANGE_ITEM_SHAPE),
     SectionType.OUTLINE: section_shape(
         {"groups": partial(check_objects, shape=OUTLINE_GROUP_SHAPE)},
         frozenset({"groups"}),

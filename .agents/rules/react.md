@@ -168,6 +168,13 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   Where a sentence is only there to cover the product, cut it. That includes a paragraph explaining
   the mechanics around an action, such as which party performs which step, and a note of a side
   effect nobody asked about, such as what happens to earlier versions.
+- **A dialog's commit button never repeats the label its trigger and title already carry.** The
+  reader pressed "Add item" to open the dialog and read "Add item" as its title; a third "Add item"
+  on the button says nothing new. The commit names the act in the fewest words: "Save" for a form
+  that adds or changes something, the bare verb for a confirmation — "Delete" under "Delete role".
+  When that verb is also the word the product's dialogs use to dismiss, such as "Cancel", the
+  commit adds what it acts on — "Cancel subscription" — so one word never means both doing the
+  act and backing out of it.
 - **A status reads from the viewer's side.** Name the state in terms of what that reader did or
   still has to do, and keep internal steps they take no part in behind a visual cue: a person who
   sent a form sees "Submitted", with the tone telling review apart from acceptance, while the
@@ -240,10 +247,14 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   Compact controls do not require a narrow container, and a wide container does not require
   stretched controls. Use the product's established layout and control sizes, preserving comparable
   widths under **Forms**, rather than shrinking the section or creating a new peer-section row.
-- **Place actions by what they affect and the product's established interaction pattern.** An
-  action on a whole surface belongs in its shared action slot; an action on one item stays associated
-  with that item. Do not move a contextual action into a detached row merely to satisfy a width or
-  proximity rule. At narrower widths, wrap or stack related content and controls while preserving
+- **Place actions by what they affect, beside the content they act on.** A page's own actions —
+  create, export, a toggle into a mode such as customize or reorder, and the strip that mode shows
+  while it is on — sit directly above the content they act on, below the page's banners and its
+  load-failure area. Never put them in the header bar, the top navigation, or anywhere else above
+  the banners, where they are far from what they change and easy to miss. The page layout owns
+  that order — banners, failures, actions, content — so no page renders its own toolbar above it.
+  An action on one section or item stays with that section or item. Do not move a contextual action
+  into a detached row merely to satisfy a width or proximity rule. At narrower widths, wrap or stack related content and controls while preserving
   readable values, visible context, accessible labels and a clear association with their actions.
 - **A frame that scrolls shows its scrollbar whenever its content overflows** — a box of legal
   text, a dialog body, a list or a table inside a maximum height — on every platform and before the
@@ -259,6 +270,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   sits, in a page, a layout or a gate: the check becomes the redirect and the screen is deleted,
   never restyled, moved into a shared message component, or kept because a task lists it among the
   states to restyle.
+- **Settings is the last group in the primary navigation, and the reader's own account is the last
+  item within it.** The work the product exists for comes first; settings about the shared
+  workspace come before settings about the reader themselves.
 - **A multi-step flow the reader has finished — a verification, a setup, an onboarding — leaves the
   navigation, and its address redirects to the viewer's home.** A finished flow whose outcome is
   final shows no banner where the reader lands, a toast at most; one whose submission waits on
@@ -278,8 +292,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **A page's content offers one control per destination or action** — a button, a link, a menu item,
   an icon or a clickable row; the app's own navigation is not counted against it. Two that open the
   same form or page — a checklist step's button or linked label beside a quick link, a row that
-  opens its record beside that row's own "View" link, a header action repeated in the section below
-  it — read as two different actions and crowd the page. Keep the one control where the reader
+  opens its record beside that row's own "View" link, a page action repeated inside the section
+  below it — read as two different actions and crowd the page. Keep the one control where the reader
   looks for it; elsewhere, text naming the same destination stays plain text, and a control that
   carries nothing else is removed.
 - **A flow starts at its first question.** A step that only introduces the product, lists what it
@@ -306,6 +320,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   page system that moves through steps — an onboarding, a setup, a verification, a wizard, a form
   split across pages — whether or not each step saves as it advances, and over general advice to
   name a button for its action.
+- **"Next" only moves on; it never performs the step's work.** A step whose requirement is an action
+  — linking an account, connecting a provider, uploading a file, verifying an identity — offers that
+  action as its own button in the step's content, and "Next" stays disabled until the requirement
+  is met. A forward control that opens a dialog, starts a connection or makes a change before it
+  advances leaves the reader unable to tell moving on from acting, and a step that advances on its
+  own once the action finishes takes the reader somewhere they did not ask to go.
 - **Every page renders in the product's page layout, including a page that reports a state** — a
   confirmation, such as the return page a flow finished outside the product lands on, or an expired
   link — with its content in sections, each headed and described as **Interface Copy** says. A
@@ -319,13 +339,26 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   an address that does not exist is the exception: a full-page message centred in the screen,
   outside the navigation, with one action home. A notice that the page is for somebody else, and a
   status page standing in a finished flow's place, are deleted as the bullets above say.
-- **A banner appears only when the reader has something to do, something is wrong, or something
-  they submitted is waiting on a decision** — terms to accept, a verification to finish, a load
-  that failed, a blocking state to resolve, a submission under review, worded from the reader's
-  side as **Interface Copy**'s status bullet says. A success or
-  completed state shows none, and a toast at most when the reader's own action just caused it. A
-  dismissible "approved" or "done" banner, and whatever stores its dismissal, is the defect: delete
-  both.
+- **A boxed banner appears only when the reader has something to do, something is wrong, or
+  something they submitted is waiting on a decision** — terms to accept, a verification to finish,
+  a load that failed, a blocking state to resolve, a submission under review, worded from the
+  reader's side as **Interface Copy**'s status bullet says. **General information the reader need
+  not act on takes the slim notice instead**: one line, a soft tint, no border or shadow — how many
+  projects the reader's plan includes, a note on how a feature behaves. Weight follows whether the
+  reader must act, never how important the message feels: information in a boxed banner, a
+  bordered callout or a card reads as a demand, and a state the reader must act on in a slim notice
+  is missed. A success or completed state shows neither, and a toast at most when the reader's own
+  action just caused it. A dismissible "approved" or "done" banner, and whatever stores its
+  dismissal, is the defect: delete both.
+- **A banner about the account or workspace, rather than the page, shows only on top-level pages**
+  — the home page and each destination the primary navigation lists — never on a page nested below
+  one, such as a record's detail, edit or create page or a step of a flow. Terms to accept, a
+  verification to finish, a note about the plan: the reader meets them where they arrive, and a
+  nested page keeps its space for the task in hand. The page's level in the navigation decides it,
+  in one place, so a new nested page leaves the banner out without being listed. A banner that
+  explains why the page's own actions are refused — a read-only or suspended workspace on a page
+  whose writes it blocks — concerns that page and shows wherever the refusal applies, as the
+  whole-subject state bullet below says.
 - **At most two non-error banners appear on the whole rendered surface, including its shell and
   sections; error banners are the exception.** Error banners may coexist visibly with those status or action
   banners and with other independent error banners. For simultaneous non-error conditions, trace each
@@ -405,13 +438,17 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Disable an action while locally known prerequisites are unmet.** Missing selections or incomplete
   required fields are normal editing state, not an error banner. Show errors for failures after a
   valid action or for failed data requests.
+- **An action that would change nothing is disabled.** "Reset to defaults" while every value is
+  already its default, "Select all" while everything is selected, "Clear" on an empty field: each
+  offers a press with no effect, and enabling it suggests the state is something other than it is.
 
 - **A page or form that edits saved values saves through one floating save panel fixed to the bottom
   of the viewport, never through buttons on the page** — a settings page, a profile, a record's edit
   page alike. The panel is out of view until a field differs from its saved value; then it animates
   up from below the viewport's bottom edge to rest a little above it, holding a cancel action that
-  restores the saved values and a save action. It stays in view as the reader scrolls while changes
-  are unsaved, and slides away once they are saved or cancelled. A reader who unticks one topic on a
+  restores the saved values and a save action. It floats over the page and never takes room in it,
+  so nothing beneath it, a page footer included, moves when it rises. It stays in view as the reader
+  scrolls while changes are unsaved, and slides away once they are saved or cancelled. A reader who unticks one topic on a
   newsletter preferences page sees it rise, and ticking the topic again sends it away. A save or
   reset button per section, a row of them at the end of the page or form, and a footer that sticks
   to the bottom of the page whether or not anything changed are the defect. A form that creates a
@@ -420,6 +457,24 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   scrolls. One shared component owns the panel, under **Shared Surfaces**.
 - **A form a person signs, certifies or attests to starts empty.** Nothing is seeded from a profile
   or an earlier submission, because the signer vouches for what they entered.
+- **A form where the signed-in person enters someone else's details turns browser autofill off on
+  every field, selects included** — a record made on another person's behalf, a person they add or
+  invite, a business or other record they name — so the browser never fills the reader's own name,
+  address, email or saved company into a record that is not the reader. One boundary around the form sets it for every control inside, including those a shared
+  field component renders, never a token per field that the next added field forgets. "Off" means
+  what the browser and the common password managers actually honour, which a bare
+  `autocomplete="off"` is not for name, email and address fields. A search or picker box opts out
+  the same way wherever it appears, since it never holds anyone's details. A form for the person's
+  own details keeps accurate autocomplete tokens on each field.
+- **A search box that picks a consequential record — a person, an account, a payee — shows no
+  suggestions and makes no request until the reader types.** A list on focus invites a pick by
+  proximity rather than intent, and offers records the reader never asked to see. A picker over a
+  low-stakes vocabulary, such as tags, may suggest on focus. The shared search component makes each
+  caller declare which kind it picks rather than defaulting to either.
+- **A suggestion list opens only once it has something to show:** its results, or its empty
+  message once the search has finished. While the results for the typed text are still loading,
+  the list stays closed and the field shows the loading state; an empty frame that grows when the
+  results land reads as a broken list.
 - **A form longer than a handful of fields is grouped into titled sections,** each holding the
   fields that answer one question; sibling forms share one section layout, under **Shared
   Surfaces** above.
@@ -472,6 +527,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   already signals navigation; hovering changes its color or underline treatment with sufficient
   contrast. The shared link primitive owns that treatment where one exists; otherwise, use the
   product's link tokens consistently across tables, cards, and inline text.
+- **Text on a clickable card, row or label stays selectable, and selecting it never activates the
+  control.** A drag, double-click or triple-click that selects text leaves the checkbox or option as
+  it was; only a plain click toggles it. Disabling selection to avoid the accidental toggle is the
+  defect. The shared label component owns this, so every card and row built on it behaves the same.
 - **A labelled button in a form, beside a field, or in a form's row of actions reads as a button at
   rest**: a filled surface, or a boundary with at least 3:1 contrast against what it sits on, plus
   a hover state. One that reads as text or a faint outline beside an input is the defect. A control
@@ -491,6 +550,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   The label stays in the layout, transparent, holding the width and remaining the accessible name,
   with the spinner overlaid and hidden from assistive technology. The button component owns this
   behind one pending prop; there is no second label prop for the pending state ("Saving…").
+  Pending covers only the time the reader waits on the product — preparing a window, saving a
+  result. Once a dialog, window or connection flow the button opened is showing, the reader is
+  acting rather than waiting, so the button stops spinning, and it spins again only for the work
+  that follows when that flow returns.
 
 - Use ternary for simple conditions
 - Use early return for complex conditions

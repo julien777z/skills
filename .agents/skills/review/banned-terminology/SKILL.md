@@ -16,7 +16,11 @@ code** in every line a change writes or edits; a banned term elsewhere in a file
 is renamed within `pre-production`'s size budget.
 
 If you reach for a placeholder-ish term a future reader could not decode from the name alone, pick a
-more intuitive name rather than adding it to the list.
+more intuitive name rather than adding it to the list. An abstraction coined one level above the
+concrete thing — an "entity" for a customer, a "target" for a server — is such a term even when it
+is accurate, because the reader has to be told what it stands for. Before a new package, module,
+type, step or document heading takes a name, ask whether the user would say that word for the thing;
+if they would say something more concrete, that is the name.
 
 ## Enforcing the list
 

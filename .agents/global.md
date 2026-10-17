@@ -69,7 +69,8 @@ alwaysApply: true
   Do not infer authorization from implementation, validation, delivery, pull-request, merge, CI,
   or earlier-request activity. Guidance maintenance is the exception: `edit-skill` runs when the
   user reports a guidance failure or canonical guidance is being changed, so the failure and its
-  owning instruction are repaired together.
+  owning instruction are repaired together, on the timing `edit-skill`'s **Recording During A
+  Task** sets.
   Determine a user-only restriction from the skill's entry point, not from the fact that it
   performs work. Required checks and independent gates declared by an authorized workflow run
   as dependencies without a separate invocation; an omitted review request is not a waiver.
@@ -312,6 +313,12 @@ return records;
   than borrowing the one real table the change was made for.
 - Sample values follow the same rule: prefer plainly synthetic literals over ones shaped like a
   real identifier from another system's domain.
+- A library owns the vocabulary of the protocol or provider it wraps. That protocol's field names
+  and naming conventions, such as how it spells a permission or a capability, are the library's own,
+  never a consumer's domain vocabulary: a helper encoding such a convention belongs in the library
+  even when one consumer prompted it, and the library's owned API gains it. This holds at the
+  wrapper's layer; an application modelling the provider's data keeps its own field names, as
+  `pre-production`'s **Adapting is not imitating** says.
 - Identify environments by their full domain name throughout code, configuration, documentation,
   and user-facing labels, including enum and constant names. Code identifiers may encode the whole
   domain with separators, such as `garden.example` becoming `GARDEN_EXAMPLE`. Never drop the domain

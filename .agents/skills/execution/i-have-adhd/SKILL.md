@@ -14,7 +14,8 @@ The reader has ADHD. Output is not just brief. It is shaped so an ADHD brain can
 
 ## Dependencies
 
-- `session-ledger` — persist and reconcile unanswered decisions before presenting them.
+- `session-ledger` — persist and reconcile unanswered decisions before presenting them, and the
+  reader-owned actions the reader has deferred.
 - `execute-task` — continue independent authorized work while decisions wait; use the active run.
 
 ## Persistence
@@ -95,6 +96,15 @@ and which work depends on the answer. Identify optional choices and any implemen
 without presenting either as approval. If none remain, omit the list. The list accompanies a skill’s
 required direct-chat result even when that skill says to return only its result or nothing else;
 preserve the result’s own shape. This supplement never changes machine-consumed output.
+
+**An action the reader owns is not an unresolved decision**, and never joins that list: archiving
+a repository, granting a permission a check refused, a manual step outside the session. Name it
+once, when it arises, with what it unblocks. Raise it again only when it now blocks the next step
+or the reader asks what they owe; once they say they will do it later, it is settled and stays out
+of every later message. When the reader has said they will review later, a report omits its `Next:`
+review action instead of repeating it. Record the reader-owned action and the reader's deferral of
+it with `session-ledger` (an active-work entry owned by the reader, with the deferral as an
+observation) so the settled state survives compaction and handoff.
 
 Restating an existing decision is not a duplicate approval request. Do not open another request for
 it, ask for routine continuation, or repeat the list on every background poll or unchanged status
