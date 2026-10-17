@@ -27,7 +27,7 @@ to test, not supported-model claims or replacements for a newer matching catalog
 | Codex family | Catalogue-hidden candidate |
 | ------------ | -------------------------- |
 | Luna | `gpt-6-luna` |
-| Terra | `gpt-6-terra` |
+| Terra | `gpt-5.6-terra` |
 | Sol | `gpt-6-sol` |
 | Astra | `gpt-6-astra` |
 
