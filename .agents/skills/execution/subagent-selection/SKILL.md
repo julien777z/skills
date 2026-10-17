@@ -1,6 +1,6 @@
 ---
 name: subagent-selection
-description: Apply when selecting a model for a live skill-verification chat or selecting and launching a subagent, including a fresh independent or read-only gate, reviewer, validator, or smoke reader. Resolve cheap, standard, advanced, and frontier capability levels from the host catalogue and dispatch evidence, select the model explicitly, and route independent steps through a subagent of the running session.
+description: Apply when selecting a model for a live skill-verification chat or selecting and launching a subagent, including a fresh independent or read-only gate, reviewer, validator, or smoke reader. Resolve cheap, standard, advanced, and frontier capability levels from the host catalogue and documented dispatch candidates. Attempt the assigned work with a catalogue-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, and route independent steps through a subagent of the running session.
 short_description: 'Select a model capability level for live verification chats or subagent delegation.'
 ---
 
@@ -18,13 +18,16 @@ agent; the calling agent launches the actual assignment with the selected model.
    parameters, or its chat model picker, and read
    [model capabilities](references/model-capabilities.md). Keep catalogue discovery, an accepted dispatch,
    and host-exposed runtime identity as separate evidence; a worker-reported label is only a label.
-2. Resolve all four capability levels to their mapped model families. For each requested family, resolve an
-   exact candidate identifier from the host's model-selection surface or from an explicit user model request.
-   A family label is not a dispatch identifier. When a mapped family is absent from the catalogue or picker,
-   keep it as `dispatch required` while resolving its exact candidate; catalogue absence leaves availability
-   unverified. A missing exact candidate, including a host with no explicit model-selection mechanism, is an
-   identifier-resolution hold, not model unavailability, and does not permit fallback or an in-process route.
-   Never invent an identifier or silently substitute another family.
+2. Resolve all four capability levels to their mapped model families. Use an exact user override only for
+   the role, chat, and capability row it expressly governs; one explicitly scoped to every assignment governs
+   every row. For every other row, prefer the latest matching identifier from the host's model-selection
+   surface. If the family is absent there, read the host's documented candidates in **model capabilities**
+   and use that family's candidate for the actual assignment. A family label is not a dispatch identifier,
+   and a documented candidate is not a claim of support. Mark a resolved catalogue-hidden candidate `dispatch
+   required` and proceed to step 3; never turn catalogue omission into an identifier hold or an override
+   question while that candidate exists. Only when neither the host nor the reference nor an exact override
+   for that assignment supplies a candidate, or the host has no explicit model-selection mechanism, record
+   an identifier-resolution hold. Do not invent versions or aliases or silently substitute another family.
 3. Before a caller marks a requested capability level or explicit model unavailable, follows an
    unavailable-model fallback, or takes an in-process route, launch the actual assigned work once with its exact
    candidate identifier and explicit reasoning effort. A successful dispatch establishes that the host accepted
@@ -117,8 +120,9 @@ Return this table to the calling agent, using actual resolved identifiers rather
 placeholders. Record catalogue evidence and assignment evidence separately. A catalogue-hidden mapped family
 with a resolved candidate is `dispatch required` until the actual assignment establishes acceptance or the host
 explicitly rejects it as unsupported; after acceptance, record `accepted` while retaining `catalogue-hidden`.
-Use `identifier required` when the family is known but no exact candidate is available from the host dispatch
-surface or an explicit user request; this is a hold, never an unavailable-model result. Use `unavailable` only
+Use `identifier required` only for an identifier-resolution hold established by Workflow step 2; report that
+step's resolved candidate and state rather than independently selecting candidate sources here. This is a
+hold, never an unavailable-model result. Use `unavailable` only
 when a host receipt explicitly rejects the exact candidate as unsupported. The calling agent then records the
 selected capability level per role or chat, or the explicit user override.
 
