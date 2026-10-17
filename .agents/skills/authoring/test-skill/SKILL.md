@@ -138,9 +138,10 @@ with the unsupported request and rejection evidence.
 Run one edited/control pair per scenario — two runs — with the same resolved model, reasoning
 effort, scenario and reading list in both. Record the catalogue state, requested capability and family,
 exact dispatch identifier, resolved reasoning effort, selector resolution, and accepted actual-assignment
-dispatch receipt with those explicit parameters in each run's evidence entry. A catalogue-hidden family is
-`dispatch required` until its exact identifier is resolved and the assigned worker accepts it; a missing identifier
-is a hold, not an unavailable model. Selector resolution retains an explicit unsupported request,
+dispatch receipt with those explicit parameters in each run's evidence entry. Record catalogue state separately
+from assignment state: a catalogue-hidden family is `dispatch required` until its exact identifier is resolved
+and the assigned worker accepts it, then it is `accepted`; a missing identifier is a hold, not an unavailable
+model. Selector resolution retains an explicit unsupported request,
 the exact fallback capability and dispatch identifier when one is permitted, why that fallback was selected,
 and any explicit user override. Record the runtime-identity and runtime-label evidence as
 `subagent-selection`'s Workflow step 3 defines. Follow the selector's dispatch instructions.
@@ -194,9 +195,10 @@ evidence behind every cell, one section per skill:
 
 #### <run label> (<edited | original> text[, round <n>])
 
-- **Catalogue state:** <capability> / <family> — <catalogue-confirmed | dispatch required | identifier required | unavailable: reason>
+- **Catalogue state:** <capability> / <family> — <catalogue-confirmed | catalogue-hidden>
 - **Requested selection:** <capability> / <family>
 - **Dispatch identifier:** <exact identifier | identifier required>
+- **Assignment state:** <not requested | dispatch required | identifier required | accepted | unavailable: reason>
 - **Reasoning effort:** <requested and resolved effort>
 - **Selector resolution:** <accepted identifier | explicit unsupported receipt | same-selection retry | fallback or override>
 - **Actual-assignment dispatch, accepted:** <source>
@@ -207,9 +209,10 @@ evidence behind every cell, one section per skill:
 
 #### Dispatch attempt <n> (incomplete pair)
 
-- **Catalogue state:** <capability> / <family> — <catalogue-confirmed | dispatch required | identifier required | unavailable: reason>
+- **Catalogue state:** <capability> / <family> — <catalogue-confirmed | catalogue-hidden>
 - **Requested selection:** <capability> / <family>
 - **Dispatch identifier:** <exact identifier | identifier required>
+- **Assignment state:** <not requested | dispatch required | identifier required | accepted | unavailable: reason>
 - **Reasoning effort:** <requested and resolved effort>
 - **Selector resolution:** <rejection classification; retained exact identifier or exact selected fallback identifier>
 - **Reader A dispatch, <accepted | rejected | not attempted>:** <receipt or reason>

@@ -113,21 +113,22 @@ context and returns its verdict into the step waiting on it; nothing else does b
 ## Output
 
 Return this table to the calling agent, using actual resolved identifiers rather than
-placeholders. Use `dispatch required` for a catalogue-hidden mapped family until an exact candidate
-identifier is resolved and the actual assignment establishes acceptance or the host explicitly rejects it as
-unsupported. Use `identifier required` when the family is known but no exact candidate is available from the
-host dispatch surface or an explicit user request; this is a hold, never an unavailable-model result. Use
-`unavailable` only when a host receipt explicitly rejects the exact candidate as unsupported.
-The calling agent then records the selected capability level per role or chat, or the explicit user override.
+placeholders. Record catalogue evidence and assignment evidence separately. A catalogue-hidden mapped family
+with a resolved candidate is `dispatch required` until the actual assignment establishes acceptance or the host
+explicitly rejects it as unsupported; after acceptance, record `accepted` while retaining `catalogue-hidden`.
+Use `identifier required` when the family is known but no exact candidate is available from the host dispatch
+surface or an explicit user request; this is a hold, never an unavailable-model result. Use `unavailable` only
+when a host receipt explicitly rejects the exact candidate as unsupported. The calling agent then records the
+selected capability level per role or chat, or the explicit user override.
 
 ```markdown
 Caller: <skill name or direct task>
 Host: <current host>
 
-| Capability | Dispatch identifier          | Status                                                        |
-| ---------- | ---------------------------- | ------------------------------------------------------------- |
-| cheap    | <identifier or identifier required> | catalogue-confirmed, dispatch required, identifier required, or unavailable: <reason> |
-| standard | <identifier or identifier required> | catalogue-confirmed, dispatch required, identifier required, or unavailable: <reason> |
-| advanced | <identifier or identifier required> | catalogue-confirmed, dispatch required, identifier required, or unavailable: <reason> |
-| frontier | <identifier or identifier required> | catalogue-confirmed, dispatch required, identifier required, or unavailable: <reason> |
+| Capability | Catalogue state | Dispatch identifier | Assignment state |
+| ---------- | --------------- | ------------------- | ---------------- |
+| cheap | catalogue-confirmed or catalogue-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, or unavailable: <reason> |
+| standard | catalogue-confirmed or catalogue-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, or unavailable: <reason> |
+| advanced | catalogue-confirmed or catalogue-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, or unavailable: <reason> |
+| frontier | catalogue-confirmed or catalogue-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, or unavailable: <reason> |
 ```
