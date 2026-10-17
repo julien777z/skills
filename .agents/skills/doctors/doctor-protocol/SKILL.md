@@ -73,7 +73,9 @@ measurement that cannot be taken is recorded as unmeasured with the reason.
 
 ## Delegate The Audit
 
-Use multiple read-only subagents for every run. The parent owns the unified ledger.
+Use multiple read-only subagents for every run. Invoke `subagent-selection` at its standard capability level
+for each reviewer, launch the exact resolved identifier, and retain catalogue state, identifier, assignment state
+and host receipt in the unified ledger. The parent owns that ledger.
 
 1. Launch at least two independent reviewers. Partition a multi-domain scope by coherent ownership
    boundaries discovered from the repository. For a narrow single-domain scope, give two reviewers
@@ -151,10 +153,11 @@ never the absence of a retired implementation.
 
 ## Implement In Waves
 
-After explicit plan approval, workers implement the complete approved plan side by side, under
-`subagent-selection`'s **Dispatch**. The parent keeps the ledger, the plan's order, every judgement
-over the combined result, and the full suite and every check that needs a shared resource; the
-edits fan out.
+After explicit plan approval, workers implement the complete approved plan side by side. Invoke
+`subagent-selection` at the capability level each implementation role requires, launch each exact resolved
+identifier, and retain catalogue state, identifier, assignment state and host receipt in the ledger under
+`subagent-selection`'s **Dispatch**. The parent keeps the ledger, the plan's order, every judgement over the
+combined result, and the full suite and every check that needs a shared resource; the edits fan out.
 
 - **A wave is the groups that can run at once:** groups whose files do not overlap and none of which
   needs what another group in flight produces. A group that reaches into other groups' files — a
