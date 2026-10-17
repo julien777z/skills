@@ -32,9 +32,10 @@ paths:
   do not rerun a behavioral suite solely because its head changed.
 - **A run whose result a known change will supersede is stopped, never awaited.** Once a result, a
   partial one included, shows a fix is needed, or another change to the same inputs is already
-  planned, stop your own in-flight run of those inputs, make and push the change, then run the
-  batch once on the new head. A rule against editing during a run means stopping your own run
-  first, never waiting it out, and no test run or its pending result holds a push.
+  planned, stop your own in-flight local run of those inputs, make and push the change, then run
+  the batch once on the new head; hosted checks follow `land-pr`. Stop it through its runner's own
+  interruption route so fixture teardown and stack and lock release run, and confirm it has exited
+  and released its resources before starting the next run. A superseded run holds no push.
 - Before delivery, complete the required repository checks and review the combined pull-request
   diff. Reuse still-valid completed-feature results; run the full required checks where the final
   repository state or integration needs them. This cadence changes when verification runs, never
