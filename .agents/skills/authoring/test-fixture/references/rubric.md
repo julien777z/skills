@@ -20,7 +20,8 @@ Before adding a test, answer five questions; a missing answer means do not add i
    setup in the same change.
 4. Does it need a production seam — an export, flag, wrapper, or injection hook — that no production
    caller needs? If so, move the test to the real boundary instead.
-5. Is what it proves worth what it costs to run? Read the runner's per-test durations for it. A
+5. Is what it proves worth what it costs to run? Read the runner's per-test durations for it,
+   setup included: a fixture's setup counts once per use, summed over every test that uses it. A
    test or parametrized family whose durations sum to more than a minute, or a module whose tests
    together take two minutes or more, is disproportionate. Make it cheap through its own setup —
    build an immutable resource once, cut the cases to the ones that differ — or remove the tests

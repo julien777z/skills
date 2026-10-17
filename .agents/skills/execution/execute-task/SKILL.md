@@ -185,7 +185,10 @@ A source or product follow-up is planned on its own. A canonical guidance correc
 
 - **The ledger holds the plan's current state, so nothing about progress depends on what the chat
   still remembers.** When a plan goes to the user, record it with `session-ledger` as a `plan`
-  entry with its steps, estimates, overlaps and what it needs from the user. Update it when the
+  entry with its steps, estimates, overlaps and what it needs from the user. Work the user adds to
+  an active task, with or without a plan of its own, becomes a step on that plan or a plan entry of
+  its own, with its approval time, before the first edit or dispatch it authorizes; a harness task
+  list, the chat or a summary is never where it first lives. Update it when the
   state changes, not when a report is due: approval, a step starting, finishing, blocking or being
   skipped, a follow-up's plan. A resumed session, a handoff and a progress view all read this
   record rather than reconstructing it.
@@ -652,10 +655,10 @@ displaces is named work whether or not a report named it: an approved plan short
 commits a remote lacks, a checkout left mid-edit. The turn that serves the new request also moves
 it — the user asking about something else is not the user withdrawing what they asked for before.
 
-- **Write it down before anything else starts.** The displaced work goes into the session's task
-  list, with its next step, before the first step of whatever displaced it.
+- **Write it down before anything else starts.** The displaced work goes into its plan entry in
+  `session-ledger`, with its next step, before the first step of whatever displaced it.
 - **An interruption pauses the step in flight; it never ends the run.** After a follow-up
-  finishes, restore the displaced task as the in-progress item in the session's task list and
+  finishes, restore the displaced task as the active step in its plan entry and
   execute its saved next step without waiting for "continue". A promise to resume is not that
   step. Completing
   its own delivery — including a guidance merge and refresh, a diagnostic answer, or a local

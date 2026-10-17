@@ -37,7 +37,9 @@ and deliver the same dashboard again on every request so the user keeps one page
 5. **Select the delivery route, then render.** Before invoking `use-dashboard`, choose the
    host's ongoing-work channel when authorized work remains, or the normal reply route for
    standalone reporting. Pass that route to the renderer for its delivery. When the ledger records
-   an earlier delivery of this task's dashboard, update that same page; otherwise record a
+   an earlier delivery of this task's dashboard, update that same page: render the whole spec
+   through `use-dashboard` again and deliver it to the same path and link, never editing the old
+   page's HTML, which skips the renderer's validation; otherwise record a
    `dashboard` entry with the page path and any published link, so the next request finds it.
 6. **Report and return to the caller.** Through the selected route, send the link or file and one
    line: percent complete, time remaining, and how many questions wait on the user, each the figure
