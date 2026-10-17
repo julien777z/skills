@@ -29,10 +29,9 @@ agent; the calling agent launches the actual assignment with the selected model.
    unavailable-model fallback, or takes an in-process route, launch the actual assigned work once with its exact
    candidate identifier and explicit reasoning effort. A successful dispatch establishes that the host accepted
    the requested identifier for that launch; it does not establish catalogue availability or runtime identity.
-   An explicit host receipt that the candidate is unsupported establishes unavailability. A transient,
-   concurrency, timeout, or unknown rejection receives one same-selection retry before it can hold the
-   dependent work. The accepted worker performs the assignment; never launch a throwaway availability probe.
-   Record the runtime identifier only when the host exposes its exact value. Generic provider or product
+   An explicit host receipt that the candidate is unsupported establishes unavailability. The accepted worker
+   performs the assignment; never launch a throwaway availability probe. Record the runtime identifier only
+   when the host exposes its exact value. Generic provider or product
    branding, a worker-reported label, or no runtime identifier is neither confirmation nor a contradiction of
    the accepted selection. Availability is not permission to change repository or global settings.
 4. When a requested capability level or model is explicitly unsupported, apply a fallback only when the
