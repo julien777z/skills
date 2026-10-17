@@ -31,9 +31,11 @@ handling after an agent-configuration change.
 ## Inputs
 
 The caller supplies the repository, the pull request, the head SHA its final acceptance passed, the
-affected behaviors its local tests already cover, receipts identifying the source head and resolved
-dependencies, configuration, toolchain and runner inputs those tests used, and the rule that decides
-what a fix made here reopens in its own review. It also supplies each validation exclusion: a current-user
+affected behaviors its local tests already cover, and the rule that decides what a fix made here
+reopens in its own review. For every local result this gate relies on, obtain a receipt from the
+caller or native validation evidence identifying its source head, resolved dependencies,
+configuration, toolchain and runner inputs. Missing evidence prevents reusing that result or
+admitting a local-coverage exclusion; it never waives hosted coverage. The caller also supplies each validation exclusion: a current-user
 direction to leave a named test or check alone, a baseline exclusion established by `execute-task`'s
 **Encountered Issues** classification with its default-branch evidence, or evidence that a hosted
 runner or provider cancellation meets the GitHub rule's pre-validation and local-coverage
