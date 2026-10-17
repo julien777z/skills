@@ -194,6 +194,12 @@ def section_shape(
     return shape
 
 
+def paged_items_section(shape: ObjectShape) -> ObjectShape:
+    """Return the shape of a section listing items of one shape, optionally a page at a time."""
+
+    return section_shape({"items": partial(check_objects, shape=shape), "page_size": check_whole_number}, frozenset({"items"}))
+
+
 CHECK_TONE: Final[Callable[[object, str], object]] = partial(check_choice, choices=Tone)
 CHECK_CHANGE: Final[Callable[[object, str], object]] = partial(check_choice, choices=Change)
 CHECK_LAYOUT: Final[Callable[[object, str], object]] = partial(check_choice, choices=PageLayout)
@@ -266,19 +272,10 @@ COLUMN_SHAPE: Final[ObjectShape] = ObjectShape(
 )
 SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
     SectionType.BOARD: section_shape({"columns": partial(check_objects, shape=COLUMN_SHAPE)}, frozenset({"columns"})),
-    SectionType.QUESTIONS: section_shape(
-        {"items": partial(check_objects, shape=QUESTION_SHAPE), "page_size": check_whole_number},
-        frozenset({"items"}),
-    ),
-    SectionType.LINKS: section_shape(
-        {"items": partial(check_objects, shape=LINK_SHAPE), "page_size": check_whole_number},
-        frozenset({"items"}),
-    ),
+    SectionType.QUESTIONS: paged_items_section(QUESTION_SHAPE),
+    SectionType.LINKS: paged_items_section(LINK_SHAPE),
     SectionType.NOTES: section_shape({"items": check_texts}, frozenset({"items"})),
-    SectionType.CHANGES: section_shape(
-        {"items": partial(check_objects, shape=CHANGE_ITEM_SHAPE), "page_size": check_whole_number},
-        frozenset({"items"}),
-    ),
+    SectionType.CHANGES: paged_items_section(CHANGE_ITEM_SHAPE),
     SectionType.OUTLINE: section_shape(
         {"groups": partial(check_objects, shape=OUTLINE_GROUP_SHAPE)},
         frozenset({"groups"}),
