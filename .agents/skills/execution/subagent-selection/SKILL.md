@@ -18,21 +18,23 @@ agent; the calling agent launches the actual assignment with the selected model.
    parameters, or its chat model picker, and read
    [model capabilities](references/model-capabilities.md). Keep catalogue discovery, an accepted dispatch,
    and host-exposed runtime identity as separate evidence; a worker-reported label is only a label.
-2. Resolve all four capability levels to the latest catalogue-confirmed model in each mapped family. When a
-   mapped family is absent from the catalogue or picker, retain its documented family alias as a dispatch
-   candidate rather than marking it unavailable. Catalogue absence leaves availability unverified. A host that
-   has no explicit model-selection mechanism, or a capability with no documented family alias, is unavailable
+2. Resolve all four capability levels to their mapped model families. For each requested family, resolve an
+   exact candidate identifier from the host's model-selection surface or from an explicit user model request.
+   A family label is not a dispatch identifier. When a mapped family is absent from the catalogue or picker,
+   keep it as `dispatch required` while resolving its exact candidate; catalogue absence leaves availability
+   unverified. A missing exact candidate is an identifier-resolution hold, not model unavailability, and does
+   not permit fallback or an in-process route. A host with no explicit model-selection mechanism is unavailable
    with that reason; never invent an identifier or silently substitute another family.
 3. Before a caller marks a requested capability level or explicit model unavailable, follows an
-   unavailable-model fallback, or takes an in-process route, launch the actual assigned work once with that
-   candidate and explicit reasoning effort. A successful dispatch establishes that the host accepted the
-   requested identifier for that launch; it does not establish catalogue availability or runtime identity. An
-   explicit host receipt that the candidate is unsupported establishes unavailability. A transient, concurrency,
-   timeout, or unknown rejection receives one same-selection retry before it can hold the dependent work.
-   The accepted worker performs the assignment; never launch a throwaway availability probe. Record the runtime
-   identifier only when the host exposes its exact value. Generic provider or product branding, a
-   worker-reported label, or no runtime identifier is neither confirmation nor a contradiction of the accepted
-   selection. Availability is not permission to change repository or global settings.
+   unavailable-model fallback, or takes an in-process route, launch the actual assigned work once with its exact
+   candidate identifier and explicit reasoning effort. A successful dispatch establishes that the host accepted
+   the requested identifier for that launch; it does not establish catalogue availability or runtime identity.
+   An explicit host receipt that the candidate is unsupported establishes unavailability. A transient,
+   concurrency, timeout, or unknown rejection receives one same-selection retry before it can hold the
+   dependent work. The accepted worker performs the assignment; never launch a throwaway availability probe.
+   Record the runtime identifier only when the host exposes its exact value. Generic provider or product
+   branding, a worker-reported label, or no runtime identifier is neither confirmation nor a contradiction of
+   the accepted selection. Availability is not permission to change repository or global settings.
 4. When a requested capability level or model is explicitly unsupported, apply a fallback only when the
    calling skill declares its direction and limits and it respects the user's explicit model or capability
    constraint. Report the original request as unavailable and name the actual fallback capability and model;
@@ -45,9 +47,9 @@ agent; the calling agent launches the actual assignment with the selected model.
    skill-verification chat, choose the least-capable available model; otherwise use the task criteria in the
    table, with **standard** as the default. Reserve frontier for the most demanding assignments unless
    specifically required. Use **medium** reasoning for bounded checks and **high** for complex, cross-cutting
-   work; never dispatch a subagent at any other reasoning effort. An explicit user model override uses that
-   identifier as the dispatch candidate even when the catalogue omits it; report it as an override rather than
-   relabeling it as a different capability level.
+   work; never dispatch a subagent at any other reasoning effort. An explicit user model override is the exact
+   dispatch candidate even when the catalogue omits it; report it as an override rather than relabeling it as a
+   different capability level.
 6. Select the chosen identifier and reasoning effort explicitly when starting a verification chat or
    dispatching a sub-agent. For Codex `spawn_agent`, use `fork_turns: "none"` with a self-contained
    assignment, scope, constraints, and reading list so model inheritance cannot override selection. Reuse a
@@ -112,20 +114,21 @@ context and returns its verdict into the step waiting on it; nothing else does b
 ## Output
 
 Return this table to the calling agent, using actual resolved identifiers rather than
-placeholders. Use `dispatch required` for a catalogue-hidden mapped family until the actual
-assignment establishes acceptance or the host explicitly rejects it as unsupported. Use
-`unavailable` only when the host cannot select a model, no documented candidate exists, or a host
-receipt explicitly rejects the candidate. The calling agent then records the selected capability
-level per role or chat, or the explicit user override.
+placeholders. Use `dispatch required` for a catalogue-hidden mapped family until an exact candidate
+identifier is resolved and the actual assignment establishes acceptance or the host explicitly rejects it as
+unsupported. Use `identifier required` when the family is known but no exact candidate is available from the
+host dispatch surface or an explicit user request; this is a hold, never an unavailable-model result. Use
+`unavailable` only when the host cannot select a model or a host receipt explicitly rejects the exact candidate.
+The calling agent then records the selected capability level per role or chat, or the explicit user override.
 
 ```markdown
 Caller: <skill name or direct task>
 Host: <current host>
 
-| Capability | Resolved model              | Status                                      |
-| ---------- | --------------------------- | ------------------------------------------- |
-| cheap    | <identifier or unavailable> | catalogue-confirmed, dispatch required, or unavailable: <reason> |
-| standard | <identifier or unavailable> | catalogue-confirmed, dispatch required, or unavailable: <reason> |
-| advanced | <identifier or unavailable> | catalogue-confirmed, dispatch required, or unavailable: <reason> |
-| frontier | <identifier or unavailable> | catalogue-confirmed, dispatch required, or unavailable: <reason> |
+| Capability | Dispatch identifier          | Status                                                        |
+| ---------- | ---------------------------- | ------------------------------------------------------------- |
+| cheap    | <identifier or identifier required> | catalogue-confirmed, dispatch required, identifier required, or unavailable: <reason> |
+| standard | <identifier or identifier required> | catalogue-confirmed, dispatch required, identifier required, or unavailable: <reason> |
+| advanced | <identifier or identifier required> | catalogue-confirmed, dispatch required, identifier required, or unavailable: <reason> |
+| frontier | <identifier or identifier required> | catalogue-confirmed, dispatch required, identifier required, or unavailable: <reason> |
 ```
