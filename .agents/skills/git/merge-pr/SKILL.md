@@ -1,7 +1,7 @@
 ---
 name: merge-pr
-description: Merge the task's finished source pull requests quickly at the user's command — each once acceptance passes and its CI is green apart from failures the default branch shares — then run CR on what merged and merge the fix pull requests it produces. Use only when the user directly invokes it.
-short_description: 'Merge finished pull requests after acceptance and CI, then CR what merged.'
+description: Merge the task's finished source pull requests quickly at the user's command — each once acceptance and its canonical check gate pass — then run CR on what merged and merge the fix pull requests it produces. Use only when the user directly invokes it.
+short_description: 'Merge finished pull requests after acceptance and the check gate, then CR what merged.'
 disable-model-invocation: true
 ---
 
@@ -48,10 +48,9 @@ depends on to merge.
    the current head, or a rewrite whose tree is identical to it. Otherwise put the head to the
    final-acceptance question. A flag is fixed and gated under that skill's **Bounds**; the
    target waits while one stands.
-2. **CI.** Invoke `land-pr` with the accepted head and every hosted check on
-   the head required. A failing check that fails the same way on the default branch's latest run
-   is a baseline: pass it to `land-pr` as an exclusion with that run as evidence, and it does not
-   block. Every other failure is fixed and the gate repeats on the new head.
+2. **Check gate.** Invoke `land-pr` with the accepted head, validation receipts and established
+   exclusions. Its **Check Gate** owns complete-diff classification, check inventory, failure
+   handling and the evidence required before merging.
 3. **Merge.** `land-pr` squash-merges at the gated head and verifies it. Record the merge commit and
    its first parent.
 
@@ -72,12 +71,12 @@ or says nothing is needed.
 ```markdown
 **Merged <n> of <total>.** CR found <count> issue(s); <their fix PRs are merged too | clean>.
 
-| PR | Acceptance | CI | Merged at |
+| PR | Acceptance | Check gate | Merged at |
 | --- | --- | --- | --- |
-| [<owner>/<repo>#<number>](<url>) | <reused (head unchanged) | accepted on `<sha>`> | <green | green; `<check>` failing on `<default>` too, not blocking> | `<sha>` |
+| [<owner>/<repo>#<number>](<url>) | <reused (head unchanged) | accepted on `<sha>`> | <passed | passed; verified exclusion: `<check>` — <gate evidence>> | `<sha>` |
 
 **CR on what merged**
-- <repo>: <clean, no fix PR | <n> confirmed finding(s), <one-line summary>. Fixed in [<repo>#<number>](<url>), accepted, CI green, merged at `<sha>`.>
+- <repo>: <clean, no fix PR | <n> confirmed finding(s), <one-line summary>. Fixed in [<repo>#<number>](<url>), accepted, check gate passed, merged at `<sha>`.>
 
 **Not merged:** <none | <PR> — <gate>>
 
