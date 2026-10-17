@@ -13,6 +13,7 @@ are validated by their evidence, smoke-test, review, and acceptance gates.
 ## Dependencies
 
 - `pre-production` — the target-contract policy for every repository and its data obligations.
+- `run-site` — select browser verification applicability before proposing it in a plan or brief.
 - `code-simplify` — simplify the finished task's complete diff before delivery.
 - `acceptance-gate` — judge the finished task's complete diff before local completion, before the pull request is sent for review and before it merges, and each fix for a flag it raises.
 - `generic-push` — keep each repository's publishing metadata independent during multi-repository changes.
@@ -62,6 +63,11 @@ Every task that changes files starts here, and so does every follow-up that arri
 
 ### What The Plan Holds
 
+- Select verification before recommending it, putting it in a plan, or delegating it. Read the
+  shared testing rule's **Environments** section and invoke `run-site` to apply its **Principles**
+  before selecting browser walkthroughs or rendered UI inspections. Carry that applicability
+  into later review and **Completion** rather than letting a downstream request add verification
+  outside the selected scope.
 - At most five numbered steps, each one bounded action with its wall-clock estimate, then the
   total and what the user does afterwards, then every decision the plan needs. Keep it under 200
   words while `i-have-adhd` is active, and send any detail a caller requires — a gated plan, a
