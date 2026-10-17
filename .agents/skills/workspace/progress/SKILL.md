@@ -76,7 +76,8 @@ and deliver the same dashboard again on every request so the user keeps one page
   follows it, with `layout` `rows`: the diagram, then `changes` "Config changes", then `changes`
   "Migration changes", then an `outline` "What changed in <pull request name>" for each pull request
   it covers, then an `outline` "Keep in mind".
-- **`board` "Work"**, four columns:
+- **`board` "Work"**, four columns, with Up next and Done setting `page_size` 5 so each shows five
+  cards at a time:
 
 | Column | `tone` | Cards |
 | --- | --- | --- |

@@ -256,7 +256,12 @@ OUTLINE_GROUP_SHAPE: Final[ObjectShape] = ObjectShape(
 )
 REFERENCE_SHAPE: Final[ObjectShape] = ObjectShape(fields={"text": check_text, "url": check_text}, required=frozenset({"text", "url"}))
 COLUMN_SHAPE: Final[ObjectShape] = ObjectShape(
-    fields={"title": check_text, "tone": CHECK_TONE, "items": partial(check_objects, shape=CARD_SHAPE, allow_empty=True)},
+    fields={
+        "title": check_text,
+        "tone": CHECK_TONE,
+        "page_size": check_whole_number,
+        "items": partial(check_objects, shape=CARD_SHAPE, allow_empty=True),
+    },
     required=frozenset({"title", "items"}),
 )
 SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {

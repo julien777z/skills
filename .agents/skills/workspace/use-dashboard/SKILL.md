@@ -35,7 +35,7 @@ for neutral. Section types:
 
 | `type` | Fields | Item fields |
 | --- | --- | --- |
-| `board` | `title`, `columns: [{title, tone?, items}]` | `title`, `detail?`, `meta?`, `tag?`, `url?` |
+| `board` | `title`, `columns: [{title, tone?, page_size?, items}]`: a column with more cards than its `page_size` shows that many at a time, with Previous and Next | `title`, `detail?`, `meta?`, `tag?`, `url?` |
 | `questions` | `title`, `items` | `question`, `status` (`open`, `answered`), `context?`, `options?`, `recommendation?`, `answer?`, `meta?` |
 | `links` | `title`, `items` | `label`, `url`, `detail?`, `status?`, `tone?`, `state?`: a pull request's `open`, `draft`, `merged` or `closed`, drawn with GitHub's icon for it in place of the arrow |
 | `table` | `title`, `columns`, `rows` | each row a list of strings, one per column |
