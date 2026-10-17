@@ -92,8 +92,10 @@ Every task that changes files starts here, and so does every follow-up that arri
 - **Settle ownership before the plan is final.** For a plan that introduces a subsystem, runtime
   boundary, or independent consumer, apply `code-simplify`'s ownership analysis to the proposed
   shape and the analogous implementations already in the repository, with one read-only subagent
-  inventorying them when the comparison spans subsystems. The plan states where common behavior
-  will live and which policy or wiring stays consumer-specific; it never starts from a parallel
+  inventorying them when the comparison spans subsystems. Invoke `subagent-selection` at its standard
+  capability level for that reader, launch the exact resolved identifier, and retain catalogue state,
+  identifier, assignment state and host receipt with the plan evidence. The plan states where common
+  behavior will live and which policy or wiring stays consumer-specific; it never starts from a parallel
   structure and leaves ownership for implementation.
 - Send this shape, leaving out the decision block when there is none:
 

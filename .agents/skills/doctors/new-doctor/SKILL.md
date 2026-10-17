@@ -59,8 +59,9 @@ A lens is only as good as what a reviewer reading it finds. Before delivery, pro
 against a violation a reviewer has not been told about.
 
 - **Who reviews.** Invoke `subagent-selection` and use its **standard** tier for read-only
-  reviewers, following its dispatch and unavailable-model policy. Record the resolved model
-  each reviewer actually ran on.
+  reviewers, following its dispatch and unavailable-model policy. Record each reviewer's catalogue
+  state, exact dispatch identifier, assignment state and receipt; record runtime identity only when
+  the host exposes it.
 - **What each reviewer gets.** The doctor's `SKILL.md`, the skills it depends on, one target tree,
   and the instruction to run the audit phase only: inventory the target, apply every lens, and
   return findings anchored to file and line, each naming the lens and the remedy. No plan, no
