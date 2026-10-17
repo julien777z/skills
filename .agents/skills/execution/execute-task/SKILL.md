@@ -203,7 +203,7 @@ A source or product follow-up is planned on its own. A canonical guidance correc
 
 ## Execution
 
-Execution starts once a required plan is approved, or straight away for a trivial change or for a canonical guidance correction with no other task active.
+Execution starts once a required plan is approved, or straight away for a trivial change or for a canonical guidance correction, whose timing `edit-skill`'s **Recording During A Task** sets.
 
 ### Task Authorization
 
@@ -763,10 +763,11 @@ side by side from here: the guidance stream and the source stream.
 - **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends only verified
   successful `guidance_correction` entries to `edit-skill`'s **Guidance Delivery** route, delegated
   so it never waits on the source stream. Edits the GitHub rule's **Branches and Pull Requests**
-  puts on this task's source pull request pass their source check and smoke round, as **Guidance
-  Delivery** step 1 says, and are pushed to it before that pull request's
+  puts on this task's source pull request were pushed to it when recorded; their source check and
+  smoke round run on that head, as **Guidance Delivery** step 1 says, before that pull request's
   source-stream step 1, so its simplification, final acceptance, history and ready message cover
-  them, and the source stream waits only for that push. A task with none has no guidance stream.
+  them, and the source stream waits only for those checks. A task with none has no guidance
+  stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:
 

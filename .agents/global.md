@@ -69,9 +69,8 @@ alwaysApply: true
   Do not infer authorization from implementation, validation, delivery, pull-request, merge, CI,
   or earlier-request activity. Guidance maintenance is the exception: `edit-skill` runs when the
   user reports a guidance failure or canonical guidance is being changed, so the failure and its
-  owning instruction are repaired together. During another active task it pushes the repair
-  to its draft pull request and records it, and the rest of the delivery runs in bulk when that task
-  completes.
+  owning instruction are repaired together, on the timing `edit-skill`'s **Recording During A
+  Task** sets.
   Determine a user-only restriction from the skill's entry point, not from the fact that it
   performs work. Required checks and independent gates declared by an authorized workflow run
   as dependencies without a separate invocation; an omitted review request is not a waiver.
