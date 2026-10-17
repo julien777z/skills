@@ -168,6 +168,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   Where a sentence is only there to cover the product, cut it. That includes a paragraph explaining
   the mechanics around an action, such as which party performs which step, and a note of a side
   effect nobody asked about, such as what happens to earlier versions.
+- **A dialog's commit button never repeats the label its trigger and title already carry.** The
+  reader pressed "Add item" to open the dialog and read "Add item" as its title; a third "Add item"
+  on the button says nothing new. The commit names the act in the fewest words: "Save" for a form
+  that adds or changes something, the bare verb for a confirmation — "Delete" under "Delete role".
 - **A status reads from the viewer's side.** Name the state in terms of what that reader did or
   still has to do, and keep internal steps they take no part in behind a visual cue: a person who
   sent a form sees "Submitted", with the tone telling review apart from acceptance, while the
