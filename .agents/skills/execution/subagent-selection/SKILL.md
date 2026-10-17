@@ -119,8 +119,9 @@ Return this table to the calling agent, using actual resolved identifiers rather
 placeholders. Record catalogue evidence and assignment evidence separately. A catalogue-hidden mapped family
 with a resolved candidate is `dispatch required` until the actual assignment establishes acceptance or the host
 explicitly rejects it as unsupported; after acceptance, record `accepted` while retaining `catalogue-hidden`.
-Use `identifier required` when the family is known but no exact candidate is available from the host dispatch
-surface or an explicit user request; this is a hold, never an unavailable-model result. Use `unavailable` only
+Use `identifier required` only for an identifier-resolution hold established by Workflow step 2; report that
+step's resolved candidate and state rather than independently selecting candidate sources here. This is a
+hold, never an unavailable-model result. Use `unavailable` only
 when a host receipt explicitly rejects the exact candidate as unsupported. The calling agent then records the
 selected capability level per role or chat, or the explicit user override.
 
