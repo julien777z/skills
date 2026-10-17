@@ -31,9 +31,9 @@ handling after an agent-configuration change.
 ## Inputs
 
 The caller supplies the repository, the pull request, the head SHA its final acceptance passed, the
-affected behaviors its local tests already cover, the rule that decides what a fix made here reopens
-in its own review, and whether every hosted check on the head is required rather than only the
-coverage local tests could not establish. It also supplies each validation exclusion: a current-user
+affected behaviors its local tests already cover, receipts identifying the source head and resolved
+dependencies, configuration, toolchain and runner inputs those tests used, and the rule that decides
+what a fix made here reopens in its own review. It also supplies each validation exclusion: a current-user
 direction to leave a named test or check alone, a baseline exclusion established by `execute-task`'s
 **Encountered Issues** classification with its default-branch evidence, or evidence that a hosted
 runner or provider cancellation meets the GitHub rule's pre-validation and local-coverage
@@ -80,26 +80,25 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    artifacts need, its exact contents, and `git diff --check`; application tests, check runs and CI
    are not consulted. The classification is semantic rather than path-based: instructions,
    documentation, policies, static metadata and non-executable configuration live anywhere.
-4. **For a runtime diff, gate only the coverage local tests could not establish**, unless the caller
-   requires every hosted check, in which case every check on the head reaches a terminal result and
-   only the exclusions below are set aside. For the affected
-   behaviors the caller's local tests do not cover, query check runs and legacy statuses only for a
-   job that supplies that missing coverage — unavailable credentials, provider-only or
-   runner-specific behavior, or a dependency the local environment cannot host. When every affected
-   behavior has passing local coverage, the gate is satisfied without querying GitHub. A qualified
-   pre-validation runner-infrastructure cancellation is skipped under the GitHub rule; other hosted
-   results remain subject to step 7. When a needed job has no check run or status, inspect the active
-   workflow definitions for pull request
-   triggers; if none can supply the coverage, report that blocker rather than waiting on unrelated
-   checks. Record and exclude each caller-supplied validation exclusion. Remove it from required
-   coverage and terminal-result gates; it never becomes a reason to repair, rerun, or wait. Every
-   other affected behavior still needs passing coverage.
-5. **Poll a relevant check until it reaches a terminal state.** Re-query the exact head on a bounded
-   interval matched to how long that job takes — roughly every 30 to 60 seconds — until it is
-   `success`, `failure`, `cancelled`, `timed_out`, `skipped` or `neutral`. Never poll an unrelated job
-   or wait on a whole workflow whose other jobs cover nothing affected. Do not end the turn, report
-   "still running", or hand back to the user while a relevant check is pending; the poll loop is the
-   work.
+4. **For a runtime diff, inventory every check on the exact head.** Read all check runs and
+   legacy statuses, including every workflow job, rather than only required checks or jobs selected
+   by local coverage. Inspect the active workflow triggers and job conditions to account for
+   missing jobs. Passing local tests never replaces this inventory or a hosted job's result. Record
+   each job's run, head, state and conclusion, and each caller-supplied exclusion with its evidence.
+   A skipped or neutral job supplies no coverage: establish whether its native condition makes it
+   inapplicable, or required validation is missing. Draft skips never supply test coverage. A job
+   without a check run or status needs the same applicability decision, not an assumed pass.
+   Before using a local receipt, compare its source head and resolved dependency, configuration,
+   toolchain and runner inputs with the proposed execution; a branch label alone is insufficient.
+   Reuse it only for unchanged inputs or evidenced equivalence, and revalidate the affected coverage
+   on drift. That receipt may support an exclusion under step 7; it never omits the hosted inventory.
+5. **Drive the complete inventory to terminal results.** Re-query the exact head on a bounded
+   interval matched to job duration — roughly every 30 to 60 seconds — until every applicable,
+   non-excluded job is terminal. Local coverage, a green selected job or a branch-protection summary
+   does not permit omitting another job. Classify failures under step 7 and account for missing or
+   skipped required validation before clearing the gate. A new head rebuilds the inventory; a moved
+   base requires rechecking mergeability and execution inputs before reusing evidence. Do not end
+   the turn or hand back while the gate is pending; its poll loop is the work.
 6. **A pending status is a cache, not evidence.** Status endpoints keep reporting `in_progress` after
    a job has finished, sometimes for an hour or more. Learn what the job normally costs from the same
    job on an earlier head or on the base branch; once a check is pending well past that, read the
