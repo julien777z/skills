@@ -528,13 +528,18 @@ bug or a passing formatter does not satisfy this spacing check.
   A push is what lets the user review and test the work, and the only copy that
   outlives the machine: a recycled container or an ended session takes every commit and edit no
   remote holds.
-- **Nothing outside the change holds a push or becomes a question about pushing.** A dependency
+- **Nothing outside the change holds a push, a check or a walkthrough, or becomes a question about
+  pushing or merging.** A dependency
   still in review in another repository, an unreleased package version, a sibling pull request not
   yet merged, CI expected to stay red until one of those lands: the branch consumes the
   dependency's pull-request branch, or its default branch once merged — in the manifest, the
   lockfile and any workflow checkout, as the global rules' version-reference bullet allows while
   developing — or builds on a same-repository sibling's branch as the GitHub rule's branch bullets
-  set out, and pushes. Which branch it consumes, and a red check that dependency explains, are
+  set out, and pushes. Every build, test and walkthrough runs against that checked-in reference,
+  never a local copy the manifest does not name. A consumer that cannot build until its dependency
+  merges is a manifest still naming the default branch: point it at the pull-request branch, never
+  ask for the dependency's merge or report the consumer blocked on it. Which branch it consumes,
+  and a red check that dependency explains, are
   surfaced in user chat under the GitHub rule's independent publishing context rather than waited on; adopting
   its maintained delivery target is named work for when the dependency merges.
 - **No edit sits uncommitted through a long wait outside the checks.** Before the slow verification
