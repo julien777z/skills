@@ -74,9 +74,12 @@
         "private sources",
         "private_source",
         "private_sources",
+        "private-source",
         "private-sources",
         "PrivateSource",
-        "PrivateSources"
+        "PrivateSources",
+        "privateSource",
+        "privateSources"
       ],
       "why": "\"Source\" is an abstraction coined one level above the thing it names, so a reader cannot tell it means a git repository checked out beside the project rather than source code, a data source, or a package index."
     },
