@@ -203,7 +203,9 @@ configured rather than inventing one.
 
 ## Review The Result
 
-Launch at least two independent read-only final reviewers:
+Launch at least two independent read-only final reviewers. Invoke `subagent-selection` at its standard
+capability level for each, launch the exact resolved identifier, and retain catalogue state, identifier,
+assignment state and host receipt in the unified ledger:
 
 - one verifies that every approved disposition was carried out completely;
 - one tries to disprove the decisions, checks what was retained, and reviews unresolved evidence.
