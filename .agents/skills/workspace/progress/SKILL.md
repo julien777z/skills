@@ -28,8 +28,8 @@ and deliver the same dashboard again on every request so the user keeps one page
    current state from its host: open, draft, merged or closed, the checks on its head, and review
    state.
 3. **Write the Architecture page** once the task has a pull request the page covers. It covers the
-   task's pull requests except those closed without merging; a closed one appears only in the Pull
-   requests list. The `dashboard` entry records the page's sections as last written and the head of
+   task's pull requests except those closed without merging, which the dashboard leaves out. The
+   `dashboard` entry records the page's sections as last written and the head of
    each pull request they were written from: reuse them while the page covers the same pull requests
    and every head is unchanged; otherwise read the diffs of the pull requests it covers, write them
    again, and record them with the new heads.
@@ -94,10 +94,11 @@ and deliver the same dashboard again on every request so the user keeps one page
   `label` what passes and `change` when a pull request adds or removes the connection. `steps`: how
   the change works, in order, one sentence each, with each step's number on the arrows it describes.
   Keep to the boxes the explanation needs, a dozen at most.
-- **`links` "Pull requests"**: `label` its name, `url`, `detail` "<owner>/<repo>" and the checks and
-  review state just read, `state` its `open`, `draft`, `merged` or `closed`, and `status` and
-  `tone`: Open `good`, Draft neutral, Merged `done`, Closed `critical`, and Failing checks
-  `critical` in place of Open or Draft when the head's checks fail.
+- **`links` "Pull requests"**: each open and draft pull request, leaving out merged and closed
+  ones, which need nothing more from the reader. `label` its name, `url`, `detail` "<owner>/<repo>"
+  and the checks and review state just read, `state` its `open` or `draft`, and `status` and
+  `tone`: Open `good`, Draft neutral, and Failing checks `critical` in place of either when the
+  head's checks fail.
 - **`questions` "Answered"**: each answered question with the user's `answer` in their words and
   `meta` the time it was given.
 - **`notes` "Decisions and notes"**: each recorded decision and each assumption made without the
