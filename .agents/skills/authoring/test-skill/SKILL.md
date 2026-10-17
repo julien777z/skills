@@ -115,11 +115,12 @@ a code change is tested: against the case that motivated it, with the change and
 
 ## Reviewer selection
 
-Invoke `subagent-selection` and request **standard** by default. If that level is unavailable,
-select the first available lower capability in the selector's ordering without asking the user;
-never move upward or inherit the orchestrator's model. This fallback applies to this skill's
-default, never against the user's explicit model or capability constraint. If no permitted model is
-available, report `not run` with the unavailable request and retain the concrete hold.
+Invoke `subagent-selection` and request **standard** by default. Select the first available lower
+capability in the selector's ordering only after a host receipt explicitly rejects the standard tier's
+exact identifier as unsupported; never move upward or inherit the orchestrator's model. This fallback
+applies to this skill's default, never against the user's explicit model or capability constraint. A
+`dispatch required` or `identifier required` result, and every rejection not explicitly unsupported,
+reports `not run` with the concrete hold.
 
 Classify a rejected reader dispatch from the host receipt. Only a receipt establishing that the
 requested capability or model is unsupported makes it unavailable for that attempt and permits the
@@ -138,8 +139,8 @@ Run one edited/control pair per scenario — two runs — with the same resolved
 effort, scenario and reading list in both. Record the catalogue state, requested capability and family,
 exact dispatch identifier, resolved reasoning effort, selector resolution, and accepted actual-assignment
 dispatch receipt with those explicit parameters in each run's evidence entry. A catalogue-hidden family is
-`dispatch required` until its exact identifier is resolved and the assigned worker accepts it; an unavailable
-identifier is a hold, not an unavailable model. Selector resolution retains an explicit unsupported request,
+`dispatch required` until its exact identifier is resolved and the assigned worker accepts it; a missing identifier
+is a hold, not an unavailable model. Selector resolution retains an explicit unsupported request,
 the exact fallback capability and dispatch identifier when one is permitted, why that fallback was selected,
 and any explicit user override. Record the runtime-identity and runtime-label evidence as
 `subagent-selection`'s Workflow step 3 defines. Follow the selector's dispatch instructions.

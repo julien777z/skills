@@ -22,9 +22,9 @@ agent; the calling agent launches the actual assignment with the selected model.
    exact candidate identifier from the host's model-selection surface or from an explicit user model request.
    A family label is not a dispatch identifier. When a mapped family is absent from the catalogue or picker,
    keep it as `dispatch required` while resolving its exact candidate; catalogue absence leaves availability
-   unverified. A missing exact candidate is an identifier-resolution hold, not model unavailability, and does
-   not permit fallback or an in-process route. A host with no explicit model-selection mechanism is unavailable
-   with that reason; never invent an identifier or silently substitute another family.
+   unverified. A missing exact candidate, including a host with no explicit model-selection mechanism, is an
+   identifier-resolution hold, not model unavailability, and does not permit fallback or an in-process route.
+   Never invent an identifier or silently substitute another family.
 3. Before a caller marks a requested capability level or explicit model unavailable, follows an
    unavailable-model fallback, or takes an in-process route, launch the actual assigned work once with its exact
    candidate identifier and explicit reasoning effort. A successful dispatch establishes that the host accepted
@@ -117,7 +117,7 @@ placeholders. Use `dispatch required` for a catalogue-hidden mapped family until
 identifier is resolved and the actual assignment establishes acceptance or the host explicitly rejects it as
 unsupported. Use `identifier required` when the family is known but no exact candidate is available from the
 host dispatch surface or an explicit user request; this is a hold, never an unavailable-model result. Use
-`unavailable` only when the host cannot select a model or a host receipt explicitly rejects the exact candidate.
+`unavailable` only when a host receipt explicitly rejects the exact candidate as unsupported.
 The calling agent then records the selected capability level per role or chat, or the explicit user override.
 
 ```markdown
