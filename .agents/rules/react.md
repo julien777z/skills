@@ -467,6 +467,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   proximity rather than intent, and offers records the reader never asked to see. A picker over a
   low-stakes vocabulary, such as tags, may suggest on focus. The shared search component makes each
   caller declare which kind it picks rather than defaulting to either.
+- **A suggestion list opens only once it has something to show:** its results, or its empty
+  message once the search has finished. While the results for the typed text are still loading,
+  the list stays closed and the field shows the loading state; an empty frame that grows when the
+  results land reads as a broken list.
 - **A form longer than a handful of fields is grouped into titled sections,** each holding the
   fields that answer one question; sibling forms share one section layout, under **Shared
   Surfaces** above.
