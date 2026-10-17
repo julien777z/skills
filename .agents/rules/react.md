@@ -317,6 +317,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   page system that moves through steps — an onboarding, a setup, a verification, a wizard, a form
   split across pages — whether or not each step saves as it advances, and over general advice to
   name a button for its action.
+- **"Next" only moves on; it never performs the step's work.** A step whose requirement is an action
+  — linking an account, connecting a provider, uploading a file, verifying an identity — offers that
+  action as its own button in the step's content, and "Next" stays disabled until the requirement
+  is met. A forward control that opens a dialog, starts a connection or makes a change before it
+  advances leaves the reader unable to tell moving on from acting, and a step that advances on its
+  own once the action finishes takes the reader somewhere they did not ask to go.
 - **Every page renders in the product's page layout, including a page that reports a state** — a
   confirmation, such as the return page a flow finished outside the product lands on, or an expired
   link — with its content in sections, each headed and described as **Interface Copy** says. A
