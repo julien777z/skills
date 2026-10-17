@@ -334,6 +334,15 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   is missed. A success or completed state shows neither, and a toast at most when the reader's own
   action just caused it. A dismissible "approved" or "done" banner, and whatever stores its
   dismissal, is the defect: delete both.
+- **A banner about the account or workspace, rather than the page, shows only on top-level pages**
+  — the home page and each destination the primary navigation lists — never on a page nested below
+  one, such as a record's detail, edit or create page or a step of a flow. Terms to accept, a
+  verification to finish, a note about the plan: the reader meets them where they arrive, and a
+  nested page keeps its space for the task in hand. The page's level in the navigation decides it,
+  in one place, so a new nested page leaves the banner out without being listed. A banner that
+  explains why the page's own actions are refused — a read-only or suspended workspace on a page
+  whose writes it blocks — concerns that page and shows wherever the refusal applies, as the
+  whole-subject state bullet below says.
 - **At most two non-error banners appear on the whole rendered surface, including its shell and
   sections; error banners are the exception.** Error banners may coexist visibly with those status or action
   banners and with other independent error banners. For simultaneous non-error conditions, trace each
