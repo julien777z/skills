@@ -35,12 +35,12 @@ for neutral. Section types:
 
 | `type` | Fields | Item fields |
 | --- | --- | --- |
-| `board` | `title`, `columns: [{title, tone?, page_size?, items}]`: a column with more cards than its `page_size` shows that many at a time, with Previous and Next | `title`, `detail?`, `meta?`, `tag?`, `url?` |
-| `questions` | `title`, `items` | `question`, `status` (`open`, `answered`), `context?`, `options?`, `recommendation?`, `answer?`, `meta?` |
-| `links` | `title`, `items` | `label`, `url`, `detail?`, `status?`, `tone?`, `state?`: a pull request's `open`, `draft`, `merged` or `closed`, drawn with GitHub's icon for it in place of the arrow |
+| `board` | `title`, `columns: [{title, tone?, page_size?, items}]` | `title`, `detail?`, `meta?`, `tag?`, `url?` |
+| `questions` | `title`, `items`, `page_size?` | `question`, `status` (`open`, `answered`), `context?`, `options?`, `recommendation?`, `answer?`, `meta?` |
+| `links` | `title`, `items`, `page_size?` | `label`, `url`, `detail?`, `status?`, `tone?`, `state?`: a pull request's `open`, `draft`, `merged` or `closed`, drawn with GitHub's icon for it in place of the arrow |
 | `table` | `title`, `columns`, `rows` | each row a list of strings, one per column |
 | `notes` | `title`, `items` | each item a string |
-| `changes` | `title`, `items` | `name`, `change` (`added`, `changed`, `removed`), `detail?`: a named part with its change as a colored badge |
+| `changes` | `title`, `items`, `page_size?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`: a named part with its change as a colored badge |
 | `outline` | `title`, `groups: [{title, items}]` | `title`, `detail`, `tone?`: a headline that opens to its detail; a group of one or two items shows them open |
 | `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?` | node: `id`, `label`, `detail?`, `pr?`, `change?`; edge: `from`, `to`, `label?`, `step?`, `change?`; pr: `ref`, `url`; each step a string |
 
@@ -49,6 +49,9 @@ edge as an arrow numbered with its `step`; the numbered `steps` are listed besid
 `change` is `added`, `changed` or `removed` and colors the box or arrow; omit it for an unchanged
 part. Every `pr`, `from` and `to` names a listed `ref` or node `id`, and every `step` a position in
 `steps`.
+
+A board column, `questions`, `links` or `changes` section with more entries than its `page_size`
+shows that many at a time, with Previous and Next.
 
 Every text field is a non-empty string; unknown fields are refused, so a typo fails the render
 instead of vanishing from the page. `ref`s, node `id`s and reference `text`s are each unique; every

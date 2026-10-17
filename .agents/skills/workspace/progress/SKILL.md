@@ -101,7 +101,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   `tone`: Open `good`, Draft neutral, and Failing checks `critical` in place of either when the
   head's checks fail.
 - **`questions` "Answered"**: each answered question with the user's `answer` in their words and
-  `meta` the time it was given.
+  `meta` the time it was given, with `page_size` 5.
 - **`notes` "Decisions and notes"**: each recorded decision and each assumption made without the
   user, labelled as an assumption.
 - **`table`**, only when the ledger holds tabular facts worth a grid, such as checks per pull

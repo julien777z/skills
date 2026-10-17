@@ -167,7 +167,7 @@
     border-top: 1px solid var(--line);
   }
 
-  .list > li:first-child { border-top: 0; }
+  .list > li:first-child, .list > li.page-start { border-top: 0; }
   .list > .change-row { grid-template-columns: minmax(0, 1fr) auto; }
   .link-row > .glyph { margin-top: 1px; }
   .list > li > .pill { align-self: start; }
@@ -539,12 +539,17 @@
       return item;
     }
 
-    function listSection(items, renderItem) {
+    function listSection(section, renderItem) {
       var list = el("ul", "list panel");
+      var rows = section.items.map(renderItem);
+      var content = document.createDocumentFragment();
 
-      items.forEach(function (entry) { list.append(renderItem(entry)); });
+      list.append.apply(list, rows);
+      content.append(list);
 
-      return list;
+      if (section.page_size && rows.length > section.page_size) content.append(pager(rows, section.page_size));
+
+      return content;
     }
 
     function tableSection(section) {
@@ -580,7 +585,10 @@
 
       function show(page) {
         current = page;
-        cards.forEach(function (card, index) { card.hidden = Math.floor(index / size) !== page; });
+        cards.forEach(function (card, index) {
+          card.hidden = Math.floor(index / size) !== page;
+          card.classList.toggle("page-start", index === page * size);
+        });
 
         var first = page * size + 1;
         var last = Math.min(cards.length, first + size - 1);
@@ -771,9 +779,9 @@
       board: { wide: true, render: boardSection },
       table: { wide: true, render: tableSection },
       diagram: { wide: true, render: diagramSection },
-      questions: { render: function (section) { return listSection(section.items, questionRow); }, count: questionCount },
-      links: { render: function (section) { return listSection(section.items, linkRow); } },
-      changes: { render: function (section) { return listSection(section.items, changeRow); } },
+      questions: { render: function (section) { return listSection(section, questionRow); }, count: questionCount },
+      links: { render: function (section) { return listSection(section, linkRow); } },
+      changes: { render: function (section) { return listSection(section, changeRow); } },
       notes: { render: notesSection },
       outline: { wide: true, render: outlineSection }
     };
