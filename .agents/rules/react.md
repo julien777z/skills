@@ -240,10 +240,14 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   Compact controls do not require a narrow container, and a wide container does not require
   stretched controls. Use the product's established layout and control sizes, preserving comparable
   widths under **Forms**, rather than shrinking the section or creating a new peer-section row.
-- **Place actions by what they affect and the product's established interaction pattern.** An
-  action on a whole surface belongs in its shared action slot; an action on one item stays associated
-  with that item. Do not move a contextual action into a detached row merely to satisfy a width or
-  proximity rule. At narrower widths, wrap or stack related content and controls while preserving
+- **Place actions by what they affect, beside the content they act on.** A page's own actions —
+  create, export, a toggle into a mode such as customize or reorder, and the strip that mode shows
+  while it is on — sit directly above the content they act on, below the page's banners and its
+  load-failure area. Never put them in the header bar, the top navigation, or anywhere else above
+  the banners, where they are far from what they change and easy to miss. The page layout owns
+  that order — banners, failures, actions, content — so no page renders its own toolbar above it.
+  An action on one section or item stays with that section or item. Do not move a contextual action
+  into a detached row merely to satisfy a width or proximity rule. At narrower widths, wrap or stack related content and controls while preserving
   readable values, visible context, accessible labels and a clear association with their actions.
 - **A frame that scrolls shows its scrollbar whenever its content overflows** — a box of legal
   text, a dialog body, a list or a table inside a maximum height — on every platform and before the
@@ -278,8 +282,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **A page's content offers one control per destination or action** — a button, a link, a menu item,
   an icon or a clickable row; the app's own navigation is not counted against it. Two that open the
   same form or page — a checklist step's button or linked label beside a quick link, a row that
-  opens its record beside that row's own "View" link, a header action repeated in the section below
-  it — read as two different actions and crowd the page. Keep the one control where the reader
+  opens its record beside that row's own "View" link, a page action repeated inside the section
+  below it — read as two different actions and crowd the page. Keep the one control where the reader
   looks for it; elsewhere, text naming the same destination stays plain text, and a control that
   carries nothing else is removed.
 - **A flow starts at its first question.** A step that only introduces the product, lists what it
