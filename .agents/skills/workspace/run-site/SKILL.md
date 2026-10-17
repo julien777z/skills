@@ -24,7 +24,7 @@ Start and verify the stack within the requested scope. When browser verification
   requirement. In a local execution environment, mark this verification not applicable; do not
   recreate it under another validation label or hold completion for its prerequisites. Browser
   work the user explicitly requests, including debugging or verification, applies in either
-  environment. Reference material, ordinary implementation or plan approval, and downstream
+  environment. Reference material, ordinary implementation or plan approval, and delegated
   reviewer requests do not supply that direct user request. Stack startup and non-browser
   validation required by the task still apply.
 - Setup is agent-agnostic. Any agent must be able to run it, so never hard-code an absolute path,

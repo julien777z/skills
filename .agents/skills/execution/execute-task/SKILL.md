@@ -65,9 +65,8 @@ Every task that changes files starts here, and so does every follow-up that arri
 
 - Select verification before recommending it, putting it in a plan, or delegating it. Read the
   shared testing rule's **Environments** section and invoke `run-site` to apply its **Principles**
-  before selecting browser walkthroughs or rendered UI inspections. Carry that applicability
-  into later review and **Completion** rather than letting a downstream request add verification
-  outside the selected scope.
+  before selecting browser walkthroughs or rendered UI inspections, including when later review
+  or **Completion** proposes additional verification.
 - At most five numbered steps, each one bounded action with its wall-clock estimate, then the
   total and what the user does afterwards, then every decision the plan needs. Keep it under 200
   words while `i-have-adhd` is active, and send any detail a caller requires — a gated plan, a
