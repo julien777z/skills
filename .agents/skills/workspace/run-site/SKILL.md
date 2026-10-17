@@ -1,6 +1,6 @@
 ---
 name: run-site
-description: Bring an application stack up and repair startup blockers. Guidance-required browser walkthroughs apply only in cloud execution environments; explicit user requests for browser work apply in either environment. Use when a change needs applicable browser verification, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works.
+description: Bring an application stack up and repair startup blockers. Guidance-required browser walkthroughs apply only in cloud execution environments; explicit user requests for browser work apply in either environment. Use before planning, recommending, delegating or performing browser walkthroughs or rendered UI inspections, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works.
 short_description: 'Start an application stack and perform browser verification where applicable.'
 ---
 
@@ -24,7 +24,9 @@ Start and verify the stack within the requested scope. When browser verification
   requirement. In a local execution environment, mark this verification not applicable; do not
   recreate it under another validation label or hold completion for its prerequisites. Browser
   work the user explicitly requests, including debugging or verification, applies in either
-  environment. Stack startup and non-browser validation required by the task still apply.
+  environment. Reference material, ordinary implementation or plan approval, and delegated
+  reviewer requests do not supply that direct user request. Stack startup and non-browser
+  validation required by the task still apply.
 - Setup is agent-agnostic. Any agent must be able to run it, so never hard-code an absolute path,
   a home directory, a machine-specific port, or an assumption about which agent is running.
   Resolve the repository root from the script's own location and read every other path from there.
