@@ -170,8 +170,8 @@ can, so the user's review of the source pull request overlaps it.
      that reading against the conversation, the plan or the code. When it is wrong, say so plainly:
      what was actually meant or done, and which existing guidance already covers it. Then stop. Make
      no guidance edit, open no pull request and record no correction, because there is no miss to
-     repair. An example is a user who reads "a shared package" in a plan as a cross-repository
-     package when the agent meant the repository's own. When only part of the premise holds, act on
+     repair, such as a user who asks for a rule against a step the plan never proposed because they
+     read its wording as naming something else. When only part of the premise holds, act on
      that part alone. This is different from a real miss that existing text already covers, which
      step 2's causal diagnosis still repairs.
 
