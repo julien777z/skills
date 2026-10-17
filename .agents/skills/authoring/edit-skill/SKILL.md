@@ -48,7 +48,8 @@ new owner under **Guidance Changes Proceed Automatically**.
 
 ## Guidance Changes Proceed Automatically
 
-A user request or an encountered guidance gap authorizes the canonical `.agents` correction. Do not
+A user request or an encountered guidance gap, once **Behavior** step 1 confirms its premise,
+authorizes the canonical `.agents` correction. Do not
 ask for a plan or for approval of a guidance-output example. An example renders the settled
 instruction and is task evidence, not a new product experience because a user reads it. A guidance
 edit that intentionally changes the product still follows the global product-decision boundary. The
@@ -164,6 +165,15 @@ can, so the user's review of the source pull request overlaps it.
 
 1. Validate input.
    - If input is missing or empty, ask: **"What should I add or update in `.agents`?"**
+   - **Confirm the request's premise before anything else.** A request often rests on the user's
+     reading of what happened: what the agent did, proposed or meant, or what the code does. Check
+     that reading against the conversation, the plan or the code. When it is wrong, say so plainly:
+     what was actually meant or done, and which existing guidance already covers it. Then stop. Make
+     no guidance edit, open no pull request and record no correction, because there is no miss to
+     repair. An example is a user who reads "a shared package" in a plan as a cross-repository
+     package when the agent meant the repository's own. When only part of the premise holds, act on
+     that part alone. This is different from a real miss that existing text already covers, which
+     step 2's causal diagnosis still repairs.
 
 2. Identify the failure class, then its target type and name.
    - **Classify before proposing a remedy or editing guidance.** State the observable outcome the
