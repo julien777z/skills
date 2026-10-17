@@ -443,8 +443,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   of the viewport, never through buttons on the page** — a settings page, a profile, a record's edit
   page alike. The panel is out of view until a field differs from its saved value; then it animates
   up from below the viewport's bottom edge to rest a little above it, holding a cancel action that
-  restores the saved values and a save action. It stays in view as the reader scrolls while changes
-  are unsaved, and slides away once they are saved or cancelled. A reader who unticks one topic on a
+  restores the saved values and a save action. It floats over the page and never takes room in it,
+  so nothing beneath it, a page footer included, moves when it rises. It stays in view as the reader
+  scrolls while changes are unsaved, and slides away once they are saved or cancelled. A reader who unticks one topic on a
   newsletter preferences page sees it rise, and ticking the topic again sends it away. A save or
   reset button per section, a row of them at the end of the page or form, and a footer that sticks
   to the bottom of the page whether or not anything changed are the defect. A form that creates a
