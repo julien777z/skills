@@ -60,13 +60,10 @@ Delegated skills retain their explicitly selected tiers, subject to the user's m
 launched worker's catalogue state, exact dispatch identifier, assignment state and host receipt in the CR
 ledger. Follow the selector's dispatch and unavailable-model policy.
 
-Only after the host explicitly rejects the required tier's exact identifier as unsupported may CR
-perform its review and fix sequence in process. It does not substitute a model: the primary agent
-reads and applies the same `code-simplify` and `code-review` rubrics, target scope, receipts, and
-validation requirements that the cohort would have covered. A `dispatch required` or `identifier
-required` result, and any rejection not explicitly unsupported, retains the concrete hold. This
-route does not replace the independent `acceptance-gate`; that gate remains a separate required
-checkpoint.
+An explicit unsupported receipt for the required tier's exact identifier, a `dispatch required` or
+`identifier required` result, and any rejection not explicitly unsupported all retain the concrete hold. CR
+never replaces an independent review, simplification, or gate in process; the independent `acceptance-gate`
+remains a separate required checkpoint.
 
 ## Review Targets
 
@@ -189,10 +186,9 @@ subagents, even when `code-simplify` would ordinarily keep a small scope in proc
 pull request into coherent app, service, package, or cross-cutting slices that collectively cover
 the entire scope; never divide it by arbitrary file counts. Give every subagent the complete
 `code-simplify` rubric for its slice and require findings anchored to paths and lines with the
-proposed restructuring. Only after an explicit unsupported receipt for the required exact identifier
-may the primary agent perform that simplification pass in process and record the slices, rubric
-checks, findings, and clean results before the code-review phase. Every other selection state retains
-the concrete hold.
+proposed restructuring. An explicit unsupported receipt, a missing identifier, and every other selection
+state retain the concrete hold; the primary agent never performs an independent simplification pass in process
+before the code-review phase.
 When the pull request adds public concepts across slices, assign one reviewer the cross-cutting
 interfaces and their existing peers as a coherent slice. Require its receipt to assess whether the
 new concepts are variants of existing ones; do not accept a clean simplification gate until that
@@ -380,7 +376,7 @@ authorization, skip deployment and continue review. Never dispatch a workflow or
 to work around this gate.
 
 1. Resolve every review target and working pull request using **Review Targets**. Process each independent unit through the remaining steps before starting the next, except a compact guidance unit follows its related source unit in another repository. Read each original target's intent and metadata without modifying a merged pull request; run **Description Refresh** when a working pull request exists. Record every review range and pass each target's intent and route-specific ownership to every subagent and into `/code-review high fix`. Run **Review Thread Triage** against each original target's discussions, with legitimate fixes placed according to that target's route. Then classify failures under **Failure relevance**, run the first test pass **Validation Order** requires, and complete the **Simplification Gate**; no code-review phase starts for a unit before all three are clean.
-2. Invoke `/code-review high fix <target>` for each unit using the open pull-request URL or the exact delegated ref range. Only after an explicit unsupported receipt for the required exact identifier may the primary agent perform the complete high fix review in process instead, with the same lenses, required searches, target scope, finding validation, and receipts; every other selection state retains the concrete hold. For a merged range, pass the original pull request as metadata only and explicitly preserve the range through resolution and eligibility checks. Direct fixes to the matching working fix branch rather than changing the immutable target.
+2. Invoke `/code-review high fix <target>` for each unit using the open pull-request URL or the exact delegated ref range. An explicit unsupported receipt, a missing identifier, and every other selection state retain the concrete hold; the primary agent never performs the independent high-fix review in process. For a merged range, pass the original pull request as metadata only and explicitly preserve the range through resolution and eligibility checks. Direct fixes to the matching working fix branch rather than changing the immutable target.
 3. For the current unit, apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the run continues; see **Deferred Findings**. A finding that can be neither fixed nor recorded remains an active gate: surface the needed resolution under the global rules' pending-result boundary and continue independent work; do not conclude CR on that report.
 4. Classify each current-unit correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean. This is the same authorized CR execution, not a new action-skill invocation.
 5. Once the current unit's review is clean, if a merged-range review has no working fix pull request, record it for the **Completion Report** and continue to the next unit without another merge. Otherwise run **Description Refresh**'s second pass, then put the complete working pull-request diff and refreshed prose to `acceptance-gate`'s final-acceptance question against the intent statement, retaining the original review range as context. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate** verdict is the fresh gate; resolve each flag under `acceptance-gate`'s **Bounds**. Before each fresh acceptance gate, repeat **Description Refresh** for the repaired head. The accepted head is the SHA `land-pr` receives.

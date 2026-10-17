@@ -38,9 +38,8 @@ agent; the calling agent launches the actual assignment with the selected model.
    calling skill declares its direction and limits and it respects the user's explicit model or capability
    constraint. Report the original request as unavailable and name the actual fallback capability and model;
    never relabel it as the requested level. Without that policy, stop the dependent step and report the
-   unsupported request, host receipt, and waiting work to the caller; do not substitute another model. The
-   caller either follows its own in-process route or retains the concrete hold for the user. Preserve one
-   resolved model within comparison pairs.
+   unsupported request, host receipt, and waiting work to the caller; do not substitute another model or
+   replace an independent step in process. Preserve one resolved model within comparison pairs.
 5. The calling agent chooses a capability level and reasoning effort for each role or chat. Honor the user's
    explicit model or capability-level constraint first, then the calling skill's capability level. For a live
    skill-verification chat, choose the least-capable suitable mapped family, resolve its exact candidate, and
