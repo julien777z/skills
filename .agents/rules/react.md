@@ -323,13 +323,17 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   an address that does not exist is the exception: a full-page message centred in the screen,
   outside the navigation, with one action home. A notice that the page is for somebody else, and a
   status page standing in a finished flow's place, are deleted as the bullets above say.
-- **A banner appears only when the reader has something to do, something is wrong, or something
-  they submitted is waiting on a decision** — terms to accept, a verification to finish, a load
-  that failed, a blocking state to resolve, a submission under review, worded from the reader's
-  side as **Interface Copy**'s status bullet says. A success or
-  completed state shows none, and a toast at most when the reader's own action just caused it. A
-  dismissible "approved" or "done" banner, and whatever stores its dismissal, is the defect: delete
-  both.
+- **A boxed banner appears only when the reader has something to do, something is wrong, or
+  something they submitted is waiting on a decision** — terms to accept, a verification to finish,
+  a load that failed, a blocking state to resolve, a submission under review, worded from the
+  reader's side as **Interface Copy**'s status bullet says. **General information the reader need
+  not act on takes the slim notice instead**: one line, a soft tint, no border or shadow — how many
+  projects the reader's plan includes, a note on how a feature behaves. Weight follows whether the
+  reader must act, never how important the message feels: information in a boxed banner, a
+  bordered callout or a card reads as a demand, and a state the reader must act on in a slim notice
+  is missed. A success or completed state shows neither, and a toast at most when the reader's own
+  action just caused it. A dismissible "approved" or "done" banner, and whatever stores its
+  dismissal, is the defect: delete both.
 - **At most two non-error banners appear on the whole rendered surface, including its shell and
   sections; error banners are the exception.** Error banners may coexist visibly with those status or action
   banners and with other independent error banners. For simultaneous non-error conditions, trace each
