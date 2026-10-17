@@ -655,10 +655,11 @@ displaces is named work whether or not a report named it: an approved plan short
 commits a remote lacks, a checkout left mid-edit. The turn that serves the new request also moves
 it — the user asking about something else is not the user withdrawing what they asked for before.
 
-- **Write it down before anything else starts.** The displaced work goes into its plan entry in
-  `session-ledger`, with its next step, before the first step of whatever displaced it.
+- **Write it down before anything else starts.** The displaced work goes into the ledger through
+  `session-ledger`, as a step on its plan or an entry of its own, with its next step, before the
+  first step of whatever displaced it.
 - **An interruption pauses the step in flight; it never ends the run.** After a follow-up
-  finishes, restore the displaced task as the active step in its plan entry and
+  finishes, mark the displaced work active again in the ledger and
   execute its saved next step without waiting for "continue". A promise to resume is not that
   step. Completing
   its own delivery — including a guidance merge and refresh, a diagnostic answer, or a local
