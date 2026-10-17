@@ -11,6 +11,9 @@ exercise, and prove that each test protects behavior or an independent contract.
 
 ## Dependencies
 
+- `session-ledger` — owns private task-plan and evidence persistence. The task owner writes the
+  boundary matrix; a worker returns its proposed rows to that owner.
+
 Read the repository's product-constraints skill when the skill listing declares one, found by its
 description rather than assumed by name. It says how broad the fix for an issue encountered while
 tracing a test surface is; without one, fix what the focused pass can finish.
@@ -46,6 +49,21 @@ tracing a test surface is; without one, fix what the focused pass can finish.
    asserting behavior.
 7. Run real deterministic application code and real domain models. Double only boundaries the
    process cannot cross or faults the real path cannot produce, using the shallowest declared seam.
+   At an external, serialized, or persisted boundary, construct values from the canonical model or
+   fixture and then emit the exact representation the production consumer receives. Do not let a
+   model's permissive internal-field input stand in for the boundary contract. Before selecting
+   cases, trace every field and cardinality condition that can change the decision; cover its
+   observable outcomes through the rubric's decision matrix rather than stopping at the reported
+   input shape. When the production path filters, selects, stops, retries, falls back, merges, or
+   persists based on those inputs, prepare a `Boundary matrix` before modifying cases. A task owner
+   writes and reads back the matrix in the task's `session-ledger` plan entry; when the task has no
+   plan entry, the owner creates and reads back a `test-fixture` evidence record in that same
+   private ledger instead. A worker returns proposed rows to the owner and waits for that owner’s
+   persistence receipt. Each row names the boundary reader, emitted representation,
+   behavior-changing condition, and expected observable outcome. In the completion report,
+   reproduce safe matrix rows — field names, shape, and outcome rather than raw payload values —
+   and their test-case mapping, then cite the private ledger entry that established them before
+   implementation.
 8. Before completion, inspect every literal added or changed in tests and test support.
    Replace domain data, sample identities, addresses, names, identifiers, payload fields, and fixture
    facts with values read from the canonical fixture or factory. A provider request or response body

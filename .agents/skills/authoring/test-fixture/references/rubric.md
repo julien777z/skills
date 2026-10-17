@@ -131,6 +131,42 @@ fixtures, and read nested values off them directly. Keep variant-only fields on 
 the root, and select a variant through one aggregate creator with a typed selector rather than a
 parallel creator per variant.
 
+### Boundary Representations And Decision Matrices
+
+When a test supplies an external response, request, queue message, file, cache entry, or stored
+payload, build its data from the canonical fixture or boundary model and encode it as the real
+consumer receives it. Where production owns the encoding, select its explicit provider or storage
+serialization options — such as field aliases, omission rules, enum values, casing, nesting, and
+JSON mode — rather than passing internal Python field names or a default dump through a permissive
+parser. A test that constructs a model and hands its fields directly to the reader proves only
+in-memory model behavior; it does not prove the boundary contract. When production only consumes a
+representation, construct the native wire data from canonical fixture values in the established
+typed test support. Repair production only when its actual parsing or emission contract is
+incomplete, never to add an encoder that no production caller needs.
+
+For a decision that filters, selects, stops, retries, falls back, merges, or persists values, trace
+every input field and collection condition the production path reads before choosing cases. Extend
+the owning parameter table with the distinct states that can change the outcome: a matching value,
+contradictory value, omitted optional evidence, absent required evidence, and one versus multiple
+candidates where each applies. Cover interactions only when the production predicates combine
+them; this is a decision matrix, not an arbitrary cross-product. Each row asserts the externally
+observable result — for example, early completion versus a fallback request — rather than only the
+decoded intermediate model. Before implementation, prepare the same rows in a `Boundary matrix`.
+A task owner writes and reads back that matrix in the task's `session-ledger` plan entry; when there
+is no plan entry, the owner creates and reads back a `test-fixture` evidence record in that same
+private ledger. A worker returns proposed rows to the owner and waits for the owner's persistence
+receipt. Each row names the boundary reader, exact emitted representation, behavior-changing
+condition, and expected observable outcome. The completion report reproduces safe matrix rows —
+field names, shape, and outcome rather than raw payload values — and their exercising test cases,
+then cites the private ledger entry that established them before implementation, so review can find
+a missing state or an
+internal representation substituted for the consumer contract.
+
+After strengthening one such boundary test, inspect the sibling tests and shared fixtures that emit
+the same representation. Update every one that simulates the same production boundary with internal
+field names or an incomplete decision state; keep tests of an in-memory model on its native
+in-memory contract.
+
 ## Mirror Source Ownership
 
 Discover the repository's source roots, test roots, distribution roots, build configuration, release
