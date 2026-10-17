@@ -102,6 +102,11 @@ with an obsolete owned contract or revision.
   something is not a smaller change; it is the same change plus a new thing to delete later.** When the
   narrow option requires inventing structure the clean option would remove, the narrow option is the
   more expensive one.
+- **A configuration directive is that narrow option too.** When a tool reports a problem in code the
+  user owns — a bundler warning, a type error, a lint finding, a size limit — the fix is in the
+  structure it points at: split the module, remove the unused export, move the import. A manifest
+  key, a bundler or compiler option, an alias or an exclusion that stops the tool from seeing the
+  problem leaves the structure as it was and hides it from the next reader.
 
 ## The Deployment's Size Is Not The Design
 
