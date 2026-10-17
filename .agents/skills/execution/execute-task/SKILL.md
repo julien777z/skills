@@ -486,7 +486,8 @@ increment's **Pre-Push Gate** verdict.
 Read the shared testing rule before planning test runs or briefing an implementation worker.
 Its **Verification Cadence** governs tests, builds, browser walkthroughs and reviews, including
 pre-push checks. Deferred feature verification does not hold an intermediate push and remains
-required afterward. Run the relevant batch after the feature is complete, then the required final
+required afterward, and a suite still running holds none either: the testing rule's superseded-run
+bullet says what happens to it. Run the relevant batch after the feature is complete, then the required final
 checks before delivery; retain evidence that the change has not invalidated.
 
 - **Required checks use CI’s commands and scope, at the verification checkpoints above.** Read

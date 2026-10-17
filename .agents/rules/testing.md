@@ -30,6 +30,11 @@ paths:
   preserve behavioral evidence once the diff establishes that they cannot affect the tested
   behavior. Run the formatter, linter, type checker, or other focused check that owns the edit;
   do not rerun a behavioral suite solely because its head changed.
+- **A run whose result a known change will supersede is stopped, never awaited.** Once a result, a
+  partial one included, shows a fix is needed, or another change to the same inputs is already
+  planned, stop your own in-flight run of those inputs, make and push the change, then run the
+  batch once on the new head. A rule against editing during a run means stopping your own run
+  first, never waiting it out, and no test run or its pending result holds a push.
 - Before delivery, complete the required repository checks and review the combined pull-request
   diff. Reuse still-valid completed-feature results; run the full required checks where the final
   repository state or integration needs them. This cadence changes when verification runs, never
