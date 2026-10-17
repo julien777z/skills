@@ -50,8 +50,8 @@ edge as an arrow numbered with its `step`; the numbered `steps` are listed besid
 part. Every `pr`, `from` and `to` names a listed `ref` or node `id`, and every `step` a position in
 `steps`.
 
-A board column, `questions`, `links` or `changes` section with more entries than its `page_size`
-shows that many at a time, with Previous and Next.
+A board column, `questions`, `links` or `changes` section with more entries than its `page_size`,
+a whole number of at least 1, shows that many at a time, with Previous and Next.
 
 Every text field is a non-empty string; unknown fields are refused, so a typo fails the render
 instead of vanishing from the page. `ref`s, node `id`s and reference `text`s are each unique; every
@@ -88,8 +88,8 @@ to show is left out, and so is the entry that requires it. A URL renders as a li
    that does not match the spec and exits non-zero; fix the spec and run it again.
 3. Keep the output path stable for one dashboard, so each render replaces the last.
 
-Change the page itself only in this skill's assets, never in one dashboard's copy: every
-dashboard shares it.
+Change a delivered dashboard only by re-rendering its whole spec, never by editing the page's
+HTML, which skips the renderer's validation; change the page itself only in this skill's assets.
 
 ## Delivery
 

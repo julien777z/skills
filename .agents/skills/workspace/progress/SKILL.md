@@ -37,10 +37,9 @@ and deliver the same dashboard again on every request so the user keeps one page
 5. **Select the delivery route, then render.** Before invoking `use-dashboard`, choose the
    host's ongoing-work channel when authorized work remains, or the normal reply route for
    standalone reporting. Pass that route to the renderer for its delivery. When the ledger records
-   an earlier delivery of this task's dashboard, update that same page: render the whole spec
-   through `use-dashboard` again and deliver it to the same path and link, never editing the old
-   page's HTML, which skips the renderer's validation; otherwise record a
-   `dashboard` entry with the page path and any published link, so the next request finds it.
+   an earlier delivery of this task's dashboard, update that same page through `use-dashboard`.
+   Otherwise record a `dashboard` entry with the page path and any published link, so the next
+   request finds it.
 6. **Report and return to the caller.** Through the selected route, send the link or file and one
    line: percent complete, time remaining, and how many questions wait on the user, each the figure
    the dashboard shows. When reporting interrupts unfinished authorized work, carry out the active
@@ -71,8 +70,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   requests**, the count of open and draft pull requests, with "<n> open · <n> draft" in `detail`;
   **Elapsed**, measured from the first plan's recorded approval time.
 - **Pull request names.** The page names each pull request "PR #<number> - <short title>": a few
-  words saying what it does, not necessarily its title, such as `PR #1337 - Migrate admin to
-  Tailscale`.
+  words saying what it does, not necessarily its title, such as `PR #1337 - Add bulk export`.
 - **Pages.** `Progress` holds the board, the pull requests, the answered questions, the notes and
   any table, in that order. Once step 3 gives the page a pull request to cover, `Architecture`
   follows it, with `layout` `rows`: the diagram, then `changes` "Config changes", then `changes`
@@ -109,7 +107,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **`table`**, only when the ledger holds tabular facts worth a grid, such as checks per pull
   request head.
 - **`outline` "What changed in <pull request name>"**: the pull request's changes grouped by the area
-  they touch, such as `Admin sign-in` or `Admin site`, with moves and renames last under
+  they touch, such as `Report export` or `Billing page`, with moves and renames last under
   `No behaviour change`. Each item's `title` says in a few words what now happens, and its `detail`
   how and why it matters in one or two sentences a reader follows without the diff.
 - **`changes` "Config changes"**: each value the application reads while it runs that a pull request
