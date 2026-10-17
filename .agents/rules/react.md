@@ -542,6 +542,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   The label stays in the layout, transparent, holding the width and remaining the accessible name,
   with the spinner overlaid and hidden from assistive technology. The button component owns this
   behind one pending prop; there is no second label prop for the pending state ("Saving…").
+  Pending covers only the time the reader waits on the product — preparing a window, saving a
+  result. Once a dialog, window or connection flow the button opened is showing, the reader is
+  acting rather than waiting, so the button stops spinning, and it spins again only for the work
+  that follows when that flow returns.
 
 - Use ternary for simple conditions
 - Use early return for complex conditions
