@@ -231,10 +231,8 @@ Execution starts once a required plan is approved, or straight away for a trivia
   implementation details to use where a rule picks one; how to remove duplication the guidance
   treats as a defect — which repository or package owns shared behavior and which mechanism replaces
   parallel copies — which `pre-production` and `code-simplify` settle; and what configuration exists
-  or how it is scoped, which is read where it lives. A worker's or reviewer's label calling something
-  an open decision or the user's call is a claim checked against this class, never the
-  classification. A permission denial leaves the decision where it was, as
-  **Environment Refusals** says.
+  or how it is scoped, which is read where it lives. A permission denial leaves the decision where
+  it was, as **Environment Refusals** says.
 - Apply the global rules' **Task execution and authorization** decision boundary before choosing
   an encountered issue's remedy, including one proposed by a worker or reviewer. An ambiguous
   instruction has no approved interpretation: name both concrete outcomes and build on the
