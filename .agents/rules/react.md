@@ -437,6 +437,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   scrolls. One shared component owns the panel, under **Shared Surfaces**.
 - **A form a person signs, certifies or attests to starts empty.** Nothing is seeded from a profile
   or an earlier submission, because the signer vouches for what they entered.
+- **A form where the signed-in person enters someone else's details turns browser autofill off on
+  every field, selects included** — a record made on another person's behalf, a person they add or
+  invite — so the browser never fills the reader's own name, address or email into a stranger's
+  record. One boundary around the form sets it for every control inside, including those a shared
+  field component renders, never a token per field that the next added field forgets. A form for
+  the person's own details keeps accurate autocomplete tokens on each field.
 - **A form longer than a handful of fields is grouped into titled sections,** each holding the
   fields that answer one question; sibling forms share one section layout, under **Shared
   Surfaces** above.
