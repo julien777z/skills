@@ -49,6 +49,25 @@ alias, package move, permission grant or test fixture repeating the implementati
 does not prove ownership or isolation. Missing evidence holds a clean verdict; it does not turn
 the implementation into the specification.
 
+For every changed or newly resolved dependency, provider, generated contract, shared package, or
+other boundary owner, complete the dependency-authority receipt in `references/rubric.md` before a
+clean verdict. First reconcile a mismatch between the declared and loaded source: a workflow, cache,
+checkout, or resolver that loads another branch is a dependency-routing defect, not evidence that a
+consumer must migrate.
+
+An unmerged pull request, proposed branch, or future release is candidate evidence only. It cannot
+establish a target contract, satisfy a required repair on another target, or be assumed to merge
+unless the user explicitly makes it a dependency.
+
+Once the resolved sources agree, compare consumer migration with changing the owner before accepting
+either. Broadening an owner, adapter, generic bound, schema, or validation solely so an owned
+consumer's previous input still passes is compatibility even when it adds no branch or fallback.
+Flag it unless the evidence establishes that broader input is the owner's independent target
+contract or the user explicitly authorized the retained compatibility. Matching runtime behavior
+does not establish that a consumer satisfies a type, API, or generated-contract constraint. The
+ordinary remedy corrects dependency selection or, when the resolved target contract is current,
+updates every owned consumer and removes its obsolete representation.
+
 `references/rubric.md` states what the statement names and how its inputs are reconciled. Read product
 state from the target repository's project guidance; never import another repository's assumptions.
 
