@@ -10,7 +10,15 @@ from pathlib import Path
 from textwrap import indent
 from typing import Final, cast
 
-from models import Change, ObjectShape, PageLayout, PullRequestState, QuestionStatus, SectionType, Tone
+from models import (
+    Change,
+    ObjectShape,
+    PageLayout,
+    PullRequestState,
+    QuestionStatus,
+    SectionType,
+    Tone,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -173,7 +181,7 @@ def check_sections(value: object, path: str) -> None:
         section_type = section.get("type") if isinstance(section, dict) else None
 
         check_choice(section_type, f"{section_path}.type", SectionType)
-        check_object(section, section_path, SECTION_SHAPES[SectionType(section_type)])
+        check_object(section, section_path, SECTION_SHAPES[SectionType(cast(str, section_type))])
 
 
 def section_shape(
