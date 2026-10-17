@@ -13,7 +13,7 @@ strongest available model family in this policy.
 | `frontier` | Astra | Fable  | The most demanding tasks; strongest available model |
 
 The labels describe selection policy, not identical capabilities across providers or guaranteed
-host availability. An absent family remains unavailable rather than being mapped to another
-capability level.
-Reasoning effort is a separate dispatch setting; no capability level implies a particular effort or
-permission to change repository or global configuration.
+host availability. A catalogue omission is not availability evidence; the workflow determines how
+the documented candidate is dispatched and classified. Reasoning effort is a separate dispatch
+setting; no capability level implies a particular effort or permission to change repository or
+global configuration.
