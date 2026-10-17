@@ -448,8 +448,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   every field, selects included** — a record made on another person's behalf, a person they add or
   invite — so the browser never fills the reader's own name, address or email into a stranger's
   record. One boundary around the form sets it for every control inside, including those a shared
-  field component renders, never a token per field that the next added field forgets. A form for
-  the person's own details keeps accurate autocomplete tokens on each field.
+  field component renders, never a token per field that the next added field forgets. "Off" means
+  what the browser and the common password managers actually honour, which a bare
+  `autocomplete="off"` is not for name, email and address fields. A search or picker box opts out
+  the same way wherever it appears, since it never holds anyone's details. A form for the person's
+  own details keeps accurate autocomplete tokens on each field.
 - **A search box that picks a consequential record — a person, an account, a payee — shows no
   suggestions and makes no request until the reader types.** A list on focus invites a pick by
   proximity rather than intent, and offers records the reader never asked to see. A picker over a
