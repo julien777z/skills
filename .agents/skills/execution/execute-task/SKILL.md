@@ -55,9 +55,8 @@ Every task that changes files starts here, and so does every follow-up that arri
   user named. It goes straight to **Execution**. Canonical guidance changes under `.agents` do not
   wait for a plan or an output-format approval: their request or an encountered guidance gap starts
   the guidance-correction workflow, and their evidence, smoke-test, review, and acceptance gates
-  verify it. While another task is active, that workflow pushes the edit to its draft pull request
-  and records it, and the rest of its delivery runs in bulk at **Completion**, as `edit-skill`'s **Recording During
-  A Task** says, whether the user asked for the correction directly or the run noticed it.
+  verify it, on the timing `edit-skill`'s **Recording During A Task** sets for an active task,
+  whether the user asked for the correction directly or the run noticed it.
 - Work the approved plan already covers takes no new plan: an encountered issue, a gate's or a
   review's flag, a failing check, or a guidance correction discovered during the run. `edit-skill`
   records verified guidance corrections and `process-ledger` processes them at **Completion**.
@@ -127,12 +126,12 @@ work in hand unless the user explicitly reprioritizes it, evidence establishes g
 that work completes. State and record the reason before switching, preserving the displaced step.
 
 Pending source work — application or library code, as opposed to tests — ranks above test-only
-work: test cleanup, test refactors, suite runtime or coverage work, a sweep's test fixes, whichever
-was requested or queued first. Start or delegate test-only work only while no source change the
-task owes, in any repository, can proceed, and order a batch plan or a worker's brief the same way.
-Test updates a source change needs travel with that change, and running tests to verify it is
-verification, not test work. A test-only item in flight when a source change can proceed pauses at
-its next safe boundary.
+work, whichever was requested or queued first. Test-only work is test cleanup, test refactors, suite
+runtime or coverage work and a sweep's test fixes. Start or delegate it only while no source change
+the task owes, in any repository, can proceed, and order the plan's steps and every worker's brief
+the same way. Test updates a source change needs travel with that change, and running tests to
+verify it is verification, not test work. A test-only item in flight when a source change can
+proceed pauses at its next safe boundary.
 
 Restoring an authorized broken deployed operation takes priority over ordinary tests, review gates,
 guidance delivery and cleanup. Pause those activities until the actual failed operation succeeds
