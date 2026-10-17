@@ -20,6 +20,13 @@ a merge.
 When a scope should be both — done after the merge *and* durable if this session ends first — that
 is two invocations, and the user asks for both.
 
+## Dependencies
+
+- `execute-task` — plan a scope that needs one, and the commit and push cadence of its branch.
+- `subagent-selection` — dispatch the worker that executes a scope now, in its worktree.
+- `session-ledger` — record a queued-on-merge scope as a step a later turn reads.
+- `defer-scope` — the durable record of a scope the user also asks to keep.
+
 ## The decision
 
 Every invocation resolves to one of two routes. Make the call explicitly and say which one was
@@ -119,13 +126,14 @@ it until the branch exists, and no other skill's completion or authorization bou
 workflow that ends by merging the very pull request this scope waits on has not consumed the
 invocation that queued it, and the scope needs no re-invocation to proceed.
 
-After a context compaction, a session resume, or any summary, re-establish the scope from the task
-list, check whether its pull request merged, and start it if it has. Resuming this route is not
+After a context compaction, a session resume, or any summary, re-establish the scope from its step
+in the task ledger, check whether its pull request merged, and start it if it has. Resuming this route is not
 re-executing this skill — the skill has not finished until the branch exists, so a notice telling a
 later turn not to re-run skills that already ran does not reach it.
 
-The task-list item is the session's bookkeeping and not a durable record. A scope that must outlive
-the session whatever happens is one to record with `defer-scope` as well, which the user asks for.
+The ledger step is the session's durable record of the scope, and a task-list item only mirrors it;
+neither is a deferral record. A scope that must outlive the session whatever happens is one to
+record with `defer-scope` as well, which the user asks for.
 
 ## Continuing deferred execution
 
