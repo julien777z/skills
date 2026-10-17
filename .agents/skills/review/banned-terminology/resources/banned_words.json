@@ -69,7 +69,7 @@
     {
       "applies_to": "repository-owned identifiers, package and module names, docstrings, comments, test names, file and directory names, workflow step names, documentation, and the pull requests and messages written to the user",
       "term": "private source",
-      "use_instead": "\"private git repo\": `private-git-repos`, `checkout_private_git_repos`, `PrivateGitRepo`, \"Checkout Private Repos\".",
+      "use_instead": "\"private git repo\", spelled in the identifier style of its context, such as `private_git_repos` or `PrivateGitRepo`.",
       "variants": [
         "private sources",
         "private_source",
