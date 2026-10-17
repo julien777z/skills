@@ -80,11 +80,12 @@ does not merge it.
 
 The work is owed once the originating pull request lands.
 
-1. **Name the originating pull request**, and write the scope as one item in the harness task list,
-   where the harness has one, whose text names that pull request as its trigger: "After #NNNN
-   merges: `<scope>`". The item is what a later turn reads, so anyone scanning the list can tell a
-   queued-on-merge item from an ordinary pending one without this skill being loaded at all. That is
-   session bookkeeping rather than a deferral record, and the guardrail against creating one stands.
+1. **Name the originating pull request**, and record the scope in the task ledger through
+   `session-ledger`, as a step whose text names that pull request as its trigger: "After #NNNN
+   merges: `<scope>`". The step is what a later turn reads. Where the harness has a task list, add the
+   same item there as well, so anyone scanning it can tell a queued-on-merge item from an ordinary
+   pending one without this skill being loaded at all. Both are session bookkeeping rather than a
+   deferral record, and the guardrail against creating one stands.
 
 2. **Tell the user the scope is queued behind that pull request**, in those terms. Say what will be
    executed and what it is waiting on. Then name it and its blocking pull request again in every
