@@ -113,8 +113,9 @@ and persistence checks its project guidance names. Use those facts exactly and r
 what exists: never invent a test identity or turn a provider fixture into a generic workflow. **Never work around the sign-in wall**: a
 preview route, a stubbed page, a component mounted where it does not ship, or a widened public-route
 matcher proves the component renders and nothing about the screen a user reaches. If sign-in
-genuinely cannot complete, report the walkthrough as not done. Drive the browser automation's own
-profile; never read the user's saved passwords, cookies, local storage, or session files.
+genuinely cannot complete, report the walkthrough as not done. Drive browser automation through the
+tab selected under the global browser procedure; never read the user's saved passwords, cookies,
+local storage, or session files.
 
 Keep a password out of argv and the transcript: put it in an environment variable for the one
 command that fills the field, build the script that fills the field, and pipe it to the browser
@@ -170,8 +171,10 @@ EOF
   permits it. Where a departure would serve the reader better, recommend it, name the rule, and
   propose its change; keep the departure pending until the user agrees, as the global rules'
   standing-guidance bullet says of design rules.
-- The browser daemon starts a fresh profile each time, so `state save` a signed-in session that must
-  survive a restart.
+- A daemon restart can change which browser context a tool controls. Refresh inventory and rebind
+  the selected task-owned tab after reconnecting. Preserve task-owned context only through the
+  browser's native route when the flow requires it; never export user cookies, local storage, or
+  session files.
 
 ### Widths and full-page captures
 

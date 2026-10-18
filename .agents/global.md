@@ -194,7 +194,7 @@ alwaysApply: true
   owners. Hold that window through exact restoration and the successful control; a short mutation or later restore
   does not make concurrent exposure safe. Never claim isolation is impossible without checking it.
 - Treat an inventory or availability error as scoped to the surface it names. A native-app lock or failure does not block browser automation, and a browser failure does not block terminal or API work.
-- Before reporting a task blocked by a surface warning, inspect the requested surface directly and retry its normal recovery path. For a browser, refresh its window and tab inventory and repeat the selection below when the bound tab has closed.
+- Before reporting a task blocked by a surface warning, inspect the requested surface directly and retry its normal recovery path. For a browser, refresh the metadata its controls expose and repeat the selection below when the bound tab has closed.
 - Before reading page content, navigating or interacting, inventory the browser metadata the tool
   exposes and select the surface most relevant to the task. Preserve every explicitly selected
   browser, profile, window or tab constraint the tool can identify and control; within those
