@@ -150,8 +150,12 @@ format transition or recovery mechanism for data explicitly declared disposable 
   pull request makes to that chain's database goes into that revision, whatever its size or concern,
   with its backfill steps inside it in dependency order and its survivorship and destructive-operation
   entries merged into that revision's own. A revision the pull request adds is unapplied unless it
-  carries the lock marker: the owner runs `lock-revision` before deploying the branch, and that is
-  the only way a chain gains a second revision in one pull request. A pull request found carrying
+  carries the lock marker or the owner reports a deploy of a commit that contains it: the owner
+  runs `lock-revision` before deploying the branch, and that, or such a report, is the only way a
+  chain gains a second revision in one pull request. A reported deploy makes each revision, as it
+  stood at the deployed commit, the applied one: restore its database outcome at that commit, lock
+  it there, and move every later change to its chain into one new revision on top, before any other
+  work on the branch. A pull request found carrying
   several unlocked revisions on one chain folds them into one before anything else, and a base update
   that adds revisions re-parents the unlocked one onto the new head.
 - **A revision whose first line is the lock marker `lock-revision` writes counts as applied.** Its id,
@@ -161,8 +165,8 @@ format transition or recovery mechanism for data explicitly declared disposable 
   into one new revision on top, which the next `lock-revision` locks. A base update that adds
   revisions to its chain is joined with a merge revision.
 - For a revision the pull request did not add, establish "not applied yet" from the real
-  `alembic_version` row in every existing environment that may have applied it; the lock marker
-  settles it for the pull request's own. An explicit user statement or repository fact that no such environment exists
+  `alembic_version` row in every existing environment that may have applied it; the lock marker or
+  the owner's report of a deploy settles it for the pull request's own. An explicit user statement or repository fact that no such environment exists
   establishes that scope without inventing a database to query. Data being disposable alone does
   not establish that a revision is unapplied; that fact decides editing rather than adding.
 - Once any environment has applied it, a later revision is the only route, and for a destructive body

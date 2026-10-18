@@ -138,6 +138,15 @@ the same way. Test updates a source change needs travel with that change, and ru
 verify it is verification, not test work. A test-only item in flight when a source change can
 proceed pauses at its next safe boundary.
 
+Source work a deploy the user is waiting on needs ranks above simplification, review gates, test
+work, guidance delivery and cleanup, whichever started or was queued first. A database revision to
+restore or split so the branch deploys safely onto an environment that already ran an earlier
+version is the common case. Start it as soon as the need is known; workers on the lower-ranked
+activities pause at their next safe boundary with their work pushed and their next action saved, and
+resume once the deploy-safety change is pushed and validated. Those later passes may still change
+that code, provided what the deploy depends on stays the same and its owning tests prove it — for a
+revision, its database outcome.
+
 Restoring an authorized broken deployed operation takes priority over ordinary tests, review gates,
 guidance delivery and cleanup. Pause those activities until the actual failed operation succeeds
 on the fix branch in every affected environment; use only the reproduction, diagnosis and repairs
