@@ -77,15 +77,21 @@ with an obsolete owned contract or revision.
   unrelated rewrite may already be disproportionate.
 - **Incidental work goes one hop, never further.** What the work notices while making the requested
   change — in a file it opened, a check it ran, a capture it read — is fixed. A file opened or edited
-  only to make such an incidental fix is never itself a source of more incidental work: what else it
-  holds is listed, not chased.
-- **Incidental work has a size budget.** The incidental part of a change — everything the request
-  did not ask for, apart from a confirmed bug in the path of the requested behaviour, which is always
-  fixed — stays about the size of the requested part, or within 150 changed lines across 10 files
-  when the requested part is smaller. Inside the budget, everything noticed is fixed. Once the next
-  incidental fix would pass it, the rest is listed under **Noticed, not changed** in the change's
-  report, one line each, and is neither fixed, deferred, nor put to the user as a question. An
-  explicitly requested broad refactor and a doctor run set their own scope and carry no budget.
+  only to make such an incidental fix is never itself a source of more incidental cleanup: what else
+  it holds is listed, not chased.
+- **A defect the work notices is always fixed, wherever it lives.** Anything the product does that a
+  reader would call broken — a missing backdrop behind a dialog, a wrong value, a state shown in the
+  wrong place, a control that does nothing — is fixed in the change in flight, outside both the hop
+  limit and the size budget below. Sitting in a shared component, an owned library or another owned
+  repository the pull request does not otherwise touch is no reason to leave it: the fix goes to that
+  repository's pull request for this work. It is never listed as noticed, offered or deferred.
+- **Incidental cleanup has a size budget.** The incidental part of a change — everything the request
+  did not ask for that is not a defect — stays about the size of the requested part, or within 150
+  changed lines across 10 files when the requested part is smaller. Inside the budget, everything
+  noticed is fixed. Once the next incidental fix would pass it, the rest is listed under **Noticed,
+  not changed** in the change's report, one line each, and is neither fixed, deferred, nor put to the
+  user as a question. An explicitly requested broad refactor and a doctor run set their own scope and
+  carry no budget.
 - **A correction to how one screen looks or reads is the user's decision about that screen, not a
   defect to sweep.** A layout, a wording, a tone or a style the user changes on one page is applied
   to that page, and other pages with the same shape are listed for the user to decide on, never
