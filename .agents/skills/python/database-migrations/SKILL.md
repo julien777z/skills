@@ -150,6 +150,9 @@ format transition or recovery mechanism for data explicitly declared disposable 
   destructive-operation entries merged into that revision's own. A pull request that already carries several unapplied revisions on one chain
   folds them into one before review, and a base update that adds revisions re-parents it onto the
   new head.
+- **A revision whose first line is the lock marker `lock-revision` writes counts as applied.** Edit,
+  fold, re-parent or regenerate only unlocked revisions. A later change goes into a new revision on
+  top. A base update that adds revisions to its chain is joined with a merge revision.
 - Establish "not applied yet" from the real `alembic_version` row in every existing environment that
   may have applied it. An explicit user statement or repository fact that no such environment exists
   establishes that scope without inventing a database to query. Data being disposable alone does
