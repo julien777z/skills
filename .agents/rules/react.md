@@ -324,6 +324,13 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   choice is made on the trigger before the dialog opens — a menu listing each option with a
   one-line description — never as tabs or a switcher inside it. A field the form itself submits,
   such as a type selector, is part of that form and stays inside.
+- **A row of actions that follows content starts where that content starts.** The reader finishes
+  reading at the content's start edge, so a form's submit, a card's or dialog's footer and the
+  choices under a prompt sit together at that edge, never at the far edge, where the eye has to
+  cross the surface to find them, and never centred under content that is not centred. Actions are
+  centred only under content that is itself centred, such as an empty state. A multi-step flow's
+  footer is the one exception, as the next bullet says; a control beside a heading, in a toolbar,
+  at the end of a table row or in a floating save panel follows that surface's own layout.
 - **A multi-step flow's footer puts "Back", on every step that has one, at its start and the
   forward action at its end, apart; a footer holding only the forward action places it at the start,
   as no control sits alone at the far edge of an empty footer. It labels them by position, never by
