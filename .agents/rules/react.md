@@ -136,10 +136,13 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   not need to be told that the action is logged or attributed to them.
 - **Name a surface for what it holds, never for the reader's role in it.** A reader knows which role
   they hold, so "Organizer events", "Attendee tickets" or "Your speaker profile" labels them rather
-  than the thing; the heading is "Events", "Tickets", "Profile", whatever the surface holds. A
-  heading is that name in a word or a short phrase — "Overview", "Contact details" — never a
-  sentence or a phrase addressed to the reader, such as "What you can do here" or "Let's get you set
-  up".
+  than the thing; the heading is "Events", "Tickets", "Profile", whatever the surface holds.
+- **Every heading and title is a name in a word or a short phrase, never a sentence.** That holds
+  for a page, a section, a card and a dialog, and for a state the page shows in place of its
+  content, such as an empty state, an error or a refusal: "Overview", "Contact details", "Nothing
+  to approve", "Sync off". A sentence, such as "This workspace doesn't allow what you asked for", or
+  a phrase addressed to the reader, such as "What you can do here" or "Let's get you set up", goes
+  in the line under the heading, which carries the explanation.
 - **Features offered side by side carry names no reader could mistake for each other.** Each name
   says what the feature holds or does in the reader's words, so a reader who has used neither picks
   the right one: "Collections" beside "Groups", or "Profiles" beside "Accounts", reads as two words
