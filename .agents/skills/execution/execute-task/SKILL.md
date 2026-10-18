@@ -235,16 +235,12 @@ Execution starts once a required plan is approved, or straight away for a trivia
 
 ### Browser Access
 
-- Use the user's `@Chrome` browser for browser work unless the user names another browser. When
-  the user explicitly selects an existing tab or window, use only that authorized surface;
-  otherwise create a new task-owned tab before any page read or action. Retain its handle or stable
-  ID and keep actions bound to it under the global rules' tab-ownership procedure. Keep a new tab
-  in the background when supported; tab isolation does not require another profile or account.
-- When attaching a browser CLI to an existing browser, create and select the task tab first, or
-  select the existing surface the user explicitly authorized, before commands that navigate or
-  inspect the current page. A named CLI session alone does not establish tab ownership.
+- Use the user's `@Chrome` browser for browser work unless the user names another browser.
+  Apply the global rules' **Tools and environments** browser selection and stable-tab binding
+  procedure before any page read or action, including when attaching a CLI to an existing browser.
+  A named CLI session alone does not establish control of the selected tab.
 - For the default Chrome route, if connected tab control is unavailable, use regular Chrome with
-  the same surface-selection requirement above. It may come to the foreground. Continue through an
+  the same global selection procedure. It may come to the foreground. Continue through an
   appropriate API or CLI when that is more direct. Report a browser-specific blocker only when the
   authorized browser's normal recovery paths cannot complete the required interaction.
 
