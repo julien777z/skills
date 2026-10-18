@@ -47,7 +47,7 @@ Codex sub-agent gate (overrides the default above; Codex's permission model requ
 - If spawning fails after permission, run sequentially and lead with `⚠️ DEGRADED: single-context (sub-agent spawn failed: <exact error>)`.
 Prefer `fork_context: false` with self-contained prompts containing cwd, target, live URL, references, product context, and output contract. If using `fork_context: true`, omit `agent_type`, `model`, and `reasoning_effort`.
 
-If browser automation is available, follow the global rules' **Tools and environments** browser selection procedure. Coordinate exclusive tab control between assessments; independent judgements do not require separate browser tabs.
+If browser automation is available, follow the global rules' **Tools and environments** browser selection procedure. Coordinate exclusive tab control between assessments. When they share a tab, Assessment A completes its clean visual judgement before Assessment B mutates the page; reload or clean up that page before any later visual assessment. Independent judgements do not require separate browser tabs.
 
 ### Assessment A: Design Review
 
