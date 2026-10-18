@@ -18,10 +18,12 @@ environment, so its revisions may be applied there. From then on, each of those 
 ## Workflow
 
 1. **Find the unlocked revisions.** In every repository in the task that has migration chains,
-   list the revisions the branch adds to each chain against its default branch. Leave out any
-   revision that already carries the lock marker. If there are none, report that nothing was
-   locked. A chain with more than one unlocked revision breaks `database-migrations`' one-revision
-   rule: fold them into one, validated as that skill says, before locking.
+   list the revisions the branch adds or changes on each chain against its default branch,
+   including a default-branch revision the branch re-parented or edited. Leave out any revision
+   that already carries the lock marker. If there are none, report that nothing was
+   locked. A chain with more than one unlocked revision the branch adds breaks
+   `database-migrations`' one-revision rule: fold them into one, validated as that skill says,
+   before locking. A default-branch revision keeps its own id and is locked beside them.
 2. **Lock each one.** Add the marker as the first line of each revision file, above its docstring:
 
    ```python
@@ -43,5 +45,5 @@ environment, so its revisions may be applied there. From then on, each of those 
   locked one. While that revision is unlocked, later changes go into it, as the at-most-one rule
   says. The next invocation locks it, and the cycle repeats.
 - When a base update adds revisions to a chain that holds a locked revision, join the two heads
-  with a merge revision. Never re-parent a locked revision: an environment that applied it would
-  sit on a chain it never ran.
+  as `database-migrations` says. Never re-parent a locked revision: an environment that applied it
+  would sit on a chain it never ran.

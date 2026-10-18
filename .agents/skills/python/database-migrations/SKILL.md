@@ -163,7 +163,10 @@ format transition or recovery mechanism for data explicitly declared disposable 
   regenerated. Its code may still change when the database outcome stays the same — a simplification,
   a refactor, a clearer helper — proven by the migration tests. A later change to the database goes
   into one new revision on top, which the next `lock-revision` locks. A base update that adds
-  revisions to its chain is joined with a merge revision.
+  revisions to its chain is joined with a merge revision. Where the migration tooling accepts only
+  a linear chain, the base's revision moves instead, re-parented onto the branch's head, once the
+  owner confirms no environment has applied it; one an environment has applied needs the tooling
+  to accept the merge revision first.
 - For a revision the pull request did not add, establish "not applied yet" from the real
   `alembic_version` row in every existing environment that may have applied it; the lock marker or
   the owner's report of a deploy settles it for the pull request's own. An explicit user statement or repository fact that no such environment exists
