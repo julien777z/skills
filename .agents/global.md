@@ -304,12 +304,13 @@ return records;
 ## Logging
 
 - **Error messages and tracebacks are never censored, in any environment.** A failure is debugged
-  from its log, so a record reporting one keeps the exception's message, its notes and its whole
-  traceback, and a warning or error keeps the values it was given. A disclosure policy conceals
+  from its log, so a record reporting one keeps the exception's type and message, its notes and its
+  whole traceback, and a warning or error keeps the values it was given. A disclosure policy conceals
   only typed secrets and credentials, such as a key or a URL's password and query string. It never
-  replaces a failure's text with a placeholder, reduces an exception to its type name, leaves a
-  provider's error response out of the record, or redacts a warning or error wholesale because it
-  might hold personal data. Records that report no failure may still withhold personal data.
+  replaces a failure's text with a placeholder, renders an exception as its type or its message
+  alone, leaves a provider's error response out of the record, or redacts a warning or error
+  wholesale because it might hold personal data. Records that report no failure may still withhold
+  personal data.
 
 ## Repository guidance
 
