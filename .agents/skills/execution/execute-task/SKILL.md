@@ -668,7 +668,8 @@ it — the user asking about something else is not the user withdrawing what the
 - **An interruption pauses the step in flight; it never ends the run.** After a follow-up
   finishes, mark the displaced work active again in the ledger and
   execute its saved next step without waiting for "continue". A promise to resume is not that
-  step. Completing
+  step, and neither is a report that ends by naming what comes next: a turn that relays a worker's
+  result or finishes a unit starts the next named step before it ends. Completing
   its own delivery — including a guidance merge and refresh, a diagnostic answer, or a local
   environment repair — does not complete the surrounding task. Report that intermediate result
   while continuing. A held item keeps its saved next action; repair, resolution and waiting follow
