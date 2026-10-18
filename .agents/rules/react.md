@@ -571,6 +571,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   result. Once a dialog, window or connection flow the button opened is showing, the reader is
   acting rather than waiting, so the button stops spinning, and it spins again only for the work
   that follows when that flow returns.
+- **Pressing a send action again moments later shows the same success as the first press.** A
+  button that emails, invites or reminds someone stays enabled once its request finishes, and the
+  server sends nothing twice, as the HTTP rule's idempotent message operations say; a countdown, a
+  "please wait" refusal or a disabled resend window in its place is the defect.
 
 - Use ternary for simple conditions
 - Use early return for complex conditions
