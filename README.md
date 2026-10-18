@@ -85,7 +85,7 @@ These run only when you ask for them by name, such as `/code-slop-doctor`.
 - [`handoff`](.agents/skills/workspace/handoff/SKILL.md) — Move the current session's work to another session with nothing lost and nothing left for the user to do.
 - [`incident`](.agents/skills/execution/incident/SKILL.md) — Restore a broken deployed service, test the fix, and merge the scoped repair.
 - [`manage-mcps`](.agents/skills/workspace/manage-mcps/SKILL.md) — Audit and repair managed MCP connectors across Claude Desktop and Codex.
-- [`merge-pr`](.agents/skills/git/merge-pr/SKILL.md) — Merge finished pull requests after acceptance and CI, then CR what merged.
+- [`merge-pr`](.agents/skills/git/merge-pr/SKILL.md) — Merge finished pull requests after acceptance and the check gate, then CR what merged.
 - [`new-doctor`](.agents/skills/doctors/new-doctor/SKILL.md) — Create a doctor skill on the shared doctor-protocol for one class of repository hygiene.
 - [`placeholder-data`](.agents/skills/workspace/placeholder-data/SKILL.md) — Turn a pasted API payload into the same shape with obviously fake values.
 - [`schema-doctor`](.agents/skills/doctors/schema-doctor/SKILL.md) — Check models and schemas for unnecessary nulls, complexity, keys, and indexes.
