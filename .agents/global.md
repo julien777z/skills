@@ -200,8 +200,9 @@ alwaysApply: true
   browser, profile, window or tab constraint the tool can identify and control; within those
   constraints, prefer the exact task page, then a related page in the correct account and work
   context, rather than the active or default surface. A shared domain or title alone does not
-  establish that context. A tab whose metadata cannot establish task relevance and account or work
-  context is not eligible for reuse; do not inspect its content only to resolve that ambiguity.
+  establish task relevance. An explicit task reference or metadata that identifies a candidate can
+  make it eligible for narrow account or work-context confirmation when no unsaved-work or
+  other-agent conflict is known; do not inspect a speculative candidate only to resolve ambiguity.
   Inspect an eligible candidate only as needed to verify it, leaving unrelated pages untouched.
 - Reuse the most relevant suitable existing tab when doing so preserves unsaved work and does not
   interfere with another agent's use. Claim or coordinate exclusive control before acting; an
