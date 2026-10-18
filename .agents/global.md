@@ -247,6 +247,10 @@ alwaysApply: true
 ## Code layout
 
 - In every language, use blank lines to separate setup, validation, transformations, side effects, and returns. Keep adjacent statements together only when they form one small operation; do not turn a function into an uninterrupted paragraph merely because a formatter permits it. Apply this to every line you write or edit, and elsewhere in a file you change within `pre-production`'s incidental size budget.
+- **Name things with the everyday word a reader expects.** Where the domain or a provider already
+  has a term, use it. An address the sign-in provider has checked is `email_verified`, never
+  `email_proven`, because an unusual synonym makes every reader translate it back. This covers
+  identifiers, fields, messages, documentation and test names in every language.
 - Use current language syntax for simple operations. For one-off Python interpolation, use f-strings instead of string concatenation or `.format()`, and keep spacing in the final string rather than a fragment with a hidden leading space. Follow the Python rule for reusable structured templates.
 
 ```python
