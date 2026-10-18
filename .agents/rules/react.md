@@ -140,6 +140,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   heading is that name in a word or a short phrase — "Overview", "Contact details" — never a
   sentence or a phrase addressed to the reader, such as "What you can do here" or "Let's get you set
   up".
+- **Features offered side by side carry names no reader could mistake for each other.** Each name
+  says what the feature holds or does in the reader's words, so a reader who has used neither picks
+  the right one: "Collections" beside "Groups", or "Profiles" beside "Accounts", reads as two words
+  for one thing. Read the names together, as the reader meets them, before settling either.
 - **A refusal is a short, friendly request for the reader's next step**, such as "Please choose a
   date after today." It says what to do rather than passing a verdict on what was done, and it
   never repeats back what the reader just entered or chose — a file name, a typed value, a picked
@@ -289,6 +293,13 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   in it is left. A field whose value the context already fixes — the language of a course taught in
   only one, the venue of an event held in only one — is not asked: the value is set, and shown as
   text where the reader should know it.
+- **A feature the reader's plan does not include is shown working, with its paid controls locked,
+  never described by a notice.** The reader can start one, open it and see every option the paid
+  plan adds, rendered as on that plan but disabled, and do what costs nothing, such as naming it and
+  saving it with its defaults; the server refuses anything past that. One notice in that surface
+  names what upgrading unlocks, as the controls the reader can see, beside the upgrade action. A
+  sentence saying the plan lacks the feature, or that the reader gets a default named by an internal
+  term, shows nothing they would gain.
 - **A page's content offers one control per destination or action** — a button, a link, a menu item,
   an icon or a clickable row; the app's own navigation is not counted against it. Two that open the
   same form or page — a checklist step's button or linked label beside a quick link, a row that
