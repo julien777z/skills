@@ -463,8 +463,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   address, email or saved company into a record that is not the reader. One boundary around the form sets it for every control inside, including those a shared
   field component renders, never a token per field that the next added field forgets. "Off" means
   what the browser and the common password managers actually honour, which a bare
-  `autocomplete="off"` is not for name, email and address fields. A search or picker box opts out
-  the same way wherever it appears, since it never holds anyone's details. A form for the person's
+  `autocomplete="off"` is not for name, email and address fields. A search or picker box offers
+  nothing the browser saved — neither saved details nor values typed into other fields — wherever
+  it appears, since it never holds anyone's details: Chrome stops typed history only for exactly
+  `off`, and fills nothing in a field it reads as a search term, so such a box takes `off` with a
+  `search` name. The shared input and combobox components own those attributes. A form for the person's
   own details keeps accurate autocomplete tokens on each field.
 - **A search box that picks a consequential record — a person, an account, a payee — shows no
   suggestions and makes no request until the reader types.** A list on focus invites a pick by
