@@ -92,14 +92,17 @@ with an obsolete owned contract or revision.
   not changed** in the change's report, one line each, and is neither fixed, deferred, nor put to the
   user as a question. An explicitly requested broad refactor and a doctor run set their own scope and
   carry no budget.
-- **A correction to how one screen looks or reads is the user's decision about that screen, not a
-  defect to sweep.** A layout, a wording, a tone or a style the user changes on one page is applied
-  to that page, and other pages with the same shape are listed for the user to decide on, never
-  changed in the same pass: a choice of taste on one screen says nothing about the others. A rule
-  written from the correction governs new work; the existing pages it would reach wait for the
-  user's decision the same way. A shape a standing rule already named as a defect before the
-  correction, and a broken mechanism, a wrong value, a missing guard or a parallel implementation,
-  stay under the bullets above on every page.
+- **A correction to how one screen looks or reads reaches every page when the user makes it a
+  rule, and that screen alone when they do not.** A correction the user asks to have codified, or
+  gives a reason for that holds wherever the shape appears, such as "the content is left-aligned,
+  so the reader has to look across it", names a defect. Every existing page with that shape is
+  fixed in the same pass, as the change's scope rather than incidental work under the size budget,
+  and the rule written from it governs existing pages as much as new ones. A layout, a wording, a
+  tone or a style changed on one page with no such reason is the user's choice about that page. It
+  is applied there, and other pages with the same shape are listed for the user to decide on,
+  never changed in the same pass. A shape a standing rule already named as a defect, and a broken
+  mechanism, a wrong value, a missing guard or a parallel implementation, stay under the bullets
+  above on every page.
 - Inspect the complete mechanism before choosing its repair. Prefer the clean result that solves
   that defect throughout its affected paths; do not equate a broader cleanup with a better fix.
 - The bar is what the cleanest result requires, not what the smallest diff permits. Existing users
