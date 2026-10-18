@@ -38,7 +38,7 @@ Done when you hold an action from the vocabulary (asked for, when the request na
 
 ## Step 2: Reuse the page, then start
 
-**Reuse** the dev server already running and the tab your harness already shows it in; a second server or a second browser window is the failure this step prevents.
+**Reuse** the dev server already running. Select the browser surface under the global rules' **Tools and environments** procedure; the harness's displayed tab is a candidate, not proof of task relevance or safe control.
 
 1. **Find the dev server**, cheapest source first, and stop at the first hit: the user's message, a browser tab already on the app (Claude Code: an origin in `tabs_context`), a server your harness started (Claude Code: `preview_list`), a terminal that printed its URL. Its origin is your `--dev-url`. **No hit**: leave `--dev-url` off and run the start command with no wait; the boot probes for a running server and its verdict names the move. `browser_needed` carries the `devUrl` it found: open it as in 2, then rerun with `--dev-url <devUrl> --wait-for-browser 60000`. `no_dev_server` means nothing serves the app: start the dev script the way the verdict says (Claude Code: `preview_start`; Cursor: a background terminal; Codex: an exec you yield from), wait for its URL, then rerun with `--dev-url <url>`.
 2. **Open the page that renders the element in your browser, then start.** The route the request names, else the one `--target` serves; `--dev-url` takes only the origin.
