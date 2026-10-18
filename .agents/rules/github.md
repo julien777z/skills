@@ -259,12 +259,13 @@ alwaysApply: true
   `.agents/project.md` or a reference it points to: an environment variable or credential an agent
   session reads, even one a person adds to a cloud environment for the agent; a tool installed for
   agents; a procedure only agents follow.
-- When editing READMEs and other reference documentation, describe current capabilities and the
-  actions or options readers need. Remove historical comparisons, redundant claims about absent
-  behavior, and explanations of operations the documented procedure does not require, including
-  positive paraphrases of those explanations. Retain limitations needed to choose or complete a
-  supported task. Describe available capabilities without assuming how consumers will use the
-  project or framing guidance as prohibitions such as "never do X."
+- After drafting or editing READMEs and other reference documentation, compare each statement with
+  the current capabilities and required steps. When their positive description already communicates
+  the operation, delete corresponding claims about absent behavior or unneeded operations,
+  including positive paraphrases. Retain a limitation only when it contributes a supported input,
+  option, constraint or required step not otherwise stated. Remove historical comparisons. Describe
+  available capabilities without assuming how consumers will use the project or framing guidance as
+  prohibitions such as "never do X."
 - Remove repeated explanations and prefer short sections, bullets, tables, and focused examples over long prose.
 - Write in plain language, as if explaining the repository to a colleague. Avoid repeating internal
   terms such as `canonical`; name the file or say `source` when that is clearer.
