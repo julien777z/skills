@@ -32,8 +32,9 @@ unless its trace shows the precedent's own condition broken.
   `bypassSecurityTrustHtml`, a raw or `safe` filter, or escaping turned off.
 - **Client code.** Missing authorization or validation in client-side code is not a finding: the
   server owns both, and the server is where the finding lives if either is missing.
-- **Logging.** Logging URLs or non-sensitive data is not a finding; logging a secret, a credential or
-  personal data is.
+- **Logging.** Logging URLs or non-sensitive data is not a finding; logging a secret or a credential
+  is, and so is personal data in a record that reports no failure. A failure's message, its
+  traceback and the values of a warning or error are never a finding, personal data included.
 - **Outbound requests.** Server-side request forgery needs control of the host or protocol;
   controlling only the path is not a finding.
 - **Model prompts.** User content placed in a model's prompt is not a finding on its own; what the
