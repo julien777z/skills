@@ -149,6 +149,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   never repeats back what the reader just entered or chose — a file name, a typed value, a picked
   item — which they already know. This holds wherever the message is written, an API's error
   message the interface shows included.
+- **The interface writes its own text for a reason another reader's message carries.** A message a
+  service writes for a different reader, such as an agent, an API client or a log, says what that
+  reader needs: an agent's carries the URL it can follow. The service sends a reason code beside
+  it, and the interface writes the words for its own reader and the page they are on, never
+  showing the other reader's message.
 - **Never write copy about the product's state that nobody has confirmed.** A page that says a
   feature is unavailable, coming soon or not yet supported, when nobody said so, misinforms the
   reader; the product's state is confirmed with the user before any copy states it.
@@ -462,6 +467,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **An action that would change nothing is disabled.** "Reset to defaults" while every value is
   already its default, "Select all" while everything is selected, "Clear" on an empty field: each
   offers a press with no effect, and enabling it suggests the state is something other than it is.
+- **A form the product would refuse in full is never shown.** When every choice it offers would be
+  refused, because the feature is off or nothing asked for is allowed, the page shows in its place
+  why, and the way forward for this reader, with one action to leave. The server refuses that
+  submission too, so the state cannot be reached by posting around the page.
 
 - **A page or form that edits saved values saves through one floating save panel fixed to the bottom
   of the viewport, never through buttons on the page** — a settings page, a profile, a record's edit

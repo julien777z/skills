@@ -312,6 +312,17 @@ return records;
   wholesale because it might hold personal data. Records that report no failure may still withhold
   personal data.
 
+## Product Copy
+
+- **Text a person reads sends them to another place with a link, never a route to follow.** "Go to
+  Settings, then Notifications" makes the reader follow a map; the place's name, linked, takes them
+  there in one action. Where the text renders markup, the name is the link. Where it is plain text
+  its reader can copy or follow, such as an API or tool message, an email body or a command's
+  output, it carries the place's absolute URL. A surface that cannot hold a link, such as a tooltip
+  or a toast, refers to no other place, and the way forward goes on the page itself. Text about a
+  control on the same page names that control where the reader sees it, as in "Turn on Sync
+  above", and never links to the page it sits on.
+
 ## Repository guidance
 
 - Reference external code and automation by a maintained version tag when available, or by a
