@@ -172,7 +172,7 @@ EOF
   propose its change; keep the departure pending until the user agrees, as the global rules'
   standing-guidance bullet says of design rules.
 - A daemon restart can change which browser context a tool controls. Refresh inventory and rebind
-  the selected task-owned tab after reconnecting. Preserve task-owned context only through the
+  the selected tab after reconnecting. Preserve task-owned context only through the
   browser's native route when the flow requires it; never export user cookies, local storage, or
   session files.
 
