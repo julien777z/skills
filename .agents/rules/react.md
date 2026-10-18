@@ -296,7 +296,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **A feature the reader's plan does not include is shown working, with its paid controls locked,
   never described by a notice.** The reader can start one, open it and see every option the paid
   plan adds, rendered as on that plan but disabled, and do what costs nothing, such as naming it and
-  saving it with its defaults; the server refuses anything past that. One notice in that surface
+  saving one with its defaults; the server refuses anything past that. Once the reader holds what
+  their plan allows, the create action stays in place, disabled, with a tooltip saying that a paid
+  plan creates more. One notice in that surface
   names what upgrading unlocks, as the controls the reader can see, beside the upgrade action. A
   sentence saying the plan lacks the feature, or that the reader gets a default named by an internal
   term, shows nothing they would gain.
