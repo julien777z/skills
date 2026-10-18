@@ -49,7 +49,9 @@ Shared tooling lives in the project's shared migration package (runner, revision
 ## Authoring Rules
 
 - **Autogenerate is the default for a schema change** — the CI workflow generates the revision.
-  Correct an existing revision only under **Applied Is What Makes History** below.
+  It creates a chain's revision only when the pull request has no unlocked revision on that chain.
+  When it has one, the change goes into that file, generated and moved in or written by hand, under
+  **Applied Is What Makes History** below; a schema change never opens a second revision.
 - Review handwritten and generated revision docstrings under the shared Python rule's **Formatting
   and Documentation** migration-revision exception before accepting the revision.
 - **A column rename is always hand-written.** Autogenerate compares two schema snapshots, in which a
@@ -144,17 +146,23 @@ format transition or recovery mechanism for data explicitly declared disposable 
   to preserve, so correct the revision itself rather than layering a second one on top to undo it.
   This holds whatever the mistake is: a destructive body, a wrong constraint name, a missing index. Say
   in the pull request that you edited it.
-- **While no environment has applied it, a pull request adds at most one revision to each chain.**
-  Every later schema or stored-data change the pull request makes to that chain's database goes into
-  that revision, with its backfill steps inside it in dependency order and its survivorship and
-  destructive-operation entries merged into that revision's own. A pull request that already carries several unapplied revisions on one chain
-  folds them into one before review, and a base update that adds revisions re-parents it onto the
-  new head.
-- **A revision whose first line is the lock marker `lock-revision` writes counts as applied.** Edit,
-  fold, re-parent or regenerate only unlocked revisions. A later change goes into a new revision on
-  top. A base update that adds revisions to its chain is joined with a merge revision.
-- Establish "not applied yet" from the real `alembic_version` row in every existing environment that
-  may have applied it. An explicit user statement or repository fact that no such environment exists
+- **A pull request holds one unlocked revision per chain.** Every schema or stored-data change the
+  pull request makes to that chain's database goes into that revision, whatever its size or concern,
+  with its backfill steps inside it in dependency order and its survivorship and destructive-operation
+  entries merged into that revision's own. A revision the pull request adds is unapplied unless it
+  carries the lock marker: the owner runs `lock-revision` before deploying the branch, and that is
+  the only way a chain gains a second revision in one pull request. A pull request found carrying
+  several unlocked revisions on one chain folds them into one before anything else, and a base update
+  that adds revisions re-parents the unlocked one onto the new head.
+- **A revision whose first line is the lock marker `lock-revision` writes counts as applied.** Its id,
+  its parent and what it does to the database stay fixed, so it is never folded, re-parented or
+  regenerated. Its code may still change when the database outcome stays the same — a simplification,
+  a refactor, a clearer helper — proven by the migration tests. A later change to the database goes
+  into one new revision on top, which the next `lock-revision` locks. A base update that adds
+  revisions to its chain is joined with a merge revision.
+- For a revision the pull request did not add, establish "not applied yet" from the real
+  `alembic_version` row in every existing environment that may have applied it; the lock marker
+  settles it for the pull request's own. An explicit user statement or repository fact that no such environment exists
   establishes that scope without inventing a database to query. Data being disposable alone does
   not establish that a revision is unapplied; that fact decides editing rather than adding.
 - Once any environment has applied it, a later revision is the only route, and for a destructive body

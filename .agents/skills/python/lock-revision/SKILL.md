@@ -20,7 +20,8 @@ environment, so its revisions may be applied there. From then on, each of those 
 1. **Find the unlocked revisions.** In every repository in the task that has migration chains,
    list the revisions the branch adds to each chain against its default branch. Leave out any
    revision that already carries the lock marker. If there are none, report that nothing was
-   locked.
+   locked. A chain with more than one unlocked revision breaks `database-migrations`' one-revision
+   rule: fold them into one, validated as that skill says, before locking.
 2. **Lock each one.** Add the marker as the first line of each revision file, above its docstring:
 
    ```python
@@ -35,7 +36,9 @@ environment, so its revisions may be applied there. From then on, each of those 
 ## After Locking
 
 - A locked revision is history under `database-migrations`' **Applied Is What Makes History**,
-  whether or not a deploy has run it yet. It is never edited, folded, re-parented or regenerated.
+  whether or not a deploy has run it yet. Its id, parent and database outcome never change, so it is
+  never folded, re-parented or regenerated. Its code may still be simplified or refactored when the
+  migration tests prove the database outcome unchanged.
 - The next schema or stored-data change on that chain goes into one new revision on top of the
   locked one. While that revision is unlocked, later changes go into it, as the at-most-one rule
   says. The next invocation locks it, and the cycle repeats.
