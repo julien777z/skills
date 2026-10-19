@@ -73,9 +73,10 @@ lens's checks name, and build these tables before judging anything:
   absence, record whether its reader refuses it, branches on it, or passes it through;
 - a **use-case table**: one row per use case — a page or screen loading, a user action, a job run, a
   request handler or RPC operation serving its caller — naming its entry point and every call it
-  makes to an operation the repository owns, at every hop behind it, with which calls wait on
-  another's result and how long the use case waits; a frontend use case is read from the network log
-  of the loaded screen, an internal one from traces or service logs;
+  makes to an operation the repository owns, whether an HTTP endpoint, an RPC operation or another
+  internal service, at every hop behind it, with which calls wait on another's result and how long
+  the use case waits; a frontend use case is read from the network log of the loaded screen, an
+  internal one from traces or service logs;
 - per language and project: every manifest and its sections, every lockfile, tools a workflow
   installs outside a manifest, first-party imports across source, tests, scripts and workflow
   helpers, and every tool invocation in CI, scripts and hooks.
@@ -172,12 +173,14 @@ they are independent; a batch operation taking the set in place of the per-item 
 calls that stay separate issued together rather than in turn; static data shipped with the client
 through its package or generated contract; every caller moved, and each operation left with no
 caller deleted with its client. The use case is timed before and after on the same stack, and a
-merge that makes it wait longer for its first useful content is not the remedy. Left alone: an
-operation another use case calls on its own, which a merge never removes; a read only some runs of
-the use case need, which a merge never folds in; a call a later interaction makes — a tab opened, a
-page turned, a row expanded; reads under different authorization or caching that one response cannot
-carry; a slow section kept apart so it does not hold a fast one, with the timing showing it; and a
-third-party provider's operations, batched only where the provider offers it.
+merge that makes it wait longer for its first useful content is not the remedy. Two cases go to the
+user for approval with the run's recommendation and the counts and timings behind it, never merged
+or left alone silently: an operation another use case also calls on its own, where the use case may
+gain a merged operation while the other keeps its own; and a read only some runs of the use case
+need, which a merged operation may still carry. Left alone: a call a later interaction makes — a tab
+opened, a page turned, a row expanded; reads under different authorization or caching that one
+response cannot carry; a slow section kept apart so it does not hold a fast one, with the timing
+showing it; and a third-party provider's operations, batched only where the provider offers it.
 
 ### Divergent Siblings
 
@@ -494,8 +497,9 @@ lockfile resolves its constraints, and confirms that the repository's tests pass
 - each kind's slot table before and after;
 - each module merged, moved, renamed, collapsed or split, with its importers moved;
 - each layer, abstraction and alias removed, with its callers;
-- the use-case table before and after: calls and wait per use case, and each operation merged,
-  batched or deleted with its callers moved;
+- the use-case table before and after: calls and wait per use case, each operation merged, batched
+  or deleted with its callers moved, and each merge put to the user with its recommendation and
+  their answer;
 - each duplicate and its surviving owner;
 - each flag gating a former behavior, its readers and retiring backfill; each suppression removed
   and the rule code proposed as its guard; each check whose verdict gates again;
