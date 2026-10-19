@@ -51,9 +51,11 @@ an untrusted one is left out and reported.
 Hold `agent-lock` on the key `skills-install`, acquired with `--ttl-seconds 1800`, from step 2
 until step 6 finishes, so two sessions never build or remove overlays at once. Run its `check`
 before every write to shared state: step 3's stash, fast-forward and marker deletion, step 4.4's
-marker, and steps 5 and 6. On a failed check, stop, acquire the lock again and restart at step 2,
-keeping the built heads already recorded and the head the abandoned build reached. Release the lock
-with `--resource-idle` once step 6 finishes or the refresh stops.
+marker, and steps 5 and 6. On a failed check, first restore a stash this run pushed and verify its
+paths. Then acquire the lock again and restart at step 2 once, keeping step 2's first record whole
+and the head each abandoned build reached; the restarted step 2 adds only overlays that record
+lacks. A second failed check stops the refresh with the step it reached as its blocker. Release the
+lock with `--resource-idle` once step 6 finishes or the refresh stops.
 
 1. Resolve an installed user-level skill link to its Git checkout. When the link resolves into an
    overlay worktree, use the main checkout it is a linked worktree of. Confirm the checkout is the
@@ -94,13 +96,13 @@ with `--resource-idle` once step 6 finishes or the refresh stops.
    the installed source. Check Codex's global `AGENTS.md` link when Codex is installed. Preserve
    real files and foreign links; the installer's conflict preflight reports them before changing
    links. Never reset, drop, or overwrite preserved work.
-6. Once the links point into the installed source, remove every other `skills-overlay/` worktree
-   of the checkout, complete or not; this step alone removes overlays. First compare each with the
-   built head step 2 recorded for it, or for this run's own abandoned build the head it reached, or,
-   for a markerless overlay this run never recorded, its starting commit: preserve a commit after
-   it, or a working tree that differs from it, on a named branch, and report it. Then remove the
-   worktree and delete its `skills-overlay/` branch, along with every `skills-overlay/` branch left
-   without a worktree.
+6. Once the links point into the installed source, remove every other `skills-overlay/` worktree of
+   the checkout, complete or not; this step alone removes overlays. First compare each with the
+   built head step 2 recorded for it, or for each of this run's abandoned builds the head it
+   reached, or, for a markerless overlay this run never recorded, its starting commit: preserve a
+   commit after it, or a working tree that differs from it, on a named branch, and report it. Then
+   remove the worktree and delete its `skills-overlay/` branch, along with every `skills-overlay/`
+   branch left without a worktree.
 7. Read every shared rule and shared skill that differs between the recorded and the new installed
    source, with each changed skill's supporting files, before using them in the current session.
 
