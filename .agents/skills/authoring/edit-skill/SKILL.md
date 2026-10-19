@@ -80,9 +80,10 @@ During A Task** for the edit's timing.
   way.
 - After verified success, record the correction as a `guidance_correction` entry with
   `session-ledger`: the successful action and its evidence, a reproduction scenario, the intended
-  behavior, the canonical files it will change, and `pending` as its delivery status. Steps 1–6
-  and 7.1 of **Behavior** run now, while the evidence is fresh, and their result goes into the
-  entry; step 7.2 onward waits.
+  behavior, the canonical files it will change, and `pending` as its delivery status. Steps 1–4
+  of **Behavior** run now, while the evidence is fresh, and their result goes into the entry; the
+  edit itself (steps 5, 6 and 7.1) is written as the bullet on writing the edit below says, and step
+  7.2 onward waits.
 - **A recorded correction governs the rest of the session at once**, ahead of the installed text it
   amends. Before a decision a pending entry's subject covers, read the ledger's pending entries and
   follow their intended behavior; recording a correction and then repeating the miss it records is
@@ -95,16 +96,17 @@ During A Task** for the edit's timing.
 - When the action fails, is blocked, or cannot be verified, keep its evidence in the task's
   verification record and continue its recovery or escalation. Do not create, amend, or process a
   `guidance_correction` entry, and do not edit canonical guidance from that outcome.
-- Unless a guidance batch is in flight, write the edit in the checkout step 4 resolves, on the branch step 7.1 selects, commit it, and
-  push it to that branch's pull request once the **Pre-Push Gate** passes, opening a draft when the
-  branch has none; this holds for a source pull request step 7.1 selects as for an
-  agent-configuration one. When the checkout holds the active task's uncommitted or source-branch
-  work, write and commit the edit from a separate worktree on the selected branch, leave the task's
-  tree untouched, and stage only the guidance files. Record the branch, commit and pull request in
-  the entry. Nothing else of delivery runs while the task does: no review, gate, smoke round, merge
-  or worker. A standing instruction about how guidance pull requests are reviewed or merged governs
-  that delivery when it runs, never when. A gate result that arrives for a guidance pull request
-  already open is recorded as its entry's stage result, and its repair waits with the rest.
+- Unless a guidance batch is in flight, write the edit in the checkout step 4 resolves, on the
+  branch step 7.1 selects, commit it, and push it to that branch's pull request once the **Pre-Push
+  Gate** passes, opening a draft when the branch has none; this holds for a source pull request step
+  7.1 selects as for an agent-configuration one. When the checkout holds the active task's
+  uncommitted or source-branch work, write and commit the edit from a separate worktree on the
+  selected branch, leave the task's tree untouched, and stage only the guidance files. Record the
+  branch, commit and pull request in the entry. Nothing else of delivery runs while the task does:
+  no review, gate, smoke round, merge or worker. A standing instruction about how guidance pull
+  requests are reviewed or merged governs that delivery when it runs, never when. A gate result that
+  arrives for a guidance pull request already open is recorded as its entry's stage result, and its
+  repair waits with the rest.
 - **Every `guidance_correction` entry keeps one generic recovery comment on the pull request that
   carries its edit**, posted once the edit is pushed and kept current as the [ledger backup
   reference](references/ledger-backup.md) says. This skill authorizes that comment and its edits
@@ -119,10 +121,10 @@ During A Task** for the edit's timing.
 ## Guidance Delivery
 
 `process-ledger` invokes this route only for the batch of `guidance_correction` entries it froze,
-beside the source stream. It holds the source pull request only for the checks its ridden edits need; only an
-edit on that pull request, or one the GitHub rule's **Merge Authorization** holds for a source pull
-request in another repository, waits for that merge. Run it as a delegated worker when the session
-can, so the user's review of the source pull request overlaps it.
+beside the source stream. It holds the source pull request only for the checks its ridden edits
+need; only an edit on that pull request, or one the GitHub rule's **Merge Authorization** holds for
+a source pull request in another repository, waits for that merge. Run it as a delegated worker when
+the session can, so the user's review of the source pull request overlaps it.
 
 1. Read every entry in the batch `process-ledger` froze and resume at its recorded first
    nonterminal stage, rebuilding a lost or truncated entry from its recovery
@@ -134,9 +136,9 @@ can, so the user's review of the source pull request overlaps it.
    pushed commit resumes from that head, taking the pull request's current state, tip and diff
    against the base from the host, which override the entry's and the comment's recorded commits
    and delivery stage; a merged or closed pull request resumes at verifying the merged text, never
-   at review. An edit step 7.1 put on a source pull request this session drives was pushed when it
-   was recorded; step 7.2's source check and step 7.5's smoke round run on the head carrying it
-   before the source stream proceeds, and those checks are what the source stream waits for. It
+   at review. An edit step 7.1 puts on a source pull request this session drives is pushed there and
+   passes step 7.2's source check and step 7.5's smoke round on the head carrying it before that
+   pull request's source stream proceeds, as `execute-task`'s **Completion** says. It
    carries step 7.3's prose-duplication checks into that pull request's simplification and step
    7.4's incident vocabulary into its final acceptance, so both gates read wording the smoke round
    has already checked; a later repair to that wording repeats the smoke round before the source

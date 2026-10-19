@@ -780,11 +780,12 @@ Two streams run side by side from here: the guidance stream and the source strea
 
 - **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends the
   `guidance_correction` batch it freezes to `edit-skill`'s **Guidance Delivery** route, delegated
-  so it never waits on the source stream. Edits the GitHub rule's **Branches and Pull Requests**
-  puts on this task's source pull request were pushed to it when recorded; their source check and
-  smoke round run on that head, as **Guidance Delivery** step 1 says, before that pull request's
-  source-stream step 1, so its review pass, history and ready message cover them, and the source
-  stream waits only for those checks. A task with none has no guidance stream.
+  so it never waits on the source stream. Before a source pull request's source-stream step 1,
+  every pending `guidance_correction` entry the GitHub rule's **Branches and Pull Requests** puts
+  on it, in the batch in flight or waiting for the next one, is pushed to it and passes its source
+  check and smoke round, as **Guidance Delivery** step 1 says, so its review pass, history and
+  ready message cover them; the source stream waits only for those. A task with none has no
+  guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:
 
