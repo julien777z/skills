@@ -54,8 +54,9 @@ before every write to shared state: step 3's stash, fast-forward and marker dele
 marker, and steps 5 and 6. On a failed check, first restore a stash this run pushed and verify its
 paths. Then acquire the lock again and restart at step 2 once, keeping step 2's first record whole
 and the head each abandoned build reached; the restarted step 2 adds only overlays that record
-lacks. A second failed check stops the refresh with the step it reached as its blocker. Release the
-lock with `--resource-idle` once step 6 finishes or the refresh stops.
+lacks. A second failed check stops the refresh with the step it reached as its blocker, with no lock
+left to release. Otherwise release the lock with `--resource-idle` once step 6 finishes or the
+refresh stops.
 
 1. Resolve an installed user-level skill link to its Git checkout. When the link resolves into an
    overlay worktree, use the main checkout it is a linked worktree of. Confirm the checkout is the
