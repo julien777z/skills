@@ -35,8 +35,9 @@ an untrusted one is left out and reported.
   `created` or `touched` receipt, open on the host and trusted. A `reference` entry never takes
   effect. A merged pull request arrives through the default branch.
 - **Pull requests in effect** are the recorded ones plus each pull request the current overlay —
-  the newest complete one, read at step 2 — names in its stored inputs that is still open on the host and trusted, whichever session recorded it, so
-  one session's refresh never drops another's pending changes from the shared install.
+  the newest complete one, read at step 2 — names in its stored inputs that is still open on the
+  host and trusted, whichever session recorded it, so one session's refresh never drops another's
+  pending changes from the shared install.
 - **A pull request's content** is its fetched remote head followed by its local branch tip when one
   exists, so pushed commits from other workers and unpushed local commits both arrive.
 - **The checked-out branch**, when it is not the default branch, takes effect at its local tip only
@@ -47,10 +48,12 @@ an untrusted one is left out and reported.
 
 ## Refresh
 
-Hold `agent-lock` on the key `skills-install` from step 2 until step 6 finishes, so two sessions
-never build or remove overlays at once. Run its `check` before step 4.4 writes the marker and before
-steps 5 and 6; on a failed check, stop, acquire the lock again and restart at step 2, leaving the
-abandoned build for step 6 to remove. Release it with `--resource-idle` once step 6 finishes.
+Hold `agent-lock` on the key `skills-install`, acquired with `--ttl-seconds 1800`, from step 2
+until step 6 finishes, so two sessions never build or remove overlays at once. Run its `check`
+before every write to shared state: step 3's stash, fast-forward and marker deletion, step 4.4's
+marker, and steps 5 and 6. On a failed check, stop, acquire the lock again and restart at step 2,
+keeping the built heads already recorded and the head the abandoned build reached. Release the lock
+with `--resource-idle` once step 6 finishes or the refresh stops.
 
 1. Resolve an installed user-level skill link to its Git checkout. When the link resolves into an
    overlay worktree, use the main checkout it is a linked worktree of. Confirm the checkout is the
@@ -80,9 +83,9 @@ abandoned build for step 6 to remove. Release it with `--resource-idle` once ste
       onto the overlay, resolving a conflict the same way, and commit it in the overlay.
    4. Write the overlay's inputs last, to a `skills-overlay` file in its own Git directory: each
       pull request in effect, the checked-out branch, and the overlay's built head commit. That file
-      marks the overlay complete, and the installer then
-      installs from the newest complete overlay of the source checkout. Never edit inside it:
-      guidance edits go to the source checkout and reach the next overlay at the next refresh.
+      marks the overlay complete, and the installer then installs from the newest complete overlay
+      of the source checkout. Never edit inside it: guidance edits go to the source checkout and
+      reach the next overlay at the next refresh.
 5. Run the installer: `bash bootstrap/install.sh` from the source checkout on a local machine, or
    the setup clone's installer in a cloud session, which selects the attached checkout and relinks
    every cloud home. The installer fetches a cloud setup clone's configured branch and
@@ -93,9 +96,11 @@ abandoned build for step 6 to remove. Release it with `--resource-idle` once ste
    links. Never reset, drop, or overwrite preserved work.
 6. Once the links point into the installed source, remove every other `skills-overlay/` worktree
    of the checkout, complete or not; this step alone removes overlays. First compare each with the
-   built head step 2 recorded for it, or with its starting commit when it never had a marker:
-   preserve a commit after it, or a working tree that differs from it, on a named branch, and
-   report it. Then remove the worktree and delete its `skills-overlay/` branch.
+   built head step 2 recorded for it, or for this run's own abandoned build the head it reached, or,
+   for a markerless overlay this run never recorded, its starting commit: preserve a commit after
+   it, or a working tree that differs from it, on a named branch, and report it. Then remove the
+   worktree and delete its `skills-overlay/` branch, along with every `skills-overlay/` branch left
+   without a worktree.
 7. Read every shared rule and shared skill that differs between the recorded and the new installed
    source, with each changed skill's supporting files, before using them in the current session.
 
