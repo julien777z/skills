@@ -71,7 +71,7 @@ alwaysApply: true
 - Record every pull request with `session-ledger` immediately after the hosting service returns its canonical URL. A task-scoped pull-request lookup reconciles verified task records through that ledger and verifies each selected URL remotely; never infer task membership from the current checkout, a branch name, a transcript, or a broad hosting-service search.
 
 - **Open every pull request as a draft and keep it draft until it merges.** The user reviews it as
-  a draft; it leaves draft once, as the first step of an authorized merge through `land-pr`, so its
+  a draft; it leaves draft once, as the first step of an authorized merge through `merge-gate`, so its
   test jobs run once, on the head about to merge. Never mark one ready to start its tests, to show
   it finished, or to hand it to the user; a follow-up keeps pushing to the draft.
 - Keep pull requests focused and give them descriptive titles and descriptions; request appropriate reviewers when the repository workflow requires them.
@@ -91,7 +91,7 @@ alwaysApply: true
   repository's diff and evidence. Remove foreign references, including from dependency and delivery
   notes. Describe a consumed interface or unresolved delivery requirement in terms of this
   repository's own contract; disclose provider PR links and merge ordering to the user in chat.
-  `land-pr` still owns the complete dependency inventory and readiness gate.
+  `merge-gate` still owns the complete dependency inventory and readiness gate.
 - **Each session opens its own source pull request in each repository.** Later source work in the
   same session joins that pull request rather than creating one per concern or worker. Continue a
   source pull request from another session only when the user, an applicable invoked skill, or a

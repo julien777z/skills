@@ -20,7 +20,7 @@ run; each doctor owns only its domain.
   before it lands.
 - `defer-scope` — record work consciously left undone; it runs the gate's admission question itself.
 - `pre-production` — apply the encountered-issue and target-contract policy while implementing.
-- `land-pr` — for a doctor that delivers in merged batches, the check gate, conflict resolution and
+- `merge-gate` — for a doctor that delivers in merged batches, the check gate, conflict resolution and
   verified squash merge of each batch pull request its run opens.
 
 Read the applicable dependencies before beginning. Apply their approval, compatibility, migration,
@@ -253,7 +253,7 @@ request it depends on.
   - Before merging, the batch passes **Run Repository-Native Checks**, **Review The Result**, and
     **Accept The Complete Diff** on its own diff, gated against the run's full intent statement kept
     current with the batches already merged; the batch's entries say only what this diff must
-    complete. It then merges through `land-pr`, which polls its checks to a terminal state. Between
+    complete. It then merges through `merge-gate`, which polls its checks to a terminal state. Between
     polls the next batch's first wave runs, its workers pushing each step through `execute-task`'s
     **Pre-Push Gate** to the next batch's branch, stacked on the batch's branch as the GitHub rule's
     **Branches and Pull Requests** allows; nothing more is pushed to the batch's branch.

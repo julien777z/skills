@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once at the start of every task authorized to change files, before recommending an implementation, delegating edits, or editing — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until verified completion or explicit user stop or handoff. It plans source and product changes first, except for trivial changes; canonical guidance changes run directly through their evidence, smoke-test, review, and acceptance gates. It then applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, keeps session-created source work to one pull request per repository, finishes each pull request with a simplification pass, a test sweep, an acceptance gate and a history rewrite before sending it for review, checks every outcome it reports at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
+description: "Always run this. Invoke once at the start of every task authorized to change files, before recommending an implementation, delegating edits, or editing — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until verified completion or explicit user stop or handoff. It plans source and product changes first, except for trivial changes; canonical guidance changes run directly through their evidence, smoke-test, review, and acceptance gates. It then applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, keeps session-created source work to one pull request per repository, finishes each pull request, once the whole task is done, with a test sweep, a review pass over everything not yet reviewed (simplification, code review, acceptance) and a history rewrite before sending it for review, checks every outcome it reports at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
 short_description: 'Plan source and product changes for approval; validate canonical guidance changes through their delivery gates.'
 ---
 
@@ -14,12 +14,12 @@ are validated by their evidence, smoke-test, review, and acceptance gates.
 
 - `pre-production` — the target-contract policy for every repository and its data obligations.
 - `run-site` — select browser verification applicability before proposing it in a plan or brief.
-- `code-simplify` — simplify the finished task's complete diff before delivery.
+- `review-pass` — review, simplify and fix the finished task's unreviewed changes before delivery.
 - `acceptance-gate` — judge the finished task's complete diff before local completion, before the pull request is sent for review and before it merges, and each fix for a flag it raises.
 - `generic-push` — keep each repository's publishing metadata independent during multi-repository changes.
-- `merge-conflict` — bring in a conflicting base as soon as a push read-back shows it, and a moved one once at **Completion**.
+- `merge-conflict` — bring in a conflicting base as soon as a push read-back shows it.
 - `subagent-selection` — the hand-up a worker without an agent tool uses for an independent step.
-- `land-pr` — at **Completion**, when the merge is authorized, ready the pull request, drive its checks to green and merge it.
+- `merge-gate` — at **Completion**, when the merge is authorized, ready the pull request, drive its checks to green and merge it.
 - `test-fixture` — the sweep over the task's tests at **Completion**.
 - `security-audit` — **Building It Safely** while writing code that crosses a trust boundary, and
   its **Diff Review** of such a change at **Completion**.
@@ -427,12 +427,11 @@ compatibility, generated-output drift.
 
 ### Ongoing Simplification
 
-Read and invoke `code-simplify` once across the finished task's complete diff, under
-**Completion**, never per push.
+The final simplification runs once, inside `review-pass` at **Completion**, never per push.
 
 Own each coherent feature through integration: the primary agent settles dependencies, product
-decisions and the combined result. Simplify a feature as it is built; the final `code-simplify` pass
-still covers the complete diff. Assign a worker an independently owned scope with a concrete
+decisions and the combined result. Simplify a feature as it is built; the final pass
+still covers every change not yet reviewed. Assign a worker an independently owned scope with a concrete
 boundary and return condition, not an arbitrary slice of the primary agent's feature. Keep admitted
 cleanup with its feature; an independently selected cleanup follows its own stated scope and
 ownership. When cleanup crosses an interface or repository, bring its producer and consumers to a
@@ -466,8 +465,8 @@ the task.
 Every push goes out once the pre-push checks below pass, on a draft and on a pull request ready for
 review alike; nothing holds committed work on one machine — not a gate, review or simplification
 pass pending on it, an integration merge, or a plan that orders one first. `code-simplify` and `acceptance-gate`'s
-diff question do not run per push: they run once over the finished task's complete diff, under
-**Completion**. A fix pushed for a flag a gate or review raised gets one fresh `acceptance-gate`
+diff question do not run per push: they run once over the finished task's unreviewed changes, inside
+`review-pass` at **Completion**. A fix pushed for a flag a gate or review raised gets one fresh `acceptance-gate`
 run over that fix's increment, read with the whole branch diff as its originating diff, as
 `acceptance-gate`'s **Bounds** require; that fresh verdict is what other skills mean by an
 increment's **Pre-Push Gate** verdict.
@@ -553,7 +552,8 @@ An outcome is what its source of truth shows, never what an action or a worker s
 - **Whatever that read shows wrong is the next thing done**, ahead of every queued item, and is
   never carried to "the next push" or bundled behind other work. A conflict is brought in
   through `merge-conflict`, delivered under the **Pre-Push Gate**, and read back. A base that only
-  moved, with no conflict, is brought in once, at **Completion**, before the final acceptance.
+  moved, with no conflict, is brought in once, by `review-pass` at **Completion**, before the final
+  acceptance.
 - **A delegated worker's report of an outcome is a claim, never evidence.** Before relaying it or
   building on it, check it at its source: "tests pass" against the run or the CI result on that
   commit, "pushed" or "exists" against the branch, "merged" or "refreshed" against the default
@@ -711,8 +711,8 @@ or failed default-source retry keeps this checkpoint paused; a completed diagnos
 substep does not start either delivery stream.
 
 Run this checkpoint before reporting a change complete, including a local-only result with no
-pull request. In that case, source-stream steps 1–3 and step 5's verification review the complete
-task diff and its validation prerequisites, and the history, the message and `land-pr` apply only
+pull request. In that case, source-stream steps 1–2 and step 4's verification review the complete
+task diff and its validation prerequisites, and the history, the message and `merge-gate` apply only
 when a pull request exists. A failed local setup
 operation remains encountered work under **Encountered Issues**, not an unverified-completion caveat. The independent gate
 receives its affected-repository map and comparison evidence along with the diff.
@@ -737,42 +737,48 @@ and state precisely which live behavior remains unverified. Do not add a tempora
 Missing merge approval holds merging, never available branch verification. Merge is delivery after
 verification, never a substitute for an available branch test.
 
-Then finish each pull request the task changed, once, with its work finished. Two streams run
-side by side from here: the guidance stream and the source stream.
+Then finish each pull request the task changed, once, with its work finished. **The work is
+finished only when nothing in the run is still to do**: every step of the approved plan is done, no
+named work or queued follow-up remains under **Work You Have Already Named**, and no question to the
+user is unanswered. A finished step, a push, a milestone or a passing check is not that point, and
+the streams below never start from one. A follow-up arriving after the streams ran is built, then
+reaches this checkpoint again when it is finished; `review-pass` reviews only what changed since the
+head it last accepted, so a small follow-up costs a small review and a large one a full review of the
+new work.
+
+Two streams run side by side from here: the guidance stream and the source stream.
 
 - **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends only verified
   successful `guidance_correction` entries to `edit-skill`'s **Guidance Delivery** route, delegated
   so it never waits on the source stream. Edits the GitHub rule's **Branches and Pull Requests**
   puts on this task's source pull request pass their source check and smoke round, as **Guidance
   Delivery** step 1 says, and are pushed to it before that pull request's
-  source-stream step 1, so its simplification, final acceptance, history and ready message cover
+  source-stream step 1, so its review pass, history and ready message cover
   them, and the source stream waits only for that push. A task with none has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:
 
-1. Run `code-simplify` across the pull request's complete diff, under `pre-production`'s size
-   budget, and push its simplifications through the **Pre-Push Gate**.
-2. Run `test-fixture`'s **Sweep** over the tests the task added or changed and, when the diff
+1. Run `test-fixture`'s **Sweep** over the tests the task added or changed and, when the diff
    crosses a trust boundary `security-audit` names, run `security-audit`'s **Diff Review** at
    `medium`; push their fixes.
-3. Bring in a base that moved since the branch was cut or last incorporated, through
-   `merge-conflict`. Then put the complete diff to `acceptance-gate`'s final-acceptance question, or
-   its diff question when no pull request exists, with the intent statement. Push the fix for each
-   flag as its own increment and put it to the fresh gate that skill's **Bounds** require.
-4. Shape the history with `rewrite-git-history`. The first time a pull request is sent for review,
+2. Invoke `review-pass` on the pull request, or on the local task diff when none exists, with the
+   intent statement. It sizes itself from the changes no earlier pass reviewed, brings in a moved
+   base, simplifies, reviews, fixes, and returns the head its final acceptance passed.
+3. Shape the history with `rewrite-git-history`. The first time a pull request is sent for review,
    rebuild it into one commit per material change. Each later **Completion** of the same pull
    request, after a follow-up, folds every change into the commit it amends through that skill's
    fixup route, or adds a new commit for a new material change, and never rebuilds it again, so the
    commits the user already reviewed keep their shape. A rewrite whose tree proof shows an
-   identical tree keeps the acceptance verdict.
-5. Reconcile the result with **Product Constraints**' target receipt, updating its sources when
+   identical tree keeps the acceptance verdict and moves `review-pass`'s reviewed head to the
+   rewritten head.
+4. Reconcile the result with **Product Constraints**' target receipt, updating its sources when
    accepted requirements changed. Verify every requested outcome and every incidental fix, confirm tests and relevant validation
    cover each of them and every simplification, confirm intentional contract changes are reflected
    in the expected behavior, and confirm multi-repository delivery artifacts describe only their
    owning repository. Then build this pull request's ready-for-review message, in the shape below,
-   from `list-prs` and what the run did.
-6. Send step 5's message; the pull request stays draft. Only when **Task Authorization** finds
-   the merge authorized, invoke `land-pr` with the accepted head and, as its fix rule, the
+   from `list-prs`, what the run did and `review-pass`'s **Result**.
+5. Send step 4's message; the pull request stays draft. Only when **Task Authorization** finds
+   the merge authorized, invoke `merge-gate` with the accepted head and, as its fix rule, the
    **Pre-Push Gate** with each fix folded into its commit through `rewrite-git-history`'s fixup
    route. It readies the pull request, which starts its test jobs once, fixes what they report and
    merges; when it returns, send one line with the result it read: the merge, or the gate that
@@ -791,18 +797,19 @@ The ready-for-review message takes exactly this shape, one message per pull requ
 **Ready for review:** <pull request URL>
 
 - **What landed:** <each requested outcome, one clause each>
+- **Review:** <full | delta `<reviewed head>..<head>` | trivial delta `<reviewed head>..<head>` | nothing new> · <n> simplification fix(es) · <n> code-review finding(s) fixed · acceptance passed on `<head>` — leave out each count `review-pass` did not run
 - **History:** <n> commits (<subject> · <subject> · …)
 - **Fixed on the way:** <each incidental fix, or none>
 - **Noticed, not changed** (over the size budget):
   1. <item>
-- **Still running:** <the authorized merge through `land-pr` (CI ~<n> min) | the guidance fixes from this task that have their own pull request (<n> correction(s)) | nothing>
+- **Still running:** <the authorized merge through `merge-gate` (CI ~<n> min) | the guidance fixes from this task that have their own pull request (<n> correction(s)) | nothing>
 
-**Next:** <review the pull request; send follow-ups here, or `/merge-pr` when you're happy | review the pull request; it merges once its checks pass>
+**Next:** <review the pull request; send follow-ups here, `/finish-pr` to review anything new and merge, or `/merge-now` to merge first and review after | review the pull request; it merges once its checks pass>
 ```
 
 The run stays open until both streams finish: the source stream when its message is sent, or when
-`land-pr` returns from an authorized merge; the guidance stream when `process-ledger` reports no
+`merge-gate` returns from an authorized merge; the guidance stream when `process-ledger` reports no
 remaining entries or a concrete retained hold.
 
-A workflow that already runs final acceptance runs step 3 as its own; one that already invokes
-`land-pr` runs step 6 as its own.
+A workflow that already runs `review-pass` runs step 2 as its own; one that already invokes
+`merge-gate` runs step 5 as its own.

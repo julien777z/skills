@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. First carry out the requested action; only a verified success is recorded in the session ledger and delivered as a guidance edit. Deliver every behavior-changing guidance edit through CR, the acceptance gate, and `test-skill` before its pull request merges.
+description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. First carry out the requested action; only a verified success is recorded in the session ledger and delivered as a guidance edit. Deliver every behavior-changing guidance edit through `review-pass`, the acceptance gate, and `test-skill` before its pull request merges.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -62,8 +62,8 @@ task is active, preserve its execution and follow **Recording During A Task** fo
 - `acceptance-gate` — the diff question over the `.agents` change once it reads clean.
 - `test-skill` — the proof that every behavior-changing guidance edit changes what a reader does before it merges.
 - `subagent-selection` — the model capability level for live verification chats.
-- `cr` — the delegated review of the guidance pull request **Guidance Delivery** opens, merge withheld.
-- `land-pr` — the verified squash merge of the pull request step 7 clears.
+- `review-pass` — the review of the guidance pull request **Guidance Delivery** opens.
+- `merge-gate` — the verified squash merge of the pull request step 7 clears.
 - `session-ledger` — retain observed issues, reproduction scenarios and pending guidance delivery across the active task.
 
 ## Recording During A Task
@@ -107,10 +107,10 @@ can, so the user's review of the source pull request overlaps it.
    and the delivery report says the push moved that pull request's head past its owner's
    acceptance. The steps below cover the agent-configuration pull request.
 2. Run step 7.2's source check.
-3. Delegate the pull request to `cr` with merge withheld. Give it the user's request and the
+3. Run `review-pass` on the pull request. Give it the user's request and the
    recorded evidence as the intent statement, the incident vocabulary for its acceptance gate as
    step 7.4 describes, and step 7.3's prose-duplication checks for its simplification gate.
-4. Run step 7.5's `test-skill` smoke round on the head `cr` accepted, with every entry's
+4. Run step 7.5's `test-skill` smoke round on the head `review-pass` accepted, with every entry's
    reproduction scenario as an input and entries that share a failure class grouped into one
    scenario, then steps 7.6–7.9.
 5. After each completed or failed stage, record its exact head, stage result, and first
@@ -126,7 +126,7 @@ can, so the user's review of the source pull request overlaps it.
 - At a checkpoint and before reporting its state, record the complete pull-request head and file
   list, the target repository's lifecycle, its current state, and its next transition. A draft
   confined to canonical agent configuration records `agent-configuration exception`
-  and `land-pr` as its next action unless step 7.7 holds it for the user or for a source pull request
+  and `merge-gate` as its next action unless step 7.7 holds it for the user or for a source pull request
   in another repository; it never records `await user authorization` otherwise.
 
 ## Behavior
@@ -384,7 +384,7 @@ can, so the user's review of the source pull request overlaps it.
    - If one request contains multiple distinct items, map each item to the best existing file or a new file within the same inferred/selected type.
    - If scope is ambiguous, ask a short follow-up before editing.
 
-7. **Guidance Delivery** delivers the batch in this order, with `cr` carrying steps 3–4. Ordinary
+7. **Guidance Delivery** delivers the batch in this order, with `review-pass` carrying steps 3–4. Ordinary
    repairs and verification remain authorized throughout this delivery; resolve flagged gates under `acceptance-gate`'s **Bounds** and failing smoke runs under
    `test-skill`. A pull request confined to agent configuration has merge authorization under the
    GitHub rule after its stated gates; ask neither to repeat that authorization nor to continue
@@ -397,7 +397,7 @@ can, so the user's review of the source pull request overlaps it.
       source branch, the one checked out included, except guidance that rule puts on the source pull
       request it depends on, which merges with it. Commit the `.agents` files, never a provider
       mirror, and push each step once `execute-task`'s **Pre-Push Gate** checks pass to a draft pull
-      request; steps 3–4 are the complete-diff pass its **Completion** runs, and step 7's `land-pr` merges it,
+      request; steps 3–4 are the complete-diff pass its **Completion** runs, and step 7's `merge-gate` merges it,
       taking it out of draft as the merge's first step. None of that waits to be asked: the decision was made when the edit was requested, and
       a pull request left open keeps every later session working from the guidance this change
       replaced. A source fix required by step 3 is source work: it goes onto the source pull request
@@ -421,7 +421,7 @@ can, so the user's review of the source pull request overlaps it.
       When the guidance needs a change in an unreleased tool owned by another repository, point
       the draft consuming workflow at that tool's active branch and validate against it, without
       waiting for the tool's review loop. That workflow change is source work under step 1's source
-      route; its delivery follows `land-pr`'s dependency gate rather than merging a testing reference.
+      route; its delivery follows `merge-gate`'s dependency gate rather than merging a testing reference.
       The guidance rides that workflow's source pull request, as the GitHub rule's **Branches and
       Pull Requests** says, and merges with it; that pull request waits for the tool through the
       same gate. After the tool merges, the consumer adopts and validates its maintained target under the reference guidance
@@ -450,7 +450,7 @@ can, so the user's review of the source pull request overlaps it.
       dropping owed work or merging flagged guidance; acceptance must cover the final wording before
       delivery.
 
-   5. **Run one `test-skill` round over the batch on the head `cr` accepted.** Give it every
+   5. **Run one `test-skill` round over the batch on the head `review-pass` accepted.** Give it every
       entry's reproduction scenario, grouping entries that share a failure class. `test-skill` owns
       the coverage, package, control, scoring, and rerun procedure.
       Record an entry whose run `test-skill` does not require as `not run: <test-skill reason>`;
@@ -460,7 +460,7 @@ can, so the user's review of the source pull request overlaps it.
       skill's result or a turn boundary.** Before a report names its state, read the target
       repository's agent-configuration pull-request lifecycle and take the next transition it
       requires. Read the complete pull-request file list, not only the latest edit or its informal
-      label. After the smoke, acceptance, and file-list checks pass, invoke `land-pr`; do not leave
+      label. After the smoke, acceptance, and file-list checks pass, invoke `merge-gate`; do not leave
       it draft under an ordinary source-work default or report it as delivered before its merged
       text and generated outputs are verified. The report names either the merged state or a
       concrete documented gate with its evidence; draft alone is neither.
@@ -468,7 +468,7 @@ can, so the user's review of the source pull request overlaps it.
       **The agent-configuration merge exception decides the conflict with the ordinary merge
       default.** When the GitHub rule classifies every changed path as canonical agent
       configuration, the required gates pass, a skill's changed scripts' own checks included, and no
-      still-open source pull request in another repository holds it, `land-pr` is the next action in
+      still-open source pull request in another repository holds it, `merge-gate` is the next action in
       this run. Do not record, report, or ask for a permission hold by citing the ordinary default;
       that is not a documented gate for this pull request.
 
@@ -498,7 +498,7 @@ can, so the user's review of the source pull request overlaps it.
       formatter run or a file picked up by `git add -A` looks identical to intent. A path outside
       `.agents` leaves this branch — dropped when it was never meant, moved to the source pull
       request the work continues under step 1 when it was — and the new head goes back through step 4. Everything
-      in `.agents`, merge it through `land-pr` with the head `acceptance-gate` accepted — but first
+      in `.agents`, merge it through `merge-gate` with the head `acceptance-gate` accepted — but first
       ask whether any line it adds or drops is true only once a still-open source pull request
       merges. A line depending on one in this repository moves onto it under step 1; one depending
       on another repository's moves to its own agent-configuration pull request, held as the GitHub
@@ -520,7 +520,7 @@ can, so the user's review of the source pull request overlaps it.
       from that text for the rest of the session. A skill invoked while its change is still open
       is read the same way from the branch that carries it, never from a checkout that predates
       it.
-      `land-pr` then waits for the default-branch Agent Sync run; the GitHub rules' **After Agent
+      `merge-gate` then waits for the default-branch Agent Sync run; the GitHub rules' **After Agent
       Sync** section says when the installed copy is refreshed.
       Once the run finishes, inspect every generated artifact on the default branch that represents
       the changed source, including `AGENTS.md` when the source feeds root instructions and
