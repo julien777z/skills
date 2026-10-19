@@ -480,9 +480,9 @@ manifests for one package pinned differently across projects or languages and a 
 runs that its sibling does not. The final adversarial reviewer tries to reach each removed layer,
 branch, alias and operation from a live caller, confirms each merged operation returns only what
 every run of its use cases needs and each use case waits no longer than before, confirms no import
-of a moved or renamed module still points at its old path, replays every chain the run touched, confirms a stacked migration correction did not
-narrow the approved downgrade or survivorship coverage, challenges every revision kept as applied
-without version-table evidence, confirms each removed configuration name and package has no
+of a moved or renamed module still points at its old path, replays every chain the run touched,
+confirms a stacked migration correction did not narrow the approved downgrade or survivorship
+coverage, challenges every revision kept as applied without version-table evidence, confirms each removed configuration name and package has no
 surviving reader or importer, re-traces every retained package to an importer or an invocation,
 re-derives the matrix for every retained mismatch, re-reads the deployment columns for every field
 kept as a local-development tool, confirms each regenerated lockfile resolves its constraints, and
