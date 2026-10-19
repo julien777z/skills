@@ -296,11 +296,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Navigation decides who reaches a page, and the decision that hides a page also refuses to serve
   it.** An address the viewer's role, workspace, plan or permissions never offer them redirects to
   the viewer's home. A feature a higher plan includes is offered, locked, as the plan bullet below
-  says, never redirected. A screen or empty state telling the viewer the page belongs to somebody else —
-  "this page is for …", "switch to … to use it", "you don't have access" — is dead code wherever it
-  sits, in a page, a layout or a gate: the check becomes the redirect and the screen is deleted,
-  never restyled, moved into a shared message component, or kept because a task lists it among the
-  states to restyle.
+  says, never redirected. A screen or empty state telling the viewer the page belongs to somebody
+  else — "this page is for …", "switch to … to use it", "you don't have access" — is dead code
+  wherever it sits, in a page, a layout or a gate: the check becomes the redirect and the screen is
+  deleted, never restyled, moved into a shared message component, or kept because a task lists it
+  among the states to restyle.
 - **Settings is the last group in the primary navigation, and the reader's own account is the last
   item within it.** The work the product exists for comes first; settings about the shared
   workspace come before settings about the reader themselves.
