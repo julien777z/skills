@@ -94,6 +94,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   pagination, and show an explicit error when a required request fails. Validate the shared section
   with a cold load and a revalidation: the cold load changes directly from one complete skeleton to
   one complete section, and revalidation does not remove or append the section's visible structure.
+- **A page states that something is missing only once its request has said so.** "Not found", an
+  empty list or a "nothing here yet" state shows after the request answers with that result, such
+  as a 404 or an empty page of results. While the request is pending, or before it has started,
+  the skeleton is all the reader sees; data not arrived yet is never read as data that does not
+  exist.
 
 - **A change to a shared mechanism is applied everywhere that mechanism appears, and on every
   sibling surface, in the same change.** A widget grid, a list row, a dialog shell, an edit-mode
