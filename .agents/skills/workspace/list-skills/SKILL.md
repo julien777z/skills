@@ -26,7 +26,7 @@ catalogue, or memory. Plugin and built-in harness skills are outside both source
 
 ## Categories
 
-- Both sections use the global skills' categories: its folders under `.agents/skills/`, each a
+- Both sections use the skills repository's categories: its folders under `.agents/skills/`, each a
   sub-section titled by the folder name in title case, in name order.
 - A skill with no folder, or with a folder the skills repository lacks, goes under the category
   whose skills do the same kind of work, judged from its summary; one that fits none goes under

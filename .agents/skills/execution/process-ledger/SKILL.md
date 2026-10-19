@@ -42,7 +42,8 @@ at their owners.
    that entry with its concrete hold and next action until the required delivery is verified
    complete or withdrawn. Reporting a hold does not complete that delivery. Keep every other
    unresolved dependency, uncertainty or next action the same way.
-   A ledger is fully processed only when it has no entries.
+   A ledger is fully processed only when it has no entries other than kept `review` records,
+   which are pull-request state: report them as kept; they carry no hold.
 
 ## Output
 

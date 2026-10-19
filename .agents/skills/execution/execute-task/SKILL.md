@@ -737,11 +737,8 @@ and state precisely which live behavior remains unverified. Do not add a tempora
 Missing merge approval holds merging, never available branch verification. Merge is delivery after
 verification, never a substitute for an available branch test.
 
-Then finish each pull request the task changed, once, with its work finished. **The work is
-finished only when nothing in the run is still to do**: every step of the approved plan is done, no
-named work or queued follow-up remains under **Work You Have Already Named**, and no question to the
-user whose answer could change the work is unanswered. A finished step, a push, a milestone or a passing check is not that point, and
-the streams below never start from one. A follow-up arriving after the streams ran is built, then
+Then finish each pull request the task changed, once, with its work finished. A follow-up arriving
+after the streams ran is built, then
 reaches this checkpoint again when it is finished; `review-pass` reviews only what changed since the
 head it last accepted, so a small follow-up costs a small review and a large one a full review of the
 new work.
@@ -807,7 +804,7 @@ The ready-for-review message takes exactly this shape, one message per pull requ
 
 The run stays open until both streams finish: the source stream when its message is sent, or when
 `merge-gate` returns from an authorized merge; the guidance stream when `process-ledger` reports no
-remaining entries or a concrete retained hold.
+remaining entries other than kept `review` records, or a concrete retained hold.
 
 A workflow that already runs `review-pass` runs step 1 as its own; one that already invokes
 `merge-gate` runs step 4 as its own.

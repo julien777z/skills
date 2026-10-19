@@ -397,7 +397,7 @@ can, so the user's review of the source pull request overlaps it.
       source branch, the one checked out included, except guidance that rule puts on the source pull
       request it depends on, which merges with it. Commit the `.agents` files, never a provider
       mirror, and push each step once `execute-task`'s **Pre-Push Gate** checks pass to a draft pull
-      request; steps 3–4 are the complete-diff pass its **Completion** runs, and step 7's `merge-gate` merges it,
+      request; steps 3–4 are the review pass its **Completion** runs over what no earlier pass reviewed, and step 7's `merge-gate` merges it,
       taking it out of draft as the merge's first step. None of that waits to be asked: the decision was made when the edit was requested, and
       a pull request left open keeps every later session working from the guidance this change
       replaced. A source fix required by step 3 is source work: it goes onto the source pull request
@@ -426,7 +426,8 @@ can, so the user's review of the source pull request overlaps it.
       Pull Requests** says, and merges with it; that pull request waits for the tool through the
       same gate. After the tool merges, the consumer adopts and validates its maintained target under the reference guidance
       above. No merge here authorizes a release.
-   3. **Run `code-simplify`** across the branch and act on what it reports: guidance duplicated
+   3. **Run `code-simplify`** across the delta `review-pass` selects, reading every touched `.agents`
+      file whole, and act on what it reports: guidance duplicated
       between peer rules or skills, including a caller and a skill it always invokes; a section grown
       around a second subject; a heading named for a category with one member; a rubric left inline
       that the skill-shape rule sends to a

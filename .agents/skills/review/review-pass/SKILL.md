@@ -1,6 +1,6 @@
 ---
 name: review-pass
-description: Run the complete pre-merge review loop over a pull request's changes not yet reviewed — thread triage, fanned-out simplification, high-effort code review with fixes, base incorporation, final acceptance and two test passes — and record the head it reviewed. Never merges. Use from `execute-task`'s Completion once a task is finished, from `finish-pr` and `merge-now`, and from guidance delivery.
+description: Run the complete pre-merge review loop over a pull request's changes not yet reviewed — thread triage, a test sweep, a security review of a trust-boundary change, fanned-out simplification, high-effort code review with fixes, base incorporation, final acceptance and two test passes — and record the head it reviewed. Never merges. Use from `execute-task`'s Completion once a task is finished, from `finish-pr` and `merge-now`, and from guidance delivery.
 short_description: 'Review, simplify and fix what a pull request has not had reviewed yet, then record the reviewed head.'
 ---
 
@@ -71,10 +71,10 @@ a follow-up after it gets a review of the follow-up, sized to the follow-up.
   - **Empty** (the patch equals the reviewed patch): only **Review Thread Triage** runs, since
     a reviewer may have commented without changing code; with no thread fix, return the recorded
     verdict. A thread fix is a new delta, sized again here.
-  - **Trivial**: run **Review Thread Triage**, the second test pass and final acceptance over the
-    delta. No code-review lens runs, and no simplification lens except on a delta confined to
-    canonical `.agents` Markdown, which still gets the in-process `code-simplify` pass `edit-skill`'s
-    **Guidance Delivery** requires of every guidance change.
+  - **Trivial**: run **Review Thread Triage**, the sweep and security review **Workflow** step 1
+    sizes to the delta, the second test pass and final acceptance. No code-review lens runs, and no
+    simplification lens except on a delta confined to canonical `.agents` Markdown, which gets the
+    in-process `code-simplify` pass `edit-skill`'s **Guidance Delivery** step 3 requires.
   - **Anything else**: the full **Workflow**, with the delta as every lens's review target and the
     complete merge-base diff and full touched files as context. A defect found in that context is
     still fixed under **Confirmed Findings**.
@@ -360,11 +360,12 @@ to work around this gate.
    and pass the intent and route-specific ownership to every subagent and into `code-review high fix`.
    Run **Review Thread Triage**. Run `test-fixture`'s **Sweep** over the tests the delta adds or
    changes, and, whatever the delta's size, `security-audit`'s **Diff Review** at `medium` when the
-   delta crosses a trust boundary that skill names; push their fixes. Then classify failures under
+   delta crosses a trust boundary that skill names, with the delta as its target and the merge-base
+   diff as the context its traces read; push their fixes. Then classify failures under
    **Failure relevance**, run the first test pass **Validation Order** requires, and complete the
    **Simplification Gate**; no code-review phase starts before all of these are clean. A trivial
-   delta skips the first test pass, the **Simplification Gate** apart from its guidance exception
-   in **Review Scope**, and steps 2–4.
+   delta skips the first test pass, steps 2–4, and the **Simplification Gate** except for the
+   guidance pass **Review Scope** keeps.
 2. Invoke `code-review high fix <target>` using the open pull-request URL or the exact delegated ref
    range. An explicit unsupported receipt, a missing identifier, and every other selection state
    retain the concrete hold; the primary agent never performs the independent high-fix review in
