@@ -33,9 +33,9 @@ revision was applied, so a revision with neither is folded and locked as step 1 
 2. **Lock each one** with `database-migrations`' lock marker, as that skill's lock-marker rule
    says.
 3. **Check only what changed.** A chain that only gained marker lines needs the formatter and the
-   migration tool's single-head check. A folded chain also needs its replay from empty with the
-   drift check, and the migration tests of the folded revision. No other suite, walkthrough,
-   review or simplification runs as part of this skill.
+   migration tool's single-head check. A fold also needs the repository's migration tests, all of
+   them: a fold moves the revisions that backfills and earlier revisions' tests are registered
+   against. No other suite, walkthrough, review or simplification runs as part of this skill.
 4. **Commit and push** the marker lines and any fold on the branch's pull request, one commit per
    repository (`chore(migrations): lock revisions <ids>`), as soon as those checks pass.
 5. **Report** each locked revision by chain and file, and end with the pushed commit the user can
