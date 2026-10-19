@@ -115,8 +115,12 @@ alwaysApply: true
   chosen to achieve it. **A routine presentation or interaction detail is not a product choice, and
   is not put to the user.** An alignment, a spacing, a size or tone on the product's existing scale,
   the placement of a message or control among the product's established positions, the wording of a
-  message: decide it by what serves the reader and stays consistent with the product, and state the
-  choice and its reason in the report. Ask only where the user has said such a detail is theirs. Do
+  message the change adds: decide it by what serves the reader and stays consistent with the
+  product, and state the choice and its reason in the report. Ask only where the user has said such
+  a detail is theirs. **Text already in the product is changed only where the user named it.** A
+  request to reword one text rewords that text alone; any other existing title, label, description
+  or message, beside it or elsewhere, keeps its words even when a rule or the new wording suggests
+  changing it, and the suggested rewording goes to the user for approval. Do
   not silently reclassify a condition, reinterpret a rule, or conceal a conflict to make the
   implementation fit. Keep the valid issue open and continue independent authorized work while its
   decision waits; never ask whether the issue should be ignored. A choice already settled by the
