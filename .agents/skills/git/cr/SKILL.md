@@ -215,7 +215,9 @@ the entire scope; never divide it by arbitrary file counts. Give every subagent 
 `code-simplify` rubric for its slice and require findings anchored to paths and lines with the
 proposed restructuring. An explicit unsupported receipt, a missing identifier, and every other selection
 state retain the concrete hold; the primary agent never performs an independent simplification pass in process
-before the code-review phase.
+before the code-review phase. A guidance pull request `edit-skill`'s **Guidance Delivery** delegates
+is the exception: one reviewer holds a guidance diff whole, so that skill's own procedure runs its
+simplification in process, and this gate takes that pass as its result.
 When the pull request adds public concepts across slices, assign one reviewer the cross-cutting
 interfaces and their existing peers as a coherent slice. Require its receipt to assess whether the
 new concepts are variants of existing ones; do not accept a clean simplification gate until that

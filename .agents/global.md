@@ -264,8 +264,8 @@ alwaysApply: true
 
 - In every language, use blank lines to separate setup, validation, transformations, side effects, and returns. Keep adjacent statements together only when they form one small operation; do not turn a function into an uninterrupted paragraph merely because a formatter permits it. Apply this to every line you write or edit, and elsewhere in a file you change within `pre-production`'s incidental size budget.
 - **Name things with the everyday word a reader expects.** Where the domain or a provider already
-  has a term, use it. An address the sign-in provider has checked is `email_verified`, never
-  `email_proven`, because an unusual synonym makes every reader translate it back. This covers
+  has a term, use it. A payment the processor reports as settled is `settled`, never
+  `money_landed`, because an unusual synonym makes every reader translate it back. This covers
   identifiers, fields, messages, documentation and test names in every language.
 - Use current language syntax for simple operations. For one-off Python interpolation, use f-strings instead of string concatenation or `.format()`, and keep spacing in the final string rather than a fragment with a hidden leading space. Follow the Python rule for reusable structured templates.
 
@@ -356,7 +356,7 @@ return records;
 - Sample values follow the same rule: prefer plainly synthetic literals over ones shaped like a
   real identifier from another system's domain.
 - A library owns the vocabulary of the protocol or provider it wraps. That protocol's field names
-  and naming conventions, such as how it spells a permission or a capability, are the library's own,
+  and naming conventions, such as how it spells an event type or a scope, are the library's own,
   never a consumer's domain vocabulary: a helper encoding such a convention belongs in the library
   even when one consumer prompted it, and the library's owned API gains it. This holds at the
   wrapper's layer; an application modelling the provider's data keeps its own field names, as

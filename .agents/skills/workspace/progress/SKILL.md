@@ -107,7 +107,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **`table`**, only when the ledger holds tabular facts worth a grid, such as checks per pull
   request head.
 - **`outline` "What changed in <pull request name>"**: the pull request's changes grouped by the area
-  they touch, such as `Report export` or `Billing page`, with moves and renames last under
+  they touch, such as `Report export` or `Search page`, with moves and renames last under
   `No behaviour change`. Each item's `title` says in a few words what now happens, and its `detail`
   how and why it matters in one or two sentences a reader follows without the diff.
 - **`changes` "Config changes"**: each value the application reads while it runs that a pull request

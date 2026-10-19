@@ -23,7 +23,7 @@ paths:
   with the first request's success and sends nothing again, so a double click or a retry reaches the
   recipient once. The check is atomic and shared across processes, keyed on what makes the message
   the same. A refusal or cooldown error on such a repeat is the defect. An operation whose repeat
-  would contradict a state change, such as accepting an invitation already accepted, keeps its
+  would contradict a state change, such as confirming a booking already confirmed, keeps its
   conflict.
 - A client may express intent or start setup through an API. Derive the resulting restrictions and
   eligibility from that operation's meaning and authoritative server policy, rather than letting the

@@ -156,8 +156,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   than the thing; the heading is "Events", "Tickets", "Profile", whatever the surface holds.
 - **Every heading and title is a name in a word or a short phrase, never a sentence.** That holds
   for a page, a section, a card and a dialog, and for a state the page shows in place of its
-  content, such as an empty state, an error or a refusal: "Overview", "Contact details", "Nothing
-  to approve", "Sync off". A sentence, such as "This workspace doesn't allow what you asked for", or
+  content, such as an empty state, an error or a refusal: "Overview", "Contact details", "No
+  playlists yet", "Sync off". A sentence, such as "This folder is shared with you as read-only", or
   a phrase addressed to the reader, such as "What you can do here" or "Let's get you set up", goes
   in the line under the heading, which carries the explanation.
 - **Features offered side by side carry names no reader could mistake for each other.** Each name
@@ -198,11 +198,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   the mechanics around an action, such as which party performs which step, and a note of a side
   effect nobody asked about, such as what happens to earlier versions.
 - **A dialog's commit button never repeats the label its trigger and title already carry.** The
-  reader pressed "Add item" to open the dialog and read "Add item" as its title; a third "Add item"
+  reader pressed "Add song" to open the dialog and read "Add song" as its title; a third "Add song"
   on the button says nothing new. The commit names the act in the fewest words: "Save" for a form
-  that adds or changes something, the bare verb for a confirmation — "Delete" under "Delete role".
-  When that verb is also the word the product's dialogs use to dismiss, such as "Cancel", the
-  commit adds what it acts on — "Cancel subscription" — so one word never means both doing the
+  that adds or changes something, the bare verb for a confirmation — "Delete" under "Delete
+  playlist". When that verb is also the word the product's dialogs use to dismiss, such as "Cancel",
+  the commit adds what it acts on — "Cancel booking" — so one word never means both doing the
   act and backing out of it.
 - **A status reads from the viewer's side.** Name the state in terms of what that reader did or
   still has to do, and keep internal steps they take no part in behind a visual cue: a person who
@@ -277,7 +277,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   stretched controls. Use the product's established layout and control sizes, preserving comparable
   widths under **Forms**, rather than shrinking the section or creating a new peer-section row.
 - **Place actions by what they affect, beside the content they act on.** A page's own actions —
-  create, export, a toggle into a mode such as customize or reorder, and the strip that mode shows
+  create, import, a toggle into a mode such as reorder or bulk edit, and the strip that mode shows
   while it is on — sit directly above the content they act on, below the page's banners and its
   load-failure area. Never put them in the header bar, the top navigation, or anywhere else above
   the banners, where they are far from what they change and easy to miss. The page layout owns
@@ -368,7 +368,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   split across pages — whether or not each step saves as it advances, and over general advice to
   name a button for its action.
 - **"Next" only moves on; it never performs the step's work.** A step whose requirement is an action
-  — linking an account, connecting a provider, uploading a file, verifying an identity — offers that
+  — linking an account, connecting a calendar, uploading a file — offers that
   action as its own button in the step's content, and "Next" stays disabled until the requirement
   is met. A forward control that opens a dialog, starts a connection or makes a change before it
   advances leaves the reader unable to tell moving on from acting, and a step that advances on its
@@ -399,8 +399,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   dismissal, is the defect: delete both.
 - **A banner about the account or workspace, rather than the page, shows only on top-level pages**
   — the home page and each destination the primary navigation lists — never on a page nested below
-  one, such as a record's detail, edit or create page or a step of a flow. Terms to accept, a
-  verification to finish, a note about the plan: the reader meets them where they arrive, and a
+  one, such as a record's detail, edit or create page or a step of a flow. Storage nearly full, a
+  renewal coming due, a note about the plan: the reader meets them where they arrive, and a
   nested page keeps its space for the task in hand. The page's level in the navigation decides it,
   in one place, so a new nested page leaves the banner out without being listed. A banner that
   explains why the page's own actions are refused — a read-only or suspended workspace on a page
@@ -485,8 +485,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Disable an action while locally known prerequisites are unmet.** Missing selections or incomplete
   required fields are normal editing state, not an error banner. Show errors for failures after a
   valid action or for failed data requests.
-- **An action that would change nothing is disabled.** "Reset to defaults" while every value is
-  already its default, "Select all" while everything is selected, "Clear" on an empty field: each
+- **An action that would change nothing is disabled.** "Mark all read" while nothing is unread,
+  "Expand all" while every row is open, "Clear" on an empty field: each
   offers a press with no effect, and enabling it suggests the state is something other than it is.
 - **A form the product would refuse in full is never shown.** When every choice it offers would be
   refused, because the feature is off or nothing asked for is allowed, the page shows in its place
@@ -509,9 +509,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **A form a person signs, certifies or attests to starts empty.** Nothing is seeded from a profile
   or an earlier submission, because the signer vouches for what they entered.
 - **A form where the signed-in person enters someone else's details turns browser autofill off on
-  every field, selects included** — a record made on another person's behalf, a person they add or
-  invite, a business or other record they name — so the browser never fills the reader's own name,
-  address, email or saved company into a record that is not the reader. One boundary around the form sets it for every control inside, including those a shared
+  every field, selects included** — a record made on another person's behalf, a person they add to
+  a team, an organization or other record they name — so the browser never fills the reader's own
+  name, address, email or saved organization into a record that is not the reader. One boundary around the form sets it for every control inside, including those a shared
   field component renders, never a token per field that the next added field forgets. "Off" means
   what the browser and the common password managers actually honour, which a bare
   `autocomplete="off"` is not for name, email and address fields. A search or picker box offers
@@ -609,7 +609,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   acting rather than waiting, so the button stops spinning, and it spins again only for the work
   that follows when that flow returns.
 - **Pressing a send action again moments later shows the same success as the first press.** A
-  button that emails, invites or reminds someone stays enabled once its request finishes, and the
+  button that emails, notifies or reminds someone stays enabled once its request finishes, and the
   server sends nothing twice, as the HTTP rule's idempotent message operations say; a countdown, a
   "please wait" refusal or a disabled resend window in its place is the defect.
 

@@ -37,13 +37,7 @@ environment, so its revisions may be applied there. From then on, each of those 
 
 ## After Locking
 
-- A locked revision is history under `database-migrations`' **Applied Is What Makes History**,
-  whether or not a deploy has run it yet. Its id, parent and database outcome never change, so it is
-  never folded, re-parented or regenerated. Its code may still be simplified or refactored when the
-  migration tests prove the database outcome unchanged.
-- The next schema or stored-data change on that chain goes into one new revision on top of the
-  locked one. While that revision is unlocked, later changes go into it, as the at-most-one rule
-  says. The next invocation locks it, and the cycle repeats.
-- When a base update adds revisions to a chain that holds a locked revision, join the two heads
-  as `database-migrations` says. Never re-parent a locked revision: an environment that applied it
-  would sit on a chain it never ran.
+A locked revision is history under `database-migrations`' **Applied Is What Makes History**,
+whether or not a deploy has run it yet, and that skill's lock-marker rule governs it from then on:
+what stays fixed, where the chain's next change goes, and how a base update joins the chain. The
+next invocation locks the revision that next change opens, and the cycle repeats.

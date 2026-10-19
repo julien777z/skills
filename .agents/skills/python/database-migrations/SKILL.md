@@ -160,7 +160,7 @@ format transition or recovery mechanism for data explicitly declared disposable 
   that adds revisions re-parents the unlocked one onto the new head.
 - **A revision whose first line is the lock marker `lock-revision` writes counts as applied.** Its id,
   its parent and what it does to the database stay fixed, so it is never folded, re-parented or
-  regenerated. Its code may still change when the database outcome stays the same — a simplification,
+  regenerated: an environment that applied it would sit on a chain it never ran. Its code may still change when the database outcome stays the same — a simplification,
   a refactor, a clearer helper — proven by the migration tests. A later change to the database goes
   into one new revision on top, which the next `lock-revision` locks. A base update that adds
   revisions to its chain is joined with a merge revision. Where the migration tooling accepts only

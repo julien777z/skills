@@ -51,14 +51,13 @@ with an obsolete owned contract or revision.
 - **The scope of a change is the whole shape of the problem, not the files the request happened to
   name.** A reported symptom is where the defect surfaced, not its boundary. When the same defect
   appears beside it — a second implementation of the mechanism, a sibling path answering the same
-  question from a different input, a parallel copy nobody reconciled — that is one piece of work, and
-  splitting it leaves the half that stays behind as the version the next person extends.
+  question from a different input, a parallel copy nobody reconciled — that is one piece of work, the
+  change's own scope rather than incidental work under the size budget or an item left for later,
+  and splitting it leaves the half that stays behind as the version the next person extends.
 - **A parallel copy is reconciled by giving the mechanism one owner, never by keeping the copies in
   step.** Making copies identical, a test that they match, or a note to update both leaves the
   second mechanism in place. Pick the owner by the fewest-mechanisms test, across repositories as
-  within one, move every consumer onto it and delete the copies. A parallel copy of a mechanism the
-  change touches is that change's scope, never incidental work under the size budget, and never an
-  item reported as left for later.
+  within one, move every consumer onto it and delete the copies.
 - Establish the defect's boundary from the failed behavior, violated invariant, and mechanism that
   produces it. Repair every affected implementation and consumer of that mechanism, including
   necessary generated contracts and retained-data migrations. Sharing a directory, a naming
@@ -80,7 +79,7 @@ with an obsolete owned contract or revision.
   only to make such an incidental fix is never itself a source of more incidental cleanup: what else
   it holds is listed, not chased.
 - **A defect the work notices is always fixed, wherever it lives.** Anything the product does that a
-  reader would call broken — a missing backdrop behind a dialog, a wrong value, a state shown in the
+  reader would call broken — an image that never loads, a wrong value, a state shown in the
   wrong place, a control that does nothing — is fixed in the change in flight, outside both the hop
   limit and the size budget below. Sitting in a shared component, an owned library or another owned
   repository the pull request does not otherwise touch is no reason to leave it: the fix goes to that
@@ -94,8 +93,8 @@ with an obsolete owned contract or revision.
   carry no budget.
 - **A correction to how one screen looks or reads reaches every page when the user makes it a
   rule, and that screen alone when they do not.** A correction the user asks to have codified, or
-  gives a reason for that holds wherever the shape appears, such as "the content is left-aligned,
-  so the reader has to look across it", names a defect. Every existing page with that shape is
+  gives a reason for that holds wherever the shape appears, such as "labels sit above their fields
+  so the eye moves straight down the form", names a defect. Every existing page with that shape is
   fixed in the same pass, as the change's scope rather than incidental work under the size budget,
   and the rule written from it governs existing pages as much as new ones. A layout, a wording, a
   tone or a style changed on one page with no such reason is the user's choice about that page. It
