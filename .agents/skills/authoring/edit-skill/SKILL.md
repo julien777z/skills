@@ -139,15 +139,15 @@ user's review of the source pull request overlaps it.
    and delivery stage; a merged or closed pull request resumes at verifying the merged text, never
    at review. An edit step 7.1 puts on a source pull request this session drives is pushed there and
    passes step 7.2's source check and step 7.5's smoke round on the head carrying it before that
-   pull request's source stream proceeds, as `execute-task`'s **Completion** says; once both pass,
-   the entry is recorded as held for that pull request's merge, so its batch can be done. It
+   pull request's source stream proceeds, as `execute-task`'s **Completion** says. It
    carries step 7.3's prose-duplication checks into that pull request's simplification and step
    7.4's incident vocabulary into its final acceptance, so both gates read wording the smoke round
    has already checked; a later repair to that wording repeats the smoke round before the source
-   stream proceeds. An edit on another session's source pull request
-   runs steps 7.2 to 7.5 here on the head it pushed, stays `pending` until that pull request merges,
-   and the delivery report says the push moved that pull request's head past its owner's
-   acceptance. The steps below cover the agent-configuration pull request.
+   stream proceeds. An edit on another session's source pull request runs steps 7.2 to 7.5 here on
+   the head it pushed, and the delivery report says the push moved that pull request's head past its
+   owner's acceptance. An edit on either source pull request is recorded as held for that pull
+   request's merge once its source check and smoke round pass, so its batch can be done. The steps
+   below cover the agent-configuration pull request.
 2. Run step 7.2's source check.
 3. Run `review-pass` on the pull request. Give it the user's request and the
    recorded evidence as the intent statement, the incident vocabulary for its acceptance gate as
