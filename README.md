@@ -87,6 +87,7 @@ These run only when you ask for them by name, such as `/code-slop-doctor`.
 - [`handoff`](.agents/skills/workspace/handoff/SKILL.md) — Move the current session's work to another session with nothing lost and nothing left for the user to do.
 - [`image-to-code`](.agents/skills/web/image-to-code/SKILL.md) — Moved to github.com/Leonxlnx/imagegen-skills.
 - [`incident`](.agents/skills/execution/incident/SKILL.md) — Restore a broken deployed service, test the fix, and merge the scoped repair.
+- [`lock-revision`](.agents/skills/python/lock-revision/SKILL.md) — Lock the current migration revisions before a test deploy; later changes go in a new revision.
 - [`manage-mcps`](.agents/skills/workspace/manage-mcps/SKILL.md) — Audit and repair managed MCP connectors across Claude Desktop and Codex.
 - [`merge-pr`](.agents/skills/git/merge-pr/SKILL.md) — Merge finished pull requests after acceptance and the check gate, then CR what merged.
 - [`new-doctor`](.agents/skills/doctors/new-doctor/SKILL.md) — Create a doctor skill on the shared doctor-protocol for one class of repository hygiene.

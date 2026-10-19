@@ -178,16 +178,22 @@ EOF
 
 ### Widths and full-page captures
 
-Walk every changed screen at several widths — at least 1280, 1536 and 2000 pixels, plus a phone width
-when the screen is reachable on one — and on each confirm the document does not scroll sideways and
-everything the change touched is visible and usable. **Capture the full page, always.** A capture
+**Widths are for what the change can do to layout.** Walk a screen at several widths — at least 1280,
+1536 and 2000 pixels, plus a phone width when the screen is reachable on one — when the change can
+move it: an element added, removed or moved, spacing, sizing or responsive rules, or a slot whose
+content now runs to a different length. Every other screen and state the change touches — what a
+screen shows or permits inside its unchanged layout, such as a permission, a value, or copy in its
+existing slot — is walked and captured once, at 1280. Each state is one capture, never one per width,
+unless its layout is what changed. At each width walked, confirm the document does not scroll sideways
+and everything the change touched is visible and usable. **Capture the full page, always.** A capture
 taken while the window is shorter than the page draws fixed chrome such as a sidebar only as tall as
 the window, leaving an empty band that reads as a layout bug, so size the viewport to the page's full
 height before each capture — the larger of the document's and its scrolling container's scroll
-height — and restore it before interacting again:
+height — and restore it before interacting again. The loop runs over the widths walked for that
+state: 1280 alone when its layout did not change.
 
 ```bash
-for width in 1280 1536 2000; do
+for width in <widths walked>; do
   agent-browser --session <name> set viewport "$width" 900
   agent-browser --session <name> eval "document.documentElement.scrollWidth <= innerWidth"
   height=$(agent-browser --session <name> eval \
@@ -233,8 +239,8 @@ agent-browser --session <name> record stop
 ffmpeg -y -i <path>.webm -c:v libx264 -pix_fmt yuv420p -movflags +faststart -an <path>.mp4
 ```
 
-Send the recording and a still of the view the change touched, unasked, plus a still per width, the
-page with its requests failing, and each defect with the fix that resolved it — as the run produces
+Send the recording and a still of the view the change touched, unasked, plus a still per width
+walked, the page with its requests failing, and each defect with the fix that resolved it — as the run produces
 them, as the User-Facing Output rule requires. Captures left on disk are a walkthrough the reader
 never saw. The report names the widths checked, whether the run without the API changes was done,
 and what the screens were read against.

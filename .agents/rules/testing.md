@@ -30,6 +30,12 @@ paths:
   preserve behavioral evidence once the diff establishes that they cannot affect the tested
   behavior. Run the formatter, linter, type checker, or other focused check that owns the edit;
   do not rerun a behavioral suite solely because its head changed.
+- **A run whose result a known change will supersede is stopped, never awaited.** Once a result, a
+  partial one included, shows a fix is needed, or another change to the same inputs is already
+  planned, stop your own in-flight local run of those inputs, make and push the change, then run
+  the batch once on the new head; hosted checks follow `merge-gate`. Stop it through its runner's own
+  interruption route so fixture teardown and stack and lock release run, and confirm it has exited
+  and released its resources before starting the next run. A superseded run holds no push.
 - Before delivery, complete the required repository checks and review the combined pull-request
   diff. Reuse still-valid completed-feature results; run the full required checks where the final
   repository state or integration needs them. This cadence changes when verification runs, never
@@ -244,6 +250,12 @@ class TreeNode(BaseModel):
   parametrized cases — and fix that cause, or remove what cannot be made cheap, until the suite
   fits. Splitting the suite across jobs only to stay under the budget, or giving any suite a timeout
   above 15 minutes, hides the same defect.
+- **A run that verifies a change is read for its cost as well as its counts.** Read each suite's
+  wall time against its budget and compare it with the sum of its tests' call durations: a large
+  gap between the two means setup is the cost. The usual setup causes are a fixture whose setup,
+  summed over every test that uses it, dominates (an autouse one especially), an external account
+  or identity created per test though nothing per-test lives on it, and a stack torn down and
+  rebuilt each run though its inputs have not changed.
 - **A test, parametrized family or module that dominates its suite's runtime is the cause, not the
   suite around it.** One disproportionate under `test-fixture`'s cost question is made cheap or
   removed, as that rubric and `pre-production` decide. Absorbing it instead keeps the cost and hides

@@ -30,7 +30,8 @@ happens next; this skill never readies, merges or deploys.
 ## Dependencies
 
 - `subagent-selection` — select the standard tier for this workflow's own sub-agents.
-- `code-simplify` — run the complete simplification and fix pass before any review.
+- `code-simplify` — run the complete simplification and fix pass before any review, routed as
+  **Simplification Gate** says.
 - `code-review` — run the complete review and fix workflow, delegated by this skill.
 - `acceptance-gate` — admit deferrals, gate would-be-deferral fixes and base-incorporation
   refactors, and accept the final diff.
@@ -38,17 +39,18 @@ happens next; this skill never readies, merges or deploys.
 - `pre-production` — the size budget for cleanup beyond confirmed findings.
 - `test-fixture` — the sweep over the tests the delta adds or changes.
 - `security-audit` — the **Diff Review** of a delta that crosses a trust boundary.
-- `session-ledger` — read and record the reviewed head of each pull request.
+- `session-ledger` — read and record the reviewed head of each pull request, and the pass's worker
+  dispatch receipts.
 
 Invoke `subagent-selection` and use its **standard** tier for this workflow's own sub-agents.
 Delegated skills retain their explicitly selected tiers, subject to the user's model override. Record each
 launched worker's catalogue state, exact dispatch identifier, assignment state and host receipt in the
-ledger. Follow the selector's dispatch and unavailable-model policy.
+task ledger through `session-ledger`. Follow the selector's dispatch and unavailable-model policy.
 
 An explicit unsupported receipt for the required tier's exact identifier, a `dispatch required` or
 `identifier required` result, and any rejection not explicitly unsupported all retain the concrete hold. This
-skill never replaces an independent review, simplification, or gate in process; the independent
-`acceptance-gate` remains a separate required checkpoint.
+skill never substitutes an in-process pass for a review, simplification, or gate the required tier cannot
+spawn; the independent `acceptance-gate` remains a separate required checkpoint.
 
 ## Review Scope
 
@@ -180,8 +182,9 @@ the entire scope; never divide it by arbitrary file counts. Give every subagent 
 `code-simplify` rubric for its slice and require findings anchored to paths and lines with the
 proposed restructuring. An explicit unsupported receipt, a missing identifier, and every other selection
 state retain the concrete hold; the primary agent never performs an independent simplification pass in process
-before the code-review phase. A diff confined to canonical `.agents` Markdown is the exception: it
-runs in process, as `edit-skill`'s **Guidance Delivery** says, because one reviewer holds it whole.
+before the code-review phase. A diff confined to canonical `.agents` Markdown is the exception: one
+reviewer holds a guidance diff whole, so this gate runs its simplification in process over the
+branch's own files with the prose-duplication checks `edit-skill`'s **Behavior** step 7.3 hands it.
 When the pull request adds public concepts across slices, assign one reviewer the cross-cutting
 interfaces and their existing peers as a coherent slice. Require its receipt to assess whether the
 new concepts are variants of existing ones; do not accept a clean simplification gate until that
@@ -251,6 +254,10 @@ When separately requested implementation changes the reviewed codebase, target, 
 invalidate affected receipts and resume the active pass at its first nonterminal phase. Internal
 review fixes remain phases of the active pass. Pass this continuity rule into `code-review high fix`;
 it overrides that skill's generic restart-on-any-new-task instruction.
+
+A dependent unit's repoint under `finish-pr`'s **Dependent Pull Requests**, confined to its
+reference edits and the lockfile entries they change, retains every receipt: it reopens no lens and
+needs no second acceptance gate.
 
 A mechanically bounded follow-up confined to formatting, lint compliance, a type-only annotation,
 or the validation/check harness does not invalidate review receipts when it changes no shipped

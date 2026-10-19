@@ -20,6 +20,13 @@ a merge.
 When a scope should be both — done after the merge *and* durable if this session ends first — that
 is two invocations, and the user asks for both.
 
+## Dependencies
+
+- `execute-task` — plan a scope that needs one, and the commit and push cadence of its branch.
+- `subagent-selection` — dispatch the worker that executes a scope now, in its worktree.
+- `session-ledger` — record a queued-on-merge scope as a step a later turn reads, and the dispatch
+  receipt of a scope executed now.
+
 ## The decision
 
 Every invocation resolves to one of two routes. Make the call explicitly and say which one was
@@ -63,7 +70,8 @@ The worktree leaves the current branch's working tree untouched.
 2. **Delegate the work to a subagent** scoped to that worktree, once no other building worker in the
    session is changing the same files or resources. Invoke `subagent-selection` at the capability level the
    work requires, launch its exact resolved identifier, and retain catalogue state, identifier, assignment state
-   and host receipt in the scheduling record, as `subagent-selection`'s **Dispatch** requires. This keeps the
+   and host receipt with the scope's evidence in the task ledger through `session-ledger`, as
+   `subagent-selection`'s **Dispatch** requires. This keeps the
    parent session's own state and working directory where they were. Give the worker the scope, the worktree
    path, and the commit and push cadence `execute-task`'s **Pre-Push Gate** sets for delegated edits.
 
@@ -81,11 +89,12 @@ does not merge it.
 
 The work is owed once the originating pull request lands.
 
-1. **Name the originating pull request**, and write the scope as one item in the harness task list,
-   where the harness has one, whose text names that pull request as its trigger: "After #NNNN
-   merges: `<scope>`". The item is what a later turn reads, so anyone scanning the list can tell a
-   queued-on-merge item from an ordinary pending one without this skill being loaded at all. That is
-   session bookkeeping rather than a deferral record, and the guardrail against creating one stands.
+1. **Name the originating pull request**, and record the scope in the task ledger through
+   `session-ledger`, as a step whose text names that pull request as its trigger: "After #NNNN
+   merges: `<scope>`". The step is what a later turn reads. Where the harness has a task list, add the
+   same item there as well, so anyone scanning it can tell a queued-on-merge item from an ordinary
+   pending one without this skill being loaded at all. Both are session bookkeeping rather than a
+   deferral record, and the guardrail against creating one stands.
 
 2. **Tell the user the scope is queued behind that pull request**, in those terms. Say what will be
    executed and what it is waiting on. Then name it and its blocking pull request again in every
@@ -119,13 +128,14 @@ it until the branch exists, and no other skill's completion or authorization bou
 workflow that ends by merging the very pull request this scope waits on has not consumed the
 invocation that queued it, and the scope needs no re-invocation to proceed.
 
-After a context compaction, a session resume, or any summary, re-establish the scope from the task
-list, check whether its pull request merged, and start it if it has. Resuming this route is not
+After a context compaction, a session resume, or any summary, re-establish the scope from its step
+in the task ledger, check whether its pull request merged, and start it if it has. Resuming this route is not
 re-executing this skill — the skill has not finished until the branch exists, so a notice telling a
 later turn not to re-run skills that already ran does not reach it.
 
-The task-list item is the session's bookkeeping and not a durable record. A scope that must outlive
-the session whatever happens is one to record with `defer-scope` as well, which the user asks for.
+The ledger step is the session's durable record of the scope, and a task-list item only mirrors it;
+neither is a deferral record. A scope that must outlive the session whatever happens is one to
+record with `defer-scope` as well, which the user asks for.
 
 ## Continuing deferred execution
 

@@ -71,7 +71,8 @@ hold. A held entry does not keep its batch in flight.
 
 Return a compact list of removed entries with their verified dispositions, retained entries with
 their concrete hold and next action, and kept `review` records as kept. Do not include private
-ledger contents in pull-request comments or other public output.
+ledger contents in pull-request comments or other public output, other than the generic recovery
+comment `edit-skill` keeps on a guidance pull request.
 
 ## Guardrails
 

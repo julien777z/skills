@@ -56,6 +56,34 @@ in another repository only when its complete diff changes one non-executable `.a
 and documents behavior the source unit introduces: merge the source unit first, then complete the
 guidance unit's own gates.
 
+## Dependent Pull Requests
+
+A selected pull request whose build or behavior resolves another pull request's branch — through a
+manifest, lockfile, submodule or checkout reference — that this session is also changing is a
+dependent unit. Its dependency gates its merge, never its review:
+
+- Review the dependency's unit first, and review the dependent once against the dependency's
+  accepted head. When a later fix to the dependency changes what the dependent consumes, adapting
+  the dependent is a fix under `review-pass`'s **Review Continuity**. A dependency that merged
+  before the dependent's review starts is repointed first, as below, and the dependent is then
+  reviewed once on that head.
+- The dependent completes its review at its accepted head and holds there, draft, while the
+  dependency is unmerged, so `merge-gate` later receives that review's coverage. The hold is not a
+  withheld merge and does not end the run: other selected units proceed while it waits for the
+  dependency's merge through the host's event route, and the run ends only once it lands or reaches
+  the gate below. A dependency closed without merging, or whose merge is neither authorized nor
+  pending, is a concrete gate: the unit stays at its accepted head, draft, and the **Report** names
+  the gate and the saved next action.
+- Once the dependency merges, repoint every consuming reference as `merge-gate`'s
+  delivery-dependency gate says, regenerating any lockfile with the repository's tooling. The
+  repoint's diff holds only those reference edits and the lockfile entries they change; it passes
+  only the validation it affects, the pre-push checks and `merge-gate`'s check gate, and
+  `merge-gate` receives the repointed head as the head to merge, with the repoint named as the sole
+  commit past the accepted head. Any other change in that push, another lockfile entry included,
+  follows `review-pass`'s **Review Continuity**.
+- Then land the dependent under the same invocation's merge authorization. A user's explicit
+  withholding of merge still ends the unit at its accepted head.
+
 ## Workflow
 
 Process each unit through these steps before starting the next.
@@ -63,9 +91,10 @@ Process each unit through these steps before starting the next.
 1. Invoke `review-pass` on the pull request with its intent statement, asking for the whole pull
    request: its complete merge-base diff, the full contents of every touched file, related code and
    sibling modules, whatever an earlier pass already accepted. It returns the accepted head.
-2. When merge is withheld, the unit ends at that head, its pull request left draft. Otherwise invoke
-   `merge-gate` with:
-   - the pull request and the head `review-pass` accepted;
+2. When merge is withheld, the unit ends at that head, its pull request left draft. A dependent unit
+   holds at that head until its dependency merges and then repoints, as **Dependent Pull Requests**
+   says. Otherwise invoke `merge-gate` with:
+   - the pull request and the head `review-pass` accepted, or a dependent unit's repointed head;
    - the affected behaviors its second test pass covered;
    - every exclusion it returned, with its evidence;
    - the fix rule for every fix `merge-gate` makes — a check fix, a conflict resolution, a commit
