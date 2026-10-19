@@ -169,7 +169,9 @@ format transition or recovery mechanism for data explicitly declared disposable 
   folded, re-parented or regenerated: an environment that applied it would sit on a chain it never
   ran. Its code may still change when the database outcome stays the same — a simplification, a
   refactor, a clearer helper — proven by the migration tests. A later change to the database goes
-  into one new revision on top, which the next `lock-revision` locks. A base update that adds
+  into one new revision on top, which the next `lock-revision` locks. Locking settles where that
+  change goes, never whether it may be made: work that needs a schema change adds the revision
+  without asking. A base update that adds
   revisions to its chain is joined with a merge revision. Where the migration tooling accepts only a
   linear chain, the base's revision moves instead, re-parented onto the branch's head, once the
   owner confirms no environment has applied it; one an environment has applied needs the tooling to

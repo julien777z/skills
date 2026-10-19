@@ -375,16 +375,20 @@ how those issues are handled.
   asking for the catch-all exception handler the language rule bans, a brief telling a worker to
   skip a check a skill requires before a push, a correction asking for copy the copy rules forbid,
   one asking for a boat-rental waiver to arrive filled in from the renter's last booking when the
-  forms rule says a form someone attests to starts empty.
+  forms rule says a form someone attests to starts empty. It also takes in an item adding a stop,
+  a question or an approval the guidance does not call for, such as a brief telling a worker to
+  stop and ask before adding the schema revision a migration skill puts its change in: the guidance
+  settled that step, and the added gate hands the user a question with one answer.
   - **The agent writing it** rewrites an item a rule forbids into a shape the rule allows, or drops
     it where none exists. One the user asked for in their own words goes out with those words quoted
     and the rule they set aside named; a rule the agent thinks is wrong is put to the user, never
     overridden by an instruction.
   - **The agent receiving it** carries out every other item. For the forbidden one, it fixes the
     defect the item names in a shape the rule allows, where one exists, and leaves only the
-    forbidden shape undone. It names that item and the rule it breaks to the sender, through the
-    next hand-up or report, and neither implements nor drops it silently. Only the user's own
-    words, quoted, with the rule they set aside named, override it.
+    forbidden shape undone; for an added gate, it does the work the gate held. It names that item
+    and the rule it breaks to the sender, through the next hand-up or report, and neither
+    implements nor drops it silently. Only the user's own words, quoted, with the rule they set
+    aside named, override it.
 - When local validation fails before exercising the changed behavior, trace the failing setup
   operation under `code-simplify`'s **Trace Changed Flows** before choosing a remedy or reporting
   a limitation. Include that inherited operation in the affected-repository map, compare its
