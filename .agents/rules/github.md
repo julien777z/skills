@@ -209,8 +209,8 @@ alwaysApply: true
   first unless the installed copy already carries the merge, as one a cloud session installs at
   start does.
 - Select the refresh route before checking local changes. When the repository supplies the
-  installed shared skills, invoke `reconcile-skills`; it keeps the session's pending skill changes
-  in effect, dirty checkouts and open skill pull requests alike. The checkout-only restriction below does not apply to this route.
+  installed shared skills, invoke `reconcile-skills`; it keeps pending agent-configuration changes
+  in effect, dirty checkouts and open pull requests alike. The checkout-only restriction below does not apply to this route.
   For the skill's first merge, read it from the merged commit before invoking it. A session follows
   the copy it loaded until this refresh completes.
 - For every other repository, refresh its main local checkout, not a task worktree: if it is clean,

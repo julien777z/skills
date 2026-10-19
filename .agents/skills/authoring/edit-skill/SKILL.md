@@ -221,7 +221,8 @@ can, so the user's review of the source pull request overlaps it.
      An agent definition that a shared skill runs on goes with that skill; every other agent, and
      every rule, is repository-owned.
    - A shared target is edited in the skills repository's checkout — the one the user-level link
-     resolves to or, when the session has no editing checkout, a writable checkout attached to
+     resolves to, or the main checkout behind it when the link resolves into `reconcile-skills`'
+     overlay worktree, or, when the session has no editing checkout, a writable checkout attached to
      or cloned into the session — on a branch and pull request in that repository, never
      through the link's path from another repository's branch. A cloud setup clone installed
      only to provide skills is not the editing checkout. Transfer the edit to a separate
