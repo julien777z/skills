@@ -571,10 +571,14 @@ can, so the user's review of the source pull request overlaps it.
 
 ## Manual verification
 
-When skill behavior needs a live agent chat, use `subagent-selection` to resolve the host's model
-capabilities and choose its least-capable available model for that chat. Select the resolved model
-in the chat UI; record it with the tested branch, exact commit, session type, and observed result. A resumed
-container proves its maintenance path, not a fresh setup run.
+When skill behavior needs a live agent chat, use `subagent-selection` to choose the least-capable
+sufficient capability and resolve its exact host dispatch identifier. Select that identifier in the chat UI and
+record catalogue state, dispatch identifier, assignment state and receipt, tested branch, exact commit, session
+type, and observed result separately. A catalogue-hidden candidate remains dispatch-required until the actual
+chat assignment is accepted; a missing identifier or any rejection other than an explicit unsupported receipt
+holds manual verification rather than selecting a substitute. An explicit unsupported receipt records the chat
+as unavailable and keeps manual verification blocked. A resumed container proves its maintenance path, not a
+fresh setup run.
 
 ### Claude Desktop
 

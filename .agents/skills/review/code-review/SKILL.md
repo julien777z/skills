@@ -95,11 +95,11 @@ investigation respectively.
 Effort still determines the cohort and validation depth. Rating, deduplication, fix decisions,
 and writing fixes stay with the orchestrator.
 
-Use the dependency's explicit dispatch instructions. If the standard capability level is
-unavailable, report the limitation; do not silently substitute another tier, model version, or the
-orchestrator's model. Every lens, validator
-and refuter this skill hands to a subagent is routed as `subagent-selection`'s **Dispatch** section
-directs.
+Use the dependency's explicit dispatch instructions. Record each launched reviewer's catalogue state,
+exact dispatch identifier, assignment state and host receipt in the review evidence. If the standard capability
+level is unavailable, report the limitation; do not silently substitute another tier, model version, or the
+orchestrator's model. Every lens, validator and refuter this skill hands to a subagent is routed as
+`subagent-selection`'s **Dispatch** section directs.
 
 ## Step 1 — Resolve the target
 

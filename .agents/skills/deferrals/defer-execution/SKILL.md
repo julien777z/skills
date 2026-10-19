@@ -68,10 +68,11 @@ The worktree leaves the current branch's working tree untouched.
    ```
 
 2. **Delegate the work to a subagent** scoped to that worktree, once no other building worker in the
-   session is changing the same files or resources, as `subagent-selection`'s **Dispatch** requires,
-   so the parent session's own state and working directory stay where they were. Give it the scope,
-   the worktree path, and the commit and push cadence `execute-task`'s **Pre-Push Gate** sets for
-   delegated edits.
+   session is changing the same files or resources. Invoke `subagent-selection` at the capability level the
+   work requires, launch its exact resolved identifier, and retain catalogue state, identifier, assignment state
+   and host receipt in the scheduling record, as `subagent-selection`'s **Dispatch** requires. This keeps the
+   parent session's own state and working directory where they were. Give the worker the scope, the worktree
+   path, and the commit and push cadence `execute-task`'s **Pre-Push Gate** sets for delegated edits.
 
 3. **Validate inside the worktree** with the repository's own checks for what changed.
 

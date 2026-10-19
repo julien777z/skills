@@ -84,7 +84,7 @@ Do these without asking, and report what they showed:
 - Re-run, cancel or dispatch a workflow.
 - Fix, commit and push a change the plan or the diagnosis already covers.
 - Create or reuse the pull request carrying the fix.
-- Use connected Chrome in agent-owned tabs to reproduce and test the affected flow.
+- Use connected Chrome to reproduce and test the affected flow, following the global rules' **Tools and environments** browser selection and stable-tab binding procedure.
 - Merge scoped fix pull requests after **One Review Round** completes and live verification succeeds.
 
 Stop and ask only for: a secret the user holds, a destructive action (deleting or truncating data, a

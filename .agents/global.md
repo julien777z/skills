@@ -195,16 +195,32 @@ alwaysApply: true
   owners. Hold that window through exact restoration and the successful control; a short mutation or later restore
   does not make concurrent exposure safe. Never claim isolation is impossible without checking it.
 - Treat an inventory or availability error as scoped to the surface it names. A native-app lock or failure does not block browser automation, and a browser failure does not block terminal or API work.
-- Before reporting a task blocked by a surface warning, inspect the requested surface directly and retry its normal recovery path. For a browser, refresh the tab inventory and reopen an authenticated task tab when the prior agent-owned tab has closed.
-- Create a new task-owned browser tab before reading page content, navigating or interacting.
-  When the user explicitly directs use of an existing tab or window for this task, use only that
-  authorized surface. Leave every other user-owned or agent-owned tab untouched.
-- Retain the task tab's handle or stable ID and bind subsequent actions to it. With tools that
+- Before reporting a task blocked by a surface warning, inspect the requested surface directly and retry its normal recovery path. For a browser, refresh the metadata its controls expose and repeat the selection below when the bound tab has closed.
+- Before reading page content, navigating or interacting, inventory the browser metadata the tool
+  exposes and select the surface most relevant to the task. Preserve every explicitly selected
+  browser, profile, window or tab constraint the tool can identify and control; within those
+  constraints, prefer the exact task page, then a related page in the correct account and work
+  context, rather than the active or default surface. A shared domain or title alone does not
+  establish task relevance. An explicit task reference or metadata that identifies a candidate can
+  make it eligible for narrow account or work-context confirmation when no unsaved-work or
+  other-agent conflict is known; do not inspect a speculative candidate only to resolve ambiguity.
+  Inspect an eligible candidate only as needed to verify it, leaving unrelated pages untouched.
+- Reuse the most relevant suitable existing tab when doing so preserves unsaved work and does not
+  interfere with another agent's use. Claim or coordinate exclusive control before acting; an
+  inventory match alone grants neither ownership nor authority for a new action. If no suitable
+  tab can be reused safely, create a task-owned tab in the most relevant available parent surface
+  when the tool can select one, in the background when supported. Otherwise use its supported
+  browser or tab route without asserting unavailable parent context. Create a window only when the
+  tool supports it and none suitable exists. Preserve the user's explicit surface constraints; ask
+  about a concrete conflict or an explicit constraint the tool cannot verify or honor rather than
+  silently choosing another account or surface.
+- Retain the selected tab's handle or stable ID together with every available parent-surface ID and
+  explicit user constraint, and bind subsequent actions to it. With tools that
   act on a selected tab, explicitly select that ID and verify it before each action batch and after
   reconnecting or switching tabs. A matching URL, active tab, browser profile or session label is
-  not evidence of ownership. If the owned tab has closed, create a replacement; never fall back to
-  the browser's current tab. Inventory metadata may be read to locate the owned tab, without
-  inspecting other tabs' page content.
+  not evidence of control. If the bound tab closes, refresh the inventory and apply the same
+  relevance and safe-reuse selection within the retained constraints; never fall back to the
+  browser's current tab.
 - Classify an awaited result from its observed state before treating it as a blocker. Startup,
   recovery, a queued review or an unanswered request is pending until it has a terminal result;
   current unavailability, a quiet interval or a bounded wait yielding without a result is not

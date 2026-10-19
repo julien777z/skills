@@ -79,8 +79,10 @@ applicable task pull requests, not only default-branch or local checkout compari
 checks analogous implementations and the evidence for retained differences; missing applicable
 pull-request context is a flag to obtain that context, not permission to assume consistency.
 
-The gate is read-only and distinct: not the author of the item. Its reader freshness follows
-`subagent-selection`'s **Dispatch**. It receives five things and nothing else:
+The gate is read-only and distinct: not the author of the item. Invoke `subagent-selection` at its frontier
+capability level, dispatch the gate with its exact identifier, and retain catalogue state, identifier, assignment
+state and host receipt in the gate record. Its reader freshness follows `subagent-selection`'s **Dispatch**. It
+receives five things and nothing else:
 
 1. the intent statement;
 2. the originating diff, with its deletions first;
@@ -93,8 +95,8 @@ The gate is read-only and distinct: not the author of the item. Its reader fresh
 **The gate has no shell, so every diff reaches it as content, never as a reference.** The caller
 pastes the originating diff and a diff item into the prompt, or writes each to a file the prompt
 names, with deletions intact; a commit range, a branch name, or a `git` command leaves the gate
-judging a working tree that other edits may have moved, or nothing at all. Dispatch it on the
-host's largest model, named explicitly.
+judging a working tree that other edits may have moved, or nothing at all. Its selector receipt is the
+model-dispatch record; never replace it with a generic “largest model” label.
 
 **Start any diff review with the design comparison.** Inventory the responsibilities and decisions the diff moves,
 duplicates, specializes, removes or introduces, reading both sides independently of the caller's
