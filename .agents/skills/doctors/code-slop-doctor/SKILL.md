@@ -179,13 +179,13 @@ its own, where the use case may gain a merged operation while the other keeps it
 only some runs of the use case need, which a merged operation may still carry. Each request lets the
 user decide without opening the code: the operations it would combine, by method and path or RPC
 name; the proposed operation's method, path, parameters and response fields; every other caller of
-each of those operations, found in the code by page, job or service, with what it reads and whether it
-already shares the use case's read; what becomes of each existing operation, kept for which caller
-or deleted; the counts and timings before and after; and the run's recommendation. Left alone: a
-call a later interaction makes — a tab opened, a page turned, a row expanded; reads under different
-authorization or caching that one response cannot carry; a slow section kept apart so it does not
-hold a fast one, with the timing showing it; and a third-party provider's operations, batched only
-where the provider offers it.
+each of those operations, found in the code by page, job or service, with what it reads and
+whether it already shares the use case's read; what becomes of each existing operation, kept for
+which caller or deleted; the counts and timings before and after; and the run's recommendation.
+Left alone: a call a later interaction makes — a tab opened, a page turned, a row expanded; reads
+under different authorization or caching that one response cannot carry; a slow section kept apart
+so it does not hold a fast one, with the timing showing it; and a third-party provider's
+operations, batched only where the provider offers it.
 
 ### Divergent Siblings
 
