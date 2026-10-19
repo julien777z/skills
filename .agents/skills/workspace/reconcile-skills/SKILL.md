@@ -51,12 +51,13 @@ an untrusted one is left out and reported.
 Hold `agent-lock` on the key `skills-install`, acquired with `--ttl-seconds 1800`, from step 2
 until step 6 finishes, so two sessions never build or remove overlays at once. Run its `check`
 before every write to shared state: step 3's stash, fast-forward and marker deletion, step 4.4's
-marker, and steps 5 and 6. On a failed check, first restore a stash this run pushed and verify its
+marker, step 5, and each removal in step 6. On a failed check, first restore a stash this run pushed and verify its
 paths. Then acquire the lock again and restart at step 2 once, keeping step 2's first record whole
 and the head each abandoned build reached; the restarted step 2 adds only overlays that record
 lacks. A second failed check stops the refresh with the step it reached as its blocker, with no lock
 left to release. Otherwise release the lock with `--resource-idle` once step 6 finishes or the
-refresh stops; a release the tool refuses because the lock already expired needs nothing further.
+refresh stops. A release the tool refuses means a successor holds the lock: release nothing, and
+report that the lock expired and which overlays were removed after its deadline.
 
 1. Resolve an installed user-level skill link to its Git checkout. When the link resolves into an
    overlay worktree, use the main checkout it is a linked worktree of. Confirm the checkout is the
@@ -114,5 +115,5 @@ the default branch's old and new commits, each pull request in effect with the t
 checked-out branch, and the uncommitted paths applied — every input or path left out and why, every
 conflict resolved in the overlay and the pull request it belongs to, anything preserved from a
 removed overlay, the roots refreshed, link verification, and the skills and rules reread. State the
-exact blocker and untouched paths if the refresh stopped, and which source the links point at: the
-previous one before step 5 relinks, the new one after it.
+exact blocker and untouched paths if the refresh stopped, and the source and commit the installed
+links resolve to.
