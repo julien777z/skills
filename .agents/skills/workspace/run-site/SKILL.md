@@ -114,9 +114,9 @@ pages it reaches**, signing in with the identity project guidance names for each
 walkthrough says nothing about what another sees. Where the repository provides a one-time sign-in
 link or token, sign in with it and leave the identity's password alone. Use those facts exactly
 and reuse what exists: never invent a test identity or turn a provider fixture into a generic
-workflow. **Never work around the sign-in wall**: a preview route, a stubbed page, a component mounted where it does not ship, or a widened public-route
-matcher proves the component renders and nothing about the screen a user reaches. If sign-in
-genuinely cannot complete, report the walkthrough as not done. Drive browser automation through the
+workflow. **Never work around the sign-in wall**: a preview route, a stubbed page, a component
+mounted where it does not ship, or a widened public-route matcher proves the component renders
+and nothing about the screen a user reaches. If sign-in genuinely cannot complete, report the walkthrough as not done. Drive browser automation through the
 tab selected under the global browser procedure; never read the user's saved passwords, cookies,
 local storage, or session files.
 
