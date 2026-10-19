@@ -99,13 +99,18 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   as a 404 or an empty page of results. While the request is pending, or before it has started,
   the skeleton is all the reader sees; data not arrived yet is never read as data that does not
   exist.
-- **A click that navigates changes the screen at once.** The destination's frame and skeleton
-  replace the current page as soon as the reader clicks, and its data fills them as it arrives;
-  the old page never stays on screen while the next one's requests run. Each route segment that
-  waits on data owns its own loading boundary, so the skeleton shows wherever the navigation
-  diverges, and the destination starts its independent requests together rather than one after
-  another. Validate it by timing a click to the skeleton and to the content against a deliberately
-  slowed backend.
+- **A click that navigates shows the destination at once, finished where the data could be loaded
+  ahead.** Load a destination's data before the click whenever the reader signals where they are
+  going: a pointer resting on a row or link, keyboard focus on it, or a link in view whose
+  destination is cheap to load. Where each destination costs several requests, as a detail page
+  opened from a list does, load it on that signal for the one row in question, never for every row
+  on screen. The skeleton is the fallback for data that has not arrived by the click: the
+  destination's frame and skeleton replace the current page at once, and the old page never stays
+  on screen while the next one's requests run. Each route segment that waits on data owns its own
+  loading boundary, so the fallback shows wherever the navigation diverges, and the destination
+  starts its independent requests together rather than one after another. Validate it by timing a
+  click to content after resting on the row, and a cold click to the skeleton and to the content,
+  against a deliberately slowed backend.
 
 - **A change to a shared mechanism is applied everywhere that mechanism appears, and on every
   sibling surface, in the same change.** A widget grid, a list row, a dialog shell, an edit-mode
