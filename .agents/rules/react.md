@@ -337,6 +337,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   below it — read as two different actions and crowd the page. Keep the one control where the reader
   looks for it; elsewhere, text naming the same destination stays plain text, and a control that
   carries nothing else is removed.
+- **A row that opens its record is itself the control.** Clicking anywhere on a list or table row,
+  or pressing Enter on it, opens or edits the record it shows; a pencil, "Edit" or "View" button
+  beside it makes the reader find a second target for the one destination and is left out. Other
+  controls in the row, such as a menu or a delete, keep their own action without opening the row.
 - **A flow starts at its first question.** A step that only introduces the product, lists what it
   offers or explains what comes next asks the reader for nothing and is removed. The context a
   first-time reader needs to answer that question — what they are creating and what it holds —
