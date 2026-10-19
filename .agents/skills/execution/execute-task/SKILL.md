@@ -784,8 +784,9 @@ Two streams run side by side from here: the guidance stream and the source strea
   every pending `guidance_correction` entry the GitHub rule's **Branches and Pull Requests** puts
   on it, in the batch in flight or waiting for the next one, is pushed to it and passes its source
   check and smoke round, as **Guidance Delivery** step 1 says, so its review pass, history and
-  ready message cover them; the source stream waits only for those. A task with none has no
-  guidance stream.
+  ready message cover them. An entry waiting for the next batch is delivered only once the batch in
+  flight is done, so the source stream then waits for that batch too, and for nothing else. A task
+  with none has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:
 

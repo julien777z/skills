@@ -122,9 +122,10 @@ During A Task** for the edit's timing.
 
 `process-ledger` invokes this route only for the batch of `guidance_correction` entries it froze,
 beside the source stream. It holds the source pull request only for the checks its ridden edits
-need; only an edit on that pull request, or one the GitHub rule's **Merge Authorization** holds for
-a source pull request in another repository, waits for that merge. Run it as a delegated worker when
-the session can, so the user's review of the source pull request overlaps it.
+need, and for the batch in flight while one of them waits for the next batch; only an edit on that
+pull request, or one the GitHub rule's **Merge Authorization** holds for a source pull request in
+another repository, waits for that merge. Run it as a delegated worker when the session can, so the
+user's review of the source pull request overlaps it.
 
 1. Read every entry in the batch `process-ledger` froze and resume at its recorded first
    nonterminal stage, rebuilding a lost or truncated entry from its recovery
@@ -138,7 +139,8 @@ the session can, so the user's review of the source pull request overlaps it.
    and delivery stage; a merged or closed pull request resumes at verifying the merged text, never
    at review. An edit step 7.1 puts on a source pull request this session drives is pushed there and
    passes step 7.2's source check and step 7.5's smoke round on the head carrying it before that
-   pull request's source stream proceeds, as `execute-task`'s **Completion** says. It
+   pull request's source stream proceeds, as `execute-task`'s **Completion** says; once both pass,
+   the entry is recorded as held for that pull request's merge, so its batch can be done. It
    carries step 7.3's prose-duplication checks into that pull request's simplification and step
    7.4's incident vocabulary into its final acceptance, so both gates read wording the smoke round
    has already checked; a later repair to that wording repeats the smoke round before the source
@@ -162,7 +164,8 @@ the session can, so the user's review of the source pull request overlaps it.
 - Before the surrounding task ends or hands off, every `pending` entry is processed, or carries its
   concrete blocking decision, failed gate or unavailable dependency under the global rules' **Tools
   and environments** pending-result boundary. Never lose a correction, treat a recorded one as
-  delivered, or hold the source pull request for it beyond the checks its ridden edits need.
+  delivered, or hold the source pull request for it beyond the checks its ridden edits need and the
+  batch in flight ahead of them.
 - At a checkpoint and before reporting its state, record the complete pull-request head and file
   list, the target repository's lifecycle, its current state, and its next transition. A draft
   confined to canonical agent configuration records `agent-configuration exception`
