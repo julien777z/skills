@@ -51,7 +51,7 @@ main_checkout_of() {
   esac
 
   case "$common_dir" in
-    */.git) (cd "${common_dir%/.git}" 2> /dev/null && pwd) || printf '%s\n' "$1" ;;
+    */.git) (cd "${common_dir%/.git}" 2>/dev/null && pwd) || printf '%s\n' "$1" ;;
     *) printf '%s\n' "$1" ;;
   esac
 }

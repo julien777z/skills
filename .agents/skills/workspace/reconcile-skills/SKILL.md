@@ -34,8 +34,8 @@ an untrusted one is left out and reported.
 - **Recorded pull requests** are the `artifact` entries `session-ledger` holds for this task with a
   `created` or `touched` receipt, open on the host and trusted. A `reference` entry never takes
   effect. A merged pull request arrives through the default branch.
-- **Pull requests in effect** are the recorded ones plus each pull request the current overlay's
-  stored inputs name that is still open on the host and trusted, whichever session recorded it, so
+- **Pull requests in effect** are the recorded ones plus each pull request the current overlay —
+  the newest complete one, read at step 2 — names in its stored inputs that is still open on the host and trusted, whichever session recorded it, so
   one session's refresh never drops another's pending changes from the shared install.
 - **A pull request's content** is its fetched remote head followed by its local branch tip when one
   exists, so pushed commits from other workers and unpushed local commits both arrive.
@@ -48,18 +48,21 @@ an untrusted one is left out and reported.
 ## Refresh
 
 Hold `agent-lock` on the key `skills-install` from step 2 until step 6 finishes, so two sessions
-never build or remove overlays at once; acquire again when a refresh outruns its lock.
+never build or remove overlays at once. Run its `check` before step 4.4 writes the marker and before
+steps 5 and 6; on a failed check, stop, acquire the lock again and restart at step 2, leaving the
+abandoned build for step 6 to remove. Release it with `--resource-idle` once step 6 finishes.
 
 1. Resolve an installed user-level skill link to its Git checkout. When the link resolves into an
    overlay worktree, use the main checkout it is a linked worktree of. Confirm the checkout is the
    shared skills repository and its README identifies `bootstrap/install.sh`.
-2. Record the checkout's current commit, branch, working-tree status, and installed source. Fetch
-   the remote default branch and the branch of every pull request in effect.
+2. Record the checkout's current commit, branch, working-tree status, installed source, and each
+   `skills-overlay/` worktree with the built head its marker stores. Fetch the remote default branch
+   and the branch of every pull request in effect.
 3. **With no pull request in effect and the checkout on the default branch**, fast-forward it in
    place: create a named `git stash push --include-untracked` when the tree is dirty, fast-forward,
    restore the stash and verify the original paths are present. Its uncommitted edits stay live
-   through the links into it. Then retire every overlay under step 6's preservation, deleting each
-   one's `skills-overlay` marker so the installer returns to the checkout, and continue at step 5.
+   through the links into it. Then delete every overlay's `skills-overlay` marker, so the installer
+   returns to the checkout, and continue at step 5.
 4. **Otherwise build a new overlay**, and leave the source checkout's branch and working tree exactly
    as they were, since the session goes on editing and pushing there. The installed links keep
    pointing at the previous source until the new overlay is complete:
@@ -76,9 +79,8 @@ never build or remove overlays at once; acquire again when a refresh outruns its
       index without touching the checkout, apply its `.agents` diff from the checkout's branch head
       onto the overlay, resolving a conflict the same way, and commit it in the overlay.
    4. Write the overlay's inputs last, to a `skills-overlay` file in its own Git directory: each
-      pull request in effect, the checked-out branch, and the overlay's built head commit. Before
-      writing it, reread the newest existing marker; when its inputs name a pull request this build
-      lacks, bring that one in first. That file marks the overlay complete, and the installer then
+      pull request in effect, the checked-out branch, and the overlay's built head commit. That file
+      marks the overlay complete, and the installer then
       installs from the newest complete overlay of the source checkout. Never edit inside it:
       guidance edits go to the source checkout and reach the next overlay at the next refresh.
 5. Run the installer: `bash bootstrap/install.sh` from the source checkout on a local machine, or
@@ -90,9 +92,10 @@ never build or remove overlays at once; acquire again when a refresh outruns its
    real files and foreign links; the installer's conflict preflight reports them before changing
    links. Never reset, drop, or overwrite preserved work.
 6. Once the links point into the installed source, remove every other `skills-overlay/` worktree
-   of the checkout, complete or not. First compare each with its stored built head, or with its
-   starting commit when it has no marker: preserve a commit after it, or a working tree that
-   differs from it, on a named branch, and report it.
+   of the checkout, complete or not; this step alone removes overlays. First compare each with the
+   built head step 2 recorded for it, or with its starting commit when it never had a marker:
+   preserve a commit after it, or a working tree that differs from it, on a named branch, and
+   report it. Then remove the worktree and delete its `skills-overlay/` branch.
 7. Read every shared rule and shared skill that differs between the recorded and the new installed
    source, with each changed skill's supporting files, before using them in the current session.
 

@@ -7,6 +7,22 @@ cleanup() {
 
 trap cleanup EXIT
 
+readonly SKILLS_REMOTE='https://github.com/julien777z/skills.git'
+
+assert_link() {
+  [ -L "$1" ] && [ "$(readlink "$1")" = "$2" ] || {
+    echo "Unexpected link: $1 (expected $2)" >&2
+    exit 1
+  }
+}
+
+assert_absent() {
+  [ ! -e "$1" ] && [ ! -L "$1" ] || {
+    echo "Unexpected path: $1" >&2
+    exit 1
+  }
+}
+
 commit_all() {
   git -C "$1" add -A
   git -C "$1" -c user.name=test -c user.email=test@example.invalid commit --quiet -m fixture
@@ -31,7 +47,9 @@ if [ "$(id -u)" -eq 0 ]; then
 
   mkdir -p "$(dirname "$root_clone")" "$root_home"
   cp -a "$root_source" "$root_clone"
-  git -C "$root_clone" remote set-url origin https://github.com/julien777z/skills.git
+  rm -rf "$root_clone/.git"
+  git -C "$root_clone" init --quiet
+  git -C "$root_clone" remote add origin "$SKILLS_REMOTE"
   chown -R nobody:nogroup "$root_cloud_home"
   printf '%s\n' "$root_clone" > "$root_marker"
 
@@ -54,7 +72,7 @@ if [ "$(id -u)" -eq 0 ]; then
   printf '%s\n' '# Global guidance' > "$root_attached/.agents/global.md"
   printf '%s\n' '---' 'name: sample' 'description: Sample skill' '---' > "$root_attached/.agents/skills/example/sample/SKILL.md"
   git -C "$root_attached" init --quiet
-  git -C "$root_attached" remote add origin https://github.com/julien777z/skills.git
+  git -C "$root_attached" remote add origin "$SKILLS_REMOTE"
   commit_all "$root_attached"
   add_overlay "$root_attached" "$root_overlay" complete
   chown -R nobody:nogroup "$root_attached" "$root_overlay"
@@ -90,20 +108,6 @@ printf '%s\n' '# Global guidance' > "$repo/.agents/global.md"
 printf '%s\n' '# Rule' > "$repo/.agents/rules/example.md"
 printf '%s\n' '---' 'name: sample' 'description: Sample skill' '---' > "$repo/.agents/skills/example/sample/SKILL.md"
 cp "$repo/.agents/skills/example/sample/SKILL.md" "$repo/.agents/.auto_generated/.codex/skills/sample/SKILL.md"
-
-assert_link() {
-  [ -L "$1" ] && [ "$(readlink "$1")" = "$2" ] || {
-    echo "Unexpected link: $1 (expected $2)" >&2
-    exit 1
-  }
-}
-
-assert_absent() {
-  [ ! -e "$1" ] && [ ! -L "$1" ] || {
-    echo "Unexpected path: $1" >&2
-    exit 1
-  }
-}
 
 cloud_home="$fixture/cloud"
 runtime_home="$fixture/runtime/codex-home"
@@ -143,9 +147,9 @@ mkdir -p "$(dirname "$cloud_clone")"
 cp -a "$repo" "$cloud_clone"
 cp -a "$repo" "$attached_checkout"
 git -C "$cloud_clone" init --quiet
-git -C "$cloud_clone" remote add origin https://github.com/julien777z/skills.git
+git -C "$cloud_clone" remote add origin "$SKILLS_REMOTE"
 git -C "$attached_checkout" init --quiet
-git -C "$attached_checkout" remote add origin https://github.com/julien777z/skills.git
+git -C "$attached_checkout" remote add origin "$SKILLS_REMOTE"
 printf '%s\n' "$cloud_clone" > "$cloud_marker"
 (
   cd "$attached_checkout/.agents"
@@ -271,7 +275,7 @@ overlay_home="$fixture/overlay-home"
 cp -a "$repo" "$overlay_repo"
 mkdir -p "$overlay_home/.agents"
 git -C "$overlay_repo" init --quiet
-git -C "$overlay_repo" remote add origin https://github.com/julien777z/skills.git
+git -C "$overlay_repo" remote add origin "$SKILLS_REMOTE"
 commit_all "$overlay_repo"
 add_overlay "$overlay_repo" "$fixture/overlay-old" complete
 add_overlay "$overlay_repo" "$fixture/overlay-new" complete
