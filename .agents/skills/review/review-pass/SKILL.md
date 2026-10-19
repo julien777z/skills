@@ -22,7 +22,7 @@ happens next; this skill never readies, merges or deploys.
   on the merged-range route only, creating the fix pull request **Review Targets** describes. It
   does not authorize a merge, readying a draft, an independent review, a release workflow, a
   deployment, or an unrelated provider mutation.
-- Run `code-review high fix <target>` without comment mode; do not ask the user to select review
+- Run `code-review high fix` without comment mode; do not ask the user to select review
   effort or modes.
 - The one gate this skill holds is an unresolved `acceptance-gate` flag. It returns the accepted
   head to its caller; every later gate is the caller's.
@@ -71,9 +71,9 @@ a follow-up after it gets a review of the follow-up, sized to the follow-up.
   - **Empty** (the patch equals the reviewed patch): only **Review Thread Triage** runs, since
     a reviewer may have commented without changing code; with no thread fix, return the recorded
     verdict. A thread fix is a new delta, sized again here.
-  - **Trivial**: no code-review lens runs, and no simplification lens except on a delta confined
-    to canonical `.agents` Markdown, which gets the in-process `code-simplify` pass `edit-skill`'s
-    **Guidance Delivery** step 3 requires. **Workflow** step 1 says what else a trivial delta skips.
+  - **Trivial**: the route **Workflow** step 1 states. A delta confined to canonical `.agents`
+    Markdown keeps the in-process `code-simplify` pass `edit-skill`'s **Guidance Delivery** step 3
+    requires.
   - **Anything else**: the full **Workflow**, with the delta as every lens's review target and the
     complete merge-base diff and full touched files as context. A defect found in that context is
     still fixed under **Confirmed Findings**.
@@ -367,8 +367,8 @@ to work around this gate.
    guidance pass **Review Scope** keeps.
 2. Invoke `code-review high fix` on the open pull-request URL or the exact delegated ref range,
    delegating the **Review Scope** delta as its review target, with the complete merge-base diff,
-   the full touched files and any working fix head as context. An explicit unsupported receipt, a missing identifier, and every other selection state
-   retain the concrete hold; the primary agent never performs the independent high-fix review in
+   the full touched files and any working fix head as context. An explicit unsupported receipt, a
+   missing identifier, and every other selection state retain the concrete hold; the primary agent never performs the independent high-fix review in
    process. For a merged range, pass the original pull request as metadata only and explicitly
    preserve the range through resolution and eligibility checks. Direct fixes to the matching
    working fix branch rather than changing the immutable target.

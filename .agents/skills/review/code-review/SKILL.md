@@ -238,8 +238,8 @@ Deduplicate findings describing the same underlying issue, then validate each on
 
 Require each validator to state the full pull-request range it inspected and, on a later round, the
 incremental range it checked for the latest fixes. Reject a validation based only on the latest
-commit, even if the finding sits in that commit; rerun it against the complete target before using
-its verdict.
+commit, even if the finding sits in that commit; rerun it against the complete target Step 1
+resolves before using its verdict.
 
 ## Step 5 — Rate and rank
 
@@ -334,4 +334,4 @@ run under `subagent-selection`'s **Dispatch** section, add one line naming it.
 - Do not post to GitHub unless comment mode is on.
 - Do not build, typecheck, or run tests during the review pass. The fix pass runs tests after applying corrections; the review pass never does.
 - Do not resolve or create GitHub review threads.
-- Do not mark a head as already reviewed outside the comment-mode gate; each invocation reviews the current complete diff.
+- Do not mark a head as already reviewed outside the comment-mode gate; each invocation reviews the current complete target Step 1 resolves.
