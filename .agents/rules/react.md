@@ -98,8 +98,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **A change to a shared mechanism is applied everywhere that mechanism appears, and on every
   sibling surface, in the same change.** A widget grid, a list row, a dialog shell, an edit-mode
   chrome, an empty state: when a fix arrives for one page built on it, the other pages built on it
-  are in scope too. A correction the user makes to how one page looks or reads stays on that page,
-  as `pre-production`'s **Scope Follows The Defect, Not The Request** says.
+  are in scope too. Whether a correction the user makes to how one page looks or reads reaches
+  other pages is `pre-production`'s **Scope Follows The Defect, Not The Request** to decide.
   Search for every surface that renders the same component or hook before editing, and every
   sibling surface — the variants of one document, the create and edit of one record, the same
   surface built for two audiences — whether or not it renders that component yet, since siblings
