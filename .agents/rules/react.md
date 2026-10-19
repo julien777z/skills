@@ -487,9 +487,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Disable an action while locally known prerequisites are unmet.** Missing selections or incomplete
   required fields are normal editing state, not an error banner. Show errors for failures after a
   valid action or for failed data requests.
-- **An action that would change nothing is disabled.** "Mark all read" while nothing is unread,
-  "Expand all" while every row is open, "Clear" on an empty field: each
-  offers a press with no effect, and enabling it suggests the state is something other than it is.
+- **An action the reader cannot take is left out while another action beside it is available.**
+  Cancelling a subscription that does not exist, "Mark all read" while nothing is unread, moving an
+  item that has nowhere to go: shown disabled among working controls, each offers a press with no
+  effect. A control shows disabled only when no other action in its menu, toolbar or group is
+  available — a form's submit while required fields are incomplete, as the bullet above says — or
+  when it is a paid control the plan bullet below locks to show what upgrading adds.
 - **A form the product would refuse in full is never shown.** When every choice it offers would be
   refused, because the feature is off or nothing asked for is allowed, the page shows in its place
   why, and the way forward for this reader, with one action to leave. The server refuses that
