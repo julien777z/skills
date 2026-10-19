@@ -354,24 +354,25 @@ authorization, skip deployment and continue review. Never dispatch a workflow or
 to work around this gate.
 
 1. Resolve the review target under **Review Targets** and its delta under **Review Scope**; an empty
-   delta runs only **Review Thread Triage** before returning. Read the target's intent and metadata without modifying a merged pull
-   request; run **Description Refresh** when a working pull request exists. Record the review range
-   and pass the intent and route-specific ownership to every subagent and into `code-review high fix`.
-   Run **Review Thread Triage**. Run `test-fixture`'s **Sweep** over the tests the delta adds or
-   changes, and, whatever the delta's size, `security-audit`'s **Diff Review** at `medium` when the
-   delta crosses a trust boundary that skill names, with the delta as its target and the merge-base
-   diff as the context its traces read; push their fixes. Then classify failures under
-   **Failure relevance**, run the first test pass **Validation Order** requires, and complete the
-   **Simplification Gate**; no code-review phase starts before all of these are clean. A trivial
-   delta skips the first test pass, steps 2–4, and the **Simplification Gate** except for the
-   guidance pass **Review Scope** keeps.
+   delta runs only **Review Thread Triage** before returning. Read the target's intent and metadata
+   without modifying a merged pull request; run **Description Refresh** when a working pull request
+   exists. Record the review range and pass the intent and route-specific ownership to every
+   subagent and into `code-review high fix`. Run **Review Thread Triage**. Run `test-fixture`'s
+   **Sweep** over the tests the delta adds or changes, and, whatever the delta's size,
+   `security-audit`'s **Diff Review** at `medium` when the delta crosses a trust boundary that skill
+   names, with the delta as its target and the merge-base diff as the context its traces read; push
+   their fixes. Then classify failures under **Failure relevance**, run the first test pass
+   **Validation Order** requires, and complete the **Simplification Gate**; no code-review phase
+   starts before all of these are clean. A trivial delta skips the first test pass, steps 2–4, and
+   the **Simplification Gate** except for the guidance pass **Review Scope** keeps.
 2. Invoke `code-review high fix` on the open pull-request URL or the exact delegated ref range,
    delegating the **Review Scope** delta as its review target, with the complete merge-base diff,
    the full touched files and any working fix head as context. An explicit unsupported receipt, a
-   missing identifier, and every other selection state retain the concrete hold; the primary agent never performs the independent high-fix review in
-   process. For a merged range, pass the original pull request as metadata only and explicitly
-   preserve the range through resolution and eligibility checks. Direct fixes to the matching
-   working fix branch rather than changing the immutable target.
+   missing identifier, and every other selection state retain the concrete hold; the primary agent
+   never performs the independent high-fix review in process. For a merged range, pass the original
+   pull request as metadata only and explicitly preserve the range through resolution and
+   eligibility checks. Direct fixes to the matching working fix branch rather than changing the
+   immutable target.
 3. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the pass continues; see **Deferred Findings**. A finding that can be neither fixed nor recorded remains an active gate: surface the needed resolution under the global rules' pending-result boundary and continue independent work.
 4. Classify each correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean.
 5. Once the review is clean, if a merged-range review has no working fix pull request, return a
