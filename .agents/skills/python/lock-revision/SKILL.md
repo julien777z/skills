@@ -12,8 +12,8 @@ environment, so its revisions may be applied there. From then on, each of those 
 
 ## Dependencies
 
-- `database-migrations` — the revision rules a locked revision falls under, and how later
-  revisions are added and validated.
+- `database-migrations` — the lock marker and how a revision is locked, the revision rules a locked
+  revision falls under, and how later revisions are added and validated.
 
 ## Workflow
 
@@ -24,13 +24,8 @@ environment, so its revisions may be applied there. From then on, each of those 
    locked. A chain with more than one unlocked revision the branch adds breaks
    `database-migrations`' one-revision rule: fold them into one, validated as that skill says,
    before locking. A default-branch revision keeps its own id and is locked beside them.
-2. **Lock each one.** Add the marker as the first line of each revision file, above its docstring:
-
-   ```python
-   # Locked: an environment may have applied this revision. Put later changes in a new revision.
-   ```
-
-   Change nothing else in the file.
+2. **Lock each one** with `database-migrations`' lock marker, as that skill's lock-marker rule
+   says.
 3. **Commit and push** the marker lines on the branch's pull request, one commit per repository
    (`chore(migrations): lock revisions <ids>`), after the repository's migration file checks pass.
 4. **Report** each locked revision by chain and file, and the commit that locked it.

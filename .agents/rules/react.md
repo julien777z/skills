@@ -522,7 +522,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   it reads as a search term, so such a box takes `off` with a `search` name. The shared input and
   combobox components own those attributes. A form for the person's own details keeps accurate
   autocomplete tokens on each field.
-- **A search box that picks a consequential record — a person, an account, a payee — shows no
+- **A search box that picks a consequential record — a person, an account, a project — shows no
   suggestions and makes no request until the reader types.** A list on focus invites a pick by
   proximity rather than intent, and offers records the reader never asked to see. A picker over a
   low-stakes vocabulary, such as tags, may suggest on focus. The shared search component makes each

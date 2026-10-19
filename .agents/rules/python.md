@@ -665,8 +665,8 @@ ALLOWED_STATES: Final[frozenset[str]] = frozenset({"ready", "complete"})
 
 - Add a blank line before multi-line assert statements.
 - Do NOT put docstrings or comments at the top of files (no module-level docstrings, no module-level comments, and no encoding header comments like `# coding: utf-8`).
-  A migration revision file's first line may be the lock marker `lock-revision` writes: it is a
-  machine-read marker that counts the revision as applied, and it stays verbatim.
+  A migration revision file's first line may be the lock marker `database-migrations` defines: it
+  is a machine-read marker that counts the revision as applied, and it stays verbatim.
 
 - Every **function**, **method**, and **class** should have a concise docstring (purpose or role). Include `main()` and nested helpers the same way unless the file’s existing style omits docstrings on tiny locals—when in doubt, add one line.
 - Keep ordinary docstrings to a single line. Do not include Args, Returns, or Raises sections.

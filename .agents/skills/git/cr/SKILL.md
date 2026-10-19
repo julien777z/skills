@@ -45,7 +45,8 @@ and lands it separately after smoke runs. An earlier delegation cannot be reused
 ## Dependencies
 
 - `subagent-selection` — select the standard tier for this workflow's own sub-agents.
-- `code-simplify` — run the complete multi-subagent simplification and fix pass before any review.
+- `code-simplify` — run the complete simplification and fix pass before any review, routed as
+  **Simplification Gate** says.
 - `code-review` — run the complete review and fix workflow before the merge gate.
 - `acceptance-gate` — admit deferrals, gate would-be-deferral fixes and base-incorporation
   refactors, and accept the final diff.
@@ -54,11 +55,12 @@ and lands it separately after smoke runs. An earlier delegation cannot be reused
   squash merge.
 - `list-prs` — resolve every open pull request the ongoing task worked on before selecting review targets.
 - `execute-task` — apply the repository-local delivery ownership rule when refreshing pull-request prose.
+- `session-ledger` — record the run's worker dispatch receipts and its pull-request URLs.
 
 Invoke `subagent-selection` and use its **standard** tier for this workflow's own sub-agents.
 Delegated skills retain their explicitly selected tiers, subject to the user's model override. Record each
-launched worker's catalogue state, exact dispatch identifier, assignment state and host receipt in the CR
-ledger. Follow the selector's dispatch and unavailable-model policy.
+launched worker's catalogue state, exact dispatch identifier, assignment state and host receipt in the task
+ledger through `session-ledger`. Follow the selector's dispatch and unavailable-model policy.
 
 An explicit unsupported receipt for the required tier's exact identifier, a `dispatch required` or
 `identifier required` result, and any rejection not explicitly unsupported all retain the concrete hold. CR

@@ -34,7 +34,9 @@ unless its trace shows the precedent's own condition broken.
   server owns both, and the server is where the finding lives if either is missing.
 - **Logging.** Logging URLs or non-sensitive data is not a finding; logging a secret or a credential
   is, and so is personal data in a record that reports no failure. A failure's message, its
-  traceback and the values of a warning or error are never a finding, personal data included.
+  traceback and the values of a warning or error are never a finding for the personal data or other
+  values they hold; a secret or credential in them still is, since the global Logging rule conceals
+  it.
 - **Outbound requests.** Server-side request forgery needs control of the host or protocol;
   controlling only the path is not a finding.
 - **Model prompts.** User content placed in a model's prompt is not a finding on its own; what the

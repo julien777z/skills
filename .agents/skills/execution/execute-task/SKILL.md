@@ -471,8 +471,10 @@ the task.
   - **Similar code**: every other place in the repository already expressing the same concept,
     shape, or operation as the changed code — a near-duplicate helper, a parallel implementation,
     a second representation of one value. Search by concept and by key operation, not by filename;
-    a sibling-only read cannot find the canonical implementation another package owns. Where the
-    change and the code it resembles should be one thing, make them one thing, within
+    a sibling-only read cannot find the canonical implementation another package owns. A copy of
+    the change's own mechanism is the change's scope under `pre-production`'s **Scope Follows The
+    Defect**: give the mechanism one owner, move every consumer onto it and delete the copies.
+    Other code the change resembles and should be one thing with is made one thing within
     `pre-production`'s size budget.
   - **Sibling modules**: the other modules in each changed file's package, which is where a
     misplaced piece of logic and its rightful home become visible together.
