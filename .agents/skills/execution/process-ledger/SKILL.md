@@ -47,8 +47,8 @@ at their owners.
 
 ## Output
 
-Return a compact list of removed entries with their verified dispositions and retained entries with
-their concrete hold and next action. Do not include private ledger contents in pull-request comments
+Return a compact list of removed entries with their verified dispositions, retained entries with
+their concrete hold and next action, and kept `review` records as kept. Do not include private ledger contents in pull-request comments
 or other public output.
 
 ## Guardrails

@@ -71,10 +71,9 @@ a follow-up after it gets a review of the follow-up, sized to the follow-up.
   - **Empty** (the patch equals the reviewed patch): only **Review Thread Triage** runs, since
     a reviewer may have commented without changing code; with no thread fix, return the recorded
     verdict. A thread fix is a new delta, sized again here.
-  - **Trivial**: run **Review Thread Triage**, the sweep and security review **Workflow** step 1
-    sizes to the delta, the second test pass and final acceptance. No code-review lens runs, and no
-    simplification lens except on a delta confined to canonical `.agents` Markdown, which gets the
-    in-process `code-simplify` pass `edit-skill`'s **Guidance Delivery** step 3 requires.
+  - **Trivial**: no code-review lens runs, and no simplification lens except on a delta confined
+    to canonical `.agents` Markdown, which gets the in-process `code-simplify` pass `edit-skill`'s
+    **Guidance Delivery** step 3 requires. **Workflow** step 1 says what else a trivial delta skips.
   - **Anything else**: the full **Workflow**, with the delta as every lens's review target and the
     complete merge-base diff and full touched files as context. A defect found in that context is
     still fixed under **Confirmed Findings**.
@@ -196,8 +195,8 @@ every survivor under **Confirmed Findings**. Reproducing a defect on the base br
 that it is pre-existing; it never refutes the finding or creates a decision to ask the user before
 fixing it. Update affected tests and consumers, and verify that the refreshed scope meets
 `code-simplify`'s approval bar. Do not start `code-review` while a simplification finding remains
-unapplied or unresolved. Run `code-review high fix <target>` only against the resolved review target,
-with any working fix head and the complete originating range supplied as context.
+unapplied or unresolved. Run `code-review high fix` only against the resolved review target,
+as **Workflow** step 2 hands it over.
 
 ## GitHub Transport
 
@@ -366,8 +365,9 @@ to work around this gate.
    **Simplification Gate**; no code-review phase starts before all of these are clean. A trivial
    delta skips the first test pass, steps 2–4, and the **Simplification Gate** except for the
    guidance pass **Review Scope** keeps.
-2. Invoke `code-review high fix <target>` using the open pull-request URL or the exact delegated ref
-   range. An explicit unsupported receipt, a missing identifier, and every other selection state
+2. Invoke `code-review high fix` on the open pull-request URL or the exact delegated ref range,
+   delegating the **Review Scope** delta as its review target, with the complete merge-base diff,
+   the full touched files and any working fix head as context. An explicit unsupported receipt, a missing identifier, and every other selection state
    retain the concrete hold; the primary agent never performs the independent high-fix review in
    process. For a merged range, pass the original pull request as metadata only and explicitly
    preserve the range through resolution and eligibility checks. Direct fixes to the matching

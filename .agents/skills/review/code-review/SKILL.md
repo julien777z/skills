@@ -126,7 +126,8 @@ In every review round, give each dispatched reviewer and validator the merge-bas
 SHA, complete pull-request diff, and complete changed-file list. When a previous reviewed head
 exists, also give the diff from that head to the current head so recent fixes receive focused
 attention. That incremental diff supplements the full pull-request target; never substitute the
-latest commit or fix diff for it.
+latest commit or fix diff for it. The one exception is a delta `review-pass` delegates: that delta is
+the review target, and the complete pull-request diff is the context its reviewers read.
 
 Classify whether the target is non-runtime before choosing validation. A target is non-runtime when its complete diff does not change executable source, package or dependency definitions, tests, runtime configuration, CI workflows, generated runtime artifacts, or another contract that changes executed behavior. This is semantic rather than path-based: agent instructions, documentation, policies, static metadata, and non-executable configuration can live anywhere. Validate a non-runtime target with the checks appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests or query or wait for CI.
 
