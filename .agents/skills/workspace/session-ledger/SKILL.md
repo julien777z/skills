@@ -122,7 +122,7 @@ identity, never a second authoritative copy of its records.
 Store this YAML document in the private task file and return its records to the calling workflow,
 not as a user-facing report. Task metadata carries only the locator and task identity.
 Keep every entry's envelope fixed; `kind` distinguishes records such as `artifact`, `plan`,
-`question`, `guidance_correction` or `decision`, and both `data` mappings hold only the facts that record needs.
+`question`, `guidance_correction`, `review` or `decision`, and both `data` mappings hold only the facts that record needs.
 Keep `id` stable and unique within the task. Use `observations: []` when none have been recorded.
 
 ```yaml

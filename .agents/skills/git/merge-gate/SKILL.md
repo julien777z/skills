@@ -1,10 +1,10 @@
 ---
-name: land-pr
-description: Merge a pull request its caller is authorized to merge — verify its delivery dependencies before taking it out of draft, gate its exact head, resolve merge conflicts, squash-merge and verify the merge. Use when a workflow reaches an authorized merge — `execute-task`'s Completion, a guidance batch's delivery, `cr`, a doctor's merged batch, or a user-invoked `merge-pr`. A pull request leaves draft only here; newly introduced PR or testing dependencies block that transition and merge. Unchanged references already on the default branch are exempt from that dependency gate.
+name: merge-gate
+description: Merge a pull request its caller is authorized to merge — verify its delivery dependencies before taking it out of draft, gate its exact head, resolve merge conflicts, squash-merge and verify the merge. Use when a workflow reaches an authorized merge — `execute-task`'s Completion, a guidance batch's delivery, a user-invoked `finish-pr` or `merge-now`, or a doctor's merged batch. A pull request leaves draft only here; newly introduced PR or testing dependencies block that transition and merge. Unchanged references already on the default branch are exempt from that dependency gate.
 short_description: 'Ready a pull request for its authorized merge, gate its exact head, and merge it.'
 ---
 
-# Land Pull Request
+# Merge Gate
 
 Merge one pull request at the head its caller accepted, and only after every check that head needs
 has reached a terminal result. A verified merge completes this skill, except for required Agent Sync
