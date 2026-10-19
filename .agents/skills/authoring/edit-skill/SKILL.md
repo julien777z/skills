@@ -16,7 +16,8 @@ recording a guidance correction. Record only a verified success, or a direct gui
 the guidance files stay untouched until that task reaches `execute-task`'s **Completion**, which
 starts `process-ledger`. A failed, blocked, or unavailable action is task evidence only: it
 does not create a ledger correction or a guidance edit. With no other task running and no guidance
-batch in delivery, first perform the requested action and record it only after it succeeds.
+batch in flight, as `process-ledger`'s **Batches** defines it, first perform the requested action
+and record it only after it succeeds.
 
 An open `.agents` pull request is not a delivery result. Processing continues through its source
 check, required review steps, merge or hold, Agent Sync result, and verification of generated root
@@ -55,7 +56,7 @@ ask for a plan or for approval of a guidance-output example. An example renders 
 instruction and is task evidence, not a new product experience because a user reads it. A guidance
 edit that intentionally changes the product still follows the global product-decision boundary. The
 required smoke test, review, and acceptance gate validate the correction. When a separate source
-task is active, or a guidance batch is in delivery, preserve its execution and follow **Recording
+task is active, or a guidance batch is in flight, preserve its execution and follow **Recording
 During A Task** for the edit's timing.
 
 ## Dependencies
@@ -85,11 +86,11 @@ During A Task** for the edit's timing.
   correction while the task runs.
 - **A direct request to change guidance is its own requested action**: its delivery is that action,
   and the user's words are its evidence. When it is recorded rather than applied at once, during a
-  task or while a batch is in delivery, record it `pending`; `process-ledger` admits it on that
+  task or while a batch is in flight, record it `pending`; `process-ledger` admits it on that
   evidence.
 - A related correction recorded before its batch is frozen joins the same entry or sits beside it
   in that batch; the batch is one pull request, apart from edits the GitHub rule puts on a source
-  pull request or holds for another repository. One recorded while a batch is in delivery waits for
+  pull request or holds for another repository. One recorded while a batch is in flight waits for
   the next, as `process-ledger`'s **Batches** says: edit none of its files, and tell the user it is
   queued behind the batch in flight.
 - The task's next step is never held by a correction: record it and carry on.

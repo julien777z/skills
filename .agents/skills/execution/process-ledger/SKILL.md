@@ -17,20 +17,25 @@ at their owners.
 
 ## Batches
 
-**One guidance batch is delivered at a time, and it is frozen when its delivery starts.** A run
-that finds a batch in flight freezes nothing; the run delivering that batch freezes the next one.
-Otherwise, before sending entries to `edit-skill`'s **Guidance Delivery**, mark with one batch id
-every `pending` `guidance_correction` entry step 2 admits that no unfinished batch holds; that set
-is the batch. An entry recorded after that
-moment, the user asking to change a file the batch is changing included, carries no batch id and
-waits as the next batch: the batch in flight never takes it in, reopens an edit for it, or reruns a
-reviewer, gate or smoke round because of it. A repair the batch's own review, gate or smoke round
-requires is the batch's work under `acceptance-gate`'s **Bounds** and `test-skill`, never a new
-entry. The batch is done once every entry in it has a verified delivery or a recorded hold. The run
-then freezes and delivers the next batch from every waiting entry and every held entry whose hold
-has since resolved, which resumes at its recorded stage. When no entry waits and no hold has
-resolved, it returns, reporting each remaining hold; a waiting entry is never reported as a hold. Only the user's explicit instruction to add an entry to the batch in flight puts it
-there.
+**One guidance batch is in flight at a time, frozen when its delivery starts.** A batch is in
+flight from its freeze until it is done: every entry in it has a verified delivery or a recorded
+hold. A held entry does not keep its batch in flight.
+
+- **Freezing.** Mark with one batch id every `pending` `guidance_correction` entry that `edit-skill`'s
+  **Recording During A Task** admits and that either carries no batch id or is held by a hold that
+  has since resolved, which resumes at its recorded stage. That set is the batch. Record the run
+  delivering it as its owner through `session-ledger`.
+- **While a batch is in flight**, an entry recorded then, the user asking to change a file the batch
+  is changing included, carries no batch id and waits for the next batch: the batch never takes it
+  in, reopens an edit for it, or reruns a reviewer, gate or smoke round because of it. A repair the
+  batch's own review, gate or smoke round requires is the batch's work under `acceptance-gate`'s
+  **Bounds** and `test-skill`, never a new entry. Only the user's explicit instruction to add an
+  entry to the batch in flight puts it there.
+- **A run that finds a batch in flight** freezes nothing. It leaves the batch to its owner while the
+  owner's record shows it delivering and the owner is live; otherwise it takes ownership under
+  `session-ledger`'s transfer rule and resumes the batch at its recorded stages.
+- **When a batch is done**, its owner freezes and delivers the next batch. When no entry qualifies,
+  it returns, reporting each remaining hold; a waiting entry is never reported as a hold.
 
 ## Workflow
 
@@ -40,10 +45,9 @@ there.
    before acting; a missing, invalid, or incomplete ledger is a recovery condition, not an empty
    result.
 2. Classify each entry by `kind`, then follow its owning workflow.
-   - `guidance_correction`: process it only when `edit-skill`'s **Recording During A Task** admits
-     it — a verified successful correction, or a direct guidance request on the user's words — and
-     it belongs to the batch **Batches** froze. Send it to `edit-skill`'s
-     **Guidance Delivery** route so canonical guidance completes its delivery gates.
+   - `guidance_correction`: process it only when it belongs to the batch this run delivers under
+     **Batches**. Send it to `edit-skill`'s **Guidance Delivery** route so canonical guidance
+     completes its delivery gates.
    - `artifact`, `plan`, `question`, and `decision`: reconcile the state with the artifact owner,
      plan workflow, or user answer. They never create guidance merely because they were processed.
    - `review`: `review-pass`'s reviewed head for a pull request. Keep it while that pull request is
@@ -51,8 +55,8 @@ there.
      closed.
    - An unrecognized kind: preserve it only when evidence identifies a concrete owning workflow or
      next action; otherwise remove it as invalid.
-3. A failed, blocked, unavailable, or unverified requested action is not a `guidance_correction`
-   to process; a direct guidance request is not one, since its delivery is its action. Keep its evidence in the task's verification record, continue recovery or escalate
+3. A failed, blocked, unavailable, or unverified requested action — which a direct guidance request
+   never is, since its delivery is its action — is not a `guidance_correction` to process. Keep its evidence in the task's verification record, continue recovery or escalate
    the live task as needed, and do not create, amend, or deliver permanent guidance from it.
 4. Judge terminality against each record's complete owning outcome, including its required delivery
    and verification. Remove it only when that outcome is verified complete or evidence proves the
