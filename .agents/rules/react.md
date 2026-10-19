@@ -209,6 +209,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   sent a form sees "Submitted", with the tone telling review apart from acceptance, while the
   reviewer sees "Pending review" and "Approved". One status maps to each audience's label in one
   place.
+- **A message about something not yet possible says what will make it possible, never that it is
+  held back.** Name who has to do what and what that enables — "This member must confirm their
+  email to enable exports" — rather than "Exports stay blocked until they confirm", which reads as
+  a penalty. Words such as blocked, locked, denied, stay or until frame a pending step as a
+  punishment; keep them for a refusal the reader can do nothing about.
 
 ### Confirmation Dialogs
 
