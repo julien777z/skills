@@ -33,6 +33,8 @@ alwaysApply: true
 - Invoke `i-have-adhd` before the first response a user reads in the session, whether or not the
   user invoked it or the running skill names it. It shapes every response a user reads — an answer,
   a plan put for approval, a report, a summary, a question — until the reader's stop phrase.
+- **A web product's views are pages.** Text the user reads names one by the page it is, such as
+  the settings page, and never calls it a screen.
 - **A file the user should see reaches them where they read.** Per-item detail past five items —
   findings, rows — and any gated plan a skill requires go in a file sent with the harness's
   file-sending tool before the text that reports the result, so that text stays the turn's final
