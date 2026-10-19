@@ -1,14 +1,14 @@
 ---
 name: finish-pr
-description: Finish the task's pull requests at the user's command — review and fix whatever no earlier review pass covered, such as follow-ups since the automatic review, then merge each one at its accepted head. Use only when the user directly invokes it.
-short_description: 'Review what is not yet reviewed, fix it, then merge each pull request.'
+description: Finish the task's pull requests at the user's command — review and fix the whole of each pull request, with its touched files, related code and sibling modules, then merge each one at its accepted head. Use only when the user directly invokes it.
+short_description: 'Review and fix the whole pull request, then merge it.'
 disable-model-invocation: true
 ---
 
 # Finish PR
 
-Take every selected pull request from its current head to a verified merge: review the changes no
-earlier `review-pass` covered, fix what that finds, then merge.
+Take every selected pull request from its current head to a verified merge: review the whole pull
+request, fix what that finds, then merge.
 
 ## Authorization
 
@@ -32,7 +32,8 @@ earlier `review-pass` covered, fix what that finds, then merge.
 ## Dependencies
 
 - `list-prs` — the task's open pull requests when the user names none.
-- `review-pass` — the review and fix loop over each target's unreviewed changes.
+- `review-pass` — the review and fix loop over each target's whole pull request.
+- `code-review` — its branch and commit setup rules for a pull request **Targets** creates.
 - `merge-gate` — the exact-head check gate, conflict resolution and the verified squash merge.
 - `session-ledger` — record each target, its accepted head and its merge.
 
@@ -59,16 +60,16 @@ guidance unit's own gates.
 
 Process each unit through these steps before starting the next.
 
-1. Invoke `review-pass` on the pull request with its intent statement. It reviews only the delta
-   since the head an earlier pass accepted — the whole pull request when none did — and returns the
-   accepted head.
+1. Invoke `review-pass` on the pull request with its intent statement, asking for the whole pull
+   request: its complete merge-base diff, the full contents of every touched file, related code and
+   sibling modules, whatever an earlier pass already accepted. It returns the accepted head.
 2. When merge is withheld, the unit ends at that head, its pull request left draft. Otherwise invoke
    `merge-gate` with:
    - the pull request and the head `review-pass` accepted;
    - the affected behaviors its second test pass covered;
    - every exclusion it returned, with its evidence;
    - the fix rule for every fix `merge-gate` makes — a check fix, a conflict resolution, a commit
-     someone else pushed: `review-pass` runs again over that delta, and the fix is pushed through
+     someone else pushed: `review-pass` runs again over that fix's delta, and the fix is pushed through
      `execute-task`'s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
      passed.
 3. Record the merge, or the gate that holds, with `session-ledger`, and continue to the next unit.

@@ -7,8 +7,8 @@ disable-model-invocation: true
 
 # Merge Now
 
-Merge the work the user has reviewed without making them wait on a review loop first, and review
-afterwards whatever merged without an earlier `review-pass`.
+Merge the work the user has reviewed without a review loop at merge time, and review afterwards
+whatever merged without an earlier `review-pass`.
 
 ## Authorization
 

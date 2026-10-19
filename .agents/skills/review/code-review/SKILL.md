@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Review a pull request or current changes with independent reviewer lenses, validated findings, and severity-rated results. Use when the user directly asks for a code review, or when `review-pass` delegates its review phase; never on your own initiative.
+description: Review a pull request or current changes with independent reviewer lenses, validated findings, and severity-rated results. Use when the user directly asks for a code review, or when `review-pass` or `incident` delegates to it; never on your own initiative.
 short_description: 'Code review a pull request or the current working changes with independent reviewer lenses, validated findings, and severity-rated results.'
 ---
 
@@ -37,7 +37,7 @@ fixed values in that type. A receipt without the conditional list is incomplete 
 
 ## Invocation
 
-- Run this skill only when the user directly invokes it or `review-pass` delegates it. `review-pass` supplies high effort and fix mode; do not ask for standalone review options on that route.
+- Run this skill only when the user directly invokes it, or `review-pass` or `incident` delegates it. `review-pass` supplies high effort and fix mode; do not ask for standalone review options on that route.
 
 ```
 /code-review [low|medium|high|xhigh|max|ultra] [fix] [comment] [<target>]

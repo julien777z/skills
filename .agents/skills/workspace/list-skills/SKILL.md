@@ -1,6 +1,6 @@
 ---
 name: list-skills
-description: List every skill available to this session — the shared skills repository's skills and the current repository's own skills, in separate sections — each marked user- or model-invocable with a one- or two-line summary. Use when the user asks which skills exist, what a skill does, or what they can invoke.
+description: List the shared skills repository's skills and the current repository's own skills, in separate sections grouped by category, each marked user- or model-invocable with a one- or two-line summary. Use when the user asks which skills exist, what a skill does, or what they can invoke.
 short_description: 'List shared and repository skills with who can invoke each and what it does.'
 ---
 
@@ -8,7 +8,7 @@ short_description: 'List shared and repository skills with who can invoke each a
 
 ## Sources
 
-- **Skills repository**: every `SKILL.md` under the shared skills repository's `.agents/skills/`,
+- **Global skills**: every `SKILL.md` under the shared skills repository's `.agents/skills/`,
   read from the checkout the user-level skill root resolves to, or a fresh read of that repository's
   default branch when no checkout is present.
 - **This repository**: every `SKILL.md` under the current repository's `.agents/skills/`. When the
@@ -26,7 +26,7 @@ catalogue, or memory. Plugin and built-in harness skills are outside both source
 
 ## Categories
 
-- Both sections use the skills repository's categories: its folders under `.agents/skills/`, each a
+- Both sections use the global skills' categories: its folders under `.agents/skills/`, each a
   sub-section titled by the folder name in title case, in name order.
 - A skill with no folder, or with a folder the skills repository lacks, goes under the category
   whose skills do the same kind of work, judged from its summary; one that fits none goes under
@@ -36,10 +36,12 @@ catalogue, or memory. Plugin and built-in harness skills are outside both source
 
 ## Output
 
-Reply in chat with exactly this shape; the listing is the answer, so it is not sent as a file:
+Reply in chat with exactly this shape. The listing is the answer the user reads in the
+conversation, so it is the exception to the global rules' **User-Facing Output** file rule for
+long item lists and is never sent as a file:
 
 ```markdown
-## Skills repository
+## Global skills
 
 ### <Category>
 - `<skill-name>` — **<user | model>** — <summary>

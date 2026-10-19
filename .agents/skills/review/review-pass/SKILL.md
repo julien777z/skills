@@ -16,7 +16,9 @@ happens next; this skill never readies, merges or deploys.
   **Completion**, `finish-pr`, `merge-now`, and `edit-skill`'s **Guidance Delivery**. The caller
   names the target and supplies the intent statement.
 - The invocation authorizes the declared `code-simplify`, `code-review`, `merge-conflict` and
-  `acceptance-gate` dependencies over that target, pushing fixes to its working pull request, and,
+  `acceptance-gate` dependencies over that target, `test-fixture`'s **Sweep** and `security-audit`'s
+  **Diff Review** as **Workflow** step 1 sizes them, pushing fixes to its working pull request,
+  resolving its review threads and posting the replies **Review Thread Triage** allows there, and,
   on the merged-range route only, creating the fix pull request **Review Targets** describes. It
   does not authorize a merge, readying a draft, an independent review, a release workflow, a
   deployment, or an unrelated provider mutation.
@@ -34,6 +36,8 @@ happens next; this skill never readies, merges or deploys.
   refactors, and accept the final diff.
 - `merge-conflict` — resolve every base update this run performs.
 - `pre-production` — the size budget for cleanup beyond confirmed findings.
+- `test-fixture` — the sweep over the tests the delta adds or changes.
+- `security-audit` — the **Diff Review** of a delta that crosses a trust boundary.
 - `session-ledger` — read and record the reviewed head of each pull request.
 
 Invoke `subagent-selection` and use its **standard** tier for this workflow's own sub-agents.
@@ -54,16 +58,23 @@ a follow-up after it gets a review of the follow-up, sized to the follow-up.
 - **The reviewed head.** When a pass's final acceptance passes, record a `review` entry with
   `session-ledger` for the pull request: repository, number, the accepted head and its tree. A
   history rewrite whose tree proof shows an identical tree moves the record to the rewritten head.
-- **The unreviewed delta** is `git diff <reviewed head> <current head>`, limited to the paths the
-  pull request's merge-base diff touches; what a base incorporation brought in is
-  `merge-conflict`'s to judge. With no record, or a recorded head the repository can no longer
-  read, the delta is the complete merge-base diff. Commits by anyone count, the user's included.
+- **The unreviewed delta is the change in the pull request's own patch**, never in its tree:
+  compare the patch now — `merge-base..head`, or `first-parent..merge-commit` for a merged range —
+  with the patch at the reviewed head, `merge-base..reviewed head`, through `git range-diff` or a
+  diff of the two patches. Base commits a merge brought in are excluded; `merge-conflict` judges
+  them. With no record, or a recorded head the repository can no longer read, the delta is the
+  complete merge-base diff. Commits by anyone count, the user's included.
+- **A caller can ask for the whole pull request.** The delta is then the complete merge-base diff
+  whatever the record says, sized as **Anything else** below; `finish-pr` always asks for it.
 - **Size the pass from the delta**, using `execute-task`'s definition of a trivial change — no
   design choice in it: a typo, a one-line fix, a rename the user named.
-  - **Empty** (the head's tree equals the reviewed tree): nothing runs; return the recorded
-    verdict.
+  - **Empty** (the patch equals the reviewed patch): only **Review Thread Triage** runs, since
+    a reviewer may have commented without changing code; with no thread fix, return the recorded
+    verdict. A thread fix is a new delta, sized again here.
   - **Trivial**: run **Review Thread Triage**, the second test pass and final acceptance over the
-    delta. No simplification or code-review lens runs.
+    delta. No code-review lens runs, and no simplification lens except on a delta confined to
+    canonical `.agents` Markdown, which still gets the in-process `code-simplify` pass `edit-skill`'s
+    **Guidance Delivery** requires of every guidance change.
   - **Anything else**: the full **Workflow**, with the delta as every lens's review target and the
     complete merge-base diff and full touched files as context. A defect found in that context is
     still fixed under **Confirmed Findings**.
@@ -344,13 +355,16 @@ authorization, skip deployment and continue review. Never dispatch a workflow or
 to work around this gate.
 
 1. Resolve the review target under **Review Targets** and its delta under **Review Scope**; an empty
-   delta returns here. Read the target's intent and metadata without modifying a merged pull
+   delta runs only **Review Thread Triage** before returning. Read the target's intent and metadata without modifying a merged pull
    request; run **Description Refresh** when a working pull request exists. Record the review range
    and pass the intent and route-specific ownership to every subagent and into `code-review high fix`.
-   Run **Review Thread Triage**. Then classify failures under **Failure relevance**, run the first
-   test pass **Validation Order** requires, and complete the **Simplification Gate**; no code-review
-   phase starts before all three are clean. A trivial delta skips the first test pass, the
-   **Simplification Gate** and steps 2–4.
+   Run **Review Thread Triage**. Run `test-fixture`'s **Sweep** over the tests the delta adds or
+   changes, and, whatever the delta's size, `security-audit`'s **Diff Review** at `medium` when the
+   delta crosses a trust boundary that skill names; push their fixes. Then classify failures under
+   **Failure relevance**, run the first test pass **Validation Order** requires, and complete the
+   **Simplification Gate**; no code-review phase starts before all of these are clean. A trivial
+   delta skips the first test pass, the **Simplification Gate** apart from its guidance exception
+   in **Review Scope**, and steps 2–4.
 2. Invoke `code-review high fix <target>` using the open pull-request URL or the exact delegated ref
    range. An explicit unsupported receipt, a missing identifier, and every other selection state
    retain the concrete hold; the primary agent never performs the independent high-fix review in
@@ -360,15 +374,16 @@ to work around this gate.
 3. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the pass continues; see **Deferred Findings**. A finding that can be neither fixed nor recorded remains an active gate: surface the needed resolution under the global rules' pending-result boundary and continue independent work.
 4. Classify each correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean.
 5. Once the review is clean, if a merged-range review has no working fix pull request, return a
-   clean result. Otherwise run **Incorporating The Base** and **Description Refresh**'s second pass,
-   then put the working pull request's diff and refreshed prose to `acceptance-gate`'s
-   final-acceptance question against the intent statement, with the delta marked and the complete
-   merge-base diff as context, or its diff question when no pull request exists. Fix every flag and
-   push the fix as its own increment, whose **Pre-Push Gate** verdict is the fresh gate; resolve each
-   flag under `acceptance-gate`'s **Bounds**. Before each fresh acceptance gate, repeat
-   **Description Refresh** for the repaired head.
-6. Run the second test pass **Validation Order** requires. Never stop, restart, reconfigure or claim
-   a local service this pass did not start.
+   clean result. Otherwise run **Incorporating The Base**, then the second test pass **Validation
+   Order** requires. Never stop, restart, reconfigure or claim a local service this pass did not
+   start.
+6. Run **Description Refresh**'s second pass, then put the working pull request's diff and refreshed
+   prose to `acceptance-gate`'s final-acceptance question against the intent statement, with the
+   delta marked and the complete merge-base diff as context, or its diff question when no pull
+   request exists. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate**
+   verdict is the fresh gate, after rerunning the affected targets it touches; resolve each flag
+   under `acceptance-gate`'s **Bounds**. Before each fresh acceptance gate, repeat **Description
+   Refresh** for the repaired head. The accepted head is the tested head.
 7. Record the accepted head under **Review Scope** and return the **Result**.
 
 ## Result

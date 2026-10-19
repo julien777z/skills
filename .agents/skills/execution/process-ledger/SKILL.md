@@ -28,6 +28,9 @@ at their owners.
      so canonical guidance completes its delivery gates.
    - `artifact`, `plan`, `question`, and `decision`: reconcile the state with the artifact owner,
      plan workflow, or user answer. They never create guidance merely because they were processed.
+   - `review`: `review-pass`'s reviewed head for a pull request. Keep it while that pull request is
+     open, since the next pass sizes itself from it; remove it once the pull request is merged or
+     closed.
    - An unrecognized kind: preserve it only when evidence identifies a concrete owning workflow or
      next action; otherwise remove it as invalid.
 3. A failed, blocked, unavailable, or unverified requested action is not a `guidance_correction`
