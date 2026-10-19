@@ -62,8 +62,8 @@ ledger. Follow the selector's dispatch and unavailable-model policy.
 
 An explicit unsupported receipt for the required tier's exact identifier, a `dispatch required` or
 `identifier required` result, and any rejection not explicitly unsupported all retain the concrete hold. CR
-never replaces an independent review, simplification, or gate in process; the independent `acceptance-gate`
-remains a separate required checkpoint.
+never substitutes an in-process pass for a review, simplification, or gate the required tier cannot spawn; the
+independent `acceptance-gate` remains a separate required checkpoint.
 
 ## Review Targets
 
@@ -216,8 +216,9 @@ the entire scope; never divide it by arbitrary file counts. Give every subagent 
 proposed restructuring. An explicit unsupported receipt, a missing identifier, and every other selection
 state retain the concrete hold; the primary agent never performs an independent simplification pass in process
 before the code-review phase. A guidance pull request `edit-skill`'s **Guidance Delivery** delegates
-is the exception: one reviewer holds a guidance diff whole, so that skill's own procedure runs its
-simplification in process, and this gate takes that pass as its result.
+is the exception: one reviewer holds a guidance diff whole, so this gate runs its simplification in
+process over the branch's own files with the prose-duplication checks that skill hands it, as that
+skill's **Behavior** step 7.3 says.
 When the pull request adds public concepts across slices, assign one reviewer the cross-cutting
 interfaces and their existing peers as a coherent slice. Require its receipt to assess whether the
 new concepts are variants of existing ones; do not accept a clean simplification gate until that

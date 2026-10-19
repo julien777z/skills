@@ -24,7 +24,8 @@ is two invocations, and the user asks for both.
 
 - `execute-task` — plan a scope that needs one, and the commit and push cadence of its branch.
 - `subagent-selection` — dispatch the worker that executes a scope now, in its worktree.
-- `session-ledger` — record a queued-on-merge scope as a step a later turn reads.
+- `session-ledger` — record a queued-on-merge scope as a step a later turn reads, and the dispatch
+  receipt of a scope executed now.
 - `defer-scope` — the durable record of a scope the user also asks to keep.
 
 ## The decision
@@ -70,7 +71,8 @@ The worktree leaves the current branch's working tree untouched.
 2. **Delegate the work to a subagent** scoped to that worktree, once no other building worker in the
    session is changing the same files or resources. Invoke `subagent-selection` at the capability level the
    work requires, launch its exact resolved identifier, and retain catalogue state, identifier, assignment state
-   and host receipt in the scheduling record, as `subagent-selection`'s **Dispatch** requires. This keeps the
+   and host receipt with the scope's evidence in the task ledger through `session-ledger`, as
+   `subagent-selection`'s **Dispatch** requires. This keeps the
    parent session's own state and working directory where they were. Give the worker the scope, the worktree
    path, and the commit and push cadence `execute-task`'s **Pre-Push Gate** sets for delegated edits.
 
