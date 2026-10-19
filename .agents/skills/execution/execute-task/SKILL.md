@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once at the start of every task authorized to change files, before recommending an implementation, delegating edits, or editing — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until verified completion or explicit user stop or handoff. It plans source and product changes first, except for trivial changes; canonical guidance changes run directly through their evidence, smoke-test, review, and acceptance gates. It then applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, keeps session-created source work to one pull request per repository, finishes each pull request with a simplification pass, a test sweep, an acceptance gate and a history rewrite before sending it for review, checks every outcome it reports at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
+description: "Always run this. Invoke once at the start of every task authorized to change files, before recommending an implementation, delegating edits, or editing — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until verified completion or explicit user stop or handoff. It plans source and product changes first, except for trivial changes; canonical guidance changes skip the plan and, while another task is active, are pushed to a draft pull request, recorded, and delivered in bulk at its completion. It then applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, keeps session-created source work to one pull request per repository, finishes each pull request with a simplification pass, a test sweep, an acceptance gate and a history rewrite before sending it for review, checks every outcome it reports at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
 short_description: 'Plan source and product changes for approval; validate canonical guidance changes through their delivery gates.'
 ---
 
@@ -56,7 +56,8 @@ Every task that changes files starts here, and so does every follow-up that arri
   user named. It goes straight to **Execution**. Canonical guidance changes under `.agents` do not
   wait for a plan or an output-format approval: their request or an encountered guidance gap starts
   the guidance-correction workflow, and their evidence, smoke-test, review, and acceptance gates
-  verify it. `edit-skill` sequences its canonical edit around any active source task.
+  verify it, on the timing `edit-skill`'s **Recording During A Task** sets for an active task,
+  whether the user asked for the correction directly or the run noticed it.
 - Work the approved plan already covers takes no new plan: an encountered issue, a gate's or a
   review's flag, a failing check, or a guidance correction discovered during the run. `edit-skill`
   records verified guidance corrections and `process-ledger` processes them at **Completion**.
@@ -131,6 +132,23 @@ follow-up joins that record; arrival order does not give it priority. Keep the a
 work in hand unless the user explicitly reprioritizes it, evidence establishes greater urgency, or
 that work completes. State and record the reason before switching, preserving the displaced step.
 
+Pending source work — application or library code, as opposed to tests — ranks above test-only
+work, whichever was requested or queued first. Test-only work is test cleanup, test refactors, suite
+runtime or coverage work and a sweep's test fixes. Start or delegate it only while no source change
+the task owes, in any repository, can proceed, and order the plan's steps and every worker's brief
+the same way. Test updates a source change needs travel with that change, and running tests to
+verify it is verification, not test work. A test-only item in flight when a source change can
+proceed pauses at its next safe boundary.
+
+Source work a deploy the user is waiting on needs ranks above simplification, review gates, test
+work, guidance delivery and cleanup, whichever started or was queued first. A database revision to
+restore or split so the branch deploys safely onto an environment that already ran an earlier
+version is the common case. Start it as soon as the need is known; workers on the lower-ranked
+activities pause at their next safe boundary with their work pushed and their next action saved, and
+resume once the deploy-safety change is pushed and validated. Those later passes may still change
+that code, provided what the deploy depends on stays the same and its owning tests prove it — for a
+revision, its database outcome.
+
 Restoring an authorized broken deployed operation takes priority over ordinary tests, review gates,
 guidance delivery and cleanup. Pause those activities until the actual failed operation succeeds
 on the fix branch in every affected environment; use only the reproduction, diagnosis and repairs
@@ -150,7 +168,7 @@ recovery, review and source-restoration procedure.
 A source or product follow-up is planned on its own. A canonical guidance correction follows **When A Plan Is Needed** and does not wait for approval. **Priority** decides when other follow-ups run and whether affected work pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
 
 - **One that touches nothing in flight** — other files, another outcome — leaves the running work
-  going. It gets its own plan, or none when trivial or a canonical guidance correction, and runs beside that work once approved when approval is required and
+  going. It gets its own plan, or none when trivial, and runs beside that work once approved when approval is required and
   **Priority** permits, under `subagent-selection`'s **Dispatch**. Send this template only for a
   follow-up that needs a plan:
 
@@ -182,7 +200,11 @@ A source or product follow-up is planned on its own. A canonical guidance correc
 
 - **The ledger holds the plan's current state, so nothing about progress depends on what the chat
   still remembers.** When a plan goes to the user, record it with `session-ledger` as a `plan`
-  entry with its steps, estimates, overlaps and what it needs from the user. Update it when the
+  entry with its steps, estimates, overlaps and what it needs from the user. Work the user adds to
+  an active task, with or without a plan of its own, becomes a step on that plan or a plan entry of
+  its own, with its approval time, or the time the user added it when it has no plan, before the
+  first edit or dispatch it authorizes; a harness task list, the chat or a summary is never where it
+  first lives. Update it when the
   state changes, not when a report is due: approval, a step starting, finishing, blocking or being
   skipped, a follow-up's plan. A resumed session, a handoff and a progress view all read this
   record rather than reconstructing it.
@@ -193,7 +215,7 @@ A source or product follow-up is planned on its own. A canonical guidance correc
 
 ## Execution
 
-Execution starts once a required plan is approved, or straight away for a trivial change or canonical guidance correction.
+Execution starts once a required plan is approved, or straight away for a trivial change or for a canonical guidance correction, whose timing `edit-skill`'s **Recording During A Task** sets.
 
 ### Task Authorization
 
@@ -217,9 +239,11 @@ Execution starts once a required plan is approved, or straight away for a trivia
   has since regenerated, and whether to reset or reopen local records to reach a state, such as a
   test account back at its first sign-in, both of which the global rules give the agent; what a
   data change owes records already stored, which project guidance says; which of two
-  implementation details to use where a rule picks one; and what configuration exists or how it is
-  scoped, which is read where it lives. A permission denial leaves the decision where it was, as
-  **Environment Refusals** says.
+  implementation details to use where a rule picks one; how to remove duplication the guidance
+  treats as a defect — which repository or package owns shared behavior and which mechanism replaces
+  parallel copies — which `pre-production` and `code-simplify` settle; and what configuration exists
+  or how it is scoped, which is read where it lives. A permission denial leaves the decision where
+  it was, as **Environment Refusals** says.
 - Apply the global rules' **Task execution and authorization** decision boundary before choosing
   an encountered issue's remedy, including one proposed by a worker or reviewer. An ambiguous
   instruction has no approved interpretation: name both concrete outcomes and build on the
@@ -447,8 +471,10 @@ the task.
   - **Similar code**: every other place in the repository already expressing the same concept,
     shape, or operation as the changed code — a near-duplicate helper, a parallel implementation,
     a second representation of one value. Search by concept and by key operation, not by filename;
-    a sibling-only read cannot find the canonical implementation another package owns. Where the
-    change and the code it resembles should be one thing, make them one thing, within
+    a sibling-only read cannot find the canonical implementation another package owns. A copy of
+    the change's own mechanism is the change's scope under `pre-production`'s **Scope Follows The
+    Defect**: give the mechanism one owner, move every consumer onto it and delete the copies.
+    Other code the change resembles and should be one thing with is made one thing within
     `pre-production`'s size budget.
   - **Sibling modules**: the other modules in each changed file's package, which is where a
     misplaced piece of logic and its rightful home become visible together.
@@ -475,7 +501,8 @@ increment's **Pre-Push Gate** verdict.
 Read the shared testing rule before planning test runs or briefing an implementation worker.
 Its **Verification Cadence** governs tests, builds, browser walkthroughs and reviews, including
 pre-push checks. Deferred feature verification does not hold an intermediate push and remains
-required afterward. Run the relevant batch after the feature is complete, then the required final
+required afterward, and a suite still running holds none either: the testing rule's superseded-run
+bullet says what happens to it. Run the relevant batch after the feature is complete, then the required final
 checks before delivery; retain evidence that the change has not invalidated.
 
 - **Required checks use CI’s commands and scope, at the verification checkpoints above.** Read
@@ -510,13 +537,18 @@ bug or a passing formatter does not satisfy this spacing check.
   A push is what lets the user review and test the work, and the only copy that
   outlives the machine: a recycled container or an ended session takes every commit and edit no
   remote holds.
-- **Nothing outside the change holds a push or becomes a question about pushing.** A dependency
+- **Nothing outside the change holds a push, a check or a walkthrough, or becomes a question about
+  pushing or merging.** A dependency
   still in review in another repository, an unreleased package version, a sibling pull request not
   yet merged, CI expected to stay red until one of those lands: the branch consumes the
   dependency's pull-request branch, or its default branch once merged — in the manifest, the
   lockfile and any workflow checkout, as the global rules' version-reference bullet allows while
   developing — or builds on a same-repository sibling's branch as the GitHub rule's branch bullets
-  set out, and pushes. Which branch it consumes, and a red check that dependency explains, are
+  set out, and pushes. Every build, test and walkthrough runs against that checked-in reference,
+  never a local copy the manifest does not name. A consumer that cannot build until its dependency
+  merges is a manifest still naming the default branch: point it at the pull-request branch, never
+  ask for the dependency's merge or report the consumer blocked on it. Which branch it consumes,
+  and a red check that dependency explains, are
   surfaced in user chat under the GitHub rule's independent publishing context rather than waited on; adopting
   its maintained delivery target is named work for when the dependency merges.
 - **No edit sits uncommitted through a long wait outside the checks.** Before the slow verification
@@ -640,12 +672,13 @@ displaces is named work whether or not a report named it: an approved plan short
 commits a remote lacks, a checkout left mid-edit. The turn that serves the new request also moves
 it — the user asking about something else is not the user withdrawing what they asked for before.
 
-- **Write it down before anything else starts.** The displaced work goes into the session's task
-  list, with its next step, before the first step of whatever displaced it.
+- **Write it down before anything else starts.** The displaced work is recorded as **Progress
+  Record** says, with its next step, before the first step of whatever displaced it.
 - **An interruption pauses the step in flight; it never ends the run.** After a follow-up
-  finishes, restore the displaced task as the in-progress item in the session's task list and
+  finishes, mark the displaced work active again in the ledger and
   execute its saved next step without waiting for "continue". A promise to resume is not that
-  step. Completing
+  step, and neither is a report that ends by naming what comes next: a turn that relays a worker's
+  result or finishes a unit starts the next named step before it ends. Completing
   its own delivery — including a guidance merge and refresh, a diagnostic answer, or a local
   environment repair — does not complete the surrounding task. Report that intermediate result
   while continuing. A held item keeps its saved next action; repair, resolution and waiting follow
@@ -743,10 +776,11 @@ side by side from here: the guidance stream and the source stream.
 - **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends only verified
   successful `guidance_correction` entries to `edit-skill`'s **Guidance Delivery** route, delegated
   so it never waits on the source stream. Edits the GitHub rule's **Branches and Pull Requests**
-  puts on this task's source pull request pass their source check and smoke round, as **Guidance
-  Delivery** step 1 says, and are pushed to it before that pull request's
+  puts on this task's source pull request were pushed to it when recorded; their source check and
+  smoke round run on that head, as **Guidance Delivery** step 1 says, before that pull request's
   source-stream step 1, so its simplification, final acceptance, history and ready message cover
-  them, and the source stream waits only for that push. A task with none has no guidance stream.
+  them, and the source stream waits only for those checks. A task with none has no guidance
+  stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:
 

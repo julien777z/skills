@@ -467,6 +467,8 @@ Apply the baseline prompt above, plus these explicit review rules:
    - Keep a comment only for externally owned behavior the code cannot make evident, such as a
      surprising third-party or protocol constraint. Make it factual and one physical line when
      possible, with two lines as the absolute maximum.
+   - Keep a migration revision's lock marker, the first-line comment `database-migrations` defines,
+     verbatim: it is a machine-read marker that counts the revision as applied, not prose.
    - Keep ordinary docstrings to one physical line that identifies the symbol rather than narrating
      its implementation. A migration revision file's `upgrade()` and `downgrade()` docstrings may
      use a few concise lines only when needed to name the concrete transformation and its purpose.

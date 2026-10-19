@@ -49,7 +49,9 @@ Shared tooling lives in the project's shared migration package (runner, revision
 ## Authoring Rules
 
 - **Autogenerate is the default for a schema change** — the CI workflow generates the revision.
-  Correct an existing revision only under **Applied Is What Makes History** below.
+  It creates a chain's revision only when the pull request has no unlocked revision on that chain.
+  When it has one, the change goes into that file, generated and moved in or written by hand, under
+  **Applied Is What Makes History** below; a schema change never opens a second revision.
 - Review handwritten and generated revision docstrings under the shared Python rule's **Formatting
   and Documentation** migration-revision exception before accepting the revision.
 - **A column rename is always hand-written.** Autogenerate compares two schema snapshots, in which a
@@ -144,10 +146,40 @@ format transition or recovery mechanism for data explicitly declared disposable 
   to preserve, so correct the revision itself rather than layering a second one on top to undo it.
   This holds whatever the mistake is: a destructive body, a wrong constraint name, a missing index. Say
   in the pull request that you edited it.
-- Establish "not applied yet" from the real `alembic_version` row in every existing environment that
-  may have applied it. An explicit user statement or repository fact that no such environment exists
-  establishes that scope without inventing a database to query. Data being disposable alone does
-  not establish that a revision is unapplied; that fact decides editing rather than adding.
+- **A pull request holds one unlocked revision per chain.** Every schema or stored-data change the
+  pull request makes to that chain's database goes into that revision, whatever its size or concern,
+  with its backfill steps inside it in dependency order and its survivorship and
+  destructive-operation entries merged into that revision's own. A revision the pull request adds is
+  unapplied unless it carries the lock marker or the owner reports a deploy of a commit that
+  contains it: the owner runs `lock-revision` before deploying the branch, and that, or such a
+  report, is the only way a chain gains a second revision in one pull request. A reported deploy
+  makes each revision, as it stood at the deployed commit, the applied one: restore its database
+  outcome at that commit, lock it there with the lock marker, and move every later change to its
+  chain into one new revision on top, before any other work on the branch. A pull request found
+  carrying several unlocked revisions on one chain folds them into one before anything else, and a
+  base update that adds revisions re-parents the unlocked one onto the new head.
+- **A revision whose first line is the lock marker counts as applied.** Locking a revision adds
+  this line as the first line of its file and changes nothing else in it:
+
+  ```python
+  # Locked: an environment may have applied this revision. Put later changes in a new revision.
+  ```
+
+  A locked revision's id, its parent and what it does to the database stay fixed, so it is never
+  folded, re-parented or regenerated: an environment that applied it would sit on a chain it never
+  ran. Its code may still change when the database outcome stays the same — a simplification, a
+  refactor, a clearer helper — proven by the migration tests. A later change to the database goes
+  into one new revision on top, which the next `lock-revision` locks. A base update that adds
+  revisions to its chain is joined with a merge revision. Where the migration tooling accepts only a
+  linear chain, the base's revision moves instead, re-parented onto the branch's head, once the
+  owner confirms no environment has applied it; one an environment has applied needs the tooling to
+  accept the merge revision first.
+- For a revision the pull request did not add, establish "not applied yet" from the real
+  `alembic_version` row in every existing environment that may have applied it; the lock marker or
+  the owner's report of a deploy settles it for the pull request's own. An explicit user statement
+  or repository fact that no such environment exists establishes that scope without inventing a
+  database to query. Data being disposable alone does not establish that a revision is unapplied;
+  that fact decides editing rather than adding.
 - Once any environment has applied it, a later revision is the only route, and for a destructive body
   it is not a repair: that database lost the values and will never re-run the corrected body, a fresh
   one keeps them, and both land on an identical schema — so drift detection stays silent about the
