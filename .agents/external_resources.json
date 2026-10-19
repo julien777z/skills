@@ -172,6 +172,14 @@
     },
     {
       "kind": "skill",
+      "name": "reverse-engineer-anything",
+      "repo": "morluto/rea",
+      "skill": "reverse-engineer-anything",
+      "category": "workspace",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
       "name": "tailwind-design-system",
       "repo": "wshobson/agents",
       "skill": "tailwind-design-system",
