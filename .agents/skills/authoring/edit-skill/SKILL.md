@@ -89,7 +89,8 @@ During A Task** for the edit's timing.
 - **While a guidance batch is in delivery, a new guidance change waits for the next batch**, as
   `process-ledger`'s **Batches** says: whether the user requests it directly or the work turns it
   up, and even when it changes a file the batch is changing. Record it as a `pending` entry outside
-  the batch, edit none of its files, rerun none of the batch's reviewers or gates, and tell the user
+  the batch, with the user's words as its evidence when they asked for the change directly, edit
+  none of its files, rerun none of the batch's reviewers or gates, and tell the user
   it is queued behind the batch in flight.
 
 ## Guidance Delivery

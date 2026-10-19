@@ -36,7 +36,9 @@ instruction to add an entry to the batch in flight puts it there.
    result.
 2. Classify each entry by `kind`, then follow its owning workflow.
    - `guidance_correction`: process it only when its recorded current-work action succeeded,
-     evidence proves the requested result, and it belongs to the batch **Batches** froze. Send it to `edit-skill`'s **Guidance Delivery** route
+     evidence proves the requested result, and it belongs to the batch **Batches** froze. A direct
+     guidance request queued behind a batch has no other action: the user's request, in their
+     words, is its evidence. Send it to `edit-skill`'s **Guidance Delivery** route
      so canonical guidance completes its delivery gates.
    - `artifact`, `plan`, `question`, and `decision`: reconcile the state with the artifact owner,
      plan workflow, or user answer. They never create guidance merely because they were processed.
