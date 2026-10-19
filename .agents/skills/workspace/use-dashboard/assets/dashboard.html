@@ -167,7 +167,7 @@
     border-top: 1px solid var(--line);
   }
 
-  .list > li:first-child { border-top: 0; }
+  .list > li:first-child, .list > li.page-start { border-top: 0; }
   .list > .change-row { grid-template-columns: minmax(0, 1fr) auto; }
   .link-row > .glyph { margin-top: 1px; }
   .list > li > .pill { align-self: start; }
@@ -246,6 +246,23 @@
   .card-title { font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }
   .card-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; }
   .tag { font-size: 12px; color: var(--muted); }
+
+  .pager { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+
+  .pager button {
+    appearance: none;
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 4px 10px;
+    color: var(--ink-2);
+    font: 500 13px/1.4 var(--font-sans);
+    cursor: pointer;
+  }
+
+  .pager button:hover:not(:disabled) { color: var(--ink); }
+  .pager button:disabled { color: var(--muted); cursor: default; opacity: 0.5; }
+  .pager button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   .table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -522,12 +539,17 @@
       return item;
     }
 
-    function listSection(items, renderItem) {
-      var list = el("ul", "list panel");
+    function listSection(renderItem) {
+      return function (section) {
+        var list = el("ul", "list panel");
+        var rows = section.items.map(renderItem);
+        var content = document.createDocumentFragment();
 
-      items.forEach(function (entry) { list.append(renderItem(entry)); });
+        list.append.apply(list, rows);
+        content.append(list, pager(rows, section.page_size, section.title));
 
-      return list;
+        return content;
+      };
     }
 
     function tableSection(section) {
@@ -553,6 +575,52 @@
       return wrap;
     }
 
+    function pager(entries, size, title) {
+      if (!size || entries.length <= size) return document.createDocumentFragment();
+
+      var controls = el("div", "pager");
+      var previous = el("button", "", "Previous");
+      var position = el("span", "count");
+      var next = el("button", "", "Next");
+      var pages = Math.ceil(entries.length / size);
+      var current = 0;
+
+      function show(page) {
+        current = page;
+
+        entries.forEach(function (entry, index) {
+          entry.hidden = Math.floor(index / size) !== page;
+          entry.classList.toggle("page-start", index === page * size);
+        });
+
+        var first = page * size + 1;
+        var last = Math.min(entries.length, first + size - 1);
+
+        position.textContent = first + "–" + last + " of " + entries.length;
+        previous.disabled = page === 0;
+        next.disabled = page === pages - 1;
+      }
+
+      function turn(step, pressed, other) {
+        show(current + step);
+
+        if (pressed.disabled) other.focus();
+      }
+
+      controls.setAttribute("role", "group");
+      controls.setAttribute("aria-label", title + " pages");
+      position.setAttribute("aria-live", "polite");
+      previous.type = "button";
+      next.type = "button";
+      previous.addEventListener("click", function () { turn(-1, previous, next); });
+      next.addEventListener("click", function () { turn(1, next, previous); });
+
+      controls.append(previous, position, next);
+      show(0);
+
+      return controls;
+    }
+
     function boardSection(section) {
       var board = el("div", "card-grid");
 
@@ -565,7 +633,7 @@
 
         if (!column.items.length) node.append(el("p", "empty", "Nothing here."));
 
-        column.items.forEach(function (entry) {
+        var cards = column.items.map(function (entry) {
           var card = el("div", "card");
           var title = el("span", "card-title");
 
@@ -582,7 +650,11 @@
           }
 
           node.append(card);
+
+          return card;
         });
+
+        node.append(pager(cards, column.page_size, column.title));
 
         board.append(node);
       });
@@ -719,9 +791,9 @@
       board: { wide: true, render: boardSection },
       table: { wide: true, render: tableSection },
       diagram: { wide: true, render: diagramSection },
-      questions: { render: function (section) { return listSection(section.items, questionRow); }, count: questionCount },
-      links: { render: function (section) { return listSection(section.items, linkRow); } },
-      changes: { render: function (section) { return listSection(section.items, changeRow); } },
+      questions: { render: listSection(questionRow), count: questionCount },
+      links: { render: listSection(linkRow) },
+      changes: { render: listSection(changeRow) },
       notes: { render: notesSection },
       outline: { wide: true, render: outlineSection }
     };

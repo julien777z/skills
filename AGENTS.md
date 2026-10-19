@@ -70,7 +70,8 @@ Canonical guidance lives in `.agents/`.
   Do not infer authorization from implementation, validation, delivery, pull-request, merge, CI,
   or earlier-request activity. Guidance maintenance is the exception: `edit-skill` runs when the
   user reports a guidance failure or canonical guidance is being changed, so the failure and its
-  owning instruction are repaired together.
+  owning instruction are repaired together, on the timing `edit-skill`'s **Recording During A
+  Task** sets.
   Determine a user-only restriction from the skill's entry point, not from the fact that it
   performs work. Required checks and independent gates declared by an authorized workflow run
   as dependencies without a separate invocation; an omitted review request is not a waiver.
@@ -313,6 +314,28 @@ return records;
   the entrypoint. A test may import a command to exercise that command itself, but not to obtain
   unrelated setup or sample data. Classify the module by its role, not merely its directory name.
 
+## Logging
+
+- **Error messages and tracebacks are never censored, in any environment.** A failure is debugged
+  from its log, so a record reporting one keeps the exception's type and message, its notes and its
+  whole traceback, and a warning or error keeps the values it was given. A disclosure policy conceals
+  only typed secrets and credentials, such as a key or a URL's password and query string. It never
+  replaces a failure's text with a placeholder, renders an exception as its type or its message
+  alone, leaves a provider's error response out of the record, or redacts a warning or error
+  wholesale because it might hold personal data. Records that report no failure may still withhold
+  personal data.
+
+## Product Copy
+
+- **Text a person reads sends them to another place with a link, never a route to follow.** "Open
+  Library, then Shared albums" makes the reader follow a map; the place's name, linked, takes them
+  there in one action. Where the text renders markup, the name is the link. Where it is plain text
+  its reader can copy or follow, such as an API or tool message, an email body or a command's
+  output, it carries the place's absolute URL. A surface that cannot hold a link, such as a tooltip
+  or a toast, refers to no other place, and the way forward goes on the page itself. Text about a
+  control on the same page names that control where the reader sees it, as in "Turn on Sync
+  above", and never links to the page it sits on.
+
 ## Repository guidance
 
 - Reference external code and automation by a maintained version tag when available, or by a
@@ -324,11 +347,21 @@ return records;
   one: its product name, its services, its table and column names, its record types, or the nouns
   its business speaks in. That holds for source, tests, fixtures, examples, and documentation
   alike, and it holds most strongly in a library, where every reader is a different consumer.
+- **Name things with the everyday word a reader expects.** Where the domain or a provider already
+  has a term, use it. A parcel the carrier reports as delivered is `delivered`, never
+  `parcel_arrived`, because an unusual synonym makes every reader translate it back. This covers
+  identifiers, fields, messages, documentation and test names in every language.
 - Name things for the shape being exercised, not for whichever caller happened to prompt the work.
   A test needing a table with a secret column names it for that — a record with a secret — rather
   than borrowing the one real table the change was made for.
 - Sample values follow the same rule: prefer plainly synthetic literals over ones shaped like a
   real identifier from another system's domain.
+- A library owns the vocabulary of the protocol or provider it wraps. That protocol's field names
+  and naming conventions, such as how it spells an event type or a scope, are the library's own,
+  never a consumer's domain vocabulary: a helper encoding such a convention belongs in the library
+  even when one consumer prompted it, and the library's owned API gains it. This holds at the
+  wrapper's layer; an application modelling the provider's data keeps its own field names, as
+  `pre-production`'s **Adapting is not imitating** says.
 - Identify environments by their full domain name throughout code, configuration, documentation,
   and user-facing labels, including enum and constant names. Code identifiers may encode the whole
   domain with separators, such as `garden.example` becoming `GARDEN_EXAMPLE`. Never drop the domain
