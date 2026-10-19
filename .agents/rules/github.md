@@ -207,12 +207,12 @@ alwaysApply: true
   A merge that is the session's last work ends with no refresh, and its report reads `refresh:
   deferred to the next request`. The next request, in this session or a later one, runs the refresh
   first unless the installed copy already carries the merge, as one a cloud session installs at
-  start does.
-- Select the refresh route before checking local changes. When the repository supplies the
-  installed shared skills, invoke `reconcile-skills`; it keeps pending agent-configuration changes
-  in effect, dirty checkouts and open pull requests alike. The checkout-only restriction below does not apply to this route.
-  For the skill's first merge, read it from the merged commit before invoking it. A session follows
-  the copy it loaded until this refresh completes.
+  start with no refresh overlay does.
+- Select the refresh route before checking local changes. When the repository supplies the installed
+  shared skills, invoke `reconcile-skills`; it keeps pending agent-configuration changes in effect,
+  dirty checkouts and open pull requests alike. The checkout-only restriction below does not apply
+  to this route. For the skill's first merge, read it from the merged commit before invoking it. A
+  session follows the copy it loaded until this refresh completes.
 - For every other repository, refresh its main local checkout, not a task worktree: if it is clean,
   check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force
   this checkout-only refresh; report a skipped refresh and leave them untouched.

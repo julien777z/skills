@@ -39,14 +39,19 @@ overlay_marker() {
 main_checkout_of() {
   local common_dir
 
-  common_dir="$(source_git -C "$1" rev-parse --path-format=absolute --git-common-dir 2>/dev/null)" || {
+  common_dir="$(source_git -C "$1" rev-parse --git-common-dir 2>/dev/null)" || {
     printf '%s\n' "$1"
 
     return
   }
 
   case "$common_dir" in
-    */.git) printf '%s\n' "${common_dir%/.git}" ;;
+    /*) ;;
+    *) common_dir="$1/$common_dir" ;;
+  esac
+
+  case "$common_dir" in
+    */.git) (cd "${common_dir%/.git}" 2> /dev/null && pwd) || printf '%s\n' "$1" ;;
     *) printf '%s\n' "$1" ;;
   esac
 }
@@ -160,7 +165,8 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
   declare -A seen_checkouts=()
 
   current_checkout="$(git -c safe.directory='*' -C "$PWD" rev-parse --show-toplevel 2>/dev/null || true)"
-  if [ -n "$current_checkout" ] && overlay_marker "$current_checkout" > /dev/null; then
+
+  if [ -n "$current_checkout" ]; then
     current_checkout="$(main_checkout_of "$current_checkout")"
   fi
 
@@ -202,6 +208,7 @@ fi
 overlay_root="$(newest_overlay "$REPO_ROOT")"
 
 if [ -n "$overlay_root" ]; then
+  echo "Using the refresh overlay $overlay_root; reconcile-skills rebuilds it from the latest default branch."
   REPO_ROOT="$overlay_root"
 fi
 

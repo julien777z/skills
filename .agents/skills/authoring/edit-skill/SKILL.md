@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. First carry out the requested action; only a verified success is recorded in the session ledger and delivered as a guidance edit. Deliver every behavior-changing guidance edit through `review-pass`, the acceptance gate, and `test-skill` before its pull request merges.
+description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. First carry out the requested action; only a verified success, or a direct guidance request in the user's words, is recorded in the session ledger and delivered as a guidance edit. Deliver every behavior-changing guidance edit through `review-pass`, the acceptance gate, and `test-skill` before its pull request merges.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -11,7 +11,8 @@ every edit through the same delivery whether the user invoked this skill or the 
 doing other work. An edit that skipped this is unverified, and the report says so.
 
 **First perform the requested action.** While another task runs, correct the current work before
-recording a guidance correction. Record only a verified success under **Recording During A Task**;
+recording a guidance correction. Record only a verified success, or a direct guidance request, under
+**Recording During A Task**;
 the guidance files stay untouched until that task reaches `execute-task`'s **Completion**, which
 starts `process-ledger`. A failed, blocked, or unavailable action is task evidence only: it
 does not create a ledger correction or a guidance edit. With no other task running, first perform
@@ -82,27 +83,25 @@ During A Task** for the edit's timing.
   `guidance_correction` entry, and do not edit canonical guidance from that outcome.
 - Do not edit the guidance files, open a guidance branch, or start a worker for a successful
   correction while the task runs.
-- A related correction joins the same entry or sits beside it in the same batch; the batch is one
-  pull request, apart from edits the GitHub rule puts on a source pull request or holds for another
-  repository.
+- **A direct request to change guidance is its own requested action.** When it is recorded rather
+  than applied at once, during a task or while a batch is in delivery, record it `pending` with the
+  user's words as its evidence.
+- A related correction recorded before its batch is frozen joins the same entry or sits beside it
+  in that batch; the batch is one pull request, apart from edits the GitHub rule puts on a source
+  pull request or holds for another repository. One recorded while a batch is in delivery waits for
+  the next, as `process-ledger`'s **Batches** says: edit none of its files, and tell the user it is
+  queued behind the batch in flight.
 - The task's next step is never held by a correction: record it and carry on.
-- **While a guidance batch is in delivery, a new guidance change waits for the next batch**, as
-  `process-ledger`'s **Batches** says: whether the user requests it directly or the work turns it
-  up, and even when it changes a file the batch is changing. Record it as a `pending` entry outside
-  the batch, with the user's words as its evidence when they asked for the change directly, edit
-  none of its files, rerun none of the batch's reviewers or gates, and tell the user
-  it is queued behind the batch in flight.
 
 ## Guidance Delivery
 
-`process-ledger` invokes this route only for a verified successful `guidance_correction`, beside the
-source stream. It holds the source pull request only for the push its ridden edits need; only an
+`process-ledger` invokes this route only for the batch of `guidance_correction` entries it froze,
+beside the source stream. It holds the source pull request only for the push its ridden edits need; only an
 edit on that pull request, or one the GitHub rule's **Merge Authorization** holds for a source pull
 request in another repository, waits for that merge. Run it as a delegated worker when the session
 can, so the user's review of the source pull request overlaps it.
 
-1. Read every `pending` `guidance_correction` entry in the batch `process-ledger` froze whose
-   recorded action succeeded and resume at
+1. Read every entry in the batch `process-ledger` froze and resume at
    its recorded first nonterminal stage. Only an entry with no stage receipt applies its edits under
    **Behavior** steps 5 and 6, on the branch step 7.1 selects. An edit step 7.1 puts on a source
    pull request this session drives runs step 7.2's source check and step 7.5's smoke round on the

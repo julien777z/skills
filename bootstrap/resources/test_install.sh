@@ -7,6 +7,19 @@ cleanup() {
 
 trap cleanup EXIT
 
+commit_all() {
+  git -C "$1" add -A
+  git -C "$1" -c user.name=test -c user.email=test@example.invalid commit --quiet -m fixture
+}
+
+add_overlay() {
+  git -C "$1" worktree add --quiet -b "skills-overlay/$(basename "$2")" "$2"
+
+  if [ "$3" = complete ]; then
+    touch "$(git -C "$2" rev-parse --absolute-git-dir)/skills-overlay"
+  fi
+}
+
 if [ "$(id -u)" -eq 0 ]; then
   root_fixture="$(mktemp -d)"
   root_source="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -34,6 +47,26 @@ if [ "$(id -u)" -eq 0 ]; then
   [ "$(realpath "$root_home/.claude/skills/code-review")" = "$root_clone/.agents/skills/review/code-review" ]
   [ "$(stat -c %U "$root_home/.claude")" = root ]
   [ -L "$root_runtime/skills/code-review" ]
+
+  root_attached="$root_cloud_home/attached-skills"
+  root_overlay="$root_cloud_home/attached-overlay"
+  mkdir -p "$root_attached/.agents/skills/example/sample"
+  printf '%s\n' '# Global guidance' > "$root_attached/.agents/global.md"
+  printf '%s\n' '---' 'name: sample' 'description: Sample skill' '---' > "$root_attached/.agents/skills/example/sample/SKILL.md"
+  git -C "$root_attached" init --quiet
+  git -C "$root_attached" remote add origin https://github.com/julien777z/skills.git
+  commit_all "$root_attached"
+  add_overlay "$root_attached" "$root_overlay" complete
+  chown -R nobody:nogroup "$root_attached" "$root_overlay"
+
+  (
+    cd "$root_attached"
+    exec 9<"$root_marker"
+    env HOME="$root_home" CODEX_HOME="$root_runtime" SKILLS_CLOUD_HOME="$root_cloud_home" bash "$root_clone/bootstrap/install.sh"
+  )
+
+  [ "$(realpath "$root_cloud_home/.claude/skills/sample")" = "$root_overlay/.agents/skills/example/sample" ]
+  [ "$(realpath "$root_home/.claude/skills/sample")" = "$root_overlay/.agents/skills/example/sample" ]
 
   rootless_runner="$(mktemp -d)"
 
@@ -131,29 +164,18 @@ mkdir -p "$cloud_clone_home/.codex"
 assert_link "$cloud_clone_home/.codex/skills/sample" "$attached_checkout/.agents/.auto_generated/.codex/skills/sample"
 [ "$(grep -Fc "$cloud_clone_home/.codex:" "$fixture/cloud-codex-output")" -eq 1 ]
 
-commit_all() {
-  git -C "$1" add -A
-  git -C "$1" -c user.name=test -c user.email=test@example.invalid commit --quiet -m fixture
-}
-
-add_overlay() {
-  git -C "$1" worktree add --quiet -b "$(basename "$2")" "$2"
-
-  if [ "$3" = complete ]; then
-    touch "$(git -C "$2" rev-parse --absolute-git-dir)/skills-overlay"
-  fi
-}
-
-commit_all "$attached_checkout"
 cloud_overlay="$cloud_clone_home/attached-overlay"
 cloud_partial="$cloud_clone_home/attached-partial"
+commit_all "$attached_checkout"
 add_overlay "$attached_checkout" "$cloud_overlay" complete
 add_overlay "$attached_checkout" "$cloud_partial" partial
+
 (
   cd "$attached_checkout/.agents"
   exec 9<"$cloud_marker"
   env HOME="$fixture/runtime-user" CODEX_HOME="$cloud_clone_home/.codex" SKILLS_CLOUD_HOME="$cloud_clone_home" bash "$cloud_clone/bootstrap/install.sh"
 )
+
 assert_link "$cloud_clone_home/.agents/skills/sample" "$cloud_overlay/.agents/skills/example/sample"
 assert_link "$cloud_clone_home/.codex/skills/sample" "$cloud_overlay/.agents/.auto_generated/.codex/skills/sample"
 
@@ -247,14 +269,16 @@ assert_absent "$prunable_home/.codex/resources/stale"
 overlay_repo="$fixture/overlay-repo"
 overlay_home="$fixture/overlay-home"
 cp -a "$repo" "$overlay_repo"
+mkdir -p "$overlay_home/.agents"
 git -C "$overlay_repo" init --quiet
 git -C "$overlay_repo" remote add origin https://github.com/julien777z/skills.git
 commit_all "$overlay_repo"
 add_overlay "$overlay_repo" "$fixture/overlay-old" complete
-sleep 1
 add_overlay "$overlay_repo" "$fixture/overlay-new" complete
-mkdir -p "$overlay_home/.agents"
+touch -d @1 "$(git -C "$fixture/overlay-old" rev-parse --absolute-git-dir)/skills-overlay"
+
 env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$overlay_home" CODEX_HOME= bash "$overlay_repo/bootstrap/install.sh"
+
 assert_link "$overlay_home/.agents/skills/sample" "$fixture/overlay-new/.agents/skills/example/sample"
 
 echo 'Installer regression checks passed'

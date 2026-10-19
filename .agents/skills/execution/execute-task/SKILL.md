@@ -745,8 +745,8 @@ new work.
 
 Two streams run side by side from here: the guidance stream and the source stream.
 
-- **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends only verified
-  successful `guidance_correction` entries to `edit-skill`'s **Guidance Delivery** route, delegated
+- **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends the
+  `guidance_correction` batch it freezes to `edit-skill`'s **Guidance Delivery** route, delegated
   so it never waits on the source stream. Edits the GitHub rule's **Branches and Pull Requests**
   puts on this task's source pull request pass their source check and smoke round, as **Guidance
   Delivery** step 1 says, and are pushed to it before that pull request's

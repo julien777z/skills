@@ -22,10 +22,13 @@ sending entries to `edit-skill`'s **Guidance Delivery**, mark every eligible `pe
 `guidance_correction` entry with one batch id; that set is the batch. An entry recorded after that
 moment, the user asking to change a file the batch is changing included, carries no batch id and
 waits as the next batch: the batch in flight never takes it in, reopens an edit for it, or reruns a
-reviewer, gate or smoke round because of it. The batch is done once every entry in it has a verified
-delivery or a recorded hold. The next processing run then freezes the next batch from the waiting
-entries, and the run that holds them processes them before it closes. Only the user's explicit
-instruction to add an entry to the batch in flight puts it there.
+reviewer, gate or smoke round because of it. A repair the batch's own review, gate or smoke round
+requires is the batch's work under `acceptance-gate`'s **Bounds** and `test-skill`, never a new
+entry. The batch is done once every entry in it has a verified delivery or a recorded hold. This
+run then freezes the next batch before it returns — every waiting entry, and every entry an
+earlier batch left held, which resumes at its recorded stage — so a waiting entry is never reported
+as a hold. Only the user's explicit instruction to add an entry to the batch in flight puts it
+there.
 
 ## Workflow
 
@@ -35,11 +38,10 @@ instruction to add an entry to the batch in flight puts it there.
    before acting; a missing, invalid, or incomplete ledger is a recovery condition, not an empty
    result.
 2. Classify each entry by `kind`, then follow its owning workflow.
-   - `guidance_correction`: process it only when its recorded current-work action succeeded,
-     evidence proves the requested result, and it belongs to the batch **Batches** froze. A direct
-     guidance request queued behind a batch has no other action: the user's request, in their
-     words, is its evidence. Send it to `edit-skill`'s **Guidance Delivery** route
-     so canonical guidance completes its delivery gates.
+   - `guidance_correction`: process it only when its recorded action succeeded and evidence proves
+     the requested result, as `edit-skill`'s **Recording During A Task** defines both for a direct
+     guidance request, and it belongs to the batch **Batches** froze. Send it to `edit-skill`'s
+     **Guidance Delivery** route so canonical guidance completes its delivery gates.
    - `artifact`, `plan`, `question`, and `decision`: reconcile the state with the artifact owner,
      plan workflow, or user answer. They never create guidance merely because they were processed.
    - `review`: `review-pass`'s reviewed head for a pull request. Keep it while that pull request is
