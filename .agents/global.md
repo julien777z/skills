@@ -263,10 +263,6 @@ alwaysApply: true
 ## Code layout
 
 - In every language, use blank lines to separate setup, validation, transformations, side effects, and returns. Keep adjacent statements together only when they form one small operation; do not turn a function into an uninterrupted paragraph merely because a formatter permits it. Apply this to every line you write or edit, and elsewhere in a file you change within `pre-production`'s incidental size budget.
-- **Name things with the everyday word a reader expects.** Where the domain or a provider already
-  has a term, use it. A payment the processor reports as settled is `settled`, never
-  `money_landed`, because an unusual synonym makes every reader translate it back. This covers
-  identifiers, fields, messages, documentation and test names in every language.
 - Use current language syntax for simple operations. For one-off Python interpolation, use f-strings instead of string concatenation or `.format()`, and keep spacing in the final string rather than a fragment with a hidden leading space. Follow the Python rule for reusable structured templates.
 
 ```python
@@ -330,8 +326,8 @@ return records;
 
 ## Product Copy
 
-- **Text a person reads sends them to another place with a link, never a route to follow.** "Go to
-  Settings, then Notifications" makes the reader follow a map; the place's name, linked, takes them
+- **Text a person reads sends them to another place with a link, never a route to follow.** "Open
+  Library, then Shared albums" makes the reader follow a map; the place's name, linked, takes them
   there in one action. Where the text renders markup, the name is the link. Where it is plain text
   its reader can copy or follow, such as an API or tool message, an email body or a command's
   output, it carries the place's absolute URL. A surface that cannot hold a link, such as a tooltip
@@ -350,6 +346,10 @@ return records;
   one: its product name, its services, its table and column names, its record types, or the nouns
   its business speaks in. That holds for source, tests, fixtures, examples, and documentation
   alike, and it holds most strongly in a library, where every reader is a different consumer.
+- **Name things with the everyday word a reader expects.** Where the domain or a provider already
+  has a term, use it. A parcel the carrier reports as delivered is `delivered`, never
+  `parcel_arrived`, because an unusual synonym makes every reader translate it back. This covers
+  identifiers, fields, messages, documentation and test names in every language.
 - Name things for the shape being exercised, not for whichever caller happened to prompt the work.
   A test needing a table with a secret column names it for that — a record with a secret — rather
   than borrowing the one real table the change was made for.

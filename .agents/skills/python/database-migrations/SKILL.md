@@ -158,20 +158,22 @@ format transition or recovery mechanism for data explicitly declared disposable 
   work on the branch. A pull request found carrying
   several unlocked revisions on one chain folds them into one before anything else, and a base update
   that adds revisions re-parents the unlocked one onto the new head.
-- **A revision whose first line is the lock marker `lock-revision` writes counts as applied.** Its id,
-  its parent and what it does to the database stay fixed, so it is never folded, re-parented or
-  regenerated: an environment that applied it would sit on a chain it never ran. Its code may still change when the database outcome stays the same — a simplification,
-  a refactor, a clearer helper — proven by the migration tests. A later change to the database goes
-  into one new revision on top, which the next `lock-revision` locks. A base update that adds
-  revisions to its chain is joined with a merge revision. Where the migration tooling accepts only
-  a linear chain, the base's revision moves instead, re-parented onto the branch's head, once the
-  owner confirms no environment has applied it; one an environment has applied needs the tooling
-  to accept the merge revision first.
+- **A revision whose first line is the lock marker `lock-revision` writes counts as applied.** Its
+  id, its parent and what it does to the database stay fixed, so it is never folded, re-parented or
+  regenerated: an environment that applied it would sit on a chain it never ran. Its code may still
+  change when the database outcome stays the same — a simplification, a refactor, a clearer helper —
+  proven by the migration tests. A later change to the database goes into one new revision on top,
+  which the next `lock-revision` locks. A base update that adds revisions to its chain is joined
+  with a merge revision. Where the migration tooling accepts only a linear chain, the base's
+  revision moves instead, re-parented onto the branch's head, once the owner confirms no environment
+  has applied it; one an environment has applied needs the tooling to accept the merge revision
+  first.
 - For a revision the pull request did not add, establish "not applied yet" from the real
   `alembic_version` row in every existing environment that may have applied it; the lock marker or
-  the owner's report of a deploy settles it for the pull request's own. An explicit user statement or repository fact that no such environment exists
-  establishes that scope without inventing a database to query. Data being disposable alone does
-  not establish that a revision is unapplied; that fact decides editing rather than adding.
+  the owner's report of a deploy settles it for the pull request's own. An explicit user statement
+  or repository fact that no such environment exists establishes that scope without inventing a
+  database to query. Data being disposable alone does not establish that a revision is unapplied;
+  that fact decides editing rather than adding.
 - Once any environment has applied it, a later revision is the only route, and for a destructive body
   it is not a repair: that database lost the values and will never re-run the corrected body, a fresh
   one keeps them, and both land on an identical schema — so drift detection stays silent about the

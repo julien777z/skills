@@ -26,7 +26,6 @@ is two invocations, and the user asks for both.
 - `subagent-selection` — dispatch the worker that executes a scope now, in its worktree.
 - `session-ledger` — record a queued-on-merge scope as a step a later turn reads, and the dispatch
   receipt of a scope executed now.
-- `defer-scope` — the durable record of a scope the user also asks to keep.
 
 ## The decision
 

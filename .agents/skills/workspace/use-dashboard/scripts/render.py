@@ -72,11 +72,13 @@ def check_rows(value: object, path: str) -> None:
         check_texts(row, f"{path}[{index}]")
 
 
-def check_choice(value: object, path: str, choices: type[StrEnum]) -> None:
-    """Require one member of a string enum."""
+def check_choice[E: StrEnum](value: object, path: str, choices: type[E]) -> E:
+    """Require one member of a string enum and return it."""
 
     if not isinstance(value, str) or value not in {choice.value for choice in choices}:
         raise DashboardSpecError(f"{path} must be one of: {', '.join(choice.value for choice in choices)}")
+
+    return choices(value)
 
 
 def check_fraction(value: object, path: str) -> None:
@@ -178,10 +180,10 @@ def check_sections(value: object, path: str) -> None:
 
     for index, section in enumerate(check_list(value, path)):
         section_path = f"{path}[{index}]"
-        section_type = section.get("type") if isinstance(section, dict) else None
+        raw_type = section.get("type") if isinstance(section, dict) else None
+        section_type = check_choice(raw_type, f"{section_path}.type", SectionType)
 
-        check_choice(section_type, f"{section_path}.type", SectionType)
-        check_object(section, section_path, SECTION_SHAPES[SectionType(cast(str, section_type))])
+        check_object(section, section_path, SECTION_SHAPES[section_type])
 
 
 def section_shape(

@@ -280,11 +280,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   create, import, a toggle into a mode such as reorder or bulk edit, and the strip that mode shows
   while it is on — sit directly above the content they act on, below the page's banners and its
   load-failure area. Never put them in the header bar, the top navigation, or anywhere else above
-  the banners, where they are far from what they change and easy to miss. The page layout owns
-  that order — banners, failures, actions, content — so no page renders its own toolbar above it.
-  An action on one section or item stays with that section or item. Do not move a contextual action
-  into a detached row merely to satisfy a width or proximity rule. At narrower widths, wrap or stack related content and controls while preserving
-  readable values, visible context, accessible labels and a clear association with their actions.
+  the banners, where they are far from what they change and easy to miss. The page layout owns that
+  order — banners, failures, actions, content — so no page renders its own toolbar above it. An
+  action on one section or item stays with that section or item. Do not move a contextual action
+  into a detached row merely to satisfy a width or proximity rule. At narrower widths, wrap or stack
+  related content and controls while preserving readable values, visible context, accessible labels
+  and a clear association with their actions.
 - **A frame that scrolls shows its scrollbar whenever its content overflows** — a box of legal
   text, a dialog body, a list or a table inside a maximum height — on every platform and before the
   reader touches it, so cut-off text reads as more to scroll rather than as text that ends. A hidden
@@ -499,27 +500,28 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   up from below the viewport's bottom edge to rest a little above it, holding a cancel action that
   restores the saved values and a save action. It floats over the page and never takes room in it,
   so nothing beneath it, a page footer included, moves when it rises. It stays in view as the reader
-  scrolls while changes are unsaved, and slides away once they are saved or cancelled. A reader who unticks one topic on a
-  newsletter preferences page sees it rise, and ticking the topic again sends it away. A save or
-  reset button per section, a row of them at the end of the page or form, and a footer that sticks
-  to the bottom of the page whether or not anything changed are the defect. A form that creates a
-  record or submits a flow step is not editing saved values and keeps its own footer, and a form
-  inside a dialog saves through the dialog's own actions; the panel belongs to a page the reader
-  scrolls. One shared component owns the panel, under **Shared Surfaces**.
+  scrolls while changes are unsaved, and slides away once they are saved or cancelled. A reader who
+  unticks one topic on a newsletter preferences page sees it rise, and ticking the topic again sends
+  it away. A save or reset button per section, a row of them at the end of the page or form, and a
+  footer that sticks to the bottom of the page whether or not anything changed are the defect. A
+  form that creates a record or submits a flow step is not editing saved values and keeps its own
+  footer, and a form inside a dialog saves through the dialog's own actions; the panel belongs to a
+  page the reader scrolls. One shared component owns the panel, under **Shared Surfaces**.
 - **A form a person signs, certifies or attests to starts empty.** Nothing is seeded from a profile
   or an earlier submission, because the signer vouches for what they entered.
 - **A form where the signed-in person enters someone else's details turns browser autofill off on
-  every field, selects included** — a record made on another person's behalf, a person they add to
-  a team, an organization or other record they name — so the browser never fills the reader's own
-  name, address, email or saved organization into a record that is not the reader. One boundary around the form sets it for every control inside, including those a shared
-  field component renders, never a token per field that the next added field forgets. "Off" means
-  what the browser and the common password managers actually honour, which a bare
-  `autocomplete="off"` is not for name, email and address fields. A search or picker box offers
-  nothing the browser saved — neither saved details nor values typed into other fields — wherever
-  it appears, since it never holds anyone's details: Chrome stops typed history only for exactly
-  `off`, and fills nothing in a field it reads as a search term, so such a box takes `off` with a
-  `search` name. The shared input and combobox components own those attributes. A form for the person's
-  own details keeps accurate autocomplete tokens on each field.
+  every field, selects included** — a record made on another person's behalf, a person they add to a
+  team, an organization or other record they name — so the browser never fills the reader's own
+  name, address, email or saved organization into a record that is not the reader. One boundary
+  around the form sets it for every control inside, including those a shared field component
+  renders, never a token per field that the next added field forgets. "Off" means what the browser
+  and the common password managers actually honour, which a bare `autocomplete="off"` is not for
+  name, email and address fields. A search or picker box offers nothing the browser saved — neither
+  saved details nor values typed into other fields — wherever it appears, since it never holds
+  anyone's details: Chrome stops typed history only for exactly `off`, and fills nothing in a field
+  it reads as a search term, so such a box takes `off` with a `search` name. The shared input and
+  combobox components own those attributes. A form for the person's own details keeps accurate
+  autocomplete tokens on each field.
 - **A search box that picks a consequential record — a person, an account, a payee — shows no
   suggestions and makes no request until the reader types.** A list on focus invites a pick by
   proximity rather than intent, and offers records the reader never asked to see. A picker over a

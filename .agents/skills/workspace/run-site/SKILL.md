@@ -189,10 +189,11 @@ and everything the change touched is visible and usable. **Capture the full page
 taken while the window is shorter than the page draws fixed chrome such as a sidebar only as tall as
 the window, leaving an empty band that reads as a layout bug, so size the viewport to the page's full
 height before each capture — the larger of the document's and its scrolling container's scroll
-height — and restore it before interacting again:
+height — and restore it before interacting again. The loop runs over the widths walked for that
+state: 1280 alone when its layout did not change.
 
 ```bash
-for width in 1280 1536 2000; do
+for width in <widths walked>; do
   agent-browser --session <name> set viewport "$width" 900
   agent-browser --session <name> eval "document.documentElement.scrollWidth <= innerWidth"
   height=$(agent-browser --session <name> eval \

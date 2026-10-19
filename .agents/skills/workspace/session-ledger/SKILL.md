@@ -75,9 +75,7 @@ identity, never a second authoritative copy of its records.
      (`next`, `active`, `done`, `blocked` or `skipped`), wall-clock estimate, the observed
      start and finish times once known, and any parts, each with a title, a status from that same
      set and an estimate. Change a step's status when the work changes it, with an
-     observation for the transition; a follow-up plan is an entry of its own. Work the user adds to
-     an active task is recorded the same way as soon as it is added, as a step on that task's plan
-     or a `plan` entry of its own.
+     observation for the transition; a follow-up plan is an entry of its own.
    - For a question put to the user, record a `question` entry: the question, its options, the
      recommendation, the work that depends on it, its status (`open`, `evidence_pending`,
      `answered` or `withdrawn`), and the user's answer in their words with when it was given.
