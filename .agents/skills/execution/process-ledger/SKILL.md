@@ -15,6 +15,18 @@ at their owners.
 - `session-ledger` — resolve, validate, update, and preserve the private task ledger.
 - `edit-skill` — deliver verified `guidance_correction` records into canonical guidance.
 
+## Batches
+
+**One guidance batch is delivered at a time, and it is frozen when its delivery starts.** Before
+sending entries to `edit-skill`'s **Guidance Delivery**, mark every eligible `pending`
+`guidance_correction` entry with one batch id; that set is the batch. An entry recorded after that
+moment, the user asking to change a file the batch is changing included, carries no batch id and
+waits as the next batch: the batch in flight never takes it in, reopens an edit for it, or reruns a
+reviewer, gate or smoke round because of it. The batch is done once every entry in it has a verified
+delivery or a recorded hold. The next processing run then freezes the next batch from the waiting
+entries, and the run that holds them processes them before it closes. Only the user's explicit
+instruction to add an entry to the batch in flight puts it there.
+
 ## Workflow
 
 1. Resolve and read the active task's ledger through `session-ledger`. Honor `execute-task`'s
@@ -23,8 +35,8 @@ at their owners.
    before acting; a missing, invalid, or incomplete ledger is a recovery condition, not an empty
    result.
 2. Classify each entry by `kind`, then follow its owning workflow.
-   - `guidance_correction`: process it only when its recorded current-work action succeeded and
-     evidence proves the requested result. Send it to `edit-skill`'s **Guidance Delivery** route
+   - `guidance_correction`: process it only when its recorded current-work action succeeded,
+     evidence proves the requested result, and it belongs to the batch **Batches** froze. Send it to `edit-skill`'s **Guidance Delivery** route
      so canonical guidance completes its delivery gates.
    - `artifact`, `plan`, `question`, and `decision`: reconcile the state with the artifact owner,
      plan workflow, or user answer. They never create guidance merely because they were processed.

@@ -54,7 +54,8 @@ ask for a plan or for approval of a guidance-output example. An example renders 
 instruction and is task evidence, not a new product experience because a user reads it. A guidance
 edit that intentionally changes the product still follows the global product-decision boundary. The
 required smoke test, review, and acceptance gate validate the correction. When a separate source
-task is active, preserve its execution and follow **Recording During A Task** for the edit's timing.
+task is active, or a guidance batch is in delivery, preserve its execution and follow **Recording
+During A Task** for the edit's timing.
 
 ## Dependencies
 
@@ -85,6 +86,11 @@ task is active, preserve its execution and follow **Recording During A Task** fo
   pull request, apart from edits the GitHub rule puts on a source pull request or holds for another
   repository.
 - The task's next step is never held by a correction: record it and carry on.
+- **While a guidance batch is in delivery, a new guidance change waits for the next batch**, as
+  `process-ledger`'s **Batches** says: whether the user requests it directly or the work turns it
+  up, and even when it changes a file the batch is changing. Record it as a `pending` entry outside
+  the batch, edit none of its files, rerun none of the batch's reviewers or gates, and tell the user
+  it is queued behind the batch in flight.
 
 ## Guidance Delivery
 
@@ -94,7 +100,8 @@ edit on that pull request, or one the GitHub rule's **Merge Authorization** hold
 request in another repository, waits for that merge. Run it as a delegated worker when the session
 can, so the user's review of the source pull request overlaps it.
 
-1. Read every `pending` `guidance_correction` entry whose recorded action succeeded and resume at
+1. Read every `pending` `guidance_correction` entry in the batch `process-ledger` froze whose
+   recorded action succeeded and resume at
    its recorded first nonterminal stage. Only an entry with no stage receipt applies its edits under
    **Behavior** steps 5 and 6, on the branch step 7.1 selects. An edit step 7.1 puts on a source
    pull request this session drives runs step 7.2's source check and step 7.5's smoke round on the
