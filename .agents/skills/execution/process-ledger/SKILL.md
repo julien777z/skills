@@ -1,6 +1,6 @@
 ---
 name: process-ledger
-description: Process a task's private ledger at task completion or when a user asks to process it. Reconcile verified records, route successful guidance corrections into permanent guidance, and retain only entries with a concrete unresolved next action.
+description: Process a task's private ledger at task completion or when a user asks to process it. Reconcile verified records, route admitted guidance corrections, direct guidance requests included, into permanent guidance, and retain only entries with a concrete unresolved next action.
 short_description: 'Process verified private-ledger records into durable outcomes.'
 ---
 
@@ -13,21 +13,23 @@ at their owners.
 ## Dependencies
 
 - `session-ledger` — resolve, validate, update, and preserve the private task ledger.
-- `edit-skill` — deliver verified `guidance_correction` records into canonical guidance.
+- `edit-skill` — deliver admitted `guidance_correction` records into canonical guidance.
 
 ## Batches
 
-**One guidance batch is delivered at a time, and it is frozen when its delivery starts.** Before
-sending entries to `edit-skill`'s **Guidance Delivery**, mark every eligible `pending`
-`guidance_correction` entry with one batch id; that set is the batch. An entry recorded after that
+**One guidance batch is delivered at a time, and it is frozen when its delivery starts.** A run
+that finds a batch in flight freezes nothing; the run delivering that batch freezes the next one.
+Otherwise, before sending entries to `edit-skill`'s **Guidance Delivery**, mark with one batch id
+every `pending` `guidance_correction` entry step 2 admits that no unfinished batch holds; that set
+is the batch. An entry recorded after that
 moment, the user asking to change a file the batch is changing included, carries no batch id and
 waits as the next batch: the batch in flight never takes it in, reopens an edit for it, or reruns a
 reviewer, gate or smoke round because of it. A repair the batch's own review, gate or smoke round
 requires is the batch's work under `acceptance-gate`'s **Bounds** and `test-skill`, never a new
-entry. The batch is done once every entry in it has a verified delivery or a recorded hold. This
-run then freezes the next batch before it returns — every waiting entry, and every entry an
-earlier batch left held, which resumes at its recorded stage — so a waiting entry is never reported
-as a hold. Only the user's explicit instruction to add an entry to the batch in flight puts it
+entry. The batch is done once every entry in it has a verified delivery or a recorded hold. The run
+then freezes and delivers the next batch from every waiting entry and every held entry whose hold
+has since resolved, which resumes at its recorded stage. When no entry waits and no hold has
+resolved, it returns, reporting each remaining hold; a waiting entry is never reported as a hold. Only the user's explicit instruction to add an entry to the batch in flight puts it
 there.
 
 ## Workflow
@@ -38,9 +40,9 @@ there.
    before acting; a missing, invalid, or incomplete ledger is a recovery condition, not an empty
    result.
 2. Classify each entry by `kind`, then follow its owning workflow.
-   - `guidance_correction`: process it only when its recorded action succeeded and evidence proves
-     the requested result, as `edit-skill`'s **Recording During A Task** defines both for a direct
-     guidance request, and it belongs to the batch **Batches** froze. Send it to `edit-skill`'s
+   - `guidance_correction`: process it only when `edit-skill`'s **Recording During A Task** admits
+     it — a verified successful correction, or a direct guidance request on the user's words — and
+     it belongs to the batch **Batches** froze. Send it to `edit-skill`'s
      **Guidance Delivery** route so canonical guidance completes its delivery gates.
    - `artifact`, `plan`, `question`, and `decision`: reconcile the state with the artifact owner,
      plan workflow, or user answer. They never create guidance merely because they were processed.
@@ -50,7 +52,7 @@ there.
    - An unrecognized kind: preserve it only when evidence identifies a concrete owning workflow or
      next action; otherwise remove it as invalid.
 3. A failed, blocked, unavailable, or unverified requested action is not a `guidance_correction`
-   to process. Keep its evidence in the task's verification record, continue recovery or escalate
+   to process; a direct guidance request is not one, since its delivery is its action. Keep its evidence in the task's verification record, continue recovery or escalate
    the live task as needed, and do not create, amend, or deliver permanent guidance from it.
 4. Judge terminality against each record's complete owning outcome, including its required delivery
    and verification. Remove it only when that outcome is verified complete or evidence proves the

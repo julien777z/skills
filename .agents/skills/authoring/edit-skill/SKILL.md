@@ -15,8 +15,8 @@ recording a guidance correction. Record only a verified success, or a direct gui
 **Recording During A Task**;
 the guidance files stay untouched until that task reaches `execute-task`'s **Completion**, which
 starts `process-ledger`. A failed, blocked, or unavailable action is task evidence only: it
-does not create a ledger correction or a guidance edit. With no other task running, first perform
-the requested action and record it only after it succeeds.
+does not create a ledger correction or a guidance edit. With no other task running and no guidance
+batch in delivery, first perform the requested action and record it only after it succeeds.
 
 An open `.agents` pull request is not a delivery result. Processing continues through its source
 check, required review steps, merge or hold, Agent Sync result, and verification of generated root
@@ -83,9 +83,10 @@ During A Task** for the edit's timing.
   `guidance_correction` entry, and do not edit canonical guidance from that outcome.
 - Do not edit the guidance files, open a guidance branch, or start a worker for a successful
   correction while the task runs.
-- **A direct request to change guidance is its own requested action.** When it is recorded rather
-  than applied at once, during a task or while a batch is in delivery, record it `pending` with the
-  user's words as its evidence.
+- **A direct request to change guidance is its own requested action**: its delivery is that action,
+  and the user's words are its evidence. When it is recorded rather than applied at once, during a
+  task or while a batch is in delivery, record it `pending`; `process-ledger` admits it on that
+  evidence.
 - A related correction recorded before its batch is frozen joins the same entry or sits beside it
   in that batch; the batch is one pull request, apart from edits the GitHub rule puts on a source
   pull request or holds for another repository. One recorded while a batch is in delivery waits for
