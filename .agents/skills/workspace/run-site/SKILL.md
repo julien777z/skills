@@ -109,7 +109,10 @@ say so and name what only a harness rendered.
 ### Sign in
 
 Use the repository's normal sign-in flow and the test identity, tenant, fixtures, provider modes,
-and persistence checks its project guidance names. Use those facts exactly and reuse
+and persistence checks its project guidance names. **Walk the change as each kind of user whose
+pages it reaches**, signing in with the identity project guidance names for each role: one role's
+walkthrough says nothing about what another sees. Where the repository provides a one-time sign-in
+link or token, sign in with it and leave the identity's password alone. Use those facts exactly and reuse
 what exists: never invent a test identity or turn a provider fixture into a generic workflow. **Never work around the sign-in wall**: a
 preview route, a stubbed page, a component mounted where it does not ship, or a widened public-route
 matcher proves the component renders and nothing about the screen a user reaches. If sign-in
