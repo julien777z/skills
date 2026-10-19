@@ -131,6 +131,32 @@ mkdir -p "$cloud_clone_home/.codex"
 assert_link "$cloud_clone_home/.codex/skills/sample" "$attached_checkout/.agents/.auto_generated/.codex/skills/sample"
 [ "$(grep -Fc "$cloud_clone_home/.codex:" "$fixture/cloud-codex-output")" -eq 1 ]
 
+commit_all() {
+  git -C "$1" add -A
+  git -C "$1" -c user.name=test -c user.email=test@example.invalid commit --quiet -m fixture
+}
+
+add_overlay() {
+  git -C "$1" worktree add --quiet -b "$(basename "$2")" "$2"
+
+  if [ "$3" = complete ]; then
+    touch "$(git -C "$2" rev-parse --absolute-git-dir)/skills-overlay"
+  fi
+}
+
+commit_all "$attached_checkout"
+cloud_overlay="$cloud_clone_home/attached-overlay"
+cloud_partial="$cloud_clone_home/attached-partial"
+add_overlay "$attached_checkout" "$cloud_overlay" complete
+add_overlay "$attached_checkout" "$cloud_partial" partial
+(
+  cd "$attached_checkout/.agents"
+  exec 9<"$cloud_marker"
+  env HOME="$fixture/runtime-user" CODEX_HOME="$cloud_clone_home/.codex" SKILLS_CLOUD_HOME="$cloud_clone_home" bash "$cloud_clone/bootstrap/install.sh"
+)
+assert_link "$cloud_clone_home/.agents/skills/sample" "$cloud_overlay/.agents/skills/example/sample"
+assert_link "$cloud_clone_home/.codex/skills/sample" "$cloud_overlay/.agents/.auto_generated/.codex/skills/sample"
+
 conflict_home="$fixture/conflict"
 conflict_runtime="$fixture/conflict-runtime"
 mkdir -p "$conflict_home/.codex" "$conflict_home/.agents/skills/sample"
@@ -217,5 +243,18 @@ ln -s "$repo/missing-resource" "$prunable_home/.codex/resources/stale"
 
 env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$prunable_home" CODEX_HOME="$prunable_runtime" bash "$repo/bootstrap/install.sh"
 assert_absent "$prunable_home/.codex/resources/stale"
+
+overlay_repo="$fixture/overlay-repo"
+overlay_home="$fixture/overlay-home"
+cp -a "$repo" "$overlay_repo"
+git -C "$overlay_repo" init --quiet
+git -C "$overlay_repo" remote add origin https://github.com/julien777z/skills.git
+commit_all "$overlay_repo"
+add_overlay "$overlay_repo" "$fixture/overlay-old" complete
+sleep 1
+add_overlay "$overlay_repo" "$fixture/overlay-new" complete
+mkdir -p "$overlay_home/.agents"
+env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$overlay_home" CODEX_HOME= bash "$overlay_repo/bootstrap/install.sh"
+assert_link "$overlay_home/.agents/skills/sample" "$fixture/overlay-new/.agents/skills/example/sample"
 
 echo 'Installer regression checks passed'

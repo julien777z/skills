@@ -18,6 +18,54 @@ is_skills_remote() {
   esac
 }
 
+source_git() {
+  if [ -n "${CLOUD_HOME:-}" ] && [ "$(id -u)" -ne 0 ]; then
+    run_as_cloud_user git "$@"
+  else
+    git -c safe.directory='*' "$@"
+  fi
+}
+
+# A refresh overlay writes `skills-overlay` into its own Git directory once it is complete.
+overlay_marker() {
+  local git_dir
+
+  git_dir="$(source_git -C "$1" rev-parse --absolute-git-dir 2>/dev/null)" || return 1
+
+  [ -f "$git_dir/skills-overlay" ] && printf '%s\n' "$git_dir/skills-overlay"
+}
+
+# Every linked worktree of a checkout, an overlay included, stands for its main checkout.
+main_checkout_of() {
+  local common_dir
+
+  common_dir="$(source_git -C "$1" rev-parse --path-format=absolute --git-common-dir 2>/dev/null)" || {
+    printf '%s\n' "$1"
+
+    return
+  }
+
+  case "$common_dir" in
+    */.git) printf '%s\n' "${common_dir%/.git}" ;;
+    *) printf '%s\n' "$1" ;;
+  esac
+}
+
+newest_overlay() {
+  local worktree marker newest="" newest_marker=""
+
+  while IFS= read -r worktree; do
+    marker="$(overlay_marker "$worktree")" || continue
+
+    if [ -z "$newest_marker" ] || [ "$marker" -nt "$newest_marker" ]; then
+      newest="$worktree"
+      newest_marker="$marker"
+    fi
+  done < <(source_git -C "$1" worktree list --porcelain 2>/dev/null | sed -n 's/^worktree //p')
+
+  printf '%s\n' "$newest"
+}
+
 if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
   CLOUD_HOME="${REPO_ROOT%/.local/share/agent-skills}"
   CLOUD_CLAUDE_HOME=""
@@ -112,6 +160,10 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
   declare -A seen_checkouts=()
 
   current_checkout="$(git -c safe.directory='*' -C "$PWD" rev-parse --show-toplevel 2>/dev/null || true)"
+  if [ -n "$current_checkout" ] && overlay_marker "$current_checkout" > /dev/null; then
+    current_checkout="$(main_checkout_of "$current_checkout")"
+  fi
+
   if [ -n "$current_checkout" ] && [ "$current_checkout" != "$REPO_ROOT" ] && is_skills_checkout "$current_checkout"; then
     seen_checkouts["$current_checkout"]=1
     source_checkout="$current_checkout"
@@ -127,7 +179,7 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
 
   for search_root in "${search_roots[@]}"; do
     while IFS= read -r git_marker; do
-      candidate="$(dirname "$git_marker")"
+      candidate="$(main_checkout_of "$(dirname "$git_marker")")"
 
       [ "$candidate" = "$REPO_ROOT" ] && continue
       [ -z "${seen_checkouts[$candidate]:-}" ] || continue
@@ -145,6 +197,12 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
   done
 
   REPO_ROOT="$source_checkout"
+fi
+
+overlay_root="$(newest_overlay "$REPO_ROOT")"
+
+if [ -n "$overlay_root" ]; then
+  REPO_ROOT="$overlay_root"
 fi
 
 CANONICAL_SKILLS="$REPO_ROOT/.agents/skills"
