@@ -1,6 +1,6 @@
 ---
 name: code-slop-doctor
-description: Strip the complexity a codebase does not need and the code a reviewer reads as generated slop — pass-through layers, one-case abstractions, duplicates, divergent siblings, legacy paths, tangled or padded code, and surplus migrations, build files, configuration names and dependencies. Use to deslop a repository or one of its phases, lenses or paths.
+description: Strip the complexity a codebase does not need and the code a reviewer reads as generated slop — pass-through layers, one-case abstractions, use cases split across many calls, duplicates, divergent siblings, legacy paths, tangled or padded code, and surplus migrations, build files, configuration names and dependencies. Use to deslop a repository or one of its phases, lenses or paths.
 short_description: 'Remove unneeded layers, abstractions, duplicates, legacy paths, code that reads as slop, configuration names and dependencies.'
 disable-model-invocation: true
 ---
@@ -71,6 +71,11 @@ lens's checks name, and build these tables before judging anything:
   whose environment lives on a hosting platform is one column, read by name through the deployment
   skill; one that cannot be read is recorded unread, never empty. For every field whose default is
   absence, record whether its reader refuses it, branches on it, or passes it through;
+- a **use-case table**: one row per use case — a page or screen loading, a user action, a job run, a
+  request handler or RPC operation serving its caller — naming its entry point and every call it
+  makes to an operation the repository owns, at every hop behind it, with which calls wait on
+  another's result and how long the use case waits; a frontend use case is read from the network log
+  of the loaded screen, an internal one from traces or service logs;
 - per language and project: every manifest and its sections, every lockfile, tools a workflow
   installs outside a manifest, first-party imports across source, tests, scripts and workflow
   helpers, and every tool invocation in CI, scripts and hooks.
@@ -78,7 +83,8 @@ lens's checks name, and build these tables before judging anything:
 The measurements taken once before fan-out: the repository's configured lint and type checks over
 the scope with no changed-lines filter; its cross-file duplication detector over each phase's trees
 at the tool's default similarity; the chain replay and drift check its migration tooling defines;
-and each deployment's configuration column, read by name once.
+each use case's calls and timing on the running local stack; and each deployment's configuration
+column, read by name once.
 
 ## Lenses
 
@@ -145,6 +151,33 @@ The remedy is one owner, placed by `code-simplify`'s ownership analysis — the 
 consumer reads where more than one deployable needs it — with the copies and the bridge deleted and
 generated types used directly or derived from. Left alone: a generated mirror; a demonstrated
 dependency, domain or contract boundary; two contract models, which are `schema-doctor`'s.
+
+### Fragmented Use Case
+
+One use case paying for many calls to operations the repository owns. The unit is the use case, not
+the endpoint: read each row of the use-case table, never the list of operations alone.
+
+- every use case calling several owned operations it always needs together — one screen's load, one
+  handler serving one request;
+- every call made once per item — per row, per record, per identifier — inside a loop, a list render
+  or a fan-out, where one operation could take the set;
+- every chain of calls each waiting for the one before although none reads another's result;
+- every owned operation whose callers all pass its result straight to another owned operation;
+- static data the client can carry in its build — a published reference list, an owned enum and
+  its labels — fetched at run time.
+
+The remedy is the operation shaped for its use case: one owned operation returning what that use
+case always needs together, assembled server-side from the existing queries and concurrently where
+they are independent; a batch operation taking the set in place of the per-item call; independent
+calls that stay separate issued together rather than in turn; static data shipped with the client
+through its package or generated contract; every caller moved, and each operation left with no
+caller deleted with its client. The use case is timed before and after on the same stack, and a
+merge that makes it wait longer for its first useful content is not the remedy. Left alone: an
+operation another use case calls on its own, which a merge never removes; a read only some runs of
+the use case need, which a merge never folds in; a call a later interaction makes — a tab opened, a
+page turned, a row expanded; reads under different authorization or caching that one response cannot
+carry; a slow section kept apart so it does not hold a fast one, with the timing showing it; and a
+third-party provider's operations, batched only where the provider offers it.
 
 ### Divergent Siblings
 
@@ -445,8 +478,9 @@ against the settings model its process loads, one name declared on two models, a
 each checklist, manifest and example file names against the configuration matrix; and compares
 manifests for one package pinned differently across projects or languages and a check one project
 runs that its sibling does not. The final adversarial reviewer tries to reach each removed layer,
-branch and alias from a live caller, confirms no import of a moved or renamed module still points at
-its old path, replays every chain the run touched, confirms a stacked migration correction did not
+branch, alias and operation from a live caller, confirms each merged operation returns only what
+every run of its use cases needs and each use case waits no longer than before, confirms no import
+of a moved or renamed module still points at its old path, replays every chain the run touched, confirms a stacked migration correction did not
 narrow the approved downgrade or survivorship coverage, challenges every revision kept as applied
 without version-table evidence, confirms each removed configuration name and package has no
 surviving reader or importer, re-traces every retained package to an importer or an invocation,
@@ -460,6 +494,8 @@ confirms that the repository's tests pass on each batch.
 - each kind's slot table before and after;
 - each module merged, moved, renamed, collapsed or split, with its importers moved;
 - each layer, abstraction and alias removed, with its callers;
+- the use-case table before and after: calls and wait per use case, and each operation merged,
+  batched or deleted with its callers moved;
 - each duplicate and its surviving owner;
 - each flag gating a former behavior, its readers and retiring backfill; each suppression removed
   and the rule code proposed as its guard; each check whose verdict gates again;
