@@ -101,7 +101,9 @@ with an obsolete owned contract or revision.
   is applied there, and other pages with the same shape are listed for the user to decide on,
   never changed in the same pass. A shape a standing rule already named as a defect, and a broken
   mechanism, a wrong value, a missing guard or a parallel implementation, stay under the bullets
-  above on every page.
+  above on every page. A page that builds its own copy of a shared component moves onto the shared
+  one in the same pass even though its look changes with it: it takes the look the rest of the
+  product already has, which is no new choice about that page.
 - Inspect the complete mechanism before choosing its repair. Prefer the clean result that solves
   that defect throughout its affected paths; do not equate a broader cleanup with a better fix.
 - The bar is what the cleanest result requires, not what the smallest diff permits. Existing users
