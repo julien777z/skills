@@ -4,72 +4,24 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 INSTALLER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly SKILLS_REMOTE='https://github.com/julien777z/skills.git'
+INSTALL_MODE=apply
+LOCAL_ONLY=0
+
+for option in "$@"; do
+  case "$option" in
+    --check) INSTALL_MODE=check ;;
+    --local-only) LOCAL_ONLY=1 ;;
+    *) echo "Unknown option: $option" >&2; exit 1 ;;
+  esac
+done
+
 reexecuted=0
 
 if IFS= read -r -u 9 reexec_root 2>/dev/null && [ "$reexec_root" = "$REPO_ROOT" ]; then
   reexecuted=1
 fi
 
-is_skills_remote() {
-  case "$1" in
-    "$SKILLS_REMOTE"|https://github.com/julien777z/skills|git@github.com:julien777z/skills.git|git@github.com:julien777z/skills)
-      return 0 ;;
-    *) return 1 ;;
-  esac
-}
-
-source_git() {
-  if [ -n "${CLOUD_HOME:-}" ] && [ "$(id -u)" -ne 0 ]; then
-    run_as_cloud_user git "$@"
-  else
-    git -c safe.directory='*' "$@"
-  fi
-}
-
-# A refresh overlay writes `skills-overlay` into its own Git directory once it is complete.
-overlay_marker() {
-  local git_dir
-
-  git_dir="$(source_git -C "$1" rev-parse --absolute-git-dir 2>/dev/null)" || return 1
-
-  [ -f "$git_dir/skills-overlay" ] && printf '%s\n' "$git_dir/skills-overlay"
-}
-
-# Every linked worktree of a checkout, an overlay included, stands for its main checkout.
-main_checkout_of() {
-  local common_dir
-
-  common_dir="$(source_git -C "$1" rev-parse --git-common-dir 2>/dev/null)" || {
-    printf '%s\n' "$1"
-
-    return
-  }
-
-  case "$common_dir" in
-    /*) ;;
-    *) common_dir="$1/$common_dir" ;;
-  esac
-
-  case "$common_dir" in
-    */.git) (cd "${common_dir%/.git}" 2>/dev/null && pwd) || printf '%s\n' "$1" ;;
-    *) printf '%s\n' "$1" ;;
-  esac
-}
-
-newest_overlay() {
-  local worktree marker newest="" newest_marker=""
-
-  while IFS= read -r worktree; do
-    marker="$(overlay_marker "$worktree")" || continue
-
-    if [ -z "$newest_marker" ] || [ "$marker" -nt "$newest_marker" ]; then
-      newest="$worktree"
-      newest_marker="$marker"
-    fi
-  done < <(source_git -C "$1" worktree list --porcelain 2>/dev/null | sed -n 's/^worktree //p')
-
-  printf '%s\n' "$newest"
-}
+source "$REPO_ROOT/.agents/hooks/skills-refresh/installation.sh"
 
 if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
   CLOUD_HOME="${REPO_ROOT%/.local/share/agent-skills}"
@@ -113,7 +65,7 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
 
   is_skills_checkout "$REPO_ROOT" || { echo "Setup clone is not the skills repository: $REPO_ROOT" >&2; exit 1; }
 
-  if [ "$reexecuted" -eq 0 ]; then
+  if [ "$reexecuted" -eq 0 ] && [ "$LOCAL_ONLY" -eq 0 ]; then
     if [ -n "$(run_as_cloud_user git -C "$REPO_ROOT" status --porcelain)" ]; then
       echo "Skills setup clone has local edits; refusing to overwrite them: $REPO_ROOT" >&2
       exit 1
@@ -208,10 +160,11 @@ fi
 overlay_root="$(newest_overlay "$REPO_ROOT")"
 
 if [ -n "$overlay_root" ]; then
-  echo "Using the refresh overlay $overlay_root; reconcile-skills rebuilds it from the latest default branch."
+  [ "$INSTALL_MODE" = check ] || echo "Using the refresh overlay $overlay_root; reconcile-skills rebuilds it from the latest default branch."
   REPO_ROOT="$overlay_root"
 fi
 
+MAIN_CHECKOUT="$(main_checkout_of "$REPO_ROOT")"
 CANONICAL_SKILLS="$REPO_ROOT/.agents/skills"
 CANONICAL_AGENTS="$REPO_ROOT/.agents/agents"
 CANONICAL_RULES="$REPO_ROOT/.agents/rules"
@@ -239,252 +192,6 @@ if [ -n "${CLOUD_HOME:-}" ]; then
     TARGET_HOMES+=("$HOME")
   fi
 fi
-
-check_link() {
-  local link="$1" resolved old_root old_remote
-
-  [ -e "$link" ] || [ -L "$link" ] || return 0
-
-  if [ ! -L "$link" ]; then
-    echo "conflict: $link is a real file or directory" >&2
-    return 1
-  fi
-
-  resolved="$(realpath "$link" 2>/dev/null || true)"
-  [ -n "$resolved" ] || resolved="$(readlink "$link")"
-
-  case "$resolved" in
-    "$REPO_ROOT"/*) return 0 ;;
-  esac
-
-  old_root="$(git -c safe.directory='*' -C "$(dirname "$resolved")" rev-parse --show-toplevel 2>/dev/null || true)"
-  old_remote="$(git -c safe.directory='*' -C "$old_root" remote get-url origin 2>/dev/null || true)"
-
-  if is_skills_remote "$old_remote"; then
-    case "$resolved" in
-      "$old_root"/.agents/*|"$old_root"/bootstrap/*) return 0 ;;
-    esac
-  fi
-
-  echo "conflict: $link points outside $REPO_ROOT" >&2
-  return 1
-}
-
-check_directory() {
-  local directory="$1"
-
-  while [ "$directory" != / ] && [ "$directory" != . ]; do
-    if [ -L "$directory" ]; then
-      echo "conflict: $directory is a symlink" >&2
-      return 1
-    fi
-
-    if [ -e "$directory" ] && [ ! -d "$directory" ]; then
-      echo "conflict: $directory is not a directory" >&2
-      return 1
-    fi
-
-    directory="$(dirname "$directory")"
-  done
-}
-
-preflight_provider() {
-  local provider="$1" root="$2" skill agent rule resource name failed=0
-
-  check_directory "$root/skills" || return 1
-
-  [ -d "$root" ] || return 0
-
-  while IFS= read -r skill; do
-    name="$(basename "$skill")"
-
-    check_link "$root/skills/$name" || failed=1
-  done < <(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)
-
-  if [ "$provider" = agents ]; then
-    return "$failed"
-  fi
-
-  check_directory "$root/resources" || failed=1
-
-  if [ -d "$CANONICAL_RESOURCES" ]; then
-    for resource in "$CANONICAL_RESOURCES"/*; do
-      [ -d "$resource" ] || continue
-
-      name="$(basename "$resource")"
-
-      check_link "$root/resources/$name" || failed=1
-    done
-  fi
-
-  if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -d "$CANONICAL_AGENTS" ]; then
-    check_directory "$root/agents" || failed=1
-
-    for agent in "$CANONICAL_AGENTS"/*.md; do
-      [ -f "$agent" ] || continue
-
-      name="$(basename "$agent")"
-
-      check_link "$root/agents/$name" || failed=1
-    done
-  fi
-
-  if [ -d "$CANONICAL_RULES" ]; then
-    check_directory "$root/rules" || failed=1
-
-    for rule in "$CANONICAL_RULES"/*.md; do
-      [ -f "$rule" ] || continue
-
-      name="$(basename "$rule")"
-
-      if [ "$provider" = "cursor" ]; then
-        name="${name%.md}.mdc"
-      fi
-
-      check_link "$root/rules/$name" || failed=1
-    done
-  fi
-
-  if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ "$CANONICAL_GLOBAL" != "$CANONICAL_RULES/global.md" ]; then
-    check_directory "$root/rules" || failed=1
-
-    name="global.md"
-    if [ "$provider" = "cursor" ]; then
-      name="global.mdc"
-    fi
-
-    check_link "$root/rules/$name" || failed=1
-  fi
-
-  if [ "$provider" = "codex" ] && { [ -e "$root/AGENTS.md" ] || [ -L "$root/AGENTS.md" ]; }; then
-    check_link "$root/AGENTS.md" || failed=1
-  fi
-
-  [ "$failed" -eq 0 ]
-}
-
-link_source() {
-  local provider="$1" kind="$2" name="$3" canonical="$4"
-  local mirror="$GENERATED_ROOT/.$provider/$kind/$name"
-
-  if [ -e "$mirror" ]; then
-    printf '%s\n' "$mirror"
-  else
-    printf '%s\n' "$canonical"
-  fi
-}
-
-prune_links() {
-  local dir="$1" link target old_root relative
-
-  for link in "$dir"/*; do
-    [ -L "$link" ] || continue
-
-    target="$(readlink "$link")"
-
-    case "$target" in
-      "$REPO_ROOT"/*) [ -e "$link" ] || rm -f "$link" ;;
-      *)
-        check_link "$link" >/dev/null 2>&1 || continue
-
-        old_root="$(git -c safe.directory='*' -C "$(dirname "$target")" rev-parse --show-toplevel 2>/dev/null || true)"
-
-        [ -n "$old_root" ] || continue
-
-        relative="${target#"$old_root"/}"
-
-        [ -e "$REPO_ROOT/$relative" ] || rm -f "$link"
-        ;;
-    esac
-  done
-}
-
-install_provider() {
-  local provider="$1" root="$2" skill agent rule resource name skills=0 agents=0 rules=0 resources=0
-
-  [ -d "$root" ] || return 0
-
-  found_root=1
-
-  mkdir -p "$root/skills"
-
-  while IFS= read -r skill; do
-    name="$(basename "$skill")"
-
-    ln -sfn "$(link_source "$provider" skills "$name" "$skill")" "$root/skills/$name"
-    skills=$((skills + 1))
-  done < <(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)
-
-  prune_links "$root/skills"
-
-  if [ "$provider" = agents ]; then
-    echo "$root: $skills skills linked"
-
-    return
-  fi
-
-  if [ -d "$CANONICAL_RESOURCES" ]; then
-    mkdir -p "$root/resources"
-
-    for resource in "$CANONICAL_RESOURCES"/*; do
-      [ -d "$resource" ] || continue
-
-      name="$(basename "$resource")"
-
-      ln -sfn "$resource" "$root/resources/$name"
-      resources=$((resources + 1))
-    done
-
-  fi
-
-  prune_links "$root/resources"
-
-  if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -d "$CANONICAL_AGENTS" ]; then
-    mkdir -p "$root/agents"
-
-    for agent in "$CANONICAL_AGENTS"/*.md; do
-      [ -f "$agent" ] || continue
-
-      name="$(basename "$agent")"
-
-      ln -sfn "$(link_source "$provider" agents "$name" "$agent")" "$root/agents/$name"
-      agents=$((agents + 1))
-    done
-
-    prune_links "$root/agents"
-  fi
-
-  if [ -d "$CANONICAL_RULES" ]; then
-    mkdir -p "$root/rules"
-
-    for rule in "$CANONICAL_RULES"/*.md; do
-      [ -f "$rule" ] || continue
-
-      name="$(basename "$rule")"
-
-      if [ "$provider" = "cursor" ]; then name="${name%.md}.mdc"; fi
-
-      ln -sfn "$(link_source "$provider" rules "$name" "$rule")" "$root/rules/$name"
-      rules=$((rules + 1))
-    done
-
-    prune_links "$root/rules"
-  fi
-
-  if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ "$CANONICAL_GLOBAL" != "$CANONICAL_RULES/global.md" ]; then
-    name="global.md"
-    if [ "$provider" = "cursor" ]; then name="global.mdc"; fi
-
-    ln -sfn "$CANONICAL_GLOBAL" "$root/rules/$name"
-    rules=$((rules + 1))
-  fi
-
-  if [ "$provider" = "codex" ]; then
-    ln -sfn "$CANONICAL_GLOBAL" "$root/AGENTS.md"
-  fi
-
-  echo "$root: $skills skills, $agents agents, $rules rules, $resources resources linked"
-}
 
 INSTALL_PROVIDERS=()
 INSTALL_ROOTS=()
@@ -529,6 +236,10 @@ preflight_ok=1
 
 for index in "${!INSTALL_ROOTS[@]}"; do
   preflight_provider "${INSTALL_PROVIDERS[$index]}" "${INSTALL_ROOTS[$index]}" || preflight_ok=0
+
+  if [ "${INSTALL_PROVIDERS[$index]}" = codex ] || [ "${INSTALL_PROVIDERS[$index]}" = claude ]; then
+    python3 "$REPO_ROOT/.agents/hooks/skills-refresh/configuration.py" preflight "${INSTALL_PROVIDERS[$index]}" "${INSTALL_ROOTS[$index]}" "$REPO_ROOT" || preflight_ok=0
+  fi
 done
 
 if [ "$preflight_ok" -eq 0 ]; then
@@ -536,10 +247,17 @@ if [ "$preflight_ok" -eq 0 ]; then
   exit 1
 fi
 
+install_changed=0
+
 for index in "${!INSTALL_ROOTS[@]}"; do
-  mkdir -p "${INSTALL_ROOTS[$index]}"
+  [ "$INSTALL_MODE" = check ] || mkdir -p "${INSTALL_ROOTS[$index]}"
   install_provider "${INSTALL_PROVIDERS[$index]}" "${INSTALL_ROOTS[$index]}"
 done
+
+if [ "$INSTALL_MODE" = check ]; then
+  [ "$install_changed" -eq 0 ] || exit 3
+  exit 0
+fi
 
 if [ "$found_root" -eq 0 ]; then
   echo "No user-level agent root found (looked for .claude, .codex, .cursor); nothing linked."
@@ -547,6 +265,6 @@ else
   echo "Installed skills from $REPO_ROOT"
 fi
 
-if [ "${CLOUD_HOME:-}" = /home/claude ]; then
+if [ "$LOCAL_ONLY" -eq 0 ] && [ "${CLOUD_HOME:-}" = /home/claude ]; then
   bash "$INSTALLER_DIR/resources/install_pass_cli.sh"
 fi

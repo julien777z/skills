@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "",
+            "timeout": 110,
+            "statusMessage": "Checking installed shared skills"
+          }
+        ]
+      }
+    ]
+  }
+}

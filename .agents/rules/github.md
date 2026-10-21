@@ -208,6 +208,9 @@ alwaysApply: true
   deferred to the next request`. The next request, in this session or a later one, runs the refresh
   first unless the installed copy already carries the merge, as one a cloud session installs at
   start with no refresh overlay does.
+- The shared SessionStart hook repairs installation links on startup and resume after local pulls;
+  it does not fetch remote updates or rebuild pending overlays. Use the refresh below when those
+  operations are required.
 - Select the refresh route before checking local changes. When the repository supplies the installed
   shared skills, invoke `reconcile-skills`; it keeps pending agent-configuration changes in effect,
   dirty checkouts and open pull requests alike. The checkout-only restriction below does not apply

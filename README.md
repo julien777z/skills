@@ -10,7 +10,9 @@ vendors the third-party skills and reference collections registered under `.agen
 ## Quick Start
 
 For a local installation, run `bash bootstrap/install.sh` from the main checkout. User-level links
-point into that checkout; pull `main` there after a merge to update installed guidance. While skill
+point into that checkout. Codex and Claude SessionStart hooks check and repair owned installation
+links on startup and resume, including skills added, renamed or removed after a pull. Changes pulled
+during an open session are checked at its next startup or resume. While skill
 changes are pending, the agent's refresh links them into an overlay worktree beside the checkout
 instead, and installed guidance updates when the next refresh rebuilds it. Edit skills on a separate
 branch or worktree. For Claude cloud, put this at the start of the environment setup script, before
@@ -46,7 +48,15 @@ installer exits on update, conflict, or installation failure.
 The local installer links skills, reference collections, reusable rules, and applicable agent definitions into existing
 Claude, Codex, and Cursor user roots. Codex's global `AGENTS.md` links to the same canonical
 `global.md` rule used by the other harnesses. Repository-specific rules stay in each repository's
-`project.md`. Re-running refreshes owned links and prunes obsolete ones; real content or foreign
+`project.md`. The installer registers the owned SessionStart handler without replacing other hooks or settings.
+Codex requires its native review and trust of a new hook definition before running it. Startup checks
+use local sources without fetching remotely; `reconcile-skills` owns remote refreshes and rebuilding
+pending overlays. A changed overlay input instructs the agent to reconcile before ordinary work.
+Claude requests a skill re-scan after a startup repair. Codex discovers skills before its
+SessionStart hook; newly repaired skills appear in the next session, and the hook reports that
+limitation rather than claiming the active catalogue was reloaded.
+
+Re-running refreshes owned links and prunes obsolete ones; real content or foreign
 links at an installed path are reported before any links change.
 
 ## Layout
@@ -54,6 +64,7 @@ links at an installed path are reported before any links change.
 | Path | Purpose |
 |---|---|
 | `.agents/skills/<category>/<name>/` | One skill: `SKILL.md`, with `references/`, `scripts/`, `assets/`, or `resources/` beside it. The categories sort the skills and reach no provider — each one still installs as `<name>`, so a name is unique across the whole tree. |
+| `.agents/hooks/skills-refresh/` | Canonical SessionStart hook configuration, provider adaptation and shared installation helpers. |
 | `.agents/agents/` | Subagent definitions; the tier each runs on is stated by the skill that launches it. |
 | `.agents/rules/` | Reconciled reusable rules; technology-specific rules retain their file scopes. |
 | `.agents/external_resources.json` | Third-party skills and reference directories vendored by the workflow. |

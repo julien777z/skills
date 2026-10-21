@@ -8,7 +8,9 @@ short_description: 'Refresh installed skills to the latest default branch, keepi
 
 Refresh the user-level agent roots from the shared skills repository. An agent runs this skill
 when the GitHub rules' **After Agent Sync** section calls for it; cloud setup also runs the
-installer when a session starts.
+installer when a session starts. The shared SessionStart hook repairs local installation links
+without fetching remotely. When it reports changed overlay inputs, run this workflow before ordinary
+work. Keep overlay rebuilding here, rather than in the hook.
 This skill never copies provider mirrors by hand.
 
 ## Dependencies
@@ -99,6 +101,11 @@ deadline.
    the installed source. Check Codex's global `AGENTS.md` link when Codex is installed. Preserve
    real files and foreign links; the installer's conflict preflight reports them before changing
    links. Never reset, drop, or overwrite preserved work.
+   The installer also registers the owned SessionStart hooks. Record the selected overlay’s
+   local inputs only after this workflow rebuilds that overlay: after step 5’s link verification, run
+   `python3 .agents/hooks/skills-refresh/record_overlay.py <installed-overlay-path>` from the source
+   checkout when step 4 built it in this run. A generic installer invocation never certifies overlay
+   inputs. Preserve native hook trust requirements; never write trust hashes or bypass review.
 6. Once the links point into the installed source, remove every other `skills-overlay/` worktree of
    the checkout, complete or not; this step alone removes overlays. First compare each with the
    built head step 2 recorded for it, or for each of this run's abandoned builds the head it
