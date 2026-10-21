@@ -360,7 +360,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   reader is still writing.
 - **An action graver than its neighbours is set apart from any action it could be mistaken for.**
   In a menu it goes last, below a divider; in a group of buttons it stands apart from the rest. Two
-  destructive actions listed together, such as archiving a record beside rejecting a submission, are
+  destructive actions listed together, such as removing a member beside deleting the workspace, are
   one slip of the pointer apart, and the slip costs far more in one direction; sharing a red tone
   does nothing to tell them apart.
 - **A flow starts at its first question.** A step that only introduces the product, lists what it
@@ -500,7 +500,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   appears as a notification.
 - **Red is for errors and destructive actions, never required verification or another blocking status.**
   Red, or whatever tone the product reserves for destructive and
-  failed states, marks only a failure, a refusal, or a destructive action. A state that blocks or
+  failed states, marks only a failure, a refusal the product reports, or a destructive action: one
+  that removes or discards what the reader cannot get back. A decision the reader makes on someone
+  else's submission, such as rejecting or declining it, is not destructive; it takes the neutral
+  tone and sits beside its counterpart, as reject directly under approve. A state that blocks or
   warns without being an error — something the reader must resolve, a hold, a limit reached — takes
   the warning tone, and a neutral status the neutral one, on a badge, a banner or a text color
   alike: an order waiting on a missing delivery address is a warning, not an error.
