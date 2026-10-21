@@ -1,6 +1,6 @@
 ---
 name: subagent-selection
-description: Apply when selecting a model for a live skill-verification chat or selecting and launching a subagent, including a fresh independent or read-only gate, reviewer, validator, or smoke reader. Resolve cheap, standard, advanced, and frontier capability levels from the host catalogue and documented dispatch candidates. Attempt the assigned work with a catalogue-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, and route independent steps through a subagent of the running session.
+description: Apply before every subagent launch, including a workflow coordinator or nested reviewer, and when selecting a live skill-verification model. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or smoke reader. Resolve cheap, standard, advanced, and frontier capability levels from the host catalogue and documented dispatch candidates. Attempt the assigned work with a catalogue-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, and route independent steps through a subagent of the running session.
 short_description: 'Select a model capability level for live verification chats or subagent delegation.'
 ---
 
@@ -18,7 +18,10 @@ agent; the calling agent launches the actual assignment with the selected model.
    parameters, or its chat model picker, and read
    [model capabilities](references/model-capabilities.md). Keep catalogue discovery, an accepted dispatch,
    and host-exposed runtime identity as separate evidence; a worker-reported label is only a label.
-2. Resolve all four capability levels to their mapped model families. Use an exact user override only for
+2. Resolve the assignment's role through **Codex role selections** in **model capabilities** first.
+   Keep that selected identifier separate from the general capability table: a caller's tier or the
+   coordinator's model cannot override a role selection. Resolve all four general capability levels
+   to their mapped model families for assignments without a role selection. Use an exact user override only for
    the role, chat, and capability row it expressly governs; one explicitly scoped to every assignment governs
    every row. For every other row, prefer the latest matching identifier from the host's model-selection
    surface. If the family is absent there, read the host's documented candidates in **model capabilities**
@@ -44,7 +47,8 @@ agent; the calling agent launches the actual assignment with the selected model.
    unsupported request, host receipt, and waiting work to the caller; do not substitute another model or
    replace an independent step in process. Preserve one resolved model within comparison pairs.
 5. The calling agent chooses a capability level and reasoning effort for each role or chat. Honor the user's
-   explicit model or capability-level constraint first, then the calling skill's capability level. For a live
+   explicit model or capability-level constraint first, then the configured role selection, then the
+   calling skill's capability level. For a live
    skill-verification chat, choose the least-capable suitable mapped family, resolve its exact candidate, and
    launch the actual chat assignment; never skip that family because the catalogue omits it. Advance to another
    family only after an explicit unsupported receipt and only as the caller's fallback policy permits. Otherwise
@@ -59,6 +63,14 @@ agent; the calling agent launches the actual assignment with the selected model.
    catalogue-confirmed selection while the host catalogue is unchanged. Reuse accepted-dispatch evidence only
    for the same active assignment; a later independent assignment launches its own worker. Preserve one
    resolved model and reasoning effort within each comparison pair.
+7. Before sending a dispatch, compare its actual `model`, reasoning effort and history mode with
+   the selected role receipt. A missing model argument is not an explicit selection, even when
+   the parent happens to use the selected model. Correct the call before launching: on Codex,
+   send the selected `model` and effort with `fork_turns: "none"`. Delegating through a coordinator
+   does not change the child's role or permit a history fork to inherit the coordinator's model.
+   Record the arguments the host accepted; a missing or mismatched field is an invalid dispatch,
+   not review evidence. Replace that reader with an explicitly selected reader before counting
+   the required review or gate as complete.
 
 ## Dispatch
 
@@ -129,6 +141,8 @@ selected capability level per role or chat, or the explicit user override.
 ```markdown
 Caller: <skill name or direct task>
 Host: <current host>
+Role: <assignment role>
+Selected dispatch: <exact identifier> / <reasoning effort> / <history mode>
 
 | Capability | Catalogue state | Dispatch identifier | Assignment state |
 | ---------- | --------------- | ------------------- | ---------------- |
