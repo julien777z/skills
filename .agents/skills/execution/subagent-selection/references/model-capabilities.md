@@ -18,6 +18,23 @@ exact host dispatch identifier and classifies its actual assignment. Reasoning e
 setting; no capability level implies a particular effort or permission to change repository or
 global configuration.
 
+## Codex role selections
+
+Resolve the assignment's role before applying the general family table. These exact Codex
+selections take precedence over a caller's capability label and over the coordinator's model;
+a direct user override for that assignment still takes precedence.
+
+| Role | Codex dispatch identifier |
+| --- | --- |
+| Review or simplification, including their coordinators, lenses, validators and refuters | `gpt-5.6-terra` |
+| Acceptance gate | `gpt-6.1-sol` |
+
+Classify what the assignment does, not its worker name. Ordinary implementation workers checking
+their own changes are not independent review assignments. An acceptance gate remains its own role
+when a review workflow invokes it. Other Codex assignments and Claude assignments retain the
+capability-family selection above. An unavailable role selection is a concrete hold, never
+permission to inherit the coordinator's model or substitute another family.
+
 ## Dispatch candidates
 
 Prefer the host's latest identifier matching the selected family. When a Codex catalogue omits the
@@ -28,7 +45,7 @@ to test, not supported-model claims or replacements for a newer matching catalog
 | ------------ | -------------------------- |
 | Luna | `gpt-6-luna` |
 | Terra | `gpt-5.6-terra` |
-| Sol | `gpt-6-sol` |
+| Sol | `gpt-6.1-sol` |
 | Astra | `gpt-6-astra` |
 
 Retain the exact request and host receipt. An unsupported rejection invokes only the calling
