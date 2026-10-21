@@ -45,7 +45,7 @@ to test, not supported-model claims or replacements for a newer matching catalog
 | ------------ | -------------------------- |
 | Luna | `gpt-6-luna` |
 | Terra | `gpt-5.6-terra` |
-| Sol | `gpt-6.1-sol` |
+| Sol | `gpt-6-sol` |
 | Astra | `gpt-6-astra` |
 
 Retain the exact request and host receipt. An unsupported rejection invokes only the calling
