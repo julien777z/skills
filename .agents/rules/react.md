@@ -204,6 +204,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   playlist". When that verb is also the word the product's dialogs use to dismiss, such as "Cancel",
   the commit adds what it acts on — "Cancel booking" — so one word never means both doing the
   act and backing out of it.
+- **A bare verb labels a control only where what it acts on is plain from what surrounds it**, as
+  under a dialog's title. A control among several things it could act on names its object: "Clear
+  filters" beside a search field and a select, never "Clear".
 - **A status reads from the viewer's side.** Name the state in terms of what that reader did or
   still has to do, and keep internal steps they take no part in behind a visual cue: a person who
   sent a form sees "Submitted", with the tone telling review apart from acceptance, while the
