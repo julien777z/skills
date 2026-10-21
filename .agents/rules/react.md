@@ -351,6 +351,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   or pressing Enter on it, opens or edits the record it shows; a pencil, "Edit" or "View" button
   beside it makes the reader find a second target for the one destination and is left out. Other
   controls in the row, such as a menu or a delete, keep their own action without opening the row.
+- **A row's actions go in one "⋯" menu at the row's end, not as buttons inline in the row.** Delete,
+  archive, set as default, download and the like are menu items, with a destructive item last; a
+  row of icon or text buttons competes with the row's content and differs from row to row. A
+  control that is the row's content, such as a role picker or an on/off switch, stays in the row,
+  and so does a remove control on an entry being edited in a form, such as one line of a list the
+  reader is still writing.
 - **A flow starts at its first question.** A step that only introduces the product, lists what it
   offers or explains what comes next asks the reader for nothing and is removed. The context a
   first-time reader needs to answer that question — what they are creating and what it holds —
