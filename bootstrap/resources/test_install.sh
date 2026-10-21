@@ -45,9 +45,10 @@ assert_status() {
 }
 
 assert_hook_configuration() {
-  python3 - "$1" "$2" "$3" "$4" <<'PY'
+  python3 - "$1" "$2" "$3" "$4" "${5:-}" <<'PY'
 from json import loads
 from pathlib import Path
+from shlex import quote
 from sys import argv
 
 path = Path(argv[1])
@@ -61,11 +62,21 @@ assert "BeforeTool" in document["hooks"]
 
 groups = document["hooks"]["SessionStart"]
 commands = [handler.get("command") for group in groups for handler in group["hooks"]]
-owned = f"python3 {root / 'hooks/skills-refresh/session_start.py'} {provider}"
+invocation = ["python3", str(root / "hooks/skills-refresh/session_start.py"), provider]
+
+if argv[5]:
+    invocation = ["env", f"SKILLS_CLOUD_HOME={argv[5]}", *invocation]
+
+owned = " ".join(quote(argument) for argument in invocation)
 
 assert commands.count(owned) == 1, commands
+assert len(commands) == 7, commands
 assert "foreign-start" in commands
 assert "foreign-session" in commands
+assert "echo /tmp/hooks/skills-refresh/session_start.py" in commands
+assert f"python3 /tmp/hooks/skills-refresh/session_start.py.backup {provider}" in commands
+assert f"python3 /previous/.agents/hooks/skills-refresh/session_start.py {provider}" in commands
+assert f"python3 /opt/other/hooks/skills-refresh/session_start.py {provider}" in commands
 assert (root / "hooks/skills-refresh").resolve() == (
     source / ".agents/hooks/skills-refresh"
 ).resolve()
@@ -124,10 +135,26 @@ document = {
                 "hooks": [
                     {
                         "type": "command",
-                        "command": f"python3 /previous/.agents/hooks/skills-refresh/session_start.py {provider}",
-                        "statusMessage": "Checking installed shared skills",
+                        "command": f"python3 {path.parent / 'hooks/skills-refresh/session_start.py'} {provider}",
+                        "statusMessage": "Previous startup status",
                     },
                     {"type": "command", "command": "foreign-session"},
+                    {
+                        "type": "command",
+                        "command": "echo /tmp/hooks/skills-refresh/session_start.py",
+                    },
+                    {
+                        "type": "command",
+                        "command": f"python3 /tmp/hooks/skills-refresh/session_start.py.backup {provider}",
+                    },
+                    {
+                        "type": "command",
+                        "command": f"python3 /previous/.agents/hooks/skills-refresh/session_start.py {provider}",
+                    },
+                    {
+                        "type": "command",
+                        "command": f"python3 /opt/other/hooks/skills-refresh/session_start.py {provider}",
+                    },
                 ],
             },
         ],
@@ -168,6 +195,7 @@ if [ "$(id -u)" -eq 0 ]; then
 
   mkdir -p "$(dirname "$root_clone")" "$root_home/.claude"
   write_foreign_configuration "$root_home/.claude/settings.json" claude
+  chown nobody:nogroup "$root_home/.claude/settings.json"
   cp -a "$root_source" "$root_clone"
   rm -rf "$root_clone/.git"
   git -C "$root_clone" init --quiet
@@ -186,9 +214,9 @@ if [ "$(id -u)" -eq 0 ]; then
   [ -L "$root_home/.claude/skills/code-review" ]
   [ "$(realpath "$root_home/.claude/skills/code-review")" = "$root_clone/.agents/skills/review/code-review" ]
   [ "$(stat -c %U "$root_home/.claude")" = root ]
-  [ "$(stat -c %U "$root_home/.claude/settings.json")" = root ]
+  [ "$(stat -c %U "$root_home/.claude/settings.json")" = nobody ]
   assert_hook_configuration "$root_home/.claude/settings.json" claude \
-    "$root_home/.claude" "$root_clone"
+    "$root_home/.claude" "$root_clone" "$root_cloud_home"
   [ -L "$root_runtime/skills/code-review" ]
 
   root_attached="$root_cloud_home/attached-skills"
@@ -214,9 +242,33 @@ if [ "$(id -u)" -eq 0 ]; then
 
   [ "$(realpath "$root_cloud_home/.claude/skills/sample")" = "$root_overlay/.agents/skills/example/sample" ]
   [ "$(realpath "$root_home/.claude/skills/sample")" = "$root_overlay/.agents/skills/example/sample" ]
-  [ "$(stat -c %U "$root_home/.claude/settings.json")" = root ]
+  [ "$(stat -c %U "$root_home/.claude/settings.json")" = nobody ]
   assert_hook_configuration "$root_home/.claude/settings.json" claude \
-    "$root_home/.claude" "$root_overlay"
+    "$root_home/.claude" "$root_overlay" "$root_cloud_home"
+
+  python3 "$root_overlay/.agents/hooks/skills-refresh/record_overlay.py" "$root_overlay"
+  rm "$root_cloud_home/.claude/skills/sample" "$root_home/.claude/skills/sample"
+  env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$root_home" CODEX_HOME="$root_runtime" \
+    python3 - "$root_home/.claude/settings.json" > "$root_fixture/cloud-hook-output" <<'PY'
+from json import dumps, loads
+from pathlib import Path
+from shlex import split
+from subprocess import run
+from sys import argv
+
+groups = loads(Path(argv[1]).read_text())["hooks"]["SessionStart"]
+command = groups[-1]["hooks"][0]["command"]
+run(
+    split(command),
+    input=dumps({"hook_event_name": "SessionStart", "source": "resume"}),
+    text=True,
+    check=True,
+)
+PY
+  assert_session_output "$root_fixture/cloud-hook-output" claude \
+    'Installed shared skill and rule links were repaired and verified'
+  assert_link "$root_cloud_home/.claude/skills/sample" "$root_overlay/.agents/skills/example/sample"
+  assert_link "$root_home/.claude/skills/sample" "$root_overlay/.agents/skills/example/sample"
 
   rootless_runner="$(mktemp -d)"
 
@@ -545,6 +597,22 @@ assert_link "$foreign_runtime/skills/sample" "$fixture/foreign-skill"
 assert_absent "$foreign_home/.codex/skills"
 assert_absent "$foreign_home/.agents"
 
+mkdir -p "$repo/.agents/references"
+printf '%s\n' 'Foreign content' > "$repo/README.md"
+printf '%s\n' 'Foreign content' > "$repo/.agents/references/foreign.md"
+
+for foreign_target in README.md .agents/references/foreign.md; do
+  internal_foreign_home="$fixture/internal-foreign-$(basename "$foreign_target")"
+  mkdir -p "$internal_foreign_home/.codex/skills"
+  ln -s "$repo/$foreign_target" "$internal_foreign_home/.codex/skills/sample"
+
+  assert_status 1 env -u SKILLS_CLOUD_HOME -u CLOUD_HOME \
+    HOME="$internal_foreign_home" CODEX_HOME= \
+    bash "$repo/bootstrap/install.sh" --local-only
+  assert_link "$internal_foreign_home/.codex/skills/sample" "$repo/$foreign_target"
+  assert_absent "$internal_foreign_home/.agents"
+done
+
 for obstruction in shared-file runtime-file dangling-root blocked-parent skills-file linked-skills; do
   blocked_home="$fixture/$obstruction"
   blocked_runtime="$fixture/$obstruction-runtime"
@@ -599,7 +667,7 @@ assert_link "$resources_target/stale" "$repo/missing-resource"
 prunable_home="$fixture/prunable-resources"
 prunable_runtime="$fixture/prunable-resources-runtime"
 mkdir -p "$prunable_home/.codex/resources"
-ln -s "$repo/missing-resource" "$prunable_home/.codex/resources/stale"
+ln -s "$repo/.agents/resources/missing-resource" "$prunable_home/.codex/resources/stale"
 
 env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$prunable_home" CODEX_HOME="$prunable_runtime" bash "$repo/bootstrap/install.sh"
 assert_absent "$prunable_home/.codex/resources/stale"
@@ -636,6 +704,19 @@ printf '%s\n' '{"hook_event_name":"SessionStart","source":"resume"}' | \
     python3 "$overlay_home/.codex/hooks/skills-refresh/session_start.py" codex \
     > "$fixture/current-overlay-output"
 [ ! -s "$fixture/current-overlay-output" ]
+
+add_overlay "$overlay_repo" "$fixture/overlay-unrecorded" complete
+touch -d @2147483000 "$(git -C "$fixture/overlay-unrecorded" rev-parse --absolute-git-dir)/skills-overlay"
+snapshot_tree "$overlay_home/.codex" "$overlay_home/.agents" > "$fixture/before-newer-overlay"
+printf '%s\n' '{"hook_event_name":"SessionStart","source":"resume"}' | \
+  env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$overlay_home" CODEX_HOME= \
+    python3 "$overlay_home/.codex/hooks/skills-refresh/session_start.py" codex \
+    > "$fixture/newer-overlay-output"
+assert_session_output "$fixture/newer-overlay-output" codex \
+  'Shared skills overlay inputs changed'
+snapshot_tree "$overlay_home/.codex" "$overlay_home/.agents" > "$fixture/after-newer-overlay"
+cmp "$fixture/before-newer-overlay" "$fixture/after-newer-overlay"
+git -C "$overlay_repo" worktree remove "$fixture/overlay-unrecorded"
 
 overlay_other_home="$fixture/overlay-other-home"
 mkdir -p "$overlay_other_home/.codex"

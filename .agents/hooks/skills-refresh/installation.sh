@@ -62,7 +62,7 @@ newest_overlay() {
 }
 
 check_link() {
-  local link="$1" resolved old_root old_remote
+  local link="$1" resolved old_root old_remote kind relative artifact
 
   [ -e "$link" ] || [ -L "$link" ] || return 0
 
@@ -75,19 +75,59 @@ check_link() {
   [ -n "$resolved" ] || resolved="$(readlink "$link")"
 
   case "$resolved" in
-    "$REPO_ROOT"/*|"$MAIN_CHECKOUT"/.agents/*) return 0 ;;
+    "$REPO_ROOT"/*) old_root="$REPO_ROOT" ;;
+    "$MAIN_CHECKOUT"/*) old_root="$MAIN_CHECKOUT" ;;
+    *)
+      old_root="$(git -c safe.directory='*' -C "$(dirname "$resolved")" rev-parse --show-toplevel 2>/dev/null || true)"
+      old_remote="$(git -c safe.directory='*' -C "$old_root" remote get-url origin 2>/dev/null || true)"
+
+      is_skills_remote "$old_remote" || old_root=""
+      ;;
   esac
 
-  old_root="$(git -c safe.directory='*' -C "$(dirname "$resolved")" rev-parse --show-toplevel 2>/dev/null || true)"
-  old_remote="$(git -c safe.directory='*' -C "$old_root" remote get-url origin 2>/dev/null || true)"
+  kind="$(basename "$(dirname "$link")")"
+  [ "${link##*/}" != AGENTS.md ] || kind=global
 
-  if is_skills_remote "$old_remote"; then
-    case "$resolved" in
-      "$old_root"/.agents/*|"$old_root"/bootstrap/*) return 0 ;;
+  if [ -n "$old_root" ]; then
+    relative="${resolved#"$old_root"/}"
+
+    case "$kind:$relative" in
+      skills:.agents/skills/*|skills:.agents/.auto_generated/.*/skills/*)
+        if [ ! -e "$resolved" ] || [ -f "$resolved/SKILL.md" ]; then
+          return 0
+        fi
+        ;;
+      agents:.agents/agents/*.md)
+        artifact="${relative#.agents/agents/}"
+        [[ "$artifact" == */* ]] || return 0
+        ;;
+      agents:.agents/.auto_generated/.*/agents/*.md)
+        artifact="${relative#*/agents/}"
+        [[ "$artifact" == */* ]] || return 0
+        ;;
+      rules:.agents/rules/*.md)
+        artifact="${relative#.agents/rules/}"
+        [[ "$artifact" == */* ]] || return 0
+        ;;
+      rules:.agents/.auto_generated/.*/rules/*.md|rules:.agents/.auto_generated/.*/rules/*.mdc)
+        artifact="${relative#*/rules/}"
+        [[ "$artifact" == */* ]] || return 0
+        ;;
+      rules:.agents/global.md|global:.agents/global.md|global:.agents/rules/global.md)
+        return 0 ;;
+      resources:.agents/resources/*)
+        artifact="${relative#.agents/resources/}"
+
+        if [[ "$artifact" != */* ]] && { [ ! -e "$resolved" ] || [ -d "$resolved" ]; }; then
+          return 0
+        fi
+        ;;
+      hooks:.agents/hooks/skills-refresh)
+        return 0 ;;
     esac
   fi
 
-  echo "conflict: $link points outside $REPO_ROOT" >&2
+  echo "conflict: $link -> $resolved is not an owned $kind artifact" >&2
   return 1
 }
 
@@ -314,7 +354,7 @@ install_provider() {
     [ "$INSTALL_MODE" = check ] || mkdir -p "$root/hooks"
     install_link "$REPO_ROOT/.agents/hooks/skills-refresh" "$root/hooks/skills-refresh"
 
-    python3 "$REPO_ROOT/.agents/hooks/skills-refresh/configuration.py" "$INSTALL_MODE" "$provider" "$root" "$REPO_ROOT" || {
+    python3 "$REPO_ROOT/.agents/hooks/skills-refresh/configuration.py" "$INSTALL_MODE" "$provider" "$root" "$REPO_ROOT" "${CLOUD_HOME:-}" || {
       [ "$?" -eq 3 ] || return 1
       install_changed=1
     }

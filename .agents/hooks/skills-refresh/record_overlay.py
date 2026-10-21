@@ -1,5 +1,3 @@
-"""Record the selected overlay after a successful installation."""
-
 from pathlib import Path
 from sys import argv
 

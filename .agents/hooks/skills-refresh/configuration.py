@@ -1,14 +1,38 @@
-"""Merge the owned startup hook into provider configuration without replacing other hooks."""
-
 from json import dumps, loads
 from os import chmod, chown, geteuid, replace
 from pathlib import Path
-from shlex import quote
+from shlex import quote, split
 from sys import argv
 from tempfile import NamedTemporaryFile
 
+from models import InstallationMode
 
-def configure(mode: str, provider: str, root: Path, source: Path) -> bool:
+
+def owns_command(command: object, provider: str, script: Path) -> bool:
+    """Recognize the complete installed refresh invocation."""
+
+    if not isinstance(command, str):
+        return False
+
+    try:
+        arguments = split(command)
+    except ValueError:
+        return False
+
+    if len(arguments) == 5 and arguments[0] == "env" and arguments[1].startswith("SKILLS_CLOUD_HOME="):
+        arguments = arguments[2:]
+
+    return (
+        len(arguments) == 3
+        and arguments[0] == "python3"
+        and arguments[1] == str(script)
+        and arguments[2] == provider
+    )
+
+
+def configure(mode: InstallationMode, provider: str, root: Path, source: Path, cloud_home: str) -> bool:
+    """Merge the owned startup registration."""
+
     path = root / ("hooks.json" if provider == "codex" else "settings.json")
 
     if path.is_symlink():
@@ -32,9 +56,13 @@ def configure(mode: str, provider: str, root: Path, source: Path) -> bool:
     template = loads((source / ".agents/hooks/skills-refresh/hooks.json").read_text())
     owned = template["hooks"]["SessionStart"][0]
     handler = owned["hooks"][0]
-    handler["command"] = " ".join([
-        "python3", quote(str(root / "hooks/skills-refresh/session_start.py")), provider,
-    ])
+    script = root / "hooks/skills-refresh/session_start.py"
+    command = ["python3", str(script), provider]
+
+    if cloud_home:
+        command = ["env", f"SKILLS_CLOUD_HOME={cloud_home}", *command]
+
+    handler["command"] = " ".join(quote(argument) for argument in command)
     retained = []
 
     for group in groups:
@@ -42,9 +70,7 @@ def configure(mode: str, provider: str, root: Path, source: Path) -> bool:
             raise ValueError(f"Invalid SessionStart group in {path}")
 
         handlers = [item for item in group["hooks"] if not (
-            isinstance(item, dict) and item.get("statusMessage") == handler["statusMessage"]
-            and isinstance(item.get("command"), str)
-            and "/hooks/skills-refresh/session_start.py" in item["command"]
+            isinstance(item, dict) and owns_command(item.get("command"), provider, script)
         )]
 
         if handlers:
@@ -54,7 +80,7 @@ def configure(mode: str, provider: str, root: Path, source: Path) -> bool:
     original = loads(path.read_text()) if path.exists() else {}
     changed = document != original
 
-    if not changed or mode != "apply":
+    if not changed or mode != InstallationMode.APPLY:
         return changed
 
     root.mkdir(parents=True, exist_ok=True)
@@ -74,5 +100,7 @@ def configure(mode: str, provider: str, root: Path, source: Path) -> bool:
 
 
 if __name__ == "__main__":
-    changed = configure(argv[1], argv[2], Path(argv[3]), Path(argv[4]))
-    raise SystemExit(3 if changed and argv[1] == "check" else 0)
+    mode = InstallationMode(argv[1])
+    changed = configure(mode, argv[2], Path(argv[3]), Path(argv[4]), argv[5])
+
+    raise SystemExit(3 if changed and mode == InstallationMode.CHECK else 0)

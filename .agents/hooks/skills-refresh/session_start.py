@@ -1,5 +1,3 @@
-"""Adapt the shared installation checker to a provider's SessionStart event."""
-
 from json import dumps, load
 from os import environ, getpid
 from pathlib import Path
@@ -7,26 +5,38 @@ from subprocess import run
 from sys import argv, executable, stdin
 from tempfile import TemporaryDirectory
 
-from models import StartupContext, StartupResult
+from models import RefreshOutcome, StartupContext, StartupResult
 from state import overlay_changed
 
 
 def repair(source: Path, outcome: Path) -> None:
+    """Check and repair the locked installation."""
+
     run([
         executable, str(source / ".agents/skills/workspace/agent-lock/resources/main.py"),
         "check", "--receipt", environ["AGENT_LOCK_RECEIPT"],
     ], check=True, text=True)
 
-    if overlay_changed(source):
-        outcome.write_text("reconcile")
+    installer = ["bash", str(source / ".agents/hooks/skills-refresh/install.sh"), "--local-only"]
+    selection = run([
+        *installer, "--resolve-source",
+    ], capture_output=True, text=True, timeout=20)
+
+    if selection.returncode != 0:
+        raise RuntimeError(f"Shared skills source selection failed:\n{selection.stdout}{selection.stderr}")
+
+    selected_source = Path(selection.stdout.strip())
+
+    if overlay_changed(selected_source):
+        outcome.write_text(RefreshOutcome.RECONCILE)
 
         return
 
-    command = ["bash", str(source / "bootstrap/install.sh"), "--local-only"]
+    command = [*installer, "--source", str(selected_source)]
     check = run([*command, "--check"], capture_output=True, text=True, timeout=20)
 
     if check.returncode == 0:
-        outcome.write_text("current")
+        outcome.write_text(RefreshOutcome.CURRENT)
 
         return
 
@@ -43,10 +53,12 @@ def repair(source: Path, outcome: Path) -> None:
     if verified.returncode != 0:
         raise RuntimeError(f"Installed skills verification failed:\n{verified.stdout}{verified.stderr}")
 
-    outcome.write_text("repaired")
+    outcome.write_text(RefreshOutcome.REPAIRED)
 
 
-def refresh(source: Path) -> str:
+def refresh(source: Path) -> RefreshOutcome:
+    """Run the installation check under shared ownership."""
+
     lock = source / ".agents/skills/workspace/agent-lock/resources/main.py"
 
     with TemporaryDirectory(prefix="skills-startup-") as temporary:
@@ -63,41 +75,42 @@ def refresh(source: Path) -> str:
         if result.returncode != 0:
             raise RuntimeError(f"Shared skills startup did not finish:\n{result.stdout}{result.stderr}")
 
-        return outcome.read_text()
+        return RefreshOutcome(outcome.read_text())
 
 
 def session_start(provider: str) -> None:
+    """Handle a supported provider startup event."""
+
     event = load(stdin)
 
     if event.get("hook_event_name") != "SessionStart" or event.get("source") not in ("startup", "resume"):
         return
 
     source = Path(__file__).resolve().parents[3]
+    prompts = Path(__file__).resolve().parent / "prompts"
     outcome = refresh(source)
 
-    if outcome == "current":
+    if outcome == RefreshOutcome.CURRENT:
         return
 
-    if outcome == "reconcile":
+    if outcome == RefreshOutcome.RECONCILE:
         print(dumps(StartupResult(hookSpecificOutput=StartupContext(
             hookEventName="SessionStart",
-            additionalContext="Shared skills overlay inputs changed or the installed source is an unmarked worktree. Run reconcile-skills before ordinary work; preserve pending changes.",
+            additionalContext=(prompts / "reconcile.md").read_text().strip(),
         ))))
 
         return
 
-    if outcome != "repaired":
-        raise ValueError(f"Unexpected skills refresh outcome: {outcome}")
-
     output = StartupContext(
         hookEventName="SessionStart",
-        additionalContext="Installed shared skill and rule links were repaired and verified. Read changed guidance before using it.",
+        additionalContext=(prompts / "repaired.md").read_text().strip(),
     )
 
     if provider == "claude":
         output["reloadSkills"] = True
     else:
-        output["additionalContext"] += " Codex discovers skills before SessionStart; newly installed skills appear in the next session. Do not claim the current catalogue was reloaded."
+        discovery = (prompts / "codex-discovery.md").read_text().strip()
+        output["additionalContext"] += f" {discovery}"
 
     print(dumps(StartupResult(hookSpecificOutput=output)))
 

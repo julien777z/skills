@@ -93,18 +93,20 @@ deadline.
       marks the overlay complete, and the installer then installs from the newest complete overlay
       of the source checkout. Never edit inside it: guidance edits go to the source checkout and
       reach the next overlay at the next refresh.
-5. Run the installer: `bash bootstrap/install.sh` from the source checkout on a local machine, or
-   the setup clone's installer in a cloud session, which selects the attached checkout and relinks
-   every cloud home. The installer fetches a cloud setup clone's configured branch and
-   fast-forwards it, and installs from the newest complete overlay when one exists. Resolve each
+5. Use the complete overlay step 4 built as the installation source, or the source checkout when
+   step 3 selected it. Run that source's canonical driver:
+   `bash <installation-source>/.agents/hooks/skills-refresh/install.sh --local-only --source <installation-source>`.
+   In a cloud session, set `SKILLS_CLOUD_HOME` to the home containing the setup clone, so the driver
+   retains every cloud runtime home. Step 2 owns remote updates; installation uses the selected local
+   inputs. Resolve each
    installed skill and rule link in every existing user-level agent root and confirm it points into
    the installed source. Check Codex's global `AGENTS.md` link when Codex is installed. Preserve
    real files and foreign links; the installer's conflict preflight reports them before changing
    links. Never reset, drop, or overwrite preserved work.
    The installer also registers the owned SessionStart hooks. Record the selected overlay’s
    local inputs only after this workflow rebuilds that overlay: after step 5’s link verification, run
-   `python3 .agents/hooks/skills-refresh/record_overlay.py <installed-overlay-path>` from the source
-   checkout when step 4 built it in this run. A generic installer invocation never certifies overlay
+   `python3 <installation-source>/.agents/hooks/skills-refresh/record_overlay.py <installation-source>`
+   when step 4 built it in this run. A generic installer invocation never certifies overlay
    inputs. Preserve native hook trust requirements; never write trust hashes or bypass review.
 6. Once the links point into the installed source, remove every other `skills-overlay/` worktree of
    the checkout, complete or not; this step alone removes overlays. First compare each with the

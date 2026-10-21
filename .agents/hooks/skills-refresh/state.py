@@ -1,5 +1,3 @@
-"""Retain the local inputs present when an overlay installation is registered."""
-
 from hashlib import sha256
 from json import dumps, loads
 from os import chown, geteuid, replace
@@ -9,6 +7,8 @@ from tempfile import NamedTemporaryFile
 
 
 def git(source: Path, *arguments: str) -> str:
+    """Read trusted checkout metadata."""
+
     return run(
         ["git", "-c", f"safe.directory={source}", "-C", str(source), *arguments],
         check=True, stdout=PIPE, text=True,
@@ -16,6 +16,8 @@ def git(source: Path, *arguments: str) -> str:
 
 
 def overlay_state(source: Path) -> str | None:
+    """Fingerprint the overlay composition inputs."""
+
     git_directory = Path(git(source, "rev-parse", "--absolute-git-dir"))
     marker = git_directory / "skills-overlay"
 
@@ -45,10 +47,14 @@ def overlay_state(source: Path) -> str | None:
 
 
 def receipt_path(source: Path) -> Path:
+    """Locate the shared overlay receipt."""
+
     return Path(git(source, "rev-parse", "--absolute-git-dir")) / "skills-refresh-inputs.json"
 
 
 def overlay_changed(source: Path) -> bool:
+    """Check whether the installed source needs reconciliation."""
+
     current = overlay_state(source)
 
     if current is None:
@@ -65,6 +71,8 @@ def overlay_changed(source: Path) -> bool:
 
 
 def record_overlay(source: Path) -> None:
+    """Record a freshly composed overlay."""
+
     inputs = overlay_state(source)
 
     if inputs is None:
