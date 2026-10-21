@@ -358,6 +358,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   control that is the row's content, such as a role picker or an on/off switch, stays in the row,
   and so does a remove control on an entry being edited in a form, such as one line of a list the
   reader is still writing.
+- **An action graver than its neighbours is set apart from any action it could be mistaken for.**
+  In a menu it goes last, below a divider; in a group of buttons it stands apart from the rest. Two
+  destructive actions listed together, such as archiving a record beside rejecting a submission, are
+  one slip of the pointer apart, and the slip costs far more in one direction; sharing a red tone
+  does nothing to tell them apart.
 - **A flow starts at its first question.** A step that only introduces the product, lists what it
   offers or explains what comes next asks the reader for nothing and is removed. The context a
   first-time reader needs to answer that question — what they are creating and what it holds —
