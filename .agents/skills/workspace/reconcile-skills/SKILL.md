@@ -96,8 +96,9 @@ deadline.
 5. Use the complete overlay step 4 built as the installation source, or the source checkout when
    step 3 selected it. Run that source's canonical driver:
    `bash <installation-source>/.agents/hooks/skills-refresh/install.sh --local-only --source <installation-source>`.
-   In a cloud session, set `SKILLS_CLOUD_HOME` to the home containing the setup clone, so the driver
-   retains every cloud runtime home. Step 2 owns remote updates; installation uses the selected local
+   In a cloud session, set `SKILLS_CLOUD_HOME` to the cloud user's home: the setup clone is
+   `<cloud-home>/.local/share/agent-skills`. This retains every cloud runtime home.
+   Step 2 owns remote updates; installation uses the selected local
    inputs. Resolve each
    installed skill and rule link in every existing user-level agent root and confirm it points into
    the installed source. Check Codex's global `AGENTS.md` link when Codex is installed. Preserve
