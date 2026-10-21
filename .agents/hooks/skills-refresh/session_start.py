@@ -1,4 +1,4 @@
-from json import dumps, load
+from json import JSONDecodeError, dumps, load, loads
 from os import environ, getpid
 from pathlib import Path
 from subprocess import run
@@ -72,6 +72,15 @@ def refresh(source: Path) -> RefreshOutcome:
             executable, str(Path(__file__).resolve()), "--repair", str(source), str(outcome),
         ], capture_output=True, text=True, timeout=100)
 
+        if result.returncode == 2:
+            try:
+                lock_result = loads(result.stdout)
+            except JSONDecodeError:
+                lock_result = None
+
+            if isinstance(lock_result, dict) and lock_result.get("status") == RefreshOutcome.BUSY:
+                return RefreshOutcome.BUSY
+
         if result.returncode != 0:
             raise RuntimeError(f"Shared skills startup did not finish:\n{result.stdout}{result.stderr}")
 
@@ -93,10 +102,12 @@ def session_start(provider: str) -> None:
     if outcome == RefreshOutcome.CURRENT:
         return
 
-    if outcome == RefreshOutcome.RECONCILE:
+    if outcome in (RefreshOutcome.RECONCILE, RefreshOutcome.BUSY):
+        prompt = "busy.md" if outcome == RefreshOutcome.BUSY else "reconcile.md"
+
         print(dumps(StartupResult(hookSpecificOutput=StartupContext(
             hookEventName="SessionStart",
-            additionalContext=(prompts / "reconcile.md").read_text().strip(),
+            additionalContext=(prompts / prompt).read_text().strip(),
         ))))
 
         return

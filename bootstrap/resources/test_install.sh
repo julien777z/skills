@@ -236,6 +236,14 @@ if [ "$(id -u)" -eq 0 ]; then
 
   (
     cd "$root_attached"
+    env HOME="$root_home" CODEX_HOME="$root_runtime" SKILLS_CLOUD_HOME="$root_cloud_home" \
+      bash "$root_clone/.agents/hooks/skills-refresh/install.sh" --resolve-source \
+      > "$root_fixture/startup-source"
+  )
+  [ "$(cat "$root_fixture/startup-source")" = "$root_clone" ]
+
+  (
+    cd "$root_attached"
     exec 9<"$root_marker"
     env HOME="$root_home" CODEX_HOME="$root_runtime" SKILLS_CLOUD_HOME="$root_cloud_home" bash "$root_clone/bootstrap/install.sh"
   )
@@ -470,7 +478,7 @@ lock_ready="$fixture/lock-ready"
 lock_release="$fixture/lock-release"
 env HOME="$session_home" python3 "$lock_script" consume skills-install \
   --owner fixture/holder --activity 'Hold installer for concurrency test' \
-  --receipt "$fixture/holder-receipt.json" --wait-seconds 1 --ttl-seconds 10 -- \
+  --receipt "$fixture/holder-receipt.json" --wait-seconds 1 --ttl-seconds 30 -- \
   bash -c 'touch "$1"; while [ ! -f "$2" ]; do sleep 0.02; done' \
   fixture-holder "$lock_ready" "$lock_release" > "$fixture/holder-output" 2>&1 &
 lock_holder_pid=$!
@@ -480,6 +488,16 @@ for _ in $(seq 1 100); do
   sleep 0.02
 done
 [ -e "$lock_ready" ]
+
+printf '%s\n' '{"hook_event_name":"SessionStart","source":"startup"}' | \
+  env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$session_home" \
+    CODEX_HOME="$session_runtime" \
+    python3 "$session_runtime/hooks/skills-refresh/session_start.py" codex \
+    > "$fixture/busy-session-output"
+kill -0 "$lock_holder_pid"
+assert_absent "$session_runtime/skills/sample"
+assert_session_output "$fixture/busy-session-output" codex \
+  'startup check has not run'
 
 printf '%s\n' '{"hook_event_name":"SessionStart","source":"startup"}' | \
   env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$session_home" \

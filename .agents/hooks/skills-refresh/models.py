@@ -28,5 +28,6 @@ class RefreshOutcome(StrEnum):
     """Local installation check outcome."""
 
     CURRENT = "current"
+    BUSY = "busy"
     RECONCILE = "reconcile"
     REPAIRED = "repaired"

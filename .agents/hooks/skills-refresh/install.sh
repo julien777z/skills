@@ -120,7 +120,7 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
     fi
   fi
 
-  if [ -z "$SELECTED_SOURCE" ]; then
+  if [ -z "$SELECTED_SOURCE" ] && [ "$RESOLVE_SOURCE" -eq 0 ]; then
     source_checkout="$REPO_ROOT"
     search_roots=("$CLOUD_HOME")
     declare -A seen_checkouts=()
@@ -165,6 +165,10 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
 
     REPO_ROOT="$source_checkout"
   fi
+fi
+
+if [ "$RESOLVE_SOURCE" -eq 1 ]; then
+  REPO_ROOT="$SOURCE_ROOT"
 fi
 
 if [ -n "$SELECTED_SOURCE" ]; then
