@@ -233,9 +233,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - Name the record in the title's noun, not the title's value: a dialog headed with one record's
   name is a different heading on every row, and the reader learns nothing from it that the row they
   clicked did not already tell them.
-- **An action that cannot be undone is confirmed by typing, not by clicking.** Require the reader to
-  type something that identifies what they are acting on — the record's own name — and keep the
-  action unavailable until it matches. A button a reader can hit by reflex is not a confirmation.
+- **Typing to confirm is reserved for the most severe actions**, such as deleting an account or a
+  whole workspace, where everything the reader holds goes at once. There the reader types something
+  that identifies what they are acting on and the action stays unavailable until it matches. Every
+  other action, including one that cannot be undone — deleting a record, voiding a document,
+  removing a saved payment method, sending a payment — is confirmed by the dialog's button alone.
+  A phrase demanded for routine actions slows every one of them and is soon typed by reflex.
 - One component owns this shape, under **Shared Surfaces** above: dialogs hand-built from the same
   primitives are where these rules get broken one at a time.
 
