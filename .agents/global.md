@@ -368,7 +368,10 @@ return records;
   output, it carries the place's absolute URL. A surface that cannot hold a link, such as a tooltip
   or a toast, refers to no other place, and the way forward goes on the page itself. Text about a
   control on the same page names that control where the reader sees it, as in "Turn on Sync
-  above", and never links to the page it sits on.
+  above", and never links to the page it sits on. It names the thing the control acts on, never
+  quotes a label that is already an instruction into a sentence that gives its own: a switch
+  labelled "Enable AI agent tools" is "Turn on AI agent tools", never "Turn on Enable AI agent
+  tools".
 
 ## Repository guidance
 
