@@ -618,7 +618,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   results land reads as a broken list.
 - **A form longer than a handful of fields is grouped into titled sections,** each holding the
   fields that answer one question; sibling forms share one section layout, under **Shared
-  Surfaces** above.
+  Surfaces** above. A section is never one per input: a control that only qualifies another — how
+  picked items combine, the unit of an amount, the end of a range — sits in that control's section,
+  directly under it, and the section's one description covers both.
 - **Group fields by the question the reader answers, not by how short their values are.** Fields
   answered together sit side by side wherever the width allows, wrapping when it does not; independent
   decisions keep separate rows even when both controls are short.
