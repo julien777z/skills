@@ -186,13 +186,19 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   what the reader should put in it, in the words they would use themselves.
 - **Every section, every step of a flow and every dialog carries a one-sentence description under
   its own heading, inside its surface** — two on a flow's first step, as **A flow starts at its first
-  question** below allows — saying what the reader does there, what the section holds, or what the
-  dialog's action does: "Choose how you hear about new activity", "The people who can see and edit
-  this project". A heading alone, or a heading with only a badge beside it, is the defect, in every
+  question** below allows — saying what the reader does there, what the section holds, or why the
+  dialog appeared, in terms of what the reader is trying to do: "Choose how you hear about new
+  activity", "The people who can see and edit this project", "Sharing an album requires a verified
+  email address first." It never narrates the surface's own controls, such as "Selecting
+  Continue takes you to…" or "Click below to…": the button's label already names its action. A
+  heading alone, or a heading with only a badge beside it, is the defect, in every
   state the surface renders, a loading or failed one included. A shared dialog component makes its
   description a required prop, so a title-only dialog cannot be written. No sentence floats between
   the page's top bar and its first section: a page's name sits where the product puts page titles,
   and whatever a page-level sentence would say belongs to the section it describes.
+- **Spell out an abbreviation the reader may not know the first time a surface uses it**, with the
+  short form after it, such as "Know Your Customer (KYC)"; later mentions on that surface use the
+  short form alone.
 - Say the one thing the reader needs and stop. On a field, prefer no description to a description
   that repeats the label, narrates the obvious, or hedges, and keep out of any label what the
   product already knows about the reader, such as their own email address in a confirmation label.
