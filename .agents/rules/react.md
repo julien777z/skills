@@ -302,12 +302,15 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   Compact controls do not require a narrow container, and a wide container does not require
   stretched controls. Use the product's established layout and control sizes, preserving comparable
   widths under **Forms**, rather than shrinking the section or creating a new peer-section row.
-- **Place actions by what they affect, beside the content they act on.** A page's own actions —
-  create, import, a toggle into a mode such as reorder or bulk edit, and the strip that mode shows
-  while it is on — sit directly above the content they act on, below the page's banners and its
-  load-failure area. Never put them in the header bar, the top navigation, or anywhere else above
-  the banners, where they are far from what they change and easy to miss. The page layout owns that
-  order — banners, failures, actions, content — so no page renders its own toolbar above it. An
+- **Place actions by what they affect, beside the content they act on.** A page's own actions on
+  its content — create, import, a toggle into a mode such as reorder or bulk edit, and the strip
+  that mode shows while it is on — sit directly above the content they act on, below the page's
+  banners and its load-failure area. A control that changes the page itself rather than its
+  content, such as customizing its layout, and the strip its mode shows, come first, above every
+  banner, because a banner concerns one thing on the page and that control concerns all of it.
+  Never put either in the header bar or the top navigation, where they are far from what they
+  change and easy to miss. The page layout owns that order — page controls, banners, failures,
+  content actions, content — so no page renders its own toolbar outside it. An
   action on one section or item stays with that section or item. Do not move a contextual action
   into a detached row merely to satisfy a width or proximity rule. At narrower widths, wrap or stack
   related content and controls while preserving readable values, visible context, accessible labels
