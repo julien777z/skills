@@ -300,8 +300,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   related content and controls while preserving readable values, visible context, accessible labels
   and a clear association with their actions.
 - **A table row stacked on a narrow screen reads from the left.** Each value sits left-aligned
-  under its column's label, in columns that line up from row to row; only the row's "⋯" menu takes
-  the right edge. A value pushed to the right edge reads as detached from its label and sends the
+  under its column's label; only the row's "⋯" menu takes the right edge. A value pushed to the right edge reads as detached from its label and sends the
   eye zigzagging across the card.
 - **A frame that scrolls shows its scrollbar whenever its content overflows** — a box of legal
   text, a dialog body, a list or a table inside a maximum height — on every platform and before the
