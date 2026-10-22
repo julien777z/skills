@@ -459,6 +459,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   is missed. A success or completed state shows neither, and a toast at most when the reader's own
   action just caused it. A dismissible "approved" or "done" banner, and whatever stores its
   dismissal, is the defect: delete both.
+- **A toast reports a result of the reader's action that the page does not already show** — a
+  record saved, an invitation sent, a file exported. An action that changed nothing the reader can
+  see closes without one: a request already recorded, a step only someone else can take, a save
+  with nothing changed, a dialog's Continue after the dialog has said what happens next. A toast
+  never repeats text the dialog or page already shows, and one that claims an outcome which did not
+  happen, such as a notification nobody sent, is the worse defect.
 - **A banner about the account or workspace, rather than the page, shows only on top-level pages**
   — the home page and each destination the primary navigation lists — never on a page nested below
   one, such as a record's detail, edit or create page or a step of a flow. Storage nearly full, a
