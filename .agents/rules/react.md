@@ -392,7 +392,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   product's dialog scale that holds its widest field or control group at its natural size, such as
   a row of colour swatches; an empty band beside the content reads as unfinished and pushes the
   actions away from what they act on. When even the smallest step leaves a band, the scale gains a
-  smaller step rather than the dialog a width of its own.
+  smaller step rather than the dialog a width of its own. Content that already spans the dialog,
+  such as a grid of many options, keeps the width that lets the reader scan it, however much room
+  each cell has to spare.
 - **A dialog holds one form.** When the reader chooses between several forms or documents, the
   choice is made on the trigger before the dialog opens — a menu listing each option with a
   one-line description — never as tabs or a switcher inside it. A field the form itself submits,
