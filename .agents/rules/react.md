@@ -189,10 +189,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   question** below allows — saying what the reader does there, what the section holds, or what the
   dialog's action does: "Choose how you hear about new activity", "The people who can see and edit
   this project". A heading alone, or a heading with only a badge beside it, is the defect, in every
-  state the surface renders, a loading or failed one included. A shared section or dialog component
-  makes the description a required prop, so a heading-only surface cannot be written. No sentence floats between the page's top bar and its
-  first section: a page's name sits where the product puts page titles, and whatever a page-level
-  sentence would say belongs to the section it describes.
+  state the surface renders, a loading or failed one included. A shared dialog component makes its
+  description a required prop, so a title-only dialog cannot be written. No sentence floats between
+  the page's top bar and its first section: a page's name sits where the product puts page titles,
+  and whatever a page-level sentence would say belongs to the section it describes.
 - Say the one thing the reader needs and stop. On a field, prefer no description to a description
   that repeats the label, narrates the obvious, or hedges, and keep out of any label what the
   product already knows about the reader, such as their own email address in a confirmation label.
