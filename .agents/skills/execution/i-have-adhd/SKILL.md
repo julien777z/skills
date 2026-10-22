@@ -97,7 +97,8 @@ message before sending; an asynchronous question control or task checklist does 
 visible list. At meaningful progress updates and handoffs, refresh the same list. Use a numbered
 list: each item starts with a **bold subject**. An evidence-pending item states its pending work;
 a ready item states the actual question and existing choices so
-it can be answered without earlier messages, and includes the recommendation or material trade-off
+it can be answered without earlier messages, its captures sent directly beneath it as the global
+rules' **User-Facing Output** says, and includes the recommendation or material trade-off
 and which work depends on the answer. Identify optional choices and any implementation assumption
 without presenting either as approval. If none remain, omit the list. The list accompanies a skill’s
 required direct-chat result even when that skill says to return only its result or nothing else;

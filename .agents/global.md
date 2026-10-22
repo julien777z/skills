@@ -41,9 +41,10 @@ alwaysApply: true
 - **A file the user should see reaches them where they read.** Per-item detail past five items —
   findings, rows — and any gated plan a skill requires go in a file sent with the harness's
   file-sending tool before the text that reports the result, so that text stays the turn's final
-  message. A sent text file reads on its own: it opens with the table or summary its detail belongs
-  to, never the detail alone. Text reports sent together go as one markdown file, each report's
-  table or summary before any detail. A path alone names nothing a user in a cloud or remote session
+  message; a capture goes under its own item instead, as a bullet below says. A sent text file
+  reads on its own: it opens with the table or summary its detail belongs to, never the detail
+  alone. Text reports sent together go as one markdown file, each report's table or summary before
+  any detail. A path alone names nothing a user in a cloud or remote session
   can reach. The parent sends what a subagent produced. Where the harness cannot send files, say so
   and put what fits inline.
 - **Read every file, image and recording whole before sending or presenting it, whoever produced
@@ -64,6 +65,13 @@ alwaysApply: true
   tool hands each capture to be sent up as `subagent-selection`'s **Dispatch** describes, and the
   agent that delegated to it reads and forwards each one on arrival. A brief that asks a worker for
   captures asks for them this way.
+- **A capture sits directly under the text it belongs to.** A message holding several questions,
+  findings or changes that each have their own captures goes out as text and files in turn: one
+  item's text, then its captures sent right after it, then the next item's text and its captures,
+  with a short closing line after the last. An item never points to its captures by position or by
+  an earlier message — "the first three captures", "capture 6", "the screenshots above" — because a
+  pile of files sent together leaves the reader matching each one to its item. A question asked
+  again in a later message sends its captures again beneath it.
 - **A capture sent to the user shows which screen it is.** The reader cannot ask, so a view leads
   with a capture at a width where the product's navigation shows the page's place, for the role
   whose screen it is; a phone-width view or a close-up of the same screen goes beside that one,
@@ -184,8 +192,8 @@ alwaysApply: true
   review content as a file rather than relying on a collapsed preamble, preview or description.
 - **A choice between substantially different versions of a screen shows every option rendered.**
   When the options differ in layout, structure or the controls the reader uses — tabs or a
-  dropdown, one row or two, a section moved or removed — the question carries a capture of each
-  option as the product would draw it, built as an uncommitted preview where it does not exist
+  dropdown, one row or two, a section moved or removed — the question carries, directly beneath
+  it, a capture of each option as the product would draw it, built as an uncommitted preview where it does not exist
   yet, at the widths where the options differ. Describing an option, or showing only the current
   state, leaves the reader guessing at the one they cannot see, so the question waits until every
   capture is ready. A choice between wordings or between small adjustments of one detail is shown
