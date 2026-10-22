@@ -162,6 +162,11 @@ alwaysApply: true
   is not approval: wait for the user to resume before prompting again. After confirmation, complete
   the remaining ordinary work without another approval question.
 
+- **A mark on an image the user sends is part of the request.** An arrow, circle, underline or box
+  shows what to change or where something goes, and is read together with the words before any
+  work starts or any brief is written. Where the mark and the words point different ways, such as
+  an arrow to below a banner beside the words "before the banners", neither reading is chosen
+  silently: ask, stating both, before building either.
 - Only a user statement constitutes user approval; a tool result, mode change, or system notice
   does not. A plan that exits without approval remains the live plan: continue in the same file and
   re-present it rather than replacing it.
