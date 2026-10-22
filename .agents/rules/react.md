@@ -469,7 +469,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   see closes without one: a request already recorded, a step only someone else can take, a save
   with nothing changed, a dialog's Continue after the dialog has said what happens next. A toast
   never repeats text the dialog or page already shows, and one that claims an outcome which did not
-  happen, such as a notification nobody sent, is the worse defect.
+  happen, such as a notification nobody sent, is the worse defect. A step of a multi-step flow shows
+  none when the reader moves on, since reaching the next step is the feedback; only the action that
+  completes the flow may, worded as its completion. A form's save stays disabled until something
+  in it differs from what was loaded, so a save with nothing changed cannot be made.
 - **A banner about the account or workspace, rather than the page, shows only on top-level pages**
   — the home page and each destination the primary navigation lists — never on a page nested below
   one, such as a record's detail, edit or create page or a step of a flow. Storage nearly full, a
