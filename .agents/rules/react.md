@@ -388,6 +388,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   dialog holding the form, such as a tag's name and colour; the list page never keeps the form open
   above its content, and the record gets no create page of its own. A create page is for a record
   whose form is a document the reader builds, such as an invoice with its lines.
+- **A dialog is as wide as its content needs and no wider.** Take the smallest width on the
+  product's dialog scale that holds its widest field or control group at its natural size, such as
+  a row of colour swatches; an empty band beside the content reads as unfinished and pushes the
+  actions away from what they act on. When even the smallest step leaves a band, the scale gains a
+  smaller step rather than the dialog a width of its own.
 - **A dialog holds one form.** When the reader chooses between several forms or documents, the
   choice is made on the trigger before the dialog opens — a menu listing each option with a
   one-line description — never as tabs or a switcher inside it. A field the form itself submits,
