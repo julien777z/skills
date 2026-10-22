@@ -215,6 +215,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **A bare verb labels a control only where what it acts on is plain from what surrounds it**, as
   under a dialog's title. A control among several things it could act on names its object: "Clear
   filters" beside a search field and a select, never "Clear".
+- **A list filter takes tabs only for a few top-level groups that fit one row on a phone**, such as
+  all, individual and business; a filter with more options, or one likely to gain them, such as a
+  status, is a select in the filter bar. A row of many tabs wraps or scrolls on a phone and takes
+  the room the next filter needs, while a select holds any number of options, each with its count,
+  in one control.
 - **A status reads from the viewer's side.** Name the state in terms of what that reader did or
   still has to do, and keep internal steps they take no part in behind a visual cue: a person who
   sent a form sees "Submitted", with the tone telling review apart from acceptance, while the
