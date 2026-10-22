@@ -184,11 +184,13 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Keep implementation out of the interface.** Storage, masking, hashing, background jobs, retries
   and the names of internal states belong in the code. A description says what the field is for and
   what the reader should put in it, in the words they would use themselves.
-- **Every section and every step of a flow carries a one-sentence description under its own heading,
-  inside its surface** — two on a flow's first step, as **A flow starts at its first question**
-  below allows — saying what the reader does there or what the section holds: "Choose how you hear
-  about new activity", "The people who can see and edit this project". A heading alone, or a heading
-  with only a badge beside it, is the defect. No sentence floats between the page's top bar and its
+- **Every section, every step of a flow and every dialog carries a one-sentence description under
+  its own heading, inside its surface** — two on a flow's first step, as **A flow starts at its first
+  question** below allows — saying what the reader does there, what the section holds, or what the
+  dialog's action does: "Choose how you hear about new activity", "The people who can see and edit
+  this project". A heading alone, or a heading with only a badge beside it, is the defect, in every
+  state the surface renders, a loading or failed one included. A shared section or dialog component
+  makes the description a required prop, so a heading-only surface cannot be written. No sentence floats between the page's top bar and its
   first section: a page's name sits where the product puts page titles, and whatever a page-level
   sentence would say belongs to the section it describes.
 - Say the one thing the reader needs and stop. On a field, prefer no description to a description
