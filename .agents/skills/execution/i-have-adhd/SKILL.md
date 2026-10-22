@@ -84,6 +84,11 @@ requests supporting evidence or an explanation before choosing, keep that decisi
 mark its evidence work as pending. Until the requested support is provided, report that work and
 what remains to supply instead of asking for the choice again. Provide the support before making
 the same question actionable; an existing capture or report not yet shown does not establish readiness.
+**A change the reader asked for that alters what an open question is about makes it
+evidence-pending the same way**, such as new wording for the dialog whose size is being chosen: the
+evidence already shown no longer shows what the reader would choose about, and the change may settle
+the question or remove it. Report the change in progress instead of the question; once it lands, show
+the changed state with the question, or drop the question when the change answered it.
 
 After every user message, include all remaining unresolved decisions in the direct-chat response,
 even when the reply concerns another topic or adds no progress. Reconcile the ledger and the latest
