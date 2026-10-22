@@ -299,6 +299,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   into a detached row merely to satisfy a width or proximity rule. At narrower widths, wrap or stack
   related content and controls while preserving readable values, visible context, accessible labels
   and a clear association with their actions.
+- **A table row stacked on a narrow screen reads from the left.** Each value sits left-aligned
+  under its column's label, in columns that line up from row to row; only the row's "⋯" menu takes
+  the right edge. A value pushed to the right edge reads as detached from its label and sends the
+  eye zigzagging across the card.
 - **A frame that scrolls shows its scrollbar whenever its content overflows** — a box of legal
   text, a dialog body, a list or a table inside a maximum height — on every platform and before the
   reader touches it, so cut-off text reads as more to scroll rather than as text that ends. A hidden
@@ -366,6 +370,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   destructive actions listed together, such as removing a member beside deleting the workspace, are
   one slip of the pointer apart, and the slip costs far more in one direction; sharing a red tone
   does nothing to tell them apart.
+- **A field gets no button beside it for what editing it or leaving it already does.** An edit in
+  place shows its save alone: Escape or moving away cancels it and keeps the saved value. A "×"
+  button outside the field to cancel or clear it is a second control for the same thing, easy to
+  mistake for a delete, and is left out; a clear "×" inside a search field, as part of the field, is
+  the expected shape.
 - **A flow starts at its first question.** A step that only introduces the product, lists what it
   offers or explains what comes next asks the reader for nothing and is removed. The context a
   first-time reader needs to answer that question — what they are creating and what it holds —
@@ -376,6 +385,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   dialog.** A dialog is for one action taken from inside a page, however long its form —
   submitting a form outside any flow, submitting on someone's behalf, a quick edit — and one form
   serves the page and the dialog alike, inside each shell.
+- **A record created from a short form is created in a dialog.** Its list's create button opens a
+  dialog holding the form, such as a tag's name and colour; the list page never keeps the form open
+  above its content, and the record gets no create page of its own. A create page is for a record
+  whose form is a document the reader builds, such as an invoice with its lines.
 - **A dialog holds one form.** When the reader chooses between several forms or documents, the
   choice is made on the trigger before the dialog opens — a menu listing each option with a
   one-line description — never as tabs or a switcher inside it. A field the form itself submits,
