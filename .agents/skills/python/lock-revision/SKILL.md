@@ -1,7 +1,7 @@
 ---
 name: lock-revision
 description: Lock the database revisions a branch has added or changed so far, including default-branch revisions it re-parented or edited, because they may be deployed to a test environment, so every later schema or stored-data change goes into a new revision. Each invocation locks the revisions added or changed since the last one.
-short_description: 'Lock the current migration revisions before a test deploy; later changes go in a new revision.'
+short_description: 'Lock the current migration revisions before a test deploy; later changes go in a new revision, pushed once the user lets revisions resume.'
 disable-model-invocation: true
 ---
 
@@ -38,8 +38,10 @@ revision was applied, so a revision with neither is folded and locked as step 1 
    against. No other suite, walkthrough, review or simplification runs as part of this skill.
 4. **Commit and push** the marker lines and any fold on the branch's pull request, one commit per
    repository (`chore(migrations): lock revisions <ids>`), as soon as those checks pass.
-5. **Report** each locked revision by chain and file, and end with the pushed commit the user can
-   deploy.
+5. **Report** each locked revision by chain and file, end with the pushed commit the user can
+   deploy, and **ask the user to confirm when revisions may resume**: a revision pushed before that
+   deploy runs would ride into it. Record the hold and the pending question with `session-ledger`,
+   so both survive compaction and handoff.
 
 ## After Locking
 
@@ -47,3 +49,10 @@ A locked revision is history under `database-migrations`' **Applied Is What Make
 whether or not a deploy has run it yet, and that skill's lock-marker rule governs it from then on:
 what stays fixed, where the chain's next change goes, and how a base update joins the chain. The
 next invocation locks the revision that next change opens, and the cycle repeats.
+
+**Until the user says revisions may resume, a change that needs a new revision stays local.** The
+revision, and the code that depends on its schema or stored data, is committed on a local branch
+off the pushed head and never pushed, while work that needs no revision keeps pushing as usual, so
+no push carries it. Only the user's own words lift the hold; once they do, rebase that work onto the
+pull request's branch, validate it as `database-migrations` says, push it, and clear the hold from
+the ledger. Each invocation starts a new hold.

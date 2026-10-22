@@ -171,7 +171,8 @@ format transition or recovery mechanism for data explicitly declared disposable 
   refactor, a clearer helper — proven by the migration tests. A later change to the database goes
   into one new revision on top, which the next `lock-revision` locks. Locking settles where that
   change goes, never whether it may be made: work that needs a schema change adds the revision
-  without asking. A base update that adds
+  without asking, and pushes it only once the user lets revisions resume, as `lock-revision`'s
+  **After Locking** says. A base update that adds
   revisions to its chain is joined with a merge revision. Where the migration tooling accepts only a
   linear chain, the base's revision moves instead, re-parented onto the branch's head, once the
   owner confirms no environment has applied it; one an environment has applied needs the tooling to
