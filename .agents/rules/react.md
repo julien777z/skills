@@ -411,8 +411,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   page, such as a full-page form, a card or the choices under a prompt, the row starts where the
   content starts, at the bottom-left, with the primary action last. In a modal, a dialog or a
   confirmation, the row sits at the bottom-right, the primary action rightmost and cancel
-  immediately to its left, where readers of modals look for them. Actions are centred only under
-  content that is itself centred, such as an empty state. A multi-step flow's footer is the one
+  immediately to its left, where readers of modals look for them. A dialog that only points the
+  reader to one next step, such as a prompt to complete a requirement before an action, shows that
+  action alone: its "×" already closes it, and a cancel beside the step the product wants taken
+  invites the reader away from it. A dialog that collects input, takes a payment or confirms an
+  action keeps its cancel. Actions are centred only under content that is itself centred, such as
+  an empty state. A multi-step flow's footer is the one
   exception, as the next bullet says; a control beside a heading, in a toolbar, at the end of a
   table row or in a floating save panel follows that surface's own layout.
 - **A multi-step flow's footer puts "Back", on every step that has one, at its start and the
@@ -515,7 +519,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   Never substitute field error messages, a toast or an unframed row, or put the banner in a card,
   table row, field, footer, submit row or floating save panel. A dialog's data-load failure uses the
   native shared banner at the top of the dialog, above its fields, rather than moving it to the page
-  behind the dialog. The banner never replaces the surface's own heading or description, which keep saying
+  behind the dialog. A dialog that only exists to say what an action needs first never opens on data
+  it could not load: the action's failure reports on the page, as these rules say for a page resource
+  or a failed action, worded as an error rather than as the dialog's usual explanation. The banner
+  never replaces the surface's own heading or description, which keep saying
   what the surface is while the banner says what went wrong.
   When a load failure appears or changes, keep entered values and reveal its banner through the
   existing shared failure owner if it is outside the visible scroll area, including inside a dialog. Do not
