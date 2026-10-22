@@ -64,6 +64,11 @@ alwaysApply: true
   tool hands each capture to be sent up as `subagent-selection`'s **Dispatch** describes, and the
   agent that delegated to it reads and forwards each one on arrival. A brief that asks a worker for
   captures asks for them this way.
+- **A capture sent to the user shows which screen it is.** The reader cannot ask, so a view leads
+  with a capture at a width where the product's navigation shows the page's place, for the role
+  whose screen it is; a phone-width view or a close-up of the same screen goes beside that one,
+  never alone, since either can belong to several pages. The caption names the screen as the
+  reader reaches it, such as "the contractor's Tax forms page".
 - A delegated worker's report of an outcome — tests pass, pushed, merged, deployed, fixed — is a
   claim. Check it at its source of truth before relaying it or building on it, and tell the user
   what was read, not what was reported; `execute-task`'s **Reported Outcomes** holds the procedure.
@@ -117,7 +122,9 @@ alwaysApply: true
   the placement of a message or control among the product's established positions, the wording of a
   message the change adds: decide it by what serves the reader and stays consistent with the
   product, and state the choice and its reason in the report. Ask only where the user has said such
-  a detail is theirs. **Text already in the product keeps its words unless it is wrong or the user
+  a detail is theirs. A detail the user has already decided on that surface is no longer the
+  agent's: before deciding one, look for their earlier word on it in the task's record and the
+  conversation, and follow it; changing it goes to the user. **Text already in the product keeps its words unless it is wrong or the user
   named it.** Text that is plainly wrong or inconsistent, such as a label stating something untrue,
   one thing called by two names, or a message that no longer matches what happens, is corrected or
   left by judgement, and the report says which. A request to reword one text rewords that text

@@ -371,7 +371,11 @@ how those issues are handled.
   guidance, as the global rules' **Task execution and authorization** says. Each side reads every
   item against the rules and skills governing the surface it changes — the language, framework,
   copy and testing rules, and the skills the worker runs — opening them at that moment where it has
-  not read them yet. The class is any item asking for what a rule rules out: a review finding
+  not read them yet — and against the user's recorded decisions on that surface. An item calling a
+  detail decided names who decided it and where; one the agent decided itself says so. Every brief
+  for work that can change a surface the user has decided on, a simplification or review pass
+  included, carries those decisions in the user's words, so the worker keeps them rather than
+  undoing them; an item that would undo one goes to the user. The class is any item asking for what a rule rules out: a review finding
   asking for the catch-all exception handler the language rule bans, a brief telling a worker to
   skip a check a skill requires before a push, a correction asking for copy the copy rules forbid,
   one asking for a boat-rental waiver to arrive filled in from the renter's last booking when the
