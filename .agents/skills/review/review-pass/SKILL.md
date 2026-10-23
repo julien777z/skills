@@ -267,7 +267,8 @@ dependencies, effective runtime or deployment configuration, API and deployment 
 generated contracts unchanged. A prior reviewer having read the changed non-source artifact does
 not reopen that lens. Retain the cohort's completed receipts and loop counters, run the focused
 validation and any artifact-specific gate the follow-up needs, then run the one fresh exact-head
-acceptance and check gate without launching another reviewer lens or cohort. A change to a review
+acceptance without launching another reviewer lens or cohort. Return that accepted head to the
+caller’s applicable check gate; this pass does not launch that gate itself. A change to a review
 rubric or reviewer instruction reruns only the lenses that use it; a supposedly non-source change
 that affects shipped behavior or a contract invalidates only the affected receipts under this
 section.
@@ -323,9 +324,11 @@ slice, or a fix is not a reason to run.
 
 Run the affected targets once more against the refreshed head the loops leave behind. Fix what that
 run reports, rerun only the lenses whose receipts the repair invalidates under **Review Continuity**,
-and run the affected targets again. A repair confined to tests invalidates no receipt and restarts no
-review. Repeat only that narrow loop until one clean lens pass and one green run describe the same
-head.
+and run the affected targets again. A test-only repair retains the review cohort, every completed
+reviewer receipt, and loop state, even when it changes validation inputs; rerun its focused
+validation and any test-artifact gate instead. A repair that also changes shipped behavior, a
+contract, or review guidance invalidates the affected receipts. Repeat only that narrow loop until
+one clean lens pass and one green run describe the same head.
 
 Run the full repository suite only when every test is relevant to the pull request.
 
