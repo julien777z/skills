@@ -221,12 +221,15 @@ alwaysApply: true
   not evidence of control. If the bound tab closes, refresh the inventory and apply the same
   relevance and safe-reuse selection within the retained constraints; never fall back to the
   browser's current tab.
-  Verify that the control itself targets that stable tab independently of the foreground selection;
+  Verify that the control itself targets the stable tab independently of the foreground selection;
   an application handle that follows the active tab or window does not preserve the binding. When
-  the binding is lost, create and bind a replacement task-owned tab through the supported tab
-  control, rather than creating a window or asking the user to stop using their current tab. If
-  that control cannot reach the required page, hold only that operation and continue independent
-  work; never inspect or operate the current tab as a fallback.
+  the binding is lost, refresh the inventory and reapply the retained explicit user constraints,
+  relevance, safe-reuse, and coordination requirements before rebinding an eligible tab. If no
+  eligible tab can be safely reused and a supported tab control can create a replacement that honors
+  every retained constraint, create and bind a task-owned tab in the relevant available parent
+  surface; never create a window. If an explicit constraint cannot be honored, ask the user about
+  that concrete conflict. If the control cannot reach the required page, hold only that operation
+  and continue independent work; never inspect or operate the current tab as a fallback.
 - Classify an awaited result from its observed state before treating it as a blocker. Startup,
   recovery, a queued review or an unanswered request is pending until it has a terminal result;
   current unavailability, a quiet interval or a bounded wait yielding without a result is not

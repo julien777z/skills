@@ -265,13 +265,16 @@ harness, formatting, lint compliance, or a type-only annotation. Classify it fro
 never from its path: it may change validation inputs, but must leave shipped product behavior,
 dependencies, effective runtime or deployment configuration, API and deployment contracts, and
 generated contracts unchanged. A prior reviewer having read the changed non-source artifact does
-not reopen that lens. Retain the cohort's completed receipts and loop counters, run the focused
-validation and any artifact-specific gate the follow-up needs, then run the one fresh exact-head
-acceptance without launching another reviewer lens or cohort. Return that accepted head to the
-caller’s applicable check gate; this pass does not launch that gate itself. A change to a review
-rubric or reviewer instruction reruns only the lenses that use it; a supposedly non-source change
-that affects shipped behavior or a contract invalidates only the affected receipts under this
-section.
+not reopen that lens. Compare the follow-up against each receipt's reviewed-input inventory and
+retain only receipts whose reviewed target material and supporting inputs are byte-identical. Run
+`test-fixture`'s **Sweep** over every changed test or fixture, focused validation, and any other
+artifact-specific gate. A CI or check-harness change that alters a trigger, source or ref,
+permission, identity, runner, secret, environment, action, reusable workflow, deployment target,
+or validation target is a workflow/runtime input: rerun every dependent lens, including Bugs and
+Security where applicable, before exact-head acceptance. Return that accepted head to the caller’s
+applicable check gate; this pass does not launch that gate itself. A change to a review rubric or
+reviewer instruction reruns only the lenses that use it; a supposedly non-source change that affects
+shipped behavior or a contract invalidates only the affected receipts under this section.
 
 When the user makes residual lint-only diagnostics non-blocking, they do not hold a behavior-complete
 source pull request. Retain any useful lint repair already in that pull request. Open a fresh
@@ -324,11 +327,11 @@ slice, or a fix is not a reason to run.
 
 Run the affected targets once more against the refreshed head the loops leave behind. Fix what that
 run reports, rerun only the lenses whose receipts the repair invalidates under **Review Continuity**,
-and run the affected targets again. A test-only repair retains the review cohort, every completed
-reviewer receipt, and loop state, even when it changes validation inputs; rerun its focused
-validation and any test-artifact gate instead. A repair that also changes shipped behavior, a
-contract, or review guidance invalidates the affected receipts. Repeat only that narrow loop until
-one clean lens pass and one green run describe the same head.
+and run the affected targets again. A test-only repair retains only the receipts that did not cover
+the changed test or its inputs; rerun `test-fixture`'s **Sweep**, focused validation, and every lens
+invalidated under **Review Continuity**. A repair that changes shipped behavior, a contract, review
+guidance, or workflow/runtime authority invalidates the affected receipts. Repeat only that narrow
+loop until one clean lens pass and one green run describe the same head.
 
 Run the full repository suite only when every test is relevant to the pull request.
 
