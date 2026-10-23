@@ -204,6 +204,12 @@ alwaysApply: true
   not evidence of ownership. If the owned tab has closed, create a replacement; never fall back to
   the browser's current tab. Inventory metadata may be read to locate the owned tab, without
   inspecting other tabs' page content.
+  Verify that the control itself targets that stable tab independently of the foreground selection;
+  an application handle that follows the active tab or window does not preserve the binding. When
+  the binding is lost, create and bind a replacement task-owned tab through the supported tab
+  control, rather than creating a window or asking the user to stop using their current tab. If
+  that control cannot reach the required page, hold only that operation and continue independent
+  work; never inspect or operate the current tab as a fallback.
 - Classify an awaited result from its observed state before treating it as a blocker. Startup,
   recovery, a queued review or an unanswered request is pending until it has a terminal result;
   current unavailability, a quiet interval or a bounded wait yielding without a result is not
