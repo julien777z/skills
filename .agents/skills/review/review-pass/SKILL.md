@@ -518,10 +518,13 @@ to work around this gate.
      verify repository, branch/ref, candidate head/tree, selected-cell preimages, and the delivery
      write-set against the captured origin. Reject any write to unrelated dirty index or worktree content;
      apply only selected cells plus recorded review/validation-fix cells with matching captured preimages.
-     Apply that verified delta through one rollback-capable patch-and-index operation. Read back the exact
-     accepted identity, then release the owned lock with `--resource-idle`. On a busy acquisition, failed
-     check, or invalid receipt, do not touch, roll back, or release the origin: retain the accepted
-     checkout and hand off. On every other owned-lock pre-application exit, including receipt recording
+     Apply that verified delta through one rollback-capable patch-and-index operation. Read back the
+     accepted selected-cell contents and modes plus preserved unrelated cells, record their mapping to
+     the gate-bound candidate, and retain that candidate commit identity as review evidence before
+     releasing the owned lock with `--resource-idle`. On a busy acquisition, retain the accepted artifact
+     and retry acquisition through bounded waits while keeping this delivery phase active. On a failed
+     check or invalid receipt, do not touch, roll back, or release the origin; retain the accepted
+     checkout and wait for recovery rather than handing off without explicit user authorization. On every other owned-lock pre-application exit, including receipt recording
      or verification failure, confirm the origin is untouched and release with `--resource-idle`. On an
      owned-lock identity/preimage/write-set mismatch, confirm the origin is untouched, release with
      `--resource-idle`, and hand off. Only after a partial/failed application while the owned lock
