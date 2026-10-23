@@ -117,7 +117,7 @@ separate `HEAD`, `index`, and `worktree` cells; each cell records presence, mode
 bytes when present. The artifact includes a digest over the serialized identity, layered manifest, and
 payload. Write it in the ledger's private evidence storage, read it back, verify every digest, and
 record its absolute locator, artifact digest, intended-selection identity, and input identities in the
-task ledger before dispatching a worker, then releases the capture receipt with `--resource-idle`.
+task ledger before dispatching a worker, then releases the capture receipt with `--resource-idle`; every ambiguity, hold, failure, cancellation, or other post-acquire exit releases its owned receipt after confirming the checkout stayed untouched.
 A consumer reloads that artifact only into a fresh pristine task-owned checkout, verifies that every retained cell and all expected absent untracked paths match,
 and removes any residue before work; it never treats the original checkout or an old path as the
 snapshot.
@@ -514,14 +514,16 @@ to work around this gate.
      discards the verdict, persists a replacement `currentSnapshot`, and reruns the affected cohort,
      validation, and Diff gate before recording acceptance. After every accepted local Diff gate, enter this terminal delivery phase before recording acceptance.
      Acquire `agent-lock` for `checkout:<absolute-origin-path>`, record and `check` its receipt, then
-     verify repository, branch/ref, candidate head/tree, and selected-cell preimages against the captured
-     origin. Apply the verified origin-to-accepted candidate delta, including committed validation and
-     review fixes, through one rollback-capable patch-and-index operation. Read back the exact accepted
-     identity, then release the lock with `--resource-idle`. On a busy or invalid lock, identity or
-     preimage mismatch, or any partial/failed application, roll the origin back and verify that rollback,
-     release the lock, preserve the origin, retain the accepted task-owned checkout and private patch
-     artifact, and return their absolute locators as the required user handoff instead of claiming source
-     delivery.
+     verify repository, branch/ref, candidate head/tree, selected-cell preimages, and the delivery
+     write-set against the captured origin. Reject any write to unrelated dirty index or worktree content;
+     apply only selected cells plus recorded review/validation-fix cells with matching captured preimages.
+     Apply that verified delta through one rollback-capable patch-and-index operation. Read back the exact
+     accepted identity, then release the owned lock with `--resource-idle`. On a busy acquisition, failed
+     check, or invalid receipt, do not touch, roll back, or release the origin: retain the accepted
+     checkout and hand off. On an owned-lock identity/preimage/write-set mismatch, release without writing
+     and hand off. Only after a partial/failed application while the owned lock remains valid, roll the
+     origin back, verify rollback, release, preserve the origin, retain the accepted task-owned checkout
+     and private patch artifact, and return their absolute locators instead of claiming source delivery.
    Fix every flag as its own increment. Push a working-pull-request fix through its **Pre-Push Gate**;
    for a local snapshot fix, freeze a replacement local snapshot, rerun affected validation and
    continuity coverage, run a fresh **Diff** gate, then return to the terminal delivery phase. Resolve each flag under
