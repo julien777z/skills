@@ -259,6 +259,9 @@ Apply the baseline prompt above, plus these explicit review rules:
      and importers, an entry point the framework or packaging looks up by path, or a UI component
      module, which the React rules hold to exactly one exported component with its helper components
      unexported in the same file; a folder of such modules is their area, never one module to merge.
+     The UI exemption holds only for a component that earns its place under the React rules'
+     **Components and Props**: a module whose component is another's variant or a hook's wrapper,
+     or one link of a chain each adding one prop, merges into its owner.
    - Re-count after every relocation, on the source and on the target, and say both counts.
    - History is not a disposition. Count a module as it stands in scope, whatever the diff calls it —
      new, renamed, moved, generalized, or already there when the change arrived. "It held one symbol
@@ -411,7 +414,7 @@ Apply the baseline prompt above, plus these explicit review rules:
 11. **Prefer direct, boring, maintainable code over hacky or magical code.**
    - Treat brittle, ad-hoc, or "magic" behavior as a code-quality problem.
    - Be skeptical of generic mechanisms that hide simple data-shape assumptions.
-   - Forbid slim pass-through shims: a function whose body is a single call to the canonical function is banned, whether it forwards its arguments unchanged or supplies a fixed value for one of them. Call the canonical function directly at the use site and name the argument there. Several call sites passing the same constant is not a defect on its own and does not earn a wrapper to hold it; where the argument genuinely must not vary, encode that in the callee's own signature or type.
+   - Forbid slim pass-through shims: a function whose body is a single call to the canonical function is banned, whether it forwards its arguments unchanged or supplies a fixed value for one of them. Call the canonical function directly at the use site and name the argument there. Several call sites passing the same constant is not a defect on its own and does not earn a wrapper to hold it; where the argument genuinely must not vary, encode that in the callee's own signature or type. Rendering is a call: a component that renders one other component with fixed or defaulted props is this shim, and the React rules' **Components and Props** says what replaces it.
 
 12. **Push hard on type and boundary cleanliness when they affect maintainability.**
    - Question unnecessary optionality, `unknown`, `any`, or cast-heavy code when a clearer type boundary could exist.

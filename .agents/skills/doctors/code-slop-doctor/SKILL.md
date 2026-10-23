@@ -1,7 +1,7 @@
 ---
 name: code-slop-doctor
-description: Strip the complexity a codebase does not need and the code a reviewer reads as generated slop — pass-through layers, one-case abstractions, use cases split across many calls, duplicates, divergent siblings, legacy paths, tangled or padded code, and surplus migrations, build files, configuration names and dependencies. Use to deslop a repository or one of its phases, lenses or paths.
-short_description: 'Remove unneeded layers, abstractions, duplicates, legacy paths, code that reads as slop, configuration names and dependencies.'
+description: Strip the complexity a codebase does not need and the code a reviewer reads as generated slop — pass-through layers and wrapper components, one-case abstractions, use cases split across many calls, duplicates, divergent siblings, legacy paths, hand-written styling in apps, tangled or padded code, and surplus migrations, build files, configuration names and dependencies. Use to deslop a repository or one of its phases, lenses or paths.
+short_description: 'Remove unneeded layers, wrappers, abstractions, duplicates, legacy paths, hand-written styling, code that reads as slop, configuration names and dependencies.'
 disable-model-invocation: true
 ---
 
@@ -33,8 +33,11 @@ offers.
 
 The run works in five phases, in this order, and each phase is one batch:
 
-1. **Application code** — services, apps, workers, shared packages and libraries.
-2. **Frontend** — web and mobile apps, their components, hooks, stores, styles and API types.
+1. **Application code** — services, apps, workers, shared packages and libraries other than UI
+   ones.
+2. **Frontend** — every shared UI package the audited apps consume, first, then web and mobile apps,
+   their components, hooks, stores, styles and API types. A scope naming an app includes the shared
+   UI packages it consumes, because that is where its styling and wrapper fixes land.
 3. **Migrations** — every migration chain, its registries, backfills and tooling.
 4. **Build, configuration and dependencies** — container files, workflows, scripts, tool and root
    configuration, every place a configuration name is declared or read, manifests and lockfiles.
@@ -84,23 +87,30 @@ lens's checks name, and build these tables before judging anything:
 The measurements taken once before fan-out: the repository's configured lint and type checks over
 the scope with no changed-lines filter; its cross-file duplication detector over each phase's trees
 at the tool's default similarity; the chain replay and drift check its migration tooling defines;
-each use case's calls and timing on the running local stack; and each deployment's configuration
-column, read by name once.
+each use case's calls and timing on the running local stack; each app's hand-written styling count,
+as **Hand-Written Styling** defines it; and each deployment's configuration column, read by name
+once.
 
 ## Lenses
 
 Each lens states its defect shape, the checks that find every instance, the remedy, and what is left
 alone so a reviewer does not go hunting. Every lens applies in every phase, read in that phase's
-language; **Migration Chain** belongs to the migrations phase, **Build And Root**, **Configuration
-Drift** and **Dependency Drift** to the build phase, and **Test Slop** to the test phase.
+language; **Hand-Written Styling** belongs to the frontend phase, **Migration Chain** to the
+migrations phase, **Build And Root**, **Configuration Drift** and **Dependency Drift** to the build
+phase, and **Test Slop** to the test phase.
 
 ### Pass-Through Layer
 
 A layer, wrapper or alias that only hands the call on.
 
 - every function, method, component or hook whose body is one call that receives the caller's own
-  parameters, unchanged or renamed, and adds no policy of its own — callers could make that call with
-  what they already hold: count its callers;
+  parameters, unchanged or renamed, or with fixed or defaulted values added, and adds no policy of
+  its own — callers could make that call with what they already hold: count its callers. Rendering
+  one other component is that call: a component passing on its props with some look or behavior
+  props fixed or defaulted, and no content, data or state of its own, is a finding;
+- every component that only runs a hook and renders nothing or its children;
+- every chain of components each rendering the next with one more prop or value, counted end to end
+  from the call site to the primitive at its end and reported as one finding with every link;
 - every module layer — a service over a gateway, a lib under a route, a hook over one library call —
   whose members all forward to the next layer down;
 - every barrel and re-export: count live imports through each path, tests separately; two live paths
@@ -109,11 +119,14 @@ A layer, wrapper or alias that only hands the call on.
   spellings.
 
 The remedy is that callers call the target, the layer and alias go, and every importer moves in the
-same change. Left alone: a wrapper that adds policy — validation, error mapping, retries,
-authorization, caching, translation at a provider boundary; a function that names a domain
-operation by mapping a domain value onto the call below it; one external name per field at a
-provider boundary; the explicit public-surface re-export a language defines for a package, in a
-short list.
+same change. A wrapper component's fixed values become a variant or prop on the component it
+renders, as the React rules' **Components and Props** says, a chain collapses into one component
+with variants, and a hook-only component becomes the hook its callers call. Left alone: a wrapper
+that adds policy, which is only validation, error mapping, retries, authorization, caching or
+translation at a provider boundary — a fixed or defaulted value, a hook call, a class or a renamed
+prop is never policy; a function that names a domain operation by mapping a domain value onto the
+call below it; one external name per field at a provider boundary; the explicit public-surface
+re-export a language defines for a package, in a short list.
 
 ### Speculative Abstraction
 
@@ -210,6 +223,8 @@ Left alone: a slot whose difference a contract requires, with the contract named
 Code spread over more files and folders than its responsibilities need.
 
 - every module with one or two small public symbols whose siblings would hold them;
+- every UI area folder whose modules include **Pass-Through Layer**'s wrapper components or links
+  of its chains;
 - every pair of modules or folders answering the same question, and every concern split across
   several folders;
 - every catch-all module mixing unrelated owners, and every `lib`/`utils`-style pair with no rule
@@ -224,8 +239,11 @@ collapse one-symbol modules into their owner, split a catch-all by owner, move c
 consumers expect it, rename files and folders for what they hold, and regroup each declaration list
 by concept, renumbering an owned wire contract's fields to match — every importer, producer and
 consumer updated and every generated target regenerated in the same change, no re-export left
-behind. Left alone: a module boundary a framework prescribes, a package boundary a build or
-distribution artifact needs.
+behind. A UI area folder is merged down to the components that earn their place under the React
+rules' **Components and Props**, each wrapper becoming a variant on its owner. Left alone: a module
+boundary a framework prescribes, a package boundary a build or distribution artifact needs, and the
+one-component-per-file split the React rules require for the components that remain — never for a
+wrapper.
 
 ### Repeated Literal
 
@@ -236,16 +254,62 @@ One meaning spelled out many times.
   report every value that appears in three or more places with its count and locations;
 - every error-to-message conversion written inline beside a helper that does it; every port, host or
   URL declared in more than one place; every message template spelled out at more than one site;
-  every list restating an enum's members.
+  every list restating an enum's members;
+- every constant restating a token the theme or framework declares — a breakpoint width, a color, a
+  spacing step, a layer order — in script or in a second stylesheet.
 
 The remedy is one owned definition — a component or style token, the existing helper, one
-configuration source, the enum itself — and every site reading it.
+configuration source, the enum itself — and every site reading it; a restated theme token is read
+from the theme, through one shared hook where script needs it.
+
+### Hand-Written Styling
+
+Styling written by hand where a shared component owns it. The aim is an app whose every page is a
+tree of common components configured by props and variants, so every screen looks standard and the
+app holds no styling of its own:
+
+```tsx
+<Page title="Recipes" actions={<Button>New recipe</Button>}>
+  <Section title="Favorites" description="The recipes you cook most often.">
+    <Stack gap="md">
+      <Row justify="between">
+        <Text>Lemon tart</Text>
+        <Badge tone="neutral">40 min</Badge>
+      </Row>
+    </Stack>
+  </Section>
+</Page>
+```
+
+- in every app built on a shared UI library: every `className`, class-merging call such as `cn(`,
+  class string held in a constant or style module, style rule or styled component of the app's own
+  beyond the stylesheet line that loads the library's, and inline `style` whose values are not read
+  from saved data — counted per app;
+- inside the shared library: every layout, spacing, color or type size written as raw classes in a
+  component where a primitive expresses it, and every shared component taking a `className` prop.
+
+The remedy is the owner's existing prop or variant at the call site, and where none expresses the
+case, a new prop or variant on the shared component that owns it — never a local wrapper, class
+constant or style module in the app; inside the library, the primitive in place of the raw classes,
+and each `className` prop removed with its callers moved onto variants. A finished run brings every
+app's count to zero: a use left standing is an open finding, never a disposition. Left alone: an
+inline style whose values come from saved data, such as a layout the reader arranged; inside the
+library, the classes a primitive is made of and the allowances the React rules' **Components and
+Props** grants there.
 
 ### Reads As Slop
 
 Code a reviewer recognizes as generated: correct, and still a shape no careful author writes. The
-test is the reader's: would someone opening this file wince? Every check below makes that test
-concrete, and a shape the test catches that no check names is still a finding.
+test is an experienced reviewer's: opening these modules, would they call any of it slop? Each
+reason they would give is a finding with its remedy, whether or not a check below or another lens
+names it — layers that each add one tweak, wrappers that only forward or fix a value, one-symbol
+fragments, one thing built twice, comments narrating code, confusing or near-duplicate names, dead
+or speculative code, hand-written styling or configuration where an owner exists. The list
+illustrates the test and never bounds it. A shape another lens owns is fixed under that lens, and an
+exemption in this skill or a rule that would keep a shape the reviewer calls slop is named in the
+finding and does not keep it. Apply the test to each package whole as well as file by file — its
+file count, its exported names, the depth of its component chains — since a reviewer calls a
+package slop from its shape before opening any file. Every check below makes the test concrete.
 
 - **Tangled control flow** — nesting deeper than the repository's lint configuration allows,
   three levels by default; nested loops that a lookup map, a set or one pass replaces; an if/else
@@ -255,17 +319,19 @@ concrete, and a shape the test catches that no check names is still a finding.
   choice whose reason lives in code the repository controls; a comment narrating what a branch,
   guard or invariant does or protects against; a docstring listing the parameters, return or raised
   types the signature already declares, or running past the line the repository's language rules
-  require; a comment on an external quirk running past two lines; banner or section-divider
-  comments; a comment explaining what a better name would show.
+  require; a JSDoc block on a prop, field, type or component; a comment on an external quirk
+  running past two lines; banner or section-divider comments; a comment explaining what a better
+  name would show.
 - **Ceremony** — a temporary assigned and returned on the next line; a branch returning `True` or
   `False` to restate its own condition; comparing to `True`, `False` or `None` with `==`; a
   hand-written loop that a comprehension, builtin or standard-library call already does; a helper
   re-implementing the standard library.
 - **Defensive noise** — a try/except around code that cannot raise what it catches; catch, log and
   re-raise repeated at each layer.
-- **Placeholder names** — `data`, `result`, `temp`, `info`, `helper`, `manager` or `handler` naming
-  something specific; `_new`, `_v2`, `_final` or `_fixed` suffixes; a name saying how rather than
-  what.
+- **Placeholder and confusing names** — `data`, `result`, `temp`, `info`, `helper`, `manager` or
+  `handler` naming something specific; `_new`, `_v2`, `_final` or `_fixed` suffixes; a name saying
+  how rather than what; a name a reader cannot map to what it renders or holds; two exported names
+  for one need, and one name on two exports.
 - **Padding** — a function past the length the repository's configuration sets, about sixty lines by
   default, doing several separable phases; log lines restating the step the code just took; emoji or
   exclamation in comments and logs.
@@ -494,7 +560,8 @@ coverage, challenges every revision kept as applied without version-table eviden
 removed configuration name and package has no surviving reader or importer, re-traces every retained
 package to an importer or an invocation, re-derives the matrix for every retained mismatch, re-reads
 the deployment columns for every field kept as a local-development tool, confirms each regenerated
-lockfile resolves its constraints, and confirms that the repository's tests pass on each batch.
+lockfile resolves its constraints, re-counts every app's hand-written styling and confirms it reads
+zero, and confirms that the repository's tests pass on each batch.
 
 ## Report Additions
 
@@ -515,6 +582,8 @@ lockfile resolves its constraints, and confirms that the repository's tests pass
   the reason; the readers traced for each removal; for every field no deployment sets, its outcome;
 - per manifest: declarations removed, added and re-ranged; each lockfile regenerated with its
   command; audit tools wired in or removed;
+- each app's hand-written styling count before and after, and each variant or prop added to a shared
+  component in its place;
 - each shape **Reads As Slop** rewrote, by check, with the test proving each executable rewrite's
   behavior unchanged and the test that carries each deleted comment's behavioral guarantee;
 - each test removed or repaired with the layer it exercised;

@@ -44,7 +44,9 @@ type Status = (typeof Status)[keyof typeof Status];
 - A TS/TSX module must own a broad domain, not a single feature, action, watcher, or one-shot helper. Name modules after the domain (`payments.ts`), not the feature (`refundPayment.ts`).
   **A component module is the exception, here and in the subfolder and fewer-files bullets below**:
   it exports exactly one component, as the React rules state, and its domain becomes the folder
-  those files share, however few lines each holds.
+  those files share, however few lines each holds. The exception covers a component that earns its
+  place under the React rules' **Components and Props**; a module whose component is another's
+  variant or a hook's wrapper merges like any other fragment.
 - Avoid role-suffixed file names like `*Action.ts`, `*Lookup.ts`, `*Watcher.ts`, `*Extractor.ts`, `*Url.ts`, or `*Collections.ts`; the folder already conveys the role.
 - Cross-domain helpers belong in a generic `utils` or `lib` module, not in a module named after a single feature.
 - Split a domain module into a subfolder only when the single file would exceed approximately 1000 lines. Name the folder after the domain and its files after subareas.
@@ -162,7 +164,8 @@ type Status = (typeof Status)[keyof typeof Status];
 - **The code carries its own explanation, so it carries no comments.** A name, a type, and a
   function small enough to read at once say what a sentence beside them would, and they cannot drift
   from the code the way the sentence does. Where a line needs prose to be understood, rename it,
-  split it, or give the value a type that states what it is.
+  split it, or give the value a type that states what it is. That includes JSDoc on a prop, field,
+  type or component: a prop's name and type carry what the block would say.
 - The exception is a directive the tooling reads — a linter suppression, a type-checker instruction
   — which is not prose and stays.
 - **The other exception is behaviour somebody else owns, which no amount of renaming can make the

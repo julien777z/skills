@@ -14,8 +14,22 @@ paths:
   helper components it needs stay in that file, unexported, so no other module can reach them. A
   module exporting two — a navigation shell that also exports a toggle and a menu — is two modules.
 - **Components that belong together go in a folder named for their area, one file each**, published
-  through the area's index as the TypeScript rules' **Area Imports** describe. A client component's
-  `"use client"` directive goes on the first line of its own file.
+  through the area's index as the TypeScript rules' **Area Imports** describe. The folder holds
+  components that each earn their place under the next bullet; it never shelters one that is
+  another's variant or a hook's wrapper. A client component's `"use client"` directive goes on the
+  first line of its own file.
+- **A shared UI library is primitives and the fuller components built from them, and a difference
+  in look or behavior is a prop or variant on its owner, never another component.** A primitive is
+  one layout, type, surface or control with variants — a stack, a text, a panel, a button — taking
+  children but no named slots and opening no portal. A fuller component — a page, a section, a
+  dialog, a list, a form — composes primitives and takes slots, as the structure bullet below says.
+  A component that renders one other component with some of its look or behavior props fixed or
+  defaulted, and adds no content, data or state of its own, is that owner's variant: a `DangerNotice`
+  rendering `<Notice tone="danger" dismissible={false}>` is `tone="danger"` on `Notice`. One that
+  only runs a hook and renders nothing or its children is that hook, called where it is needed. A
+  chain of components each adding one prop or value is one component with variants, counted from
+  the call site to the primitive at its end. A variant shares its owner's structure; a branch that
+  renders a different tree is a second component behind a prop, and becomes that component.
 - Named exports for components
 - Default exports only for page components
 
@@ -37,10 +51,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   `actionLabel` and `actionHref` — so each caller keeps its own content without the component
   growing a prop per field. Its parts — a header, a body, a title, an item — are unexported helpers
   in its file: exported compound parts (`Panel`, `PanelHeader`, `PanelBody`), however common in
-  component libraries and pattern guides, are the hand-assembly this forbids. A call site fills slots;
-  it never assembles the surface from parts or primitives, and structural behavior a caller needs
-  becomes a prop or variant. Where a surface is hand-assembled or exports its parts, the fix names
-  the one component that replaces it and lists each slot prop it takes.
+  component libraries and pattern guides, the `vercel-composition-patterns` and
+  `tailwind-design-system` skills' compound examples included, are the hand-assembly this forbids.
+  A call site fills slots; it never assembles the surface from parts or primitives, and structural
+  behavior a caller needs becomes a prop or variant. Where a surface is hand-assembled or exports
+  its parts, the fix names the one component that replaces it and lists each slot prop it takes.
 - **Layout and type come from primitives, never from class strings.** A feature component arranges
   its content with the shared layout and text primitives — a row, a column, a grid, a box, a text, a
   heading — through their variants (`<Flex gap="sm" justify="between">`, `<Type size="sm"
@@ -49,6 +64,24 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   needs, or a width on a layout primitive; a button keeps its own, as **Rendering and Events** says.
   A case the primitives cannot express becomes a new variant on the primitive
   that owns it, never a class string at the call site, so one spacing and type scale holds everywhere.
+  These allowances belong to the code that builds the UI; an app built on a shared UI library takes
+  none of them, as the next bullet says.
+- **An app built on a shared UI library writes no styling of its own.** No `className`, no
+  class-merging call such as `cn(`, no class string kept in a constant or a style module, no style
+  rule or styled component of its own — its stylesheet only loads the library's — and no inline
+  `style` except a value read from saved data, such as a layout the reader arranged and saved. Each screen is a tree of the library's
+  components configured by their props and variants, so every screen looks standard: a page reads
+  `<Section title="Favorites" description="…"><Stack gap="md">…</Stack></Section>`, never a `div`
+  spelling out the section's padding and border. A case the library cannot express becomes a prop or
+  variant on the shared component that owns it, never a local wrapper, and no shared component takes
+  a `className` prop that would let a caller reach around its variants.
+- **Responsive layout is the primitive's own CSS.** A primitive changes layout with the room it is
+  given through the styling system's container variants, or its responsive variants where the
+  viewport decides (`@md:` and `md:` in Tailwind), and a variant value says what it renders at every
+  width — never a `cols={3}` whose classes collapse to one column at a breakpoint the caller cannot
+  see, as the `tailwind-design-system` skill's grid example does. Script that must know the width
+  reads the theme's breakpoint through one shared hook; a number restating a breakpoint, color or
+  spacing step the theme declares is a second copy of that token.
 
 ## Reference Data
 
@@ -81,9 +114,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 - **Find the established owner before building a repeated surface.** When the same page section,
   navigation element, menu, input, loading state or action appears elsewhere, move the established
-  implementation into a generic shared primitive. A local wrapper around the shared primitive may
-  supply content or a documented variant; it never recreates structure, styling, fetching or
-  interaction behavior. An interface
+  implementation into a generic shared primitive. A local component built on the shared primitive
+  supplies content — its own data and copy — and picks a documented variant at the call site; it
+  never fixes a variant under a second name, as **Components and Props** says, and never recreates
+  structure, styling, fetching or interaction behavior. An interface
   that is correct in one consumer is the canonical starting point for the extraction, not a visual
   reference to copy.
 
@@ -643,7 +677,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 ## State and Hooks
 
-- Put reusable custom hooks in the repository's established hooks module.
+- **A custom hook lives in its package's hooks area** — `hooks/`, or the repository's established
+  hooks module — never inside a component or feature module, and a shared package exports it only
+  once a consumer outside the package calls it.
 - Prefix custom hooks with `use`, for example `useResources` or `useViewport`.
 - Extract reusable logic into custom hooks
 
