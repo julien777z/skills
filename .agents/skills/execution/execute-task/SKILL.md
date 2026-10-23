@@ -277,8 +277,14 @@ candidate's actual role against it. A shared filename, label, directory or provi
 unrelated automation part of that scope. Expand to a required dependency or an explicitly broader
 user instruction, never to everything a text search happens to return.
 
-Before recommending an implementation or delegating its edits, trace the requested behavior from
-the caller to its owner and inspect that owner's existing capabilities. Reconcile the complete
+Before recommending an implementation, asking a question that presupposes one, or delegating its
+edits, trace the requested behavior through the caller, transport, configured destination and
+execution owner, including the entrypoint that launches or deploys it. Establish where it runs and
+which existing capabilities and stored data it can use from configuration and, when available, the
+running artifact; a client request alone establishes neither a remote dependency nor missing local
+behavior. An independent inventory receives the request, observed evidence and unresolved facts,
+not a proposed topology to assume. Its result must reconcile that runtime path before it supports
+a new mechanism or a product question. Reconcile the complete
 accepted target with the user's instructions, approved plan, repository guidance and observed
 mechanism; record each settled outcome or constraint with its source and the evidence the proposed
 implementation will need to satisfy it. Identify unresolved facts rather than silently replacing
