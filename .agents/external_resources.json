@@ -52,7 +52,7 @@
     {
       "kind": "skill",
       "name": "image-to-code",
-      "repo": "Leonxlnx/taste-skill",
+      "repo": "Leonxlnx/imagegen-skills",
       "skill": "image-to-code",
       "category": "web",
       "update_on_sync": true
