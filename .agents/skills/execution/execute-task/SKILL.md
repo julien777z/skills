@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once at the start of every task authorized to change files, before recommending an implementation, delegating edits, or editing — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until verified completion or explicit user stop or handoff. It plans source and product changes first, except for trivial changes; canonical guidance changes skip the plan and, while another task is active, are pushed to a draft pull request, recorded, and delivered in bulk at its completion. It then applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, keeps session-created source work to one pull request per repository, finishes each pull request, once the whole task is done, with a review pass over everything not yet reviewed (test sweep, simplification, code review, acceptance) and a history rewrite before sending it for review, checks every outcome it reports at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
+description: "Always run this. Invoke once at the start of every task authorized to change files, before recommending an implementation, delegating edits, or editing — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until verified completion or explicit user stop or handoff. It plans source and product changes first, except for trivial changes; canonical guidance changes skip the plan and, while another task is active, are pushed to a draft pull request, recorded, and delivered in bulk at its completion. It then applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, gates each finished plan step or worker task with a simplification pass and an acceptance gate before later work builds on it, keeps session-created source work to one pull request per repository, finishes each pull request, once the whole task is done, with a review pass over everything not yet reviewed (test sweep, simplification, code review, acceptance) and a history rewrite before sending it for review, checks every outcome it reports at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
 short_description: 'Plan source and product changes for approval; validate canonical guidance changes through their delivery gates.'
 ---
 
@@ -14,9 +14,9 @@ are validated by their evidence, smoke-test, review, and acceptance gates.
 
 - `pre-production` — the target-contract policy for every repository and its data obligations.
 - `run-site` — select browser verification applicability before proposing it in a plan or brief.
-- `code-simplify` — the pass over each delegated worker's finished task, and the ownership analysis a plan settles.
+- `code-simplify` — the pass over each finished plan step and delegated worker task, and the ownership analysis a plan settles.
 - `review-pass` — review, simplify and fix the finished task's unreviewed changes before delivery.
-- `acceptance-gate` — judge the finished task's complete diff before local completion, before the pull request is sent for review and before it merges, and each fix for a flag it raises.
+- `acceptance-gate` — judge each finished plan step's and worker task's diff before later work builds on it, the finished task's complete diff before local completion, before the pull request is sent for review and before it merges, and each fix for a flag it raises.
 - `generic-push` — keep each repository's publishing metadata independent during multi-repository changes.
 - `merge-conflict` — bring in a conflicting base as soon as a push read-back shows it.
 - `subagent-selection` — the hand-up a worker without an agent tool uses for an independent step.
@@ -459,7 +459,14 @@ compatibility, generated-output drift.
 
 ### Ongoing Simplification
 
-The final simplification runs once, inside `review-pass` at **Completion**, never per push.
+**Every finished step is gated before anything builds on it.** When a plan step or a worker task
+finishes, whoever made it, in process or delegated, run `code-simplify` and then `acceptance-gate`'s
+diff question over that step's diff before the step is recorded or reported done and before a later
+step, worker or consumer builds on it; what they flag is fixed within that step. A step that skipped
+its gates is gated before the next step starts, however much has been built on it since. The final
+simplification and acceptance still run once over every change not yet reviewed, inside
+`review-pass` at **Completion**, and neither runs per push. A guidance correction recorded during a
+task follows `edit-skill`'s timing instead.
 
 Own each coherent feature through integration: the primary agent settles dependencies, product
 decisions and the combined result. Simplify a feature as it is built; the final pass
@@ -498,9 +505,9 @@ the task.
 
 Every push goes out once the pre-push checks below pass, on a draft and on a pull request ready for
 review alike; nothing holds committed work on one machine — not a gate, review or simplification
-pass pending on it, an integration merge, or a plan that orders one first. The final `code-simplify` pass and `acceptance-gate`'s
-diff question do not run per push: they run once over the finished task's unreviewed changes, inside
-`review-pass` at **Completion**. A fix pushed for a flag a gate or review raised gets one fresh `acceptance-gate`
+pass pending on it, an integration merge, or a plan that orders one first. `code-simplify` and `acceptance-gate`'s
+diff question do not run per push: they run as each step finishes and over the finished task's
+unreviewed changes inside `review-pass` at **Completion**, as **Ongoing Simplification** says. A fix pushed for a flag a gate or review raised gets one fresh `acceptance-gate`
 run over that fix's increment, read with the whole branch diff as its originating diff, as
 `acceptance-gate`'s **Bounds** require; that fresh verdict is what other skills mean by an
 increment's **Pre-Push Gate** verdict.
@@ -566,8 +573,8 @@ bug or a passing formatter does not satisfy this spacing check.
   Requests** — and names the exact files to change, under `subagent-selection`'s **Dispatch**. The
   worker pushes each step once its checks pass and reports the branch and head. The delegating
   agent, which holds the intent statement, reads that head under **Reported Outcomes** and, once
-  the worker's task is finished, runs one `code-simplify` pass and one `acceptance-gate` diff
-  question over that task's diff, returning what they flag as fix steps for the next worker. The worker ends with nothing uncommitted and
+  the worker's task is finished, runs the step gates **Ongoing Simplification** sets over that
+  task's diff, returning what they flag as fix steps before any dependent work starts. The worker ends with nothing uncommitted and
   nothing unpushed, never amends or rebases a pushed commit, and its report names the branch and
   head.
 - **Pull requests stay draft until they merge**, so these pushes start no test jobs, as the
@@ -600,7 +607,9 @@ An outcome is what its source of truth shows, never what an action or a worker s
   branch or the installed copy, "deployed" or "healthy" against the host, "fixed" by reproducing it
   or reading the evidence, "the screenshot shows it" by looking at the image, "no references
   remain" by searching. A claim the check contradicts is the next thing done, ahead of queued
-  work: sent back to the worker with what the read showed, or fixed here.
+  work: sent back to the worker with what the read showed, or fixed here. A verified report of
+  finished work is relayed as done, or built on, only after the step gates **Ongoing
+  Simplification** sets have passed over it.
 - **What a worker reports leaving alone is classified before it reaches the user.** Read each item
   against `pre-production`'s **Scope Follows The Defect, Not The Request** bullets: a defect, a
   parallel implementation or a shape a standing rule names goes back to the worker or is fixed

@@ -1,6 +1,6 @@
 ---
 name: acceptance-gate
-description: Required independent checkpoint over an authorized change's complete diff before local completion, draft readiness or merge; run as a workflow dependency without a separate user invocation. Passing tests or the author's own review never substitute for its verdict. Judge an issue, finding, proposal or diff against product state, intent and the quality rubric through a read-only subagent. Run for triage, before recording a deferral, before and after fixing or resolving one, after base incorporation, and on a fix for a gate or review flag.
+description: Required independent checkpoint over an authorized change's complete diff before local completion, draft readiness or merge; run as a workflow dependency without a separate user invocation. Passing tests or the author's own review never substitute for its verdict. Judge an issue, finding, proposal or diff against product state, intent and the quality rubric through a read-only subagent. Run over each finished plan step or worker task before later work builds on it, for triage, before recording a deferral, before and after fixing or resolving one, after base incorporation, and on a fix for a gate or review flag.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 
@@ -80,7 +80,7 @@ checks analogous implementations and the evidence for retained differences; miss
 pull-request context is a flag to obtain that context, not permission to assume consistency.
 
 The gate is read-only and distinct: not the author of the item. Invoke `subagent-selection` for the
-acceptance-gate role, using its configured Codex role selection and the frontier capability level on
+acceptance-gate role, using its configured Codex role selection and the advanced capability level on
 other hosts. Dispatch the gate with that exact identifier, and retain catalogue state, identifier, assignment
 state and host receipt in the gate record. Its reader freshness follows `subagent-selection`'s **Dispatch**. It
 receives five things and nothing else:
@@ -99,7 +99,19 @@ names, with deletions intact; a commit range, a branch name, or a `git` command 
 judging a working tree that other edits may have moved, or nothing at all. Its selector receipt is the
 model-dispatch record; never replace it with a generic “largest model” label.
 
-**Start any diff review with the design comparison.** Inventory the responsibilities and decisions the diff moves,
+**A diff review judges the code as it stands, not only the lines that changed.** Read every module
+the diff adds, moves or rewrites whole; moved and renamed code is judged as if it were new. Before
+the design comparison, answer the plain question: would an experienced reviewer opening these
+modules call any of it slop? Each reason they would give is a flag with its remedy, whether or not
+a narrower rule below names it: layers that each add one tweak, wrappers that only forward or fix a
+value, one-symbol fragments, one thing implemented twice, comments narrating code, confusing or
+near-duplicate names, dead or speculative code, hand-written configuration or styling where an
+owner exists. The list illustrates the question and never bounds it. A rubric exemption that would
+excuse such a shape is named in the flag. A remedy that sends the author to an existing piece judges
+that piece the same way first: a wrapper or a duplicate is not an owner. An increment fixing an
+earlier flag is read the same way, over the modules it touches, never only against that flag.
+
+**Then make the design comparison.** Inventory the responsibilities and decisions the diff moves,
 duplicates, specializes, removes or introduces, reading both sides independently of the caller's
 rationale. Follow each prior selected or computed answer to every resulting use, counting independent
 selections, copies and repeated work even inside one file; a canonical file is not proof of canonical
@@ -167,7 +179,7 @@ it:
   one of fix, close, defer or do.
 - **Admission — may this work be deferred?** The triage question asked of a proposed record.
 - **Proposal — should this be written?**
-- **Diff — should this stand?** A finished task's diff, or the increment fixing a flag, read with
+- **Diff — should this stand?** A finished step's or task's diff, or the increment fixing a flag, read with
   the whole branch diff as its originating diff.
 - **Base incorporation — what did the base bring in that the change must refactor?** The procedure
   below.
