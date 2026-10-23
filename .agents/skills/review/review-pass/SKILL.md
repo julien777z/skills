@@ -60,29 +60,55 @@ a follow-up after it gets a review of the follow-up, sized to the follow-up.
 - **The reviewed head.** When a pass's final acceptance passes, record a `review` entry with
   `session-ledger` for the pull request: repository, number, the accepted head, its tree, and the
   accepted target-snapshot identity. For a local route, record a `local_review` entry keyed by
-  repository, route, merge base, accepted commit/tree, target-patch and entry identities; later local
-  deltas compare against that entry. A history rewrite whose continuity attestation proves an
-equivalent route, target patch, entries, slices, and supporting inputs may move the record to the
-rewritten head even when its head/tree locator changes.
+  repository and route with its merge base, accepted commit/tree, durable snapshot locator and digest,
+  target-patch digest, and complete entry manifest. A history rewrite whose continuity attestation
+  proves an equivalent route, target patch, entries, slices, and supporting inputs may move the record
+  to the rewritten head even when its head/tree locator changes.
 - **The unreviewed delta is the change in the pull request's own patch**, never in its tree:
   compare the patch now — `merge-base..head`, or `first-parent..merge-commit` for a merged range —
   with the patch at the reviewed head, `merge-base..reviewed head`, through `git range-diff` or a
   diff of the two patches. Base commits a merge brought in are excluded; `merge-conflict` judges
   them. With no record, or a recorded head the repository can no longer read, the delta is the
   complete merge-base diff. Commits by anyone count, the user's included.
+- **The local unreviewed delta is the change from the latest matching `local_review`.** Reload its
+  durable snapshot artifact and freeze the current local inputs before comparing their merge base,
+  complete target patch, and entry manifests. The delta contains every added, removed, or content- or
+  mode-changed committed, staged, unstaged, and untracked entry plus its patch change; unchanged
+  entries remain context only. With no matching readable record, the delta is the complete current
+  local snapshot. Equal target-patch and entry-manifest identities make the local delta empty.
 - **A caller can ask for the whole pull request.** The delta is then the complete merge-base diff
   whatever the record says, sized as **Anything else** below; `finish-pr` always asks for it.
 - **Size the pass from the delta**, using `execute-task`'s definition of a trivial change — no
   design choice in it: a typo, a one-line fix, a rename the user named.
-  - **Empty** (the patch equals the reviewed patch): only **Review Thread Triage** runs, since
-    a reviewer may have commented without changing code; with no thread fix, return the recorded
-    verdict. A thread fix is a new delta, sized again here.
+  - **Empty**: a working-pull-request route runs only **Review Thread Triage**, since a reviewer
+    may have commented without changing code; with no thread fix, return the recorded verdict. A
+    local route verifies its recorded durable snapshot and returns its recorded verdict without
+    thread triage. A thread fix is a new delta, sized again here.
   - **Trivial**: the route **Workflow** step 1 states. A delta confined to canonical `.agents`
     Markdown keeps the in-process `code-simplify` pass `edit-skill`'s **Guidance Delivery** step 3
     requires.
   - **Anything else**: the full **Workflow**, with the delta as every lens's review target and the
     complete merge-base diff and full touched files as context. A defect found in that context is
     still fixed under **Confirmed Findings**.
+
+## Local Snapshot Artifact
+
+A local `targetSnapshot` is a task-private, durable artifact owned by the task owner through
+`session-ledger`, never a pointer into the mutable source checkout. Every freeze serializes the route,
+repository, merge base, candidate head/tree when present, complete target patch, and a complete entry
+manifest. For each committed, staged, unstaged, and untracked entry, retain its relative path, mode,
+content digest, and bytes; the artifact includes a digest over the serialized manifest and payload.
+Write it in the ledger's private evidence storage, read it back, verify every digest, and record its
+absolute locator, artifact digest, and input identities in the task ledger before dispatching a worker.
+A consumer reloads that artifact and rehydrates or verifies the task-owned checkout from its bytes;
+it never treats the original checkout or an old path as the snapshot.
+
+For a local route, `currentSnapshot` begins as the first verified artifact. Every mutation from
+validation, security review, simplification, review fixing, or acceptance repair derives, persists,
+and readbacks a replacement `currentSnapshot` from the task-owned checkout before any later review,
+validation, or gate. Replace the active snapshot, recompute the local delta, and invalidate coverage
+under **Review Continuity**. Keep the originating delta for gate context, but only the active snapshot
+binds downstream work.
 
 ## Review Targets
 
@@ -202,7 +228,10 @@ Subagents do not edit. The parent reconciles overlapping findings, validates eac
 every survivor under **Confirmed Findings**. Reproducing a defect on the base branch establishes only
 that it is pre-existing; it never refutes the finding or creates a decision to ask the user before
 fixing it. Update affected tests and consumers, and verify that the refreshed scope meets
-`code-simplify`'s approval bar. Do not start `code-review` while a simplification finding remains
+`code-simplify`'s approval bar. For a local route, persist a replacement `currentSnapshot` after every
+simplification or validation repair before `code-review` reads the target. For a pull-request route,
+freeze a replacement active review-scope snapshot after every pass-authored mutation while retaining
+the originating delta as context. Do not start `code-review` while a simplification finding remains
 unapplied or unresolved. Run `code-review high fix` only against the resolved review target,
 as **Workflow** step 2 hands it over.
 
@@ -394,13 +423,16 @@ and verified live result; a default-branch or merged artifact is not test eviden
 authorization, skip deployment and continue review. Never dispatch a workflow or mutate a provider
 to work around this gate.
 
-1. Resolve the review target under **Review Targets** and its delta under **Review Scope**; an empty
-   delta runs only **Review Thread Triage** before returning. Read the target's intent and metadata
-   without modifying a merged pull request; run **Description Refresh** when a working pull request
-   exists. With no working pull request, freeze the local task diff as an immutable `targetSnapshot`,
-   record its entries and identities, and materialize a verified writable task-owned feature checkout
-   before any fix-mode review. Record the review range and pass the intent and route-specific
-   ownership to every subagent and into `code-review high fix`. When a working pull request exists, run **Review Thread Triage**. Run `test-fixture`'s
+1. Resolve the review target under **Review Targets** and its delta under **Review Scope**. An empty
+   working-pull-request delta runs only **Review Thread Triage** before returning; an empty local
+   delta reloads and verifies its recorded durable snapshot, then returns its recorded verdict. Read
+   the target's intent and metadata without modifying a merged pull request; run **Description
+   Refresh** when a working pull request exists. With no working pull request, create and verify the
+   durable `currentSnapshot` artifact described in **Local Snapshot Artifact**, record it through
+   `session-ledger`, and materialize a verified writable task-owned feature checkout from it before
+   any fix-mode review. Record the review range and pass the intent and route-specific ownership to
+   every subagent and into `code-review high fix`. When a working pull request exists, run **Review
+   Thread Triage**. Run `test-fixture`'s
    **Sweep** over the tests the delta adds or changes, and, whatever the delta's size,
    `security-audit`'s **Diff Review** at `medium` when the delta crosses a trust boundary that skill
    names, with the delta as its target and the merge-base diff as the context its traces read; push
@@ -410,7 +442,7 @@ to work around this gate.
    starts before all of these are clean. A trivial delta skips the first test pass, steps 2–4, and
    the **Simplification Gate** except for the guidance pass **Review Scope** keeps.
 2. Invoke `code-review high fix` on the open pull-request URL, the exact delegated ref range, or
-   the immutable local `targetSnapshot` when this route has no working pull request. Delegate the
+   the immutable local `currentSnapshot` artifact when this route has no working pull request. Delegate the
    **Review Scope** delta as its review target, with the complete merge-base diff, the full touched
    files and any working fix head as context. An explicit unsupported receipt, a
    missing identifier, and every other selection state retain the concrete hold; the primary agent
@@ -419,15 +451,16 @@ to work around this gate.
    eligibility checks. Direct fixes to the matching working fix branch rather than changing the
    immutable target.
 3. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the pass continues; see **Deferred Findings**. A finding that can be neither fixed nor recorded remains an active gate: surface the needed resolution under the global rules' pending-result boundary and continue independent work.
-4. Classify each correction under **Review Continuity**. When normal invalidation applies and a fix changes a reviewed target, freeze the replacement snapshot and rerun every invalidated lens, concern, and validator against it. Repeat until the applicable review is clean.
+4. Classify each correction under **Review Continuity**. When normal invalidation applies and a fix changes a reviewed target, freeze the replacement snapshot and rerun every invalidated lens, concern, and validator against it. For a local route, persist and read back the replacement `currentSnapshot`; for a pull-request route, advance the active review-scope snapshot to the repaired remote patch while retaining the originating delta. Repeat until the applicable review is clean.
 5. Once the review is clean, if a merged-range review has no working fix pull request, return a
    clean result. Otherwise run **Incorporating The Base**, then the second test pass **Validation
    Order** requires. Never stop, restart, reconfigure or claim a local service this pass did not
    start.
 6. Before final acceptance, branch by target route.
-   - With a working pull request, materialize the current `targetSnapshot` in its exact pushed head:
-     candidate SHA equals remote SHA, candidate tree and entries equal the remote tree, and the target
-     patch equals the recorded review-scope delta reconstructed from the remote head. When intended dirty input remains, stage only
+   - With a working pull request, materialize the current active `targetSnapshot` in its exact pushed
+     head: candidate SHA equals remote SHA, candidate tree and entries equal the remote tree, and the
+     target patch equals the active snapshot's recorded patch reconstructed from the remote head. The
+     originating review-scope delta remains gate context, not the final identity comparison. When intended dirty input remains, stage only
      that input, commit and push it, freeze the resulting replacement snapshot, and rerun the required
      cohort and validation. A remote mismatch freezes a replacement snapshot and reruns the affected
      cohort, validation, and final acceptance. Run **Description Refresh**'s second pass and put the
@@ -436,11 +469,15 @@ to work around this gate.
      re-read PR state, base ref and SHA, remote head, and recomputed merge base, then repeat the
      identity comparison; a mismatch discards the verdict,
      freezes a replacement snapshot, and reruns the affected cohort, validation, and final gate.
-   - With no working pull request, materialize the exact local `targetSnapshot` on its verified
-     task-owned feature checkout before acceptance: stage only its recorded intended entries, commit
-     them, freeze the resulting replacement snapshot, and rerun the required cohort and validation.
-     Re-gate that materialized snapshot and put its diff to `acceptance-gate`'s **Diff** question
-     with the intent statement, marked delta, originating diff, and affected-repository map.
+   - With no working pull request, materialize the exact local `currentSnapshot` from its durable
+     artifact on its verified task-owned feature checkout before acceptance: stage only its recorded
+     intended entries, commit them, persist and read back the resulting replacement snapshot, and
+     rerun the required cohort and validation. Re-gate that materialized snapshot and put its diff to
+     `acceptance-gate`'s **Diff** question with the intent statement, marked delta, originating diff,
+     and affected-repository map. After a clean verdict, reload the gate-bound artifact and recompute
+     its patch and entry identities from the task-owned checkout. A difference discards the verdict,
+     persists a replacement `currentSnapshot`, and reruns the affected cohort, validation, and Diff
+     gate before recording acceptance.
    Fix every flag as its own increment. Push a working-pull-request fix through its **Pre-Push Gate**;
    for a local snapshot fix, freeze a replacement local snapshot, rerun affected validation and
    continuity coverage, and run a fresh **Diff** gate. Resolve each flag under
