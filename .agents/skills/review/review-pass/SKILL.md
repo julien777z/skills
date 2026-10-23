@@ -106,16 +106,20 @@ intended local-entry selection at the patch-partition and hunk level, including 
 status and deletion state; stop for user resolution whenever that selection is ambiguous. In particular,
 stop when a selected hunk shares an index, modified-worktree, or untracked-worktree cell with unrelated
 content because the cell cannot be faithfully serialized as selected work alone. Exclude unrelated
-staged, unstaged, and untracked work from the snapshot, delta, and final staging set. Every freeze
-serializes the route, repository, merge base, candidate head/tree when present, complete target-patch
-partitions, and that selected layered-entry manifest. For every selected path, record separate `HEAD`,
-`index`, and `worktree` cells; each cell records presence, mode, content digest, and bytes when
-present. The artifact includes a digest over the serialized identity, layered
-manifest, and payload. Write it in the ledger's private evidence storage, read it back, verify every
-digest, and record its absolute locator, artifact digest, intended-selection identity, and input
-identities in the task ledger before dispatching a worker. A consumer reloads that artifact and
-rehydrates or verifies the task-owned checkout's index and worktree from its bytes; it never treats
-the original checkout or an old path as the snapshot.
+staged, unstaged, and untracked work from the snapshot, delta, and final staging set. Before retaining
+any bytes, classify every selected cell under the repository's secret policy. Never serialize or dispatch
+secret-bearing bytes in ledger evidence; exclude an unneeded secret cell, or hold the local route when
+it is required and establish an authorized secret-safe review input outside the ledger. Every eligible
+freeze serializes the route, repository, merge base, candidate head/tree when present, complete
+target-patch partitions, and that selected layered-entry manifest. For every selected path, record
+separate `HEAD`, `index`, and `worktree` cells; each cell records presence, mode, content digest, and
+bytes when present. The artifact includes a digest over the serialized identity, layered manifest, and
+payload. Write it in the ledger's private evidence storage, read it back, verify every digest, and
+record its absolute locator, artifact digest, intended-selection identity, and input identities in the
+task ledger before dispatching a worker. A consumer reloads that artifact only into a fresh pristine
+task-owned checkout, verifies that every retained cell and all expected absent untracked paths match,
+and removes any residue before work; it never treats the original checkout or an old path as the
+snapshot.
 
 Two local snapshots are equivalent only when their route, repository, merge base, candidate head/tree
 (or explicit absence), target-patch digest, layered intended-entry-manifest digest, and artifact digest
@@ -356,8 +360,10 @@ and run `merge-conflict` for every base update in this pass; it places its compa
 `acceptance-gate` verdict.
 
 Apply required refactors in this pull request and invalidate affected review receipts under
-**Review Continuity**. Say which incoming behavior was reconciled with the change's intent in the
-pull request body. This procedure does not restart the full cohort.
+**Review Continuity**. After incorporation, re-resolve the PR's base ref and SHA, merge base,
+candidate head and tree, then freeze and record a replacement active PR snapshot before revalidation
+or another gate. Say which incoming behavior was reconciled with the change's intent in the pull
+request body. This procedure does not restart the full cohort.
 
 ## Validation Order
 
@@ -445,7 +451,9 @@ and verified live result; a default-branch or merged artifact is not test eviden
 authorization, skip deployment and continue review. Never dispatch a workflow or mutate a provider
 to work around this gate.
 
-1. Resolve the review target under **Review Targets** and its delta under **Review Scope**. An empty
+1. Resolve the review target under **Review Targets** and its delta under **Review Scope**. Before a
+   no-PR route creates its first snapshot, resolve the intended local-entry selection; if it has no
+   selected input and no committed target patch, return `no work` without creating a snapshot. An empty
    working-pull-request delta runs only **Review Thread Triage** after exact snapshot/input reuse or a
    recorded continuity attestation; otherwise resume the affected cohort and acceptance. An empty local
    delta reloads and verifies its complete recorded durable snapshot identity, final receipt and gate,
@@ -495,15 +503,19 @@ to work around this gate.
      **Incorporating The Base**; every other mismatch freezes a replacement snapshot. In either case,
      discard the verdict and rerun the affected cohort, validation, and final gate.
    - With no working pull request, materialize the exact local `currentSnapshot` from its durable
-     artifact on its verified task-owned feature checkout before acceptance: stage only its recorded
-     intended entries, commit them, persist and read back the resulting replacement snapshot, and
-     rerun the required cohort and validation. Re-gate that materialized snapshot and put its diff to
-     `acceptance-gate`'s **Diff** question with the intent statement, marked delta, originating diff,
-     and affected-repository map. After a clean verdict, reload the gate-bound artifact and compare the
-     task-owned checkout's full snapshot identity through **Local Snapshot Artifact**'s canonical
-     equivalence predicate. A difference
+     artifact on a fresh verified task-owned feature checkout before acceptance. Stage and commit only
+     its recorded intended index or worktree input when it differs from the candidate; otherwise retain
+     the existing candidate head and freeze/read back a no-op replacement snapshot. Rerun the required
+     cohort and validation, then re-gate that materialized snapshot with `acceptance-gate`'s **Diff**
+     question, the intent statement, marked delta, originating diff, and affected-repository map. After
+     a clean verdict, reload the gate-bound artifact and compare the task-owned checkout's full snapshot
+     identity through **Local Snapshot Artifact**'s canonical equivalence predicate. A difference
      discards the verdict, persists a replacement `currentSnapshot`, and reruns the affected cohort,
-     validation, and Diff gate before recording acceptance.
+     validation, and Diff gate before recording acceptance. Then deliver the accepted selected cells
+     back to the recorded originating checkout only when its recorded preimages still match and no
+     unrelated cell would change; read back the applied result. On a preimage mismatch, preserve the
+     origin, retain the accepted task-owned checkout and a private patch artifact, and return their
+     absolute locators as the required user handoff instead of claiming source delivery.
    Fix every flag as its own increment. Push a working-pull-request fix through its **Pre-Push Gate**;
    for a local snapshot fix, freeze a replacement local snapshot, rerun affected validation and
    continuity coverage, and run a fresh **Diff** gate. Resolve each flag under
