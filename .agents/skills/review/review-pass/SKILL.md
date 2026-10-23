@@ -101,40 +101,7 @@ a follow-up after it gets a review of the follow-up, sized to the follow-up.
 
 ## Local Snapshot Artifact
 
-A local `targetSnapshot` is a task-private, durable artifact owned by the task owner through
-`session-ledger`, never a pointer into the mutable source checkout. Before each freeze, use `agent-lock` to acquire the exact key `checkout:<absolute-path>` for the checkout being captured, record its receipt and deadline, `check` ownership immediately before capture, then resolve the
-intended local-entry selection at the patch-partition and hunk level, including each selected path's
-status and deletion state; stop for user resolution whenever that selection is ambiguous. In particular,
-stop when a selected hunk shares an index, modified-worktree, or untracked-worktree cell with unrelated
-content because the cell cannot be faithfully serialized as selected work alone. Exclude unrelated
-staged, unstaged, and untracked work from the snapshot, delta, and final staging set. Before retaining
-any bytes, classify every selected cell under the repository's secret policy. Never serialize or dispatch
-secret-bearing bytes in ledger evidence; exclude an unneeded secret cell, or hold the local route when
-it is required and establish an authorized secret-safe review input outside the ledger. Every eligible
-freeze serializes the route, repository, merge base, candidate head/tree when present, complete
-target-patch partitions, and that selected layered-entry manifest. For every selected path, record
-separate `HEAD`, `index`, and `worktree` cells; each cell records presence, mode, content digest, and
-bytes when present. The artifact includes a digest over the serialized identity, layered manifest, and
-payload. Write it in the ledger's private evidence storage, read it back, verify every digest, and
-record its absolute locator, artifact digest, intended-selection identity, and input identities in the
-task ledger only after a second `check` confirms ownership; on a failed post-capture check discard the
-artifact and record the hold without checkout inspection or release, before dispatching a worker, then releases the capture receipt with `--resource-idle`; every ambiguity, hold, failure, cancellation, or other post-acquire exit first `check`s ownership; on any failed check it records the hold and performs no checkout inspection or release, otherwise it confirms the checkout stayed untouched and releases its owned receipt with `--resource-idle`.
-A consumer reloads that artifact only into a fresh pristine task-owned checkout, verifies that every retained cell and all expected absent untracked paths match,
-and removes any residue before work; it never treats the original checkout or an old path as the
-snapshot.
-
-Two local snapshots are equivalent only when their route, repository, merge base, candidate head/tree
-(or explicit absence), target-patch digest, layered intended-entry-manifest digest, and artifact digest
-are identical. A changed supporting input separately invalidates every receipt that depends on it. A
-changed base, head, or tree cannot reuse a verdict without the recorded **Review Continuity**
-attestation that proves every retained receipt remains valid.
-
-For a local route, `currentSnapshot` begins as the first verified artifact. Every mutation from
-validation, security review, simplification, review fixing, or acceptance repair derives, persists,
-and readbacks a replacement `currentSnapshot` from the task-owned checkout before any later review,
-validation, or gate. Replace the active snapshot, recompute the local delta, and invalidate coverage
-under **Review Continuity**. Keep the originating delta for gate context, but only the active snapshot
-binds downstream work.
+Use `session-ledger`'s **Snapshot Evidence** protocol for capture, persistence, rehydration, and cleanup. This workflow owns local delta, replacement-snapshot, delivery, and acceptance orchestration only.
 
 ## Review Targets
 

@@ -151,3 +151,7 @@ new top-level collections or an envelope per kind.
   or search result alone.
 - A missing record is not permission to broaden a query. Ask for the target when the current task
   and verified records leave multiple plausible artifacts.
+
+## Snapshot Evidence
+
+A local review snapshot is task-private evidence. Its owner resolves intended partitions, uses `agent-lock` around capture, excludes secret-bearing bytes, serializes layered HEAD/index/worktree cells with digests, atomically promotes and readbacks the artifact, materializes it only in a pristine task-owned checkout, and verifies ownership before retaining or dispatching it. Every failure or cancellation checks ownership first; a valid owned lock is released with `--resource-idle`, while a failed check performs no checkout action or release. Workflows record the artifact locator, identity, inputs, and receipts in the ledger and reference this protocol instead of copying it.
