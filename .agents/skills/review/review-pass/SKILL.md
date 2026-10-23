@@ -400,9 +400,10 @@ to work around this gate.
    **Validation Order** requires, and complete the **Simplification Gate**; no code-review phase
    starts before all of these are clean. A trivial delta skips the first test pass, steps 2–4, and
    the **Simplification Gate** except for the guidance pass **Review Scope** keeps.
-2. Invoke `code-review high fix` on the open pull-request URL or the exact delegated ref range,
-   delegating the **Review Scope** delta as its review target, with the complete merge-base diff,
-   the full touched files and any working fix head as context. An explicit unsupported receipt, a
+2. Invoke `code-review high fix` on the open pull-request URL, the exact delegated ref range, or
+   the immutable local `targetSnapshot` when this route has no working pull request. Delegate the
+   **Review Scope** delta as its review target, with the complete merge-base diff, the full touched
+   files and any working fix head as context. An explicit unsupported receipt, a
    missing identifier, and every other selection state retain the concrete hold; the primary agent
    never performs the independent high-fix review in process. For a merged range, pass the original
    pull request as metadata only and explicitly preserve the range through resolution and
@@ -414,19 +415,22 @@ to work around this gate.
    clean result. Otherwise run **Incorporating The Base**, then the second test pass **Validation
    Order** requires. Never stop, restart, reconfigure or claim a local service this pass did not
    start.
-6. Before final acceptance, when a working pull request exists, materialize the current `targetSnapshot`
-   in its exact pushed head: its candidate head, tree, entries, and intended patch must match the
-   freshly fetched remote head. When intended dirty input remains, stage only that input, commit and
-   push it, freeze the resulting replacement snapshot, and rerun the required cohort and validation.
-   A remote mismatch freezes a replacement snapshot and reruns the affected cohort, validation, and
-   final acceptance. Then run **Description Refresh**'s second pass and put the working pull request's
-   diff and refreshed prose to `acceptance-gate`'s final-acceptance question. With no working pull
-   request, re-gate the exact local `targetSnapshot` and submit only its diff to the acceptance gate. against the intent statement, with the
-   delta marked and the complete merge-base diff as context, or its diff question when no pull
-   request exists. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate**
+6. Before final acceptance, branch by target route.
+   - With a working pull request, materialize the current `targetSnapshot` in its exact pushed head:
+     candidate SHA equals remote SHA, candidate tree and entries equal the remote tree, and the target
+     patch equals the `merge-base..remote-head` patch. When intended dirty input remains, stage only
+     that input, commit and push it, freeze the resulting replacement snapshot, and rerun the required
+     cohort and validation. A remote mismatch freezes a replacement snapshot and reruns the affected
+     cohort, validation, and final acceptance. Run **Description Refresh**'s second pass and put the
+     diff and refreshed prose to `acceptance-gate`'s **Final acceptance** question with the intent
+     statement, marked delta, originating diff, and affected-repository map.
+   - With no working pull request, re-gate the exact local `targetSnapshot` and put its diff to
+     `acceptance-gate`'s **Diff** question with the intent statement, marked delta, originating
+     diff, and affected-repository map.
+   Fix every flag and push a working-pull-request fix as its own increment, whose **Pre-Push Gate**
    verdict is the fresh gate, after rerunning the affected targets it touches; resolve each flag
-   under `acceptance-gate`'s **Bounds**. Before each fresh acceptance gate, repeat **Description
-   Refresh** for the repaired head. The accepted head is the tested head.
+   under `acceptance-gate`'s **Bounds**. Before each working-pull-request fresh acceptance gate,
+   repeat **Description Refresh** for the repaired head. The accepted head is the tested head.
 7. Record the accepted head under **Review Scope** and return the **Result**.
 
 ## Result

@@ -104,7 +104,7 @@ orchestrator's model. Every lens, validator and refuter this skill hands to a su
 
 Make a todo list first.
 
-When `<target>` is given — a PR number, PR URL, `owner/repo#N`, `owner/repo/pull/N`, or a git ref range — review exactly that and mutate nothing. Never substitute a different PR.
+When `<target>` is given — a PR number, PR URL, `owner/repo#N`, `owner/repo/pull/N`, a git ref range, or an immutable local `targetSnapshot` — review exactly that. Never substitute a different PR. An explicit target remains immutable for review; when authorized fix mode finds a defect, writes are limited to the verified writable checkout of that exact PR head branch or local snapshot route.
 
 Otherwise work from the current branch. Detect the repository, the remote default branch, the current branch, the worktree state, and any open PR whose head branch is exactly the current branch.
 
