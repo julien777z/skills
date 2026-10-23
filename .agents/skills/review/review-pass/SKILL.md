@@ -59,8 +59,9 @@ a follow-up after it gets a review of the follow-up, sized to the follow-up.
 
 - **The reviewed head.** When a pass's final acceptance passes, record a `review` entry with
   `session-ledger` for the pull request: repository, number, the accepted head, its tree, and the
-  accepted target-snapshot identity. A history rewrite whose tree proof shows an identical tree and
-  target snapshot moves the record to the rewritten head.
+  accepted target-snapshot identity. A history rewrite whose continuity attestation proves an
+equivalent route, target patch, entries, slices, and supporting inputs may move the record to the
+rewritten head even when its head/tree locator changes.
 - **The unreviewed delta is the change in the pull request's own patch**, never in its tree:
   compare the patch now — `merge-base..head`, or `first-parent..merge-commit` for a merged range —
   with the patch at the reviewed head, `merge-base..reviewed head`, through `git range-diff` or a
@@ -408,16 +409,17 @@ to work around this gate.
    eligibility checks. Direct fixes to the matching working fix branch rather than changing the
    immutable target.
 3. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the pass continues; see **Deferred Findings**. A finding that can be neither fixed nor recorded remains an active gate: surface the needed resolution under the global rules' pending-result boundary and continue independent work.
-4. Classify each correction under **Review Continuity**. When normal invalidation applies and an application-source fix changes a reviewed target, rerun only the bug lenses against the new head. Repeat until the applicable review is clean.
+4. Classify each correction under **Review Continuity**. When normal invalidation applies and a fix changes a reviewed target, freeze the replacement snapshot and rerun every invalidated lens, concern, and validator against it. Repeat until the applicable review is clean.
 5. Once the review is clean, if a merged-range review has no working fix pull request, return a
    clean result. Otherwise run **Incorporating The Base**, then the second test pass **Validation
    Order** requires. Never stop, restart, reconfigure or claim a local service this pass did not
    start.
-6. Before final acceptance, materialize the current `targetSnapshot` in the exact pushed pull-request
-   head: its complete intended target patch must equal that remote head. When intended dirty input
-   remains, stage only that input, commit and push it, freeze the resulting replacement snapshot,
-   and rerun the required cohort and validation. Then run **Description Refresh**'s second pass and
-   put the working pull request's diff and refreshed prose to `acceptance-gate`'s final-acceptance question against the intent statement, with the
+6. Before final acceptance, when a working pull request exists, materialize the current `targetSnapshot`
+   in its exact pushed head: its complete intended target patch must equal that remote head. When
+   intended dirty input remains, stage only that input, commit and push it, freeze the resulting
+   replacement snapshot, and rerun the required cohort and validation. With no working pull request,
+   re-gate the exact local `targetSnapshot` for the diff question. Then run **Description Refresh**'s
+   second pass and put the working pull request's diff and refreshed prose to `acceptance-gate`'s final-acceptance question against the intent statement, with the
    delta marked and the complete merge-base diff as context, or its diff question when no pull
    request exists. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate**
    verdict is the fresh gate, after rerunning the affected targets it touches; resolve each flag
