@@ -41,6 +41,7 @@ happens next; this skill never readies, merges or deploys.
 - `security-audit` — the **Diff Review** of a delta that crosses a trust boundary.
 - `session-ledger` — read and record the reviewed head of each pull request, and the pass's worker
   dispatch receipts.
+- `agent-lock` — acquire the exact checkout key around every local snapshot capture and source delivery.
 
 Invoke `subagent-selection` and use its **standard** tier for this workflow's own sub-agents.
 Delegated skills retain their explicitly selected tiers, subject to the user's model override. Record each
@@ -101,7 +102,7 @@ a follow-up after it gets a review of the follow-up, sized to the follow-up.
 ## Local Snapshot Artifact
 
 A local `targetSnapshot` is a task-private, durable artifact owned by the task owner through
-`session-ledger`, never a pointer into the mutable source checkout. Before each freeze, claim exclusive ownership of the originating checkout for capture and resolve the
+`session-ledger`, never a pointer into the mutable source checkout. Before each freeze, use `agent-lock` to acquire the exact key `checkout:<absolute-path>` for the checkout being captured, record its receipt and deadline, `check` ownership immediately before capture, then resolve the
 intended local-entry selection at the patch-partition and hunk level, including each selected path's
 status and deletion state; stop for user resolution whenever that selection is ambiguous. In particular,
 stop when a selected hunk shares an index, modified-worktree, or untracked-worktree cell with unrelated
@@ -116,8 +117,8 @@ separate `HEAD`, `index`, and `worktree` cells; each cell records presence, mode
 bytes when present. The artifact includes a digest over the serialized identity, layered manifest, and
 payload. Write it in the ledger's private evidence storage, read it back, verify every digest, and
 record its absolute locator, artifact digest, intended-selection identity, and input identities in the
-task ledger before dispatching a worker. A consumer reloads that artifact only into a fresh pristine
-task-owned checkout, verifies that every retained cell and all expected absent untracked paths match,
+task ledger before dispatching a worker, then releases the capture receipt with `--resource-idle`.
+A consumer reloads that artifact only into a fresh pristine task-owned checkout, verifies that every retained cell and all expected absent untracked paths match,
 and removes any residue before work; it never treats the original checkout or an old path as the
 snapshot.
 
@@ -511,15 +512,19 @@ to work around this gate.
      a clean verdict, reload the gate-bound artifact and compare the task-owned checkout's full snapshot
      identity through **Local Snapshot Artifact**'s canonical equivalence predicate. A difference
      discards the verdict, persists a replacement `currentSnapshot`, and reruns the affected cohort,
-     validation, and Diff gate before recording acceptance. Then claim exclusive ownership of the recorded originating checkout, recheck its recorded preimages,
-     and apply the accepted selected cells through a rollback-capable patch and index operation only
-     when no unrelated cell would change; read back the applied result before releasing ownership. On a
-     unavailable lock, preimage mismatch, or failed application, preserve the origin, retain the accepted
-     task-owned checkout and a private patch artifact, and return their absolute locators as the required
-     user handoff instead of claiming source delivery.
+     validation, and Diff gate before recording acceptance. After every accepted local Diff gate, enter this terminal delivery phase before recording acceptance.
+     Acquire `agent-lock` for `checkout:<absolute-origin-path>`, record and `check` its receipt, then
+     verify repository, branch/ref, candidate head/tree, and selected-cell preimages against the captured
+     origin. Apply the verified origin-to-accepted candidate delta, including committed validation and
+     review fixes, through one rollback-capable patch-and-index operation. Read back the exact accepted
+     identity, then release the lock with `--resource-idle`. On a busy or invalid lock, identity or
+     preimage mismatch, or any partial/failed application, roll the origin back and verify that rollback,
+     release the lock, preserve the origin, retain the accepted task-owned checkout and private patch
+     artifact, and return their absolute locators as the required user handoff instead of claiming source
+     delivery.
    Fix every flag as its own increment. Push a working-pull-request fix through its **Pre-Push Gate**;
    for a local snapshot fix, freeze a replacement local snapshot, rerun affected validation and
-   continuity coverage, and run a fresh **Diff** gate. Resolve each flag under
+   continuity coverage, run a fresh **Diff** gate, then return to the terminal delivery phase. Resolve each flag under
    `acceptance-gate`'s **Bounds**. Before each working-pull-request fresh acceptance gate,
    repeat **Description Refresh** for the repaired head. The accepted head is the tested head.
 7. Record the accepted head under **Review Scope** and return the **Result**.
