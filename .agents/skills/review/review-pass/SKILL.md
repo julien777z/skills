@@ -60,9 +60,10 @@ a follow-up after it gets a review of the follow-up, sized to the follow-up.
 - **The reviewed head.** When a pass's final acceptance passes, record a `review` entry with
   `session-ledger` for the pull request: repository, number, the accepted head, its tree, and the
   accepted target-snapshot identity. For a local route, record a `local_review` entry keyed by
-  repository and route with its merge base, accepted commit/tree, durable snapshot locator and digest,
-  target-patch digest, and complete entry manifest. A history rewrite whose continuity attestation
-  proves an equivalent route, target patch, entries, slices, and supporting inputs may move the record
+  repository and route with its full accepted snapshot identity, durable snapshot locator and digest,
+  target-patch digest, layered intended-entry manifest, final receipt and gate locators, and every
+  receipt's supporting-input identity. A history rewrite or base incorporation whose continuity
+  attestation proves equivalent route, snapshots, slices, and supporting inputs may move the record
   to the rewritten head even when its head/tree locator changes.
 - **The unreviewed delta is the change in the pull request's own patch**, never in its tree:
   compare the patch now — `merge-base..head`, or `first-parent..merge-commit` for a merged range —
@@ -71,19 +72,24 @@ a follow-up after it gets a review of the follow-up, sized to the follow-up.
   them. With no record, or a recorded head the repository can no longer read, the delta is the
   complete merge-base diff. Commits by anyone count, the user's included.
 - **The local unreviewed delta is the change from the latest matching `local_review`.** Reload its
-  durable snapshot artifact and freeze the current local inputs before comparing their merge base,
-  complete target patch, and entry manifests. The delta contains every added, removed, or content- or
-  mode-changed committed, staged, unstaged, and untracked entry plus its patch change; unchanged
+  durable snapshot artifact, resolve the intended local-entry selection, and freeze the current local
+  inputs before comparing their complete snapshot identities. The delta contains every selected added,
+  removed, or changed committed, index, or worktree cell plus its patch partition; unchanged selected
   entries remain context only. With no matching readable record, the delta is the complete current
-  local snapshot. Equal target-patch and entry-manifest identities make the local delta empty.
+  local snapshot. A local delta is empty only when the route, repository, merge base, candidate
+  head/tree (or their explicit absence), target-patch digest, and layered intended-entry-manifest digest
+  are identical, and every retained receipt's supporting-input identity still matches. A changed base
+  or candidate may retain coverage only through **Review Continuity**'s recorded attestation; otherwise
+  it is a new delta.
 - **A caller can ask for the whole pull request.** The delta is then the complete merge-base diff
   whatever the record says, sized as **Anything else** below; `finish-pr` always asks for it.
 - **Size the pass from the delta**, using `execute-task`'s definition of a trivial change — no
   design choice in it: a typo, a one-line fix, a rename the user named.
   - **Empty**: a working-pull-request route runs only **Review Thread Triage**, since a reviewer
     may have commented without changing code; with no thread fix, return the recorded verdict. A
-    local route verifies its recorded durable snapshot and returns its recorded verdict without
-    thread triage. A thread fix is a new delta, sized again here.
+    local route verifies its complete recorded snapshot identity, final receipt and gate, and every
+    retained supporting input before returning its recorded verdict without thread triage. A thread
+    fix is a new delta, sized again here.
   - **Trivial**: the route **Workflow** step 1 states. A delta confined to canonical `.agents`
     Markdown keeps the in-process `code-simplify` pass `edit-skill`'s **Guidance Delivery** step 3
     requires.
@@ -94,14 +100,24 @@ a follow-up after it gets a review of the follow-up, sized to the follow-up.
 ## Local Snapshot Artifact
 
 A local `targetSnapshot` is a task-private, durable artifact owned by the task owner through
-`session-ledger`, never a pointer into the mutable source checkout. Every freeze serializes the route,
-repository, merge base, candidate head/tree when present, complete target patch, and a complete entry
-manifest. For each committed, staged, unstaged, and untracked entry, retain its relative path, mode,
-content digest, and bytes; the artifact includes a digest over the serialized manifest and payload.
-Write it in the ledger's private evidence storage, read it back, verify every digest, and record its
-absolute locator, artifact digest, and input identities in the task ledger before dispatching a worker.
-A consumer reloads that artifact and rehydrates or verifies the task-owned checkout from its bytes;
-it never treats the original checkout or an old path as the snapshot.
+`session-ledger`, never a pointer into the mutable source checkout. Before each freeze, resolve the
+intended local-entry selection, including each selected path's status and deletion state; stop on
+ambiguity. Exclude unrelated staged, unstaged, and untracked work from the snapshot, delta, and final
+staging set. Every freeze serializes the route, repository, merge base, candidate head/tree when
+present, complete target-patch partitions, and that selected layered-entry manifest. For every selected
+path, record separate `HEAD`, `index`, and `worktree` cells; each cell records presence, mode, content
+digest, and bytes when present. The artifact includes a digest over the serialized identity, layered
+manifest, and payload. Write it in the ledger's private evidence storage, read it back, verify every
+digest, and record its absolute locator, artifact digest, intended-selection identity, and input
+identities in the task ledger before dispatching a worker. A consumer reloads that artifact and
+rehydrates or verifies the task-owned checkout's index and worktree from its bytes; it never treats
+the original checkout or an old path as the snapshot.
+
+Two local snapshots are equivalent only when their route, repository, merge base, candidate head/tree
+(or explicit absence), target-patch digest, layered intended-entry-manifest digest, and artifact digest
+are identical. A changed supporting input separately invalidates every receipt that depends on it. A
+changed base, head, or tree cannot reuse a verdict without the recorded **Review Continuity**
+attestation that proves every retained receipt remains valid.
 
 For a local route, `currentSnapshot` begins as the first verified artifact. Every mutation from
 validation, security review, simplification, review fixing, or acceptance repair derives, persists,
@@ -425,7 +441,8 @@ to work around this gate.
 
 1. Resolve the review target under **Review Targets** and its delta under **Review Scope**. An empty
    working-pull-request delta runs only **Review Thread Triage** before returning; an empty local
-   delta reloads and verifies its recorded durable snapshot, then returns its recorded verdict. Read
+   delta reloads and verifies its complete recorded durable snapshot identity, final receipt and gate,
+   and every supporting-input identity before returning its recorded verdict. Read
    the target's intent and metadata without modifying a merged pull request; run **Description
    Refresh** when a working pull request exists. With no working pull request, create and verify the
    durable `currentSnapshot` artifact described in **Local Snapshot Artifact**, record it through
@@ -474,10 +491,11 @@ to work around this gate.
      intended entries, commit them, persist and read back the resulting replacement snapshot, and
      rerun the required cohort and validation. Re-gate that materialized snapshot and put its diff to
      `acceptance-gate`'s **Diff** question with the intent statement, marked delta, originating diff,
-     and affected-repository map. After a clean verdict, reload the gate-bound artifact and recompute
-     its patch and entry identities from the task-owned checkout. A difference discards the verdict,
-     persists a replacement `currentSnapshot`, and reruns the affected cohort, validation, and Diff
-     gate before recording acceptance.
+     and affected-repository map. After a clean verdict, reload the gate-bound artifact and compare the
+     task-owned checkout's full snapshot identity: route, repository, merge base, candidate head/tree,
+     target-patch digest, layered intended-entry-manifest digest, and artifact digest. A difference
+     discards the verdict, persists a replacement `currentSnapshot`, and reruns the affected cohort,
+     validation, and Diff gate before recording acceptance.
    Fix every flag as its own increment. Push a working-pull-request fix through its **Pre-Push Gate**;
    for a local snapshot fix, freeze a replacement local snapshot, rerun affected validation and
    continuity coverage, and run a fresh **Diff** gate. Resolve each flag under
