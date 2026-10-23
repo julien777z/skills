@@ -391,8 +391,10 @@ to work around this gate.
 1. Resolve the review target under **Review Targets** and its delta under **Review Scope**; an empty
    delta runs only **Review Thread Triage** before returning. Read the target's intent and metadata
    without modifying a merged pull request; run **Description Refresh** when a working pull request
-   exists. Record the review range and pass the intent and route-specific ownership to every
-   subagent and into `code-review high fix`. Run **Review Thread Triage**. Run `test-fixture`'s
+   exists. With no working pull request, freeze the local task diff as an immutable `targetSnapshot`,
+   record its entries and identities, and materialize a verified writable task-owned feature checkout
+   before any fix-mode review. Record the review range and pass the intent and route-specific
+   ownership to every subagent and into `code-review high fix`. Run **Review Thread Triage**. Run `test-fixture`'s
    **Sweep** over the tests the delta adds or changes, and, whatever the delta's size,
    `security-audit`'s **Diff Review** at `medium` when the delta crosses a trust boundary that skill
    names, with the delta as its target and the merge-base diff as the context its traces read; push
@@ -418,12 +420,14 @@ to work around this gate.
 6. Before final acceptance, branch by target route.
    - With a working pull request, materialize the current `targetSnapshot` in its exact pushed head:
      candidate SHA equals remote SHA, candidate tree and entries equal the remote tree, and the target
-     patch equals the `merge-base..remote-head` patch. When intended dirty input remains, stage only
+     patch equals the recorded review-scope delta reconstructed from the remote head. When intended dirty input remains, stage only
      that input, commit and push it, freeze the resulting replacement snapshot, and rerun the required
      cohort and validation. A remote mismatch freezes a replacement snapshot and reruns the affected
      cohort, validation, and final acceptance. Run **Description Refresh**'s second pass and put the
      diff and refreshed prose to `acceptance-gate`'s **Final acceptance** question with the intent
-     statement, marked delta, originating diff, and affected-repository map.
+     statement, marked delta, originating diff, and affected-repository map. After its verdict,
+     re-fetch the remote head and repeat this identity comparison; a mismatch discards the verdict,
+     freezes a replacement snapshot, and reruns the affected cohort, validation, and final gate.
    - With no working pull request, re-gate the exact local `targetSnapshot` and put its diff to
      `acceptance-gate`'s **Diff** question with the intent statement, marked delta, originating
      diff, and affected-repository map.
