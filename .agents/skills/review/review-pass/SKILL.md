@@ -58,8 +58,9 @@ spawn; the independent `acceptance-gate` remains a separate required checkpoint.
 a follow-up after it gets a review of the follow-up, sized to the follow-up.
 
 - **The reviewed head.** When a pass's final acceptance passes, record a `review` entry with
-  `session-ledger` for the pull request: repository, number, the accepted head and its tree. A
-  history rewrite whose tree proof shows an identical tree moves the record to the rewritten head.
+  `session-ledger` for the pull request: repository, number, the accepted head, its tree, and the
+  accepted target-snapshot identity. A history rewrite whose tree proof shows an identical tree and
+  target snapshot moves the record to the rewritten head.
 - **The unreviewed delta is the change in the pull request's own patch**, never in its tree:
   compare the patch now — `merge-base..head`, or `first-parent..merge-commit` for a merged range —
   with the patch at the reviewed head, `merge-base..reviewed head`, through `git range-diff` or a
@@ -253,7 +254,7 @@ preserve every receipt, while a review-rubric change invalidates the lenses that
 Rebuild the complete context inventory, retain only receipts with byte-identical analysis slices and
 supporting inputs, and rerun each invalidated lens.
 
-Treat fetching, pulling, or rebasing only to incorporate commits from the reviewed base as continuity-preserving. Do not restart the full cohort solely because that operational update changes a branch SHA, base SHA, or commit ancestry. Verify that the reviewed codebase diff is unchanged and that no conflict resolution altered a reviewed hunk, then retain the existing receipts and resume the cohort. A conflict resolution that changes a reviewed hunk, and every refactor made under **Incorporating The Base** below, are new reviewed hunks: handle them like a **Workflow** step 4 fix, rerunning the lenses whose receipts they invalidate, never as a full restart.
+Treat fetching, pulling, or rebasing only to incorporate commits from the reviewed base as continuity-preserving. Do not restart the full cohort solely because that operational update changes a branch SHA, base SHA, or commit ancestry. Verify that the reviewed codebase diff is unchanged and that no conflict resolution altered a reviewed hunk, then reconcile the current target snapshot through `code-review`'s continuity attestation and coverage map before retaining any receipt. A conflict resolution that changes a reviewed hunk, and every refactor made under **Incorporating The Base** below, are new reviewed hunks: handle them like a **Workflow** step 4 fix, rerunning the lenses whose receipts they invalidate, never as a full restart.
 
 When separately requested implementation changes the reviewed codebase, target, or reviewed diff,
 invalidate affected receipts and resume the active pass at its first nonterminal phase. Internal
@@ -261,10 +262,12 @@ review fixes remain phases of the active pass. Pass this continuity rule into `c
 it overrides that skill's generic restart-on-any-new-task instruction.
 
 A dependent unit's repoint under `finish-pr`'s **Dependent Pull Requests**, confined to its
-reference edits and the lockfile entries they change, retains only receipts whose analysis slices
-and supporting inputs are byte-identical. Rerun every invalidated lens and exact-head acceptance
-before returning the repointed head to the applicable check gate. It reopens no lens and needs no
-second acceptance gate only when every receipt remains byte-identical.
+reference edits and the lockfile entries they change, reconciles the current target snapshot through
+`code-review`'s continuity attestation and coverage map. When any receipt or target material changes,
+rerun every invalidated or newly applicable lens and exact-head acceptance before returning the
+repointed head to the applicable check gate. When every receipt remains byte-identical and the
+coverage map is complete, record the continuity attestations and proceed directly to that check
+gate.
 
 A mechanically bounded, behavior-preserving follow-up does not restart a CR loop or invalidate any
 completed reviewer receipt merely because it changes a test, fixture, documentation, CI or check
@@ -362,9 +365,9 @@ action and does not close the pass.
 
 Before returning, explicitly confirm that the current cohort has no running or queued delegated
 agents and that every required review and validation loop has a terminal receipt for the exact
-accepted head. A retained earlier-head lens or validator receipt counts only with a continuity
-attestation bound to that accepted head, proving its analysis-slice and supporting-input identities
-remain unchanged; otherwise its loop is nonterminal.
+accepted head and target-snapshot identity. A retained earlier-head lens or validator receipt counts
+only with a continuity attestation bound to that accepted head and snapshot, proving its analysis-slice
+and supporting-input identities remain unchanged; otherwise its loop is nonterminal.
 
 An additional user request does not close the active pass unless it explicitly stops, pauses, hands
 off, or replaces it. When the added work does not modify the target or any reviewed input, continue
@@ -423,7 +426,7 @@ to work around this gate.
 
 Return to the caller, which reports it to the user:
 
-- the accepted head, and the delta it reviewed: `<reviewed head>..<head>`, or `full`;
+- the accepted head and target-snapshot identity, and the delta it reviewed: `<reviewed head>..<head>`, or `full`;
 - the pass size: `full`, `delta`, `trivial` or `empty`;
 - the counts and one-line summaries of simplification fixes and confirmed findings fixed, and every
   fix review surfaced rather than the task required;
