@@ -428,9 +428,11 @@ to work around this gate.
      statement, marked delta, originating diff, and affected-repository map. After its verdict,
      re-fetch the remote head and repeat this identity comparison; a mismatch discards the verdict,
      freezes a replacement snapshot, and reruns the affected cohort, validation, and final gate.
-   - With no working pull request, re-gate the exact local `targetSnapshot` and put its diff to
-     `acceptance-gate`'s **Diff** question with the intent statement, marked delta, originating
-     diff, and affected-repository map.
+   - With no working pull request, materialize the exact local `targetSnapshot` on its verified
+     task-owned feature checkout before acceptance: stage only its recorded intended entries, commit
+     them, freeze the resulting replacement snapshot, and rerun the required cohort and validation.
+     Re-gate that materialized snapshot and put its diff to `acceptance-gate`'s **Diff** question
+     with the intent statement, marked delta, originating diff, and affected-repository map.
    Fix every flag and push a working-pull-request fix as its own increment, whose **Pre-Push Gate**
    verdict is the fresh gate, after rerunning the affected targets it touches; resolve each flag
    under `acceptance-gate`'s **Bounds**. Before each working-pull-request fresh acceptance gate,
