@@ -27,6 +27,8 @@ handling after an agent-configuration change.
 
 - `merge-conflict` — resolve every base incorporation this skill performs.
 - `pre-production` — the encountered-issue policy a failed check falls under.
+- `reconcile-skills` — refresh the installed shared guidance after successful Agent Sync when the
+  GitHub rules select that route.
 
 ## Inputs
 
@@ -169,13 +171,13 @@ A separate direct delivery or release task owns that work and its verification.
 
 When the merged diff changes agent configuration, poll the default-branch Agent Sync run the merge
 started as **Check Gate** steps 6–7 poll a check. A run ending in anything but success is diagnosed
-from its log and reported. The refresh is not this skill's; the GitHub rules' **After Agent Sync**
-section says when it runs.
+from its log and reported. After a successful run, complete the refresh selected by the GitHub
+rules' **After Agent Sync** section and verify its installed links before reporting completion.
 
 ## Report
 
 ```markdown
-Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only | names of hosted checks and results> — sync: <run result | not agent configuration>; refresh: <deferred to the next request | not agent configuration>
+Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only | names of hosted checks and results> — sync: <run result | not agent configuration>; refresh: <installed source and commit | blocked: exact reason | not agent configuration>
 ```
 
 Or, when a gate holds: `Not merged: <link> — <gate>: <evidence>`. The evidence includes each
