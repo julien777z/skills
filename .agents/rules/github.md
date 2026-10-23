@@ -71,7 +71,7 @@ alwaysApply: true
 - Record every pull request with `session-ledger` immediately after the hosting service returns its canonical URL. A task-scoped pull-request lookup reconciles verified task records through that ledger and verifies each selected URL remotely; never infer task membership from the current checkout, a branch name, a transcript, or a broad hosting-service search.
 
 - **Open every pull request as a draft and keep it draft until it merges.** The user reviews it as
-  a draft; it leaves draft once, as the first step of an authorized merge through `land-pr`, so its
+  a draft; it leaves draft once, as the first step of an authorized merge through `merge-gate`, so its
   test jobs run once, on the head about to merge. Never mark one ready to start its tests, to show
   it finished, or to hand it to the user; a follow-up keeps pushing to the draft.
 - Keep pull requests focused and give them descriptive titles and descriptions; request appropriate reviewers when the repository workflow requires them.
@@ -91,7 +91,7 @@ alwaysApply: true
   repository's diff and evidence. Remove foreign references, including from dependency and delivery
   notes. Describe a consumed interface or unresolved delivery requirement in terms of this
   repository's own contract; disclose provider PR links and merge ordering to the user in chat.
-  `land-pr` still owns the complete dependency inventory and readiness gate.
+  `merge-gate` still owns the complete dependency inventory and readiness gate.
 - **Each session opens its own source pull request in each repository.** Later source work in the
   same session joins that pull request rather than creating one per concern or worker. Continue a
   source pull request from another session only when the user, an applicable invoked skill, or a
@@ -207,12 +207,12 @@ alwaysApply: true
   A merge that is the session's last work ends with no refresh, and its report reads `refresh:
   deferred to the next request`. The next request, in this session or a later one, runs the refresh
   first unless the installed copy already carries the merge, as one a cloud session installs at
-  start does.
-- Select the refresh route before checking local changes. When the repository supplies the
-  installed shared skills, invoke `reconcile-skills`; its preservation workflow governs dirty
-  checkouts as well as clean ones. The checkout-only restriction below does not apply to this route.
-  For the skill's first merge, read it from the merged commit before invoking it. A session follows
-  the copy it loaded until this refresh completes.
+  start with no refresh overlay does.
+- Select the refresh route before checking local changes. When the repository supplies the installed
+  shared skills, invoke `reconcile-skills`; it keeps pending agent-configuration changes in effect,
+  dirty checkouts and open pull requests alike. The checkout-only restriction below does not apply
+  to this route. For the skill's first merge, read it from the merged commit before invoking it. A
+  session follows the copy it loaded until this refresh completes.
 - For every other repository, refresh its main local checkout, not a task worktree: if it is clean,
   check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force
   this checkout-only refresh; report a skipped refresh and leave them untouched.
@@ -259,7 +259,13 @@ alwaysApply: true
   `.agents/project.md` or a reference it points to: an environment variable or credential an agent
   session reads, even one a person adds to a cloud environment for the agent; a tool installed for
   agents; a procedure only agents follow.
-- Describe available capabilities without assuming how consumers will use the project or framing guidance as prohibitions such as "never do X."
+- After drafting or editing READMEs and other reference documentation, compare each statement with
+  the current capabilities and required steps. When their positive description already communicates
+  the operation, delete corresponding claims about absent behavior or unneeded operations,
+  including positive paraphrases. Retain a limitation only when it contributes a supported input,
+  option, constraint or required step not otherwise stated. Remove historical comparisons. Describe
+  available capabilities without assuming how consumers will use the project or framing guidance as
+  prohibitions such as "never do X."
 - Remove repeated explanations and prefer short sections, bullets, tables, and focused examples over long prose.
 - Write in plain language, as if explaining the repository to a colleague. Avoid repeating internal
   terms such as `canonical`; name the file or say `source` when that is clearer.

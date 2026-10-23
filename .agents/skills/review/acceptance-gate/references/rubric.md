@@ -22,6 +22,15 @@ The statement names:
 - the required behavior and ownership boundaries, with the accepted requirements that establish them;
 - the applicable target-contract instruction, the one canonical representation of each owned boundary
   it changes, and every prior or candidate representation the change removes or rejects;
+- for each changed or newly resolved dependency, provider, generated contract, shared package, or
+  other boundary owner: the current owner; the exact loaded source and revision; each consumer's
+  declared source and revision; every owned consumer that differs from that declared contract; and
+  any explicit authorization to retain an earlier representation. Resolve a mismatch between the
+  declared and loaded source as a dependency-routing defect before proposing a consumer migration.
+  An unmerged pull request, proposed branch, or future release is candidate evidence only; it cannot
+  establish a target contract, satisfy a repair on another target, or be assumed to merge unless
+  the user explicitly makes it a dependency. The
+  comparison states why migrating consumers is insufficient before it accepts broadening an owner;
 - the shapes removed and their replacements, read from current deletions and the originating commits;
 - the pull request's title and body, checked against those requirements and the implementation;
 - the target repository's purpose and scope, as its README and project guidance state them;

@@ -70,7 +70,8 @@ Canonical guidance lives in `.agents/`.
   Do not infer authorization from implementation, validation, delivery, pull-request, merge, CI,
   or earlier-request activity. Guidance maintenance is the exception: `edit-skill` runs when the
   user reports a guidance failure or canonical guidance is being changed, so the failure and its
-  owning instruction are repaired together.
+  owning instruction are repaired together, on the timing `edit-skill`'s **Recording During A
+  Task** sets.
   Determine a user-only restriction from the skill's entry point, not from the fact that it
   performs work. Required checks and independent gates declared by an authorized workflow run
   as dependencies without a separate invocation; an omitted review request is not a waiver.
@@ -195,16 +196,32 @@ Canonical guidance lives in `.agents/`.
   owners. Hold that window through exact restoration and the successful control; a short mutation or later restore
   does not make concurrent exposure safe. Never claim isolation is impossible without checking it.
 - Treat an inventory or availability error as scoped to the surface it names. A native-app lock or failure does not block browser automation, and a browser failure does not block terminal or API work.
-- Before reporting a task blocked by a surface warning, inspect the requested surface directly and retry its normal recovery path. For a browser, refresh the tab inventory and reopen an authenticated task tab when the prior agent-owned tab has closed.
-- Create a new task-owned browser tab before reading page content, navigating or interacting.
-  When the user explicitly directs use of an existing tab or window for this task, use only that
-  authorized surface. Leave every other user-owned or agent-owned tab untouched.
-- Retain the task tab's handle or stable ID and bind subsequent actions to it. With tools that
+- Before reporting a task blocked by a surface warning, inspect the requested surface directly and retry its normal recovery path. For a browser, refresh the metadata its controls expose and repeat the selection below when the bound tab has closed.
+- Before reading page content, navigating or interacting, inventory the browser metadata the tool
+  exposes and select the surface most relevant to the task. Preserve every explicitly selected
+  browser, profile, window or tab constraint the tool can identify and control; within those
+  constraints, prefer the exact task page, then a related page in the correct account and work
+  context, rather than the active or default surface. A shared domain or title alone does not
+  establish task relevance. An explicit task reference or metadata that identifies a candidate can
+  make it eligible for narrow account or work-context confirmation when no unsaved-work or
+  other-agent conflict is known; do not inspect a speculative candidate only to resolve ambiguity.
+  Inspect an eligible candidate only as needed to verify it, leaving unrelated pages untouched.
+- Reuse the most relevant suitable existing tab when doing so preserves unsaved work and does not
+  interfere with another agent's use. Claim or coordinate exclusive control before acting; an
+  inventory match alone grants neither ownership nor authority for a new action. If no suitable
+  tab can be reused safely, create a task-owned tab in the most relevant available parent surface
+  when the tool can select one, in the background when supported. Otherwise use its supported
+  browser or tab route without asserting unavailable parent context. Create a window only when the
+  tool supports it and none suitable exists. Preserve the user's explicit surface constraints; ask
+  about a concrete conflict or an explicit constraint the tool cannot verify or honor rather than
+  silently choosing another account or surface.
+- Retain the selected tab's handle or stable ID together with every available parent-surface ID and
+  explicit user constraint, and bind subsequent actions to it. With tools that
   act on a selected tab, explicitly select that ID and verify it before each action batch and after
   reconnecting or switching tabs. A matching URL, active tab, browser profile or session label is
-  not evidence of ownership. If the owned tab has closed, create a replacement; never fall back to
-  the browser's current tab. Inventory metadata may be read to locate the owned tab, without
-  inspecting other tabs' page content.
+  not evidence of control. If the bound tab closes, refresh the inventory and apply the same
+  relevance and safe-reuse selection within the retained constraints; never fall back to the
+  browser's current tab.
 - Classify an awaited result from its observed state before treating it as a blocker. Startup,
   recovery, a queued review or an unanswered request is pending until it has a terminal result;
   current unavailability, a quiet interval or a bounded wait yielding without a result is not
@@ -297,6 +314,28 @@ return records;
   the entrypoint. A test may import a command to exercise that command itself, but not to obtain
   unrelated setup or sample data. Classify the module by its role, not merely its directory name.
 
+## Logging
+
+- **Error messages and tracebacks are never censored, in any environment.** A failure is debugged
+  from its log, so a record reporting one keeps the exception's type and message, its notes and its
+  whole traceback, and a warning or error keeps the values it was given. A disclosure policy conceals
+  only typed secrets and credentials, such as a key or a URL's password and query string. It never
+  replaces a failure's text with a placeholder, renders an exception as its type or its message
+  alone, leaves a provider's error response out of the record, or redacts a warning or error
+  wholesale because it might hold personal data. Records that report no failure may still withhold
+  personal data.
+
+## Product Copy
+
+- **Text a person reads sends them to another place with a link, never a route to follow.** "Open
+  Library, then Shared albums" makes the reader follow a map; the place's name, linked, takes them
+  there in one action. Where the text renders markup, the name is the link. Where it is plain text
+  its reader can copy or follow, such as an API or tool message, an email body or a command's
+  output, it carries the place's absolute URL. A surface that cannot hold a link, such as a tooltip
+  or a toast, refers to no other place, and the way forward goes on the page itself. Text about a
+  control on the same page names that control where the reader sees it, as in "Turn on Sync
+  above", and never links to the page it sits on.
+
 ## Repository guidance
 
 - Reference external code and automation by a maintained version tag when available, or by a
@@ -308,11 +347,21 @@ return records;
   one: its product name, its services, its table and column names, its record types, or the nouns
   its business speaks in. That holds for source, tests, fixtures, examples, and documentation
   alike, and it holds most strongly in a library, where every reader is a different consumer.
+- **Name things with the everyday word a reader expects.** Where the domain or a provider already
+  has a term, use it. A parcel the carrier reports as delivered is `delivered`, never
+  `parcel_arrived`, because an unusual synonym makes every reader translate it back. This covers
+  identifiers, fields, messages, documentation and test names in every language.
 - Name things for the shape being exercised, not for whichever caller happened to prompt the work.
   A test needing a table with a secret column names it for that — a record with a secret — rather
   than borrowing the one real table the change was made for.
 - Sample values follow the same rule: prefer plainly synthetic literals over ones shaped like a
   real identifier from another system's domain.
+- A library owns the vocabulary of the protocol or provider it wraps. That protocol's field names
+  and naming conventions, such as how it spells an event type or a scope, are the library's own,
+  never a consumer's domain vocabulary: a helper encoding such a convention belongs in the library
+  even when one consumer prompted it, and the library's owned API gains it. This holds at the
+  wrapper's layer; an application modelling the provider's data keeps its own field names, as
+  `pre-production`'s **Adapting is not imitating** says.
 - Identify environments by their full domain name throughout code, configuration, documentation,
   and user-facing labels, including enum and constant names. Code identifiers may encode the whole
   domain with separators, such as `garden.example` becoming `GARDEN_EXAMPLE`. Never drop the domain
@@ -420,7 +469,7 @@ return records;
 - Record every pull request with `session-ledger` immediately after the hosting service returns its canonical URL. A task-scoped pull-request lookup reconciles verified task records through that ledger and verifies each selected URL remotely; never infer task membership from the current checkout, a branch name, a transcript, or a broad hosting-service search.
 
 - **Open every pull request as a draft and keep it draft until it merges.** The user reviews it as
-  a draft; it leaves draft once, as the first step of an authorized merge through `land-pr`, so its
+  a draft; it leaves draft once, as the first step of an authorized merge through `merge-gate`, so its
   test jobs run once, on the head about to merge. Never mark one ready to start its tests, to show
   it finished, or to hand it to the user; a follow-up keeps pushing to the draft.
 - Keep pull requests focused and give them descriptive titles and descriptions; request appropriate reviewers when the repository workflow requires them.
@@ -440,7 +489,7 @@ return records;
   repository's diff and evidence. Remove foreign references, including from dependency and delivery
   notes. Describe a consumed interface or unresolved delivery requirement in terms of this
   repository's own contract; disclose provider PR links and merge ordering to the user in chat.
-  `land-pr` still owns the complete dependency inventory and readiness gate.
+  `merge-gate` still owns the complete dependency inventory and readiness gate.
 - **Each session opens its own source pull request in each repository.** Later source work in the
   same session joins that pull request rather than creating one per concern or worker. Continue a
   source pull request from another session only when the user, an applicable invoked skill, or a
@@ -556,12 +605,12 @@ return records;
   A merge that is the session's last work ends with no refresh, and its report reads `refresh:
   deferred to the next request`. The next request, in this session or a later one, runs the refresh
   first unless the installed copy already carries the merge, as one a cloud session installs at
-  start does.
-- Select the refresh route before checking local changes. When the repository supplies the
-  installed shared skills, invoke `reconcile-skills`; its preservation workflow governs dirty
-  checkouts as well as clean ones. The checkout-only restriction below does not apply to this route.
-  For the skill's first merge, read it from the merged commit before invoking it. A session follows
-  the copy it loaded until this refresh completes.
+  start with no refresh overlay does.
+- Select the refresh route before checking local changes. When the repository supplies the installed
+  shared skills, invoke `reconcile-skills`; it keeps pending agent-configuration changes in effect,
+  dirty checkouts and open pull requests alike. The checkout-only restriction below does not apply
+  to this route. For the skill's first merge, read it from the merged commit before invoking it. A
+  session follows the copy it loaded until this refresh completes.
 - For every other repository, refresh its main local checkout, not a task worktree: if it is clean,
   check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force
   this checkout-only refresh; report a skipped refresh and leave them untouched.
@@ -608,7 +657,13 @@ return records;
   `.agents/project.md` or a reference it points to: an environment variable or credential an agent
   session reads, even one a person adds to a cloud environment for the agent; a tool installed for
   agents; a procedure only agents follow.
-- Describe available capabilities without assuming how consumers will use the project or framing guidance as prohibitions such as "never do X."
+- After drafting or editing READMEs and other reference documentation, compare each statement with
+  the current capabilities and required steps. When their positive description already communicates
+  the operation, delete corresponding claims about absent behavior or unneeded operations,
+  including positive paraphrases. Retain a limitation only when it contributes a supported input,
+  option, constraint or required step not otherwise stated. Remove historical comparisons. Describe
+  available capabilities without assuming how consumers will use the project or framing guidance as
+  prohibitions such as "never do X."
 - Remove repeated explanations and prefer short sections, bullets, tables, and focused examples over long prose.
 - Write in plain language, as if explaining the repository to a colleague. Avoid repeating internal
   terms such as `canonical`; name the file or say `source` when that is clearer.

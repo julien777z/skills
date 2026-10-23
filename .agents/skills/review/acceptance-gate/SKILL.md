@@ -49,6 +49,25 @@ alias, package move, permission grant or test fixture repeating the implementati
 does not prove ownership or isolation. Missing evidence holds a clean verdict; it does not turn
 the implementation into the specification.
 
+For every changed or newly resolved dependency, provider, generated contract, shared package, or
+other boundary owner, complete the dependency-authority receipt in `references/rubric.md` before a
+clean verdict. First reconcile a mismatch between the declared and loaded source: a workflow, cache,
+checkout, or resolver that loads another branch is a dependency-routing defect, not evidence that a
+consumer must migrate.
+
+An unmerged pull request, proposed branch, or future release is candidate evidence only. It cannot
+establish a target contract, satisfy a required repair on another target, or be assumed to merge
+unless the user explicitly makes it a dependency.
+
+Once the resolved sources agree, compare consumer migration with changing the owner before accepting
+either. Broadening an owner, adapter, generic bound, schema, or validation solely so an owned
+consumer's previous input still passes is compatibility even when it adds no branch or fallback.
+Flag it unless the evidence establishes that broader input is the owner's independent target
+contract or the user explicitly authorized the retained compatibility. Matching runtime behavior
+does not establish that a consumer satisfies a type, API, or generated-contract constraint. The
+ordinary remedy corrects dependency selection or, when the resolved target contract is current,
+updates every owned consumer and removes its obsolete representation.
+
 `references/rubric.md` states what the statement names and how its inputs are reconciled. Read product
 state from the target repository's project guidance; never import another repository's assumptions.
 
@@ -60,8 +79,11 @@ applicable task pull requests, not only default-branch or local checkout compari
 checks analogous implementations and the evidence for retained differences; missing applicable
 pull-request context is a flag to obtain that context, not permission to assume consistency.
 
-The gate is read-only and distinct: not the author of the item. Its reader freshness follows
-`subagent-selection`'s **Dispatch**. It receives five things and nothing else:
+The gate is read-only and distinct: not the author of the item. Invoke `subagent-selection` for the
+acceptance-gate role, using its configured Codex role selection and the frontier capability level on
+other hosts. Dispatch the gate with that exact identifier, and retain catalogue state, identifier, assignment
+state and host receipt in the gate record. Its reader freshness follows `subagent-selection`'s **Dispatch**. It
+receives five things and nothing else:
 
 1. the intent statement;
 2. the originating diff, with its deletions first;
@@ -74,8 +96,8 @@ The gate is read-only and distinct: not the author of the item. Its reader fresh
 **The gate has no shell, so every diff reaches it as content, never as a reference.** The caller
 pastes the originating diff and a diff item into the prompt, or writes each to a file the prompt
 names, with deletions intact; a commit range, a branch name, or a `git` command leaves the gate
-judging a working tree that other edits may have moved, or nothing at all. Dispatch it on the
-host's largest model, named explicitly.
+judging a working tree that other edits may have moved, or nothing at all. Its selector receipt is the
+model-dispatch record; never replace it with a generic “largest model” label.
 
 **Start any diff review with the design comparison.** Inventory the responsibilities and decisions the diff moves,
 duplicates, specializes, removes or introduces, reading both sides independently of the caller's
