@@ -261,8 +261,10 @@ review fixes remain phases of the active pass. Pass this continuity rule into `c
 it overrides that skill's generic restart-on-any-new-task instruction.
 
 A dependent unit's repoint under `finish-pr`'s **Dependent Pull Requests**, confined to its
-reference edits and the lockfile entries they change, retains every receipt: it reopens no lens and
-needs no second acceptance gate.
+reference edits and the lockfile entries they change, retains only receipts whose analysis slices
+and supporting inputs are byte-identical. Rerun every invalidated lens and exact-head acceptance
+before returning the repointed head to the applicable check gate. It reopens no lens and needs no
+second acceptance gate only when every receipt remains byte-identical.
 
 A mechanically bounded, behavior-preserving follow-up does not restart a CR loop or invalidate any
 completed reviewer receipt merely because it changes a test, fixture, documentation, CI or check
@@ -277,7 +279,7 @@ those that are byte-identical. Run `test-fixture`'s workflow over every changed 
 check-harness change that alters a trigger, source or ref,
 permission, identity, runner, secret, environment, action, reusable workflow, deployment target,
 or validation target is a workflow/runtime input: rerun every dependent lens, including Bugs and
-Security where applicable, before exact-head acceptance. Return that accepted head to the caller’s
+Security, before exact-head acceptance. Return that accepted head to the caller’s
 applicable check gate; this pass does not launch that gate itself. A change to a review rubric or
 reviewer instruction reruns only the lenses that use it; a supposedly non-source change that affects
 shipped behavior or a contract invalidates only the affected receipts under this section.
@@ -360,7 +362,9 @@ action and does not close the pass.
 
 Before returning, explicitly confirm that the current cohort has no running or queued delegated
 agents and that every required review and validation loop has a terminal receipt for the exact
-accepted head.
+accepted head. A retained earlier-head lens or validator receipt counts only with a continuity
+attestation bound to that accepted head, proving its analysis-slice and supporting-input identities
+remain unchanged; otherwise its loop is nonterminal.
 
 An additional user request does not close the active pass unless it explicitly stops, pauses, hands
 off, or replaces it. When the added work does not modify the target or any reviewed input, continue

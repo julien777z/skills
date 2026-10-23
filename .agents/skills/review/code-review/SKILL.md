@@ -229,9 +229,15 @@ Its coverage receipt names the evidence for each constraint and the counterexamp
 tests mirroring an incorrect configuration do not establish the intended boundary. Reject a clean
 receipt that omits this comparison or substitutes the author's design claim for an accepted user
 requirement.
+Every lens and validator whose conclusion might be retained records the reviewed head and merge-base
+identities, a target-diff identity covering intended committed, staged, unstaged, and untracked
+content, an analysis-slice manifest, and a supporting-input manifest. Each slice and input entry
+carries an immutable locator and canonical content identity or digest, so a later pass can compare
+the actual bytes it reviewed even when the target contained uncommitted changes.
+
 From `high` upward, each reviewer returns a coverage receipt with its lens, the reviewed head SHA,
-the complete changed-file list it received as context, its analysis-slice manifest, the supporting-input
-manifest, the exact rule and rubric inputs it used, its completion status, and a flat list of
+the complete changed-file list it received as context, its analysis-slice and supporting-input
+manifests, the exact rule and rubric inputs it used, its completion status, and a flat list of
 findings. Each finding carries path, line, anchor (`RIGHT` for added or current changed lines,
 `LEFT` for removed or base changed lines, or `OUTSIDE_DIFF` for an exact current line with no
 faithful diff anchor), a concrete trigger, and its reasoning.
@@ -255,9 +261,10 @@ Do not classify validity by file extension or category. A lock file can change e
 Deduplicate findings describing the same underlying issue, then validate each one against the diff as `references/rubric.md` — Validation directs: validators are told to refute, every finding resolves to CONFIRMED or refuted, the rubric lists what is dropped outright, and the one undecidable case — intent absent from the supplied instructions, accepted decisions and repository guidance — goes to the user in the shape step 8 uses for an ambiguous fix.
 
 Require each validator to state the full pull-request range it inspected and, on a later round, the
-incremental range it checked for the latest fixes. Reject a validation based only on the latest
-commit, even if the finding sits in that commit; rerun it against the complete target Step 1
-resolves before using its verdict.
+incremental range it checked for the latest fixes. Its retainable receipt carries the same target-diff
+identity and analysis-slice and supporting-input manifests, keyed to the findings it refuted or
+confirmed. Reject a validation based only on the latest commit, even if the finding sits in that
+commit; rerun it against the complete target Step 1 resolves before using its verdict.
 
 ## Step 5 — Rate and rank
 
@@ -269,11 +276,15 @@ Rank most severe first and report at most 32 findings.
 
 Re-fetch the target head and rebuild the complete reviewed-input inventory. If either differs from
 the baseline, apply the invalidation rule from Step 3: discard and rerun every receipt whose
-analysis slice intersects changed target material or whose supporting inputs changed, and retain
-only receipts proven byte-identical in both respects. A changed context manifest alone is retained
-only when the receipt proves the changed material was not analyzed or relied on. Report the head
-and inputs actually reviewed. Never report findings gathered against one target or rubric as though
-they apply to another. For a PR target, repeat the Step 1 eligibility check.
+analysis slice intersects changed target material or whose supporting inputs changed. Retain an
+earlier-head receipt only after recording a continuity attestation that identifies its source
+receipt and original head, the current head and target-diff identity, recomputed slice/input
+identities, and proof that no changed material intersects the slice and every supporting input is
+identical. A changed context manifest alone is retained only when the attestation proves the changed
+material was not analyzed or relied on. Missing, incomparable, or changed identities require a
+rerun. Report the head and inputs actually reviewed. Never report findings gathered against one
+target or rubric as though they apply to another. For a PR target, repeat the Step 1 eligibility
+check.
 
 Before reporting a clean result at `high` or above, verify that every launched lens returned a complete, distinct receipt for the baseline head. Reject missing, failed, duplicate, incomplete, or stale receipts and rerun those lenses. A review without complete coverage must never report `No findings.`
 
