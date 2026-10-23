@@ -415,11 +415,13 @@ to work around this gate.
    Order** requires. Never stop, restart, reconfigure or claim a local service this pass did not
    start.
 6. Before final acceptance, when a working pull request exists, materialize the current `targetSnapshot`
-   in its exact pushed head: its complete intended target patch must equal that remote head. When
-   intended dirty input remains, stage only that input, commit and push it, freeze the resulting
-   replacement snapshot, and rerun the required cohort and validation. With no working pull request,
-   re-gate the exact local `targetSnapshot` for the diff question. Then run **Description Refresh**'s
-   second pass and put the working pull request's diff and refreshed prose to `acceptance-gate`'s final-acceptance question against the intent statement, with the
+   in its exact pushed head: its candidate head, tree, entries, and intended patch must match the
+   freshly fetched remote head. When intended dirty input remains, stage only that input, commit and
+   push it, freeze the resulting replacement snapshot, and rerun the required cohort and validation.
+   A remote mismatch freezes a replacement snapshot and reruns the affected cohort, validation, and
+   final acceptance. Then run **Description Refresh**'s second pass and put the working pull request's
+   diff and refreshed prose to `acceptance-gate`'s final-acceptance question. With no working pull
+   request, re-gate the exact local `targetSnapshot` and submit only its diff to the acceptance gate. against the intent statement, with the
    delta marked and the complete merge-base diff as context, or its diff question when no pull
    request exists. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate**
    verdict is the fresh gate, after rerunning the affected targets it touches; resolve each flag
