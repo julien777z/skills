@@ -79,8 +79,9 @@ applicable task pull requests, not only default-branch or local checkout compari
 checks analogous implementations and the evidence for retained differences; missing applicable
 pull-request context is a flag to obtain that context, not permission to assume consistency.
 
-The gate is read-only and distinct: not the author of the item. Invoke `subagent-selection` at its frontier
-capability level, dispatch the gate with its exact identifier, and retain catalogue state, identifier, assignment
+The gate is read-only and distinct: not the author of the item. Invoke `subagent-selection` for the
+acceptance-gate role, using its configured Codex role selection and the frontier capability level on
+other hosts. Dispatch the gate with that exact identifier, and retain catalogue state, identifier, assignment
 state and host receipt in the gate record. Its reader freshness follows `subagent-selection`'s **Dispatch**. It
 receives five things and nothing else:
 
