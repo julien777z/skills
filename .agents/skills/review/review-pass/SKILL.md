@@ -117,7 +117,7 @@ separate `HEAD`, `index`, and `worktree` cells; each cell records presence, mode
 bytes when present. The artifact includes a digest over the serialized identity, layered manifest, and
 payload. Write it in the ledger's private evidence storage, read it back, verify every digest, and
 record its absolute locator, artifact digest, intended-selection identity, and input identities in the
-task ledger before dispatching a worker, then releases the capture receipt with `--resource-idle`; every ambiguity, hold, failure, cancellation, or other post-acquire exit releases its owned receipt after confirming the checkout stayed untouched.
+task ledger before dispatching a worker, then releases the capture receipt with `--resource-idle`; every ambiguity, hold, failure, cancellation, or other post-acquire exit first `check`s ownership; on any failed check it records the hold and performs no checkout inspection or release, otherwise it confirms the checkout stayed untouched and releases its owned receipt with `--resource-idle`.
 A consumer reloads that artifact only into a fresh pristine task-owned checkout, verifies that every retained cell and all expected absent untracked paths match,
 and removes any residue before work; it never treats the original checkout or an old path as the
 snapshot.
