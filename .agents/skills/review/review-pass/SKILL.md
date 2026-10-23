@@ -77,8 +77,7 @@ a follow-up after it gets a review of the follow-up, sized to the follow-up.
   inputs before comparing their complete snapshot identities. The delta contains every selected added,
   removed, or changed committed, index, or worktree cell plus its patch partition; unchanged selected
   entries remain context only. With no matching readable record, the delta is the complete current
-  local snapshot. A local delta is empty only when the two snapshots satisfy **Local Snapshot
-  Artifact**'s complete equivalence predicate and every retained receipt's supporting-input identity
+  local snapshot. A local delta is empty only when the two snapshots satisfy `session-ledger`'s **Snapshot Evidence** equivalence predicate and every retained receipt's supporting-input identity
   still matches. A changed base or candidate may retain coverage only through **Review Continuity**'s
   recorded attestation; otherwise it is a new delta.
 - **A caller can ask for the whole pull request.** The delta is then the complete merge-base diff
