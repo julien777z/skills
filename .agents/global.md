@@ -201,7 +201,8 @@ alwaysApply: true
   it, a capture of each option as the product would draw it, built as an uncommitted preview where it does not exist
   yet, at the widths where the options differ. Describing an option, or showing only the current
   state, leaves the reader guessing at the one they cannot see, so the question waits until every
-  capture is ready. A choice between wordings or between small adjustments of one detail is shown
+  capture is ready. A drawing made of text, such as a sketch in a question tool's preview, is a
+  description, not a capture. A choice between wordings or between small adjustments of one detail is shown
   as text or a single capture.
 - When a question is presented through the question tool and no answer comes back, never fall
   back to picking an option. Post the question and its options as plain text in chat and wait
