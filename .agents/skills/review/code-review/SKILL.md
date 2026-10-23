@@ -281,8 +281,10 @@ Rank most severe first and report at most 32 findings.
 
 ## Step 6 — Re-gate before reporting
 
-Re-fetch the target head and rebuild the complete reviewed-input inventory. If either differs from
-the baseline, freeze a replacement `targetSnapshot`. When target material changed, invalidate only
+For PR and ref targets, re-fetch the target head and rebuild the complete reviewed-input inventory.
+For a local snapshot, reload its durable private artifact, verify its patch and entry identities in
+the task-owned checkout, then freeze and compare a replacement local snapshot. If either differs
+from the baseline, freeze a replacement `targetSnapshot`. When target material changed, invalidate only
 results whose analysis slices intersect changed material; supporting-input-only changes invalidate
 all dependent lens and validator receipts. Rebuild coverage and retirement state from retained
 attested receipts plus fresh work against the replacement. Retain an earlier-head receipt only after

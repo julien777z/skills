@@ -97,8 +97,9 @@ Select the target route before resolving a working pull request:
   **Review Thread Triage** do not apply.
 
 Use these route bindings throughout. All review lenses and finding validation apply to every review
-target. Description updates, fix validation and acceptance apply to that target's working pull
-request only. A clean merged-range review ends without creating another pull request.
+target. Description updates apply only to a working pull request; a local task snapshot uses its
+materialized task-owned checkout for validation and its local **Diff** gate for acceptance. A clean
+merged-range review ends without creating another pull request.
 
 ## Pull Request Ownership
 
@@ -399,7 +400,7 @@ to work around this gate.
    exists. With no working pull request, freeze the local task diff as an immutable `targetSnapshot`,
    record its entries and identities, and materialize a verified writable task-owned feature checkout
    before any fix-mode review. Record the review range and pass the intent and route-specific
-   ownership to every subagent and into `code-review high fix`. Run **Review Thread Triage**. Run `test-fixture`'s
+   ownership to every subagent and into `code-review high fix`. When a working pull request exists, run **Review Thread Triage**. Run `test-fixture`'s
    **Sweep** over the tests the delta adds or changes, and, whatever the delta's size,
    `security-audit`'s **Diff Review** at `medium` when the delta crosses a trust boundary that skill
    names, with the delta as its target and the merge-base diff as the context its traces read; push
