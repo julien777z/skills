@@ -527,9 +527,11 @@ to work around this gate.
      checkout and wait for recovery rather than handing off without explicit user authorization. On every other owned-lock pre-application exit, including receipt recording
      or verification failure, confirm the origin is untouched and release with `--resource-idle`. On an
      owned-lock identity/preimage/write-set mismatch, confirm the origin is untouched, release with
-     `--resource-idle`, and hand off. Only after a partial/failed application while the owned lock
-     remains valid, roll the origin back, verify rollback, release with `--resource-idle`, preserve the origin, retain the accepted task-owned checkout
-     and private patch artifact, and return their absolute locators instead of claiming source delivery.
+     `--resource-idle`, and keep the delivery phase active while resolving the mismatch. Only after a
+     partial/failed application while the owned lock remains valid, roll the origin back, verify rollback,
+     release with `--resource-idle`, preserve the origin, retain the accepted task-owned checkout and
+     private patch artifact, and keep delivery active while resolving the failure. Report locators as
+     intermediate evidence; handoff requires explicit user authorization.
    Fix every flag as its own increment. Push a working-pull-request fix through its **Pre-Push Gate**;
    for a local snapshot fix, freeze a replacement local snapshot, rerun affected validation and
    continuity coverage, run a fresh **Diff** gate, then return to the terminal delivery phase. Resolve each flag under
