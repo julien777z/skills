@@ -85,7 +85,6 @@ These run only when you ask for them by name, such as `/code-slop-doctor`.
 - [`grade-plans`](.agents/skills/execution/grade-plans/SKILL.md) — Compare, grade, rate, rank, or choose between two implementation plans written for the same goal or original agent prompt.
 - [`guidance-doctor`](.agents/skills/doctors/guidance-doctor/SKILL.md) — Review agent guidance for instructions to cut, clarify, or add.
 - [`handoff`](.agents/skills/workspace/handoff/SKILL.md) — Move the current session's work to another session with nothing lost and nothing left for the user to do.
-- [`image-to-code`](.agents/skills/web/image-to-code/SKILL.md) — Moved to github.com/Leonxlnx/imagegen-skills.
 - [`incident`](.agents/skills/execution/incident/SKILL.md) — Restore a broken deployed service, test the fix, and merge the scoped repair.
 - [`lock-revision`](.agents/skills/python/lock-revision/SKILL.md) — Lock the current migration revisions before a test deploy; later changes go in a new revision.
 - [`manage-mcps`](.agents/skills/workspace/manage-mcps/SKILL.md) — Audit and repair managed MCP connectors across Claude Desktop and Codex.
@@ -107,6 +106,8 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`agent-lock`](.agents/skills/workspace/agent-lock/SKILL.md) — Coordinate exclusive use of a shared resource between agents using an exact string key.
 - [`async-python-patterns`](.agents/skills/python/async-python-patterns/SKILL.md) — Master Python asyncio, concurrent programming, and async/await patterns for high-performance applications.
 - [`banned-terminology`](.agents/skills/review/banned-terminology/SKILL.md) — Owns the banned-terms list in resources/banned_words.json and enforces it.
+- [`brag`](.agents/skills/workspace/brag/SKILL.md) — Turn the current project website into a short, polished, shareable launch video using Hyperframes.
+- [`brag-slim`](.agents/skills/workspace/brag-slim/SKILL.md) — Turn a project directory or a website URL into a short, shareable launch video with music, motion, and share copy.
 - [`build-types`](.agents/skills/web/build-types/SKILL.md) — Regenerate generated API types from an OpenAPI document, using a local API checkout when it is present and the deployed API otherwise.
 - [`clerk-nextjs-patterns`](.agents/skills/web/clerk-nextjs-patterns/SKILL.md) — Advanced Next.js patterns - middleware, Server Actions, caching with Clerk.
 - [`code-review`](.agents/skills/review/code-review/SKILL.md) — Code review a pull request or the current working changes with independent reviewer lenses, validated findings, and severity-rated results.
@@ -123,6 +124,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`generic-push`](.agents/skills/git/generic-push/SKILL.md) — Keep repository publishing metadata generic and isolated.
 - [`get-doctors`](.agents/skills/doctors/get-doctors/SKILL.md) — List every doctor skill the skill listing declares with a one-line summary of what it audits.
 - [`i-have-adhd`](.agents/skills/execution/i-have-adhd/SKILL.md) — Apply before the first user-facing response without waiting for an invocation, and stay active until the reader explicitly stops it.
+- [`image-to-code`](.agents/skills/web/image-to-code/SKILL.md) — Elite website image-to-code skill for Codex.
 - [`impeccable`](.agents/skills/web/impeccable/SKILL.md) — Use when the user wants to design, redesign, shape, critique, audit, polish, simplify, harden, animate, or otherwise improve a frontend interface: websites, landing pages, dashboards, product UI, components, forms, settings, onboarding, empty states, and native iOS or Android screens.
 - [`linear`](.agents/skills/workspace/linear/SKILL.md) — Create, find, and update Linear issues through the available Linear integration with dynamic team, workflow, project, and label discovery.
 - [`list-prs`](.agents/skills/workspace/list-prs/SKILL.md) — List the ongoing task’s open PRs.
