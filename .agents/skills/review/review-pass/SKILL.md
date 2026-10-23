@@ -520,9 +520,11 @@ to work around this gate.
      Apply that verified delta through one rollback-capable patch-and-index operation. Read back the exact
      accepted identity, then release the owned lock with `--resource-idle`. On a busy acquisition, failed
      check, or invalid receipt, do not touch, roll back, or release the origin: retain the accepted
-     checkout and hand off. On an owned-lock identity/preimage/write-set mismatch, release without writing
-     and hand off. Only after a partial/failed application while the owned lock remains valid, roll the
-     origin back, verify rollback, release, preserve the origin, retain the accepted task-owned checkout
+     checkout and hand off. On every other owned-lock pre-application exit, including receipt recording
+     or verification failure, confirm the origin is untouched and release with `--resource-idle`. On an
+     owned-lock identity/preimage/write-set mismatch, confirm the origin is untouched, release with
+     `--resource-idle`, and hand off. Only after a partial/failed application while the owned lock
+     remains valid, roll the origin back, verify rollback, release with `--resource-idle`, preserve the origin, retain the accepted task-owned checkout
      and private patch artifact, and return their absolute locators instead of claiming source delivery.
    Fix every flag as its own increment. Push a working-pull-request fix through its **Pre-Push Gate**;
    for a local snapshot fix, freeze a replacement local snapshot, rerun affected validation and
