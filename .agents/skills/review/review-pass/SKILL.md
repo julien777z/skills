@@ -246,7 +246,12 @@ Report a recorded deferral as recorded. Link its pull request in the result and 
 
 ## Review Continuity
 
-Keep a review cohort running when a new user task does not change the reviewed target or any target, rule, rubric, dependency, configuration, workflow, generated contract, or document input recorded in its receipts. File categories alone never decide continuity: an unrelated agent, rule, or skill edit can preserve every receipt, while a review-rubric change invalidates the lenses that depend on it. Rebuild the complete reviewed-input inventory, retain only byte-identical receipts, and rerun each invalidated lens.
+Keep a review cohort running when a new user task does not change a receipt's analysis slice or
+any rule, rubric, dependency, configuration, workflow, generated contract, or document input it
+records. File categories alone never decide continuity: an unrelated agent, rule, or skill edit can
+preserve every receipt, while a review-rubric change invalidates the lenses that depend on it.
+Rebuild the complete context inventory, retain only receipts with byte-identical analysis slices and
+supporting inputs, and rerun each invalidated lens.
 
 Treat fetching, pulling, or rebasing only to incorporate commits from the reviewed base as continuity-preserving. Do not restart the full cohort solely because that operational update changes a branch SHA, base SHA, or commit ancestry. Verify that the reviewed codebase diff is unchanged and that no conflict resolution altered a reviewed hunk, then retain the existing receipts and resume the cohort. A conflict resolution that changes a reviewed hunk, and every refactor made under **Incorporating The Base** below, are new reviewed hunks: handle them like a **Workflow** step 4 fix, rerunning the lenses whose receipts they invalidate, never as a full restart.
 
@@ -265,10 +270,11 @@ harness, formatting, lint compliance, or a type-only annotation. Classify it fro
 never from its path: it may change validation inputs, but must leave shipped product behavior,
 dependencies, effective runtime or deployment configuration, API and deployment contracts, and
 generated contracts unchanged. A prior reviewer having read the changed non-source artifact does
-not reopen that lens. Compare the follow-up against each receipt's reviewed-input inventory and
-retain only receipts whose reviewed target material and supporting inputs are byte-identical. Run
-`test-fixture`'s **Sweep** over every changed test or fixture, focused validation, and any other
-artifact-specific gate. A CI or check-harness change that alters a trigger, source or ref,
+not reopen that lens unless its analysis slice or supporting inputs include that artifact. Compare
+the follow-up against each receipt's analysis-slice and supporting-input manifests and retain only
+those that are byte-identical. Run `test-fixture`'s workflow over every changed fixture and its
+**Sweep** over every changed test, focused validation, and any other artifact-specific gate. A CI or
+check-harness change that alters a trigger, source or ref,
 permission, identity, runner, secret, environment, action, reusable workflow, deployment target,
 or validation target is a workflow/runtime input: rerun every dependent lens, including Bugs and
 Security where applicable, before exact-head acceptance. Return that accepted head to the caller’s
@@ -327,11 +333,12 @@ slice, or a fix is not a reason to run.
 
 Run the affected targets once more against the refreshed head the loops leave behind. Fix what that
 run reports, rerun only the lenses whose receipts the repair invalidates under **Review Continuity**,
-and run the affected targets again. A test-only repair retains only the receipts that did not cover
-the changed test or its inputs; rerun `test-fixture`'s **Sweep**, focused validation, and every lens
-invalidated under **Review Continuity**. A repair that changes shipped behavior, a contract, review
-guidance, or workflow/runtime authority invalidates the affected receipts. Repeat only that narrow
-loop until one clean lens pass and one green run describe the same head.
+and run the affected targets again. A test-only repair retains only the receipts whose analysis
+slices and supporting inputs do not cover the changed test; rerun `test-fixture`'s **Sweep**,
+focused validation, and every lens invalidated under **Review Continuity**. A repair that changes
+shipped behavior, a contract, review guidance, or workflow/runtime authority invalidates the
+affected receipts. Repeat only that narrow loop until one clean lens pass and one green run describe
+the same head.
 
 Run the full repository suite only when every test is relevant to the pull request.
 

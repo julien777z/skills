@@ -127,7 +127,12 @@ SHA, complete pull-request diff, and complete changed-file list. When a previous
 exists, also give the diff from that head to the current head so recent fixes receive focused
 attention. That incremental diff supplements the full pull-request target; never substitute the
 latest commit or fix diff for it. The one exception is a delta `review-pass` delegates: that delta is
-the review target, and the complete pull-request diff is the context its reviewers read.
+the review target, and the complete pull-request diff is the context its reviewers read. Keep that
+complete context distinct from each lens's analysis slice: the exact changed hunks, files, and
+operations it evaluates, plus every supporting input whose semantics it uses. A reviewer may read
+context without adding it to its analysis slice, but material it evaluates, uses as evidence, or
+relies on for a conclusion belongs in that slice. Record both manifests so a later pass can retain a
+receipt only when its actual analysis remains valid.
 
 Classify whether the target is non-runtime before choosing validation. A target is non-runtime when its complete diff does not change executable source, package or dependency definitions, tests, runtime configuration, CI workflows, generated runtime artifacts, or another contract that changes executed behavior. This is semantic rather than path-based: agent instructions, documentation, policies, static metadata, and non-executable configuration can live anywhere. Validate a non-runtime target with the checks appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests or query or wait for CI.
 
@@ -224,11 +229,24 @@ Its coverage receipt names the evidence for each constraint and the counterexamp
 tests mirroring an incorrect configuration do not establish the intended boundary. Reject a clean
 receipt that omits this comparison or substitutes the author's design claim for an accepted user
 requirement.
-From `high` upward, each reviewer returns a coverage receipt with its lens, the reviewed head SHA, the reviewed changed-file list, the exact rule and rubric inputs it used, its completion status, and a flat list of findings. Each finding carries path, line, anchor (`RIGHT` for added or current changed lines, `LEFT` for removed or base changed lines, or `OUTSIDE_DIFF` for an exact current line with no faithful diff anchor), a concrete trigger, and its reasoning.
+From `high` upward, each reviewer returns a coverage receipt with its lens, the reviewed head SHA,
+the complete changed-file list it received as context, its analysis-slice manifest, the supporting-input
+manifest, the exact rule and rubric inputs it used, its completion status, and a flat list of
+findings. Each finding carries path, line, anchor (`RIGHT` for added or current changed lines,
+`LEFT` for removed or base changed lines, or `OUTSIDE_DIFF` for an exact current line with no
+faithful diff anchor), a concrete trigger, and its reasoning.
 
 For `ultra`, deduplicate each round against every finding seen so far, not only against confirmed ones, or rejected findings resurface every round and the loop never converges.
 
-If the user gives a new task while reviewers are running, compare the complete reviewed inputs: the target diff and every rule, rubric, dependency, generated contract, configuration, workflow, and document whose semantics a lens used. A changed target diff invalidates every receipt that covered the changed material. A changed supporting input invalidates each lens whose analysis depends on it, even when no source file changed. Interrupt and rerun only the invalidated lenses after the new task completes; retain receipts whose target material and inputs are byte-identical.
+If the user gives a new task while reviewers are running, rebuild the complete context inventory,
+then compare each receipt's analysis slice and every rule, rubric, dependency, generated contract,
+configuration, workflow, and document input whose semantics that lens used. A changed target diff
+invalidates a receipt only when it intersects that lens's analysis slice. A changed supporting input
+invalidates each lens whose analysis depends on it, even when no source file changed. A changed
+complete-context manifest alone does not invalidate a receipt, but a receipt cannot call material
+context-only when it evaluated, used as evidence, or relied on it. Interrupt and rerun only the
+invalidated lenses after the new task completes; retain only receipts with byte-identical analysis
+slices and supporting inputs.
 
 Do not classify validity by file extension or category. A lock file can change executed code, a workflow can change the gate, a rule can create a new violation, and a skill can change a lens rubric. Conversely, an unrelated edit outside the target and its reviewed inputs does not invalidate anything. Record the compared inputs and the receipt decision so a resumed review can prove why coverage still stands.
 
@@ -249,7 +267,13 @@ Rank most severe first and report at most 32 findings.
 
 ## Step 6 — Re-gate before reporting
 
-Re-fetch the target head and rebuild the complete reviewed-input inventory. If either differs from the baseline, apply the invalidation rule from Step 3: discard and rerun every receipt whose target material or supporting inputs changed, and retain only receipts proven byte-identical in both respects. Report the head and inputs actually reviewed. Never report findings gathered against one target or rubric as though they apply to another. For a PR target, repeat the Step 1 eligibility check.
+Re-fetch the target head and rebuild the complete reviewed-input inventory. If either differs from
+the baseline, apply the invalidation rule from Step 3: discard and rerun every receipt whose
+analysis slice intersects changed target material or whose supporting inputs changed, and retain
+only receipts proven byte-identical in both respects. A changed context manifest alone is retained
+only when the receipt proves the changed material was not analyzed or relied on. Report the head
+and inputs actually reviewed. Never report findings gathered against one target or rubric as though
+they apply to another. For a PR target, repeat the Step 1 eligibility check.
 
 Before reporting a clean result at `high` or above, verify that every launched lens returned a complete, distinct receipt for the baseline head. Reject missing, failed, duplicate, incomplete, or stale receipts and rerun those lenses. A review without complete coverage must never report `No findings.`
 
