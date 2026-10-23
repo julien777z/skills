@@ -398,7 +398,8 @@ to work around this gate.
    **Sweep** over the tests the delta adds or changes, and, whatever the delta's size,
    `security-audit`'s **Diff Review** at `medium` when the delta crosses a trust boundary that skill
    names, with the delta as its target and the merge-base diff as the context its traces read; push
-   their fixes. Then classify failures under **Failure relevance**, run the first test pass
+   their fixes only when a working pull request exists, otherwise freeze a replacement local snapshot
+   and continue its validation and review loop. Then classify failures under **Failure relevance**, run the first test pass
    **Validation Order** requires, and complete the **Simplification Gate**; no code-review phase
    starts before all of these are clean. A trivial delta skips the first test pass, steps 2–4, and
    the **Simplification Gate** except for the guidance pass **Review Scope** keeps.
@@ -426,16 +427,18 @@ to work around this gate.
      cohort, validation, and final acceptance. Run **Description Refresh**'s second pass and put the
      diff and refreshed prose to `acceptance-gate`'s **Final acceptance** question with the intent
      statement, marked delta, originating diff, and affected-repository map. After its verdict,
-     re-fetch the remote head and repeat this identity comparison; a mismatch discards the verdict,
+     re-read PR state, base ref and SHA, remote head, and recomputed merge base, then repeat the
+     identity comparison; a mismatch discards the verdict,
      freezes a replacement snapshot, and reruns the affected cohort, validation, and final gate.
    - With no working pull request, materialize the exact local `targetSnapshot` on its verified
      task-owned feature checkout before acceptance: stage only its recorded intended entries, commit
      them, freeze the resulting replacement snapshot, and rerun the required cohort and validation.
      Re-gate that materialized snapshot and put its diff to `acceptance-gate`'s **Diff** question
      with the intent statement, marked delta, originating diff, and affected-repository map.
-   Fix every flag and push a working-pull-request fix as its own increment, whose **Pre-Push Gate**
-   verdict is the fresh gate, after rerunning the affected targets it touches; resolve each flag
-   under `acceptance-gate`'s **Bounds**. Before each working-pull-request fresh acceptance gate,
+   Fix every flag as its own increment. Push a working-pull-request fix through its **Pre-Push Gate**;
+   for a local snapshot fix, freeze a replacement local snapshot, rerun affected validation and
+   continuity coverage, and run a fresh **Diff** gate. Resolve each flag under
+   `acceptance-gate`'s **Bounds**. Before each working-pull-request fresh acceptance gate,
    repeat **Description Refresh** for the repaired head. The accepted head is the tested head.
 7. Record the accepted head under **Review Scope** and return the **Result**.
 
