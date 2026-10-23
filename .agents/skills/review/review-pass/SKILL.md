@@ -413,8 +413,11 @@ to work around this gate.
    clean result. Otherwise run **Incorporating The Base**, then the second test pass **Validation
    Order** requires. Never stop, restart, reconfigure or claim a local service this pass did not
    start.
-6. Run **Description Refresh**'s second pass, then put the working pull request's diff and refreshed
-   prose to `acceptance-gate`'s final-acceptance question against the intent statement, with the
+6. Before final acceptance, materialize the current `targetSnapshot` in the exact pushed pull-request
+   head: its complete intended target patch must equal that remote head. When intended dirty input
+   remains, stage only that input, commit and push it, freeze the resulting replacement snapshot,
+   and rerun the required cohort and validation. Then run **Description Refresh**'s second pass and
+   put the working pull request's diff and refreshed prose to `acceptance-gate`'s final-acceptance question against the intent statement, with the
    delta marked and the complete merge-base diff as context, or its diff question when no pull
    request exists. Fix every flag and push the fix as its own increment, whose **Pre-Push Gate**
    verdict is the fresh gate, after rerunning the affected targets it touches; resolve each flag

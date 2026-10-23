@@ -120,7 +120,7 @@ What happens next turns on whether the branch already carries commits of its own
 
 Then open a **draft** PR against the remote default branch when no open PR already has this branch as its head. Committing the first change above is what makes this always possible: a branch reaches this point with at least one commit, so there is never a state where a review runs with no PR behind it. If there is genuinely nothing to review — no commits and no uncommitted changes — stop before any of this.
 
-The review target is the complete `merge-base(default, HEAD)..HEAD` diff plus any uncommitted intended changes — every commit on the branch, not only the latest push. If that is empty, stop and report there is nothing to review. Record the PR number, base branch, head branch, and full head SHA, or the ref range. Before dispatching any lens or validator, freeze an immutable target snapshot containing every intended committed, staged, unstaged, and untracked input, its complete target-diff identity, and immutable locators and content identities for every entry. Pass that exact snapshot to every worker; receipts and later attestations derive from it, never from a mutable working tree.
+The review target is the complete `merge-base(default, HEAD)..HEAD` diff plus any uncommitted intended changes — every commit on the branch, not only the latest push. If that is empty, stop and report there is nothing to review. Record the PR number, base branch, head branch, and full head SHA, or the ref range. Before dispatching any lens or validator, freeze an immutable `targetSnapshot` containing its route, merge base and candidate head/tree, every intended committed, staged, unstaged, and untracked input, complete target-patch and changed-file identities, and immutable locators and content identities for every entry. Pass its identifier and exact material to every worker; receipts, test results, validation verdicts, and later attestations derive from it, never from a mutable working tree.
 
 In every review round, give each dispatched reviewer and validator the merge-base SHA, current head
 SHA, complete pull-request diff, and complete changed-file list. When a previous reviewed head
@@ -235,7 +235,7 @@ content, an analysis-slice manifest, and a supporting-input manifest. Each slice
 carries an immutable locator and canonical content identity or digest, so a later pass can compare
 the actual bytes it reviewed even when the target contained uncommitted changes.
 
-From `high` upward, each reviewer returns a coverage receipt with its lens, the reviewed head SHA,
+From `high` upward, each reviewer returns a coverage receipt with its lens and assigned concern, the reviewed head SHA,
 the complete changed-file list it received as context, its analysis-slice and supporting-input
 manifests, the exact rule and rubric inputs it used, its completion status, and a flat list of
 findings. Each finding carries path, line, anchor (`RIGHT` for added or current changed lines,
@@ -252,9 +252,10 @@ invalidates each lens whose analysis depends on it, even when no source file cha
 complete-context manifest alone does not invalidate a receipt, but a receipt cannot call material
 context-only when it evaluated, used as evidence, or relied on it. Interrupt and rerun only the
 invalidated lenses after the new task completes; retain only receipts with byte-identical analysis
-slices and supporting inputs. Build a coverage map over the current target snapshot before reporting
-clean: retained applicable slices must collectively cover its target material. Dispatch the
-applicable fresh lens only for material the map leaves uncovered; never carry a receipt forward as a
+slices and supporting inputs. Build a coverage map keyed by every required lens and concern over the
+current target snapshot before reporting clean: each applicable lens's slices must cover its target
+material, and high review keeps distinct Bugs concern keys. Dispatch each missing applicable lens
+and concern only for material the map leaves uncovered; never carry a receipt forward as a
 substitute for coverage of a newly added hunk, file, or operation.
 
 Do not classify validity by file extension or category. A lock file can change executed code, a workflow can change the gate, a rule can create a new violation, and a skill can change a lens rubric. Conversely, an unrelated edit outside the target and its reviewed inputs does not invalidate anything. Record the compared inputs and the receipt decision so a resumed review can prove why coverage still stands.
@@ -278,9 +279,10 @@ Rank most severe first and report at most 32 findings.
 ## Step 6 — Re-gate before reporting
 
 Re-fetch the target head and rebuild the complete reviewed-input inventory. If either differs from
-the baseline, apply the invalidation rule from Step 3: discard and rerun every receipt whose
-analysis slice intersects changed target material or whose supporting inputs changed. Retain an
-earlier-head receipt only after recording a continuity attestation that identifies its source
+the baseline, freeze a replacement `targetSnapshot`. When target material changed, discard every
+old target-bound result and rebuild the applicable coverage and retirement state against that
+replacement; supporting-input-only changes retain its target material but invalidate dependent lens
+keys. Retain an earlier-head receipt only after recording a continuity attestation that identifies its source
 receipt and original head, the current head and target-diff identity, recomputed slice/input
 identities, and proof that no changed material intersects the slice and every supporting input is
 identical. A changed context manifest alone is retained only when the attestation proves the changed
