@@ -101,7 +101,7 @@ a follow-up after it gets a review of the follow-up, sized to the follow-up.
 ## Local Snapshot Artifact
 
 A local `targetSnapshot` is a task-private, durable artifact owned by the task owner through
-`session-ledger`, never a pointer into the mutable source checkout. Before each freeze, resolve the
+`session-ledger`, never a pointer into the mutable source checkout. Before each freeze, claim exclusive ownership of the originating checkout for capture and resolve the
 intended local-entry selection at the patch-partition and hunk level, including each selected path's
 status and deletion state; stop for user resolution whenever that selection is ambiguous. In particular,
 stop when a selected hunk shares an index, modified-worktree, or untracked-worktree cell with unrelated
@@ -511,11 +511,12 @@ to work around this gate.
      a clean verdict, reload the gate-bound artifact and compare the task-owned checkout's full snapshot
      identity through **Local Snapshot Artifact**'s canonical equivalence predicate. A difference
      discards the verdict, persists a replacement `currentSnapshot`, and reruns the affected cohort,
-     validation, and Diff gate before recording acceptance. Then deliver the accepted selected cells
-     back to the recorded originating checkout only when its recorded preimages still match and no
-     unrelated cell would change; read back the applied result. On a preimage mismatch, preserve the
-     origin, retain the accepted task-owned checkout and a private patch artifact, and return their
-     absolute locators as the required user handoff instead of claiming source delivery.
+     validation, and Diff gate before recording acceptance. Then claim exclusive ownership of the recorded originating checkout, recheck its recorded preimages,
+     and apply the accepted selected cells through a rollback-capable patch and index operation only
+     when no unrelated cell would change; read back the applied result before releasing ownership. On a
+     unavailable lock, preimage mismatch, or failed application, preserve the origin, retain the accepted
+     task-owned checkout and a private patch artifact, and return their absolute locators as the required
+     user handoff instead of claiming source delivery.
    Fix every flag as its own increment. Push a working-pull-request fix through its **Pre-Push Gate**;
    for a local snapshot fix, freeze a replacement local snapshot, rerun affected validation and
    continuity coverage, and run a fresh **Diff** gate. Resolve each flag under

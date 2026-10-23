@@ -105,6 +105,7 @@ orchestrator's model. Every lens, validator and refuter this skill hands to a su
 Make a todo list first.
 
 When `<target>` is given — a PR number, PR URL, `owner/repo#N`, `owner/repo/pull/N`, a git ref range, or an immutable local `targetSnapshot` — review exactly that. Never substitute a different PR. An explicit target remains immutable for review; when authorized fix mode finds a defect, writes are limited to the verified writable checkout of that exact PR head branch or local snapshot route.
+For an explicit local `targetSnapshot`, resolve its ledger entry and durable private artifact before any target derivation, context read, lens dispatch, or fix. Verify its route, repository, full identity, and digests, then materialize its cells in a fresh pristine task-owned checkout; a missing or invalid artifact is an incomplete retrieval, never permission to use the ambient checkout.
 
 Otherwise work from the current branch. Detect the repository, the remote default branch, the current branch, the worktree state, and any open PR whose head branch is exactly the current branch.
 
@@ -283,8 +284,8 @@ Rank most severe first and report at most 32 findings.
 
 For PR and ref targets, re-fetch the target head and rebuild the complete reviewed-input inventory,
 including the resolved base ref, base SHA, and merge base recorded in the active snapshot.
-For a local snapshot, reload its ledger-recorded durable private artifact, rehydrate or verify its
-full identity in the task-owned checkout — route, repository, merge base, candidate head/tree,
+For a local snapshot, reload its ledger-recorded durable private artifact and rehydrate it into a
+fresh pristine task-owned checkout before verifying its full identity in the task-owned checkout — route, repository, merge base, candidate head/tree,
 target-patch digest, intended-selection, layered entry manifest, and artifact digest — then persist,
 read back, and compare a replacement local snapshot. If any identity differs from the baseline, freeze
 a replacement `targetSnapshot`. When target material changed, invalidate only
