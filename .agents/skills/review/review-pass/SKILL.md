@@ -59,7 +59,9 @@ a follow-up after it gets a review of the follow-up, sized to the follow-up.
 
 - **The reviewed head.** When a pass's final acceptance passes, record a `review` entry with
   `session-ledger` for the pull request: repository, number, the accepted head, its tree, and the
-  accepted target-snapshot identity. A history rewrite whose continuity attestation proves an
+  accepted target-snapshot identity. For a local route, record a `local_review` entry keyed by
+  repository, route, merge base, accepted commit/tree, target-patch and entry identities; later local
+  deltas compare against that entry. A history rewrite whose continuity attestation proves an
 equivalent route, target patch, entries, slices, and supporting inputs may move the record to the
 rewritten head even when its head/tree locator changes.
 - **The unreviewed delta is the change in the pull request's own patch**, never in its tree:
@@ -234,7 +236,10 @@ do not supply a separate route. A confirmed defect never reaches that route on s
 whatever shape its fix takes, including a schema migration, it is fixed in this pass. Work that is
 merely inconvenient, unfamiliar, or larger than expected is not a deferral justification.
 
-Each fix is committed and pushed as its own increment, and that increment's `execute-task` **Pre-Push Gate** verdict is its gate, as `code-review`'s fix mode states.
+Each working-pull-request fix is committed and pushed as its own increment, and that increment's
+`execute-task` **Pre-Push Gate** verdict is its gate. A local-snapshot fix is committed in its
+task-owned checkout, freezes a replacement snapshot, validates and re-gates locally, and is never
+pushed unless an authorized working-pull-request route is established.
 
 ## Deferred Findings
 
