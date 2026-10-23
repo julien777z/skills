@@ -103,7 +103,8 @@ a follow-up after it gets a review of the follow-up, sized to the follow-up.
 A local `targetSnapshot` is a task-private, durable artifact owned by the task owner through
 `session-ledger`, never a pointer into the mutable source checkout. Before each freeze, resolve the
 intended local-entry selection at the patch-partition and hunk level, including each selected path's
-status and deletion state; stop when a selected hunk shares an index or worktree cell with unrelated
+status and deletion state; stop for user resolution whenever that selection is ambiguous. In particular,
+stop when a selected hunk shares an index, modified-worktree, or untracked-worktree cell with unrelated
 content because the cell cannot be faithfully serialized as selected work alone. Exclude unrelated
 staged, unstaged, and untracked work from the snapshot, delta, and final staging set. Every freeze
 serializes the route, repository, merge base, candidate head/tree when present, complete target-patch
@@ -481,17 +482,18 @@ to work around this gate.
    start.
 6. Before final acceptance, branch by target route.
    - With a working pull request, materialize the current active `targetSnapshot` in its exact pushed
-     head: candidate SHA equals remote SHA, candidate tree and entries equal the remote tree, and the
-     target patch equals the active snapshot's recorded patch reconstructed from the remote head. The
-     originating review-scope delta remains gate context, not the final identity comparison. When intended dirty input remains, stage only
+     head: resolved base ref and SHA, recomputed merge base, candidate SHA, candidate tree and entries,
+     and target patch all equal the active snapshot's recorded identities. The originating review-scope
+     delta remains gate context, not the final identity comparison. When intended dirty input remains, stage only
      that input, commit and push it, freeze the resulting replacement snapshot, and rerun the required
      cohort and validation. A remote mismatch freezes a replacement snapshot and reruns the affected
      cohort, validation, and final acceptance. Run **Description Refresh**'s second pass and put the
      diff and refreshed prose to `acceptance-gate`'s **Final acceptance** question with the intent
      statement, marked delta, originating diff, and affected-repository map. After its verdict,
-     re-read PR state, base ref and SHA, remote head, and recomputed merge base, then repeat the
-     identity comparison; a mismatch discards the verdict,
-     freezes a replacement snapshot, and reruns the affected cohort, validation, and final gate.
+     re-read PR state, base ref and SHA, remote head, and recomputed merge base, then compare each
+     identity with the active snapshot. A changed base ref, base SHA, or merge base first runs
+     **Incorporating The Base**; every other mismatch freezes a replacement snapshot. In either case,
+     discard the verdict and rerun the affected cohort, validation, and final gate.
    - With no working pull request, materialize the exact local `currentSnapshot` from its durable
      artifact on its verified task-owned feature checkout before acceptance: stage only its recorded
      intended entries, commit them, persist and read back the resulting replacement snapshot, and
