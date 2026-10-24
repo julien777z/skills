@@ -43,11 +43,13 @@ Skills checkout when one is available and links the result into existing agent r
 cloud it also searches Claude's session checkout and links the root home used by the runtime. The
 installer exits on update, conflict, or installation failure.
 
-The local installer links skills, reference collections, reusable rules, and applicable agent definitions into existing
-Claude, Codex, and Cursor user roots. Codex's global `AGENTS.md` links to the same canonical
-`global.md` rule used by the other harnesses. Repository-specific rules stay in each repository's
-`project.md`. Re-running refreshes owned links and prunes obsolete ones; real content or foreign
-links at an installed path are reported before any links change.
+The local installer links skills, reference collections, reusable rules, hooks, and applicable agent definitions into existing
+Claude, Codex, and Cursor user roots, and adds the hook registrations in `.agents/settings/claude.json`
+to Claude's user `settings.json` beside the settings and hooks already there. Codex's global
+`AGENTS.md` links to the same canonical `global.md` rule used by the other harnesses.
+Repository-specific rules stay in each repository's `project.md`. Re-running refreshes owned links
+and registrations and prunes obsolete ones; real content or foreign links at an installed path, or
+an unreadable `settings.json`, are reported before anything changes.
 
 ## Layout
 
@@ -56,11 +58,14 @@ links at an installed path are reported before any links change.
 | `.agents/skills/<category>/<name>/` | One skill: `SKILL.md`, with `references/`, `scripts/`, `assets/`, or `resources/` beside it. The categories sort the skills and reach no provider — each one still installs as `<name>`, so a name is unique across the whole tree. |
 | `.agents/agents/` | Subagent definitions; the tier each runs on is stated by the skill that launches it. |
 | `.agents/rules/` | Reconciled reusable rules; technology-specific rules retain their file scopes. |
+| `.agents/hooks/` | Hook scripts, such as the turn-end check that every task ledger entry owing a backup comment has one; linked into each user-level root under `hooks/`. |
+| `.agents/settings/` | Provider settings; `claude.json` registers the hooks with Claude. |
 | `.agents/external_resources.json` | Third-party skills and reference directories vendored by the workflow. |
 | `.agents/resources/<name>/` | Vendored reference files, linked into each supported user-level root under `resources/<name>/`. |
 | `.agents/.auto_generated/` | Provider mirrors the workflow generates on `main`; never edited by hand. |
 | `AGENTS.md` | Repository instructions the workflow generates at the root; never edited by hand. |
-| `bootstrap/install.sh` | Refreshes a cloud setup clone when used there, then links skills, resources, agents, and rules into user-level roots. |
+| `bootstrap/install.sh` | Refreshes a cloud setup clone when used there, then links skills, resources, agents, rules, and hooks into user-level roots and registers the hooks with Claude. |
+| `tests/hooks/` | Tests for the hook scripts. |
 
 ## Skills
 
@@ -201,4 +206,6 @@ the acceptance gate, and the smoke test before the pull request merges.
 ```bash
 bootstrap/install.sh                                            # link into this machine's roots
 python3.12 .agents/skills/authoring/edit-skill/scripts/validate_sources.py # mirror with the pinned sync tool
+python3 -m unittest discover -s tests/hooks                     # test the hooks
+bash bootstrap/resources/test_install.sh                        # test the installer
 ```
