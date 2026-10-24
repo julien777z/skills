@@ -121,8 +121,9 @@ alwaysApply: true
   what the product does or offers: what a feature does or what information it shows, who a surface
   serves, the steps of a workflow or a quantity the reader meets, a new layout, control or surface,
   scope, a workaround for a
-  constraint the user set, and anything touching security, disclosure or authorization. Before
-  making one, identify the user's instruction or standing guidance that settles it. If neither does,
+  constraint the user set, and anything touching security, disclosure or authorization. Closing a
+  security vulnerability, so the product enforces the access it already intends, is a fix and never
+  waits on this question. Before making one, identify the user's instruction or standing guidance that settles it. If neither does,
   explain the concrete issue, show the concrete alternatives with a recommendation, and ask before
   building one; a required outcome does not approve an unnamed layout, control, scope or timing
   chosen to achieve it. **A routine presentation or interaction detail is not a product choice, and
