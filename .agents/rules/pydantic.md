@@ -71,7 +71,6 @@ class TShirtOrderBad(BaseModel):
 
 - Do not define named module-level or static helper functions whose only role is constructing a `BaseModel` from another shape.
 - Put reusable single-source conversions on the target model as `@classmethod from_<source>(cls, source) -> Self`.
-- A classmethod that returns a new instance of its own class is typed `-> Self`. One that returns anything else, such as a group of an enum's members or a lookup result, names that type: `Self` adds nothing on a class that cannot be subclassed, and code bent to satisfy a checker over it is the defect.
 - When target and source represent the same noun, name the source precisely, such as `from_orm_<noun>` for a stored row or `from_<system>_<noun>` for an external payload.
 - When construction combines multiple distinct inputs, use a `build_*` classmethod on the target model. Keep single-use compositions inline at the call site.
 - When importing the source into the target package would invert dependency direction, put a `to_<target>(self) -> Target` method on the source model instead.

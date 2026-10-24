@@ -120,13 +120,14 @@ the screen a user reaches. If sign-in genuinely cannot complete, report the walk
 Drive browser automation through the tab selected under the global browser procedure; never read the
 user's saved passwords, cookies, local storage, or session files.
 
-Keep a password out of argv and the transcript: put it in an environment variable for the one
-command that fills the field, build the script that fills the field, and pipe it to the browser
-command through stdin. The password comes from what the repository provides — the file project
-guidance names, or the helper its tooling uses to set or generate a test identity's password, run
-first when the identity has none yet — and through `proton-pass` only for an account the
-repository provides no source for, such as a deployed or third-party one. Set the value through the native setter and dispatch a bubbling `input` event so a
-framework-controlled input registers it:
+Keep a password or one-time sign-in token out of argv and the transcript: put it in an environment
+variable for the one command that fills the field or opens the link, build that script, and pipe it
+to the browser command through stdin. The password comes from what the repository provides — the
+file project guidance names, or the helper its tooling uses to set or generate a test identity's
+password, run first when the identity has none yet — and through `proton-pass` only for an account
+the repository provides no source for, such as a deployed or third-party one. Set the value through
+the native setter and dispatch a bubbling `input` event so a framework-controlled input registers
+it:
 
 ```bash
 # Account with no repository source: SIGN_IN_PASSWORD="$(PROTON_PASS_AGENT_REASON="<why>" pass-cli item view \

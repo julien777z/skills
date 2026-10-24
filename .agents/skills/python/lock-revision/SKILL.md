@@ -11,9 +11,12 @@ Invoking this skill means the user is about to deploy the branch's current chang
 environment, so its revisions may be applied there. From then on, each of those revisions is history.
 
 The user is waiting to deploy, so the run is the next work in the session, ahead of everything
-`execute-task`'s **Priority** ranks below a waiting deploy, and it does only the steps below. It
-never stops to ask: the lock marker and a deploy the user reported are the only record that a
-revision was applied, so a revision with neither is folded and locked as step 1 says.
+`execute-task`'s **Priority** ranks below a waiting deploy, and it does only the steps below. Those
+numbered steps are the plan the user approved by invoking it, so a fold needs no separate
+`execute-task` plan. It never asks whether a revision was applied: the lock marker and a deploy the
+user reported are the only record, and a revision with neither is locked, folded first when a chain
+has several unlocked branch revisions, as steps 1-2 say. Its one question is step 5's, after the
+push.
 
 ## Dependencies
 
@@ -42,7 +45,8 @@ revision was applied, so a revision with neither is folded and locked as step 1 
 5. **Report** each locked revision by chain and file, end with the pushed commit the user can
    deploy, and **ask the user to confirm when revisions may resume**: a revision pushed before that
    deploy runs would ride into it. Record the hold and the pending question with `session-ledger`,
-   so both survive compaction and handoff.
+   so both survive compaction and handoff; once a held local branch exists, the hold's entry names
+   that branch and its head.
 
 ## After Locking
 
@@ -55,5 +59,6 @@ next invocation locks the revision that next change opens, and the cycle repeats
 revision, and the code that depends on its schema or stored data, is committed on a local branch
 off the pushed head and never pushed, while work that needs no revision keeps pushing as usual, so
 no push carries it. Only the user's own words lift the hold; once they do, rebase that work onto the
-pull request's branch, validate it as `database-migrations` says, push it, and clear the hold from
-the ledger. Each invocation starts a new hold.
+pull request's branch, validate it as `database-migrations` says, push it, and mark the hold's
+question `answered` with the user's words and the time they gave them. Each invocation starts a new
+hold.

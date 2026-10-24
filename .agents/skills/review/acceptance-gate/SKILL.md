@@ -126,10 +126,10 @@ before accepting it. Return the concrete consolidation or deletion, or the actua
 that the simpler complete candidate would break. Missing validation evidence is a separate flag,
 never a reason to leave this judgement unfinished.
 
-**Trace changed state-like values during that comparison.** Apply the rubric's **State Meaning**
-criteria to their writers, transformations and consumers, including values whose names did not
-change. Include the authority, lifetime and purpose evidence in `Also read`, and semantic collisions
-in the flag bullets; missing evidence prevents a clean verdict.
+**Trace changed state-like values during the design comparison.** Apply the rubric's **State
+Meaning** criteria to their writers, transformations and consumers, including values whose names did
+not change. Include the authority, lifetime and purpose evidence in `Also read`, and semantic
+collisions in the flag bullets; missing evidence prevents a clean verdict.
 
 **Then run five greps.** Grep the diff's added lines for five shapes and list every hit as a finding
 ahead of all others, with the remedy the rubric names:

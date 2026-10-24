@@ -21,6 +21,8 @@ does nothing or makes a reader wince, and takes it out.
   Ownership And Deletions** rubric when two implementations collapse into one.
 - `test-fixture` — the per-test checks the test phase runs.
 - `defer-scope` — report a migration-test deferral record whose path no longer exists.
+- `acceptance-gate` — its diff review's slop question is the **Reads As Slop** test; reviewers are
+  given that question.
 
 Also read, when the skill listing declares them and found by their descriptions, the repository's
 database-migration skill, its test-runner skill, its checklist for adding a configuration value and
@@ -126,7 +128,9 @@ that adds policy, which is only validation, error mapping, retries, authorizatio
 translation at a provider boundary — a fixed or defaulted value, a hook call, a class or a renamed
 prop is never policy; a function that names a domain operation by mapping a domain value onto the
 call below it; one external name per field at a provider boundary; the explicit public-surface
-re-export a language defines for a package, in a short list.
+re-export a language defines for a package, in a short list; a component that carries the
+`"use client"` boundary for a Server Component call site, as the React rules' **Components and
+Props** says; and a file the framework looks up by path.
 
 ### Speculative Abstraction
 
@@ -185,7 +189,9 @@ case always needs together, assembled server-side from the existing queries and 
 they are independent; a batch operation taking the set in place of the per-item call; independent
 calls that stay separate issued together rather than in turn; static data shipped with the client
 through its package or generated contract; every caller moved, and each operation left with no
-caller deleted with its client. The use case is timed before and after on the same stack, and a
+caller deleted with its client. A batch or merged operation authorizes each item and each returned
+field as the operations it replaces did; where it cannot, those operations stay separate, as Left
+alone says. The use case is timed before and after on the same stack, and a
 merge that makes it wait longer for its first useful content is not the remedy. Two cases go to the
 user for approval, never merged or left alone silently: an operation another use case also calls on
 its own, where the use case may gain a merged operation while the other keeps its own; and a read
@@ -193,10 +199,12 @@ only some runs of the use case need, which a merged operation may still carry. E
 user decide without opening the code: the operations it would combine, by method and path or RPC
 name; the proposed operation's method, path, parameters and response fields; every other caller of
 each of those operations, found in the code by page, job or service, with what it reads and
-whether it already shares the use case's read; what becomes of each existing operation, kept for
-which caller or deleted; the counts and timings before and after; and the run's recommendation.
-Left alone: a call a later interaction makes — a tab opened, a page turned, a row expanded; reads
-under different authorization or caching that one response cannot carry; a slow section kept apart
+whether it already shares the use case's read; what would become of each existing operation, kept
+for which caller or deleted; the current counts and timings, and the call count the proposed
+operation would leave; and the run's recommendation. The timings after are measured once the merge
+is approved and made. Left alone: a call a later interaction makes — a tab opened, a page turned, a
+row expanded; reads under different authorization or caching that one response cannot carry, and
+any set of items one operation cannot authorize as the per-item calls did; a slow section kept apart
 so it does not hold a fast one, with the timing showing it; and a third-party provider's
 operations, batched only where the provider offers it.
 
@@ -251,7 +259,9 @@ One meaning spelled out many times.
 
 - count every class-name or style string literal across the components in scope — extract each
   `className`, `class`, style-token or `cn(...)` argument string and tally identical values — and
-  report every value that appears in three or more places with its count and locations;
+  report every value that appears in three or more places with its count and locations, outside
+  an app built on a shared UI library, whose class strings **Hand-Written Styling** owns and fixes
+  as variants;
 - every error-to-message conversion written inline beside a helper that does it; every port, host or
   URL declared in more than one place; every message template spelled out at more than one site;
   every list restating an enum's members;
@@ -550,15 +560,16 @@ each checklist, manifest and example file names against the configuration matrix
 manifests for one package pinned differently across projects or languages and a check one project
 runs that its sibling does not. The final adversarial reviewer tries to reach each removed layer,
 branch, alias and operation from a live caller, confirms each merged operation returns only what
-every run of its use cases needs and each use case waits no longer than before, confirms no import
-of a moved or renamed module still points at its old path, replays every chain the run touched,
-confirms a stacked migration correction did not narrow the approved downgrade or survivorship
-coverage, challenges every revision kept as applied without version-table evidence, confirms each
-removed configuration name and package has no surviving reader or importer, re-traces every retained
-package to an importer or an invocation, re-derives the matrix for every retained mismatch, re-reads
-the deployment columns for every field kept as a local-development tool, confirms each regenerated
-lockfile resolves its constraints, re-counts every app's hand-written styling and confirms it reads
-zero, and confirms that the repository's tests pass on each batch.
+every run of its use cases needs, each batch or merged operation authorizes each item and each
+returned field as the operations it replaced did, and each use case waits no longer than before,
+confirms no import of a moved or renamed module still points at its old path, replays every chain
+the run touched, confirms a stacked migration correction did not narrow the approved downgrade or
+survivorship coverage, challenges every revision kept as applied without version-table evidence,
+confirms each removed configuration name and package has no surviving reader or importer, re-traces
+every retained package to an importer or an invocation, re-derives the matrix for every retained
+mismatch, re-reads the deployment columns for every field kept as a local-development tool, confirms
+each regenerated lockfile resolves its constraints, re-counts every app's hand-written styling and
+confirms it reads zero, and confirms that the repository's tests pass on each batch.
 
 ## Report Additions
 

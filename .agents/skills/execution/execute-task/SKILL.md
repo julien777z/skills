@@ -443,7 +443,8 @@ how those issues are handled.
   whichever repository it lives, plus every generated artifact and required migration for the
   target contract.
 - Apply **Task Authorization** to encountered corrections. Ask only when the correction is a product
-  change as the first bullet defines it, changes security or disclosure posture, reaches a
+  change as the first bullet defines it, changes security or disclosure posture (closing a
+  vulnerability is a fix, never a question), reaches a
   repository, environment, or external recipient the task did not authorize, or a platform requires
   action-time confirmation. Another file, component, or package in the same repository is never a
   new target, and neither is a repository the user owns that consumes a contract the change breaks:
@@ -473,15 +474,17 @@ compatibility, generated-output drift.
 finishes, whoever made it, in process or delegated, run `code-simplify` and then `acceptance-gate`'s
 diff question over that step's diff before the step is recorded or reported done and before a later
 step, worker or consumer builds on it; what they flag is fixed within that step. A step that skipped
-its gates is gated before the next step starts, however much has been built on it since. The final
+its gates is gated before the next step starts, however much has been built on it since. The step
+gates for a step a waiting deploy needs run after its push and report, as **Priority** orders. The
+final
 simplification and acceptance still run once over every change not yet reviewed, inside
 `review-pass` at **Completion**, and neither runs per push. A guidance correction recorded during a
 task follows `edit-skill`'s timing instead.
 
 Own each coherent feature through integration: the primary agent settles dependencies, product
-decisions and the combined result. Simplify a feature as it is built; the final pass
-still covers every change not yet reviewed. Assign a worker an independently owned scope with a concrete
-boundary and return condition, not an arbitrary slice of the primary agent's feature. Keep admitted
+decisions and the combined result. Simplify a feature as it is built. Assign a worker an
+independently owned scope with a concrete boundary and return condition, not an arbitrary slice of
+the primary agent's feature. Keep admitted
 cleanup with its feature; an independently selected cleanup follows its own stated scope and
 ownership. When cleanup crosses an interface or repository, bring its producer and consumers to a
 coordinated checkpoint, verify compatibility at both ends, and keep the cleanup named until
@@ -515,10 +518,10 @@ the task.
 
 Every push goes out once the pre-push checks below pass, on a draft and on a pull request ready for
 review alike; nothing holds committed work on one machine — not a gate, review or simplification
-pass pending on it, an integration merge, or a plan that orders one first. `code-simplify` and
-`acceptance-gate`'s diff question do not run per push: they run as each step finishes and over the
-finished task's unreviewed changes inside `review-pass` at **Completion**, as **Ongoing
-Simplification** says. A fix pushed for a flag a gate or review raised gets one fresh
+pass pending on it, an integration merge, or a plan that orders one first. The one exception is
+commits that `lock-revision`'s **After Locking** hold keeps local until the user lets revisions
+resume. `code-simplify` and `acceptance-gate`'s diff question do not run per push; **Ongoing
+Simplification** sets when they run. A fix pushed for a flag a gate or review raised gets one fresh
 `acceptance-gate` run over that fix's increment, read with the whole branch diff as its originating
 diff, as `acceptance-gate`'s **Bounds** require; that fresh verdict is what other skills mean by an
 increment's **Pre-Push Gate** verdict.
@@ -584,12 +587,14 @@ bug or a passing formatter does not satisfy this spacing check.
   Requests** — and names the exact files to change, under `subagent-matrix`'s **Dispatch**. The
   worker pushes each step once its checks pass and reports the branch and head. The brief has the
   worker fix every defect it meets, in the product or the repository's tooling, as `pre-production`
-  defines one, and report as left alone only cleanup past the size budget; a brief that only asks
-  what was left alone invites a defect into that list. The delegating
+  defines one, and report as left alone only cleanup past the size budget and any item
+  `pre-production`'s scope bullets leave to the user; a brief that only asks what was left alone
+  invites a defect into that list. The delegating
   agent, which holds the intent statement, reads that head under **Reported Outcomes** and, once
   the worker's task is finished, runs the step gates **Ongoing Simplification** sets over that
   task's diff, returning what they flag as fix steps before any dependent work starts. The worker
-  ends with nothing uncommitted and nothing unpushed, never amends or rebases a pushed commit, and
+  ends with nothing uncommitted and nothing unpushed beyond the **Pre-Push Gate**'s one exception,
+  never amends or rebases a pushed commit, and
   its report names the branch and head.
 - **Pull requests stay draft until the authorized merge gate readies them**, so these pushes may
   start no test jobs. Readiness can enqueue duplicate hosted jobs without changing the head;
@@ -733,7 +738,7 @@ it — the user asking about something else is not the user withdrawing what the
   checked under **Encountered Issues** before it is obeyed.
 - **Commits a remote lacks are undelivered work**; their next step is the pre-push checks and the
   push. A hook or status line counting unpushed commits whose checks pass reports a push owed now,
-  not something to explain.
+  not something to explain, apart from the commits the **Pre-Push Gate**'s one exception holds.
 
 **The failure is a report, not a refusal.** It reads as diligence: the item appears under "still to
 do", the turn ends, the next message arrives, and the item appears again, unchanged, in the next

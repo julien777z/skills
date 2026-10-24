@@ -18,17 +18,18 @@ paths:
   components that each earn their place under the next bullet; it never shelters one that is
   another's variant or a hook's wrapper. A client component's `"use client"` directive goes on the
   first line of its own file.
-- **A shared UI library is primitives and the fuller components built from them, and a difference
-  in look or behavior is a prop or variant on its owner, never another component.** A primitive is
-  one layout, type, surface or control with variants — a stack, a text, a panel, a button — taking
+- **A shared UI library is primitives and the fuller components built from them, and a difference in
+  look or behavior is a prop or variant on its owner, never another component.** A primitive is one
+  layout, type, surface or control with variants — a stack, a text, a panel, a button — taking
   children but no named slots and opening no portal. A fuller component — a page, a section, a
   dialog, a list, a form — composes primitives and takes slots, as the structure bullet below says.
   A component that renders one other component with some of its look or behavior props fixed or
-  defaulted, and adds no content, data or state of its own, is that owner's variant: a `DangerNotice`
-  rendering `<Notice tone="danger" dismissible={false}>` is `tone="danger"` on `Notice`. One that
-  only runs a hook and renders nothing or its children is that hook, called where it is needed. A
-  chain of components each adding one prop or value is one component with variants, counted from
-  the call site to the primitive at its end. A variant shares its owner's structure; a branch that
+  defaulted, and adds no content, data or state of its own, is that owner's variant: a
+  `DangerNotice` rendering `<Notice tone="danger" dismissible={false}>` is `tone="danger"` on
+  `Notice`. One that only runs a hook and renders nothing or its children is that hook, called where
+  it is needed, unless it carries the `"use client"` boundary for a Server Component call site. A
+  chain of components each adding one prop or value is one component with variants, counted from the
+  call site to the primitive at its end. A variant shares its owner's structure; a branch that
   renders a different tree is a second component behind a prop, and becomes that component.
 - Named exports for components
 - Default exports only for page components
@@ -276,7 +277,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   question in the one place the reader cannot answer it.
 - **The body is where the question is asked, and a confirmation body opens with "Are you sure you
   want to …".** After the question, one sentence on what follows — what the reader loses, what stops
-  working, whether it can be undone — and nothing else.
+  working, whether it can be undone — and nothing else. On a confirmation, this body is the
+  dialog's description, and the question with its one consequence sentence stands in for the
+  one-sentence limit.
 - **The body never opens with the title again.** A title reading "Archive record" over a body
   reading "Archive Ann Lee? …" says the same words twice and spends the only line the reader
   actually reads on the one they have already read. Write the body as though the title is above it,
@@ -389,23 +392,24 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   plan adds, rendered as on that plan but disabled, and do what costs nothing, such as naming it and
   saving one with its defaults; the server refuses anything past that. Once the reader holds what
   their plan allows, the create action stays in place, disabled, with a hint on hover and focus that
-  names the plan which creates more and links to the plans page. The hint is the product's one
-  tooltip, which the reader can move into and tab to when it holds a link; every hover or focus hint
-  uses that tooltip, never a second popup built for one case. One notice in that surface
-  names what upgrading unlocks, as the controls the reader can see, beside the upgrade action. A
-  sentence saying the plan lacks the feature, or that the reader gets a default named by an internal
-  term, shows nothing they would gain.
+  names the plan which creates more and links to the plans page, in the tooltip the next bullet
+  describes. One notice in that surface names what upgrading unlocks, as the controls the reader
+  can see, beside the upgrade action. A sentence saying the plan lacks the feature, or that the
+  reader gets a default named by an internal term, shows nothing they would gain.
+- **Every hover or focus hint uses the product's one tooltip, never a second popup built for one
+  case.** A hint holding a link is that tooltip made reachable by pointer and keyboard: the reader
+  can move into it and tab to the link.
 - **A page's content offers one control per destination or action** — a button, a link, a menu item,
   an icon or a clickable row; the app's own navigation is not counted against it. Two that open the
-  same form or page — a checklist step's button or linked label beside a quick link, a row that
-  opens its record beside that row's own "View" link, a page action repeated inside the section
-  below it — read as two different actions and crowd the page. Keep the one control where the reader
-  looks for it; elsewhere, text naming the same destination stays plain text, and a control that
-  carries nothing else is removed.
+  same form or page — a checklist step's button or linked label beside a quick link, a page action
+  repeated inside the section below it — read as two different actions and crowd the page. Keep the
+  one control where the reader looks for it; elsewhere, text naming the same destination stays plain
+  text, and a control that carries nothing else is removed.
 - **A row that opens its record is itself the control.** Clicking anywhere on a list or table row,
   or pressing Enter on it, opens or edits the record it shows; a pencil, "Edit" or "View" button
   beside it makes the reader find a second target for the one destination and is left out. Other
-  controls in the row, such as a menu or a delete, keep their own action without opening the row.
+  controls in the row, such as the row's menu or a role picker, keep their own action without
+  opening the row.
 - **A row's actions go in one "⋯" menu at the row's end, not as buttons inline in the row.** Delete,
   archive, set as default, download and the like are menu items, with a destructive item last; a
   row of icon or text buttons competes with the row's content and differs from row to row. A
@@ -454,7 +458,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   immediately to its left, where readers of modals look for them. A dialog that only points the
   reader to one next step, such as a prompt to complete a requirement before an action, shows that
   action alone: its "×" already closes it, and a cancel beside the step the product wants taken
-  invites the reader away from it. A dialog that collects input, takes a payment or confirms an
+  invites the reader away from it. A dialog that collects input, takes a purchase or confirms an
   action keeps its cancel. Actions are centred only under content that is itself centred, such as
   an empty state. A multi-step flow's footer is the one
   exception, as the next bullet says; a control beside a heading, in a toolbar, at the end of a
@@ -499,12 +503,13 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   is missed. A success or completed state shows neither, and a toast at most when the reader's own
   action just caused it. A dismissible "approved" or "done" banner, and whatever stores its
   dismissal, is the defect: delete both.
-- **A toast reports a result of the reader's action that the page does not already show** — a
-  record saved, an invitation sent, a file exported. An action that changed nothing the reader can
-  see closes without one: a request already recorded, a step only someone else can take, a save
-  with nothing changed, a dialog's Continue after the dialog has said what happens next. A toast
-  never repeats text the dialog or page already shows, and one that claims an outcome which did not
-  happen, such as a notification nobody sent, is the worse defect. A step of a multi-step flow shows
+- **A toast reports a result of the reader's action that the page does not already show, or the
+  completion of a flow** — a record saved, an invitation sent, a file exported. An action that
+  changed nothing the reader can see closes without one: a request already recorded, a step only
+  someone else can take, a save with nothing changed, a dialog's Continue after the dialog has said
+  what happens next. Apart from the flow-completion toast below, a toast never repeats text the
+  dialog or page already shows, and one that claims an outcome which did not happen, such as a
+  notification nobody sent, is the worse defect. A step of a multi-step flow shows
   none when the reader moves on, since reaching the next step is the feedback; the action that
   completes the flow shows one, worded as its completion, even where the page it lands on says the
   same in a banner, which the reader may not see at once. A form's save stays disabled until something
@@ -570,8 +575,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   table row, field, footer, submit row or floating save panel. A dialog's data-load failure uses the
   native shared banner at the top of the dialog, above its fields, rather than moving it to the page
   behind the dialog. A dialog that only exists to say what an action needs first never opens on data
-  it could not load: the action's failure reports on the page, as these rules say for a page resource
-  or a failed action, worded as an error rather than as the dialog's usual explanation. The banner
+  it could not load: the load failure reports as a page resource failure, in the page's shared error
+  banner, worded as an error rather than as the dialog's usual explanation. The banner
   never replaces the surface's own heading or description, which keep saying
   what the surface is while the banner says what went wrong.
   When a load failure appears or changes, keep entered values and reveal its banner through the
@@ -606,9 +611,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **An action the reader cannot take is left out while another action beside it is available.**
   Cancelling a subscription that does not exist, "Mark all read" while nothing is unread, moving an
   item that has nowhere to go: shown disabled among working controls, each offers a press with no
-  effect. A control shows disabled only when no other action in its menu, toolbar or group is
-  available — a form's submit while required fields are incomplete, as the bullet above says — or
-  when it is a paid control the plan bullet below locks to show what upgrading adds.
+  effect. An action with nothing to act on shows disabled only when no other action in its menu,
+  toolbar or group is available, or when it is a paid control the plan bullet below locks to show
+  what upgrading adds. An action whose prerequisite the reader can still meet stays, disabled,
+  beside available actions, as the bullets here say: a form's submit while required fields are
+  incomplete, Next until its step is complete, Save until something has changed, and an action
+  while it is already running.
 - **A form the product would refuse in full is never shown.** When every choice it offers would be
   refused, because the feature is off or nothing asked for is allowed, the page shows in its place
   why, and the way forward for this reader, with one action to leave. The server refuses that
@@ -794,7 +802,7 @@ export function SearchInput() {
 ```
 
 - **Render on the server.** A page, and every section of it that shows data, is an async Server Component that loads its data and renders it. A Client Component (`"use client"`) exists only for what the browser has to own — event handlers and input, state and effect hooks, browser-only APIs, a dialog, drag-and-drop, a third-party client widget — takes its data as props, and never fetches it.
-- **Writes are Server Actions** that authenticate their caller and re-render the page when they finish. A client-side data layer for reads — SWR, React Query, a fetching hook, a fallback cache seeded from the server — is the shape this replaces, not a companion to it, and a status that has to update live refreshes the server render on an interval instead of fetching on the client. A read that depends on input an open control holds in its own state — a city search as the reader types, a preview of the choices in a dialog — is a read-only Server Action that control calls, never a route handler it fetches; input that belongs in the address, such as a list's filters, stays search params the page renders from.
+- **Writes are Server Actions** that authenticate their caller and re-render the page when they finish. A client-side data layer for reads — SWR, React Query, a fetching hook, a fallback cache seeded from the server — is the shape this replaces, not a companion to it, and a status that has to update live refreshes the server render on an interval instead of fetching on the client. A read that depends on input an open control holds in its own state — a city search as the reader types, a preview of the choices in a dialog — is a read-only Server Action that control calls, never a route handler it fetches, and it authenticates its caller and authorizes the data it returns, as a write does; input that belongs in the address, such as a list's filters, stays search params the page renders from.
 - **Expected refusals carry a specific, human-readable message the reader can act on**, worded as
   **Interface Copy** says. Trace generic copy for a known validation or business refusal to its service
   and fix that error contract there, rather than inventing replacement client copy. Expected

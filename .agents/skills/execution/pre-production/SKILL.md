@@ -79,21 +79,26 @@ with an obsolete owned contract or revision.
   only to make such an incidental fix is never itself a source of more incidental cleanup: what else
   it holds is listed, not chased.
 - **A defect the work notices is always fixed, wherever it lives.** A defect is what
-  `acceptance-gate`'s rubric calls one, anything the system does that a reader would call broken,
-  and the system includes the repository's own tooling as much as the product: an image that never
-  loads, a wrong value, a state shown in the wrong place, a control that does nothing, a test suite
-  that fails in a fresh checkout, a fixture that builds data the code would never hold, a setup
-  step or documented command that errors. It is fixed in the change in flight, outside both the hop
-  limit and the size budget below. Sitting in a shared component, an owned library or another owned
-  repository the pull request does not otherwise touch is no reason to leave it: the fix goes to that
-  repository's pull request for this work. It is never listed as noticed, offered or deferred.
+  `acceptance-gate`'s rubric calls one: an image that never loads, a wrong value, a state shown in
+  the wrong place, a control that does nothing, a test suite that fails in a fresh checkout, a
+  fixture that builds data the code would never hold, a setup step or documented command that
+  errors. It is fixed in the change in flight, outside both the hop limit and the size budget below.
+  Sitting in a shared component, an owned library or another owned repository the pull request does
+  not otherwise touch is no reason to leave it: the fix goes to that repository's pull request for
+  this work. It is never listed as noticed, offered or deferred.
 - **A security vulnerability the work finds is such a defect, whoever finds it and whenever it
   arrived.** One a gate, reviewer or audit reports in code the change never touched, one that
   predates the change, and one another layer is said to stop before that layer is traced on every
   path the attack takes are all fixed in the change in flight, with a test that reproduces the
-  attack first. A shape that may be exploitable is traced to an attacker or ruled out in the same
-  run. It is never put to the user as something to consider, recorded as deferred, left as a
-  hardening note, or answered with a recommendation to run an audit or a doctor later.
+  attack first where one can exist. A shape that may be exploitable is traced to an attacker or
+  ruled out in the same run. It is always closed in the change with the fix that enforces the
+  access the product already intends; only a change that widens access or changes who the feature
+  serves goes to the user, as `global.md`'s product-choice rule says. Every mitigation within reach
+  is carried in the change, and a remaining step only another party can take, such as rotating a
+  credential they hold, is reported as a gate with its owner and saved next action, as `global.md`'s
+  concrete-gate rule says. It is never put to the user as something to consider or an option,
+  recorded as deferred, left as a hardening note, or answered with a recommendation to run an audit
+  or a doctor later.
 - **Incidental cleanup has a size budget.** The incidental part of a change — everything the request
   did not ask for that is not a defect — stays about the size of the requested part, or within 150
   changed lines across 10 files when the requested part is smaller. Inside the budget, everything
@@ -113,7 +118,8 @@ with an obsolete owned contract or revision.
   mechanism, a wrong value, a missing guard or a parallel implementation, stay under the bullets
   above on every page. A page that builds its own copy of a shared component moves onto the shared
   one in the same pass even though its look changes with it: it takes the look the rest of the
-  product already has, which is no new choice about that page.
+  product already has, which is no new choice about that page, unless the task's record or the
+  conversation shows the user decided that page's look, in which case the move goes to the user.
 - Inspect the complete mechanism before choosing its repair. Prefer the clean result that solves
   that defect throughout its affected paths; do not equate a broader cleanup with a better fix.
 - The bar is what the cleanest result requires, not what the smallest diff permits. Existing users

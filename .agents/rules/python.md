@@ -12,7 +12,8 @@ paths:
 - For single-consumer, non-library repositories, require Python 3.12 or newer and prefer the latest stable Python release when the repository's runtime and dependencies are compatible. For public libraries, prefer the widest feasible supported range with a minimum no earlier than Python 3.11.
 - Use modern type hints: `str | None` instead of `Optional[str]`.
 - Use built-in generics: `list[T]`, `dict[K, V]` instead of `List[T]`, `Dict[K, V]`.
-- Use `Self` from `typing` for class method return types.
+- Type a class method that returns a new instance of its own class as `Self` from `typing`; any
+  other class method names its return type.
 - Use `collections.abc` for abstract types: `Callable`, `Iterable`, etc.
 - Never use `Protocol` for model typing; use concrete model classes in type annotations.
 

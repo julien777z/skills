@@ -260,8 +260,8 @@ Apply the baseline prompt above, plus these explicit review rules:
      module, which the React rules hold to exactly one exported component with its helper components
      unexported in the same file; a folder of such modules is their area, never one module to merge.
      The UI exemption holds only for a component that earns its place under the React rules'
-     **Components and Props**: a module whose component is another's variant or a hook's wrapper,
-     or one link of a chain each adding one prop, merges into its owner.
+     **Components and Props**: a module whose component that rule calls another's variant or a
+     hook's wrapper, or one link of a chain each adding one prop, merges into its owner.
    - Re-count after every relocation, on the source and on the target, and say both counts.
    - History is not a disposition. Count a module as it stands in scope, whatever the diff calls it —
      new, renamed, moved, generalized, or already there when the change arrived. "It held one symbol

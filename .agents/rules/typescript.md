@@ -45,8 +45,8 @@ type Status = (typeof Status)[keyof typeof Status];
   **A component module is the exception, here and in the subfolder and fewer-files bullets below**:
   it exports exactly one component, as the React rules state, and its domain becomes the folder
   those files share, however few lines each holds. The exception covers a component that earns its
-  place under the React rules' **Components and Props**; a module whose component is another's
-  variant or a hook's wrapper merges like any other fragment.
+  place under the React rules' **Components and Props**; a module whose component that rule calls
+  another's variant or a hook's wrapper merges like any other fragment.
 - Avoid role-suffixed file names like `*Action.ts`, `*Lookup.ts`, `*Watcher.ts`, `*Extractor.ts`, `*Url.ts`, or `*Collections.ts`; the folder already conveys the role.
 - Cross-domain helpers belong in a generic `utils` or `lib` module, not in a module named after a single feature.
 - Split a domain module into a subfolder only when the single file would exceed approximately 1000 lines. Name the folder after the domain and its files after subareas.

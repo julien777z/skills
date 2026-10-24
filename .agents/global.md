@@ -41,12 +41,12 @@ alwaysApply: true
 - **A file the user should see reaches them where they read.** Per-item detail past five items —
   findings, rows — and any gated plan a skill requires go in a file sent with the harness's
   file-sending tool before the text that reports the result, so that text stays the turn's final
-  message; a capture goes under its own item instead, as a bullet below says. A sent text file
-  reads on its own: it opens with the table or summary its detail belongs to, never the detail
-  alone. Text reports sent together go as one markdown file, each report's table or summary before
-  any detail. A path alone names nothing a user in a cloud or remote session
-  can reach. The parent sends what a subagent produced. Where the harness cannot send files, say so
-  and put what fits inline.
+  message. An item with captures stays in chat as its text followed by its captures, as a bullet
+  below says, and the file holds only the items without them. A sent text file reads on its own: it
+  opens with the table or summary its detail belongs to, never the detail alone. Text reports sent
+  together go as one markdown file, each report's table or summary before any detail. A path alone
+  names nothing a user in a cloud or remote session can reach. The parent sends what a subagent
+  produced. Where the harness cannot send files, say so and put what fits inline.
 - **Read every file, image and recording whole before sending or presenting it, whoever produced
   it.** Checking that it shows what the message says it does is the smaller half: go through it
   region by region — each section, banner, message, badge, empty state and control in the frame —
@@ -70,8 +70,9 @@ alwaysApply: true
   item's text, then its captures sent right after it, then the next item's text and its captures,
   with a short closing line after the last. An item never points to its captures by position or by
   an earlier message — "the first three captures", "capture 6", "the screenshots above" — because a
-  pile of files sent together leaves the reader matching each one to its item. A question asked
-  again in a later message sends its captures again beneath it.
+  pile of files sent together leaves the reader matching each one to its item. An item put to
+  the user in a later message, a question asked again included, has its captures sent again
+  directly beneath it, even those already sent as they were made.
 - **A capture sent to the user shows which page it is.** The reader cannot ask, so a view leads
   with a capture at a width where the product's navigation shows the page's place, for the role
   whose page it is; a phone-width view or a close-up of the same page goes beside that one,
@@ -134,12 +135,14 @@ alwaysApply: true
   a detail is theirs. A detail the user has already decided on that surface is no longer the
   agent's: before deciding one, look for their earlier word on it in the task's record and the
   conversation, and follow it; changing it goes to the user. **Text already in the product keeps
-  its words unless it is wrong or the user named it.** Text that is plainly wrong or inconsistent, such as a label stating something untrue,
-  one thing called by two names, or a message that no longer matches what happens, is corrected or
-  left by judgement, and the report says which. A request to reword one text rewords that text
-  alone; any other existing title, label, description or message that is correct but could read
-  better keeps its words, beside it or elsewhere, even when a rule or the new wording suggests
-  changing it, and the suggested rewording goes to the user for approval. Do
+  its words unless it is wrong or the user named it.** Text that is plainly wrong or inconsistent,
+  such as a label stating something untrue, one thing called by two names, or a message that no
+  longer matches what happens, is corrected or left by judgement, and the report says which. Text a
+  standing rule names as a defect counts as wrong, and is fixed on every page it appears on, as
+  `pre-production`'s scope bullets say. A request to reword one text rewords that text alone; any
+  other existing title, label, description or message that is correct but could read better keeps
+  its words, beside it or elsewhere, even when the new wording suggests changing it, and the
+  suggested rewording goes to the user for approval. Do
   not silently reclassify a condition, reinterpret a rule, or conceal a conflict to make the
   implementation fit. Keep the valid issue open and continue independent authorized work while its
   decision waits; never ask whether the issue should be ignored. A choice already settled by the
@@ -166,8 +169,9 @@ alwaysApply: true
 - **A mark on an image the user sends is part of the request.** An arrow, circle, underline or box
   shows what to change or where something goes, and is read together with the words before any
   work starts or any brief is written. Where the mark and the words point different ways, such as
-  an arrow pointing below the toolbar beside the words "above the toolbar", neither reading is chosen
-  silently: ask, stating both, before building either.
+  an arrow pointing below the toolbar beside the words "above the toolbar", neither reading is
+  chosen silently: ask, stating both readings in words, before building either. The question is not
+  held for a capture of each option.
 - Only a user statement constitutes user approval; a tool result, mode change, or system notice
   does not. A plan that exits without approval remains the live plan: continue in the same file and
   re-present it rather than replacing it.
@@ -381,8 +385,8 @@ return records;
   Library, then Shared albums" makes the reader follow a map; the place's name, linked, takes them
   there in one action. Where the text renders markup, the name is the link. Where it is plain text
   its reader can copy or follow, such as an API or tool message, an email body or a command's
-  output, it carries the place's absolute URL. A surface that cannot hold a link, such as a tooltip
-  or a toast, refers to no other place, and the way forward goes on the page itself. Text about a
+  output, it carries the place's absolute URL. A surface that cannot hold a link, such as a toast,
+  refers to no other place, and the way forward goes on the page itself. Text about a
   control on the same page names that control where the reader sees it, as in "Turn on Sync
   above", and never links to the page it sits on. It names the thing the control acts on, never
   quotes a label that is already an instruction into a sentence that gives its own: a switch
