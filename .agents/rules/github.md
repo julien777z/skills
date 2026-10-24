@@ -18,10 +18,6 @@ alwaysApply: true
   and source authorization bindings. Default-branch-only execution or merging is never a substitute
   for an available selected-branch route.
 
-- Before considering a merge after a requested candidate release check, dispatch the existing
-  selected-branch workflow at the candidate ref and verify the run records that ref's head. A merge
-  follows candidate evidence as a separately authorized delivery action; it is never a test path.
-
 - Build, publish, and deploy through the repository's existing entrypoint and supported ref
   selection. Use its GitHub Actions workflow when that is the designated route; a native CLI the
   user explicitly authorizes remains available. Inspect the entrypoint's supported inputs before
