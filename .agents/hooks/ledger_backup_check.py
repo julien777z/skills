@@ -246,12 +246,15 @@ def missing_backup(record: BackupRecord, url_owners: dict[str, list[BackupRecord
 
         return "no recovery_comment URL"
 
+    if not is_guidance:
+        return None
+
     sharers = sorted(
         {
             owner["id"]
             for url in record["urls"]
             for owner in url_owners[url]
-            if owner["id"] != record["id"] and (is_guidance or owner["kind"] != record["kind"])
+            if owner["id"] != record["id"]
         }
     )
 

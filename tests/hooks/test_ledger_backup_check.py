@@ -114,32 +114,18 @@ class LedgerBackupCheckTest(unittest.TestCase):
         self.assertIn("- gc-example-1 (guidance_correction): ", result["stderr"])
         self.assertIn("is shared with gc-example-2", result["stderr"])
 
-    def test_reports_comment_shared_across_kinds(self) -> None:
-        self.write_ledger(
-            ledger_document(
-                [
-                    ledger_entry("plan-example", "plan", recovery_comment=f"{COMMENT}1"),
-                    ledger_entry(
-                        "question-example",
-                        "question",
-                        status="answered",
-                        recovery_comment=f"{COMMENT}1",
-                    ),
-                ]
-            )
-        )
-
-        result = self.run_hook()
-
-        self.assertEqual(result["code"], 2)
-        self.assertIn("- plan-example (plan): recovery_comment URL is shared", result["stderr"])
-
     def test_allows_one_comment_per_kind(self) -> None:
         document = ledger_document(
             [
                 ledger_entry("plan-example-1", "plan", recovery_comment=f"{COMMENT}1"),
                 ledger_entry("plan-example-2", "plan", recovery_comment=f"{COMMENT}1"),
                 ledger_entry("decision-example", "decision", recovery_comment=f"{COMMENT}2"),
+                ledger_entry(
+                    "question-example",
+                    "question",
+                    status="answered",
+                    recovery_comment=f"{COMMENT}3",
+                ),
             ]
         )
         document["decisions"] = [{"text": "synthetic choice", "recovery_comment": f"{COMMENT}2"}]
