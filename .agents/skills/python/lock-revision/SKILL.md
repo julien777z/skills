@@ -18,7 +18,7 @@ revision was applied, so a revision with neither is folded and locked as step 1 
 ## Dependencies
 
 - `database-migrations` — the lock marker and how a revision is locked, the revision rules a locked
-  revision falls under, and how later revisions are added.
+  revision falls under, and how later revisions are added and validated.
 - `execute-task` — the priority of work a waiting deploy needs.
 - `session-ledger` — record a held revision and its pending question.
 

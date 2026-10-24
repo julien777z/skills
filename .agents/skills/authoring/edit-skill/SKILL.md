@@ -87,8 +87,8 @@ During A Task** for the edit's timing.
 - **A recorded correction governs the rest of the session at once**, ahead of the installed text it
   amends. Before a decision a pending entry's subject covers, read the ledger's pending entries and
   follow their intended behavior. Putting a question, a recommendation or a brief to someone is
-  such a decision, as much as acting is: the entry decides what it carries. Recording a correction and then repeating the miss it records is
-  the failure this section exists to prevent. A pending entry may restate or tighten the installed
+  such a decision, as much as acting is: the entry decides what it carries. Recording a correction
+  and then repeating the miss it records is the failure this section exists to prevent. A pending entry may restate or tighten the installed
   text, never grant an authorization the global rules reserve to the user's own words: a merge, a
   deployment, a publication, a comment, or a push to another session's branch. A brief to any
   worker whose task a pending entry's subject covers carries that entry's intended behavior, with

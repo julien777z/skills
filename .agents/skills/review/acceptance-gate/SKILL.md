@@ -189,8 +189,8 @@ it:
   one of fix, close, defer or do.
 - **Admission — may this work be deferred?** The triage question asked of a proposed record.
 - **Proposal — should this be written?**
-- **Diff — should this stand?** A finished step's or task's diff, or the increment fixing a flag, read with
-  the whole branch diff as its originating diff.
+- **Diff — should this stand?** A finished step's or task's diff, or the increment fixing a flag,
+  read with the whole branch diff as its originating diff.
 - **Base incorporation — what did the base bring in that the change must refactor?** The procedure
   below.
 - **Final acceptance — may this merge?** The complete pull-request diff, read once after review is

@@ -264,9 +264,9 @@ from the theme, through one shared hook where script needs it.
 
 ### Hand-Written Styling
 
-Styling written by hand where a shared component owns it. The aim is an app whose every page is a
-tree of common components configured by props and variants, so every screen looks standard and the
-app holds no styling of its own:
+Styling written by hand where a shared component owns it. The aim is the app the React rules'
+**Components and Props** describes: every page a tree of common components configured by props and
+variants, so every page looks standard and the app holds no styling of its own:
 
 ```tsx
 <Page title="Recipes" actions={<Button>New recipe</Button>}>
@@ -300,14 +300,11 @@ Props** grants there.
 ### Reads As Slop
 
 Code a reviewer recognizes as generated: correct, and still a shape no careful author writes. The
-test is an experienced reviewer's: opening these modules, would they call any of it slop? Each
-reason they would give is a finding with its remedy, whether or not a check below or another lens
-names it — layers that each add one tweak, wrappers that only forward or fix a value, one-symbol
-fragments, one thing built twice, comments narrating code, confusing or near-duplicate names, dead
-or speculative code, hand-written styling or configuration where an owner exists. The list
-illustrates the test and never bounds it. A shape another lens owns is fixed under that lens, and an
-exemption in this skill or a rule that would keep a shape the reviewer calls slop is named in the
-finding and does not keep it. Apply the test to each package whole as well as file by file — its
+test is the slop question `acceptance-gate`'s diff review asks first, with the shapes it lists as
+examples rather than the limit: each reason an experienced reviewer would give is a finding with its
+remedy, whether or not a check below or another lens names it. A shape another lens owns is fixed
+under that lens, and an exemption in this skill or a rule that would keep a shape the reviewer calls
+slop is named in the finding and does not keep it. Apply the test to each package whole as well as file by file — its
 file count, its exported names, the depth of its component chains — since a reviewer calls a
 package slop from its shape before opening any file. Every check below makes the test concrete.
 

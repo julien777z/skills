@@ -69,8 +69,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **An app built on a shared UI library writes no styling of its own.** No `className`, no
   class-merging call such as `cn(`, no class string kept in a constant or a style module, no style
   rule or styled component of its own — its stylesheet only loads the library's — and no inline
-  `style` except a value read from saved data, such as a layout the reader arranged and saved. Each screen is a tree of the library's
-  components configured by their props and variants, so every screen looks standard: a page reads
+  `style` except a value read from saved data, such as a layout the reader arranged and saved. Each
+  page is a tree of the library's components configured by their props and variants, so every page
+  looks standard: a page reads
   `<Section title="Favorites" description="…"><Stack gap="md">…</Stack></Section>`, never a `div`
   spelling out the section's padding and border. A case the library cannot express becomes a prop or
   variant on the shared component that owns it, never a local wrapper, and no shared component takes
@@ -231,7 +232,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   the page's top bar and its first section: a page's name sits where the product puts page titles,
   and whatever a page-level sentence would say belongs to the section it describes.
 - **Spell out an abbreviation the reader may not know the first time a surface uses it**, with the
-  short form after it, such as "Know Your Customer (KYC)"; later mentions on that surface use the
+  short form after it, such as "Service Level Agreement (SLA)"; later mentions on that surface use the
   short form alone.
 - Say the one thing the reader needs and stop. On a field, prefer no description to a description
   that repeats the label, narrates the obvious, or hedges, and keep out of any label what the
@@ -250,7 +251,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   under a dialog's title. A control among several things it could act on names its object: "Clear
   filters" beside a search field and a select, never "Clear".
 - **A list filter takes tabs only for a few top-level groups that fit one row on a phone**, such as
-  all, individual and business; a filter with more options, or one likely to gain them, such as a
+  all, mine and shared; a filter with more options, or one likely to gain them, such as a
   status, is a select in the filter bar. A row of many tabs wraps or scrolls on a phone and takes
   the room the next filter needs, while a select holds any number of options in one control. A
   filter select's options carry no counts; a count beside a filter option belongs only on a tab.
@@ -286,8 +287,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Typing to confirm is reserved for the most severe actions**, such as deleting an account or a
   whole workspace, where everything the reader holds goes at once. There the reader types something
   that identifies what they are acting on and the action stays unavailable until it matches. Every
-  other action, including one that cannot be undone — deleting a record, voiding a document,
-  removing a saved payment method, sending a payment — is confirmed by the dialog's button alone.
+  other action, including one that cannot be undone — deleting a record, removing a saved address,
+  sending a message — is confirmed by the dialog's button alone.
   A phrase demanded for routine actions slows every one of them and is soon typed by reflex.
 - One component owns this shape, under **Shared Surfaces** above: dialogs hand-built from the same
   primitives are where these rules get broken one at a time.
@@ -347,8 +348,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   related content and controls while preserving readable values, visible context, accessible labels
   and a clear association with their actions.
 - **A table row stacked on a narrow screen reads from the left.** Each value sits left-aligned
-  under its column's label; only the row's "⋯" menu takes the right edge. A value pushed to the right edge reads as detached from its label and sends the
-  eye zigzagging across the card.
+  under its column's label; only the row's "⋯" menu takes the right edge. A value pushed to the
+  right edge reads as detached from its label and sends the eye zigzagging across the card.
 - **A frame that scrolls shows its scrollbar whenever its content overflows** — a box of legal
   text, a dialog body, a list or a table inside a maximum height — on every platform and before the
   reader touches it, so cut-off text reads as more to scroll rather than as text that ends. A hidden
@@ -432,12 +433,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   submitting a form outside any flow, submitting on someone's behalf, a quick edit — and one form
   serves the page and the dialog alike, inside each shell.
 - **A record created from a short form is created in a dialog.** Its list's create button opens a
-  dialog holding the form, such as a tag's name and colour; the list page never keeps the form open
+  dialog holding the form, such as a folder's name and icon; the list page never keeps the form open
   above its content, and the record gets no create page of its own. A create page is for a record
-  whose form is a document the reader builds, such as an invoice with its lines.
+  whose form is a document the reader builds, such as a report with its sections.
 - **A dialog is as wide as its content needs and no wider.** Take the smallest width on the
   product's dialog scale that holds its widest field or control group at its natural size, such as
-  a row of colour swatches; an empty band beside the content reads as unfinished and pushes the
+  a row of icon choices; an empty band beside the content reads as unfinished and pushes the
   actions away from what they act on. When even the smallest step leaves a band, the scale gains a
   smaller step rather than the dialog a width of its own. Content that already spans the dialog,
   such as a grid of many options, keeps the width that lets the reader scan it, however much room
@@ -793,7 +794,7 @@ export function SearchInput() {
 ```
 
 - **Render on the server.** A page, and every section of it that shows data, is an async Server Component that loads its data and renders it. A Client Component (`"use client"`) exists only for what the browser has to own — event handlers and input, state and effect hooks, browser-only APIs, a dialog, drag-and-drop, a third-party client widget — takes its data as props, and never fetches it.
-- **Writes are Server Actions** that authenticate their caller and re-render the page when they finish. A client-side data layer for reads — SWR, React Query, a fetching hook, a fallback cache seeded from the server — is the shape this replaces, not a companion to it, and a status that has to update live refreshes the server render on an interval instead of fetching on the client. A read that depends on input an open control holds in its own state — a branch search as the reader types, a preview of the choices in a dialog — is a read-only Server Action that control calls, never a route handler it fetches; input that belongs in the address, such as a list's filters, stays search params the page renders from.
+- **Writes are Server Actions** that authenticate their caller and re-render the page when they finish. A client-side data layer for reads — SWR, React Query, a fetching hook, a fallback cache seeded from the server — is the shape this replaces, not a companion to it, and a status that has to update live refreshes the server render on an interval instead of fetching on the client. A read that depends on input an open control holds in its own state — a city search as the reader types, a preview of the choices in a dialog — is a read-only Server Action that control calls, never a route handler it fetches; input that belongs in the address, such as a list's filters, stays search params the page renders from.
 - **Expected refusals carry a specific, human-readable message the reader can act on**, worded as
   **Interface Copy** says. Trace generic copy for a known validation or business refusal to its service
   and fix that error contract there, rather than inventing replacement client copy. Expected

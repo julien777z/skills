@@ -385,8 +385,8 @@ how those issues are handled.
   detail decided names who decided it and where; one the agent decided itself says so. Every brief
   for work that can change a surface the user has decided on, a simplification or review pass
   included, carries those decisions in the user's words, so the worker keeps them rather than
-  undoing them; an item that would undo one goes to the user. The class is any item asking for what a rule rules out: a review finding
-  asking for the catch-all exception handler the language rule bans, a brief telling a worker to
+  undoing them; an item that would undo one goes to the user. The class is any item asking for
+  what a rule rules out: a review finding asking for the catch-all exception handler the language rule bans, a brief telling a worker to
   skip a check a skill requires before a push, a correction asking for copy the copy rules forbid,
   one asking for a boat-rental waiver to arrive filled in from the renter's last booking when the
   forms rule says a form someone attests to starts empty. It also takes in an item adding a stop,
@@ -515,11 +515,12 @@ the task.
 
 Every push goes out once the pre-push checks below pass, on a draft and on a pull request ready for
 review alike; nothing holds committed work on one machine — not a gate, review or simplification
-pass pending on it, an integration merge, or a plan that orders one first. `code-simplify` and `acceptance-gate`'s
-diff question do not run per push: they run as each step finishes and over the finished task's
-unreviewed changes inside `review-pass` at **Completion**, as **Ongoing Simplification** says. A fix pushed for a flag a gate or review raised gets one fresh `acceptance-gate`
-run over that fix's increment, read with the whole branch diff as its originating diff, as
-`acceptance-gate`'s **Bounds** require; that fresh verdict is what other skills mean by an
+pass pending on it, an integration merge, or a plan that orders one first. `code-simplify` and
+`acceptance-gate`'s diff question do not run per push: they run as each step finishes and over the
+finished task's unreviewed changes inside `review-pass` at **Completion**, as **Ongoing
+Simplification** says. A fix pushed for a flag a gate or review raised gets one fresh
+`acceptance-gate` run over that fix's increment, read with the whole branch diff as its originating
+diff, as `acceptance-gate`'s **Bounds** require; that fresh verdict is what other skills mean by an
 increment's **Pre-Push Gate** verdict.
 
 Read the shared testing rule before planning test runs or briefing an implementation worker.
@@ -587,9 +588,9 @@ bug or a passing formatter does not satisfy this spacing check.
   what was left alone invites a defect into that list. The delegating
   agent, which holds the intent statement, reads that head under **Reported Outcomes** and, once
   the worker's task is finished, runs the step gates **Ongoing Simplification** sets over that
-  task's diff, returning what they flag as fix steps before any dependent work starts. The worker ends with nothing uncommitted and
-  nothing unpushed, never amends or rebases a pushed commit, and its report names the branch and
-  head.
+  task's diff, returning what they flag as fix steps before any dependent work starts. The worker
+  ends with nothing uncommitted and nothing unpushed, never amends or rebases a pushed commit, and
+  its report names the branch and head.
 - **Pull requests stay draft until the authorized merge gate readies them**, so these pushes may
   start no test jobs. Readiness can enqueue duplicate hosted jobs without changing the head;
   `merge-gate` decides whether completed exact-head evidence is equivalent before it waits for
