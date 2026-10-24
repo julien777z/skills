@@ -108,6 +108,12 @@ work there. Apply the same test to repeated branches, mirrored state, speculativ
 hand-built mechanisms; the class is unnecessary machinery, not just forwarding functions. Tests
 passing and the absence of duplicated lines do not answer this question.
 
+Compare consolidation within the existing operation before adding configuration, dispatch or
+extension interfaces. A dispatch table's current shape is not a contract requiring each selected
+operation to be uniform internally. A repair that grows surrounding machinery to retain the
+questioned boundary must show why direct consolidation cannot preserve current callers. Renaming
+or relocating the extra layer is not its removal.
+
 For a retained shape, identify the actual independent caller, lifecycle, contract or dependency
 that the simpler complete candidate would violate. A role name, a possible future consumer, a
 short body, "separation of concerns", or "not a pure wrapper" is not that evidence. Do not force
