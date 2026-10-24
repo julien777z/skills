@@ -62,7 +62,7 @@ alwaysApply: true
   navigating, diagnosing, or recording a baseline before anything changed — stays where it was saved
   and is not sent, except as the before half of a pair once its after exists; a capture the user or
   the running skill asked for is sent as it is made, change or not. An agent with no file-sending
-  tool hands each capture to be sent up as `subagent-selection`'s **Dispatch** describes, and the
+  tool hands each capture to be sent up as `subagent-matrix`'s **Dispatch** describes, and the
   agent that delegated to it reads and forwards each one on arrival. A brief that asks a worker for
   captures asks for them this way.
 - **A capture sits directly under the text it belongs to.** A message holding several questions,
@@ -262,6 +262,15 @@ alwaysApply: true
   not evidence of control. If the bound tab closes, refresh the inventory and apply the same
   relevance and safe-reuse selection within the retained constraints; never fall back to the
   browser's current tab.
+  Verify that the control itself targets the stable tab independently of the foreground selection;
+  an application handle that follows the active tab or window does not preserve the binding. When
+  the binding is lost, refresh the inventory and reapply the retained explicit user constraints,
+  relevance, safe-reuse, and coordination requirements before rebinding an eligible tab. If no
+  eligible tab can be safely reused and a supported tab control can create a replacement that honors
+  every retained constraint, create and bind a task-owned tab in the relevant available parent
+  surface; never create a window. If an explicit constraint cannot be honored, ask the user about
+  that concrete conflict. If the control cannot reach the required page, hold only that operation
+  and continue independent work; never inspect or operate the current tab as a fallback.
 - Classify an awaited result from its observed state before treating it as a blocker. Startup,
   recovery, a queued review or an unanswered request is pending until it has a terminal result;
   current unavailability, a quiet interval or a bounded wait yielding without a result is not

@@ -76,8 +76,11 @@ dependent unit. Its dependency gates its merge, never its review:
   the gate and the saved next action.
 - Once the dependency merges, repoint every consuming reference as `merge-gate`'s
   delivery-dependency gate says, regenerating any lockfile with the repository's tooling. The
-  repoint's diff holds only those reference edits and the lockfile entries they change; it passes
-  only the validation it affects, the pre-push checks and `merge-gate`'s check gate, and
+  repoint's diff holds only those reference edits and the lockfile entries they change; reconcile it
+  through `review-pass`'s **Review Continuity** before its checks. That reconciliation records
+  continuity attestations for retained receipts, reruns only invalidated or newly applicable lenses,
+  and runs fresh exact-head acceptance when any receipt or target material changed. The repoint then
+  passes only the validation it affects, the pre-push checks and `merge-gate`'s check gate, and
   `merge-gate` receives the repointed head as the head to merge, with the repoint named as the sole
   commit past the accepted head. Any other change in that push, another lockfile entry included,
   follows `review-pass`'s **Review Continuity**.

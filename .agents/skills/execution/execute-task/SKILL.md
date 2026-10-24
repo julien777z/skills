@@ -19,7 +19,7 @@ are validated by their evidence, smoke-test, review, and acceptance gates.
 - `acceptance-gate` — judge each finished plan step's and worker task's diff before later work builds on it, the finished task's complete diff before local completion, before the pull request is sent for review and before it merges, and each fix for a flag it raises.
 - `generic-push` — keep each repository's publishing metadata independent during multi-repository changes.
 - `merge-conflict` — bring in a conflicting base as soon as a push read-back shows it.
-- `subagent-selection` — the hand-up a worker without an agent tool uses for an independent step.
+- `subagent-matrix` — the hand-up a worker without an agent tool uses for an independent step.
 - `merge-gate` — at **Completion**, when the merge is authorized, ready the pull request, drive its checks to green and merge it.
 - `security-audit` — **Building It Safely** while writing code that crosses a trust boundary;
   `review-pass` runs its **Diff Review** of such a change at **Completion**.
@@ -86,14 +86,14 @@ Every task that changes files starts here, and so does every follow-up that arri
   - a round of parallel readers or reviewers is about a minute, and a round of auditing reviewers
     over a tree is 5–10 minutes;
   - CI, a deployment or a merge with its follow-up is the observed duration of that job.
-- Schedule steps by `subagent-selection`'s **Dispatch**: coupled work stays sequential, and
+- Schedule steps by `subagent-matrix`'s **Dispatch**: coupled work stays sequential, and
   independent scopes with separate owners, files and resources overlap once their inputs are
   settled. Estimate the elapsed time with that overlap, counting overlapping work once at the
   longest of the overlapping steps.
 - **Settle ownership before the plan is final.** For a plan that introduces a subsystem, runtime
   boundary, or independent consumer, apply `code-simplify`'s ownership analysis to the proposed
   shape and the analogous implementations already in the repository, with one read-only subagent
-  inventorying them when the comparison spans subsystems. Invoke `subagent-selection` at its standard
+  inventorying them when the comparison spans subsystems. Invoke `subagent-matrix` at its standard
   capability level for that reader, launch the exact resolved identifier, and retain catalogue state,
   identifier, assignment state and host receipt with the plan evidence. The plan states where common
   behavior will live and which policy or wiring stays consumer-specific; it never starts from a parallel
@@ -169,7 +169,7 @@ A source or product follow-up is planned on its own. A canonical guidance correc
 
 - **One that touches nothing in flight** — other files, another outcome — leaves the running work
   going. It gets its own plan, or none when trivial, and runs beside that work once approved when approval is required and
-  **Priority** permits, under `subagent-selection`'s **Dispatch**. Send this template only for a
+  **Priority** permits, under `subagent-matrix`'s **Dispatch**. Send this template only for a
   follow-up that needs a plan:
 
 ```markdown
@@ -304,8 +304,14 @@ candidate's actual role against it. A shared filename, label, directory or provi
 unrelated automation part of that scope. Expand to a required dependency or an explicitly broader
 user instruction, never to everything a text search happens to return.
 
-Before recommending an implementation or delegating its edits, trace the requested behavior from
-the caller to its owner and inspect that owner's existing capabilities. Reconcile the complete
+Before recommending an implementation, asking a question that presupposes one, or delegating its
+edits, trace the requested behavior through the caller, transport, configured destination and
+execution owner, including the entrypoint that launches or deploys it. Establish where it runs and
+which existing capabilities and stored data it can use from configuration and, when available, the
+running artifact; a client request alone establishes neither a remote dependency nor missing local
+behavior. An independent inventory receives the request, observed evidence and unresolved facts,
+not a proposed topology to assume. Its result must reconcile that runtime path before it supports
+a new mechanism or a product question. Reconcile the complete
 accepted target with the user's instructions, approved plan, repository guidance and observed
 mechanism; record each settled outcome or constraint with its source and the evidence the proposed
 implementation will need to satisfy it. Identify unresolved facts rather than silently replacing
@@ -570,17 +576,17 @@ bug or a passing formatter does not satisfy this spacing check.
   coherent step, commit it, and push it; the checks' own runs are part of the push, not such a wait.
 - **Delegated edits run at this cadence.** A brief handing a worker edits states it, names the
   branch the worker pushes to — the branch of the pull request the work continues, under **Pull
-  Requests** — and names the exact files to change, under `subagent-selection`'s **Dispatch**. The
+  Requests** — and names the exact files to change, under `subagent-matrix`'s **Dispatch**. The
   worker pushes each step once its checks pass and reports the branch and head. The delegating
   agent, which holds the intent statement, reads that head under **Reported Outcomes** and, once
   the worker's task is finished, runs the step gates **Ongoing Simplification** sets over that
   task's diff, returning what they flag as fix steps before any dependent work starts. The worker ends with nothing uncommitted and
   nothing unpushed, never amends or rebases a pushed commit, and its report names the branch and
   head.
-- **Pull requests stay draft until they merge**, so these pushes start no test jobs, as the
-  GitHub rule's **Workflows** section sets up; the tests run once, when an authorized merge takes
-  the pull request out of draft, as the GitHub rule's **Branches and Pull Requests** says. The
-  local checks above are what stand between a push and that one hosted run.
+- **Pull requests stay draft until the authorized merge gate readies them**, so these pushes may
+  start no test jobs. Readiness can enqueue duplicate hosted jobs without changing the head;
+  `merge-gate` decides whether completed exact-head evidence is equivalent before it waits for
+  fresh coverage. The local checks above are what stand between a push and hosted validation.
 - **The order is change, checks, push, then the slow verification**: a browser walkthrough, a full
   or end-to-end suite, a run against a service without the change, root-causing a failure seen
   along the way — anything slow or needing a running stack. What it finds goes out as fix pushes, each once its checks pass.
@@ -750,7 +756,7 @@ names what it uses that only the awaited result will supply; absent that depende
 **Priority**, it starts now: coming later in the plan, belonging to the same feature, or consuming a shape already agreed
 with the awaited work, such as a planned contract, is not such a thing, so build against that shape.
 When the awaited work is a building worker, another edit starts only in an independently owned
-scope with separate files and resources, under `subagent-selection`'s **Dispatch**; otherwise do
+scope with separate files and resources, under `subagent-matrix`'s **Dispatch**; otherwise do
 read-only verification, review or question preparation while it runs.
 A status report is not a stopping point. When every remaining item depends on an awaited result,
 apply the global rules' **Tools and environments** pending-result boundary: keep the available
@@ -833,7 +839,8 @@ Two streams run side by side from here: the guidance stream and the source strea
 4. Send step 3's message; the pull request stays draft. Only when **Task Authorization** finds
    the merge authorized, invoke `merge-gate` with the accepted head and, as its fix rule, the
    **Pre-Push Gate** with each fix folded into its commit through `rewrite-git-history`'s fixup
-   route. It readies the pull request, which starts its test jobs once, fixes what they report and
+   route. It readies the pull request, inventories its exact-head hosted coverage, obtains fresh
+   results only where no equivalent terminal coverage exists, fixes what relevant checks report and
    merges; when it returns, send one line with the result it read: the merge, or the gate that
    holds it.
 

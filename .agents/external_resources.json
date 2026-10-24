@@ -19,6 +19,22 @@
     },
     {
       "kind": "skill",
+      "name": "brag",
+      "repo": "latent-spaces/brag",
+      "skill": "brag",
+      "category": "media",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "brag-slim",
+      "repo": "latent-spaces/brag",
+      "skill": "brag-slim",
+      "category": "media",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
       "name": "clerk-nextjs-patterns",
       "repo": "clerk/skills",
       "skill": "clerk-nextjs-patterns",

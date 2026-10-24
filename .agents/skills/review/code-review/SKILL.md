@@ -28,12 +28,13 @@ fixed values in that type. A receipt without the conditional list is incomplete 
 
 ## Dependencies
 
-- `subagent-selection` — return model capabilities for explicit reviewer dispatch.
+- `subagent-matrix` — return model capabilities for explicit reviewer dispatch.
 - `code-simplify` — its `references/rubric.md` is the complete simplification rubric for that review lens.
 - `pre-production` — supply the repository's target-contract and staging-data policy.
 - `security-audit` — its `references/rubric.md` defines an exploitable finding, its precedents and its remedy, and its attack-class catalogue supplies the Security lens. The review borrows both and never the audit workflow.
 - `acceptance-gate` — define the intent statement and gate the fixes the change did not itself
   introduce.
+- `agent-lock` — protect local snapshot capture with the exact checkout key.
 
 ## Invocation
 
@@ -87,7 +88,7 @@ State these verbatim to every subagent launched:
 
 ## Subagent selection
 
-Invoke `subagent-selection` and choose its **standard** capability level for every reviewer,
+Invoke `subagent-matrix` and choose its **standard** capability level for every reviewer,
 validator, and refuter. The `fast`, `standard`, and `deep` labels elsewhere describe assignment
 depth, not model capability levels: mechanical lookup, contextual review, and adversarial
 investigation respectively.
@@ -98,13 +99,14 @@ Use the dependency's explicit dispatch instructions. Record each launched review
 exact dispatch identifier, assignment state and host receipt in the review evidence. If the standard capability
 level is unavailable, report the limitation; do not silently substitute another tier, model version, or the
 orchestrator's model. Every lens, validator and refuter this skill hands to a subagent is routed as
-`subagent-selection`'s **Dispatch** section directs.
+`subagent-matrix`'s **Dispatch** section directs.
 
 ## Step 1 — Resolve the target
 
 Make a todo list first.
 
-When `<target>` is given — a PR number, PR URL, `owner/repo#N`, `owner/repo/pull/N`, or a git ref range — review exactly that and mutate nothing. Never substitute a different PR.
+When `<target>` is given — a PR number, PR URL, `owner/repo#N`, `owner/repo/pull/N`, a git ref range, or an immutable local `targetSnapshot` — review exactly that. Never substitute a different PR. An explicit target remains immutable for review; when authorized fix mode finds a defect, writes are limited to the verified writable checkout of that exact PR head branch or local snapshot route.
+For an explicit local `targetSnapshot`, resolve its ledger entry and durable private artifact before any target derivation, context read, lens dispatch, or fix. Verify its route, repository, full identity, and digests, then materialize its cells in a fresh pristine task-owned checkout; a missing or invalid artifact is an incomplete retrieval, never permission to use the ambient checkout.
 
 Otherwise work from the current branch. Detect the repository, the remote default branch, the current branch, the worktree state, and any open PR whose head branch is exactly the current branch.
 
@@ -120,14 +122,19 @@ What happens next turns on whether the branch already carries commits of its own
 
 Then open a **draft** PR against the remote default branch when no open PR already has this branch as its head. Committing the first change above is what makes this always possible: a branch reaches this point with at least one commit, so there is never a state where a review runs with no PR behind it. If there is genuinely nothing to review — no commits and no uncommitted changes — stop before any of this.
 
-The review target is the complete `merge-base(default, HEAD)..HEAD` diff plus any uncommitted intended changes — every commit on the branch, not only the latest push. If that is empty, stop and report there is nothing to review. Record the PR number, base branch, head branch, and full head SHA, or the ref range.
+The review target is the complete `merge-base(default, HEAD)..HEAD` diff plus any uncommitted intended changes — every commit on the branch, not only the latest push. If that is empty, stop and report there is nothing to review. Record the PR number, base branch, head branch, and full head SHA, or the ref range. Before dispatching any lens or validator, resolve an explicit pull request's remote head and base as authoritative and materialize that exact commit in a read-only checkout or immutable remote tree; an unrelated local checkout does not block that review. In fix mode, also resolve and verify a task-owned, clean writable checkout of that PR head and branch before applying corrections; its branch, HEAD, tree, and tracked remote must equal the resolved PR, and create one when none qualifies. Then freeze an immutable `targetSnapshot` containing its route, merge base and candidate head/tree. A PR snapshot also records its resolved base ref and exact base SHA. An explicit-PR snapshot contains only that resolved remote material. For a local-diff snapshot, use `session-ledger`'s **Snapshot Evidence** protocol. This step supplies only the target route, intended scope, and verified task-owned checkout to that protocol; all capture, secret, lock, artifact, and rehydration mechanics belong to `session-ledger`.
 
 In every review round, give each dispatched reviewer and validator the merge-base SHA, current head
 SHA, complete pull-request diff, and complete changed-file list. When a previous reviewed head
 exists, also give the diff from that head to the current head so recent fixes receive focused
 attention. That incremental diff supplements the full pull-request target; never substitute the
 latest commit or fix diff for it. The one exception is a delta `review-pass` delegates: that delta is
-the review target, and the complete pull-request diff is the context its reviewers read.
+the review target, and the complete pull-request diff is the context its reviewers read. Keep that
+complete context distinct from each lens's analysis slice: the exact changed hunks, files, and
+operations it evaluates, plus every supporting input whose semantics it uses. A reviewer may read
+context without adding it to its analysis slice, but material it evaluates, uses as evidence, or
+relies on for a conclusion belongs in that slice. Record both manifests so a later pass can retain a
+receipt only when its actual analysis remains valid.
 
 Classify whether the target is non-runtime before choosing validation. A target is non-runtime when its complete diff does not change executable source, package or dependency definitions, tests, runtime configuration, CI workflows, generated runtime artifacts, or another contract that changes executed behavior. This is semantic rather than path-based: agent instructions, documentation, policies, static metadata, and non-executable configuration can live anywhere. Validate a non-runtime target with the checks appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests or query or wait for CI.
 
@@ -224,11 +231,35 @@ Its coverage receipt names the evidence for each constraint and the counterexamp
 tests mirroring an incorrect configuration do not establish the intended boundary. Reject a clean
 receipt that omits this comparison or substitutes the author's design claim for an accepted user
 requirement.
-From `high` upward, each reviewer returns a coverage receipt with its lens, the reviewed head SHA, the reviewed changed-file list, the exact rule and rubric inputs it used, its completion status, and a flat list of findings. Each finding carries path, line, anchor (`RIGHT` for added or current changed lines, `LEFT` for removed or base changed lines, or `OUTSIDE_DIFF` for an exact current line with no faithful diff anchor), a concrete trigger, and its reasoning.
+Every lens and validator whose conclusion might be retained records the reviewed head and merge-base
+identities, a target-diff identity covering intended committed, staged, unstaged, and untracked
+content, an analysis-slice manifest, and a supporting-input manifest. Each slice and input entry
+carries an immutable locator and canonical content identity or digest, so a later pass can compare
+the actual bytes it reviewed even when the target contained uncommitted changes.
+
+From `high` upward, each reviewer returns a coverage receipt with its lens and assigned concern, the reviewed head SHA,
+the complete changed-file list it received as context, its analysis-slice and supporting-input
+manifests, the exact rule and rubric inputs it used, its completion status, and a flat list of
+findings. Each finding carries path, line, anchor (`RIGHT` for added or current changed lines,
+`LEFT` for removed or base changed lines, or `OUTSIDE_DIFF` for an exact current line with no
+faithful diff anchor), a concrete trigger, and its reasoning.
 
 For `ultra`, deduplicate each round against every finding seen so far, not only against confirmed ones, or rejected findings resurface every round and the loop never converges.
 
-If the user gives a new task while reviewers are running, compare the complete reviewed inputs: the target diff and every rule, rubric, dependency, generated contract, configuration, workflow, and document whose semantics a lens used. A changed target diff invalidates every receipt that covered the changed material. A changed supporting input invalidates each lens whose analysis depends on it, even when no source file changed. Interrupt and rerun only the invalidated lenses after the new task completes; retain receipts whose target material and inputs are byte-identical.
+If the user gives a new task while reviewers are running, rebuild the complete context inventory,
+then compare each receipt's analysis slice and every rule, rubric, dependency, generated contract,
+configuration, workflow, and document input whose semantics that lens used. A changed target diff
+invalidates a receipt only when it intersects that lens's analysis slice. A changed supporting input
+invalidates each lens whose analysis depends on it, even when no source file changed. A changed
+complete-context manifest alone does not invalidate a receipt, but a receipt cannot call material
+context-only when it evaluated, used as evidence, or relied on it. Interrupt and rerun only the
+invalidated lenses after the new task completes; retain only receipts with byte-identical analysis
+slices and supporting inputs. Build a coverage map keyed by every required lens and concern over the
+current target snapshot before reporting clean: each applicable lens's slices must cover its target
+material, and high review keeps a frozen concern-by-operation matrix for distinct Bugs concerns.
+Every applicable concern covers each new operation or records an explicit non-applicability disposition.
+Dispatch each missing applicable lens and concern only for material the map leaves uncovered; never carry a receipt forward as a
+substitute for coverage of a newly added hunk, file, or operation.
 
 Do not classify validity by file extension or category. A lock file can change executed code, a workflow can change the gate, a rule can create a new violation, and a skill can change a lens rubric. Conversely, an unrelated edit outside the target and its reviewed inputs does not invalidate anything. Record the compared inputs and the receipt decision so a resumed review can prove why coverage still stands.
 
@@ -236,10 +267,13 @@ Do not classify validity by file extension or category. A lock file can change e
 
 Deduplicate findings describing the same underlying issue, then validate each one against the diff as `references/rubric.md` — Validation directs: validators are told to refute, every finding resolves to CONFIRMED or refuted, the rubric lists what is dropped outright, and the one undecidable case — intent absent from the supplied instructions, accepted decisions and repository guidance — goes to the user in the shape step 8 uses for an ambiguous fix.
 
-Require each validator to state the full pull-request range it inspected and, on a later round, the
-incremental range it checked for the latest fixes. Reject a validation based only on the latest
-commit, even if the finding sits in that commit; rerun it against the complete target Step 1
-resolves before using its verdict.
+Require each validator to state the complete resolved target it inspected: the full pull-request range
+for PR targets, immutable range for ref targets, or snapshot identity with complete target-diff and
+entry identities for local targets; on a later round, also state the incremental range it checked for
+the latest fixes. Its retainable receipt carries the same target-diff
+identity and analysis-slice and supporting-input manifests, keyed to the findings it refuted or
+confirmed. Reject a validation based only on the latest commit, even if the finding sits in that
+commit; rerun it against the complete target Step 1 resolves before using its verdict.
 
 ## Step 5 — Rate and rank
 
@@ -249,9 +283,27 @@ Rank most severe first and report at most 32 findings.
 
 ## Step 6 — Re-gate before reporting
 
-Re-fetch the target head and rebuild the complete reviewed-input inventory. If either differs from the baseline, apply the invalidation rule from Step 3: discard and rerun every receipt whose target material or supporting inputs changed, and retain only receipts proven byte-identical in both respects. Report the head and inputs actually reviewed. Never report findings gathered against one target or rubric as though they apply to another. For a PR target, repeat the Step 1 eligibility check.
+For PR and ref targets, re-fetch the target head and rebuild the complete reviewed-input inventory,
+including the resolved base ref, base SHA, and merge base recorded in the active snapshot.
+For a local snapshot, reload its ledger-recorded durable private artifact and rehydrate it into a
+fresh pristine task-owned checkout before verifying its full identity in the task-owned checkout — route, repository, merge base, candidate head/tree,
+target-patch digest, intended-selection, layered entry manifest, and artifact digest — then persist,
+read back, and compare a replacement local snapshot. If any identity differs from the baseline, freeze
+a replacement `targetSnapshot`. When target material changed, invalidate only
+results whose analysis slices intersect changed material; supporting-input-only changes invalidate
+all dependent lens and validator receipts. Rebuild coverage and retirement state from retained
+attested receipts plus fresh work against the replacement. Retain an earlier-head receipt only after
+recording a continuity attestation that identifies its source
+receipt and original head, the current head and target-diff identity, recomputed slice/input
+identities, and proof that no changed material intersects the slice and every supporting input is
+identical. A changed context manifest alone is retained only when the attestation proves the changed
+material was not analyzed or relied on. Missing, incomparable, or changed identities require a
+rerun. Rebuild the coverage map against the re-gated snapshot and dispatch the applicable fresh
+lens for every uncovered target entry before reporting clean. Report the head and inputs actually
+reviewed. Never report findings gathered against one target or rubric as though they apply to
+another. For a PR target, repeat the Step 1 eligibility check.
 
-Before reporting a clean result at `high` or above, verify that every launched lens returned a complete, distinct receipt for the baseline head. Reject missing, failed, duplicate, incomplete, or stale receipts and rerun those lenses. A review without complete coverage must never report `No findings.`
+Before reporting a clean result at `high` or above, verify that every required lens and concern key has either a complete distinct receipt for the replacement snapshot or a complete earlier-head receipt with a continuity attestation bound to it. Reject missing, failed, duplicate, incomplete, or stale keys and rerun only those lenses. A review without complete coverage must never report `No findings.`
 
 ## Step 7 — Report
 
@@ -277,7 +329,7 @@ Work findings in severity order:
 4. Escalate only a decision that is genuinely the user's: a change to intended product behavior, or a choice between defensible designs that neither the diff nor the guidance settles. Designs that differ only in how the code is built — where shared behavior lives, which repository owns a helper, which mechanism replaces parallel copies — are ranked by `pre-production` and `code-simplify`: apply the one that leaves the fewest mechanisms and report the choice. A reviewer or validator calling a finding an open decision, or a question for the user, is a claim this step classifies, never the classification. Ask the specific question through the host's question tool and act on the answer. An unanswered question is one of only three routes to reporting a CONFIRMED finding unfixed, and the report must say what was asked.
 5. Size keeps a confirmed finding out of this round only under the size bar in `references/rubric.md` — Fix Mode; a confirmed defect is fixed here whatever its size. A scope the bar admits is recorded through the repository's deferral mechanism so it outlives the review, and the record is named in the report: a finding described only in the report is not deferred, it is dropped. That mechanism's admission gate decides whether the scope may be recorded at all; a refusal naming fix or do means the finding is fixed here, and one naming close is recorded cancelled with its reason and reconsideration criterion.
 
-**Each fix is committed and pushed as its own increment, and that increment's `execute-task` **Pre-Push Gate** verdict is its gate.** A pre-existing defect, an `OUTSIDE_DIFF` anchor, a defect the diff inherits, and anything this round considered deferring are the fixes most likely to take the shape the change is removing, because nothing about them was the change's purpose, and the gate reads each against the intent statement. Resolve each flag under `acceptance-gate`'s **Bounds**, retaining the finding and intent through each changed increment and fresh review. A repeated flag is neither a deferral justification nor permission to leave flagged code standing.
+**Each fix is committed as its own increment. A working-pull-request fix is pushed and its `execute-task` **Pre-Push Gate** verdict is its gate; a local-snapshot fix freezes a replacement local snapshot and continues its local validation and review loop without pushing.** A pre-existing defect, an `OUTSIDE_DIFF` anchor, a defect the diff inherits, and anything this round considered deferring are the fixes most likely to take the shape the change is removing, because nothing about them was the change's purpose, and the gate reads each against the intent statement. Resolve each flag under `acceptance-gate`'s **Bounds**, retaining the finding and intent through each changed increment and fresh review. A repeated flag is neither a deferral justification nor permission to leave flagged code standing.
 
 Preserve the requested behavior and any unrelated worktree changes. Re-review the fixed lines to confirm each correction holds, then re-report with an outcome per finding: `fixed`, `skipped`, or `no_change_needed`.
 
@@ -287,9 +339,9 @@ of its own; check it the same way as any other edit. Where a fix cannot satisfy 
 and a rule, correct the governing rule rather than shipping code that violates it.
 
 After fixing, rescan the affected ownership area and its consumers for the same class of finding,
-then apply the target classification from Step 1. For a non-runtime target, validate only the checks appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests or query or wait for CI. Otherwise, run the relevant tests and report their actual output. Before any local validation, record which local services were already running. Never stop, restart, reconfigure, or claim ownership of a pre-existing service: another agent or user may be using it. When relevant validation requires local services and any were already running, do not run a competing service-managed test locally; push the fix, use the pull request's CI checks as the authoritative validation, and wait through the host's event mechanism until those checks reach a terminal result. If no required service was already running and the repository's normal test command can run without disturbing external state, run it; otherwise use CI and state the local-validation limit. A draft pull request's test jobs do not run, so on a draft state the local-validation limit and leave the hosted result to `merge-gate` once the pull request leaves draft; a draft's skipped run is never validation.
+then apply the target classification from Step 1. For a non-runtime target, validate only the checks appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests or query or wait for CI. Otherwise, record which local services were already running before local validation. Never stop, restart, reconfigure, or claim ownership of a pre-existing service: another agent or user may be using it. When relevant validation requires local services and any were already running, do not run a competing service-managed test locally. A working-pull-request fix uses CI only at its exact pushed head; when no safe native command is available, CI is its fallback and its draft state records the local-validation limit until `merge-gate`. An unpushed local snapshot runs an isolated native check only when it can do so without disturbing external state; otherwise it records the concrete local-validation limit and remains gated or requires an authorized working-pull-request route. It never uses CI for an unpushed snapshot.
 
-Stage only the fix edits — never sweep in unrelated uncommitted work that Step 1 deliberately left alone — and commit on the current feature branch with a conventional commit message, never on the default branch. When the target is a PR, push so its diff stays authoritative. A full re-review is a later phase of the same authorized logical fix review, not a new action-skill invocation: carry forward its receipts and lens-retirement counters, invalidate them against the new reviewed inputs, and rerun the required cohort.
+Stage only the fix edits — never sweep in unrelated uncommitted work that Step 1 deliberately left alone — and commit in the verified writable checkout selected for the target, never on the default branch. Push only when that target has a working pull request; a local-snapshot fix creates a replacement local snapshot and remains unpushed unless an authorized working-pull-request route is established. A full re-review is a later phase of the same authorized logical fix review, not a new action-skill invocation: carry forward its receipts and lens-retirement counters, invalidate them against the new reviewed inputs, and rerun the required cohort.
 
 ## Step 9 — Comment mode
 
@@ -325,7 +377,7 @@ The chat list carries the five most severe findings. Whenever more than five rem
 the session's scratch directory holds every finding in the same shape and is sent with the report.
 The outcome arrow appears only in fix mode. If nothing remains, the list is the single line
 `No findings.` and the closing lines stay. When a lens, validator or refuter was reported as not
-run under `subagent-selection`'s **Dispatch** section, add one line naming it.
+run under `subagent-matrix`'s **Dispatch** section, add one line naming it.
 
 ## Constraints
 

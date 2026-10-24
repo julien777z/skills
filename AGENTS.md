@@ -57,7 +57,7 @@ Canonical guidance lives in `.agents/`.
   navigating, diagnosing, or recording a baseline before anything changed — stays where it was saved
   and is not sent, except as the before half of a pair once its after exists; a capture the user or
   the running skill asked for is sent as it is made, change or not. An agent with no file-sending
-  tool hands each capture to be sent up as `subagent-selection`'s **Dispatch** describes, and the
+  tool hands each capture to be sent up as `subagent-matrix`'s **Dispatch** describes, and the
   agent that delegated to it reads and forwards each one on arrival. A brief that asks a worker for
   captures asks for them this way.
 - A delegated worker's report of an outcome — tests pass, pushed, merged, deployed, fixed — is a
@@ -222,6 +222,15 @@ Canonical guidance lives in `.agents/`.
   not evidence of control. If the bound tab closes, refresh the inventory and apply the same
   relevance and safe-reuse selection within the retained constraints; never fall back to the
   browser's current tab.
+  Verify that the control itself targets the stable tab independently of the foreground selection;
+  an application handle that follows the active tab or window does not preserve the binding. When
+  the binding is lost, refresh the inventory and reapply the retained explicit user constraints,
+  relevance, safe-reuse, and coordination requirements before rebinding an eligible tab. If no
+  eligible tab can be safely reused and a supported tab control can create a replacement that honors
+  every retained constraint, create and bind a task-owned tab in the relevant available parent
+  surface; never create a window. If an explicit constraint cannot be honored, ask the user about
+  that concrete conflict. If the control cannot reach the required page, hold only that operation
+  and continue independent work; never inspect or operate the current tab as a fallback.
 - Classify an awaited result from its observed state before treating it as a blocker. Startup,
   recovery, a queued review or an unanswered request is pending until it has a terminal result;
   current unavailability, a quiet interval or a bounded wait yielding without a result is not
@@ -500,7 +509,10 @@ return records;
 - **Agent configuration that depends on no still-open source pull request continues the open
   agent-configuration pull request for that work, whichever session opened it.** Agent configuration
   is the canonical `.agents` tree — skills, each with its own scripts, assets and templates; rules;
-  and agent definitions; everything else is source. List the repository's open pull requests before
+  and agent definitions. Nonbehavioral text and guidance-reference corrections in agent hooks and
+  installers also follow this workflow. Changes to execution, timing, installation, discovery,
+  permissions or mutation scope remain source work. Everything else is source.
+  List the repository's open pull requests before
   selecting a branch, and create an agent-configuration pull request only when none owns the work.
   Later guidance edits and worker tasks join it. Open another only when the user asks or the first
   has merged. Consolidate a duplicate this session opened onto the selected pull request and close
@@ -566,7 +578,8 @@ return records;
   request once `code-simplify` has run and its findings are resolved and a skill's changed scripts
   pass the checks they own, such as a type check or a test render. One that adds a doctor skill
   waits instead for the user's review together with everything in its batch. A workflow, installer,
-  or repository tooling outside a skill's folder is source work even when it sits under `.agents`.
+  or repository tooling outside a skill's folder is source work when its execution changes, even
+  when it sits under `.agents`.
   When the user asked for the change to be tested, first run the smoke test against the exact
   pull-request head. Check that the complete pull request remains confined to this agent
   configuration before using this exception.
@@ -596,18 +609,13 @@ return records;
 
 ### After Agent Sync
 
-- **The refresh runs before the next work, never on the merge alone.** After a pull request that
-  changes agent configuration merges and its default-branch Agent Sync run finishes, the refresh
-  below waits for the session's next work: a remaining step of an active task, a follow-up, or the
-  user's next request. The merge's own delivery is not that work: the Agent Sync poll, the
-  merged-text read-back, the generated-output check and the merge's report. The refresh runs
-  before that next work reads any skill or rule.
-  A merge that is the session's last work ends with no refresh, and its report reads `refresh:
-  deferred to the next request`. The next request, in this session or a later one, runs the refresh
-  first unless the installed copy already carries the merge, as one a cloud session installs at
-  start with no refresh overlay does.
+- **Refresh immediately after Agent Sync succeeds.** After a pull request that changes agent
+  configuration merges and its default-branch Agent Sync run succeeds, complete the refresh below
+  and verify the installed links before reporting delivery complete. The refresh is part of the
+  merge's delivery, including when the merge is the session's final work. Report the installed
+  source and commit, or the concrete blocker preventing refresh.
 - Select the refresh route before checking local changes. When the repository supplies the installed
-  shared skills, invoke `reconcile-skills`; it keeps pending agent-configuration changes in effect,
+  shared skills, invoke `update-skills`; it keeps pending agent-configuration changes in effect,
   dirty checkouts and open pull requests alike. The checkout-only restriction below does not apply
   to this route. For the skill's first merge, read it from the merged commit before invoking it. A
   session follows the copy it loaded until this refresh completes.
