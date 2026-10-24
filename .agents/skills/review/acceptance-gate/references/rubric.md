@@ -197,7 +197,8 @@ the answer is one of four dispositions, decided by the tests below in order. The
 ends the question.
 
 1. **fix** — the item is a confirmed defect. A defect is anything the system does that a reader would
-   call broken. Wrong output, a lost write, a lost notification, a crash and an exhausted budget are
+   call broken, and the system includes the repository's tooling: its tests, fixtures, build, setup
+   and CI. Wrong output, a lost write, a lost notification, a crash and an exhausted budget are
    its familiar shapes, not its boundary. Work the system cannot finish in useful time, a resource
    that grows with the data with nothing to bound it, a stored value nothing limits, work a restart
    throws away where a sibling phase keeps its place, and a job that only advances because a

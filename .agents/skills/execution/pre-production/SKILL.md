@@ -78,9 +78,12 @@ with an obsolete owned contract or revision.
   change — in a file it opened, a check it ran, a capture it read — is fixed. A file opened or edited
   only to make such an incidental fix is never itself a source of more incidental cleanup: what else
   it holds is listed, not chased.
-- **A defect the work notices is always fixed, wherever it lives.** Anything the product does that a
-  reader would call broken — an image that never loads, a wrong value, a state shown in the
-  wrong place, a control that does nothing — is fixed in the change in flight, outside both the hop
+- **A defect the work notices is always fixed, wherever it lives.** A defect is what
+  `acceptance-gate`'s rubric calls one, anything the system does that a reader would call broken,
+  and the system includes the repository's own tooling as much as the product: an image that never
+  loads, a wrong value, a state shown in the wrong place, a control that does nothing, a test suite
+  that fails in a fresh checkout, a fixture that builds data the code would never hold, a setup
+  step or documented command that errors. It is fixed in the change in flight, outside both the hop
   limit and the size budget below. Sitting in a shared component, an owned library or another owned
   repository the pull request does not otherwise touch is no reason to leave it: the fix goes to that
   repository's pull request for this work. It is never listed as noticed, offered or deferred.

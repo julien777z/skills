@@ -577,7 +577,10 @@ bug or a passing formatter does not satisfy this spacing check.
 - **Delegated edits run at this cadence.** A brief handing a worker edits states it, names the
   branch the worker pushes to — the branch of the pull request the work continues, under **Pull
   Requests** — and names the exact files to change, under `subagent-matrix`'s **Dispatch**. The
-  worker pushes each step once its checks pass and reports the branch and head. The delegating
+  worker pushes each step once its checks pass and reports the branch and head. The brief has the
+  worker fix every defect it meets, in the product or the repository's tooling, as `pre-production`
+  defines one, and report as left alone only cleanup past the size budget; a brief that only asks
+  what was left alone invites a defect into that list. The delegating
   agent, which holds the intent statement, reads that head under **Reported Outcomes** and, once
   the worker's task is finished, runs the step gates **Ongoing Simplification** sets over that
   task's diff, returning what they flag as fix steps before any dependent work starts. The worker ends with nothing uncommitted and
