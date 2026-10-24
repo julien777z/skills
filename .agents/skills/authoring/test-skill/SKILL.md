@@ -11,7 +11,7 @@ a code change is tested: against the case that motivated it, with the change and
 
 ## Dependencies
 
-- `subagent-selection` — return model capabilities for explicit reviewer dispatch.
+- `subagent-matrix` — return model capabilities for explicit reviewer dispatch.
 - `code-simplify` — the pass every skill pull request gets before it merges; this skill runs after it.
 - `session-ledger` — resolve retained private evidence storage and preserve verification inputs and results.
 
@@ -115,7 +115,7 @@ a code change is tested: against the case that motivated it, with the change and
 
 ## Reviewer selection
 
-Invoke `subagent-selection` and request **standard** by default. Only after a host receipt explicitly
+Invoke `subagent-matrix` and request **standard** by default. Only after a host receipt explicitly
 rejects the standard tier's exact identifier as unsupported, select the next permitted lower mapped capability,
 resolve its exact identifier, and launch the actual reader assignment. Advance again only after that candidate
 receives its own explicit unsupported receipt; never move upward or inherit the orchestrator's model. This
@@ -145,7 +145,7 @@ and the assigned worker accepts it, then it is `accepted`; a missing identifier 
 model. Selector resolution retains an explicit unsupported request,
 the exact fallback capability and dispatch identifier when one is permitted, why that fallback was selected,
 and any explicit user override. Record the runtime-identity and runtime-label evidence as
-`subagent-selection`'s Workflow step 3 defines. Follow the selector's dispatch instructions.
+`subagent-matrix`'s Workflow step 3 defines. Follow the selector's dispatch instructions.
 
 ## Output
 

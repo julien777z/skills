@@ -204,7 +204,7 @@ alwaysApply: true
   merge's delivery, including when the merge is the session's final work. Report the installed
   source and commit, or the concrete blocker preventing refresh.
 - Select the refresh route before checking local changes. When the repository supplies the installed
-  shared skills, invoke `reconcile-skills`; it keeps pending agent-configuration changes in effect,
+  shared skills, invoke `update-skills`; it keeps pending agent-configuration changes in effect,
   dirty checkouts and open pull requests alike. The checkout-only restriction below does not apply
   to this route. For the skill's first merge, read it from the merged commit before invoking it. A
   session follows the copy it loaded until this refresh completes.

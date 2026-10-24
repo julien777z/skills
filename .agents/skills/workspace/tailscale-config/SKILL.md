@@ -12,8 +12,6 @@ of that proof; agreement in one never establishes agreement in another.
 
 ## Dependencies
 
-- `coordinate-repositories` — discover and deduplicate the bounded repository collection, preserve
-  unrelated work, and deliver each applicable repository.
 - `edit-skill` — diagnose every encountered Tailscale failure while operational repair continues.
 - `proton-pass` — retrieve only the credential fields a required operation needs without exposing them.
 
@@ -25,8 +23,12 @@ of that proof; agreement in one never establishes agreement in another.
    Tailscale change; a general configuration audit remains owned by `code-slop-doctor`'s
    **Configuration Drift** lens, which runs only when that doctor is directly invoked. Reading a
    deployment procedure supplies its read-only inspection route and never authorizes a rollout.
-2. Invoke `coordinate-repositories` for its bounded discovery and normalized-remote manifest.
-   Inspect every unique repository's current remote configuration before deciding applicability;
+2. Discover Git repositories within the user's authorized collection, accessible sibling roots and
+   worktrees, and previously established task targets. Normalize remotes and deduplicate worktrees
+   into one repository row per remote; do not crawl unrelated locations. Record the affected
+   repository manifest before mutation, preserve unrelated work, and use isolated task worktrees
+   for changes. Inspect every unique repository's current remote default-branch configuration
+   before deciding applicability;
    include consumers beyond the repository where the symptom occurred. Retain multiple execution
    surfaces under one repository row rather than treating duplicate worktrees as consumers.
    Augment that manifest with live deployments, nodes, services, and automated runners reached by

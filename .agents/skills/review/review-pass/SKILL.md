@@ -29,7 +29,7 @@ happens next; this skill never readies, merges or deploys.
 
 ## Dependencies
 
-- `subagent-selection` — select the standard tier for this workflow's own sub-agents.
+- `subagent-matrix` — select the standard tier for this workflow's own sub-agents.
 - `code-simplify` — run the complete simplification and fix pass before any review, routed as
   **Simplification Gate** says.
 - `code-review` — run the complete review and fix workflow, delegated by this skill.
@@ -43,7 +43,7 @@ happens next; this skill never readies, merges or deploys.
   dispatch receipts.
 - `agent-lock` — acquire the exact checkout key around every local snapshot capture and source delivery.
 
-Invoke `subagent-selection` and use its **standard** tier for this workflow's own sub-agents.
+Invoke `subagent-matrix` and use its **standard** tier for this workflow's own sub-agents.
 Delegated skills retain their explicitly selected tiers, subject to the user's model override. Record each
 launched worker's catalogue state, exact dispatch identifier, assignment state and host receipt in the
 task ledger through `session-ledger`. Follow the selector's dispatch and unavailable-model policy.

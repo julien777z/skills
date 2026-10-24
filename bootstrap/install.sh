@@ -208,7 +208,7 @@ fi
 overlay_root="$(newest_overlay "$REPO_ROOT")"
 
 if [ -n "$overlay_root" ]; then
-  echo "Using the refresh overlay $overlay_root; reconcile-skills rebuilds it from the latest default branch."
+  echo "Using the refresh overlay $overlay_root; update-skills rebuilds it from the latest default branch."
   REPO_ROOT="$overlay_root"
 fi
 
