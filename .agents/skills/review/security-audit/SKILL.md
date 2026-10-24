@@ -15,7 +15,7 @@ the rubric whole before any of them and apply it throughout.
 
 ## Dependencies
 
-- `subagent-selection` — route every agent a level names through a subagent of the running session.
+- `subagent-matrix` — route every agent a level names through a subagent of the running session.
 
 ## While Writing Code
 
@@ -66,9 +66,9 @@ fallback was used.
 
 At `low` every phase runs in process. From `medium` upward, launch the agents each phase names in
 parallel; capacity limits force batching, never omission and never an undeclared local skim. For each named
-agent, invoke `subagent-selection` at its standard capability level, launch the exact resolved identifier, and
+agent, invoke `subagent-matrix` at its standard capability level, launch the exact resolved identifier, and
 retain catalogue state, identifier, assignment state and host receipt in the audit evidence. Each agent a level
-names is launched as `subagent-selection`'s **Dispatch** section directs.
+names is launched as `subagent-matrix`'s **Dispatch** section directs.
 
 **The rubric is the same at every level; only the cohort shrinks.** A `low` finding is held to
 exactly the bar in `references/rubric.md` — exploitable, with a concrete attack — because a thinner

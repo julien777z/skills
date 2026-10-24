@@ -22,7 +22,7 @@
       "name": "brag",
       "repo": "latent-spaces/brag",
       "skill": "brag",
-      "category": "workspace",
+      "category": "media",
       "update_on_sync": true
     },
     {
@@ -30,7 +30,7 @@
       "name": "brag-slim",
       "repo": "latent-spaces/brag",
       "skill": "brag-slim",
-      "category": "workspace",
+      "category": "media",
       "update_on_sync": true
     },
     {

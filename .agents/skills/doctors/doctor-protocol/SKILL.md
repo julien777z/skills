@@ -11,7 +11,7 @@ run; each doctor owns only its domain.
 
 ## Dependencies
 
-- `subagent-selection` — route every reviewer, final reviewer and implementation worker through a
+- `subagent-matrix` — route every reviewer, final reviewer and implementation worker through a
   subagent of the running session.
 - `execute-task` — present the validated remediation plan through its **Plan** and require explicit
   approval before editing, then implement it under its **Execution**.
@@ -73,7 +73,7 @@ measurement that cannot be taken is recorded as unmeasured with the reason.
 
 ## Delegate The Audit
 
-Use multiple read-only subagents for every run. Invoke `subagent-selection` at its standard capability level
+Use multiple read-only subagents for every run. Invoke `subagent-matrix` at its standard capability level
 for each reviewer, launch the exact resolved identifier, and retain catalogue state, identifier, assignment state
 and host receipt in the unified ledger. The parent owns that ledger.
 
@@ -154,9 +154,9 @@ never the absence of a retired implementation.
 ## Implement In Waves
 
 After explicit plan approval, workers implement the complete approved plan side by side. Invoke
-`subagent-selection` at the capability level each implementation role requires, launch each exact resolved
+`subagent-matrix` at the capability level each implementation role requires, launch each exact resolved
 identifier, and retain catalogue state, identifier, assignment state and host receipt in the ledger under
-`subagent-selection`'s **Dispatch**. The parent keeps the ledger, the plan's order, every judgement over the
+`subagent-matrix`'s **Dispatch**. The parent keeps the ledger, the plan's order, every judgement over the
 combined result, and the full suite and every check that needs a shared resource; the edits fan out.
 
 - **A wave is the groups that can run at once:** groups whose files do not overlap and none of which
@@ -203,7 +203,7 @@ configured rather than inventing one.
 
 ## Review The Result
 
-Launch at least two independent read-only final reviewers. Invoke `subagent-selection` at its standard
+Launch at least two independent read-only final reviewers. Invoke `subagent-matrix` at its standard
 capability level for each, launch the exact resolved identifier, and retain catalogue state, identifier,
 assignment state and host receipt in the unified ledger:
 

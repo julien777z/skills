@@ -63,7 +63,7 @@ During A Task** for the edit's timing.
 - `code-simplify` — the pass over the guidance itself before it merges.
 - `acceptance-gate` — the diff question over the `.agents` change once it reads clean.
 - `test-skill` — the proof that every behavior-changing guidance edit changes what a reader does before it merges.
-- `subagent-selection` — the model capability level for live verification chats.
+- `subagent-matrix` — the model capability level for live verification chats.
 - `review-pass` — the review of the guidance pull request **Guidance Delivery** opens.
 - `merge-gate` — the verified squash merge of the pull request step 7 clears.
 - `session-ledger` — retain observed issues, reproduction scenarios and pending guidance delivery across the active task.
@@ -273,7 +273,7 @@ user's review of the source pull request overlaps it.
      An agent definition that a shared skill runs on goes with that skill; every other agent, and
      every rule, is repository-owned.
    - A shared target is edited in the skills repository's checkout — the one the user-level link
-     resolves to, or the main checkout behind it when the link resolves into `reconcile-skills`'
+     resolves to, or the main checkout behind it when the link resolves into `update-skills`'
      overlay worktree, or, when the session has no editing checkout, a writable checkout attached to
      or cloned into the session — on a branch and pull request in that repository, never
      through the link's path from another repository's branch. A cloud setup clone installed
@@ -584,7 +584,7 @@ user's review of the source pull request overlaps it.
 
 ## Manual verification
 
-When skill behavior needs a live agent chat, use `subagent-selection` to choose the least-capable
+When skill behavior needs a live agent chat, use `subagent-matrix` to choose the least-capable
 sufficient capability and resolve its exact host dispatch identifier. Select that identifier in the chat UI and
 record catalogue state, dispatch identifier, assignment state and receipt, tested branch, exact commit, session
 type, and observed result separately. A catalogue-hidden candidate remains dispatch-required until the actual

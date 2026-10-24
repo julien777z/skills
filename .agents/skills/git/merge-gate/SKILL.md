@@ -27,7 +27,7 @@ handling after an agent-configuration change.
 
 - `merge-conflict` — resolve every base incorporation this skill performs.
 - `pre-production` — the encountered-issue policy a failed check falls under.
-- `reconcile-skills` — refresh the installed shared guidance after successful Agent Sync when the
+- `update-skills` — refresh the installed shared guidance after successful Agent Sync when the
   GitHub rules select that route.
 
 ## Inputs
