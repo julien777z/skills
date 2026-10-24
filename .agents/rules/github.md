@@ -207,6 +207,9 @@ alwaysApply: true
   and verify the installed links before reporting delivery complete. The refresh is part of the
   merge's delivery, including when the merge is the session's final work. Report the installed
   source and commit, or the concrete blocker preventing refresh.
+- The shared SessionStart hook repairs installation links on startup and resume after local pulls;
+  it does not fetch remote updates or rebuild pending overlays. Use the refresh below when those
+  operations are required.
 - Select the refresh route before checking local changes. When the repository supplies the installed
   shared skills, invoke `update-skills`; it keeps pending agent-configuration changes in effect,
   dirty checkouts and open pull requests alike. The checkout-only restriction below does not apply
