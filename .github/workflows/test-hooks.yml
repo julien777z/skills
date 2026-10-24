@@ -1,0 +1,17 @@
+name: Test Hooks
+
+on:
+  pull_request:
+    paths:
+      - ".agents/hooks/**"
+      - "tests/hooks/**"
+      - ".github/workflows/test-hooks.yml"
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  test:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 -m unittest discover -s tests/hooks

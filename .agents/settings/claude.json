@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$HOME/.claude/hooks/ledger_backup_check.py\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
