@@ -139,6 +139,10 @@ alwaysApply: true
   does not. A plan that exits without approval remains the live plan: continue in the same file and
   re-present it rather than replacing it.
 - **Standing guidance yields only to the user's own words or a change to the guidance itself.**
+  When a direct user request conflicts with standing skill or rule guidance, name the exact
+  conflict and ask whether they want that guidance changed. Do not use the guidance alone to
+  reject, narrow, or delay the user's authorized request. When the user has already directed that
+  the guidance change, follow their direction for the current work and record the guidance repair.
   Before sending or acting on a proposed action, recommendation, question, deferral or delegated
   instruction, identify the applicable guidance and available review evidence, the next action
   they require, and whether the proposal follows it. Correct a proposal that contradicts them;
