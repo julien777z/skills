@@ -568,10 +568,10 @@ bug or a passing formatter does not satisfy this spacing check.
   question over that task's diff, returning what they flag as fix steps for the next worker. The worker ends with nothing uncommitted and
   nothing unpushed, never amends or rebases a pushed commit, and its report names the branch and
   head.
-- **Pull requests stay draft until they merge**, so these pushes start no test jobs, as the
-  GitHub rule's **Workflows** section sets up; the tests run once, when an authorized merge takes
-  the pull request out of draft, as the GitHub rule's **Branches and Pull Requests** says. The
-  local checks above are what stand between a push and that one hosted run.
+- **Pull requests stay draft until the authorized merge gate readies them**, so these pushes may
+  start no test jobs. Readiness can enqueue duplicate hosted jobs without changing the head;
+  `merge-gate` decides whether completed exact-head evidence is equivalent before it waits for
+  fresh coverage. The local checks above are what stand between a push and hosted validation.
 - **The order is change, checks, push, then the slow verification**: a browser walkthrough, a full
   or end-to-end suite, a run against a service without the change, root-causing a failure seen
   along the way — anything slow or needing a running stack. What it finds goes out as fix pushes, each once its checks pass.
@@ -817,7 +817,8 @@ Two streams run side by side from here: the guidance stream and the source strea
 4. Send step 3's message; the pull request stays draft. Only when **Task Authorization** finds
    the merge authorized, invoke `merge-gate` with the accepted head and, as its fix rule, the
    **Pre-Push Gate** with each fix folded into its commit through `rewrite-git-history`'s fixup
-   route. It readies the pull request, which starts its test jobs once, fixes what they report and
+   route. It readies the pull request, inventories its exact-head hosted coverage, obtains fresh
+   results only where no equivalent terminal coverage exists, fixes what relevant checks report and
    merges; when it returns, send one line with the result it read: the merge, or the gate that
    holds it.
 
