@@ -109,6 +109,11 @@ and name the exact missing input and investigation for any remaining choice. Ret
 and deciding evidence in the existing verdict fields; a checklist or stage inventory alone is
 incomplete.
 
+**Trace changed state-like values during that comparison.** Apply the rubric's **State Meaning**
+criteria to their writers, transformations and consumers, including values whose names did not
+change. Include the authority, lifetime and purpose evidence in `Also read`, and semantic collisions
+in the flag bullets; missing evidence prevents a clean verdict.
+
 **Then run five greps.** Grep the diff's added lines for five shapes and list every hit as a finding
 ahead of all others, with the remedy the rubric names:
 

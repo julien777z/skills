@@ -128,6 +128,26 @@ approval to retain a broad change settles retention, not whether its remaining d
 Do not reject work solely for file count, personal taste, or a large required repair, and do not
 waive correctness or security findings because the overall change appears simple.
 
+## State Meaning
+
+For every state, status, verdict, capability or similar value a change introduces, changes or
+reuses to make a decision, trace its authoritative source, what question it answers, and the
+writers, transformations and consumers that give it that meaning. Establish its lifetime: when it
+is valid, what invalidates it, and whether it is transient, cached or persisted. Inspect the actual
+flow even when a field's name or type is unchanged; equal words or current values do not establish
+equal authority, purpose or lifetime.
+
+Flag a name or shared type that makes distinct questions look interchangeable, or a consumer that
+uses one answer as another without an owning contract establishing that derivation. This applies
+across and within layers: an observation, a parsed result, a historical record, permission to act
+and presentation state can each answer a different question. Distinct meanings need distinct names
+at the declarations and their consumers; qualify them by the question or authority they represent,
+not merely by location. Separate containing classes or independent consumers do not excuse a
+repeated state term that answers different questions. Renaming alone does not fix a consumer that
+still substitutes one for another. Conversely, preserve one owner and name for one meaning rather
+than splitting genuine aliases by layer. Show the deciding source and lifetime evidence in the verdict; comments, matching
+sample values and the author's intent cannot substitute for it.
+
 ## Exploitable Findings
 
 Every question that reads a diff — diff, final acceptance, base incorporation — also reads it for

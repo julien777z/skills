@@ -293,10 +293,13 @@ Apply the baseline prompt above, plus these explicit review rules:
      enum's member names, search for a mapping's key set, for a model's discriminator. A duplicate
      arrives under a different name, with different values, in a different package, and a search by
      name never finds it.
-   - Two enums with the same member names are one enum. The second one's values — a display label, a
-     wire code, a file suffix — are a property on the first, never a sibling declaration and never a
-     second enum relocated to the shared package. A mapping keyed by a set an enum already declares
-     is the same case: its values belong on that enum's members.
+   - Matching member names are a reuse candidate, not proof of one concept. Establish that the
+     declarations answer the same question and that combining them preserves the authority and
+     lifetime distinctions their writers and consumers require. When they do represent
+     one concept, the second one's values — a display label, a wire code, a file suffix — are a
+     property on the first, never a sibling declaration or a second enum relocated to the shared
+     package. A mapping keyed by a set an enum already declares is the same case: its values belong
+     on that enum's members.
    - File a declaration where its consumers meet. One that two services or packages read belongs in
      the package that declares shared shapes, never beside the first consumer that needed it.
    - Report the search with the finding: the existing declaration found, or what was searched and
@@ -597,9 +600,9 @@ Escalate findings when you see:
 - "Temporary" branching that is likely to become permanent debt.
 - Bespoke helpers where the codebase already has a canonical utility for the job.
 - A generic helper with exactly one caller, especially one this diff just created by extraction. One caller is not proof a helper is unnecessary; it is usually proof the sweep stopped at the first site. Search for the rest by the operation it performs, not by its name, and either use it there or fold it back into its single caller.
-- A new enum, constant set, mapping, or model whose members mirror one the repository already
-  declares, however differently it is named and wherever it landed; the fix is a property, method,
-  or widening on the existing declaration, filed where its consumers meet.
+- A new enum, constant set, mapping, or model that duplicates an existing concept under standard 3;
+  the fix is a property, method, or widening on the existing declaration, filed where its consumers
+  meet.
 - A module-level constant, mapping, or handle declared without its type.
 - A models module holding something other than a declaration. For every module under a `models/`
   package the diff touches, list its module-level assignments; each is `__all__`, a type alias or
@@ -729,8 +732,8 @@ Treat these as presumptive blockers unless the author can justify them clearly:
 - the PR adds an abstraction that was never needed, or one whose guarantee is weaker than its name claims
 - the PR adds a module holding one public symbol, or a second one-symbol module beside an existing one,
   outside the exemptions standard 2 names
-- the PR adds a declaration whose members mirror one the repository already declares, or a
-  module-level constant without its type
+- the PR duplicates an existing declaration's concept under standard 3, or adds a module-level
+  constant without its type
 - the PR duplicates an existing helper, repeats a cross-consumer mechanism, or puts logic in the wrong
   layer when there is a clear canonical home
 
