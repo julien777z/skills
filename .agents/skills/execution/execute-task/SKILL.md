@@ -386,13 +386,14 @@ how those issues are handled.
   for work that can change a surface the user has decided on, a simplification or review pass
   included, carries those decisions in the user's words, so the worker keeps them rather than
   undoing them; an item that would undo one goes to the user. The class is any item asking for
-  what a rule rules out: a review finding asking for the catch-all exception handler the language rule bans, a brief telling a worker to
-  skip a check a skill requires before a push, a correction asking for copy the copy rules forbid,
-  one asking for a boat-rental waiver to arrive filled in from the renter's last booking when the
-  forms rule says a form someone attests to starts empty. It also takes in an item adding a stop,
-  a question or an approval the guidance does not call for, such as a brief telling a worker to
-  stop and ask before adding the schema revision a migration skill puts its change in: the guidance
-  settled that step, and the added gate hands the user a question with one answer.
+  what a rule rules out: a review finding asking for the catch-all exception handler the language
+  rule bans, a brief telling a worker to skip a check a skill requires before a push, a correction
+  asking for copy the copy rules forbid, one asking for a boat-rental waiver to arrive filled in
+  from the renter's last booking when the forms rule says a form someone attests to starts empty. It
+  also takes in an item adding a stop, a question or an approval the guidance does not call for,
+  such as a brief telling a worker to stop and ask before adding the schema revision a migration
+  skill puts its change in: the guidance settled that step, and the added gate hands the user a
+  question with one answer.
   - **The agent writing it** rewrites an item a rule forbids into a shape the rule allows, or drops
     it where none exists. One the user asked for in their own words goes out with those words quoted
     and the rule they set aside named; a rule the agent thinks is wrong is put to the user, never
@@ -476,8 +477,7 @@ diff question over that step's diff before the step is recorded or reported done
 step, worker or consumer builds on it; what they flag is fixed within that step. A step that skipped
 its gates is gated before the next step starts, however much has been built on it since. The step
 gates for a step a waiting deploy needs run after its push and report, as **Priority** orders. The
-final
-simplification and acceptance still run once over every change not yet reviewed, inside
+final simplification and acceptance still run once over every change not yet reviewed, inside
 `review-pass` at **Completion**, and neither runs per push. A guidance correction recorded during a
 task follows `edit-skill`'s timing instead.
 

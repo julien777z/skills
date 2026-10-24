@@ -125,29 +125,28 @@ alwaysApply: true
   constraint the user set, and anything touching security, disclosure or authorization. Closing a
   security vulnerability, so the product enforces the access it already intends, is a fix and never
   waits on this question. Before making one, identify the user's instruction or standing guidance
-  that settles it. If neither does, explain the concrete issue, show the concrete alternatives with a recommendation, and ask before
-  building one; a required outcome does not approve an unnamed layout, control, scope or timing
-  chosen to achieve it. **A routine presentation or interaction detail is not a product choice, and
-  is not put to the user.** An alignment, a spacing, a size or tone on the product's existing scale,
-  the placement of a message or control among the product's established positions, the wording of a
-  message the change adds: decide it by what serves the reader and stays consistent with the
-  product, and state the choice and its reason in the report. Ask only where the user has said such
-  a detail is theirs. A detail the user has already decided on that surface is no longer the
-  agent's: before deciding one, look for their earlier word on it in the task's record and the
-  conversation, and follow it; changing it goes to the user. **Text already in the product keeps
-  its words unless it is wrong or the user named it.** Text that is plainly wrong or inconsistent,
-  such as a label stating something untrue, one thing called by two names, or a message that no
-  longer matches what happens, is corrected or left by judgement, and the report says which. Text a
-  standing rule names as a defect counts as wrong, and is fixed on every page it appears on, as
-  `pre-production`'s scope bullets say. A request to reword one text rewords that text alone; any
-  other existing title, label, description or message that is correct but could read better keeps
-  its words, beside it or elsewhere, even when the new wording suggests changing it, and the
-  suggested rewording goes to the user for approval. Do
-  not silently reclassify a condition, reinterpret a rule, or conceal a conflict to make the
-  implementation fit. Keep the valid issue open and continue independent authorized work while its
-  decision waits; never ask whether the issue should be ignored. A choice already settled by the
-  user or guidance needs no repeated question, and routine internal fixes proceed within that
-  choice.
+  that settles it. If neither does, explain the concrete issue, show the concrete alternatives with
+  a recommendation, and ask before building one; a required outcome does not approve an unnamed
+  layout, control, scope or timing chosen to achieve it. **A routine presentation or interaction
+  detail is not a product choice, and is not put to the user.** An alignment, a spacing, a size or
+  tone on the product's existing scale, the placement of a message or control among the product's
+  established positions, the wording of a message the change adds: decide it by what serves the
+  reader and stays consistent with the product, and state the choice and its reason in the report.
+  Ask only where the user has said such a detail is theirs. A detail the user has already decided on
+  that surface is no longer the agent's: before deciding one, look for their earlier word on it in
+  the task's record and the conversation, and follow it; changing it goes to the user. **Text
+  already in the product keeps its words unless it is wrong or the user named it.** Text that is
+  plainly wrong or inconsistent, such as a label stating something untrue, one thing called by two
+  names, or a message that no longer matches what happens, is corrected or left by judgement, and
+  the report says which. Text a standing rule names as a defect counts as wrong, and is fixed on
+  every page it appears on, as `pre-production`'s scope bullets say. A request to reword one text
+  rewords that text alone; any other existing title, label, description or message that is correct
+  but could read better keeps its words, beside it or elsewhere, even when the new wording suggests
+  changing it, and the suggested rewording goes to the user for approval. Do not silently reclassify
+  a condition, reinterpret a rule, or conceal a conflict to make the implementation fit. Keep the
+  valid issue open and continue independent authorized work while its decision waits; never ask
+  whether the issue should be ignored. A choice already settled by the user or guidance needs no
+  repeated question, and routine internal fixes proceed within that choice.
 - Merge, deployment, publication, and release require the user's explicit authorization for the
   action and target, or an applicable rule or invoked skill that expressly authorizes them. A fix
   request, approved plan, or instruction to implement a plan does not itself authorize these

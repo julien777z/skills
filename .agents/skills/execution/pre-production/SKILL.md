@@ -91,14 +91,14 @@ with an obsolete owned contract or revision.
   predates the change, and one another layer is said to stop before that layer is traced on every
   path the attack takes are all fixed in the change in flight, with a test that reproduces the
   attack first where one can exist. A shape that may be exploitable is traced to an attacker or
-  ruled out in the same run. It is always closed in the change with the fix that enforces the
-  access the product already intends; only a change that widens access or changes who the feature
-  serves goes to the user, as `global.md`'s product-choice rule says. Every mitigation within reach
-  is carried in the change, and a remaining step only another party can take, such as rotating a
-  credential they hold, is reported as a gate with its owner and saved next action, as `global.md`'s
-  concrete-gate rule says. It is never put to the user as something to consider or an option,
-  recorded as deferred, left as a hardening note, or answered with a recommendation to run an audit
-  or a doctor later.
+  ruled out in the same run. It is always closed in the change with the fix that enforces the access
+  the product already intends; only a change that widens access or changes who the feature serves
+  goes to the user, as the global rules' **Task execution and authorization** says. Every mitigation
+  within reach is carried in the change, and a remaining step only another party can take, such as
+  rotating a credential they hold, is reported as a gate with its owner and saved next action, as
+  the global rules' **Tools and environments** says. It is never put to the user as something to
+  consider or an option, recorded as deferred, left as a hardening note, or answered with a
+  recommendation to run an audit or a doctor later.
 - **Incidental cleanup has a size budget.** The incidental part of a change — everything the request
   did not ask for that is not a defect — stays about the size of the requested part, or within 150
   changed lines across 10 files when the requested part is smaller. Inside the budget, everything

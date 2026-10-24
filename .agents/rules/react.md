@@ -70,9 +70,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **An app built on a shared UI library writes no styling of its own.** No `className`, no
   class-merging call such as `cn(`, no class string kept in a constant or a style module, no style
   rule or styled component of its own — its stylesheet only loads the library's — and no inline
-  `style` except a value read from saved data, such as a column width the reader dragged and saved. Each
-  page is a tree of the library's components configured by their props and variants, so every page
-  looks standard: a page reads
+  `style` except a value read from saved data, such as a column width the reader dragged and saved.
+  Each page is a tree of the library's components configured by their props and variants, so every
+  page looks standard: a page reads
   `<Section title="Favorites" description="…"><Stack gap="md">…</Stack></Section>`, never a `div`
   spelling out the section's padding and border. A case the library cannot express becomes a prop or
   variant on the shared component that owns it, never a local wrapper, and no shared component takes
@@ -221,20 +221,20 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   and the names of internal states belong in the code. A description says what the field is for and
   what the reader should put in it, in the words they would use themselves.
 - **Every section, every step of a flow and every dialog carries a one-sentence description under
-  its own heading, inside its surface** — two on a flow's first step, as **A flow starts at its first
-  question** below allows — saying what the reader does there, what the section holds, or why the
-  dialog appeared, in terms of what the reader is trying to do: "Choose how you hear about new
+  its own heading, inside its surface** — two on a flow's first step, as **A flow starts at its
+  first question** below allows — saying what the reader does there, what the section holds, or why
+  the dialog appeared, in terms of what the reader is trying to do: "Choose how you hear about new
   activity", "The people who can see and edit this project", "Sharing an album requires a verified
-  email address first." It never narrates the surface's own controls, such as "Pressing
-  Next opens…" or "Click below to…": the button's label already names its action. A
-  heading alone, or a heading with only a badge beside it, is the defect, in every
-  state the surface renders, a loading or failed one included. A shared dialog component makes its
-  description a required prop, so a title-only dialog cannot be written. No sentence floats between
-  the page's top bar and its first section: a page's name sits where the product puts page titles,
-  and whatever a page-level sentence would say belongs to the section it describes.
+  email address first." It never narrates the surface's own controls, such as "Pressing Next opens…"
+  or "Click below to…": the button's label already names its action. A heading alone, or a heading
+  with only a badge beside it, is the defect, in every state the surface renders, a loading or
+  failed one included. A shared dialog component makes its description a required prop, so a
+  title-only dialog cannot be written. No sentence floats between the page's top bar and its first
+  section: a page's name sits where the product puts page titles, and whatever a page-level sentence
+  would say belongs to the section it describes.
 - **Spell out an abbreviation the reader may not know the first time a surface uses it**, with the
-  short form after it, such as "Service Level Agreement (SLA)"; later mentions on that surface use the
-  short form alone.
+  short form after it, such as "Service Level Agreement (SLA)"; later mentions on that surface use
+  the short form alone.
 - Say the one thing the reader needs and stop. On a field, prefer no description to a description
   that repeats the label, narrates the obvious, or hedges, and keep out of any label what the
   product already knows about the reader, such as their own email address in a confirmation label.
@@ -509,11 +509,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   someone else can take, a save with nothing changed, a dialog's Continue after the dialog has said
   what happens next. Apart from the flow-completion toast below, a toast never repeats text the
   dialog or page already shows, and one that claims an outcome which did not happen, such as a
-  notification nobody sent, is the worse defect. A step of a multi-step flow shows
-  none when the reader moves on, since reaching the next step is the feedback; the action that
-  completes the flow shows one, worded as its completion, even where the page it lands on says the
-  same in a banner, which the reader may not see at once. A form's save stays disabled until something
-  in it differs from what was loaded, so a save with nothing changed cannot be made.
+  notification nobody sent, is the worse defect. A step of a multi-step flow shows none when the
+  reader moves on, since reaching the next step is the feedback; the action that completes the flow
+  shows one, worded as its completion, even where the page it lands on says the same in a banner,
+  which the reader may not see at once. A form's save stays disabled until something in it differs
+  from what was loaded, so a save with nothing changed cannot be made.
 - **A banner about the account or workspace, rather than the page, shows only on top-level pages**
   — the home page and each destination the primary navigation lists — never on a page nested below
   one, such as a record's detail, edit or create page or a step of a flow. Storage nearly full, a
@@ -612,11 +612,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   Cancelling a subscription that does not exist, "Mark all read" while nothing is unread, moving an
   item that has nowhere to go: shown disabled among working controls, each offers a press with no
   effect. An action with nothing to act on shows disabled only when no other action in its menu,
-  toolbar or group is available, or when it is a paid control the plan bullet below locks to show
-  what upgrading adds. An action whose prerequisite the reader can still meet stays, disabled,
-  beside available actions, as the bullets here say: a form's submit while required fields are
-  incomplete, Next until its step is complete, Save until something has changed, and an action
-  while it is already running.
+  toolbar or group is available, or when it is a paid control the plan bullet in **Layout And
+  Spacing** locks to show what upgrading adds. An action whose prerequisite the reader can still
+  meet stays, disabled, beside available actions, as the bullets here say: a form's submit while
+  required fields are incomplete, Next until its step is complete, Save until something has changed,
+  and an action while it is already running.
 - **A form the product would refuse in full is never shown.** When every choice it offers would be
   refused, because the feature is off or nothing asked for is allowed, the page shows in its place
   why, and the way forward for this reader, with one action to leave. The server refuses that
@@ -802,7 +802,7 @@ export function SearchInput() {
 ```
 
 - **Render on the server.** A page, and every section of it that shows data, is an async Server Component that loads its data and renders it. A Client Component (`"use client"`) exists only for what the browser has to own — event handlers and input, state and effect hooks, browser-only APIs, a dialog, drag-and-drop, a third-party client widget — takes its data as props, and never fetches it.
-- **Writes are Server Actions** that authenticate their caller and re-render the page when they finish. A client-side data layer for reads — SWR, React Query, a fetching hook, a fallback cache seeded from the server — is the shape this replaces, not a companion to it, and a status that has to update live refreshes the server render on an interval instead of fetching on the client. A read that depends on input an open control holds in its own state — a city search as the reader types, a preview of the choices in a dialog — is a read-only Server Action that control calls, never a route handler it fetches, and it authenticates its caller and authorizes the data it returns, as a write does; input that belongs in the address, such as a list's filters, stays search params the page renders from.
+- **Writes are Server Actions**, and Server Actions authenticate their caller and authorize what they read or change. A write re-renders the page when it finishes. A client-side data layer for reads — SWR, React Query, a fetching hook, a fallback cache seeded from the server — is the shape this replaces, not a companion to it, and a status that has to update live refreshes the server render on an interval instead of fetching on the client. A read that depends on input an open control holds in its own state — a city search as the reader types, a preview of the choices in a dialog — is a read-only Server Action that control calls, never a route handler it fetches; input that belongs in the address, such as a list's filters, stays search params the page renders from.
 - **Expected refusals carry a specific, human-readable message the reader can act on**, worded as
   **Interface Copy** says. Trace generic copy for a known validation or business refusal to its service
   and fix that error contract there, rather than inventing replacement client copy. Expected

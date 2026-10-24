@@ -191,22 +191,22 @@ calls that stay separate issued together rather than in turn; static data shippe
 through its package or generated contract; every caller moved, and each operation left with no
 caller deleted with its client. A batch or merged operation authorizes each item and each returned
 field as the operations it replaces did; where it cannot, those operations stay separate, as Left
-alone says. The use case is timed before and after on the same stack, and a
-merge that makes it wait longer for its first useful content is not the remedy. Two cases go to the
-user for approval, never merged or left alone silently: an operation another use case also calls on
-its own, where the use case may gain a merged operation while the other keeps its own; and a read
-only some runs of the use case need, which a merged operation may still carry. Each request lets the
-user decide without opening the code: the operations it would combine, by method and path or RPC
-name; the proposed operation's method, path, parameters and response fields; every other caller of
-each of those operations, found in the code by page, job or service, with what it reads and
-whether it already shares the use case's read; what would become of each existing operation, kept
-for which caller or deleted; the current counts and timings, and the call count the proposed
-operation would leave; and the run's recommendation. The timings after are measured once the merge
-is approved and made. Left alone: a call a later interaction makes — a tab opened, a page turned, a
-row expanded; reads under different authorization or caching that one response cannot carry, and
-any set of items one operation cannot authorize as the per-item calls did; a slow section kept apart
-so it does not hold a fast one, with the timing showing it; and a third-party provider's
-operations, batched only where the provider offers it.
+alone says. The use case is timed before and after on the same stack, and a merge that makes it wait
+longer for its first useful content is not the remedy. Two cases go to the user for approval, never
+merged or left alone silently: an operation another use case also calls on its own, where the use
+case may gain a merged operation while the other keeps its own; and a read only some runs of the use
+case need, which a merged operation may still carry. Each request lets the user decide without
+opening the code: the operations it would combine, by method and path or RPC name; the proposed
+operation's method, path, parameters and response fields; every other caller of each of those
+operations, found in the code by page, job or service, with what it reads and whether it already
+shares the use case's read; what would become of each existing operation, kept for which caller or
+deleted; the current counts and timings, and the call count the proposed operation would leave; and
+the run's recommendation. The timings after are measured once the merge is approved and made. Left
+alone: a call a later interaction makes — a tab opened, a page turned, a row expanded; reads under
+different authorization or caching that one response cannot carry, and any set of items one
+operation cannot authorize as the per-item calls did; a slow section kept apart so it does not hold
+a fast one, with the timing showing it; and a third-party provider's operations, batched only where
+the provider offers it.
 
 ### Divergent Siblings
 
@@ -303,8 +303,8 @@ case, a new prop or variant on the shared component that owns it — never a loc
 constant or style module in the app; inside the library, the primitive in place of the raw classes,
 and each `className` prop removed with its callers moved onto variants. A finished run brings every
 app's count to zero: a use left standing is an open finding, never a disposition. Left alone: an
-inline style whose values come from saved data, such as a column width the reader dragged; inside the
-library, the classes a primitive is made of and the allowances the React rules' **Components and
+inline style whose values come from saved data, such as a column width the reader dragged; inside
+the library, the classes a primitive is made of and the allowances the React rules' **Components and
 Props** grants there.
 
 ### Reads As Slop
@@ -314,9 +314,10 @@ test is the slop question `acceptance-gate`'s diff review asks first, with the s
 examples rather than the limit: each reason an experienced reviewer would give is a finding with its
 remedy, whether or not a check below or another lens names it. A shape another lens owns is fixed
 under that lens, and an exemption in this skill or a rule that would keep a shape the reviewer calls
-slop is named in the finding and does not keep it. Apply the test to each package whole as well as file by file — its
-file count, its exported names, the depth of its component chains — since a reviewer calls a
-package slop from its shape before opening any file. Every check below makes the test concrete.
+slop is named in the finding and does not keep it. Apply the test to each package whole as well as
+file by file — its file count, its exported names, the depth of its component chains — since a
+reviewer calls a package slop from its shape before opening any file. Every check below makes the
+test concrete.
 
 - **Tangled control flow** — nesting deeper than the repository's lint configuration allows,
   three levels by default; nested loops that a lookup map, a set or one pass replaces; an if/else

@@ -190,11 +190,13 @@ The criteria are `security-audit`'s `references/rubric.md`, and they cut in both
 - **When it arrived does not matter.** An exploitable finding on a surface the diff touches or
   reads, whether the change introduced it, inherited it or sits beside it, is a flag whose remedy
   goes into the change in flight. "Not new in this round" never demotes it to a note.
-- **Severity is likelihood and impact together, and the flag bar is medium.** A targeted exploit with
+- **Severity is likelihood and impact together, and it orders the flags.** A targeted exploit with
   real consequence, a state change an attacker can force, a disclosure of secrets or credentials, a
-  business-logic bypass whose blast radius is real: each is a flag. A finding that defeats an
-  explicit security boundary — an action the system gates behind a role, performed without it — is a
-  flag with the boundary named. Below that bar it is a hardening note. If the concrete damage cannot
+  business-logic bypass whose blast radius is real: each is a flag of medium severity or above. A
+  finding that defeats an explicit security boundary — an action the system gates behind a role,
+  performed without it — is a flag with the boundary named. An exploitable finding below medium is
+  still a flag, and its fix goes into the change in flight, ordered by severity; only the
+  defense-in-depth gap the bullet above defines is a hardening note. If the concrete damage cannot
   be described, the severity is lower than it looks.
 - **The remedy is found in `security-audit`'s order, not written for the sink.** A guarantee the code
   already has and fails to read, then the surface whose deletion closes the finding outright, then a
@@ -214,10 +216,10 @@ try to disprove its own finding. A verdict that raises nothing says the diff's a
 exploitable finding the gate could see. Only a `security-audit` run at a level that fans out, or a
 `security-doctor` run, says anything about the codebase.
 
-So a shape the gate can see but cannot chase to an attacker is not dropped: it is a flag whose remedy
-is the author tracing it to an attacker or ruling it out, and fixing it in the change when it is real.
-That is the gate declining to guess, not the gate finding nothing, and a recommendation to run an
-audit or a doctor later never stands in for it.
+So a shape the gate can see but cannot chase to an attacker is not dropped: it is a flag whose
+remedy is the author tracing it to an attacker or ruling it out, and fixing it in the change when it
+is real. That is the gate declining to guess, not the gate finding nothing, and a recommendation to
+run an audit or a doctor later never stands in for it.
 
 ## The Tests Behind Each Question
 
