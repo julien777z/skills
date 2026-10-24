@@ -65,7 +65,6 @@ an unreadable `settings.json`, are reported before anything changes.
 | `.agents/.auto_generated/` | Provider mirrors the workflow generates on `main`; never edited by hand. |
 | `AGENTS.md` | Repository instructions the workflow generates at the root; never edited by hand. |
 | `bootstrap/install.sh` | Refreshes a cloud setup clone when used there, then links skills, resources, agents, rules, and hooks into user-level roots and registers the hooks with Claude. |
-| `tests/hooks/` | Tests for the hook scripts. |
 
 ## Skills
 
@@ -206,6 +205,4 @@ the acceptance gate, and the smoke test before the pull request merges.
 ```bash
 bootstrap/install.sh                                            # link into this machine's roots
 python3.12 .agents/skills/authoring/edit-skill/scripts/validate_sources.py # mirror with the pinned sync tool
-python3 -m unittest discover -s tests/hooks                     # test the hooks
-bash bootstrap/resources/test_install.sh                        # test the installer
 ```
