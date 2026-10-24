@@ -72,10 +72,10 @@ alwaysApply: true
   an earlier message — "the first three captures", "capture 6", "the screenshots above" — because a
   pile of files sent together leaves the reader matching each one to its item. A question asked
   again in a later message sends its captures again beneath it.
-- **A capture sent to the user shows which screen it is.** The reader cannot ask, so a view leads
+- **A capture sent to the user shows which page it is.** The reader cannot ask, so a view leads
   with a capture at a width where the product's navigation shows the page's place, for the role
-  whose screen it is; a phone-width view or a close-up of the same screen goes beside that one,
-  never alone, since either can belong to several pages. The caption names the screen as the
+  whose page it is; a phone-width view or a close-up of the same page goes beside that one,
+  never alone, since either can belong to several pages. The caption names the page as the
   reader reaches it, such as "the contractor's Tax forms page".
 - A delegated worker's report of an outcome — tests pass, pushed, merged, deployed, fixed — is a
   claim. Check it at its source of truth before relaying it or building on it, and tell the user
@@ -195,7 +195,7 @@ alwaysApply: true
   For a standalone question with no surrounding authorized work, send that content and the question
   as the final message. A question tool may show only its question and option labels; send required
   review content as a file rather than relying on a collapsed preamble, preview or description.
-- **A choice between substantially different versions of a screen shows every option rendered.**
+- **A choice between substantially different versions of a page shows every option rendered.**
   When the options differ in layout, structure or the controls the reader uses — tabs or a
   dropdown, one row or two, a section moved or removed — the question carries, directly beneath
   it, a capture of each option as the product would draw it, built as an uncommitted preview where it does not exist
