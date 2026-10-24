@@ -208,6 +208,10 @@ A source or product follow-up is planned on its own. A canonical guidance correc
   state changes, not when a report is due: approval, a step starting, finishing, blocking or being
   skipped, a follow-up's plan. A resumed session, a handoff and a progress view all read this
   record rather than reconstructing it.
+- **A step that waits on other work records what it waits for**: the gate, merge or result whose
+  outcome lets it start. Every relayed result is checked against those records, and a result that
+  clears one starts the waiting step in that same turn, whichever stream produced it. A report that
+  lists only what is still running has not read the plan.
 - **A step estimated over 30 minutes is recorded with its parts**: bounded pieces of that step's
   work, each with its own estimate in whole minutes, at least 1, together adding up to the step's.
   Mark each part done as it finishes, so recorded progress moves while a long step runs. The plan
@@ -709,7 +713,8 @@ it — the user asking about something else is not the user withdrawing what the
   finishes, mark the displaced work active again in the ledger and
   execute its saved next step without waiting for "continue". A promise to resume is not that
   step, and neither is a report that ends by naming what comes next: a turn that relays a worker's
-  result or finishes a unit starts the next named step before it ends. Completing
+  result or finishes a unit starts the next named step before it ends, and every step that result
+  unblocks, as **Progress Record** records them. Completing
   its own delivery — including a guidance merge and refresh, a diagnostic answer, or a local
   environment repair — does not complete the surrounding task. Report that intermediate result
   while continuing. A held item keeps its saved next action; repair, resolution and waiting follow
