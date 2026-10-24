@@ -69,7 +69,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **An app built on a shared UI library writes no styling of its own.** No `className`, no
   class-merging call such as `cn(`, no class string kept in a constant or a style module, no style
   rule or styled component of its own — its stylesheet only loads the library's — and no inline
-  `style` except a value read from saved data, such as a layout the reader arranged and saved. Each
+  `style` except a value read from saved data, such as a column width the reader dragged and saved. Each
   page is a tree of the library's components configured by their props and variants, so every page
   looks standard: a page reads
   `<Section title="Favorites" description="…"><Stack gap="md">…</Stack></Section>`, never a `div`
@@ -224,8 +224,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   question** below allows — saying what the reader does there, what the section holds, or why the
   dialog appeared, in terms of what the reader is trying to do: "Choose how you hear about new
   activity", "The people who can see and edit this project", "Sharing an album requires a verified
-  email address first." It never narrates the surface's own controls, such as "Selecting
-  Continue takes you to…" or "Click below to…": the button's label already names its action. A
+  email address first." It never narrates the surface's own controls, such as "Pressing
+  Next opens…" or "Click below to…": the button's label already names its action. A
   heading alone, or a heading with only a badge beside it, is the defect, in every
   state the surface renders, a loading or failed one included. A shared dialog component makes its
   description a required prop, so a title-only dialog cannot be written. No sentence floats between
@@ -248,8 +248,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   the commit adds what it acts on — "Cancel booking" — so one word never means both doing the
   act and backing out of it.
 - **A bare verb labels a control only where what it acts on is plain from what surrounds it**, as
-  under a dialog's title. A control among several things it could act on names its object: "Clear
-  filters" beside a search field and a select, never "Clear".
+  under a dialog's title. A control among several things it could act on names its object: "Shuffle
+  queue" beside a player's search field and volume, never "Shuffle".
 - **A list filter takes tabs only for a few top-level groups that fit one row on a phone**, such as
   all, mine and shared; a filter with more options, or one likely to gain them, such as a
   status, is a select in the filter bar. A row of many tabs wraps or scrolls on a phone and takes

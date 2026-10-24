@@ -76,7 +76,7 @@ alwaysApply: true
   with a capture at a width where the product's navigation shows the page's place, for the role
   whose page it is; a phone-width view or a close-up of the same page goes beside that one,
   never alone, since either can belong to several pages. The caption names the page as the
-  reader reaches it, such as "the workspace owner's Billing page".
+  reader reaches it, such as "the album's Sharing page".
 - A delegated worker's report of an outcome — tests pass, pushed, merged, deployed, fixed — is a
   claim. Check it at its source of truth before relaying it or building on it, and tell the user
   what was read, not what was reported; `execute-task`'s **Reported Outcomes** holds the procedure.

@@ -293,7 +293,7 @@ case, a new prop or variant on the shared component that owns it — never a loc
 constant or style module in the app; inside the library, the primitive in place of the raw classes,
 and each `className` prop removed with its callers moved onto variants. A finished run brings every
 app's count to zero: a use left standing is an open finding, never a disposition. Left alone: an
-inline style whose values come from saved data, such as a layout the reader arranged; inside the
+inline style whose values come from saved data, such as a column width the reader dragged; inside the
 library, the classes a primitive is made of and the allowances the React rules' **Components and
 Props** grants there.
 
