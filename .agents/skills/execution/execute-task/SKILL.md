@@ -136,9 +136,7 @@ A follow-up is planned on its own, and only the work it changes waits for it.
   above, and resume it on approval. Unaffected work keeps running while the user decides.
 - **One that narrows scope reaches the work already in flight, at once.** Message every running
   worker to stop the work the cut removes and has not yet done, keeping what it already finished,
-  and record the cut in the intent statement every later gate and review receives. A finding in
-  the cut work, a defect included, is answered as out of scope rather than fixed, unless this
-  change introduced it.
+  and record the cut in the intent statement every later gate and review receives.
 - A follow-up on a pull request already sent for review pushes to the same draft, and its
   **Completion** folds each change into the history under `rewrite-git-history` rather than
   rebuilding it.
@@ -288,10 +286,8 @@ how those issues are handled.
   offering it to the user is not a disposition.** "Want this handled, or shall I leave it?" reads as
   diligence and is the failure this section exists to prevent: it spends a turn to obtain permission
   for something already required, and a no leaves a known defect in the tree with the agent's name
-  on the decision. The question that is genuinely the user's is about a **product change** — what a
-  feature does or what information it presents, the steps of a workflow or a quantity the reader
-  meets, a workaround for a constraint the user set, what a record keeps, who a surface serves, a
-  contract a consumer outside the user's control speaks — never whether an encountered issue gets
+  on the decision. The question that is genuinely the user's is about a **product change**, as the
+  global rules' product-experience bullet defines it — never whether an encountered issue gets
   fixed.
 - **An instruction one agent passes another — a brief, a correction, a review finding, a gate's fix
   step, a note or summary an earlier turn left for a later one — is checked against the standing
@@ -417,8 +413,8 @@ the task.
 
 Every push goes out once the pre-push checks below pass, on a draft and on a pull request ready for
 review alike; nothing holds committed work on one machine — not a gate, review or simplification
-pass pending on it, an integration merge, or a plan that orders one first. `code-simplify` and `acceptance-gate`'s
-diff question do not run per push: they run once over the finished task's complete diff, under
+pass pending on it, an integration merge, or a plan that orders one first. `code-simplify` and
+`acceptance-gate`'s diff question do not run per push: they run once over the finished task's complete diff, under
 **Completion**. A fix pushed for a flag a gate or review raised gets one fresh `acceptance-gate`
 run over that fix's increment, read with the whole branch diff as its originating diff, as
 `acceptance-gate`'s **Bounds** require; that fresh verdict is what other skills mean by an
@@ -596,8 +592,8 @@ it — the user asking about something else is not the user withdrawing what the
   `session-ledger` and from the repository — merged commits, pushed heads — and let them overrule
   the summary: a step that the ledger entry or the repository shows done is not started again, and
   one the summary left out is still owed. The first turn then moves the oldest item still open as
-  well as whatever the summary's next step names. A constraint it carries, such as "ask before X", is an earlier turn's instruction,
-  checked under **Encountered Issues** before it is obeyed.
+  well as whatever the summary's next step names. A constraint it carries, such as "ask before X",
+  is an earlier turn's instruction, checked under **Encountered Issues** before it is obeyed.
 - **Commits a remote lacks are undelivered work**; their next step is the pre-push checks and the
   push. A hook or status line counting unpushed commits whose checks pass reports a push owed now,
   not something to explain.

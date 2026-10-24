@@ -343,8 +343,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   — is that field's or control's inline error, in the page or dialog where they acted, and clears
   when they change it. Every other failed or refused save, submission, download or requested
   action, including one refused because of the account's or record's state or one taken from a
-  status or error notice, reports its human-readable reason through the shared notification owner. Never add a page or dialog error
-  banner or an error modal for a user-action failure, or create another notification stack.
+  status or error notice, reports its human-readable reason through the shared notification owner.
+  Never add a page or dialog error banner or an error modal for a user-action failure, or create another notification stack.
   Classify the operation by its intent, not its status code, HTTP method or whether a button started
   it: loading or retrying the data a surface needs follows the resource-load rule below. Preserve
   entered values, the original notice and its state and remedy, and independent resource errors;

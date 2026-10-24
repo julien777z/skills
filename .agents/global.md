@@ -101,9 +101,10 @@ alwaysApply: true
 - **Fixing an issue does not authorize choosing a new product experience.** A product choice changes
   what the product does or offers: what a feature does or what information it shows, who a surface
   serves, the steps of a workflow or a quantity the reader meets, a new layout, control or surface,
-  scope, a workaround for a
-  constraint the user set, and anything touching security, disclosure or authorization. Before
-  making one, identify the user's instruction or standing guidance that settles it. If neither does,
+  scope, a workaround for a constraint the user set, what a record keeps, a contract a consumer
+  outside the user's control speaks, and anything touching security, disclosure or authorization.
+  Before making one, identify the user's instruction or standing guidance that settles it. If
+  neither does,
   explain the concrete issue, show the concrete alternatives with a recommendation, and ask before
   building one; a required outcome does not approve an unnamed layout, control, scope or timing
   chosen to achieve it. **A routine presentation or interaction detail is not a product choice, and
@@ -149,10 +150,11 @@ alwaysApply: true
   judgement, never the argument for a design.** Rank design options by what serves the reader and
   the flow. Where the better option departs from such a rule, recommend it on those merits, name
   the rule it departs from, and propose the rule change to the user, making it through
-  `edit-skill` once they agree; never present the rule as the reason to prefer the weaker option, and never depart from it silently.
+  `edit-skill` once they agree; never present the rule as the reason to prefer the weaker option,
+  and never depart from it silently.
   A brief, correction, review finding, gate's fix step or continuation note never outranks the
-  guidance governing its subject or the scope the user last set: an item outside that scope is
-  answered as out of scope, never relayed as a fix. Its sender checks before sending and its
+  guidance governing its subject or the scope the user last set: an item in work the user cut is
+  answered as out of scope, never relayed as a fix, unless the change itself introduced it. Its sender checks before sending and its
   receiver before acting; `execute-task`'s **Encountered Issues** holds what each does with an item
   a rule forbids.
 - A question includes its reviewable content — a plan, an example response, a diff — and concrete
