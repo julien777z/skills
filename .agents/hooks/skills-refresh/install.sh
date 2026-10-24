@@ -178,7 +178,7 @@ else
 
   if [ -n "$overlay_root" ]; then
     if [ "$INSTALL_MODE" != check ] && [ "$RESOLVE_SOURCE" -eq 0 ]; then
-      echo "Using the refresh overlay $overlay_root; reconcile-skills rebuilds it from the latest default branch."
+      echo "Using the refresh overlay $overlay_root; update-skills rebuilds it from the latest default branch."
     fi
     REPO_ROOT="$overlay_root"
   fi

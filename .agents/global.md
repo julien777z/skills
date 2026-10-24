@@ -21,7 +21,7 @@ alwaysApply: true
   manual approximation for an installed action skill.
 
 - On session startup or resume, a shared-skills SessionStart hook reconciles installed links.
-  When that hook is unavailable or disabled and the installation is stale, run `reconcile-skills`
+  When that hook is unavailable or disabled and the installation is stale, run `update-skills`
   before ordinary work. Follow a startup hook’s reconciliation request before using changed guidance.
 
 - Never add `agents/openai.yaml` to a repository skill. Repository skills contain `SKILL.md` and
