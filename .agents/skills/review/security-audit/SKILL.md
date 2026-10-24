@@ -30,12 +30,13 @@ change writes. A finding in those lines is the change's own defect: it is fixed 
 A security review of a branch, a pull request or pending changes reviews the change, not the
 codebase. Its target is the merge-base diff against the repository's default branch plus any
 untracked files the branch adds, read with the callers, sinks and trust boundaries each changed line
-reaches, so a trace can run past the hunk. It reports only what the change adds or makes reachable,
-never a pre-existing finding the change does not touch.
+reaches, so a trace can run past the hunk. It hunts only what the change adds or makes reachable;
+a pre-existing finding it meets on that path is still reported as a finding.
 
 It runs every phase at the effort stated, over the changed lines and what they reach. A finding in
 lines the running task wrote is fixed in that task's change; any other finding is reported to the
-caller.
+caller, who fixes it in the change in flight, as `pre-production` says of a vulnerability the work
+finds.
 
 ## Effort
 

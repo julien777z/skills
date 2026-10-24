@@ -78,12 +78,18 @@ Bad: "Here's the fix. Separately: there is also a stale dependency. Want me to h
 Good: "Here's the fix. Also fixed on the way: the stale dependency the build pulled in."
 
 A question that guidance or evidence settles is answered without asking the reader. Use
-`session-ledger` to record questions and reconcile their dispositions; its question records
-preserve unresolved choices separately from assumptions and actual user decisions. When the reader
-requests supporting evidence or an explanation before choosing, keep that decision unresolved but
-mark its evidence work as pending. Until the requested support is provided, report that work and
-what remains to supply instead of asking for the choice again. Provide the support before making
-the same question actionable; an existing capture or report not yet shown does not establish readiness.
+`session-ledger` to record questions and reconcile their dispositions; its question records preserve
+unresolved choices separately from assumptions and actual user decisions. When the reader requests
+supporting evidence or an explanation before choosing, keep that decision unresolved but mark its
+evidence work as pending. Until the requested support is provided, report that work and what remains
+to supply instead of asking for the choice again. Provide the support before making the same
+question actionable; an existing capture or report not yet shown does not establish readiness. **A
+change the reader asked for that alters what an open question is about makes it evidence-pending the
+same way**, such as a field added to the form whose layout is being chosen: the evidence already
+shown no longer shows what the reader would choose about, and the change may settle the question or
+remove it. Report the change in progress instead of the question; once it lands, show the changed
+state with the question, or drop the question when the change answered it. Only the question the
+change alters waits; every other open question is still asked in the list as usual.
 
 After every user message, include all remaining unresolved decisions in the direct-chat response,
 even when the reply concerns another topic or adds no progress. Reconcile the ledger and the latest
@@ -91,7 +97,8 @@ message before sending; an asynchronous question control or task checklist does 
 visible list. At meaningful progress updates and handoffs, refresh the same list. Use a numbered
 list: each item starts with a **bold subject**. An evidence-pending item states its pending work;
 a ready item states the actual question and existing choices so
-it can be answered without earlier messages, and includes the recommendation or material trade-off
+it can be answered without earlier messages, its captures sent directly beneath it as the global
+rules' **User-Facing Output** says, and includes the recommendation or material trade-off
 and which work depends on the answer. Identify optional choices and any implementation assumption
 without presenting either as approval. If none remain, omit the list. The list accompanies a skill’s
 required direct-chat result even when that skill says to return only its result or nothing else;
