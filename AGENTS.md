@@ -57,7 +57,7 @@ Canonical guidance lives in `.agents/`.
   navigating, diagnosing, or recording a baseline before anything changed — stays where it was saved
   and is not sent, except as the before half of a pair once its after exists; a capture the user or
   the running skill asked for is sent as it is made, change or not. An agent with no file-sending
-  tool hands each capture to be sent up as `subagent-selection`'s **Dispatch** describes, and the
+  tool hands each capture to be sent up as `subagent-matrix`'s **Dispatch** describes, and the
   agent that delegated to it reads and forwards each one on arrival. A brief that asks a worker for
   captures asks for them this way.
 - A delegated worker's report of an outcome — tests pass, pushed, merged, deployed, fixed — is a
@@ -509,7 +509,10 @@ return records;
 - **Agent configuration that depends on no still-open source pull request continues the open
   agent-configuration pull request for that work, whichever session opened it.** Agent configuration
   is the canonical `.agents` tree — skills, each with its own scripts, assets and templates; rules;
-  and agent definitions; everything else is source. List the repository's open pull requests before
+  and agent definitions. Nonbehavioral text and guidance-reference corrections in agent hooks and
+  installers also follow this workflow. Changes to execution, timing, installation, discovery,
+  permissions or mutation scope remain source work. Everything else is source.
+  List the repository's open pull requests before
   selecting a branch, and create an agent-configuration pull request only when none owns the work.
   Later guidance edits and worker tasks join it. Open another only when the user asks or the first
   has merged. Consolidate a duplicate this session opened onto the selected pull request and close
@@ -575,7 +578,8 @@ return records;
   request once `code-simplify` has run and its findings are resolved and a skill's changed scripts
   pass the checks they own, such as a type check or a test render. One that adds a doctor skill
   waits instead for the user's review together with everything in its batch. A workflow, installer,
-  or repository tooling outside a skill's folder is source work even when it sits under `.agents`.
+  or repository tooling outside a skill's folder is source work when its execution changes, even
+  when it sits under `.agents`.
   When the user asked for the change to be tested, first run the smoke test against the exact
   pull-request head. Check that the complete pull request remains confined to this agent
   configuration before using this exception.
@@ -611,7 +615,7 @@ return records;
   merge's delivery, including when the merge is the session's final work. Report the installed
   source and commit, or the concrete blocker preventing refresh.
 - Select the refresh route before checking local changes. When the repository supplies the installed
-  shared skills, invoke `reconcile-skills`; it keeps pending agent-configuration changes in effect,
+  shared skills, invoke `update-skills`; it keeps pending agent-configuration changes in effect,
   dirty checkouts and open pull requests alike. The checkout-only restriction below does not apply
   to this route. For the skill's first merge, read it from the merged commit before invoking it. A
   session follows the copy it loaded until this refresh completes.
