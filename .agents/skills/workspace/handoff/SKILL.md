@@ -81,7 +81,9 @@ skill ends with.
    options as they were put, and every user decision and constraint that governs the work, in the
    user's words. Where the work depends on another pull request — another repository's included —
    the comment names and links it; that is the one comment a pull request carries about another
-   repository. Never put a secret, credential or token in it.
+   repository. It carries the task token `session-ledger`'s backup comments carry, so a session
+   that cannot reach the ledger file can tell which of them are this task's. Never put a secret,
+   credential or access token in it.
 9. **Transfer the finalized private ledger.** After all workers' receipts and final hand-off facts
    are recorded, follow `session-ledger` to verify the receiver's complete file, exact locator and
    writing-ownership takeover. Retain the source until that verification succeeds; never release
@@ -98,6 +100,8 @@ skill ends with.
 ## Hand-off
 
 Head `<sha>` on `<branch>` → `<base>`. Checks: <green, or red with the failing names> · Mergeable: <yes, or conflict> · Unresolved review threads: <n>
+
+Task: `<task token>`
 
 ### Queue
 1. <item> — <exact files> — <the user's words, where the item came from the user>
