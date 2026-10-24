@@ -198,16 +198,11 @@ alwaysApply: true
 
 ### After Agent Sync
 
-- **The refresh runs before the next work, never on the merge alone.** After a pull request that
-  changes agent configuration merges and its default-branch Agent Sync run finishes, the refresh
-  below waits for the session's next work: a remaining step of an active task, a follow-up, or the
-  user's next request. The merge's own delivery is not that work: the Agent Sync poll, the
-  merged-text read-back, the generated-output check and the merge's report. The refresh runs
-  before that next work reads any skill or rule.
-  A merge that is the session's last work ends with no refresh, and its report reads `refresh:
-  deferred to the next request`. The next request, in this session or a later one, runs the refresh
-  first unless the installed copy already carries the merge, as one a cloud session installs at
-  start with no refresh overlay does.
+- **Refresh immediately after Agent Sync succeeds.** After a pull request that changes agent
+  configuration merges and its default-branch Agent Sync run succeeds, complete the refresh below
+  and verify the installed links before reporting delivery complete. The refresh is part of the
+  merge's delivery, including when the merge is the session's final work. Report the installed
+  source and commit, or the concrete blocker preventing refresh.
 - The shared SessionStart hook repairs installation links on startup and resume after local pulls;
   it does not fetch remote updates or rebuild pending overlays. Use the refresh below when those
   operations are required.

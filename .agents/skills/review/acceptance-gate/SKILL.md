@@ -79,8 +79,9 @@ applicable task pull requests, not only default-branch or local checkout compari
 checks analogous implementations and the evidence for retained differences; missing applicable
 pull-request context is a flag to obtain that context, not permission to assume consistency.
 
-The gate is read-only and distinct: not the author of the item. Invoke `subagent-selection` at its frontier
-capability level, dispatch the gate with its exact identifier, and retain catalogue state, identifier, assignment
+The gate is read-only and distinct: not the author of the item. Invoke `subagent-selection` for the
+acceptance-gate role, using its configured Codex role selection and the frontier capability level on
+other hosts. Dispatch the gate with that exact identifier, and retain catalogue state, identifier, assignment
 state and host receipt in the gate record. Its reader freshness follows `subagent-selection`'s **Dispatch**. It
 receives five things and nothing else:
 
@@ -107,6 +108,11 @@ consumers, including for prose and configuration. Complete the comparisons despi
 and name the exact missing input and investigation for any remaining choice. Return the comparisons
 and deciding evidence in the existing verdict fields; a checklist or stage inventory alone is
 incomplete.
+
+**Trace changed state-like values during that comparison.** Apply the rubric's **State Meaning**
+criteria to their writers, transformations and consumers, including values whose names did not
+change. Include the authority, lifetime and purpose evidence in `Also read`, and semantic collisions
+in the flag bullets; missing evidence prevents a clean verdict.
 
 **Then run five greps.** Grep the diff's added lines for five shapes and list every hit as a finding
 ahead of all others, with the remedy the rubric names:

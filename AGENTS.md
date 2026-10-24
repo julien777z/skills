@@ -222,6 +222,15 @@ Canonical guidance lives in `.agents/`.
   not evidence of control. If the bound tab closes, refresh the inventory and apply the same
   relevance and safe-reuse selection within the retained constraints; never fall back to the
   browser's current tab.
+  Verify that the control itself targets the stable tab independently of the foreground selection;
+  an application handle that follows the active tab or window does not preserve the binding. When
+  the binding is lost, refresh the inventory and reapply the retained explicit user constraints,
+  relevance, safe-reuse, and coordination requirements before rebinding an eligible tab. If no
+  eligible tab can be safely reused and a supported tab control can create a replacement that honors
+  every retained constraint, create and bind a task-owned tab in the relevant available parent
+  surface; never create a window. If an explicit constraint cannot be honored, ask the user about
+  that concrete conflict. If the control cannot reach the required page, hold only that operation
+  and continue independent work; never inspect or operate the current tab as a fallback.
 - Classify an awaited result from its observed state before treating it as a blocker. Startup,
   recovery, a queued review or an unanswered request is pending until it has a terminal result;
   current unavailability, a quiet interval or a bounded wait yielding without a result is not
@@ -596,16 +605,11 @@ return records;
 
 ### After Agent Sync
 
-- **The refresh runs before the next work, never on the merge alone.** After a pull request that
-  changes agent configuration merges and its default-branch Agent Sync run finishes, the refresh
-  below waits for the session's next work: a remaining step of an active task, a follow-up, or the
-  user's next request. The merge's own delivery is not that work: the Agent Sync poll, the
-  merged-text read-back, the generated-output check and the merge's report. The refresh runs
-  before that next work reads any skill or rule.
-  A merge that is the session's last work ends with no refresh, and its report reads `refresh:
-  deferred to the next request`. The next request, in this session or a later one, runs the refresh
-  first unless the installed copy already carries the merge, as one a cloud session installs at
-  start with no refresh overlay does.
+- **Refresh immediately after Agent Sync succeeds.** After a pull request that changes agent
+  configuration merges and its default-branch Agent Sync run succeeds, complete the refresh below
+  and verify the installed links before reporting delivery complete. The refresh is part of the
+  merge's delivery, including when the merge is the session's final work. Report the installed
+  source and commit, or the concrete blocker preventing refresh.
 - Select the refresh route before checking local changes. When the repository supplies the installed
   shared skills, invoke `reconcile-skills`; it keeps pending agent-configuration changes in effect,
   dirty checkouts and open pull requests alike. The checkout-only restriction below does not apply

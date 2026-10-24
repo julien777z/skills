@@ -575,7 +575,7 @@ user's review of the source pull request overlaps it.
       is read the same way from the branch that carries it, never from a checkout that predates
       it.
       `merge-gate` then waits for the default-branch Agent Sync run; the GitHub rules' **After Agent
-      Sync** section says when the installed copy is refreshed.
+      Sync** section requires the installed copy to be refreshed before reporting completion.
       Once the run finishes, inspect every generated artifact on the default branch that represents
       the changed source, including `AGENTS.md` when the source feeds root instructions and
       provider trees such as `.cursor/`, `.claude/`, and `.codex/` when they represent the changed
@@ -651,7 +651,7 @@ Checks
 - Smoke test: <passing tables reported above | dropped — <reason> | not run: <reason>>
 - Example validation: <one line per skill: name — output matches concrete example after <n> round(s) | skipped, no response the user uses | skipped, response unchanged | rule-only change>
 - Merged text read back: <default branch head the touched skills and rules were re-read from | not merged>
-- Refresh: <deferred to the next request | not merged>
+- Refresh: <installed source and commit | blocked: exact reason | not merged>
 
 Pull request
 
