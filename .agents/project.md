@@ -17,3 +17,8 @@ The descriptions also cover work that file patterns alone cannot identify.
 | `sqlalchemy.md` | Defining tables or relationships, writing queries, or handling sessions. |
 | `testing.md` | Planning or running tests, or writing or moving tests, fixtures, assertions, or test configuration. |
 | `typescript.md` | Editing types, modules, imports, functions, or external-data boundaries. |
+
+## Tests
+
+- This repository holds no tests: no test files, test folders or test workflows. A change to a hook,
+  a skill's script or the installer is checked by running it, never by adding a test here.
