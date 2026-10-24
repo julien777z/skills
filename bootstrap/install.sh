@@ -328,7 +328,7 @@ preflight_provider() {
     check_directory "$root/hooks" || failed=1
 
     for hook in "$CANONICAL_HOOKS"/*; do
-      [ -f "$hook" ] || continue
+      [ -d "$hook" ] || continue
 
       check_link "$root/hooks/$(basename "$hook")" || failed=1
     done
@@ -464,7 +464,7 @@ install_provider() {
     mkdir -p "$root/hooks"
 
     for hook in "$CANONICAL_HOOKS"/*; do
-      [ -f "$hook" ] || continue
+      [ -d "$hook" ] || continue
 
       name="$(basename "$hook")"
 
