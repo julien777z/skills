@@ -77,14 +77,14 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    user or repository guidance, revalidate the consumer's new head through the caller's fix rule,
    and repeat this inventory before taking it ready. This gate authorizes no dependency merge
    or release; never take a blocked consumer ready to start tests or send a ready message.
-3. **Require a pull request ready for review.** Mark a draft ready when review requires it. That
+3. **Require a pull request ready for review.** Mark a draft ready. That
    state-only transition can start duplicate test jobs; it does not invalidate a terminal result
    already produced for the exact head. Reuse that result only when the source, resolved
    dependencies, configuration, toolchain, runner, trigger context, job conditions, and affected
    behavior coverage are evidenced equivalent. A test job `skipped` because the pull request was
    draft is no result. If readiness makes a previously skipped job applicable or changes any of
    those inputs, obtain its fresh terminal result. Otherwise, do not wait for or rerun an equivalent
-   duplicate job.
+   duplicate job that remains pending; classify every unsuccessful terminal duplicate under step 8.
 4. **Classify the complete pull-request diff.** A non-runtime diff — one that changes no executable
    source, package or dependency definition, test, runtime configuration, CI workflow, generated
    runtime artifact, or other executed-behavior contract — is validated only by the checks its
@@ -97,8 +97,9 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    for missing jobs. Passing local tests never replaces this inventory or a hosted job's result.
    Record each logical job's representative run, head, state and conclusion, every equivalent
    duplicate attempt, and each caller-supplied exclusion with its evidence. A completed successful
-   representative covers its equivalent duplicates; a changed trigger, condition, execution input,
-   or affected behavior does not.
+   representative supplies coverage for an equivalent duplicate that remains pending; a changed
+   trigger, condition, execution input, or affected behavior does not. Every unsuccessful terminal
+   duplicate remains subject to step 8.
    A skipped or neutral job supplies no coverage: establish whether its native condition makes it
    inapplicable, or required validation is missing. Draft skips never supply test coverage. A job
    without a check run or status needs the same applicability decision, not an assumed pass.
@@ -108,11 +109,11 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    on drift. That receipt may support an exclusion under step 8; it never omits the hosted inventory.
 6. **Drive the complete inventory to terminal results.** Re-query the exact head on a bounded
    interval matched to job duration — roughly every 30 to 60 seconds — until every applicable,
-   non-excluded logical job has terminal coverage. A completed successful representative means an
-   equivalent duplicate attempt does not hold the gate. Local coverage, a green selected job or a
-   branch-protection summary does not permit omitting another job. Classify failures under step 8
-   and account for missing or skipped required validation before clearing the gate. A new head
-   rebuilds the inventory. When the base moves, compare its changes with every execution input
+   non-excluded logical job has terminal coverage. A completed successful representative means a
+   pending equivalent duplicate attempt does not hold the gate. Local coverage, a green selected
+   job or a branch-protection summary does not permit omitting another job. Classify failures under
+   step 8 and account for missing or skipped required validation before clearing the gate. A new
+   head rebuilds the inventory. When the base moves, compare its changes with every execution input
    before reusing evidence; retain a result only with evidence that those inputs are equivalent.
    Otherwise incorporate the base through `merge-conflict`, run the caller's rule over the resolved
    head, and restart this gate. Do not end the turn or hand back while the gate is pending; its poll

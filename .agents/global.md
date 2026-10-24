@@ -125,7 +125,8 @@ alwaysApply: true
 - A manually dispatched workflow that builds, publishes, releases, or deploys is a deployment for
   this boundary. A completed CI build, published artifact, earlier release authority, or merge
   authority does not authorize selecting or dispatching that workflow; identify direct user
-  authorization for its target or an applicable skill or rule that expressly authorizes it.
+  authorization to dispatch that workflow for its target or an applicable skill or rule that
+  expressly authorizes that action and target.
 - Authorization to send messages to another agent or external session covers only the messages and
   purpose the user specified. Permission for a bounded exchange does not authorize later updates
   to the same recipient; ask before sending more unless the user explicitly approved an ongoing
