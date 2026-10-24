@@ -121,6 +121,11 @@ and name the exact missing input and investigation for any remaining choice. Ret
 and deciding evidence in the existing verdict fields; a checklist or stage inventory alone is
 incomplete.
 
+**Make the simpler candidate concrete.** For each suspect shape, apply the rubric's removal test
+before accepting it. Return the concrete consolidation or deletion, or the actual current contract
+that the simpler complete candidate would break. Missing validation evidence is a separate flag,
+never a reason to leave this judgement unfinished.
+
 **Trace changed state-like values during that comparison.** Apply the rubric's **State Meaning**
 criteria to their writers, transformations and consumers, including values whose names did not
 change. Include the authority, lifetime and purpose evidence in `Also read`, and semantic collisions

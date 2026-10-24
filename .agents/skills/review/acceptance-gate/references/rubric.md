@@ -95,6 +95,24 @@ the gate does not re-validate it.
 
 ## Independent Judgment
 
+For each suspect shape, test removal rather than defending its contents. Move its required work
+into the existing owner, inline a redundant step, derive a copied value where it is read, or use
+the dependency that already owns the operation. Sketch one concrete candidate and trace all of its
+required behavior before deciding. An alternative missing an accepted output, validation, side
+effect or independent caller is incomplete and cannot justify the current design.
+
+A layer can do real work and still be unnecessary. Adding a field, output, policy adjustment or
+transformation does not establish a separate owner. If that work fits the existing operation
+without breaking a current contract or dependency boundary, flag the extra layer and place the
+work there. Apply the same test to repeated branches, mirrored state, speculative options and
+hand-built mechanisms; the class is unnecessary machinery, not just forwarding functions. Tests
+passing and the absence of duplicated lines do not answer this question.
+
+For a retained shape, identify the actual independent caller, lifecycle, contract or dependency
+that the simpler complete candidate would violate. A role name, a possible future consumer, a
+short body, "separation of concerns", or "not a pure wrapper" is not that evidence. Do not force
+unrelated responsibilities together when such a boundary exists; show it and retain the boundary.
+
 Compare the prior design, the proposed or resulting design, and the simplest viable alternative
 against the accepted requirements and the borrowed code-simplify rubric. Exercise a concrete
 maintenance, extension or supported growth case without inventing product requirements, and trace
