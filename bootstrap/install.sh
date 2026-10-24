@@ -222,6 +222,9 @@ if [ ! -f "$CANONICAL_GLOBAL" ]; then
 fi
 
 CANONICAL_RESOURCES="$REPO_ROOT/.agents/resources"
+CANONICAL_HOOKS="$REPO_ROOT/.agents/hooks"
+CANONICAL_CLAUDE_SETTINGS="$REPO_ROOT/.agents/settings/claude.json"
+HOOK_REGISTRAR="$INSTALLER_DIR/resources/register_hooks.py"
 GENERATED_ROOT="$REPO_ROOT/.agents/.auto_generated"
 PROVIDERS=(claude codex cursor)
 found_root=0
@@ -288,8 +291,12 @@ check_directory() {
   done
 }
 
+can_register_hooks() {
+  [ "$1" = claude ] && command -v python3 >/dev/null
+}
+
 preflight_provider() {
-  local provider="$1" root="$2" skill agent rule resource name failed=0
+  local provider="$1" root="$2" skill agent rule resource hook name failed=0
 
   check_directory "$root/skills" || return 1
 
@@ -315,6 +322,20 @@ preflight_provider() {
 
       check_link "$root/resources/$name" || failed=1
     done
+  fi
+
+  if [ -d "$CANONICAL_HOOKS" ]; then
+    check_directory "$root/hooks" || failed=1
+
+    for hook in "$CANONICAL_HOOKS"/*; do
+      [ -f "$hook" ] || continue
+
+      check_link "$root/hooks/$(basename "$hook")" || failed=1
+    done
+  fi
+
+  if can_register_hooks "$provider"; then
+    python3 "$HOOK_REGISTRAR" check "$root/settings.json" "$CANONICAL_CLAUDE_SETTINGS" "$root/hooks" || failed=1
   fi
 
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -d "$CANONICAL_AGENTS" ]; then
@@ -400,7 +421,7 @@ prune_links() {
 }
 
 install_provider() {
-  local provider="$1" root="$2" skill agent rule resource name skills=0 agents=0 rules=0 resources=0
+  local provider="$1" root="$2" skill agent rule resource hook name skills=0 agents=0 rules=0 resources=0 hooks=0
 
   [ -d "$root" ] || return 0
 
@@ -438,6 +459,27 @@ install_provider() {
   fi
 
   prune_links "$root/resources"
+
+  if [ -d "$CANONICAL_HOOKS" ]; then
+    mkdir -p "$root/hooks"
+
+    for hook in "$CANONICAL_HOOKS"/*; do
+      [ -f "$hook" ] || continue
+
+      name="$(basename "$hook")"
+
+      ln -sfn "$(link_source "$provider" hooks "$name" "$hook")" "$root/hooks/$name"
+      hooks=$((hooks + 1))
+    done
+  fi
+
+  prune_links "$root/hooks"
+
+  if can_register_hooks "$provider"; then
+    python3 "$HOOK_REGISTRAR" install "$root/settings.json" "$CANONICAL_CLAUDE_SETTINGS" "$root/hooks"
+  elif [ "$provider" = claude ] && [ -f "$CANONICAL_CLAUDE_SETTINGS" ]; then
+    echo "python3 not found; hooks are linked but not registered in $root/settings.json" >&2
+  fi
 
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -d "$CANONICAL_AGENTS" ]; then
     mkdir -p "$root/agents"
@@ -483,7 +525,7 @@ install_provider() {
     ln -sfn "$CANONICAL_GLOBAL" "$root/AGENTS.md"
   fi
 
-  echo "$root: $skills skills, $agents agents, $rules rules, $resources resources linked"
+  echo "$root: $skills skills, $agents agents, $rules rules, $resources resources, $hooks hooks linked"
 }
 
 INSTALL_PROVIDERS=()
@@ -532,7 +574,7 @@ for index in "${!INSTALL_ROOTS[@]}"; do
 done
 
 if [ "$preflight_ok" -eq 0 ]; then
-  echo "Resolve the listed skill conflicts before installing; no links were changed." >&2
+  echo "Resolve the listed conflicts before installing; no links or settings were changed." >&2
   exit 1
 fi
 

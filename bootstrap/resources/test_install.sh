@@ -16,6 +16,10 @@ assert_link() {
   }
 }
 
+stop_commands() {
+  python3 -c 'import json, sys; [print(h["command"]) for g in json.load(open(sys.argv[1])).get("hooks", {}).get("Stop", []) for h in g["hooks"]]' "$1"
+}
+
 assert_absent() {
   [ ! -e "$1" ] && [ ! -L "$1" ] || {
     echo "Unexpected path: $1" >&2
@@ -91,6 +95,7 @@ if [ "$(id -u)" -eq 0 ]; then
   mkdir -p "$rootless_runner/bootstrap/resources"
   cp "$0" "$rootless_runner/bootstrap/resources/test_install.sh"
   cp "$(dirname "$0")/../install.sh" "$rootless_runner/bootstrap/install.sh"
+  cp "$(dirname "$0")/register_hooks.py" "$rootless_runner/bootstrap/resources/register_hooks.py"
   chown -R nobody:nogroup "$rootless_runner"
 
   runuser -u nobody -- env PATH="$PATH" bash "$rootless_runner/bootstrap/resources/test_install.sh"
@@ -101,9 +106,16 @@ installer="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/install.sh"
 fixture="$(mktemp -d)"
 
 repo="$fixture/repo"
-mkdir -p "$repo/bootstrap" "$repo/.agents/skills/example/sample" "$repo/.agents/rules" \
-  "$repo/.agents/.auto_generated/.codex/skills/sample"
+mkdir -p "$repo/bootstrap/resources" "$repo/.agents/skills/example/sample" "$repo/.agents/rules" \
+  "$repo/.agents/.auto_generated/.codex/skills/sample" "$repo/.agents/hooks" "$repo/.agents/settings"
 cp "$installer" "$repo/bootstrap/install.sh"
+cp "$(dirname "$installer")/resources/register_hooks.py" "$repo/bootstrap/resources/register_hooks.py"
+printf '%s\n' '#!/usr/bin/env python3' > "$repo/.agents/hooks/sample_hook.py"
+chmod +x "$repo/.agents/hooks/sample_hook.py"
+readonly SAMPLE_HOOK_COMMAND='python3 "$HOME/.claude/hooks/sample_hook.py"'
+printf '{"hooks": {"Stop": [{"hooks": [{"type": "command", "command": %s}]}]}}\n' \
+  "$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1]))' "$SAMPLE_HOOK_COMMAND")" \
+  > "$repo/.agents/settings/claude.json"
 printf '%s\n' '# Global guidance' > "$repo/.agents/global.md"
 printf '%s\n' '# Rule' > "$repo/.agents/rules/example.md"
 printf '%s\n' '---' 'name: sample' 'description: Sample skill' '---' > "$repo/.agents/skills/example/sample/SKILL.md"
@@ -123,6 +135,8 @@ local_home="$fixture/local"
 mkdir -p "$local_home/.codex"
 env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$local_home" CODEX_HOME= bash "$repo/bootstrap/install.sh"
 assert_link "$local_home/.codex/skills/sample" "$repo/.agents/.auto_generated/.codex/skills/sample"
+assert_link "$local_home/.codex/hooks/sample_hook.py" "$repo/.agents/hooks/sample_hook.py"
+assert_absent "$local_home/.codex/settings.json"
 assert_link "$local_home/.agents/skills/sample" "$repo/.agents/skills/example/sample"
 
 neutral_home="$fixture/neutral"
@@ -136,7 +150,67 @@ claude_home="$fixture/claude"
 mkdir -p "$claude_home/.claude"
 env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$claude_home" CODEX_HOME= bash "$repo/bootstrap/install.sh"
 assert_link "$claude_home/.claude/skills/sample" "$repo/.agents/skills/example/sample"
+assert_link "$claude_home/.claude/hooks/sample_hook.py" "$repo/.agents/hooks/sample_hook.py"
+[ "$(stop_commands "$claude_home/.claude/settings.json")" = "$SAMPLE_HOOK_COMMAND" ]
+[ "$(stat -c %a "$claude_home/.claude/settings.json")" = 600 ]
 assert_absent "$claude_home/.agents"
+
+merge_home="$fixture/claude-merge"
+mkdir -p "$merge_home/.claude/hooks"
+ln -s "$repo/.agents/hooks/retired_hook.py" "$merge_home/.claude/hooks/retired_hook.py"
+cat > "$merge_home/.claude/settings.json" <<'JSON'
+{
+  "model": "user-model",
+  "hooks": {
+    "Stop": [
+      {"hooks": [{"type": "command", "command": "user-stop-hook"}]},
+      {"hooks": [{"type": "command", "command": "python3 \"$HOME/.claude/hooks/retired_hook.py\""}]}
+    ],
+    "PreToolUse": [{"matcher": "Bash", "hooks": [{"type": "command", "command": "user-tool-hook"}]}]
+  }
+}
+JSON
+chmod 644 "$merge_home/.claude/settings.json"
+
+for run in first repeat; do
+  env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$merge_home" CODEX_HOME= bash "$repo/bootstrap/install.sh"
+done
+
+assert_absent "$merge_home/.claude/hooks/retired_hook.py"
+[ "$(stop_commands "$merge_home/.claude/settings.json")" = "$(printf '%s\n' user-stop-hook "$SAMPLE_HOOK_COMMAND")" ]
+python3 -c 'import json, sys; s = json.load(open(sys.argv[1])); assert s["model"] == "user-model"; assert s["hooks"]["PreToolUse"][0]["hooks"][0]["command"] == "user-tool-hook"' \
+  "$merge_home/.claude/settings.json"
+[ "$(stat -c %a "$merge_home/.claude/settings.json")" = 644 ]
+
+linked_settings_home="$fixture/claude-linked-settings"
+mkdir -p "$linked_settings_home/.claude" "$fixture/dotfiles"
+printf '%s\n' '{"model": "user-model"}' > "$fixture/dotfiles/settings.json"
+ln -s "$fixture/dotfiles/settings.json" "$linked_settings_home/.claude/settings.json"
+env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$linked_settings_home" CODEX_HOME= bash "$repo/bootstrap/install.sh"
+assert_link "$linked_settings_home/.claude/settings.json" "$fixture/dotfiles/settings.json"
+[ "$(stop_commands "$fixture/dotfiles/settings.json")" = "$SAMPLE_HOOK_COMMAND" ]
+
+for obstruction in invalid-settings real-hook; do
+  blocked_home="$fixture/claude-$obstruction"
+  mkdir -p "$blocked_home/.claude/hooks"
+
+  case "$obstruction" in
+    invalid-settings) printf '%s\n' '{"hooks": [' > "$blocked_home/.claude/settings.json" ;;
+    real-hook) printf '%s\n' 'Keep this file' > "$blocked_home/.claude/hooks/sample_hook.py" ;;
+  esac
+
+  if env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$blocked_home" CODEX_HOME= bash "$repo/bootstrap/install.sh"; then
+    echo "Expected $obstruction to stop installation" >&2
+    exit 1
+  fi
+
+  assert_absent "$blocked_home/.claude/skills/sample"
+
+  case "$obstruction" in
+    invalid-settings) [ "$(cat "$blocked_home/.claude/settings.json")" = '{"hooks": [' ] ;;
+    real-hook) assert_absent "$blocked_home/.claude/settings.json" ;;
+  esac
+done
 
 cloud_clone_home="$fixture/cloud-clone-home"
 cloud_clone="$cloud_clone_home/.local/share/agent-skills"
