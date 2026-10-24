@@ -228,6 +228,10 @@ Execution starts once a required plan is approved, or straight away for a trivia
   user's separate explicit instruction for that action and target or applicable guidance or an
   invoked skill that expressly authorizes it; otherwise complete the reviewable work and leave
   that outcome pending.
+- Treat manually dispatching a workflow that builds, publishes, releases, or deploys as a
+  deployment. Existing CI results, an artifact, a prior release, or merge authority do not
+  authorize that dispatch; require direct authorization for that target or an applicable skill or
+  rule that expressly authorizes it.
 - Ask only for a decision that materially changes the authorized target, recipient, or outcome, or
   for an action-time confirmation a platform actually requires. Make that question specific to the
   new decision or action; never ask the user to reconfirm the task or say "continue" to resume it.
