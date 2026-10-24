@@ -41,12 +41,12 @@ conversation, so it is the exception to the global rules' **User-Facing Output**
 long item lists and is never sent as a file:
 
 ```markdown
-## Global skills
+## This repository (`<owner>/<repo>`)
 
 ### <Category>
 - `<skill-name>` — **<user | model>** — <summary>
 
-## This repository (`<owner>/<repo>`)
+## Global skills
 
 ### <Category>
 - `<skill-name>` — **<user | model>** — <summary>

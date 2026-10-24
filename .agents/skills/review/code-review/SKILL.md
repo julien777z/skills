@@ -28,7 +28,7 @@ fixed values in that type. A receipt without the conditional list is incomplete 
 
 ## Dependencies
 
-- `subagent-selection` — return model capabilities for explicit reviewer dispatch.
+- `subagent-matrix` — return model capabilities for explicit reviewer dispatch.
 - `code-simplify` — its `references/rubric.md` is the complete simplification rubric for that review lens.
 - `pre-production` — supply the repository's target-contract and staging-data policy.
 - `security-audit` — its `references/rubric.md` defines an exploitable finding, its precedents and its remedy, and its attack-class catalogue supplies the Security lens. The review borrows both and never the audit workflow.
@@ -88,7 +88,7 @@ State these verbatim to every subagent launched:
 
 ## Subagent selection
 
-Invoke `subagent-selection` and choose its **standard** capability level for every reviewer,
+Invoke `subagent-matrix` and choose its **standard** capability level for every reviewer,
 validator, and refuter. The `fast`, `standard`, and `deep` labels elsewhere describe assignment
 depth, not model capability levels: mechanical lookup, contextual review, and adversarial
 investigation respectively.
@@ -99,7 +99,7 @@ Use the dependency's explicit dispatch instructions. Record each launched review
 exact dispatch identifier, assignment state and host receipt in the review evidence. If the standard capability
 level is unavailable, report the limitation; do not silently substitute another tier, model version, or the
 orchestrator's model. Every lens, validator and refuter this skill hands to a subagent is routed as
-`subagent-selection`'s **Dispatch** section directs.
+`subagent-matrix`'s **Dispatch** section directs.
 
 ## Step 1 — Resolve the target
 
@@ -377,7 +377,7 @@ The chat list carries the five most severe findings. Whenever more than five rem
 the session's scratch directory holds every finding in the same shape and is sent with the report.
 The outcome arrow appears only in fix mode. If nothing remains, the list is the single line
 `No findings.` and the closing lines stay. When a lens, validator or refuter was reported as not
-run under `subagent-selection`'s **Dispatch** section, add one line naming it.
+run under `subagent-matrix`'s **Dispatch** section, add one line naming it.
 
 ## Constraints
 

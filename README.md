@@ -50,7 +50,7 @@ Claude, Codex, and Cursor user roots. Codex's global `AGENTS.md` links to the sa
 `global.md` rule used by the other harnesses. Repository-specific rules stay in each repository's
 `project.md`. The installer registers the owned SessionStart handler without replacing other hooks or settings.
 Codex requires its native review and trust of a new hook definition before running it. Startup checks
-use local sources without fetching remotely; `reconcile-skills` owns remote refreshes and rebuilding
+use local sources without fetching remotely; `update-skills` owns remote refreshes and rebuilding
 pending overlays. A changed overlay input instructs the agent to reconcile before ordinary work.
 Claude requests a skill re-scan after a startup repair. Codex discovers skills before its
 SessionStart hook; newly repaired skills appear in the next session, and the hook reports that

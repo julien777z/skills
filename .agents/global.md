@@ -60,7 +60,7 @@ alwaysApply: true
   navigating, diagnosing, or recording a baseline before anything changed — stays where it was saved
   and is not sent, except as the before half of a pair once its after exists; a capture the user or
   the running skill asked for is sent as it is made, change or not. An agent with no file-sending
-  tool hands each capture to be sent up as `subagent-selection`'s **Dispatch** describes, and the
+  tool hands each capture to be sent up as `subagent-matrix`'s **Dispatch** describes, and the
   agent that delegated to it reads and forwards each one on arrival. A brief that asks a worker for
   captures asks for them this way.
 - A delegated worker's report of an outcome — tests pass, pushed, merged, deployed, fixed — is a

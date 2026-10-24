@@ -12,7 +12,7 @@ state and the change's intent, applies the repository's rubric, and answers one 
 
 ## Dependencies
 
-- `subagent-selection` — route the gate through a subagent of the running session.
+- `subagent-matrix` — route the gate through a subagent of the running session.
 - `list-prs` — the caller supplies verified task-work pull requests for cross-repository context.
 - `code-simplify` — its `references/rubric.md` defines slop and prices a mechanism. The gate borrows
   that file and never the applying-fixes workflow; this gate owns the review order.
@@ -79,10 +79,10 @@ applicable task pull requests, not only default-branch or local checkout compari
 checks analogous implementations and the evidence for retained differences; missing applicable
 pull-request context is a flag to obtain that context, not permission to assume consistency.
 
-The gate is read-only and distinct: not the author of the item. Invoke `subagent-selection` for the
+The gate is read-only and distinct: not the author of the item. Invoke `subagent-matrix` for the
 acceptance-gate role, using its configured Codex role selection and the frontier capability level on
 other hosts. Dispatch the gate with that exact identifier, and retain catalogue state, identifier, assignment
-state and host receipt in the gate record. Its reader freshness follows `subagent-selection`'s **Dispatch**. It
+state and host receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. It
 receives five things and nothing else:
 
 1. the intent statement;
@@ -159,7 +159,7 @@ findings in the verdict and summarize clean flow evidence under `Also read`.
 It returns the verdict its question defines, shaped as `references/rubric.md` — What A Verdict Names
 requires.
 
-The gate always runs as a subagent of the running session, routed as `subagent-selection`'s
+The gate always runs as a subagent of the running session, routed as `subagent-matrix`'s
 **Dispatch** section directs.
 
 ## Questions
@@ -209,7 +209,7 @@ The gate is never advisory; the rubric says what each disposition binds the call
 A flag blocks the flagged proposal or diff, not an ordinary repair the task already authorizes.
 Read its concrete objection and remedy against the intent and standing guidance, make the smallest
 coherent repair using the existing owner or mechanism, and send the changed increment with the
-whole originating diff to a fresh independent gate, following `subagent-selection`'s **Dispatch**.
+whole originating diff to a fresh independent gate, following `subagent-matrix`'s **Dispatch**.
 
 **Repair rounds are counted per objection.** A flag gets at most two repair rounds of its own; one a
 fresh gate raises for the first time starts at zero and is repaired like any other, whatever round

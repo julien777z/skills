@@ -1,13 +1,13 @@
 ---
-name: subagent-selection
+name: subagent-matrix
 description: Apply before every subagent launch, including a workflow coordinator or nested reviewer, and when selecting a live skill-verification model. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or smoke reader. Resolve cheap, standard, advanced, and frontier capability levels from the host catalogue and documented dispatch candidates. Attempt the assigned work with a catalogue-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, and route independent steps through a subagent of the running session.
 short_description: 'Select a model capability level for live verification chats or subagent delegation.'
 ---
 
-# Subagent Selection
+# Subagent Matrix
 
 Apply before every sub-agent delegation and when an owning skill requires a model capability level for a live
-verification chat. Skills that use it should declare `subagent-selection` in their dependencies,
+verification chat. Skills that use it should declare `subagent-matrix` in their dependencies,
 but a missing declaration does not bypass selection. Return the selection table to the calling
 agent; the calling agent launches the actual assignment with the selected model.
 

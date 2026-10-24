@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 ## Dependencies
 
-- `subagent-selection` — return the frontier model for research sub-agents.
+- `subagent-matrix` — return the frontier model for research sub-agents.
 - `agent-lock` — serialize access to shared interactive runners.
 - `roblox-studio` — apply its testing guidance when research uses Studio or an isolated runner.
 - `roblox-gameplay` — own the resulting gameplay design guidance.
@@ -27,7 +27,7 @@ If the needed runner capability is unavailable, return the concrete blocker and 
 
 ## Delegate the observations
 
-Invoke `subagent-selection` and choose its **frontier** tier for every research sub-agent in both
+Invoke `subagent-matrix` and choose its **frontier** tier for every research sub-agent in both
 passive and play modes. Use its exact dispatch identifier and reasoning effort for each actual researcher
 assignment. Record catalogue state separately from the assignment state and receipt: a catalogue-hidden family
 remains dispatch-required until that researcher assignment is accepted. A missing identifier or any rejection

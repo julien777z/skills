@@ -1,10 +1,10 @@
 ---
-name: reconcile-skills
+name: update-skills
 description: Refresh the installed shared skills and rules to the latest default branch while keeping pending skill pull requests, the checked-out skills branch and uncommitted skill edits in effect. Use when the GitHub rules' After Agent Sync section calls for it, or when the user asks to bring local agent guidance up to date.
 short_description: 'Refresh installed skills to the latest default branch, keeping pending skill changes in effect.'
 ---
 
-# Reconcile Skills
+# Update Skills
 
 Refresh the user-level agent roots from the shared skills repository. An agent runs this skill
 when the GitHub rules' **After Agent Sync** section calls for it; cloud setup also runs the
