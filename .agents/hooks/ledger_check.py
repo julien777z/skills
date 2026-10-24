@@ -13,7 +13,7 @@ except ImportError:
 
 LEDGER_DIRECTORY_NAME: Final = "agent-ledgers"
 LEDGER_SUFFIXES: Final = (".yaml", ".yml")
-CHECK_SUFFIX: Final = ".backup-check"
+CHECK_SUFFIX: Final = ".ledger-check"
 
 GUIDANCE_CORRECTION: Final = "guidance_correction"
 BACKUP_KINDS: Final = frozenset({GUIDANCE_CORRECTION, "plan", "decision", "question"})

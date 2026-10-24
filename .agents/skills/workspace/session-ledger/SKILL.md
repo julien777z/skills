@@ -138,7 +138,7 @@ This skill authorizes those comments and their edits under the GitHub rule's **C
   changes — a new commit, a stage result, a step's status, a later answer — edit that comment in
   place rather than posting another.
 - The comment shapes and what they may say are in [references/backup.md](references/backup.md).
-- The installed turn-end hook `ledger_backup_check.py` refuses to end a turn while a ledger this
+- The installed turn-end hook `ledger_check.py` refuses to end a turn while a ledger this
   session names owes a backup, listing each entry and what it lacks; posting or editing the comment
   and recording its URL clears it.
 
