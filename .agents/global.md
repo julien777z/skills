@@ -333,6 +333,12 @@ return records;
   wholesale because it might hold personal data. Records that report no failure may still withhold
   personal data.
 
+- An agent's authorized access to a credential is not credential exposure. Seeing a credential in a
+  prompt, private configuration, tool input or output, or the agent's own execution history never
+  establishes compromise and never warrants revocation by itself. Treat a credential as exposed
+  only when evidence shows that it reached an unauthorized recipient, a public surface, or a
+  compromised destination. Preserve secret-safe handling; do not surface values unnecessarily.
+
 ## Product Copy
 
 - **Text a person reads sends them to another place with a link, never a route to follow.** "Open
