@@ -57,11 +57,12 @@ links at an installed path are reported before any links change.
 | `.agents/agents/` | Subagent definitions; the tier each runs on is stated by the skill that launches it. |
 | `.agents/rules/` | Reconciled reusable rules; technology-specific rules retain their file scopes. |
 | `.agents/hooks/<name>/` | One hook: its `main.py` entry point and supporting modules, linked into each user-level root under `hooks/<name>/`. `ledger/` is the turn-end check that every task ledger entry owing a backup comment has one. |
+| `.agents/hooks/hooks.json` | The event each hook runs on. The installer adds these registrations to Claude's `settings.json` and to Codex's and Cursor's `hooks.json` in each user-level root, pointing at the linked hooks. |
 | `.agents/external_resources.json` | Third-party skills and reference directories vendored by the workflow. |
 | `.agents/resources/<name>/` | Vendored reference files, linked into each supported user-level root under `resources/<name>/`. |
 | `.agents/.auto_generated/` | Provider mirrors the workflow generates on `main`; never edited by hand. |
 | `AGENTS.md` | Repository instructions the workflow generates at the root; never edited by hand. |
-| `bootstrap/install.sh` | Refreshes a cloud setup clone when used there, then links skills, resources, agents, rules, and hooks into user-level roots. |
+| `bootstrap/install.sh` | Refreshes a cloud setup clone when used there, then links skills, resources, agents, rules, and hooks into user-level roots and registers the hooks. |
 
 ## Skills
 
