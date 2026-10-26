@@ -1,6 +1,6 @@
 ---
 name: test-fixture
-description: Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Rejects hard-coded domain test data when a canonical fixture or factory owns it, and enforces existing-coverage reuse before new tests, one class per file with small cases folded into existing owning classes, concise parametrized cases, honest doubles, and regression-proof validation. Its rubric owns what makes a test worth keeping, changing or removing, and its Sweep applies that to a finished change's tests and their neighbours.
+description: Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Rejects hard-coded domain test data when a canonical fixture or factory owns it, and enforces existing-coverage reuse before new tests, one class per file with small cases folded into existing owning classes, concise parametrized cases, honest doubles, and regression validation through existing tools. Its rubric owns what makes a test worth keeping, changing or removing, and its Sweep applies that to a finished change's tests and their neighbours.
 short_description: 'Check test data and fixtures before changing tests or running tests after a fixture change.'
 ---
 
@@ -54,15 +54,24 @@ tracing a test surface is; without one, fix what the focused pass can finish.
    disposition of every changed literal family, including allowed protocol, parametrized-case, and
    ownerless local-control values. A review is incomplete until each family is listed with one of the
    rubric's dispositions, even when that disposition permits it.
-9. Prove every distinct new behavioral guarantee through the mutation workflow below, restore the
-   exact baseline, and run the affected repository targets once on the completed tree with the
-   runner's per-test durations reported. Apply the rubric's cost question to every test added or
+9. Validate new or strengthened behavioral guarantees through the existing repository checks.
+   Use a temporary mutation experiment below when it resolves a concrete uncertainty, not as a
+   mandatory gate for every changed guarantee. Run the affected targets once on the completed tree
+   with the runner's per-test durations reported. Apply the rubric's cost question to every test added or
    changed, and to the module holding it, before reporting it done, and report each one's duration
    and that module's total.
 
 ## Mutation Proof
 
-After writing new or materially strengthened behavioral tests, prove each distinct guarantee:
+Mutation experiments are temporary diagnostic work, not a maintained validation system. Reuse
+existing tools and native test selections; do not turn an experiment into committed runners,
+registries, workflow inputs, CI jobs, or recurring gates, including steps hidden inside an existing
+job. Such infrastructure requires a separate explicit user request; approval of a test-repair plan
+or a CI-only execution constraint does not supply it. When the existing route cannot perform the
+experiment, record the limitation and validate the repair with the ordinary existing checks rather
+than building tooling or withholding completion for its absence.
+
+When a focused experiment is useful and supported by the existing route:
 
 1. Select the nearest editable canonical first-party implementation. Never mutate generated or
    vendored output, run generation for proof, or mutate the test itself. Mutate test support only
@@ -85,8 +94,8 @@ After writing new or materially strengthened behavioral tests, prove each distin
    or checkout, and release an exclusive window only after restoration and the passing control.
 
 Never commit or push while a mutation is present. Pure placement, naming, or prose changes that
-claim no new behavior do not need mutation proof. If no canonical owned source can be mutated
-safely, report the exact blocker and do not claim the test was proven effective.
+claim no new behavior need no mutation experiment. If canonical source cannot be mutated safely,
+report that limitation and the ordinary validation performed; do not claim mutation effectiveness.
 
 Report each mutation, the intended regression failure it demonstrated, and the restored passing run.
 
@@ -104,7 +113,7 @@ Apply the complete rubric to every test in that scope — **Test Value And Reten
 dispositions, the **Naming Checks**, **Factory Contents**, **Auditing Existing Doubles**, and the
 **Literal Sweep** — and fix what it finds: repair or rewrite a weak test, fold a duplicate into its
 keeper, and delete one that proves nothing once the rubric's deletion evidence is recorded. A
-repaired or strengthened guarantee takes its mutation proof. The fixes count toward the
+repaired or strengthened guarantee follows the existing-check validation procedure above. The fixes count toward the
 product-constraints skill's size budget like any other incidental change; past it, list what is left
 in the change's report. The rubric's cost question is part of the sweep: read the per-test durations
 from the run that verified the change, and a disproportionate test, parametrized family or module

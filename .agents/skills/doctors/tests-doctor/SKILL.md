@@ -11,12 +11,16 @@ Bring every suite to the shape its siblings share, repair or remove tests that p
 them as labels, run them within budget, and cover each contract in every classification that can
 reach it.
 
+Repair the existing tests and their necessary configuration through existing runner targets.
+Building a maintained audit system is outside this run. Apply `test-fixture`'s validation boundary
+to diagnostic experiments and any separately requested infrastructure work.
+
 ## Dependencies
 
 - `doctor-protocol` — own the run.
 - `test-fixture` — every per-test check this doctor runs — value and dispositions, naming, factory
   contents, doubles — and the standard every added or rewritten test meets for data, placement,
-  doubles, and mutation proof.
+  doubles, and regression validation through existing tools.
 
 Also read the repository's test-runner skill when the skill listing declares one, found by its
 description rather than assumed by name. Its locking, service, and pacing rules hold for every run
@@ -36,9 +40,10 @@ the repository configures, such as a documented target, with runner and CI timeo
 hang bounds rather than budgets.
 
 The measurement taken once before fan-out is the timing of every runner target through the
-runner's own per-test and per-fixture duration reporting, serialized as the runner requires. Add
-instrumentation only when the runner cannot report durations, and keep it only when the plan adopts
-it. Record baseline pass/fail state, wall time per suite, and the slowest cases and fixtures. A suite
+runner's own per-test and per-fixture duration reporting, serialized as the runner requires. Use
+existing reporting capabilities; missing attribution is recorded as unmeasured, not filled by a new
+maintained diagnostic system.
+Record baseline pass/fail state, wall time per suite, and the slowest cases and fixtures. A suite
 that cannot run locally is recorded unmeasured with its CI duration when one is available.
 
 The budget is the suite budget the testing rules set, and within it no test, parametrized family
@@ -415,7 +420,7 @@ before delivery and verify that none enters the delivered diff.
   between equally valid patterns goes to the one leaving the fewest mechanisms, stated in the pull
   request, under `pre-production`'s **Trade-Offs Are Surfaced, Never Enforced**.
 - A coverage gap is closed by the test that proves it, and a misplaced test moves between suites.
-  Every added or rewritten test follows `test-fixture`, including its mutation proof per batch.
+  Every added or rewritten test follows `test-fixture`'s validation through existing tools.
 - A construction finding moves the construction to the suite's shared home and reads identities
   from the canonical fixtures. A factory-content finding deletes the override or the provider, or
   folds the repeated shape into one generator taking the value that varied; the model's default and

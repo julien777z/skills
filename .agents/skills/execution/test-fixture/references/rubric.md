@@ -78,8 +78,8 @@ assertions, not names or deletion counts. A skip, xfail, or commented-out test w
 longer holds is revived or deleted. For each contract duplicated within one classification, pick the
 keeper of that classification and carry every unique assertion into it before removing the replay;
 a test of another classification is never the keeper. Repair vacuous assertions and negative
-controls that pass for the wrong reason, and verify new or strengthened guarantees through the
-mutation proof. A failing baseline test is investigated as a possible product defect, not treated as
+controls that pass for the wrong reason, and validate new or strengthened guarantees through the
+existing-check procedure in the owning entry point. A failing baseline test is investigated as a possible product defect, not treated as
 cleanup.
 
 ## Find The Canonical Test Data
