@@ -4,14 +4,6 @@ set -euo pipefail
 SOURCE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 REPO_ROOT="$SOURCE_ROOT"
 INSTALLER_DIR="$SOURCE_ROOT/bootstrap"
-origin_lines="$(python3 "$SOURCE_ROOT/.agents/hooks/skills-refresh/session_start.py" --origins)"
-SKILLS_REMOTES=()
-
-while IFS= read -r origin; do
-  SKILLS_REMOTES+=("$origin")
-done <<< "$origin_lines"
-
-readonly SKILLS_REMOTE="${SKILLS_REMOTES[0]:?Missing shared skills origins}"
 INSTALL_MODE=apply
 LOCAL_ONLY=0
 RESOLVE_SOURCE=0
