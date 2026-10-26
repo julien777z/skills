@@ -9,11 +9,14 @@ INSTALL_MODE=apply
 LOCAL_ONLY=0
 RESOLVE_SOURCE=0
 SELECTED_SOURCE=""
+AUTO_UPDATE=0
+INSTALL_ARGUMENTS=("$@")
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
     --check) INSTALL_MODE=check ;;
     --local-only) LOCAL_ONLY=1 ;;
+    --auto-update) AUTO_UPDATE=1 ;;
     --resolve-source) RESOLVE_SOURCE=1; LOCAL_ONLY=1 ;;
     --source)
       shift
@@ -116,7 +119,7 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
       exec 9<"$reexec_marker"
       rm -f "$reexec_marker"
 
-      exec bash "$REPO_ROOT/bootstrap/install.sh"
+      exec bash "$REPO_ROOT/bootstrap/install.sh" "${INSTALL_ARGUMENTS[@]}"
     fi
   fi
 
@@ -257,13 +260,17 @@ if [ -n "${CODEX_HOME:-}" ]; then
   add_install_root codex "$CODEX_HOME"
 fi
 
+if [ -n "${CLAUDE_CONFIG_DIR:-}" ]; then
+  add_install_root claude "$CLAUDE_CONFIG_DIR"
+fi
+
 preflight_ok=1
 
 for index in "${!INSTALL_ROOTS[@]}"; do
   preflight_provider "${INSTALL_PROVIDERS[$index]}" "${INSTALL_ROOTS[$index]}" || preflight_ok=0
 
   if [ "${INSTALL_PROVIDERS[$index]}" = codex ] || [ "${INSTALL_PROVIDERS[$index]}" = claude ]; then
-    python3 "$REPO_ROOT/.agents/hooks/skills-refresh/configuration.py" preflight "${INSTALL_PROVIDERS[$index]}" "${INSTALL_ROOTS[$index]}" "$REPO_ROOT" "${CLOUD_HOME:-}" || preflight_ok=0
+    python3 "$REPO_ROOT/.agents/hooks/skills-refresh/configuration.py" preflight "${INSTALL_PROVIDERS[$index]}" "${INSTALL_ROOTS[$index]}" "$REPO_ROOT" "${CLOUD_HOME:-}" "$AUTO_UPDATE" || preflight_ok=0
   fi
 done
 

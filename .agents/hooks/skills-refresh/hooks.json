@@ -7,7 +7,7 @@
           {
             "type": "command",
             "command": "",
-            "timeout": 110,
+            "timeout": 170,
             "statusMessage": "Checking installed shared skills"
           }
         ]

@@ -19,6 +19,9 @@ def owns_command(command: object, provider: str, script: Path) -> bool:
     except ValueError:
         return False
 
+    if arguments[-1:] == ["--fetch"]:
+        arguments = arguments[:-1]
+
     if len(arguments) == 5 and arguments[0] == "env" and arguments[1].startswith("SKILLS_CLOUD_HOME="):
         arguments = arguments[2:]
 
@@ -30,7 +33,7 @@ def owns_command(command: object, provider: str, script: Path) -> bool:
     )
 
 
-def configure(mode: InstallationMode, provider: str, root: Path, source: Path, cloud_home: str) -> bool:
+def configure(mode: InstallationMode, provider: str, root: Path, source: Path, cloud_home: str, auto_update: bool = False) -> bool:
     """Merge the owned startup registration."""
 
     path = root / ("hooks.json" if provider == "codex" else "settings.json")
@@ -58,6 +61,17 @@ def configure(mode: InstallationMode, provider: str, root: Path, source: Path, c
     handler = owned["hooks"][0]
     script = root / "hooks/skills-refresh/session_start.py"
     command = ["python3", str(script), provider]
+
+    for group in groups:
+        if not isinstance(group, dict) or not isinstance(group.get("hooks"), list):
+            raise ValueError(f"Invalid SessionStart group in {path}")
+
+        for item in group["hooks"]:
+            if isinstance(item, dict) and owns_command(item.get("command"), provider, script):
+                auto_update = auto_update or split(item["command"])[-1:] == ["--fetch"]
+
+    if auto_update:
+        command.append("--fetch")
 
     if cloud_home:
         command = ["env", f"SKILLS_CLOUD_HOME={cloud_home}", *command]
@@ -101,6 +115,6 @@ def configure(mode: InstallationMode, provider: str, root: Path, source: Path, c
 
 if __name__ == "__main__":
     mode = InstallationMode(argv[1])
-    changed = configure(mode, argv[2], Path(argv[3]), Path(argv[4]), argv[5])
+    changed = configure(mode, argv[2], Path(argv[3]), Path(argv[4]), argv[5], argv[6:7] == ["1"])
 
     raise SystemExit(3 if changed and mode == InstallationMode.CHECK else 0)

@@ -31,3 +31,4 @@ class RefreshOutcome(StrEnum):
     BUSY = "busy"
     RECONCILE = "reconcile"
     REPAIRED = "repaired"
+    FAILED = "failed"
