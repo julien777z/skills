@@ -162,6 +162,13 @@ requires.
 The gate always runs as a subagent of the running session, routed as `subagent-matrix`'s
 **Dispatch** section directs.
 
+For a canonical guidance batch, one fresh gate may inspect the complete frozen diffs together and
+return a distinct verdict for each exact head. Its prompt names every head and intent, and its
+evidence retains the per-head disposition. Retain an earlier per-head acceptance only while that
+head, its inputs, and its affected-repository map remain exact; rerun the changed head and its
+dependent gates without invalidating unrelated batch heads. A shared question never lets an author
+judge their own work or collapse distinct verdicts.
+
 ## Questions
 
 Exactly one per gate, each decided by the tests in `references/rubric.md`, with nothing appended.
