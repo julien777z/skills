@@ -387,8 +387,11 @@ async function run(options, incoming) {
 
         for (const name of incoming.keys()) {
           const value = actual.environment.find((variable) => variable.name === name);
+          const input = incoming.get(name);
+          const redacted = value?.valueRedacted === true;
+          const emptySensitiveValue = input === '' && value?.value === '';
 
-          if (value?.sensitive !== true || value?.valueRedacted !== true) {
+          if (value?.sensitive !== true || (!redacted && !emptySensitiveValue)) {
             throw new Error(`Provider ${id} did not retain ${name} as a configured secret.`);
           }
         }
