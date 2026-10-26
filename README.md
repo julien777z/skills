@@ -165,7 +165,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`tailscale-config`](.agents/skills/workspace/tailscale-config/SKILL.md) — Reconcile Tailscale authority and every affected execution consumer.
 - [`tailwind-design-system`](.agents/skills/web/tailwind-design-system/SKILL.md) — Build scalable design systems with Tailwind CSS v4, design tokens, component libraries, and responsive patterns.
 - [`test-fixture`](.agents/skills/execution/test-fixture/SKILL.md) — Check test data and fixtures before changing tests or running tests after a fixture change.
-- [`test-skill`](.agents/skills/authoring/test-skill/SKILL.md) — Compare edited and original skill guidance against the same scenario.
+- [`test-skill`](.agents/skills/authoring/test-skill/SKILL.md) — Exercise guidance safely, compare behavior, and repair failing tests.
 - [`text-highlight`](.agents/skills/git/text-highlight/SKILL.md) — Show code changes in small diff-shaped excerpts that are easy to locate.
 - [`update-skills`](.agents/skills/workspace/update-skills/SKILL.md) — Refresh installed skills to the latest default branch, keeping pending skill changes in effect.
 - [`use-dashboard`](.agents/skills/workspace/use-dashboard/SKILL.md) — Turn a dashboard spec into the shared HTML page and deliver it.
