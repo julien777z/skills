@@ -14,6 +14,7 @@ from models import (
     CodexInitialize,
     CodexRequest,
     CodexTrustEdit,
+    CodexTrustStatus,
     CodexTrustWrite,
     InstallationMode,
 )
@@ -76,7 +77,7 @@ async def trust_codex_hook(root: Path, command: str) -> None:
 
             hook = owned[0]
 
-            if hook["trustStatus"] == "trusted":
+            if hook["trustStatus"] == CodexTrustStatus.TRUSTED:
                 return
 
             await _request(CodexRequest(
@@ -95,7 +96,8 @@ async def trust_codex_hook(root: Path, command: str) -> None:
             ))
 
             if not isinstance(verified, dict) or not any(
-                candidate.get("key") == hook["key"] and candidate.get("trustStatus") == "trusted"
+                candidate.get("key") == hook["key"]
+                and candidate.get("trustStatus") == CodexTrustStatus.TRUSTED
                 for entry in verified["data"] for candidate in entry["hooks"]
             ):
                 raise RuntimeError("Codex did not retain the shared startup hook trust")

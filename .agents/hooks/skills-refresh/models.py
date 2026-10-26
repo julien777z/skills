@@ -39,6 +39,15 @@ class CodexClientInfo(TypedDict):
     version: str
 
 
+class CodexTrustStatus(StrEnum):
+    """Native hook trust states exposed by the Codex app server."""
+
+    MANAGED = "managed"
+    UNTRUSTED = "untrusted"
+    TRUSTED = "trusted"
+    MODIFIED = "modified"
+
+
 class CodexInitialize(TypedDict):
     clientInfo: CodexClientInfo
 
