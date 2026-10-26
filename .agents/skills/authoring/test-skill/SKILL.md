@@ -77,6 +77,15 @@ between the runs establishes improvement. Do not confuse those conclusions.
    improvement was demonstrated there; this is a valid conclusion, not a failing test. Never force
    an original-guidance miss, change criteria to reward wording recall, or claim causation from
    matching behavior. A failing edited run requires repair regardless of the original's result.
+   When both pass, decide whether the guidance still earns its place: an explicit policy, a
+   documented failure outside these samples, a clarified boundary or a useful consistency guarantee
+   can justify retaining it without demonstrated improvement in this run. Remove or reshape wording
+   that adds no useful instruction. Judge the complete change, not the control result alone, and
+   record the evidence for retaining or removing each independently meaningful edit. When independent
+   edits deserve different outcomes, separate them through the repository's pull-request workflow
+   where authorized; keep coupled instructions and their required repairs together. This assessment
+   recommends which changes should merge; the caller still completes acceptance and the authorized
+   merge gate. A passing smoke test alone never decides that a pull request should merge.
 7. **Repair and rerun until verified.** Diagnose each reported issue at its owner. Fix guidance
    that permits the wrong behavior; fix an invalid fixture, unavailable simulated operation, wrong
    reading list, ambiguous criterion or broken runner before judging guidance. Retain the diagnosis
@@ -146,6 +155,8 @@ A reads the edited text, B the original.
 
 Comparison: improvement demonstrated | both meet the behavior; no improvement demonstrated
 
+Disposition: retain | reshape | remove | separate independent changes — <value judgment and evidence>
+
 Diagnoses: <one line per step 7 change: scenario, round, run label, cause, change made> | None
 
 Evidence: <name of the sent file>
@@ -153,9 +164,9 @@ Evidence: <name of the sent file>
 Verdict: passes (round <n>) | not run: <nonbehavioral change under When It Runs>
 ```
 
-- **One titled table per scenario**, with its legend and supported Comparison underneath;
-  Diagnoses and Verdict follow the last one. Both rows may pass. Use the actual results rather
-  than copying the illustrative control miss above.
+- **One titled table per scenario**, with its legend, supported Comparison and evidence-backed
+  Disposition underneath; Diagnoses and Verdict follow the last one. Both rows may pass. Use the
+  actual results rather than copying the illustrative control miss above.
 - **One row per run**, labelled with the model and a letter: A reads the edited text, B the
   original, or no skill text for a new skill, which its legend line says. Each row shows its latest
   run.
@@ -189,6 +200,7 @@ evidence behind every cell, one section per skill:
 - **Environment:** <baseline identity, isolated resources, and verified execution boundary>
 - **Retained results:** <raw report, dispatch receipt, action record and resulting-state locators>
 - **<criterion>, <pass | miss>:** <artifact location or exact finding with supporting source>
+- **Edit disposition:** <each independent edit, retain/reshape/remove/separate decision, and value evidence>
 - **Round <n>, for the record:** <what the run missed before its rerun>
 
 #### Dispatch attempt <n> (incomplete pair)
