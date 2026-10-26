@@ -157,6 +157,8 @@ Comparison: improvement demonstrated | both meet the behavior; no improvement de
 
 Disposition: retain | reshape | remove | separate independent changes — <value judgment and evidence>
 
+Recommendation: merge | reshape before merge | remove | separate independent changes — <whole-PR value judgment and evidence>
+
 Diagnoses: <one line per step 7 change: scenario, round, run label, cause, change made> | None
 
 Evidence: <name of the sent file>
@@ -165,8 +167,10 @@ Verdict: passes (round <n>) | not run: <nonbehavioral change under When It Runs>
 ```
 
 - **One titled table per scenario**, with its legend, supported Comparison and evidence-backed
-  Disposition underneath; Diagnoses and Verdict follow the last one. Both rows may pass. Use the
-  actual results rather than copying the illustrative control miss above.
+  Disposition underneath. One whole-PR Recommendation reconciles those dispositions after the last
+  scenario, before Diagnoses and Verdict; a merge recommendation remains subject to the caller's
+  gates. Both rows may pass. Use the actual results rather than copying the illustrative control
+  miss above.
 - **One row per run**, labelled with the model and a letter: A reads the edited text, B the
   original, or no skill text for a new skill, which its legend line says. Each row shows its latest
   run.
@@ -219,6 +223,8 @@ evidence behind every cell, one section per skill:
 The heading reads `## Evidence: <skill name>` when the file covers several skills; the round in a
 reader-run heading and the round bullet appear only on a run that was rerun. An incomplete-pair
 dispatch attempt omits criterion scoring because it produced no comparable reader pair.
+Retain the whole-PR recommendation with its per-edit rationale and supporting artifact locators
+in the same evidence file; per-scenario conclusions do not replace that decision.
 
 ## Guardrails
 
