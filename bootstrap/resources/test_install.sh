@@ -411,6 +411,30 @@ for root, filename in ((".codex", "hooks.json"), (".claude", "settings.json"), (
 assert loads((home / ".codex/hooks.json").read_text())["foreignSetting"] == "preserved"
 PYHOOK
 
+for remote_origin in "$SKILLS_REMOTE" "${SKILLS_REMOTE%.git}" \
+  git@github.com:julien777z/skills.git git@github.com:julien777z/skills; do
+  git config --file "$remote_home/.gitconfig" --add \
+    "url.file://$remote_repository.insteadOf" "$remote_origin"
+  git -C "$remote_checkout" remote set-url origin "$remote_origin"
+  env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" \
+    PATH="$remote_home/.local/bin:$PATH" CODEX_HOME= CLAUDE_CONFIG_DIR="$remote_home/.claude-2" \
+    bash "$remote_checkout/bootstrap/install.sh" --local-only --check
+  env HOME="$remote_home" PATH="$remote_home/.local/bin:$PATH" \
+    SKILLS_CLOUD_HOME="$remote_home" CLAUDE_CONFIG_DIR="$remote_home/.claude-2" \
+    python3 "$remote_home/.codex/hooks/skills-refresh/session_start.py" --update \
+    > "$fixture/origin-update-output"
+  [ "$(cat "$fixture/origin-update-output")" = current ]
+done
+
+git -C "$remote_checkout" remote set-url origin "file://$remote_repository"
+assert_status 1 env HOME="$remote_home" PATH="$remote_home/.local/bin:$PATH" \
+  SKILLS_CLOUD_HOME="$remote_home" CLAUDE_CONFIG_DIR="$remote_home/.claude-2" \
+  bash "$remote_checkout/bootstrap/install.sh" --local-only --check
+assert_status 1 env HOME="$remote_home" PATH="$remote_home/.local/bin:$PATH" \
+  SKILLS_CLOUD_HOME="$remote_home" CLAUDE_CONFIG_DIR="$remote_home/.claude-2" \
+  python3 "$remote_home/.codex/hooks/skills-refresh/session_start.py" --update
+git -C "$remote_checkout" remote set-url origin "$SKILLS_REMOTE"
+
 remote_writer="$fixture/remote-writer"
 git clone --quiet "$remote_repository" "$remote_writer"
 printf '%s\n' '# Latest shared guidance' >> "$remote_writer/.agents/global.md"

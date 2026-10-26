@@ -4,8 +4,17 @@ from os import chown, geteuid, replace
 from pathlib import Path
 from subprocess import PIPE, run
 from tempfile import NamedTemporaryFile
+from typing import Final
 
 from models import RefreshOutcome
+
+
+SKILLS_REMOTES: Final[tuple[str, ...]] = (
+    "https://github.com/julien777z/skills.git",
+    "https://github.com/julien777z/skills",
+    "git@github.com:julien777z/skills.git",
+    "git@github.com:julien777z/skills",
+)
 
 
 def git(source: Path, *arguments: str) -> str:
@@ -34,12 +43,7 @@ def fetch_updates(source: Path) -> RefreshOutcome:
     checkout = checkout_root(source)
     remote = git(checkout, "config", "--get", "remote.origin.url")
 
-    if remote not in (
-        "https://github.com/julien777z/skills.git",
-        "https://github.com/julien777z/skills",
-        "git@github.com:julien777z/skills.git",
-        "git@github.com:julien777z/skills",
-    ):
+    if remote not in SKILLS_REMOTES:
         raise ValueError("Automatic refresh requires the shared skills origin")
 
     run(

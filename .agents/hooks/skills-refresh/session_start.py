@@ -7,7 +7,7 @@ from sys import argv, executable, stderr, stdin
 from tempfile import TemporaryDirectory
 
 from models import RefreshOutcome, StartupContext, StartupResult
-from state import fetch_updates, overlay_changed
+from state import SKILLS_REMOTES, fetch_updates, overlay_changed
 
 
 logger = getLogger(__name__)
@@ -156,7 +156,9 @@ def session_start(provider: str, fetch: bool = False) -> None:
 
 
 if __name__ == "__main__":
-    if argv[1:2] == ["--repair"]:
+    if argv[1:] == ["--origins"]:
+        print("\n".join(SKILLS_REMOTES))
+    elif argv[1:2] == ["--repair"]:
         repair(Path(argv[2]), Path(argv[3]), argv[4:] == ["--fetch"])
     elif argv[1:] == ["--update"]:
         result = refresh(Path(__file__).resolve().parents[3], fetch=True)
@@ -170,4 +172,4 @@ if __name__ == "__main__":
     elif argv[1:2] in (["codex"], ["claude"]) and argv[2:] in ([], ["--fetch"]):
         session_start(argv[1], argv[2:] == ["--fetch"])
     else:
-        raise ValueError("Expected the codex or claude adapter, or --repair source outcome")
+        raise ValueError("Expected codex|claude [--fetch], --update, --origins, or --repair source outcome [--fetch]")

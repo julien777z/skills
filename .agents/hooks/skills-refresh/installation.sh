@@ -1,11 +1,13 @@
 # Shared installation and source-selection helpers. Source from Bash.
 
 is_skills_remote() {
-  case "$1" in
-    "$SKILLS_REMOTE"|https://github.com/julien777z/skills|git@github.com:julien777z/skills.git|git@github.com:julien777z/skills)
-      return 0 ;;
-    *) return 1 ;;
-  esac
+  local accepted
+
+  for accepted in "${SKILLS_REMOTES[@]}"; do
+    [ "$1" != "$accepted" ] || return 0
+  done
+
+  return 1
 }
 
 source_git() {
