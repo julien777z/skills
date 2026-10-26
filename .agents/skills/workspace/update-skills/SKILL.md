@@ -110,7 +110,9 @@ deadline.
    local inputs only after this workflow rebuilds that overlay: after step 5’s link verification, run
    `python3 <installation-source>/.agents/hooks/skills-refresh/record_overlay.py <installation-source>`
    when step 4 built it in this run. A generic installer invocation never certifies overlay
-   inputs. Preserve native hook trust requirements; never write trust hashes or bypass review.
+   inputs. Preserve native hook trust requirements. An explicitly opted-in installation may approve
+   only its owned startup hook through the native API; never edit persisted trust hashes directly
+   or disable hook trust.
 6. Once the links point into the installed source, remove every other `skills-overlay/` worktree of
    the checkout, complete or not; this step alone removes overlays. First compare each with the
    built head step 2 recorded for it, or for each of this run's abandoned builds the head it
