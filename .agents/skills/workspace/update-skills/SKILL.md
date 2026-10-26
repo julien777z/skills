@@ -9,7 +9,9 @@ short_description: 'Refresh installed skills to the latest default branch, keepi
 Refresh the user-level agent roots from the shared skills repository. An agent runs this skill
 when the GitHub rules' **After Agent Sync** section calls for it; cloud setup also runs the
 installer when a session starts. The shared SessionStart hook repairs local installation links
-without fetching remotely. When it reports changed overlay inputs, run this workflow before ordinary
+without fetching remotely by default. An installation can opt into fetching at startup and resume;
+only clean default-branch checkouts fast-forward automatically. When it reports changed overlay inputs
+or pending work needing the fetched default branch, run this workflow before ordinary
 work. Keep overlay rebuilding here, rather than in the hook.
 This skill never copies provider mirrors by hand.
 

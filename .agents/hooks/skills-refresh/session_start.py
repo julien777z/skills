@@ -49,7 +49,7 @@ def repair(source: Path, outcome: Path, fetch: bool = False) -> None:
             updated = remote_outcome == RefreshOutcome.REPAIRED
 
     if overlay_changed(selected_source):
-        outcome.write_text(RefreshOutcome.RECONCILE)
+        outcome.write_text(RefreshOutcome.FAILED if fetch_failed else RefreshOutcome.RECONCILE)
 
         return
 

@@ -308,6 +308,7 @@ printf '%s\n' '# Global guidance' > "$repo/.agents/global.md"
 printf '%s\n' '# Rule' > "$repo/.agents/rules/example.md"
 printf '%s\n' '---' 'name: sample' 'description: Sample skill' '---' > "$repo/.agents/skills/example/sample/SKILL.md"
 cp "$repo/.agents/skills/example/sample/SKILL.md" "$repo/.agents/.auto_generated/.codex/skills/sample/SKILL.md"
+printf '%s\n' '__pycache__/' > "$repo/.gitignore"
 git -C "$repo" init --quiet
 git -C "$repo" remote add origin "$SKILLS_REMOTE"
 commit_all "$repo"
@@ -337,6 +338,100 @@ chmod +x "$no_fetch_bin/git"
     PATH="$no_fetch_bin:$PATH" bash "$no_fetch_clone/bootstrap/install.sh" --check --local-only
 )
 assert_absent "$no_fetch_marker"
+
+remote_home="$fixture/remote-home"
+remote_repository="$fixture/remote-origin.git"
+remote_checkout="$remote_home/.local/share/agent-skills"
+mkdir -p "$remote_home/.codex" "$remote_home/.claude" "$remote_home/.claude-2" "$(dirname "$remote_checkout")"
+git clone --quiet --bare "$repo" "$remote_repository"
+git --git-dir="$remote_repository" branch -M main
+git --git-dir="$remote_repository" symbolic-ref HEAD refs/heads/main
+git config --file "$remote_home/.gitconfig" "url.file://$remote_repository.insteadOf" "$SKILLS_REMOTE"
+env HOME="$remote_home" git clone --quiet "$SKILLS_REMOTE" "$remote_checkout"
+write_foreign_configuration "$remote_home/.codex/hooks.json" codex
+
+env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" CODEX_HOME= \
+  CLAUDE_CONFIG_DIR="$remote_home/.claude-2" bash "$remote_checkout/bootstrap/install.sh" --local-only --auto-update
+env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" CODEX_HOME= \
+  CLAUDE_CONFIG_DIR="$remote_home/.claude-2" bash "$remote_checkout/bootstrap/install.sh" --local-only
+python3 - "$remote_home" <<'PYHOOK'
+from json import loads
+from pathlib import Path
+from shlex import split
+from sys import argv
+
+home = Path(argv[1])
+
+for root, filename in ((".codex", "hooks.json"), (".claude", "settings.json"), (".claude-2", "settings.json")):
+    groups = loads((home / root / filename).read_text())["hooks"]["SessionStart"]
+    owned = [handler["command"] for group in groups for handler in group["hooks"] if str(home / root / "hooks/skills-refresh/session_start.py") in handler["command"]]
+    assert len(owned) == 1, owned
+    assert split(owned[0])[-1] == "--fetch", owned
+
+assert loads((home / ".codex/hooks.json").read_text())["foreignSetting"] == "preserved"
+PYHOOK
+
+remote_writer="$fixture/remote-writer"
+git clone --quiet "$remote_repository" "$remote_writer"
+printf '%s\n' '# Latest shared guidance' >> "$remote_writer/.agents/global.md"
+commit_all "$remote_writer"
+git -C "$remote_writer" push --quiet origin main
+remote_latest="$(git -C "$remote_writer" rev-parse HEAD)"
+printf '%s\n' '{"hook_event_name":"SessionStart","source":"startup"}' | \
+  env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" CODEX_HOME= SKILLS_CLOUD_HOME="$remote_home" \
+    python3 "$remote_home/.claude/hooks/skills-refresh/session_start.py" claude --fetch \
+    > "$fixture/remote-session-output"
+[ "$(git -C "$remote_checkout" rev-parse HEAD)" = "$remote_latest" ]
+assert_session_output "$fixture/remote-session-output" claude 'Installed shared skill and rule links were repaired and verified'
+
+remote_overlay="$fixture/remote-overlay"
+add_overlay "$remote_checkout" "$remote_overlay" complete
+python3 "$remote_overlay/.agents/hooks/skills-refresh/record_overlay.py" "$remote_overlay"
+env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" CODEX_HOME= \
+  bash "$remote_checkout/bootstrap/install.sh" --local-only --source "$remote_overlay"
+printf '%s\n' '{"hook_event_name":"SessionStart","source":"startup"}' | \
+  env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" CODEX_HOME= SKILLS_CLOUD_HOME="$remote_home" \
+    python3 "$remote_home/.codex/hooks/skills-refresh/session_start.py" codex --fetch \
+    > "$fixture/current-remote-overlay-output"
+[ ! -s "$fixture/current-remote-overlay-output" ]
+printf '%s\n' '# Updated overlay base' >> "$remote_writer/.agents/global.md"
+commit_all "$remote_writer"
+git -C "$remote_writer" push --quiet origin main
+printf '%s\n' '{"hook_event_name":"SessionStart","source":"resume"}' | \
+  env HOME="$remote_home" CODEX_HOME= SKILLS_CLOUD_HOME="$remote_home" \
+    python3 "$remote_home/.codex/hooks/skills-refresh/session_start.py" codex --fetch \
+    > "$fixture/pending-remote-overlay-output"
+assert_session_output "$fixture/pending-remote-overlay-output" pending 'Run update-skills before ordinary work'
+[ "$(git -C "$remote_overlay" rev-parse HEAD)" = "$remote_latest" ]
+env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" CODEX_HOME= \
+  bash "$remote_checkout/bootstrap/install.sh" --local-only --source "$remote_checkout"
+git -C "$remote_checkout" worktree remove "$remote_overlay"
+
+
+printf '%s\n' '# Keep local guidance' >> "$remote_checkout/.agents/global.md"
+printf '%s\n' '# New remote guidance' >> "$remote_writer/.agents/global.md"
+commit_all "$remote_writer"
+git -C "$remote_writer" push --quiet origin main
+cp "$remote_checkout/.agents/global.md" "$fixture/dirty-guidance"
+printf '%s\n' '{"hook_event_name":"SessionStart","source":"resume"}' | \
+  env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" CODEX_HOME= SKILLS_CLOUD_HOME="$remote_home" \
+    python3 "$remote_home/.codex/hooks/skills-refresh/session_start.py" codex --fetch \
+    > "$fixture/dirty-session-output"
+[ "$(git -C "$remote_checkout" rev-parse HEAD)" = "$remote_latest" ]
+cmp "$remote_checkout/.agents/global.md" "$fixture/dirty-guidance"
+assert_session_output "$fixture/dirty-session-output" pending 'Run update-skills before ordinary work'
+
+mv "$remote_repository" "$fixture/offline-origin.git"
+printf '%s\n' '{"hook_event_name":"SessionStart","source":"startup"}' | \
+  env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" CODEX_HOME= SKILLS_CLOUD_HOME="$remote_home" \
+    python3 "$remote_home/.codex/hooks/skills-refresh/session_start.py" codex --fetch \
+    > "$fixture/offline-session-output" 2> "$fixture/offline-session-error"
+assert_session_output "$fixture/offline-session-output" pending 'Remote skills refresh failed'
+grep -q 'CalledProcessError' "$fixture/offline-session-error"
+cmp "$remote_checkout/.agents/global.md" "$fixture/dirty-guidance"
+assert_status 1 env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" CODEX_HOME= SKILLS_CLOUD_HOME="$remote_home" \
+  python3 "$remote_home/.codex/hooks/skills-refresh/session_start.py" --update
+mv "$fixture/offline-origin.git" "$remote_repository"
 
 cloud_home="$fixture/cloud"
 runtime_home="$fixture/runtime/codex-home"
@@ -492,12 +587,18 @@ done
 printf '%s\n' '{"hook_event_name":"SessionStart","source":"startup"}' | \
   env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$session_home" \
     CODEX_HOME="$session_runtime" \
-    python3 "$session_runtime/hooks/skills-refresh/session_start.py" codex \
+    python3 "$session_runtime/hooks/skills-refresh/session_start.py" codex --fetch \
     > "$fixture/busy-session-output"
 kill -0 "$lock_holder_pid"
 assert_absent "$session_runtime/skills/sample"
 assert_session_output "$fixture/busy-session-output" codex \
   'startup check has not run'
+
+assert_status 1 env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$session_home" \
+  CODEX_HOME="$session_runtime" \
+  python3 "$session_runtime/hooks/skills-refresh/session_start.py" --update
+kill -0 "$lock_holder_pid"
+assert_absent "$session_runtime/skills/sample"
 
 printf '%s\n' '{"hook_event_name":"SessionStart","source":"startup"}' | \
   env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$session_home" \
@@ -708,7 +809,7 @@ printf '%s\n' '{"hook_event_name":"SessionStart","source":"startup"}' | \
     python3 "$overlay_home/.codex/hooks/skills-refresh/session_start.py" codex \
     > "$fixture/missing-overlay-receipt-output"
 assert_session_output "$fixture/missing-overlay-receipt-output" codex \
-  'Shared skills overlay inputs changed'
+  'Shared skills need reconciliation'
 
 env HOME="$overlay_home" python3 \
   "$fixture/overlay-new/.agents/hooks/skills-refresh/record_overlay.py" \
@@ -731,7 +832,7 @@ printf '%s\n' '{"hook_event_name":"SessionStart","source":"resume"}' | \
     python3 "$overlay_home/.codex/hooks/skills-refresh/session_start.py" codex \
     > "$fixture/newer-overlay-output"
 assert_session_output "$fixture/newer-overlay-output" codex \
-  'Shared skills overlay inputs changed'
+  'Shared skills need reconciliation'
 snapshot_tree "$overlay_home/.codex" "$overlay_home/.agents" > "$fixture/after-newer-overlay"
 cmp "$fixture/before-newer-overlay" "$fixture/after-newer-overlay"
 git -C "$overlay_repo" worktree remove "$fixture/overlay-unrecorded"
@@ -760,6 +861,6 @@ printf '%s\n' '{"hook_event_name":"SessionStart","source":"resume"}' | \
     > "$fixture/overlay-session-output"
 assert_absent "$overlay_home/.codex/skills/sample"
 assert_session_output "$fixture/overlay-session-output" codex \
-  'Shared skills overlay inputs changed'
+  'Shared skills need reconciliation'
 
 echo 'Installer regression checks passed'

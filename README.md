@@ -50,8 +50,13 @@ Claude, Codex, and Cursor user roots. Codex's global `AGENTS.md` links to the sa
 `global.md` rule used by the other harnesses. Repository-specific rules stay in each repository's
 `project.md`. The installer registers the owned SessionStart handler without replacing other hooks or settings.
 Codex requires its native review and trust of a new hook definition before running it. Startup checks
-use local sources without fetching remotely; `update-skills` owns remote refreshes and rebuilding
-pending overlays. A changed overlay input instructs the agent to reconcile before ordinary work.
+use local sources by default. Enable fetching the latest default branch at startup and resume with
+`bash bootstrap/install.sh --local-only --auto-update`. The installer retains this choice when
+repairing links. Set `CLAUDE_CONFIG_DIR` to install an additional Claude profile alongside the default.
+Use `python3 "$HOME/.codex/hooks/skills-refresh/session_start.py" --update` for a manual refresh.
+Remote refresh uses existing Git credentials and fast-forwards only a clean default-branch checkout.
+Pending work stays installed; `update-skills` rebuilds its overlay before ordinary work. An unavailable
+remote is reported while the installed guidance remains usable.
 Claude requests a skill re-scan after a startup repair. Codex discovers skills before its
 SessionStart hook; newly repaired skills appear in the next session, and the hook reports that
 limitation rather than claiming the active catalogue was reloaded.

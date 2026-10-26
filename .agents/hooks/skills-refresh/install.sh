@@ -66,9 +66,9 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
 
     if [ "$(id -u)" -eq 0 ]; then
       # Attached Claude checkouts belong to the session user, not the setup-clone owner.
-      remote="$(git -c "safe.directory=$1" -C "$1" remote get-url origin 2>/dev/null || true)"
+      remote="$(git -c "safe.directory=$1" -C "$1" config --get remote.origin.url 2>/dev/null || true)"
     else
-      remote="$(run_as_cloud_user git -C "$1" remote get-url origin 2>/dev/null || true)"
+      remote="$(run_as_cloud_user git -C "$1" config --get remote.origin.url 2>/dev/null || true)"
     fi
 
     is_skills_remote "$remote"

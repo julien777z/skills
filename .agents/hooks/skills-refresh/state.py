@@ -32,7 +32,7 @@ def fetch_updates(source: Path) -> RefreshOutcome:
     """Fetch the default branch, preserving pending work for reconciliation."""
 
     checkout = checkout_root(source)
-    remote = git(checkout, "remote", "get-url", "origin")
+    remote = git(checkout, "config", "--get", "remote.origin.url")
 
     if remote not in (
         "https://github.com/julien777z/skills.git",

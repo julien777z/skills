@@ -79,7 +79,7 @@ check_link() {
     "$MAIN_CHECKOUT"/*) old_root="$MAIN_CHECKOUT" ;;
     *)
       old_root="$(git -c safe.directory='*' -C "$(dirname "$resolved")" rev-parse --show-toplevel 2>/dev/null || true)"
-      old_remote="$(git -c safe.directory='*' -C "$old_root" remote get-url origin 2>/dev/null || true)"
+      old_remote="$(git -c safe.directory='*' -C "$old_root" config --get remote.origin.url 2>/dev/null || true)"
 
       is_skills_remote "$old_remote" || old_root=""
       ;;
