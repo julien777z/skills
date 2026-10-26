@@ -33,7 +33,7 @@ hold. A held entry does not keep its batch in flight.
   entry to the batch in flight puts it there.
 - **A run that finds a batch in flight** freezes nothing. It leaves the batch to its owner while the
   owner's record shows it delivering and the owner is live; otherwise it takes ownership under
-  `session-ledger`'s transfer rule and resumes the batch at its recorded stages.
+  `session-ledger`'s transfer rule and resumes the batch at its recorded first nonterminal stage.
 - **When a batch is done**, its owner freezes and delivers the next batch. When no entry qualifies,
   it returns, reporting each remaining hold; a waiting entry is never reported as a hold.
 
@@ -41,7 +41,10 @@ hold. A held entry does not keep its batch in flight.
 
 1. Resolve and read the active task's ledger through `session-ledger`. Honor `execute-task`'s
    **Priority** before starting permanent guidance delivery; retain its saved next action while
-   recovery holds that work. Verify each entry's evidence
+   recovery holds that work. Before freezing or prioritizing a batch, reconcile every recorded hold
+   with its current owner and authoritative dependency evidence. Discharge a completed dependency,
+   retain a genuine authorization or dependency hold with its saved next action, and resume any
+   nonterminal delivery stage without repeating a verified receipt. Verify each entry's evidence
    before acting; a missing, invalid, or incomplete ledger is a recovery condition, not an empty
    result.
 2. Classify each entry by `kind`, then follow its owning workflow.
