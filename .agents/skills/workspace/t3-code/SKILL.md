@@ -25,8 +25,8 @@ accepts supplied data; it does not depend on an application, clipboard, or crede
   An authorized request covers applying its disclosed batch; do not ask the user to approve it again.
 
 Merges replace matching variable names and preserve every unrelated variable and provider field.
-An empty value is a value, never a removal. Imported values are sensitive by default, matching
-T3's Add variable behavior. Preserve existing redaction markers and let T3 store secrets.
+An empty value is a value, never a removal. Imported values are non-sensitive by default. Preserve
+existing redaction markers and let T3 store existing secrets unchanged.
 
 For example, with the resolved helper path in `T3_ENV_SCRIPT`:
 

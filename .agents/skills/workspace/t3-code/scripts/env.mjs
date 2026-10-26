@@ -301,7 +301,7 @@ function mergeInstance(instance, incoming, options) {
   if (options.command === 'unset') {
     for (const name of options.names) environment.delete(name);
   } else {
-    for (const [name, value] of incoming) environment.set(name, { name, value, sensitive: true });
+    for (const [name, value] of incoming) environment.set(name, { name, value, sensitive: false });
   }
 
   return { ...instance, environment: [...environment.values()] };
@@ -388,11 +388,9 @@ async function run(options, incoming) {
         for (const name of incoming.keys()) {
           const value = actual.environment.find((variable) => variable.name === name);
           const input = incoming.get(name);
-          const redacted = value?.valueRedacted === true;
-          const emptySensitiveValue = input === '' && value?.value === '';
 
-          if (value?.sensitive !== true || (!redacted && !emptySensitiveValue)) {
-            throw new Error(`Provider ${id} did not retain ${name} as a configured secret.`);
+          if (value?.sensitive !== false || value?.value !== input) {
+            throw new Error(`Provider ${id} did not retain ${name} as a configured value.`);
           }
         }
 
