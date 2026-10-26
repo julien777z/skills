@@ -1,6 +1,6 @@
 ---
 name: subagent-matrix
-description: Apply before every subagent launch, including a workflow coordinator or nested reviewer, and when selecting a live skill-verification model. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or smoke reader. Resolve cheap, standard, advanced, and frontier capability levels from the host catalogue and documented dispatch candidates. Attempt the assigned work with a catalogue-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, and route independent steps through a subagent of the running session.
+description: Apply before every subagent launch, including a workflow coordinator or nested reviewer, and when selecting a live skill-verification model. Default reasoning effort to medium unless the user or invoking skill explicitly specifies another effort. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or smoke reader. Resolve cheap, standard, advanced, and frontier capability levels from the host catalogue and documented dispatch candidates. Attempt the assigned work with a catalogue-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, and route independent steps through a subagent of the running session.
 short_description: 'Select a model capability level for live verification chats or subagent delegation.'
 ---
 
@@ -46,15 +46,18 @@ agent; the calling agent launches the actual assignment with the selected model.
    never relabel it as the requested level. Without that policy, stop the dependent step and report the
    unsupported request, host receipt, and waiting work to the caller; do not substitute another model or
    replace an independent step in process. Preserve one resolved model within comparison pairs.
-5. The calling agent chooses a capability level and reasoning effort for each role or chat. Honor the user's
+5. The calling agent chooses a capability level for each role or chat. Honor the user's
    explicit model or capability-level constraint first, then the configured role selection, then the
    calling skill's capability level. For a live
    skill-verification chat, choose the least-capable suitable mapped family, resolve its exact candidate, and
    launch the actual chat assignment; never skip that family because the catalogue omits it. Advance to another
    family only after an explicit unsupported receipt and only as the caller's fallback policy permits. Otherwise
    use the task criteria in the table, with **standard** as the default. Reserve frontier for the most demanding
-   assignments unless specifically required. Use **medium** reasoning for bounded checks and **high** for
-   complex, cross-cutting work; never dispatch a subagent at any other reasoning effort. An explicit user model
+   assignments unless specifically required. Default reasoning effort to **medium** for every
+   assignment, including complex work, independent reviews, coordinators, and higher-capability
+   models. Use another effort only when the user or invoking skill explicitly specifies it for
+   that assignment; retain the instruction as dispatch evidence. Complexity, role, model capability,
+   and the parent agent's own effort do not override the default. An explicit user model
    override is the exact dispatch candidate even when the catalogue omits it; report it as an override rather
    than relabeling it as a different capability level.
 6. Select the chosen identifier and reasoning effort explicitly when starting a verification chat or
@@ -68,7 +71,8 @@ agent; the calling agent launches the actual assignment with the selected model.
    the parent happens to use the selected model. Correct the call before launching: on Codex,
    send the selected `model` and effort with `fork_turns: "none"`. Delegating through a coordinator
    does not change the child's role or permit a history fork to inherit the coordinator's model.
-   Record the arguments the host accepted; a missing or mismatched field is an invalid dispatch,
+   Check that effort is medium or has the explicit instruction required above. Record the
+   arguments the host accepted; a missing or mismatched field is an invalid dispatch,
    not review evidence. Replace that reader with an explicitly selected reader before counting
    the required review or gate as complete.
 
@@ -104,13 +108,19 @@ context and returns its verdict into the step waiting on it; nothing else does b
   finished worker cannot be resumed, the delegating agent carries out what the verdict calls for,
   such as the fix steps a flag names, itself. With no
   delegating agent to ask, the step is reported as not run, and whatever it gates stays gated.
-- **A worker that ends before its work is done is replaced, never reported as a question.** A
-  crash, a lost session or a harness stop, including the stop a user's interruption of the
-  delegating agent's turn sends to every running worker, leaves the work as authorized as it was.
-  Start a new worker on the same assignment at once, briefed from what the stopped one left: its
-  branch, its commits, its uncommitted files and its last hand-up. A notice that a worker will not
-  be resumed says only that its context is gone; the user's own words withdrawing that work are
-  what stop it.
+- **An early final does not finish the assignment.** Reconcile its retained results and live child
+  jobs before replacing anything. The parent takes over unfinished coordination and keeps waiting
+  for existing producers; it does not launch another coordinator to relay the same work. Replace
+  only an unfinished execution that actually stopped, using a fresh worker with its branch,
+  commits, uncommitted files and last hand-up. A crash, lost session or harness stop does not
+  withdraw the user's authority, and neither a completed job nor a running one is repeated merely
+  because its coordinator ended.
+- **The producer retains its complete result before handing it up.** Give it a durable private
+  destination and the owning workflow's required result contract in the brief. The parent reads
+  that original and checks its target and required coverage before counting completion; a short
+  original can be complete, while a rewritten summary cannot replace missing evidence. Recover
+  an original from retained host output when available; otherwise repeat only the unproven step,
+  not the surrounding cohort.
 - **A worker hands each capture the user should see up the same way, as it is made.** Through any
   mid-run channel the host gives it to the delegating agent, it sends the file path and a line on
   what the capture shows; a worker whose only channel is its final message returns with the
@@ -119,7 +129,11 @@ context and returns its verdict into the step waiting on it; nothing else does b
   agent splits the work so each delegation ends at one such capture, and forwards each as it
   arrives.
 - **Assign one implementation owner per coherent scope, and a fresh worker for each delegated
-  task.** The primary agent retains integration, dependencies and product decisions. Delegate
+  task.** The primary agent retains integration, dependencies, product decisions and orchestration.
+  Delegate work that produces an independent result, not a wrapper that only invokes another
+  coordinator. Before launching, settle its checked prerequisites, immutable inputs, actual
+  role-resolved launch arguments and required handoff; unresolved setup stays with the current
+  owner rather than becoming a worker's discovery task. Delegate
   independently owned scopes with explicit files, inputs, expected result and handoff; do not split
   a coupled feature among workers merely to increase parallelism. Workers may build in parallel
   only when their edits and resources do not overlap and neither needs an unsettled output from the

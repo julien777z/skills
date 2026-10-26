@@ -88,8 +88,8 @@ receives five things and nothing else:
 1. the intent statement;
 2. the originating diff, with its deletions first;
 3. the item under judgement — an issue or finding, a proposal, a diff, an incoming base diff, or a
-   record; a diff that adds or changes tests carries their per-test durations, and the total for
-   each module holding one, from the run that verified it;
+   record; a diff that adds or changes tests carries the cost evidence from its verification run
+   under `test-fixture`'s existing-reporting procedure, including any unmeasured attribution;
 4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**;
 5. exactly one question from the list below.
 
@@ -161,6 +161,13 @@ requires.
 
 The gate always runs as a subagent of the running session, routed as `subagent-matrix`'s
 **Dispatch** section directs.
+
+For a canonical guidance batch, one fresh gate may inspect the complete frozen diffs together and
+return a distinct verdict for each exact head. Its prompt names every head and intent, and its
+evidence retains the per-head disposition. Retain an earlier per-head acceptance only while that
+head, its inputs, and its affected-repository map remain exact; rerun the changed head and its
+dependent gates without invalidating unrelated batch heads. A shared question never lets an author
+judge their own work or collapse distinct verdicts.
 
 ## Questions
 
