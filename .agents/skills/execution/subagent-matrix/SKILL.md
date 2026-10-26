@@ -108,13 +108,19 @@ context and returns its verdict into the step waiting on it; nothing else does b
   finished worker cannot be resumed, the delegating agent carries out what the verdict calls for,
   such as the fix steps a flag names, itself. With no
   delegating agent to ask, the step is reported as not run, and whatever it gates stays gated.
-- **A worker that ends before its work is done is replaced, never reported as a question.** A
-  crash, a lost session or a harness stop, including the stop a user's interruption of the
-  delegating agent's turn sends to every running worker, leaves the work as authorized as it was.
-  Start a new worker on the same assignment at once, briefed from what the stopped one left: its
-  branch, its commits, its uncommitted files and its last hand-up. A notice that a worker will not
-  be resumed says only that its context is gone; the user's own words withdrawing that work are
-  what stop it.
+- **An early final does not finish the assignment.** Reconcile its retained results and live child
+  jobs before replacing anything. The parent takes over unfinished coordination and keeps waiting
+  for existing producers; it does not launch another coordinator to relay the same work. Replace
+  only an unfinished execution that actually stopped, using a fresh worker with its branch,
+  commits, uncommitted files and last hand-up. A crash, lost session or harness stop does not
+  withdraw the user's authority, and neither a completed job nor a running one is repeated merely
+  because its coordinator ended.
+- **The producer retains its complete result before handing it up.** Give it a durable private
+  destination and the owning workflow's required result contract in the brief. The parent reads
+  that original and checks its target and required coverage before counting completion; a short
+  original can be complete, while a rewritten summary cannot replace missing evidence. Recover
+  an original from retained host output when available; otherwise repeat only the unproven step,
+  not the surrounding cohort.
 - **A worker hands each capture the user should see up the same way, as it is made.** Through any
   mid-run channel the host gives it to the delegating agent, it sends the file path and a line on
   what the capture shows; a worker whose only channel is its final message returns with the
@@ -123,7 +129,11 @@ context and returns its verdict into the step waiting on it; nothing else does b
   agent splits the work so each delegation ends at one such capture, and forwards each as it
   arrives.
 - **Assign one implementation owner per coherent scope, and a fresh worker for each delegated
-  task.** The primary agent retains integration, dependencies and product decisions. Delegate
+  task.** The primary agent retains integration, dependencies, product decisions and orchestration.
+  Delegate work that produces an independent result, not a wrapper that only invokes another
+  coordinator. Before launching, settle its checked prerequisites, immutable inputs, actual
+  role-resolved launch arguments and required handoff; unresolved setup stays with the current
+  owner rather than becoming a worker's discovery task. Delegate
   independently owned scopes with explicit files, inputs, expected result and handoff; do not split
   a coupled feature among workers merely to increase parallelism. Workers may build in parallel
   only when their edits and resources do not overlap and neither needs an unsettled output from the

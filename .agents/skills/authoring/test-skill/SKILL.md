@@ -62,6 +62,12 @@ confuse those conclusions.
    live mutation targets. When a workflow would revoke a credential, send a message, purchase,
    delete or change access, supply a synthetic boundary that records that action and changes only
    disposable state. Verify which implementation and resources each run actually uses before launch.
+   Before freezing the reader package, exercise its required fixture interfaces in a disposable
+   copy: discovery must expose the identifiers the task needs, operations must be available, and
+   state changes and failures must reach the intended records. This checks the fixture contract,
+   not the reader's decisions or the comparison's expected result. Reuse that receipt while its
+   implementation and interface inputs remain unchanged; repair and recheck a changed contract
+   before spending reader runs on it.
 3. **Freeze the inputs and criteria.** Save the scenario, environment baseline, reading list,
    edited guidance, any required original guidance, and two to four observable pass criteria in private task evidence
    storage through `session-ledger` before dispatch. Criteria measure actions, resulting state or
@@ -76,11 +82,10 @@ confuse those conclusions.
    Queue readers when capacity is limited; never duplicate an active assignment. The coordinator
    retains responsibility for setup, repair, evidence and completion rather than asking the user to
    arrange the test.
-5. **Retain and inspect results immediately.** Save each raw agent report, dispatch receipt and
-   action record as it arrives, read it back, and inspect the authoritative resulting state before
-   accepting an outcome. A summary, a worker's claim that it passed, or a locator to an absent file
-   is not evidence. Score every criterion with an artifact location or an exact finding and its
-   supporting source, then construct the tables in **Output**.
+5. **Retain and inspect results immediately.** Apply `subagent-matrix`'s **Dispatch** result-handoff
+   checks to each report and dispatch receipt, retain its action record, and inspect the authoritative
+   resulting state before accepting an outcome. Score every criterion with an artifact location or
+   an exact finding and its supporting source, then construct the tables in **Output**.
 6. **Reach a supported conclusion.** Every edited run must meet every criterion, using a valid
    environment and retained evidence. If the edited run passes and the original misses, report
    demonstrated improvement for that case. If both pass, report that both meet the behavior and no
