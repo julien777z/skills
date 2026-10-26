@@ -1,11 +1,109 @@
+from asyncio import create_subprocess_exec, run, timeout
+from asyncio.subprocess import PIPE
 from json import dumps, loads
-from os import chmod, chown, geteuid, replace
+from os import chmod, chown, environ, geteuid, replace
 from pathlib import Path
 from shlex import quote, split
 from sys import argv
 from tempfile import NamedTemporaryFile
 
-from models import InstallationMode
+from models import (
+    CodexClientInfo,
+    CodexHooksQuery,
+    CodexHookTrust,
+    CodexInitialize,
+    CodexRequest,
+    CodexTrustEdit,
+    CodexTrustWrite,
+    InstallationMode,
+)
+
+
+async def trust_codex_hook(root: Path, command: str) -> None:
+    """Approve only the installed shared hook through native configuration writes."""
+
+    process = await create_subprocess_exec(
+        "codex", "app-server", "--stdio",
+        env={**environ, "CODEX_HOME": str(root)},
+        stdin=PIPE, stdout=PIPE,
+    )
+
+    async def _request(request: CodexRequest) -> object:
+        if process.stdin is None or process.stdout is None:
+            raise RuntimeError("Codex app-server did not open its native transport")
+
+        process.stdin.write((dumps(request) + "\n").encode())
+
+        await process.stdin.drain()
+
+        while line := await process.stdout.readline():
+            response = loads(line)
+
+            if response.get("id") != request["id"]:
+                continue
+
+            if "error" in response:
+                raise RuntimeError(f"Codex {request['method']} failed: {dumps(response['error'])}")
+
+            return response["result"]
+
+        raise RuntimeError(f"Codex transport closed during {request['method']}")
+
+    try:
+        async with timeout(30):
+            await _request(CodexRequest(
+                id=1, method="initialize",
+                params=CodexInitialize(clientInfo=CodexClientInfo(name="skills-installer", version="1")),
+            ))
+            listing = await _request(CodexRequest(
+                id=2, method="hooks/list", params=CodexHooksQuery(cwds=[str(root.parent)]),
+            ))
+
+            if not isinstance(listing, dict) or not isinstance(listing.get("data"), list):
+                raise ValueError(f"Invalid Codex hook listing: {listing!r}")
+
+            owned = [
+                hook
+                for entry in listing["data"]
+                for hook in entry["hooks"]
+                if hook.get("command") == command
+                and hook.get("eventName") == "sessionStart"
+                and hook.get("sourcePath") == str(root / "hooks.json")
+            ]
+
+            if len(owned) != 1:
+                raise ValueError("Codex must identify exactly one installed shared startup hook")
+
+            hook = owned[0]
+
+            if hook["trustStatus"] == "trusted":
+                return
+
+            await _request(CodexRequest(
+                id=3, method="config/batchWrite",
+                params=CodexTrustWrite(
+                    edits=[CodexTrustEdit(
+                        keyPath="hooks.state",
+                        value={hook["key"]: CodexHookTrust(trusted_hash=hook["currentHash"])},
+                        mergeStrategy="upsert",
+                    )],
+                    reloadUserConfig=True,
+                ),
+            ))
+            verified = await _request(CodexRequest(
+                id=4, method="hooks/list", params=CodexHooksQuery(cwds=[str(root.parent)]),
+            ))
+
+            if not isinstance(verified, dict) or not any(
+                candidate.get("key") == hook["key"] and candidate.get("trustStatus") == "trusted"
+                for entry in verified["data"] for candidate in entry["hooks"]
+            ):
+                raise RuntimeError("Codex did not retain the shared startup hook trust")
+    finally:
+        if process.returncode is None:
+            process.terminate()
+
+        await process.wait()
 
 
 def owns_command(command: object, provider: str, script: Path) -> bool:
@@ -95,6 +193,9 @@ def configure(mode: InstallationMode, provider: str, root: Path, source: Path, c
     changed = document != original
 
     if not changed or mode != InstallationMode.APPLY:
+        if mode == InstallationMode.APPLY and auto_update and provider == "codex":
+            run(trust_codex_hook(root, handler["command"]))
+
         return changed
 
     root.mkdir(parents=True, exist_ok=True)
@@ -109,6 +210,9 @@ def configure(mode: InstallationMode, provider: str, root: Path, source: Path, c
         chown(temporary_path, owner.st_uid, owner.st_gid)
 
     replace(temporary_path, path)
+
+    if auto_update and provider == "codex":
+        run(trust_codex_hook(root, handler["command"]))
 
     return True
 

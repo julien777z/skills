@@ -49,10 +49,11 @@ The local installer links skills, reference collections, reusable rules, and app
 Claude, Codex, and Cursor user roots. Codex's global `AGENTS.md` links to the same canonical
 `global.md` rule used by the other harnesses. Repository-specific rules stay in each repository's
 `project.md`. The installer registers the owned SessionStart handler without replacing other hooks or settings.
-Codex requires its native review and trust of a new hook definition before running it. Startup checks
-use local sources by default. Enable fetching the latest default branch at startup and resume with
+Codex requires native trust before running a new hook definition. Startup checks use local sources
+by default. Enable fetching the latest default branch at startup and resume with
 `bash bootstrap/install.sh --local-only --auto-update`. The installer retains this choice when
-repairing links. Set `CLAUDE_CONFIG_DIR` to install an additional Claude profile alongside the default.
+repairing links and approves only its owned Codex startup hook through Codex's native API. Set
+`CLAUDE_CONFIG_DIR` to install an additional Claude profile alongside the default.
 Use `python3 "$HOME/.codex/hooks/skills-refresh/session_start.py" --update` for a manual refresh.
 Remote refresh uses existing Git credentials and fast-forwards only a clean default-branch checkout.
 Pending work stays installed; `update-skills` rebuilds its overlay before ordinary work. An unavailable

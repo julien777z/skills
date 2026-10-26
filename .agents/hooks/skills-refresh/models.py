@@ -32,3 +32,37 @@ class RefreshOutcome(StrEnum):
     RECONCILE = "reconcile"
     REPAIRED = "repaired"
     FAILED = "failed"
+
+
+class CodexClientInfo(TypedDict):
+    name: str
+    version: str
+
+
+class CodexInitialize(TypedDict):
+    clientInfo: CodexClientInfo
+
+
+class CodexHooksQuery(TypedDict):
+    cwds: list[str]
+
+
+class CodexHookTrust(TypedDict):
+    trusted_hash: str
+
+
+class CodexTrustEdit(TypedDict):
+    keyPath: str
+    value: dict[str, CodexHookTrust]
+    mergeStrategy: str
+
+
+class CodexTrustWrite(TypedDict):
+    edits: list[CodexTrustEdit]
+    reloadUserConfig: bool
+
+
+class CodexRequest(TypedDict):
+    id: int
+    method: str
+    params: CodexInitialize | CodexHooksQuery | CodexTrustWrite

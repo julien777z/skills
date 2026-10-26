@@ -341,6 +341,46 @@ assert_absent "$no_fetch_marker"
 
 remote_home="$fixture/remote-home"
 remote_repository="$fixture/remote-origin.git"
+mkdir -p "$remote_home/.local/bin"
+cat > "$remote_home/.local/bin/codex" <<'PYNATIVE'
+#!/usr/bin/env python3
+from json import dumps, loads
+from os import environ
+from pathlib import Path
+from sys import argv, stdin
+
+assert argv[1:] == ["app-server", "--stdio"]
+root = Path(environ["CODEX_HOME"])
+state = root / "native-trust.json"
+
+for line in stdin:
+    request = loads(line)
+    method = request["method"]
+
+    if method == "initialize":
+        result = {}
+    elif method == "hooks/list":
+        command = loads((root / "hooks.json").read_text())["hooks"]["SessionStart"][-1]["hooks"][0]["command"]
+        trusted = loads(state.read_text()) if state.exists() else {}
+        result = {"data": [{"hooks": [
+            {"command": command, "eventName": "sessionStart", "sourcePath": str(root / "hooks.json"),
+             "key": "owned-startup", "currentHash": "owned-hash", "trustStatus": "trusted" if "owned-startup" in trusted else "untrusted"},
+            {"command": "echo foreign", "eventName": "sessionStart", "sourcePath": str(root / "hooks.json"),
+             "key": "foreign-startup", "currentHash": "foreign-hash", "trustStatus": "untrusted"},
+        ]}]}
+    elif method == "config/batchWrite":
+        edit, = request["params"]["edits"]
+        assert edit["keyPath"] == "hooks.state"
+        assert edit["mergeStrategy"] == "upsert"
+        assert set(edit["value"]) == {"owned-startup"}
+        state.write_text(dumps(edit["value"]))
+        result = {}
+    else:
+        raise AssertionError(method)
+
+    print(dumps({"id": request["id"], "result": result}), flush=True)
+PYNATIVE
+chmod +x "$remote_home/.local/bin/codex"
 remote_checkout="$remote_home/.local/share/agent-skills"
 mkdir -p "$remote_home/.codex" "$remote_home/.claude" "$remote_home/.claude-2" "$(dirname "$remote_checkout")"
 git clone --quiet --bare "$repo" "$remote_repository"
@@ -350,9 +390,9 @@ git config --file "$remote_home/.gitconfig" "url.file://$remote_repository.inste
 env HOME="$remote_home" git clone --quiet "$SKILLS_REMOTE" "$remote_checkout"
 write_foreign_configuration "$remote_home/.codex/hooks.json" codex
 
-env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" CODEX_HOME= \
+env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" PATH="$remote_home/.local/bin:$PATH" CODEX_HOME= \
   CLAUDE_CONFIG_DIR="$remote_home/.claude-2" bash "$remote_checkout/bootstrap/install.sh" --local-only --auto-update
-env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" CODEX_HOME= \
+env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" PATH="$remote_home/.local/bin:$PATH" CODEX_HOME= \
   CLAUDE_CONFIG_DIR="$remote_home/.claude-2" bash "$remote_checkout/bootstrap/install.sh" --local-only
 python3 - "$remote_home" <<'PYHOOK'
 from json import loads
@@ -378,7 +418,7 @@ commit_all "$remote_writer"
 git -C "$remote_writer" push --quiet origin main
 remote_latest="$(git -C "$remote_writer" rev-parse HEAD)"
 printf '%s\n' '{"hook_event_name":"SessionStart","source":"startup"}' | \
-  env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" CODEX_HOME= SKILLS_CLOUD_HOME="$remote_home" \
+  env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" PATH="$remote_home/.local/bin:$PATH" CODEX_HOME= SKILLS_CLOUD_HOME="$remote_home" \
     python3 "$remote_home/.claude/hooks/skills-refresh/session_start.py" claude --fetch \
     > "$fixture/remote-session-output"
 [ "$(git -C "$remote_checkout" rev-parse HEAD)" = "$remote_latest" ]
@@ -387,10 +427,10 @@ assert_session_output "$fixture/remote-session-output" claude 'Installed shared 
 remote_overlay="$fixture/remote-overlay"
 add_overlay "$remote_checkout" "$remote_overlay" complete
 python3 "$remote_overlay/.agents/hooks/skills-refresh/record_overlay.py" "$remote_overlay"
-env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" CODEX_HOME= \
+env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" PATH="$remote_home/.local/bin:$PATH" CODEX_HOME= \
   bash "$remote_checkout/bootstrap/install.sh" --local-only --source "$remote_overlay"
 printf '%s\n' '{"hook_event_name":"SessionStart","source":"startup"}' | \
-  env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" CODEX_HOME= SKILLS_CLOUD_HOME="$remote_home" \
+  env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" PATH="$remote_home/.local/bin:$PATH" CODEX_HOME= SKILLS_CLOUD_HOME="$remote_home" \
     python3 "$remote_home/.codex/hooks/skills-refresh/session_start.py" codex --fetch \
     > "$fixture/current-remote-overlay-output"
 [ ! -s "$fixture/current-remote-overlay-output" ]
@@ -398,12 +438,12 @@ printf '%s\n' '# Updated overlay base' >> "$remote_writer/.agents/global.md"
 commit_all "$remote_writer"
 git -C "$remote_writer" push --quiet origin main
 printf '%s\n' '{"hook_event_name":"SessionStart","source":"resume"}' | \
-  env HOME="$remote_home" CODEX_HOME= SKILLS_CLOUD_HOME="$remote_home" \
+  env HOME="$remote_home" PATH="$remote_home/.local/bin:$PATH" CODEX_HOME= SKILLS_CLOUD_HOME="$remote_home" \
     python3 "$remote_home/.codex/hooks/skills-refresh/session_start.py" codex --fetch \
     > "$fixture/pending-remote-overlay-output"
 assert_session_output "$fixture/pending-remote-overlay-output" pending 'Run update-skills before ordinary work'
 [ "$(git -C "$remote_overlay" rev-parse HEAD)" = "$remote_latest" ]
-env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" CODEX_HOME= \
+env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" PATH="$remote_home/.local/bin:$PATH" CODEX_HOME= \
   bash "$remote_checkout/bootstrap/install.sh" --local-only --source "$remote_checkout"
 git -C "$remote_checkout" worktree remove "$remote_overlay"
 
@@ -414,7 +454,7 @@ commit_all "$remote_writer"
 git -C "$remote_writer" push --quiet origin main
 cp "$remote_checkout/.agents/global.md" "$fixture/dirty-guidance"
 printf '%s\n' '{"hook_event_name":"SessionStart","source":"resume"}' | \
-  env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" CODEX_HOME= SKILLS_CLOUD_HOME="$remote_home" \
+  env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" PATH="$remote_home/.local/bin:$PATH" CODEX_HOME= SKILLS_CLOUD_HOME="$remote_home" \
     python3 "$remote_home/.codex/hooks/skills-refresh/session_start.py" codex --fetch \
     > "$fixture/dirty-session-output"
 [ "$(git -C "$remote_checkout" rev-parse HEAD)" = "$remote_latest" ]
@@ -423,13 +463,13 @@ assert_session_output "$fixture/dirty-session-output" pending 'Run update-skills
 
 mv "$remote_repository" "$fixture/offline-origin.git"
 printf '%s\n' '{"hook_event_name":"SessionStart","source":"startup"}' | \
-  env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" CODEX_HOME= SKILLS_CLOUD_HOME="$remote_home" \
+  env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" PATH="$remote_home/.local/bin:$PATH" CODEX_HOME= SKILLS_CLOUD_HOME="$remote_home" \
     python3 "$remote_home/.codex/hooks/skills-refresh/session_start.py" codex --fetch \
     > "$fixture/offline-session-output" 2> "$fixture/offline-session-error"
 assert_session_output "$fixture/offline-session-output" pending 'Remote skills refresh failed'
 grep -q 'CalledProcessError' "$fixture/offline-session-error"
 cmp "$remote_checkout/.agents/global.md" "$fixture/dirty-guidance"
-assert_status 1 env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" CODEX_HOME= SKILLS_CLOUD_HOME="$remote_home" \
+assert_status 1 env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$remote_home" PATH="$remote_home/.local/bin:$PATH" CODEX_HOME= SKILLS_CLOUD_HOME="$remote_home" \
   python3 "$remote_home/.codex/hooks/skills-refresh/session_start.py" --update
 mv "$fixture/offline-origin.git" "$remote_repository"
 
