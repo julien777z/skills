@@ -1,13 +1,14 @@
 ---
 name: test-skill
-description: "Prove every behavior-changing skill, rule, or agent edit changes what a reader does: rebuild the miss, run one reader on edited guidance and one on the original per scenario, and score both before the pull request merges."
-short_description: 'Compare edited and original skill guidance against the same scenario.'
+description: "Validate behavior-changing skill, rule, and agent edits before merge through realistic tasks with edited and original guidance. Choose isolated environments for actions, retain observed results, and repair guidance or defective tests until the required behavior is verified."
+short_description: 'Exercise guidance safely, compare behavior, and repair failing tests.'
 ---
 
 # Test Skill
 
-A skill edit is a claim that different words produce different behaviour. Test the claim the way
-a code change is tested: against the case that motivated it, with the change and without it.
+Test guidance by having agents do the work it governs, then inspecting the result. Compare edited
+and original guidance against the same task. Correct behavior establishes conformance; a difference
+between the runs establishes improvement. Do not confuse those conclusions.
 
 ## Dependencies
 
@@ -22,13 +23,9 @@ a code change is tested: against the case that motivated it, with the change and
   exempts it. An edit that changes what the skill returns the user runs against the concrete example
   `edit-skill` records before the edit; a smoke run validates that format without proposing or
   awaiting approval for it.
-- **An edit that changes no instruction a reader follows does not run at all, and its pull request
-  merges on the reading**. A term swapped for
-  another, a spelling standardised, a typo corrected, a dead link repaired: the text asks a reader
-  for exactly what it asked before. There is no behavioural claim to test, and the bar below needs
-  a control run to miss, which no such edit can produce. Running it regardless holds the change
-  behind a result it can never get, which is how a rename every later session is waiting on sits
-  unmerged.
+- **An edit that changes no instruction a reader follows does not run.** A spelling correction or
+  dead link repair asks the reader to do the same work. Its source validation and required reviews
+  still apply; there is no changed behavior for a smoke test to exercise.
 - Recognise one from the diff rather than from how it is described, and least of all from how small
   it looks: read each changed line against the line it replaces and confirm the instruction is
   identical. A line that gains, loses, sharpens or reorders one is an ordinary edit however few
@@ -43,75 +40,57 @@ a code change is tested: against the case that motivated it, with the change and
 
 ## Workflow
 
-1. **Name the miss.** State in one sentence what a reader did wrong before the edit, from the
-   evidence that prompted it: a review that reported a symptom and not the shape behind it, a
-   walkthrough that skipped a check, a plan that stopped a step early. An edit the waiver in **When
-   It Runs** covers never reaches this step.
-2. **Rebuild the scenario** as something a reviewer can read with none of this conversation: for a
-   review skill, a diff plus a checkout at the commit where the miss happened; for a walkthrough
-   skill, the page and the change; for a planning skill, the task as it was given. Put it in a
-   private task evidence directory resolved with `session-ledger`, outside every repository, and
-   never commit it. Use that directory for this run's frozen packages, dispatch inputs, reader
-   reports and score tables too. The scenario must not name the
-   expected answer anywhere a reviewer reads.
-   Keep it small: slice the diff to the files the miss lives in, and give every reviewer a reading
-   list — those files, their siblings, and the modules the rubric's own searches would reach — so a
-   run reads what the scenario needs instead of exploring the tree. Most of a run's time is
-   exploration the scenario could have pointed at. Beside the triggering case, build a second
-   scenario on a different member of the same class, so the result shows the edit's breadth and
-   not only its one instance.
-   **Then build a third on the likeliest loophole**: a route by which a reader follows the edited
-   text and still commits the miss. Look for it in three places. One is an escape the wording leaves
-   open — asking instead of acting, offering the work as a choice, deferring it, calling it out of
-   scope, reporting it rather than doing it, deciding the case falls outside the rule, or doing the
-   step in name only. Another is guidance the same session also loads that points the other way — a
-   global rule, an output-style skill, a caller or callee of the edited skill, an example that still
-   shows the old behaviour; search those files for the miss's own words and for their opposite, and
-   put the file that opens the route in both runs' reading lists. The third is the edit itself: one
-   that gives the reader something new to do or look at opens a route of its own, so test what the
-   reader does when that thing turns up something wrong — a capture the edit says to open showing a
-   defect, a check it adds failing, a step it adds that cannot complete.
-3. **Beside the scenario, save both texts** of every file the change edits that a run reads — the edited
-   skill, and any adjacent file a loophole brought into the change under step 8: the branch copy
-   and the original from the freshly fetched default branch. Edited runs read the branch copies,
-   controls the originals; nothing else about their prompt differs.
-4. **Write the pass criteria before launching anything.** Two to four statements, each answerable
-   yes or no from a report alone, naming what the report must contain — a count, a named sibling, a
-   proposed structure, a check performed — never how well the report reads. A criterion the
-   original text would also satisfy measures nothing; drop it. Phrase each as the words the report
-   must carry — a symbol's name, a number — so scoring is a search through the report, not a
-   reading of it.
-5. **Launch the reviewers** using **Reviewer selection** below, in parallel when
-   capacity allows: one run reading the edited text and one reading the original, per
-   scenario. Identical prompts save for those paths. Read-only, findings only, no edits;
-   the parent applies nothing from a smoke run, because the run judges wording, not the code.
-   Queue pairs when capacity is limited; never spawn a duplicate while a run is in flight.
-6. **Score every report** against every criterion, quoting the line that satisfies or fails it, and
-   tabulate as `## Output` shapes it.
-7. **Judge each scenario's table.** The edit passes when, in every scenario, every edited run reads
-   `pass` and at least one control reads `miss`. An edited run that misses, and a table where every
-   control passes, both go to step 8.
-8. **Diagnose, change, rerun, until every table passes.**
-   - **An edited run that misses has a cause**; find it in the report and record it before changing
-     anything. The wording left the reader room: revise toward what it missed, keeping the language
-     broad; a report that named the shape and then reasoned it away — "intentional", "not
-     problematic" — is this kind, and the revision states the disposition as fixed and names those
-     reasons as not reasons. The scenario cannot satisfy the criterion, such as a file missing from
-     the reading list, or its prompt never made the reader open the skill file: fix the scenario.
-     The run took a loophole another loaded file opens: fix it in that file, which joins the change.
-     The report shows the behaviour in words the criterion did not search for: rephrase the
-     criterion to that behaviour. A wording change reruns every edited run together; a scenario
-     change reruns that scenario's runs, controls included; a changed criterion rescores
-     every report it applies to.
-   - **No control misses** means the scenario has not rebuilt the miss. Sharpen it until the
-     original text misses — for an edit that broadens a rule, build it on a member of the class the
-     original never named — and rerun that scenario's runs.
-   - **A reader no change moves** means the miss in step 1 was misstated or the edit does nothing:
-     restate the miss and start again from step 1, or drop or reshape the edit.
-9. **Report** the tables in chat, and send one markdown file from the task's evidence directory
-   for the whole smoke test, both as `## Output` shapes them. Put one sentence in the pull request
-   description naming the miss the edit closes. The tables are evidence and do not belong in the
-   description.
+1. **Define the behavior.** Record the observed miss and the outcome the user requires. Build the
+   triggering case, a different member of that failure class, and its likeliest loophole. Include
+   relevant conflicting guidance in both reading lists. Keep expected answers and scoring criteria
+   outside everything the testing agents read.
+2. **Choose and verify the environment.** Use the smallest environment that exercises the actual
+   decision or operation. A review can inspect a relevant live codebase read-only, a frozen diff,
+   or an isolated repository with known defects. An action workflow needs a task-owned synthetic
+   environment: disposable files, fake credentials, local services or browser surfaces, and action
+   recorders as appropriate. Preserve the relevant interfaces, permissions, failures and state
+   transitions; a canned success or written promise does not exercise the workflow.
+   Never give smoke agents access to the user's browser, profiles, sessions, real credentials, or
+   live mutation targets. When a workflow would revoke a credential, send a message, purchase,
+   delete or change access, supply a synthetic boundary that records that action and changes only
+   disposable state. Verify which implementation and resources each run actually uses before launch.
+3. **Freeze the inputs and criteria.** Save the scenario, environment baseline, reading list,
+   edited and original guidance, and two to four observable pass criteria in private task evidence
+   storage through `session-ledger` before dispatch. Criteria measure actions, resulting state or
+   substantiated findings, not recitation of new wording. Use the branch copy and the original from
+   the freshly fetched default branch. Record their revisions or content digests. Give paired runs
+   equivalent independent environments so neither inherits the other's mutations or reports.
+4. **Run the task.** Launch one edited and one original-guidance agent per scenario through
+   **Reviewer selection**, with identical instructions except guidance and isolated resource paths.
+   Agents perform the bounded task, including mutations inside their synthetic environments when
+   the task calls for them. Read-only review tasks remain read-only. Queue pairs when capacity is
+   limited; never duplicate an active assignment. The coordinator retains responsibility for setup,
+   repair, evidence and completion rather than asking the user to arrange the test.
+5. **Retain and inspect results immediately.** Save each raw agent report, dispatch receipt and
+   action record as it arrives, read it back, and inspect the authoritative resulting state before
+   accepting an outcome. A summary, a worker's claim that it passed, or a locator to an absent file
+   is not evidence. Score every criterion with an artifact location or an exact finding and its
+   supporting source, then construct the tables in **Output**.
+6. **Reach a supported conclusion.** Every edited run must meet every criterion, using a valid
+   environment and retained evidence. If the edited run passes and the original misses, report
+   demonstrated improvement for that case. If both pass, report that both meet the behavior and no
+   improvement was demonstrated there; this is a valid conclusion, not a failing test. Never force
+   an original-guidance miss, change criteria to reward wording recall, or claim causation from
+   matching behavior. A failing edited run requires repair regardless of the original's result.
+7. **Repair and rerun until verified.** Diagnose each reported issue at its owner. Fix guidance
+   that permits the wrong behavior; fix an invalid fixture, unavailable simulated operation, wrong
+   reading list, ambiguous criterion or broken runner before judging guidance. Retain the diagnosis
+   and earlier results. Recover missing evidence from the actual run or rerun the affected task;
+   never reconstruct a result from a summary. A failed worker is replaced on the same assignment.
+   A guidance change reruns every affected edited run; an environment or scenario change reruns
+   both members of its affected pair; a scoring correction rescores all applicable retained results.
+   Inconclusive, improperly tested and missing-evidence states are work to repair, never final
+   smoke verdicts or reasons to abandon an authorized change. Keep working through recovery;
+   genuine external authorization or host boundaries follow the global rules and **Reviewer
+   selection**, holding only the dependent action while repair or resolution remains active.
+8. **Report the verified result.** Send the tables and one evidence file in the **Output** shape.
+   Describe the behavior verified in the pull request; claim improved behavior only where the
+   comparison demonstrates it. Scenario packages and raw evidence remain private, never committed.
 
 ## Reviewer selection
 
@@ -165,16 +144,18 @@ Miss: <one sentence>
 
 A reads the edited text, B the original.
 
-Diagnoses: <one line per step 8 change: scenario, round, run label, cause, change made> | None
+Comparison: improvement demonstrated | both meet the behavior; no improvement demonstrated
+
+Diagnoses: <one line per step 7 change: scenario, round, run label, cause, change made> | None
 
 Evidence: <name of the sent file>
 
-Verdict: passes (round <n>) | dropped — <reason> | not run: <reason>
+Verdict: passes (round <n>) | not run: <nonbehavioral change under When It Runs>
 ```
 
-- **One titled table per scenario**, the bold `Scenario <n>: <short name>` line above it and its
-  legend line under it, repeated for each scenario the smoke test ran; Diagnoses and Verdict follow
-  the last one.
+- **One titled table per scenario**, with its legend and supported Comparison underneath;
+  Diagnoses and Verdict follow the last one. Both rows may pass. Use the actual results rather
+  than copying the illustrative control miss above.
 - **One row per run**, labelled with the model and a letter: A reads the edited text, B the
   original, or no skill text for a new skill, which its legend line says. Each row shows its latest
   run.
@@ -205,7 +186,9 @@ evidence behind every cell, one section per skill:
 - **Actual-assignment dispatch, accepted:** <source>
 - **Runtime identity, <model | not exposed>:** <host evidence>
 - **Runtime label:** <verbatim generic label | not exposed>
-- **<criterion>, <pass | miss>:** <quoted line>
+- **Environment:** <baseline identity, isolated resources, and verified execution boundary>
+- **Retained results:** <raw report, dispatch receipt, action record and resulting-state locators>
+- **<criterion>, <pass | miss>:** <artifact location or exact finding with supporting source>
 - **Round <n>, for the record:** <what the run missed before its rerun>
 
 #### Dispatch attempt <n> (incomplete pair)
@@ -230,7 +213,7 @@ dispatch attempt omits criterion scoring because it produced no comparable reade
 - Reviewers never see the expected answer, the criteria, or one another's reports.
 - Follow the shared capability selection. Never omit a control.
 - Never edit any file under test between launching a pair of runs and scoring them.
-- Keep the scenario while the branch is open; every later edit of that skill reuses it.
+- Keep the scenario and raw evidence while the branch is open; reuse valid inputs in later rounds.
 - Never merge with a failing run or stand with a miss: diagnose it, change what caused it, and
   rerun. The decisions are the tester's and are never put to the user; asking holds every later
   session on the text the edit replaces.

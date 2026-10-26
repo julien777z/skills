@@ -62,7 +62,8 @@ During A Task** for the edit's timing.
 
 - `code-simplify` — the pass over the guidance itself before it merges.
 - `acceptance-gate` — the diff question over the `.agents` change once it reads clean.
-- `test-skill` — the proof that every behavior-changing guidance edit changes what a reader does before it merges.
+- `test-skill` — exercise behavior-changing guidance safely, compare original and edited results,
+  and repair failing guidance or tests before merge.
 - `subagent-matrix` — the model capability level for live verification chats.
 - `review-pass` — the review of the guidance pull request **Guidance Delivery** opens.
 - `merge-gate` — the verified squash merge of the pull request step 7 clears.
