@@ -57,9 +57,10 @@ tracing a test surface is; without one, fix what the focused pass can finish.
 9. Validate new or strengthened behavioral guarantees through the existing repository checks.
    Use a temporary mutation experiment below when it resolves a concrete uncertainty, not as a
    mandatory gate for every changed guarantee. Run the affected targets once on the completed tree
-   with the runner's per-test durations reported. Apply the rubric's cost question to every test added or
-   changed, and to the module holding it, before reporting it done, and report each one's duration
-   and that module's total.
+   using its existing duration reporting. Apply the rubric's cost question to every test added or
+   changed and the module holding it. Report the available test, module and suite durations; mark
+   missing attribution unmeasured. Do not add reporting infrastructure or withhold an ordinary
+   repair's completion because that attribution is unavailable.
 
 ## Mutation Proof
 
@@ -115,9 +116,9 @@ dispositions, the **Naming Checks**, **Factory Contents**, **Auditing Existing D
 keeper, and delete one that proves nothing once the rubric's deletion evidence is recorded. A
 repaired or strengthened guarantee follows the existing-check validation procedure above. The fixes count toward the
 product-constraints skill's size budget like any other incidental change; past it, list what is left
-in the change's report. The rubric's cost question is part of the sweep: read the per-test durations
-from the run that verified the change, and a disproportionate test, parametrized family or module
-in scope is made cheap or removed as the product-constraints skill decides.
+in the change's report. Apply the cost-reporting procedure above to the run that verified the
+change. A disproportionate test, parametrized family or module in scope is made cheap or removed
+as the product-constraints skill decides.
 
 Report each test in scope with its disposition, and for each deletion the evidence the rubric asks
 for.
@@ -132,5 +133,5 @@ Run the locally available targets reached by the final diff. Run the full suite 
 is relevant or the user explicitly requests it.
 
 Report source-to-test placement, sibling conventions checked, fixture and factory owners reused or
-extended, parametrized cases reused, encountered corrections, literal-sweep corrections, mutation
-proofs, and final affected targets.
+extended, parametrized cases reused, encountered corrections, literal-sweep corrections, any mutation
+experiments, and final affected targets.

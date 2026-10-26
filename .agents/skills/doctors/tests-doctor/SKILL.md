@@ -43,8 +43,9 @@ The measurement taken once before fan-out is the timing of every runner target t
 runner's own per-test and per-fixture duration reporting, serialized as the runner requires. Use
 existing reporting capabilities; missing attribution is recorded as unmeasured, not filled by a new
 maintained diagnostic system.
-Record baseline pass/fail state, wall time per suite, and the slowest cases and fixtures. A suite
-that cannot run locally is recorded unmeasured with its CI duration when one is available.
+Record baseline pass/fail state and available suite wall times. Rank cases and fixtures only where
+existing reporting attributes their costs; unavailable rankings remain unmeasured. A suite that
+cannot run locally uses its existing CI timing when available.
 
 The budget is the suite budget the testing rules set, and within it no test, parametrized family
 or module is disproportionate under `test-fixture`'s cost question.
@@ -57,11 +58,11 @@ that delivers with the same number has spent the measurement on nothing. Where t
 cannot land in this run, that is the user's call to make in the current request, with the number and
 the cause in front of them; it is never the run's to assume.
 
-**Read setup against assertion before reading any single case.** Sum the per-test call durations and
-compare that with the suite's wall time: where the difference is large, the suite's cost is fixture
-setup, and the slowest case is a symptom rather than the cause. A per-test fixture that builds a
-client, an organization, a persisted aggregate, or an authenticated session is the usual driver, and
-it is invisible in a ranking of test bodies. Report both totals per suite.
+**Read setup against assertion before reading any single case.** Where existing reporting supplies
+per-test call durations, compare their sum with suite wall time. A large difference identifies cost
+outside test bodies, not a particular fixture. Use existing setup and fixture attribution to
+investigate repeated client, organization, persisted-aggregate or authenticated-session creation.
+Report available totals and mark missing attribution unmeasured under `test-fixture`'s procedure.
 
 ## Partition The Reviewers
 
@@ -436,8 +437,10 @@ before delivery and verify that none enters the delivered diff.
 
 ## Declared Outcome: The Slowest Tests Are Posted
 
-**This run posts one comment on each of its pull requests ranking the ten slowest tests and the ten slowest
-fixtures, with each suite's wall time against the budget.** It is a declared outcome of the skill, so
+**This run posts one cost comment on each of its pull requests.** Include available suite wall times
+against the budget and rank up to ten tests and ten fixtures where existing reporting attributes
+their costs. Mark unavailable attribution unmeasured under `test-fixture`'s procedure. It is a declared
+outcome of the skill, so
 invoking the skill authorizes that comment under the comment rules, and it is posted whether the run
 brought every suite under budget or not.
 
@@ -449,8 +452,8 @@ what to cut can see what the time is being spent on.
 
 Post it once per pull request, updating the same comment when a later push changes the numbers
 rather than adding a second; each batch's pull request carries the ranking measured at its merge
-head, so the last one holds the final numbers against the baseline. Give it the measured durations and nothing else: no narration of what the run did about them,
-which the body and the diff already carry.
+head, so the last one holds the final numbers against the baseline. Give it measured durations and
+unmeasured dispositions, without narration of the repairs the body and diff already carry.
 
 ## Delivery
 
@@ -461,7 +464,7 @@ every change landing beside it.
 ## Report Additions
 
 - per suite: wall time before and after against the budget, and unmeasured suites with the reason;
-- per suite: the sum of test call durations against wall time, naming setup-dominated suites;
+- per suite: available test call totals against wall time, with unattributed costs marked unmeasured;
 - each case folded or made cheaper for disproportionate runtime, with what it proved and where that
   now lives;
 - per suite: tests removed, parametrized, renamed, moved, and added;
