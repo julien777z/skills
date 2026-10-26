@@ -427,6 +427,20 @@ for remote_origin in "$SKILLS_REMOTE" "${SKILLS_REMOTE%.git}" \
 done
 
 git -C "$remote_checkout" remote set-url origin "file://$remote_repository"
+env HOME="$remote_home" PYTHONPATH="$remote_checkout/.agents/hooks/skills-refresh" \
+  python3 - "$remote_checkout" <<'PYORIGIN'
+from pathlib import Path
+from sys import argv
+
+from state import fetch_updates
+
+try:
+    fetch_updates(Path(argv[1]))
+except ValueError as error:
+    assert "shared skills origin" in str(error)
+else:
+    raise AssertionError("Foreign origin was allowed to refresh")
+PYORIGIN
 assert_status 1 env HOME="$remote_home" PATH="$remote_home/.local/bin:$PATH" \
   SKILLS_CLOUD_HOME="$remote_home" CLAUDE_CONFIG_DIR="$remote_home/.claude-2" \
   bash "$remote_checkout/bootstrap/install.sh" --local-only --check
