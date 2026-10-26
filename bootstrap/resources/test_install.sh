@@ -70,6 +70,7 @@ if argv[5]:
 owned = " ".join(quote(argument) for argument in invocation)
 
 assert commands.count(owned) == 1, commands
+assert groups[-1]["matcher"] == "startup|resume"
 assert len(commands) == 7, commands
 assert "foreign-start" in commands
 assert "foreign-session" in commands
@@ -309,6 +310,21 @@ printf '%s\n' '# Rule' > "$repo/.agents/rules/example.md"
 printf '%s\n' '---' 'name: sample' 'description: Sample skill' '---' > "$repo/.agents/skills/example/sample/SKILL.md"
 cp "$repo/.agents/skills/example/sample/SKILL.md" "$repo/.agents/.auto_generated/.codex/skills/sample/SKILL.md"
 printf '%s\n' '__pycache__/' > "$repo/.gitignore"
+env PYTHONPATH="$repo/.agents/hooks/skills-refresh" python3 - "$repo/.agents/hooks/hooks.json" <<'PYREGISTER'
+from json import dumps, loads
+from pathlib import Path
+from sys import argv
+
+from models import HookCommand, HookGroup
+
+path = Path(argv[1])
+registration = loads(path.read_text())
+registration["hooks"]["SessionStart"].insert(0, HookGroup(
+    matcher="clear",
+    hooks=[HookCommand(type="command", command="echo unrelated-registration", timeout=10)],
+))
+path.write_text(dumps(registration))
+PYREGISTER
 git -C "$repo" init --quiet
 git -C "$repo" remote add origin "$SKILLS_REMOTE"
 commit_all "$repo"
@@ -717,6 +733,39 @@ assert_link "$session_claude_home/.claude/skills/sample" \
   "$session_repo/.agents/skills/example/sample"
 assert_session_output "$fixture/claude-session-output" claude \
   'Installed shared skill and rule links were repaired and verified'
+
+portable_home="$fixture/portable-home"
+mkdir -p "$portable_home/.codex" "$portable_home/.cursor"
+env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$portable_home" CODEX_HOME= \
+  bash "$session_repo/bootstrap/install.sh" --local-only
+
+for event in '{"hook_event_name":"SessionStart","source":"startup"}' \
+  '{"hook_event_name":"sessionStart","session_id":"synthetic-conversation","is_background_agent":false}'; do
+  rm "$portable_home/.codex/skills/sample" "$portable_home/.cursor/skills/sample"
+  printf '%s\n' "$event" | env -u SKILLS_CLOUD_HOME -u CLOUD_HOME \
+    HOME="$portable_home" CODEX_HOME= \
+    python3 "$session_repo/.agents/hooks/skills-refresh/session_start.py" \
+    > "$fixture/portable-session-output"
+  assert_link "$portable_home/.codex/skills/sample" \
+    "$session_repo/.agents/.auto_generated/.codex/skills/sample"
+  assert_link "$portable_home/.cursor/skills/sample" \
+    "$session_repo/.agents/skills/example/sample"
+  python3 - "$fixture/portable-session-output" "$event" <<'PYPORTABLE'
+from json import loads
+from pathlib import Path
+from sys import argv
+
+output = loads(Path(argv[1]).read_text())
+event = loads(argv[2])
+
+if event["hook_event_name"] == "sessionStart":
+    assert "additional_context" in output
+    assert "hookSpecificOutput" not in output
+else:
+    assert output["hookSpecificOutput"]["hookEventName"] == "SessionStart"
+    assert "reloadSkills" not in output["hookSpecificOutput"]
+PYPORTABLE
+done
 
 cloud_clone_home="$fixture/cloud-clone-home"
 cloud_clone="$cloud_clone_home/.local/share/agent-skills"

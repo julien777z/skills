@@ -6,7 +6,7 @@ from subprocess import CalledProcessError, TimeoutExpired, run
 from sys import argv, executable, stderr, stdin
 from tempfile import TemporaryDirectory
 
-from models import RefreshOutcome, StartupContext, StartupResult
+from models import CursorStartupResult, RefreshOutcome, StartupContext, StartupEvent, StartupResult
 from state import fetch_updates, overlay_changed
 
 
@@ -116,12 +116,16 @@ def refresh(source: Path, fetch: bool = False) -> RefreshOutcome:
         return RefreshOutcome(outcome.read_text())
 
 
-def session_start(provider: str, fetch: bool = False) -> None:
+def session_start(provider: str | None, fetch: bool = False) -> None:
     """Handle a supported provider startup event."""
 
-    event = load(stdin)
+    event: StartupEvent = load(stdin)
+    cursor = provider is None and event.get("hook_event_name") == "sessionStart"
 
-    if event.get("hook_event_name") != "SessionStart" or event.get("source") not in ("startup", "resume"):
+    if not cursor and (
+        event.get("hook_event_name") != "SessionStart"
+        or event.get("source") not in ("startup", "resume")
+    ):
         return
 
     source = Path(__file__).resolve().parents[3]
@@ -133,22 +137,23 @@ def session_start(provider: str, fetch: bool = False) -> None:
 
     if outcome in (RefreshOutcome.RECONCILE, RefreshOutcome.BUSY, RefreshOutcome.FAILED):
         prompt = f"{outcome.value}.md"
+        context = (prompts / prompt).read_text().strip()
+    else:
+        context = (prompts / "repaired.md").read_text().strip()
 
-        print(dumps(StartupResult(hookSpecificOutput=StartupContext(
-            hookEventName="SessionStart",
-            additionalContext=(prompts / prompt).read_text().strip(),
-        ))))
+    if cursor:
+        print(dumps(CursorStartupResult(additional_context=context)))
 
         return
 
     output = StartupContext(
         hookEventName="SessionStart",
-        additionalContext=(prompts / "repaired.md").read_text().strip(),
+        additionalContext=context,
     )
 
-    if provider == "claude":
+    if outcome == RefreshOutcome.REPAIRED and provider == "claude":
         output["reloadSkills"] = True
-    else:
+    elif outcome == RefreshOutcome.REPAIRED and provider == "codex":
         discovery = (prompts / "codex-discovery.md").read_text().strip()
         output["additionalContext"] += f" {discovery}"
 
@@ -156,7 +161,9 @@ def session_start(provider: str, fetch: bool = False) -> None:
 
 
 if __name__ == "__main__":
-    if argv[1:2] == ["--repair"]:
+    if not argv[1:]:
+        session_start(None)
+    elif argv[1:2] == ["--repair"]:
         repair(Path(argv[2]), Path(argv[3]), argv[4:] == ["--fetch"])
     elif argv[1:] == ["--update"]:
         result = refresh(Path(__file__).resolve().parents[3], fetch=True)

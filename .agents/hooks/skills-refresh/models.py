@@ -24,6 +24,35 @@ class StartupResult(TypedDict):
     hookSpecificOutput: StartupContext
 
 
+class StartupEvent(TypedDict):
+    """Native lifecycle fields used by the shared startup entrypoint."""
+
+    hook_event_name: str
+    source: NotRequired[str]
+
+
+class CursorStartupResult(TypedDict):
+    """Cursor's native startup context response."""
+
+    additional_context: str
+
+
+class HookCommand(TypedDict):
+    """An installed provider command derived from the shared registration."""
+
+    type: str
+    command: str
+    timeout: int
+    statusMessage: NotRequired[str]
+
+
+class HookGroup(TypedDict):
+    """The owned native lifecycle registration."""
+
+    matcher: str
+    hooks: list[HookCommand]
+
+
 class RefreshOutcome(StrEnum):
     """Local installation check outcome."""
 

@@ -16,6 +16,8 @@ from models import (
     CodexTrustEdit,
     CodexTrustStatus,
     CodexTrustWrite,
+    HookCommand,
+    HookGroup,
     InstallationMode,
 )
 
@@ -156,9 +158,19 @@ def configure(mode: InstallationMode, provider: str, root: Path, source: Path, c
     if not isinstance(groups, list):
         raise ValueError(f"Expected a SessionStart array in {path}")
 
-    template = loads((source / ".agents/hooks/skills-refresh/hooks.json").read_text())
-    owned = template["hooks"]["SessionStart"][0]
-    handler = owned["hooks"][0]
+    template = loads((source / ".agents/hooks/hooks.json").read_text())
+    canonical_script = "$(git rev-parse --show-toplevel)/.agents/hooks/skills-refresh/session_start.py"
+    registrations = [
+        (group, handler)
+        for group in template["hooks"]["SessionStart"]
+        for handler in group["hooks"]
+        if split(handler["command"]) == ["python3", canonical_script]
+    ]
+
+    if len(registrations) != 1:
+        raise ValueError("Shared startup hook requires exactly one canonical registration")
+
+    group_template, handler_template = registrations[0]
     script = root / "hooks/skills-refresh/session_start.py"
     command = ["python3", str(script), provider]
 
@@ -176,7 +188,13 @@ def configure(mode: InstallationMode, provider: str, root: Path, source: Path, c
     if cloud_home:
         command = ["env", f"SKILLS_CLOUD_HOME={cloud_home}", *command]
 
-    handler["command"] = " ".join(quote(argument) for argument in command)
+    handler = HookCommand(
+        type="command",
+        command=" ".join(quote(argument) for argument in command),
+        timeout=handler_template["timeout"],
+        statusMessage="Checking installed shared skills",
+    )
+    owned = HookGroup(matcher=group_template["matcher"], hooks=[handler])
     retained = []
 
     for group in groups:

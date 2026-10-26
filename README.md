@@ -49,6 +49,8 @@ The local installer links skills, reference collections, reusable rules, and app
 Claude, Codex, and Cursor user roots. Codex's global `AGENTS.md` links to the same canonical
 `global.md` rule used by the other harnesses. Repository-specific rules stay in each repository's
 `project.md`. The installer registers the owned SessionStart handler without replacing other hooks or settings.
+Agent Sync reads `.agents/hooks/hooks.json` to generate portable project registrations. The installer
+uses that same registration with explicit Claude and Codex adapters for user-level hooks.
 Codex requires native trust before running a new hook definition. Startup checks use local sources
 by default. Enable fetching the latest default branch at startup and resume with
 `bash bootstrap/install.sh --local-only --auto-update`. The installer retains this choice when
@@ -70,7 +72,7 @@ links at an installed path are reported before any links change.
 | Path | Purpose |
 |---|---|
 | `.agents/skills/<category>/<name>/` | One skill: `SKILL.md`, with `references/`, `scripts/`, `assets/`, or `resources/` beside it. The categories sort the skills and reach no provider — each one still installs as `<name>`, so a name is unique across the whole tree. |
-| `.agents/hooks/skills-refresh/` | Canonical SessionStart hook configuration, provider adaptation and shared installation helpers. |
+| `.agents/hooks/` | Shared event registration in `hooks.json`, with the startup entrypoint, provider adaptation and installation helpers in `skills-refresh/`. |
 | `.agents/agents/` | Subagent definitions; the tier each runs on is stated by the skill that launches it. |
 | `.agents/rules/` | Reconciled reusable rules; technology-specific rules retain their file scopes. |
 | `.agents/external_resources.json` | Third-party skills and reference directories vendored by the workflow. |
