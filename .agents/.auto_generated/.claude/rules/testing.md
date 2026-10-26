@@ -253,8 +253,10 @@ class TreeNode(BaseModel):
   fits. Splitting the suite across jobs only to stay under the budget, or giving any suite a timeout
   above 15 minutes, hides the same defect.
 - **A run that verifies a change is read for its cost as well as its counts.** Read each suite's
-  wall time against its budget and compare it with the sum of its tests' call durations: a large
-  gap between the two means setup is the cost. The usual setup causes are a fixture whose setup,
+  wall time against its budget. Where the native runner supplies call durations, compare their
+  sum with wall time; a large gap identifies time outside test bodies. Use existing setup and
+  fixture reporting to attribute that cost, recording unavailable attribution as unmeasured under
+  `test-fixture`'s cost-reporting procedure. The usual setup causes are a fixture whose setup,
   summed over every test that uses it, dominates (an autouse one especially), an external account
   or identity created per test though nothing per-test lives on it, and a stack torn down and
   rebuilt each run though its inputs have not changed.
