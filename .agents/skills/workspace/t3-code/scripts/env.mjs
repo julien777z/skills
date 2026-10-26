@@ -45,7 +45,7 @@ Options:
   --help                Show this help
 
 Requires Node.js 22+, an installed T3 CLI and a running target server.
-Values are supplied as data, never as command arguments. Imports are sensitive.`);
+Values are supplied as data, never as command arguments. Imports are non-sensitive by default.`);
 }
 
 function parseCommand() {
