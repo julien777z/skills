@@ -29,10 +29,10 @@ happens next; this skill never readies, merges or deploys.
 
 ## Dependencies
 
-- `subagent-matrix` — select the standard tier for this workflow's own sub-agents.
+- `subagent-matrix` — resolve each dispatched role and its launch and handoff contract.
 - `code-simplify` — run the complete simplification and fix pass before any review, routed as
   **Simplification Gate** says.
-- `code-review` — run the complete review and fix workflow, delegated by this skill.
+- `code-review` — run the complete review and fix workflow with its independent lenses and validators.
 - `acceptance-gate` — admit deferrals, gate would-be-deferral fixes and base-incorporation
   refactors, and accept the final diff.
 - `merge-conflict` — resolve every base update this run performs.
@@ -43,8 +43,9 @@ happens next; this skill never readies, merges or deploys.
   dispatch receipts.
 - `agent-lock` — acquire the exact checkout key around every local snapshot capture and source delivery.
 
-Invoke `subagent-matrix` and use its **standard** tier for this workflow's own sub-agents.
-Delegated skills retain their explicitly selected tiers, subject to the user's model override. Record each
+Invoke `subagent-matrix` for each actual role before dispatch; a workflow's general capability tier
+never replaces its role selection. Follow its **Dispatch** ownership and handoff procedure rather
+than adding a coordinator layer for a dependent workflow. Record each
 launched worker's catalogue state, exact dispatch identifier, assignment state and host receipt in the
 task ledger through `session-ledger`. Follow the selector's dispatch and unavailable-model policy.
 
@@ -356,6 +357,12 @@ behind.** A suite costs minutes and reports on the tree as it stood when the pas
 outside those two — and outside the narrow repair loop the second one may open — is spent on a tree
 the next fix is about to change.
 
+Freeze a reviewable checkpoint after known implementation, test and formatting repairs. Keep a
+cohort on that input until its reports are collected before dispatching replacements. New fixes
+may be prepared separately; consolidate the surviving corrections into the next checkpoint, then
+apply **Review Continuity** to only the affected concerns. A finished worker or an advanced head
+alone does not start another cohort.
+
 ### Failure relevance
 
 Before a failed test or hosted check can hold either pass, classify it against the reviewed target.
@@ -462,10 +469,11 @@ to work around this gate.
    starts before all of these are clean. A trivial delta skips the first test pass, steps 2–4, and
    the **Simplification Gate** except for the guidance pass **Review Scope** keeps.
 2. Invoke `code-review high fix` on the open pull-request URL, the exact delegated ref range, or
-   the immutable local `currentSnapshot` artifact when this route has no working pull request. Delegate the
-   **Review Scope** delta as its review target, with the complete merge-base diff, the full touched
-   files and any working fix head as context. An explicit unsupported receipt, a
-   missing identifier, and every other selection state retain the concrete hold; the primary agent
+   the immutable local `currentSnapshot` artifact when this route has no working pull request. The
+   current workflow owner coordinates that run; its independent lenses and validators receive the
+   **Review Scope** delta, complete merge-base diff, full touched files and any working fix head as
+   context. Do not delegate another agent only to coordinate those same producers. An explicit
+   unsupported receipt, a missing identifier, and every other selection state retain the concrete hold; the primary agent
    never performs the independent high-fix review in process. For a merged range, pass the original
    pull request as metadata only and explicitly preserve the range through resolution and
    eligibility checks. Direct fixes to the matching working fix branch rather than changing the
