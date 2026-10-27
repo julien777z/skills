@@ -98,10 +98,12 @@ Every task that changes files starts here, and so does every follow-up that arri
   identifier, assignment state and host receipt with the plan evidence. The plan states where common
   behavior will live and which policy or wiring stays consumer-specific; it never starts from a parallel
   structure and leaves ownership for implementation.
-- Send this shape, leaving out the decision block when there is none:
+- Send this supporting plan content as the global rules' **User-Facing Output** requires, leaving
+  out the decision block when there is none. Submit approval and any unresolved decisions through
+  the global question-tool procedure:
 
 ```markdown
-**Approve this plan?** Reply "go", or tell me what to change.
+**Proposed plan**
 
 1. <step> (~<n> min)
 2. <step> (~<n> min)

@@ -56,8 +56,10 @@ Keep each description to one or two sentences, and never replace them with vague
 "quick" or "thorough". Ask through the host's structured question tool when it has one and a plain
 chat question otherwise, and launch nothing until the answer arrives.
 
-When the host cannot ask, as in a non-interactive or automated run, fall back to `medium` and say the
-fallback was used.
+Follow the global rules' **Task execution and authorization** question-tool procedure, including
+timeout retries. If neither a question tool nor chat can reach the user, retain the missing effort
+as a gate with its saved next action rather than selecting it from silence. An effort explicitly
+supplied by the invocation or its calling workflow needs no question.
 
 | Effort | Recon | Hunters | Validation | Independent verification |
 |---|---|---|---|---|

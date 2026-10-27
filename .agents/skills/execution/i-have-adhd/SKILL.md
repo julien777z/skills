@@ -94,13 +94,14 @@ change alters waits; every other open question is still asked in the list as usu
 After every user message, include all remaining unresolved decisions in the direct-chat response,
 even when the reply concerns another topic or adds no progress. Reconcile the ledger and the latest
 message before sending; an asynchronous question control or task checklist does not replace this
-visible list. At meaningful progress updates and handoffs, refresh the same list. Use a numbered
-list: each item starts with a **bold subject**. An evidence-pending item states its pending work;
-a ready item states the actual question and existing choices so
-it can be answered without earlier messages, its captures sent directly beneath it as the global
-rules' **User-Facing Output** says, and includes the recommendation or material trade-off
-and which work depends on the answer. Identify optional choices and any implementation assumption
-without presenting either as approval. If none remain, omit the list. The list accompanies a skill’s
+visible status list. At meaningful progress updates and handoffs, refresh the same list. Use a
+numbered list: each item starts with a **bold subject**. An evidence-pending item states its pending
+work; a ready item identifies its active question-tool request and the work depending on it.
+Keep the question, choices and supporting captures in that request under the global question-tool
+procedure rather than soliciting another answer in chat. Where no equivalent tool exists, the
+chat question includes the choices, recommendation or material trade-off and dependent work.
+Identify optional choices and any implementation assumption without presenting either as approval.
+If none remain, omit the list. The list accompanies a skill’s
 required direct-chat result even when that skill says to return only its result or nothing else;
 preserve the result’s own shape. This supplement never changes machine-consumed output.
 
@@ -191,7 +192,7 @@ Before sending, delete:
 4. Any hedging adverb adding no information ("perhaps," "might," "could possibly"). Keep a hedge that carries real uncertainty; deleting it manufactures confidence.
 5. Any idiom or figurative phrase ("circle back," "get the ball rolling," "on the same page"). Replace with the literal action.
 
-Then reconcile pending decisions with the current ledger and user message: every unresolved item, including optional choices and unconfirmed assumptions, must appear in the required numbered list as an actionable question or evidence-pending work, according to readiness; resolved or superseded questions must not reappear.
+Then reconcile pending decisions with the current ledger and user message: every unresolved item, including optional choices and unconfirmed assumptions, must appear in the required numbered status list as an active tool request or evidence-pending work, according to readiness; chat questions appear only when no equivalent tool exists. Resolved or superseded questions must not reappear.
 
 Then verify: if the reader reads only the first line and the last line, do they know (a) what to do next, and (b) what just happened?
 
