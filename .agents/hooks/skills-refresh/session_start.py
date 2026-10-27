@@ -1,5 +1,5 @@
 from json import JSONDecodeError, dumps, load, loads
-from logging import getLogger
+from logging import Logger, getLogger
 from os import environ, getpid
 from pathlib import Path
 from subprocess import CalledProcessError, TimeoutExpired, run
@@ -13,7 +13,7 @@ from models import (
 from state import fetch_updates, overlay_changed
 
 
-logger = getLogger(__name__)
+logger: Logger = getLogger(__name__)
 
 
 def repair(source: Path, outcome: Path, fetch: bool = False) -> None:

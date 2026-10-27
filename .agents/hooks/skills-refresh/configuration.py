@@ -1,4 +1,4 @@
-from asyncio import create_subprocess_exec, run, timeout
+from asyncio import StreamReader, StreamWriter, create_subprocess_exec, run, timeout
 from asyncio.subprocess import PIPE
 from json import dumps, loads
 from os import chmod, chown, environ, geteuid, replace
@@ -6,6 +6,7 @@ from pathlib import Path
 from shlex import quote, split
 from sys import argv
 from tempfile import NamedTemporaryFile
+from typing import cast
 
 from models import (
     CodexClientInfo,
@@ -33,15 +34,16 @@ async def trust_codex_hook(root: Path, command: str) -> None:
         stdin=PIPE, stdout=PIPE,
     )
 
+    # PIPE guarantees both streams; Process typing does not encode the pipe modes.
+    input_stream = cast(StreamWriter, process.stdin)
+    output_stream = cast(StreamReader, process.stdout)
+
     async def _request(request: CodexRequest) -> object:
-        if process.stdin is None or process.stdout is None:
-            raise RuntimeError("Codex app-server did not open its native transport")
+        input_stream.write((dumps(request) + "\n").encode())
 
-        process.stdin.write((dumps(request) + "\n").encode())
+        await input_stream.drain()
 
-        await process.stdin.drain()
-
-        while line := await process.stdout.readline():
+        while line := await output_stream.readline():
             response = loads(line)
 
             if response.get("id") != request["id"]:
@@ -114,29 +116,31 @@ async def trust_codex_hook(root: Path, command: str) -> None:
         await process.wait()
 
 
-def owns_command(command: object, provider: Provider, script: Path) -> bool:
-    """Recognize the complete installed refresh invocation."""
+def owned_arguments(command: object, provider: Provider, script: Path) -> list[str] | None:
+    """Return parsed arguments only for the complete installed refresh invocation."""
 
     if not isinstance(command, str):
-        return False
+        return None
 
     try:
-        arguments = split(command)
+        parsed = split(command)
     except ValueError:
-        return False
+        return None
 
-    if arguments[-1:] == ["--fetch"]:
-        arguments = arguments[:-1]
+    arguments = parsed[:-1] if parsed[-1:] == ["--fetch"] else parsed
 
     if len(arguments) == 5 and arguments[0] == "env" and arguments[1].startswith("SKILLS_CLOUD_HOME="):
         arguments = arguments[2:]
 
-    return (
+    if (
         len(arguments) == 3
         and arguments[0] == "python3"
         and arguments[1] == str(script)
         and arguments[2] == provider
-    )
+    ):
+        return parsed
+
+    return None
 
 
 def configure(mode: InstallationMode, provider: Provider, root: Path, source: Path, cloud_home: str, auto_update: bool = False) -> bool:
@@ -178,13 +182,24 @@ def configure(mode: InstallationMode, provider: Provider, root: Path, source: Pa
     script = root / "hooks/skills-refresh/session_start.py"
     command = ["python3", str(script), provider]
 
+    retained = []
+
     for group in groups:
         if not isinstance(group, dict) or not isinstance(group.get("hooks"), list):
             raise ValueError(f"Invalid SessionStart group in {path}")
 
+        handlers = []
+
         for item in group["hooks"]:
-            if isinstance(item, dict) and owns_command(item.get("command"), provider, script):
-                auto_update = auto_update or split(item["command"])[-1:] == ["--fetch"]
+            arguments = owned_arguments(item.get("command"), provider, script) if isinstance(item, dict) else None
+
+            if arguments is None:
+                handlers.append(item)
+            else:
+                auto_update = auto_update or arguments[-1:] == ["--fetch"]
+
+        if handlers:
+            retained.append({**group, "hooks": handlers})
 
     if auto_update:
         command.append("--fetch")
@@ -199,19 +214,6 @@ def configure(mode: InstallationMode, provider: Provider, root: Path, source: Pa
         statusMessage="Checking installed shared skills",
     )
     owned = HookGroup(matcher=group_template["matcher"], hooks=[handler])
-    retained = []
-
-    for group in groups:
-        if not isinstance(group, dict) or not isinstance(group.get("hooks"), list):
-            raise ValueError(f"Invalid SessionStart group in {path}")
-
-        handlers = [item for item in group["hooks"] if not (
-            isinstance(item, dict) and owns_command(item.get("command"), provider, script)
-        )]
-
-        if handlers:
-            retained.append({**group, "hooks": handlers})
-
     hooks["SessionStart"] = [*retained, owned]
     original = loads(path.read_text()) if path.exists() else {}
     changed = document != original
