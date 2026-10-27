@@ -162,10 +162,11 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`session-ledger`](.agents/skills/workspace/session-ledger/SKILL.md) — Keep verified task artifacts in one private task file.
 - [`storyline`](.agents/skills/roblox/storyline/SKILL.md) — Create or improve a coherent game story with playable beats and a satisfying ending.
 - [`subagent-matrix`](.agents/skills/execution/subagent-matrix/SKILL.md) — Select a model capability level for live verification chats or subagent delegation.
+- [`t3-code`](.agents/skills/workspace/t3-code/SKILL.md) — Manage T3 Code configuration and provider environment variables.
 - [`tailscale-config`](.agents/skills/workspace/tailscale-config/SKILL.md) — Reconcile Tailscale authority and every affected execution consumer.
 - [`tailwind-design-system`](.agents/skills/web/tailwind-design-system/SKILL.md) — Build scalable design systems with Tailwind CSS v4, design tokens, component libraries, and responsive patterns.
 - [`test-fixture`](.agents/skills/execution/test-fixture/SKILL.md) — Check test data and fixtures before changing tests or running tests after a fixture change.
-- [`test-skill`](.agents/skills/authoring/test-skill/SKILL.md) — Compare edited and original skill guidance against the same scenario.
+- [`test-skill`](.agents/skills/authoring/test-skill/SKILL.md) — Exercise guidance safely, compare behavior, and repair failing tests.
 - [`text-highlight`](.agents/skills/git/text-highlight/SKILL.md) — Show code changes in small diff-shaped excerpts that are easy to locate.
 - [`update-skills`](.agents/skills/workspace/update-skills/SKILL.md) — Refresh installed skills to the latest default branch, keeping pending skill changes in effect.
 - [`use-dashboard`](.agents/skills/workspace/use-dashboard/SKILL.md) — Turn a dashboard spec into the shared HTML page and deliver it.

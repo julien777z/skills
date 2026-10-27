@@ -787,6 +787,13 @@ First reconcile **Priority** against the actual deployed operation. Its unmet br
 or failed default-source retry keeps this checkpoint paused; a completed diagnostic or implementation
 substep does not start either delivery stream.
 
+When an operational, external, or other non-source outcome reaches its authoritative terminal state,
+re-enter this checkpoint before any final report. Reconcile the saved work and pending guidance
+delivery from their current owners, then resume each first nonterminal delivery stage. A completed
+operation, a read-only interruption, or the absence of a source diff or pull request never makes a
+pending guidance delivery terminal; a genuine authorization or dependency hold still holds only its
+dependent action.
+
 Run this checkpoint before reporting a change complete, including a local-only result with no
 pull request. In that case, source-stream step 1 and step 3's verification review the complete
 task diff and its validation prerequisites, and the history, the message and `merge-gate` apply only
