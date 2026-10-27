@@ -113,9 +113,11 @@ review action instead of repeating it. Record the reader-owned action and the re
 it with `session-ledger` (an active-work entry owned by the reader, with the deferral as an
 observation) so the settled state survives compaction and handoff.
 
-Restating an existing decision is not a duplicate approval request. Do not open another request for
-it, ask for routine continuation, or repeat the list on every background poll or unchanged status
-update without a new user message. Continue authorized work that does not need the answer;
+Restating an existing decision is not a duplicate approval request. Follow the global rules'
+**Task execution and authorization** question-tool procedure for surfacing questions and retrying
+timeouts; restating a still-pending request does not open a duplicate. Do not ask for routine
+continuation or repeat the list on every background poll or unchanged status update without a new
+user message. Continue authorized work that does not need the answer;
 `execute-task`'s **Work You Have Already Named** governs that work and its wait.
 
 ### 5. Restate state every turn

@@ -193,12 +193,13 @@ alwaysApply: true
   That defect remains a required fix. Its sender checks before sending and its receiver before
   acting; `execute-task`'s **Encountered Issues** holds what each does with an item
   a rule forbids.
-- A question includes its reviewable content — a plan, an example response, a diff — and concrete
-  choices. During unfinished authorized work, present it through an available input channel and
-  retain it as a pending decision while independent work continues; it is not a final task report.
-  For a standalone question with no surrounding authorized work, send that content and the question
-  as the final message. A question tool may show only its question and option labels; send required
-  review content as a file rather than relying on a collapsed preamble, preview or description.
+- Surface every question through `AskUserQuestionTool` or the harness's equivalent user-question
+  tool, including plan approvals and standalone questions. Ask directly in chat only when no
+  equivalent tool exists. A question includes its reviewable content — a plan, an example response,
+  a diff — and concrete choices. A question tool may show only its question and option labels;
+  send required review content as a file rather than relying on a collapsed preamble, preview or
+  description. During unfinished authorized work, retain the question as a pending decision while
+  independent work continues; it is not a final task report.
 - **A choice between substantially different versions of a page shows every option rendered.**
   When the options differ in layout, structure or the controls the reader uses — a list or a grid,
   one column or two, a section moved or removed — the question carries, directly beneath it, a
@@ -208,9 +209,13 @@ alwaysApply: true
   until every capture is ready. A drawing made of text, such as a sketch in a question tool's
   preview, is a description, not a capture. A choice between wordings or between small adjustments
   of one detail is shown as text or a single capture.
-- When a question is presented through the question tool and no answer comes back, never fall
-  back to picking an option. Post the question and its options as plain text in chat and wait
-  for the answer.
+- After a question-tool request actually times out without an answer, invoke it again with the
+  same question, choices and supporting content, with no retry limit, until the user answers,
+  withdraws the question, or explicitly stops or supersedes the task. Silence is never an answer,
+  approval or delegation, and a timeout never justifies a chat fallback or an assumed choice.
+  An asynchronous request that remains pending has not timed out: keep its wait or event route
+  active rather than opening a duplicate. Hold only work that depends on the answer and continue
+  independent authorized work. Preserve a platform's separate action-time confirmation safeguards.
 
 - Never poll a PR with background `sleep` or timed self check-ins; act only on delivered PR
   activity webhooks.

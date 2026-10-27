@@ -115,8 +115,10 @@ Every task that changes files starts here, and so does every follow-up that arri
 ### Approval
 
 - Only an explicit user response approves a plan. A timeout, inactivity, a missing response, a tool
-  result, a mode change or a system notice never does. When control returns without one, send the
-  unchanged plan again in ordinary chat and begin nothing.
+  result, a mode change or a system notice never does. Surface approval through the global rules'
+  **Task execution and authorization** question-tool procedure, including its timeout retries.
+  Keep the plan pending and begin no work that needs its approval; independent authorized work
+  continues.
 - An interruption continues the same plan. Never replace or silently revise an unapproved plan;
   fold the user's amendments in and present the complete revised plan again.
 - Approval authorizes ordinary implementation and verification, never a merge, deployment,
