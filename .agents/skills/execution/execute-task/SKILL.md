@@ -179,7 +179,7 @@ A source or product follow-up is planned on its own. A canonical guidance correc
 ```markdown
 **Running work keeps going:** <step in flight> doesn't touch <what the follow-up changes>.
 
-**Plan for the follow-up. Approve?**
+**Proposed plan for the follow-up**
 1. <step> (~<n> min)
 
 <No decisions needed. | **Decision needed:** …>
