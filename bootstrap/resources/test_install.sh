@@ -735,35 +735,42 @@ assert_session_output "$fixture/claude-session-output" claude \
   'Installed shared skill and rule links were repaired and verified'
 
 portable_home="$fixture/portable-home"
-mkdir -p "$portable_home/.codex" "$portable_home/.cursor"
+mkdir -p "$portable_home/.codex" "$portable_home/.claude" "$portable_home/.cursor"
 env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$portable_home" CODEX_HOME= \
   bash "$session_repo/bootstrap/install.sh" --local-only
 
-for event in '{"hook_event_name":"SessionStart","source":"startup"}' \
-  '{"hook_event_name":"sessionStart","session_id":"synthetic-conversation","is_background_agent":false}'; do
+for provider in claude codex cursor; do
+  event='{"hook_event_name":"SessionStart","source":"startup"}'
+  if [ "$provider" = cursor ]; then
+    event='{"hook_event_name":"sessionStart","session_id":"synthetic-conversation","is_background_agent":false}'
+  fi
   rm "$portable_home/.codex/skills/sample" "$portable_home/.cursor/skills/sample"
   printf '%s\n' "$event" | env -u SKILLS_CLOUD_HOME -u CLOUD_HOME \
     HOME="$portable_home" CODEX_HOME= \
-    python3 "$session_repo/.agents/hooks/skills-refresh/session_start.py" \
+    python3 "$session_repo/.agents/hooks/skills-refresh/session_start.py" "$provider" \
     > "$fixture/portable-session-output"
   assert_link "$portable_home/.codex/skills/sample" \
     "$session_repo/.agents/.auto_generated/.codex/skills/sample"
   assert_link "$portable_home/.cursor/skills/sample" \
     "$session_repo/.agents/skills/example/sample"
-  python3 - "$fixture/portable-session-output" "$event" <<'PYPORTABLE'
+  python3 - "$fixture/portable-session-output" "$provider" <<'PYPORTABLE'
 from json import loads
 from pathlib import Path
 from sys import argv
 
 output = loads(Path(argv[1]).read_text())
-event = loads(argv[2])
+provider = argv[2]
 
-if event["hook_event_name"] == "sessionStart":
+if provider == "cursor":
     assert "additional_context" in output
     assert "hookSpecificOutput" not in output
 else:
     assert output["hookSpecificOutput"]["hookEventName"] == "SessionStart"
-    assert "reloadSkills" not in output["hookSpecificOutput"]
+    if provider == "claude":
+        assert output["hookSpecificOutput"]["reloadSkills"] is True
+    else:
+        assert "reloadSkills" not in output["hookSpecificOutput"]
+        assert "next session" in output["hookSpecificOutput"]["additionalContext"]
 PYPORTABLE
 done
 

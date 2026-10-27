@@ -6,7 +6,10 @@ from subprocess import CalledProcessError, TimeoutExpired, run
 from sys import argv, executable, stderr, stdin
 from tempfile import TemporaryDirectory
 
-from models import CursorStartupResult, RefreshOutcome, StartupContext, StartupEvent, StartupResult
+from models import (
+    CursorStartupResult, HookEventName, Provider, RefreshOutcome,
+    StartupContext, StartupEvent, StartupResult, StartupSource,
+)
 from state import fetch_updates, overlay_changed
 
 
@@ -116,15 +119,15 @@ def refresh(source: Path, fetch: bool = False) -> RefreshOutcome:
         return RefreshOutcome(outcome.read_text())
 
 
-def session_start(provider: str | None, fetch: bool = False) -> None:
+def session_start(provider: Provider, fetch: bool = False) -> None:
     """Handle a supported provider startup event."""
 
     event: StartupEvent = load(stdin)
-    cursor = provider is None and event.get("hook_event_name") == "sessionStart"
+    cursor = provider == Provider.CURSOR and event.get("hook_event_name") == HookEventName.SESSION_START_CAMEL
 
     if not cursor and (
-        event.get("hook_event_name") != "SessionStart"
-        or event.get("source") not in ("startup", "resume")
+        event.get("hook_event_name") != HookEventName.SESSION_START
+        or event.get("source") not in (StartupSource.STARTUP, StartupSource.RESUME)
     ):
         return
 
@@ -147,13 +150,13 @@ def session_start(provider: str | None, fetch: bool = False) -> None:
         return
 
     output = StartupContext(
-        hookEventName="SessionStart",
+        hookEventName=HookEventName.SESSION_START,
         additionalContext=context,
     )
 
-    if outcome == RefreshOutcome.REPAIRED and provider == "claude":
+    if outcome == RefreshOutcome.REPAIRED and provider == Provider.CLAUDE:
         output["reloadSkills"] = True
-    elif outcome == RefreshOutcome.REPAIRED and provider == "codex":
+    elif outcome == RefreshOutcome.REPAIRED and provider == Provider.CODEX:
         discovery = (prompts / "codex-discovery.md").read_text().strip()
         output["additionalContext"] += f" {discovery}"
 
@@ -161,9 +164,7 @@ def session_start(provider: str | None, fetch: bool = False) -> None:
 
 
 if __name__ == "__main__":
-    if not argv[1:]:
-        session_start(None)
-    elif argv[1:2] == ["--repair"]:
+    if argv[1:2] == ["--repair"]:
         repair(Path(argv[2]), Path(argv[3]), argv[4:] == ["--fetch"])
     elif argv[1:] == ["--update"]:
         result = refresh(Path(__file__).resolve().parents[3], fetch=True)
@@ -174,7 +175,7 @@ if __name__ == "__main__":
             print((Path(__file__).resolve().parent / "prompts" / f"{result.value}.md").read_text().strip())
 
         raise SystemExit(0 if result in (RefreshOutcome.CURRENT, RefreshOutcome.REPAIRED) else 1)
-    elif argv[1:2] in (["codex"], ["claude"]) and argv[2:] in ([], ["--fetch"]):
-        session_start(argv[1], argv[2:] == ["--fetch"])
+    elif argv[1:2] in ([Provider.CODEX], [Provider.CLAUDE], [Provider.CURSOR]) and argv[2:] in ([], ["--fetch"]):
+        session_start(Provider(argv[1]), argv[2:] == ["--fetch"])
     else:
-        raise ValueError("Expected codex|claude [--fetch], --update, or --repair source outcome [--fetch]")
+        raise ValueError("Expected codex|claude|cursor [--fetch], --update, or --repair source outcome [--fetch]")

@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/skills-refresh/session_start.py\"",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/skills-refresh/session_start.py\" {{harness}}",
             "timeout": 170
           }
         ]

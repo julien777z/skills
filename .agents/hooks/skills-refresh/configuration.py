@@ -18,6 +18,8 @@ from models import (
     CodexTrustWrite,
     HookCommand,
     HookGroup,
+    HookEventName,
+    Provider,
     InstallationMode,
 )
 
@@ -58,6 +60,7 @@ async def trust_codex_hook(root: Path, command: str) -> None:
                 id=1, method="initialize",
                 params=CodexInitialize(clientInfo=CodexClientInfo(name="skills-installer", version="1")),
             ))
+
             listing = await _request(CodexRequest(
                 id=2, method="hooks/list", params=CodexHooksQuery(cwds=[str(root.parent)]),
             ))
@@ -70,7 +73,7 @@ async def trust_codex_hook(root: Path, command: str) -> None:
                 for entry in listing["data"]
                 for hook in entry["hooks"]
                 if hook.get("command") == command
-                and hook.get("eventName") == "sessionStart"
+                and hook.get("eventName") == HookEventName.SESSION_START_CAMEL
                 and hook.get("sourcePath") == str(root / "hooks.json")
             ]
 
@@ -93,6 +96,7 @@ async def trust_codex_hook(root: Path, command: str) -> None:
                     reloadUserConfig=True,
                 ),
             ))
+
             verified = await _request(CodexRequest(
                 id=4, method="hooks/list", params=CodexHooksQuery(cwds=[str(root.parent)]),
             ))
@@ -110,7 +114,7 @@ async def trust_codex_hook(root: Path, command: str) -> None:
         await process.wait()
 
 
-def owns_command(command: object, provider: str, script: Path) -> bool:
+def owns_command(command: object, provider: Provider, script: Path) -> bool:
     """Recognize the complete installed refresh invocation."""
 
     if not isinstance(command, str):
@@ -135,10 +139,10 @@ def owns_command(command: object, provider: str, script: Path) -> bool:
     )
 
 
-def configure(mode: InstallationMode, provider: str, root: Path, source: Path, cloud_home: str, auto_update: bool = False) -> bool:
+def configure(mode: InstallationMode, provider: Provider, root: Path, source: Path, cloud_home: str, auto_update: bool = False) -> bool:
     """Merge the owned startup registration."""
 
-    path = root / ("hooks.json" if provider == "codex" else "settings.json")
+    path = root / ("hooks.json" if provider == Provider.CODEX else "settings.json")
 
     if path.is_symlink():
         raise ValueError(f"Hook configuration must be a regular file: {path}")
@@ -164,7 +168,7 @@ def configure(mode: InstallationMode, provider: str, root: Path, source: Path, c
         (group, handler)
         for group in template["hooks"]["SessionStart"]
         for handler in group["hooks"]
-        if split(handler["command"]) == ["python3", canonical_script]
+        if split(handler["command"]) == ["python3", canonical_script, "{{harness}}"]
     ]
 
     if len(registrations) != 1:
@@ -213,7 +217,7 @@ def configure(mode: InstallationMode, provider: str, root: Path, source: Path, c
     changed = document != original
 
     if not changed or mode != InstallationMode.APPLY:
-        if mode == InstallationMode.APPLY and auto_update and provider == "codex":
+        if mode == InstallationMode.APPLY and auto_update and provider == Provider.CODEX:
             run(trust_codex_hook(root, handler["command"]))
 
         return changed
@@ -231,7 +235,7 @@ def configure(mode: InstallationMode, provider: str, root: Path, source: Path, c
 
     replace(temporary_path, path)
 
-    if auto_update and provider == "codex":
+    if auto_update and provider == Provider.CODEX:
         run(trust_codex_hook(root, handler["command"]))
 
     return True
@@ -239,6 +243,6 @@ def configure(mode: InstallationMode, provider: str, root: Path, source: Path, c
 
 if __name__ == "__main__":
     mode = InstallationMode(argv[1])
-    changed = configure(mode, argv[2], Path(argv[3]), Path(argv[4]), argv[5], argv[6:7] == ["1"])
+    changed = configure(mode, Provider(argv[2]), Path(argv[3]), Path(argv[4]), argv[5], argv[6:7] == ["1"])
 
     raise SystemExit(3 if changed and mode == InstallationMode.CHECK else 0)

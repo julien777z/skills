@@ -10,10 +10,32 @@ class InstallationMode(StrEnum):
     PREFLIGHT = "preflight"
 
 
+class Provider(StrEnum):
+    """Harness names passed to native startup adapters."""
+
+    CODEX = "codex"
+    CLAUDE = "claude"
+    CURSOR = "cursor"
+
+
+class HookEventName(StrEnum):
+    """Native startup event spellings."""
+
+    SESSION_START = "SessionStart"
+    SESSION_START_CAMEL = "sessionStart"
+
+
+class StartupSource(StrEnum):
+    """Session lifecycle sources handled by installation refresh."""
+
+    STARTUP = "startup"
+    RESUME = "resume"
+
+
 class StartupContext(TypedDict):
     """Provider startup context."""
 
-    hookEventName: str
+    hookEventName: HookEventName
     additionalContext: str
     reloadSkills: NotRequired[bool]
 
