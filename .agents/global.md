@@ -198,7 +198,9 @@ alwaysApply: true
   equivalent tool exists. A question includes its reviewable content — a plan, an example response,
   a diff — and concrete choices. A question tool may show only its question and option labels;
   send required review content as a file rather than relying on a collapsed preamble, preview or
-  description. During unfinished authorized work, retain the question as a pending decision while
+  description. Present supporting material before invoking the tool; supporting chat text identifies
+  the material and leaves the actionable question in the tool. During unfinished authorized work,
+  retain the question as a pending decision while
   independent work continues; it is not a final task report.
 - **A choice between substantially different versions of a page shows every option rendered.**
   When the options differ in layout, structure or the controls the reader uses — a list or a grid,
