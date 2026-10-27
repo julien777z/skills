@@ -89,7 +89,8 @@ same way**, such as a field added to the form whose layout is being chosen: the 
 shown no longer shows what the reader would choose about, and the change may settle the question or
 remove it. Report the change in progress instead of the question; once it lands, show the changed
 state with the question, or drop the question when the change answered it. Only the question the
-change alters waits; every other open question is still asked in the list as usual.
+change alters waits; every other open question remains active through the global question-tool
+procedure and visible in the status list.
 
 After every user message, include all remaining unresolved decisions in the direct-chat response,
 even when the reply concerns another topic or adds no progress. Reconcile the ledger and the latest
