@@ -80,6 +80,10 @@ identity, never a second authoritative copy of its records.
      recommendation, the work that depends on it, its status (`open`, `evidence_pending`,
      `answered` or `withdrawn`), and the user's answer in their words with when it was given.
      Keep an assumption made without the user as an assumption, never as an answer.
+   - For a decision the user states without a recorded question — how a surface looks or reads,
+     what a feature does, a scope — record a `decision` entry when it is given: the surface it
+     governs and the user's words with when they were given. A later decision on that surface is
+     checked against it, and a correction that reverses it records the user's new words.
    - For active work, record its owner, priority, status, next action, dependencies and concrete
      blockers so a handoff can resume it without reconstructing the task. Record a priority change
      with its user instruction or urgency evidence and preserve the displaced step. Follow-ups keep

@@ -74,7 +74,12 @@ Keep each description to one or two sentences. Never summarize the effort values
 
 Ask using the host's structured question tool when it has one and a plain chat question otherwise. Do not resolve a target, read a diff, or launch a reviewer until the answer arrives — guessing wrong means either a shallower review than wanted or unrequested edits and comments.
 
-When the host cannot ask, as in a non-interactive or automated run, fall back to `medium` effort with both modes off and say that the fallback was used. Without fix mode this skill edits code only through the Pre-Push Gate's own fixes, committed alone as Step 1 says; without comment mode it never writes to GitHub beyond reads.
+Follow the global rules' **Task execution and authorization** question-tool procedure, including
+timeout retries. If neither a question tool nor chat can reach the user, retain the missing choices
+as a gate with its saved next action; do not choose effort or modes from silence. Values explicitly
+supplied by the invocation or its calling workflow need no question. Without fix mode this skill
+edits code only through the Pre-Push Gate's own fixes, committed alone as Step 1 says; without
+comment mode it never writes to GitHub beyond reads.
 
 **Scope.** Anchor every finding as `references/rubric.md` — Scope directs, `OUTSIDE_DIFF` included.
 

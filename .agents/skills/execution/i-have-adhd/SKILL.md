@@ -78,22 +78,31 @@ Bad: "Here's the fix. Separately: there is also a stale dependency. Want me to h
 Good: "Here's the fix. Also fixed on the way: the stale dependency the build pulled in."
 
 A question that guidance or evidence settles is answered without asking the reader. Use
-`session-ledger` to record questions and reconcile their dispositions; its question records
-preserve unresolved choices separately from assumptions and actual user decisions. When the reader
-requests supporting evidence or an explanation before choosing, keep that decision unresolved but
-mark its evidence work as pending. Until the requested support is provided, report that work and
-what remains to supply instead of asking for the choice again. Provide the support before making
-the same question actionable; an existing capture or report not yet shown does not establish readiness.
+`session-ledger` to record questions and reconcile their dispositions; its question records preserve
+unresolved choices separately from assumptions and actual user decisions. When the reader requests
+supporting evidence or an explanation before choosing, keep that decision unresolved but mark its
+evidence work as pending. Until the requested support is provided, report that work and what remains
+to supply instead of asking for the choice again. Provide the support before making the same
+question actionable; an existing capture or report not yet shown does not establish readiness. **A
+change the reader asked for that alters what an open question is about makes it evidence-pending the
+same way**, such as a field added to the form whose layout is being chosen: the evidence already
+shown no longer shows what the reader would choose about, and the change may settle the question or
+remove it. Report the change in progress instead of the question; once it lands, show the changed
+state with the question, or drop the question when the change answered it. Only the question the
+change alters waits; every other open question remains active through the global question-tool
+procedure and visible in the status list.
 
 After every user message, include all remaining unresolved decisions in the direct-chat response,
 even when the reply concerns another topic or adds no progress. Reconcile the ledger and the latest
 message before sending; an asynchronous question control or task checklist does not replace this
-visible list. At meaningful progress updates and handoffs, refresh the same list. Use a numbered
-list: each item starts with a **bold subject**. An evidence-pending item states its pending work;
-a ready item states the actual question and existing choices so
-it can be answered without earlier messages, and includes the recommendation or material trade-off
-and which work depends on the answer. Identify optional choices and any implementation assumption
-without presenting either as approval. If none remain, omit the list. The list accompanies a skill’s
+visible status list. At meaningful progress updates and handoffs, refresh the same list. Use a
+numbered list: each item starts with a **bold subject**. An evidence-pending item states its pending
+work; a ready item identifies its active question-tool request and the work depending on it.
+Keep the question, choices and supporting captures in that request under the global question-tool
+procedure rather than soliciting another answer in chat. Where no equivalent tool exists, the
+chat question includes the choices, recommendation or material trade-off and dependent work.
+Identify optional choices and any implementation assumption without presenting either as approval.
+If none remain, omit the list. The list accompanies a skill’s
 required direct-chat result even when that skill says to return only its result or nothing else;
 preserve the result’s own shape. This supplement never changes machine-consumed output.
 
@@ -106,9 +115,11 @@ review action instead of repeating it. Record the reader-owned action and the re
 it with `session-ledger` (an active-work entry owned by the reader, with the deferral as an
 observation) so the settled state survives compaction and handoff.
 
-Restating an existing decision is not a duplicate approval request. Do not open another request for
-it, ask for routine continuation, or repeat the list on every background poll or unchanged status
-update without a new user message. Continue authorized work that does not need the answer;
+Restating an existing decision is not a duplicate approval request. Follow the global rules'
+**Task execution and authorization** question-tool procedure for surfacing questions and retrying
+timeouts; restating a still-pending request does not open a duplicate. Do not ask for routine
+continuation or repeat the list on every background poll or unchanged status update without a new
+user message. Continue authorized work that does not need the answer;
 `execute-task`'s **Work You Have Already Named** governs that work and its wait.
 
 ### 5. Restate state every turn
@@ -182,7 +193,7 @@ Before sending, delete:
 4. Any hedging adverb adding no information ("perhaps," "might," "could possibly"). Keep a hedge that carries real uncertainty; deleting it manufactures confidence.
 5. Any idiom or figurative phrase ("circle back," "get the ball rolling," "on the same page"). Replace with the literal action.
 
-Then reconcile pending decisions with the current ledger and user message: every unresolved item, including optional choices and unconfirmed assumptions, must appear in the required numbered list as an actionable question or evidence-pending work, according to readiness; resolved or superseded questions must not reappear.
+Then reconcile pending decisions with the current ledger and user message: every unresolved item, including optional choices and unconfirmed assumptions, must appear in the required numbered status list as an active tool request or evidence-pending work, according to readiness; chat questions appear only when no equivalent tool exists. Resolved or superseded questions must not reappear.
 
 Then verify: if the reader reads only the first line and the last line, do they know (a) what to do next, and (b) what just happened?
 
