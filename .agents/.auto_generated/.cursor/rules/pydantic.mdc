@@ -38,8 +38,6 @@ if not policy.can_access_admin:
 - Never use `Protocol` for data models that hold data.
 - Use `Protocol` only for structural typing of interfaces (callbacks, duck typing).
 
-- Use `Self` return type for class methods.
-
 ## Validation and Configuration
 
 - Use `model_config = ConfigDict(...)` for model configuration.
