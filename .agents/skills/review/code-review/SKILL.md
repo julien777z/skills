@@ -30,7 +30,8 @@ fixed values in that type. A receipt without the conditional list is incomplete 
 
 - `subagent-matrix` — return model capabilities for explicit reviewer dispatch.
 - `code-simplify` — its `references/rubric.md` is the complete simplification rubric for that review lens.
-- `pre-production` — supply the repository's target-contract and staging-data policy.
+- `pre-production` — supply the repository's target-contract and staging-data policy, and its rule
+  that every security vulnerability the work finds is fixed in the change in flight.
 - `security-audit` — its `references/rubric.md` defines an exploitable finding, its precedents and its remedy, and its attack-class catalogue supplies the Security lens. The review borrows both and never the audit workflow.
 - `acceptance-gate` — define the intent statement and gate the fixes the change did not itself
   introduce.
