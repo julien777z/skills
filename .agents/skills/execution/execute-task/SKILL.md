@@ -288,6 +288,11 @@ Execution starts once a required plan is approved, or straight away for a trivia
   the saved next action when it returns. Repeating the same rejection is not that evidence.
   A command a permission check refuses falls under the next bullet instead, even when it targets
   a host; never bypass that boundary as recovery.
+- When recovery installs a required dependency or changes a setting on a machine this task
+  provisions, repair the canonical provisioning source as well as the running machine. A one-off
+  host change does not fix fresh instances. Verify the corrected setup in a clean applicable
+  environment before calling the repair complete. A dependency used only by a disposable test
+  belongs in that test's setup rather than the provisioned machine's runtime requirements.
 - **A permission check is not a route to find: what it refuses is not attempted again, and the
   decision never becomes the user's.** Use the owner's own routine tool from the start — a package
   manager's cache-clean rather than a raw delete of its cache directory — because that is the
