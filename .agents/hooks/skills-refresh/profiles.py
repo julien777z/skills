@@ -1,5 +1,3 @@
-"""Store explicitly registered user profile roots."""
-
 import fcntl
 import json
 import os
