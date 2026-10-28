@@ -1,6 +1,6 @@
 ---
 name: review-pass
-description: Run the complete pre-merge review loop over a pull request's changes not yet reviewed — thread triage, a test sweep, a security review of a trust-boundary change, fanned-out simplification, high-effort code review with fixes, base incorporation, final acceptance and two test passes — and record the head it reviewed. Never merges. Use from `execute-task`'s Completion once a task is finished, from `finish-pr` and `merge-now`, and from guidance delivery.
+description: Run the complete pre-merge review loop over a pull request's changes not yet reviewed — thread triage, a test sweep, a security review of a trust-boundary change, scope-sensitive simplification, high-effort code review with fixes, base incorporation, final acceptance and two test passes — and record the head it reviewed. Never merges. Use from `execute-task`'s Completion once a task is finished, from `finish-pr` and `merge-now`, and from guidance delivery.
 short_description: 'Review, simplify and fix what a pull request has not had reviewed yet, then record the reviewed head.'
 ---
 
@@ -215,16 +215,11 @@ Code simplification is the first analysis and mutation phase. Before `code-revie
 sibling modules in their packages, and related code including callers, callees, consumers, analogous
 implementations, and candidate canonical owners.
 
-When the standard tier can spawn, fan this simplification pass out to multiple read-only
-subagents, even when `code-simplify` would ordinarily keep a small scope in process. Partition the
-pull request into coherent app, service, package, or cross-cutting slices that collectively cover
-the entire scope; never divide it by arbitrary file counts. Give every subagent the complete
-`code-simplify` rubric for its slice and require findings anchored to paths and lines with the
-proposed restructuring. An explicit unsupported receipt, a missing identifier, and every other selection
-state retain the concrete hold; the primary agent never performs an independent simplification pass in process
-before the code-review phase. A diff confined to canonical `.agents` Markdown is the exception: one
-reviewer holds a guidance diff whole, so this gate runs its simplification in process over the
-branch's own files with the prose-duplication checks `edit-skill`'s **Behavior** step 7.3 hands it.
+Use code-simplify's scope policy: hold a small coherent scope in process, and dispatch distinct
+read-only readers only for separable scopes needing that coverage. Do not force fanout by file
+count or add a competing size selector. Required independent readers still follow subagent-matrix;
+an unsupported selection never authorizes an in-process substitute. A canonical guidance batch
+keeps its in-process prose-duplication pass under edit-skill's existing guidance route.
 When the pull request adds public concepts across slices, assign one reviewer the cross-cutting
 interfaces and their existing peers as a coherent slice. Require its receipt to assess whether the
 new concepts are variants of existing ones; do not accept a clean simplification gate until that

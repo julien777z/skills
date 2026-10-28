@@ -12,6 +12,8 @@ are validated by their evidence, smoke-test, review, and acceptance gates.
 
 ## Dependencies
 
+- `review-proposal` — prepare approval-requiring plans for independent Proposal acceptance.
+
 - `pre-production` — the target-contract policy for every repository and its data obligations.
 - `run-site` — select browser verification applicability before proposing it in a plan or brief.
 - `code-simplify` — the pass over each finished plan step and delegated worker task, and the ownership analysis a plan settles.
@@ -97,7 +99,7 @@ Every task that changes files starts here, and so does every follow-up that arri
   independent scopes with separate owners, files and resources overlap once their inputs are
   settled. Estimate the elapsed time with that overlap, counting overlapping work once at the
   longest of the overlapping steps.
-- **Settle ownership before the plan is final.** For a plan that introduces a subsystem, runtime
+- **Settle ownership before the plan is final.** For a plan that introduces or changes a shared operation, contract, subsystem, runtime
   boundary, or independent consumer, apply `code-simplify`'s ownership analysis to the proposed
   shape and the analogous implementations already in the repository, with one read-only subagent
   inventorying them when the comparison spans subsystems. Invoke `subagent-matrix` at its standard
@@ -122,6 +124,11 @@ Every task that changes files starts here, and so does every follow-up that arri
 ```
 
 ### Approval
+
+- Before recommending an approval-requiring plan, invoke `review-proposal` with its intent and
+  verified ownership evidence. The global approval procedure consumes its ready receipt before
+  presenting the decision. Reuse verified factual inventories; keep **When A Plan Is Needed**'s
+  exceptions rather than creating another approval requirement.
 
 - Only an explicit user response approves a plan. A timeout, inactivity, a missing response, a tool
   result, a mode change or a system notice never does. Surface approval through the global rules'

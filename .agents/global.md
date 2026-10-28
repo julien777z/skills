@@ -199,6 +199,12 @@ alwaysApply: true
   That defect remains a required fix. Its sender checks before sending and its receiver before
   acting; `execute-task`'s **Encountered Issues** holds what each does with an item
   a rule forbids.
+- Before presenting a proposed change at an existing user-approval boundary, use `review-proposal`.
+  First check for its valid ready receipt for the exact proposal and reviewed inputs; when present,
+  present the supporting content and ask without re-entering it. Otherwise prepare that receipt
+  before asking. This applies to approval-requiring change proposals, not factual questions,
+  routine authorized work or a platform's separate action-time confirmation. Acceptance-gate's
+  technical verdict is not a user-approval request and never recursively enters this procedure.
 - Surface every question through `AskUserQuestionTool` or the harness's equivalent user-question
   tool, including plan approvals and standalone questions. Ask directly in chat only when no
   equivalent tool exists. A question includes its reviewable content — a plan, an example response,

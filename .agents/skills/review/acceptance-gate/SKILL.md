@@ -86,7 +86,10 @@ state and host receipt in the gate record. Its reader freshness follows `subagen
 receives five things and nothing else:
 
 1. the intent statement;
-2. the originating diff, with its deletions first;
+2. the originating diff, with its deletions first; for a Proposal before implementation when no
+   change is in flight, explicitly declare that no implementation diff exists and name the current
+   source snapshot instead; every Diff, Final acceptance and Base incorporation still requires its
+   actual immutable diff;
 3. the item under judgement — an issue or finding, a proposal, a diff, an incoming base diff, or a
    record; a diff that adds or changes tests carries the cost evidence from its verification run
    under `test-fixture`'s existing-reporting procedure, including any unmeasured attribution;
