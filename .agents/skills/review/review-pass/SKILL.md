@@ -49,10 +49,8 @@ than adding a coordinator layer for a dependent workflow. Record each
 launched worker's catalogue state, exact dispatch identifier, assignment state and host receipt in the
 task ledger through `session-ledger`. Follow the selector's dispatch and unavailable-model policy.
 
-An explicit unsupported receipt for the required tier's exact identifier, a `dispatch required` or
-`identifier required` result, and any rejection not explicitly unsupported all retain the concrete hold. This
-skill never substitutes an in-process pass for a review, simplification, or gate the required tier cannot
-spawn; the independent `acceptance-gate` remains a separate required checkpoint.
+When a required worker cannot launch, follow `subagent-matrix`'s in-process fallback for its
+assignment and report the loss of independence. The `acceptance-gate` remains a separate checkpoint.
 
 ## Review Scope
 
@@ -220,9 +218,8 @@ subagents, even when `code-simplify` would ordinarily keep a small scope in proc
 pull request into coherent app, service, package, or cross-cutting slices that collectively cover
 the entire scope; never divide it by arbitrary file counts. Give every subagent the complete
 `code-simplify` rubric for its slice and require findings anchored to paths and lines with the
-proposed restructuring. An explicit unsupported receipt, a missing identifier, and every other selection
-state retain the concrete hold; the primary agent never performs an independent simplification pass in process
-before the code-review phase. A diff confined to canonical `.agents` Markdown is the exception: one
+proposed restructuring. When a required worker cannot launch, perform its slice in process under
+`subagent-matrix` and report the loss of independence. A diff confined to canonical `.agents` Markdown is the exception: one
 reviewer holds a guidance diff whole, so this gate runs its simplification in process over the
 branch's own files with the prose-duplication checks `edit-skill`'s **Behavior** step 7.3 hands it.
 When the pull request adds public concepts across slices, assign one reviewer the cross-cutting
@@ -472,9 +469,9 @@ to work around this gate.
    the immutable local `currentSnapshot` artifact when this route has no working pull request. The
    current workflow owner coordinates that run; its independent lenses and validators receive the
    **Review Scope** delta, complete merge-base diff, full touched files and any working fix head as
-   context. Do not delegate another agent only to coordinate those same producers. An explicit
-   unsupported receipt, a missing identifier, and every other selection state retain the concrete hold; the primary agent
-   never performs the independent high-fix review in process. For a merged range, pass the original
+   context. Do not delegate another agent only to coordinate those same producers. When a required
+   worker cannot launch, perform its lens in process under `subagent-matrix` and report the loss of
+   independence. For a merged range, pass the original
    pull request as metadata only and explicitly preserve the range through resolution and
    eligibility checks. Direct fixes to the matching working fix branch rather than changing the
    immutable target.
