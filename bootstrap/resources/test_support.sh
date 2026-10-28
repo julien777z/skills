@@ -168,3 +168,75 @@ add_overlay() {
   fi
 }
 
+assert_concurrent_hook_updates() {
+  python3 - "$1" "$2" "$3" <<'PY'
+from json import loads
+from multiprocessing import get_context
+from os import environ
+from pathlib import Path
+from sys import argv, path
+from unittest.mock import patch
+
+source, home, executable = map(Path, argv[1:])
+context = get_context("fork")
+path.insert(0, str(source / ".agents/hooks/skills-refresh"))
+
+from configuration import configure
+from models import InstallationMode, Provider
+
+for provider in (Provider.CLAUDE, Provider.CODEX):
+    root = home / provider
+    root.mkdir(parents=True)
+    filename = "hooks.json" if provider == Provider.CODEX else "settings.json"
+    entered, release, fetched = context.Event(), context.Event(), context.Event()
+    template = source / ".agents/hooks/hooks.json"
+    read_text = Path.read_text
+
+    def reconcile(fetch: bool) -> None:
+        """Exercise competing native configuration transactions."""
+
+        def read(self: Path, encoding: str | None = None, errors: str | None = None) -> str:
+            """Pause the first transaction after its configuration read."""
+
+            content = read_text(self, encoding=encoding, errors=errors)
+
+            if self == template and not fetch:
+                entered.set()
+                assert release.wait(10)
+
+            return content
+
+        with patch.object(Path, "read_text", read), patch.dict("os.environ", {"PATH": f"{executable}:{environ['PATH']}"}):
+            configure(InstallationMode.APPLY, provider, root, source, "", fetch)
+
+        if fetch:
+            fetched.set()
+
+    startup = context.Process(target=reconcile, args=(False,))
+    update = context.Process(target=reconcile, args=(True,))
+
+    try:
+        startup.start()
+        assert entered.wait(10)
+        update.start()
+        fetched.wait(1)
+        release.set()
+        startup.join(10)
+        update.join(10)
+
+        assert startup.exitcode == 0
+        assert update.exitcode == 0
+        groups = loads((root / filename).read_text())["hooks"]["SessionStart"]
+        command = groups[-1]["hooks"][0]["command"]
+        assert command.endswith("--fetch"), command
+    finally:
+        release.set()
+
+        for process in (startup, update):
+            if process.pid is not None:
+                if process.is_alive():
+                    process.terminate()
+
+                process.join()
+PY
+}

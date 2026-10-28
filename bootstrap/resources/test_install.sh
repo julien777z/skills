@@ -231,6 +231,7 @@ for line in stdin:
     print(dumps({"id": request["id"], "result": result}), flush=True)
 PYNATIVE
 chmod +x "$remote_home/.local/bin/codex"
+assert_concurrent_hook_updates "$SOURCE_ROOT" "$fixture/concurrent-profiles" "$remote_home/.local/bin"
 profile_home="$fixture/profile-home"
 mkdir -p "$profile_home/.claude" "$profile_home/.codex" "$profile_home/.codex-hub"
 write_foreign_configuration "$profile_home/.codex-hub/hooks.json" codex

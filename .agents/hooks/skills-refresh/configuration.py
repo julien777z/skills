@@ -1,5 +1,7 @@
 from asyncio import StreamReader, StreamWriter, create_subprocess_exec, run, timeout
 from asyncio.subprocess import PIPE
+from contextlib import ExitStack
+from fcntl import LOCK_EX, flock
 from json import dumps, loads
 from os import chmod, chown, environ, geteuid, replace
 from pathlib import Path
@@ -148,99 +150,110 @@ def configure(mode: InstallationMode, provider: Provider, root: Path, source: Pa
 
     path = root / ("hooks.json" if provider == Provider.CODEX else "settings.json")
 
-    if path.is_symlink():
-        raise ValueError(f"Hook configuration must be a regular file: {path}")
+    with ExitStack() as resources:
+        if mode == InstallationMode.APPLY:
+            root.mkdir(parents=True, exist_ok=True)
+            lock_path = root / "skills-refresh.lock"
+            lock = resources.enter_context(lock_path.open("a"))
+            chmod(lock_path, 0o600)
 
-    document = loads(path.read_text()) if path.exists() else {}
+            if geteuid() == 0:
+                owner = path.stat() if path.exists() else root.stat()
+                chown(lock_path, owner.st_uid, owner.st_gid)
 
-    if not isinstance(document, dict):
-        raise ValueError(f"Expected a JSON object in {path}")
+            flock(lock, LOCK_EX)
 
-    hooks = document.setdefault("hooks", {})
+        if path.is_symlink():
+            raise ValueError(f"Hook configuration must be a regular file: {path}")
 
-    if not isinstance(hooks, dict):
-        raise ValueError(f"Expected a hooks object in {path}")
+        document = loads(path.read_text()) if path.exists() else {}
 
-    groups = hooks.setdefault("SessionStart", [])
+        if not isinstance(document, dict):
+            raise ValueError(f"Expected a JSON object in {path}")
 
-    if not isinstance(groups, list):
-        raise ValueError(f"Expected a SessionStart array in {path}")
+        hooks = document.setdefault("hooks", {})
 
-    template = loads((source / ".agents/hooks/hooks.json").read_text())
-    canonical_script = "$(git rev-parse --show-toplevel)/.agents/hooks/skills-refresh/session_start.py"
-    registrations = [
-        (group, handler)
-        for group in template["hooks"]["SessionStart"]
-        for handler in group["hooks"]
-        if split(handler["command"]) == ["python3", canonical_script, "{{harness}}"]
-    ]
+        if not isinstance(hooks, dict):
+            raise ValueError(f"Expected a hooks object in {path}")
 
-    if len(registrations) != 1:
-        raise ValueError("Shared startup hook requires exactly one canonical registration")
+        groups = hooks.setdefault("SessionStart", [])
 
-    group_template, handler_template = registrations[0]
-    script = root / "hooks/skills-refresh/session_start.py"
-    command = ["python3", str(script), provider]
+        if not isinstance(groups, list):
+            raise ValueError(f"Expected a SessionStart array in {path}")
 
-    retained = []
+        template = loads((source / ".agents/hooks/hooks.json").read_text())
+        canonical_script = "$(git rev-parse --show-toplevel)/.agents/hooks/skills-refresh/session_start.py"
+        registrations = [
+            (group, handler)
+            for group in template["hooks"]["SessionStart"]
+            for handler in group["hooks"]
+            if split(handler["command"]) == ["python3", canonical_script, "{{harness}}"]
+        ]
 
-    for group in groups:
-        if not isinstance(group, dict) or not isinstance(group.get("hooks"), list):
-            raise ValueError(f"Invalid SessionStart group in {path}")
+        if len(registrations) != 1:
+            raise ValueError("Shared startup hook requires exactly one canonical registration")
 
-        handlers = []
+        group_template, handler_template = registrations[0]
+        script = root / "hooks/skills-refresh/session_start.py"
+        command = ["python3", str(script), provider]
 
-        for item in group["hooks"]:
-            arguments = owned_arguments(item.get("command"), provider, script) if isinstance(item, dict) else None
+        retained = []
 
-            if arguments is None:
-                handlers.append(item)
-            else:
-                auto_update = auto_update or arguments[-1:] == ["--fetch"]
+        for group in groups:
+            if not isinstance(group, dict) or not isinstance(group.get("hooks"), list):
+                raise ValueError(f"Invalid SessionStart group in {path}")
 
-        if handlers:
-            retained.append({**group, "hooks": handlers})
+            handlers = []
 
-    if auto_update:
-        command.append("--fetch")
+            for item in group["hooks"]:
+                arguments = owned_arguments(item.get("command"), provider, script) if isinstance(item, dict) else None
 
-    if cloud_home:
-        command = ["env", f"SKILLS_CLOUD_HOME={cloud_home}", *command]
+                if arguments is None:
+                    handlers.append(item)
+                else:
+                    auto_update = auto_update or arguments[-1:] == ["--fetch"]
 
-    handler = HookCommand(
-        type="command",
-        command=" ".join(quote(argument) for argument in command),
-        timeout=handler_template["timeout"],
-        statusMessage="Checking installed shared skills",
-    )
-    owned = HookGroup(matcher=group_template["matcher"], hooks=[handler])
-    hooks["SessionStart"] = [*retained, owned]
-    original = loads(path.read_text()) if path.exists() else {}
-    changed = document != original
+            if handlers:
+                retained.append({**group, "hooks": handlers})
 
-    if not changed or mode != InstallationMode.APPLY:
-        if mode == InstallationMode.APPLY and (auto_update or approve_owned_hooks) and provider == Provider.CODEX:
+        if auto_update:
+            command.append("--fetch")
+
+        if cloud_home:
+            command = ["env", f"SKILLS_CLOUD_HOME={cloud_home}", *command]
+
+        handler = HookCommand(
+            type="command",
+            command=" ".join(quote(argument) for argument in command),
+            timeout=handler_template["timeout"],
+            statusMessage="Checking installed shared skills",
+        )
+        owned = HookGroup(matcher=group_template["matcher"], hooks=[handler])
+        hooks["SessionStart"] = [*retained, owned]
+        original = loads(path.read_text()) if path.exists() else {}
+        changed = document != original
+
+        if not changed or mode != InstallationMode.APPLY:
+            if mode == InstallationMode.APPLY and (auto_update or approve_owned_hooks) and provider == Provider.CODEX:
+                run(trust_codex_hook(root, handler["command"]))
+
+            return changed
+
+        with NamedTemporaryFile(mode="w", dir=root, delete=False) as temporary:
+            temporary.write(dumps(document, indent=2) + "\n")
+            temporary_path = Path(temporary.name)
+
+        chmod(temporary_path, path.stat().st_mode & 0o777 if path.exists() else 0o600)
+        if geteuid() == 0:
+            owner = path.stat() if path.exists() else root.stat()
+            chown(temporary_path, owner.st_uid, owner.st_gid)
+
+        replace(temporary_path, path)
+
+        if (auto_update or approve_owned_hooks) and provider == Provider.CODEX:
             run(trust_codex_hook(root, handler["command"]))
 
-        return changed
-
-    root.mkdir(parents=True, exist_ok=True)
-
-    with NamedTemporaryFile(mode="w", dir=root, delete=False) as temporary:
-        temporary.write(dumps(document, indent=2) + "\n")
-        temporary_path = Path(temporary.name)
-
-    chmod(temporary_path, path.stat().st_mode & 0o777 if path.exists() else 0o600)
-    if geteuid() == 0:
-        owner = path.stat() if path.exists() else root.stat()
-        chown(temporary_path, owner.st_uid, owner.st_gid)
-
-    replace(temporary_path, path)
-
-    if (auto_update or approve_owned_hooks) and provider == Provider.CODEX:
-        run(trust_codex_hook(root, handler["command"]))
-
-    return True
+        return True
 
 
 if __name__ == "__main__":
