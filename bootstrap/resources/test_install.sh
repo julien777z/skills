@@ -187,6 +187,7 @@ add_overlay() {
 
 if [ "$(id -u)" -eq 0 ]; then
   root_fixture="$(mktemp -d)"
+  chmod 711 "$root_fixture"
   root_source="$SOURCE_ROOT"
   root_cloud_home="$root_fixture/cloud-home"
   root_clone="$root_cloud_home/.local/share/agent-skills"
@@ -397,6 +398,34 @@ for line in stdin:
     print(dumps({"id": request["id"], "result": result}), flush=True)
 PYNATIVE
 chmod +x "$remote_home/.local/bin/codex"
+profile_home="$fixture/profile-home"
+mkdir -p "$profile_home/.claude" "$profile_home/.codex" "$profile_home/.codex-hub"
+write_foreign_configuration "$profile_home/.codex-hub/hooks.json" codex
+env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$profile_home" PATH="$remote_home/.local/bin:$PATH" CODEX_HOME= \
+  bash "$repo/bootstrap/install.sh" --local-only --approve-owned-hooks \
+  --register-profile "claude=$profile_home/.claude-hub" --register-profile "codex=$profile_home/.codex-hub"
+assert_link "$profile_home/.claude-hub/skills/sample" "$repo/.agents/skills/example/sample"
+assert_link "$profile_home/.codex-hub/skills/sample" "$repo/.agents/.auto_generated/.codex/skills/sample"
+rm "$profile_home/.claude-hub/skills/sample" "$profile_home/.codex-hub/skills/sample"
+env -u SKILLS_CLOUD_HOME -u CLOUD_HOME HOME="$profile_home" CODEX_HOME= \
+  bash "$repo/bootstrap/install.sh" --local-only
+assert_link "$profile_home/.claude-hub/skills/sample" "$repo/.agents/skills/example/sample"
+assert_link "$profile_home/.codex-hub/skills/sample" "$repo/.agents/.auto_generated/.codex/skills/sample"
+python3 - "$profile_home" <<'PYPROFILE'
+from json import loads
+from pathlib import Path
+from sys import argv
+
+home = Path(argv[1])
+registry = loads((home / ".config/agent-skills/profiles.json").read_text())
+assert registry == [f"claude={home}/.claude-hub", f"codex={home}/.codex-hub"]
+for root, filename in ((".claude-hub", "settings.json"), (".codex-hub", "hooks.json")):
+    document = loads((home / root / filename).read_text())
+    command = document["hooks"]["SessionStart"][-1]["hooks"][0]["command"]
+    assert not command.endswith("--fetch")
+assert loads((home / ".codex-hub/hooks.json").read_text())["foreignSetting"] == "preserved"
+assert set(loads((home / ".codex-hub/native-trust.json").read_text())) == {"owned-startup"}
+PYPROFILE
 remote_checkout="$remote_home/.local/share/agent-skills"
 mkdir -p "$remote_home/.codex" "$remote_home/.claude" "$remote_home/.claude-2" "$(dirname "$remote_checkout")"
 git clone --quiet --bare "$repo" "$remote_repository"

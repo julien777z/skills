@@ -9,6 +9,8 @@ LOCAL_ONLY=0
 RESOLVE_SOURCE=0
 SELECTED_SOURCE=""
 AUTO_UPDATE=0
+APPROVE_OWNED_HOOKS=0
+REGISTER_PROFILES=()
 INSTALL_ARGUMENTS=("$@")
 
 while [ "$#" -gt 0 ]; do
@@ -16,6 +18,11 @@ while [ "$#" -gt 0 ]; do
     --check) INSTALL_MODE=check ;;
     --local-only) LOCAL_ONLY=1 ;;
     --auto-update) AUTO_UPDATE=1 ;;
+    --approve-owned-hooks) APPROVE_OWNED_HOOKS=1 ;;
+    --register-profile)
+      shift
+      REGISTER_PROFILES+=("${1:?--register-profile requires provider=/absolute/path}")
+      ;;
     --resolve-source) RESOLVE_SOURCE=1; LOCAL_ONLY=1 ;;
     --source)
       shift
@@ -263,19 +270,38 @@ if [ -n "${CLAUDE_CONFIG_DIR:-}" ]; then
   add_install_root claude "$CLAUDE_CONFIG_DIR"
 fi
 
+# Registered profiles belong to the setup-clone owner in cloud environments.
+PROFILE_HOME="${CLOUD_HOME:-$HOME}"
+run_profiles() {
+  if [ -n "${CLOUD_HOME:-}" ]; then
+    run_as_cloud_user python3 - "$PROFILE_HOME" "$@" < "$SOURCE_ROOT/.agents/hooks/skills-refresh/profiles.py"
+  else
+    python3 "$SOURCE_ROOT/.agents/hooks/skills-refresh/profiles.py" "$PROFILE_HOME" "$@"
+  fi
+}
+profile_list="$(run_profiles list "${REGISTER_PROFILES[@]}")"
+while IFS=$'\t' read -r provider root; do
+  [ -n "$provider" ] || continue
+  add_install_root "$provider" "$root"
+done <<< "$profile_list"
+
 preflight_ok=1
 
 for index in "${!INSTALL_ROOTS[@]}"; do
   preflight_provider "${INSTALL_PROVIDERS[$index]}" "${INSTALL_ROOTS[$index]}" || preflight_ok=0
 
   if [ "${INSTALL_PROVIDERS[$index]}" = codex ] || [ "${INSTALL_PROVIDERS[$index]}" = claude ]; then
-    python3 "$REPO_ROOT/.agents/hooks/skills-refresh/configuration.py" preflight "${INSTALL_PROVIDERS[$index]}" "${INSTALL_ROOTS[$index]}" "$REPO_ROOT" "${CLOUD_HOME:-}" "$AUTO_UPDATE" || preflight_ok=0
+    python3 "$REPO_ROOT/.agents/hooks/skills-refresh/configuration.py" preflight "${INSTALL_PROVIDERS[$index]}" "${INSTALL_ROOTS[$index]}" "$REPO_ROOT" "${CLOUD_HOME:-}" "$AUTO_UPDATE" "$APPROVE_OWNED_HOOKS" || preflight_ok=0
   fi
 done
 
 if [ "$preflight_ok" -eq 0 ]; then
   echo "Resolve the listed skill conflicts before installing; no links were changed." >&2
   exit 1
+fi
+
+if [ "$INSTALL_MODE" = apply ] && [ "${#REGISTER_PROFILES[@]}" -gt 0 ]; then
+  run_profiles register "${REGISTER_PROFILES[@]}" >/dev/null
 fi
 
 install_changed=0

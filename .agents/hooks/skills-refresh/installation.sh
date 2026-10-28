@@ -356,7 +356,7 @@ install_provider() {
     [ "$INSTALL_MODE" = check ] || mkdir -p "$root/hooks"
     install_link "$REPO_ROOT/.agents/hooks/skills-refresh" "$root/hooks/skills-refresh"
 
-    python3 "$REPO_ROOT/.agents/hooks/skills-refresh/configuration.py" "$INSTALL_MODE" "$provider" "$root" "$REPO_ROOT" "${CLOUD_HOME:-}" "$AUTO_UPDATE" || {
+    python3 "$REPO_ROOT/.agents/hooks/skills-refresh/configuration.py" "$INSTALL_MODE" "$provider" "$root" "$REPO_ROOT" "${CLOUD_HOME:-}" "$AUTO_UPDATE" "$APPROVE_OWNED_HOOKS" || {
       [ "$?" -eq 3 ] || return 1
       install_changed=1
     }

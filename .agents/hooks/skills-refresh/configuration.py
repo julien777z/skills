@@ -143,7 +143,7 @@ def owned_arguments(command: object, provider: Provider, script: Path) -> list[s
     return None
 
 
-def configure(mode: InstallationMode, provider: Provider, root: Path, source: Path, cloud_home: str, auto_update: bool = False) -> bool:
+def configure(mode: InstallationMode, provider: Provider, root: Path, source: Path, cloud_home: str, auto_update: bool = False, approve_owned_hooks: bool = False) -> bool:
     """Merge the owned startup registration."""
 
     path = root / ("hooks.json" if provider == Provider.CODEX else "settings.json")
@@ -219,7 +219,7 @@ def configure(mode: InstallationMode, provider: Provider, root: Path, source: Pa
     changed = document != original
 
     if not changed or mode != InstallationMode.APPLY:
-        if mode == InstallationMode.APPLY and auto_update and provider == Provider.CODEX:
+        if mode == InstallationMode.APPLY and (auto_update or approve_owned_hooks) and provider == Provider.CODEX:
             run(trust_codex_hook(root, handler["command"]))
 
         return changed
@@ -237,7 +237,7 @@ def configure(mode: InstallationMode, provider: Provider, root: Path, source: Pa
 
     replace(temporary_path, path)
 
-    if auto_update and provider == Provider.CODEX:
+    if (auto_update or approve_owned_hooks) and provider == Provider.CODEX:
         run(trust_codex_hook(root, handler["command"]))
 
     return True
@@ -245,6 +245,6 @@ def configure(mode: InstallationMode, provider: Provider, root: Path, source: Pa
 
 if __name__ == "__main__":
     mode = InstallationMode(argv[1])
-    changed = configure(mode, Provider(argv[2]), Path(argv[3]), Path(argv[4]), argv[5], argv[6:7] == ["1"])
+    changed = configure(mode, Provider(argv[2]), Path(argv[3]), Path(argv[4]), argv[5], argv[6:7] == ["1"], argv[7:8] == ["1"])
 
     raise SystemExit(3 if changed and mode == InstallationMode.CHECK else 0)

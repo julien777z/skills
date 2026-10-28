@@ -55,7 +55,11 @@ Codex requires native trust before running a new hook definition. Startup checks
 by default. Enable fetching the latest default branch at startup and resume with
 `bash bootstrap/install.sh --local-only --auto-update`. The installer retains this choice when
 repairing links and approves only its owned Codex startup hook through Codex's native API. Set
-`CLAUDE_CONFIG_DIR` to install an additional Claude profile alongside the default.
+`CLAUDE_CONFIG_DIR` or `CODEX_HOME` to install a profile for the current invocation. To retain
+additional profiles for startup and manual refresh, pass `--register-profile claude=/absolute/path`
+or `--register-profile codex=/absolute/path` (repeat the option for each profile). Registrations are
+stored in `~/.config/agent-skills/profiles.json`. Pass `--approve-owned-hooks` to approve only the
+owned Codex hook without enabling remote fetching.
 Use `python3 "$HOME/.codex/hooks/skills-refresh/session_start.py" --update` for a manual refresh.
 Remote refresh uses existing Git credentials and fast-forwards only a clean default-branch checkout.
 Pending work stays installed; `update-skills` rebuilds its overlay before ordinary work. An unavailable
