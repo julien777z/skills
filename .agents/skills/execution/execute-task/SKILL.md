@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once at the start of every task authorized to change files, before recommending an implementation, delegating edits, or editing — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until verified completion or explicit user stop or handoff. It plans source and product changes first, except for trivial changes; canonical guidance changes skip the plan and, while another task is active, are pushed to a draft pull request, recorded, and delivered in bulk at its completion. It then applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, gates each finished plan step or worker task with a simplification pass and an acceptance gate before later work builds on it, keeps session-created source work to one pull request per repository, finishes each pull request, once the whole task is done, with a review pass over everything not yet reviewed (test sweep, simplification, code review, acceptance) and a history rewrite before sending it for review, checks every outcome it reports at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
+description: "Always run this. Invoke once at the start of every task authorized to change files, before recommending an implementation, delegating edits, or editing — including one whose edits sub-agents make, and one that only begins changing files because work turned up a defect — and keep it active until verified completion or explicit user stop or handoff. It plans source and product changes first, except for trivial changes and small, clearly specified follow-ups; canonical guidance changes skip the plan and, while another task is active, are pushed to a draft pull request, recorded, and delivered in bulk at its completion. It then applies the repository's product constraints, fixes the bugs the work encounters rather than reporting them, commits each small step and pushes it promptly once its checks pass, gates each finished plan step or worker task with a simplification pass and an acceptance gate before later work builds on it, keeps session-created source work to one pull request per repository, finishes each pull request, once the whole task is done, with a review pass over everything not yet reviewed (test sweep, simplification, code review, acceptance) and a history rewrite before sending it for review, checks every outcome it reports at the source of truth, and delivers each repository independently. Never invoke it from inside a skill it runs."
 short_description: 'Plan source and product changes for approval; validate canonical guidance changes through their delivery gates.'
 ---
 
@@ -52,8 +52,15 @@ Every task that changes files starts here, and so does every follow-up that arri
 ### When A Plan Is Needed
 
 - **Every source or product change gets a plan put to the user before its first edit, except a
-  trivial one.** A trivial change has no design choice in it: a typo, a one-line fix, a rename the
-  user named. It goes straight to **Execution**. Canonical guidance changes under `.agents` do not
+  trivial change or a small, clearly specified follow-up to active work.** A trivial change has no
+  design choice in it: a typo, a one-line fix, a rename the user named. A small follow-up directly
+  extends the active task using an established behavior or component, with the user naming the
+  desired outcome and no unresolved material product, scope, security or disclosure choice. Both
+  go straight to **Execution**: the request authorizes their ordinary implementation and
+  verification, even when more than one file or an internal dependency must change. Record the
+  added work and state the next action; do not turn its implementation outline into another
+  approval question. Ask only about a concrete unresolved choice and continue independent work.
+  Completing that choice does not require approval of a separate plan. Canonical guidance changes under `.agents` do not
   wait for a plan or an output-format approval: their request or an encountered guidance gap starts
   the guidance-correction workflow, and their evidence, smoke-test, review, and acceptance gates
   verify it, on the timing `edit-skill`'s **Recording During A Task** sets for an active task,
@@ -169,10 +176,10 @@ recovery, review and source-restoration procedure.
 
 ### Follow-Ups
 
-A source or product follow-up is planned on its own. A canonical guidance correction follows **When A Plan Is Needed** and does not wait for approval; while a guidance batch is in flight it waits for the next batch, as `edit-skill`'s **Recording During A Task** says. **Priority** decides when other follow-ups run and whether affected work pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
+Classify each source or product follow-up under **When A Plan Is Needed** before preparing a plan. A small, clearly specified follow-up executes on the user's request; only a follow-up outside that exception needs its own plan. A canonical guidance correction follows **When A Plan Is Needed** and does not wait for approval; while a guidance batch is in flight it waits for the next batch, as `edit-skill`'s **Recording During A Task** says. **Priority** decides when other follow-ups run and whether affected work pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
 
 - **One that touches nothing in flight** — other files, another outcome — leaves the running work
-  going. It gets its own plan, or none when trivial, and runs beside that work once approved when approval is required and
+  going. It gets a plan only when **When A Plan Is Needed** calls for one, and runs beside that work once any required approval is present and
   **Priority** permits, under `subagent-matrix`'s **Dispatch**. Send this template only for a
   follow-up that needs a plan:
 
@@ -186,10 +193,11 @@ A source or product follow-up is planned on its own. A canonical guidance correc
 ```
 
 - **One that changes what is being built** — a source or product follow-up — records the affected
-  work and its saved next step under **Work You Have Already Named**, then puts the amended plan in
-  the full shape above.
+  work and its saved next step under **Work You Have Already Named**, then updates the active
+  plan record. Present an amended plan for approval only when **When A Plan Is Needed** requires
+  one; a small, clearly specified follow-up starts without another approval request.
   Pause affected work when **Priority** brings the amendment into execution; otherwise retain it
-  for after the active work. Resume on approval when its priority permits. Unaffected work keeps
+  for after the active work. Resume once any required approval is present and its priority permits. Unaffected work keeps
   running while the user decides.
 - **One that narrows scope reaches the work already in flight, at once.** Message every running
   worker to stop the work the cut removes and has not yet done, keeping what it already finished,
@@ -223,7 +231,7 @@ A source or product follow-up is planned on its own. A canonical guidance correc
 
 ## Execution
 
-Execution starts once a required plan is approved, or straight away for a trivial change or for a canonical guidance correction, whose timing `edit-skill`'s **Recording During A Task** sets.
+Execution starts once a required plan is approved, or immediately when **When A Plan Is Needed** requires no plan. Canonical guidance corrections follow `edit-skill`'s **Recording During A Task** timing.
 
 ### Task Authorization
 
@@ -312,10 +320,13 @@ Read the repository's product state from its project guidance before choosing ho
 contract or stored value.
 
 Resolve broad words in the context of the outcome the user named before selecting or inventorying
-implementation targets. State the operational category covered by the request, then check each
-candidate's actual role against it. A shared filename, label, directory or provider does not make
-unrelated automation part of that scope. Expand to a required dependency or an explicitly broader
-user instruction, never to everything a text search happens to return.
+implementation targets. For a contextual follow-up, derive the operational category from the purpose
+of the work being changed, not the implementation mechanism shared by candidates. State that purpose,
+then check each candidate's actual role against it. A shared filename, label, directory or provider does not make
+unrelated automation part of that scope. Broad words such as "every" or "anywhere" quantify that
+category; they do not add unrelated categories. Expand only for a required dependency or a user
+instruction naming an additional operational category or outcome, never for a broad quantifier
+alone or everything a text search happens to return.
 
 Before recommending an implementation, asking a question that presupposes one, or delegating its
 edits, trace the requested behavior through the caller, transport, configured destination and
