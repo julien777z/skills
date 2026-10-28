@@ -34,7 +34,7 @@ agent; the calling agent launches the actual assignment with the selected model.
    versions or aliases or silently substitute another family.
 3. Before a caller marks a requested capability level or explicit model unavailable, follows an
    unavailable-model fallback, or takes an in-process route, launch the actual assigned work once with its exact
-   candidate identifier and explicit reasoning effort. A successful dispatch establishes that the host accepted
+   candidate identifier and explicit reasoning effort when the native tool is available. A successful dispatch establishes that the host accepted
    the requested identifier for that launch; it does not establish catalogue availability or runtime identity.
    An explicit host receipt that the candidate is unsupported establishes unavailability. The accepted worker
    performs the assignment; never launch a throwaway availability probe. Record the runtime identifier only
@@ -180,7 +180,7 @@ Return this table to the calling agent, using actual resolved identifiers rather
 placeholders. Record catalogue evidence and assignment evidence separately. A catalogue-hidden mapped family
 with a resolved candidate is `dispatch required` until the actual assignment establishes acceptance or the host
 explicitly rejects it as unsupported; after acceptance, record `accepted` while retaining `catalogue-hidden`.
-Use `identifier required` only for an identifier-resolution hold established by Workflow step 2; report that
+Use `identifier required` only for an identifier-resolution failure established by Workflow step 2; report that
 step's resolved candidate and state rather than independently selecting candidate sources here. Apply the
 in-process fallback; do not describe the missing identifier as an unsupported-model receipt. Use `unavailable` only
 when a host receipt explicitly rejects the exact candidate as unsupported. The calling agent then records the
