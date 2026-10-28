@@ -41,8 +41,11 @@ confirmation do not enter this workflow. Optional factual discovery is not an at
    parallel when capacity permits; queue unstarted slots otherwise. Follow the selector's original
    result and producer-recovery contract, replacing only stopped or unproven slots, never live workers
    or valid siblings. Count only verified compliant launches, identical inputs and complete originals.
-3. **Resolve findings and count rounds.** Read every original, consolidate duplicates, investigate
-   concrete objections and record adopted remedies or evidence-backed refutations. A clean round has
+3. **Resolve findings and count rounds.** Read every original and consolidate duplicates. Before
+   updating the streak, classify each reported item as material, nit or refuted against the criteria
+   and record its evidence-backed disposition. An attacker's `CHANGES_REQUIRED` label alone never
+   makes a round unclean; retain that label separately for the gate. Investigate concrete material
+   objections and apply justified remedies. A clean round has
    three complete reports and no unresolved material finding under the criteria; nit-only rounds
    count clean. Normally obtain two consecutive substantively clean rounds with fresh cohorts.
    Material changes to approach, scope, ownership, verification, intent or supporting facts invalidate
