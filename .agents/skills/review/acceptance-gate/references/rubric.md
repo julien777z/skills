@@ -304,6 +304,9 @@ carries? A plan that builds a mechanism beside one the repository or a dependenc
 whose size the problem does not need, is flagged with the smaller shape named as the remedy, however
 cleanly it is written. The plan states what is added, moved, and deleted, and which existing shape
 each choice reaches for.
+For a pre-implementation Proposal with no change in flight, an explicit no-implementation-diff
+statement and current source snapshot satisfy the originating-diff absence case; do not invent a
+synthetic diff or accept that absence for a diff-based question.
 
 **Diff — should this stand?** Does the finished diff do what the accepted proposal said, and nothing
 in the removed shape?

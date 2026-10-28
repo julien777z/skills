@@ -162,7 +162,13 @@ alwaysApply: true
   exchange.
 - Do not ask the user to restate task authority with "continue", "proceed", or an equivalent
   intermediate question. State progress and take the next ordinary authorized action.
-- When a platform imposes an action-time confirmation for a distinct sensitive action, complete all
+- Before treating an intermediate step as a new approval gate, read the applicable tool or
+  workflow rule and test its exceptions against the actual action and existing authorization.
+  A consent page, credential being saved, or security-related label alone does not establish
+  expanded access. Routine sign-in retaining the authorized recipient, permissions and duration
+  remains part of the task unless the governing rule explicitly requires confirmation for that case.
+  Name the exact triggering change or platform requirement when confirmation is required.
+  When a platform imposes an action-time confirmation for a distinct sensitive action, complete all
   non-impactful preparation first and ask one exact question immediately before that action. Make
   clear that the task remains authorized. Wait up to 10 minutes without polling or interacting with
   the approval surface; treat it as failed only after that window or an explicit failure. A failure
@@ -197,6 +203,12 @@ alwaysApply: true
   That defect remains a required fix. Its sender checks before sending and its receiver before
   acting; `execute-task`'s **Encountered Issues** holds what each does with an item
   a rule forbids.
+- Before presenting a proposed change at an existing user-approval boundary, use `review-proposal`.
+  First check for its valid ready receipt for the exact proposal and reviewed inputs; when present,
+  present the supporting content and ask without re-entering it. Otherwise prepare that receipt
+  before asking. This applies to approval-requiring change proposals, not factual questions,
+  routine authorized work or a platform's separate action-time confirmation. Acceptance-gate's
+  technical verdict is not a user-approval request and never recursively enters this procedure.
 - Surface every question through `AskUserQuestionTool` or the harness's equivalent user-question
   tool, including plan approvals and standalone questions. Ask directly in chat only when no
   equivalent tool exists. A question includes its reviewable content — a plan, an example response,
