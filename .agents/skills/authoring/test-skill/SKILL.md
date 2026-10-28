@@ -123,8 +123,9 @@ rejects the standard tier's exact identifier as unsupported, select the next per
 resolve its exact identifier, and launch the actual reader assignment. Advance again only after that candidate
 receives its own explicit unsupported receipt; never move upward or inherit the orchestrator's model. This
 fallback applies to this skill's default, never against the user's explicit model or capability constraint. A
-`dispatch required` result with an exact identifier launches the actual required reader set. Only `identifier required`
-and every rejection not explicitly unsupported retain the concrete hold.
+`dispatch required` result with an exact identifier launches the actual required reader set. When a
+required reader cannot launch, perform its scenario in process under `subagent-matrix` and disclose
+that the result is not independent or blind.
 
 Classify a rejected reader dispatch from the host receipt. Only a receipt establishing that the
 requested capability or model is unsupported makes it unavailable for that attempt and permits the
@@ -132,12 +133,12 @@ lower-tier fallback. Retry a transient, concurrency, timeout, or unknown rejecti
 same resolved selection; do not lower the comparison tier. When no required reader launched, retry
 the required reader set. When one required reader launched, wait for its terminal report and retry
 only the rejected or unattempted required counterpart, never a duplicate of the accepted reader.
-When that retry cannot complete the required set, record the terminal hold with its receipts and
-the unchanged requested selection. Record every failed attempt separately from reader-run evidence,
+When that retry cannot complete the required set, record its receipts and perform the missing
+assignment in process. Record every failed attempt separately from reader-run evidence,
 including every required reader's receipt; do not score an incomplete required set as a reader
 result. When an unsupported request has a permitted fallback, wait for any accepted counterpart's
-terminal report, record the incomplete attempt, then launch a fresh required set. When no permitted fallback remains, record the terminal hold
-with the unsupported request and rejection evidence.
+terminal report, record the incomplete attempt, then launch a fresh required set. When no permitted model fallback remains, record the rejection and perform the missing assignment
+in process.
 
 Run one edited reader across the frozen scenarios and one original control only when the recorded
 comparison requires it, with the same resolved model and reasoning effort where both run. Record
@@ -145,8 +146,8 @@ the catalogue state, requested capability and family, exact dispatch identifier,
 effort, selector resolution, and accepted actual-assignment dispatch receipt with those explicit
 parameters in each run's evidence entry. Record catalogue state separately
 from assignment state: a catalogue-hidden family is `dispatch required` until its exact identifier is resolved
-and the assigned worker accepts it, then it is `accepted`; a missing identifier is a hold, not an unavailable
-model. Selector resolution retains an explicit unsupported request,
+and the assigned worker accepts it, then it is `accepted`; a missing identifier triggers the in-process
+fallback and is not an unsupported-model receipt. Selector resolution retains an explicit unsupported request,
 the exact fallback capability and dispatch identifier when one is permitted, why that fallback was selected,
 and any explicit user override. Record the runtime-identity and runtime-label evidence as
 `subagent-matrix`'s Workflow step 3 defines. Follow the selector's dispatch instructions.
