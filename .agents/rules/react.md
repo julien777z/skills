@@ -127,17 +127,23 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   noninteractive skeleton stays visible until every request needed for the initially visible
   heading, counts, controls and content resolves; a consumer cannot add a second loader or reveal
   structural content afterward. A settled result includes populated content, an empty result, and
-  an initial error. Keep that view, its controls, and its layout mounted during automatic refresh,
-  revalidation, pagination, and retries; update it when the result actually changes. A request
+  an initial error. Keep that view, its controls, and its layout mounted while automatic refresh,
+  revalidation, pagination, or a retry is pending; update it when the result actually changes,
+  including the whole-page failure presentation below when the page's subject becomes unavailable. A request
   becoming pending again never makes a settled view an initial load, and absent data alone cannot
-  distinguish a first load from a retry after failure. Show an explicit error when a required
-  request fails, retaining it until recovery rather than alternating it with a skeleton or empty
-  state. Background activity alone never replaces content, pulses the page, changes action labels,
-  or disables unrelated controls; preserve automatic refresh instead of stopping it to hide flicker.
-  Validate the shared section through a cold load and repeated slow refreshes of populated, empty,
-  and failed results, including recovery after an initial failure. The cold load changes directly
-  from one complete skeleton to one complete section; later requests keep that settled structure
-  and feedback visible while pending and apply only the new result.
+  distinguish a first load from a retry after failure. Present a required request's error through
+  the failure owner below, retaining undismissed feedback during retries rather than alternating it
+  with a skeleton or empty state. Background retries never redisplay the same dismissed failure or
+  reopen its dismissed surface; present a materially changed failure as a new result through that
+  owner. Background activity alone never replaces content, pulses the page,
+  changes action labels, or disables unrelated controls; preserve automatic refresh instead of
+  stopping it to hide flicker. These settled-view requirements apply to every data-dependent
+  component, including one outside a shared page section.
+  Validate each affected component through a cold load and repeated slow refreshes of populated, empty,
+  and failed results, including recovery after an initial failure and dismissal followed by the same
+  and a changed failure. The cold load changes directly from one complete skeleton to the settled
+  section or the failure presentation below; later requests
+  keep the settled structure and undismissed feedback visible while pending and apply only the new result.
 - **A page states that something is missing only once its request has said so.** "Not found", an
   empty list or a "nothing here yet" state shows after the request answers with that result, such
   as a 404 or an empty page of results. Before the first request settles, the skeleton is all the
