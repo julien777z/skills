@@ -9,10 +9,12 @@ vendors the third-party skills and reference collections registered under `.agen
 
 ## Quick Start
 
-For a local installation, run `bash bootstrap/install.sh` from the main checkout. User-level
-links point directly into that checkout; pull `main` there after a merge to update installed
-guidance. Edit skills on a separate branch or worktree. For Claude cloud, put
-this at the start of the environment setup script, before project-specific setup commands:
+For a local installation, run `bash bootstrap/install.sh` from the main checkout. User-level links
+point into that checkout; pull `main` there after a merge to update installed guidance. While skill
+changes are pending, the agent's refresh links them into an overlay worktree beside the checkout
+instead, and installed guidance updates when the next refresh rebuilds it. Edit skills on a separate
+branch or worktree. For Claude cloud, put this at the start of the environment setup script, before
+project-specific setup commands:
 
 ```bash
 set -e
@@ -74,18 +76,19 @@ These run only when you ask for them by name, such as `/code-slop-doctor`.
 
 - [`assume-library-update`](.agents/skills/execution/assume-library-update/SKILL.md) — Write consuming code for a change in one of your libraries before the library update is available.
 - [`ci-watch`](.agents/skills/git/ci-watch/SKILL.md) — Watch a pull request, resolve review findings, and check that CI passes.
-- [`code-review`](.agents/skills/review/code-review/SKILL.md) — Code review a pull request or the current working changes with independent reviewer lenses, validated findings, and severity-rated results.
 - [`code-slop-doctor`](.agents/skills/doctors/code-slop-doctor/SKILL.md) — Remove unneeded layers, abstractions, duplicates, legacy paths, code that reads as slop, configuration names and dependencies.
 - [`continue-handoff`](.agents/skills/workspace/continue-handoff/SKILL.md) — Pick up work another session handed off.
 - [`defer-execution`](.agents/skills/deferrals/defer-execution/SKILL.md) — Schedule separate work on its own branch, either now or after the current pull request merges.
 - [`docs-doctor`](.agents/skills/doctors/docs-doctor/SKILL.md) — Find and fix documentation that no longer matches the code.
 - [`execute-defer-scope`](.agents/skills/deferrals/execute-defer-scope/SKILL.md) — Review and resolve recorded deferred work for a chosen issue, path, or pull request.
+- [`finish-pr`](.agents/skills/git/finish-pr/SKILL.md) — Review and fix the whole pull request, then merge it.
 - [`grade-plans`](.agents/skills/execution/grade-plans/SKILL.md) — Compare, grade, rate, rank, or choose between two implementation plans written for the same goal or original agent prompt.
 - [`guidance-doctor`](.agents/skills/doctors/guidance-doctor/SKILL.md) — Review agent guidance for instructions to cut, clarify, or add.
 - [`handoff`](.agents/skills/workspace/handoff/SKILL.md) — Move the current session's work to another session with nothing lost and nothing left for the user to do.
 - [`incident`](.agents/skills/execution/incident/SKILL.md) — Restore a broken deployed service, test the fix, and merge the scoped repair.
+- [`lock-revision`](.agents/skills/python/lock-revision/SKILL.md) — Lock the current migration revisions before a test deploy; later changes go in a new revision.
 - [`manage-mcps`](.agents/skills/workspace/manage-mcps/SKILL.md) — Audit and repair managed MCP connectors across Claude Desktop and Codex.
-- [`merge-pr`](.agents/skills/git/merge-pr/SKILL.md) — Merge finished pull requests after acceptance and CI, then CR what merged.
+- [`merge-now`](.agents/skills/git/merge-now/SKILL.md) — Merge finished pull requests now, then review what merged unreviewed.
 - [`new-doctor`](.agents/skills/doctors/new-doctor/SKILL.md) — Create a doctor skill on the shared doctor-protocol for one class of repository hygiene.
 - [`placeholder-data`](.agents/skills/workspace/placeholder-data/SKILL.md) — Turn a pasted API payload into the same shape with obviously fake values.
 - [`schema-doctor`](.agents/skills/doctors/schema-doctor/SKILL.md) — Check models and schemas for unnecessary nulls, complexity, keys, and indexes.
@@ -103,38 +106,38 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`agent-lock`](.agents/skills/workspace/agent-lock/SKILL.md) — Coordinate exclusive use of a shared resource between agents using an exact string key.
 - [`async-python-patterns`](.agents/skills/python/async-python-patterns/SKILL.md) — Master Python asyncio, concurrent programming, and async/await patterns for high-performance applications.
 - [`banned-terminology`](.agents/skills/review/banned-terminology/SKILL.md) — Owns the banned-terms list in resources/banned_words.json and enforces it.
+- [`brag`](.agents/skills/media/brag/SKILL.md) — Turn the current project website into a short, polished, shareable launch video using Hyperframes.
+- [`brag-slim`](.agents/skills/media/brag-slim/SKILL.md) — Turn a project directory or a website URL into a short, shareable launch video with music, motion, and share copy.
 - [`build-types`](.agents/skills/web/build-types/SKILL.md) — Regenerate generated API types from an OpenAPI document, using a local API checkout when it is present and the deployed API otherwise.
 - [`clerk-nextjs-patterns`](.agents/skills/web/clerk-nextjs-patterns/SKILL.md) — Advanced Next.js patterns - middleware, Server Actions, caching with Clerk.
+- [`code-review`](.agents/skills/review/code-review/SKILL.md) — Code review a pull request or the current working changes with independent reviewer lenses, validated findings, and severity-rated results.
 - [`code-simplify`](.agents/skills/review/code-simplify/SKILL.md) — Strictly review the branch's changes for reuse, simplification, abstraction quality, and maintainability, then fix the issues.
-- [`coordinate-repositories`](.agents/skills/workspace/coordinate-repositories/SKILL.md) — Carry one task across selected repositories and user-level installations.
-- [`cr`](.agents/skills/git/cr/SKILL.md) — Run the full review-and-fix workflow only on a fresh explicit CR invocation or a fresh scoped delegation from user-invoked merge-pr or active process-ledger guidance delivery.
 - [`current-changes`](.agents/skills/git/current-changes/SKILL.md) — Summarize the branch's changes against the default branch with links to the code.
 - [`database-migrations`](.agents/skills/python/database-migrations/SKILL.md) — Guide for authoring, rebasing, and troubleshooting Alembic database migrations, including how to avoid and fix branched migration graphs.
 - [`defer-scope`](.agents/skills/deferrals/defer-scope/SKILL.md) — Record unfinished work in the repository it affects, or read its active records.
-- [`design-taste-frontend`](.agents/skills/web/design-taste-frontend/SKILL.md) — Anti-slop frontend skill for landing pages, portfolios, and redesigns.
+- [`design-taste-frontend`](.agents/skills/web/design-taste-frontend/SKILL.md) — tasteskill v2, the anti-slop frontend skill.
 - [`doctor-protocol`](.agents/skills/doctors/doctor-protocol/SKILL.md) — Set the audit, fix, review, and reporting process used by every doctor skill.
 - [`edit-skill`](.agents/skills/authoring/edit-skill/SKILL.md) — Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.
-- [`execute-task`](.agents/skills/execution/execute-task/SKILL.md) — Plan the change for approval, then apply repository guidance, fix issues found along the way, and deliver a reviewable pull request.
+- [`execute-task`](.agents/skills/execution/execute-task/SKILL.md) — Plan source and product changes for approval; validate canonical guidance changes through their delivery gates.
 - [`frontend-design`](.agents/skills/web/frontend-design/SKILL.md) — Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one.
 - [`generic-push`](.agents/skills/git/generic-push/SKILL.md) — Keep repository publishing metadata generic and isolated.
 - [`get-doctors`](.agents/skills/doctors/get-doctors/SKILL.md) — List every doctor skill the skill listing declares with a one-line summary of what it audits.
 - [`i-have-adhd`](.agents/skills/execution/i-have-adhd/SKILL.md) — Apply before the first user-facing response without waiting for an invocation, and stay active until the reader explicitly stops it.
 - [`image-to-code`](.agents/skills/web/image-to-code/SKILL.md) — Elite website image-to-code skill for Codex.
-- [`impeccable`](.agents/skills/web/impeccable/SKILL.md) — Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or otherwise improve a frontend interface.
-- [`land-pr`](.agents/skills/git/land-pr/SKILL.md) — Ready a pull request for its authorized merge, gate its exact head, and merge it.
+- [`impeccable`](.agents/skills/web/impeccable/SKILL.md) — Use when the user wants to design, redesign, shape, critique, audit, polish, simplify, harden, animate, or otherwise improve a frontend interface: websites, landing pages, dashboards, product UI, components, forms, settings, onboarding, empty states, and native iOS or Android screens.
 - [`linear`](.agents/skills/workspace/linear/SKILL.md) — Create, find, and update Linear issues through the available Linear integration with dynamic team, workflow, project, and label discovery.
 - [`list-prs`](.agents/skills/workspace/list-prs/SKILL.md) — List the ongoing task’s open PRs.
 - [`list-repos`](.agents/skills/workspace/list-repos/SKILL.md) — List the repository web URLs for every repository changed during the entire current session.
 - [`list-rules`](.agents/skills/workspace/list-rules/SKILL.md) — List and reconcile canonical rules across a bounded collection of local repositories.
-- [`list-skills`](.agents/skills/workspace/list-skills/SKILL.md) — List and reconcile canonical skills across a bounded collection of local repositories.
+- [`list-skills`](.agents/skills/workspace/list-skills/SKILL.md) — List shared and repository skills with who can invoke each and what it does.
 - [`luau`](.agents/skills/roblox/luau/SKILL.md) — Apply Roblox Luau conventions when reading or changing game code and tooling.
 - [`merge-conflict`](.agents/skills/git/merge-conflict/SKILL.md) — Bring the base branch into a work branch, resolve conflicts, and validate the result.
+- [`merge-gate`](.agents/skills/git/merge-gate/SKILL.md) — Ready a pull request for its authorized merge, gate its exact head, and merge it.
 - [`no-text-ai-slop`](.agents/skills/review/no-text-ai-slop/SKILL.md) — Edit drafts into sharper, more human writing while preserving the writer's personal voice, or detect AI-slop patterns without rewriting.
 - [`pre-production`](.agents/skills/execution/pre-production/SKILL.md) — Apply target-contract constraints to implementation and review tasks.
 - [`prisma-client-api`](.agents/skills/web/prisma-client-api/SKILL.md) — Prisma Client API reference covering model queries, filters, operators, and client methods.
 - [`process-ledger`](.agents/skills/execution/process-ledger/SKILL.md) — Process verified private-ledger records into durable outcomes.
 - [`progress`](.agents/skills/workspace/progress/SKILL.md) — Show the task’s progress as a dashboard.
-- [`propagate-skill`](.agents/skills/workspace/propagate-skill/SKILL.md) — Reconcile skills across the user's repository collection.
 - [`proton-pass`](.agents/skills/workspace/proton-pass/SKILL.md) — Retrieve credentials from Proton Pass with pass-cli.
 - [`python-anti-patterns`](.agents/skills/python/python-anti-patterns/SKILL.md) — Use this skill when reviewing Python code for common anti-patterns to avoid.
 - [`python-background-jobs`](.agents/skills/python/python-background-jobs/SKILL.md) — Python background job patterns including task queues, workers, and event-driven architecture.
@@ -147,7 +150,8 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`python-resource-management`](.agents/skills/python/python-resource-management/SKILL.md) — Python resource management with context managers, cleanup patterns, and streaming.
 - [`python-testing-patterns`](.agents/skills/python/python-testing-patterns/SKILL.md) — Implement comprehensive testing strategies with pytest, fixtures, mocking, and test-driven development.
 - [`python-type-safety`](.agents/skills/python/python-type-safety/SKILL.md) — Python type safety with type hints, generics, protocols, and strict type checking.
-- [`reconcile-skills`](.agents/skills/workspace/reconcile-skills/SKILL.md) — Refresh installed shared skills and rules from their source checkout.
+- [`reverse-engineer-anything`](.agents/skills/workspace/reverse-engineer-anything/SKILL.md) — Reverse engineer native, managed, Electron/JavaScript, packaged, firmware, and browser targets with REA.
+- [`review-pass`](.agents/skills/review/review-pass/SKILL.md) — Review, simplify and fix what a pull request has not had reviewed yet, then record the reviewed head.
 - [`rewrite-git-history`](.agents/skills/git/rewrite-git-history/SKILL.md) — Rework your branch into focused commits while preserving and checking its content.
 - [`roblox-building`](.agents/skills/roblox/roblox-building/SKILL.md) — Build and improve Roblox worlds, terrain, structures, props, and assets.
 - [`roblox-gameplay`](.agents/skills/roblox/roblox-gameplay/SKILL.md) — Apply every time actively modifying a Roblox game, including mechanics, progression, rewards, controls, presentation, UI, and world content.
@@ -157,12 +161,14 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`security-audit`](.agents/skills/review/security-audit/SKILL.md) — Security guidance for writing code, reviewing a change, and auditing a codebase.
 - [`session-ledger`](.agents/skills/workspace/session-ledger/SKILL.md) — Keep verified task artifacts in one private task file.
 - [`storyline`](.agents/skills/roblox/storyline/SKILL.md) — Create or improve a coherent game story with playable beats and a satisfying ending.
-- [`subagent-selection`](.agents/skills/execution/subagent-selection/SKILL.md) — Select a model capability level for live verification chats or subagent delegation.
+- [`subagent-matrix`](.agents/skills/execution/subagent-matrix/SKILL.md) — Select a model capability level for live verification chats or subagent delegation.
+- [`t3-code`](.agents/skills/workspace/t3-code/SKILL.md) — Manage T3 Code configuration and provider environment variables.
 - [`tailscale-config`](.agents/skills/workspace/tailscale-config/SKILL.md) — Reconcile Tailscale authority and every affected execution consumer.
 - [`tailwind-design-system`](.agents/skills/web/tailwind-design-system/SKILL.md) — Build scalable design systems with Tailwind CSS v4, design tokens, component libraries, and responsive patterns.
-- [`test-fixture`](.agents/skills/authoring/test-fixture/SKILL.md) — Check test data and fixtures before changing tests or running tests after a fixture change.
-- [`test-skill`](.agents/skills/authoring/test-skill/SKILL.md) — Compare edited and original skill guidance against the same scenario.
+- [`test-fixture`](.agents/skills/execution/test-fixture/SKILL.md) — Check test data and fixtures before changing tests or running tests after a fixture change.
+- [`test-skill`](.agents/skills/authoring/test-skill/SKILL.md) — Exercise guidance safely, compare behavior, and repair failing tests.
 - [`text-highlight`](.agents/skills/git/text-highlight/SKILL.md) — Show code changes in small diff-shaped excerpts that are easy to locate.
+- [`update-skills`](.agents/skills/workspace/update-skills/SKILL.md) — Refresh installed skills to the latest default branch, keeping pending skill changes in effect.
 - [`use-dashboard`](.agents/skills/workspace/use-dashboard/SKILL.md) — Turn a dashboard spec into the shared HTML page and deliver it.
 - [`vercel-composition-patterns`](.agents/skills/web/vercel-composition-patterns/SKILL.md) — React composition patterns that scale.
 - [`vercel-react-best-practices`](.agents/skills/web/vercel-react-best-practices/SKILL.md) — React and Next.js performance optimization guidelines from Vercel Engineering.

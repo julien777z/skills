@@ -13,7 +13,7 @@ Be ambitious about simplifying the implementation under judgment: seek restructu
 ## Dependencies
 
 - `pre-production` — classify required repairs and bounded local refactoring before widening edits.
-- `subagent-selection` — route each reviewer subagent through the running session.
+- `subagent-matrix` — route each reviewer subagent through the running session.
 - `test-fixture` — own test value, fixture, and class/file boundaries when the scope reaches tests.
 - `list-prs` — reconcile task-work pull requests for the affected-repository comparison.
 
@@ -47,7 +47,7 @@ covering the complete change. Do not send the same question and scope to duplica
 finished features, not intermediate edits, and reuse clean scope results until their code,
 dependencies or relationships change.
 
-**Subagents run on the host's mid-sized model** — Sonnet on a Claude host, the equivalent elsewhere — named explicitly, since an unset model inherits the orchestrator's.
+**Subagents run through `subagent-matrix` at its standard capability level.** Resolve the exact host dispatch identifier and launch each actual review assignment with it; record each worker's catalogue state, identifier, assignment state and host receipt in the pass evidence. A catalogue-hidden family remains dispatch-required until that launch is accepted. A missing identifier or any rejection other than an explicit unsupported receipt remains a concrete hold, never a substitute model or an in-process independent review.
 
 **Subagents review; the parent applies.** When subagents are warranted, every subagent returns findings — each anchored to a path and line, with the restructuring it proposes — and edits nothing. Concurrent writers on one tree produce conflicts and half-applied restructurings, and one applier is what keeps the result a single coherent change. The parent resolves the returned findings, drops any that another slice's finding subsumes, applies the survivors itself, and remains answerable for the approval bar.
 

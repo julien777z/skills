@@ -221,6 +221,11 @@ Apply the baseline prompt above, plus these explicit review rules:
    - "Defence in depth", "a clearer status code", "a legitimate check", and "in case a future writer
      changes" are not dispositions: each keeps a branch no input reaches, and a future writer that
      could produce the state carries the check that refuses it.
+   - A concurrent writer is a writer. A check made after acquiring a lock, entering the transaction
+     that serializes the change, crossing an `await`, or sitting in the gap between a read and the
+     write or debit that depends on it, including a re-read after acquiring the lock, is not a
+     duplicate of an earlier check on the path when the value can change between them; judge it
+     against what can happen in that window.
    - Where a writer can produce the state, the check is real, and it belongs on every sibling path
      answering the same question, never only on the one the diff added.
    - **Whether code is reached is judged where the change will land:** on the branch it merges into
@@ -254,6 +259,9 @@ Apply the baseline prompt above, plus these explicit review rules:
      and importers, an entry point the framework or packaging looks up by path, or a UI component
      module, which the React rules hold to exactly one exported component with its helper components
      unexported in the same file; a folder of such modules is their area, never one module to merge.
+     The UI exemption holds only for a component that earns its place under the React rules'
+     **Components and Props**: a module whose component that rule calls another's variant or a
+     hook's wrapper, or one link of a chain each adding one prop, merges into its owner.
    - Re-count after every relocation, on the source and on the target, and say both counts.
    - History is not a disposition. Count a module as it stands in scope, whatever the diff calls it —
      new, renamed, moved, generalized, or already there when the change arrived. "It held one symbol
@@ -288,10 +296,13 @@ Apply the baseline prompt above, plus these explicit review rules:
      enum's member names, search for a mapping's key set, for a model's discriminator. A duplicate
      arrives under a different name, with different values, in a different package, and a search by
      name never finds it.
-   - Two enums with the same member names are one enum. The second one's values — a display label, a
-     wire code, a file suffix — are a property on the first, never a sibling declaration and never a
-     second enum relocated to the shared package. A mapping keyed by a set an enum already declares
-     is the same case: its values belong on that enum's members.
+   - Matching member names are a reuse candidate, not proof of one concept. Establish that the
+     declarations answer the same question and that combining them preserves the authority and
+     lifetime distinctions their writers and consumers require. When they do represent
+     one concept, the second one's values — a display label, a wire code, a file suffix — are a
+     property on the first, never a sibling declaration or a second enum relocated to the shared
+     package. A mapping keyed by a set an enum already declares is the same case: its values belong
+     on that enum's members.
    - File a declaration where its consumers meet. One that two services or packages read belongs in
      the package that declares shared shapes, never beside the first consumer that needed it.
    - Report the search with the finding: the existing declaration found, or what was searched and
@@ -406,7 +417,7 @@ Apply the baseline prompt above, plus these explicit review rules:
 11. **Prefer direct, boring, maintainable code over hacky or magical code.**
    - Treat brittle, ad-hoc, or "magic" behavior as a code-quality problem.
    - Be skeptical of generic mechanisms that hide simple data-shape assumptions.
-   - Forbid slim pass-through shims: a function whose body is a single call to the canonical function is banned, whether it forwards its arguments unchanged or supplies a fixed value for one of them. Call the canonical function directly at the use site and name the argument there. Several call sites passing the same constant is not a defect on its own and does not earn a wrapper to hold it; where the argument genuinely must not vary, encode that in the callee's own signature or type.
+   - Forbid slim pass-through shims: a function whose body is a single call to the canonical function is banned, whether it forwards its arguments unchanged or supplies a fixed value for one of them. Call the canonical function directly at the use site and name the argument there. Several call sites passing the same constant is not a defect on its own and does not earn a wrapper to hold it; where the argument genuinely must not vary, encode that in the callee's own signature or type. Rendering is a call: a component that renders one other component with fixed or defaulted props is this shim, and the React rules' **Components and Props** says what replaces it.
 
 12. **Push hard on type and boundary cleanliness when they affect maintainability.**
    - Question unnecessary optionality, `unknown`, `any`, or cast-heavy code when a clearer type boundary could exist.
@@ -462,6 +473,8 @@ Apply the baseline prompt above, plus these explicit review rules:
    - Keep a comment only for externally owned behavior the code cannot make evident, such as a
      surprising third-party or protocol constraint. Make it factual and one physical line when
      possible, with two lines as the absolute maximum.
+   - Keep a migration revision's lock marker, the first-line comment `database-migrations` defines,
+     verbatim: it is a machine-read marker that counts the revision as applied, not prose.
    - Keep ordinary docstrings to one physical line that identifies the symbol rather than narrating
      its implementation. A migration revision file's `upgrade()` and `downgrade()` docstrings may
      use a few concise lines only when needed to name the concrete transformation and its purpose.
@@ -590,9 +603,9 @@ Escalate findings when you see:
 - "Temporary" branching that is likely to become permanent debt.
 - Bespoke helpers where the codebase already has a canonical utility for the job.
 - A generic helper with exactly one caller, especially one this diff just created by extraction. One caller is not proof a helper is unnecessary; it is usually proof the sweep stopped at the first site. Search for the rest by the operation it performs, not by its name, and either use it there or fold it back into its single caller.
-- A new enum, constant set, mapping, or model whose members mirror one the repository already
-  declares, however differently it is named and wherever it landed; the fix is a property, method,
-  or widening on the existing declaration, filed where its consumers meet.
+- A new enum, constant set, mapping, or model that duplicates an existing concept under standard 3;
+  the fix is a property, method, or widening on the existing declaration, filed where its consumers
+  meet.
 - A module-level constant, mapping, or handle declared without its type.
 - A models module holding something other than a declaration. For every module under a `models/`
   package the diff touches, list its module-level assignments; each is `__all__`, a type alias or
@@ -722,8 +735,8 @@ Treat these as presumptive blockers unless the author can justify them clearly:
 - the PR adds an abstraction that was never needed, or one whose guarantee is weaker than its name claims
 - the PR adds a module holding one public symbol, or a second one-symbol module beside an existing one,
   outside the exemptions standard 2 names
-- the PR adds a declaration whose members mirror one the repository already declares, or a
-  module-level constant without its type
+- the PR duplicates an existing declaration's concept under standard 3, or adds a module-level
+  constant without its type
 - the PR duplicates an existing helper, repeats a cross-consumer mechanism, or puts logic in the wrong
   layer when there is a clear canonical home
 

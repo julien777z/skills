@@ -43,6 +43,11 @@ alwaysApply: true
   dependencies.
 - Do not add glue steps that only read versions or forward setup data. Pass repository-owned version files and inputs directly to the action that uses them whenever supported.
 - Keep workflow files concise: merge related setup and dependency commands into one clearly named generic step when their execution order and conditions allow it. Do not split tool or package installation into separate steps merely by dependency.
+- Keep each workflow job's `name` plain static text. Do not interpolate matrix or other GitHub expressions into a job name: skipped matrix jobs display the source expression instead of a resolved label. Keep matrix values in the strategy and use a concise generic job name that remains readable in every job state.
+- Name a workflow and its jobs the way the owner's other repositories name the same kind, such as a
+  test workflow whose job runs over a suite matrix or a lint job, and for the role each serves
+  across the repository, never for the one language, package or suite the repository holds today.
+  Read those repositories' workflows before naming one.
 - Environment configuration that tunes a tool — retry counts, timeouts, cache locations, path entries — belongs in the step that installs or runs that tool, not in a step of its own. A step whose whole body writes to `$GITHUB_ENV` is named for a concern rather than an action, and the reader has to look elsewhere to find out which later step it affects. Write those exports at the end of the owning step so the setting and its consumer stay together.
 - Add an explanatory comment when an edge case requires an explicit version override.
 - **A job that runs under a GitHub environment reads each secret and variable by one plain name**,
@@ -66,7 +71,7 @@ alwaysApply: true
 - Record every pull request with `session-ledger` immediately after the hosting service returns its canonical URL. A task-scoped pull-request lookup reconciles verified task records through that ledger and verifies each selected URL remotely; never infer task membership from the current checkout, a branch name, a transcript, or a broad hosting-service search.
 
 - **Open every pull request as a draft and keep it draft until it merges.** The user reviews it as
-  a draft; it leaves draft once, as the first step of an authorized merge through `land-pr`, so its
+  a draft; it leaves draft once, as the first step of an authorized merge through `merge-gate`, so its
   test jobs run once, on the head about to merge. Never mark one ready to start its tests, to show
   it finished, or to hand it to the user; a follow-up keeps pushing to the draft.
 - Keep pull requests focused and give them descriptive titles and descriptions; request appropriate reviewers when the repository workflow requires them.
@@ -86,29 +91,46 @@ alwaysApply: true
   repository's diff and evidence. Remove foreign references, including from dependency and delivery
   notes. Describe a consumed interface or unresolved delivery requirement in terms of this
   repository's own contract; disclose provider PR links and merge ordering to the user in chat.
-  `land-pr` still owns the complete dependency inventory and readiness gate.
+  `merge-gate` still owns the complete dependency inventory and readiness gate.
 - **Each session opens its own source pull request in each repository.** Later source work in the
   same session joins that pull request rather than creating one per concern or worker. Continue a
   source pull request from another session only when the user, an applicable invoked skill, or a
   repository rule explicitly directs that continuation. A matching topic, existing branch, open
   state, or recorded touch does not supply that instruction. Verify the selected pull request's
-  owner, state and scope before updating it; leave other sessions' pull requests and branches untouched.
-- **Agent configuration continues the open agent-configuration pull request for that work,
-  whichever session opened it.** Agent configuration is the canonical `.agents` tree — skills,
-  rules and agent definitions; everything else is source. List the repository's open pull requests
-  before selecting a branch, and create an agent-configuration pull request only when none owns
-  the work. Later guidance edits and worker tasks join it. Open another only when the user asks or
-  the first has merged. Consolidate a duplicate this session opened onto the selected pull request
-  and close it, saying where the work went; never retarget, close or fold in one this session did
-  not open, including one the selected pull request is stacked on.
+  owner, state and scope before updating it; leave other sessions' pull requests and branches untouched,
+  except for the guidance files the dependent-guidance bullet below puts on them.
+- **Agent configuration that depends on no still-open source pull request continues the open
+  agent-configuration pull request for that work, whichever session opened it.** Agent configuration
+  is the canonical `.agents` tree — skills, each with its own scripts, assets and templates; rules;
+  and agent definitions. Nonbehavioral text and guidance-reference corrections in agent hooks and
+  installers also follow this workflow. Changes to execution, timing, installation, discovery,
+  permissions or mutation scope remain source work. Everything else is source.
+  List the repository's open pull requests before
+  selecting a branch, and create an agent-configuration pull request only when none owns the work.
+  Later guidance edits and worker tasks join it. Open another only when the user asks or the first
+  has merged. Consolidate a duplicate this session opened onto the selected pull request and close
+  it, saying where the work went; never retarget, close or fold in one this session did not open,
+  including one the selected pull request is stacked on.
 - **Every worker pushes to the branch of the pull request the work continues**, fetching and
   rebasing its unpushed commits onto the remote branch before each push. A branch per worker,
   integrated later, is the same split with the integration deferred.
-- **Agent configuration and source never share a branch**, even when a guidance change follows the
-  source work checked out; a pull request found carrying both is split by moving one kind's files
-  onto the pull request of that kind the work continues. Sharing one holds the guidance behind
-  source review and outside the agent-configuration merge authorization below. This rule is the
-  user's standing permission, when a harness or session designates one branch per repository and
+- **Guidance that is true only once a still-open source pull request merges goes on that pull
+  request, whichever session opened it**: it describes behaviour that pull request introduces, drops guidance about something it
+  removes, or needs a workflow or tool change it carries — a project guidance bullet about a helper
+  the source branch adds is the common case. It merges with the change that makes it true, so it is
+  never held on a pull request of its own. For another session's source pull request in the same
+  repository, this bullet is the explicit continuation the session-ownership bullet requires: push
+  only the guidance files, under the worker rule above. Fold a separate agent-configuration pull
+  request this session opened for such guidance into the source pull request and close it, saying
+  where the work went. Guidance in one repository that depends on a source pull request in another
+  cannot share it: it goes on its own agent-configuration pull request, never the one carrying
+  independent guidance, and is held as **Merge Authorization** says, so the hold stops nothing
+  else.
+- **Every other agent configuration and source never share a branch**, even when a guidance change
+  follows the source work checked out; a pull request found carrying both is split by moving one
+  kind's files onto the pull request of that kind the work continues. Sharing one holds the guidance
+  behind source review and outside the agent-configuration merge authorization below. This rule is
+  the user's standing permission, when a harness or session designates one branch per repository and
   forbids pushing to any other without permission, to push to the branch of the pull request the
   work continues (`git push origin HEAD:<that-branch>`) without asking. Select that pull request
   under the source or agent-configuration ownership rule above. The other kind's new branch is the
@@ -144,15 +166,18 @@ alwaysApply: true
   changes need their own merge authorization; including a lockfile does not authorize a mixed
   pull request. Required validation and dependency admission still apply, subject to current user
   pauses and exclusions; this permission authorizes no deployment or release.
-- A pull request confined to canonical, non-executable agent configuration, including Markdown skills,
-  rules, agent definitions, and static metadata, may be merged without a separate request after
-  `code-simplify` has run and its findings are resolved, except one that adds a doctor skill, which
-  waits for the user's review together with everything in its batch. An executable script, workflow, installer,
-  or runtime code is source work even when it sits under `.agents`. When the user asked for the
-  change to be tested, first run the smoke test against the exact pull-request head. Check that the
-  complete pull request remains confined to this agent configuration before using this exception.
-- **An agent-configuration pull request whose guidance is true only once a still-open source pull request has merged is held until that merge**, whatever its other gates say: it describes behaviour that pull request introduces, drops guidance about something it removes, or needs a workflow or tool change it carries — a project guidance bullet about a helper the source branch adds is the common case. Guidance true on the default branch as it stands waits for nothing.
-- A hold does not authorize merging the source pull request or asking for its merge solely to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. After that merge, incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
+- A pull request confined to agent configuration — skills with their own scripts, assets and
+  templates; rules; agent definitions; and static metadata — may be merged without a separate
+  request once `code-simplify` has run and its findings are resolved and a skill's changed scripts
+  pass the checks they own, such as a type check or a test render. One that adds a doctor skill
+  waits instead for the user's review together with everything in its batch. A workflow, installer,
+  or repository tooling outside a skill's folder is source work when its execution changes, even
+  when it sits under `.agents`.
+  When the user asked for the change to be tested, first run the smoke test against the exact
+  pull-request head. Check that the complete pull request remains confined to this agent
+  configuration before using this exception.
+- **An agent-configuration pull request whose guidance depends on a still-open source pull request in another repository is held until that merge**, whatever its other gates say; dependent guidance in the same repository rides its source pull request instead, as **Branches and Pull Requests** says, and guidance true on the default branch as it stands waits for nothing.
+- A hold does not authorize merging the source pull request or asking for its merge solely to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. The session that merges the source pull request lands the held one next: incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
 - When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request; one held for a source pull request becomes eligible once that pull request has merged. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, including one begun by another task. Do not close or leave it open merely because it is draft or conflicts with the base; close only one this session opened, and only when its change is superseded or no longer wanted.
 - An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each batch pull request a skill declaring merged-batch delivery opens during its run, and each fix pull request a directly user-invoked skill's own authorization names, once that skill's merge gates pass; that authorization ends with the run.
 - An authorized merge is not held for a failing check the current user explicitly waives or an
@@ -177,21 +202,16 @@ alwaysApply: true
 
 ### After Agent Sync
 
-- **The refresh runs before the next work, never on the merge alone.** After a pull request that
-  changes agent configuration merges and its default-branch Agent Sync run finishes, the refresh
-  below waits for the session's next work: a remaining step of an active task, a follow-up, or the
-  user's next request. The merge's own delivery is not that work: the Agent Sync poll, the
-  merged-text read-back, the generated-output check and the merge's report. The refresh runs
-  before that next work reads any skill or rule.
-  A merge that is the session's last work ends with no refresh, and its report reads `refresh:
-  deferred to the next request`. The next request, in this session or a later one, runs the refresh
-  first unless the installed copy already carries the merge, as one a cloud session installs at
-  start does.
-- Select the refresh route before checking local changes. When the repository supplies the
-  installed shared skills, invoke `reconcile-skills`; its preservation workflow governs dirty
-  checkouts as well as clean ones. The checkout-only restriction below does not apply to this route.
-  For the skill's first merge, read it from the merged commit before invoking it. A session follows
-  the copy it loaded until this refresh completes.
+- **Refresh immediately after Agent Sync succeeds.** After a pull request that changes agent
+  configuration merges and its default-branch Agent Sync run succeeds, complete the refresh below
+  and verify the installed links before reporting delivery complete. The refresh is part of the
+  merge's delivery, including when the merge is the session's final work. Report the installed
+  source and commit, or the concrete blocker preventing refresh.
+- Select the refresh route before checking local changes. When the repository supplies the installed
+  shared skills, invoke `update-skills`; it keeps pending agent-configuration changes in effect,
+  dirty checkouts and open pull requests alike. The checkout-only restriction below does not apply
+  to this route. For the skill's first merge, read it from the merged commit before invoking it. A
+  session follows the copy it loaded until this refresh completes.
 - For every other repository, refresh its main local checkout, not a task worktree: if it is clean,
   check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force
   this checkout-only refresh; report a skipped refresh and leave them untouched.
@@ -238,7 +258,13 @@ alwaysApply: true
   `.agents/project.md` or a reference it points to: an environment variable or credential an agent
   session reads, even one a person adds to a cloud environment for the agent; a tool installed for
   agents; a procedure only agents follow.
-- Describe available capabilities without assuming how consumers will use the project or framing guidance as prohibitions such as "never do X."
+- After drafting or editing READMEs and other reference documentation, compare each statement with
+  the current capabilities and required steps. When their positive description already communicates
+  the operation, delete corresponding claims about absent behavior or unneeded operations,
+  including positive paraphrases. Retain a limitation only when it contributes a supported input,
+  option, constraint or required step not otherwise stated. Remove historical comparisons. Describe
+  available capabilities without assuming how consumers will use the project or framing guidance as
+  prohibitions such as "never do X."
 - Remove repeated explanations and prefer short sections, bullets, tables, and focused examples over long prose.
 - Write in plain language, as if explaining the repository to a colleague. Avoid repeating internal
   terms such as `canonical`; name the file or say `source` when that is clearer.

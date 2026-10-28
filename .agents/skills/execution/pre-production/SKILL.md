@@ -40,19 +40,24 @@ with an obsolete owned contract or revision.
   Re-running the job is never the fix: a green re-run proves the outage ended, not that the pipeline
   survives the next one.
 
-- **A test that costs far more than it covers is removed.** When one test or parametrized family
-  is disproportionate under `test-fixture`'s cost question and cannot be made cheap by its own setup,
-  delete it with the deletion record `test-fixture`'s rubric asks for, and keep or extend a cheaper
-  test of the same classification where the contract needs one. Never keep it in any of the ways the
-  testing rules list for absorbing a slow test.
+- **A test that costs far more than it covers is removed.** When one test, parametrized family or
+  module is disproportionate under `test-fixture`'s cost question and cannot be made cheap as that
+  question allows, delete it with the deletion record `test-fixture`'s rubric asks for, and keep
+  or extend a cheaper test of the same classification where the contract needs one. Never keep it
+  in any of the ways the testing rules list for absorbing a slow test.
 
 ## Scope Follows The Defect, Not The Request
 
 - **The scope of a change is the whole shape of the problem, not the files the request happened to
   name.** A reported symptom is where the defect surfaced, not its boundary. When the same defect
   appears beside it — a second implementation of the mechanism, a sibling path answering the same
-  question from a different input, a parallel copy nobody reconciled — that is one piece of work, and
-  splitting it leaves the half that stays behind as the version the next person extends.
+  question from a different input, a parallel copy nobody reconciled — that is one piece of work, the
+  change's own scope rather than incidental work under the size budget or an item left for later,
+  and splitting it leaves the half that stays behind as the version the next person extends.
+- **A parallel copy is reconciled by giving the mechanism one owner, never by keeping the copies in
+  step.** Making copies identical, a test that they match, or a note to update both leaves the
+  second mechanism in place. Pick the owner by the fewest-mechanisms test, across repositories as
+  within one, move every consumer onto it and delete the copies.
 - Establish the defect's boundary from the failed behavior, violated invariant, and mechanism that
   produces it. Repair every affected implementation and consumer of that mechanism, including
   necessary generated contracts and retained-data migrations. Sharing a directory, a naming
@@ -71,23 +76,50 @@ with an obsolete owned contract or revision.
   unrelated rewrite may already be disproportionate.
 - **Incidental work goes one hop, never further.** What the work notices while making the requested
   change — in a file it opened, a check it ran, a capture it read — is fixed. A file opened or edited
-  only to make such an incidental fix is never itself a source of more incidental work: what else it
-  holds is listed, not chased.
-- **Incidental work has a size budget.** The incidental part of a change — everything the request
-  did not ask for, apart from a confirmed bug in the path of the requested behaviour, which is always
-  fixed — stays about the size of the requested part, or within 150 changed lines across 10 files
-  when the requested part is smaller. Inside the budget, everything noticed is fixed. Once the next
-  incidental fix would pass it, the rest is listed under **Noticed, not changed** in the change's
-  report, one line each, and is neither fixed, deferred, nor put to the user as a question. An
-  explicitly requested broad refactor and a doctor run set their own scope and carry no budget.
-- **A correction to how one screen looks or reads is the user's decision about that screen, not a
-  defect to sweep.** A layout, a wording, a tone or a style the user changes on one page is applied
-  to that page, and other pages with the same shape are listed for the user to decide on, never
-  changed in the same pass: a choice of taste on one screen says nothing about the others. A rule
-  written from the correction governs new work; the existing pages it would reach wait for the
-  user's decision the same way. A shape a standing rule already named as a defect before the
-  correction, and a broken mechanism, a wrong value, a missing guard or a parallel implementation,
-  stay under the bullets above on every page.
+  only to make such an incidental fix is never itself a source of more incidental cleanup: what else
+  it holds is listed, not chased.
+- **A defect the work notices is always fixed, wherever it lives.** A defect is what
+  `acceptance-gate`'s rubric calls one: an image that never loads, a wrong value, a state shown in
+  the wrong place, a control that does nothing, a test suite that fails in a fresh checkout, a
+  fixture that builds data the code would never hold, a setup step or documented command that
+  errors. It is fixed in the change in flight, outside both the hop limit and the size budget below.
+  Sitting in a shared component, an owned library or another owned repository the pull request does
+  not otherwise touch is no reason to leave it: the fix goes to that repository's pull request for
+  this work. It is never listed as noticed, offered or deferred.
+- **A security vulnerability the work finds is such a defect, whoever finds it and whenever it
+  arrived.** One a gate, reviewer or audit reports in code the change never touched, one that
+  predates the change, and one another layer is said to stop before that layer is traced on every
+  path the attack takes are all fixed in the change in flight, with a test that reproduces the
+  attack first where one can exist. A shape that may be exploitable is traced to an attacker or
+  ruled out in the same run. It is always closed in the change with the fix that enforces the access
+  the product already intends; only a change that widens access or changes who the feature serves
+  goes to the user, as the global rules' **Task execution and authorization** says. Every mitigation
+  within reach is carried in the change, and a remaining step only another party can take, such as
+  rotating a credential they hold, is reported as a gate with its owner and saved next action, as
+  the global rules' **Tools and environments** says. It is never put to the user as something to
+  consider or an option, recorded as deferred, left as a hardening note, or answered with a
+  recommendation to run an audit or a doctor later.
+- **Incidental cleanup has a size budget.** The incidental part of a change — everything the request
+  did not ask for that is not a defect — stays about the size of the requested part, or within 150
+  changed lines across 10 files when the requested part is smaller. Inside the budget, everything
+  noticed is fixed. Once the next incidental fix would pass it, the rest is listed under **Noticed,
+  not changed** in the change's report, one line each, and is neither fixed, deferred, nor put to the
+  user as a question. An explicitly requested broad refactor and a doctor run set their own scope and
+  carry no budget.
+- **A correction to how one screen looks or reads reaches every page when the user makes it a
+  rule, and that screen alone when they do not.** A correction the user asks to have codified, or
+  gives a reason for that holds wherever the shape appears, such as "labels sit above their fields
+  so the eye moves straight down the form", names a defect. Every existing page with that shape is
+  fixed in the same pass, as the change's scope rather than incidental work under the size budget,
+  and the rule written from it governs existing pages as much as new ones. A layout, a wording, a
+  tone or a style changed on one page with no such reason is the user's choice about that page. It
+  is applied there, and other pages with the same shape are listed for the user to decide on,
+  never changed in the same pass. A shape a standing rule already named as a defect, and a broken
+  mechanism, a wrong value, a missing guard or a parallel implementation, stay under the bullets
+  above on every page. A page that builds its own copy of a shared component moves onto the shared
+  one in the same pass even though its look changes with it: it takes the look the rest of the
+  product already has, which is no new choice about that page, unless the task's record or the
+  conversation shows the user decided that page's look, in which case the move goes to the user.
 - Inspect the complete mechanism before choosing its repair. Prefer the clean result that solves
   that defect throughout its affected paths; do not equate a broader cleanup with a better fix.
 - The bar is what the cleanest result requires, not what the smallest diff permits. Existing users
@@ -96,6 +128,11 @@ with an obsolete owned contract or revision.
   something is not a smaller change; it is the same change plus a new thing to delete later.** When the
   narrow option requires inventing structure the clean option would remove, the narrow option is the
   more expensive one.
+- **A configuration directive is that narrow option too.** When a tool reports a problem in code the
+  user owns — a bundler warning, a type error, a lint finding, a size limit — the fix is in the
+  structure it points at: split the module, remove the unused export, move the import. A manifest
+  key, a bundler or compiler option, an alias or an exclusion that stops the tool from seeing the
+  problem leaves the structure as it was and hides it from the next reader.
 
 ## The Deployment's Size Is Not The Design
 
@@ -132,6 +169,9 @@ with an obsolete owned contract or revision.
   reads as "there was no decision to make".
 - When a genuine fork appears, present it as options, state each consequence concretely, and **say
   which one removes the most duplication and leaves the fewest mechanisms behind**. Recommend that one.
+  A fork only in how the code is built — where shared behavior lives, which mechanism replaces
+  parallel copies — is decided by that same test and stated in the pull request, never put to the
+  user.
   A fork between designs of what the reader sees is ranked by what serves the reader and the flow
   instead, as the global rules' standing-guidance bullet says of design rules.
   The user may take the trade-off or refuse it; they cannot weigh what they were not told.

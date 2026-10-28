@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 ## Dependencies
 
-- `subagent-selection` — return the frontier model for research sub-agents.
+- `subagent-matrix` — return the frontier model for research sub-agents.
 - `agent-lock` — serialize access to shared interactive runners.
 - `roblox-studio` — apply its testing guidance when research uses Studio or an isolated runner.
 - `roblox-gameplay` — own the resulting gameplay design guidance.
@@ -27,10 +27,13 @@ If the needed runner capability is unavailable, return the concrete blocker and 
 
 ## Delegate the observations
 
-Invoke `subagent-selection` and choose its **frontier** tier for every research sub-agent in both
-passive and play modes. Use the returned model and explicit dispatch instructions. If frontier is
-unavailable, report research delegation as blocked; do not silently use a lower tier or inherit
-the orchestrator's model. Model selection does not relax runner locks or concurrency limits.
+Invoke `subagent-matrix` and choose its **frontier** tier for every research sub-agent in both
+passive and play modes. Use its exact dispatch identifier and reasoning effort for each actual researcher
+assignment. Record catalogue state separately from the assignment state and receipt: a catalogue-hidden family
+remains dispatch-required until that researcher assignment is accepted. A missing identifier or any rejection
+other than an explicit unsupported receipt blocks research delegation. An explicit unsupported receipt records
+frontier research as unavailable and also blocks it; do not silently use a lower tier or inherit the orchestrator's
+model. Model selection does not relax runner locks or concurrency limits.
 
 Partition the selected chart entries into batches of four. **Spawn two sub-agents for every four games, assigning exactly two distinct games to each researcher.** For a final partial batch, create only the researchers needed: one researcher for one or two games, or two researchers for three games (two games plus one). Thus the default 25-game study has 13 researcher assignments: twelve pairs and one final game. Respect available concurrency slots; run further batches as slots become available instead of exceeding the limit or silently increasing each researcher's workload.
 

@@ -1,6 +1,6 @@
 ---
 name: acceptance-gate
-description: Required independent checkpoint over an authorized change's complete diff before local completion, draft readiness or merge; run as a workflow dependency without a separate user invocation. Passing tests or the author's own review never substitute for its verdict. Judge an issue, finding, proposal or diff against product state, intent and the quality rubric through a read-only subagent. Run for triage, before recording a deferral, before and after fixing or resolving one, after base incorporation, and on a fix for a gate or review flag.
+description: Required independent checkpoint over an authorized change's complete diff before local completion, draft readiness or merge; run as a workflow dependency without a separate user invocation. Passing tests or the author's own review never substitute for its verdict. Judge an issue, finding, proposal or diff against product state, intent and the quality rubric through a read-only subagent. Run over each finished plan step or worker task before later work builds on it, for triage, before recording a deferral, before and after fixing or resolving one, after base incorporation, and on a fix for a gate or review flag.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 
@@ -12,10 +12,10 @@ state and the change's intent, applies the repository's rubric, and answers one 
 
 ## Dependencies
 
-- `subagent-selection` — route the gate through a subagent of the running session.
+- `subagent-matrix` — route the gate through a subagent of the running session.
 - `list-prs` — the caller supplies verified task-work pull requests for cross-repository context.
 - `code-simplify` — its `references/rubric.md` defines slop and prices a mechanism. The gate borrows
-  that file and never the applying-fixes workflow.
+  that file and never the applying-fixes workflow; this gate owns the review order.
 - `security-audit` — run at its `low` effort, which is defined as a single in-process pass against
   its `references/rubric.md` and names no delegated agents, because a read-only gate cannot spawn
   one. The rubric defines what counts as an exploitable finding, what it is worth, and in what order
@@ -49,6 +49,25 @@ alias, package move, permission grant or test fixture repeating the implementati
 does not prove ownership or isolation. Missing evidence holds a clean verdict; it does not turn
 the implementation into the specification.
 
+For every changed or newly resolved dependency, provider, generated contract, shared package, or
+other boundary owner, complete the dependency-authority receipt in `references/rubric.md` before a
+clean verdict. First reconcile a mismatch between the declared and loaded source: a workflow, cache,
+checkout, or resolver that loads another branch is a dependency-routing defect, not evidence that a
+consumer must migrate.
+
+An unmerged pull request, proposed branch, or future release is candidate evidence only. It cannot
+establish a target contract, satisfy a required repair on another target, or be assumed to merge
+unless the user explicitly makes it a dependency.
+
+Once the resolved sources agree, compare consumer migration with changing the owner before accepting
+either. Broadening an owner, adapter, generic bound, schema, or validation solely so an owned
+consumer's previous input still passes is compatibility even when it adds no branch or fallback.
+Flag it unless the evidence establishes that broader input is the owner's independent target
+contract or the user explicitly authorized the retained compatibility. Matching runtime behavior
+does not establish that a consumer satisfies a type, API, or generated-contract constraint. The
+ordinary remedy corrects dependency selection or, when the resolved target contract is current,
+updates every owned consumer and removes its obsolete representation.
+
 `references/rubric.md` states what the statement names and how its inputs are reconciled. Read product
 state from the target repository's project guidance; never import another repository's assumptions.
 
@@ -60,25 +79,60 @@ applicable task pull requests, not only default-branch or local checkout compari
 checks analogous implementations and the evidence for retained differences; missing applicable
 pull-request context is a flag to obtain that context, not permission to assume consistency.
 
-The gate is read-only and distinct: not the author of the item. Its reader freshness follows
-`subagent-selection`'s **Dispatch**. It receives five things and nothing else:
+The gate is read-only and distinct: not the author of the item. Invoke `subagent-matrix` for the
+acceptance-gate role, using its configured Codex role selection and the advanced capability level on
+other hosts. Dispatch the gate with that exact identifier, and retain catalogue state, identifier, assignment
+state and host receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. It
+receives five things and nothing else:
 
 1. the intent statement;
 2. the originating diff, with its deletions first;
 3. the item under judgement — an issue or finding, a proposal, a diff, an incoming base diff, or a
-   record; a diff that adds or changes tests carries their per-test durations from the run that
-   verified it;
+   record; a diff that adds or changes tests carries the cost evidence from its verification run
+   under `test-fixture`'s existing-reporting procedure, including any unmeasured attribution;
 4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**;
 5. exactly one question from the list below.
 
 **The gate has no shell, so every diff reaches it as content, never as a reference.** The caller
 pastes the originating diff and a diff item into the prompt, or writes each to a file the prompt
 names, with deletions intact; a commit range, a branch name, or a `git` command leaves the gate
-judging a working tree that other edits may have moved, or nothing at all. Dispatch it on the
-host's largest model, named explicitly.
+judging a working tree that other edits may have moved, or nothing at all. Its selector receipt is the
+model-dispatch record; never replace it with a generic “largest model” label.
 
-**Its first act on any diff is five greps.** Before reading the diff for anything else, grep its added lines for five shapes and list
-every hit as a finding ahead of all others, with the remedy the rubric names:
+**A diff review judges the code as it stands, not only the lines that changed.** Read every module
+the diff adds, moves or rewrites whole; moved and renamed code is judged as if it were new. Before
+the design comparison, answer the plain question: would an experienced reviewer opening these
+modules call any of it slop? Each reason they would give is a flag with its remedy, whether or not
+a narrower rule below names it: layers that each add one tweak, wrappers that only forward or fix a
+value, one-symbol fragments, one thing implemented twice, comments narrating code, confusing or
+near-duplicate names, dead or speculative code, hand-written configuration or styling where an
+owner exists. The list illustrates the question and never bounds it. A rubric exemption that would
+excuse such a shape is named in the flag. A remedy that sends the author to an existing piece judges
+that piece the same way first: a wrapper or a duplicate is not an owner. An increment fixing an
+earlier flag is read the same way, over the modules it touches, never only against that flag.
+
+**Then make the design comparison.** Inventory the responsibilities and decisions the diff moves,
+duplicates, specializes, removes or introduces, reading both sides independently of the caller's
+rationale. Follow each prior selected or computed answer to every resulting use, counting independent
+selections, copies and repeated work even inside one file; a canonical file is not proof of canonical
+decision ownership. Apply the rubric's **Independent Judgment** comparison to those owners and
+consumers, including for prose and configuration. Complete the comparisons despite earlier flags,
+and name the exact missing input and investigation for any remaining choice. Return the comparisons
+and deciding evidence in the existing verdict fields; a checklist or stage inventory alone is
+incomplete.
+
+**Make the simpler candidate concrete.** For each suspect shape, apply the rubric's removal test
+before accepting it. Return the concrete consolidation or deletion, or the actual current contract
+that the simpler complete candidate would break. Missing validation evidence is a separate flag,
+never a reason to leave this judgement unfinished.
+
+**Trace changed state-like values during the design comparison.** Apply the rubric's **State
+Meaning** criteria to their writers, transformations and consumers, including values whose names did
+not change. Include the authority, lifetime and purpose evidence in `Also read`, and semantic
+collisions in the flag bullets; missing evidence prevents a clean verdict.
+
+**Then run five greps.** Grep the diff's added lines for five shapes and list every hit as a finding
+ahead of all others, with the remedy the rubric names:
 
 1. **A reader reaching through a table keyed by a model, class or type for a fact about the key**
    — the pattern `[A-Z_]+\[` followed by a model, record, class, `type(` or `cls` expression, as in
@@ -119,15 +173,18 @@ executable flow but still receives a map of affected guidance owners. Flag a mis
 or incomplete map rather than treating the reviewed checkout as the complete system. Report its
 findings in the verdict and summarize clean flow evidence under `Also read`.
 
-After the explicit checks, apply the rubric's independent judgment to the complete result. A
-checklist pass is not acceptance: assess whether the change makes sense for its intent and flag
-concrete concerns even when no named rule anticipated them.
-
 It returns the verdict its question defines, shaped as `references/rubric.md` — What A Verdict Names
 requires.
 
-The gate always runs as a subagent of the running session, routed as `subagent-selection`'s
+The gate always runs as a subagent of the running session, routed as `subagent-matrix`'s
 **Dispatch** section directs.
+
+For a canonical guidance batch, one fresh gate may inspect the complete frozen diffs together and
+return a distinct verdict for each exact head. Its prompt names every head and intent, and its
+evidence retains the per-head disposition. Retain an earlier per-head acceptance only while that
+head, its inputs, and its affected-repository map remain exact; rerun the changed head and its
+dependent gates without invalidating unrelated batch heads. A shared question never lets an author
+judge their own work or collapse distinct verdicts.
 
 ## Questions
 
@@ -139,8 +196,8 @@ it:
   one of fix, close, defer or do.
 - **Admission — may this work be deferred?** The triage question asked of a proposed record.
 - **Proposal — should this be written?**
-- **Diff — should this stand?** A finished task's diff, or the increment fixing a flag, read with
-  the whole branch diff as its originating diff.
+- **Diff — should this stand?** A finished step's or task's diff, or the increment fixing a flag,
+  read with the whole branch diff as its originating diff.
 - **Base incorporation — what did the base bring in that the change must refactor?** The procedure
   below.
 - **Final acceptance — may this merge?** The complete pull-request diff, read once after review is
@@ -176,7 +233,7 @@ The gate is never advisory; the rubric says what each disposition binds the call
 A flag blocks the flagged proposal or diff, not an ordinary repair the task already authorizes.
 Read its concrete objection and remedy against the intent and standing guidance, make the smallest
 coherent repair using the existing owner or mechanism, and send the changed increment with the
-whole originating diff to a fresh independent gate, following `subagent-selection`'s **Dispatch**.
+whole originating diff to a fresh independent gate, following `subagent-matrix`'s **Dispatch**.
 
 **Repair rounds are counted per objection.** A flag gets at most two repair rounds of its own; one a
 fresh gate raises for the first time starts at zero and is repaired like any other, whatever round
@@ -228,5 +285,5 @@ Verdict: accept | flag | fix | close | defer | do
 
 Writers read: <each guard the diff adds with the writers it read, or `no guard added`>
 
-Also read: <additions of other kinds, summarised in one line, or `none`>
+Also read: <the Independent Judgment comparison receipt, plus additions of other kinds>
 ```

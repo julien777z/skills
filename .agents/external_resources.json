@@ -19,6 +19,22 @@
     },
     {
       "kind": "skill",
+      "name": "brag",
+      "repo": "latent-spaces/brag",
+      "skill": "brag",
+      "category": "media",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "brag-slim",
+      "repo": "latent-spaces/brag",
+      "skill": "brag-slim",
+      "category": "media",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
       "name": "clerk-nextjs-patterns",
       "repo": "clerk/skills",
       "skill": "clerk-nextjs-patterns",
@@ -52,7 +68,7 @@
     {
       "kind": "skill",
       "name": "image-to-code",
-      "repo": "Leonxlnx/taste-skill",
+      "repo": "Leonxlnx/imagegen-skills",
       "skill": "image-to-code",
       "category": "web",
       "update_on_sync": true
@@ -168,6 +184,14 @@
       "repo": "wshobson/agents",
       "skill": "python-type-safety",
       "category": "python",
+      "update_on_sync": true
+    },
+    {
+      "kind": "skill",
+      "name": "reverse-engineer-anything",
+      "repo": "morluto/rea",
+      "skill": "reverse-engineer-anything",
+      "category": "workspace",
       "update_on_sync": true
     },
     {

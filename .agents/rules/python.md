@@ -12,7 +12,8 @@ paths:
 - For single-consumer, non-library repositories, require Python 3.12 or newer and prefer the latest stable Python release when the repository's runtime and dependencies are compatible. For public libraries, prefer the widest feasible supported range with a minimum no earlier than Python 3.11.
 - Use modern type hints: `str | None` instead of `Optional[str]`.
 - Use built-in generics: `list[T]`, `dict[K, V]` instead of `List[T]`, `Dict[K, V]`.
-- Use `Self` from `typing` for class method return types.
+- Type a class method that returns a new instance of its own class as `Self` from `typing`; any
+  other class method names its return type.
 - Use `collections.abc` for abstract types: `Callable`, `Iterable`, etc.
 - Never use `Protocol` for model typing; use concrete model classes in type annotations.
 
@@ -351,7 +352,7 @@ def get_auth_secret(config: Settings | None = None) -> str:
 - **Tests do not justify keeping otherwise-unused application code.** A test that asserts a symbol no other application code reads is testing a fabricated contract; delete the symbol and that test together rather than preserving the symbol "because it's covered".
 - "Consumer" means live application/library code that reads the symbol — call sites, internal use by another live symbol, serialization, or a public package export in `__all__` that external packages import. Test modules are not consumers.
 - A symbol reached only indirectly through another symbol that is itself dead is also dead; remove the whole unused chain.
-- A guard, validation, or branch for a state no writer can produce is dead code too. Before adding one, read every path that creates or changes the value it tests and what its path reads next; when they already exclude the state, or a check already on the path refuses every input the guard would, leave the guard out, with its message constant and its tests.
+- A guard, validation, or branch for a state no writer can produce is dead code too. Before adding one, read every path that creates or changes the value it tests, concurrent writers included, and what its path reads next; when they already exclude the state, or a check already on the path refuses every input the guard would, leave the guard out, with its message constant and its tests. An earlier check refuses only what held when it ran: when another request or transaction can change the value between the two, across an `await`, a lock wait, a transaction boundary, or the gap between a read and the write or debit that depends on it, the later check, including a re-read after acquiring the lock, is the one that decides and is not a duplicate.
 - Defence in depth, a clearer status code, and a future writer are not reasons to keep such a guard: a writer that could produce the state carries its own check.
 - Where the state is reachable, the check goes on every sibling path answering the same question, not only the new one.
 - **Settings fields that populate environment variables consumed by a third-party library are not dead code**, even when no application code reads the field directly. If a dependency we rely on reads an env var at runtime (for example a library whose `Settings` reads `ENCRYPTION_METHOD`/`ENCRYPTION_KEY`), the field must stay on the shared settings object so the application sets that env var — the library is the consumer. Keep such fields and validate them where the environment requires it.
@@ -665,6 +666,8 @@ ALLOWED_STATES: Final[frozenset[str]] = frozenset({"ready", "complete"})
 
 - Add a blank line before multi-line assert statements.
 - Do NOT put docstrings or comments at the top of files (no module-level docstrings, no module-level comments, and no encoding header comments like `# coding: utf-8`).
+  A migration revision file's first line may be the lock marker `database-migrations` defines: it
+  is a machine-read marker that counts the revision as applied, and it stays verbatim.
 
 - Every **function**, **method**, and **class** should have a concise docstring (purpose or role). Include `main()` and nested helpers the same way unless the file’s existing style omits docstrings on tiny locals—when in doubt, add one line.
 - Keep ordinary docstrings to a single line. Do not include Args, Returns, or Raises sections.

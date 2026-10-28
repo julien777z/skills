@@ -22,13 +22,40 @@ The statement names:
 - the required behavior and ownership boundaries, with the accepted requirements that establish them;
 - the applicable target-contract instruction, the one canonical representation of each owned boundary
   it changes, and every prior or candidate representation the change removes or rejects;
+- for each changed or newly resolved dependency, provider, generated contract, shared package, or
+  other boundary owner: the current owner; the exact loaded source and revision; each consumer's
+  declared source and revision; every owned consumer that differs from that declared contract; and
+  any explicit authorization to retain an earlier representation. Resolve a mismatch between the
+  declared and loaded source as a dependency-routing defect before proposing a consumer migration.
+  An unmerged pull request, proposed branch, or future release is candidate evidence only; it cannot
+  establish a target contract, satisfy a repair on another target, or be assumed to merge unless
+  the user explicitly makes it a dependency. The
+  comparison states why migrating consumers is insufficient before it accepts broadening an owner;
 - the shapes removed and their replacements, read from current deletions and the originating commits;
-- the pull request's title and body, checked against those requirements and the implementation.
+- the pull request's title and body, checked against those requirements and the implementation;
+- the target repository's purpose and scope, as its README and project guidance state them;
+- for each kind of convention-bearing artifact the diff adds, renames or reshapes — a CI job or
+  workflow, a script or command, a package or module layout, a configuration key — how the owner's
+  other repositories that hold the same kind of artifact shape it, read from their current default
+  branches whether or not the task touches them.
 
 Read deletions before additions, but do not treat an empty deletion set as an empty intent. A file
 added and removed within the branch disappears from its final diff without cancelling the ownership
 decision that removed it. Preserve that decision until the user changes it. When inputs disagree,
 resolve them against the accepted requirements and history instead of silently narrowing the scope.
+
+## Repository Purpose And Conventions
+
+A name or shape is judged against what the repository is for, not only against what the diff
+touches today. Flag one scoped narrower than the artifact's role in the repository: a test job,
+script or module named for the one language, package or suite the repository holds now, where the
+repository's purpose says it holds or will hold several, as in a shared library repository that
+names its test job for one of its two languages. Flag a shape that departs from the convention the
+owner's other repositories use for the same kind of artifact, such as a job naming or matrix scheme
+those repositories share, unless the intent states why this repository differs. The remedy names
+the convention and the repository-wide name. A missing purpose or sibling convention for a
+convention-bearing artifact the diff adds, renames or reshapes holds a clean verdict, as a missing
+input.
 
 ## Product State
 
@@ -57,17 +84,59 @@ rubric item they violate, or the independent judgment concern, and the remedy th
 would take — narrow the model rather than subtract from it, derive the set from the declaration
 that carries it, extend the mechanism the change introduced. A disposition names the test that decided it and the fact it rests on.
 
+The existing `Also read` field carries the **Independent Judgment** comparisons, including for
+choices that do not produce flags. Name the prior, resulting and simplest viable designs, the
+concrete change or growth case, and the consequence deciding the trade-off. A source inventory or
+an assertion that existing stages were preserved is not that receipt; name the exact unavailable
+evidence when a comparison cannot be completed.
+
 A finding confirmed by a review that refutes everything it can is evidence that the problem is real;
 the gate does not re-validate it.
 
 ## Independent Judgment
 
-Use your own engineering judgment as well as the explicit checks. Ask whether the result makes
-sense for the user's intent: does its cumulative scope fit the problem, do its responsibilities
-and dependencies form a coherent design, and does its complexity earn its cost? An unusual shape,
-an unexplained detour, or a surprising amount of unrelated work deserves scrutiny even when each
-edit individually follows a rule and all checks pass. The checklist is a floor, not the limits of
-what the gate may notice.
+For each suspect shape, test removal rather than defending its contents. Move its required work
+into the existing owner, inline a redundant step, derive a copied value where it is read, or use
+the dependency that already owns the operation. Sketch one concrete candidate and trace all of its
+required behavior before deciding. An alternative missing an accepted output, validation, side
+effect or independent caller is incomplete and cannot justify the current design.
+
+A layer can do real work and still be unnecessary. Adding a field, output, policy adjustment or
+transformation does not establish a separate owner. If that work fits the existing operation
+without breaking a current contract or dependency boundary, flag the extra layer and place the
+work there. Apply the same test to repeated branches, mirrored state, speculative options and
+hand-built mechanisms; the class is unnecessary machinery, not just forwarding functions. Tests
+passing and the absence of duplicated lines do not answer this question.
+
+Compare consolidation within the existing operation before adding configuration, dispatch or
+extension interfaces. A dispatch table's current shape is not a contract requiring each selected
+operation to be uniform internally. A repair that grows surrounding machinery to retain the
+questioned boundary must show why direct consolidation cannot preserve current callers. Renaming
+or relocating the extra layer is not its removal.
+
+For a retained shape, identify the actual independent caller, lifecycle, contract or dependency
+that the simpler complete candidate would violate. A role name, a possible future consumer, a
+short body, "separation of concerns", or "not a pure wrapper" is not that evidence. Do not force
+unrelated responsibilities together when such a boundary exists; show it and retain the boundary.
+
+Compare the prior design, the proposed or resulting design, and the simplest viable alternative
+against the accepted requirements and the borrowed code-simplify rubric. Exercise a concrete
+maintenance, extension or supported growth case without inventing product requirements, and trace
+what each design would require: where decisions
+live, what must change together, and how the work or maintenance cost grows. This applies to any
+artifact that carries a decision, including a document's instructions. Name the material regression
+or the evidence that the new design improves the trade-off; merely listing the designs is not a
+comparison.
+
+Matching current outputs, passing tests, fewer files or lines, and the author's description of a
+choice as deliberate do not establish design quality. Check those claims against the actual owners
+and consumers. In particular, today's callers or sample values do not establish an invariant; removing
+supported variation needs an owning contract or an accepted requirement that retires it. Conversely,
+retain no abstraction or capability merely because it existed: a proven invariant or retired
+requirement can justify its removal. An invariant can retire a selection interface; it does not make
+copies of one owned fact independent facts or justify repeated work. Price their maintenance and
+extension cost even when varying the answer is outside the current contract. The comparison judges
+the target design, never preservation for its own sake.
 
 Flag a concern that leaves you unconvinced the change should stand; you need not find an existing
 rule that names it or prove a bug first. Name the observed shape or decision, why it seems wrong,
@@ -83,6 +152,26 @@ approval to retain a broad change settles retention, not whether its remaining d
 Do not reject work solely for file count, personal taste, or a large required repair, and do not
 waive correctness or security findings because the overall change appears simple.
 
+## State Meaning
+
+For every state, status, verdict, capability or similar value a change introduces, changes or
+reuses to make a decision, trace its authoritative source, what question it answers, and the
+writers, transformations and consumers that give it that meaning. Establish its lifetime: when it
+is valid, what invalidates it, and whether it is transient, cached or persisted. Inspect the actual
+flow even when a field's name or type is unchanged; equal words or current values do not establish
+equal authority, purpose or lifetime.
+
+Flag a name or shared type that makes distinct questions look interchangeable, or a consumer that
+uses one answer as another without an owning contract establishing that derivation. This applies
+across and within layers: an observation, a parsed result, a historical record, permission to act
+and presentation state can each answer a different question. Distinct meanings need distinct names
+at the declarations and their consumers; qualify them by the question or authority they represent,
+not merely by location. Separate containing classes or independent consumers do not excuse a
+repeated state term that answers different questions. Renaming alone does not fix a consumer that
+still substitutes one for another. Conversely, preserve one owner and name for one meaning rather
+than splitting genuine aliases by layer. Show the deciding source and lifetime evidence in the verdict; comments, matching
+sample values and the author's intent cannot substitute for it.
+
 ## Exploitable Findings
 
 Every question that reads a diff — diff, final acceptance, base incorporation — also reads it for
@@ -96,12 +185,18 @@ The criteria are `security-audit`'s `references/rubric.md`, and they cut in both
   "Theoretically" and "potentially" mark the place where the work stopped, not a finding.
 - **A defense-in-depth gap is not one.** Where a layer the diff leaves in place already prevents the
   attack, the absence of a second layer is a hardening note under `Also read`, never a flag, and
-  never inflated to carry one.
-- **Severity is likelihood and impact together, and the flag bar is medium.** A targeted exploit with
+  never inflated to carry one. The note names that layer and shows it stops the attack on every
+  path; a layer that covers some paths, such as one kind of handler, leaves a finding on the rest.
+- **When it arrived does not matter.** An exploitable finding on a surface the diff touches or
+  reads, whether the change introduced it, inherited it or sits beside it, is a flag whose remedy
+  goes into the change in flight. "Not new in this round" never demotes it to a note.
+- **Severity is likelihood and impact together, and it orders the flags.** A targeted exploit with
   real consequence, a state change an attacker can force, a disclosure of secrets or credentials, a
-  business-logic bypass whose blast radius is real: each is a flag. A finding that defeats an
-  explicit security boundary — an action the system gates behind a role, performed without it — is a
-  flag with the boundary named. Below that bar it is a hardening note. If the concrete damage cannot
+  business-logic bypass whose blast radius is real: each is a flag of medium severity or above. A
+  finding that defeats an explicit security boundary — an action the system gates behind a role,
+  performed without it — is a flag with the boundary named. An exploitable finding below medium is
+  still a flag, and its fix goes into the change in flight, ordered by severity; only the
+  defense-in-depth gap the bullet above defines is a hardening note. If the concrete damage cannot
   be described, the severity is lower than it looks.
 - **The remedy is found in `security-audit`'s order, not written for the sink.** A guarantee the code
   already has and fails to read, then the surface whose deletion closes the finding outright, then a
@@ -121,9 +216,10 @@ try to disprove its own finding. A verdict that raises nothing says the diff's a
 exploitable finding the gate could see. Only a `security-audit` run at a level that fans out, or a
 `security-doctor` run, says anything about the codebase.
 
-So a shape the gate can see but cannot chase to an attacker is not dropped: name it under `Also read`
-and recommend a `security-doctor` run over the surface it sits on. That is the gate declining to guess,
-not the gate finding nothing.
+So a shape the gate can see but cannot chase to an attacker is not dropped: it is a flag whose
+remedy is the author tracing it to an attacker or ruling it out, and fixing it in the change when it
+is real. That is the gate declining to guess, not the gate finding nothing, and a recommendation to
+run an audit or a doctor later never stands in for it.
 
 ## The Tests Behind Each Question
 
@@ -132,7 +228,8 @@ the answer is one of four dispositions, decided by the tests below in order. The
 ends the question.
 
 1. **fix** — the item is a confirmed defect. A defect is anything the system does that a reader would
-   call broken. Wrong output, a lost write, a lost notification, a crash and an exhausted budget are
+   call broken, and the system includes the repository's tooling: its tests, fixtures, build, setup
+   and CI. Wrong output, a lost write, a lost notification, a crash and an exhausted budget are
    its familiar shapes, not its boundary. Work the system cannot finish in useful time, a resource
    that grows with the data with nothing to bound it, a stored value nothing limits, work a restart
    throws away where a sibling phase keeps its place, and a job that only advances because a
@@ -223,10 +320,12 @@ manifests, policies, provider payloads, and response schemas remain models. All 
 code-simplify opens with; the gate runs them over the diff's added lines and lists their hits before
 anything else.
 
-**A test is priced by what it costs to run.** Flag a test the diff adds or changes that
-`test-fixture`'s cost question calls disproportionate, and any change that absorbs a slow test in a
-way the testing rules list; the remedy is making it cheap or removing it, as that rubric and
-`pre-production` decide. Durations missing for an added or changed test hold a clean verdict.
+**A test is priced by what it costs to run.** Flag a test the diff adds or changes, or the module
+holding it, that `test-fixture`'s cost question calls disproportionate, and any change that absorbs
+a slow test in a way the testing rules list; the remedy is making it cheap or removing it, as that
+rubric and `pre-production` decide. Apply `test-fixture`'s existing-reporting procedure: missing
+available evidence holds a clean verdict; attribution the native route cannot provide is recorded
+unmeasured and does not hold an otherwise validated repair.
 
 **An added guard is priced like a missing one.** For every guard, refusal, validation, or branch a
 diff adds, the gate opens the writers `code-simplify`'s standard 1 says to read and names them in the

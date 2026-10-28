@@ -30,16 +30,17 @@ out.
 | `pages` | `[{title, layout?, sections}]`: with more than one, a tab bar switches between them, and the progress and metrics show on the first. `sections` render in order; with `layout` `columns`, the default, boards, tables and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
 | `references` | `[{text, url}]`: every whole-word occurrence of `text` in the page's own text becomes a link to `url`. |
 
-`tone` is `good`, `warning`, `critical` or `accent`; omit it for neutral. Section types:
+`tone` is `good`, `warning`, `critical`, `accent` or `done`, a purple for finished work; omit it
+for neutral. Section types:
 
 | `type` | Fields | Item fields |
 | --- | --- | --- |
-| `board` | `title`, `columns: [{title, tone?, items}]` | `title`, `detail?`, `meta?`, `tag?`, `url?` |
-| `questions` | `title`, `items` | `question`, `status` (`open`, `answered`), `context?`, `options?`, `recommendation?`, `answer?`, `meta?` |
-| `links` | `title`, `items` | `label`, `url`, `detail?`, `status?`, `tone?` |
+| `board` | `title`, `columns: [{title, tone?, page_size?, items}]` | `title`, `detail?`, `meta?`, `tag?`, `url?` |
+| `questions` | `title`, `items`, `page_size?` | `question`, `status` (`open`, `answered`), `context?`, `options?`, `recommendation?`, `answer?`, `meta?` |
+| `links` | `title`, `items`, `page_size?` | `label`, `url`, `detail?`, `status?`, `tone?`, `state?`: a pull request's `open`, `draft`, `merged` or `closed`, drawn with GitHub's icon for it in place of the arrow |
 | `table` | `title`, `columns`, `rows` | each row a list of strings, one per column |
 | `notes` | `title`, `items` | each item a string |
-| `changes` | `title`, `items` | `name`, `change` (`added`, `changed`, `removed`), `detail?`: a named part with its change as a colored badge |
+| `changes` | `title`, `items`, `page_size?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`: a named part with its change as a colored badge |
 | `outline` | `title`, `groups: [{title, items}]` | `title`, `detail`, `tone?`: a headline that opens to its detail; a group of one or two items shows them open |
 | `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?` | node: `id`, `label`, `detail?`, `pr?`, `change?`; edge: `from`, `to`, `label?`, `step?`, `change?`; pr: `ref`, `url`; each step a string |
 
@@ -48,6 +49,9 @@ edge as an arrow numbered with its `step`; the numbered `steps` are listed besid
 `change` is `added`, `changed` or `removed` and colors the box or arrow; omit it for an unchanged
 part. Every `pr`, `from` and `to` names a listed `ref` or node `id`, and every `step` a position in
 `steps`.
+
+A board column, `questions`, `links` or `changes` section with more entries than its `page_size`,
+a whole number of at least 1, shows that many at a time, with Previous and Next.
 
 Every text field is a non-empty string; unknown fields are refused, so a typo fails the render
 instead of vanishing from the page. `ref`s, node `id`s and reference `text`s are each unique; every
@@ -84,8 +88,8 @@ to show is left out, and so is the entry that requires it. A URL renders as a li
    that does not match the spec and exits non-zero; fix the spec and run it again.
 3. Keep the output path stable for one dashboard, so each render replaces the last.
 
-Change the page itself only in this skill's assets, never in one dashboard's copy: every
-dashboard shares it.
+Change a delivered dashboard only by re-rendering its whole spec, never by editing the page's
+HTML, which skips the renderer's validation; change the page itself only in this skill's assets.
 
 ## Delivery
 

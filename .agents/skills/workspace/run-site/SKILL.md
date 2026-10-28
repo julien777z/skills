@@ -1,6 +1,6 @@
 ---
 name: run-site
-description: Bring an application stack up and repair startup blockers. Guidance-required browser walkthroughs apply only in cloud execution environments; explicit user requests for browser work apply in either environment. Use when a change needs applicable browser verification, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works.
+description: Bring an application stack up and repair startup blockers. Guidance-required browser walkthroughs apply only in cloud execution environments; explicit user requests for browser work apply in either environment. Use before planning, recommending, delegating or performing browser walkthroughs or rendered UI inspections, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works.
 short_description: 'Start an application stack and perform browser verification where applicable.'
 ---
 
@@ -24,7 +24,9 @@ Start and verify the stack within the requested scope. When browser verification
   requirement. In a local execution environment, mark this verification not applicable; do not
   recreate it under another validation label or hold completion for its prerequisites. Browser
   work the user explicitly requests, including debugging or verification, applies in either
-  environment. Stack startup and non-browser validation required by the task still apply.
+  environment. Reference material, ordinary implementation or plan approval, and delegated
+  reviewer requests do not supply that direct user request. Stack startup and non-browser
+  validation required by the task still apply.
 - Setup is agent-agnostic. Any agent must be able to run it, so never hard-code an absolute path,
   a home directory, a machine-specific port, or an assumption about which agent is running.
   Resolve the repository root from the script's own location and read every other path from there.
@@ -107,20 +109,25 @@ say so and name what only a harness rendered.
 ### Sign in
 
 Use the repository's normal sign-in flow and the test identity, tenant, fixtures, provider modes,
-and persistence checks its project guidance names. Use those facts exactly and reuse
-what exists: never invent a test identity or turn a provider fixture into a generic workflow. **Never work around the sign-in wall**: a
-preview route, a stubbed page, a component mounted where it does not ship, or a widened public-route
-matcher proves the component renders and nothing about the screen a user reaches. If sign-in
-genuinely cannot complete, report the walkthrough as not done. Drive the browser automation's own
-profile; never read the user's saved passwords, cookies, local storage, or session files.
+and persistence checks its project guidance names. **Walk the change as each kind of user whose
+pages it reaches**, signing in with the identity project guidance names for each role: one role's
+walkthrough says nothing about what another sees. Where the repository provides a one-time sign-in
+link or token, sign in with it and leave the identity's password alone. Use those facts exactly and
+reuse what exists: never invent a test identity or turn a provider fixture into a generic workflow.
+**Never work around the sign-in wall**: a preview route, a stubbed page, a component mounted where
+it does not ship, or a widened public-route matcher proves the component renders and nothing about
+the screen a user reaches. If sign-in genuinely cannot complete, report the walkthrough as not done.
+Drive browser automation through the tab selected under the global browser procedure; never read the
+user's saved passwords, cookies, local storage, or session files.
 
-Keep a password out of argv and the transcript: put it in an environment variable for the one
-command that fills the field, build the script that fills the field, and pipe it to the browser
-command through stdin. The password comes from what the repository provides — the file project
-guidance names, or the helper its tooling uses to set or generate a test identity's password, run
-first when the identity has none yet — and through `proton-pass` only for an account the
-repository provides no source for, such as a deployed or third-party one. Set the value through the native setter and dispatch a bubbling `input` event so a
-framework-controlled input registers it:
+Keep a password or one-time sign-in token out of argv and the transcript: put it in an environment
+variable for the one command that fills the field or opens the link, build that script, and pipe it
+to the browser command through stdin. The password comes from what the repository provides — the
+file project guidance names, or the helper its tooling uses to set or generate a test identity's
+password, run first when the identity has none yet — and through `proton-pass` only for an account
+the repository provides no source for, such as a deployed or third-party one. Set the value through
+the native setter and dispatch a bubbling `input` event so a framework-controlled input registers
+it:
 
 ```bash
 # Account with no repository source: SIGN_IN_PASSWORD="$(PROTON_PASS_AGENT_REASON="<why>" pass-cli item view \
@@ -168,21 +175,29 @@ EOF
   permits it. Where a departure would serve the reader better, recommend it, name the rule, and
   propose its change; keep the departure pending until the user agrees, as the global rules'
   standing-guidance bullet says of design rules.
-- The browser daemon starts a fresh profile each time, so `state save` a signed-in session that must
-  survive a restart.
+- A daemon restart can change which browser context a tool controls. Refresh inventory and rebind
+  the selected tab after reconnecting. Preserve task-owned context only through the
+  browser's native route when the flow requires it; never export user cookies, local storage, or
+  session files.
 
 ### Widths and full-page captures
 
-Walk every changed screen at several widths — at least 1280, 1536 and 2000 pixels, plus a phone width
-when the screen is reachable on one — and on each confirm the document does not scroll sideways and
-everything the change touched is visible and usable. **Capture the full page, always.** A capture
+**Widths are for what the change can do to layout.** Walk a screen at several widths — at least 1280,
+1536 and 2000 pixels, plus a phone width when the screen is reachable on one — when the change can
+move it: an element added, removed or moved, spacing, sizing or responsive rules, or a slot whose
+content now runs to a different length. Every other screen and state the change touches — what a
+screen shows or permits inside its unchanged layout, such as a permission, a value, or copy in its
+existing slot — is walked and captured once, at 1280. Each state is one capture, never one per width,
+unless its layout is what changed. At each width walked, confirm the document does not scroll sideways
+and everything the change touched is visible and usable. **Capture the full page, always.** A capture
 taken while the window is shorter than the page draws fixed chrome such as a sidebar only as tall as
 the window, leaving an empty band that reads as a layout bug, so size the viewport to the page's full
 height before each capture — the larger of the document's and its scrolling container's scroll
-height — and restore it before interacting again:
+height — and restore it before interacting again. The loop runs over the widths walked for that
+state: 1280 alone when its layout did not change.
 
 ```bash
-for width in 1280 1536 2000; do
+for width in <widths walked>; do
   agent-browser --session <name> set viewport "$width" 900
   agent-browser --session <name> eval "document.documentElement.scrollWidth <= innerWidth"
   height=$(agent-browser --session <name> eval \
@@ -217,8 +232,9 @@ run above; say which kind each capture shows, since the two look identical.
 ### Evidence
 
 Record the flow until the feature is exercised to its end — the form submitted and its result read
-back, the item seen in its list, the setting confirmed after a reload. Start recording before signing
-in: starting a recording opens a fresh browser context, so a session signed in before it is gone.
+back, the item seen in its list, the setting confirmed after a reload. Record through the selected
+tab's existing browser context, preserving its authenticated state; start before sign-in only when
+sign-in is part of the flow being exercised.
 The recorder writes WebM, which some viewers cannot play; send the MP4:
 
 ```bash
@@ -227,8 +243,8 @@ agent-browser --session <name> record stop
 ffmpeg -y -i <path>.webm -c:v libx264 -pix_fmt yuv420p -movflags +faststart -an <path>.mp4
 ```
 
-Send the recording and a still of the view the change touched, unasked, plus a still per width, the
-page with its requests failing, and each defect with the fix that resolved it — as the run produces
+Send the recording and a still of the view the change touched, unasked, plus a still per width
+walked, the page with its requests failing, and each defect with the fix that resolved it — as the run produces
 them, as the User-Facing Output rule requires. Captures left on disk are a walkthrough the reader
 never saw. The report names the widths checked, whether the run without the API changes was done,
 and what the screens were read against.

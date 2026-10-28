@@ -15,7 +15,7 @@ the rubric whole before any of them and apply it throughout.
 
 ## Dependencies
 
-- `subagent-selection` — route every agent a level names through a subagent of the running session.
+- `subagent-matrix` — route every agent a level names through a subagent of the running session.
 
 ## While Writing Code
 
@@ -30,12 +30,13 @@ change writes. A finding in those lines is the change's own defect: it is fixed 
 A security review of a branch, a pull request or pending changes reviews the change, not the
 codebase. Its target is the merge-base diff against the repository's default branch plus any
 untracked files the branch adds, read with the callers, sinks and trust boundaries each changed line
-reaches, so a trace can run past the hunk. It reports only what the change adds or makes reachable,
-never a pre-existing finding the change does not touch.
+reaches, so a trace can run past the hunk. It hunts only what the change adds or makes reachable;
+a pre-existing finding it meets on that path is still reported as a finding.
 
 It runs every phase at the effort stated, over the changed lines and what they reach. A finding in
 lines the running task wrote is fixed in that task's change; any other finding is reported to the
-caller.
+caller, who fixes it in the change in flight, as `pre-production` says of a vulnerability the work
+finds.
 
 ## Effort
 
@@ -55,8 +56,10 @@ Keep each description to one or two sentences, and never replace them with vague
 "quick" or "thorough". Ask through the host's structured question tool when it has one and a plain
 chat question otherwise, and launch nothing until the answer arrives.
 
-When the host cannot ask, as in a non-interactive or automated run, fall back to `medium` and say the
-fallback was used.
+Follow the global rules' **Task execution and authorization** question-tool procedure, including
+timeout retries. If neither a question tool nor chat can reach the user, retain the missing effort
+as a gate with its saved next action rather than selecting it from silence. An effort explicitly
+supplied by the invocation or its calling workflow needs no question.
 
 | Effort | Recon | Hunters | Validation | Independent verification |
 |---|---|---|---|---|
@@ -65,8 +68,10 @@ fallback was used.
 | `high` | 3 agents | 2 on the riskiest classes, 1 elsewhere | 1 refuter per finding | 1 verifier per finding |
 
 At `low` every phase runs in process. From `medium` upward, launch the agents each phase names in
-parallel; capacity limits force batching, never omission and never an undeclared local skim. Each
-agent a level names is launched as `subagent-selection`'s **Dispatch** section directs.
+parallel; capacity limits force batching, never omission and never an undeclared local skim. For each named
+agent, invoke `subagent-matrix` at its standard capability level, launch the exact resolved identifier, and
+retain catalogue state, identifier, assignment state and host receipt in the audit evidence. Each agent a level
+names is launched as `subagent-matrix`'s **Dispatch** section directs.
 
 **The rubric is the same at every level; only the cohort shrinks.** A `low` finding is held to
 exactly the bar in `references/rubric.md` — exploitable, with a concrete attack — because a thinner
