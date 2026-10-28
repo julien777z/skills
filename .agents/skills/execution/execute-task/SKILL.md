@@ -231,7 +231,7 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
 
 ## Execution
 
-Execution starts once a required plan is approved, or straight away for a trivial change or for a canonical guidance correction, whose timing `edit-skill`'s **Recording During A Task** sets.
+Execution starts once a required plan is approved, or immediately when **When A Plan Is Needed** requires no plan. Canonical guidance corrections follow `edit-skill`'s **Recording During A Task** timing.
 
 ### Task Authorization
 
