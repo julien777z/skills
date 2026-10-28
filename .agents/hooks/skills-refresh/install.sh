@@ -279,7 +279,7 @@ run_profiles() {
     python3 "$SOURCE_ROOT/.agents/hooks/skills-refresh/profiles.py" "$PROFILE_HOME" "$@"
   fi
 }
-profile_list="$(run_profiles list "${REGISTER_PROFILES[@]}")"
+profile_list="$(run_profiles list ${REGISTER_PROFILES[@]+"${REGISTER_PROFILES[@]}"})"
 while IFS=$'\t' read -r provider root; do
   [ -n "$provider" ] || continue
   add_install_root "$provider" "$root"
