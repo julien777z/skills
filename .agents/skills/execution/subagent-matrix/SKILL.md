@@ -1,6 +1,6 @@
 ---
 name: subagent-matrix
-description: Apply before every subagent launch, including a workflow coordinator or nested reviewer, and when selecting a live skill-verification model. Default reasoning effort to medium unless the user or invoking skill explicitly specifies another effort. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or smoke reader. Resolve cheap, standard, advanced, and frontier capability levels from the host catalogue and documented dispatch candidates. Attempt the assigned work with a catalogue-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, and route independent steps through a subagent of the running session.
+description: Apply before every subagent launch, including a workflow coordinator or nested reviewer, and when selecting a live skill-verification model. Default reasoning effort to medium unless the user or invoking skill explicitly specifies another effort. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or smoke reader. Resolve cheap, standard, advanced, and frontier capability levels from the host catalogue and documented dispatch candidates. Attempt the assigned work with a catalogue-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, route independent steps through a subagent of the running session, and give the user complete direct-dispatch diagnostics when the launch cannot start.
 short_description: 'Select a model capability level for live verification chats or subagent delegation.'
 ---
 
@@ -139,6 +139,41 @@ context and returns its verdict into the step waiting on it; nothing else does b
   only when their edits and resources do not overlap and neither needs an unsettled output from the
   other. A worker ends with its task; the next gets a fresh context. Read-only gates and reviews may
   run alongside building at the cadence their owning skill sets.
+
+## Launch Failure Reporting
+
+When a required direct subagent dispatch cannot start, preserve its exact attempted dispatch and
+report it to the user before describing the dependent work as blocked. Do not replace the required
+independent step, and do not turn a tool inventory from a nested bridge or an unrelated agent tool
+into evidence about the native launcher's availability.
+
+- Attempt the selected native dispatch once whenever its direct tool is exposed. Never claim an
+  attempted invocation when the tool was not exposed.
+- State the native tool's exact name, the assignment role and gated work, selected model, reasoning
+  effort, history mode, and every argument sent to the host. Preserve argument names and values;
+  omit only typed credentials or other secret values, retaining their field names and shapes.
+- State the complete host receipt exactly when one exists. When no invocation was possible, say
+  which direct tool surface was inspected and that there is no host receipt.
+- Classify the outcome as one of: native tool not exposed, no resolved dispatch identifier, explicit
+  unsupported-model receipt, rejected dispatch, capacity refusal, or accepted dispatch whose worker
+  later failed. Do not collapse these into a generic unavailable-agent claim.
+- Name the specific recovery action and leave only the dependent work gated. A missing direct tool
+  is not proof that an in-process, browser, MCP, nested-tool, or unrelated application agent can
+  perform the required assignment.
+
+Use this user-facing shape whenever a launch failure is material to the task:
+
+```markdown
+## Subagent launch blocked
+
+- **Gated work:** <required independent step>
+- **Native tool:** `<exact direct tool name>` — <attempted or not exposed>
+- **Selected dispatch:** `<model>` / `<reasoning effort>` / `<history mode>`
+- **Arguments:** `<complete argument names and safe values>`
+- **Host receipt:** <verbatim receipt, or `none — <why no invocation was possible>`>
+- **Classification:** <one permitted classification and its evidence>
+- **Next action:** <specific recovery that preserves the gate>
+```
 
 ## Output
 
