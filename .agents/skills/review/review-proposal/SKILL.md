@@ -24,6 +24,11 @@ product, security, disclosure or scope alternatives. This creates no new approva
 Factual questions, status reports, routine authorized actions and a platform's separate action-time
 confirmation do not enter this workflow. Optional factual discovery is not an attack slot.
 
+When subagent-matrix uses a launch-failure fallback, retain its useful analysis and disclose the
+loss of independence; never count an in-process result as a fresh independent reader. An explicit
+user requirement for independent reviewers or a selected model remains unmet without that evidence.
+Follow the dependency's fallback procedure without inventing a compliant launch or ready receipt.
+
 ## Workflow
 
 1. **Prepare the evidence.** Build the acceptance-gate intent statement from the user's requirements,

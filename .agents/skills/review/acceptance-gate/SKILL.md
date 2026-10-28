@@ -1,6 +1,6 @@
 ---
 name: acceptance-gate
-description: Required independent checkpoint over an authorized change's complete diff before local completion, draft readiness or merge; run as a workflow dependency without a separate user invocation. Passing tests or the author's own review never substitute for its verdict. Judge an issue, finding, proposal or diff against product state, intent and the quality rubric through a read-only subagent. Run over each finished plan step or worker task before later work builds on it, for triage, before recording a deferral, before and after fixing or resolving one, after base incorporation, and on a fix for a gate or review flag.
+description: Required checkpoint over an authorized change's complete diff before local completion, draft readiness or merge; run as a workflow dependency without a separate user invocation. Passing tests or the author's own review never substitute for its verdict. Judge an issue, finding, proposal or diff against product state, intent and the quality rubric through a read-only subagent, or in process when it cannot launch. Run over each finished plan step or worker task before later work builds on it, for triage, before recording a deferral, before and after fixing or resolving one, after base incorporation, and on a fix for a gate or review flag.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 
@@ -79,7 +79,8 @@ applicable task pull requests, not only default-branch or local checkout compari
 checks analogous implementations and the evidence for retained differences; missing applicable
 pull-request context is a flag to obtain that context, not permission to assume consistency.
 
-The gate is read-only and distinct: not the author of the item. Invoke `subagent-matrix` for the
+The gate is read-only and normally distinct from the author. If its reader cannot launch, perform
+the gate in process under `subagent-matrix` and disclose the loss of independence. Invoke `subagent-matrix` for the
 acceptance-gate role, using its configured Codex role selection and the advanced capability level on
 other hosts. Dispatch the gate with that exact identifier, and retain catalogue state, identifier, assignment
 state and host receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. It
@@ -179,8 +180,8 @@ findings in the verdict and summarize clean flow evidence under `Also read`.
 It returns the verdict its question defines, shaped as `references/rubric.md` — What A Verdict Names
 requires.
 
-The gate always runs as a subagent of the running session, routed as `subagent-matrix`'s
-**Dispatch** section directs.
+Route the gate through `subagent-matrix`'s **Dispatch**, including its disclosed in-process
+fallback when the required reader cannot launch.
 
 For a canonical guidance batch, one fresh gate may inspect the complete frozen diffs together and
 return a distinct verdict for each exact head. Its prompt names every head and intent, and its
