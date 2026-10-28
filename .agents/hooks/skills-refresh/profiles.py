@@ -7,14 +7,16 @@ import sys
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
+from models import Provider
 
-def validate(value: str) -> tuple[str, str]:
+
+def validate(value: str) -> tuple[Provider, str]:
     provider, separator, root = value.partition("=")
 
-    if not separator or provider not in {"claude", "codex"} or not root.startswith("/") or any(c in root for c in "\n\r\t"):
+    if not separator or provider not in {Provider.CLAUDE, Provider.CODEX} or not root.startswith("/") or any(c in root for c in "\n\r\t"):
         raise ValueError(f"Invalid profile registration: {value!r}")
 
-    return provider, os.path.normpath(root)
+    return Provider(provider), os.path.normpath(root)
 
 
 def main() -> None:

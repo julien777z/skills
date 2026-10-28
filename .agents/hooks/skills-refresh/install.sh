@@ -274,7 +274,7 @@ fi
 PROFILE_HOME="${CLOUD_HOME:-$HOME}"
 run_profiles() {
   if [ -n "${CLOUD_HOME:-}" ]; then
-    run_as_cloud_user python3 - "$PROFILE_HOME" "$@" < "$SOURCE_ROOT/.agents/hooks/skills-refresh/profiles.py"
+    run_as_cloud_user python3 "$REPO_ROOT/.agents/hooks/skills-refresh/profiles.py" "$PROFILE_HOME" "$@"
   else
     python3 "$SOURCE_ROOT/.agents/hooks/skills-refresh/profiles.py" "$PROFILE_HOME" "$@"
   fi
