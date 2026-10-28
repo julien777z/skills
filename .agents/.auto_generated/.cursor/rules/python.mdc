@@ -14,7 +14,8 @@ globs:
 - For single-consumer, non-library repositories, require Python 3.12 or newer and prefer the latest stable Python release when the repository's runtime and dependencies are compatible. For public libraries, prefer the widest feasible supported range with a minimum no earlier than Python 3.11.
 - Use modern type hints: `str | None` instead of `Optional[str]`.
 - Use built-in generics: `list[T]`, `dict[K, V]` instead of `List[T]`, `Dict[K, V]`.
-- Use `Self` from `typing` for class method return types.
+- Type a class method that returns a new instance of its own class as `Self` from `typing`; any
+  other class method names its return type.
 - Use `collections.abc` for abstract types: `Callable`, `Iterable`, etc.
 - Never use `Protocol` for model typing; use concrete model classes in type annotations.
 
@@ -673,8 +674,11 @@ ALLOWED_STATES: Final[frozenset[str]] = frozenset({"ready", "complete"})
 - Every **function**, **method**, and **class** should have a concise docstring (purpose or role). Include `main()` and nested helpers the same way unless the file’s existing style omits docstrings on tiny locals—when in doubt, add one line.
 - Keep ordinary docstrings to a single line. Do not include Args, Returns, or Raises sections.
 - **Migration revision files are the only exception:** their `upgrade()` and `downgrade()` docstrings
-  name the concrete schema or data transformation and why it is needed. Use a few concise lines
-  when both do not fit clearly on one; never an essay. Generic text such as “Apply this schema
+  name the concrete schema or data transformation and why it is needed. Before writing or accepting
+  either docstring, identify its principal target shape or constraint and the reader or writer
+  requirement it satisfies. Put both in the text; an auxiliary preparation or recovery purpose
+  cannot substitute for that transformation's reason. Use a few concise lines when both do not fit
+  clearly on one; never an essay. Generic text such as “Apply this schema
   revision” or “Restore the preceding schema revision” does not identify the operation or its
   purpose. The exception does not extend to ordinary application functions or migration helpers
   outside revision files, and it permits no Args, Returns, or Raises sections.
