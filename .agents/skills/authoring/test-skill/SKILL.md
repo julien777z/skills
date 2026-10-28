@@ -154,6 +154,10 @@ and any explicit user override. Record the runtime-identity and runtime-label ev
 
 ## Output
 
+When a scenario runs in process, record the same actions and evidence, label its reader as in process,
+and disclose that it was neither independent nor blind. Do not claim an independent control or demonstrated
+improvement from an in-process comparison.
+
 Return this shape, one block per skill under test, and in chat nothing after the last verdict line:
 
 ```markdown
