@@ -158,7 +158,13 @@ alwaysApply: true
   exchange.
 - Do not ask the user to restate task authority with "continue", "proceed", or an equivalent
   intermediate question. State progress and take the next ordinary authorized action.
-- When a platform imposes an action-time confirmation for a distinct sensitive action, complete all
+- Before treating an intermediate step as a new approval gate, read the applicable tool or
+  workflow rule and test its exceptions against the actual action and existing authorization.
+  A consent page, credential being saved, or security-related label alone does not establish
+  expanded access. Routine sign-in retaining the authorized recipient, permissions and duration
+  remains part of the task unless the governing rule explicitly requires confirmation for that case.
+  Name the exact triggering change or platform requirement when confirmation is required.
+  When a platform imposes an action-time confirmation for a distinct sensitive action, complete all
   non-impactful preparation first and ask one exact question immediately before that action. Make
   clear that the task remains authorized. Wait up to 10 minutes without polling or interacting with
   the approval surface; treat it as failed only after that window or an explicit failure. A failure
