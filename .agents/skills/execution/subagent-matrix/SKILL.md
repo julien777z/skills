@@ -30,7 +30,8 @@ agent; the calling agent launches the actual assignment with the selected model.
    required` and proceed to step 3; never turn catalogue omission into an identifier hold or an override
    question while that candidate exists. Only when neither the host nor the reference nor an exact override
    for that assignment supplies a candidate, or the host has no explicit model-selection mechanism, record
-   an identifier-resolution hold. Do not invent versions or aliases or silently substitute another family.
+   an identifier-resolution failure and use the in-process fallback for the assignment. Do not invent
+   versions or aliases or silently substitute another family.
 3. Before a caller marks a requested capability level or explicit model unavailable, follows an
    unavailable-model fallback, or takes an in-process route, launch the actual assigned work once with its exact
    candidate identifier and explicit reasoning effort. A successful dispatch establishes that the host accepted
@@ -43,9 +44,10 @@ agent; the calling agent launches the actual assignment with the selected model.
 4. When a requested capability level or model is explicitly unsupported, apply a fallback only when the
    calling skill declares its direction and limits and it respects the user's explicit model or capability
    constraint. Report the original request as unavailable and name the actual fallback capability and model;
-   never relabel it as the requested level. Without that policy, stop the dependent step and report the
-   unsupported request, host receipt, and waiting work to the caller; do not substitute another model or
-   replace an independent step in process. Preserve one resolved model within comparison pairs.
+   never relabel it as the requested level. Without that policy, report the unsupported request and host
+   receipt; do not substitute another model. If the required worker cannot launch, perform its assigned
+   work in process and disclose the loss of independence. Preserve one
+   resolved model within comparison pairs.
 5. The calling agent chooses a capability level for each role or chat. Honor the user's
    explicit model or capability-level constraint first, then the configured role selection, then the
    calling skill's capability level. For a live
@@ -78,8 +80,7 @@ agent; the calling agent launches the actual assignment with the selected model.
 
 ## Dispatch
 
-**Every subagent a skill calls for runs as a subagent of the running session, launched through the
-host's agent tool.** It matters most for an independent step, one whose value is a judgement the
+**Launch every available subagent a skill calls for through the running session's agent tool.** It matters most for an independent step, one whose value is a judgement the
 author does not make about its own work: an acceptance gate, a simplification or review lens, a
 finding validator, a smoke-test reader, an audit's read-only reviewer. A subagent gives it a fresh
 context and returns its verdict into the step waiting on it; nothing else does both.
@@ -88,11 +89,11 @@ context and returns its verdict into the step waiting on it; nothing else does b
   routine, or a message asking any session but the delegating agent to run it. Those run outside
   the step, can fail setup or leave branches behind, and their verdict never returns to the run
   that waits on it.
-- **Never answer an independent step in process as a fallback.** The author answering the question
-  is exactly what the step exists to prevent, whatever label the report gives it. A skill whose own
-  procedure puts a pass in process, such as a small-scope simplification, is not handing it to a
-  reviewer, and this leaves that pass alone.
-- **An independent step gets a newly launched subagent for every question it answers.** A gate,
+- **When a required subagent cannot launch, perform its assignment in process.** Attempt the native
+  dispatch when available, then apply the same scope and rubric in process if it cannot start or
+  complete. Record the launch outcome and report that the result lacked independent review; never
+  describe the in-process result as an independent verdict.
+- **An independent step gets a newly launched subagent for every question it answers when available.** A gate,
   finding validator or smoke reader that has answered about an item is never resumed, messaged or
   reused for a later round on it — not to judge the repair of its own flag or a revised item — since
   its answer would then rest on its own earlier verdict. A skill whose procedure reuses a reviewer
@@ -107,7 +108,7 @@ context and returns its verdict into the step waiting on it; nothing else does b
   request, and resumes when the verdict comes back. The delegating agent runs it and returns the verdict unedited; when the
   finished worker cannot be resumed, the delegating agent carries out what the verdict calls for,
   such as the fix steps a flag names, itself. With no
-  delegating agent to ask, the step is reported as not run, and whatever it gates stays gated.
+  delegating agent to ask, perform the assigned step in process and report the loss of independence.
 - **An early final does not finish the assignment.** Reconcile its retained results and live child
   jobs before replacing anything. The parent takes over unfinished coordination and keeps waiting
   for existing producers; it does not launch another coordinator to relay the same work. Replace
@@ -143,8 +144,7 @@ context and returns its verdict into the step waiting on it; nothing else does b
 ## Launch Failure Reporting
 
 When a required direct subagent dispatch cannot start, preserve its exact attempted dispatch and
-report it to the user before describing the dependent work as blocked. Do not replace the required
-independent step, and do not turn a tool inventory from a nested bridge or an unrelated agent tool
+record it and perform the assigned work in process. Do not turn a tool inventory from a nested bridge or an unrelated agent tool
 into evidence about the native launcher's availability.
 
 - Attempt the selected native dispatch once whenever its direct tool is exposed. Never claim an
@@ -157,22 +157,21 @@ into evidence about the native launcher's availability.
 - Classify the outcome as one of: native tool not exposed, no resolved dispatch identifier, explicit
   unsupported-model receipt, rejected dispatch, capacity refusal, or accepted dispatch whose worker
   later failed. Do not collapse these into a generic unavailable-agent claim.
-- Name the specific recovery action and leave only the dependent work gated. A missing direct tool
-  is not proof that an in-process, browser, MCP, nested-tool, or unrelated application agent can
-  perform the required assignment.
+- Name the in-process fallback and its loss of independence; do not substitute an unrelated agent
+  or claim it performed the assignment.
 
 Use this user-facing shape whenever a launch failure is material to the task:
 
 ```markdown
-## Subagent launch blocked
+## Subagent launch fallback
 
-- **Gated work:** <required independent step>
+- **Assignment:** <required independent step>
 - **Native tool:** `<exact direct tool name>` — <attempted or not exposed>
 - **Selected dispatch:** `<model>` / `<reasoning effort>` / `<history mode>`
 - **Arguments:** `<complete argument names and safe values>`
 - **Host receipt:** <verbatim receipt, or `none — <why no invocation was possible>`>
 - **Classification:** <one permitted classification and its evidence>
-- **Next action:** <specific recovery that preserves the gate>
+- **Fallback:** <in-process work and its loss of independence>
 ```
 
 ## Output
@@ -182,8 +181,8 @@ placeholders. Record catalogue evidence and assignment evidence separately. A ca
 with a resolved candidate is `dispatch required` until the actual assignment establishes acceptance or the host
 explicitly rejects it as unsupported; after acceptance, record `accepted` while retaining `catalogue-hidden`.
 Use `identifier required` only for an identifier-resolution hold established by Workflow step 2; report that
-step's resolved candidate and state rather than independently selecting candidate sources here. This is a
-hold, never an unavailable-model result. Use `unavailable` only
+step's resolved candidate and state rather than independently selecting candidate sources here. Apply the
+in-process fallback; do not describe the missing identifier as an unsupported-model receipt. Use `unavailable` only
 when a host receipt explicitly rejects the exact candidate as unsupported. The calling agent then records the
 selected capability level per role or chat, or the explicit user override.
 

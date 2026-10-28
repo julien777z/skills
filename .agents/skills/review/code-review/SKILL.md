@@ -195,7 +195,7 @@ Effort selects the cohort and the validation depth:
 | `max` | 2 | 3 | 2 | 2 | Three **deep** refuters per finding, majority rules |
 | `ultra` | 2 | 3 | 2 | 2 | Three **deep** refuters per finding, majority rules |
 
-At `low` and `medium` the lenses may run inline in a single pass, and depth on the riskiest changed files beats exhaustive coverage of trivial ones. From `high` upward, launch one distinct subagent per lens in parallel; capacity limits force batching, never omission and never an undeclared local skim.
+At `low` and `medium` the lenses may run inline in a single pass, and depth on the riskiest changed files beats exhaustive coverage of trivial ones. From `high` upward, launch one distinct subagent per lens in parallel; capacity limits force batching. When a required reader cannot launch, follow `subagent-matrix`'s in-process fallback for its complete lens and disclose the loss of independence.
 
 `ultra` runs the `max` cohort repeatedly, stopping only after two consecutive rounds surface no new confirmed finding. Every other level runs its cohort once.
 
