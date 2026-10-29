@@ -214,11 +214,6 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   says what the feature holds or does in the reader's words, so a reader who has used neither picks
   the right one: "Collections" beside "Groups", or "Profiles" beside "Accounts", reads as two words
   for one thing. Read the names together, as the reader meets them, before settling either.
-- **A refusal is a short, friendly request for the reader's next step**, such as "Please choose a
-  date after today." It says what to do rather than passing a verdict on what was done, and it
-  never repeats back what the reader just entered or chose — a file name, a typed value, a picked
-  item — which they already know. This holds wherever the message is written, an API's error
-  message the interface shows included.
 - **The interface writes its own text for a reason another reader's message carries.** A message a
   service writes for a different reader, such as an agent, an API client or a log, says what that
   reader needs: an agent's carries the URL it can follow. The service sends a reason code beside
