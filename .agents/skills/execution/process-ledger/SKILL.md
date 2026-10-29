@@ -53,6 +53,8 @@ hold. A held entry does not keep its batch in flight.
      completes its delivery gates.
    - `artifact`, `plan`, `question`, and `decision`: reconcile the state with the artifact owner,
      plan workflow, or user answer. They never create guidance merely because they were processed.
+     A complete `plan` stays while its task is active, since `progress` counts the finished work of
+     every plan the task has had; remove it once the task's outcome is verified complete.
    - `review`: `review-pass`'s reviewed head for a pull request. Keep it while that pull request is
      open, since the next pass sizes itself from it; remove it once the pull request is merged or
      closed.
