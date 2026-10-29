@@ -154,13 +154,14 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   going: a pointer resting on a row or link, keyboard focus on it, or a link in view whose
   destination is cheap to load. Where each destination costs several requests, as a detail page
   opened from a list does, load it on that signal for the one row in question, never for every row
-  on screen. The skeleton is the fallback for data that has not arrived by the click: the
-  destination's frame and skeleton replace the current page at once, and the old page never stays
-  on screen while the next one's requests run. Each route segment that waits on data owns its own
-  loading boundary, so the fallback shows wherever the navigation diverges, and the destination
-  starts its independent requests together rather than one after another. Validate it by timing a
-  click to content after resting on the row, and a cold click to the skeleton and to the content,
-  against a deliberately slowed backend.
+  on screen. The skeleton is the fallback for data that has not arrived by the click: once a
+  short pending delay of about 200 ms passes without the destination arriving, its frame and
+  skeleton replace the current page, so a destination loaded ahead never flashes a skeleton and
+  the old page never stays on screen past that delay while the next one's requests run. Each
+  route segment that waits on data owns its own loading boundary, so the fallback shows wherever
+  the navigation diverges, and the destination starts its independent requests together rather
+  than one after another. Validate it by timing a click to content after resting on the row, and a
+  cold click to the skeleton and to the content, against a deliberately slowed backend.
 
 - **A change to a shared mechanism is applied everywhere that mechanism appears, and on every
   sibling surface, in the same change.** A widget grid, a list row, a dialog shell, an edit-mode
