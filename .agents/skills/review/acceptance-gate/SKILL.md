@@ -113,7 +113,9 @@ near-duplicate names, dead or speculative code, hand-written configuration or st
 owner exists. The list illustrates the question and never bounds it. A rubric exemption that would
 excuse such a shape is named in the flag. A remedy that sends the author to an existing piece judges
 that piece the same way first: a wrapper or a duplicate is not an owner. An increment fixing an
-earlier flag is read the same way, over the modules it touches, never only against that flag.
+earlier flag is read the same way, over the modules it touches, never only against that flag; the
+rest of the originating diff, which the earlier gate judged, is context, re-judged only where the
+increment changes what it depends on.
 
 **Then make the design comparison.** Inventory the responsibilities and decisions the diff moves,
 duplicates, specializes, removes or introduces, reading both sides independently of the caller's
@@ -249,8 +251,14 @@ report names.
 
 Never rerun an unchanged item hoping for acceptance, argue it through the same gate, rename it to
 reset its history, or keep flagged code because the caller can authorize its merge. Carry unresolved
-objections and previous remedies into the next review. If evidence refutes an objection, send that
+objections and previous remedies into the next review; a remedy that reverses one given earlier
+names it and the evidence it was wrong. If evidence refutes an objection, send that
 evidence to a fresh gate for an explicit disposition; the caller cannot dismiss it unilaterally.
+
+When the intent statement already schedules a flag's remedy as named work with its owner, such as
+a consumer's migration on its own pull request, the gate reports it as a hold on the merge that
+work must precede, not a flag on the step, and it counts no repair round. The hold stays until that
+work is accepted.
 
 When no compliant repair is available, name the conflict and the smallest native repair examined.
 Apply the rubric's triage and admission tests before reverting, recording, or re-scoping any work;

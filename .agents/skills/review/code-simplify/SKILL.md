@@ -36,11 +36,24 @@ When the scope includes tests, fixtures, or test support, invoke `test-fixture` 
 
 **Use subagents for scopes that benefit from independent review.** Fan out when the scope is large enough to partition into two or more coherent slices, or when relationships across multiple subsystems materially benefit from a separate cross-cutting review. Partition by app, service, or package rather than arbitrary file counts, and give every reviewer the same complete rubric over its slice. When an introduced subsystem, runtime boundary, or independent consumer has analogues whose complete implementations will not fit comfortably in one review context, add one read-only cross-cutting reviewer to compare their ownership and duplication while slice reviewers cover their own areas. Skip that reviewer when one reviewer can hold the complete change and every analogous implementation at once.
 
-**After fixing a scope's findings, rescan that scope.** Return the updated complete scope and the
-fix diff to its reviewer, asking it to check both the remedies and anything else the fixes expose.
-Use the same reviewer when available, otherwise a fresh reviewer with the previous findings.
-Unaffected clean scopes do not restart. This scope rescan is not a replacement for a separate
-acceptance gate or its requirement for a fresh independent gate reviewer.
+**After fixing a scope's findings, rescan that scope only when the fixes restructured it.** A fix
+batch that adds, moves, merges or deletes a module, or changes an interface other code reads, goes
+back for a rescan: a fresh reviewer gets the previous findings with their remedies, the fix diff and
+the files it touches, and checks both the remedies and anything else the fixes expose. A batch that
+only applies the findings' own remedies in place is checked by the acceptance gate over its
+increment instead, with no rescan. Unaffected clean scopes do not restart. A rescan is not a
+replacement for a separate acceptance gate or its requirement for a fresh independent gate reviewer.
+
+**A remedy conforms to the rules governing the code it would write, and never silently reverses an
+earlier one.** Check each proposed remedy against the language and layout rules for its file before
+proposing it; a remedy whose result another rule then flags costs a round. A remedy that undoes one
+an earlier review or gate prescribed for the same code names that remedy and the evidence it was
+wrong.
+
+**Evidence is as long as the finding it backs.** Every file in the slice keeps its one line, and
+every receipt below keeps its subject; a clean receipt is one line naming what was searched or
+inspected and the count, and the full list of searches, pairs, writers or members read appears only
+under the finding it supports.
 
 For final review, assign one read-only reviewer per coherent scope, with the scopes together
 covering the complete change. Do not send the same question and scope to duplicate agents. Review
@@ -101,8 +114,8 @@ do not suppress it as a cosmetic nit or omit it because a larger finding exists.
 conditional selecting a fixed set of string statuses, including log-only values, and flag inline
 literals where the applicable language rules call for a named finite-state type. In Python use
 `Enum` for internal states and `StrEnum` for string contracts; in TypeScript follow the const-object
-and value-union rule. A clean report must show the inspected pairs and status conditionals, not just
-say readability and types were checked.
+and value-union rule. A clean report names the inspected functions and status conditionals with their
+count, not just that readability and types were checked.
 
 List every guard, refusal, validation, or branch the diff adds or edits with the writers of the value
 it tests and of what its path reads next, each named by path and function. One whose refused inputs
