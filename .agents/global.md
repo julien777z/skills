@@ -208,7 +208,8 @@ alwaysApply: true
 - Surface every question through `AskUserQuestionTool` or the harness's equivalent user-question
   tool, including plan approvals and standalone questions. Ask directly in chat only when no
   equivalent tool exists. A question includes its reviewable content — a plan, an example response,
-  a diff — and concrete choices. A question tool may show only its question and option labels;
+  a diff — and concrete choices. The option that approves a plan or proposal reads "Approved",
+  never "Go" or another word. A question tool may show only its question and option labels;
   send required review content as a file rather than relying on a collapsed preamble, preview or
   description. Present supporting material before invoking the tool; supporting chat text identifies
   the material and leaves the actionable question in the tool. During unfinished authorized work,
