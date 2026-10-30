@@ -1,6 +1,6 @@
 ---
 name: interactive-skill
-description: Give a skill a command-line-style menu of what it can do. Skip the menu when the request already says which choice the user wants; otherwise ask, and accept the answer in any common form (a number, a name, "y" for yes). Use as a dependency of any skill that declares a menu, whenever that skill starts or reaches a point where the user picks what happens next.
+description: Give a skill a command-line-style menu of what it can do. Skip the menu when the request already says which choice the user wants; otherwise ask, and accept the answer in any common form (a number, a name, a short prefix, or "y" for yes in a yes-or-no question). Use as a dependency of any skill that declares a menu, whenever that skill starts or reaches a point where the user picks what happens next.
 short_description: 'Offer a skill’s choices as a menu, skipped when the request already says.'
 ---
 
@@ -42,18 +42,26 @@ choices:
 
 ## Resolve From The Request
 
-1. **Drop what is not available.** Leave out every choice whose `available` condition does not hold
-   now. When exactly one choice remains, that is the choice; when none remains, say what is missing
-   and stop.
-2. **Read the request.** Take the invocation's arguments and the user's words that led to it. The
-   request picks a choice when it names its `id`, `label` or an alias, or matches its `when`.
-   Arguments count the same way as a typed reply below, so `2` or `y` already answers.
-3. **Skip the menu when the request settles it.** That happens when it picks exactly one choice of a
+1. **Leave out what is not available.** Drop every choice whose `available` condition does not hold
+   now; the rest are numbered from 1 in their declared order, and every number below means that
+   numbering, whether or not the menu is shown.
+2. **Read the request.** Take the invocation's arguments and the user's words that led to it.
+   Arguments are matched exactly as a reply is under **Match The Reply**, so `2` or `y` already
+   answers. Otherwise the request picks a choice when it names its `id`, `label` or an alias as a
+   whole word or phrase, ignoring case, or when the user's main ask, read as a whole rather than
+   for keywords, is what the choice's `when` describes. A name the request rules out, as in "don't
+   review it", picks nothing.
+3. **Stop when the request picks a dropped choice.** Say what its `available` condition is missing,
+   and run nothing.
+4. **Skip the menu when the request settles it.** That happens when it picks exactly one choice of a
    `choice` menu, names the choices of a `multi` menu, says yes or no to a `confirm`, or gives the
-   answer to a `text`. Open the reply with one line saying what was taken and why, such as
-   "Running **Packing list**, from your request.", and continue with it.
-4. **Ask otherwise.** That covers a request that picks nothing, or more than one choice of a `choice`
-   menu. Never guess between choices, and never take one only because it is first or most common.
+   answer to a `text`. It also happens when only one choice is available. Open the reply with one
+   line saying what was taken and why, such as "Running **Packing list**, from your request." or
+   "Running **Plan a trip**, the only choice available.", and continue with it.
+5. **Ask otherwise.** That covers a request that picks nothing, or more than one choice of a
+   `choice` menu. In the second case, open the menu with one line naming the choices the request
+   picked and saying that one runs at a time. Never guess between choices, and never take one only
+   because it is first or most common.
 
 ## Ask
 
@@ -74,43 +82,44 @@ choices:
 Please pick a choice to proceed.
 ```
 
-| `kind` | Last line of the menu |
+| `kind` | Shape |
 | --- | --- |
-| `choice` | `Please pick a choice to proceed.` |
-| `multi` | `Pick one or more, such as 1,3, all or none, to proceed.` |
-| `confirm` | No list; the prompt ends with `(yes/no)`, then `Please answer yes or no to proceed.` |
-| `text` | No list; `Example: <example>` when there is one, then `Please type your answer to proceed.` |
-
-Number the choices from 1 in their declared order. Leave out a choice that is not available, so a
-number never points at a choice that cannot run.
+| `choice` | As above. A choice without `detail` is its label alone. Last line: `Please pick a choice to proceed.` |
+| `multi` | As above. Last line: `Pick one or more, such as 1,3, all or none, to proceed.` |
+| `confirm` | No list: `**<prompt> (yes/no)**`, a blank line, then `Please answer yes or no to proceed.` |
+| `text` | No list: `**<prompt>**`, then `Example: <example>` when there is one, then `Please type your answer to proceed.` |
 
 ## Match The Reply
 
-Trim the reply, ignore case and surrounding punctuation, then take the first rule that matches:
+Trim the reply and ignore case and surrounding punctuation. Then take the first rule that matches:
 
 | Reply | Means |
 | --- | --- |
-| A number shown, alone or as `#2`, `2.`, `option 2`; or an ordinal such as `second`, `the last one` | That choice. |
+| `cancel`, `stop`, `never mind`, `quit`; for `text`, only when it is the whole reply | Cancelled: run nothing, and say that nothing ran. For `confirm` this differs from `no`, which runs the caller's "no" branch. |
+| A number in the numbering, alone or as `#2`, `2.`, `option 2`; `1st` to `4th`; `one` to `four`; `first` to `fourth` or `last`, with an optional leading `the` and trailing `one`, `option` or `choice` | That choice. |
 | A choice's `id`, `label` or alias | That choice. |
-| The start of exactly one choice's `id`, `label` or alias, at least three letters | That choice. |
-| For `confirm`: `y`, `yes`, `yeah`, `yep`, `yup`, `sure`, `ok`, `okay`, `go ahead`, `do it`, `1` | Yes. |
-| For `confirm`: `n`, `no`, `nope`, `nah`, `don't`, `2` | No. |
+| The start of an `id`, `label` or alias, at least three letters, when every one it starts belongs to the same choice | That choice. |
+| For `confirm`: `y`, `yes`, `yeah`, `yep`, `yup`, `sure`, `ok`, `okay`, `go ahead`, `do it` | Yes. |
+| For `confirm`: `n`, `no`, `nope`, `nah`, `don't` | No. |
 | For `multi`: items separated by commas, spaces or `and`, each matched as above; `all` or `everything`; `none` or `nothing` | Those choices; every choice; no choice. |
 | For `text`: anything else, or nothing when there is a `default` | The answer as typed, or the default. |
-| `cancel`, `stop`, `never mind`, `quit` | Run nothing, and say that nothing ran. |
 
-- **A reply that matches no choice, or more than one, gets the menu again.** Put this line above
-  it: "That did not match a choice. Please reply with a number from 1 to <n> or a choice's name."
-  Never pick for the user; repeat this until a reply matches.
-- **A reply that asks something else is a new request.** The menu is dropped, and the calling skill
-  is not continued.
+- **A reply that is a new request is not an answer.** A full sentence, question or instruction that
+  names no choice and is about something other than the menu drops the menu, and the calling skill
+  is not continued; the new request is handled as it stands.
+- **Any other reply that matches no choice, or more than one, gets the menu again**, never a pick
+  made for the user, as often as it takes. Put one line above it, or in the question text when the
+  question tool asks: "That did not match a choice. Please reply with a number from 1 to <n> or a
+  choice's name." for `choice`, the same ending "…, all or none." for `multi`, and "That did not
+  match. Please answer yes or no." for `confirm`.
 
 ## Returning To The Caller
 
-Hand back the chosen `id` or `id`s, `yes` or `no`, or the typed text, and whether it came from the
-request or the reply. The calling skill runs that branch with no further question about it.
+Hand back the chosen `id` or `id`s, `yes` or `no`, the typed text, or `cancelled`, and where it
+came from: the request, the reply, or the only available choice. The calling skill runs that branch
+with no further question about it, and stops without running any branch on `cancelled`.
 
 ## Guardrails
 
-- Never run a choice the user's request or reply did not select, and never offer one whose
-  `available` condition does not hold.
+- Never run a choice the user's request or reply did not select, unless it is the only one
+  available, and never offer one whose `available` condition does not hold.
