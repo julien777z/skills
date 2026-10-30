@@ -1,0 +1,16 @@
+{
+  "description": "Check at turn end that every task ledger entry owing a backup comment has one.",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/ledger/main.py\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

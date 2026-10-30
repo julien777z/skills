@@ -112,10 +112,9 @@ During A Task** for the edit's timing.
   requests are reviewed or merged governs that delivery when it runs, never when. A gate result that
   arrives for a guidance pull request already open is recorded as its entry's stage result, and its
   repair waits with the rest.
-- **Every `guidance_correction` entry keeps one generic recovery comment on the pull request that
-  carries its edit**, posted once the edit is pushed and kept current as the [ledger backup
-  reference](references/ledger-backup.md) says. This skill authorizes that comment and its edits
-  under the GitHub rule's **Comments**.
+- **Every `guidance_correction` entry keeps one generic recovery comment of its own on the pull
+  request that carries its edit**, posted once the edit is pushed, its URL recorded in the entry in
+  the same step, and kept current as `session-ledger`'s **Backup** section says.
 - A related correction recorded before its batch is frozen joins the same entry or sits beside it
   in that batch; the batch is one pull request, apart from edits the GitHub rule puts on a source
   pull request or holds for another repository. One recorded while a batch is in flight waits for
