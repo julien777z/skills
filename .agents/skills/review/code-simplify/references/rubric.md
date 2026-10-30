@@ -244,10 +244,12 @@ Apply the baseline prompt above, plus these explicit review rules:
      decide (models with models, routers with routers), for an existing module whose concern contains
      it, or one a broader name would make its owner, such as an avatar module beside the module that
      stores a user's uploaded images. A module whose functions are built on one existing module's
-     policy, gateway calls or models belongs with that module. When either owner exists, the module
-     merges into it, renamed first when its name is too narrow, whether it holds one symbol or five;
-     the global rules' **A new file is the last resort** is the same test at the time of writing. A
-     count of one is the plainest case of this finding, never its threshold.
+     policy or gateway calls belongs with that module; one built on another module's models belongs
+     with the module of its own kind that owns the same concept. When an owner exists, the module
+     merges into it, the owner renamed first when its name is too narrow to hold both, whether the
+     module holds one symbol or five; the global rules' **A new file is the last resort** is the same
+     test at the time of writing. A count of one is the plainest case of this finding, never its
+     threshold.
    - Count before you read: a module whose public surface is one function, one small class, or one
      constant plus its helper has not earned a file. Say the count in the finding.
    - A router is a container the same way, and a router carrying one handler is the same finding:
@@ -264,10 +266,11 @@ Apply the baseline prompt above, plus these explicit review rules:
    - Merge it into the existing owner when one exists, and an owner is a module that already holds the
      concern, not the nearest small module with room: a destination that is itself one or two symbols
      is another lone module, and moving into it changes the file name and nothing else. Keep a module
-     this standard catches, at any count, in its own file only for a dependency boundary you can show from declared dependencies
-     and importers, an entry point the framework or packaging looks up by path, or a UI component
-     module, which the React rules hold to exactly one exported component with its helper components
-     unexported in the same file; a folder of such modules is their area, never one module to merge.
+     this standard catches, at any count, in its own file only for a dependency boundary you can show
+     from declared dependencies and importers, an entry point the framework or packaging looks up by
+     path, or a UI component module, which the React rules hold to exactly one exported component
+     with its helper components unexported in the same file; a folder of such modules is their area,
+     never one module to merge.
      The UI exemption holds only for a component that earns its place under the React rules'
      **Components and Props**: a module whose component that rule calls another's variant or a
      hook's wrapper, or one link of a chain each adding one prop, merges into its owner.
@@ -282,9 +285,9 @@ Apply the baseline prompt above, plus these explicit review rules:
      the rename did not, and leaving it alone under a new name spends that rewrite on a file that has
      still not earned its name.
    - **Declarative ownership outranks the count.** Never move a data model into a client, service,
-     route, entrypoint, or utility to eliminate a model module this standard catches, at any count. Models stay in a
-     `models.py` file or concept-specific `models/` package; only Pydantic `BaseSettings` classes
-     stay in `config.py` or `config/`. A declarative module may be merged only with another
+     route, entrypoint, or utility to eliminate a model module this standard catches, at any count.
+     Models stay in a `models.py` file or concept-specific `models/` package; only Pydantic
+     `BaseSettings` classes stay in `config.py` or `config/`. A declarative module may be merged only with another
      declarative module under the same ownership boundary, never into operational code.
    - A concern no sibling shares is not a boundary. It is a symbol with no home yet, and "unique
      concern", "idiomatic for this package", "acceptable", "accepted", "stands", and "earns its file"
@@ -642,9 +645,9 @@ Escalate findings when you see:
   only the values move.
 - A module with one public symbol — new, renamed, moved, or already in scope — a module of any size
   whose concern an existing module's concern contains, and a package where several modules each hold
-  one, outside the exemptions standard 2 names. The
-  first is a file that has not earned its name; the second is a slice of its owner's concern filed
-  apart; the third is one module split across several files.
+  one, outside the exemptions standard 2 names. The first is a file that has not earned its name;
+  the second is a slice of its owner's concern filed apart; the third is one module split across
+  several files.
   Count symbols per module rather than judging by line count.
 - Two utilities performing one operation on different shapes, or with their own separate constants and sentinels for the same idea. Collapse them into one whose parameter covers both callers.
 - A helper written narrowly for its first caller when a slightly wider contract would serve places that currently go without. Widening it is the fix; a second near-duplicate later is the cost of not doing it.
@@ -692,7 +695,9 @@ When you identify a code-quality problem, prefer suggestions like:
 - Turn special-case logic into a simpler default flow with fewer exceptions.
 - Extract a helper or pure function.
 - Split a large file into smaller focused modules.
-- Collapse one-symbol modules into one module named for what they share, widening the existing one, except where standard 2 exempts them.
+- Merge a module whose concern an existing module owns into that owner, renaming the owner when its
+  name is too narrow, and collapse one-symbol modules into one module named for what they share,
+  widening the existing one, except where standard 2 exempts them.
 - Move feature-specific logic behind a dedicated abstraction.
 - Replace condition chains with a typed model or explicit dispatcher.
 - Separate orchestration from business logic.
