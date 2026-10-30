@@ -60,7 +60,7 @@ lens's checks name, and build these tables before judging anything:
   startup and shutdown lifecycle, health and readiness, configuration, middleware or interceptors,
   logging, dependency wiring, data fetching for a frontend) and one column per deployable naming
   the file and symbol that fills it, or `none`;
-- every module with its public symbol count, and every catch-all module (`utils`, `helpers`,
+- every module with its public symbol count and the concern it serves, and every catch-all module (`utils`, `helpers`,
   `common`, `misc`);
 - every comment, constant or message carrying a compatibility word — legacy, compat, fallback,
   deprecated, kept for, formerly, transitional, temporary, old format — as a search key pointing at
@@ -231,6 +231,8 @@ Left alone: a slot whose difference a contract requires, with the contract named
 Code spread over more files and folders than its responsibilities need.
 
 - every module with one or two small public symbols whose siblings would hold them;
+- every module, whatever its count, whose concern an existing module's concern contains, or whose
+  functions are built on one existing module's policy, gateway calls or models;
 - every UI area folder whose modules include **Pass-Through Layer**'s wrapper components or links
   of its chains;
 - every pair of modules or folders answering the same question, and every concern split across
