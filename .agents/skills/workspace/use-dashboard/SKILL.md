@@ -110,7 +110,8 @@ Dashboards look alike because they are built alike:
    (`$XDG_CACHE_HOME/use-dashboard`, or `~/.cache/use-dashboard`), which needs Node.js 20 or newer,
    npm and access to the npm registry, and takes up to a minute; later renders reuse that build. A
    failed build exits non-zero with npm's output.
-3. Keep the output path stable for one dashboard, so each render replaces the last.
+3. Keep one output path per dashboard, so each render replaces the last and republishes to the same
+   page.
 
 Change a delivered dashboard only by re-rendering its whole spec, never by editing the page's
 HTML, which skips the renderer's validation. Change the page itself only in `app/`: its shadcn
@@ -121,14 +122,20 @@ app.
 
 ## Delivery
 
-Use the first route the host offers, and use the same one for every update of one dashboard.
+Every render the user is shown goes out through this section, including a preview, a sample, or a
+test of a change to the page: a screenshot of a render is a capture of the page, never its delivery.
+Use the first route the host offers, and the same one for every update of one dashboard.
 
-1. **A tool that publishes an HTML page to a link** — Claude's Artifact tool, for example. Render
-   with `--fragment`, publish that file as a plain page, never through a page type the host offers
-   for dashboards, so every dashboard keeps this template, and give the user the link. Republish
-   later renders to that same page so the link stays the one the user already has; record the link
-   where the caller keeps task state. Follow the tool's own instructions for its icon and
-   description.
+1. **A tool that publishes an HTML page to a link**, such as Claude's Artifact tool, whenever the
+   host offers one. Render with `--fragment` and publish that file as a plain page, never through a
+   page type the host offers for dashboards, so every dashboard keeps this template. Follow the
+   tool's own instructions for its icon and description, and give the user the link.
+   - **One artifact per dashboard.** Before publishing, look for the link already published for
+     this dashboard's purpose, in the caller's task state or earlier in the session. When there is
+     one, republish to it: the same file path within the session, or the link itself from another
+     one. A dashboard that changes its look, its data, or both is still the same dashboard; only a
+     dashboard with a different purpose gets a new artifact.
+   - Record each new link where the caller keeps task state, so the next render finds it.
 2. **A tool that sends a file to the user.** Send the full page.
 3. **Neither** — Codex, for example. Give the absolute path to the full page and the command that
    opens it on the user's machine, such as `open <path>` on macOS or `xdg-open <path>` on Linux.

@@ -122,7 +122,7 @@ export function SiteHeader({ title, status, updatedAt, pages, current, onSelectP
   }
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-[env(safe-area-inset-top,0px)] z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-14 w-full max-w-screen-2xl items-center gap-4 px-4 lg:px-6">
         {hasPages && (
           <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
