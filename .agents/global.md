@@ -445,11 +445,10 @@ return records;
   has a term, use it. A parcel the carrier reports as delivered is `delivered`, never
   `parcel_arrived`, because an unusual synonym makes every reader translate it back. This covers
   identifiers, fields, messages, documentation and test names in every language.
-- **A Boolean's name says what it is true of.** A function, property, parameter or variable
-  holding true or false names its subject or object, which may be the receiver or the argument:
-  `invoice.is_overdue`, `can_send(message)`, `has_attachments`. A bare verb or participle that
-  names neither, such as `sends(message)`, leaves its reader asking "sends what?". A name a
-  framework or protocol defines keeps its own spelling.
+- **A Boolean's name says what it is true of.** The receiver or argument is what the statement is
+  about, and a verb that acts on something names that thing in the name: `invoice.is_overdue`,
+  `can_send(message)`, `report.exports_to_file`, never `exports(report)`, whose reader asks
+  "exports where?". A name a framework or protocol defines keeps its own spelling.
 - Name things for the shape being exercised, not for whichever caller happened to prompt the work.
   A test needing a table with a secret column names it for that — a record with a secret — rather
   than borrowing the one real table the change was made for.
@@ -504,9 +503,10 @@ return records;
 - Git history is the record of what changed; documentation describes what exists now.
 - The same applies to code comments and docstrings: no "formerly", "replaces", or "kept for
   backwards compatibility" notes.
-- **Behaviour another party owns is explained once, beside the line that works around it.** A
-  constant, docstring or second comment that the workaround uses never restates it: two comments
-  saying that a library sets no timeout, one above the constant and one at the override, are one
-  comment too many.
+- **Behaviour another party owns is explained once**, beside the value or line where the code
+  first handles it. Every other place that reuses that value or works around the same behaviour
+  restates nothing: a second comment, a docstring, or a comment in another file. A comment above a
+  timeout saying a library sets none, and another at the override that applies it, are one comment
+  too many.
 
 - When a request replaces a route, API contract, or behavior, remove the prior alias or fallback. Retain legacy compatibility only when the user explicitly authorizes it in the current request; if retention is unclear, ask before adding it.
