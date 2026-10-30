@@ -7,29 +7,29 @@ short_description: 'Turn a dashboard spec into the shared HTML page and deliver 
 # Use Dashboard
 
 A caller describes its dashboard as a JSON spec; [scripts/render.py](scripts/render.py) validates it
-and fills the page built from [app/](app/), a React app on Tailwind CSS and shadcn/ui laid out as
-shadcn's standard dashboard: a collapsible sidebar listing the pages, a header naming the open page,
-a row of stat cards, and each section in its own card. Every dashboard gets that layout without the
+and fills the page built from [app/](app/), a React app on Tailwind CSS and shadcn/ui laid out
+as a standard shadcn site: a sticky top navbar with the title and a link to each page, the open
+page's title and subtitle under it, a row of stat cards, and each section in its own card. Every dashboard gets that layout without the
 caller writing any markup. The page is one self-contained file; its web font loads from Google
 Fonts and falls back to system fonts, and a diagram is drawn by Mermaid, loaded from jsDelivr, with
 its connections listed as text when Mermaid cannot load. The page is dark unless the host's viewer
-is explicitly set to light (`data-theme="light"` on the root element), collapses the sidebar into a
-drawer on a phone, and renders every value as text, so data never runs as markup or script.
+is explicitly set to light (`data-theme="light"` on the root element), folds the page links into a
+menu on a phone, and renders every value as text, so data never runs as markup or script.
 
 ## Spec
 
-Top level: `title`, `updated_at` (ISO 8601) and `pages` are required. The sidebar shows `title`
-with how long ago `updated_at` was, and the header shows the open page's title; the page's own
+Top level: `title`, `updated_at` (ISO 8601) and `pages` are required. The navbar shows `title`,
+how long ago `updated_at` was and the `status` badge, and each page opens with its own title; the page's own
 name, which a browser tab or a published link shows, is always `Dashboard - <title>`. Every other
 field is optional, and an absent one leaves its part of the page out.
 
 | Field | Shape |
 | --- | --- |
-| `subtitle` | One line at the top of every page. |
-| `status` | `{label, tone?}`: the badge at the right of the header. |
+| `subtitle` | One line under every page's title. |
+| `status` | `{label, tone?}`: the badge at the right of the navbar. |
 | `progress` | `{value: 0–1, label, detail?, segments?}`: a stat card twice as wide as the others, with the percentage, `detail` as its badge, and a bar. `segments` is `[{label, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1; without `segments` the bar is a plain fill. |
 | `metrics` | `[{label, value, detail?}]`: at most four stat cards beside the progress, `detail` under the figure. |
-| `pages` | `[{title, icon?, layout?, sections}]`: one sidebar entry each, the progress and metrics showing on the first. `icon` is one of `overview`, `list`, `chart`, `diagram`, `document`, `shield`, `people`, `data`, `settings`, `alert`, `check` or `calendar`; without it the first page shows `overview` and the rest `document`. `sections` render in order; with `layout` `columns`, the default, callouts, boards, tables, outlines and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
+| `pages` | `[{title, icon?, layout?, sections}]`: one navbar link each, the progress and metrics showing on the first. `icon` is one of `overview`, `list`, `chart`, `diagram`, `document`, `shield`, `people`, `data`, `settings`, `alert`, `check` or `calendar`; without it the first page shows `overview` and the rest `document`. `sections` render in order; with `layout` `columns`, the default, callouts, boards, tables, outlines and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
 | `references` | `[{text, url}]`: every whole-word occurrence of `text` in the page's own text becomes a link to `url`. |
 
 `tone` is `good`, `warning`, `critical`, `accent` or `done`, as **Making A Dashboard** defines

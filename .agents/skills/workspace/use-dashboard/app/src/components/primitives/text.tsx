@@ -3,7 +3,13 @@ import type { ReactNode } from 'react';
 
 const textVariants = cva('', {
   variants: {
-    size: { xs: 'text-xs', sm: 'text-sm', base: 'text-base', figure: 'text-2xl @[250px]/card:text-3xl' },
+    size: {
+      xs: 'text-xs',
+      sm: 'text-sm',
+      base: 'text-base',
+      figure: 'text-2xl @[250px]/card:text-3xl',
+      title: 'text-2xl tracking-tight sm:text-3xl',
+    },
     tone: {
       default: '',
       muted: 'text-muted-foreground',
@@ -13,7 +19,7 @@ const textVariants = cva('', {
       accent: 'text-info',
       done: 'text-done',
     },
-    weight: { normal: 'font-normal', medium: 'font-medium', semibold: 'font-semibold' },
+    weight: { normal: 'font-normal', medium: 'font-medium', semibold: 'font-semibold', bold: 'font-bold' },
     numeric: { true: 'tabular-nums', false: '' },
     breakAnywhere: { true: '[overflow-wrap:anywhere]', false: '' },
     truncate: { true: 'truncate', false: '' },
