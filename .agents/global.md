@@ -337,11 +337,6 @@ alwaysApply: true
 ## Code layout
 
 - In every language, use blank lines to separate setup, validation, transformations, side effects, and returns. Keep adjacent statements together only when they form one small operation; do not turn a function into an uninterrupted paragraph merely because a formatter permits it. Apply this to every line you write or edit, and elsewhere in a file you change within `pre-production`'s incidental size budget.
-- **A new file is the last resort.** Before creating one, find the existing module that already owns
-  the concern, or an existing module a broader name would make its owner, and put the code there,
-  renaming that module and updating every importer when the broader name is needed. Create a file
-  only when neither exists, and name the candidates checked in the report. Code the change already
-  wrote into a new file is moved the same way.
 - Use current language syntax for simple operations. For one-off Python interpolation, use f-strings instead of string concatenation or `.format()`, and keep spacing in the final string rather than a fragment with a hidden leading space. Follow the Python rule for reusable structured templates.
 
 ```python
@@ -380,6 +375,14 @@ setRecords(records);
 
 return records;
 ```
+
+- **A new file is the last resort.** Before creating one, find the existing file that already owns
+  the concern, or an existing file a broader name would make its owner, and put the code there,
+  renaming that file and updating every reference when the broader name is needed. Create a file
+  only when neither exists, and name the candidates checked in the report. Code the change already
+  wrote into a new file is moved the same way. A file another rule or tool requires — a component
+  module, a models module, a migration revision, a page or workflow found by its path — is not this
+  case.
 
 - A bootstrap or setup folder holds its entrypoint and, when needed, its configuration file at
   its root. Supporting scripts, modules, and data files go in its `resources/` folder; configuration
