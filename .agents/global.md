@@ -230,8 +230,8 @@ alwaysApply: true
   reply to that message when there is one, with no retry limit, until the user answers, withdraws
   the question, or explicitly stops or supersedes the task. Such a message is handled on its own
   wherever its handling does not depend on the answer. Silence or such a message is never an
-  answer, approval or delegation, and neither justifies a chat fallback or a choice inferred from
-  what the message seems to imply.
+  answer, approval or delegation, and neither justifies a chat fallback or an assumed choice,
+  including one inferred from what the message seems to imply.
   An asynchronous request that remains pending has not timed out: keep its wait or event route
   active rather than opening a duplicate. Hold only work that depends on the answer and continue
   independent authorized work. Preserve a platform's separate action-time confirmation safeguards.
