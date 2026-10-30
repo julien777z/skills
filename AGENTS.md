@@ -417,13 +417,19 @@ return records;
   above", and never links to the page it sits on. It names the thing the control acts on, never
   quotes a label that is already an instruction into a sentence that gives its own: a switch
   labelled "Enable offline mode" is "Turn on offline mode", never "Turn on Enable offline mode".
-- **A refusal is a short, friendly request for the reader's next step**, such as "This library
-  card cannot be used. Please use a different card." It says what to do rather than passing a
-  verdict on what was done or on the reader, as "You can't use this library card." does, and it never
-  repeats back what the reader just entered or chose — a file name, a typed value, a picked item —
-  which they already know. It holds wherever the message is written: an API's or a tool's error
-  message, a server-side enum or constant that holds the text, a test fixture, and wording a brief
-  proposes to a worker.
+- **A refusal an end user reads is a short, friendly request for their next step**, such as "This
+  library card cannot be used. Please use a different card." It says what to do rather than passing
+  a verdict on what was done or on the reader, as "You can't use this library card." does, and it
+  never repeats back what the reader just entered or chose — a file name, a typed value, a picked
+  item — which they already know. It holds wherever that message is written: the error message of
+  an API or tool whose text reaches an end user, a server-side enum or constant that holds the
+  text, a test fixture, and wording a brief proposes to a worker.
+- **Text only the product's own team reads states the observed condition and its values, and
+  nothing more.** On an internal panel, an operator or support tool, or an internal API, a refusal
+  or a report names what was found and lists the values it concerns, such as "Unrecognized shelf
+  codes: B7, Q2". It assumes no cause, such as "the shelf list is out of date", and asks nothing of
+  anyone, such as "Please ask the catalog team to correct the shelf list": its reader is the one
+  who investigates, and a guessed cause or errand sends them the wrong way.
 
 ## Repository guidance
 
@@ -445,6 +451,15 @@ return records;
   than borrowing the one real table the change was made for.
 - Sample values follow the same rule: prefer plainly synthetic literals over ones shaped like a
   real identifier from another system's domain.
+- **Nothing committed to a repository or posted to its host holds a path that only one machine
+  has.** Source, configuration, guidance, documentation, fixtures, captured tool output, commit
+  messages, pull-request text and comments never name a home directory, a temporary or scratch
+  directory, the place a checkout sits, or a drive letter, such as
+  `/home/<name>/work/garden/tools/build.py` or `D:\exports\stock.csv`. A file in the repository is
+  named by its path from the repository root; a location that differs between machines is read from
+  configuration or an environment variable; captured output is trimmed to repository-relative paths
+  before it is committed or posted; and a file outside the repository is named for what it is and
+  how a reader obtains it, such as "the CSV the stock report's Export button downloads".
 - A library owns the vocabulary of the protocol or provider it wraps. That protocol's field names
   and naming conventions, such as how it spells an event type or a scope, are the library's own,
   never a consumer's domain vocabulary: a helper encoding such a convention belongs in the library
