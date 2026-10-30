@@ -156,13 +156,14 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   going: a pointer resting on a row or link, keyboard focus on it, or a link in view whose
   destination is cheap to load. Where each destination costs several requests, as a detail page
   opened from a list does, load it on that signal for the one row in question, never for every row
-  on screen. The skeleton is the fallback for data that has not arrived by the click: the
-  destination's frame and skeleton replace the current page at once, and the old page never stays
-  on screen while the next one's requests run. Each route segment that waits on data owns its own
-  loading boundary, so the fallback shows wherever the navigation diverges, and the destination
-  starts its independent requests together rather than one after another. Validate it by timing a
-  click to content after resting on the row, and a cold click to the skeleton and to the content,
-  against a deliberately slowed backend.
+  on screen. The skeleton is the fallback for data that has not arrived by the click: once a
+  short pending delay of about 200 ms passes without the destination arriving, its frame and
+  skeleton replace the current page, so a destination loaded ahead never flashes a skeleton and
+  the old page never stays on screen past that delay while the next one's requests run. Each
+  route segment that waits on data owns its own loading boundary, so the fallback shows wherever
+  the navigation diverges, and the destination starts its independent requests together rather
+  than one after another. Validate it by timing a click to content after resting on the row, and a
+  cold click to the skeleton and to the content, against a deliberately slowed backend.
 
 - **A change to a shared mechanism is applied everywhere that mechanism appears, and on every
   sibling surface, in the same change.** A widget grid, a list row, a dialog shell, an edit-mode
@@ -216,11 +217,6 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   says what the feature holds or does in the reader's words, so a reader who has used neither picks
   the right one: "Collections" beside "Groups", or "Profiles" beside "Accounts", reads as two words
   for one thing. Read the names together, as the reader meets them, before settling either.
-- **A refusal is a short, friendly request for the reader's next step**, such as "Please choose a
-  date after today." It says what to do rather than passing a verdict on what was done, and it
-  never repeats back what the reader just entered or chose — a file name, a typed value, a picked
-  item — which they already know. This holds wherever the message is written, an API's error
-  message the interface shows included.
 - **The interface writes its own text for a reason another reader's message carries.** A message a
   service writes for a different reader, such as an agent, an API client or a log, says what that
   reader needs: an agent's carries the URL it can follow. The service sends a reason code beside
@@ -819,8 +815,9 @@ export function SearchInput() {
 
 - **Render on the server.** A page, and every section of it that shows data, is an async Server Component that loads its data and renders it. A Client Component (`"use client"`) exists only for what the browser has to own — event handlers and input, state and effect hooks, browser-only APIs, a dialog, drag-and-drop, a third-party client widget — takes its data as props, and never fetches it.
 - **Writes are Server Actions**, and Server Actions authenticate their caller and authorize what they read or change. A write re-renders the page when it finishes. A client-side data layer for reads — SWR, React Query, a fetching hook, a fallback cache seeded from the server — is the shape this replaces, not a companion to it, and a status that has to update live refreshes the server render on an interval instead of fetching on the client. A read that depends on input an open control holds in its own state — a city search as the reader types, a preview of the choices in a dialog — is a read-only Server Action that control calls, never a route handler it fetches; input that belongs in the address, such as a list's filters, stays search params the page renders from.
+- **The address carries only state that differs from the page's default.** The first page, an empty search, and the default filter, tab or sort stay out of every link, redirect and router push, so a URL never reads `?page=1` or `?search=`. The helper that builds the address drops a default value itself, so no caller has to remember to.
 - **Expected refusals carry a specific, human-readable message the reader can act on**, worded as
-  **Interface Copy** says. Trace generic copy for a known validation or business refusal to its service
+  the global rules' **Product Copy** says. Trace generic copy for a known validation or business refusal to its service
   and fix that error contract there, rather than inventing replacement client copy. Expected
   refusals must not escape as internal server errors. Genuine 500 responses may keep a safe,
   generic message; diagnose and repair an unexpected 500 encountered during normal operation
