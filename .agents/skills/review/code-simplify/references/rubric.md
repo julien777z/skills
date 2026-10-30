@@ -523,7 +523,7 @@ For every meaningful change, ask:
   or move that carried one symbol across is still one symbol — and do its siblings hold one each too?
 - Does any new enum, constant set, mapping, or model re-declare a set the repository already has,
   and does every module-level declaration carry its type?
-- Does this represent a value differently from how a sibling already represents the same thing — a bare string where an enum exists, a fresh constant where a canonical type is the established shape?
+- Does this build anything in a second shape beside how the repository already builds it — a bare string where an enum exists, a fresh constant where a canonical type is the established shape, a route factory where every other router declares its handlers, a helper, test or configuration entry written unlike its siblings — without converting every existing instance?
 - Does a branch or conditional produce a closed set of string states, including log-only statuses, that belongs on the language's canonical named finite-state type rather than inline literals?
 - Is this orchestration more sequential or less atomic than it needs to be?
 - Does any added docstring outside a migration revision file's `upgrade()` or `downgrade()` run

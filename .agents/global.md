@@ -385,11 +385,16 @@ return records;
   or tool requires to stand alone — a component module, a migration revision, a page or workflow
   found by its path — is not this case.
 
-- **The repository does one thing one way.** Before writing code of a kind it already holds, such
-  as a router, a client or a fixture, read how the existing instances are written and follow that
-  shape. A case that seems to need a different shape either converts every existing instance to it
-  in the same change or keeps the existing shape: a new pattern beside the old one reads as bespoke
-  however good it is, and a reviewer meeting it has to learn two ways to do the same thing.
+- **The repository does one thing one way.** Before writing anything of a kind it already holds —
+  a router, a client, a helper, a test, a fixture, a configuration entry, the way it raises and
+  reports errors — read how the existing instances are written and follow that shape. A case that
+  seems to need a different shape either converts every existing instance to it in the same change
+  or keeps the existing shape: a new pattern beside the old one reads as bespoke however good it
+  is, and a reviewer meeting it has to learn two ways to do the same thing. That conversion is the
+  change's own scope, never incidental work under `pre-production`'s size budget, so it is never
+  left half done. An existing shape a standing rule names a defect is not followed; it is repaired
+  on every instance as `pre-production`'s **Scope Follows The Defect** says. Only a difference a
+  contract the instance serves requires stays, with that contract named in the report.
 
 - A bootstrap or setup folder holds its entrypoint and, when needed, its configuration file at
   its root. Supporting scripts, modules, and data files go in its `resources/` folder; configuration
