@@ -380,9 +380,10 @@ return records;
   the concern, or an existing file a broader name would make its owner, and put the code there,
   renaming that file and updating every reference when the broader name is needed. Create a file
   only when neither exists, and name the candidates checked in the report. Code the change already
-  wrote into a new file is moved the same way. A file another rule or tool requires — a component
-  module, a models module, a migration revision, a page or workflow found by its path — is not this
-  case.
+  wrote into a new file is moved the same way. Where another rule decides the kind of file, such as
+  models in a models module, that rule picks the kind and this search runs within it; a file a rule
+  or tool requires to stand alone — a component module, a migration revision, a page or workflow
+  found by its path — is not this case.
 
 - A bootstrap or setup folder holds its entrypoint and, when needed, its configuration file at
   its root. Supporting scripts, modules, and data files go in its `resources/` folder; configuration
