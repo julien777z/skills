@@ -51,14 +51,25 @@ an untrusted one is left out and reported.
 Hold `agent-lock` on the key `skills-install`, acquired with `--ttl-seconds 1800`, from step 2 until
 step 6 finishes, so two sessions never build or remove overlays at once. Run its `check` before
 every write to shared state: step 3's stash, fast-forward and marker deletion, step 4.4's marker,
-step 5, and each removal in step 6. On a failed check, first restore a stash this run pushed and
-verify its paths. Then acquire the lock again and restart at step 2 once, keeping step 2's first
-record whole and the head each abandoned build reached; the restarted step 2 adds only overlays that
-record lacks. A second failed check stops the refresh with the step it reached as its blocker, with
-no lock left to release. Otherwise release the lock with `--resource-idle` once step 6 finishes or
-the refresh stops. A release the tool refuses means a successor took the lock after its deadline:
+step 5, and each removal in step 6. On a failed check, stop writes immediately, reacquire the lock, restore any stash this run pushed
+and verify its paths, then restart at step 2. Keep step 2's first record whole and the head each
+abandoned build reached; the restarted step 2 adds only overlays that record lacks. Repeat recovery
+after each lost lease until verification succeeds. After safe cleanup, release the lock with
+`--resource-idle` once step 6 finishes or an authority conflict holds further writes. A release the tool refuses means a successor took the lock after its deadline:
 release nothing, and report that the lock expired and which overlays were removed after its
 deadline.
+
+A local fault is recovery work, not completion. If a checkout, Git object, ref, overlay or managed
+link cannot be read, preserve the original state and reconstruct a healthy source from the latest
+default branch, the last verified complete snapshot and retained trusted input records. Recover every
+readable pending change and preserve unreadable originals for later recovery; do not assert their
+contents or silently discard them. Repair the native installer or its owned source as needed, and
+resume the refresh through link verification. Link verification proves which source was installed,
+not the contents of unreadable inputs: report that uncertainty and continue investigating retained
+originals without holding installation. Use retained ownership records and installer preflight to
+distinguish managed links from foreign links. Reading merged guidance does not install it. Preserve
+foreign files and links, trust checks and lock ownership throughout; a genuine authority conflict
+remains a decision while independent recovery continues.
 
 1. Resolve an installed user-level skill link to its Git checkout. When the link resolves into an
    overlay worktree, use the main checkout it is a linked worktree of. Confirm the checkout is the
@@ -116,4 +127,4 @@ links resolve to, what took effect — the default branch's old and new commits,
 effect with the tips brought in, the checked-out branch, and the uncommitted paths applied — every
 input or path left out and why, every conflict resolved in the overlay and the pull request it
 belongs to, anything preserved from a removed overlay, the roots refreshed, link verification, and
-the skills and rules reread. State the exact blocker and untouched paths if the refresh stopped.
+the skills and rules reread. Name any preserved unreadable originals and the evidence used to reconstruct the installed source; retain any unresolved authority conflict and its next action.
