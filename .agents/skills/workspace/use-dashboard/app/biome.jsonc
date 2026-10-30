@@ -20,6 +20,11 @@
       "style": {
         "useBlockStatements": "error"
       },
+      "a11y": {
+        // A row click is a mouse shortcut for the button the row contains, which keyboards use.
+        "useKeyWithClickEvents": "off",
+        "noStaticElementInteractions": "off"
+      },
       "suspicious": {
         // Every list renders spec data that never reorders, and items carry no unique field.
         "noArrayIndexKey": "off"
