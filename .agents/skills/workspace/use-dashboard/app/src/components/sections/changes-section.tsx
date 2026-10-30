@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 
 import { Stack } from '@/components/primitives';
 import { RichText } from '@/components/rich-text';
+import { SourceLinks } from '@/components/source-links';
 import { StatusBadge } from '@/components/status-badge';
 import { CHANGES } from '@/lib/tone';
 import type { ChangesSection as ChangesSectionSpec } from '@/spec';
@@ -21,7 +22,9 @@ export function ChangesSection({ section }: { section: ChangesSectionSpec }): Re
                 title={<RichText text={item.name} />}
                 detail={item.detail}
                 aside={<StatusBadge label={CHANGES[item.change].label} tone={CHANGES[item.change].tone} />}
-              />
+              >
+                {item.links && <SourceLinks links={item.links} />}
+              </ListRow>
             ))}
           </Stack>
         )}

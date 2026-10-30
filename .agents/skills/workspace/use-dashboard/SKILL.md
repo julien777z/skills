@@ -39,18 +39,21 @@ An `icon` is one of `overview`, `progress`, `board`, `checklist`, `list`, `chart
 all differ, so no glyph appears twice in the navbar.
 
 `tone` is `good`, `warning`, `critical`, `accent` or `done`, as **Making A Dashboard** defines
-them; omit it for neutral. Every section takes an optional `description`, one sentence shown under
+them; omit it for neutral. `links` is `[{label, url}]`: pills under the item that open its sources,
+each labelled briefly, such as `terms-of-service.md L324` or `export.py L40–L58`. `at` is an ISO 8601
+timestamp the page shows in the viewer's own timezone on a 12-hour clock, such as `9:05 PM`, with the
+date when it is not today. Every section takes an optional `description`, one sentence shown under
 its title. Section types:
 
 | `type` | Fields | Item fields |
 | --- | --- | --- |
-| `board` | `title`, `columns: [{title, tone?, page_size?, items}]` | `title`, `detail?`, `meta?`, `tag?`, `url?` |
-| `questions` | `title`, `items`, `page_size?` | `question`, `status` (`open`, `answered`), `context?`, `options?`, `recommendation?`, `answer?`, `meta?` |
+| `board` | `title`, `columns: [{title, tone?, page_size?, items}]` | `title`, `detail?`, `meta?`, `tag?`, `url?`, `at?`, `links?` |
+| `questions` | `title`, `items`, `page_size?` | `question`, `status` (`open`, `answered`), `context?`, `options?`, `recommendation?`, `answer?`, `meta?`, `at?` |
 | `links` | `title`, `items`, `page_size?` | `label`, `url`, `detail?`, `status?`, `tone?`, `state?`: a pull request's `open`, `draft`, `merged` or `closed`, drawn with GitHub's icon for it in place of the arrow |
 | `table` | `title`, `columns`, `rows` | each row a list of strings, one per column |
 | `notes` | `title`, `items` | each item a string |
-| `changes` | `title`, `items`, `page_size?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`: a named part with its change as a colored badge |
-| `outline` | `title`, `groups: [{title, items}]` | `title`, `detail`, `tone?`, `tag?`, `meta?`: a headline that opens to its detail, with `tag` as a badge in the item's tone and `meta` as small text such as a source; a group of one or two items shows them open |
+| `changes` | `title`, `items`, `page_size?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`, `links?`: a named part with its change as a colored badge |
+| `outline` | `title`, `groups: [{title, items}]` | `title`, `detail`, `tone?`, `tag?`, `meta?`, `links?`: a headline that opens to its detail, with `tag` as a badge in the item's tone and `meta` as small text; a group of one or two items shows them open |
 | `callout` | `title`, `body`, `tone?` | — : a banner across the page with an icon for its tone, for the one thing the reader must see first |
 | `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?` | node: `id`, `label`, `detail?`, `pr?`, `change?`; edge: `from`, `to`, `label?`, `step?`, `change?`; pr: `ref`, `url`; each step a string |
 
@@ -112,6 +115,13 @@ Dashboards look alike because they are built alike:
   a purple, is finished work. Leave it out for neutral; never tone an item only to decorate it.
 - **Every section says what it holds.** Give each one a `description`: one sentence on what the
   reader finds or does there, never a narration of its controls.
+- **Sources are links, never paths in text.** Anything a reader can check, such as a file and line,
+  a diff, a pull request, a document's section or a page of a site, goes in `links` with a URL that
+  opens it at that exact place: a permalink to the line or range at the commit that was read, or the
+  pull request's diff for that file. A path or line number written into `detail` or `meta` is not a
+  source the reader can open.
+- **Times are timestamps.** A moment goes in `at` as a timestamp, never as a clock time written into
+  text, so every reader sees it in their own timezone.
 - **Text is plain.** Titles say what is true in a few words; `detail` explains in a sentence or two
   that reads without the source. Name a file, section or line in `meta`, never in the title.
 

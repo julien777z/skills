@@ -29,12 +29,9 @@ import { Stack, Text } from '@/components/primitives';
 import { StatusBadge } from '@/components/status-badge';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { relativeTime } from '@/lib/time';
 import { cn } from '@/lib/utils';
 import { IconName, type Label, type Page } from '@/spec';
-
-const MINUTE_MS: number = 60_000;
-
-const MINUTES_PER_DAY: number = 1_440;
 
 const ICONS: Record<IconName, LucideIcon> = {
   [IconName.OVERVIEW]: LayoutDashboard,
@@ -68,25 +65,6 @@ interface SiteHeaderProps {
   pages: Page[];
   current: number;
   onSelectPage: (position: number) => void;
-}
-
-function relativeTime(iso: string, now: number): string {
-  const then = new Date(iso);
-  const minutes = Math.round((now - then.getTime()) / MINUTE_MS);
-
-  if (minutes < 1) {
-    return 'Updated just now';
-  }
-
-  if (minutes < 60) {
-    return `Updated ${minutes} min ago`;
-  }
-
-  if (minutes < MINUTES_PER_DAY) {
-    return `Updated ${Math.round(minutes / 60)} h ago`;
-  }
-
-  return `Updated ${then.toLocaleDateString()}`;
 }
 
 function PageLinks({
@@ -139,7 +117,7 @@ export function SiteHeader({
   const BrandIcon = ICONS[icon];
 
   useEffect(() => {
-    const timer = window.setInterval(() => setNow(Date.now()), MINUTE_MS);
+    const timer = window.setInterval(() => setNow(Date.now()), 60_000);
 
     return () => window.clearInterval(timer);
   }, []);

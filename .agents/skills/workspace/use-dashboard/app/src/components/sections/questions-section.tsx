@@ -1,6 +1,6 @@
 import { Check, CircleHelp } from 'lucide-react';
 import type { ReactNode } from 'react';
-
+import { Moment } from '@/components/moment';
 import { Stack, Text } from '@/components/primitives';
 import { RichText } from '@/components/rich-text';
 import { QuestionStatus, type QuestionsSection as QuestionsSectionSpec } from '@/spec';
@@ -39,9 +39,11 @@ export function QuestionsSection({ section }: { section: QuestionsSectionSpec })
                   title={<RichText text={question.question} />}
                   detail={question.context}
                   aside={
-                    question.meta && (
+                    (question.meta || question.at) && (
                       <Text size="xs" tone="muted" numeric>
-                        <RichText text={question.meta} />
+                        {question.meta && <RichText text={question.meta} />}
+                        {question.meta && question.at && ' · '}
+                        {question.at && <Moment at={question.at} />}
                       </Text>
                     )
                   }

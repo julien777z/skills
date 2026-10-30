@@ -273,9 +273,23 @@ METRIC_SHAPE: Final[ObjectShape] = ObjectShape(
     fields={"label": check_text, "value": check_text, "detail": check_text},
     required=frozenset({"label", "value"}),
 )
+SOURCE_LINK_SHAPE: Final[ObjectShape] = ObjectShape(
+    name="SourceLink",
+    fields={"label": check_text, "url": check_text},
+    required=frozenset({"label", "url"}),
+)
+CHECK_SOURCE_LINKS: Final[Callable[[object, str], object]] = partial(check_objects, shape=SOURCE_LINK_SHAPE)
 BOARD_CARD_SHAPE: Final[ObjectShape] = ObjectShape(
     name="BoardCard",
-    fields={"title": check_text, "detail": check_text, "meta": check_text, "tag": check_text, "url": check_text},
+    fields={
+        "title": check_text,
+        "detail": check_text,
+        "meta": check_text,
+        "tag": check_text,
+        "url": check_text,
+        "at": check_timestamp,
+        "links": CHECK_SOURCE_LINKS,
+    },
     required=frozenset({"title"}),
 )
 BOARD_COLUMN_SHAPE: Final[ObjectShape] = ObjectShape(
@@ -298,6 +312,7 @@ QUESTION_SHAPE: Final[ObjectShape] = ObjectShape(
         "recommendation": check_text,
         "answer": check_text,
         "meta": check_text,
+        "at": check_timestamp,
     },
     required=frozenset({"question", "status"}),
 )
@@ -315,12 +330,19 @@ LINK_SHAPE: Final[ObjectShape] = ObjectShape(
 )
 CHANGE_ITEM_SHAPE: Final[ObjectShape] = ObjectShape(
     name="ChangeItem",
-    fields={"name": check_text, "change": CHECK_CHANGE, "detail": check_text},
+    fields={"name": check_text, "change": CHECK_CHANGE, "detail": check_text, "links": CHECK_SOURCE_LINKS},
     required=frozenset({"name", "change"}),
 )
 OUTLINE_ITEM_SHAPE: Final[ObjectShape] = ObjectShape(
     name="OutlineItem",
-    fields={"title": check_text, "detail": check_text, "tone": CHECK_TONE, "tag": check_text, "meta": check_text},
+    fields={
+        "title": check_text,
+        "detail": check_text,
+        "tone": CHECK_TONE,
+        "tag": check_text,
+        "meta": check_text,
+        "links": CHECK_SOURCE_LINKS,
+    },
     required=frozenset({"title", "detail"}),
 )
 OUTLINE_GROUP_SHAPE: Final[ObjectShape] = ObjectShape(

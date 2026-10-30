@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 
 import { Grid, Stack, Text } from '@/components/primitives';
 import { RichText } from '@/components/rich-text';
+import { SourceLinks } from '@/components/source-links';
 import { StatusBadge } from '@/components/status-badge';
 import { ToneDot } from '@/components/tone-dot';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -39,6 +40,11 @@ function Group({ group }: { group: OutlineGroup }): ReactNode {
                 </Stack>
               </Stack>
             </AccordionTrigger>
+            {item.links && (
+              <Stack inset="item">
+                <SourceLinks links={item.links} />
+              </Stack>
+            )}
             <AccordionContent className="pl-[18px] text-muted-foreground [overflow-wrap:anywhere]">
               <RichText text={item.detail} />
             </AccordionContent>

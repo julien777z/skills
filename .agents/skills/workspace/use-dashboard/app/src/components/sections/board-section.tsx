@@ -1,8 +1,10 @@
 import type { ReactNode } from 'react';
 
 import { ExternalLink } from '@/components/external-link';
+import { Moment } from '@/components/moment';
 import { Grid, Stack, Text } from '@/components/primitives';
 import { RichText } from '@/components/rich-text';
+import { SourceLinks } from '@/components/source-links';
 import { StatusBadge } from '@/components/status-badge';
 import { ToneDot } from '@/components/tone-dot';
 import type { BoardColumn, BoardSection as BoardSectionSpec } from '@/spec';
@@ -38,18 +40,21 @@ function Column({ column }: { column: BoardColumn }): ReactNode {
                   <RichText text={card.detail} />
                 </Text>
               )}
-              {(card.tag || card.meta) && (
+              {(card.tag || card.meta || card.at) && (
                 <Stack direction="row" align="center" justify="between" gap="sm" wrap>
                   {card.tag && <StatusBadge label={card.tag} dot={false} />}
-                  {card.meta && (
+                  {(card.meta || card.at) && (
                     <Stack direction="row" justify="end" grow>
                       <Text size="xs" tone="muted" numeric>
-                        <RichText text={card.meta} />
+                        {card.meta && <RichText text={card.meta} />}
+                        {card.meta && card.at && ' · '}
+                        {card.at && <Moment at={card.at} />}
                       </Text>
                     </Stack>
                   )}
                 </Stack>
               )}
+              {card.links && <SourceLinks links={card.links} />}
             </Stack>
           ))
         }
