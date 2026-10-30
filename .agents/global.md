@@ -224,17 +224,17 @@ alwaysApply: true
   until every capture is ready. A drawing made of text, such as a sketch in a question tool's
   preview, is a description, not a capture. A choice between wordings or between small adjustments
   of one detail is shown as text or a single capture.
-- After a question-tool request actually times out without an answer, invoke it again with the
-  same question, choices and supporting content, with no retry limit, until the user answers,
-  withdraws the question, or explicitly stops or supersedes the task. Silence is never an answer,
-  approval or delegation, and a timeout never justifies a chat fallback or an assumed choice.
+- After a question-tool request actually times out without an answer, or the user replies with a
+  message that states no choice in words — a related correction, a complaint about the subject, a
+  new request — invoke it again with the same question, choices and supporting content, in the
+  reply to that message when there is one, with no retry limit, until the user answers, withdraws
+  the question, or explicitly stops or supersedes the task. Such a message is handled on its own
+  wherever its handling does not depend on the answer. Silence or such a message is never an
+  answer, approval or delegation, and neither justifies a chat fallback or a choice inferred from
+  what the message seems to imply.
   An asynchronous request that remains pending has not timed out: keep its wait or event route
   active rather than opening a duplicate. Hold only work that depends on the answer and continue
   independent authorized work. Preserve a platform's separate action-time confirmation safeguards.
-- **A message sent in place of an answer answers the question only when it states a choice in
-  words.** A related correction, a complaint about the subject, or a new request is handled on its
-  own, and the question is asked again with its choices directly after, never answered from what the
-  message seems to imply. No inferred choice is acted on before the user states one.
 
 - Never poll a PR with background `sleep` or timed self check-ins; act only on delivered PR
   activity webhooks.
