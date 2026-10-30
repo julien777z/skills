@@ -26,7 +26,7 @@ function StatCard({
     <Card
       className={cn(
         '@container/card bg-gradient-to-t from-primary/5 to-card shadow-xs dark:bg-card',
-        wide && '@xl/main:col-span-2',
+        wide && '@xl/page:col-span-2',
       )}
     >
       <CardHeader>

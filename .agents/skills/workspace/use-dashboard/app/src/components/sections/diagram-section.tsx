@@ -114,8 +114,9 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
             <Stack as="ul" gap="xs" marker="bullet">
               {section.edges.map((edge, index) => (
                 <Text key={index} as="li" size="sm" tone="muted">
-                  {labels.get(edge.from)} → {labels.get(edge.to)}
-                  {edge.label ? `: ${edge.label}` : ''}
+                  <RichText
+                    text={`${labels.get(edge.from)} → ${labels.get(edge.to)}${edge.label ? `: ${edge.label}` : ''}`}
+                  />
                 </Text>
               ))}
             </Stack>

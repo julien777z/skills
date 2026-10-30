@@ -8,20 +8,21 @@ short_description: 'Turn a dashboard spec into the shared HTML page and deliver 
 
 A caller describes its dashboard as a JSON spec; [scripts/render.py](scripts/render.py) validates it
 and fills the page built from [app/](app/), a React app on Tailwind CSS and shadcn/ui laid out
-as a standard shadcn site: a sticky top navbar with the title and a link to each page, the open
-page's title and subtitle under it, a row of stat cards, and each section in its own card. Every dashboard gets that layout without the
-caller writing any markup. The page is one self-contained file; its web font loads from Google
+as a standard shadcn site: a sticky top navbar with the dashboard's icon and title and a link to
+each page, the open page's title and subtitle under it, a row of stat cards, and each section in its
+own card. Every dashboard gets that layout without the caller writing any markup. The page is one self-contained file; its web font loads from Google
 Fonts and falls back to system fonts, and a diagram is drawn by Mermaid, loaded from jsDelivr, with
 its connections listed as text when Mermaid cannot load. The page is dark unless the host's viewer
 is explicitly set to light (`data-theme="light"` on the root element), folds the page links into a
-menu on a phone, and renders every value as text, so data never runs as markup or script.
+menu below 1024 px, and renders every value as text, so data never runs as markup or script.
 
 ## Spec
 
-Top level: `title`, `updated_at` (ISO 8601) and `pages` are required. The navbar shows `title`,
-how long ago `updated_at` was and the `status` badge, and each page opens with its own title; the page's own
-name, which a browser tab or a published link shows, is always `Dashboard - <title>`. Every other
-field is optional, and an absent one leaves its part of the page out.
+Top level: `title`, `icon`, `updated_at` (ISO 8601) and `pages` are required. The navbar shows
+`title` beside `icon`, then a link to each page, how long ago `updated_at` was and the `status`
+badge, and each page opens with its own title; the page's own name, which a browser tab or a
+published link shows, is always `Dashboard - <title>`. Every other field is optional, and an absent
+one leaves its part of the page out.
 
 | Field | Shape |
 | --- | --- |
@@ -29,8 +30,13 @@ field is optional, and an absent one leaves its part of the page out.
 | `status` | `{label, tone?}`: the badge at the right of the navbar. |
 | `progress` | `{value: 0–1, label, detail?, segments?}`: a stat card twice as wide as the others, with the percentage, `detail` as its badge, and a bar. `segments` is `[{label, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1; without `segments` the bar is a plain fill. |
 | `metrics` | `[{label, value, detail?}]`: at most four stat cards beside the progress, `detail` under the figure. |
-| `pages` | `[{title, icon?, layout?, sections}]`: one navbar link each, the progress and metrics showing on the first. `icon` is one of `overview`, `list`, `chart`, `diagram`, `document`, `shield`, `people`, `data`, `settings`, `alert`, `check` or `calendar`; without it the first page shows `overview` and the rest `document`. `sections` render in order; with `layout` `columns`, the default, callouts, boards, tables, outlines and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
-| `references` | `[{text, url}]`: every whole-word occurrence of `text` in the page's own text becomes a link to `url`, apart from the navbar, badges, and an outline item's title and `meta`, which open the item and stay plain. |
+| `pages` | `[{title, icon, layout?, sections}]`: one navbar link each. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. `sections` render in order; with `layout` `columns`, the default, callouts, boards, tables, outlines and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
+| `references` | `[{text, url}]`: every whole-word occurrence of `text` in the page's own text becomes a link to `url`, apart from the navbar, page titles, stat card figures, badges, and an outline item's title and `meta`, which open the item, all of which stay plain. |
+
+An `icon` is one of `overview`, `progress`, `board`, `checklist`, `list`, `chart`, `activity`,
+`diagram`, `document`, `guide`, `legal`, `shield`, `people`, `data`, `package`, `release`,
+`pull-request`, `settings`, `alert`, `check` or `calendar`. The dashboard's icon and each page's icon
+all differ, so no glyph appears twice in the navbar.
 
 `tone` is `good`, `warning`, `critical`, `accent` or `done`, as **Making A Dashboard** defines
 them; omit it for neutral. Every section takes an optional `description`, one sentence shown under
@@ -66,6 +72,7 @@ to show is left out, and so is the entry that requires it. A URL renders as a li
 ```json
 {
   "title": "Search rewrite",
+  "icon": "activity",
   "updated_at": "2026-01-05T14:20:00+00:00",
   "status": {"label": "On track", "tone": "good"},
   "progress": {
@@ -75,7 +82,11 @@ to show is left out, and so is the entry that requires it. A URL renders as a li
   },
   "metrics": [{"label": "Time remaining", "value": "~20 min"}],
   "pages": [
-    {"title": "Progress", "sections": [{"type": "notes", "title": "Notes", "items": ["Index format settled."]}]}
+    {
+      "title": "Overview",
+      "icon": "overview",
+      "sections": [{"type": "notes", "title": "Notes", "items": ["Index format settled."]}]
+    }
   ]
 }
 ```
@@ -84,9 +95,13 @@ to show is left out, and so is the entry that requires it. A URL renders as a li
 
 Dashboards look alike because they are built alike:
 
-- **First page, the answer.** Open on the page that tells the reader where things stand: the
-  `progress` and `metrics` stat cards, then a `callout` when one thing needs them now, then the
-  detail. Later pages go deeper on one subject each, named for it and given a fitting `icon`.
+- **Overview first, then one page per subject.** Every dashboard opens on `Overview`, the page
+  that tells the reader where things stand: the `progress` and `metrics` stat cards, then a
+  `callout` when one thing needs them now, then the few sections that summarize. Each later page
+  goes deeper on one subject and is named for it.
+- **Icons say what each thing is.** Give the dashboard the icon that best names its subject, such as
+  `progress` for a task's progress or `legal` for legal documents, and each page the icon for what
+  it holds, such as `board` for a board of work or `diagram` for a diagram.
 - **Pick the section by the reader's question.** Where is each item? `board`. What needs my answer?
   `questions`. Where do I click? `links`. What does each part say, in a sentence I can open?
   `outline`. What was added or removed? `changes`. Values across the same columns? `table`. Short

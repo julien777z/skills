@@ -1,15 +1,24 @@
 import {
+  Activity,
+  BookOpen,
   Calendar,
   ChartColumn,
   CircleCheck,
   Database,
   FileText,
+  Gauge,
+  GitPullRequest,
   LayoutDashboard,
   List,
+  ListChecks,
   type LucideIcon,
   Menu,
+  Package,
+  Rocket,
+  Scale,
   Settings,
   Shield,
+  SquareKanban,
   TriangleAlert,
   Users,
   Workflow,
@@ -21,29 +30,39 @@ import { StatusBadge } from '@/components/status-badge';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
-import { type Label, type Page, PageIcon } from '@/spec';
+import { IconName, type Label, type Page } from '@/spec';
 
 const MINUTE_MS: number = 60_000;
 
 const MINUTES_PER_DAY: number = 1_440;
 
-const PAGE_ICONS: Record<PageIcon, LucideIcon> = {
-  [PageIcon.OVERVIEW]: LayoutDashboard,
-  [PageIcon.LIST]: List,
-  [PageIcon.CHART]: ChartColumn,
-  [PageIcon.DIAGRAM]: Workflow,
-  [PageIcon.DOCUMENT]: FileText,
-  [PageIcon.SHIELD]: Shield,
-  [PageIcon.PEOPLE]: Users,
-  [PageIcon.DATA]: Database,
-  [PageIcon.SETTINGS]: Settings,
-  [PageIcon.ALERT]: TriangleAlert,
-  [PageIcon.CHECK]: CircleCheck,
-  [PageIcon.CALENDAR]: Calendar,
+const ICONS: Record<IconName, LucideIcon> = {
+  [IconName.OVERVIEW]: LayoutDashboard,
+  [IconName.PROGRESS]: Gauge,
+  [IconName.BOARD]: SquareKanban,
+  [IconName.CHECKLIST]: ListChecks,
+  [IconName.LIST]: List,
+  [IconName.CHART]: ChartColumn,
+  [IconName.ACTIVITY]: Activity,
+  [IconName.DIAGRAM]: Workflow,
+  [IconName.DOCUMENT]: FileText,
+  [IconName.GUIDE]: BookOpen,
+  [IconName.LEGAL]: Scale,
+  [IconName.SHIELD]: Shield,
+  [IconName.PEOPLE]: Users,
+  [IconName.DATA]: Database,
+  [IconName.PACKAGE]: Package,
+  [IconName.RELEASE]: Rocket,
+  [IconName.PULL_REQUEST]: GitPullRequest,
+  [IconName.SETTINGS]: Settings,
+  [IconName.ALERT]: TriangleAlert,
+  [IconName.CHECK]: CircleCheck,
+  [IconName.CALENDAR]: Calendar,
 };
 
 interface SiteHeaderProps {
   title: string;
+  icon: IconName;
   status?: Label;
   updatedAt: string;
   pages: Page[];
@@ -79,7 +98,7 @@ function PageLinks({
   return (
     <Stack as="ul" direction={vertical ? 'column' : 'row'} gap="xs">
       {pages.map((page, position) => {
-        const Icon = PAGE_ICONS[page.icon ?? (position === 0 ? PageIcon.OVERVIEW : PageIcon.DOCUMENT)];
+        const Icon = ICONS[page.icon];
         const active = position === current;
 
         return (
@@ -105,10 +124,19 @@ function PageLinks({
   );
 }
 
-export function SiteHeader({ title, status, updatedAt, pages, current, onSelectPage }: SiteHeaderProps): ReactNode {
+export function SiteHeader({
+  title,
+  icon,
+  status,
+  updatedAt,
+  pages,
+  current,
+  onSelectPage,
+}: SiteHeaderProps): ReactNode {
   const [now, setNow] = useState(() => Date.now());
   const [menuOpen, setMenuOpen] = useState(false);
   const hasPages = pages.length > 1;
+  const BrandIcon = ICONS[icon];
 
   useEffect(() => {
     const timer = window.setInterval(() => setNow(Date.now()), MINUTE_MS);
@@ -125,41 +153,43 @@ export function SiteHeader({ title, status, updatedAt, pages, current, onSelectP
     <header className="sticky top-[env(safe-area-inset-top,0px)] z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <Stack direction="row" align="center" gap="lg" inset="page" frame="page" height="bar">
         {hasPages && (
-          <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="-ml-2 lg:hidden" aria-label="Open pages">
-                <Menu />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-72">
-              <SheetHeader>
-                <SheetTitle>{title}</SheetTitle>
-              </SheetHeader>
-              <Stack as="nav" label="Dashboard pages" inset="page">
-                <PageLinks pages={pages} current={current} vertical onSelectPage={handleSelectFromMenu} />
-              </Stack>
-            </SheetContent>
-          </Sheet>
+          <Stack show="belowLg">
+            <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="-ml-2" aria-label="Open pages">
+                  <Menu />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-72">
+                <SheetHeader>
+                  <SheetTitle>{title}</SheetTitle>
+                </SheetHeader>
+                <Stack as="nav" label="Dashboard pages" inset="page">
+                  <PageLinks pages={pages} current={current} vertical onSelectPage={handleSelectFromMenu} />
+                </Stack>
+              </SheetContent>
+            </Sheet>
+          </Stack>
         )}
         <Stack direction="row" align="center" gap="sm">
           <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground">
-            <LayoutDashboard className="size-4" />
+            <BrandIcon className="size-4" />
           </span>
           <Text weight="semibold" truncate>
             {title}
           </Text>
         </Stack>
         {hasPages && (
-          <Stack as="nav" label="Dashboard pages" show="wide">
+          <Stack as="nav" label="Dashboard pages" show="fromLg" scroll>
             <PageLinks pages={pages} current={current} vertical={false} onSelectPage={onSelectPage} />
           </Stack>
         )}
         <Stack direction="row" align="center" gap="md" push>
-          <span className="hidden sm:inline">
+          <Stack show="fromSm">
             <Text size="xs" tone="muted">
               {relativeTime(updatedAt, now)}
             </Text>
-          </span>
+          </Stack>
           {status && <StatusBadge label={status.label} tone={status.tone} />}
         </Stack>
       </Stack>

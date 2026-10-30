@@ -50,17 +50,26 @@ class PageLayout(StrEnum):
     ROWS = "rows"
 
 
-class PageIcon(StrEnum):
-    """Icons a dashboard page shows beside its name in the navbar."""
+class IconName(StrEnum):
+    """Icons the navbar shows for a dashboard and for each of its pages."""
 
     OVERVIEW = "overview"
+    PROGRESS = "progress"
+    BOARD = "board"
+    CHECKLIST = "checklist"
     LIST = "list"
     CHART = "chart"
+    ACTIVITY = "activity"
     DIAGRAM = "diagram"
     DOCUMENT = "document"
+    GUIDE = "guide"
+    LEGAL = "legal"
     SHIELD = "shield"
     PEOPLE = "people"
     DATA = "data"
+    PACKAGE = "package"
+    RELEASE = "release"
+    PULL_REQUEST = "pull-request"
     SETTINGS = "settings"
     ALERT = "alert"
     CHECK = "check"

@@ -16,11 +16,12 @@ const stackVariants = cva('flex min-w-0', {
       panel: 'rounded-lg border bg-muted/30 p-3',
       card: 'rounded-md border bg-card px-3 py-2.5 shadow-xs',
     },
-    frame: { none: '', page: '@container/main mx-auto w-full max-w-screen-2xl' },
+    frame: { none: '', page: '@container/page mx-auto w-full max-w-screen-2xl' },
     height: { auto: '', bar: 'h-14' },
     block: { none: '', page: 'py-8' },
     push: { true: 'ml-auto shrink-0', false: '' },
-    show: { always: '', wide: 'hidden lg:flex', narrow: 'lg:hidden' },
+    show: { always: '', fromSm: 'hidden sm:flex', fromLg: 'hidden lg:flex', belowLg: 'lg:hidden' },
+    scroll: { true: 'overflow-x-auto', false: '' },
     marker: {
       none: 'list-none',
       bullet: 'list-disc pl-5 marker:text-muted-foreground',
@@ -42,6 +43,7 @@ const stackVariants = cva('flex min-w-0', {
     block: 'none',
     push: false,
     show: 'always',
+    scroll: false,
     marker: 'none',
   },
 });

@@ -169,11 +169,16 @@ export async function drawDiagram(section: DiagramSection, container: HTMLElemen
   const available = container.clientWidth;
   const id = `diagram-${diagramCount++}`;
   const { mermaid, colors } = await loadMermaid();
+  const sandbox = document.createElement('div');
+
+  sandbox.style.cssText = `position:absolute;visibility:hidden;pointer-events:none;width:${available}px`;
+  container.append(sandbox);
+
   const results = await Promise.all(
     DIRECTIONS.map((direction) =>
-      mermaid.render(`${id}-${direction}`, flowchartSource(section, direction, colors), container),
+      mermaid.render(`${id}-${direction}`, flowchartSource(section, direction, colors), sandbox),
     ),
-  );
+  ).finally(() => sandbox.remove());
 
   const drawings = results.map((result) => {
     const holder = document.createElement('div');

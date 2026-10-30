@@ -24,6 +24,7 @@ export function App({ dashboard }: { dashboard: Dashboard }): ReactNode {
     <ReferencesContext.Provider value={references}>
       <SiteHeader
         title={dashboard.title}
+        icon={dashboard.icon}
         status={dashboard.status}
         updatedAt={dashboard.updated_at}
         pages={dashboard.pages}
