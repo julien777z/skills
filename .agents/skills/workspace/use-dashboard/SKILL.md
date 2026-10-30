@@ -36,7 +36,7 @@ one leaves its part of the page out.
 | `progress` | `{value: 0–1, label, detail?, segments?}`: a stat card twice as wide as the others, with the percentage, `detail` as its badge, and a bar. `segments` is `[{label, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1; without `segments` the bar is a plain fill. |
 | `metrics` | `[{label, value, detail?}]`: at most four stat cards beside the progress, `detail` under the figure. |
 | `pages` | `[{title, icon, layout?, sections}]`: one navbar link each. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. `sections` render in order; with `layout` `columns`, the default, callouts, boards, tables, outlines and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
-| `references` | `[{text, url}]`: every whole-word occurrence of `text` in the page's own text becomes a link to `url`, apart from the navbar, page titles, stat card figures, badges, and an outline item's title and `meta`, which open the item, all of which stay plain. |
+| `references` | `[{text, url}]`: every whole-word occurrence of `text` in any page's text becomes a link to `url`, apart from the navbar, page titles, stat card figures, badges, and an outline item's title and `meta`, which open the item, all of which stay plain. |
 
 An `icon` is one of `overview`, `progress`, `board`, `checklist`, `list`, `chart`, `activity`,
 `diagram`, `document`, `guide`, `legal`, `shield`, `people`, `data`, `package`, `release`,
@@ -60,7 +60,7 @@ its title. Section types:
 | `table` | `title`, `columns`, `rows` | each row a list of strings, one per column |
 | `notes` | `title`, `items` | each item a string |
 | `changes` | `title`, `items`, `page_size?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`, `links?`: a named part with its change as a colored badge |
-| `outline` | `title`, `groups: [{title, items}]` | `title`, `detail`, `tone?`, `tag?`, `meta?`, `links?`: a headline that opens to its detail, with `tag` as a badge in the item's tone and `meta` as small text; a group of one or two items shows them open |
+| `outline` | `title`, `groups: [{title, items}]` | `title`, `detail`, `tone?`, `tag?`, `meta?`, `links?`: a headline that opens to its detail, with `tag` as a badge in the item's tone (neutral without one) and `meta` as small text; a group of one or two items shows them open |
 | `callout` | `title`, `body`, `tone?` | — : a banner across the page with an icon for its tone, for the one thing the reader must see first |
 | `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?` | node: `id`, `label`, `detail?`, `pr?`, `change?`; edge: `from`, `to`, `label?`, `step?`, `change?`; pr: `ref`, `url`; each step a string |
 

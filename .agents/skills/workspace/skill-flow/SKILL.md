@@ -44,28 +44,38 @@ the request asks for a new page.
    invoking another, one launching subagents, and one borrowing another's criteria. Invoking a skill
    or borrowing its rubric starts no extra agent. Record each subagent launch with its owner, role,
    capability, whether it always or only sometimes runs, how many run per round, and whether it
-   recurs. These are structural counts, never measured time or cost.
-4. **Recheck the sources** before building. When a file changed while you read, map it again; never
-   show a mix of two snapshots as current. A source that is missing or still changing makes the map
-   incomplete, and the page says which connection is unknown.
+   recurs. A launch always runs when it runs on every run of the step that starts it. When one skill
+   runs another's phases, the launch belongs to the skill whose run starts it. These are structural
+   counts, never measured time or cost.
+4. **Recheck the sources** before building. When a file the map cites changed while you read, map it
+   again; never show a mix of two snapshots as current. A change to a file the map does not cite
+   leaves it standing, and links stay on the commit read. A source that is missing or still
+   changing makes the map incomplete, and the page says which connection is unknown.
 5. **Build the spec** for `use-dashboard`:
    - `title` `Skill flow`, `icon` `diagram`, and `subtitle` "How the skills run, read from
      <repository> at <short commit>.", with `references` linking the repository and the commit.
-   - `metrics`: **Skills mapped**, **Pages**, **Subagent launches** (the launch points across all
-     pages), and **Unknown** (connections the sources left open).
+   - `metrics`: **Skills mapped**, **Pages** (the kind-of-work pages), **Subagent launches** (each
+     launch point counted once, however many pages reach it), and **Unknown** (connections the
+     sources left open).
    - `Overview`, `icon` `overview` and `layout` `rows`: a `table` `By kind of work` with a row per
-     page and the columns Page, Skills, Starts from, Subagent launches and Loops; then `notes` `How
-     to read the flows`, one line each for an invocation arrow, a launch arrow and a borrowed-rubric
-     arrow as their labels show them.
-   - Each kind-of-work page, `layout` `rows`: a `diagram` `Flow` whose nodes are skills, labelled
-     with the skill's name and its role in a few words, and whose edges are labelled `invokes`,
-     `launches ×<n>` or `borrows`, with `steps` saying in order how the work moves through them;
-     then an `outline` `Where subagents start`, grouped by the skill that launches them, one item per
-     launch saying who, how many and when, toned `warning` for a launch that always runs and neutral
-     for a conditional one; then a `table` `Skills` with the columns Skill, Role and Started by.
+     page and the columns Page, Skills (every skill its flow reaches), Starts from, Subagent
+     launches (the launch points its flow reaches) and Loops (how many repair or rerun loops, then
+     each in a few words); then `notes` `How to read the flows`, one line each for an invocation
+     arrow, a launch arrow and a borrowed-rubric arrow as their labels show them.
+   - Each kind-of-work page, `layout` `rows`: a `diagram` `Flow` whose nodes are the skills the
+     page's starting skills reach directly, each labelled with its name and its role in a few words,
+     and one node per launch named for the subagents it starts and how many, such as `Plan
+     attackers ×3 per round`, as its outline item is titled. Edges are labelled `invokes`,
+     `launches` (from the skill to its launch node) or `borrows`, and `steps` say in order how the
+     work moves through them; a skill reached only further down appears in the `Skills` table
+     alone. Then an `outline` `Where subagents start`, grouped by the skill that launches them, one
+     item per launch saying who, how many and when, toned `warning` for a launch that always runs
+     and neutral for a conditional one; then a `table` `Skills` with the columns Skill, Role and
+     Started by.
    - Every claim points at its source: each outline item's `links` take a `spec` link to the
      `SKILL.md` lines that state it, at the commit read, and `references` make each skill's name a
-     link to its `SKILL.md` wherever the page's text names it.
+     link to its whole `SKILL.md` wherever the page's text names it. Each item's `meta` names the
+     launch's capability level from `subagent-matrix`, or says it is unstated.
 6. **Deliver** through `use-dashboard`. Name what is incomplete, if anything, in one line.
 
 ## Guardrails
