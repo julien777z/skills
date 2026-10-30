@@ -81,7 +81,7 @@ preserve configured ports.
 |---|---|---|
 | Every authenticated request returns 401 | A checked-in placeholder shadowed the real value from the session environment | Make the environment win over the dotenv layers; read the running process's environment to confirm |
 | A service starts but every query fails | The database has no schemas | Run schema provisioning before launch and read its output for the failing service |
-| A module is missing at import though the manifest names it | It is declared where the package manager does not install it | Declare it in the manifest's install list, re-lock, and install; never patch the environment by hand |
+| A module is missing at import though the manifest names it | It is declared where the package manager does not install it | Declare it in the manifest's install list, regenerate the lock, and install; never patch the environment by hand |
 | A setup command reports missing settings before doing anything | It imports something that builds the application config at import time | Import only what build tooling needs, and keep a test guarding it |
 | A `run`-style script reports command not found | Its entry point is registered only by an install that has not run since | Invoke bootstrap commands as modules so they need no registration |
 | A dependency service refuses connections | It is not in the started set | Start it through the launcher's service selection |
