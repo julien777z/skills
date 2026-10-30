@@ -238,7 +238,14 @@ Apply the baseline prompt above, plus these explicit review rules:
      outside this repository, so it could not be checked" leaves the question open; it never
      settles it, and nothing is called unreached until it is answered.
 
-2. **A module holding one symbol is a finding before anything else about it is judged.**
+2. **A module whose concern an existing module already owns is a finding before anything else about
+   it is judged, whatever its symbol count.**
+   - Name the concern each module in scope serves, then look for the existing module whose concern
+     contains it, such as an avatar module beside the module that stores a user's uploaded images.
+     When one exists, the module merges into it, renamed first when a broader name fits, whether it
+     holds one symbol or five; the global rules' **A new file is the last resort** is the same test
+     at the time of writing. A count of one is the plainest case of this finding, never its
+     threshold.
    - Count before you read: a module whose public surface is one function, one small class, or one
      constant plus its helper has not earned a file. Say the count in the finding.
    - A router is a container the same way, and a router carrying one handler is the same finding:
@@ -628,8 +635,9 @@ Escalate findings when you see:
   module holding only the moved values is the same problem under a different directory name. A set
   of one enum's members is a classmethod on that enum. The enums and models in the same file stay;
   only the values move.
-- A module with one public symbol — new, renamed, moved, or already in scope — and a package where
-  several modules each hold one, outside the exemptions standard 2 names. The
+- A module with one public symbol — new, renamed, moved, or already in scope — a module of any size
+  whose concern an existing module's concern contains, and a package where several modules each hold
+  one, outside the exemptions standard 2 names. The
   first is a file that has not earned its name; the second is one module split across several files.
   Count symbols per module rather than judging by line count.
 - Two utilities performing one operation on different shapes, or with their own separate constants and sentinels for the same idea. Collapse them into one whose parameter covers both callers.
@@ -744,8 +752,8 @@ Treat these as presumptive blockers unless the author can justify them clearly:
 - the PR leaves a function that only reads one declared shape, or a family of them, outside that shape
 - the PR carries code written after the review — for a tool, a red check, or a reviewer — that never went through the rubric
 - the PR adds an abstraction that was never needed, or one whose guarantee is weaker than its name claims
-- the PR adds a module holding one public symbol, or a second one-symbol module beside an existing one,
-  outside the exemptions standard 2 names
+- the PR adds a module holding one public symbol, a module whose concern an existing module already
+  owns, or a second one-symbol module beside an existing one, outside the exemptions standard 2 names
 - the PR duplicates an existing declaration's concept under standard 3, or adds a module-level
   constant without its type
 - the PR duplicates an existing helper, repeats a cross-consumer mechanism, or puts logic in the wrong

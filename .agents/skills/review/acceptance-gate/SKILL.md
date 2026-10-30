@@ -107,16 +107,16 @@ model-dispatch record; never replace it with a generic “largest model” label
 **A diff review judges the code as it stands, not only the lines that changed.** Read every module
 the diff adds, moves or rewrites whole; moved and renamed code is judged as if it were new. Before
 the design comparison, answer the plain question: would an experienced reviewer opening these
-modules call any of it slop? Each reason they would give is a flag with its remedy, whether or not
-a narrower rule below names it: layers that each add one tweak, wrappers that only forward or fix a
-value, one-symbol fragments, one thing implemented twice, comments narrating code, confusing or
-near-duplicate names, dead or speculative code, hand-written configuration or styling where an
-owner exists. The list illustrates the question and never bounds it. A rubric exemption that would
-excuse such a shape is named in the flag. A remedy that sends the author to an existing piece judges
-that piece the same way first: a wrapper or a duplicate is not an owner. An increment fixing an
-earlier flag is read the same way, over the modules it touches, never only against that flag; the
-rest of the originating diff, which the earlier gate judged, is context, re-judged only where the
-increment changes what it depends on.
+modules call any of it slop? Each reason they would give is a flag with its remedy, whether or not a
+narrower rule below names it: layers that each add one tweak, wrappers that only forward or fix a
+value, one-symbol fragments, a file for a slice of a concern another module owns, one thing
+implemented twice, comments narrating code, confusing or near-duplicate names, dead or speculative
+code, hand-written configuration or styling where an owner exists. The list illustrates the question
+and never bounds it. A rubric exemption that would excuse such a shape is named in the flag. A
+remedy that sends the author to an existing piece judges that piece the same way first: a wrapper or
+a duplicate is not an owner. An increment fixing an earlier flag is read the same way, over the
+modules it touches, never only against that flag; the rest of the originating diff, which the
+earlier gate judged, is context, re-judged only where the increment changes what it depends on.
 
 **Then make the design comparison.** Inventory the responsibilities and decisions the diff moves,
 duplicates, specializes, removes or introduces, reading both sides independently of the caller's
