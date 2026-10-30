@@ -89,14 +89,23 @@
   --color-done: var(--done);
 }
 
+html,
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
 
-  body {
-    @apply bg-background text-foreground font-sans antialiased;
-  }
 
   a {
     @apply font-medium text-info underline-offset-4 hover:underline;
