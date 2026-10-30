@@ -468,8 +468,10 @@ return records;
   one: its product name, its services, its table and column names, its record types, or the nouns
   its business speaks in. That holds for source, tests, fixtures, examples, and documentation
   alike, and it holds most strongly in a library, where every reader is a different consumer.
-- **Name things with the everyday word a reader expects.** Where the domain or a provider already
-  has a term, use it. A parcel the carrier reports as delivered is `delivered`, never
+- **Name things with the everyday word a reader expects.** The reader is this codebase's: a name
+  says what its product, its users and its existing code call the thing, never a word that is right
+  only in another field, such as a legal term for whoever owns a record. Where the domain or a
+  provider already has a term, use it. A parcel the carrier reports as delivered is `delivered`, never
   `parcel_arrived`, because an unusual synonym makes every reader translate it back. This covers
   identifiers, fields, messages, documentation and test names in every language.
 - **A Boolean's name says what it is true of.** The receiver or argument is what the statement is

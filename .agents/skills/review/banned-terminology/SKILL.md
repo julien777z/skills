@@ -1,6 +1,6 @@
 ---
 name: banned-terminology
-description: Owns the banned-terms list in resources/banned_words.json and enforces it. Use when naming anything, when writing a pull request or a message to the user, when reviewing a name, when the user says a term is bad, confusing, or should not be used, when they reject a replacement an entry recommends, when they lift a ban, or whenever the decision is about a word rather than one symbol.
+description: Owns the banned-terms list in resources/banned_words.json and enforces it. Use when naming anything, when writing a pull request or a message to the user, when reviewing a name, when the user asks for a word to be kept out wherever it appears, when they reject a replacement an entry recommends, when they lift a ban, or whenever the decision is about a word rather than one symbol.
 short_description: 'Owns the banned-terms list in resources/banned_words.json and enforces it.'
 ---
 
@@ -40,12 +40,13 @@ contract break, reported per the repository's rules rather than worked around.
 
 ## When the list itself changes
 
-The decision is about a **word** rather than one symbol — the objection would apply anywhere the
-word appeared:
+The decision is about a **word** rather than one symbol — the user objects to the word wherever it
+appears, not to the name in front of them:
 
-- **Adding** — "X is a bad name", "I don't like X terminology", "don't use X", "rename X everywhere".
-  Judging a term unintuitive **is** the decision to ban it; do not wait to be asked for the entry
-  separately.
+- **Adding** — "don't use X", "ban X", "never call anything X". A complaint about a name — "I don't
+  like X", "X is a bad name", "X is not intuitive" — is a rename of that name in its codebase, to the
+  word that codebase's readers would use, as the global rules' naming bullet says, and changes no
+  list.
 - **Updating** — the user rejects the replacement an entry recommends, or a better one is agreed.
   The entry changes, the old replacement moves to `rejected_replacements`, and every call site that
   took the old advice changes with it.
@@ -53,9 +54,16 @@ word appeared:
 
 Renaming a single function, class, or variable is an ordinary edit and does not run this skill.
 
+**Which list.** The shared file holds only words that mislead in every repository whatever its
+domain, such as a placeholder or a word for an action no reader can picture. A word that is unclear
+only in one codebase's domain goes in that repository's **Banned Terms** table, never the shared
+file. Test a candidate by reading it in a repository from an unrelated domain: where the word is the
+right one there, it is not a shared ban.
+
 ### Adding or updating
 
-1. Write or amend the entry first, so the decision survives whatever happens to the sweep.
+1. Write or amend the entry first, in the list **Which list** picks, so the decision survives
+   whatever happens to the sweep.
 
 2. **Take the inventory before renaming anything**, so the size is known up front rather than
    discovered halfway:
