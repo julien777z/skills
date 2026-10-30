@@ -604,6 +604,13 @@ Escalate findings when you see:
   `if`/`elif` chain or consecutive early-return `if` guards — where the language rule dispatches with
   `match` or its equivalent. Read for the shape, not the keyword: guards with no `elif` between them
   are the same dispatch.
+- A parameter a caller fills from the settings object or an environment check — grep added call
+  arguments for an attribute of the settings instance — even at one call site; the function reads
+  the setting itself, as the Python rule's **Configuration** says.
+- A parameter that carries error text, or per-caller messages for one refusal; the raising function
+  owns one message per condition, as the language rules say.
+- A normalizing call — `.lower()`, `.strip()`, `.upper()` — on a model field outside the model;
+  the field's type holds the canonical form.
 - "Temporary" branching that is likely to become permanent debt.
 - Bespoke helpers where the codebase already has a canonical utility for the job.
 - A generic helper with exactly one caller, especially one this diff just created by extraction. One caller is not proof a helper is unnecessary; it is usually proof the sweep stopped at the first site. Search for the rest by the operation it performs, not by its name, and either use it there or fold it back into its single caller.
