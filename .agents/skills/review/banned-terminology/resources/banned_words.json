@@ -67,6 +67,12 @@
       "why": "\"Lease\" blurs the handoff with the lock that protects it."
     },
     {
+      "term": "orm_factory",
+      "applies_to": "test fixtures and helpers, as a `*orm_factory` suffix",
+      "use_instead": "Name the domain action directly, such as `create_payment` or `create_invoice`.",
+      "why": "It encodes the persistence implementation in the name instead of what the helper builds."
+    },
+    {
       "applies_to": "repository-owned identifiers, package and module names, docstrings, comments, test names, file and directory names, workflow step names, documentation, and the pull requests and messages written to the user",
       "term": "private source",
       "use_instead": "\"private git repo\", spelled in the identifier style of its context, such as `private_git_repos` or `PrivateGitRepo`.",
@@ -143,6 +149,12 @@
       "applies_to": "a subject's current state in some process",
       "use_instead": "Name the thing the model actually carries. A model holding a count and a timestamp is `*Attempts`; one holding an outcome is `*Status` or `*Result`.",
       "why": "\"Standing\" reads as a rank or reputation, which is never what these carry."
+    },
+    {
+      "term": "stub",
+      "applies_to": "application-code identifiers",
+      "use_instead": "\"client\". Keep a generated `*Stub` class name only when referring to that external type.",
+      "why": "In application code the object is the client a caller talks to; \"stub\" names a test double or a generated transport class, so the reader expects a fake."
     },
     {
       "term": "tier",

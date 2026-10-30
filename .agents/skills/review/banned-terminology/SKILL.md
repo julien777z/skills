@@ -43,22 +43,25 @@ contract break, reported per the repository's rules rather than worked around.
 The decision is about a **word** rather than one symbol — the user objects to the word wherever it
 appears, not to the name in front of them:
 
-- **Adding** — "don't use X", "ban X", "never call anything X". A complaint about a name — "I don't
-  like X", "X is a bad name", "X is not intuitive" — is a rename of that name in its codebase, to the
-  word that codebase's readers would use, as the global rules' naming bullet says, and changes no
-  list.
+- **Adding** — "don't use X", "ban X", "never call anything X": the user asks for the word to be
+  kept out.
+- **Renaming without an entry** — a complaint about a name — "I don't like X", "X is a bad name", "X
+  is not intuitive" — or "rename X everywhere" in one codebase renames every name in that codebase
+  built on the word for that meaning, to the word its readers would use, as the global rules' naming
+  bullet says. It runs steps 2–5 below and writes no entry.
 - **Updating** — the user rejects the replacement an entry recommends, or a better one is agreed.
   The entry changes, the old replacement moves to `rejected_replacements`, and every call site that
   took the old advice changes with it.
 - **Removing** — a ban is lifted, or an entry describes a distinction the codebase no longer makes.
 
-Renaming a single function, class, or variable is an ordinary edit and does not run this skill.
+Renaming a single function, class, or variable for any other reason is an ordinary edit and does
+not run this skill.
 
-**Which list.** The shared file holds only words that mislead in every repository whatever its
-domain, such as a placeholder or a word for an action no reader can picture. A word that is unclear
-only in one codebase's domain goes in that repository's **Banned Terms** table, never the shared
-file. Test a candidate by reading it in a repository from an unrelated domain: where the word is the
-right one there, it is not a shared ban.
+**Which list.** A shared entry bans a meaning for which the word is wrong in every field: a
+placeholder, an action no reader can picture, or a word whose usual meaning is something else. A word
+that is the right term for that meaning in some field, and is only unclear to one codebase's
+readers, goes in that repository's **Banned Terms** table, never the shared file; when the
+repository has no table yet, create it in its `.agents/project.md`.
 
 ### Adding or updating
 
