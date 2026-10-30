@@ -281,7 +281,9 @@ ends the question.
    preserve, never a mechanical condition a relocated shape could satisfy.
    Size is not that arguability and never stands in for it. The test is a question somebody could
    answer differently, so a conversion repeated across a hundred call sites is long rather than
-   arguable and the number of files it touches decides nothing. Incidental work past
+   arguable and the number of files it touches decides nothing. A conversion of existing instances
+   to a better shape that no defect or requirement owes is such a question, and the user's: triage
+   returns it as a fork put to the user now, never as do. Incidental work past
    `pre-production`'s size budget never reaches this test: it is listed in the change's report, not
    deferred or done. Nor are the size and shape of the
    work inputs the gate may take on trust: "large", "not mechanical", "each site needs its own
