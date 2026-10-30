@@ -392,12 +392,15 @@ return records;
 
 - **The repository does one thing one way.** Before writing anything of a kind it already holds —
   a router, a client, a helper, a test, a fixture, a configuration entry, the way it raises and
-  reports errors — read how the existing instances are written and follow that shape. A case that
-  seems to need a different shape either converts every existing instance to it in the same change
-  or keeps the existing shape: a new pattern beside the old one reads as bespoke however good it
-  is, and a reviewer meeting it has to learn two ways to do the same thing. That conversion is the
-  change's own scope, never incidental work under `pre-production`'s size budget, so it is never
-  left half done. An existing shape a standing rule names a defect is not followed; it is repaired
+  reports errors — read how the existing instances are written and follow that shape. A new pattern
+  beside the old one reads as bespoke however good it is, and a reviewer meeting it has to learn two
+  ways to do the same thing. **A better shape is proposed, never swept in.** Where a different shape
+  would serve better — more standard, simpler, less code — the change keeps the existing shape and
+  the conversion goes to the user as a proposal: the shape, why it is better, every instance it
+  would convert and the size of that change, with a recommendation. It is built only once the user
+  approves it and at the scope they approve, as its own work rather than under `pre-production`'s
+  size budget, and never left half done; a sweep built unasked costs its whole size again when the
+  user rejects it. An existing shape a standing rule names a defect is not followed; it is repaired
   on every instance as `pre-production`'s **Scope Follows The Defect** says. Only a difference a
   contract the instance serves requires stays, with that contract named in the report.
 
