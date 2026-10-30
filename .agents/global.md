@@ -224,10 +224,14 @@ alwaysApply: true
   until every capture is ready. A drawing made of text, such as a sketch in a question tool's
   preview, is a description, not a capture. A choice between wordings or between small adjustments
   of one detail is shown as text or a single capture.
-- After a question-tool request actually times out without an answer, invoke it again with the
-  same question, choices and supporting content, with no retry limit, until the user answers,
-  withdraws the question, or explicitly stops or supersedes the task. Silence is never an answer,
-  approval or delegation, and a timeout never justifies a chat fallback or an assumed choice.
+- After a question-tool request actually times out without an answer, or the user replies with a
+  message that states no choice in words — a related correction, a complaint about the subject, a
+  new request — invoke it again with the same question, choices and supporting content, in the
+  reply to that message when there is one, with no retry limit, until the user answers, withdraws
+  the question, or explicitly stops or supersedes the task. Such a message is handled on its own
+  wherever its handling does not depend on the answer. Silence or such a message is never an
+  answer, approval or delegation, and neither justifies a chat fallback or an assumed choice,
+  including one inferred from what the message seems to imply.
   An asynchronous request that remains pending has not timed out: keep its wait or event route
   active rather than opening a duplicate. Hold only work that depends on the answer and continue
   independent authorized work. Preserve a platform's separate action-time confirmation safeguards.
@@ -384,6 +388,17 @@ return records;
   models in a models module, that rule picks the kind and this search runs within it; a file a rule
   or tool requires to stand alone — a component module, a migration revision, a page or workflow
   found by its path — is not this case.
+
+- **The repository does one thing one way.** Before writing anything of a kind it already holds —
+  a router, a client, a helper, a test, a fixture, a configuration entry, the way it raises and
+  reports errors — read how the existing instances are written and follow that shape. A case that
+  seems to need a different shape either converts every existing instance to it in the same change
+  or keeps the existing shape: a new pattern beside the old one reads as bespoke however good it
+  is, and a reviewer meeting it has to learn two ways to do the same thing. That conversion is the
+  change's own scope, never incidental work under `pre-production`'s size budget, so it is never
+  left half done. An existing shape a standing rule names a defect is not followed; it is repaired
+  on every instance as `pre-production`'s **Scope Follows The Defect** says. Only a difference a
+  contract the instance serves requires stays, with that contract named in the report.
 
 - A bootstrap or setup folder holds its entrypoint and, when needed, its configuration file at
   its root. Supporting scripts, modules, and data files go in its `resources/` folder; configuration
