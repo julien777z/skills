@@ -33,7 +33,7 @@
   --sidebar-ring: oklch(0.552 0.016 285.938);
   --good: oklch(0.72 0.17 152);
   --warning: oklch(0.8 0.15 80);
-  --critical: oklch(0.704 0.191 22.216);
+  --critical: var(--destructive);
   --info: oklch(0.7 0.14 250);
   --done: oklch(0.7 0.16 300);
 }
@@ -68,7 +68,7 @@
   --sidebar-ring: oklch(0.705 0.015 286.067);
   --good: oklch(0.55 0.15 152);
   --warning: oklch(0.62 0.14 70);
-  --critical: oklch(0.577 0.245 27.325);
+  --critical: var(--destructive);
   --info: oklch(0.55 0.16 255);
   --done: oklch(0.52 0.2 300);
 }
@@ -120,5 +120,9 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  a {
+    @apply font-medium text-info underline-offset-4 hover:underline;
   }
 }

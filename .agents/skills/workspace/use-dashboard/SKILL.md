@@ -28,12 +28,12 @@ field is optional, and an absent one leaves its part of the page out.
 | `subtitle` | One line at the top of every page. |
 | `status` | `{label, tone?}`: the badge at the right of the header. |
 | `progress` | `{value: 0–1, label, detail?, segments?}`: a stat card twice as wide as the others, with the percentage, `detail` as its badge, and a bar. `segments` is `[{label, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1; without `segments` the bar is a plain fill. |
-| `metrics` | `[{label, value, detail?}]`: up to four stat cards beside the progress, `detail` under the figure. |
+| `metrics` | `[{label, value, detail?}]`: at most four stat cards beside the progress, `detail` under the figure. |
 | `pages` | `[{title, icon?, layout?, sections}]`: one sidebar entry each, the progress and metrics showing on the first. `icon` is one of `overview`, `list`, `chart`, `diagram`, `document`, `shield`, `people`, `data`, `settings`, `alert`, `check` or `calendar`; without it the first page shows `overview` and the rest `document`. `sections` render in order; with `layout` `columns`, the default, callouts, boards, tables, outlines and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
 | `references` | `[{text, url}]`: every whole-word occurrence of `text` in the page's own text becomes a link to `url`. |
 
-`tone` is `good`, `warning`, `critical`, `accent` or `done`, a purple for finished work; omit it
-for neutral. Section types:
+`tone` is `good`, `warning`, `critical`, `accent` or `done`, as **Making A Dashboard** defines
+them; omit it for neutral. Section types:
 
 | `type` | Fields | Item fields |
 | --- | --- | --- |
@@ -90,9 +90,9 @@ Dashboards look alike because they are built alike:
   `questions`. Where do I click? `links`. What does each part say, in a sentence I can open?
   `outline`. What was added or removed? `changes`. Values across the same columns? `table`. Short
   remarks? `notes`. How do the parts connect? `diagram`.
-- **Tone means the same everywhere.** `good` is fine or done, `warning` needs the reader's look or
-  action, `critical` is wrong or blocking, `accent` is in progress or informational, `done` is
-  finished work. Leave it out for neutral; never tone an item only to decorate it.
+- **Tone means the same everywhere.** `good` is fine or matches, `warning` needs the reader's look
+  or action, `critical` is wrong or blocking, `accent` is in progress or informational, and `done`,
+  a purple, is finished work. Leave it out for neutral; never tone an item only to decorate it.
 - **Text is plain.** Titles say what is true in a few words; `detail` explains in a sentence or two
   that reads without the source. Name a file, section or line in `meta`, never in the title.
 
@@ -114,9 +114,10 @@ Dashboards look alike because they are built alike:
 
 Change a delivered dashboard only by re-rendering its whole spec, never by editing the page's
 HTML, which skips the renderer's validation. Change the page itself only in `app/`: its shadcn
-components live in `app/src/components/ui/` and are added with the shadcn CLI, a spec field the app
-reads is declared in both `app/src/spec.ts` and `scripts/render.py`, and `npm run check` in `app/`
-type-checks and lints it.
+components live in `app/src/components/ui/` and are added with the shadcn CLI. The spec is declared
+once, in `scripts/render.py`, which writes the app's TypeScript types from it into the build. Run
+`npm ci` once and then `npm run check` in `app/` to write those types and type-check and lint the
+app.
 
 ## Delivery
 

@@ -13,8 +13,9 @@ import {
   Users,
   Workflow,
 } from 'lucide-react';
-import type * as React from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 
+import { Stack, Text } from '@/components/primitives';
 import {
   Sidebar,
   SidebarContent,
@@ -27,36 +28,65 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import type { Page, PageIcon } from '@/spec';
+import { type Page, PageIcon } from '@/spec';
+
+const MINUTE_MS: number = 60_000;
+
+const MINUTES_PER_DAY: number = 1_440;
 
 const PAGE_ICONS: Record<PageIcon, LucideIcon> = {
-  overview: LayoutDashboard,
-  list: List,
-  chart: ChartColumn,
-  diagram: Workflow,
-  document: FileText,
-  shield: Shield,
-  people: Users,
-  data: Database,
-  settings: Settings,
-  alert: TriangleAlert,
-  check: CircleCheck,
-  calendar: Calendar,
+  [PageIcon.OVERVIEW]: LayoutDashboard,
+  [PageIcon.LIST]: List,
+  [PageIcon.CHART]: ChartColumn,
+  [PageIcon.DIAGRAM]: Workflow,
+  [PageIcon.DOCUMENT]: FileText,
+  [PageIcon.SHIELD]: Shield,
+  [PageIcon.PEOPLE]: Users,
+  [PageIcon.DATA]: Database,
+  [PageIcon.SETTINGS]: Settings,
+  [PageIcon.ALERT]: TriangleAlert,
+  [PageIcon.CHECK]: CircleCheck,
+  [PageIcon.CALENDAR]: Calendar,
 };
 
 interface AppSidebarProps {
-  variant?: React.ComponentProps<typeof Sidebar>['variant'];
   title: string;
-  updated: string;
+  updatedAt: string;
   pages: Page[];
   current: number;
   onSelectPage: (position: number) => void;
 }
 
-export function AppSidebar({ variant, title, updated, pages, current, onSelectPage }: AppSidebarProps) {
-  const { isMobile, setOpenMobile } = useSidebar();
+function relativeTime(iso: string, now: number): string {
+  const then = new Date(iso);
+  const minutes = Math.round((now - then.getTime()) / MINUTE_MS);
 
-  function select(position: number) {
+  if (minutes < 1) {
+    return 'Updated just now';
+  }
+
+  if (minutes < 60) {
+    return `Updated ${minutes} min ago`;
+  }
+
+  if (minutes < MINUTES_PER_DAY) {
+    return `Updated ${Math.round(minutes / 60)} h ago`;
+  }
+
+  return `Updated ${then.toLocaleDateString()}`;
+}
+
+export function AppSidebar({ title, updatedAt, pages, current, onSelectPage }: AppSidebarProps): ReactNode {
+  const { isMobile, setOpenMobile } = useSidebar();
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(Date.now()), MINUTE_MS);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  function handleSelectPage(position: number) {
     onSelectPage(position);
 
     if (isMobile) {
@@ -65,21 +95,21 @@ export function AppSidebar({ variant, title, updated, pages, current, onSelectPa
   }
 
   return (
-    <Sidebar collapsible="offcanvas" variant={variant}>
+    <Sidebar collapsible="offcanvas" variant="inset">
       <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg" className="cursor-default hover:bg-transparent active:bg-transparent">
-              <span className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                <LayoutDashboard className="size-4" />
-              </span>
-              <span className="grid min-w-0 flex-1 text-left leading-tight">
-                <span className="truncate font-semibold">{title}</span>
-                <span className="truncate text-xs text-muted-foreground">{updated}</span>
-              </span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <Stack direction="row" align="center" gap="sm">
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+            <LayoutDashboard className="size-4" />
+          </span>
+          <Stack grow>
+            <Text weight="semibold" size="sm" truncate>
+              {title}
+            </Text>
+            <Text size="xs" tone="muted" truncate>
+              {relativeTime(updatedAt, now)}
+            </Text>
+          </Stack>
+        </Stack>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -87,15 +117,15 @@ export function AppSidebar({ variant, title, updated, pages, current, onSelectPa
           <SidebarGroupContent>
             <SidebarMenu>
               {pages.map((page, position) => {
-                const Icon = PAGE_ICONS[page.icon ?? (position === 0 ? 'overview' : 'document')];
+                const Icon = PAGE_ICONS[page.icon ?? (position === 0 ? PageIcon.OVERVIEW : PageIcon.DOCUMENT)];
 
                 return (
-                  <SidebarMenuItem key={page.title}>
+                  <SidebarMenuItem key={position}>
                     <SidebarMenuButton
                       tooltip={page.title}
                       isActive={position === current}
                       aria-current={position === current ? 'page' : undefined}
-                      onClick={() => select(position)}
+                      onClick={() => handleSelectPage(position)}
                     >
                       <Icon />
                       <span>{page.title}</span>

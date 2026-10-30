@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "check": "tsc --noEmit && biome check"
+    "precheck": "python3 -B ../scripts/render.py --types",
+    "check": "tsc && biome check"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

@@ -1,4 +1,5 @@
-import type { Change, DiagramSection } from '@/spec';
+import { CHANGES, type ChangeName, TONES } from '@/lib/tone';
+import type { DiagramNode, DiagramSection } from '@/spec';
 
 interface Mermaid {
   initialize: (config: object) => void;
@@ -11,93 +12,63 @@ declare global {
   }
 }
 
-type Direction = 'LR' | 'TB';
+const DIRECTIONS = ['LR', 'TB'] as const;
 
-type ColorToken = 'background' | 'card' | 'foreground' | 'muted-foreground' | 'border' | 'good' | 'info' | 'critical';
+type Direction = (typeof DIRECTIONS)[number];
 
-type Colors = Record<ColorToken, string>;
+const BASE_COLORS = ['background', 'card', 'foreground', 'muted-foreground', 'border'] as const;
 
-interface StrokeStyle {
-  token: ColorToken;
-  text: ColorToken;
-  width: string;
-  dashed?: boolean;
-}
+type Colors = Record<string, string>;
 
 export interface Drawing {
   svg: SVGSVGElement;
   width: number;
-  scale: number;
 }
 
-const COLOR_TOKENS: ColorToken[] = [
-  'background',
-  'card',
-  'foreground',
-  'muted-foreground',
-  'border',
-  'good',
-  'info',
-  'critical',
-];
-
-const MERMAID_SCRIPT = {
+const MERMAID_SCRIPT: Readonly<{ src: string; integrity: string }> = {
   src: 'https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js',
   integrity: 'sha384-rbtjAdnIQE/aQJGEgXrVUlMibdfTSa4PQju4HDhN3sR2PmaKFzhEafuePsl9H/9I',
 };
 
-export const MIN_DIAGRAM_SCALE = 0.65;
-
-export const SPLIT_RATIO = 0.6;
+const MIN_DIAGRAM_SCALE: number = 0.65;
 
 const RANK_SPACING: Record<Direction, string> = {
   LR: '%%{init: {"flowchart": {"rankSpacing": 36}}}%%',
   TB: '%%{init: {"flowchart": {"rankSpacing": 60}}}%%',
 };
 
-const CHANGE_STROKES: Record<Change | 'same', StrokeStyle> = {
-  added: { token: 'good', text: 'foreground', width: '2px' },
-  changed: { token: 'info', text: 'foreground', width: '2px' },
-  removed: { token: 'critical', text: 'muted-foreground', width: '1.5px', dashed: true },
-  same: { token: 'muted-foreground', text: 'foreground', width: '1px' },
-};
-
 let mermaidReady: Promise<{ mermaid: Mermaid; colors: Colors }> | null = null;
 
-let diagramCount = 0;
+let diagramCount: number = 0;
 
 function resolveColors(): Colors {
   const styles = getComputedStyle(document.documentElement);
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d', { willReadFrequently: true });
-  const backdrop = styles.getPropertyValue('--background').trim();
-  const colors = {} as Colors;
+  const tokens = [...BASE_COLORS, ...Object.values(TONES).map((tone) => tone.color)];
+
+  if (!context) {
+    return Object.fromEntries(tokens.map((token) => [token, styles.getPropertyValue(`--${token}`).trim()]));
+  }
 
   canvas.width = 1;
   canvas.height = 1;
 
-  for (const token of COLOR_TOKENS) {
-    const value = styles.getPropertyValue(`--${token}`).trim();
+  return Object.fromEntries(
+    tokens.map((token) => {
+      context.fillStyle = styles.getPropertyValue('--background').trim();
+      context.fillRect(0, 0, 1, 1);
+      context.fillStyle = styles.getPropertyValue(`--${token}`).trim();
+      context.fillRect(0, 0, 1, 1);
 
-    if (!context) {
-      colors[token] = value;
-      continue;
-    }
+      const [red, green, blue] = context.getImageData(0, 0, 1, 1).data;
 
-    context.fillStyle = backdrop;
-    context.fillRect(0, 0, 1, 1);
-    context.fillStyle = value;
-    context.fillRect(0, 0, 1, 1);
-
-    const [red, green, blue] = context.getImageData(0, 0, 1, 1).data;
-
-    colors[token] = `#${[red, green, blue].map((channel) => channel.toString(16).padStart(2, '0')).join('')}`;
-  }
-
-  return colors;
+      return [token, `#${[red, green, blue].map((channel) => channel.toString(16).padStart(2, '0')).join('')}`];
+    }),
+  );
 }
 
-function loadMermaid() {
+function loadMermaid(): Promise<{ mermaid: Mermaid; colors: Colors }> {
   if (!mermaidReady) {
     mermaidReady = new Promise<Mermaid>((resolve, reject) => {
       const script = document.createElement('script');
@@ -107,6 +78,7 @@ function loadMermaid() {
       script.crossOrigin = 'anonymous';
       script.onload = () => (window.mermaid ? resolve(window.mermaid) : reject(new Error('Mermaid did not load')));
       script.onerror = () => reject(new Error('Mermaid did not load'));
+
       document.head.append(script);
     }).then((mermaid) => {
       const colors = resolveColors();
@@ -141,26 +113,21 @@ function mermaidString(value: string): string {
   return value.replace(/`/g, '').replace(/[&<>"#%]/g, (character) => `#${character.charCodeAt(0)};`);
 }
 
-function strokeStyle(style: StrokeStyle, colors: Colors): string {
-  return `stroke:${colors[style.token]},stroke-width:${style.width}${style.dashed ? ',stroke-dasharray:5 4' : ''}`;
+function strokeStyle(change: ChangeName, colors: Colors): string {
+  const style = CHANGES[change];
+  const width = change === 'unchanged' ? '1px' : style.dashed ? '1.5px' : '2px';
+
+  return `stroke:${colors[TONES[style.tone].color]},stroke-width:${width}${style.dashed ? ',stroke-dasharray:5 4' : ''}`;
 }
 
 function flowchartSource(section: DiagramSection, direction: Direction, colors: Colors): string {
-  const ids: Record<string, string> = {};
+  const ids = new Map(section.nodes.map((node, index) => [node.id, `n${index}`]));
   const lines = [RANK_SPACING[direction], `flowchart ${direction}`];
 
-  section.nodes.forEach((node, index) => {
-    ids[node.id] = `n${index}`;
-  });
+  function nodeLine(node: DiagramNode): string {
+    const detail = node.detail ? `<br/><small>${mermaidString(node.detail)}</small>` : '';
 
-  function nodeLine(node: DiagramSection['nodes'][number]): string {
-    let text = `<b>${mermaidString(node.label)}</b>`;
-
-    if (node.detail) {
-      text += `<br/><small>${mermaidString(node.detail)}</small>`;
-    }
-
-    return `${ids[node.id]}["${text}"]:::${node.change ?? 'same'}`;
+    return `${ids.get(node.id)}["<b>${mermaidString(node.label)}</b>${detail}"]:::${node.change ?? 'unchanged'}`;
   }
 
   for (const node of section.nodes.filter((entry) => !entry.pr)) {
@@ -180,42 +147,44 @@ function flowchartSource(section: DiagramSection, direction: Direction, colors: 
   for (const edge of section.edges) {
     const label = [edge.step, edge.label].filter(Boolean).join(' · ');
 
-    lines.push(`${ids[edge.from]} --> ${label ? `|"${mermaidString(label)}"| ` : ''}${ids[edge.to]}`);
+    lines.push(`${ids.get(edge.from)} --> ${label ? `|"${mermaidString(label)}"| ` : ''}${ids.get(edge.to)}`);
   }
 
   section.edges.forEach((edge, index) => {
     if (edge.change) {
-      lines.push(`linkStyle ${index} ${strokeStyle(CHANGE_STROKES[edge.change], colors)}`);
+      lines.push(`linkStyle ${index} ${strokeStyle(edge.change, colors)}`);
     }
   });
 
-  for (const [change, style] of Object.entries(CHANGE_STROKES)) {
-    lines.push(`classDef ${change} fill:${colors.card},color:${colors[style.text]},${strokeStyle(style, colors)}`);
+  for (const change of Object.keys(CHANGES) as ChangeName[]) {
+    const text = change === 'removed' || change === 'unchanged' ? colors['muted-foreground'] : colors.foreground;
+
+    lines.push(`classDef ${change} fill:${colors.card},color:${text},${strokeStyle(change, colors)}`);
   }
 
   return lines.join('\n');
 }
 
-function parseDrawing(svgSource: string, available: number): Drawing {
-  const holder = document.createElement('div');
-
-  holder.innerHTML = svgSource;
-
-  const svg = holder.querySelector('svg') as SVGSVGElement;
-  const width = svg.viewBox.baseVal.width;
-
-  return { svg, width, scale: Math.min(1, available / width) };
-}
-
 export async function drawDiagram(section: DiagramSection, available: number): Promise<Drawing> {
   const id = `diagram-${diagramCount++}`;
   const { mermaid, colors } = await loadMermaid();
-  const directions: Direction[] = ['LR', 'TB'];
   const results = await Promise.all(
-    directions.map((direction) => mermaid.render(`${id}-${direction}`, flowchartSource(section, direction, colors))),
+    DIRECTIONS.map((direction) => mermaid.render(`${id}-${direction}`, flowchartSource(section, direction, colors))),
   );
-  const [preferred, fallback] = results.map((result) => parseDrawing(result.svg, available));
-  const readable = preferred.scale >= MIN_DIAGRAM_SCALE || preferred.scale >= fallback.scale;
 
-  return readable ? preferred : fallback;
+  const drawings = results.map((result) => {
+    const holder = document.createElement('div');
+
+    holder.innerHTML = result.svg;
+
+    const svg = holder.querySelector('svg') as SVGSVGElement;
+    const width = svg.viewBox.baseVal.width;
+
+    return { svg, width, scale: Math.min(1, available / width) };
+  });
+
+  const [preferred, fallback] = drawings;
+  const chosen = preferred.scale >= MIN_DIAGRAM_SCALE || preferred.scale >= fallback.scale ? preferred : fallback;
+
+  return { svg: chosen.svg, width: chosen.width * Math.max(chosen.scale, MIN_DIAGRAM_SCALE) };
 }

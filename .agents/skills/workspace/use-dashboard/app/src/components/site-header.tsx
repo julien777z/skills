@@ -1,21 +1,26 @@
-import { StatusBadge } from '@/components/status';
+import type { ReactNode } from 'react';
+
+import { Stack, Text } from '@/components/primitives';
+import { StatusBadge } from '@/components/status-badge';
 import { Separator } from '@/components/ui/separator';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import type { Label } from '@/spec';
 
-export function SiteHeader({ title, status }: { title: string; status?: Label }) {
+export function SiteHeader({ title, status }: { title: string; status?: Label }): ReactNode {
   return (
-    <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b">
-      <div className="flex w-full min-w-0 items-center gap-1 px-4 lg:gap-2 lg:px-6">
+    <header className="flex h-(--header-height) shrink-0 items-center border-b">
+      <Stack direction="row" align="center" gap="sm" grow inset="page">
         <SidebarTrigger className="-ml-1" />
-        <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-4" />
-        <h1 className="truncate text-base font-medium">{title}</h1>
+        <Separator orientation="vertical" className="mx-1 data-[orientation=vertical]:h-4" />
+        <Text as="h1" size="base" weight="medium" truncate>
+          {title}
+        </Text>
         {status && (
-          <div className="ml-auto flex shrink-0 items-center gap-2">
+          <Stack direction="row" justify="end" grow>
             <StatusBadge label={status.label} tone={status.tone} />
-          </div>
+          </Stack>
         )}
-      </div>
+      </Stack>
     </header>
   );
 }

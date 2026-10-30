@@ -1,7 +1,10 @@
-import { Badge } from '@/components/ui/badge';
+import type { ReactNode } from 'react';
+
+import { Text } from '@/components/primitives';
+import { StatusBadge } from '@/components/status-badge';
 import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { TONE_DOT } from '@/lib/tone';
+import { TONES } from '@/lib/tone';
 import { cn } from '@/lib/utils';
 import type { Metric, ProgressSummary } from '@/spec';
 
@@ -14,43 +17,64 @@ const WIDE_COLUMNS: Record<number, string> = {
   6: '@5xl/main:grid-cols-6',
 };
 
-function ProgressCard({ progress }: { progress: ProgressSummary }) {
-  const percent = Math.round(progress.value * 100);
-
+function StatCard({
+  label,
+  figure,
+  badge,
+  wide = false,
+  children,
+}: {
+  label: string;
+  figure: string;
+  badge?: string;
+  wide?: boolean;
+  children?: ReactNode;
+}): ReactNode {
   return (
-    <Card className="@container/card @xl/main:col-span-2">
+    <Card className={cn('@container/card', wide && '@xl/main:col-span-2')}>
       <CardHeader>
-        <CardDescription>{progress.label}</CardDescription>
-        <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">{percent}%</CardTitle>
-        {progress.detail && (
+        <CardDescription>{label}</CardDescription>
+        <CardTitle>
+          <Text size="figure" weight="semibold" numeric breakAnywhere>
+            {figure}
+          </Text>
+        </CardTitle>
+        {badge && (
           <CardAction>
-            <Badge variant="outline">{progress.detail}</Badge>
+            <StatusBadge label={badge} dot={false} />
           </CardAction>
         )}
       </CardHeader>
-      <CardFooter className="flex-col items-stretch gap-2">
-        {progress.segments ? (
-          <div aria-hidden="true" className="flex h-2 gap-0.5">
-            {progress.segments.map((segment, index) => (
-              <span
-                key={`${segment.label}-${index}`}
-                title={segment.label}
-                style={{ flexGrow: segment.weight ?? 1 }}
-                className={cn('basis-0 rounded-[2px]', segment.tone ? TONE_DOT[segment.tone] : 'bg-foreground/15')}
-              />
-            ))}
-          </div>
-        ) : (
-          <Progress value={percent} aria-hidden="true" />
-        )}
-        <meter className="sr-only" min={0} max={100} value={percent} aria-label={progress.label} />
-      </CardFooter>
+      {children && <CardFooter className="flex-col items-stretch gap-2">{children}</CardFooter>}
     </Card>
   );
 }
 
-export function SectionCards({ progress, metrics }: { progress?: ProgressSummary; metrics: Metric[] }) {
+function ProgressBar({ progress, percent }: { progress: ProgressSummary; percent: number }): ReactNode {
+  return (
+    <>
+      {progress.segments ? (
+        <div aria-hidden="true" className="flex h-2 gap-0.5">
+          {progress.segments.map((segment, index) => (
+            <span
+              key={index}
+              title={segment.label}
+              style={{ flexGrow: segment.weight ?? 1 }}
+              className={cn('basis-0 rounded-[2px]', segment.tone ? TONES[segment.tone].dot : 'bg-foreground/15')}
+            />
+          ))}
+        </div>
+      ) : (
+        <Progress value={percent} aria-hidden="true" />
+      )}
+      <meter className="sr-only" min={0} max={100} value={percent} aria-label={progress.label} />
+    </>
+  );
+}
+
+export function SectionCards({ progress, metrics }: { progress?: ProgressSummary; metrics: Metric[] }): ReactNode {
   const columns = (progress ? 2 : 0) + metrics.length;
+  const percent = progress ? Math.round(progress.value * 100) : 0;
 
   return (
     <div
@@ -59,17 +83,19 @@ export function SectionCards({ progress, metrics }: { progress?: ProgressSummary
         WIDE_COLUMNS[columns],
       )}
     >
-      {progress && <ProgressCard progress={progress} />}
-      {metrics.map((metric) => (
-        <Card key={metric.label} className="@container/card">
-          <CardHeader>
-            <CardDescription>{metric.label}</CardDescription>
-            <CardTitle className="text-2xl font-semibold tabular-nums [overflow-wrap:anywhere] @[250px]/card:text-3xl">
-              {metric.value}
-            </CardTitle>
-          </CardHeader>
-          {metric.detail && <CardFooter className="text-sm text-muted-foreground">{metric.detail}</CardFooter>}
-        </Card>
+      {progress && (
+        <StatCard label={progress.label} figure={`${percent}%`} badge={progress.detail} wide>
+          <ProgressBar progress={progress} percent={percent} />
+        </StatCard>
+      )}
+      {metrics.map((metric, index) => (
+        <StatCard key={index} label={metric.label} figure={metric.value}>
+          {metric.detail && (
+            <Text size="sm" tone="muted">
+              {metric.detail}
+            </Text>
+          )}
+        </StatCard>
       ))}
     </div>
   );

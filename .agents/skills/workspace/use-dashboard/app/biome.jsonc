@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
-    "includes": ["src/**/*.ts", "src/**/*.tsx", "vite.config.ts"]
+    "includes": ["src/**/*.ts", "src/**/*.tsx", "!src/spec.ts", "vite.config.ts"]
   },
   "formatter": {
     "enabled": true,
@@ -21,6 +21,7 @@
         "useBlockStatements": "error"
       },
       "suspicious": {
+        // Every list renders spec data that never reorders, and items carry no unique field.
         "noArrayIndexKey": "off"
       }
     }

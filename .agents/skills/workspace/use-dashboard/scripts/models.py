@@ -78,6 +78,7 @@ class Change(StrEnum):
 class ObjectShape(TypedDict):
     """Validation rules for one spec object."""
 
+    name: str
     fields: dict[str, Callable[[object, str], object]]
     required: frozenset[str]
     relations: NotRequired[Callable[[dict[str, object], str], None]]
