@@ -1,6 +1,6 @@
 ---
 name: banned-terminology
-description: Owns the banned-terms list in resources/banned_words.json and enforces it. Use when naming anything, when writing a pull request or a message to the user, when reviewing a name, when the user asks for a word to be kept out wherever it appears, when they reject a replacement an entry recommends, when they lift a ban, or whenever the decision is about a word rather than one symbol.
+description: Owns the banned-terms list in resources/banned_words.json and enforces it. Use when naming anything, when writing a pull request or a message to the user, when reviewing a name, when the user says a name is unclear or asks for a word to be renamed across one codebase, when they ask for a word to be kept out wherever it appears, when they reject a replacement an entry recommends, when they lift a ban, or whenever the decision is about a word rather than one symbol.
 short_description: 'Owns the banned-terms list in resources/banned_words.json and enforces it.'
 ---
 
@@ -38,10 +38,10 @@ trip the list exists to prevent.
 A term reaching a proto message, an RPC, a route, or a stored value makes the rename a deliberate
 contract break, reported per the repository's rules rather than worked around.
 
-## When the list itself changes
+## When a word, not one symbol, is the decision
 
-The decision is about a **word** rather than one symbol — the user objects to the word wherever it
-appears, not to the name in front of them:
+The decision is about a **word for one meaning** rather than one symbol: the objection would apply to
+every name built on that word for that meaning.
 
 - **Adding** — "don't use X", "ban X", "never call anything X": the user asks for the word to be
   kept out.

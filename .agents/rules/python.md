@@ -621,7 +621,7 @@ except Exception as exc:
 
 ## Formatting and Documentation
 
-- Never use vague, cute, or placeholder terminology in identifiers, docstrings, comments, or test names. Name things for the behavior they actually have. This applies to **new and pre-existing code** in every line you write or edit; elsewhere in a touched file, rename within the change's incidental size budget. `banned-terminology` owns the banned terms and what to use instead.
+- Name things for the behavior they actually have; `banned-terminology` owns the banned terms and what to use instead.
 
 - Add a blank line after each docstring.
 - Never add decorative separator comments (for example, `# -----` headers).

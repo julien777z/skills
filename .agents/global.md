@@ -471,9 +471,10 @@ return records;
 - **Name things with the everyday word a reader expects.** The reader is this codebase's: a name
   says what its product, its users and its existing code call the thing, never a word that is right
   only in another field, such as a botanical Latin name for a plant in a garden shop's catalogue.
-  Where the domain or a provider has a term this codebase's readers use, use it. A parcel the carrier reports as delivered is `delivered`, never
-  `parcel_arrived`, because an unusual synonym makes every reader translate it back. This covers
-  identifiers, fields, messages, documentation and test names in every language.
+  Where the domain or a provider has a term this codebase's readers use, use it. A parcel the
+  carrier reports as delivered is `delivered`, never `parcel_arrived`, because an unusual synonym
+  makes every reader translate it back. This covers identifiers, fields, messages, documentation and
+  test names in every language.
 - **A Boolean's name says what it is true of.** The receiver or argument is what the statement is
   about, and a verb that acts on something names that thing in the name: `invoice.is_overdue`,
   `is_deliverable(message)`, `job.writes_files`, never `writes(job)`, whose reader asks "writes
