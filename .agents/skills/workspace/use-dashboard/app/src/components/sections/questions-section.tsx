@@ -12,7 +12,12 @@ export function QuestionsSection({ section }: { section: QuestionsSectionSpec })
   const open = section.items.filter((question) => question.status === QuestionStatus.OPEN).length;
 
   return (
-    <SectionCard title={section.title} count={open ? `${open} waiting on you` : 'All answered'} flush>
+    <SectionCard
+      title={section.title}
+      description={section.description}
+      count={open ? `${open} waiting on you` : 'All answered'}
+      flush
+    >
       <Paged items={section.items} pageSize={section.page_size} label={section.title} flush>
         {(visible) => (
           <Stack as="ul" divided>
@@ -42,13 +47,13 @@ export function QuestionsSection({ section }: { section: QuestionsSectionSpec })
                   }
                 >
                   {question.options && !answered && (
-                    <ol className="mt-1 list-decimal space-y-0.5 pl-5 text-sm text-muted-foreground">
+                    <Stack as="ol" gap="xs" marker="number">
                       {question.options.map((option, position) => (
-                        <li key={position}>
+                        <Text key={position} as="li" size="sm" tone="muted">
                           <RichText text={option} />
-                        </li>
+                        </Text>
                       ))}
-                    </ol>
+                    </Stack>
                   )}
                   {question.recommendation && !answered && (
                     <Text as="p" size="sm" tone="muted">

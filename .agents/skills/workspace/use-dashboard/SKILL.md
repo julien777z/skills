@@ -33,7 +33,8 @@ field is optional, and an absent one leaves its part of the page out.
 | `references` | `[{text, url}]`: every whole-word occurrence of `text` in the page's own text becomes a link to `url`. |
 
 `tone` is `good`, `warning`, `critical`, `accent` or `done`, as **Making A Dashboard** defines
-them; omit it for neutral. Section types:
+them; omit it for neutral. Every section takes an optional `description`, one sentence shown under
+its title. Section types:
 
 | `type` | Fields | Item fields |
 | --- | --- | --- |
@@ -93,6 +94,8 @@ Dashboards look alike because they are built alike:
 - **Tone means the same everywhere.** `good` is fine or matches, `warning` needs the reader's look
   or action, `critical` is wrong or blocking, `accent` is in progress or informational, and `done`,
   a purple, is finished work. Leave it out for neutral; never tone an item only to decorate it.
+- **Every section says what it holds.** Give each one a `description`: one sentence on what the
+  reader finds or does there, never a narration of its controls.
 - **Text is plain.** Titles say what is true in a few words; `detail` explains in a sentence or two
   that reads without the source. Name a file, section or line in `meta`, never in the title.
 

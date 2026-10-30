@@ -10,12 +10,12 @@ const stackVariants = cva('flex min-w-0', {
     wrap: { true: 'flex-wrap', false: 'flex-nowrap' },
     grow: { true: 'flex-1', false: '' },
     divided: { true: 'divide-y border-t', false: '' },
-    inset: {
-      none: '',
-      list: 'px-6 py-3',
-      page: 'px-4 lg:px-6',
-      panel: 'rounded-lg border bg-muted/30 p-3',
-      card: 'rounded-md border bg-card px-3 py-2.5 shadow-xs',
+    inset: { none: '', row: 'px-6 py-3', page: 'px-4 lg:px-6', panel: 'p-3', card: 'px-3 py-2.5' },
+    surface: { none: '', panel: 'rounded-lg border bg-muted/30', card: 'rounded-md border bg-card shadow-xs' },
+    marker: {
+      none: 'list-none',
+      bullet: 'list-disc pl-5 marker:text-muted-foreground',
+      number: 'list-decimal pl-5 marker:text-muted-foreground',
     },
   },
   defaultVariants: {
@@ -27,6 +27,8 @@ const stackVariants = cva('flex min-w-0', {
     grow: false,
     divided: false,
     inset: 'none',
+    surface: 'none',
+    marker: 'none',
   },
 });
 

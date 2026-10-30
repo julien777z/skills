@@ -48,7 +48,7 @@ function resolveColors(): Colors {
   const tokens = [...BASE_COLORS, ...Object.values(TONES).map((tone) => tone.color)];
 
   if (!context) {
-    return Object.fromEntries(tokens.map((token) => [token, styles.getPropertyValue(`--${token}`).trim()]));
+    throw new Error('Canvas 2D is unavailable to convert theme colors for Mermaid');
   }
 
   canvas.width = 1;

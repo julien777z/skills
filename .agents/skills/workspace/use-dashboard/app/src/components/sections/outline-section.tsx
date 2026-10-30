@@ -16,7 +16,7 @@ function Group({ group }: { group: OutlineGroup }): ReactNode {
   return (
     <Stack>
       <Text as="h3" size="xs" weight="medium" tone="muted" caps>
-        {group.title}
+        <RichText text={group.title} />
       </Text>
       <Accordion type="multiple" defaultValue={open}>
         {group.items.map((item, index) => (
@@ -25,9 +25,7 @@ function Group({ group }: { group: OutlineGroup }): ReactNode {
               <Stack direction="row" align="start" gap="sm" grow>
                 <ToneDot tone={item.tone} offset />
                 <Stack gap="xs" grow>
-                  <Text breakAnywhere>
-                    <RichText text={item.title} />
-                  </Text>
+                  <Text breakAnywhere>{item.title}</Text>
                   {(item.tag || item.meta) && (
                     <Stack direction="row" align="center" gap="sm" wrap>
                       {item.tag && <StatusBadge label={item.tag} tone={item.tone} dot={false} />}
@@ -53,7 +51,7 @@ function Group({ group }: { group: OutlineGroup }): ReactNode {
 
 export function OutlineSection({ section }: { section: OutlineSectionSpec }): ReactNode {
   return (
-    <SectionCard title={section.title} wide>
+    <SectionCard title={section.title} description={section.description} wide>
       <Grid columns="medium" gap="loose">
         {section.groups.map((group, index) => (
           <Group key={index} group={group} />

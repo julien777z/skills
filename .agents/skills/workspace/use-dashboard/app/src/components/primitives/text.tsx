@@ -4,21 +4,14 @@ import type { ReactNode } from 'react';
 const textVariants = cva('', {
   variants: {
     size: {
+      xxs: 'text-[11px]',
       xs: 'text-xs',
       sm: 'text-sm',
       base: 'text-base',
       figure: 'text-2xl @[250px]/card:text-3xl',
       title: 'text-2xl tracking-tight sm:text-3xl',
     },
-    tone: {
-      default: '',
-      muted: 'text-muted-foreground',
-      good: 'text-good',
-      warning: 'text-warning',
-      critical: 'text-critical',
-      accent: 'text-info',
-      done: 'text-done',
-    },
+    tone: { default: '', muted: 'text-muted-foreground', accent: 'text-info' },
     weight: { normal: 'font-normal', medium: 'font-medium', semibold: 'font-semibold', bold: 'font-bold' },
     numeric: { true: 'tabular-nums', false: '' },
     breakAnywhere: { true: '[overflow-wrap:anywhere]', false: '' },
@@ -37,7 +30,7 @@ const textVariants = cva('', {
 });
 
 interface TextProps extends VariantProps<typeof textVariants> {
-  as?: 'span' | 'p' | 'h1' | 'h2' | 'h3' | 'div' | 'b';
+  as?: 'span' | 'p' | 'h1' | 'h2' | 'h3' | 'div' | 'b' | 'li';
   children: ReactNode;
 }
 

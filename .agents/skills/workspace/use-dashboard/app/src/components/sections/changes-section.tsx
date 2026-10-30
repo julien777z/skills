@@ -11,7 +11,7 @@ import { SectionCard } from './section-card';
 
 export function ChangesSection({ section }: { section: ChangesSectionSpec }): ReactNode {
   return (
-    <SectionCard title={section.title} count={String(section.items.length)} flush>
+    <SectionCard title={section.title} description={section.description} count={String(section.items.length)} flush>
       <Paged items={section.items} pageSize={section.page_size} label={section.title} flush>
         {(visible) => (
           <Stack as="ul" divided>

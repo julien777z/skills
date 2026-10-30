@@ -11,11 +11,11 @@ import { SectionCard } from './section-card';
 
 function Column({ column }: { column: BoardColumn }): ReactNode {
   return (
-    <Stack gap="md" inset="panel">
+    <Stack gap="md" inset="panel" surface="panel">
       <Stack direction="row" align="center" gap="sm">
         <ToneDot tone={column.tone} />
         <Text size="sm" weight="medium">
-          {column.title}
+          <RichText text={column.title} />
         </Text>
         <Stack direction="row" justify="end" grow>
           <StatusBadge label={String(column.items.length)} dot={false} />
@@ -29,7 +29,7 @@ function Column({ column }: { column: BoardColumn }): ReactNode {
       <Paged items={column.items} pageSize={column.page_size} label={column.title}>
         {(visible) =>
           visible.map((card, index) => (
-            <Stack key={index} gap="xs" inset="card">
+            <Stack key={index} gap="xs" inset="card" surface="card">
               <Text size="sm" weight="medium" breakAnywhere>
                 {card.url ? <ExternalLink href={card.url}>{card.title}</ExternalLink> : <RichText text={card.title} />}
               </Text>
@@ -44,7 +44,7 @@ function Column({ column }: { column: BoardColumn }): ReactNode {
                   {card.meta && (
                     <Stack direction="row" justify="end" grow>
                       <Text size="xs" tone="muted" numeric>
-                        {card.meta}
+                        <RichText text={card.meta} />
                       </Text>
                     </Stack>
                   )}
@@ -60,7 +60,7 @@ function Column({ column }: { column: BoardColumn }): ReactNode {
 
 export function BoardSection({ section }: { section: BoardSectionSpec }): ReactNode {
   return (
-    <SectionCard title={section.title} wide>
+    <SectionCard title={section.title} description={section.description} wide>
       <Grid columns="narrow">
         {section.columns.map((column, index) => (
           <Column key={index} column={column} />

@@ -7,14 +7,14 @@ import { SectionCard } from './section-card';
 
 export function TableSection({ section }: { section: TableSectionSpec }): ReactNode {
   return (
-    <SectionCard title={section.title} count={String(section.rows.length)} wide>
+    <SectionCard title={section.title} description={section.description} count={String(section.rows.length)} wide>
       <div className="overflow-hidden rounded-lg border">
         <Table>
           <TableHeader className="bg-muted">
             <TableRow>
               {section.columns.map((column, index) => (
                 <TableHead key={index} className="px-4">
-                  {column}
+                  <RichText text={column} />
                 </TableHead>
               ))}
             </TableRow>

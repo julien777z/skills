@@ -46,8 +46,9 @@ choices:
    now; the rest are numbered from 1 in their declared order, and every number below means that
    numbering, whether or not the menu is shown.
 2. **Read the request.** Take the invocation's arguments and the user's words that led to it.
-   Arguments are matched exactly as a reply is under **Match The Reply**, so `2` or `y` already
-   answers. Otherwise the request picks a choice when it names its `id`, `label` or an alias as a
+   The calling skill's own name or command never picks a choice; only its arguments and the user's
+   other words count. Arguments are matched exactly as a reply is under **Match The Reply**, so `2`
+   or `y` already answers. Otherwise the request picks a choice when it names its `id`, `label` or an alias as a
    whole word or phrase, ignoring case, or when the user's main ask, read as a whole rather than
    for keywords, is what the choice's `when` describes. A name the request rules out, as in "don't
    review it", picks nothing.
@@ -96,7 +97,7 @@ Trim the reply and ignore case and surrounding punctuation. Then take the first 
 | Reply | Means |
 | --- | --- |
 | `cancel`, `stop`, `never mind`, `quit`; for `text`, only when it is the whole reply | Cancelled: run nothing, and say that nothing ran. For `confirm` this differs from `no`, which runs the caller's "no" branch. |
-| A number in the numbering, alone or as `#2`, `2.`, `option 2`; `1st` to `4th`; `one` to `four`; `first` to `fourth` or `last`, with an optional leading `the` and trailing `one`, `option` or `choice` | That choice. |
+| A number in the numbering, written as digits (`2`, `#2`, `2.`, `option 2`, `2nd`), as a word (`two`, `second`) or as `last`, with an optional leading `the` and trailing `one`, `option` or `choice` | That choice. |
 | A choice's `id`, `label` or alias | That choice. |
 | The start of an `id`, `label` or alias, at least three letters, when every one it starts belongs to the same choice | That choice. |
 | For `confirm`: `y`, `yes`, `yeah`, `yep`, `yup`, `sure`, `ok`, `okay`, `go ahead`, `do it` | Yes. |
@@ -118,8 +119,3 @@ Trim the reply and ignore case and surrounding punctuation. Then take the first 
 Hand back the chosen `id` or `id`s, `yes` or `no`, the typed text, or `cancelled`, and where it
 came from: the request, the reply, or the only available choice. The calling skill runs that branch
 with no further question about it, and stops without running any branch on `cancelled`.
-
-## Guardrails
-
-- Never run a choice the user's request or reply did not select, unless it is the only one
-  available, and never offer one whose `available` condition does not hold.

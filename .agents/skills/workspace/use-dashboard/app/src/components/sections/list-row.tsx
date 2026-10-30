@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+
 import { Stack, Text } from '@/components/primitives';
 import { RichText } from '@/components/rich-text';
 
@@ -12,7 +13,7 @@ interface ListRowProps {
 
 export function ListRow({ icon, title, detail, aside, children }: ListRowProps): ReactNode {
   return (
-    <Stack as="li" direction="row" align="start" gap="md" inset="list">
+    <Stack as="li" direction="row" align="start" gap="md" inset="row">
       {icon && <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center">{icon}</span>}
       <Stack grow gap="xs">
         <Text weight="medium" breakAnywhere>

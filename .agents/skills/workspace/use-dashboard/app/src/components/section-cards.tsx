@@ -1,21 +1,13 @@
 import type { ReactNode } from 'react';
 
-import { Text } from '@/components/primitives';
+import { Grid, Text } from '@/components/primitives';
+import { RichText } from '@/components/rich-text';
 import { StatusBadge } from '@/components/status-badge';
 import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { TONES } from '@/lib/tone';
 import { cn } from '@/lib/utils';
 import type { Metric, ProgressSummary } from '@/spec';
-
-const WIDE_COLUMNS: Record<number, string> = {
-  1: '@5xl/main:grid-cols-1',
-  2: '@5xl/main:grid-cols-2',
-  3: '@5xl/main:grid-cols-3',
-  4: '@5xl/main:grid-cols-4',
-  5: '@5xl/main:grid-cols-5',
-  6: '@5xl/main:grid-cols-6',
-};
 
 function StatCard({
   label,
@@ -31,9 +23,16 @@ function StatCard({
   children?: ReactNode;
 }): ReactNode {
   return (
-    <Card className={cn('@container/card', wide && '@xl/main:col-span-2')}>
+    <Card
+      className={cn(
+        '@container/card bg-gradient-to-t from-primary/5 to-card shadow-xs dark:bg-card',
+        wide && '@xl/main:col-span-2',
+      )}
+    >
       <CardHeader>
-        <CardDescription>{label}</CardDescription>
+        <CardDescription>
+          <RichText text={label} />
+        </CardDescription>
         <CardTitle>
           <Text size="figure" weight="semibold" numeric breakAnywhere>
             {figure}
@@ -72,17 +71,21 @@ function ProgressBar({ progress, percent }: { progress: ProgressSummary; percent
   );
 }
 
+const STAT_COLUMNS: Record<number, 'stats2' | 'stats3' | 'stats4' | 'stats5' | 'stats6'> = {
+  1: 'stats2',
+  2: 'stats2',
+  3: 'stats3',
+  4: 'stats4',
+  5: 'stats5',
+  6: 'stats6',
+};
+
 export function SectionCards({ progress, metrics }: { progress?: ProgressSummary; metrics: Metric[] }): ReactNode {
   const columns = (progress ? 2 : 0) + metrics.length;
   const percent = progress ? Math.round(progress.value * 100) : 0;
 
   return (
-    <div
-      className={cn(
-        'grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 dark:*:data-[slot=card]:bg-card',
-        WIDE_COLUMNS[columns],
-      )}
-    >
+    <Grid columns={STAT_COLUMNS[columns]} inset="page" align="stretch">
       {progress && (
         <StatCard label={progress.label} figure={`${percent}%`} badge={progress.detail} wide>
           <ProgressBar progress={progress} percent={percent} />
@@ -92,11 +95,11 @@ export function SectionCards({ progress, metrics }: { progress?: ProgressSummary
         <StatCard key={index} label={metric.label} figure={metric.value}>
           {metric.detail && (
             <Text size="sm" tone="muted">
-              {metric.detail}
+              <RichText text={metric.detail} />
             </Text>
           )}
         </StatCard>
       ))}
-    </div>
+    </Grid>
   );
 }

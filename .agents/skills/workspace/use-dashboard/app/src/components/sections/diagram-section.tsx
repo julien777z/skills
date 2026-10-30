@@ -1,7 +1,7 @@
 import { type ReactNode, useContext, useEffect, useRef, useState } from 'react';
 
 import { ExternalLink } from '@/components/external-link';
-import { Stack, Text } from '@/components/primitives';
+import { Grid, Stack, Text } from '@/components/primitives';
 import { RichText } from '@/components/rich-text';
 import { drawDiagram } from '@/lib/diagram';
 import { type References, ReferencesContext } from '@/lib/references';
@@ -102,8 +102,8 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
   }, [section, references]);
 
   return (
-    <SectionCard title={section.title} wide>
-      <div className={cn('grid gap-5', split && 'lg:grid-cols-[auto_minmax(300px,1fr)] lg:items-start')}>
+    <SectionCard title={section.title} description={section.description} wide>
+      <Grid columns={split ? 'figureBesideSteps' : 'figure'} gap="figure">
         <Stack gap="md">
           {status === DrawStatus.FAILED && (
             <Text size="sm" tone="muted">
@@ -111,16 +111,19 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
             </Text>
           )}
           {status !== DrawStatus.DRAWN && (
-            <ul className="list-disc pl-5 text-sm text-muted-foreground">
+            <Stack as="ul" gap="xs" marker="bullet">
               {section.edges.map((edge, index) => (
-                <li key={index}>
+                <Text key={index} as="li" size="sm" tone="muted">
                   {labels.get(edge.from)} → {labels.get(edge.to)}
                   {edge.label ? `: ${edge.label}` : ''}
-                </li>
+                </Text>
               ))}
-            </ul>
+            </Stack>
           )}
-          <div ref={figure} className="grid justify-items-center overflow-x-auto [&_svg]:h-auto" />
+          <div
+            ref={figure}
+            className="grid justify-items-center overflow-x-auto [&_.cluster-label_div]:!max-w-none [&_.cluster-label_div]:!whitespace-nowrap [&_.cluster-label_foreignObject]:overflow-visible [&_svg]:h-auto"
+          />
           {used.size > 0 && (
             <Stack direction="row" gap="lg" wrap>
               {legend.map((change) => (
@@ -150,25 +153,22 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
           )}
         </Stack>
         {section.steps && (
-          <ol
-            className={cn(
-              'grid gap-3 border-t pt-4 sm:grid-cols-[repeat(auto-fill,minmax(min(100%,300px),1fr))]',
-              split && 'lg:grid-cols-1 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-7',
-            )}
-          >
+          <Grid as="ol" columns={split ? 'single' : 'steps'} gap="sm" divider={split ? 'side' : 'top'}>
             {section.steps.map((step, index) => (
-              <li key={index} className="flex gap-2.5 text-sm text-muted-foreground">
-                <span className="flex size-5 shrink-0 items-center justify-center rounded-full border border-info text-[11px] font-bold text-info">
-                  {index + 1}
+              <Stack key={index} as="li" direction="row" align="start" gap="sm">
+                <span className="flex size-5 shrink-0 items-center justify-center rounded-full border border-info">
+                  <Text size="xxs" weight="bold" tone="accent">
+                    {index + 1}
+                  </Text>
                 </span>
-                <span>
+                <Text size="sm" tone="muted">
                   <RichText text={step} />
-                </span>
-              </li>
+                </Text>
+              </Stack>
             ))}
-          </ol>
+          </Grid>
         )}
-      </div>
+      </Grid>
     </SectionCard>
   );
 }

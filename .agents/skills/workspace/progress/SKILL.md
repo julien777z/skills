@@ -137,6 +137,9 @@ and deliver the same dashboard again on every request so the user keeps one page
   "<owner>/<repo>#<number>", and "#<number>" when no other pull request of the task shares the
   number — with its `url`, so every mention of it is a link.
 
+Every section takes a one-sentence `description` of what it holds, such as "Each step of the task's
+plans, by where it stands" for the board.
+
 Leave out withdrawn plans and questions, and a section with nothing in it, except the board,
 which keeps its four columns.
 
