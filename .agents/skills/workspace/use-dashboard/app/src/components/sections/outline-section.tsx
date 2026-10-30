@@ -6,32 +6,38 @@ import { SourceLinks } from '@/components/source-links';
 import { StatusBadge } from '@/components/status-badge';
 import { ToneDot } from '@/components/tone-dot';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import type { OutlineGroup, OutlineSection as OutlineSectionSpec } from '@/spec';
+import type { OutlineGroup, OutlineItem, OutlineSection as OutlineSectionSpec } from '@/spec';
 import { SectionCard } from './section-card';
 
 const OPEN_GROUP_LIMIT: number = 2;
 const DETAIL_LINE_LENGTH: number = 80;
 
-function groupWeight(group: OutlineGroup): number {
-  const opensAll = group.items.length <= OPEN_GROUP_LIMIT;
-
-  return group.items.reduce(
-    (total, item) =>
-      total + 2 + (item.links ? 1 : 0) + (opensAll ? Math.ceil(item.detail.length / DETAIL_LINE_LENGTH) : 0),
-    1,
-  );
+interface GroupPart {
+  group: OutlineGroup;
+  start: number;
+  end: number;
 }
 
-function splitColumns(groups: OutlineGroup[]): OutlineGroup[][] {
-  const weights = groups.map(groupWeight);
-  const total = weights.reduce((sum, weight) => sum + weight, 0);
+function itemWeight(item: OutlineItem, opensAll: boolean): number {
+  return 2 + (item.links ? 1 : 0) + (opensAll ? Math.ceil(item.detail.length / DETAIL_LINE_LENGTH) : 0);
+}
+
+function splitColumns(groups: OutlineGroup[]): GroupPart[][] {
+  const entries = groups.flatMap((group, groupIndex) =>
+    group.items.map((item, index) => ({
+      groupIndex,
+      index,
+      weight: itemWeight(item, group.items.length <= OPEN_GROUP_LIMIT) + (index === 0 ? 1 : 0),
+    })),
+  );
+  const total = entries.reduce((sum, entry) => sum + entry.weight, 0);
 
   let split = 1;
-  let left = weights[0];
-  let bestGap = Math.abs(total - 2 * left);
+  let left = 0;
+  let bestGap = Number.POSITIVE_INFINITY;
 
-  for (let index = 1; index < groups.length - 1; index++) {
-    left += weights[index];
+  for (let index = 0; index < entries.length - 1; index++) {
+    left += entries[index].weight;
 
     const gap = Math.abs(total - 2 * left);
 
@@ -41,10 +47,33 @@ function splitColumns(groups: OutlineGroup[]): OutlineGroup[][] {
     }
   }
 
-  return [groups.slice(0, split), groups.slice(split)];
+  const { groupIndex, index } = entries[split];
+  const leftParts: GroupPart[] = groups
+    .slice(0, groupIndex)
+    .map((group) => ({ group, start: 0, end: group.items.length }));
+  const rightParts: GroupPart[] = groups
+    .slice(groupIndex + 1)
+    .map((group) => ({ group, start: 0, end: group.items.length }));
+  const splitGroup = groups[groupIndex];
+
+  if (index > 0) {
+    leftParts.push({ group: splitGroup, start: 0, end: index });
+  }
+
+  rightParts.unshift({ group: splitGroup, start: index, end: splitGroup.items.length });
+
+  return [leftParts, rightParts];
 }
 
-function Group({ group }: { group: OutlineGroup }): ReactNode {
+function Group({
+  group,
+  start = 0,
+  end = group.items.length,
+}: {
+  group: OutlineGroup;
+  start?: number;
+  end?: number;
+}): ReactNode {
   const [open, setOpen] = useState<string[]>(() =>
     group.items.length <= OPEN_GROUP_LIMIT ? group.items.map((_, index) => String(index)) : [],
   );
@@ -59,42 +88,48 @@ function Group({ group }: { group: OutlineGroup }): ReactNode {
 
   return (
     <Stack>
-      <Text as="h3" size="xs" weight="medium" tone="muted" caps>
-        <RichText text={group.title} />
-      </Text>
+      {start === 0 && (
+        <Text as="h3" size="xs" weight="medium" tone="muted" caps>
+          <RichText text={group.title} />
+        </Text>
+      )}
       <Accordion type="multiple" value={open} onValueChange={setOpen}>
-        {group.items.map((item, index) => (
-          <AccordionItem key={index} value={String(index)}>
-            <div
-              className="flex cursor-pointer items-start gap-3 py-3"
-              onClick={(event) => handleRowClick(event, String(index))}
-            >
-              <Stack direction="row" align="start" gap="sm" grow>
-                <ToneDot tone={item.tone} offset />
-                {item.tag && <StatusBadge label={item.tag} tone={item.tone} dot={false} />}
-                <Stack gap="xs" grow>
-                  <Text weight="medium" size="sm" breakAnywhere>
-                    <RichText text={item.title} />
-                  </Text>
-                  {item.meta && (
-                    <Text size="xs" tone="muted" breakAnywhere>
-                      <RichText text={item.meta} />
+        {group.items.slice(start, end).map((item, offset) => {
+          const index = start + offset;
+
+          return (
+            <AccordionItem key={index} value={String(index)}>
+              <div
+                className="flex cursor-pointer items-start gap-3 py-3"
+                onClick={(event) => handleRowClick(event, String(index))}
+              >
+                <Stack direction="row" align="start" gap="sm" grow>
+                  <ToneDot tone={item.tone} offset />
+                  {item.tag && <StatusBadge label={item.tag} tone={item.tone} dot={false} />}
+                  <Stack gap="xs" grow>
+                    <Text weight="medium" size="sm" breakAnywhere>
+                      <RichText text={item.title} />
                     </Text>
-                  )}
+                    {item.meta && (
+                      <Text size="xs" tone="muted" breakAnywhere>
+                        <RichText text={item.meta} />
+                      </Text>
+                    )}
+                  </Stack>
                 </Stack>
-              </Stack>
-              <AccordionTrigger className="flex-none py-0" aria-label={item.title} />
-            </div>
-            {item.links && (
-              <Stack inset="item">
-                <SourceLinks links={item.links} />
-              </Stack>
-            )}
-            <AccordionContent className="pl-[18px] text-muted-foreground [overflow-wrap:anywhere]">
-              <RichText text={item.detail} />
-            </AccordionContent>
-          </AccordionItem>
-        ))}
+                <AccordionTrigger className="flex-none py-0" aria-label={item.title} />
+              </div>
+              {item.links && (
+                <Stack inset="item">
+                  <SourceLinks links={item.links} />
+                </Stack>
+              )}
+              <AccordionContent className="pl-[18px] text-muted-foreground [overflow-wrap:anywhere]">
+                <RichText text={item.detail} />
+              </AccordionContent>
+            </AccordionItem>
+          );
+        })}
       </Accordion>
     </Stack>
   );
@@ -114,8 +149,8 @@ export function OutlineSection({ section }: { section: OutlineSectionSpec }): Re
       <Grid columns="pair" gap="loose">
         {splitColumns(section.groups).map((column, columnIndex) => (
           <Stack key={columnIndex} gap="xl">
-            {column.map((group, index) => (
-              <Group key={index} group={group} />
+            {column.map((part, index) => (
+              <Group key={index} group={part.group} start={part.start} end={part.end} />
             ))}
           </Stack>
         ))}
