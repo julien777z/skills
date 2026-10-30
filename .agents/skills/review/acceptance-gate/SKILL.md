@@ -1,6 +1,6 @@
 ---
 name: acceptance-gate
-description: Required checkpoint over an authorized change's complete diff before local completion, draft readiness or merge; run as a workflow dependency without a separate user invocation. Passing tests or the author's own review never substitute for its verdict. Judge an issue, finding, proposal or diff against product state, intent and the quality rubric through a read-only subagent, or in process when it cannot launch. Run over each finished plan step or worker task before later work builds on it, for triage, before recording a deferral, before and after fixing or resolving one, after base incorporation, and on a fix for a gate or review flag.
+description: Required checkpoint over an authorized change's complete diff before local completion, draft readiness or merge; run as a workflow dependency without a separate user invocation. Passing tests or the author's own review never substitute for its verdict. Judge an issue, finding, proposal or diff against product state, intent and the quality rubric through a read-only subagent, or in process when it cannot launch. Run over each finished plan step or worker task before later work builds on it, for triage, before recording a deferral, before and after fixing or resolving one, after base incorporation, and on a fix for a gate or review flag larger than a small repair.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 
@@ -240,6 +240,15 @@ A flag blocks the flagged proposal or diff, not an ordinary repair the task alre
 Read its concrete objection and remedy against the intent and standing guidance, make the smallest
 coherent repair using the existing owner or mechanism, and send the changed increment with the
 whole originating diff to a fresh independent gate, following `subagent-matrix`'s **Dispatch**.
+
+**A small repair is checked in process instead.** A repair is small when it changes about 30 lines or
+fewer and carries out the remedy the flag names without settling a design, product or security
+choice of its own. The agent that made it re-reads the changed lines against the flag's objection and
+remedy, runs the checks covering that code, and records the result with the flag; no fresh gate or
+worker is started for it. It still counts as one of the flag's repair rounds, and the next gate over
+the step or the complete diff is the independent acceptance covering its resolution. A larger repair,
+one that settles such a choice, or one the in-process check cannot settle goes to a fresh gate as
+above.
 
 **Repair rounds are counted per objection.** A flag gets at most two repair rounds of its own; one a
 fresh gate raises for the first time starts at zero and is repaired like any other, whatever round
