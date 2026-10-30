@@ -231,6 +231,10 @@ alwaysApply: true
   An asynchronous request that remains pending has not timed out: keep its wait or event route
   active rather than opening a duplicate. Hold only work that depends on the answer and continue
   independent authorized work. Preserve a platform's separate action-time confirmation safeguards.
+- **A message sent in place of an answer answers the question only when it states a choice in
+  words.** A related correction, a complaint about the subject, or a new request is handled on its
+  own, and the question is asked again with its choices directly after, never answered from what the
+  message seems to imply. No inferred choice is acted on before the user states one.
 
 - Never poll a PR with background `sleep` or timed self check-ins; act only on delivered PR
   activity webhooks.
