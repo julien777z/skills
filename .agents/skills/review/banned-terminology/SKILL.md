@@ -1,6 +1,6 @@
 ---
 name: banned-terminology
-description: Owns the banned-terms list in resources/banned_words.json and enforces it. Use when naming anything, when writing a pull request or a message to the user, when reviewing a name, when the user says a term is bad, confusing, or should not be used, when they reject a replacement an entry recommends, when they lift a ban, or whenever the decision is about a word rather than one symbol.
+description: Owns the banned-terms list in resources/banned_words.json and enforces it. Use when naming anything, when writing a pull request or a message to the user, when reviewing a name, when the user says a name is unclear or asks for a word to be renamed across one codebase, when they ask for a word to be kept out wherever it appears, when they reject a replacement an entry recommends, when they lift a ban, or whenever the decision is about a word rather than one symbol.
 short_description: 'Owns the banned-terms list in resources/banned_words.json and enforces it.'
 ---
 
@@ -38,24 +38,35 @@ trip the list exists to prevent.
 A term reaching a proto message, an RPC, a route, or a stored value makes the rename a deliberate
 contract break, reported per the repository's rules rather than worked around.
 
-## When the list itself changes
+## When a word, not one symbol, is the decision
 
-The decision is about a **word** rather than one symbol — the objection would apply anywhere the
-word appeared:
+The decision is about a **word for one meaning** rather than one symbol: the objection would apply to
+every name built on that word for that meaning.
 
-- **Adding** — "X is a bad name", "I don't like X terminology", "don't use X", "rename X everywhere".
-  Judging a term unintuitive **is** the decision to ban it; do not wait to be asked for the entry
-  separately.
+- **Adding** — "don't use X", "ban X", "never call anything X": the user asks for the word to be
+  kept out.
+- **Renaming without an entry** — a complaint about a name — "I don't like X", "X is a bad name", "X
+  is not intuitive" — or "rename X everywhere" in one codebase renames every name in that codebase
+  built on the word for that meaning, to the word its readers would use, as the global rules' naming
+  bullet says. It runs steps 2–5 below and writes no entry.
 - **Updating** — the user rejects the replacement an entry recommends, or a better one is agreed.
   The entry changes, the old replacement moves to `rejected_replacements`, and every call site that
   took the old advice changes with it.
 - **Removing** — a ban is lifted, or an entry describes a distinction the codebase no longer makes.
 
-Renaming a single function, class, or variable is an ordinary edit and does not run this skill.
+Renaming a single function, class, or variable for any other reason is an ordinary edit and does
+not run this skill.
+
+**Which list.** A shared entry bans a meaning for which the word is wrong in every field: a
+placeholder, an action no reader can picture, or a word whose usual meaning is something else. A word
+that is the right term for that meaning in some field, and is only unclear to one codebase's
+readers, goes in that repository's **Banned Terms** table, never the shared file; when the
+repository has no table yet, create it in its `.agents/project.md`.
 
 ### Adding or updating
 
-1. Write or amend the entry first, so the decision survives whatever happens to the sweep.
+1. Write or amend the entry first, in the list **Which list** picks, so the decision survives
+   whatever happens to the sweep.
 
 2. **Take the inventory before renaming anything**, so the size is known up front rather than
    discovered halfway:

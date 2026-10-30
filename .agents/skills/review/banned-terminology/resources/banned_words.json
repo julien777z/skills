@@ -145,6 +145,12 @@
       "why": "\"Standing\" reads as a rank or reputation, which is never what these carry."
     },
     {
+      "term": "stub",
+      "applies_to": "application-code identifiers",
+      "use_instead": "\"client\". Keep a generated `*Stub` class name only when referring to that external type.",
+      "why": "In application code the object is the client a caller talks to; \"stub\" names a test double or a generated transport class, so the reader expects a fake."
+    },
+    {
       "term": "tier",
       "variants": [
         "tiers",
