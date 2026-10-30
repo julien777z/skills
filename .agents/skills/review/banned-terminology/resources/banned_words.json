@@ -163,6 +163,16 @@
       "rejected_replacements": [
         "Banning \"validate\" outright. It is the right word for input validation, and renaming every field and model validator to assert_ made guards of things that only clean a value."
       ]
+    },
+    {
+      "term": "party",
+      "variants": [
+        "parties",
+        "Party"
+      ],
+      "applies_to": "any identifier, docstring, comment, test name, wire contract or stored value, except the standard compounds \"first-party\" and \"third-party\"",
+      "use_instead": "Name the role the value plays: who owns a record is an owner type (`OwnerType`, `owner_type`); who wrote a document is its `author`; the name and address block on a document is a contact (`InvoiceContact`); a person shown on a record is a person (`AdminOrganizationPerson`).",
+      "why": "\"Party\" means a side of a contract, a group, an event, or an external system depending on the reader, so a value named for it leaves them guessing which of its roles it plays."
     }
   ]
 }
