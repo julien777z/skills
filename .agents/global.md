@@ -504,5 +504,9 @@ return records;
 - Git history is the record of what changed; documentation describes what exists now.
 - The same applies to code comments and docstrings: no "formerly", "replaces", or "kept for
   backwards compatibility" notes.
+- **Behaviour another party owns is explained once, beside the line that works around it.** A
+  constant, docstring or second comment that the workaround uses never restates it: two comments
+  saying that a library sets no timeout, one above the constant and one at the override, are one
+  comment too many.
 
 - When a request replaces a route, API contract, or behavior, remove the prior alias or fallback. Retain legacy compatibility only when the user explicitly authorizes it in the current request; if retention is unclear, ask before adding it.
