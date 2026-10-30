@@ -287,8 +287,9 @@ Apply the baseline prompt above, plus these explicit review rules:
    - **Declarative ownership outranks the count.** Never move a data model into a client, service,
      route, entrypoint, or utility to eliminate a model module this standard catches, at any count.
      Models stay in a `models.py` file or concept-specific `models/` package; only Pydantic
-     `BaseSettings` classes stay in `config.py` or `config/`. A declarative module may be merged only with another
-     declarative module under the same ownership boundary, never into operational code.
+     `BaseSettings` classes stay in `config.py` or `config/`. A declarative module may be merged
+     only with another declarative module under the same ownership boundary, never into operational
+     code.
    - A concern no sibling shares is not a boundary. It is a symbol with no home yet, and "unique
      concern", "idiomatic for this package", "acceptable", "accepted", "stands", and "earns its file"
      never appear against a module this standard catches: each is the disposition it takes out of the

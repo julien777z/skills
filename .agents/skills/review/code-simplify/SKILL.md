@@ -166,10 +166,11 @@ For every new independent consumer or boundary, report the analogous implementat
 candidate shared owners, the common mechanism and consumer-specific behavior identified, and the
 reason each parallel implementation was consolidated or retained.
 
-For every new module or package, report its public symbol count, the concern it serves, the
-existing module whose concern contains it or that a broader name would make its owner, or the
-search that found none, the sibling modules in its package with the same shape, the importers and
-candidate owners inspected, and why the boundary was retained, flattened, or merged. A new module reported without its count is an unreviewed module.
+For every new module or package, report its public symbol count, the concern it serves, the existing
+module whose concern contains it or that a broader name would make its owner, or the search that
+found none, the sibling modules in its package with the same shape, the importers and candidate
+owners inspected, and why the boundary was retained, flattened, or merged. A new module reported
+without its count is an unreviewed module.
 
 For every new enum, constant set, mapping, alias, or model, report the member names or keys you
 searched the repository for — the members themselves, never the declaration's own name — and every
