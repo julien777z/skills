@@ -226,6 +226,7 @@ APPLICATION_CONFIG = ActionConfig()
 - Do not add helper functions like `_get_environment` when the value already exists on the shared settings object.
 - Do not read environment variables directly with `os.getenv`, `os.environ`, or `os.environ.get` in application/service/library code.
 - Always read environment-backed values from the typed settings object so defaults, validation, and normalization live in one place.
+- **A function whose behaviour depends on a setting reads that setting itself.** No parameter carries in a configuration value, or a value derived from one such as an environment check, that a caller read from the settings object — not at many call sites and not at one: `render_receipt(order, show_debug_footer=not APPLICATION_CONFIG.is_production)` is `render_receipt(order)` reading the check inside. The same holds for any value every caller would take from one shared source: read it from that source where it is used. A test sets the setting through the settings it runs with, never through an argument added for it.
 - Exception: one-off scripts may read from `os` when introducing a settings model would be unnecessary overhead.
 
 ## Constants
@@ -269,8 +270,7 @@ Avoid trivial wrapper functions that add no value. A function that just returns 
 - Return an enum for an outcome with more than two states or states whose names carry meaning. Never return bare integers as application status codes.
 - A subprocess return code is an external value and may remain an `int` at that boundary. Convert it into the domain outcome enum before carrying it through the application.
 - Do not rebind function arguments to a second local name when the value is unchanged (for example, `profile = obj`); name the parameter correctly at the signature instead.
-- Do not add passthrough function or method parameters when every call site provides the value from one shared source (for example, forwarding `service_base_url` from `APPLICATION_CONFIG` in every call); read from that source directly where the value is used.
-- A controlled API owns its configuration-backed default. Its callers omit that argument instead of forwarding the same configuration value at every call site. When omission and an explicit `None` have different meanings, use one reusable `Undefined` sentinel from a neutral shared owner; do not define a database-, transport-, or feature-specific sentinel for a general presence distinction.
+- When omission and an explicit `None` have different meanings for a parameter, use one reusable `Undefined` sentinel from a neutral shared owner; do not define a database-, transport-, or feature-specific sentinel for a general presence distinction.
 - Give domain-specific parsers and converters domain-qualified names so imports from multiple domains cannot silently shadow one another. Keep unqualified names only for genuinely domain-independent transformations.
 - **Name a guard for the condition it asserts, not for the outcome it prevents.** A function that
   raises when an invariant is broken is named `assert_<invariant>`, so the call site reads as the
@@ -347,6 +347,15 @@ def get_auth_secret(config: Settings | None = None) -> str:
 - Do not convert between models you own with `Target(**source.model_dump())`, `Target.model_validate(source.model_dump())`, or `Target(**source.__dict__)`. These dictionary-shaped conversions erase the relationship between the source and target contracts, can collide with explicitly supplied fields, and may re-run normalization or encryption.
 - Put the conversion on the target in a typed `from_<source>` or `build_*` classmethod that names the fields. If the copy becomes long, consolidate the models or carry the source model as a nested field instead of flattening it.
 - Reserve `model_dump()` for boundaries that leave the typed model layer, such as JSON, persistence, caches, and logs.
+- **A value with one canonical form is normalized once, by its field's type on the model.** A case-insensitive identifier such as a username or a hostname, or a code kept trimmed and upper-case, is declared with an annotated type or validator on the model, or a column type that normalizes on write, so every value the model holds is already canonical. Service code never calls `.lower()`, `.strip()` or the like on it, since one call site that misses the call is a bug; input compared against it goes through the same type. Rows already stored are migrated to the canonical form with the change, as `database-migrations` says.
+
+```python
+Hostname = Annotated[str, AfterValidator(str.lower)]
+
+
+class Mirror(BaseModel):
+    hostname: Hostname
+```
 
 - Application code (a function, method, property, class, constant, or field) with **zero non-test consumers** is dead code and must be deleted, along with the tests that only exist to exercise it. Consumers, and the writers a guard below is checked against, are counted where the change will land, as `code-simplify`'s rubric says.
 - **Tests do not justify keeping otherwise-unused application code.** A test that asserts a symbol no other application code reads is testing a fabricated contract; delete the symbol and that test together rather than preserving the symbol "because it's covered".
@@ -592,6 +601,7 @@ return JSONResponse(
 
 - Never catch bare `Exception`; always catch specific exception types, with two exceptions: a test case explicitly exercising that broad exception, and an outermost wrapper — the loop running a worker's jobs, the boundary serving a request — that logs the error with its traceback and turns it into a failure result, its broad-catch lint finding disabled on that line alone. Lint keeps flagging every other catch-all.
 - For generated or SDK-backed API clients, catch the library's documented exception type instead of broad exceptions.
+- **A function that raises owns the message for the condition it refuses.** One condition has one message, written where the error is raised; no parameter carries error text in, and callers that each want their own wording for the same refusal share that one message, such as "Too many results to show. Narrow the search and try again." A fact the message needs, such as the limit, goes in as data the message formats, never as a sentence. A caller that must tell two refusals apart does so by error type, never by message.
 
 ```python
 import third_party_client
