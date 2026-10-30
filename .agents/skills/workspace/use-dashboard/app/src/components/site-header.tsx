@@ -123,11 +123,11 @@ export function SiteHeader({ title, status, updatedAt, pages, current, onSelectP
 
   return (
     <header className="sticky top-[env(safe-area-inset-top,0px)] z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="mx-auto flex h-14 w-full max-w-screen-2xl items-center gap-4 px-4 lg:px-6">
+      <Stack direction="row" align="center" gap="lg" inset="page" frame="page" height="bar">
         {hasPages && (
           <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="-ml-2 md:hidden" aria-label="Open pages">
+              <Button variant="ghost" size="icon" className="-ml-2 lg:hidden" aria-label="Open pages">
                 <Menu />
               </Button>
             </SheetTrigger>
@@ -135,9 +135,9 @@ export function SiteHeader({ title, status, updatedAt, pages, current, onSelectP
               <SheetHeader>
                 <SheetTitle>{title}</SheetTitle>
               </SheetHeader>
-              <nav aria-label="Dashboard pages" className="px-2">
+              <Stack as="nav" label="Dashboard pages" inset="page">
                 <PageLinks pages={pages} current={current} vertical onSelectPage={handleSelectFromMenu} />
-              </nav>
+              </Stack>
             </SheetContent>
           </Sheet>
         )}
@@ -150,19 +150,19 @@ export function SiteHeader({ title, status, updatedAt, pages, current, onSelectP
           </Text>
         </Stack>
         {hasPages && (
-          <nav aria-label="Dashboard pages" className="hidden md:block">
+          <Stack as="nav" label="Dashboard pages" show="wide">
             <PageLinks pages={pages} current={current} vertical={false} onSelectPage={onSelectPage} />
-          </nav>
+          </Stack>
         )}
-        <div className="ml-auto flex shrink-0 items-center gap-3">
+        <Stack direction="row" align="center" gap="md" push>
           <span className="hidden sm:inline">
             <Text size="xs" tone="muted">
               {relativeTime(updatedAt, now)}
             </Text>
           </span>
           {status && <StatusBadge label={status.label} tone={status.tone} />}
-        </div>
-      </div>
+        </Stack>
+      </Stack>
     </header>
   );
 }

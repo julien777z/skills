@@ -30,7 +30,7 @@ export function App({ dashboard }: { dashboard: Dashboard }): ReactNode {
         current={current}
         onSelectPage={handleSelectPage}
       />
-      <main className="@container/main mx-auto flex w-full max-w-screen-2xl flex-col gap-6 py-8">
+      <Stack as="main" gap="xl" frame="page" block="page">
         <Stack gap="xs" inset="page">
           <Text as="h1" size="title" weight="bold">
             {page.title}
@@ -47,7 +47,7 @@ export function App({ dashboard }: { dashboard: Dashboard }): ReactNode {
             <DashboardSection key={index} section={section} />
           ))}
         </Grid>
-      </main>
+      </Stack>
     </ReferencesContext.Provider>
   );
 }

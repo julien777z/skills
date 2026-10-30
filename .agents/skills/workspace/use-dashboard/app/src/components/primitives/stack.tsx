@@ -10,8 +10,17 @@ const stackVariants = cva('flex min-w-0', {
     wrap: { true: 'flex-wrap', false: 'flex-nowrap' },
     grow: { true: 'flex-1', false: '' },
     divided: { true: 'divide-y border-t', false: '' },
-    inset: { none: '', row: 'px-6 py-3', page: 'px-4 lg:px-6', panel: 'p-3', card: 'px-3 py-2.5' },
-    surface: { none: '', panel: 'rounded-lg border bg-muted/30', card: 'rounded-md border bg-card shadow-xs' },
+    inset: { none: '', row: 'px-6 py-3', page: 'px-4 lg:px-6' },
+    surface: {
+      none: '',
+      panel: 'rounded-lg border bg-muted/30 p-3',
+      card: 'rounded-md border bg-card px-3 py-2.5 shadow-xs',
+    },
+    frame: { none: '', page: '@container/main mx-auto w-full max-w-screen-2xl' },
+    height: { auto: '', bar: 'h-14' },
+    block: { none: '', page: 'py-8' },
+    push: { true: 'ml-auto shrink-0', false: '' },
+    show: { always: '', wide: 'hidden lg:flex', narrow: 'lg:hidden' },
     marker: {
       none: 'list-none',
       bullet: 'list-disc pl-5 marker:text-muted-foreground',
@@ -28,12 +37,17 @@ const stackVariants = cva('flex min-w-0', {
     divided: false,
     inset: 'none',
     surface: 'none',
+    frame: 'none',
+    height: 'auto',
+    block: 'none',
+    push: false,
+    show: 'always',
     marker: 'none',
   },
 });
 
 interface StackProps extends VariantProps<typeof stackVariants> {
-  as?: 'div' | 'section' | 'ul' | 'ol' | 'li' | 'nav' | 'span';
+  as?: 'div' | 'section' | 'main' | 'ul' | 'ol' | 'li' | 'nav' | 'span';
   label?: string;
   children: ReactNode;
 }

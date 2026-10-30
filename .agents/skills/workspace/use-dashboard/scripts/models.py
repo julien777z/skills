@@ -51,7 +51,7 @@ class PageLayout(StrEnum):
 
 
 class PageIcon(StrEnum):
-    """Icons a dashboard page shows beside its name in the sidebar."""
+    """Icons a dashboard page shows beside its name in the navbar."""
 
     OVERVIEW = "overview"
     LIST = "list"

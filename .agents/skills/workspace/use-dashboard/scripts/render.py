@@ -443,7 +443,7 @@ def referenced_declarations(shape: ObjectShape, shapes: dict[str, ObjectShape], 
         if not isinstance(check, partial):
             continue
 
-        if "choices" in check.keywords:
+        if check.func is check_choice:
             enums.setdefault(check.keywords["choices"].__name__, check.keywords["choices"])
         elif check.keywords["shape"]["name"] not in shapes:
             referenced_declarations(check.keywords["shape"], shapes, enums)
@@ -463,14 +463,10 @@ def typescript_declarations() -> str:
     referenced_declarations(DASHBOARD_SHAPE, shapes, enums)
 
     section_names = {shape["name"]: section_type for section_type, shape in SECTION_SHAPES.items()}
-    union = " | ".join(section_names)
-    interfaces = [typescript_interface(shape, section_names.get(name)) for name, shape in shapes.items()]
-    page_index = next(index for index, name in enumerate(shapes) if name == PAGE_SHAPE["name"])
     blocks = [
         *(typescript_enum(choices) for choices in enums.values()),
-        *interfaces[:page_index],
-        f"export type Section = {union};",
-        *interfaces[page_index:],
+        f"export type Section = {' | '.join(section_names)};",
+        *(typescript_interface(shape, section_names.get(name)) for name, shape in shapes.items()),
     ]
 
     return TYPES_HEADER + "\n" + "\n\n".join(blocks) + "\n"

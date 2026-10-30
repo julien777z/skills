@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 
 import { Grid, Text } from '@/components/primitives';
 import { RichText } from '@/components/rich-text';
@@ -71,7 +71,7 @@ function ProgressBar({ progress, percent }: { progress: ProgressSummary; percent
   );
 }
 
-const STAT_COLUMNS: Record<number, 'stats2' | 'stats3' | 'stats4' | 'stats5' | 'stats6'> = {
+const STAT_COLUMNS: Record<number, NonNullable<ComponentProps<typeof Grid>['columns']>> = {
   1: 'stats2',
   2: 'stats2',
   3: 'stats3',

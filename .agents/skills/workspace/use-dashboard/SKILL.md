@@ -30,7 +30,7 @@ field is optional, and an absent one leaves its part of the page out.
 | `progress` | `{value: 0–1, label, detail?, segments?}`: a stat card twice as wide as the others, with the percentage, `detail` as its badge, and a bar. `segments` is `[{label, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1; without `segments` the bar is a plain fill. |
 | `metrics` | `[{label, value, detail?}]`: at most four stat cards beside the progress, `detail` under the figure. |
 | `pages` | `[{title, icon?, layout?, sections}]`: one navbar link each, the progress and metrics showing on the first. `icon` is one of `overview`, `list`, `chart`, `diagram`, `document`, `shield`, `people`, `data`, `settings`, `alert`, `check` or `calendar`; without it the first page shows `overview` and the rest `document`. `sections` render in order; with `layout` `columns`, the default, callouts, boards, tables, outlines and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
-| `references` | `[{text, url}]`: every whole-word occurrence of `text` in the page's own text becomes a link to `url`. |
+| `references` | `[{text, url}]`: every whole-word occurrence of `text` in the page's own text becomes a link to `url`, apart from the navbar, badges, and an outline item's title and `meta`, which open the item and stay plain. |
 
 `tone` is `good`, `warning`, `critical`, `accent` or `done`, as **Making A Dashboard** defines
 them; omit it for neutral. Every section takes an optional `description`, one sentence shown under

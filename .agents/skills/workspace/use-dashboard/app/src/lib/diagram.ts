@@ -3,7 +3,7 @@ import type { DiagramNode, DiagramSection } from '@/spec';
 
 interface Mermaid {
   initialize: (config: object) => void;
-  render: (id: string, source: string) => Promise<{ svg: string }>;
+  render: (id: string, source: string, container: Element) => Promise<{ svg: string }>;
 }
 
 declare global {
@@ -165,11 +165,14 @@ function flowchartSource(section: DiagramSection, direction: Direction, colors: 
   return lines.join('\n');
 }
 
-export async function drawDiagram(section: DiagramSection, available: number): Promise<Drawing> {
+export async function drawDiagram(section: DiagramSection, container: HTMLElement): Promise<Drawing> {
+  const available = container.clientWidth;
   const id = `diagram-${diagramCount++}`;
   const { mermaid, colors } = await loadMermaid();
   const results = await Promise.all(
-    DIRECTIONS.map((direction) => mermaid.render(`${id}-${direction}`, flowchartSource(section, direction, colors))),
+    DIRECTIONS.map((direction) =>
+      mermaid.render(`${id}-${direction}`, flowchartSource(section, direction, colors), container),
+    ),
   );
 
   const drawings = results.map((result) => {

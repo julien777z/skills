@@ -74,7 +74,7 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
 
     let cancelled = false;
 
-    drawDiagram(section, target.clientWidth)
+    drawDiagram(section, target)
       .then((drawing) => {
         if (cancelled) {
           return;
@@ -103,7 +103,7 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
 
   return (
     <SectionCard title={section.title} description={section.description} wide>
-      <Grid columns={split ? 'figureBesideSteps' : 'figure'} gap="figure">
+      <Grid columns={split ? 'figureBesideSteps' : 'single'} gap="lg">
         <Stack gap="md">
           {status === DrawStatus.FAILED && (
             <Text size="sm" tone="muted">

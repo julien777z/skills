@@ -11,7 +11,7 @@ import { SectionCard } from './section-card';
 
 function Column({ column }: { column: BoardColumn }): ReactNode {
   return (
-    <Stack gap="md" inset="panel" surface="panel">
+    <Stack gap="md" surface="panel">
       <Stack direction="row" align="center" gap="sm">
         <ToneDot tone={column.tone} />
         <Text size="sm" weight="medium">
@@ -29,7 +29,7 @@ function Column({ column }: { column: BoardColumn }): ReactNode {
       <Paged items={column.items} pageSize={column.page_size} label={column.title}>
         {(visible) =>
           visible.map((card, index) => (
-            <Stack key={index} gap="xs" inset="card" surface="card">
+            <Stack key={index} gap="xs" surface="card">
               <Text size="sm" weight="medium" breakAnywhere>
                 {card.url ? <ExternalLink href={card.url}>{card.title}</ExternalLink> : <RichText text={card.title} />}
               </Text>

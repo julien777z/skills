@@ -41,7 +41,7 @@ export function QuestionsSection({ section }: { section: QuestionsSectionSpec })
                   aside={
                     question.meta && (
                       <Text size="xs" tone="muted" numeric>
-                        {question.meta}
+                        <RichText text={question.meta} />
                       </Text>
                     )
                   }
