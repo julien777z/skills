@@ -86,7 +86,8 @@ other hosts. Dispatch the gate with that exact identifier, and retain catalogue 
 state and host receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. It
 receives five things and nothing else:
 
-1. the intent statement;
+1. the intent statement, carrying every decision the task has recorded that the item's subject
+   touches, with the user's words, so earlier settled behaviour is not judged as new;
 2. the originating diff, with its deletions first; for a Proposal before implementation when no
    change is in flight, explicitly declare that no implementation diff exists and name the current
    source snapshot instead; every Diff, Final acceptance and Base incorporation still requires its
@@ -237,7 +238,11 @@ under the GitHub rules on branch ownership, and its resolved result is theirs to
 The gate is never advisory; the rubric says what each disposition binds the caller to.
 
 A flag blocks the flagged proposal or diff, not an ordinary repair the task already authorizes.
-Read its concrete objection and remedy against the intent and standing guidance, make the smallest
+Before admitting a flag, check it against the task's recorded decisions and the commit that
+introduced the behaviour it names. A flag that reopens behaviour a recorded decision or an earlier
+accepted step settled, or that asks for work outside the scope the user set, is answered as settled
+or out of scope with that evidence; it is never repaired and never put to the user as a question.
+Read every other objection and remedy against the intent and standing guidance, make the smallest
 coherent repair using the existing owner or mechanism, and send the changed increment with the
 whole originating diff to a fresh independent gate, following `subagent-matrix`'s **Dispatch**.
 
