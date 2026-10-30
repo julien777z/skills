@@ -467,7 +467,8 @@ how those issues are handled.
 - One focused pass means the correction needs no separate research or design phase and is not
   expected to require multiple implementation iterations.
 - Apply an owned API, protobuf, schema, payload, or stored-shape change selected by
-  `pre-production` without a second approval; update every consumer the user controls, in
+  `pre-production` without a second approval, once its **Target Contract** admits it without a
+  proposal; update every consumer the user controls, in
   whichever repository it lives, plus every generated artifact and required migration for the
   target contract.
 - Apply **Task Authorization** to encountered corrections. Ask only when the correction is a product

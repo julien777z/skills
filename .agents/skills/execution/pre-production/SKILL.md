@@ -168,8 +168,8 @@ with an obsolete owned contract or revision.
   reaching a store it never reached before, a permission finally applying where it always should have,
   a value newly shown to or withheld from someone — that is the user's decision, and the way to put
   it to them is to state it plainly and carry on with the work that does not depend on the answer.
-  A shape change to an owned contract is not one of those: it is made, with every consumer, and
-  stated in the pull request.
+  A shape change to an owned contract that **Target Contract** admits without a proposal is not one
+  of those: it is made, with every consumer, and stated in the pull request.
 - **Never quietly narrow the work to avoid the conversation.** Choosing the option that changes nothing
   is choosing the sloppier result on the user's behalf while hiding that a choice existed. Silence
   reads as "there was no decision to make".
@@ -177,7 +177,9 @@ with an obsolete owned contract or revision.
   which one removes the most duplication and leaves the fewest mechanisms behind**. Recommend that one.
   A fork only in how the code is built — where shared behavior lives, which mechanism replaces
   parallel copies — is decided by that same test and stated in the pull request, never put to the
-  user.
+  user. Converting existing instances that are not defective to a different shape is not such a
+  fork: it is proposed to the user, as the global rules' **A better shape is proposed, never swept
+  in** says.
   A fork between designs of what the reader sees is ranked by what serves the reader and the flow
   instead, as the global rules' standing-guidance bullet says of design rules.
   The user may take the trade-off or refuse it; they cannot weigh what they were not told.
@@ -221,7 +223,10 @@ with an obsolete owned contract or revision.
   the approval above. Third-party contracts remain governed by **Owned And Third-Party Contracts**.
 - Prefer a deliberate break to an owned API, wire, schema, payload, or stored shape when it
   materially simplifies the result. Update affected consumers and migrate retained data, then remove
-  the old shape; update every consumer and generated contract in the same change.
+  the old shape; update every consumer and generated contract in the same change. A break the
+  requested work or a defect requires is made without a question. One chosen only because another
+  shape would serve better, on a contract the work does not otherwise alter, is proposed to the user
+  first, as the global rules' **A better shape is proposed, never swept in** says.
 - **An owned contract stays owned across repositories.** A consumer in a sibling repository the
   user owns makes the break multi-repository work, never somebody else's decision; only a consumer
   outside the user's control freezes a shape. **Scope Follows The Defect** holds for a break as for
