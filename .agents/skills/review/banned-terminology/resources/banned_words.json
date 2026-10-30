@@ -84,6 +84,18 @@
       "why": "\"Source\" is an abstraction coined one level above the thing it names, so a reader cannot tell it means a git repository checked out beside the project rather than source code, a data source, or a package index."
     },
     {
+      "term": "relock",
+      "variants": [
+        "re-lock",
+        "relocks",
+        "relocked",
+        "relocking"
+      ],
+      "applies_to": "any identifier, workflow, job, step or script name, docstring, comment, test name, pull request, or message to the user",
+      "use_instead": "Name the command that rewrites the lock: a `poetry-lock` workflow or job, a `poetry_lock.py` script, \"run `poetry lock`\" or \"regenerate the lock\" in prose, and the same shape for any other package manager's lock command. For taking a held lock again, \"acquire the lock again\".",
+      "why": "\"Relock\" reads as locking something again, so the reader cannot tell a lockfile rewrite from re-taking a held lock, and it names no tool; the command name says which tool runs and what it writes."
+    },
+    {
       "term": "require",
       "variants": [
         "required",

@@ -183,7 +183,7 @@ recovery, review and source-restoration procedure.
 
 ### Follow-Ups
 
-Classify each source or product follow-up under **When A Plan Is Needed** before preparing a plan. A small, clearly specified follow-up executes on the user's request; only a follow-up outside that exception needs its own plan. A canonical guidance correction follows **When A Plan Is Needed** and does not wait for approval; while a guidance batch is in flight it waits for the next batch, as `edit-skill`'s **Recording During A Task** says. **Priority** decides when other follow-ups run and whether affected work pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
+Classify each source or product follow-up under **When A Plan Is Needed** before preparing a plan. A small, clearly specified follow-up executes on the user's request; only a follow-up outside that exception needs its own plan. A canonical guidance correction follows **When A Plan Is Needed** and does not wait for approval; while a guidance batch is in flight it joins that batch, as `edit-skill`'s **Recording During A Task** says. **Priority** decides when other follow-ups run and whether affected work pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
 
 - **One that touches nothing in flight** — other files, another outcome — leaves the running work
   going. It gets a plan only when **When A Plan Is Needed** calls for one, and runs beside that work once any required approval is present and
@@ -859,11 +859,11 @@ Two streams run side by side from here: the guidance stream and the source strea
   `guidance_correction` batch it freezes to `edit-skill`'s **Guidance Delivery** route, delegated
   so it never waits on the source stream. Before a source pull request's source-stream step 1,
   every pending `guidance_correction` entry the GitHub rule's **Branches and Pull Requests** puts
-  on it, in the batch in flight or waiting for the next one, is pushed to it and passes its source
-  check and smoke round, as **Guidance Delivery** step 1 says, so its review pass, history and
-  ready message cover them. An entry waiting for the next batch is delivered only once the batch in
-  flight is done, so the source stream then waits for that batch too, and for nothing else before
-  step 1. A repair step 1's review pass makes to such an entry's wording repeats that entry's smoke
+  on it, in the batch in flight or the one after it, is pushed to it and passes its source check and
+  smoke round, as **Guidance Delivery** step 1 says, so its review pass, history and ready message
+  cover them. An entry recorded after the batch in flight merged is delivered in the batch frozen
+  once that one is done, so the source stream then waits for that delivery too, and for nothing
+  else before step 1. A repair step 1's review pass makes to such an entry's wording repeats that entry's smoke
   round on the repaired head before step 2. A task with none has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:

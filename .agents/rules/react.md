@@ -230,6 +230,14 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Keep implementation out of the interface.** Storage, masking, hashing, background jobs, retries
   and the names of internal states belong in the code. A description says what the field is for and
   what the reader should put in it, in the words they would use themselves.
+- **Copy never hands the reader a workaround for the implementation.** No message tells the reader
+  to reload or refresh the page, sign out and back in, or clear their cache to get past what the
+  product should have done itself. When an action reveals that the page shows stale data, such as a
+  request refused because the item it targets has changed since the page loaded, the page fetches
+  the current data itself — in the background, as a transition that keeps the settled view under
+  **Shared Surfaces** on screen with no skeleton and no full reload, or through a refresh control
+  where an automatic update would move content under the reader — and the message states only the
+  condition, such as "This playlist was deleted."
 - **Every section, every step of a flow and every dialog carries a one-sentence description under
   its own heading, inside its surface** — two on a flow's first step, as **A flow starts at its
   first question** below allows — saying what the reader does there, what the section holds, or why
@@ -277,7 +285,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   confirm", which reads as a penalty. Words such as blocked, locked, denied, stay or until frame a
   pending step as a punishment; keep them for a refusal the reader can do nothing about. A status
   label or badge is not such a sentence: it names the state plainly, as the status bullet above
-  says.
+  says. A notice only the product's own team reads states the condition and its values instead, as
+  the global rules' **Product Copy** says.
 
 ### Confirmation Dialogs
 
