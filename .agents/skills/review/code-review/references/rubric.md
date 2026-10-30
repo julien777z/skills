@@ -54,7 +54,8 @@ Assign severity by realistic trigger likelihood, not the worst imaginable outcom
 - **Critical** — data loss, security or auth bypass, crash, or broken core behavior.
 - **High** — likely defect in normal use.
 - **Medium** — real but conditional, narrowly scoped, recoverable, or limited in impact.
-- **Low** — valid minor or rare-edge issue. Keep at most the three most important.
+- **Low** — valid minor or rare-edge issue. Keep at most the three most important, except that
+  every `security` finding that survives validation is kept, as `pre-production` requires.
 
 Reserve High for failures common in normal use. Prefer a short, high-confidence result over exhaustive speculation.
 

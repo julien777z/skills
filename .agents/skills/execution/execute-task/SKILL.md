@@ -18,7 +18,7 @@ are validated by their evidence, smoke-test, review, and acceptance gates.
 - `run-site` — select browser verification applicability before proposing it in a plan or brief.
 - `code-simplify` — the pass over each finished plan step and delegated worker task, and the ownership analysis a plan settles.
 - `review-pass` — review, simplify and fix the finished task's unreviewed changes before delivery.
-- `acceptance-gate` — judge each finished plan step's and worker task's diff before later work builds on it, the finished task's complete diff before local completion, before the pull request is sent for review and before it merges, and each fix for a flag it raises.
+- `acceptance-gate` — judge each finished plan step's and worker task's diff before later work builds on it, the finished task's complete diff before local completion, before the pull request is sent for review and before it merges, and each fix for a flag it raises that its **Bounds** do not leave to an in-process check.
 - `generic-push` — keep each repository's publishing metadata independent during multi-repository changes.
 - `merge-conflict` — bring in a conflicting base as soon as a push read-back shows it.
 - `subagent-matrix` — the hand-up a worker without an agent tool uses for an independent step.
@@ -550,7 +550,8 @@ commits that `lock-revision`'s **After Locking** hold keeps local until the user
 resume. `code-simplify` and `acceptance-gate`'s diff question do not run per push; **Ongoing
 Simplification** sets when they run. A fix pushed for a flag a gate or review raised gets one fresh
 `acceptance-gate` run over that fix's increment, read with the whole branch diff as its originating
-diff, as `acceptance-gate`'s **Bounds** require; that fresh verdict is what other skills mean by an
+diff, unless it is a small repair, as `acceptance-gate`'s **Bounds** define one, which the agent that
+made it checks in process; that fresh verdict, or that recorded check, is what other skills mean by an
 increment's **Pre-Push Gate** verdict.
 
 Read the shared testing rule before planning test runs or briefing an implementation worker.

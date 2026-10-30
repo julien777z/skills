@@ -1,6 +1,6 @@
 ---
 name: acceptance-gate
-description: Required checkpoint over an authorized change's complete diff before local completion, draft readiness or merge; run as a workflow dependency without a separate user invocation. Passing tests or the author's own review never substitute for its verdict. Judge an issue, finding, proposal or diff against product state, intent and the quality rubric through a read-only subagent, or in process when it cannot launch. Run over each finished plan step or worker task before later work builds on it, for triage, before recording a deferral, before and after fixing or resolving one, after base incorporation, and on a fix for a gate or review flag.
+description: Required checkpoint over an authorized change's complete diff before local completion, draft readiness or merge; run as a workflow dependency without a separate user invocation. Passing tests or the author's own review never substitute for its verdict. Judge an issue, finding, proposal or diff against product state, intent and the quality rubric through a read-only subagent, or in process when it cannot launch. Run over each finished plan step or worker task before later work builds on it, for triage, before recording a deferral, before and after fixing or resolving one, after base incorporation, and on a fix for a gate or review flag larger than a small repair.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 
@@ -86,7 +86,8 @@ other hosts. Dispatch the gate with that exact identifier, and retain catalogue 
 state and host receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. It
 receives five things and nothing else:
 
-1. the intent statement;
+1. the intent statement, carrying every decision the task has recorded that the item's subject
+   touches, with the user's words, so earlier settled behaviour is not judged as new;
 2. the originating diff, with its deletions first; for a Proposal before implementation when no
    change is in flight, explicitly declare that no implementation diff exists and name the current
    source snapshot instead; every Diff, Final acceptance and Base incorporation still requires its
@@ -113,7 +114,9 @@ near-duplicate names, dead or speculative code, hand-written configuration or st
 owner exists. The list illustrates the question and never bounds it. A rubric exemption that would
 excuse such a shape is named in the flag. A remedy that sends the author to an existing piece judges
 that piece the same way first: a wrapper or a duplicate is not an owner. An increment fixing an
-earlier flag is read the same way, over the modules it touches, never only against that flag.
+earlier flag is read the same way, over the modules it touches, never only against that flag; the
+rest of the originating diff, which the earlier gate judged, is context, re-judged only where the
+increment changes what it depends on.
 
 **Then make the design comparison.** Inventory the responsibilities and decisions the diff moves,
 duplicates, specializes, removes or introduces, reading both sides independently of the caller's
@@ -235,9 +238,24 @@ under the GitHub rules on branch ownership, and its resolved result is theirs to
 The gate is never advisory; the rubric says what each disposition binds the caller to.
 
 A flag blocks the flagged proposal or diff, not an ordinary repair the task already authorizes.
-Read its concrete objection and remedy against the intent and standing guidance, make the smallest
+Before admitting a flag, check it against the task's recorded decisions and the commit that
+introduced the behaviour it names. A flag that reopens a behaviour choice a recorded decision or an
+earlier accepted step settled, or that asks for work outside the scope the user set, is answered as
+settled or out of scope with that evidence; it is never repaired and never put to the user as a
+question. A confirmed defect or a security vulnerability is never settled this way, whatever an
+earlier step accepted: it is repaired as below.
+Read every other objection and remedy against the intent and standing guidance, make the smallest
 coherent repair using the existing owner or mechanism, and send the changed increment with the
 whole originating diff to a fresh independent gate, following `subagent-matrix`'s **Dispatch**.
+
+**A small repair is checked in process instead.** A repair is small when it changes about 30 lines or
+fewer and carries out the remedy the flag names without settling a design, product or security
+choice of its own. The agent that made it re-reads the changed lines against the flag's objection and
+remedy, runs the checks covering that code, and records the result with the flag; no fresh gate or
+worker is started for it. It still counts as one of the flag's repair rounds, and the next gate over
+the step or the complete diff is the independent acceptance covering its resolution. A larger repair,
+one that settles such a choice, or one the in-process check cannot settle goes to a fresh gate as
+above.
 
 **Repair rounds are counted per objection.** A flag gets at most two repair rounds of its own; one a
 fresh gate raises for the first time starts at zero and is repaired like any other, whatever round
@@ -249,8 +267,14 @@ report names.
 
 Never rerun an unchanged item hoping for acceptance, argue it through the same gate, rename it to
 reset its history, or keep flagged code because the caller can authorize its merge. Carry unresolved
-objections and previous remedies into the next review. If evidence refutes an objection, send that
+objections and previous remedies into the next review; a remedy that reverses one given earlier
+names it and the evidence it was wrong. If evidence refutes an objection, send that
 evidence to a fresh gate for an explicit disposition; the caller cannot dismiss it unilaterally.
+
+When the intent statement already schedules a flag's remedy as named work with its owner, such as
+a consumer's migration on its own pull request, the gate reports it as a hold on the merge that
+work must precede, not a flag on the step, and it counts no repair round. The hold stays until that
+work is accepted.
 
 When no compliant repair is available, name the conflict and the smallest native repair examined.
 Apply the rubric's triage and admission tests before reverting, recording, or re-scoping any work;
