@@ -447,8 +447,8 @@ return records;
   identifiers, fields, messages, documentation and test names in every language.
 - **A Boolean's name says what it is true of.** The receiver or argument is what the statement is
   about, and a verb that acts on something names that thing in the name: `invoice.is_overdue`,
-  `can_send(message)`, `report.exports_to_file`, never `exports(report)`, whose reader asks
-  "exports where?". A name a framework or protocol defines keeps its own spelling.
+  `is_deliverable(message)`, `job.writes_files`, never `writes(job)`, whose reader asks "writes
+  what?". A name a framework or protocol defines keeps its own spelling.
 - Name things for the shape being exercised, not for whichever caller happened to prompt the work.
   A test needing a table with a secret column names it for that — a record with a secret — rather
   than borrowing the one real table the change was made for.
