@@ -416,9 +416,9 @@ return records;
   above", and never links to the page it sits on. It names the thing the control acts on, never
   quotes a label that is already an instruction into a sentence that gives its own: a switch
   labelled "Enable offline mode" is "Turn on offline mode", never "Turn on Enable offline mode".
-- **A refusal is a short, friendly request for the reader's next step**, such as "This email
-  cannot be used. Please use a different email." It says what to do rather than passing a verdict
-  on what was done or on the reader, as "You can't use this email address." does, and it never
+- **A refusal is a short, friendly request for the reader's next step**, such as "This library
+  card cannot be used. Please use a different card." It says what to do rather than passing a
+  verdict on what was done or on the reader, as "You can't use this library card." does, and it never
   repeats back what the reader just entered or chose — a file name, a typed value, a picked item —
   which they already know. It holds wherever the message is written: an API's or a tool's error
   message, a server-side enum or constant that holds the text, a test fixture, and wording a brief

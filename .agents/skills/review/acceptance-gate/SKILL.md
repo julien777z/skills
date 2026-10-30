@@ -239,9 +239,11 @@ The gate is never advisory; the rubric says what each disposition binds the call
 
 A flag blocks the flagged proposal or diff, not an ordinary repair the task already authorizes.
 Before admitting a flag, check it against the task's recorded decisions and the commit that
-introduced the behaviour it names. A flag that reopens behaviour a recorded decision or an earlier
-accepted step settled, or that asks for work outside the scope the user set, is answered as settled
-or out of scope with that evidence; it is never repaired and never put to the user as a question.
+introduced the behaviour it names. A flag that reopens a behaviour choice a recorded decision or an
+earlier accepted step settled, or that asks for work outside the scope the user set, is answered as
+settled or out of scope with that evidence; it is never repaired and never put to the user as a
+question. A confirmed defect or a security vulnerability is never settled this way, whatever an
+earlier step accepted: it is repaired as below.
 Read every other objection and remedy against the intent and standing guidance, make the smallest
 coherent repair using the existing owner or mechanism, and send the changed increment with the
 whole originating diff to a fresh independent gate, following `subagent-matrix`'s **Dispatch**.
