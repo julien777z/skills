@@ -168,8 +168,8 @@ with an obsolete owned contract or revision.
   reaching a store it never reached before, a permission finally applying where it always should have,
   a value newly shown to or withheld from someone — that is the user's decision, and the way to put
   it to them is to state it plainly and carry on with the work that does not depend on the answer.
-  A shape change to an owned contract that **Target Contract** admits is not one of those: it is
-  made, with every consumer, and stated in the pull request.
+  A shape change to an owned contract that **Target Contract** admits without a proposal is not one
+  of those: it is made, with every consumer, and stated in the pull request.
 - **Never quietly narrow the work to avoid the conversation.** Choosing the option that changes nothing
   is choosing the sloppier result on the user's behalf while hiding that a choice existed. Silence
   reads as "there was no decision to make".

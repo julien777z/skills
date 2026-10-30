@@ -282,8 +282,10 @@ ends the question.
    Size is not that arguability and never stands in for it. The test is a question somebody could
    answer differently, so a conversion repeated across a hundred call sites is long rather than
    arguable and the number of files it touches decides nothing. A conversion of existing instances
-   to a better shape that no defect or requirement owes is such a question, and the user's: triage
-   returns it as a fork put to the user now, never as do. Incidental work past
+   to a better shape that no defect or requirement owes is the user's decision whatever its size:
+   triage returns defer on that ground alone, naming the fork — the shape, every instance it would
+   convert, the size of that change and the recommendation — which the caller puts to the user now;
+   it is built only at the scope the user approves, never returned as do. Incidental work past
    `pre-production`'s size budget never reaches this test: it is listed in the change's report, not
    deferred or done. Nor are the size and shape of the
    work inputs the gate may take on trust: "large", "not mechanical", "each site needs its own
