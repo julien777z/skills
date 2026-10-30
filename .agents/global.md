@@ -385,6 +385,12 @@ return records;
   or tool requires to stand alone — a component module, a migration revision, a page or workflow
   found by its path — is not this case.
 
+- **The repository does one thing one way.** Before writing code of a kind it already holds, such
+  as a router, a client or a fixture, read how the existing instances are written and follow that
+  shape. A case that seems to need a different shape either converts every existing instance to it
+  in the same change or keeps the existing shape: a new pattern beside the old one reads as bespoke
+  however good it is, and a reviewer meeting it has to learn two ways to do the same thing.
+
 - A bootstrap or setup folder holds its entrypoint and, when needed, its configuration file at
   its root. Supporting scripts, modules, and data files go in its `resources/` folder; configuration
   stays beside the entrypoint rather than among those helpers.
