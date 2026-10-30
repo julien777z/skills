@@ -16,6 +16,11 @@ its connections listed as text when Mermaid cannot load. The page is dark unless
 is explicitly set to light (`data-theme="light"` on the root element), folds the page links into a
 menu below 1024 px, and renders every value as text, so data never runs as markup or script.
 
+## Dependencies
+
+- `use-browser` — open the page in the user's browser, and reload it after each change, when no tool
+  publishes it.
+
 ## Spec
 
 Top level: `title`, `icon`, `updated_at` (ISO 8601) and `pages` are required. The navbar shows
@@ -135,15 +140,14 @@ Dashboards look alike because they are built alike:
    its publishing tool reads only there.
 2. Run `python3 -B scripts/render.py --input <spec.json> --output <page.html>`, resolving `scripts/`
    from this skill's directory; `-B` keeps the run from writing bytecode into the skill. Add
-   `--fragment` when the host wraps the page in its own document, as the publishing route below
-   says. The script prints the written path, or names the first field
+   `--fragment` when the publishing tool wraps the page in its own document, as **Delivery** says. The script prints the written path, or names the first field
    that does not match the spec and exits non-zero; fix the spec and run it again.
    The first render after the app changes builds it with npm into the user cache directory
    (`$XDG_CACHE_HOME/use-dashboard`, or `~/.cache/use-dashboard`), which needs Node.js 20 or newer,
    npm and access to the npm registry, and takes up to a minute; later renders reuse that build. A
    failed build exits non-zero with npm's output.
-3. Keep one output path per dashboard, so each render replaces the last and republishes to the same
-   page.
+3. Keep one output path per dashboard, so each render replaces the last and updates the same
+   published page or browser tab.
 
 Change a delivered dashboard only by re-rendering its whole spec, never by editing the page's
 HTML, which skips the renderer's validation. Change the page itself only in `app/`: its shadcn
@@ -156,21 +160,23 @@ app.
 
 Every render the user is shown goes out through this section, including a preview, a sample, or a
 test of a change to the page: a screenshot of a render is a capture of the page, never its delivery.
-Use the first route the host offers, and the same one for every update of one dashboard.
+Use the first route the session offers, and the same one for every update of one dashboard.
 
-1. **A tool that publishes an HTML page to a link**, such as Claude's Artifact tool, whenever the
-   host offers one. Render with `--fragment` and publish that file as a plain page, never through a
-   page type the host offers for dashboards, so every dashboard keeps this template. Follow the
-   tool's own instructions for its icon and description, and give the user the link.
-   - **One artifact per dashboard.** Before publishing, look for the link already published for
-     this dashboard's purpose, in the caller's task state or earlier in the session. When there is
-     one, republish to it: the same file path within the session, or the link itself from another
-     one. A dashboard that changes its look, its data, or both is still the same dashboard; only a
-     dashboard with a different purpose gets a new artifact.
+1. **A tool that publishes an HTML page for the user to open**, such as an artifact tool, whenever
+   the harness offers one. Render with `--fragment` when the tool wraps the file in its own document
+   skeleton, and the full page otherwise. Publish it as a plain page, never through a page type the
+   tool offers for dashboards, so every dashboard keeps this template. Follow the tool's own
+   instructions for its icon and description, and give the user the link.
+   - **One published page per dashboard.** Before publishing, look for the link already published
+     for this dashboard's purpose, in the caller's task state or earlier in the session. When there
+     is one, publish the update to it. A dashboard that changes its look, its data, or both is still
+     the same dashboard; only a dashboard with a different purpose gets a new page.
    - Record each new link where the caller keeps task state, so the next render finds it.
-2. **A tool that sends a file to the user.** Send the full page.
-3. **Neither** — Codex, for example. Give the absolute path to the full page and the command that
-   opens it on the user's machine, such as `open <path>` on macOS or `xdg-open <path>` on Linux.
+2. **The user's own browser, through `use-browser`**, when no such tool exists and the user's browser
+   is within reach. Render the full page; with one path per dashboard, **Showing A Local Page**
+   reloads the tab it already opened instead of opening another.
+3. **Otherwise**, send the full page with a tool that sends a file to the user, or, with none, give
+   its absolute path.
 
 ## Guardrails
 
