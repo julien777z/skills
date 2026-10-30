@@ -285,7 +285,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   confirm", which reads as a penalty. Words such as blocked, locked, denied, stay or until frame a
   pending step as a punishment; keep them for a refusal the reader can do nothing about. A status
   label or badge is not such a sentence: it names the state plainly, as the status bullet above
-  says.
+  says. A notice only the product's own team reads states the condition and its values instead, as
+  the global rules' **Product Copy** says.
 
 ### Confirmation Dialogs
 
