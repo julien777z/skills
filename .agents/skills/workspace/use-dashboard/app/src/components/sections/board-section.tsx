@@ -20,7 +20,9 @@ function Column({ column }: { column: BoardColumn }): ReactNode {
           <RichText text={column.title} />
         </Text>
         <Stack direction="row" justify="end" grow>
-          <StatusBadge label={String(column.items.length)} dot={false} />
+          <Text size="sm" tone="muted" numeric>
+            {column.items.length}
+          </Text>
         </Stack>
       </Stack>
       {!column.items.length && (

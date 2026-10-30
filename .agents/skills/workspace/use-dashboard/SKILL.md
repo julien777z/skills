@@ -121,7 +121,8 @@ Dashboards look alike because they are built alike:
   a diff, a pull request, a document's section or a page of a site, goes in `links` with a URL that
   opens it at that exact place: a permalink to the line or range at the commit that was read, or the
   pull request's diff for that file. A path or line number written into `detail` or `meta` is not a
-  source the reader can open.
+  source the reader can open, and a branch, commit, pull request or file a sentence names takes a
+  `references` entry so the mention itself is a link.
 - **Times are timestamps.** A moment goes in `at` as a timestamp, never as a clock time written into
   text, so every reader sees it in their own timezone.
 - **Text is plain.** Titles say what is true in a few words; `detail` explains in a sentence or two

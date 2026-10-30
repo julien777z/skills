@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react';
-
+import { Text } from '@/components/primitives';
 import { RichText } from '@/components/rich-text';
-import { StatusBadge } from '@/components/status-badge';
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
@@ -37,7 +36,9 @@ export function SectionCard({
         )}
         {count && (
           <CardAction>
-            <StatusBadge label={count} dot={false} />
+            <Text size="sm" tone="muted" numeric>
+              {count}
+            </Text>
           </CardAction>
         )}
       </CardHeader>
