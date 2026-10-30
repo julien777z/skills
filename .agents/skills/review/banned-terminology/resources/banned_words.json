@@ -42,7 +42,7 @@
         "engagements"
       ],
       "applies_to": "repository-owned identifiers, docstrings, comments, test names, interface copy, and the rules and skills agents read, but not a legal document's defined terms, which are a drafting decision rather than a name",
-      "use_instead": "Say what happens. A party \"pays\" another, \"adds\" one, or \"works with\" one; the row linking two parties is named for what it records; a mechanism \"applies\", \"takes effect\", or \"fires\".",
+      "use_instead": "Say what happens. One side \"pays\" the other, \"adds\" one, or \"works with\" one; the row linking the two is named for what it records; a mechanism \"applies\", \"takes effect\", or \"fires\".",
       "why": "It names no action a reader can picture: the same word covers hiring somebody, paying them, and a mechanism switching on. On a control it reads as a formality rather than the thing the control does, so the reader cannot tell what clicking it will change."
     },
     {
@@ -65,6 +65,15 @@
       "applies_to": "work handed to a worker",
       "use_instead": "`claim`, `claimed_job`, or `ClaimedJob`. Reserve \"lock\" for lock ownership and expiry.",
       "why": "\"Lease\" blurs the handoff with the lock that protects it."
+    },
+    {
+      "term": "party",
+      "variants": [
+        "parties"
+      ],
+      "applies_to": "any identifier, docstring, comment, test name, wire contract or stored value, except first-party, third-party and counterparty in any spelling (`third party`, `third_party`, `ThirdParty`)",
+      "use_instead": "Name the role the value plays: who owns a record is an owner type (`OwnerType`, `owner_type`); who wrote a document is its `author`; one side of a contract is named for that side, such as `buyer`, `seller` or `signer`.",
+      "why": "\"Party\" can mean a record's owner, a document's author or either side of a contract, so a value named for it leaves the reader guessing which role it plays."
     },
     {
       "applies_to": "repository-owned identifiers, package and module names, docstrings, comments, test names, file and directory names, workflow step names, documentation, and the pull requests and messages written to the user",
