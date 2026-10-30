@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: Apply target-contract constraints to every implementation and review task, including tooling and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply to relevant CI failures after validation classification.
+description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including maintenance, cleanup, tooling, and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply to relevant CI failures after validation classification.
 short_description: 'Apply target-contract constraints to implementation and review tasks.'
 ---
 
@@ -19,6 +19,12 @@ Build the clean target contract instead of preserving transitional behavior.
   valuable stored evidence exist. Apply an explicit statement that affected data is nonexistent or
   disposable; ask only about a concrete conflicting fact or a genuinely unresolved retention choice.
   Do not invent a production environment or require queries against one to confirm that statement.
+- **Operational safeguards enforce evidenced requirements.** Before adding an execution limit,
+  preservation step, or restriction to authorized work, identify the user or repository requirement,
+  service contract, or observed resource risk it enforces. A remote environment, a large dataset, or
+  a hypothetical production concern alone supplies none. Do not invent a cutoff or reduce the
+  requested outcome on that basis; carry out the authorized work and verify it. Preserve limits
+  required by an established contract, and handle measured failures under **Encountered Issues**.
 - Migrate affected users and retained data onto the target contract before removing the old one.
   Release state changes the migration work; it does not by itself justify a legacy runtime path.
 
