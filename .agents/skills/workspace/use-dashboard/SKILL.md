@@ -7,27 +7,29 @@ short_description: 'Turn a dashboard spec into the shared HTML page and deliver 
 # Use Dashboard
 
 A caller describes its dashboard as a JSON spec; [scripts/render.py](scripts/render.py) validates it
-and fills [assets/dashboard.html](assets/dashboard.html), with
-[assets/diagram.js](assets/diagram.js) inlined, into one page with no build step; its web font loads
-from Google Fonts and falls back to system fonts, and a diagram is drawn by Mermaid, loaded from
-jsDelivr, with its connections listed as text when Mermaid cannot load. The page is dark unless the
-host's viewer is explicitly set to light, lays out wide on a desktop and stacks on a phone, and
-renders every value as text, so data never runs as markup or script.
+and fills the page built from [app/](app/), a React app on Tailwind CSS and shadcn/ui laid out as
+shadcn's standard dashboard: a collapsible sidebar listing the pages, a header naming the open page,
+a row of stat cards, and each section in its own card. Every dashboard gets that layout without the
+caller writing any markup. The page is one self-contained file; its web font loads from Google
+Fonts and falls back to system fonts, and a diagram is drawn by Mermaid, loaded from jsDelivr, with
+its connections listed as text when Mermaid cannot load. The page is dark unless the host's viewer
+is explicitly set to light (`data-theme="light"` on the root element), collapses the sidebar into a
+drawer on a phone, and renders every value as text, so data never runs as markup or script.
 
 ## Spec
 
-Top level: `title`, `updated_at` (ISO 8601) and `pages` are required. The page heading shows
-`title`; the page's own name, which a browser tab or a published link shows, is always
-`Dashboard - <title>`. Every other field is optional, and an absent one leaves its part of the page
-out.
+Top level: `title`, `updated_at` (ISO 8601) and `pages` are required. The sidebar shows `title`
+with how long ago `updated_at` was, and the header shows the open page's title; the page's own
+name, which a browser tab or a published link shows, is always `Dashboard - <title>`. Every other
+field is optional, and an absent one leaves its part of the page out.
 
 | Field | Shape |
 | --- | --- |
-| `subtitle` | One line under the title. |
-| `status` | `{label, tone?}`: the pill beside the title. |
-| `progress` | `{value: 0–1, label, detail?, segments?}`: the large percentage and its bar. `segments` is `[{label, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1; without `segments` the bar is a plain fill. |
-| `metrics` | `[{label, value, detail?}]`: up to four figures beside the progress. |
-| `pages` | `[{title, layout?, sections}]`: with more than one, a tab bar switches between them, and the progress and metrics show on the first. `sections` render in order; with `layout` `columns`, the default, boards, tables and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
+| `subtitle` | One line at the top of every page. |
+| `status` | `{label, tone?}`: the badge at the right of the header. |
+| `progress` | `{value: 0–1, label, detail?, segments?}`: a stat card twice as wide as the others, with the percentage, `detail` as its badge, and a bar. `segments` is `[{label, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1; without `segments` the bar is a plain fill. |
+| `metrics` | `[{label, value, detail?}]`: up to four stat cards beside the progress, `detail` under the figure. |
+| `pages` | `[{title, icon?, layout?, sections}]`: one sidebar entry each, the progress and metrics showing on the first. `icon` is one of `overview`, `list`, `chart`, `diagram`, `document`, `shield`, `people`, `data`, `settings`, `alert`, `check` or `calendar`; without it the first page shows `overview` and the rest `document`. `sections` render in order; with `layout` `columns`, the default, callouts, boards, tables, outlines and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
 | `references` | `[{text, url}]`: every whole-word occurrence of `text` in the page's own text becomes a link to `url`. |
 
 `tone` is `good`, `warning`, `critical`, `accent` or `done`, a purple for finished work; omit it
@@ -41,7 +43,8 @@ for neutral. Section types:
 | `table` | `title`, `columns`, `rows` | each row a list of strings, one per column |
 | `notes` | `title`, `items` | each item a string |
 | `changes` | `title`, `items`, `page_size?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`: a named part with its change as a colored badge |
-| `outline` | `title`, `groups: [{title, items}]` | `title`, `detail`, `tone?`: a headline that opens to its detail; a group of one or two items shows them open |
+| `outline` | `title`, `groups: [{title, items}]` | `title`, `detail`, `tone?`, `tag?`, `meta?`: a headline that opens to its detail, with `tag` as a badge in the item's tone and `meta` as small text such as a source; a group of one or two items shows them open |
+| `callout` | `title`, `body`, `tone?` | — : a banner across the page with an icon for its tone, for the one thing the reader must see first |
 | `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?` | node: `id`, `label`, `detail?`, `pr?`, `change?`; edge: `from`, `to`, `label?`, `step?`, `change?`; pr: `ref`, `url`; each step a string |
 
 A diagram draws each node as a box inside a frame titled with the `ref` its `pr` names, and each
@@ -76,6 +79,23 @@ to show is left out, and so is the entry that requires it. A URL renders as a li
 }
 ```
 
+## Making A Dashboard
+
+Dashboards look alike because they are built alike:
+
+- **First page, the answer.** Open on the page that tells the reader where things stand: the
+  `progress` and `metrics` stat cards, then a `callout` when one thing needs them now, then the
+  detail. Later pages go deeper on one subject each, named for it and given a fitting `icon`.
+- **Pick the section by the reader's question.** Where is each item? `board`. What needs my answer?
+  `questions`. Where do I click? `links`. What does each part say, in a sentence I can open?
+  `outline`. What was added or removed? `changes`. Values across the same columns? `table`. Short
+  remarks? `notes`. How do the parts connect? `diagram`.
+- **Tone means the same everywhere.** `good` is fine or done, `warning` needs the reader's look or
+  action, `critical` is wrong or blocking, `accent` is in progress or informational, `done` is
+  finished work. Leave it out for neutral; never tone an item only to decorate it.
+- **Text is plain.** Titles say what is true in a few words; `detail` explains in a sentence or two
+  that reads without the source. Name a file, section or line in `meta`, never in the title.
+
 ## Render
 
 1. Write the spec to a JSON file in private task storage, outside every repository checkout, and
@@ -86,10 +106,17 @@ to show is left out, and so is the entry that requires it. A URL renders as a li
    `--fragment` when the host wraps the page in its own document, as the publishing route below
    says. The script prints the written path, or names the first field
    that does not match the spec and exits non-zero; fix the spec and run it again.
+   The first render after the app changes builds it with npm into the user cache directory
+   (`$XDG_CACHE_HOME/use-dashboard`, or `~/.cache/use-dashboard`), which needs Node.js 20 or newer,
+   npm and access to the npm registry, and takes up to a minute; later renders reuse that build. A
+   failed build exits non-zero with npm's output.
 3. Keep the output path stable for one dashboard, so each render replaces the last.
 
 Change a delivered dashboard only by re-rendering its whole spec, never by editing the page's
-HTML, which skips the renderer's validation; change the page itself only in this skill's assets.
+HTML, which skips the renderer's validation. Change the page itself only in `app/`: its shadcn
+components live in `app/src/components/ui/` and are added with the shadcn CLI, a spec field the app
+reads is declared in both `app/src/spec.ts` and `scripts/render.py`, and `npm run check` in `app/`
+type-checks and lints it.
 
 ## Delivery
 

@@ -1,18 +1,24 @@
+import fcntl
 import logging
+import os
+import shutil
+import subprocess
 from argparse import ArgumentParser
 from collections.abc import Callable
 from datetime import datetime
 from enum import StrEnum
 from functools import partial
+from hashlib import sha256
 from html import escape
+from html.parser import HTMLParser
 from json import JSONDecodeError, dumps, loads
 from pathlib import Path
-from textwrap import indent
 from typing import Final, cast
 
 from models import (
     Change,
     ObjectShape,
+    PageIcon,
     PageLayout,
     PullRequestState,
     QuestionStatus,
@@ -22,10 +28,10 @@ from models import (
 
 logger = logging.getLogger(__name__)
 
-SKILL_ROOT: Final[Path] = Path(__file__).resolve().parent.parent
-TEMPLATE_PATH: Final[Path] = SKILL_ROOT / "assets" / "dashboard.html"
-DIAGRAM_SCRIPT_PATH: Final[Path] = SKILL_ROOT / "assets" / "diagram.js"
-DIAGRAM_PLACEHOLDER: Final[str] = "__DIAGRAM_SCRIPT__"
+APP_ROOT: Final[Path] = Path(__file__).resolve().parent.parent / "app"
+APP_BUILD_OUTPUTS: Final[frozenset[str]] = frozenset({"node_modules", "dist"})
+APP_LOCKFILE: Final[str] = "package-lock.json"
+CACHE_ROOT: Final[Path] = Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache") / "use-dashboard"
 DATA_PLACEHOLDER: Final[str] = "__DASHBOARD_DATA__"
 TITLE_PLACEHOLDER: Final[str] = "__DASHBOARD_TITLE__"
 PAGE_TITLE_TEMPLATE: Final[str] = "Dashboard - {title}"
@@ -37,6 +43,46 @@ DOCUMENT_PREAMBLE: Final[str] = (
 
 class DashboardSpecError(ValueError):
     """Raised when a dashboard spec does not match the documented shape."""
+
+
+class DashboardBuildError(RuntimeError):
+    """Raised when the dashboard app cannot be built."""
+
+
+class DocumentParts(HTMLParser):
+    """Offsets of a built page's head and body contents."""
+
+    def __init__(self, source: str) -> None:
+        super().__init__(convert_charrefs=False)
+
+        self.line_starts = [0]
+        self.offsets: dict[str, int] = {}
+
+        for line in source.splitlines(keepends=True):
+            self.line_starts.append(self.line_starts[-1] + len(line))
+
+        self.feed(source)
+        self.close()
+
+    def position(self, after_tag: bool) -> int:
+        """Return the parser's offset, after the tag just read when asked."""
+
+        line, column = self.getpos()
+        offset = self.line_starts[line - 1] + column
+
+        return offset + len(self.get_starttag_text() or "") if after_tag else offset
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        """Record where the head and body contents start."""
+
+        if tag in {"head", "body"} and f"{tag}_start" not in self.offsets:
+            self.offsets[f"{tag}_start"] = self.position(after_tag=True)
+
+    def handle_endtag(self, tag: str) -> None:
+        """Record where the head and body contents end."""
+
+        if tag in {"head", "body"}:
+            self.offsets[f"{tag}_end"] = self.position(after_tag=False)
 
 
 def check_text(value: object, path: str) -> None:
@@ -263,7 +309,7 @@ EDGE_SHAPE: Final[ObjectShape] = ObjectShape(
     required=frozenset({"from", "to"}),
 )
 OUTLINE_ITEM_SHAPE: Final[ObjectShape] = ObjectShape(
-    fields={"title": check_text, "detail": check_text, "tone": CHECK_TONE},
+    fields={"title": check_text, "detail": check_text, "tone": CHECK_TONE, "tag": check_text, "meta": check_text},
     required=frozenset({"title", "detail"}),
 )
 OUTLINE_GROUP_SHAPE: Final[ObjectShape] = ObjectShape(
@@ -290,6 +336,7 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
         {"groups": partial(check_objects, shape=OUTLINE_GROUP_SHAPE)},
         frozenset({"groups"}),
     ),
+    SectionType.CALLOUT: section_shape({"body": check_text, "tone": CHECK_TONE}, frozenset({"body"})),
     SectionType.TABLE: section_shape(
         {"columns": check_texts, "rows": check_rows},
         frozenset({"columns", "rows"}),
@@ -307,7 +354,12 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
     ),
 }
 PAGE_SHAPE: Final[ObjectShape] = ObjectShape(
-    fields={"title": check_text, "layout": CHECK_LAYOUT, "sections": check_sections},
+    fields={
+        "title": check_text,
+        "icon": partial(check_choice, choices=PageIcon),
+        "layout": CHECK_LAYOUT,
+        "sections": check_sections,
+    },
     required=frozenset({"title", "sections"}),
 )
 DASHBOARD_SHAPE: Final[ObjectShape] = ObjectShape(
@@ -353,17 +405,107 @@ def embed_dashboard_spec(spec: dict[str, object]) -> str:
     return serialized.replace("&", "\\u0026").replace("<", "\\u003c").replace(">", "\\u003e")
 
 
+def app_source_files() -> list[Path]:
+    """Return the dashboard app's source files, without its build outputs."""
+
+    return sorted(
+        path for path in APP_ROOT.rglob("*") if path.is_file() and not APP_BUILD_OUTPUTS.intersection(path.relative_to(APP_ROOT).parts)
+    )
+
+
+def digest_files(paths: list[Path]) -> str:
+    """Return one digest over the relative paths and contents of files in the app."""
+
+    digest = sha256()
+
+    for path in paths:
+        digest.update(str(path.relative_to(APP_ROOT)).encode("utf-8"))
+        digest.update(path.read_bytes())
+
+    return digest.hexdigest()[:16]
+
+
+def run_npm(arguments: list[str], workspace: Path) -> None:
+    """Run one npm command in the build workspace."""
+
+    npm = shutil.which("npm")
+
+    if npm is None:
+        raise DashboardBuildError("building the dashboard needs Node.js 20 or newer and npm on PATH")
+
+    result = subprocess.run([npm, *arguments], cwd=workspace, capture_output=True, text=True, check=False)
+
+    if result.returncode != 0:
+        raise DashboardBuildError(f"npm {' '.join(arguments)} failed:\n{result.stdout}{result.stderr}")
+
+
+def document_contents(page: str) -> str:
+    """Return a built page's head and body contents, without the document around them."""
+
+    offsets = DocumentParts(page).offsets
+    head = page[offsets["head_start"] : offsets["head_end"]].strip()
+    body = page[offsets["body_start"] : offsets["body_end"]].strip()
+
+    return f"{head}\n{body}\n"
+
+
+def build_template() -> str:
+    """Return the built dashboard page, building the app the first time its source changes."""
+
+    sources = app_source_files()
+    template_path = CACHE_ROOT / f"template-{digest_files(sources)}.html"
+    workspace = CACHE_ROOT / f"workspace-{digest_files([APP_ROOT / APP_LOCKFILE])}"
+
+    CACHE_ROOT.mkdir(parents=True, exist_ok=True)
+
+    with (CACHE_ROOT / ".lock").open("w") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+
+        if template_path.exists():
+            return template_path.read_text(encoding="utf-8")
+
+        logger.info("use-dashboard: building the dashboard app, which takes a minute the first time")
+
+        workspace.mkdir(exist_ok=True)
+
+        for source in sources:
+            target = workspace / source.relative_to(APP_ROOT)
+
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source, target)
+
+        if not (workspace / "node_modules").is_dir():
+            run_npm(["ci", "--no-audit", "--no-fund", "--loglevel=error"], workspace)
+
+        run_npm(["run", "build"], workspace)
+
+        template = document_contents((workspace / "dist" / "index.html").read_text(encoding="utf-8"))
+        partial_path = template_path.with_suffix(".partial")
+
+        partial_path.write_text(template, encoding="utf-8")
+        partial_path.replace(template_path)
+
+        for stale in CACHE_ROOT.glob("template-*.html"):
+            if stale != template_path:
+                stale.unlink()
+
+        for stale in CACHE_ROOT.glob("workspace-*"):
+            if stale != workspace:
+                shutil.rmtree(stale)
+
+        return template
+
+
 def render_dashboard(spec: object, fragment: bool) -> str:
     """Return the dashboard page for a spec."""
 
     dashboard = check_object(spec, "dashboard", DASHBOARD_SHAPE)
+    template = build_template()
 
-    diagram_script = indent(DIAGRAM_SCRIPT_PATH.read_text(encoding="utf-8"), "    ").strip()
-    template = TEMPLATE_PATH.read_text(encoding="utf-8").replace(DIAGRAM_PLACEHOLDER, diagram_script, 1)
     page = template.replace(DATA_PLACEHOLDER, embed_dashboard_spec(dashboard), 1)
     page = page.replace(TITLE_PLACEHOLDER, escape(PAGE_TITLE_TEMPLATE.format(title=dashboard["title"])), 1)
 
-    return page if fragment else DOCUMENT_PREAMBLE + page
+    return page if fragment else DOCUMENT_PREAMBLE + page + "</html>\n"
 
 
 def main() -> int:
@@ -386,7 +528,7 @@ def main() -> int:
     try:
         page = render_dashboard(loads(arguments.input.read_text(encoding="utf-8")), arguments.fragment)
         encoded_page = page.encode("utf-8")
-    except (OSError, JSONDecodeError, UnicodeError, DashboardSpecError) as error:
+    except (OSError, JSONDecodeError, UnicodeError, DashboardSpecError, DashboardBuildError) as error:
         logger.error("use-dashboard: %s", error)
 
         return 1

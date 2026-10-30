@@ -40,6 +40,7 @@ class SectionType(StrEnum):
     DIAGRAM = "diagram"
     OUTLINE = "outline"
     CHANGES = "changes"
+    CALLOUT = "callout"
 
 
 class PageLayout(StrEnum):
@@ -47,6 +48,23 @@ class PageLayout(StrEnum):
 
     COLUMNS = "columns"
     ROWS = "rows"
+
+
+class PageIcon(StrEnum):
+    """Icons a dashboard page shows beside its name in the sidebar."""
+
+    OVERVIEW = "overview"
+    LIST = "list"
+    CHART = "chart"
+    DIAGRAM = "diagram"
+    DOCUMENT = "document"
+    SHIELD = "shield"
+    PEOPLE = "people"
+    DATA = "data"
+    SETTINGS = "settings"
+    ALERT = "alert"
+    CHECK = "check"
+    CALENDAR = "calendar"
 
 
 class Change(StrEnum):
