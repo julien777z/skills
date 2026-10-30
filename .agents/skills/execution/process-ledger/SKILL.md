@@ -17,20 +17,26 @@ at their owners.
 
 ## Batches
 
-**One guidance batch is in flight at a time, frozen when its delivery starts.** A batch is in
-flight from its freeze until it is done: every entry in it has a verified delivery or a recorded
-hold. A held entry does not keep its batch in flight.
+**One guidance batch is in flight at a time.** It is frozen when its delivery starts, and an entry
+admitted while it is in flight joins it until its pull request merges. A batch is in flight from its
+freeze until it is done: every entry in it has a verified delivery or a recorded hold. A held entry
+does not keep its batch in flight.
 
 - **Freezing.** Mark with one batch id every `pending` `guidance_correction` entry that `edit-skill`'s
   **Recording During A Task** admits and that either carries no batch id or is held by a hold that
   has since resolved, which resumes at its recorded stage. That set is the batch. Record the run
   delivering it as its owner through `session-ledger`.
-- **While a batch is in flight**, an entry recorded then, the user asking to change a file the batch
-  is changing included, carries no batch id and waits for the next batch: the batch never takes it
-  in, reopens an edit for it, or reruns a reviewer, gate or smoke round because of it. A repair the
-  batch's own review, gate or smoke round requires is the batch's work under `acceptance-gate`'s
-  **Bounds** and `test-skill`, never a new entry. Only the user's explicit instruction to add an
-  entry to the batch in flight puts it there.
+- **While a batch is in flight and its pull request has not merged**, an entry admitted then, the
+  user asking to change a file the batch is changing included, takes the batch's id and its edit is
+  pushed to the batch's pull request. The batch reruns only the checks that edit invalidates and
+  keeps every verdict on what it left unchanged: the source check runs on the new head, the review
+  and acceptance gate judge the new increment alone, and the smoke round covers the new entry's
+  scenario and any entry whose wording the edit changed. A completed stage is not repeated for the
+  entries it already covers.
+- **Once the batch's pull request has merged**, an entry admitted then starts the next batch, frozen
+  when this one is done and delivered with its normal checks; the merged batch is never reopened.
+- A repair the batch's own review, gate or smoke round requires is the batch's work under
+  `acceptance-gate`'s **Bounds** and `test-skill`, never a new entry.
 - **A run that finds a batch in flight** freezes nothing. It leaves the batch to its owner while the
   owner's record shows it delivering and the owner is live; otherwise it takes ownership under
   `session-ledger`'s transfer rule and resumes the batch at its recorded first nonterminal stage.

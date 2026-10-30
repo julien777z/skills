@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. First carry out the requested action; only a verified success, or a direct guidance request in the user's words, is recorded in the session ledger and delivered as a guidance edit. While another task is active, every correction, a direct request to edit guidance included, is pushed to a draft guidance pull request and recorded, with a generic recovery comment there, and the rest of its delivery runs in bulk when that task completes; one arriving while a guidance batch is in flight waits, unedited, for the next batch. Deliver every behavior-changing guidance edit through `review-pass`, the acceptance gate, and `test-skill` before its pull request merges.
+description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. First carry out the requested action; only a verified success, or a direct guidance request in the user's words, is recorded in the session ledger and delivered as a guidance edit. While another task is active, every correction, a direct request to edit guidance included, is pushed to a draft guidance pull request and recorded, with a generic recovery comment there, and the rest of its delivery runs in bulk when that task completes; one arriving while a guidance batch is in flight joins that batch's pull request, which reruns only the checks the new edit invalidates. Deliver every behavior-changing guidance edit through `review-pass`, the acceptance gate, and `test-skill` before its pull request merges.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -99,36 +99,37 @@ During A Task** for the edit's timing.
 - When the action fails, is blocked, or cannot be verified, keep its evidence in the task's
   verification record and continue its recovery or escalation. Do not create, amend, or process a
   `guidance_correction` entry, and do not edit canonical guidance from that outcome.
-- Unless a guidance batch is in flight, write the edit in the checkout step 4 resolves, on the
-  branch step 7.1 selects, commit it, and push it to that branch's pull request once the **Pre-Push
-  Gate** passes, opening a draft when the branch has none; this holds for a source pull request step
-  7.1 selects as for an agent-configuration one. When the checkout holds the active task's
-  uncommitted or source-branch work, write and commit the edit from a separate worktree on the
-  selected branch, leave the task's tree untouched, and stage only the guidance files. Record the
-  branch, commit and pull request in the entry, then run `update-skills` at once so the installed
-  copy every agent loads, subagents included, carries the edit; agents still running hold no
-  refresh, since each skill is read through its link when it is used. Nothing else of delivery runs
-  while the task does: no review, gate, smoke round, merge or worker. A standing instruction about how guidance pull
-  requests are reviewed or merged governs that delivery when it runs, never when. A gate result that
-  arrives for a guidance pull request already open is recorded as its entry's stage result, and its
-  repair waits with the rest.
+- Write the edit in the checkout step 4 resolves, on the branch step 7.1 selects — the batch's own
+  branch while a batch is in flight and its pull request has not merged — commit it, and push it
+  to that branch's pull request once the **Pre-Push Gate** passes, opening a draft when the branch
+  has none; this holds for a source pull request step 7.1 selects as for an agent-configuration
+  one. When the checkout holds the active task's uncommitted or source-branch work, write and
+  commit the edit from a separate worktree on the selected branch, leave the task's tree
+  untouched, and stage only the guidance files. Record the branch, commit and pull request in the
+  entry, then run `update-skills` at once so the installed copy every agent loads, subagents
+  included, carries the edit; agents still running hold no refresh, since each skill is read
+  through its link when it is used. Nothing else of delivery runs while the task does: no review,
+  gate, smoke round, merge or worker, except the checks a batch in flight reruns for an edit that
+  joined it, as `process-ledger`'s **Batches** says. A standing instruction about how guidance
+  pull requests are reviewed or merged governs that delivery when it runs, never when. A gate
+  result that arrives for a guidance pull request already open is recorded as its entry's stage
+  result, and its repair waits with the rest.
 - **Every `guidance_correction` entry keeps one generic recovery comment on the pull request that
   carries its edit**, posted once the edit is pushed and kept current as the [ledger backup
   reference](references/ledger-backup.md) says. This skill authorizes that comment and its edits
   under the GitHub rule's **Comments**.
 - A related correction recorded before its batch is frozen joins the same entry or sits beside it
   in that batch; the batch is one pull request, apart from edits the GitHub rule puts on a source
-  pull request or holds for another repository. One recorded while a batch is in flight waits for
-  the next, as `process-ledger`'s **Batches** says: write none of its edit until that batch is
-  done, and tell the user it is queued behind the batch in flight.
+  pull request or holds for another repository. One recorded while a batch is in flight joins that
+  batch, and one recorded after the batch's pull request merged starts the next, as
+  `process-ledger`'s **Batches** says; tell the user which.
 - The task's next step is never held by a correction: record it and carry on.
 
 ## Guidance Delivery
 
 `process-ledger` invokes this route only for the batch of `guidance_correction` entries it froze,
 beside the source stream. It holds the source pull request only for the checks its ridden edits
-need, and for the batch in flight while one of them waits for the next batch; only an edit on that
-pull request, or one the GitHub rule's **Merge Authorization** holds for a source pull request in
+need and the delivery of the batch carrying them; only an edit on that pull request, or one the GitHub rule's **Merge Authorization** holds for a source pull request in
 another repository, waits for that merge. Run it as a delegated worker when the session can, so the
 user's review of the source pull request overlaps it.
 
@@ -170,7 +171,7 @@ user's review of the source pull request overlaps it.
   concrete blocking decision, failed gate or unavailable dependency under the global rules' **Tools
   and environments** pending-result boundary. Never lose a correction, treat a recorded one as
   delivered, or hold the source pull request for it beyond the checks its ridden edits need and the
-  batch in flight ahead of them.
+  delivery of the batch carrying them.
 - At a checkpoint and before reporting its state, record the complete pull-request head and file
   list, the target repository's lifecycle, its current state, and its next transition. A draft
   confined to canonical agent configuration records `agent-configuration exception`
