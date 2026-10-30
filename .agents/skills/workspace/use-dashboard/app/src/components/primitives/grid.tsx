@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 const gridVariants = cva('', {
   variants: {
     columns: {
-      flow: 'columns-[20rem] [&>*]:mb-6 [&_h3]:break-after-avoid [&_[data-slot=accordion-item]]:break-inside-avoid',
+      pair: 'grid grid-cols-1 @3xl/page:grid-cols-2',
       single: 'grid grid-cols-1',
       narrow: 'grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))]',
       medium: 'grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))]',

@@ -140,8 +140,8 @@ Dashboards look alike because they are built alike:
    its publishing tool reads only there.
 2. Run `python3 -B scripts/render.py --input <spec.json> --output <page.html>`, resolving `scripts/`
    from this skill's directory; `-B` keeps the run from writing bytecode into the skill. Add
-   `--fragment` when the publishing tool wraps the page in its own document, as **Delivery** says. The script prints the written path, or names the first field
-   that does not match the spec and exits non-zero; fix the spec and run it again.
+   `--fragment` when **Delivery** says to. The script prints the written path, or names the first
+   field that does not match the spec and exits non-zero; fix the spec and run it again.
    The first render after the app changes builds it with npm into the user cache directory
    (`$XDG_CACHE_HOME/use-dashboard`, or `~/.cache/use-dashboard`), which needs Node.js 20 or newer,
    npm and access to the npm registry, and takes up to a minute; later renders reuse that build. A
@@ -172,9 +172,9 @@ Use the first route the session offers, and the same one for every update of one
      is one, publish the update to it. A dashboard that changes its look, its data, or both is still
      the same dashboard; only a dashboard with a different purpose gets a new page.
    - Record each new link where the caller keeps task state, so the next render finds it.
-2. **The user's own browser, through `use-browser`**, when no such tool exists and the user's browser
-   is within reach. Render the full page; with one path per dashboard, **Showing A Local Page**
-   reloads the tab it already opened instead of opening another.
+2. **The user's own browser, through `use-browser`**, when no such tool exists and its **Showing A
+   Local Page** route applies. Render the full page; with one path per dashboard, that route reloads
+   the tab it already opened instead of opening another.
 3. **Otherwise**, send the full page with a tool that sends a file to the user, or, with none, give
    its absolute path.
 

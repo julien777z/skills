@@ -10,6 +10,39 @@ import type { OutlineGroup, OutlineSection as OutlineSectionSpec } from '@/spec'
 import { SectionCard } from './section-card';
 
 const OPEN_GROUP_LIMIT: number = 2;
+const DETAIL_LINE_LENGTH: number = 80;
+
+function groupWeight(group: OutlineGroup): number {
+  const opensAll = group.items.length <= OPEN_GROUP_LIMIT;
+
+  return group.items.reduce(
+    (total, item) =>
+      total + 2 + (item.links ? 1 : 0) + (opensAll ? Math.ceil(item.detail.length / DETAIL_LINE_LENGTH) : 0),
+    1,
+  );
+}
+
+function splitColumns(groups: OutlineGroup[]): OutlineGroup[][] {
+  const weights = groups.map(groupWeight);
+  const total = weights.reduce((sum, weight) => sum + weight, 0);
+
+  let split = 1;
+  let left = weights[0];
+  let bestGap = Math.abs(total - 2 * left);
+
+  for (let index = 1; index < groups.length - 1; index++) {
+    left += weights[index];
+
+    const gap = Math.abs(total - 2 * left);
+
+    if (gap < bestGap) {
+      bestGap = gap;
+      split = index + 1;
+    }
+  }
+
+  return [groups.slice(0, split), groups.slice(split)];
+}
 
 function Group({ group }: { group: OutlineGroup }): ReactNode {
   const [open, setOpen] = useState<string[]>(() =>
@@ -38,19 +71,15 @@ function Group({ group }: { group: OutlineGroup }): ReactNode {
             >
               <Stack direction="row" align="start" gap="sm" grow>
                 <ToneDot tone={item.tone} offset />
+                {item.tag && <StatusBadge label={item.tag} tone={item.tone} dot={false} />}
                 <Stack gap="xs" grow>
                   <Text weight="medium" size="sm" breakAnywhere>
                     <RichText text={item.title} />
                   </Text>
-                  {(item.tag || item.meta) && (
-                    <Stack direction="row" align="center" gap="sm" wrap>
-                      {item.tag && <StatusBadge label={item.tag} tone={item.tone} dot={false} />}
-                      {item.meta && (
-                        <Text size="xs" tone="muted" breakAnywhere>
-                          <RichText text={item.meta} />
-                        </Text>
-                      )}
-                    </Stack>
+                  {item.meta && (
+                    <Text size="xs" tone="muted" breakAnywhere>
+                      <RichText text={item.meta} />
+                    </Text>
                   )}
                 </Stack>
               </Stack>
@@ -72,11 +101,23 @@ function Group({ group }: { group: OutlineGroup }): ReactNode {
 }
 
 export function OutlineSection({ section }: { section: OutlineSectionSpec }): ReactNode {
+  if (section.groups.length === 1) {
+    return (
+      <SectionCard title={section.title} description={section.description} wide>
+        <Group group={section.groups[0]} />
+      </SectionCard>
+    );
+  }
+
   return (
     <SectionCard title={section.title} description={section.description} wide>
-      <Grid columns="flow" gap="loose">
-        {section.groups.map((group, index) => (
-          <Group key={index} group={group} />
+      <Grid columns="pair" gap="loose">
+        {splitColumns(section.groups).map((column, columnIndex) => (
+          <Stack key={columnIndex} gap="xl">
+            {column.map((group, index) => (
+              <Group key={index} group={group} />
+            ))}
+          </Stack>
         ))}
       </Grid>
     </SectionCard>
