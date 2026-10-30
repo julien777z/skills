@@ -97,8 +97,9 @@ Dashboards look alike because they are built alike:
 
 - **Overview first, then one page per subject.** Every dashboard opens on `Overview`, the page
   that tells the reader where things stand: the `progress` and `metrics` stat cards, then a
-  `callout` when one thing needs them now, then the few sections that summarize. Each later page
-  goes deeper on one subject and is named for it.
+  `callout` when one thing needs them now, then sections that summarize, such as counts per subject
+  or one line per theme naming the page that holds it. Overview repeats no item another page lists;
+  each later page goes deeper on one subject and is named for it.
 - **Icons say what each thing is.** Give the dashboard the icon that best names its subject, such as
   `progress` for a task's progress or `legal` for legal documents, and each page the icon for what
   it holds, such as `board` for a board of work or `diagram` for a diagram.
