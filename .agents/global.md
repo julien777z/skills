@@ -445,6 +445,10 @@ return records;
   has a term, use it. A parcel the carrier reports as delivered is `delivered`, never
   `parcel_arrived`, because an unusual synonym makes every reader translate it back. This covers
   identifiers, fields, messages, documentation and test names in every language.
+- **A Boolean's name is a yes/no question that names its subject**: a function, property,
+  parameter or variable holding true or false reads as `is_draft_order(order)`, `has_overdue_items`
+  or `is_write`, never a bare verb or participle such as `writes` or `writing`, whose reader has to
+  ask "writes what?".
 - Name things for the shape being exercised, not for whichever caller happened to prompt the work.
   A test needing a table with a secret column names it for that — a record with a secret — rather
   than borrowing the one real table the change was made for.
