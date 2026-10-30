@@ -623,15 +623,7 @@ except Exception as exc:
 
 ## Formatting and Documentation
 
-- Never use vague, cute, or placeholder terminology in identifiers, docstrings, comments, or test names. Name things for the behavior they actually have. This applies to **new and pre-existing code** in every line you write or edit; elsewhere in a touched file, rename within the change's incidental size budget.
-- Banned terms and what to use instead:
-  - **"best effort"** — state the real contract. A function that swallows failures and reports the outcome should say so: name it `try_<verb>` (for example `try_send_email`) and document it as "returning whether it succeeded", not "best-effort".
-  - **"seed" / "seeds" / "seeding"** (for test data or sample records) — name the helper for what it builds: a `<noun>_*_factory` fixture, `create_*`, or "sample data". Do not call setup data a "seed".
-  - **"holder"** (for a model or object that carries a field) — name it for the thing it models, such as `ApiCredential`, `StateRecord`, or `AliasSet`.
-  - **"stub"** (in application-code identifiers) — use "client". Keep a generated `*Stub` class name only when referring to that external type.
-  - **"lease" / "leased"** (for work handed to a worker) — use `claim`, `claimed_job`, or `ClaimedJob`. Reserve "lock" for lock ownership and expiry.
-  - **"*orm_factory"** (in test fixtures and helpers) — name the domain action directly, such as `create_payment` or `create_invoice`; do not encode persistence implementation in the name.
-- If you reach for a placeholder-ish term a future reader could not decode from the name alone, pick a more intuitive name instead of adding it to this list.
+- Name things for the behavior they actually have; `banned-terminology` owns the banned terms and what to use instead.
 
 - Add a blank line after each docstring.
 - Never add decorative separator comments (for example, `# -----` headers).
