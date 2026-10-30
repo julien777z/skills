@@ -472,7 +472,26 @@ return next(
 )
 ```
 
-- Use `match` statement instead of chains of `if`/`elif` statements when dispatching on enum members or discriminant values.
+- **Dispatch on one subject with `match`.** Any sequence of conditionals that tests the same subject against several enum members, literal values or discriminant values is a `match` statement, whatever shape the sequence takes: an `if`/`elif` chain, or consecutive `if subject is Member: return ...` guards followed by a fallback return. Each tested value becomes a `case`, and the fallback becomes `case _`.
+
+```python
+# Bad: early-return guards on one subject
+if self is Shelf.FICTION:
+    return "A-F"
+if self is Shelf.REFERENCE:
+    return "R"
+return None
+
+# Good
+match self:
+    case Shelf.FICTION:
+        return "A-F"
+    case Shelf.REFERENCE:
+        return "R"
+    case _:
+        return None
+```
+
 - For data-driven column/field selection with many independent boolean flags, prefer a declarative mapping iterated in a loop over repeated `if` blocks.
 - Use enums with descriptive string values for column names, header labels, and other user-facing strings instead of raw string literals scattered across functions.
 
