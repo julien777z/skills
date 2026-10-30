@@ -22,6 +22,7 @@ from models import (
     PullRequestState,
     QuestionStatus,
     SectionType,
+    SourceKind,
     Tone,
 )
 
@@ -275,8 +276,8 @@ METRIC_SHAPE: Final[ObjectShape] = ObjectShape(
 )
 SOURCE_LINK_SHAPE: Final[ObjectShape] = ObjectShape(
     name="SourceLink",
-    fields={"label": check_text, "url": check_text},
-    required=frozenset({"label", "url"}),
+    fields={"kind": partial(check_choice, choices=SourceKind), "label": check_text, "url": check_text},
+    required=frozenset({"kind", "label", "url"}),
 )
 CHECK_SOURCE_LINKS: Final[Callable[[object, str], object]] = partial(check_objects, shape=SOURCE_LINK_SHAPE)
 BOARD_CARD_SHAPE: Final[ObjectShape] = ObjectShape(

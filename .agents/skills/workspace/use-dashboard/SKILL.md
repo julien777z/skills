@@ -39,8 +39,10 @@ An `icon` is one of `overview`, `progress`, `board`, `checklist`, `list`, `chart
 all differ, so no glyph appears twice in the navbar.
 
 `tone` is `good`, `warning`, `critical`, `accent` or `done`, as **Making A Dashboard** defines
-them; omit it for neutral. `links` is `[{label, url}]`: pills under the item that open its sources,
-each labelled briefly, such as `terms-of-service.md L324` or `export.py L40–L58`. `at` is an ISO 8601
+them; omit it for neutral. `links` is `[{kind, label, url}]`: pills under the item that open its sources,
+each led by its `kind` — `doc`, `code`, `diff`, `spec`, `pull-request`, `config`, `test`, `page` or
+`data`, shown as Doc, Code, Diff, Spec, PR, Config, Test, Page or Data — and labelled briefly, such as
+`terms-of-service.md L324` or `export.py L40–L58`. `at` is an ISO 8601
 timestamp the page shows in the viewer's own timezone on a 12-hour clock, such as `9:05 PM`, with the
 date when it is not today. Every section takes an optional `description`, one sentence shown under
 its title. Section types:

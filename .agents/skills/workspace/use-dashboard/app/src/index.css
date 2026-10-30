@@ -103,7 +103,7 @@ body {
     @apply border-border outline-ring/50;
   }
 
-  a {
+  a:not([data-slot]) {
     @apply font-medium text-info underline-offset-4 hover:underline;
   }
 

@@ -58,7 +58,7 @@ function Group({ group }: { group: OutlineGroup }): ReactNode {
 export function OutlineSection({ section }: { section: OutlineSectionSpec }): ReactNode {
   return (
     <SectionCard title={section.title} description={section.description} wide>
-      <Grid columns="medium" gap="loose">
+      <Grid columns="flow" gap="loose">
         {section.groups.map((group, index) => (
           <Group key={index} group={group} />
         ))}

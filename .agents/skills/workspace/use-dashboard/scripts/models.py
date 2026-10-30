@@ -76,6 +76,20 @@ class IconName(StrEnum):
     CALENDAR = "calendar"
 
 
+class SourceKind(StrEnum):
+    """What a source link opens, shown at the start of its pill."""
+
+    DOC = "doc"
+    CODE = "code"
+    DIFF = "diff"
+    SPEC = "spec"
+    PULL_REQUEST = "pull-request"
+    CONFIG = "config"
+    TEST = "test"
+    PAGE = "page"
+    DATA = "data"
+
+
 class Change(StrEnum):
     """What a pull request does to one part of the system."""
 

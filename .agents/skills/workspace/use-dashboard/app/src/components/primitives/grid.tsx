@@ -1,20 +1,21 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import type { ReactNode } from 'react';
 
-const gridVariants = cva('grid', {
+const gridVariants = cva('', {
   variants: {
     columns: {
-      single: 'grid-cols-1',
-      narrow: 'grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))]',
-      medium: 'grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))]',
-      wide: 'grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))]',
-      steps: 'sm:grid-cols-[repeat(auto-fill,minmax(min(100%,300px),1fr))]',
-      figureBesideSteps: 'grid-cols-1 lg:grid-cols-[auto_minmax(300px,1fr)]',
-      stats2: 'grid-cols-1 @xl/page:grid-cols-2',
-      stats3: 'grid-cols-1 @xl/page:grid-cols-2 @5xl/page:grid-cols-3',
-      stats4: 'grid-cols-1 @xl/page:grid-cols-2 @5xl/page:grid-cols-4',
-      stats5: 'grid-cols-1 @xl/page:grid-cols-2 @5xl/page:grid-cols-5',
-      stats6: 'grid-cols-1 @xl/page:grid-cols-2 @5xl/page:grid-cols-6',
+      flow: 'columns-[20rem] [&>*]:mb-6 [&_h3]:break-after-avoid [&_[data-slot=accordion-item]]:break-inside-avoid',
+      single: 'grid grid-cols-1',
+      narrow: 'grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))]',
+      medium: 'grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))]',
+      wide: 'grid grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))]',
+      steps: 'grid sm:grid-cols-[repeat(auto-fill,minmax(min(100%,300px),1fr))]',
+      figureBesideSteps: 'grid grid-cols-1 lg:grid-cols-[auto_minmax(300px,1fr)]',
+      stats2: 'grid grid-cols-1 @xl/page:grid-cols-2',
+      stats3: 'grid grid-cols-1 @xl/page:grid-cols-2 @5xl/page:grid-cols-3',
+      stats4: 'grid grid-cols-1 @xl/page:grid-cols-2 @5xl/page:grid-cols-4',
+      stats5: 'grid grid-cols-1 @xl/page:grid-cols-2 @5xl/page:grid-cols-5',
+      stats6: 'grid grid-cols-1 @xl/page:grid-cols-2 @5xl/page:grid-cols-6',
     },
     gap: { sm: 'gap-3', md: 'gap-4', lg: 'gap-4 md:gap-6', loose: 'gap-x-8 gap-y-6' },
     inset: { none: '', page: 'px-4 lg:px-6' },

@@ -123,19 +123,20 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **`outline` "What changed in <pull request name>"**: the pull request's changes grouped by the area
   they touch, such as `Report export` or `Search page`, with moves and renames last under
   `No behaviour change`. Each item's `title` says in a few words what now happens, and its `detail`
-  how and why it matters in one or two sentences a reader follows without the diff. Its `links`
-  open the diff of each file that makes the change, in the pull request's Files changed view.
+  how and why it matters in one or two sentences a reader follows without the diff. Its `links`,
+  of kind `diff`, open the diff of each file that makes the change, in the pull request's Files
+  changed view.
 - **`changes` "Config changes"**: each value the application reads while it runs that a pull request
   adds, changes or removes, such as an environment variable, a settings field or its default, a
   feature flag, a secret it reads, or a key in its configuration file. A setting only CI, a workflow
   or a deployment pipeline reads stays out — a GitHub Actions input, a workflow variable, a job's
   timeout. `name` the name a reader sets, `change`, and `detail` "<pull request name> · <its default
-  or new value> · <what the user has to do, or Nothing>", with `links` to the line in the pull
-  request's diff that sets it. A secret is named, never its value.
+  or new value> · <what the user has to do, or Nothing>", with a `diff` link to the line in
+  the pull request's diff that sets it. A secret is named, never its value.
 - **`changes` "Migration changes"**: each database migration a pull request adds, changes or
   removes. `name` the migration's file or revision, `change`, and `detail` "<pull request name> ·
-  <what it does to the schema or stored data> · <what the user has to do, or Nothing>", with
-  `links` to the migration file in the pull request's diff.
+  <what it does to the schema or stored data> · <what the user has to do, or Nothing>", with a
+  `diff` link to the migration file in the pull request's diff.
 - **`outline` "Keep in mind"**: what a reviewer or the user needs before relying on the change —
   risks, limits, the order the pull requests merge in, anything a merge or deploy needs from the
   user — grouped by when it applies, such as `Before merge`, `Before deploy` and `After deploy`.

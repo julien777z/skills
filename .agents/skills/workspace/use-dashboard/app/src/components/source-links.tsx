@@ -4,7 +4,31 @@ import type { ReactNode } from 'react';
 import { Stack } from '@/components/primitives';
 import { Badge } from '@/components/ui/badge';
 import { safeUrl } from '@/lib/references';
-import type { SourceLink } from '@/spec';
+import { SourceKind, type SourceLink } from '@/spec';
+
+const KIND_LABELS: Record<SourceKind, string> = {
+  [SourceKind.DOC]: 'Doc',
+  [SourceKind.CODE]: 'Code',
+  [SourceKind.DIFF]: 'Diff',
+  [SourceKind.SPEC]: 'Spec',
+  [SourceKind.PULL_REQUEST]: 'PR',
+  [SourceKind.CONFIG]: 'Config',
+  [SourceKind.TEST]: 'Test',
+  [SourceKind.PAGE]: 'Page',
+  [SourceKind.DATA]: 'Data',
+};
+
+function PillContent({ link, linked }: { link: SourceLink; linked: boolean }): ReactNode {
+  return (
+    <>
+      <span className="bg-muted px-1.5 py-0.5 font-medium text-foreground">{KIND_LABELS[link.kind]}</span>
+      <span className="flex items-center gap-1 px-1.5 py-0.5">
+        {link.label}
+        {linked && <ArrowUpRight className="size-3" />}
+      </span>
+    </>
+  );
+}
 
 export function SourceLinks({ links }: { links: SourceLink[] }): ReactNode {
   return (
@@ -13,15 +37,14 @@ export function SourceLinks({ links }: { links: SourceLink[] }): ReactNode {
         const href = safeUrl(link.url);
 
         return href ? (
-          <Badge key={index} variant="outline" asChild>
+          <Badge key={index} variant="source" asChild>
             <a href={href} target="_blank" rel="noopener noreferrer">
-              {link.label}
-              <ArrowUpRight />
+              <PillContent link={link} linked />
             </a>
           </Badge>
         ) : (
-          <Badge key={index} variant="outline">
-            {link.label}
+          <Badge key={index} variant="source">
+            <PillContent link={link} linked={false} />
           </Badge>
         );
       })}
