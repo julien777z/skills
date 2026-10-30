@@ -713,6 +713,61 @@ assert_link "$foreign_runtime/skills/sample" "$fixture/foreign-skill"
 assert_absent "$foreign_home/.codex/skills"
 assert_absent "$foreign_home/.agents"
 
+for checkout_kind in checkout worktree included conditional foreign foreign-worktree conditional-foreign; do
+  damaged_repo="$fixture/damaged-$checkout_kind"
+  damaged_home="$fixture/damaged-home-$checkout_kind"
+  damaged_source="$damaged_repo"
+
+  cp -a "$repo" "$damaged_repo"
+
+  if [ "$checkout_kind" = worktree ] || [ "$checkout_kind" = foreign-worktree ]; then
+    damaged_source="$fixture/damaged-overlay-$checkout_kind"
+
+    add_overlay "$damaged_repo" "$damaged_source" complete
+
+    if [ "$checkout_kind" = foreign-worktree ]; then
+      git -C "$damaged_repo" config extensions.worktreeConfig true
+      git -C "$damaged_source" config --worktree remote.origin.url https://example.invalid/unrelated.git
+    else
+      git -C "$damaged_repo" config extensions.worktreeConfig true
+      git -C "$damaged_source" config --worktree remote.origin.url "$SKILLS_REMOTE"
+      git -C "$damaged_repo" config --unset remote.origin.url
+    fi
+  elif [ "$checkout_kind" = conditional ] || [ "$checkout_kind" = conditional-foreign ]; then
+    git -C "$damaged_repo" config "includeIf.gitdir:$damaged_repo/.git.path" origin.config
+
+    if [ "$checkout_kind" = conditional ]; then
+      git -C "$damaged_repo" config --unset remote.origin.url
+      git config --file "$damaged_repo/.git/origin.config" remote.origin.url "$SKILLS_REMOTE"
+    else
+      git config --file "$damaged_repo/.git/origin.config" remote.origin.url https://example.invalid/unrelated.git
+    fi
+  elif [ "$checkout_kind" = included ]; then
+    git -C "$damaged_repo" config --unset remote.origin.url
+    git -C "$damaged_repo" config include.path origin.config
+    git config --file "$damaged_repo/.git/origin.config" remote.origin.url "$SKILLS_REMOTE"
+  elif [ "$checkout_kind" = foreign ]; then
+    git -C "$damaged_repo" remote set-url origin https://example.invalid/unrelated.git
+  fi
+
+  mkdir -p "$damaged_home/.agents/skills"
+  ln -s "$damaged_source/.agents/skills/example/sample" "$damaged_home/.agents/skills/sample"
+
+  rm -rf "$damaged_repo/.git/objects"
+
+  if [ "$checkout_kind" = foreign ] || [ "$checkout_kind" = foreign-worktree ] || [ "$checkout_kind" = conditional-foreign ]; then
+    assert_status 1 env -u SKILLS_CLOUD_HOME -u CLOUD_HOME \
+      HOME="$damaged_home" CODEX_HOME= bash "$repo/bootstrap/install.sh" --local-only
+
+    assert_link "$damaged_home/.agents/skills/sample" "$damaged_source/.agents/skills/example/sample"
+  else
+    env -u SKILLS_CLOUD_HOME -u CLOUD_HOME \
+      HOME="$damaged_home" CODEX_HOME= bash "$repo/bootstrap/install.sh" --local-only
+
+    assert_link "$damaged_home/.agents/skills/sample" "$repo/.agents/skills/example/sample"
+  fi
+done
+
 mkdir -p "$repo/.agents/references"
 printf '%s\n' 'Foreign content' > "$repo/README.md"
 printf '%s\n' 'Foreign content' > "$repo/.agents/references/foreign.md"
