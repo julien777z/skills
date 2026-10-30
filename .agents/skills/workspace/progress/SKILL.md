@@ -76,11 +76,16 @@ and deliver the same dashboard again on every request so the user keeps one page
   **Elapsed**, measured from the first plan's recorded approval time.
 - **Pull request names.** The page names each pull request "PR #<number> - <short title>": a few
   words saying what it does, not necessarily its title, such as `PR #1337 - Add bulk export`.
-- **Pages.** `Progress` holds the board, the pull requests, the answered questions, the notes and
-  any table, in that order. Once step 3 gives the page a pull request to cover, `Architecture`
-  follows it, with `layout` `rows`: the diagram, then `changes` "Config changes", then `changes`
-  "Migration changes", then an `outline` "What changed in <pull request name>" for each pull request
-  it covers, then an `outline` "Keep in mind".
+- **Pages.** `Progress`, `icon` `overview`, holds the callout, the board, the pull requests, the
+  answered questions, the notes and any table, in that order. Once step 3 gives the page a pull
+  request to cover, `Architecture` follows it, with `icon` `diagram` and `layout` `rows`: the
+  diagram, then `changes` "Config changes", then `changes` "Migration changes", then an `outline`
+  "What changed in <pull request name>" for each pull request it covers, then an `outline` "Keep in
+  mind".
+- **`callout`**, only while something waits on the user: `tone` `warning`, `title` "<n> question(s)
+  waiting on you" when a question is open, and `body` the first open question in a sentence and
+  the step it blocks; otherwise, while a step is blocked, `tone` `critical`, `title` "<step title> is
+  blocked" and `body` what it waits for.
 - **`board` "Work"**, four columns, with Up next and Done setting `page_size` 5 so each shows five
   cards at a time:
 
