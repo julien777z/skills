@@ -98,10 +98,19 @@ class Change(StrEnum):
     REMOVED = "removed"
 
 
+class Field(TypedDict):
+    """One spec field: how it is checked and the TypeScript type it declares."""
+
+    check: Callable[[object, str], object]
+    typescript: str
+    shape: NotRequired["ObjectShape"]
+    choices: NotRequired[type[StrEnum]]
+
+
 class ObjectShape(TypedDict):
     """Validation rules for one spec object."""
 
     name: str
-    fields: dict[str, Callable[[object, str], object]]
+    fields: dict[str, Field]
     required: frozenset[str]
     relations: NotRequired[Callable[[dict[str, object], str], None]]

@@ -16,6 +16,7 @@ from typing import Final, cast
 
 from models import (
     Change,
+    Field,
     ObjectShape,
     IconName,
     PageLayout,
@@ -122,6 +123,8 @@ def check_flag(value: object, path: str) -> None:
 def check_timestamp(value: object, path: str) -> None:
     """Require an ISO 8601 timestamp."""
 
+    check_text(value, path)
+
     try:
         datetime.fromisoformat(str(value))
     except ValueError as error:
@@ -145,7 +148,7 @@ def check_object(value: object, path: str, shape: ObjectShape) -> dict[str, obje
         raise DashboardSpecError(f"{path} is missing: {', '.join(missing)}")
 
     for key, field_value in value.items():
-        shape["fields"][key](field_value, f"{path}.{key}")
+        shape["fields"][key]["check"](field_value, f"{path}.{key}")
 
     if "relations" in shape:
         shape["relations"](value, path)
@@ -232,179 +235,221 @@ def check_sections(value: object, path: str) -> None:
         check_object(section, section_path, SECTION_SHAPES[section_type])
 
 
+TEXT: Final[Field] = Field(check=check_text, typescript="string")
+TEXTS: Final[Field] = Field(check=check_texts, typescript="string[]")
+ROWS: Final[Field] = Field(check=check_rows, typescript="string[][]")
+TIMESTAMP: Final[Field] = Field(check=check_timestamp, typescript="string")
+FRACTION: Final[Field] = Field(check=check_fraction, typescript="number")
+WHOLE_NUMBER: Final[Field] = Field(check=check_whole_number, typescript="number")
+FLAG: Final[Field] = Field(check=check_flag, typescript="boolean")
+SECTIONS: Final[Field] = Field(check=check_sections, typescript="Section[]")
+TONE: Final[Field] = Field(check=partial(check_choice, choices=Tone), typescript=Tone.__name__, choices=Tone)
+CHANGE: Final[Field] = Field(check=partial(check_choice, choices=Change), typescript=Change.__name__, choices=Change)
+ICON: Final[Field] = Field(check=partial(check_choice, choices=IconName), typescript=IconName.__name__, choices=IconName)
+
+
 def section_shape(
     section_type: SectionType,
-    fields: dict[str, Callable[[object, str], object]],
+    fields: dict[str, Field],
     required: frozenset[str],
     relations: Callable[[dict[str, object], str], None] | None = None,
 ) -> ObjectShape:
     """Return the shape of a section type."""
 
-    shape = ObjectShape(
-        name=f"{section_type.value.capitalize()}Section",
-        fields={"type": check_text, "title": check_text, "description": check_text} | fields,
-        required=frozenset({"type", "title"}) | required,
-    )
+    name = f"{section_type.value.capitalize()}Section"
+    section_fields: dict[str, Field] = {
+        "type": Field(check=check_text, typescript=f"typeof {SectionType.__name__}.{section_type.name}"),
+        "title": TEXT,
+        "description": TEXT,
+    } | fields
+    section_required = frozenset({"type", "title"}) | required
 
-    if relations:
-        shape["relations"] = relations
+    if relations is None:
+        return ObjectShape(name=name, fields=section_fields, required=section_required)
 
-    return shape
-
-
-def paged_items_section(section_type: SectionType, shape: ObjectShape) -> ObjectShape:
-    """Return the shape of a section listing items of one shape, optionally a page at a time."""
-
-    return section_shape(
-        section_type,
-        {"items": partial(check_objects, shape=shape), "page_size": check_whole_number},
-        frozenset({"items"}),
-    )
+    return ObjectShape(name=name, fields=section_fields, required=section_required, relations=relations)
 
 
-CHECK_TONE: Final[Callable[[object, str], object]] = partial(check_choice, choices=Tone)
-CHECK_CHANGE: Final[Callable[[object, str], object]] = partial(check_choice, choices=Change)
-
-LABEL_SHAPE: Final[ObjectShape] = ObjectShape(name="Label", fields={"label": check_text, "tone": CHECK_TONE}, required=frozenset({"label"}))
+LABEL_SHAPE: Final[ObjectShape] = ObjectShape(name="Label", fields={"label": TEXT, "tone": TONE}, required=frozenset({"label"}))
 SEGMENT_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Segment",
-    fields={"label": check_text, "tone": CHECK_TONE, "weight": check_whole_number},
+    fields={"label": TEXT, "tone": TONE, "weight": WHOLE_NUMBER},
     required=frozenset({"label"}),
 )
 PROGRESS_SHAPE: Final[ObjectShape] = ObjectShape(
     name="ProgressSummary",
-    fields={"value": check_fraction, "label": check_text, "detail": check_text, "segments": partial(check_objects, shape=SEGMENT_SHAPE)},
+    fields={
+        "value": FRACTION,
+        "label": TEXT,
+        "detail": TEXT,
+        "segments": Field(check=partial(check_objects, shape=SEGMENT_SHAPE), typescript="Segment[]", shape=SEGMENT_SHAPE),
+    },
     required=frozenset({"value", "label"}),
 )
 METRIC_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Metric",
-    fields={"label": check_text, "value": check_text, "detail": check_text},
+    fields={"label": TEXT, "value": TEXT, "detail": TEXT},
     required=frozenset({"label", "value"}),
 )
 SOURCE_LINK_SHAPE: Final[ObjectShape] = ObjectShape(
     name="SourceLink",
-    fields={"kind": partial(check_choice, choices=SourceKind), "label": check_text, "url": check_text},
+    fields={
+        "kind": Field(check=partial(check_choice, choices=SourceKind), typescript=SourceKind.__name__, choices=SourceKind),
+        "label": TEXT,
+        "url": TEXT,
+    },
     required=frozenset({"kind", "label", "url"}),
 )
-CHECK_SOURCE_LINKS: Final[Callable[[object, str], object]] = partial(check_objects, shape=SOURCE_LINK_SHAPE)
+SOURCE_LINKS: Final[Field] = Field(
+    check=partial(check_objects, shape=SOURCE_LINK_SHAPE), typescript="SourceLink[]", shape=SOURCE_LINK_SHAPE
+)
 BOARD_CARD_SHAPE: Final[ObjectShape] = ObjectShape(
     name="BoardCard",
     fields={
-        "title": check_text,
-        "detail": check_text,
-        "meta": check_text,
-        "tag": check_text,
-        "url": check_text,
-        "at": check_timestamp,
-        "links": CHECK_SOURCE_LINKS,
+        "title": TEXT,
+        "detail": TEXT,
+        "meta": TEXT,
+        "tag": TEXT,
+        "url": TEXT,
+        "at": TIMESTAMP,
+        "links": SOURCE_LINKS,
     },
     required=frozenset({"title"}),
 )
 BOARD_COLUMN_SHAPE: Final[ObjectShape] = ObjectShape(
     name="BoardColumn",
     fields={
-        "title": check_text,
-        "tone": CHECK_TONE,
-        "page_size": check_whole_number,
-        "items": partial(check_objects, shape=BOARD_CARD_SHAPE, allow_empty=True),
+        "title": TEXT,
+        "tone": TONE,
+        "page_size": WHOLE_NUMBER,
+        "items": Field(
+            check=partial(check_objects, shape=BOARD_CARD_SHAPE, allow_empty=True), typescript="BoardCard[]", shape=BOARD_CARD_SHAPE
+        ),
     },
     required=frozenset({"title", "items"}),
 )
 QUESTION_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Question",
     fields={
-        "question": check_text,
-        "status": partial(check_choice, choices=QuestionStatus),
-        "context": check_text,
-        "options": check_texts,
-        "recommendation": check_text,
-        "answer": check_text,
-        "meta": check_text,
-        "at": check_timestamp,
+        "question": TEXT,
+        "status": Field(check=partial(check_choice, choices=QuestionStatus), typescript=QuestionStatus.__name__, choices=QuestionStatus),
+        "context": TEXT,
+        "options": TEXTS,
+        "recommendation": TEXT,
+        "answer": TEXT,
+        "meta": TEXT,
+        "at": TIMESTAMP,
     },
     required=frozenset({"question", "status"}),
 )
 LINK_SHAPE: Final[ObjectShape] = ObjectShape(
     name="LinkItem",
     fields={
-        "label": check_text,
-        "url": check_text,
-        "detail": check_text,
-        "status": check_text,
-        "tone": CHECK_TONE,
-        "state": partial(check_choice, choices=PullRequestState),
+        "label": TEXT,
+        "url": TEXT,
+        "detail": TEXT,
+        "status": TEXT,
+        "tone": TONE,
+        "state": Field(
+            check=partial(check_choice, choices=PullRequestState), typescript=PullRequestState.__name__, choices=PullRequestState
+        ),
     },
     required=frozenset({"label", "url"}),
 )
 CHANGE_ITEM_SHAPE: Final[ObjectShape] = ObjectShape(
     name="ChangeItem",
-    fields={"name": check_text, "change": CHECK_CHANGE, "detail": check_text, "links": CHECK_SOURCE_LINKS},
+    fields={"name": TEXT, "change": CHANGE, "detail": TEXT, "links": SOURCE_LINKS},
     required=frozenset({"name", "change"}),
 )
 OUTLINE_ITEM_SHAPE: Final[ObjectShape] = ObjectShape(
     name="OutlineItem",
-    fields={
-        "title": check_text,
-        "detail": check_text,
-        "tone": CHECK_TONE,
-        "tag": check_text,
-        "meta": check_text,
-        "links": CHECK_SOURCE_LINKS,
-    },
+    fields={"title": TEXT, "detail": TEXT, "tone": TONE, "tag": TEXT, "meta": TEXT, "links": SOURCE_LINKS},
     required=frozenset({"title", "detail"}),
 )
 OUTLINE_GROUP_SHAPE: Final[ObjectShape] = ObjectShape(
     name="OutlineGroup",
-    fields={"title": check_text, "items": partial(check_objects, shape=OUTLINE_ITEM_SHAPE)},
+    fields={
+        "title": TEXT,
+        "items": Field(check=partial(check_objects, shape=OUTLINE_ITEM_SHAPE), typescript="OutlineItem[]", shape=OUTLINE_ITEM_SHAPE),
+    },
     required=frozenset({"title", "items"}),
 )
 DIAGRAM_PULL_REQUEST_SHAPE: Final[ObjectShape] = ObjectShape(
     name="DiagramPullRequest",
-    fields={"ref": check_text, "url": check_text},
+    fields={"ref": TEXT, "url": TEXT},
     required=frozenset({"ref", "url"}),
 )
 DIAGRAM_NODE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="DiagramNode",
-    fields={"id": check_text, "label": check_text, "detail": check_text, "pr": check_text, "change": CHECK_CHANGE},
+    fields={"id": TEXT, "label": TEXT, "detail": TEXT, "pr": TEXT, "change": CHANGE},
     required=frozenset({"id", "label"}),
 )
 DIAGRAM_EDGE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="DiagramEdge",
-    fields={"from": check_text, "to": check_text, "label": check_text, "step": check_whole_number, "change": CHECK_CHANGE},
+    fields={"from": TEXT, "to": TEXT, "label": TEXT, "step": WHOLE_NUMBER, "change": CHANGE},
     required=frozenset({"from", "to"}),
 )
 REFERENCE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Reference",
-    fields={"text": check_text, "url": check_text},
+    fields={"text": TEXT, "url": TEXT},
     required=frozenset({"text", "url"}),
 )
 SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
     SectionType.BOARD: section_shape(
-        SectionType.BOARD, {"columns": partial(check_objects, shape=BOARD_COLUMN_SHAPE)}, frozenset({"columns"})
+        SectionType.BOARD,
+        {"columns": Field(check=partial(check_objects, shape=BOARD_COLUMN_SHAPE), typescript="BoardColumn[]", shape=BOARD_COLUMN_SHAPE)},
+        frozenset({"columns"}),
     ),
-    SectionType.QUESTIONS: paged_items_section(SectionType.QUESTIONS, QUESTION_SHAPE),
-    SectionType.LINKS: paged_items_section(SectionType.LINKS, LINK_SHAPE),
-    SectionType.CHANGES: paged_items_section(SectionType.CHANGES, CHANGE_ITEM_SHAPE),
-    SectionType.NOTES: section_shape(SectionType.NOTES, {"items": check_texts}, frozenset({"items"})),
+    SectionType.QUESTIONS: section_shape(
+        SectionType.QUESTIONS,
+        {
+            "items": Field(check=partial(check_objects, shape=QUESTION_SHAPE), typescript="Question[]", shape=QUESTION_SHAPE),
+            "page_size": WHOLE_NUMBER,
+        },
+        frozenset({"items"}),
+    ),
+    SectionType.LINKS: section_shape(
+        SectionType.LINKS,
+        {
+            "items": Field(check=partial(check_objects, shape=LINK_SHAPE), typescript="LinkItem[]", shape=LINK_SHAPE),
+            "page_size": WHOLE_NUMBER,
+        },
+        frozenset({"items"}),
+    ),
+    SectionType.CHANGES: section_shape(
+        SectionType.CHANGES,
+        {
+            "items": Field(check=partial(check_objects, shape=CHANGE_ITEM_SHAPE), typescript="ChangeItem[]", shape=CHANGE_ITEM_SHAPE),
+            "page_size": WHOLE_NUMBER,
+        },
+        frozenset({"items"}),
+    ),
+    SectionType.NOTES: section_shape(SectionType.NOTES, {"items": TEXTS}, frozenset({"items"})),
     SectionType.OUTLINE: section_shape(
         SectionType.OUTLINE,
-        {"groups": partial(check_objects, shape=OUTLINE_GROUP_SHAPE), "expanded": check_flag},
+        {
+            "groups": Field(
+                check=partial(check_objects, shape=OUTLINE_GROUP_SHAPE), typescript="OutlineGroup[]", shape=OUTLINE_GROUP_SHAPE
+            ),
+            "expanded": FLAG,
+        },
         frozenset({"groups"}),
     ),
-    SectionType.CALLOUT: section_shape(SectionType.CALLOUT, {"body": check_text, "tone": CHECK_TONE}, frozenset({"body"})),
-    SectionType.TABLE: section_shape(
-        SectionType.TABLE,
-        {"columns": check_texts, "rows": check_rows},
-        frozenset({"columns", "rows"}),
-        check_table_rows,
-    ),
+    SectionType.CALLOUT: section_shape(SectionType.CALLOUT, {"body": TEXT, "tone": TONE}, frozenset({"body"})),
+    SectionType.TABLE: section_shape(SectionType.TABLE, {"columns": TEXTS, "rows": ROWS}, frozenset({"columns", "rows"}), check_table_rows),
     SectionType.DIAGRAM: section_shape(
         SectionType.DIAGRAM,
         {
-            "prs": partial(check_objects, shape=DIAGRAM_PULL_REQUEST_SHAPE, unique="ref"),
-            "nodes": partial(check_objects, shape=DIAGRAM_NODE_SHAPE, unique="id"),
-            "edges": partial(check_objects, shape=DIAGRAM_EDGE_SHAPE),
-            "steps": check_texts,
+            "prs": Field(
+                check=partial(check_objects, shape=DIAGRAM_PULL_REQUEST_SHAPE, unique="ref"),
+                typescript="DiagramPullRequest[]",
+                shape=DIAGRAM_PULL_REQUEST_SHAPE,
+            ),
+            "nodes": Field(
+                check=partial(check_objects, shape=DIAGRAM_NODE_SHAPE, unique="id"), typescript="DiagramNode[]", shape=DIAGRAM_NODE_SHAPE
+            ),
+            "edges": Field(check=partial(check_objects, shape=DIAGRAM_EDGE_SHAPE), typescript="DiagramEdge[]", shape=DIAGRAM_EDGE_SHAPE),
+            "steps": TEXTS,
         },
         frozenset({"nodes", "edges"}),
         check_diagram,
@@ -413,66 +458,44 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
 PAGE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Page",
     fields={
-        "title": check_text,
-        "icon": partial(check_choice, choices=IconName),
-        "layout": partial(check_choice, choices=PageLayout),
-        "sections": check_sections,
+        "title": TEXT,
+        "icon": ICON,
+        "layout": Field(check=partial(check_choice, choices=PageLayout), typescript=PageLayout.__name__, choices=PageLayout),
+        "sections": SECTIONS,
     },
     required=frozenset({"title", "icon", "sections"}),
 )
 DASHBOARD_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Dashboard",
     fields={
-        "title": check_text,
-        "icon": partial(check_choice, choices=IconName),
-        "subtitle": check_text,
-        "updated_at": check_timestamp,
-        "status": partial(check_object, shape=LABEL_SHAPE),
-        "progress": partial(check_object, shape=PROGRESS_SHAPE),
-        "metrics": partial(check_objects, shape=METRIC_SHAPE, max_entries=MAX_METRICS),
-        "pages": partial(check_objects, shape=PAGE_SHAPE),
-        "references": partial(check_objects, shape=REFERENCE_SHAPE, unique="text"),
+        "title": TEXT,
+        "icon": ICON,
+        "subtitle": TEXT,
+        "updated_at": TIMESTAMP,
+        "status": Field(check=partial(check_object, shape=LABEL_SHAPE), typescript="Label", shape=LABEL_SHAPE),
+        "progress": Field(check=partial(check_object, shape=PROGRESS_SHAPE), typescript="ProgressSummary", shape=PROGRESS_SHAPE),
+        "metrics": Field(
+            check=partial(check_objects, shape=METRIC_SHAPE, max_entries=MAX_METRICS), typescript="Metric[]", shape=METRIC_SHAPE
+        ),
+        "pages": Field(check=partial(check_objects, shape=PAGE_SHAPE), typescript="Page[]", shape=PAGE_SHAPE),
+        "references": Field(
+            check=partial(check_objects, shape=REFERENCE_SHAPE, unique="text"), typescript="Reference[]", shape=REFERENCE_SHAPE
+        ),
     },
     required=frozenset({"title", "icon", "updated_at", "pages"}),
     relations=check_navbar,
 )
-TYPESCRIPT_TYPES: Final[dict[Callable[..., object], str]] = {
-    check_text: "string",
-    check_timestamp: "string",
-    check_texts: "string[]",
-    check_rows: "string[][]",
-    check_fraction: "number",
-    check_whole_number: "number",
-    check_flag: "boolean",
-    check_sections: "Section[]",
-}
 
 
-def typescript_type(check: Callable[[object, str], object]) -> str:
-    """Return the TypeScript type a field's check accepts."""
-
-    if not isinstance(check, partial):
-        return TYPESCRIPT_TYPES[check]
-
-    match check.func:
-        case func if func is check_choice:
-            return check.keywords["choices"].__name__
-        case func if func is check_object:
-            return check.keywords["shape"]["name"]
-        case _:
-            return f"{check.keywords['shape']['name']}[]"
-
-
-def typescript_interface(shape: ObjectShape, section_type: SectionType | None = None) -> str:
+def typescript_interface(shape: ObjectShape) -> str:
     """Return the TypeScript interface for one spec object."""
 
     lines = [f"export interface {shape['name']} {{"]
 
-    for key, check in shape["fields"].items():
+    for key, field in shape["fields"].items():
         optional = "" if key in shape["required"] else "?"
-        field_type = f"typeof SectionType.{section_type.name}" if section_type and key == "type" else typescript_type(check)
 
-        lines.append(f"  {key}{optional}: {field_type};")
+        lines.append(f"  {key}{optional}: {field['typescript']};")
 
     return "\n".join([*lines, "}"])
 
@@ -488,14 +511,12 @@ def typescript_enum(choices: type[StrEnum]) -> str:
 def referenced_declarations(shape: ObjectShape, shapes: dict[str, ObjectShape], enums: dict[str, type[StrEnum]]) -> None:
     """Collect the shapes and enums a shape's fields refer to, each after what it refers to."""
 
-    for check in shape["fields"].values():
-        if not isinstance(check, partial):
-            continue
+    for field in shape["fields"].values():
+        if "choices" in field:
+            enums.setdefault(field["choices"].__name__, field["choices"])
 
-        if check.func is check_choice:
-            enums.setdefault(check.keywords["choices"].__name__, check.keywords["choices"])
-        elif check.keywords["shape"]["name"] not in shapes:
-            referenced_declarations(check.keywords["shape"], shapes, enums)
+        if "shape" in field and field["shape"]["name"] not in shapes:
+            referenced_declarations(field["shape"], shapes, enums)
 
     shapes.setdefault(shape["name"], shape)
 
@@ -511,11 +532,10 @@ def typescript_declarations() -> str:
 
     referenced_declarations(DASHBOARD_SHAPE, shapes, enums)
 
-    section_names = {shape["name"]: section_type for section_type, shape in SECTION_SHAPES.items()}
     blocks = [
         *(typescript_enum(choices) for choices in enums.values()),
-        f"export type Section = {' | '.join(section_names)};",
-        *(typescript_interface(shape, section_names.get(name)) for name, shape in shapes.items()),
+        f"export type Section = {' | '.join(shape['name'] for shape in SECTION_SHAPES.values())};",
+        *(typescript_interface(shape) for shape in shapes.values()),
     ]
 
     return TYPES_HEADER + "\n" + "\n\n".join(blocks) + "\n"
@@ -602,6 +622,7 @@ def build_page() -> str:
                 remove_path(entry)
 
         shutil.copytree(APP_ROOT, workspace, ignore=shutil.ignore_patterns(*APP_BUILD_OUTPUTS), dirs_exist_ok=True)
+
         (workspace / APP_TYPES_PATH).write_text(declarations, encoding="utf-8")
 
         install_dependencies(workspace)
