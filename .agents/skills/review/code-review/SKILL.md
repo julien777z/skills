@@ -36,6 +36,7 @@ fixed values in that type. A receipt without the conditional list is incomplete 
 - `acceptance-gate` — define the intent statement and gate the fixes the change did not itself
   introduce.
 - `agent-lock` — protect local snapshot capture with the exact checkout key.
+- `interactive-skill` — the effort and modes menus under **Arguments**.
 
 ## Invocation
 
@@ -55,25 +56,56 @@ Read the tokens as follows:
 - A token matching `fix` or `comment`, with or without a leading `--`, enables that mode.
 - Any remaining token is the `<target>`. To review a ref whose name collides with a reserved word, pass it as a fuller ref such as `refs/heads/fix`.
 
-**Ask for anything the invocation did not state, before doing anything else.** The invocation states two things independently, and each unstated one is a question:
+**Ask for anything the invocation did not state, before doing anything else**, through
+`interactive-skill` with the two menus below. The invocation's tokens settle each independently: an
+effort token settles **Effort**, and any mode token settles **Modes**, turning the named modes on
+and the unnamed ones off. So a bare `/code-review` asks both, `/code-review high` asks only about
+modes, `/code-review fix` asks only about effort, and `/code-review high fix` asks nothing and runs.
+A `<target>` never triggers a question; it has a defined fallback when absent. Neither menu is
+picked from anything but those tokens: do not resolve a target, read a diff, or launch a reviewer
+until both are settled, since guessing wrong means either a shallower review than wanted or
+unrequested edits and comments.
 
-- **Effort** — stated by an effort token. Otherwise ask which level to run.
-- **Modes** — stated by the presence of any mode token, which turns the named modes on and leaves the unnamed ones off. When no mode token appears at all, ask which modes to enable.
+Effort, each value described by its actual coverage and validation depth, never summarized as a
+range or replaced by a vague label such as "quick" or "thorough":
 
-So a bare `/code-review` asks both, `/code-review high` asks only about modes, `/code-review fix` asks only about effort, and `/code-review high fix` asks nothing and runs. A `<target>` never triggers a question; it has a defined fallback when absent.
+```yaml
+prompt: Which effort level should the review run at?
+kind: choice
+choices:
+  - id: low
+    label: low
+    detail: one Rules and one Bugs lens with inline validation, for small, low-risk changes
+  - id: medium
+    label: medium
+    detail: one Rules, one Bugs, one Simplification and one Security lens, with inline validation
+  - id: high
+    label: high
+    detail: one Rules, two independent Bugs, one Simplification and one Security lens, then one standard validator tries to refute every finding
+  - id: xhigh
+    label: xhigh
+    detail: two independent Rules and Bugs lenses plus one Simplification and one Security lens, then two standard validators per finding with majority rule
+  - id: max
+    label: max
+    detail: two Rules, three Bugs, two Simplification and two Security lenses in one pass, then three deep refuters per finding with majority rule
+  - id: ultra
+    label: ultra
+    detail: the max cohort repeated until two consecutive rounds find nothing new, with the same three deep refuters per finding
+```
 
-When asking for effort, list every accepted value explicitly and describe its actual coverage and validation depth:
+Modes:
 
-- `low` — Run one Rules and one Bugs lens with inline validation for a quick review of small, low-risk changes.
-- `medium` — Run one Rules, one Bugs, and one Simplification lens, plus one Security lens, with inline validation.
-- `high` — Run one Rules, two independent Bugs, and one Simplification lens, plus one Security lens, then have one standard validator try to refute every finding.
-- `xhigh` — Run two independent Rules and Bugs lenses plus one Simplification lens and one Security lens, then use two standard validators per finding with majority rule.
-- `max` — Run two Rules, three Bugs, two Simplification, and two Security lenses in one pass, then use three deep refuters per finding with majority rule.
-- `ultra` — Repeat the `max` cohort until two consecutive rounds find nothing new, using the same three deep refuters per finding.
-
-Keep each description to one or two sentences. Never summarize the effort values as a range such as `low`–`ultra` or replace the concrete descriptions with vague labels such as "quick," "thorough," or "broad."
-
-Ask using the host's structured question tool when it has one and a plain chat question otherwise. Do not resolve a target, read a diff, or launch a reviewer until the answer arrives — guessing wrong means either a shallower review than wanted or unrequested edits and comments.
+```yaml
+prompt: Which modes should the review run with?
+kind: multi
+choices:
+  - id: fix
+    label: fix
+    detail: fix every confirmed finding in the change
+  - id: comment
+    label: comment
+    detail: post one inline comment per issue on the pull request
+```
 
 Follow the global rules' **Task execution and authorization** question-tool procedure, including
 timeout retries. If neither a question tool nor chat can reach the user, retain the missing choices

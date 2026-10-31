@@ -16,6 +16,7 @@ the rubric whole before any of them and apply it throughout.
 ## Dependencies
 
 - `subagent-matrix` — route every agent a level names through a subagent of the running session.
+- `interactive-skill` — the effort menu under **Effort**.
 
 ## While Writing Code
 
@@ -45,16 +46,24 @@ A **Diff Review** or codebase audit may state an effort level and a target: `/se
 the target — a path, or a branch, pull request or pending changes for **Diff Review** — which falls
 back to the current working directory.
 
-When a review or audit states no effort, ask, listing every accepted value with its actual coverage:
+When a review or audit states no effort, ask through `interactive-skill` with this menu, each value
+described by its actual coverage and never replaced by a vague label such as "quick" or
+"thorough". Only an effort token picks it, and nothing launches until it is settled:
 
-- `low` — One pass over the target against the rubric, with no delegated agents at all.
-- `medium` — Recon inline, one hunter per attack class recon surfaced, one validator per finding.
-- `high` — Recon fanned out, two hunters on the riskiest classes and one elsewhere, then a refuter
-  and an independent verifier per finding, repeated until a round finds nothing new.
-
-Keep each description to one or two sentences, and never replace them with vague labels such as
-"quick" or "thorough". Ask through the host's structured question tool when it has one and a plain
-chat question otherwise, and launch nothing until the answer arrives.
+```yaml
+prompt: Which effort level should the audit run at?
+kind: choice
+choices:
+  - id: low
+    label: low
+    detail: one pass over the target against the rubric, with no delegated agents at all
+  - id: medium
+    label: medium
+    detail: recon inline, one hunter per attack class recon surfaced, one validator per finding
+  - id: high
+    label: high
+    detail: recon fanned out, two hunters on the riskiest classes and one elsewhere, then a refuter and an independent verifier per finding, repeated until a round finds nothing new
+```
 
 Follow the global rules' **Task execution and authorization** question-tool procedure, including
 timeout retries. If neither a question tool nor chat can reach the user, retain the missing effort

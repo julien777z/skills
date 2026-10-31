@@ -90,8 +90,8 @@ and deliver the same dashboard again on every request so the user keeps one page
   waiting on you" when a question is open, and `body` the first open question in a sentence and
   the step it blocks; otherwise, while a step is blocked, `tone` `critical`, `title` "<step title> is
   blocked" and `body` what it waits for.
-- **`board` "Work"**, four columns, with Up next and Done setting `page_size` 5 so each shows five
-  cards at a time:
+- **`board` "Work"**, described as "Each step of the task's plans, by where it stands", four
+  columns, with Up next and Done setting `page_size` 5 so each shows five cards at a time:
 
 | Column | `tone` | Cards |
 | --- | --- | --- |
@@ -144,9 +144,6 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **`references`**: each pull request in every form the page writes it — its name,
   "<owner>/<repo>#<number>", and "#<number>" when no other pull request of the task shares the
   number — with its `url`, so every mention of it is a link.
-
-Every section takes a one-sentence `description` of what it holds, such as "Each step of the task's
-plans, by where it stands" for the board.
 
 Leave out withdrawn plans and questions, and a section with nothing in it, except the board,
 which keeps its four columns.

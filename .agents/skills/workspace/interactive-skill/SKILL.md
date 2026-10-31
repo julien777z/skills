@@ -68,7 +68,8 @@ choices:
 
 - **Use the harness's question tool when the menu fits it.** Claude's question tool holds two to
   four options. Each available choice becomes an option, its `label` as the label and its `detail`
-  as the description. A `multi` menu allows several selections, and a `confirm` offers Yes and No.
+  as the description. A `multi` menu allows several selections, and a `confirm` offers Yes and No,
+  its Yes labelled Approved when it approves a plan or proposal.
   A reply typed into the tool's free-text answer is matched as below.
 - **Otherwise write the menu in chat**, exactly in this shape. That covers a harness with no
   question tool, a menu longer than the tool can hold, and a `text` prompt. Then end the turn;

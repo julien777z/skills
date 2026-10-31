@@ -36,7 +36,7 @@ one leaves its part of the page out.
 | `progress` | `{value: 0–1, label, detail?, segments?}`: a stat card twice as wide as the others, with the percentage, `detail` as its badge, and a bar. `segments` is `[{label, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1; without `segments` the bar is a plain fill. |
 | `metrics` | `[{label, value, detail?}]`: at most four stat cards beside the progress, `detail` under the figure. |
 | `pages` | `[{title, icon, layout?, sections}]`: one navbar link each. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. `sections` render in order; with `layout` `columns`, the default, callouts, boards, tables, outlines and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
-| `references` | `[{text, url}]`: every whole-word occurrence of `text` in any page's text becomes a link to `url`, apart from the navbar, page titles, stat card figures, badges, and an outline item's title and `meta`, which open the item, all of which stay plain. |
+| `references` | `[{text, url}]`: every whole-word occurrence of `text` in any page's text becomes a link to `url`, apart from the navbar, page titles, stat card figures and badges, which stay plain. |
 
 An `icon` is one of `overview`, `progress`, `board`, `checklist`, `list`, `chart`, `activity`,
 `diagram`, `document`, `guide`, `legal`, `shield`, `people`, `data`, `package`, `release`,
@@ -152,9 +152,9 @@ Dashboards look alike because they are built alike:
 Change a delivered dashboard only by re-rendering its whole spec, never by editing the page's
 HTML, which skips the renderer's validation. Change the page itself only in `app/`: its shadcn
 components live in `app/src/components/ui/` and are added with the shadcn CLI. The spec is declared
-once, in `scripts/render.py`, which writes the app's TypeScript types from it into the build. Run
-`npm ci` once and then `npm run check` in `app/` to write those types and type-check and lint the
-app.
+once, in `scripts/` (its enums in `models.py`, its shapes in `render.py`), and `render.py` writes the
+app's TypeScript types from it into the build. Run `npm ci` once and then `npm run check` in `app/`
+to write those types and type-check and lint the app.
 
 ## Delivery
 
