@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react';
 
-import { ExternalLink, Moment, RichText, SourceLinks, StatusBadge, ToneDot } from '@/components';
+import { ExternalLink, ItemMeta, RichText, SourceLinks, StatusBadge, ToneDot } from '@/components';
 import { Grid, Stack, Text } from '@/components/primitives';
+import { withKeys } from '@/lib/utils';
 import type { BoardColumn, BoardSection as BoardSectionSpec } from '@/spec';
 import { Paged } from './paged';
 import { SectionCard } from './section-card';
@@ -27,8 +28,8 @@ function Column({ column }: { column: BoardColumn }): ReactNode {
       )}
       <Paged items={column.items} pageSize={column.page_size} label={column.title}>
         {(visible) =>
-          visible.map((card, index) => (
-            <Stack key={index} gap="xs" surface="card">
+          withKeys(visible, (card) => card.title).map(({ key, item: card }) => (
+            <Stack key={key} gap="xs" surface="card">
               <Text size="sm" weight="medium" breakAnywhere>
                 {card.url ? <ExternalLink href={card.url}>{card.title}</ExternalLink> : <RichText text={card.title} />}
               </Text>
@@ -42,7 +43,7 @@ function Column({ column }: { column: BoardColumn }): ReactNode {
                   {card.tag && <StatusBadge label={card.tag} dot={false} />}
                   {(card.meta || card.at) && (
                     <Stack direction="row" justify="end" grow>
-                      <Moment meta={card.meta} at={card.at} />
+                      <ItemMeta meta={card.meta} at={card.at} />
                     </Stack>
                   )}
                 </Stack>
@@ -60,8 +61,8 @@ export function BoardSection({ section }: { section: BoardSectionSpec }): ReactN
   return (
     <SectionCard title={section.title} description={section.description} wide>
       <Grid columns="narrow">
-        {section.columns.map((column, index) => (
-          <Column key={index} column={column} />
+        {withKeys(section.columns, (column) => column.title).map(({ key, item: column }) => (
+          <Column key={key} column={column} />
         ))}
       </Grid>
     </SectionCard>

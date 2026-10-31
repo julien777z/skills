@@ -7,14 +7,15 @@ short_description: 'Turn a dashboard spec into the shared HTML page and deliver 
 # Use Dashboard
 
 A caller describes its dashboard as a JSON spec; [scripts/render.py](scripts/render.py) validates it
-and fills the page built from [app/](app/), a React app on Tailwind CSS and shadcn/ui laid out
-as a standard shadcn site: a sticky top navbar with the dashboard's icon and title and a link to
-each page, the open page's title and subtitle under it, a row of stat cards, and each section in its
-own card. Every dashboard gets that layout without the caller writing any markup. The page is one self-contained file; its web font loads from Google
-Fonts and falls back to system fonts, and a diagram is drawn by Mermaid, loaded from jsDelivr, with
-its connections listed as text when Mermaid cannot load. The page is dark unless the host's viewer
-is explicitly set to light (`data-theme="light"` on the root element), folds the page links into a
-menu below 1024 px, and renders every value as text, so data never runs as markup or script.
+and fills the page built from [app/](app/), a React app on Tailwind CSS and shadcn/ui laid out as a
+standard shadcn site: a sticky top navbar with the dashboard's icon and title and a link to each
+page, the open page's title and subtitle under it, a row of stat cards, and each section in its own
+card. Every dashboard gets that layout without the caller writing any markup. The page is one
+self-contained file; its web font loads from Google Fonts and falls back to system fonts, and a
+diagram is drawn by Mermaid, loaded from jsDelivr, with its connections listed as text when Mermaid
+cannot load. The page is dark unless the host's viewer is explicitly set to light
+(`data-theme="light"` on the root element), folds the page links into a menu below 1024 px, and
+renders every value as text, so data never runs as markup or script.
 
 ## Dependencies
 
@@ -131,7 +132,8 @@ Dashboards look alike because they are built alike:
 - **Times are timestamps.** A moment goes in `at` as a timestamp, never as a clock time written into
   text, so every reader sees it in their own timezone.
 - **Text is plain.** Titles say what is true in a few words; `detail` explains in a sentence or two
-  that reads without the source. Name a file, section or line in `meta`, never in the title.
+  that reads without the source. A file, section or line is named by its `links` pill, never in the
+  title, `detail` or `meta`.
 
 ## Render
 

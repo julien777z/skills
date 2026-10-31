@@ -19,10 +19,6 @@
       },
       "style": {
         "useBlockStatements": "error"
-      },
-      "suspicious": {
-        // Every list renders spec data that never reorders, and items carry no unique field.
-        "noArrayIndexKey": "off"
       }
     }
   },

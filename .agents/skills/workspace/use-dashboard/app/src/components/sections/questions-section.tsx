@@ -1,7 +1,7 @@
 import { Check, CircleHelp } from 'lucide-react';
 import type { ReactNode } from 'react';
 
-import { Moment, RichText } from '@/components';
+import { ItemMeta, RichText } from '@/components';
 import { Stack, Text } from '@/components/primitives';
 import { QuestionStatus, type QuestionsSection as QuestionsSectionSpec } from '@/spec';
 import { ListSection } from './list-section';
@@ -30,7 +30,7 @@ export function QuestionsSection({ section }: { section: QuestionsSectionSpec })
           ),
           title: <RichText text={question.question} />,
           detail: question.context && <RichText text={question.context} />,
-          aside: <Moment meta={question.meta} at={question.at} />,
+          aside: <ItemMeta meta={question.meta} at={question.at} />,
           body: (
             <>
               {question.options && !answered && <TextList items={question.options} numbered />}

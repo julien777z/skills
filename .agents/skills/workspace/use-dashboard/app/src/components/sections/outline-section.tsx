@@ -1,4 +1,4 @@
-import { type MouseEvent, type ReactNode, useState } from 'react';
+import { type ReactNode, useId, useState } from 'react';
 
 import { RichText, SourceLinks, StatusBadge, ToneDot } from '@/components';
 import { Grid, Stack, Text } from '@/components/primitives';
@@ -84,12 +84,16 @@ function Group({
     opensAll(group, expanded) ? group.items.map((_, index) => String(index)) : [],
   );
 
-  function handleRowClick(event: MouseEvent<HTMLElement>, value: string) {
-    if (window.getSelection()?.toString() || (event.target as HTMLElement).closest('a, button')) {
+  const triggerId = useId();
+
+  function handleOpenChange(next: string[]) {
+    const selection = window.getSelection();
+
+    if (selection && !selection.isCollapsed && selection.anchorNode?.parentElement?.closest('label')) {
       return;
     }
 
-    setOpen((current) => (current.includes(value) ? current.filter((entry) => entry !== value) : [...current, value]));
+    setOpen(next);
   }
 
   return (
@@ -99,24 +103,18 @@ function Group({
           <RichText text={group.title} />
         </Text>
       )}
-      <Accordion type="multiple" value={open} onValueChange={setOpen}>
+      <Accordion type="multiple" value={open} onValueChange={handleOpenChange}>
         {group.items.slice(start, end).map((item, offset) => {
           const index = start + offset;
 
           return (
             <AccordionItem key={index} value={String(index)}>
-              <Stack
-                direction="row"
-                align="start"
-                gap="md"
-                block="row"
-                onClick={(event) => handleRowClick(event, String(index))}
-              >
+              <Stack direction="row" align="start" gap="md" block="row">
                 <Stack direction="row" align="start" gap="sm" grow>
                   <ToneDot tone={item.tone} offset />
                   {item.tag && <StatusBadge label={item.tag} tone={item.tone} dot={false} />}
                   <Stack gap="xs" grow>
-                    <Text weight="medium" size="sm" breakAnywhere>
+                    <Text labelFor={`${triggerId}-${index}`} weight="medium" size="sm" breakAnywhere>
                       <RichText text={item.title} />
                     </Text>
                     {item.meta && (
@@ -126,7 +124,7 @@ function Group({
                     )}
                   </Stack>
                 </Stack>
-                <AccordionTrigger className="flex-none py-0" aria-label={item.title} />
+                <AccordionTrigger id={`${triggerId}-${index}`} className="flex-none py-0" aria-label={item.title} />
               </Stack>
               {item.links && (
                 <Stack inset="item">
@@ -158,10 +156,16 @@ export function OutlineSection({ section }: { section: OutlineSectionSpec }): Re
   return (
     <SectionCard title={section.title} description={section.description} wide>
       <Grid columns="pair" gap="loose">
-        {splitColumns(section.groups, expanded).map((column, columnIndex) => (
-          <Stack key={columnIndex} gap="xl">
-            {column.map((part, index) => (
-              <Group key={index} group={part.group} expanded={expanded} start={part.start} end={part.end} />
+        {splitColumns(section.groups, expanded).map((column) => (
+          <Stack key={column.map((part) => `${part.group.title}:${part.start}`).join('|')} gap="xl">
+            {column.map((part) => (
+              <Group
+                key={`${part.group.title}:${part.start}`}
+                group={part.group}
+                expanded={expanded}
+                start={part.start}
+                end={part.end}
+              />
             ))}
           </Stack>
         ))}

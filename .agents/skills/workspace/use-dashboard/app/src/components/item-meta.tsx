@@ -4,7 +4,7 @@ import { Text } from '@/components/primitives';
 import { formatMoment } from '@/lib/time';
 import { RichText } from './rich-text';
 
-export function Moment({ meta, at }: { meta?: string; at?: string }): ReactNode {
+export function ItemMeta({ meta, at }: { meta?: string; at?: string }): ReactNode {
   if (!meta && !at) {
     return null;
   }

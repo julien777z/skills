@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 
 import { RichText } from '@/components';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { withKeys } from '@/lib/utils';
 import type { TableSection as TableSectionSpec } from '@/spec';
 import { SectionCard } from './section-card';
 
@@ -12,18 +13,18 @@ export function TableSection({ section }: { section: TableSectionSpec }): ReactN
         <Table>
           <TableHeader className="bg-muted">
             <TableRow>
-              {section.columns.map((column, index) => (
-                <TableHead key={index} className="px-4">
+              {withKeys(section.columns, (column) => column).map(({ key, item: column }) => (
+                <TableHead key={key} className="px-4">
                   <RichText text={column} />
                 </TableHead>
               ))}
             </TableRow>
           </TableHeader>
           <TableBody>
-            {section.rows.map((cells, row) => (
-              <TableRow key={row}>
-                {cells.map((cell, column) => (
-                  <TableCell key={column} className="px-4 align-top whitespace-normal tabular-nums">
+            {withKeys(section.rows, (cells) => cells.join('\u0000')).map(({ key: rowKey, item: cells }) => (
+              <TableRow key={rowKey}>
+                {withKeys(cells, (cell) => cell).map(({ key, item: cell }) => (
+                  <TableCell key={key} className="px-4 align-top whitespace-normal tabular-nums">
                     <RichText text={cell} />
                   </TableCell>
                 ))}

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { Stack, Text } from '@/components/primitives';
+import { withKeys } from '@/lib/utils';
 import { Paged } from './paged';
 import { SectionCard } from './section-card';
 
@@ -58,8 +59,8 @@ export function ListSection<Item>({
       <Paged items={items} pageSize={pageSize} label={title} flush>
         {(visible) => (
           <Stack as="ul" divided>
-            {visible.map((item, index) => (
-              <ListRow key={index} {...row(item)} />
+            {withKeys(visible, (item) => JSON.stringify(item)).map(({ key, item }) => (
+              <ListRow key={key} {...row(item)} />
             ))}
           </Stack>
         )}

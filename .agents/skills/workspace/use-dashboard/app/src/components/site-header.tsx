@@ -80,7 +80,7 @@ function PageLinks({
         const active = position === current;
 
         return (
-          <li key={position}>
+          <li key={page.icon}>
             <Button
               variant="ghost"
               size="sm"
@@ -150,9 +150,9 @@ export function SiteHeader({
           </Stack>
         )}
         <Stack direction="row" align="center" gap="sm">
-          <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground">
+          <Stack align="center" justify="center" badge="brand">
             <BrandIcon className="size-4" />
-          </span>
+          </Stack>
           <Text weight="semibold" truncate>
             {title}
           </Text>

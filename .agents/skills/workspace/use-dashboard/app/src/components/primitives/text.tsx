@@ -32,9 +32,18 @@ const textVariants: ReturnType<typeof cva<typeof TEXT_VARIANTS>> = cva('', {
 
 interface TextProps extends VariantProps<typeof textVariants> {
   as?: 'span' | 'p' | 'h1' | 'h3' | 'b' | 'li';
+  labelFor?: string;
   children: ReactNode;
 }
 
-export function Text({ as: Element = 'span', children, ...variants }: TextProps): ReactNode {
+export function Text({ as: Element = 'span', labelFor, children, ...variants }: TextProps): ReactNode {
+  if (labelFor) {
+    return (
+      <label htmlFor={labelFor} className={textVariants({ ...variants, class: 'cursor-pointer' })}>
+        {children}
+      </label>
+    );
+  }
+
   return <Element className={textVariants(variants)}>{children}</Element>;
 }

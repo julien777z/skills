@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import { Stack } from '@/components/primitives';
 import { Badge } from '@/components/ui/badge';
 import { linkAttributes } from '@/lib/references';
+import { withKeys } from '@/lib/utils';
 import { SourceKind, type SourceLink } from '@/spec';
 
 const KIND_LABELS: Record<SourceKind, string> = {
@@ -33,17 +34,17 @@ function PillContent({ link, linked }: { link: SourceLink; linked: boolean }): R
 export function SourceLinks({ links }: { links: SourceLink[] }): ReactNode {
   return (
     <Stack direction="row" gap="xs" wrap>
-      {links.map((link, index) => {
+      {withKeys(links, (link) => link.url).map(({ key, item: link }) => {
         const attributes = linkAttributes(link.url);
 
         return attributes ? (
-          <Badge key={index} variant="source" asChild>
+          <Badge key={key} variant="source" asChild>
             <a {...attributes}>
               <PillContent link={link} linked />
             </a>
           </Badge>
         ) : (
-          <Badge key={index} variant="source">
+          <Badge key={key} variant="source">
             <PillContent link={link} linked={false} />
           </Badge>
         );

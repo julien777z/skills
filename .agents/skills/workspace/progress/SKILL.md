@@ -77,8 +77,8 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **Pull request names.** The page names each pull request "PR #<number> - <short title>": a few
   words saying what it does, not necessarily its title, such as `PR #1337 - Add bulk export`.
 - **Pages.** The dashboard's `icon` is `progress`. `Overview`, `icon` `overview` and `layout`
-  `rows`, holds the callout, the pull requests and the `table` "Plans", in that order. `Progress`, `icon` `board`, holds the
-  board, the answered questions, the notes and any other table. Once step 3 gives the page a pull
+  `rows`, holds the callout, the pull requests and the `table` "Plans", in that order. `Progress`,
+  `icon` `board`, holds the board, the answered questions, the notes and any other table. Once step 3 gives the page a pull
   request to cover, `Architecture` follows them, with `icon` `diagram` and `layout` `rows`: the
   diagram, then `changes` "Config changes", then `changes` "Migration changes", then an `outline`
   "What changed in <pull request name>" for each pull request it covers, then an `outline` "Keep in

@@ -4,7 +4,7 @@ import { Grid, Text } from '@/components/primitives';
 import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { TONES } from '@/lib/tone';
-import { cn } from '@/lib/utils';
+import { cn, withKeys } from '@/lib/utils';
 import type { Metric, ProgressSummary } from '@/spec';
 import { RichText } from './rich-text';
 import { StatusBadge } from './status-badge';
@@ -54,9 +54,9 @@ function ProgressBar({ progress, percent }: { progress: ProgressSummary; percent
     <>
       {progress.segments ? (
         <div aria-hidden="true" className="flex h-2 gap-0.5">
-          {progress.segments.map((segment, index) => (
+          {withKeys(progress.segments, (segment) => segment.label).map(({ key, item: segment }) => (
             <span
-              key={index}
+              key={key}
               title={segment.label}
               style={{ flexGrow: segment.weight ?? 1 }}
               className={cn('basis-0 rounded-[2px]', segment.tone ? TONES[segment.tone].dot : 'bg-foreground/15')}
@@ -91,8 +91,8 @@ export function SectionCards({ progress, metrics }: { progress?: ProgressSummary
           <ProgressBar progress={progress} percent={percent} />
         </StatCard>
       )}
-      {metrics.map((metric, index) => (
-        <StatCard key={index} label={metric.label} figure={metric.value}>
+      {withKeys(metrics, (metric) => metric.label).map(({ key, item: metric }) => (
+        <StatCard key={key} label={metric.label} figure={metric.value}>
           {metric.detail && (
             <Text size="sm" tone="muted">
               <RichText text={metric.detail} />

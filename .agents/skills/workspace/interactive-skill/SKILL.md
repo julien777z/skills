@@ -48,10 +48,12 @@ choices:
 2. **Read the request.** Take the invocation's arguments and the user's words that led to it.
    The calling skill's own name or command never picks a choice; only its arguments and the user's
    other words count. Arguments are matched exactly as a reply is under **Match The Reply**, so `2`
-   or `y` already answers. Otherwise the request picks a choice when it names its `id`, `label` or an alias as a
-   whole word or phrase, ignoring case, or when the user's main ask, read as a whole rather than
-   for keywords, is what the choice's `when` describes. A name the request rules out, as in "don't
-   review it", picks nothing.
+   or `y` already answers. Otherwise the request picks a choice when it names its `id`, `label` or
+   an alias as a whole word or phrase, ignoring case, or when the user's main ask, read as a whole
+   rather than for keywords, is what the choice's `when` describes. A name the request rules out,
+   as in "don't review it", picks nothing. A calling skill that names what may pick a menu, such as
+   only its own argument tokens parsed its own way, narrows this step to exactly that; nothing else
+   in the request picks.
 3. **Stop when the request picks a dropped choice.** Say what its `available` condition is missing,
    and run nothing.
 4. **Skip the menu when the request settles it.** That happens when it picks exactly one choice of a

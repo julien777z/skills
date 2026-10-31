@@ -1,5 +1,5 @@
 export { ExternalLink } from './external-link';
-export { Moment } from './moment';
+export { ItemMeta } from './item-meta';
 export { RichText } from './rich-text';
 export { SectionCards } from './section-cards';
 export { SiteHeader } from './site-header';

@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from 'class-variance-authority';
-import type { MouseEventHandler, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 const STACK_VARIANTS = {
   direction: { row: 'flex-row', column: 'flex-col' },
@@ -20,6 +20,7 @@ const STACK_VARIANTS = {
     slot: 'mt-0.5 size-5 shrink-0',
     goodFilled: 'size-5 shrink-0 rounded-full bg-good text-background',
     accentRing: 'size-5 shrink-0 rounded-full border border-info',
+    brand: 'size-7 shrink-0 rounded-md bg-primary text-primary-foreground',
   },
   frame: { none: '', page: '@container/page mx-auto w-full max-w-screen-2xl' },
   height: { auto: '', bar: 'h-14' },
@@ -60,17 +61,12 @@ const stackVariants: ReturnType<typeof cva<typeof STACK_VARIANTS>> = cva('flex m
 interface StackProps extends VariantProps<typeof stackVariants> {
   as?: 'div' | 'main' | 'ul' | 'ol' | 'li' | 'nav';
   label?: string;
-  onClick?: MouseEventHandler<HTMLElement>;
   children: ReactNode;
 }
 
-export function Stack({ as: Element = 'div', label, onClick, children, ...variants }: StackProps): ReactNode {
+export function Stack({ as: Element = 'div', label, children, ...variants }: StackProps): ReactNode {
   return (
-    <Element
-      aria-label={label}
-      onClick={onClick}
-      className={stackVariants({ ...variants, class: onClick && 'cursor-pointer' })}
-    >
+    <Element aria-label={label} className={stackVariants(variants)}>
       {children}
     </Element>
   );

@@ -5,7 +5,7 @@ import { Grid, Stack, Text } from '@/components/primitives';
 import { drawDiagram } from '@/lib/diagram';
 import { linkAttributes, type References, ReferencesContext } from '@/lib/references';
 import { CHANGES, ChangeName, TONES } from '@/lib/tone';
-import { cn } from '@/lib/utils';
+import { cn, withKeys } from '@/lib/utils';
 import type { DiagramSection as DiagramSectionSpec } from '@/spec';
 import { SectionCard } from './section-card';
 import { TextList } from './text-list';
@@ -146,8 +146,8 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
           )}
           {section.prs && (
             <Stack direction="row" gap="lg" wrap>
-              {section.prs.map((entry, index) => (
-                <Text key={index} size="xs">
+              {section.prs.map((entry) => (
+                <Text key={entry.ref} size="xs">
                   <ExternalLink href={entry.url}>{entry.ref}</ExternalLink>
                 </Text>
               ))}
@@ -156,8 +156,8 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
         </Stack>
         {section.steps && (
           <Grid as="ol" columns={split ? 'single' : 'steps'} gap="sm" divider={split ? 'side' : 'top'}>
-            {section.steps.map((step, index) => (
-              <Stack key={index} as="li" direction="row" align="start" gap="sm">
+            {withKeys(section.steps, (step) => step).map(({ key, item: step }, index) => (
+              <Stack key={key} as="li" direction="row" align="start" gap="sm">
                 <Stack align="center" justify="center" badge="accentRing">
                   <Text size="xxs" weight="bold" tone="accent">
                     {index + 1}

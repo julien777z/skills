@@ -4,6 +4,7 @@ import { RichText, SectionCards, SiteHeader } from '@/components';
 import { Grid, Stack, Text } from '@/components/primitives';
 import { DashboardSection } from '@/components/sections';
 import { References, ReferencesContext } from '@/lib/references';
+import { withKeys } from '@/lib/utils';
 import { type Dashboard, PageLayout } from '@/spec';
 
 export function App({ dashboard }: { dashboard: Dashboard }): ReactNode {
@@ -42,8 +43,8 @@ export function App({ dashboard }: { dashboard: Dashboard }): ReactNode {
         </Stack>
         {showSummary && <SectionCards progress={dashboard.progress} metrics={metrics} />}
         <Grid key={current} inset="page" gap="lg" columns={page.layout === PageLayout.ROWS ? 'single' : 'wide'}>
-          {page.sections.map((section, index) => (
-            <DashboardSection key={index} section={section} />
+          {withKeys(page.sections, (section) => section.title).map(({ key, item: section }) => (
+            <DashboardSection key={key} section={section} />
           ))}
         </Grid>
       </Stack>
