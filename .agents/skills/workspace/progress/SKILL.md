@@ -76,13 +76,22 @@ and deliver the same dashboard again on every request so the user keeps one page
   **Elapsed**, measured from the first plan's recorded approval time.
 - **Pull request names.** The page names each pull request "PR #<number> - <short title>": a few
   words saying what it does, not necessarily its title, such as `PR #1337 - Add bulk export`.
-- **Pages.** `Progress` holds the board, the pull requests, the answered questions, the notes and
-  any table, in that order. Once step 3 gives the page a pull request to cover, `Architecture`
-  follows it, with `layout` `rows`: the diagram, then `changes` "Config changes", then `changes`
-  "Migration changes", then an `outline` "What changed in <pull request name>" for each pull request
-  it covers, then an `outline` "Keep in mind".
-- **`board` "Work"**, four columns, with Up next and Done setting `page_size` 5 so each shows five
-  cards at a time:
+- **Pages.** The dashboard's `icon` is `progress`. `Overview`, `icon` `overview` and `layout`
+  `rows`, holds the callout, the pull requests and the `table` "Plans", in that order. `Progress`,
+  `icon` `board`, holds the board, the answered questions, the notes and any other table. Once step
+  3 gives the page a pull request to cover, `Architecture` follows them, with `icon` `diagram` and
+  `layout` `rows`: the diagram, then `changes` "Config changes", then `changes` "Migration changes",
+  then an `outline` "What changed in <pull request name>" for each pull request it covers, then an
+  `outline` "Keep in mind".
+- **`table` "Plans"**: one row per plan that is not withdrawn, with the columns Plan, Steps done
+  ("<done> of <n>"), Running, Waiting on you and Time left, the summary of what the board shows step
+  by step.
+- **`callout`**, only while something waits on the user: `tone` `warning`, `title` "<n> question(s)
+  waiting on you" when a question is open, and `body` the first open question in a sentence and
+  the step it blocks; otherwise, while a step is blocked, `tone` `critical`, `title` "<step title> is
+  blocked" and `body` what it waits for.
+- **`board` "Work"**, described as "Each step of the task's plans, by where it stands", four
+  columns, with Up next and Done setting `page_size` 5 so each shows five cards at a time:
 
 | Column | `tone` | Cards |
 | --- | --- | --- |
@@ -106,7 +115,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   `tone`: Open `good`, Draft neutral, and Failing checks `critical` in place of either when the
   head's checks fail.
 - **`questions` "Answered"**: each answered question with the user's `answer` in their words and
-  `meta` the time it was given, with `page_size` 5.
+  `at` the time it was given, with `page_size` 5.
 - **`notes` "Decisions and notes"**: each recorded decision and each assumption made without the
   user, labelled as an assumption.
 - **`table`**, only when the ledger holds tabular facts worth a grid, such as checks per pull
@@ -114,16 +123,20 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **`outline` "What changed in <pull request name>"**: the pull request's changes grouped by the area
   they touch, such as `Report export` or `Search page`, with moves and renames last under
   `No behaviour change`. Each item's `title` says in a few words what now happens, and its `detail`
-  how and why it matters in one or two sentences a reader follows without the diff.
+  how and why it matters in one or two sentences a reader follows without the diff. Its `links`,
+  of kind `diff`, open the diff of each file that makes the change, in the pull request's Files
+  changed view.
 - **`changes` "Config changes"**: each value the application reads while it runs that a pull request
   adds, changes or removes, such as an environment variable, a settings field or its default, a
   feature flag, a secret it reads, or a key in its configuration file. A setting only CI, a workflow
   or a deployment pipeline reads stays out — a GitHub Actions input, a workflow variable, a job's
   timeout. `name` the name a reader sets, `change`, and `detail` "<pull request name> · <its default
-  or new value> · <what the user has to do, or Nothing>". A secret is named, never its value.
+  or new value> · <what the user has to do, or Nothing>", with a `diff` link to the line in
+  the pull request's diff that sets it. A secret is named, never its value.
 - **`changes` "Migration changes"**: each database migration a pull request adds, changes or
   removes. `name` the migration's file or revision, `change`, and `detail` "<pull request name> ·
-  <what it does to the schema or stored data> · <what the user has to do, or Nothing>".
+  <what it does to the schema or stored data> · <what the user has to do, or Nothing>", with a
+  `diff` link to the migration file in the pull request's diff.
 - **`outline` "Keep in mind"**: what a reviewer or the user needs before relying on the change —
   risks, limits, the order the pull requests merge in, anything a merge or deploy needs from the
   user — grouped by when it applies, such as `Before merge`, `Before deploy` and `After deploy`.

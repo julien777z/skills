@@ -40,6 +40,7 @@ class SectionType(StrEnum):
     DIAGRAM = "diagram"
     OUTLINE = "outline"
     CHANGES = "changes"
+    CALLOUT = "callout"
 
 
 class PageLayout(StrEnum):
@@ -47,6 +48,46 @@ class PageLayout(StrEnum):
 
     COLUMNS = "columns"
     ROWS = "rows"
+
+
+class IconName(StrEnum):
+    """Icons the navbar shows for a dashboard and for each of its pages."""
+
+    OVERVIEW = "overview"
+    PROGRESS = "progress"
+    BOARD = "board"
+    CHECKLIST = "checklist"
+    LIST = "list"
+    CHART = "chart"
+    ACTIVITY = "activity"
+    DIAGRAM = "diagram"
+    DOCUMENT = "document"
+    GUIDE = "guide"
+    LEGAL = "legal"
+    SHIELD = "shield"
+    PEOPLE = "people"
+    DATA = "data"
+    PACKAGE = "package"
+    RELEASE = "release"
+    PULL_REQUEST = "pull-request"
+    SETTINGS = "settings"
+    ALERT = "alert"
+    CHECK = "check"
+    CALENDAR = "calendar"
+
+
+class SourceKind(StrEnum):
+    """What a source link opens, shown at the start of its pill."""
+
+    DOC = "doc"
+    CODE = "code"
+    DIFF = "diff"
+    SPEC = "spec"
+    PULL_REQUEST = "pull-request"
+    CONFIG = "config"
+    TEST = "test"
+    PAGE = "page"
+    DATA = "data"
 
 
 class Change(StrEnum):
@@ -57,9 +98,19 @@ class Change(StrEnum):
     REMOVED = "removed"
 
 
+class Field(TypedDict):
+    """One spec field: how it is checked and the TypeScript type it declares."""
+
+    check: Callable[[object, str], object]
+    typescript: str
+    shape: NotRequired["ObjectShape"]
+    choices: NotRequired[type[StrEnum]]
+
+
 class ObjectShape(TypedDict):
     """Validation rules for one spec object."""
 
-    fields: dict[str, Callable[[object, str], object]]
+    name: str
+    fields: dict[str, Field]
     required: frozenset[str]
     relations: NotRequired[Callable[[dict[str, object], str], None]]

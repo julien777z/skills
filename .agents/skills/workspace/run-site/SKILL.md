@@ -11,7 +11,7 @@ Start and verify the stack within the requested scope. When browser verification
 
 ## Dependencies
 
-- `agent-browser` — the browser automation CLI this skill drives.
+- `use-browser` — the browser this skill drives, through the `agent-browser` CLI.
 - `execute-task` — what happens to a defect a walkthrough finds, under its **Encountered Issues**.
 - `proton-pass` — a sign-in password the repository provides no source for.
 

@@ -7,41 +7,62 @@ short_description: 'Turn a dashboard spec into the shared HTML page and deliver 
 # Use Dashboard
 
 A caller describes its dashboard as a JSON spec; [scripts/render.py](scripts/render.py) validates it
-and fills [assets/dashboard.html](assets/dashboard.html), with
-[assets/diagram.js](assets/diagram.js) inlined, into one page with no build step; its web font loads
-from Google Fonts and falls back to system fonts, and a diagram is drawn by Mermaid, loaded from
-jsDelivr, with its connections listed as text when Mermaid cannot load. The page is dark unless the
-host's viewer is explicitly set to light, lays out wide on a desktop and stacks on a phone, and
+and fills the page built from [app/](app/), a React app on Tailwind CSS and shadcn/ui laid out as a
+standard shadcn site: a sticky top navbar with the dashboard's icon and title and a link to each
+page, the open page's title and subtitle under it, a row of stat cards, and each section in its own
+card. Every dashboard gets that layout without the caller writing any markup. The page is one
+self-contained file; its web font loads from Google Fonts and falls back to system fonts, and a
+diagram is drawn by Mermaid, loaded from jsDelivr, with its connections listed as text when Mermaid
+cannot load. The page is dark unless the host's viewer is explicitly set to light
+(`data-theme="light"` on the root element), folds the page links into a menu below 1024 px, and
 renders every value as text, so data never runs as markup or script.
+
+## Dependencies
+
+- `use-browser` — open the page in the user's browser, and reload it after each change, when no tool
+  publishes it.
 
 ## Spec
 
-Top level: `title`, `updated_at` (ISO 8601) and `pages` are required. The page heading shows
-`title`; the page's own name, which a browser tab or a published link shows, is always
-`Dashboard - <title>`. Every other field is optional, and an absent one leaves its part of the page
-out.
+Top level: `title`, `icon`, `updated_at` (ISO 8601) and `pages` are required. The navbar shows
+`title` beside `icon`, then a link to each page, how long ago `updated_at` was and the `status`
+badge, and each page opens with its own title; the page's own name, which a browser tab or a
+published link shows, is always `Dashboard - <title>`. Every other field is optional, and an absent
+one leaves its part of the page out.
 
 | Field | Shape |
 | --- | --- |
-| `subtitle` | One line under the title. |
-| `status` | `{label, tone?}`: the pill beside the title. |
-| `progress` | `{value: 0–1, label, detail?, segments?}`: the large percentage and its bar. `segments` is `[{label, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1; without `segments` the bar is a plain fill. |
-| `metrics` | `[{label, value, detail?}]`: up to four figures beside the progress. |
-| `pages` | `[{title, layout?, sections}]`: with more than one, a tab bar switches between them, and the progress and metrics show on the first. `sections` render in order; with `layout` `columns`, the default, boards, tables and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
-| `references` | `[{text, url}]`: every whole-word occurrence of `text` in the page's own text becomes a link to `url`. |
+| `subtitle` | One line under every page's title. |
+| `status` | `{label, tone?}`: the badge at the right of the navbar. |
+| `progress` | `{value: 0–1, label, detail?, segments?}`: a stat card twice as wide as the others, with the percentage, `detail` as its badge, and a bar. `segments` is `[{label, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1; without `segments` the bar is a plain fill. |
+| `metrics` | `[{label, value, detail?}]`: at most four stat cards beside the progress, `detail` under the figure. |
+| `pages` | `[{title, icon, layout?, sections}]`: one navbar link each. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. `sections` render in order; with `layout` `columns`, the default, callouts, boards, tables, outlines and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
+| `references` | `[{text, url}]`: every whole-word occurrence of `text` in any page's text becomes a link to `url`, apart from the navbar, page titles, stat card figures and badges, which stay plain. |
 
-`tone` is `good`, `warning`, `critical`, `accent` or `done`, a purple for finished work; omit it
-for neutral. Section types:
+An `icon` is one of `overview`, `progress`, `board`, `checklist`, `list`, `chart`, `activity`,
+`diagram`, `document`, `guide`, `legal`, `shield`, `people`, `data`, `package`, `release`,
+`pull-request`, `settings`, `alert`, `check` or `calendar`. The dashboard's icon and each page's icon
+all differ, so no glyph appears twice in the navbar.
+
+`tone` is `good`, `warning`, `critical`, `accent` or `done`, as **Making A Dashboard** defines
+them; omit it for neutral. `links` is `[{kind, label, url}]`: pills under the item that open its sources,
+each led by its `kind` — `doc`, `code`, `diff`, `spec`, `pull-request`, `config`, `test`, `page` or
+`data`, shown as Doc, Code, Diff, Spec, PR, Config, Test, Page or Data — and labelled briefly, such as
+`terms-of-service.md L324` or `export.py L40–L58`. `at` is an ISO 8601
+timestamp the page shows in the viewer's own timezone on a 12-hour clock, such as `9:05 PM`, with the
+date when it is not today. Every section takes an optional `description`, one sentence shown under
+its title. Section types:
 
 | `type` | Fields | Item fields |
 | --- | --- | --- |
-| `board` | `title`, `columns: [{title, tone?, page_size?, items}]` | `title`, `detail?`, `meta?`, `tag?`, `url?` |
-| `questions` | `title`, `items`, `page_size?` | `question`, `status` (`open`, `answered`), `context?`, `options?`, `recommendation?`, `answer?`, `meta?` |
+| `board` | `title`, `columns: [{title, tone?, page_size?, items}]` | `title`, `detail?`, `meta?`, `tag?`, `url?`, `at?`, `links?` |
+| `questions` | `title`, `items`, `page_size?` | `question`, `status` (`open`, `answered`), `context?`, `options?`, `recommendation?`, `answer?`, `meta?`, `at?` |
 | `links` | `title`, `items`, `page_size?` | `label`, `url`, `detail?`, `status?`, `tone?`, `state?`: a pull request's `open`, `draft`, `merged` or `closed`, drawn with GitHub's icon for it in place of the arrow |
 | `table` | `title`, `columns`, `rows` | each row a list of strings, one per column |
 | `notes` | `title`, `items` | each item a string |
-| `changes` | `title`, `items`, `page_size?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`: a named part with its change as a colored badge |
-| `outline` | `title`, `groups: [{title, items}]` | `title`, `detail`, `tone?`: a headline that opens to its detail; a group of one or two items shows them open |
+| `changes` | `title`, `items`, `page_size?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`, `links?`: a named part with its change as a colored badge |
+| `outline` | `title`, `groups: [{title, items}]`, `expanded?` (every item starts open when true) | `title`, `detail`, `tone?`, `tag?`, `meta?`, `links?`: a headline that opens to its detail, with `tag` as a badge in the item's tone (neutral without one) and `meta` as small text; without `expanded`, a group of one or two items shows them open |
+| `callout` | `title`, `body`, `tone?` | — : a banner across the page with an icon for its tone, for the one thing the reader must see first |
 | `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?` | node: `id`, `label`, `detail?`, `pr?`, `change?`; edge: `from`, `to`, `label?`, `step?`, `change?`; pr: `ref`, `url`; each step a string |
 
 A diagram draws each node as a box inside a frame titled with the `ref` its `pr` names, and each
@@ -62,6 +83,7 @@ to show is left out, and so is the entry that requires it. A URL renders as a li
 ```json
 {
   "title": "Search rewrite",
+  "icon": "activity",
   "updated_at": "2026-01-05T14:20:00+00:00",
   "status": {"label": "On track", "tone": "good"},
   "progress": {
@@ -71,10 +93,47 @@ to show is left out, and so is the entry that requires it. A URL renders as a li
   },
   "metrics": [{"label": "Time remaining", "value": "~20 min"}],
   "pages": [
-    {"title": "Progress", "sections": [{"type": "notes", "title": "Notes", "items": ["Index format settled."]}]}
+    {
+      "title": "Overview",
+      "icon": "overview",
+      "sections": [{"type": "notes", "title": "Notes", "items": ["Index format settled."]}]
+    }
   ]
 }
 ```
+
+## Making A Dashboard
+
+Dashboards look alike because they are built alike:
+
+- **Overview first, then one page per subject.** Every dashboard opens on `Overview`, the page
+  that tells the reader where things stand: the `progress` and `metrics` stat cards, then a
+  `callout` when one thing needs them now, then sections that summarize, such as counts per subject
+  or one line per theme naming the page that holds it. Overview repeats no item another page lists;
+  each later page goes deeper on one subject and is named for it.
+- **Icons say what each thing is.** Give the dashboard the icon that best names its subject, such as
+  `progress` for a task's progress or `legal` for legal documents, and each page the icon for what
+  it holds, such as `board` for a board of work or `diagram` for a diagram.
+- **Pick the section by the reader's question.** Where is each item? `board`. What needs my answer?
+  `questions`. Where do I click? `links`. What does each part say, in a sentence I can open?
+  `outline`. What was added or removed? `changes`. Values across the same columns? `table`. Short
+  remarks? `notes`. How do the parts connect? `diagram`.
+- **Tone means the same everywhere.** `good` is fine or matches, `warning` needs the reader's look
+  or action, `critical` is wrong or blocking, `accent` is in progress or informational, and `done`,
+  a purple, is finished work. Leave it out for neutral; never tone an item only to decorate it.
+- **Every section says what it holds.** Give each one a `description`: one sentence on what the
+  reader finds or does there, never a narration of its controls.
+- **Sources are links, never paths in text.** Anything a reader can check, such as a file and line,
+  a diff, a pull request, a document's section or a page of a site, goes in `links` with a URL that
+  opens it at that exact place: a permalink to the line or range at the commit that was read, or the
+  pull request's diff for that file. A path or line number written into `detail` or `meta` is not a
+  source the reader can open, and a branch, commit, pull request or file a sentence names takes a
+  `references` entry so the mention itself is a link.
+- **Times are timestamps.** A moment goes in `at` as a timestamp, never as a clock time written into
+  text, so every reader sees it in their own timezone.
+- **Text is plain.** Titles say what is true in a few words; `detail` explains in a sentence or two
+  that reads without the source. A file, section or line is named by its `links` pill, never in the
+  title, `detail` or `meta`.
 
 ## Render
 
@@ -83,27 +142,43 @@ to show is left out, and so is the entry that requires it. A URL renders as a li
    its publishing tool reads only there.
 2. Run `python3 -B scripts/render.py --input <spec.json> --output <page.html>`, resolving `scripts/`
    from this skill's directory; `-B` keeps the run from writing bytecode into the skill. Add
-   `--fragment` when the host wraps the page in its own document, as the publishing route below
-   says. The script prints the written path, or names the first field
-   that does not match the spec and exits non-zero; fix the spec and run it again.
-3. Keep the output path stable for one dashboard, so each render replaces the last.
+   `--fragment` when **Delivery** says to. The script prints the written path, or names the first
+   field that does not match the spec and exits non-zero; fix the spec and run it again.
+   The first render after the app changes builds it with npm into the user cache directory
+   (`$XDG_CACHE_HOME/use-dashboard`, or `~/.cache/use-dashboard`), which needs Node.js 20 or newer,
+   npm and access to the npm registry, and takes up to a minute; later renders reuse that build. A
+   failed build exits non-zero with npm's output.
+3. Keep one output path per dashboard, so each render replaces the last and updates the same
+   published page or browser tab.
 
 Change a delivered dashboard only by re-rendering its whole spec, never by editing the page's
-HTML, which skips the renderer's validation; change the page itself only in this skill's assets.
+HTML, which skips the renderer's validation. Change the page itself only in `app/`: its shadcn
+components live in `app/src/components/ui/` and are added with the shadcn CLI. The spec is declared
+once, in `scripts/` (its enums in `models.py`, its shapes in `render.py`), and `render.py` writes the
+app's TypeScript types from it into the build. Run `npm ci` once and then `npm run check` in `app/`
+to write those types and type-check and lint the app.
 
 ## Delivery
 
-Use the first route the host offers, and use the same one for every update of one dashboard.
+Every render the user is shown goes out through this section, including a preview, a sample, or a
+test of a change to the page: a screenshot of a render is a capture of the page, never its delivery.
+Use the first route the session offers, and the same one for every update of one dashboard.
 
-1. **A tool that publishes an HTML page to a link** — Claude's Artifact tool, for example. Render
-   with `--fragment`, publish that file as a plain page, never through a page type the host offers
-   for dashboards, so every dashboard keeps this template, and give the user the link. Republish
-   later renders to that same page so the link stays the one the user already has; record the link
-   where the caller keeps task state. Follow the tool's own instructions for its icon and
-   description.
-2. **A tool that sends a file to the user.** Send the full page.
-3. **Neither** — Codex, for example. Give the absolute path to the full page and the command that
-   opens it on the user's machine, such as `open <path>` on macOS or `xdg-open <path>` on Linux.
+1. **A tool that publishes an HTML page for the user to open**, such as an artifact tool, whenever
+   the harness offers one. Render with `--fragment` when the tool wraps the file in its own document
+   skeleton, and the full page otherwise. Publish it as a plain page, never through a page type the
+   tool offers for dashboards, so every dashboard keeps this template. Follow the tool's own
+   instructions for its icon and description, and give the user the link.
+   - **One published page per dashboard.** Before publishing, look for the link already published
+     for this dashboard's purpose, in the caller's task state or earlier in the session. When there
+     is one, publish the update to it. A dashboard that changes its look, its data, or both is still
+     the same dashboard; only a dashboard with a different purpose gets a new page.
+   - Record each new link where the caller keeps task state, so the next render finds it.
+2. **The user's own browser, through `use-browser`**, when no such tool exists and its **Showing A
+   Local Page** route applies. Render the full page; with one path per dashboard, that route reloads
+   the tab it already opened instead of opening another.
+3. **Otherwise**, send the full page with a tool that sends a file to the user, or, with none, give
+   its absolute path.
 
 ## Guardrails
 

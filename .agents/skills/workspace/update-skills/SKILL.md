@@ -91,9 +91,8 @@ remains a decision while independent recovery continues.
       `.agents` diff from its merge base with the default branch three-way, and commit it. A
       conflict, between the default branch and an input or between two inputs, is resolved through
       `merge-conflict` steps 3 to 8, with the overlay as built so far as the base and the input as
-      the head; leave out step 7's regeneration and pre-push checks, and its gate and push steps,
-      since the overlay is local. The report names each pull request that will need the same
-      resolution.
+      the head; leave out step 7's regeneration and pre-push checks, since the overlay is local.
+      The report names each pull request that will need the same resolution.
    3. Snapshot the source checkout's working tree, untracked files included, through a temporary
       index without touching the checkout, apply its `.agents` diff from the checkout's branch head
       onto the overlay, resolving a conflict the same way, and commit it in the overlay.
