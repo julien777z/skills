@@ -138,7 +138,7 @@ export function SiteHeader({
                   <Menu />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-72">
+              <SheetContent side="left" className="w-60">
                 <SheetHeader>
                   <SheetTitle>{title}</SheetTitle>
                 </SheetHeader>
