@@ -18,16 +18,20 @@ interface GroupPart {
   end: number;
 }
 
+function opensAll(group: OutlineGroup, expanded: boolean): boolean {
+  return expanded || group.items.length <= OPEN_GROUP_LIMIT;
+}
+
 function itemWeight(item: OutlineItem, opensAll: boolean): number {
   return 2 + (item.links ? 1 : 0) + (opensAll ? Math.ceil(item.detail.length / DETAIL_LINE_LENGTH) : 0);
 }
 
-function splitColumns(groups: OutlineGroup[]): GroupPart[][] {
+function splitColumns(groups: OutlineGroup[], expanded: boolean): GroupPart[][] {
   const entries = groups.flatMap((group, groupIndex) =>
     group.items.map((item, index) => ({
       groupIndex,
       index,
-      weight: itemWeight(item, group.items.length <= OPEN_GROUP_LIMIT) + (index === 0 ? 1 : 0),
+      weight: itemWeight(item, opensAll(group, expanded)) + (index === 0 ? 1 : 0),
     })),
   );
   const total = entries.reduce((sum, entry) => sum + entry.weight, 0);
@@ -67,15 +71,17 @@ function splitColumns(groups: OutlineGroup[]): GroupPart[][] {
 
 function Group({
   group,
+  expanded,
   start = 0,
   end = group.items.length,
 }: {
   group: OutlineGroup;
+  expanded: boolean;
   start?: number;
   end?: number;
 }): ReactNode {
   const [open, setOpen] = useState<string[]>(() =>
-    group.items.length <= OPEN_GROUP_LIMIT ? group.items.map((_, index) => String(index)) : [],
+    opensAll(group, expanded) ? group.items.map((_, index) => String(index)) : [],
   );
 
   function handleRowClick(event: MouseEvent<HTMLDivElement>, value: string) {
@@ -136,10 +142,12 @@ function Group({
 }
 
 export function OutlineSection({ section }: { section: OutlineSectionSpec }): ReactNode {
+  const expanded = section.expanded ?? false;
+
   if (section.groups.length === 1) {
     return (
       <SectionCard title={section.title} description={section.description} wide>
-        <Group group={section.groups[0]} />
+        <Group group={section.groups[0]} expanded={expanded} />
       </SectionCard>
     );
   }
@@ -147,10 +155,10 @@ export function OutlineSection({ section }: { section: OutlineSectionSpec }): Re
   return (
     <SectionCard title={section.title} description={section.description} wide>
       <Grid columns="pair" gap="loose">
-        {splitColumns(section.groups).map((column, columnIndex) => (
+        {splitColumns(section.groups, expanded).map((column, columnIndex) => (
           <Stack key={columnIndex} gap="xl">
             {column.map((part, index) => (
-              <Group key={index} group={part.group} start={part.start} end={part.end} />
+              <Group key={index} group={part.group} expanded={expanded} start={part.start} end={part.end} />
             ))}
           </Stack>
         ))}

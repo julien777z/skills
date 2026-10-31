@@ -112,6 +112,13 @@ def check_whole_number(value: object, path: str) -> None:
         raise DashboardSpecError(f"{path} must be a whole number from 1")
 
 
+def check_flag(value: object, path: str) -> None:
+    """Require true or false."""
+
+    if not isinstance(value, bool):
+        raise DashboardSpecError(f"{path} must be true or false")
+
+
 def check_timestamp(value: object, path: str) -> None:
     """Require an ISO 8601 timestamp."""
 
@@ -380,7 +387,9 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
     SectionType.CHANGES: paged_items_section(SectionType.CHANGES, CHANGE_ITEM_SHAPE),
     SectionType.NOTES: section_shape(SectionType.NOTES, {"items": check_texts}, frozenset({"items"})),
     SectionType.OUTLINE: section_shape(
-        SectionType.OUTLINE, {"groups": partial(check_objects, shape=OUTLINE_GROUP_SHAPE)}, frozenset({"groups"})
+        SectionType.OUTLINE,
+        {"groups": partial(check_objects, shape=OUTLINE_GROUP_SHAPE), "expanded": check_flag},
+        frozenset({"groups"}),
     ),
     SectionType.CALLOUT: section_shape(SectionType.CALLOUT, {"body": check_text, "tone": CHECK_TONE}, frozenset({"body"})),
     SectionType.TABLE: section_shape(
@@ -434,6 +443,7 @@ TYPESCRIPT_TYPES: Final[dict[Callable[..., object], str]] = {
     check_rows: "string[][]",
     check_fraction: "number",
     check_whole_number: "number",
+    check_flag: "boolean",
     check_sections: "Section[]",
 }
 
