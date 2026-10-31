@@ -3,15 +3,15 @@ import { type ReactNode, useState } from 'react';
 import { Stack, Text } from '@/components/primitives';
 import { Button } from '@/components/ui/button';
 
-interface PagedProps<T> {
-  items: T[];
+interface PagedProps<Item> {
+  items: Item[];
   pageSize?: number;
   label: string;
   flush?: boolean;
-  children: (visible: T[], start: number) => ReactNode;
+  children: (visible: Item[]) => ReactNode;
 }
 
-export function Paged<T>({ items, pageSize, label, flush = false, children }: PagedProps<T>): ReactNode {
+export function Paged<Item>({ items, pageSize, label, flush = false, children }: PagedProps<Item>): ReactNode {
   const [page, setPage] = useState(0);
   const size = pageSize && items.length > pageSize ? pageSize : items.length;
   const pages = Math.max(1, Math.ceil(items.length / Math.max(size, 1)));
@@ -20,7 +20,7 @@ export function Paged<T>({ items, pageSize, label, flush = false, children }: Pa
 
   return (
     <>
-      {children(items.slice(start, last), start)}
+      {children(items.slice(start, last))}
       {pages > 1 && (
         <Stack
           as="nav"

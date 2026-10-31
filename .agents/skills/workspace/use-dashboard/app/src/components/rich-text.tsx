@@ -1,7 +1,7 @@
 import { type ReactNode, useContext } from 'react';
 
-import { ExternalLink } from '@/components/external-link';
 import { ReferencesContext } from '@/lib/references';
+import { ExternalLink } from './external-link';
 
 export function RichText({ text }: { text: string }): ReactNode {
   const references = useContext(ReferencesContext);

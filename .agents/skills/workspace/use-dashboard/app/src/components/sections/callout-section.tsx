@@ -1,13 +1,13 @@
 import type { ReactNode } from 'react';
 
-import { RichText } from '@/components/rich-text';
+import { RichText } from '@/components';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { TONES } from '@/lib/tone';
+import { TONES, ToneName } from '@/lib/tone';
 import { cn } from '@/lib/utils';
 import type { CalloutSection as CalloutSectionSpec } from '@/spec';
 
 export function CalloutSection({ section }: { section: CalloutSectionSpec }): ReactNode {
-  const style = TONES[section.tone ?? 'neutral'];
+  const style = TONES[section.tone ?? ToneName.NEUTRAL];
   const Icon = style.icon;
 
   return (

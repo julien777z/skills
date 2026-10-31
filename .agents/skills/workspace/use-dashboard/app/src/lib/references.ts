@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { type Context, createContext } from 'react';
 
 import type { Reference } from '@/spec';
 
@@ -9,13 +9,27 @@ export interface ReferenceLink {
   href: string;
 }
 
-export function safeUrl(value: string): string | null {
+export interface LinkAttributes {
+  href: string;
+  target: '_blank';
+  rel: string;
+}
+
+export function linkAttributes(value: string): LinkAttributes | null {
   try {
     const url = new URL(value);
 
-    return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : null;
-  } catch {
-    return null;
+    if (url.protocol !== 'https:' && url.protocol !== 'http:') {
+      return null;
+    }
+
+    return { href: url.href, target: '_blank', rel: 'noopener noreferrer' };
+  } catch (error) {
+    if (error instanceof TypeError) {
+      return null;
+    }
+
+    throw error;
   }
 }
 
@@ -31,10 +45,10 @@ export class References {
     this.urls = new Map();
 
     for (const entry of entries) {
-      const href = safeUrl(entry.url);
+      const link = linkAttributes(entry.url);
 
-      if (href) {
-        this.urls.set(entry.text, href);
+      if (link) {
+        this.urls.set(entry.text, link.href);
       }
     }
 
@@ -67,4 +81,4 @@ export class References {
   }
 }
 
-export const ReferencesContext = createContext<References>(new References([]));
+export const ReferencesContext: Context<References> = createContext(new References([]));

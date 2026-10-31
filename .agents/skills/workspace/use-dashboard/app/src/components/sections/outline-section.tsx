@@ -1,12 +1,9 @@
 import { type MouseEvent, type ReactNode, useState } from 'react';
 
+import { RichText, SourceLinks, StatusBadge, ToneDot } from '@/components';
 import { Grid, Stack, Text } from '@/components/primitives';
-import { RichText } from '@/components/rich-text';
-import { SourceLinks } from '@/components/source-links';
-import { StatusBadge } from '@/components/status-badge';
-import { ToneDot } from '@/components/tone-dot';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import type { OutlineGroup, OutlineItem, OutlineSection as OutlineSectionSpec } from '@/spec';
+import type { OutlineGroup, OutlineSection as OutlineSectionSpec } from '@/spec';
 import { SectionCard } from './section-card';
 
 const OPEN_GROUP_LIMIT: number = 2;
@@ -22,18 +19,21 @@ function opensAll(group: OutlineGroup, expanded: boolean): boolean {
   return expanded || group.items.length <= OPEN_GROUP_LIMIT;
 }
 
-function itemWeight(item: OutlineItem, opensAll: boolean): number {
-  return 2 + (item.links ? 1 : 0) + (opensAll ? Math.ceil(item.detail.length / DETAIL_LINE_LENGTH) : 0);
-}
-
 function splitColumns(groups: OutlineGroup[], expanded: boolean): GroupPart[][] {
-  const entries = groups.flatMap((group, groupIndex) =>
-    group.items.map((item, index) => ({
+  const entries = groups.flatMap((group, groupIndex) => {
+    const open = opensAll(group, expanded);
+
+    return group.items.map((item, index) => ({
       groupIndex,
       index,
-      weight: itemWeight(item, opensAll(group, expanded)) + (index === 0 ? 1 : 0),
-    })),
-  );
+      weight:
+        2 +
+        (item.links ? 1 : 0) +
+        (open ? Math.ceil(item.detail.length / DETAIL_LINE_LENGTH) : 0) +
+        (index === 0 ? 1 : 0),
+    }));
+  });
+
   const total = entries.reduce((sum, entry) => sum + entry.weight, 0);
 
   let split = 1;
@@ -84,7 +84,7 @@ function Group({
     opensAll(group, expanded) ? group.items.map((_, index) => String(index)) : [],
   );
 
-  function handleRowClick(event: MouseEvent<HTMLDivElement>, value: string) {
+  function handleRowClick(event: MouseEvent<HTMLElement>, value: string) {
     if (window.getSelection()?.toString() || (event.target as HTMLElement).closest('a, button')) {
       return;
     }
@@ -105,8 +105,11 @@ function Group({
 
           return (
             <AccordionItem key={index} value={String(index)}>
-              <div
-                className="flex cursor-pointer items-start gap-3 py-3"
+              <Stack
+                direction="row"
+                align="start"
+                gap="md"
+                block="row"
                 onClick={(event) => handleRowClick(event, String(index))}
               >
                 <Stack direction="row" align="start" gap="sm" grow>
@@ -124,7 +127,7 @@ function Group({
                   </Stack>
                 </Stack>
                 <AccordionTrigger className="flex-none py-0" aria-label={item.title} />
-              </div>
+              </Stack>
               {item.links && (
                 <Stack inset="item">
                   <SourceLinks links={item.links} />

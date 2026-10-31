@@ -26,12 +26,12 @@ import {
 import { type ReactNode, useEffect, useState } from 'react';
 
 import { Stack, Text } from '@/components/primitives';
-import { StatusBadge } from '@/components/status-badge';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { relativeTime } from '@/lib/time';
 import { cn } from '@/lib/utils';
 import { IconName, type Label, type Page } from '@/spec';
+import { StatusBadge } from './status-badge';
 
 const ICONS: Record<IconName, LucideIcon> = {
   [IconName.OVERVIEW]: LayoutDashboard,

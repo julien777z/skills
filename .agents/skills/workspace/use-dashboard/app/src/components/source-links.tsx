@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 
 import { Stack } from '@/components/primitives';
 import { Badge } from '@/components/ui/badge';
-import { safeUrl } from '@/lib/references';
+import { linkAttributes } from '@/lib/references';
 import { SourceKind, type SourceLink } from '@/spec';
 
 const KIND_LABELS: Record<SourceKind, string> = {
@@ -34,11 +34,11 @@ export function SourceLinks({ links }: { links: SourceLink[] }): ReactNode {
   return (
     <Stack direction="row" gap="xs" wrap>
       {links.map((link, index) => {
-        const href = safeUrl(link.url);
+        const attributes = linkAttributes(link.url);
 
-        return href ? (
+        return attributes ? (
           <Badge key={index} variant="source" asChild>
-            <a href={href} target="_blank" rel="noopener noreferrer">
+            <a {...attributes}>
               <PillContent link={link} linked />
             </a>
           </Badge>

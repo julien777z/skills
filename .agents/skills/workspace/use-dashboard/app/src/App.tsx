@@ -1,10 +1,8 @@
 import { type ReactNode, useMemo, useState } from 'react';
 
+import { RichText, SectionCards, SiteHeader } from '@/components';
 import { Grid, Stack, Text } from '@/components/primitives';
-import { RichText } from '@/components/rich-text';
-import { SectionCards } from '@/components/section-cards';
 import { DashboardSection } from '@/components/sections';
-import { SiteHeader } from '@/components/site-header';
 import { References, ReferencesContext } from '@/lib/references';
 import { type Dashboard, PageLayout } from '@/spec';
 

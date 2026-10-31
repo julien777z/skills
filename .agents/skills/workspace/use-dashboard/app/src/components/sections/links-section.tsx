@@ -1,15 +1,11 @@
 import { ArrowUpRight } from 'lucide-react';
 import type { ReactNode } from 'react';
 
-import { ExternalLink } from '@/components/external-link';
-import { Stack } from '@/components/primitives';
-import { StatusBadge } from '@/components/status-badge';
+import { ExternalLink, RichText, StatusBadge } from '@/components';
 import { PULL_REQUESTS, TONES } from '@/lib/tone';
 import { cn } from '@/lib/utils';
 import type { LinkItem, LinksSection as LinksSectionSpec } from '@/spec';
-import { ListRow } from './list-row';
-import { Paged } from './paged';
-import { SectionCard } from './section-card';
+import { ListSection } from './list-section';
 
 function LinkIcon({ item }: { item: LinkItem }): ReactNode {
   if (!item.state) {
@@ -28,22 +24,18 @@ function LinkIcon({ item }: { item: LinkItem }): ReactNode {
 
 export function LinksSection({ section }: { section: LinksSectionSpec }): ReactNode {
   return (
-    <SectionCard title={section.title} description={section.description} count={String(section.items.length)} flush>
-      <Paged items={section.items} pageSize={section.page_size} label={section.title} flush>
-        {(visible) => (
-          <Stack as="ul" divided>
-            {visible.map((item, index) => (
-              <ListRow
-                key={index}
-                icon={<LinkIcon item={item} />}
-                title={<ExternalLink href={item.url}>{item.label}</ExternalLink>}
-                detail={item.detail}
-                aside={item.status && <StatusBadge label={item.status} tone={item.tone} />}
-              />
-            ))}
-          </Stack>
-        )}
-      </Paged>
-    </SectionCard>
+    <ListSection
+      title={section.title}
+      description={section.description}
+      summary={section.items.length}
+      items={section.items}
+      pageSize={section.page_size}
+      row={(item) => ({
+        icon: <LinkIcon item={item} />,
+        title: <ExternalLink href={item.url}>{item.label}</ExternalLink>,
+        detail: item.detail && <RichText text={item.detail} />,
+        aside: item.status && <StatusBadge label={item.status} tone={item.tone} />,
+      })}
+    />
   );
 }

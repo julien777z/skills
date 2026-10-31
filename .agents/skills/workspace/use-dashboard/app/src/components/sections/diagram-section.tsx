@@ -1,14 +1,14 @@
 import { type ReactNode, useContext, useEffect, useRef, useState } from 'react';
 
-import { ExternalLink } from '@/components/external-link';
+import { ExternalLink, RichText } from '@/components';
 import { Grid, Stack, Text } from '@/components/primitives';
-import { RichText } from '@/components/rich-text';
 import { drawDiagram } from '@/lib/diagram';
-import { type References, ReferencesContext } from '@/lib/references';
-import { CHANGES, type ChangeName, TONES } from '@/lib/tone';
+import { linkAttributes, type References, ReferencesContext } from '@/lib/references';
+import { CHANGES, ChangeName, TONES } from '@/lib/tone';
 import { cn } from '@/lib/utils';
 import type { DiagramSection as DiagramSectionSpec } from '@/spec';
 import { SectionCard } from './section-card';
+import { TextList } from './text-list';
 
 const DrawStatus = { DRAWING: 'drawing', DRAWN: 'drawn', FAILED: 'failed' } as const;
 
@@ -43,11 +43,15 @@ function linkFigureText(root: HTMLElement, references: References): void {
           return document.createTextNode(part);
         }
 
+        const attributes = linkAttributes(part.href);
+
+        if (!attributes) {
+          return document.createTextNode(part.text);
+        }
+
         const anchor = document.createElement('a');
 
-        anchor.href = part.href;
-        anchor.target = '_blank';
-        anchor.rel = 'noopener noreferrer';
+        Object.assign(anchor, attributes);
         anchor.textContent = part.text;
 
         return anchor;
@@ -63,7 +67,7 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
   const [split, setSplit] = useState(false);
   const labels = new Map(section.nodes.map((node) => [node.id, node.label]));
   const used = new Set([...section.nodes, ...section.edges].map((part) => part.change).filter(Boolean));
-  const legend = (Object.keys(CHANGES) as ChangeName[]).filter((change) => change === 'unchanged' || used.has(change));
+  const legend = Object.values(ChangeName).filter((change) => change === ChangeName.UNCHANGED || used.has(change));
 
   useEffect(() => {
     const target = figure.current;
@@ -85,6 +89,7 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
 
         target.replaceChildren(drawing.svg);
         target.scrollLeft = (target.scrollWidth - target.clientWidth) / 2;
+
         linkFigureText(target, references);
 
         setSplit(Boolean(section.steps) && drawing.width < target.clientWidth * SPLIT_RATIO);
@@ -111,15 +116,11 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
             </Text>
           )}
           {status !== DrawStatus.DRAWN && (
-            <Stack as="ul" gap="xs" marker="bullet">
-              {section.edges.map((edge, index) => (
-                <Text key={index} as="li" size="sm" tone="muted">
-                  <RichText
-                    text={`${labels.get(edge.from)} → ${labels.get(edge.to)}${edge.label ? `: ${edge.label}` : ''}`}
-                  />
-                </Text>
-              ))}
-            </Stack>
+            <TextList
+              items={section.edges.map(
+                (edge) => `${labels.get(edge.from)} → ${labels.get(edge.to)}${edge.label ? `: ${edge.label}` : ''}`,
+              )}
+            />
           )}
           <div
             ref={figure}
@@ -157,11 +158,11 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
           <Grid as="ol" columns={split ? 'single' : 'steps'} gap="sm" divider={split ? 'side' : 'top'}>
             {section.steps.map((step, index) => (
               <Stack key={index} as="li" direction="row" align="start" gap="sm">
-                <span className="flex size-5 shrink-0 items-center justify-center rounded-full border border-info">
+                <Stack align="center" justify="center" badge="accentRing">
                   <Text size="xxs" weight="bold" tone="accent">
                     {index + 1}
                   </Text>
-                </span>
+                </Stack>
                 <Text size="sm" tone="muted">
                   <RichText text={step} />
                 </Text>

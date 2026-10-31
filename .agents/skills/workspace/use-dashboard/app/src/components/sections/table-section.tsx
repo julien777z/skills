@@ -1,13 +1,13 @@
 import type { ReactNode } from 'react';
 
-import { RichText } from '@/components/rich-text';
+import { RichText } from '@/components';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import type { TableSection as TableSectionSpec } from '@/spec';
 import { SectionCard } from './section-card';
 
 export function TableSection({ section }: { section: TableSectionSpec }): ReactNode {
   return (
-    <SectionCard title={section.title} description={section.description} count={String(section.rows.length)} wide>
+    <SectionCard title={section.title} description={section.description} summary={section.rows.length} wide>
       <div className="overflow-hidden rounded-lg border">
         <Table>
           <TableHeader className="bg-muted">

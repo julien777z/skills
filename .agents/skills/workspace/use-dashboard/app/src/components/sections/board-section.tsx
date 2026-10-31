@@ -1,12 +1,7 @@
 import type { ReactNode } from 'react';
 
-import { ExternalLink } from '@/components/external-link';
-import { Moment } from '@/components/moment';
+import { ExternalLink, Moment, RichText, SourceLinks, StatusBadge, ToneDot } from '@/components';
 import { Grid, Stack, Text } from '@/components/primitives';
-import { RichText } from '@/components/rich-text';
-import { SourceLinks } from '@/components/source-links';
-import { StatusBadge } from '@/components/status-badge';
-import { ToneDot } from '@/components/tone-dot';
 import type { BoardColumn, BoardSection as BoardSectionSpec } from '@/spec';
 import { Paged } from './paged';
 import { SectionCard } from './section-card';
@@ -47,11 +42,7 @@ function Column({ column }: { column: BoardColumn }): ReactNode {
                   {card.tag && <StatusBadge label={card.tag} dot={false} />}
                   {(card.meta || card.at) && (
                     <Stack direction="row" justify="end" grow>
-                      <Text size="xs" tone="muted" numeric>
-                        {card.meta && <RichText text={card.meta} />}
-                        {card.meta && card.at && ' · '}
-                        {card.at && <Moment at={card.at} />}
-                      </Text>
+                      <Moment meta={card.meta} at={card.at} />
                     </Stack>
                   )}
                 </Stack>

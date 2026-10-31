@@ -1,13 +1,13 @@
 import type { ComponentProps, ReactNode } from 'react';
 
 import { Grid, Text } from '@/components/primitives';
-import { RichText } from '@/components/rich-text';
-import { StatusBadge } from '@/components/status-badge';
 import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { TONES } from '@/lib/tone';
 import { cn } from '@/lib/utils';
 import type { Metric, ProgressSummary } from '@/spec';
+import { RichText } from './rich-text';
+import { StatusBadge } from './status-badge';
 
 function StatCard({
   label,

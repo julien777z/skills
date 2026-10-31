@@ -1,13 +1,13 @@
 import type { ReactNode } from 'react';
 
-import { ToneDot } from '@/components/tone-dot';
 import { Badge } from '@/components/ui/badge';
-import { TONES, type ToneName } from '@/lib/tone';
+import { TONES, ToneName } from '@/lib/tone';
 import { cn } from '@/lib/utils';
+import { ToneDot } from './tone-dot';
 
 export function StatusBadge({
   label,
-  tone = 'neutral',
+  tone = ToneName.NEUTRAL,
   dot = true,
 }: {
   label: string;

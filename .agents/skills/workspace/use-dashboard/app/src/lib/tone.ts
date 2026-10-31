@@ -2,9 +2,13 @@ import { CircleAlert, CircleCheck, Info, type LucideIcon, TriangleAlert } from '
 
 import { Change, PullRequestState, Tone } from '@/spec';
 
-export type ToneName = Tone | 'neutral';
+export const ToneName = { ...Tone, NEUTRAL: 'neutral' } as const;
 
-export type ChangeName = Change | 'unchanged';
+export type ToneName = (typeof ToneName)[keyof typeof ToneName];
+
+export const ChangeName = { ...Change, UNCHANGED: 'unchanged' } as const;
+
+export type ChangeName = (typeof ChangeName)[keyof typeof ChangeName];
 
 interface ToneStyle {
   dot: string;
@@ -20,6 +24,8 @@ interface ChangeStyle {
   label: string;
   tone: ToneName;
   dashed: boolean;
+  strokeWidth: string;
+  mutedText: boolean;
 }
 
 interface PullRequestStyle {
@@ -28,7 +34,7 @@ interface PullRequestStyle {
   path: string;
 }
 
-export const TONES: Record<ToneName, ToneStyle> = {
+export const TONES = {
   [Tone.GOOD]: {
     dot: 'bg-good',
     badge: 'border-good/30 bg-good/15 text-good',
@@ -74,7 +80,7 @@ export const TONES: Record<ToneName, ToneStyle> = {
     text: 'text-done',
     icon: CircleCheck,
   },
-  neutral: {
+  [ToneName.NEUTRAL]: {
     dot: 'bg-muted-foreground',
     badge: 'border-border bg-muted text-muted-foreground',
     alert: '',
@@ -83,13 +89,19 @@ export const TONES: Record<ToneName, ToneStyle> = {
     text: 'text-muted-foreground',
     icon: Info,
   },
-};
+} as const satisfies Record<ToneName, ToneStyle>;
 
 export const CHANGES: Record<ChangeName, ChangeStyle> = {
-  [Change.ADDED]: { label: 'Added', tone: Tone.GOOD, dashed: false },
-  [Change.CHANGED]: { label: 'Changed', tone: Tone.ACCENT, dashed: false },
-  [Change.REMOVED]: { label: 'Removed', tone: Tone.CRITICAL, dashed: true },
-  unchanged: { label: 'Unchanged', tone: 'neutral', dashed: false },
+  [Change.ADDED]: { label: 'Added', tone: Tone.GOOD, dashed: false, strokeWidth: '2px', mutedText: false },
+  [Change.CHANGED]: { label: 'Changed', tone: Tone.ACCENT, dashed: false, strokeWidth: '2px', mutedText: false },
+  [Change.REMOVED]: { label: 'Removed', tone: Tone.CRITICAL, dashed: true, strokeWidth: '1.5px', mutedText: true },
+  [ChangeName.UNCHANGED]: {
+    label: 'Unchanged',
+    tone: ToneName.NEUTRAL,
+    dashed: false,
+    strokeWidth: '1px',
+    mutedText: true,
+  },
 };
 
 export const PULL_REQUESTS: Record<PullRequestState, PullRequestStyle> = {
@@ -100,7 +112,7 @@ export const PULL_REQUESTS: Record<PullRequestState, PullRequestStyle> = {
   },
   [PullRequestState.DRAFT]: {
     label: 'Draft pull request',
-    tone: 'neutral',
+    tone: ToneName.NEUTRAL,
     path: 'M3.25 1A2.25 2.25 0 0 1 4 5.372v5.256a2.251 2.251 0 1 1-1.5 0V5.372A2.251 2.251 0 0 1 3.25 1Zm9.5 14a2.25 2.25 0 1 1 0-4.5 2.25 2.25 0 0 1 0 4.5ZM2.5 3.25a.75.75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0ZM3.25 12a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm9.5 0a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM14 7.5a1.25 1.25 0 1 1-2.5 0 1.25 1.25 0 0 1 2.5 0Zm0-4.25a1.25 1.25 0 1 1-2.5 0 1.25 1.25 0 0 1 2.5 0Z',
   },
   [PullRequestState.MERGED]: {

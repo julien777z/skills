@@ -1,13 +1,14 @@
 import type { ReactNode } from 'react';
+
+import { RichText } from '@/components';
 import { Text } from '@/components/primitives';
-import { RichText } from '@/components/rich-text';
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
 interface SectionCardProps {
   title: string;
   description?: string;
-  count?: string;
+  summary?: ReactNode;
   wide?: boolean;
   flush?: boolean;
   children: ReactNode;
@@ -16,7 +17,7 @@ interface SectionCardProps {
 export function SectionCard({
   title,
   description,
-  count,
+  summary,
   wide = false,
   flush = false,
   children,
@@ -34,10 +35,10 @@ export function SectionCard({
             <RichText text={description} />
           </CardDescription>
         )}
-        {count && (
+        {summary === undefined ? null : (
           <CardAction>
             <Text size="sm" tone="muted" numeric>
-              {count}
+              {summary}
             </Text>
           </CardAction>
         )}

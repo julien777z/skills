@@ -1,4 +1,4 @@
-import { CHANGES, type ChangeName, TONES } from '@/lib/tone';
+import { CHANGES, ChangeName, TONES, type ToneName } from '@/lib/tone';
 import type { DiagramNode, DiagramSection } from '@/spec';
 
 interface Mermaid {
@@ -18,7 +18,7 @@ type Direction = (typeof DIRECTIONS)[number];
 
 const BASE_COLORS = ['background', 'card', 'foreground', 'muted-foreground', 'border'] as const;
 
-type Colors = Record<string, string>;
+type Colors = Record<(typeof BASE_COLORS)[number] | (typeof TONES)[ToneName]['color'], string>;
 
 export interface Drawing {
   svg: SVGSVGElement;
@@ -65,7 +65,7 @@ function resolveColors(): Colors {
 
       return [token, `#${[red, green, blue].map((channel) => channel.toString(16).padStart(2, '0')).join('')}`];
     }),
-  );
+  ) as Colors;
 }
 
 function loadMermaid(): Promise<{ mermaid: Mermaid; colors: Colors }> {
@@ -115,9 +115,8 @@ function mermaidString(value: string): string {
 
 function strokeStyle(change: ChangeName, colors: Colors): string {
   const style = CHANGES[change];
-  const width = change === 'unchanged' ? '1px' : style.dashed ? '1.5px' : '2px';
 
-  return `stroke:${colors[TONES[style.tone].color]},stroke-width:${width}${style.dashed ? ',stroke-dasharray:5 4' : ''}`;
+  return `stroke:${colors[TONES[style.tone].color]},stroke-width:${style.strokeWidth}${style.dashed ? ',stroke-dasharray:5 4' : ''}`;
 }
 
 function flowchartSource(section: DiagramSection, direction: Direction, colors: Colors): string {
@@ -127,7 +126,7 @@ function flowchartSource(section: DiagramSection, direction: Direction, colors: 
   function nodeLine(node: DiagramNode): string {
     const detail = node.detail ? `<br/><small>${mermaidString(node.detail)}</small>` : '';
 
-    return `${ids.get(node.id)}["<b>${mermaidString(node.label)}</b>${detail}"]:::${node.change ?? 'unchanged'}`;
+    return `${ids.get(node.id)}["<b>${mermaidString(node.label)}</b>${detail}"]:::${node.change ?? ChangeName.UNCHANGED}`;
   }
 
   for (const node of section.nodes.filter((entry) => !entry.pr)) {
@@ -156,8 +155,8 @@ function flowchartSource(section: DiagramSection, direction: Direction, colors: 
     }
   });
 
-  for (const change of Object.keys(CHANGES) as ChangeName[]) {
-    const text = change === 'removed' || change === 'unchanged' ? colors['muted-foreground'] : colors.foreground;
+  for (const change of Object.values(ChangeName)) {
+    const text = CHANGES[change].mutedText ? colors['muted-foreground'] : colors.foreground;
 
     lines.push(`classDef ${change} fill:${colors.card},color:${text},${strokeStyle(change, colors)}`);
   }
