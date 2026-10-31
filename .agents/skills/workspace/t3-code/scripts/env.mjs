@@ -45,7 +45,7 @@ Options:
   --help                Show this help
 
 Requires Node.js 22+, an installed T3 CLI and a running target server.
-Values are supplied as data, never as command arguments. Imports are sensitive.`);
+Values are supplied as data, never as command arguments. Imports are non-sensitive by default.`);
 }
 
 function parseCommand() {
@@ -301,7 +301,7 @@ function mergeInstance(instance, incoming, options) {
   if (options.command === 'unset') {
     for (const name of options.names) environment.delete(name);
   } else {
-    for (const [name, value] of incoming) environment.set(name, { name, value, sensitive: true });
+    for (const [name, value] of incoming) environment.set(name, { name, value, sensitive: false });
   }
 
   return { ...instance, environment: [...environment.values()] };
@@ -388,11 +388,9 @@ async function run(options, incoming) {
         for (const name of incoming.keys()) {
           const value = actual.environment.find((variable) => variable.name === name);
           const input = incoming.get(name);
-          const redacted = value?.valueRedacted === true;
-          const emptySensitiveValue = input === '' && value?.value === '';
 
-          if (value?.sensitive !== true || (!redacted && !emptySensitiveValue)) {
-            throw new Error(`Provider ${id} did not retain ${name} as a configured secret.`);
+          if (value?.sensitive !== false || value?.value !== input) {
+            throw new Error(`Provider ${id} did not retain ${name} as a configured value.`);
           }
         }
 
