@@ -3,6 +3,7 @@ import { type ReactNode, useId, useState } from 'react';
 import { RichText, SourceLinks, StatusBadge, ToneDot } from '@/components';
 import { Grid, Stack, Text } from '@/components/primitives';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { withKeys } from '@/lib/utils';
 import type { OutlineGroup, OutlineSection as OutlineSectionSpec } from '@/spec';
 import { SectionCard } from './section-card';
 
@@ -85,11 +86,25 @@ function Group({
   );
 
   const triggerId = useId();
+  const entries = withKeys(group.items, (item) => item.title)
+    .map((entry, position) => ({ ...entry, value: String(position) }))
+    .slice(start, end);
 
   function handleOpenChange(next: string[]) {
+    const changed = [
+      ...next.filter((value) => !open.includes(value)),
+      ...open.filter((value) => !next.includes(value)),
+    ];
+    const trigger = document.getElementById(`${triggerId}-${changed[0]}`);
+    const label = trigger && document.querySelector(`label[for="${CSS.escape(trigger.id)}"]`);
     const selection = window.getSelection();
 
-    if (selection && !selection.isCollapsed && selection.anchorNode?.parentElement?.closest('label')) {
+    if (
+      selection &&
+      !selection.isCollapsed &&
+      label?.contains(selection.anchorNode) &&
+      document.activeElement !== trigger
+    ) {
       return;
     }
 
@@ -104,17 +119,17 @@ function Group({
         </Text>
       )}
       <Accordion type="multiple" value={open} onValueChange={handleOpenChange}>
-        {group.items.slice(start, end).map((item, offset) => {
-          const index = start + offset;
+        {entries.map(({ key, item, value }) => {
+          const id = `${triggerId}-${value}`;
 
           return (
-            <AccordionItem key={index} value={String(index)}>
+            <AccordionItem key={key} value={value}>
               <Stack direction="row" align="start" gap="md" block="row">
                 <Stack direction="row" align="start" gap="sm" grow>
                   <ToneDot tone={item.tone} offset />
                   {item.tag && <StatusBadge label={item.tag} tone={item.tone} dot={false} />}
                   <Stack gap="xs" grow>
-                    <Text labelFor={`${triggerId}-${index}`} weight="medium" size="sm" breakAnywhere>
+                    <Text labelFor={id} weight="medium" size="sm" breakAnywhere>
                       <RichText text={item.title} />
                     </Text>
                     {item.meta && (
@@ -124,14 +139,17 @@ function Group({
                     )}
                   </Stack>
                 </Stack>
-                <AccordionTrigger id={`${triggerId}-${index}`} className="flex-none py-0" aria-label={item.title} />
+                <AccordionTrigger id={id} className="flex-none py-0" aria-label={item.title} />
               </Stack>
               {item.links && (
                 <Stack inset="item">
                   <SourceLinks links={item.links} />
                 </Stack>
               )}
-              <AccordionContent className="pl-[18px] text-muted-foreground [overflow-wrap:anywhere]">
+              <AccordionContent
+                aria-labelledby={id}
+                className="pl-[18px] text-muted-foreground [overflow-wrap:anywhere]"
+              >
                 <RichText text={item.detail} />
               </AccordionContent>
             </AccordionItem>
