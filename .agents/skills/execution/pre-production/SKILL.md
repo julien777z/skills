@@ -273,6 +273,13 @@ with an obsolete owned contract or revision.
 - For retained values, use the authoritative source where one exists and a type-valid placeholder
   only where none exists. Never overwrite a known retained value, fabricate a placeholder in runtime
   code, or keep a permanent schema default solely to make a migration convenient.
+- **A backfill writes each row's value under the new contract, never one chosen so existing rows
+  keep behaving as before.** A flag set on every pre-change row so it keeps the old outcome, such as
+  staying exempt from a new check, closed to a new path, or treated as the old kind, is a legacy
+  fallback written into data. So is a branch on a creation date or a stored version that does the
+  same. Where the new field records a fact, such as who did something or when, backfill that fact
+  from its authoritative source. The tell is a description or comment saying that rows from before
+  the change keep the old behaviour.
 - Before selecting an implementation for a schema or stored-representation change, invoke the
   database-migration skill for that role, including when the repository has no migration runner or
   uses startup reconciliation. Resolve its local commands and layout through project guidance;
