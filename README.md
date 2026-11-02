@@ -89,6 +89,7 @@ These run only when you ask for them by name, such as `/code-slop-doctor`.
 - [`ci-watch`](.agents/skills/git/ci-watch/SKILL.md) — Watch a pull request, resolve review findings, and check that CI passes.
 - [`code-slop-doctor`](.agents/skills/doctors/code-slop-doctor/SKILL.md) — Remove unneeded layers, wrappers, abstractions, duplicates, legacy paths, hand-written styling, code that reads as slop, configuration names and dependencies.
 - [`continue-handoff`](.agents/skills/workspace/continue-handoff/SKILL.md) — Pick up work another session handed off.
+- [`debug-skill-rounds`](.agents/skills/workspace/debug-skill-rounds/SKILL.md) — Show in chat which subagents and rounds are using time and tokens.
 - [`defer-execution`](.agents/skills/deferrals/defer-execution/SKILL.md) — Schedule separate work on its own branch, either now or after the current pull request merges.
 - [`docs-doctor`](.agents/skills/doctors/docs-doctor/SKILL.md) — Find and fix documentation that no longer matches the code.
 - [`execute-defer-scope`](.agents/skills/deferrals/execute-defer-scope/SKILL.md) — Review and resolve recorded deferred work for a chosen issue, path, or pull request.
