@@ -271,9 +271,9 @@ the step or the complete diff is the independent acceptance covering its resolut
 one that settles such a choice, or one the in-process check cannot settle goes to a fresh gate as
 above.
 
-**Repair rounds are counted per objection and per change.** A change gets at most 3 gate rounds, the
-first and 2 after repairs, as the global rules' review-round limit says: once 3 have flagged it,
-whatever each raised, the decision that bullet calls for replaces another repair, and an acceptance
+**Repair rounds are counted per objection and per change.** A change gets at most 3 rounds across
+every kind of check, the first and 2 after repairs, as the global rules' review-round limit counts
+them: once 3 have failed it, whatever each raised, the decision that bullet calls for replaces another repair, and an acceptance
 with recorded findings that decision makes is the one exception to the rules below on flagged
 diffs; an in-process check of a small repair is not one of those 3 rounds. While the change is
 under that limit, a flag gets at most two repair rounds of its own, and one a fresh gate raises for
