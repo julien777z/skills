@@ -73,7 +73,11 @@ function ProgressBar({ progress, percent }: { progress: ProgressSummary; percent
                     <Text size="sm" weight="medium">
                       {segment.label}
                     </Text>
-                    {segment.detail && <Text size="xs">{segment.detail}</Text>}
+                    {withKeys(segment.details ?? [], (line) => line).map(({ key: lineKey, item: line }) => (
+                      <Text key={lineKey} size="xs">
+                        {line}
+                      </Text>
+                    ))}
                   </Stack>
                 </TooltipContent>
               </Tooltip>

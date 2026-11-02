@@ -334,7 +334,7 @@ LABEL_SHAPE: Final[ObjectShape] = ObjectShape(
 )
 SEGMENT_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Segment",
-    fields={"label": TEXT, "detail": TEXT, "tone": TONE, "weight": WHOLE_NUMBER},
+    fields={"label": TEXT, "details": TEXTS, "tone": TONE, "weight": WHOLE_NUMBER},
     required=frozenset({"label"}),
 )
 PROGRESS_SHAPE: Final[ObjectShape] = ObjectShape(
@@ -555,6 +555,7 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
                 shape=OUTLINE_GROUP_SHAPE,
             ),
             "expanded": FLAG,
+            "stacked": FLAG,
         },
         frozenset({"groups"}),
     ),

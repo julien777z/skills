@@ -65,9 +65,9 @@ and deliver the same dashboard again on every request so the user keeps one page
   that is not withdrawn, where finished work is each done step's work and each done part of a step
   neither done nor skipped. `detail`: "<done> of <total> steps done", counting steps with work,
   adding "across <n> plans" when there are several.
-  `segments`: one per step with work, in plan order, labelled with the step's title, `detail` its
-  status, then "~<n> min estimated", then "took <n> min" once done, or "<done> of <n> parts" for a
-  step with parts, such as "Done · ~18 min estimated · took 21 min",
+  `segments`: one per step with work, in plan order, labelled with the step's title, `details` its
+  status, "~<n> min estimated", then "took <n> min" once done or "<done> of <n> parts done" for a
+  step with parts, such as ["Done", "~18 min estimated", "took 21 min"],
   `weight` that work in minutes, toned `good` when done, `accent` when active, `critical` when
   blocked, and neutral otherwise. A step neither done nor skipped with done parts takes them as a
   first segment, toned `good`, then its remaining work as a second, toned by the step's status as
@@ -97,7 +97,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   ("<done> of <n>"), Running, Waiting on you and Time left, the summary of what the board shows step
   by step, and `details` holding each row's plan write-up, so a row opens the plan.
 - **Plan write-up**: the plan as a reader who missed the conversation needs it, from the ledger's
-  `plan` entry: an `outline` with `expanded` set, `title` the plan's title and `description` its
+  `plan` entry: an `outline` with `expanded` and `stacked` set, `title` the plan's title and `description` its
   goal, then "Approved <time> · ~<total> min". Its groups, each only when it has something in it:
   "Context", why the plan exists and what it starts from, one item per point; "Steps", one item per
   step titled "<n>. <step title>", `detail` what the step changes and how, `meta` "~<n> min" and

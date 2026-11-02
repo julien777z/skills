@@ -127,10 +127,14 @@ function Group({ group, expanded }: { group: OutlineGroup; expanded: boolean }):
 export function OutlineSection({ section }: { section: OutlineSectionSpec }): ReactNode {
   const expanded = section.expanded ?? false;
 
-  if (section.groups.length === 1) {
+  if (section.groups.length === 1 || section.stacked) {
     return (
       <SectionCard title={section.title} description={section.description} wide>
-        <Group group={section.groups[0]} expanded={expanded} />
+        <Stack gap="xl">
+          {section.groups.map((group) => (
+            <Group key={group.title} group={group} expanded={expanded} />
+          ))}
+        </Stack>
       </SectionCard>
     );
   }
