@@ -233,9 +233,10 @@ freeze a replacement active review-scope snapshot after every pass-authored muta
 the originating delta as context. Do not start `code-review` while a simplification finding remains
 unapplied or unresolved. Run `code-review high fix` only against the resolved review target,
 as **Workflow** step 2 hands it over. Hand it the Simplification Gate's pass and, when it ran, the
-**Diff Review**, the latter clean with its own fixes included, each brought to the snapshot
-`code-review` starts on through its continuity attestation, so `code-review` takes them as lens
-receipts as its Step 3 says; a later change that touches their material reruns that lens over it.
+**Diff Review**, the latter clean with its own fixes included. Record each when it runs, at the
+snapshot it read, with the identities and manifests `code-review`'s Step 3 lists, and bring each to
+the snapshot `code-review` starts on through its continuity attestation, so `code-review` takes them
+as lens receipts as its Step 3 says; a later change that touches their material reruns that lens over it.
 
 ## GitHub Transport
 
@@ -453,7 +454,8 @@ to work around this gate.
    Thread Triage**. Run `test-fixture`'s
    **Sweep** over the tests the delta adds or changes, and, whatever the delta's size,
    `security-audit`'s **Diff Review** at `medium` when the delta crosses a trust boundary that skill
-   names, with the delta as its target and the merge-base diff as the context its traces read; push
+   names, with the delta as its target and the merge-base diff as the context its traces read,
+   recording its receipt as the Simplification Gate's hand-over to `code-review` describes; push
    their fixes only when a working pull request exists, otherwise freeze a replacement local snapshot
    and continue its validation and review loop. Then classify failures under **Failure relevance**, run the first test pass
    **Validation Order** requires, and complete the **Simplification Gate**; no code-review phase
