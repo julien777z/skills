@@ -1,8 +1,9 @@
 import type { ComponentProps, ReactNode } from 'react';
 
-import { Grid, Text } from '@/components/primitives';
+import { Grid, Stack, Text } from '@/components/primitives';
 import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { TONES } from '@/lib/tone';
 import { cn, withKeys } from '@/lib/utils';
 import type { Metric, ProgressSummary } from '@/spec';
@@ -53,16 +54,37 @@ function ProgressBar({ progress, percent }: { progress: ProgressSummary; percent
   return (
     <>
       {progress.segments ? (
-        <div aria-hidden="true" className="flex h-2 gap-0.5">
-          {withKeys(progress.segments, (segment) => segment.label).map(({ key, item: segment }) => (
-            <span
-              key={key}
-              title={segment.label}
-              style={{ flexGrow: segment.weight ?? 1 }}
-              className={cn('basis-0 rounded-[2px]', segment.tone ? TONES[segment.tone].dot : 'bg-foreground/15')}
-            />
-          ))}
-        </div>
+        <TooltipProvider>
+          <div className="group/bar flex h-2 gap-0.5">
+            {withKeys(progress.segments, (segment) => segment.label).map(({ key, item: segment }) => (
+              <Tooltip key={key}>
+                <TooltipTrigger asChild>
+                  <button
+                    type="button"
+                    aria-label={[segment.label, ...(segment.details ?? [])].join(', ')}
+                    style={{ flexGrow: segment.weight ?? 1 }}
+                    className={cn(
+                      'basis-0 rounded-[2px] outline-none transition-[opacity,transform] duration-150 group-hover/bar:opacity-40 group-has-focus-visible/bar:opacity-40 hover:scale-y-150 hover:opacity-100! focus-visible:scale-y-150 focus-visible:opacity-100!',
+                      segment.tone ? TONES[segment.tone].dot : 'bg-foreground/15',
+                    )}
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <Stack gap="xs">
+                    <Text size="sm" weight="medium">
+                      {segment.label}
+                    </Text>
+                    {withKeys(segment.details ?? [], (line) => line).map(({ key: lineKey, item: line }) => (
+                      <Text key={lineKey} size="xs">
+                        {line}
+                      </Text>
+                    ))}
+                  </Stack>
+                </TooltipContent>
+              </Tooltip>
+            ))}
+          </div>
+        </TooltipProvider>
       ) : (
         <Progress value={percent} aria-hidden="true" />
       )}

@@ -40,7 +40,6 @@ class SectionType(StrEnum):
     DIAGRAM = "diagram"
     OUTLINE = "outline"
     CHANGES = "changes"
-    CALLOUT = "callout"
 
 
 class PageLayout(StrEnum):

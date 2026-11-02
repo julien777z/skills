@@ -12,7 +12,10 @@ vendors the third-party skills and reference collections registered under `.agen
 For a local installation, run `bash bootstrap/install.sh` from the main checkout. User-level links
 point into that checkout; pull `main` there after a merge to update installed guidance. While skill
 changes are pending, the agent's refresh links them into an overlay worktree beside the checkout
-instead, and installed guidance updates when the next refresh rebuilds it. Edit skills on a separate
+instead, and installed guidance updates when the next refresh rebuilds it. Installing from an
+overlay regenerates its provider mirrors with the sync tool the Agent Sync workflow pins. That
+needs Python 3.12 or newer as `python3`, and network access on every overlay install to resolve the
+pinned revision, then to install the tool when that revision is new. Edit skills on a separate
 branch or worktree. For Claude cloud, put this at the start of the environment setup script, before
 project-specific setup commands:
 
@@ -43,11 +46,17 @@ Skills checkout when one is available and links the result into existing agent r
 cloud it also searches Claude's session checkout and links the root home used by the runtime. The
 installer exits on update, conflict, or installation failure.
 
-The local installer links skills, reference collections, reusable rules, and applicable agent definitions into existing
+The local installer links skills, reference collections, reusable rules, hooks, and applicable agent definitions into existing
 Claude, Codex, and Cursor user roots. Codex's global `AGENTS.md` links to the same canonical
 `global.md` rule used by the other harnesses. Repository-specific rules stay in each repository's
 `project.md`. Re-running refreshes owned links and prunes obsolete ones; real content or foreign
 links at an installed path are reported before any links change.
+
+The hooks and their registration need Python 3.11 or newer as `python3`; without it the installer
+links the hooks, warns, and registers none. The `ledger` hook needs PyYAML. When a ledger the
+session writes lacks a backup comment, it keeps the turn going in Claude Code and Codex and submits
+a follow-up message in Cursor. Codex runs a newly registered hook once it has been reviewed and
+trusted there.
 
 ## Layout
 
@@ -56,11 +65,13 @@ links at an installed path are reported before any links change.
 | `.agents/skills/<category>/<name>/` | One skill: `SKILL.md`, with `references/`, `scripts/`, `assets/`, or `resources/` beside it. The categories sort the skills and reach no provider — each one still installs as `<name>`, so a name is unique across the whole tree. |
 | `.agents/agents/` | Subagent definitions; the tier each runs on is stated by the skill that launches it. |
 | `.agents/rules/` | Reconciled reusable rules; technology-specific rules retain their file scopes. |
+| `.agents/hooks/<name>/` | One hook: its `main.py` entry point and supporting modules, linked into each user-level root under `hooks/<name>/`. `ledger/` is the turn-end check that every task ledger entry owing a backup comment has one. |
+| `.agents/hooks/hooks.json` | The event each hook runs on. Agent Sync turns it into each provider's registrations: Claude's `settings.json` and Codex's and Cursor's `hooks.json`. The installer reconciles those into each user-level root, pointing them at the linked hooks: it adds new registrations, replaces its earlier ones, and removes its own that no longer have a hook. |
 | `.agents/external_resources.json` | Third-party skills and reference directories vendored by the workflow. |
 | `.agents/resources/<name>/` | Vendored reference files, linked into each supported user-level root under `resources/<name>/`. |
 | `.agents/.auto_generated/` | Provider mirrors the workflow generates on `main`; never edited by hand. |
 | `AGENTS.md` | Repository instructions the workflow generates at the root; never edited by hand. |
-| `bootstrap/install.sh` | Refreshes a cloud setup clone when used there, then links skills, resources, agents, and rules into user-level roots. |
+| `bootstrap/install.sh` | Refreshes a cloud setup clone when used there, then links skills, resources, agents, rules, and hooks into user-level roots and registers the hooks. |
 
 ## Skills
 
@@ -201,5 +212,5 @@ the acceptance gate, and the smoke test before the pull request merges.
 
 ```bash
 bootstrap/install.sh                                            # link into this machine's roots
-python3.12 .agents/skills/authoring/edit-skill/scripts/validate_sources.py # mirror with the pinned sync tool
+python3.12 .agents/skills/authoring/edit-skill/scripts/validate_sources.py check # validate with the pinned sync tool
 ```

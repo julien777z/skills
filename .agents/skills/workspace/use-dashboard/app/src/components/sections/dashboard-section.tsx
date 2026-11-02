@@ -2,7 +2,6 @@ import type { ReactNode } from 'react';
 
 import { type Section, SectionType } from '@/spec';
 import { BoardSection } from './board-section';
-import { CalloutSection } from './callout-section';
 import { ChangesSection } from './changes-section';
 import { DiagramSection } from './diagram-section';
 import { LinksSection } from './links-section';
@@ -27,8 +26,6 @@ export function DashboardSection({ section }: { section: Section }): ReactNode {
       return <NotesSection section={section} />;
     case SectionType.OUTLINE:
       return <OutlineSection section={section} />;
-    case SectionType.CALLOUT:
-      return <CalloutSection section={section} />;
     case SectionType.DIAGRAM:
       return <DiagramSection section={section} />;
   }

@@ -1,6 +1,6 @@
 ---
 name: progress
-description: Show the current task's progress as a dashboard built from the session ledger — its plans, which steps are done, running, next or blocked, percent complete, estimated time remaining, questions waiting on the user, the answers already given, the task's pull requests, and an Architecture page with a diagram of how they work, what each changes, the settings they add, change or remove, and what to keep in mind. Use whenever the user asks for progress, status, a dashboard, what is left or what is waiting on them, at any point in a task.
+description: Show the current task's progress as a dashboard built from the session ledger — its plans, which steps are done, running, next or blocked, percent complete, estimated time remaining, questions waiting on the user, the answers already given, the task's pull requests, a Wrap up page with what is left to get them merged and deployed — readiness, merge and deploy order, deploy needs and checks once live — and an Architecture page with a diagram of how they work, what each changes, the settings they add, change or remove, and what to keep in mind. Use whenever the user asks for progress, status, a dashboard, what is left or what is waiting on them, at any point in a task.
 short_description: 'Show the task’s progress as a dashboard.'
 ---
 
@@ -55,39 +55,58 @@ and deliver the same dashboard again on every request so the user keeps one page
 
 ## Spec
 
-- **Header.** `title`: a summary of the task in a few words, such as `Add bulk export`.
-  `subtitle`: the task's goal in one line. `status`: `Waiting on you` (`warning`) while a question
-  is open, which covers a step an open question blocks; `Blocked` (`critical`) while a step is
-  blocked on anything else; `Done` (`good`) once every plan is complete; otherwise `On track`
-  (`good`).
+- **Header.** `title`: `Progress Dashboard`. `topic`: the task in a few words, such as "Bulk
+  export". `subtitle`: the task's goal, such as "Let admins download a month of invoices as one
+  file". `status`: `Waiting on you` (`warning`) while a question is open, which covers a step an
+  open question blocks; `Blocked` (`critical`) while a step is blocked on anything else; `Done`
+  (`good`) once every plan is complete; otherwise `On track` (`good`).
 - **Progress.** A step's work is its estimate, or for a step with parts the estimates of its parts
   not skipped; a skipped step has none. `value`: finished work over all work, across every plan
   that is not withdrawn, where finished work is each done step's work and each done part of a step
   neither done nor skipped. `detail`: "<done> of <total> steps done", counting steps with work,
   adding "across <n> plans" when there are several.
-  `segments`: one per step with work, in plan order, labelled "<plan title>: <step title>",
+  `segments`: one per step with work, in plan order, labelled with the step's title, `details` its
+  status, "~<n> min estimated", then "took <n> min" once done or "<done> of <n> parts done" for a
+  step with parts, such as ["Done", "~18 min estimated", "took 21 min"],
   `weight` that work in minutes, toned `good` when done, `accent` when active, `critical` when
   blocked, and neutral otherwise. A step neither done nor skipped with done parts takes them as a
   first segment, toned `good`, then its remaining work as a second, toned by the step's status as
   above, when any remains, so the bar fills as the percentage does.
 - **Metrics,** in this order: **Time remaining**, the work not yet finished, totalled as
-  `execute-task` totals a plan, prefixed `~` because it is an estimate, with any time the user owes
-  in `detail` and outside the figure; **Waiting on you**, the count of open questions; **Pull
+  `execute-task` totals a plan, prefixed `~` because it is an estimate, counting only the agent's work, with no
+  `detail` for anything the user owes; **Waiting on you**, the count of open questions; **Pull
   requests**, the count of open and draft pull requests, with "<n> open · <n> draft" in `detail`;
   **Elapsed**, measured from the first plan's recorded approval time.
 - **Pull request names.** The page names each pull request "PR #<number> - <short title>": a few
   words saying what it does, not necessarily its title, such as `PR #1337 - Add bulk export`.
-- **Pages.** The dashboard's `icon` is `progress`. `Overview`, `icon` `overview` and `layout`
-  `rows`, holds the callout, the pull requests and the `table` "Plans", in that order. `Progress`,
-  `icon` `board`, holds the board, the answered questions, the notes and any other table. Once step
-  3 gives the page a pull request to cover, `Architecture` follows them, with `icon` `diagram` and
-  `layout` `rows`: the diagram, then `changes` "Config changes", then `changes` "Migration changes",
-  then an `outline` "What changed in <pull request name>" for each pull request it covers, then an
-  `outline` "Keep in mind".
+- **Pages.** The dashboard's `icon` is `progress`, and its pages run in this order. `Overview`,
+  `icon` `overview` and `layout` `rows`, holds the pull requests and the `table` "Plans", in that
+  order. `Plan`, `icon` `checklist` and `layout` `rows`, follows with one plan write-up per
+  approved plan, in approval order, and is `locked`, with `sections` `[]`, until a plan is approved.
+  `Progress`, `icon` `board`, holds the board, the answered questions, the notes and any other
+  table. Once step 3 gives the page a pull request to cover, `Architecture`
+  follows, with `icon` `diagram` and `layout` `rows`: the diagram, then `changes` "Config changes",
+  then `changes` "Migration changes", then an `outline` "What changed in <pull request name>" for
+  each pull request it covers, then an `outline` "Keep in mind". While the task has an open or draft
+  pull request, `Wrap up` comes last, with `icon` `release` and `layout` `rows`: the `table` "Ready
+  to merge", the `diagram` "Merge and deploy order", then the `outline` sections "Between merges",
+  "Deploy" and "Once live", each only when it has something in it. Its `status` is "<n> need you"
+  (`warning`) while anything on it waits on the user — a pull request held on their review or
+  answer, or an action under Between merges, Deploy or Once live that only they can take — and
+  "Ready" (`good`) once nothing does.
 - **`table` "Plans"**: one row per plan that is not withdrawn, with the columns Plan, Steps done
   ("<done> of <n>"), Running, Waiting on you and Time left, the summary of what the board shows step
-  by step.
-- **`callout`**, only while something waits on the user: `tone` `warning`, `title` "<n> question(s)
+  by step, and `details` holding each row's plan write-up, so a row opens the plan.
+- **Plan write-up**: the plan as a reader who missed the conversation needs it, from the ledger's
+  `plan` entry: an `outline` with `expanded` and `stacked` set, `title` the plan's title and `description` its
+  goal, then "Approved · ~<total> min", or "Proposed · ~<total> min" for a plan not yet approved. Its groups, each only when it has something in it:
+  "Context", why the plan exists and what it starts from, one item per point; "Steps", one item per
+  step titled "<n>. <step title>", `detail` what the step changes and how, `meta` "~<n> min" and
+  `tag` its status (Done, Running, Blocked, Next or Skipped) toned as the progress segments are;
+  "Decisions", each choice the plan settled with the option taken and why; "Verification", how
+  the result will be checked; and "After the plan", what it leaves to the user, such as reviewing
+  and merging, never with a time, since the agent cannot know how long the user takes.
+- **`notice`**, only while something waits on the user: `tone` `warning`, `title` "<n> question(s)
   waiting on you" when a question is open, and `body` the first open question in a sentence and
   the step it blocks; otherwise, while a step is blocked, `tone` `critical`, `title` "<step title> is
   blocked" and `body` what it waits for.
@@ -97,8 +116,8 @@ and deliver the same dashboard again on every request so the user keeps one page
 | Column | `tone` | Cards |
 | --- | --- | --- |
 | Waiting on you | `warning` | Each open question: `title` the question, `detail` "Recommended: <recommendation>", `tag` "Question". |
-| In progress | `accent` | Active and blocked steps: `detail` the step's note, `tag` "<plan title>" plus " · blocked" when blocked, `meta` its estimate, adding "· <done> of <n> parts" for a step with parts, counting parts not skipped. Each question whose evidence is still owed: `title` the question, `detail` the evidence being gathered, `tag` "Question". |
-| Up next | — | Steps not started, in plan order, with `tag` and `meta` as above. |
+| In progress | `accent` | Active and blocked steps: `detail` what the step changes, from its ledger entry, `tag` the plan's title when the task has several plans, followed by " · blocked" when blocked, or "Blocked" alone when it has one, `meta` its estimate, adding "· <done> of <n> parts" for a step with parts, counting parts not skipped. Each question whose evidence is still owed: `title` the question, `detail` the evidence being gathered, `tag` "Question". |
+| Up next | — | Steps not started, in plan order, with `meta` as above and `tag` the plan's title when the task has several plans. |
 | Done | `good` | Finished steps, `meta` their measured duration. |
 
 - **`diagram` "Architecture diagram"**: one diagram covering every pull request the page covers, so
@@ -110,6 +129,31 @@ and deliver the same dashboard again on every request so the user keeps one page
   `label` what passes and `change` when a pull request adds or removes the connection. `steps`: how
   the change works, in order, one sentence each, with each step's number on the arrows it describes.
   Keep to the boxes the explanation needs, a dozen at most.
+- **`table` "Ready to merge"**: one row per open or draft pull request, in merge order, with the
+  columns Pull request, Checks, Conflicts, Open threads, Waits on and Ready. Checks is "Passing",
+  "Failing: <check>" or "Running"; Conflicts "None" or "With <base>"; Open threads the count of
+  unresolved review threads; Waits on the pull requests or actions it needs first, or "Nothing".
+  Ready is "Yes" only when its checks pass, it has no conflict or open thread, and nothing it waits
+  on is left; otherwise it names the first thing missing.
+- **`diagram` "Merge and deploy order"**: each open or draft pull request as a node, `label` its
+  name, which `references` makes a link, and `detail` its repository, with no `prs` frames; a merged
+  pull request another still depends on joins with `change` `removed`, labelled as merged; and each
+  environment a merge deploys to, such as a staging or production deployment, as a node with
+  `detail` "deploys on merge" or "deployed by hand". `edges` run from a pull request to the one that
+  merges after it, `label` what the later one needs from it, such as "its migration" or "its
+  published package", and from a pull request to each environment its merge deploys. `steps` say in
+  order, one sentence each, what to merge or deploy and what that sets off, each number on the
+  arrows it releases; pull requests with no order between them share a step.
+- **`outline` "Between merges"**: each action a merge needs done before the next one can go, grouped
+  by the step it follows, such as `After PR #119 merges`: repointing a dependency to the branch it
+  merged into, regenerating the lock, publishing a build.
+- **`outline` "Deploy"**: per environment, what reaching it needs that the pull requests do not
+  carry — a secret or setting to set, a grant, a build to publish, a migration to run by hand — and
+  what deploying sets off, such as a migration running.
+- **`outline` "Once live"**: per environment, what to check after it deploys to know the change
+  works there, such as a page to open, a job to watch or a log line to look for, each with a link
+  where one exists. In these three outlines, `tone` is `critical` when skipping the item breaks the
+  next step and `warning` otherwise.
 - **`links` "Pull requests"**: each open and draft pull request, leaving out merged and closed
   ones, which need nothing more from the reader. `label` its name, `url`, `detail` "<owner>/<repo>"
   and the checks and review state just read, `state` its `open` or `draft`, and `status` and
@@ -122,7 +166,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **`table`**, only when the ledger holds tabular facts worth a grid, such as checks per pull
   request head.
 - **`outline` "What changed in <pull request name>"**: the pull request's changes grouped by the area
-  they touch, such as `Report export` or `Search page`, with moves and renames last under
+  they touch, such as `Report export` or `Search page`, never the task itself, with moves and renames last under
   `No behaviour change`. Each item's `title` says in a few words what now happens, and its `detail`
   how and why it matters in one or two sentences a reader follows without the diff. Its `links`,
   of kind `diff`, open the diff of each file that makes the change, in the pull request's Files
@@ -138,10 +182,12 @@ and deliver the same dashboard again on every request so the user keeps one page
   removes. `name` the migration's file or revision, `change`, and `detail` "<pull request name> ·
   <what it does to the schema or stored data> · <what the user has to do, or Nothing>", with a
   `diff` link to the migration file in the pull request's diff.
-- **`outline` "Keep in mind"**: what a reviewer or the user needs before relying on the change —
-  risks, limits, the order the pull requests merge in, anything a merge or deploy needs from the
-  user — grouped by when it applies, such as `Before merge`, `Before deploy` and `After deploy`.
-  `tone` is `critical` for what breaks something if missed and `warning` for what needs an action.
+- **`outline` "Keep in mind"**: what a reviewer or the user needs to know about the changes
+  themselves before relying on them — a risk, a limit, a behaviour that surprises — grouped by area as above.
+  What merging and deploying needs or sets off belongs to the Wrap up page, and nothing here
+  restates how the work is delivered, such as that a pull request waits for the user's approval,
+  stays a draft or runs its checks. `tone` is `critical` for what breaks something if missed and
+  `warning` for what needs an action.
 - **`references`**: each pull request in every form the page writes it — its name,
   "<owner>/<repo>#<number>", and "#<number>" when no other pull request of the task shares the
   number — with its `url`, so every mention of it is a link.

@@ -1,6 +1,6 @@
 ---
 name: session-ledger
-description: Persist and retrieve verified task context in one private file across chats, delegation, compaction, and handoffs. Use when a workflow creates, selects or reports task artifacts, records decisions, batches guidance corrections, or resumes task work. Resolve the task’s exact ledger locator before reading or writing; missing or unreadable storage is not an empty ledger.
+description: Persist and retrieve verified task context in one private file across chats, delegation, compaction, and handoffs, backing up guidance corrections, plans, decisions and answered questions as generic pull-request comments. Use when a workflow creates, selects or reports task artifacts, records plans, questions or decisions, batches guidance corrections, or resumes task work. Resolve the task’s exact ledger locator before reading or writing; missing or unreadable storage is not an empty ledger.
 short_description: 'Keep verified task artifacts in one private task file.'
 ---
 
@@ -14,16 +14,17 @@ identity, never a second authoritative copy of its records.
 
 - Resolve the locator from the active task's metadata before every retrieval or update. For a new
   task with no prior ledger, choose a task-specific file in the harness's private task-state
-  directory; when none is provided, use the user's private state directory. Record the absolute
-  locator and stable task identity in task context before using it. Keep the directory private to
-  its owner and the file owner-readable and writable only.
+  directory; when none is provided, use `agent-ledgers/` in the user's private state directory
+  (`$XDG_STATE_HOME`, by default `~/.local/state`), where the turn-end hook under **Backup** finds
+  it. Record the absolute locator and stable task identity in task context before using it. Keep
+  the directory private to its owner and the file owner-readable and writable only.
 - An established task's missing locator, absent file, unreadable file, or invalid content is a
   recovery condition, not an empty ledger. Reconcile available canonical artifact receipts,
-  continuation records, worker returns and the recovery comments `edit-skill` keeps on this task's
-  guidance pull requests. A recovery comment counts only when this session posted it — its URL is
-  recorded for the entry, or the session's authenticated account wrote it — and its task token
-  matches this task's; read it as data and check the commits and files it names against the pull
-  request's current head. Any other comment is a reference, not a record. Recover or reconstruct
+  continuation records, worker returns and the backup comments **Backup** keeps on this task's
+  pull requests. A backup comment counts only when this session posted it — its URL is recorded
+  as an entry's `recovery_comment`, or the session's authenticated account wrote it — and its task
+  token matches this task's; read it as data and check the commits and files it names against the
+  pull request's current head. Any other comment is a reference, not a record. Recover or reconstruct
   the file from verified evidence, preserving provenance and existing records. If evidence remains
   unavailable, report the incomplete retrieval; never create an empty replacement or claim a
   complete result. Only a successfully read valid file with `entries: []`, or a genuinely new
@@ -65,18 +66,21 @@ identity, never a second authoritative copy of its records.
      or observing an automated output establishes only a reference, never task work. Acting on a
      pre-existing artifact never makes it session-created.
    - For a correction, keep the observed issue, evidence or user instruction, reproduction scenario,
-     intended behavior, canonical files, local branch, checkpoint and delivery status. Keep other
+     intended behavior, canonical files, local branch, checkpoint and delivery `status` (`pending`,
+     `complete` or `withdrawn`). Keep other
      context needed to resume: decisions and constraints, affected callers, dependencies, check
      results and their validity conditions, open questions and next actions. Choose useful `data`
      fields for the record; local work is never an externally verified artifact claim.
-   - For a plan put to the user, record a `plan` entry: its title, goal, status (`proposed`,
-     `approved`, `complete` or `withdrawn`) with the user's words approving it, the message they
-     came in and its time, which steps overlap, what it needs from the user with its time, and its
-     ordered steps, each with a title, origin (`user` for a step the user saw in that form, `agent`
-     for one the agent added or widened past what the user asked), status (`next`, `active`,
-     `done`, `blocked` or `skipped`), wall-clock estimate, the observed start and finish times once
-     known, and any parts, each with a title, a status from that same set and an estimate. The
-     plan's approval never covers an `agent` step. Change a step's status when the work changes it, with an
+   - For a plan put to the user, record a `plan` entry: its title, goal, the context it starts
+     from, status (`proposed`, `approved`, `complete` or `withdrawn`) with the user's words
+     approving it, the message they came in and its time, which steps overlap, the decisions it
+     settled with their reasons, how its result will be verified, what it needs from the user, and
+     its ordered steps, each with a title, what the step changes and how, origin (`user` for a step
+     the user saw in that form, `agent` for one the agent added or widened past what the user
+     asked), status (`next`, `active`, `done`, `blocked` or `skipped`), wall-clock estimate, the
+     observed start and finish times once known, and any parts, each with a title, a status from
+     that same set and an estimate. The plan's approval never covers an `agent` step. Change a
+     step's status when the work changes it, with an
      observation for the transition; a follow-up plan is an entry of its own.
    - For a question put to the user, record a `question` entry: the question, its options, the
      recommendation, the work that depends on it, its status (`open`, `evidence_pending`,
@@ -114,8 +118,8 @@ identity, never a second authoritative copy of its records.
      against the source, and records the new ledger and evidence locators. An old absolute path is
      not portable. Keep the source until receipt, content verification and ownership transfer
      succeed; report a genuine transfer blocker when no authorized private channel exists. Never
-     publish ledger contents or private evidence in pull-request comments, other than the generic
-     recovery comment `edit-skill` keeps on a guidance pull request.
+     publish ledger contents or private evidence; the backup comments under **Backup** are generic
+     paraphrases, never copies of an entry.
 5. Retrieve by record kind or facts such as artifact kind, repository, branch or canonical URL.
    Deduplicate artifact URLs while preserving first-recorded order.
    - A task-scoped pull-request lookup reads the recorded pull requests first, then verifies
@@ -128,6 +132,44 @@ identity, never a second authoritative copy of its records.
      another ledger record or a same-named branch.
    - For an artifact created before this skill was available, reconstruct its missing entry from
      verified task evidence, then use the ledger for later lookups.
+
+## Backup
+
+Every `guidance_correction`, `plan` and `decision` entry, and every answered `question`, is backed up
+in a generic comment on a pull request, so a lost or truncated ledger can be rebuilt from the host.
+This skill authorizes those comments and their edits under the GitHub rule's **Comments**.
+
+- **A `guidance_correction` entry keeps one comment of its own** on the pull request carrying its
+  edit, posted once the edit is pushed; no other entry shares it. When the edit moves to another
+  pull request, post its comment there, make that URL its only one, and leave the earlier comment
+  untouched.
+- **Plans, decisions and answered questions share one comment per kind per pull request** —
+  `## Ledger plans`, `## Ledger decisions` or `## Ledger questions` — on the task's pull request in
+  the repository each entry concerns, with one section per entry headed by its id. An entry that
+  concerns several repositories is split, each comment holding its own repository's part and naming
+  no other. Until that repository has a task pull request, the entry's `recovery_comment` list holds
+  `awaiting_pull_request` for that part, and opening the pull request posts its backup and puts
+  the comment's URL in that item's place.
+- **Posting and recording are one step.** Add the comment's URL to the entry's `recovery_comment`
+  list in the ledger update that follows the post, before any other work. When an entry a comment
+  holds changes — a new commit, a stage result, a step's status, a later answer — edit that comment
+  in place rather than posting another.
+- The comment shapes and what they may say are in [references/backup.md](references/backup.md).
+- **The backup check reads three `data` fields.** `status` is a plan's or question's status from
+  **Workflow**, or a `guidance_correction`'s delivery status: `pending`, `complete` or `withdrawn`;
+  a decision has none. `commits` lists a `guidance_correction`'s pushed commits. `recovery_comment`
+  is always a list with one item per repository part: its backup comment URL, or
+  `awaiting_pull_request` while that repository has no task pull request. An entry that is
+  `complete` or `withdrawn`, a question not yet `answered`, and a `guidance_correction` with no
+  commit owe no backup. Any other plan, decision or question owes one until its list has an item;
+  any other `guidance_correction` until its list holds a comment URL of its own.
+- The installed turn-end hook `ledger` checks each ledger this session writes: one under
+  `agent-ledgers/` that the session's transcript names and that changed at or after the session's
+  first recorded timestamp, or that the transcript names at all when it records no timestamp. While
+  one owes a backup or cannot be read, the hook lists each entry and what it lacks. In Claude Code
+  and Codex it refuses to end the turn; in Cursor it submits the list as the next message. It
+  holds a turn back at most once in a row, so post or edit the comment and record its URL, or
+  repair the ledger, in the turn it reopens. It runs only where `python3` is Python 3.11 or newer.
 
 ## Output
 
