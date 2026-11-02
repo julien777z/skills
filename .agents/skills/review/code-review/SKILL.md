@@ -217,6 +217,14 @@ Summarize the changed files and produce the intent statement as `acceptance-gate
 | **Simplification** | deep | Run the `code-simplify` skill as its rubric over the scope — redundancy, a module named or placed wrong, a file past a healthy size, a value modelled one way here and another way in a sibling |
 | **Security** | deep | Apply `security-audit`'s rubric and attack-class catalogue over the changed lines — injection, authentication and authorization defeats, sensitive data reaching a log or response, unsafe deserialization, secrets in source |
 
+**A caller's pass can be a lens's receipt.** When the caller hands over a `code-simplify` pass or a
+`security-audit` **Diff Review** over this target as the Simplification or Security lens's receipt,
+it counts as that lens's coverage receipt only when it carries the identities and manifests this
+step requires, reports no unresolved finding, and, for Simplification, meets the receipt checks
+below. It then fills that lens's coverage-map key, and it is retained, invalidated and
+continuity-attested like any lens receipt, so a later change reruns that lens only over the material
+the change touches. Without such a receipt the lens runs.
+
 Effort selects the cohort and the validation depth:
 
 | Effort | Rules | Bugs | Simplification | Security | Validation |
@@ -408,7 +416,7 @@ The chat report takes this shape and nothing else:
   Concrete trigger, impact, and the expected correction. → Fixed | → Not fixed: <reason>
 
 Findings: <count by severity>. Fixed: <count>. Deferred: <count, each with its record>.
-Lenses: <completed lens names>. Head: <reviewed SHA>. Rules: <ledger summary>.
+Lenses: <completed lens names, each covered by a caller's receipt marked as such>. Head: <reviewed SHA>. Rules: <ledger summary>.
 ```
 
 The chat list carries the five most severe findings. Whenever more than five remain, one file in
