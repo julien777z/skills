@@ -165,16 +165,17 @@ alwaysApply: true
   product's established positions, the wording of a message the change adds, a small layout
   adjustment confined to the surface in hand that leaves every value as easy to read: decide it by
   what serves the reader and stays consistent with the product, and state the choice and its reason
-  in the report. **Content that does not fit its space is a choice of what to show at that size,
-  and it goes to the user.** Squeezing columns until cells wrap onto several lines, truncating
-  values, shrinking type, or narrowing cards, form fields or toolbar controls until their labels
-  break word by word keeps everything visible by making rows and items tall and hard to scan, and is
-  never the remedy. Removing a column, field or item, or hiding it below a width, changes what
-  information the product shows, so ask which content can go or be hidden at that size, with
-  captures of the options, before changing the layout; until the user answers, the content keeps
-  the room its values need. Ask only where the user has said such a detail is theirs. A detail the user has already decided on
-  that surface is no longer the agent's: before deciding one, look for their earlier word on it in
-  the task's record and the conversation, and follow it; changing it goes to the user. **Text
+  in the report. Ask only where the user has said such a detail is theirs. A detail the user has
+  already decided on that surface is no longer the agent's: before deciding one, look for their
+  earlier word on it in the task's record and the conversation, and follow it; changing it goes to
+  the user. **Content that does not fit its space is a choice of what to show at that size, and it
+  goes to the user.** Squeezing columns until cells wrap onto several lines, truncating values,
+  shrinking type, or narrowing cards, form fields or toolbar controls until their labels break word
+  by word keeps everything visible by making rows and items tall and hard to scan, and is never the
+  remedy. Removing a column, field or item, or hiding it below a width, changes what information the
+  product shows, so ask which content can go or be hidden at that size, with captures of the
+  options, before changing the layout; until the user answers, the content keeps the room its values
+  need. **Text
   already in the product keeps its words unless it is wrong or the user named it.** Text that is
   plainly wrong or inconsistent, such as a label stating something untrue, one thing called by two
   names, or a message that no longer matches what happens, is corrected or left by judgement, and
