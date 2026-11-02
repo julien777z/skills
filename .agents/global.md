@@ -20,6 +20,8 @@ alwaysApply: true
   canonical source. Report it missing only when those sources do not contain it; never substitute a
   manual approximation for an installed action skill.
 
+- In repositories that provide an agent CLI or otherwise interact with agents, store every agent prompt in a dedicated Markdown file rather than inline in application code so it is easy to find, review, and maintain. Application code may load a prompt file and interpolate runtime values into it.
+
 - Never stage generated provider output manually. Only the repository's Agent Sync workflow may generate and commit provider mirrors.
 
 ## User-Facing Output
@@ -504,6 +506,9 @@ return records;
   who investigates, and a guessed cause or errand sends them the wrong way.
 
 ## Repository guidance
+
+- A repository's project guidance is `.agents/project.md` together with the reference files it
+  points to.
 
 - Reference external code and automation by a maintained version tag when available, or by a
   maintained branch while developing or when no release tag exists. Do not pin dependency manifests,

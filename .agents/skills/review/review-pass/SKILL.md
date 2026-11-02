@@ -426,10 +426,6 @@ Carry the pass's state throughout: the current workflow step, repository and PR,
 
 ## Workflow
 
-When the canonical guidance-batch route in **Review Scope** applies, use that route instead of the
-general Workflow step 2 high-fix review and its duplicative validation pass; retain thread triage,
-source validation, simplification, repair, and final acceptance requirements.
-
 Before beginning review, submit and verify a test deployment from the exact current head of a
 runtime pull request with a test-deployment path only when the current request explicitly authorizes
 that deployment. Record the repository and head together with the exact provider app, component,

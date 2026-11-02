@@ -1,10 +1,9 @@
 ---
-description: Apply when writing, creating, or editing agent guidance — skills, rules, agent definitions, project guidance, and agent prompts, including a prompt an application sends to an agent.
+description: Apply when writing, creating, or editing agent guidance — skills, rules, agent definitions, and project guidance.
 alwaysApply: false
 paths:
 - '.agents/**'
 - '**/SKILL.md'
-- '**/prompts/**'
 ---
 
 # Agent Guidance Rules
@@ -19,8 +18,7 @@ paths:
   packages, layout, documentation structure, inventories, and generated sections.
 - Repository facts only some work needs — a local stack, test accounts, deployment targets, a
   migration layout — go in `.agents/references/<name>.md`, named for their content and read on
-  demand, and `.agents/project.md` points to each file in one line. A repository's project guidance
-  is `project.md` together with the reference files it points to.
+  demand, and `.agents/project.md` points to each file in one line.
 - A rule that cannot be stated without naming something this repository owns belongs in
   `.agents/project.md`. Move it there rather than rewording it into something generic but untrue.
 - **Shared or repository-owned.** Generic skills live in one shared skills repository and reach
@@ -51,7 +49,6 @@ paths:
     change the name a skill installs under.
   - repository facts only some skills need -> `.agents/references/<name>.md`, as the references
     bullet above places them; Agent Sync neither mirrors nor validates them.
-- In repositories that provide an agent CLI or otherwise interact with agents, store every agent prompt in a dedicated Markdown file rather than inline in application code so it is easy to find, review, and maintain. Application code may load a prompt file and interpolate runtime values into it.
 
 ## Rules
 
