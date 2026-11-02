@@ -462,6 +462,7 @@ PAGE_SHAPE: Final[ObjectShape] = ObjectShape(
         "icon": ICON,
         "layout": Field(check=partial(check_choice, choices=PageLayout), typescript=PageLayout.__name__, choices=PageLayout),
         "sections": SECTIONS,
+        "status": Field(check=partial(check_object, shape=LABEL_SHAPE), typescript="Label", shape=LABEL_SHAPE),
     },
     required=frozenset({"title", "icon", "sections"}),
 )

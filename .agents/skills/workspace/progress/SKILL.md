@@ -85,7 +85,10 @@ and deliver the same dashboard again on every request so the user keeps one page
   each pull request it covers, then an `outline` "Keep in mind". While the task has an open or draft
   pull request, `Wrap up` comes last, with `icon` `release` and `layout` `rows`: the `table` "Ready
   to merge", the `diagram` "Merge and deploy order", then the `outline` sections "Between merges",
-  "Deploy" and "Once live", each only when it has something in it.
+  "Deploy" and "Once live", each only when it has something in it. Its `status` is "<n> need you"
+  (`warning`) while anything on it waits on the user — a pull request held on their review or
+  answer, or an action under Between merges, Deploy or Once live that only they can take — and is
+  left out otherwise.
 - **`table` "Plans"**: one row per plan that is not withdrawn, with the columns Plan, Steps done
   ("<done> of <n>"), Running, Waiting on you and Time left, the summary of what the board shows step
   by step.

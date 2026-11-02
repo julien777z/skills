@@ -94,6 +94,7 @@ function PageLinks({
             >
               <Icon />
               {page.title}
+              {page.status && <StatusBadge label={page.status.label} tone={page.status.tone} />}
             </Button>
           </li>
         );
