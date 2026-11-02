@@ -79,7 +79,8 @@ supplied by the invocation or its calling workflow needs no question.
 At `low` every phase runs in process. From `medium` upward, launch the agents each phase names in
 parallel; capacity limits force batching, never omission and never an undeclared local skim. For each named
 agent, invoke `subagent-matrix` at its standard capability level, launch the exact resolved identifier, and
-retain catalogue state, identifier, assignment state and host receipt in the audit evidence. Each agent a level
+retain catalogue state, identifier, assignment state and host receipt in the audit evidence; a research sub-agent a
+hunter starts launches the same way. Each agent a level
 names is launched as `subagent-matrix`'s **Dispatch** section directs.
 
 **The rubric is the same at every level; only the cohort shrinks.** A `low` finding is held to

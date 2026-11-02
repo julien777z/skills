@@ -64,7 +64,7 @@ During A Task** for the edit's timing.
 - `acceptance-gate` — the diff question over the `.agents` change once it reads clean.
 - `test-skill` — exercise behavior-changing guidance safely, compare original and edited results,
   and repair failing guidance or tests before merge.
-- `subagent-matrix` — the model capability level for live verification chats.
+- `subagent-matrix` — the model capability level for live verification chats and the delivery worker.
 - `review-pass` — the review of the guidance pull request **Guidance Delivery** opens.
 - `merge-gate` — the verified squash merge of the pull request step 7 clears.
 - `session-ledger` — retain observed issues, reproduction scenarios and pending guidance delivery across the active task.
@@ -128,7 +128,7 @@ During A Task** for the edit's timing.
 `process-ledger` invokes this route only for the batch of `guidance_correction` entries it froze,
 beside the source stream. It holds the source pull request only for the checks its ridden edits
 need and the delivery of the batch carrying them; only an edit on that pull request, or one the GitHub rule's **Merge Authorization** holds for a source pull request in
-another repository, waits for that merge. Run it as a delegated worker when the session can, so the
+another repository, waits for that merge. Run it as a delegated worker, at `subagent-matrix`'s standard capability level, when the session can, so the
 user's review of the source pull request overlaps it.
 
 1. Read every entry in the batch `process-ledger` froze and resume at its recorded first
@@ -142,11 +142,10 @@ user's review of the source pull request overlaps it.
    against the base from the host, which override the entry's and the comment's recorded commits
    and delivery stage; a merged or closed pull request resumes at verifying the merged text, never
    at review. An edit step 7.1 puts on a source pull request this session drives is pushed there and
-   passes step 7.2's source check and step 7.5's smoke round on the head carrying it before that
-   pull request's source stream proceeds, as `execute-task`'s **Completion** says. It carries step
-   7.3's prose-duplication checks into that pull request's simplification and step 7.4's incident
-   vocabulary into its final acceptance, so both gates read wording the smoke round has already
-   checked; a repair that review makes repeats the smoke round, as **Completion** says. An edit on
+   passes step 7.2's source check on the head carrying it before that pull request's source stream
+   proceeds, and step 7.5's smoke round on the head that pull request's review pass accepted, as
+   `execute-task`'s **Completion** says. It carries step 7.3's prose-duplication checks into that
+   pull request's simplification and step 7.4's incident vocabulary into its final acceptance. An edit on
    another session's source pull request runs steps 7.2 to 7.5 here on the head it pushed, and the
    delivery report says the push moved that pull request's head past its owner's acceptance. An
    edit on either source pull request is recorded as held for that pull request's merge once its
@@ -158,7 +157,9 @@ user's review of the source pull request overlaps it.
    step 7.4 describes, and step 7.3's prose-duplication checks for its simplification gate.
 4. Run step 7.5's `test-skill` smoke round on the head `review-pass` accepted, with every entry's
    reproduction scenario as an input and entries that share a failure class grouped into one
-   scenario, then steps 7.6–7.9.
+   scenario, then steps 7.6–7.9. A guidance repair the smoke round makes, here or on a source pull
+   request under step 1, goes back through `review-pass` over its delta, and the smoke round reruns
+   the scenarios it invalidated on the head that review accepts.
 5. After each completed or failed stage, record its exact head, stage result, and first
    nonterminal next stage in each entry. Resume from that stage without repeating completed work.
    After the smoke round, record the pull request, its head, the smoke results and the merge or
@@ -211,13 +212,9 @@ user's review of the source pull request overlaps it.
      When the owner necessarily runs before the action, remove equivalent conditions from callers;
      strengthen its trigger or invocation only if that owner would otherwise be missed. Explain the
      placement.
-   - **A file's name and description bound what it owns.** Before choosing a skill or rule, state
-     the condition its name and description set — a release stage, a technology, a mode, a kind of
-     task — and ask whether the guidance would still be true where that condition does not hold. If
-     it would, that file is too narrow, however close its neighbouring section: the guidance goes to
-     the file whose scope matches its own, and a global rule takes what holds everywhere. Neither
-     running on every task nor already holding a related rule, such as one on required fields when
-     the guidance is about required settings, makes a narrower file the owner.
+   - Read the shared `agent-guidance.md` rule before choosing an owner. **A file's name and
+     description bound what it owns**, as its **Where Guidance Lives** says; test the candidate
+     against it before choosing.
    - **When the request names no target, find the guidance that let the gap through and change it
      there.** A request usually arrives as a symptom with no file attached — "that is a bad
      implementation, do not use X" — and the file to edit is the one that governs the thing X
@@ -225,7 +222,7 @@ user's review of the source pull request overlaps it.
      review skill for something a review let past, the skill that ran for something it did while
      running. Search the rules and skills by the subject of the request, not by the request's words,
      read what the candidate already says about that subject, and put the change where a reader
-     doing that work will meet it, at the breadth step 5 asks for. Never ask which file; the search
+     doing that work will meet it, at the breadth the shared `agent-guidance.md` rule asks for. Never ask which file; the search
      is this skill's job.
    - **A violated instruction calls for causal diagnosis and an application repair.** Trace whether
      the instruction was absent, its trigger or sequence kept it from the decision, a conflicting
@@ -265,17 +262,8 @@ user's review of the source pull request overlaps it.
    - Skip the underlying fix only when the user explicitly requests an instruction-only change.
 
 4. Resolve which repository owns the target, then its path inside that repository's `.agents`.
-   - **Shared or repository-owned.** Generic skills live in one shared skills repository and reach
-     every session through a user-level skill root; repository-specific skills, every rule, and
-     repository-specific agents live in the repository they describe. Inspect a skill's content and
-     dependencies to decide ownership, including for an existing skill: a user-level symlink shows
-     where it is installed, not where it belongs. A new or existing skill goes to the skills
-     repository only when it reads generically without losing required behavior. If making it
-     generic would remove or misstate guidance it needs to give, put it in the repository it
-     describes under `.agents/skills/`, at any depth; move a misplaced existing skill there.
-     **Guidance whose correctness depends on a current repository's product, resources, topology, contracts, configuration, or relationships is project guidance.** It belongs in that repository's `.agents/project.md` or a repository-specific skill, regardless of the subject that exposed the gap. A shared skill may teach the classification procedure, but never carry a current repository's facts or boundaries.
-     An agent definition that a shared skill runs on goes with that skill; every other agent, and
-     every rule, is repository-owned.
+   - Decide whether the target is shared or repository-owned, and its path for its type, as the
+     shared `agent-guidance.md` rule's **Where Guidance Lives** says.
    - A shared target is edited in the skills repository's checkout — the one the user-level link
      resolves to, or the main checkout behind it when the link resolves into `update-skills`'
      overlay worktree, or, when the session has no editing checkout, a writable checkout attached to
@@ -293,26 +281,16 @@ user's review of the source pull request overlaps it.
      then reads that head's `SKILL.md` explicitly and replays the case in its own context before
      merge; fetch the head when accessible or receive the exact file as a scratch artifact. A new
      head invalidates that replay. Do not assume a pull request automatically installs its skill.
-   - `agent` -> `.agents/agents/<name>.md`
-   - `rule` -> `.agents/rules/<name>.md`
-   - For a scoped rule, declare its file patterns once as `paths` in canonical frontmatter.
-     Do not duplicate them as `globs`; Agent Sync writes each provider's required scope key.
-     Use `alwaysApply: true` only when the rule belongs in every session.
-   - `skill` -> `.agents/skills/<name>/SKILL.md`, or `.agents/skills/<folder>/<name>/SKILL.md`
-     where the repository sorts its skills into folders; the folders group the source and never
-     change the name a skill installs under.
-   - repository facts only some skills need -> `.agents/references/<name>.md`, as the global
-     rules' **Repository guidance** places them; Agent Sync neither mirrors nor validates them.
    - Never read or write `.cursor/*`, `.claude/*`, `.codex/*`, or any other non-`.agents` agent or provider folder.
    - Do not manually create, update, or sync mirrored command/skill/rule files in those folders; repository automation propagates changes from `.agents` to Cursor, Claude, Codex, and similar targets. This holds with no exception, including where the change leaves a mirror pointing at a path it renames or deletes: the workflow reconciles those on the default branch, and a branch carrying a stale or broken one meanwhile is expected.
    - This path restriction applies to the agent-content update, not to source changes required to fix an underlying issue from step 3.
    - When importing external guidance, inspect its actual entry points and file layout before registering it. If an owned sync tool cannot represent the source, extend that tool for the source's format and register the original content directly. Keep a standalone reference collection standalone: do not invent a substitute skill, relabel its files as skills, or bury it in another skill's references.
 
 5. Upsert behavior.
-   - Read the [guidance quality criteria](references/guidance-quality.md), then inventory and read the
-     target entry point and its referenced files, scripts, templates, and examples. Follow supporting
-     links within the package; reviewing only `SKILL.md` or the edited hunk is incomplete. Apply the
-     same genericity, ownership, clarity, and evidence standards to every file.
+   - Inventory and read the target entry point and
+     its referenced files, scripts, templates, and examples. Follow supporting links within the
+     package; reviewing only `SKILL.md` or the edited hunk is incomplete. Apply the same genericity,
+     ownership, clarity, and evidence standards to every file.
    - **A change to what a skill returns the user is specified with a concrete example before the
      skill is written to produce it.** The class is any new or changed user-facing output shape — a
      table, a report layout, a sent file, a message template, a listing — in a skill whose response
@@ -336,17 +314,13 @@ user's review of the source pull request overlaps it.
      change. Removing a bad example while retaining a directive that regenerates it is incomplete.
      Put incident evidence in the project/verification record and state that destination explicitly.
      Fix the producing instruction and its output together.
-   - When generalizing or shortening guidance, account for each useful instruction removed: retain
-     it as a reusable procedure, link its owning guidance, or establish why it no longer applies.
-     Check that the next reader can still perform the action and recognize success; removing the
-     incident details must not remove the lesson. Apply the preservation criteria in the quality reference.
-   - Apply those criteria to skill shape and output, including agent-consumed results and section
-     order. Move inline criteria to a named reference when required, and add the appropriate
-     hard-coded output format or delivery report line when absent.
+   - Move inline criteria to a named reference when the shared `agent-guidance.md` rule's **Skills**
+     standards require it, and add the appropriate hard-coded output format or delivery report line
+     when absent.
    - Validate every added or changed instruction for conflicts before delivery. Search the canonical
      rules and skills by its subject, required action and opposite disposition. Read the complete
      changed skill or rule and its supporting files, plus relevant sections in other skills, rules,
-     callers and dependencies. Apply the quality reference's conflict criteria. Resolve competing instructions
+     callers and dependencies. Apply the [conflict criteria](references/conflicting-instructions.md). Resolve competing instructions
      at their owners rather than adding a reminder beside them. Record the searches, sources read
      and each resolution, or the evidence for a clean result. Repeat this check for later wording
      changes before acceptance and smoke tests; an earlier clean result does not cover a new edit.
@@ -370,74 +344,10 @@ user's review of the source pull request overlaps it.
      release for a bug fix; verify any moving major tag points to that release and validate the
      consumer against it. Never use an unpublished tag; use the default branch when the user chose it
      or applicable reference guidance permits it.
-   - If target file does not exist, create it with a concise structure matching existing style.
-   - Group frontmatter fields by subject. Put a field that summarizes, qualifies, or overrides
-     another immediately after the field it relates to, unless the format requires another order.
-     Place new body guidance under the broadest existing subject section that fits.
-   - A heading names the subject a reader looks under — Comments, Commits, Workflows — never the
-     requirement it holds. Add a section only when no existing one covers the subject, and name it
-     for the whole subject: a heading that states one rule invites the next rule on that subject
-     into a heading of its own. A restriction on one subject goes under that subject's heading;
-     `## Guardrails`, always the last section when present, holds only constraints that span the
-     file's subjects.
-   - Express each independent requirement once, as one concise statement or bullet, without padding. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
-   - Normalize the touched file's nearby structure when needed: combine narrow sections, remove redundant wording, and order foundational guidance before specialized concerns.
-   - **Prefer the broad statement, and let the request's shape be its example.** A request
-     arrives as one symptom, and the rule it needs names the class that symptom belongs to; the
-     symptom's shape stays as one illustration of it. In shared guidance that illustration never
-     carries the incident's own vocabulary — the labels, headings, records, screens or values of
-     the product that prompted it, however ordinary they read: a label lifted from the screen
-     under review is that screen's copy. Retell it with invented nouns from an unrelated domain, as
-     the global rules' **Repository guidance** requires, and replace any such noun already in the
-     section the edit touches. Asked for `Final` on string constants, write `Final` for
-     every module-level constant; asked for a walkthrough rule because a page reloaded in a
-     loop once a back-end change was absent, write that the run is judged against intended
-     behaviour because an API error surfaces as any unintended behaviour, and name the loop
-     only as one instance. A rule written for the symptom is silent on the next one, and the
-     next one is what it will be read for. A named field, file, section, document kind, tool,
-     or step, including the place a request says to put the fix, is an example of its class and
-     a candidate home under step 2, never the limit of the rule, unless the contract requires
-     its exact identity. Broaden to the class the user plainly meant, never to a neighbouring
-     subject. Wording handed over — rule text in the request or in a delegating agent's brief —
-     remains input, not the spec: draft against the invariant and alternate routes classified in
-     step 2, then apply that decision to every instruction in the file that does the same work.
-     One section rewritten while a neighbour still does the narrow thing is the draft only half
-     done, and it is rewritten until the neighbour changes too. An agent delegating an edit
-     passes the class and the evidence, not finished rule text for one case.
-   - Describe reusable roles, boundaries, and decision criteria generically even in
-     repository-focused guidance when the pattern is not repository-specific. Keep concrete
-     repository names only when correctness depends on that local contract.
-   - Before adding a requirement to a shared rule, test it against a repository without the feature that prompted it. If it prescribes the current repository's documentation sections, inventory, or generation workflow, put it in `.agents/project.md`; keep the shared rule limited to guidance that still makes sense elsewhere.
-   - When the user asks to add guidance from another repository, treat that repository as source material: encode transferable requirements in the owning skills and refer to those skills by name. Before delivery, audit the edited package for the source repository's name, links, paths, commands, versions, and configuration; never hard-code or cite that repository in a skill.
-   - Separate temporary task, session, and pull-request directions from lasting guidance before
-     writing. Apply the former to the current work only; never encode them as canonical rules or
-     skills.
-   - A skill may restate an ambient rule when it helps the reader act at the point of use; this does
-     not license a second copy of a decision boundary owned by a skill that necessarily runs.
-   - Keep reusable skill names, instructions, scripts, and interfaces model-agnostic.
-     Name a client or model only in a scoped compatibility section where its behavior genuinely
-     differs. A skill states the facts an agent gathers about its own session — its transcript, its
-     task list, its subagents and their records — and leaves finding them to the agent in whichever
-     harness runs it; outside such a compatibility section, a script or instruction that finds those
-     session facts through one harness's files, environment variables or record layout is a
-     defect, never a convenience.
-   - Write new or substantially rewritten skill helper scripts in Python by default. Use another language when the execution platform requires it, such as browser JavaScript, and state that constraint. Keep executable helpers inside the owning skill's `scripts/` directory, resolve supporting files relative to the skill package, and take private endpoints, credentials, and environment-specific values from private configuration rather than committed source.
-   - Do not add committed tests for skills or their helper scripts, inside or outside the skill directory. Keep any needed execution checks temporary and untracked.
-   - **Refer to a skill, and to anything inside it, by the skill's name, never by path.** `the `code-simplify` skill's rubric reference` is right; a relative path into another skill's directory is wrong, because the directories move between repositories and user-level roots and the name is the only stable handle.
-   - Declare every invoked skill by canonical skill name in a near-top `## Dependencies` section of the owning `SKILL.md`. That section lists skills only, never tools, plugins, scripts, references, assets, executables, or filesystem paths.
-   - **A skill restricted to user invocation is never an automatic dependency.** A directly
-     user-invoked workflow may delegate such an action only when its contract explicitly authorizes
-     that action and bounds its targets, and the restricted action's own entry point recognizes
-     that delegation. Declare it in the workflow's dependencies. This authority lasts only for that
-     invocation; discovery, an ordinary task, a prior run, or an automatic caller supplies none.
-     Otherwise move any shared steps into a model-invokable skill both may depend on rather than
-     bypassing the restriction. Naming a user-only skill or suggesting the user invoke it is not
-     delegation or authorization.
-   - Invoke dependent skills only from the owning `SKILL.md`. References and other supporting files are passive and must not invoke skills or identify dependencies through relative paths to another `SKILL.md`.
-   - Before delivery, audit each edited skill's complete package and its affected callers: list every instruction to apply or invoke another skill, compare those names with the owning entry point's `## Dependencies`, and resolve missing, stale, or path-based entries and any user-only dependency lacking the explicit bounded delegation above. Check references separately for hidden invocations and cross-skill filesystem links; move the invocation to `SKILL.md` and refer to the other package by skill name. A passing source mirror does not replace this audit.
-   - Do not embed product-specific file paths or copy current application code into reusable skills; those go stale when files move or refactors land. Prefer generic placeholders (for example `services/<name>/...`), short pattern descriptions, or minimal invented examples that are not tied to live paths or current line-level code.
-   - **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract, and where a skill genuinely needs one local fact, take it from the repository's project guidance or a setting rather than baking it in. Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
-   - **Generic ownership is determined by what the skill must do, not its name.** A generically named skill can depend on one repository's contract; keep that skill in the repository and its facts in project guidance. Language, platform, framework, and workflow skills that truly apply across products remain shared and read repository commands, identities, hosts, packages, and fixtures from project guidance rather than embedding them.
+   - Write every added or changed instruction as the shared `agent-guidance.md` rule says: its
+     frontmatter, headings and statements, its breadth and examples, its scripts, a skill's shape,
+     output and section order, and its dependencies.
+   - Before delivery, audit each edited skill's complete package and its affected callers: list every instruction to apply or invoke another skill, compare those names with the owning entry point's `## Dependencies`, and resolve missing, stale, or path-based entries and any user-only dependency lacking the explicit bounded delegation the shared `agent-guidance.md` rule requires. Check references separately for hidden invocations and cross-skill filesystem links; move the invocation to `SKILL.md` and refer to the other package by skill name. A passing source mirror does not replace this audit.
 
 6. Multi-target behavior.
    - Apply multi-target updates for `agents`, `skills`, and `rules`.
@@ -493,7 +403,7 @@ user's review of the source pull request overlaps it.
       file whole, and act on what it reports: guidance duplicated
       between peer rules or skills, including a caller and a skill it always invokes; a section grown
       around a second subject; a heading named for a category with one member; a rubric left inline
-      that the skill-shape rule sends to a
+      that the shared `agent-guidance.md` rule's skill shape sends to a
       reference. Prose duplicates as readily as code, and nothing else catches it. Every `.agents`
       change gets that pass over its entry point and supporting files, a one-line rule edit as much as a
       new skill: a single bullet added to
@@ -504,7 +414,7 @@ user's review of the source pull request overlaps it.
       both.
    4. **Run `acceptance-gate`** with its diff question over the batch's complete `.agents` diff, one
       gate per round, the request as the intent statement. It judges whether the guidance answers
-      the request at the breadth **Upsert behavior** asks for and whether every mechanism it adds
+      the request at the breadth the shared `agent-guidance.md` rule asks for and whether every mechanism it adds
       earns its place. Treat a named tool, surface, or workaround in generic guidance as a finding
       unless the skill's contract depends on it; the incident's route must not narrow the durable
       decision boundary. Give the gate the incident's vocabulary — the product, its record and
