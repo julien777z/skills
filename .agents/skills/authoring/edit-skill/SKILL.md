@@ -414,7 +414,7 @@ user's review of the source pull request overlaps it.
      skills.
    - A skill may restate an ambient rule when it helps the reader act at the point of use; this does
      not license a second copy of a decision boundary owned by a skill that necessarily runs.
-   - Keep reusable skill names, instructions, scripts, and interfaces model- and harness-agnostic.
+   - Keep reusable skill names, instructions, scripts, and interfaces model-agnostic.
      Name a client or model only in a scoped compatibility section where its behavior genuinely
      differs. A skill states the facts an agent gathers about its own session — its transcript, its
      task list, its subagents and their records — and leaves finding them to the agent in whichever

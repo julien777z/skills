@@ -33,6 +33,9 @@ Group them for the report:
   the skills invoked during it.
 - **A round** is the subagents a loop launched together, or a repeat the skill ran, such as a
   second review after a repair.
+- **A loop is running** while the record shows its outermost skill's run still active or any of
+  its subagents running, and finished once the record shows that run ended. Where the record does
+  not show the run's end, its state is reported as missing, never guessed from a pause.
 - **Two scopes overlap** when they share a file or one folder contains the other.
 
 A fact the record does not hold is reported as missing, never estimated.
