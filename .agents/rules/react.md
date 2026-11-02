@@ -356,9 +356,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   page.** Keep a page section's structural frame, heading, description and dividers at the width its
   page layout assigns. Bound simple control groups inside that frame so short values and their
   actions stay together; give structured content the room its columns and relationships need.
-  Compact controls do not require a narrow container, and a wide container does not require
-  stretched controls. Use the product's established layout and control sizes, preserving comparable
-  widths under **Forms**, rather than shrinking the section or creating a new peer-section row.
+  Content that cannot get that room at some width never gets it by squeezing values until they
+  wrap, truncate or shrink; which of it to remove or hide below that width is the user's choice,
+  as the global rules' product-choice bullet says. Compact controls do not require a narrow
+  container, and a wide container does not require stretched controls. Use the product's
+  established layout and control sizes, preserving comparable widths under **Forms**, rather than
+  shrinking the section or creating a new peer-section row.
 - **Place actions by what they affect, beside the content they act on.** A page's own actions —
   create, import, a toggle into a mode such as reorder or bulk edit, and the strip that mode shows
   while it is on — sit directly above the content they act on, below the page's banners and its

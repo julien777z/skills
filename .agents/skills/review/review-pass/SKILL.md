@@ -298,7 +298,9 @@ any rule, rubric, dependency, configuration, workflow, generated contract, or do
 records. File categories alone never decide continuity: an unrelated agent, rule, or skill edit can
 preserve every receipt, while a review-rubric change invalidates the lenses that depend on it.
 Rebuild the complete context inventory, retain only receipts with byte-identical analysis slices and
-supporting inputs, and rerun each invalidated lens.
+supporting inputs, and rerun each invalidated lens. A lens rerun for a repair judges the repair's own
+lines and the findings it answers; elsewhere in its slice, which the earlier run judged, it raises
+only a confirmed defect or exploitable vulnerability.
 
 Treat fetching, pulling, or rebasing only to incorporate commits from the reviewed base as continuity-preserving. Do not restart the full cohort solely because that operational update changes a branch SHA, base SHA, or commit ancestry. Verify that the reviewed codebase diff is unchanged and that no conflict resolution altered a reviewed hunk, then reconcile the current target snapshot through `code-review`'s continuity attestation and coverage map before retaining any receipt. A conflict resolution that changes a reviewed hunk, and every refactor made under **Incorporating The Base** below, are new reviewed hunks: handle them like a **Workflow** step 4 fix, rerunning the lenses whose receipts they invalidate, never as a full restart.
 
@@ -399,7 +401,7 @@ slices and supporting inputs do not cover the changed test; rerun `test-fixture`
 focused validation, and every lens invalidated under **Review Continuity**. A repair that changes
 shipped behavior, a contract, review guidance, or workflow/runtime authority invalidates the
 affected receipts. Repeat only that narrow loop until one clean lens pass and one green run describe
-the same head.
+the same head, within the global rules' review-round limit of 3 rounds per change.
 
 Run the full repository suite only when every test is relevant to the pull request.
 

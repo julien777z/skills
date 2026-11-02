@@ -86,8 +86,9 @@ other hosts. Dispatch the gate with that exact identifier, and retain catalogue 
 state and host receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. It
 receives five things and nothing else:
 
-1. the intent statement, carrying every decision the task has recorded that the item's subject
-   touches, with the user's words, so earlier settled behaviour is not judged as new;
+1. the intent statement, quoting the user's request in their words and carrying every decision the
+   task has recorded that the item's subject touches, with the user's words, so earlier settled
+   behaviour is not judged as new and scope is judged against what the user asked;
 2. the originating diff, with its deletions first; for a Proposal before implementation when no
    change is in flight, explicitly declare that no implementation diff exists and name the current
    source snapshot instead; every Diff, Final acceptance and Base incorporation still requires its
@@ -114,9 +115,11 @@ implemented twice, comments narrating code, confusing or near-duplicate names, d
 code, hand-written configuration or styling where an owner exists. The list illustrates the question
 and never bounds it. A rubric exemption that would excuse such a shape is named in the flag. A
 remedy that sends the author to an existing piece judges that piece the same way first: a wrapper or
-a duplicate is not an owner. An increment fixing an earlier flag is read the same way, over the
-modules it touches, never only against that flag; the rest of the originating diff, which the
-earlier gate judged, is context, re-judged only where the increment changes what it depends on.
+a duplicate is not an owner. An increment fixing an earlier flag is judged on the earlier flags it
+answers and on its own lines, read the same way, never only against that flag; the rest of the
+modules it touches and of the originating diff, which the earlier gate judged, is context, open to a
+new flag only where the increment changes what it depends on or it holds a confirmed defect or
+exploitable vulnerability.
 
 **Then make the design comparison.** Inventory the responsibilities and decisions the diff moves,
 duplicates, specializes, removes or introduces, reading both sides independently of the caller's
@@ -172,6 +175,15 @@ value it tests and of what its path reads next**, by path and function, and flag
 rubric's diff test flags. For an owned boundary, it also names every representation each path reads
 or writes and flags a second representation, including one hidden behind a helper. A verdict with no
 added guard says `no guard added` in those words.
+
+**Then it lists every product choice the diff makes**, as the global rules define one — a change to
+what a feature does or shows, a remedy whose visible effect is large, such as a layout, control or
+flow changing across many pages, a change carried past the surface the user named — each with the
+user's words in the intent statement that settle it. Small presentation decisions on the surface in
+hand are not listed. A product choice with no such words is a flag whose remedy is putting the
+choice to the user before the code stands, whatever the step calls itself, a fix included. An
+earlier accepted step, a plan record without the user's words, or a brief calling the choice decided
+is not those words. A verdict with none says `no product choice added` in those words.
 
 For a diff question, also apply the `code-simplify` rubric’s **Trace Changed Flows** to the supplied
 implementations, consumers, and affected-repository map. A diff alone that cannot establish that
@@ -239,10 +251,12 @@ The gate is never advisory; the rubric says what each disposition binds the call
 
 A flag blocks the flagged proposal or diff, not an ordinary repair the task already authorizes.
 Before admitting a flag, check it against the task's recorded decisions and the commit that
-introduced the behaviour it names. A flag that reopens a behaviour choice a recorded decision or an
-earlier accepted step settled, or that asks for work outside the scope the user set, is answered as
-settled or out of scope with that evidence; it is never repaired and never put to the user as a
-question. A confirmed defect or a security vulnerability is never settled this way, whatever an
+introduced the behaviour it names. A flag that reopens a behaviour choice the user's recorded words
+or an earlier accepted step settled, or that asks for work outside the scope the user set, is
+answered as settled or out of scope with that evidence; it is never repaired and never put to the
+user as a question. Only the user's words settle a product choice: one an accepted step or an
+agent-written record holds without them is still open, and goes to the user. A confirmed defect or a
+security vulnerability is never settled this way, whatever an
 earlier step accepted: it is repaired as below.
 Read every other objection and remedy against the intent and standing guidance, make the smallest
 coherent repair using the existing owner or mechanism, and send the changed increment with the
@@ -257,13 +271,17 @@ the step or the complete diff is the independent acceptance covering its resolut
 one that settles such a choice, or one the in-process check cannot settle goes to a fresh gate as
 above.
 
-**Repair rounds are counted per objection.** A flag gets at most two repair rounds of its own; one a
-fresh gate raises for the first time starts at zero and is repaired like any other, whatever round
-the change as a whole has reached. A flag the gate still raises after its own second repair goes to
-the user as a report, never as a choice about whether to fix it or leave it in place: the open flag,
-each remedy tried and its evidence, the gate's proposed remedy and the recommended next step. Every
-other flag keeps its own repair and gate meanwhile, and the user's reply directs only the flag the
-report names.
+**Repair rounds are counted per objection and per change.** A change gets at most 3 rounds across
+every kind of check, the first and 2 after repairs, as the global rules' review-round limit counts
+them: once 3 have failed it, whatever each raised, the decision that bullet calls for replaces
+another repair, and an acceptance with recorded findings that decision makes is the one exception to
+the rules below on flagged diffs; an in-process check of a small repair is not one of those 3
+rounds. While the change is under that limit, a flag gets at most two repair rounds of its own, and
+one a fresh gate raises for the first time starts at zero. A flag the gate still raises after its
+own second repair, with the change still under the limit, goes to the user as a report, never as a
+choice about whether to fix it or leave it in place: the open flag, each remedy tried and its
+evidence, the gate's proposed remedy and the recommended next step. Every other flag keeps its own
+repair and gate meanwhile, and the user's reply directs only the flag the report names.
 
 Never rerun an unchanged item hoping for acceptance, argue it through the same gate, rename it to
 reset its history, or keep flagged code because the caller can authorize its merge. Carry unresolved
@@ -312,6 +330,8 @@ Verdict: accept | flag | fix | close | defer | do
 - <for a triage disposition: the test that decided it and the fact it rests on>
 
 Writers read: <each guard the diff adds with the writers it read, or `no guard added`>
+
+Product choices: <each product choice the diff makes with the user's words settling it, or `no product choice added`>
 
 Also read: <the Independent Judgment comparison receipt, plus additions of other kinds>
 ```

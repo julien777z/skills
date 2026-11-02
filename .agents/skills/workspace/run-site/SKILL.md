@@ -14,6 +14,8 @@ Start and verify the stack within the requested scope. When browser verification
 - `use-browser` — the browser this skill drives, through the `agent-browser` CLI.
 - `execute-task` — what happens to a defect a walkthrough finds, under its **Encountered Issues**.
 - `proton-pass` — a sign-in password the repository provides no source for.
+- `test-fixture` — the tests a scenario added or updated carries.
+- `subagent-matrix` — the capture worker a long list of captures can be handed to.
 
 ## Principles
 
@@ -106,6 +108,21 @@ output and the old text nowhere in the tree. Judge by what the edit touches, not
 moving text into a shared constant stays a copy change only while every call site keeps its slot. Where a component has no surface in the running app,
 say so and name what only a harness rendered.
 
+### Scenarios
+
+Where the repository provides commands to start an isolated stack instance, bring it to a named
+state (a scenario) and capture pages, the walkthrough reaches its state with the scenario command
+and captures with the capture command, as project guidance names them, never by seeding records by
+hand; the control the change touches is still operated as **Drive the change** says. A list of
+pages the capture command reads holds only the pages the change reaches. A long capture list can
+go to a capture worker at the capability `subagent-matrix` names for one, and every image it
+returns is read whole before it is used.
+
+**The scenario command grows with the product.** A change that adds a state a person would want to
+test — a new status, a flow step, a kind of record a page shows — adds its scenario, with its tests,
+in the same change, and a change that alters a state updates its scenario. A walkthrough that needs
+a state no scenario reaches adds that scenario rather than seeding it by hand.
+
 ### Sign in
 
 Use the repository's normal sign-in flow and the test identity, tenant, fixtures, provider modes,
@@ -144,9 +161,10 @@ EOF
 
 ### Drive the change
 
-- Drive the **local** production build the startup command serves, never a dev server and never the
-  deployed domain: prefetching, caching, and middleware behave differently under a dev server, and a
-  deployed site proves nothing about this checkout. Snapshot after every navigation; refs do not
+- The final walkthrough drives the **local** production build the startup command serves, never a
+  dev server and never the deployed domain: prefetching, caching, and middleware behave differently
+  under a dev server, and a deployed site proves nothing about this checkout. Interim captures while
+  the work is in flight may come from dev servers. Snapshot after every navigation; refs do not
   survive it.
 - **Operate the control the change touched, not the page that holds it**, with real input events on
   every screen that mounts it, then read the state it was meant to leave — where the element landed,

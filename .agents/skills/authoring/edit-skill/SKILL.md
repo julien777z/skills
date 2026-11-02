@@ -100,20 +100,21 @@ During A Task** for the edit's timing.
   verification record and continue its recovery or escalation. Do not create, amend, or process a
   `guidance_correction` entry, and do not edit canonical guidance from that outcome.
 - Write the edit in the checkout step 4 resolves, on the branch step 7.1 selects — the batch's own
-  branch while a batch is in flight and its pull request has not merged — commit it, and push it
-  to that branch's pull request once the **Pre-Push Gate** passes, opening a draft when the branch
-  has none; this holds for a source pull request step 7.1 selects as for an agent-configuration
-  one. When the checkout holds the active task's uncommitted or source-branch work, write and
-  commit the edit from a separate worktree on the selected branch, leave the task's tree
-  untouched, and stage only the guidance files. Record the branch, the `commits` list and the pull
-  request in the entry's `data`, then run `update-skills` at once so the installed copy every
-  agent loads, subagents included, carries the edit; agents still running hold no refresh, since
-  each skill is read through its link when it is used. Nothing else of delivery runs while the
-  task does: no review, gate, smoke round, merge or worker, except the checks a batch in flight
-  reruns for an edit that joined it, as `process-ledger`'s **Batches** says. A standing
-  instruction about how guidance pull requests are reviewed or merged governs that delivery when
-  it runs, never when. A gate result that arrives for a guidance pull request already open is
-  recorded as its entry's stage result, and its repair waits with the rest.
+  branch while a batch is in flight and its pull request has not merged — commit it, and push it to
+  that branch's pull request once the **Pre-Push Gate** passes, opening a draft when the branch has
+  none; this holds for a source pull request step 7.1 selects as for an agent-configuration one.
+  When the checkout holds the active task's uncommitted or source-branch work, write and commit the
+  edit from a separate worktree on the selected branch, leave the task's tree untouched, and stage
+  only the guidance files. Record the branch, the `commits` list and the pull request in the entry's
+  `data`, bring that pull request's description up to date as `execute-task`'s **Pull Requests**
+  says for a milestone, then run `update-skills` at once so the installed copy every agent loads,
+  subagents included, carries the edit; agents still running hold no refresh, since each skill is
+  read through its link when it is used. Nothing else of delivery runs while the task does: no
+  review, gate, smoke round, merge or worker, except the checks a batch in flight reruns for an edit
+  that joined it, as `process-ledger`'s **Batches** says. A standing instruction about how guidance
+  pull requests are reviewed or merged governs that delivery when it runs, never when. A gate result
+  that arrives for a guidance pull request already open is recorded as its entry's stage result, and
+  its repair waits with the rest.
 - **Every `guidance_correction` entry is backed up** as `session-ledger`'s **Backup** section says.
 - A related correction recorded before its batch is frozen joins the same entry or sits beside it
   in that batch; the batch is one pull request, apart from edits the GitHub rule puts on a source
@@ -504,9 +505,10 @@ user's review of the source pull request overlaps it.
       screen nouns, the labels the request quoted — so an example carrying any of it is a finding.
       Resolve each flag through that skill's **Bounds**: repair the owning instruction, push the
       changed increment, and put it to a fresh independent gate, or check it in process when those
-      **Bounds** call it a small repair. Repeated flags do not permit
-      dropping owed work or merging flagged guidance; acceptance must cover the final wording before
-      delivery.
+      **Bounds** call it a small repair. Repeated flags do not permit dropping owed work or merging
+      flagged guidance, apart from the decision the global rules' review-round limit calls for after
+      3 rounds; acceptance, or that recorded round-limit decision, must cover the final wording
+      before delivery.
 
    5. **Run one `test-skill` round over the batch on the head `review-pass` accepted.** Give it every
       entry's reproduction scenario, grouping entries that share a failure class. `test-skill` owns

@@ -59,7 +59,11 @@ with an obsolete owned contract or revision.
   appears beside it — a second implementation of the mechanism, a sibling path answering the same
   question from a different input, a parallel copy nobody reconciled — that is one piece of work, the
   change's own scope rather than incidental work under the size budget or an item left for later,
-  and splitting it leaves the half that stays behind as the version the next person extends.
+  and splitting it leaves the half that stays behind as the version the next person extends. The
+  repair itself, the defect no longer showing anywhere, is always in scope. A repair whose visible
+  effect beyond that reaches surfaces the user did not name, such as a shared component's new
+  layout reaching every page that uses it, is a proposal for those surfaces, put to the user as the
+  global rules' product-choice bullet says, unless a standing rule names that shape a defect.
 - **A parallel copy is reconciled by giving the mechanism one owner, never by keeping the copies in
   step.** Making copies identical, a test that they match, or a note to update both leaves the
   second mechanism in place. Pick the owner by the fewest-mechanisms test, across repositories as
@@ -273,6 +277,14 @@ with an obsolete owned contract or revision.
 - For retained values, use the authoritative source where one exists and a type-valid placeholder
   only where none exists. Never overwrite a known retained value, fabricate a placeholder in runtime
   code, or keep a permanent schema default solely to make a migration convenient.
+- **A backfill writes each row's value under the new contract, never one chosen so existing rows
+  keep behaving as before.** A flag set on every pre-change row so it keeps the old outcome, such as
+  staying exempt from a new check, closed to a new path, or treated as the old kind, is a legacy
+  fallback written into data. So is a branch on a creation date or a stored version that does the
+  same. Where the new field records a fact, such as who did something or when, backfill that fact
+  from its authoritative source. The tell is a description or comment saying that rows from before
+  the change keep the old behaviour; keeping it needs the user's approval, as any legacy support
+  does.
 - Before selecting an implementation for a schema or stored-representation change, invoke the
   database-migration skill for that role, including when the repository has no migration runner or
   uses startup reconciliation. Resolve its local commands and layout through project guidance;

@@ -20,7 +20,8 @@ and deliver the same dashboard again on every request so the user keeps one page
 
 1. **Read the ledger.** Resolve and read the task's ledger through `session-ledger`. A plan or
    question the task has put to the user that the ledger lacks is reconstructed and recorded first,
-   from verified task evidence, as that skill's recovery rules say; the dashboard never shows a step
+   from verified task evidence, as that skill's recovery rules say, approved only where the user's
+   own message approved it; the dashboard never shows a step
    the ledger does not hold. The figures cover the whole task since its first approved plan, so
    that check spans every plan it has had, finished ones included: a plan another entry names, such
    as one a later plan continues or supersedes, and finished work the task's record shows that no
@@ -104,7 +105,8 @@ and deliver the same dashboard again on every request so the user keeps one page
   goal, then "Approved · ~<total> min", or "Proposed · ~<total> min" for a plan not yet approved. Its groups, each only when it has something in it:
   "Context", why the plan exists and what it starts from, one item per point; "Steps", one item per
   step titled "<n>. <step title>", `detail` what the step changes and how, `meta` "~<n> min" and
-  `tag` its status (Done, Running, Blocked, Next or Skipped) toned as the progress segments are;
+  `tag` its status (Done, Running, Blocked, Next or Skipped) toned as the progress segments are,
+  adding "· added by agent" for a step whose origin is `agent`;
   "Decisions", each choice the plan settled with the option taken and why; "Verification", how
   the result will be checked; and "After the plan", what it leaves to the user, such as reviewing
   and merging, never with a time, since the agent cannot know how long the user takes.
