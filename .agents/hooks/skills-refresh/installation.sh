@@ -370,7 +370,7 @@ install_provider() {
 
     name="${hook##*/}"
 
-    install_link "$(link_source "$provider" hooks "$name" "$hook")" "$root/hooks/$name"
+    install_link "$hook" "$root/hooks/$name"
   done
 
   prune_links "$root/hooks"
