@@ -149,9 +149,11 @@ alwaysApply: true
   controls or flow a reader meets on many pages or across several products, or that a returning user
   would notice, such as every list turning into a card grid once its content passes a length, or a
   form splitting into steps everywhere past some number of fields — is a product choice, and so is a
-  remedy carried past the surface the user named to others like it. Each is put to the user with
-  captures before it is built, as the rendered-options bullet below says, whether it arrives as a
-  fix, a later fix round adjusts it, or a gate accepted it. The user's word on how something looks
+  remedy carried past the surface the user named to others like it. Each is proposed before it is
+  built, whether it arrives as a fix, a later fix round adjusts it, or a gate accepted it: the
+  proposal lists every page it would change and carries before-and-after captures of a few
+  representative pages where the change shows, never every page, so the user decides where it
+  applies. The user's word on how something looks
   under one condition, such as on a phone, decides nothing about when it appears under another.
   **A routine presentation or interaction detail is not a product choice, and is not put to the
   user.** An alignment, a spacing, a size or tone on the product's existing scale, the placement of
