@@ -272,15 +272,26 @@ def check_page_sections(page: dict[str, object], path: str) -> None:
         )
 
 
+def check_tree_nodes(value: object, path: str) -> None:
+    """Require a list of tree nodes, each of which may hold more."""
+
+    check_objects(value, path, shape=TREE_NODE_SHAPE)
+
+
+def check_section(section: object, path: str) -> None:
+    """Require one section of a known type."""
+
+    raw_type = section.get("type") if isinstance(section, dict) else None
+    section_type = check_choice(raw_type, f"{path}.type", SectionType)
+
+    check_object(section, path, SECTION_SHAPES[section_type])
+
+
 def check_sections(value: object, path: str) -> None:
     """Require a list of sections."""
 
     for index, section in enumerate(check_list(value, path, allow_empty=True)):
-        section_path = f"{path}[{index}]"
-        raw_type = section.get("type") if isinstance(section, dict) else None
-        section_type = check_choice(raw_type, f"{section_path}.type", SectionType)
-
-        check_object(section, section_path, SECTION_SHAPES[section_type])
+        check_section(section, f"{path}[{index}]")
 
 
 TEXT: Final[Field] = Field(check=check_text, typescript="string")
@@ -453,6 +464,7 @@ OUTLINE_ITEM_SHAPE: Final[ObjectShape] = ObjectShape(
         "tag": TEXT,
         "meta": TEXT,
         "links": SOURCE_LINKS,
+        "points": TEXTS,
     },
     required=frozenset({"title", "detail"}),
 )
@@ -494,6 +506,18 @@ REFERENCE_SHAPE: Final[ObjectShape] = ObjectShape(
     fields={"text": TEXT, "url": TEXT},
     required=frozenset({"text", "url"}),
 )
+TREE_NODE_SHAPE: Final[ObjectShape] = ObjectShape(
+    name="TreeNode",
+    fields={
+        "label": TEXT,
+        "detail": TEXT,
+        "meta": TEXT,
+        "tone": TONE,
+        "children": Field(check=check_tree_nodes, typescript="TreeNode[]"),
+        "details": Field(check=check_section, typescript="Section"),
+    },
+    required=frozenset({"label"}),
+)
 NOTICE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Notice",
     fields={"title": TEXT, "body": TEXT, "tone": TONE},
@@ -526,6 +550,7 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
     SectionType.LINKS: section_shape(
         SectionType.LINKS,
         {
+            "counted": FLAG,
             "items": Field(
                 check=partial(check_objects, shape=LINK_SHAPE),
                 typescript="LinkItem[]",
@@ -538,6 +563,7 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
     SectionType.CHANGES: section_shape(
         SectionType.CHANGES,
         {
+            "counted": FLAG,
             "items": Field(
                 check=partial(check_objects, shape=CHANGE_ITEM_SHAPE),
                 typescript="ChangeItem[]",
@@ -548,7 +574,7 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
         frozenset({"items"}),
     ),
     SectionType.NOTES: section_shape(
-        SectionType.NOTES, {"items": TEXTS}, frozenset({"items"})
+        SectionType.NOTES, {"items": TEXTS, "counted": FLAG}, frozenset({"items"})
     ),
     SectionType.OUTLINE: section_shape(
         SectionType.OUTLINE,
@@ -560,14 +586,28 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
             ),
             "expanded": FLAG,
             "stacked": FLAG,
+            "collapsible": FLAG,
         },
         frozenset({"groups"}),
+    ),
+    SectionType.TREE: section_shape(
+        SectionType.TREE,
+        {
+            "items": Field(
+                check=check_tree_nodes,
+                typescript="TreeNode[]",
+                shape=TREE_NODE_SHAPE,
+            ),
+            "open_depth": WHOLE_NUMBER,
+        },
+        frozenset({"items"}),
     ),
     SectionType.TABLE: section_shape(
         SectionType.TABLE,
         {
             "columns": TEXTS,
             "rows": ROWS,
+            "counted": FLAG,
             "details": SECTIONS,
         },
         frozenset({"columns", "rows"}),
