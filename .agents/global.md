@@ -84,9 +84,9 @@ alwaysApply: true
   reader reaches it, such as "the album's Sharing page".
 - **A new behaviour is named as new wherever it is reported.** A progress report, a summary, a pull
   request description or a capture's caption that shows the product now behaving differently under
-  some condition states that behaviour and where it applies, such as "lists now switch to cards
-  below a set width on every page", never folds it into the fix it arrived with, so the reader can
-  tell a new layout, control or flow from a repair.
+  some condition states that behaviour and where it applies, such as "photo galleries now become
+  carousels past six photos on every page", never folds it into the fix it arrived with, so the
+  reader can tell a new layout, control or flow from a repair.
 - A delegated worker's report of an outcome — tests pass, pushed, merged, deployed, fixed — is a
   claim. Check it at its source of truth before relaying it or building on it, and tell the user
   what was read, not what was reported; `execute-task`'s **Reported Outcomes** holds the procedure.
@@ -152,14 +152,14 @@ alwaysApply: true
   layout, control, scope or timing chosen to achieve it. **A fix's remedy meets the same test, judged
   by its visible reach.** A remedy whose visible effect is large — one that changes the layout,
   controls or flow a reader meets on many pages or across several products, or that a returning user
-  would notice, such as every list turning into a card grid once its content passes a length, or a
-  form splitting into steps everywhere past some number of fields — is a product choice, and so is a
+  would notice, such as every photo gallery turning into a carousel once it holds more than a few
+  photos, or a form splitting into steps everywhere past some number of fields — is a product choice, and so is a
   remedy carried past the surface the user named to others like it. Each is proposed before it is
   built, whether it arrives as a fix, a later fix round adjusts it, or a gate accepted it: the
   proposal lists every page it would change and carries before-and-after captures of a few
   representative pages where the change shows, never every page, so the user decides where it
   applies. The user's word on how something looks
-  under one condition, such as on a phone, decides nothing about when it appears under another.
+  under one condition, such as at one width, decides nothing about when it appears under another.
   **A routine presentation or interaction detail is not a product choice, and is not put to the
   user.** An alignment, a spacing, a size or tone on the product's existing scale, the placement of
   a message or control among the product's established positions, the wording of a message the
