@@ -230,9 +230,10 @@ Use the first route the session offers, and the same one for every update of one
        earlier in this session. A new session publishes a new page and never updates one another
        session published.
      - **A subject that outlives the session**, such as a repository's structure, also looks among
-       the user's published pages for one with the same title, through the tool's own listing. Before
-       publishing to a page found that way, read it through the tool to confirm the user can edit it
-       and to build on its current version; when they cannot, publish a new page and say why.
+       the user's published pages for one with the same title and topic, through the tool's own
+       listing. Before publishing to a page found that way, read it through the tool to confirm this
+       session can update it and to build on its current version; when it cannot, publish a new
+       page and say why.
    - Record each new link where the caller keeps task state, so the next render finds it.
 2. **The user's own browser, through `use-browser`**, when no such tool exists and its **Showing A
    Local Page** route applies. Render the full page; with one path per dashboard, that route reloads

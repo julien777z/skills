@@ -189,8 +189,8 @@ the request asks for a new page.
    - `references` make each skill's name a link to its whole `SKILL.md`, at the commit read,
      wherever the page's text names it; outline items carry no `links`.
 6. **Deliver** through `use-dashboard`, as a dashboard of a subject that outlives the session, so an
-   existing page for the same repository is updated when the user can edit it. Name what is
-   incomplete, if anything, in one line.
+   existing page with the same title and topic, the repository, is updated when this session can
+   update it. Name what is incomplete, if anything, in one line.
 
 ## Interrogate
 

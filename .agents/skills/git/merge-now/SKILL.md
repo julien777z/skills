@@ -52,7 +52,7 @@ depends on to merge.
    exclusions and the fix rule for every fix it makes — a check fix, a conflict resolution, a commit
    someone else pushed: `review-pass` runs again over that fix's delta, and the fix is pushed through
    `execute-task`'s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
-   passed. Its **Check Gate** owns complete-diff classification, check inventory, failure
+   passed. `merge-gate`'s **Check Gate** owns complete-diff classification, check inventory, failure
    handling and the evidence required before merging.
 3. **Merge.** `merge-gate` squash-merges at the gated head and verifies it. Record the merge commit and
    its first parent.

@@ -883,7 +883,7 @@ Two streams run side by side from here: the guidance stream and the source strea
   as **Guidance Delivery** step 1 says, so its review pass, history and ready message cover them. An entry recorded after the batch in flight merged is delivered in the batch frozen
   once that one is done, so the source stream then waits for that delivery too, and for nothing
   else before step 1. Each such entry's smoke round runs on the head step 1's review pass accepted, before
-  step 2. A task with none has no guidance stream.
+  step 2, and a repair it makes returns to review as **Guidance Delivery** step 4 says. A task with none has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:
 

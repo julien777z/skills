@@ -157,7 +157,9 @@ user's review of the source pull request overlaps it.
    step 7.4 describes, and step 7.3's prose-duplication checks for its simplification gate.
 4. Run step 7.5's `test-skill` smoke round on the head `review-pass` accepted, with every entry's
    reproduction scenario as an input and entries that share a failure class grouped into one
-   scenario, then steps 7.6–7.9.
+   scenario, then steps 7.6–7.9. A guidance repair the smoke round makes, here or on a source pull
+   request under step 1, goes back through `review-pass` over its delta, and the smoke round reruns
+   the scenarios it invalidated on the head that review accepts.
 5. After each completed or failed stage, record its exact head, stage result, and first
    nonterminal next stage in each entry. Resume from that stage without repeating completed work.
    After the smoke round, record the pull request, its head, the smoke results and the merge or
