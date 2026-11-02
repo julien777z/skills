@@ -4,6 +4,7 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 INSTALLER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly SKILLS_REMOTE='https://github.com/julien777z/skills.git'
+readonly GENERATED_DIRNAME='.agents/.auto_generated'
 reexecuted=0
 
 if IFS= read -r -u 9 reexec_root 2>/dev/null && [ "$reexec_root" = "$REPO_ROOT" ]; then
@@ -210,6 +211,11 @@ overlay_root="$(newest_overlay "$REPO_ROOT")"
 if [ -n "$overlay_root" ]; then
   echo "Using the refresh overlay $overlay_root; update-skills rebuilds it from the latest default branch."
   REPO_ROOT="$overlay_root"
+
+  python3 -B "$INSTALLER_DIR/resources/regenerate_mirrors.py" "$REPO_ROOT" "$GENERATED_DIRNAME" || {
+    echo "Could not regenerate the provider mirrors in $REPO_ROOT; no links were changed." >&2
+    exit 1
+  }
 fi
 
 CANONICAL_SKILLS="$REPO_ROOT/.agents/skills"
@@ -224,7 +230,7 @@ fi
 CANONICAL_RESOURCES="$REPO_ROOT/.agents/resources"
 CANONICAL_HOOKS="$REPO_ROOT/.agents/hooks"
 HOOK_REGISTRAR="$INSTALLER_DIR/resources/register_hooks.py"
-GENERATED_ROOT="$REPO_ROOT/.agents/.auto_generated"
+GENERATED_ROOT="$REPO_ROOT/$GENERATED_DIRNAME"
 PROVIDERS=(claude codex cursor)
 found_root=0
 TARGET_HOMES=("$HOME")

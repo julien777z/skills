@@ -12,7 +12,9 @@ vendors the third-party skills and reference collections registered under `.agen
 For a local installation, run `bash bootstrap/install.sh` from the main checkout. User-level links
 point into that checkout; pull `main` there after a merge to update installed guidance. While skill
 changes are pending, the agent's refresh links them into an overlay worktree beside the checkout
-instead, and installed guidance updates when the next refresh rebuilds it. Edit skills on a separate
+instead, and installed guidance updates when the next refresh rebuilds it. Installing from an
+overlay regenerates its provider mirrors with the sync tool the Agent Sync workflow pins, which
+needs `python3` and, the first time, network access to install that tool. Edit skills on a separate
 branch or worktree. For Claude cloud, put this at the start of the environment setup script, before
 project-specific setup commands:
 

@@ -94,7 +94,10 @@ deadline.
 5. Run the installer: `bash bootstrap/install.sh` from the source checkout on a local machine, or
    the setup clone's installer in a cloud session, which selects the attached checkout and relinks
    every cloud home. The installer fetches a cloud setup clone's configured branch and
-   fast-forwards it, and installs from the newest complete overlay when one exists. Resolve each
+   fast-forwards it, and installs from the newest complete overlay when one exists, first
+   regenerating that overlay's provider mirrors with the sync tool its workflow pins, so pending
+   rule and agent edits reach the providers that link a generated copy. A failed regeneration stops
+   the installer before any link changes; treat it as recovery work. Resolve each
    installed skill and rule link in every existing user-level agent root and confirm it points into
    the installed source. Check Codex's global `AGENTS.md` link when Codex is installed. Preserve
    real files and foreign links; the installer's conflict preflight reports them before changing
@@ -103,7 +106,8 @@ deadline.
    the checkout, complete or not; this step alone removes overlays. First compare each with the
    built head step 2 recorded for it, or for each of this run's abandoned builds the head it
    reached, or, for a markerless overlay this run never recorded, its starting commit: preserve a
-   commit after it, or a working tree that differs from it, on a named branch, and report it. Then
+   commit after it, or a working tree that differs from it outside the regenerated provider mirrors
+   under `.agents/.auto_generated`, on a named branch, and report it. Then
    remove the worktree and delete its `skills-overlay/` branch, along with every `skills-overlay/`
    branch left without a worktree.
 7. Read every shared rule and shared skill that differs between the recorded and the new installed
