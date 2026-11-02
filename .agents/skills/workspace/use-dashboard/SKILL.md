@@ -170,6 +170,9 @@ data exists, or a change to the app — runs on one made-up scenario, never on r
 - **Every value comes from that scenario**: titles, references, links, diffs, checks, questions and
   notes. No real repository, pull request, person, task, setting or address appears, and links point
   at `example.com`.
+- **Every page the caller's skill defines is there**, filled, even when the change being previewed
+  touches one: a reader judges a page by where it sits among the others, and a preview showing one
+  page reads as a dashboard that has only that one.
 - **The pages agree with one another**: the same pull requests, counts and names recur on every page,
   and each section fills its slot as the caller's skill describes, so the preview shows what a real
   run of that skill would produce.
