@@ -1,6 +1,6 @@
 import { type ReactNode, useMemo, useState } from 'react';
 
-import { RichText, SectionCards, SiteHeader } from '@/components';
+import { NoticeBanner, RichText, SectionCards, SiteHeader } from '@/components';
 import { Grid, Stack, Text } from '@/components/primitives';
 import { DashboardSection } from '@/components/sections';
 import { References, ReferencesContext } from '@/lib/references';
@@ -41,6 +41,11 @@ export function App({ dashboard }: { dashboard: Dashboard }): ReactNode {
             </Text>
           )}
         </Stack>
+        {dashboard.notice && (
+          <Stack inset="page">
+            <NoticeBanner notice={dashboard.notice} />
+          </Stack>
+        )}
         {showSummary && <SectionCards progress={dashboard.progress} metrics={metrics} />}
         <Grid key={current} inset="page" gap="lg" columns={page.layout === PageLayout.ROWS ? 'single' : 'wide'}>
           {withKeys(page.sections, (section) => section.title).map(({ key, item: section }) => (

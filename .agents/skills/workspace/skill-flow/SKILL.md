@@ -52,7 +52,7 @@ the request asks for a new page.
    leaves it standing, and links stay on the commit read. A source that is missing or still
    changing makes the map incomplete, and the page says which connection is unknown.
 5. **Build the spec** for `use-dashboard`:
-   - `title` `Skill flow`, `icon` `diagram`, and `subtitle` "How the skills run, read from
+   - `title` `Skill Flow Dashboard`, `topic` the repository's name, `icon` `diagram`, and `subtitle` "How the skills run, read from
      <repository> at <short commit>.", with `references` linking the repository and the commit.
    - `metrics`: **Skills mapped**, **Pages** (the kind-of-work pages), **Subagent launches** (each
      launch point counted once, however many pages reach it), and **Unknown** (connections the

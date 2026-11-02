@@ -10,39 +10,29 @@ import { SectionCard } from './section-card';
 const OPEN_GROUP_LIMIT: number = 2;
 const DETAIL_LINE_LENGTH: number = 80;
 
-interface GroupPart {
-  group: OutlineGroup;
-  start: number;
-  end: number;
-}
-
 function opensAll(group: OutlineGroup, expanded: boolean): boolean {
   return expanded || group.items.length <= OPEN_GROUP_LIMIT;
 }
 
-function splitColumns(groups: OutlineGroup[], expanded: boolean): GroupPart[][] {
-  const entries = groups.flatMap((group, groupIndex) => {
-    const open = opensAll(group, expanded);
+function groupWeight(group: OutlineGroup, expanded: boolean): number {
+  const open = opensAll(group, expanded);
 
-    return group.items.map((item, index) => ({
-      groupIndex,
-      index,
-      weight:
-        2 +
-        (item.links ? 1 : 0) +
-        (open ? Math.ceil(item.detail.length / DETAIL_LINE_LENGTH) : 0) +
-        (index === 0 ? 1 : 0),
-    }));
-  });
+  return group.items.reduce(
+    (sum, item) => sum + 2 + (item.links ? 1 : 0) + (open ? Math.ceil(item.detail.length / DETAIL_LINE_LENGTH) : 0),
+    1,
+  );
+}
 
-  const total = entries.reduce((sum, entry) => sum + entry.weight, 0);
+function splitColumns(groups: OutlineGroup[], expanded: boolean): OutlineGroup[][] {
+  const weights = groups.map((group) => groupWeight(group, expanded));
+  const total = weights.reduce((sum, weight) => sum + weight, 0);
 
   let split = 1;
   let left = 0;
   let bestGap = Number.POSITIVE_INFINITY;
 
-  for (let index = 0; index < entries.length - 1; index++) {
-    left += entries[index].weight;
+  for (let index = 0; index < groups.length - 1; index++) {
+    left += weights[index];
 
     const gap = Math.abs(total - 2 * left);
 
@@ -52,43 +42,19 @@ function splitColumns(groups: OutlineGroup[], expanded: boolean): GroupPart[][] 
     }
   }
 
-  const { groupIndex, index } = entries[split];
-  const leftParts: GroupPart[] = groups
-    .slice(0, groupIndex)
-    .map((group) => ({ group, start: 0, end: group.items.length }));
-  const rightParts: GroupPart[] = groups
-    .slice(groupIndex + 1)
-    .map((group) => ({ group, start: 0, end: group.items.length }));
-  const splitGroup = groups[groupIndex];
-
-  if (index > 0) {
-    leftParts.push({ group: splitGroup, start: 0, end: index });
-  }
-
-  rightParts.unshift({ group: splitGroup, start: index, end: splitGroup.items.length });
-
-  return [leftParts, rightParts];
+  return [groups.slice(0, split), groups.slice(split)];
 }
 
-function Group({
-  group,
-  expanded,
-  start = 0,
-  end = group.items.length,
-}: {
-  group: OutlineGroup;
-  expanded: boolean;
-  start?: number;
-  end?: number;
-}): ReactNode {
+function Group({ group, expanded }: { group: OutlineGroup; expanded: boolean }): ReactNode {
   const [open, setOpen] = useState<string[]>(() =>
     opensAll(group, expanded) ? group.items.map((_, index) => String(index)) : [],
   );
 
   const triggerId = useId();
-  const entries = withKeys(group.items, (item) => item.title)
-    .map((entry, position) => ({ ...entry, value: String(position) }))
-    .slice(start, end);
+  const entries = withKeys(group.items, (item) => item.title).map((entry, position) => ({
+    ...entry,
+    value: String(position),
+  }));
 
   function handleOpenChange(next: string[]) {
     const changed = [
@@ -113,11 +79,9 @@ function Group({
 
   return (
     <Stack>
-      {start === 0 && (
-        <Text as="h3" size="xs" weight="medium" tone="muted" caps>
-          <RichText text={group.title} />
-        </Text>
-      )}
+      <Text as="h3" size="sm" weight="medium" tone="muted">
+        <RichText text={group.title} />
+      </Text>
       <Accordion type="multiple" value={open} onValueChange={handleOpenChange}>
         {entries.map(({ key, item, value }) => {
           const id = `${triggerId}-${value}`;
@@ -162,28 +126,16 @@ function Group({
 
 export function OutlineSection({ section }: { section: OutlineSectionSpec }): ReactNode {
   const expanded = section.expanded ?? false;
-
-  if (section.groups.length === 1) {
-    return (
-      <SectionCard title={section.title} description={section.description} wide>
-        <Group group={section.groups[0]} expanded={expanded} />
-      </SectionCard>
-    );
-  }
+  const columns =
+    section.stacked || section.groups.length === 1 ? [section.groups] : splitColumns(section.groups, expanded);
 
   return (
     <SectionCard title={section.title} description={section.description} wide>
-      <Grid columns="pair" gap="loose">
-        {splitColumns(section.groups, expanded).map((column) => (
-          <Stack key={column.map((part) => `${part.group.title}:${part.start}`).join('|')} gap="xl">
-            {column.map((part) => (
-              <Group
-                key={`${part.group.title}:${part.start}`}
-                group={part.group}
-                expanded={expanded}
-                start={part.start}
-                end={part.end}
-              />
+      <Grid columns={columns.length > 1 ? 'pair' : 'single'} gap="loose">
+        {columns.map((column) => (
+          <Stack key={column.map((group) => group.title).join('|')} gap="xl">
+            {column.map((group) => (
+              <Group key={group.title} group={group} expanded={expanded} />
             ))}
           </Stack>
         ))}

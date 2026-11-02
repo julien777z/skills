@@ -69,9 +69,11 @@ identity, never a second authoritative copy of its records.
      context needed to resume: decisions and constraints, affected callers, dependencies, check
      results and their validity conditions, open questions and next actions. Choose useful `data`
      fields for the record; local work is never an externally verified artifact claim.
-   - For a plan put to the user, record a `plan` entry: its title, goal, status (`proposed`,
-     `approved`, `complete` or `withdrawn`) with the time it was approved, which steps overlap,
-     what it needs from the user with its time, and its ordered steps, each with a title, status
+   - For a plan put to the user, record a `plan` entry: its title, goal, the context it starts
+     from, status (`proposed`, `approved`, `complete` or `withdrawn`) with the time it was
+     approved, which steps overlap, the decisions it settled with their reasons, how its result
+     will be verified, what it needs from the user, and its ordered steps, each with a title, what
+     the step changes and how, status
      (`next`, `active`, `done`, `blocked` or `skipped`), wall-clock estimate, the observed
      start and finish times once known, and any parts, each with a title, a status from that same
      set and an estimate. Change a step's status when the work changes it, with an

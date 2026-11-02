@@ -11,6 +11,7 @@ import {
   LayoutDashboard,
   List,
   ListChecks,
+  Lock,
   type LucideIcon,
   Menu,
   Package,
@@ -32,6 +33,7 @@ import { relativeTime } from '@/lib/time';
 import { cn } from '@/lib/utils';
 import { IconName, type Label, type Page } from '@/spec';
 import { StatusBadge } from './status-badge';
+import { ToneDot } from './tone-dot';
 
 const ICONS: Record<IconName, LucideIcon> = {
   [IconName.OVERVIEW]: LayoutDashboard,
@@ -76,7 +78,7 @@ function PageLinks({
   return (
     <Stack as="ul" direction={vertical ? 'column' : 'row'} gap="xs">
       {pages.map((page, position) => {
-        const Icon = ICONS[page.icon];
+        const Icon = page.locked ? Lock : ICONS[page.icon];
         const active = position === current;
 
         return (
@@ -85,6 +87,7 @@ function PageLinks({
               variant="ghost"
               size="sm"
               aria-current={active ? 'page' : undefined}
+              disabled={page.locked}
               onClick={() => onSelectPage(position)}
               className={cn(
                 'text-muted-foreground hover:text-foreground',
@@ -94,6 +97,12 @@ function PageLinks({
             >
               <Icon />
               {page.title}
+              {page.status && (
+                <>
+                  <ToneDot tone={page.status.tone} />
+                  <Text srOnly>{`, ${page.status.label}`}</Text>
+                </>
+              )}
             </Button>
           </li>
         );
