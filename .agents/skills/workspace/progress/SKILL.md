@@ -76,16 +76,16 @@ and deliver the same dashboard again on every request so the user keeps one page
   **Elapsed**, measured from the first plan's recorded approval time.
 - **Pull request names.** The page names each pull request "PR #<number> - <short title>": a few
   words saying what it does, not necessarily its title, such as `PR #1337 - Add bulk export`.
-- **Pages.** The dashboard's `icon` is `progress`. `Overview`, `icon` `overview` and `layout`
-  `rows`, holds the callout, the pull requests and the `table` "Plans", in that order. `Progress`,
-  `icon` `board`, holds the board, the answered questions, the notes and any other table. While the
-  task has an open or draft pull request, `Wrap up` follows, with `icon` `release` and `layout`
-  `rows`: the `table` "Ready to merge", the `diagram` "Merge and deploy order", then the `outline`
-  sections "Between merges", "Deploy" and "Once live", each only when it has something in it. Once
-  step 3 gives the page a pull request to cover, `Architecture` follows them, with `icon` `diagram`
-  and `layout` `rows`: the diagram, then `changes` "Config changes", then `changes` "Migration
-  changes", then an `outline` "What changed in <pull request name>" for each pull request it covers,
-  then an `outline` "Keep in mind".
+- **Pages.** The dashboard's `icon` is `progress`, and its pages run in this order. `Overview`,
+  `icon` `overview` and `layout` `rows`, holds the callout, the pull requests and the `table`
+  "Plans", in that order. `Progress`, `icon` `board`, holds the board, the answered questions, the
+  notes and any other table. Once step 3 gives the page a pull request to cover, `Architecture`
+  follows, with `icon` `diagram` and `layout` `rows`: the diagram, then `changes` "Config changes",
+  then `changes` "Migration changes", then an `outline` "What changed in <pull request name>" for
+  each pull request it covers, then an `outline` "Keep in mind". While the task has an open or draft
+  pull request, `Wrap up` comes last, with `icon` `release` and `layout` `rows`: the `table` "Ready
+  to merge", the `diagram` "Merge and deploy order", then the `outline` sections "Between merges",
+  "Deploy" and "Once live", each only when it has something in it.
 - **`table` "Plans"**: one row per plan that is not withdrawn, with the columns Plan, Steps done
   ("<done> of <n>"), Running, Waiting on you and Time left, the summary of what the board shows step
   by step.

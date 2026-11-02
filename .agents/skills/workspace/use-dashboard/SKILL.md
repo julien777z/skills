@@ -115,6 +115,9 @@ Dashboards look alike because they are built alike:
   a page about one thing, such as the order pull requests merge in, find the stage that thing
   belongs to, such as wrapping up to merge and deploy, and build the page for that stage, with the
   requested thing as one section among what the reader needs there. Name the page for the stage.
+- **Pages run in the order the reader's work does.** After Overview, pages that help the reader
+  understand the work come together, followed by pages for acting on it, such as wrapping up to
+  merge and deploy, which come last; a page never sits between two pages of another kind.
 - **Icons say what each thing is.** Give the dashboard the icon that best names its subject, such as
   `progress` for a task's progress or `legal` for legal documents, and each page the icon for what
   it holds, such as `board` for a board of work or `diagram` for a diagram.
