@@ -173,14 +173,17 @@ alwaysApply: true
   in the report. Ask only where the user has said such a detail is theirs. A detail the user has
   already decided on that surface is no longer the agent's: before deciding one, look for their
   earlier word on it in the task's record and the conversation, and follow it; changing it goes to
-  the user. **Content that does not fit its space is a choice of what to show at that size, and it
-  goes to the user.** Squeezing columns until cells wrap onto several lines, truncating values,
-  shrinking type, or narrowing cards, form fields or toolbar controls until their labels break word
-  by word keeps everything visible by making rows and items tall and hard to scan, and is never the
-  remedy. Removing a column, field or item, or hiding it below a width, changes what information the
-  product shows, so ask which content can go or be hidden at that size, with captures of the
-  options, before changing the layout; until the user answers, the content keeps the room its values
-  need. **Text
+  the user. **Making content fit its space is the agent's work; only what to remove or hide goes to
+  the user.** A remedy that keeps every value readable — a strip that scrolls with its scrollbar
+  shown, a long value broken at its natural boundaries, items stacked, a control moved to one of the
+  product's established positions — is a routine detail as above, decided and fixed at whatever
+  width the defect shows, and so is a defect a capture shows that predates the change. Squeezing
+  columns until cells wrap onto several lines, truncating values, shrinking type, or narrowing
+  cards, form fields or toolbar controls until their labels break word by word keeps everything
+  visible by making rows and items tall and hard to scan, and is never the remedy. Removing a
+  column, field or item, or hiding it below a width, changes what information the product shows, so
+  ask which content can go or be hidden at that size, with captures of the options, before changing
+  the layout; until the user answers, the content keeps the room its values need. **Text
   already in the product keeps its words unless it is wrong or the user named it.** Text that is
   plainly wrong or inconsistent, such as a label stating something untrue, one thing called by two
   names, or a message that no longer matches what happens, is corrected or left by judgement, and
