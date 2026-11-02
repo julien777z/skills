@@ -14,7 +14,6 @@ START_MARKER: Final[str] = "<!-- skills:start -->"
 END_MARKER: Final[str] = "<!-- skills:end -->"
 FRONT_MATTER_KEY_PATTERN: Final[re.Pattern[str]] = re.compile(r"^([A-Za-z][\w-]*):\s*(.*)$")
 SENTENCE_PATTERN: Final[re.Pattern[str]] = re.compile(r"(?<=[.!?])\s+")
-MAX_SUMMARY_LENGTH: Final[int] = 140
 
 
 def parse_front_matter(path: Path) -> dict[str, str]:
@@ -86,12 +85,7 @@ def read_skills() -> list[tuple[Path, dict[str, str]]]:
 def summarize(front_matter: dict[str, str]) -> str:
     """Use the skill's own summary, or its opening sentence if absent."""
 
-    short_description = front_matter.get("short_description")
-    summary = short_description or SENTENCE_PATTERN.split(front_matter["description"])[0]
-
-    if short_description and len(summary) > MAX_SUMMARY_LENGTH:
-        raise ValueError(f"{front_matter['name']} needs a shorter README description")
-    return summary
+    return front_matter.get("short_description") or SENTENCE_PATTERN.split(front_matter["description"])[0]
 
 
 def render_links(skills: list[tuple[Path, dict[str, str]]]) -> str:

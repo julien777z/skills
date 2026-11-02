@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: Apply target-contract constraints to every implementation and review task, including tooling and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply to relevant CI failures after validation classification.
+description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including maintenance, cleanup, tooling, and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply to relevant CI failures after validation classification.
 short_description: 'Apply target-contract constraints to implementation and review tasks.'
 ---
 
@@ -19,6 +19,12 @@ Build the clean target contract instead of preserving transitional behavior.
   valuable stored evidence exist. Apply an explicit statement that affected data is nonexistent or
   disposable; ask only about a concrete conflicting fact or a genuinely unresolved retention choice.
   Do not invent a production environment or require queries against one to confirm that statement.
+- **Operational safeguards enforce evidenced requirements.** Before adding an execution limit,
+  preservation step, or restriction to authorized work, identify the user or repository requirement,
+  service contract, or observed resource risk it enforces. A remote environment, a large dataset, or
+  a hypothetical production concern alone supplies none. Do not invent a cutoff or reduce the
+  requested outcome on that basis; carry out the authorized work and verify it. Preserve limits
+  required by an established contract, and handle measured failures under **Encountered Issues**.
 - Migrate affected users and retained data onto the target contract before removing the old one.
   Release state changes the migration work; it does not by itself justify a legacy runtime path.
 
@@ -53,7 +59,11 @@ with an obsolete owned contract or revision.
   appears beside it — a second implementation of the mechanism, a sibling path answering the same
   question from a different input, a parallel copy nobody reconciled — that is one piece of work, the
   change's own scope rather than incidental work under the size budget or an item left for later,
-  and splitting it leaves the half that stays behind as the version the next person extends.
+  and splitting it leaves the half that stays behind as the version the next person extends. The
+  repair itself, the defect no longer showing anywhere, is always in scope. A repair whose visible
+  effect beyond that reaches surfaces the user did not name, such as a shared component's new
+  layout reaching every page that uses it, is a proposal for those surfaces, put to the user as the
+  global rules' product-choice bullet says, unless a standing rule names that shape a defect.
 - **A parallel copy is reconciled by giving the mechanism one owner, never by keeping the copies in
   step.** Making copies identical, a test that they match, or a note to update both leaves the
   second mechanism in place. Pick the owner by the fewest-mechanisms test, across repositories as
@@ -162,8 +172,8 @@ with an obsolete owned contract or revision.
   reaching a store it never reached before, a permission finally applying where it always should have,
   a value newly shown to or withheld from someone — that is the user's decision, and the way to put
   it to them is to state it plainly and carry on with the work that does not depend on the answer.
-  A shape change to an owned contract is not one of those: it is made, with every consumer, and
-  stated in the pull request.
+  A shape change to an owned contract that **Target Contract** admits without a proposal is not one
+  of those: it is made, with every consumer, and stated in the pull request.
 - **Never quietly narrow the work to avoid the conversation.** Choosing the option that changes nothing
   is choosing the sloppier result on the user's behalf while hiding that a choice existed. Silence
   reads as "there was no decision to make".
@@ -171,7 +181,9 @@ with an obsolete owned contract or revision.
   which one removes the most duplication and leaves the fewest mechanisms behind**. Recommend that one.
   A fork only in how the code is built — where shared behavior lives, which mechanism replaces
   parallel copies — is decided by that same test and stated in the pull request, never put to the
-  user.
+  user. Converting existing instances that are not defective to a different shape is not such a
+  fork: it is proposed to the user, as the global rules' **A better shape is proposed, never swept
+  in** says.
   A fork between designs of what the reader sees is ranked by what serves the reader and the flow
   instead, as the global rules' standing-guidance bullet says of design rules.
   The user may take the trade-off or refuse it; they cannot weigh what they were not told.
@@ -215,7 +227,10 @@ with an obsolete owned contract or revision.
   the approval above. Third-party contracts remain governed by **Owned And Third-Party Contracts**.
 - Prefer a deliberate break to an owned API, wire, schema, payload, or stored shape when it
   materially simplifies the result. Update affected consumers and migrate retained data, then remove
-  the old shape; update every consumer and generated contract in the same change.
+  the old shape; update every consumer and generated contract in the same change. A break the
+  requested work or a defect requires is made without a question. One chosen only because another
+  shape would serve better, on a contract the work does not otherwise alter, is proposed to the user
+  first, as the global rules' **A better shape is proposed, never swept in** says.
 - **An owned contract stays owned across repositories.** A consumer in a sibling repository the
   user owns makes the break multi-repository work, never somebody else's decision; only a consumer
   outside the user's control freezes a shape. **Scope Follows The Defect** holds for a break as for
@@ -262,6 +277,14 @@ with an obsolete owned contract or revision.
 - For retained values, use the authoritative source where one exists and a type-valid placeholder
   only where none exists. Never overwrite a known retained value, fabricate a placeholder in runtime
   code, or keep a permanent schema default solely to make a migration convenient.
+- **A backfill writes each row's value under the new contract, never one chosen so existing rows
+  keep behaving as before.** A flag set on every pre-change row so it keeps the old outcome, such as
+  staying exempt from a new check, closed to a new path, or treated as the old kind, is a legacy
+  fallback written into data. So is a branch on a creation date or a stored version that does the
+  same. Where the new field records a fact, such as who did something or when, backfill that fact
+  from its authoritative source. The tell is a description or comment saying that rows from before
+  the change keep the old behaviour; keeping it needs the user's approval, as any legacy support
+  does.
 - Before selecting an implementation for a schema or stored-representation change, invoke the
   database-migration skill for that role, including when the repository has no migration runner or
   uses startup reconciliation. Resolve its local commands and layout through project guidance;

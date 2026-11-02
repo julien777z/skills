@@ -6,15 +6,35 @@ short_description: 'Draw a Mermaid diagram with an explicit direction.'
 
 # Use Diagram
 
+## Dependencies
+
+- `interactive-skill` — the direction menu under **Inputs**.
+
 ## Inputs
 
 - Content: the relationships, decisions or process to show, including any existing graph.
 - Direction: explicit `LR`, `RL`, `TD`/`TB`, or `BT`, supplied by the user or calling workflow.
+  When it is absent, ask through `interactive-skill` with this menu; only a stated direction picks
+  it, never the subject:
+
+```yaml
+prompt: Which way should the diagram run?
+kind: choice
+choices:
+  - id: TD
+    label: Top to bottom
+    aliases: [TB, top down]
+  - id: LR
+    label: Left to right
+  - id: RL
+    label: Right to left
+  - id: BT
+    label: Bottom to top
+```
 
 ## Workflow
 
-1. Resolve both inputs before drawing. Ask through the available question tool when direction is
-   absent; never infer it from the subject. `TD` and `TB` both mean top to bottom.
+1. Resolve both inputs before drawing.
 2. Use Mermaid, with short concrete labels and groups only where they clarify ownership or phase.
    Distinguish execution order, conditions, parallel work and dependency relationships in a legend.
    Preserve uncertainty rather than inventing missing edges.

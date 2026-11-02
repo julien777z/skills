@@ -54,10 +54,18 @@ assignment and report the loss of independence. The `acceptance-gate` remains a 
 
 ## Review Scope
 
+**Guidance gets one reviewer.** Every guidance change — skills with their own scripts, assets and
+templates, rules, agent definitions, project guidance and the references it points to — is
+reviewed by one independent reviewer that covers every lens `code-review` would split, a skill's
+scripts and app code included, never a reviewer per lens or one for the prose and another for the
+code. In a pull request that also changes source, the guidance adds no reviewer of its own: one of
+the source review's reviewers reads it. Pass this into `code-review high fix`; it overrides that
+skill's lens fanout.
+
 **A canonical guidance batch uses one coordinated review route.** Freeze every included head and
 complete diff, then have the independent edited reader complete its smoke work before inspecting
-the combined batch diff. That reader's prose review receipt replaces this route's redundant
-high-fix reviewer fanout, not final acceptance; retain its coverage per head. Reuse the receipt
+the combined batch diff. That reader's prose review receipt replaces this route's
+high-fix reviewer, not final acceptance; retain its coverage per head. Reuse the receipt
 only while its reviewed head, guidance inputs, and analysis scope remain exact, and rerun only the
 affected concern after a change. Add a reader only for a distinct named risk. This route never
 applies to runtime or source review, never lets an author review their own work, and leaves each
@@ -290,7 +298,9 @@ any rule, rubric, dependency, configuration, workflow, generated contract, or do
 records. File categories alone never decide continuity: an unrelated agent, rule, or skill edit can
 preserve every receipt, while a review-rubric change invalidates the lenses that depend on it.
 Rebuild the complete context inventory, retain only receipts with byte-identical analysis slices and
-supporting inputs, and rerun each invalidated lens.
+supporting inputs, and rerun each invalidated lens. A lens rerun for a repair judges the repair's own
+lines and the findings it answers; elsewhere in its slice, which the earlier run judged, it raises
+only a confirmed defect or exploitable vulnerability.
 
 Treat fetching, pulling, or rebasing only to incorporate commits from the reviewed base as continuity-preserving. Do not restart the full cohort solely because that operational update changes a branch SHA, base SHA, or commit ancestry. Verify that the reviewed codebase diff is unchanged and that no conflict resolution altered a reviewed hunk, then reconcile the current target snapshot through `code-review`'s continuity attestation and coverage map before retaining any receipt. A conflict resolution that changes a reviewed hunk, and every refactor made under **Incorporating The Base** below, are new reviewed hunks: handle them like a **Workflow** step 4 fix, rerunning the lenses whose receipts they invalidate, never as a full restart.
 
@@ -391,7 +401,7 @@ slices and supporting inputs do not cover the changed test; rerun `test-fixture`
 focused validation, and every lens invalidated under **Review Continuity**. A repair that changes
 shipped behavior, a contract, review guidance, or workflow/runtime authority invalidates the
 affected receipts. Repeat only that narrow loop until one clean lens pass and one green run describe
-the same head.
+the same head, within the global rules' review-round limit of 3 rounds per change.
 
 Run the full repository suite only when every test is relevant to the pull request.
 

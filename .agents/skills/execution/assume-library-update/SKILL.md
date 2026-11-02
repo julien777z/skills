@@ -97,8 +97,8 @@ entry beside its own declaration.
 
 **Regenerate the lock beside every manifest, and commit both.** A changed manifest whose lock still
 describes the old resolution fails installation outright — every job that installs that project
-dies before it runs a line of the change, which reads as a broken branch rather than a missing
-relock. Check every lock in the repository afterwards, not only the ones just edited: making one
+dies before it runs a line of the change, which reads as a broken branch rather than a lock nobody
+regenerated. Check every lock in the repository afterwards, not only the ones just edited: making one
 project's dependencies explicit can turn a name it always had into a requirement its consumers must
 now resolve.
 

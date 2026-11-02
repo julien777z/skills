@@ -198,6 +198,11 @@ if [ "$RESOLVE_SOURCE" -eq 1 ]; then
   exit 0
 fi
 
+if overlay_marker "$REPO_ROOT" >/dev/null; then
+  python3 -B "$REPO_ROOT/.agents/skills/authoring/edit-skill/scripts/validate_sources.py" mirror \
+    --root "$REPO_ROOT" --output-dir .agents/.auto_generated
+fi
+
 MAIN_CHECKOUT="$(main_checkout_of "$REPO_ROOT")"
 CANONICAL_SKILLS="$REPO_ROOT/.agents/skills"
 CANONICAL_AGENTS="$REPO_ROOT/.agents/agents"
@@ -209,6 +214,7 @@ if [ ! -f "$CANONICAL_GLOBAL" ]; then
 fi
 
 CANONICAL_RESOURCES="$REPO_ROOT/.agents/resources"
+CANONICAL_HOOKS="$REPO_ROOT/.agents/hooks"
 GENERATED_ROOT="$REPO_ROOT/.agents/.auto_generated"
 PROVIDERS=(claude codex cursor)
 found_root=0
@@ -290,7 +296,7 @@ preflight_ok=1
 for index in "${!INSTALL_ROOTS[@]}"; do
   preflight_provider "${INSTALL_PROVIDERS[$index]}" "${INSTALL_ROOTS[$index]}" || preflight_ok=0
 
-  if [ "${INSTALL_PROVIDERS[$index]}" = codex ] || [ "${INSTALL_PROVIDERS[$index]}" = claude ]; then
+  if [ "${INSTALL_PROVIDERS[$index]}" != agents ]; then
     python3 "$REPO_ROOT/.agents/hooks/skills-refresh/configuration.py" preflight "${INSTALL_PROVIDERS[$index]}" "${INSTALL_ROOTS[$index]}" "$REPO_ROOT" "${CLOUD_HOME:-}" "$AUTO_UPDATE" "$APPROVE_OWNED_HOOKS" || preflight_ok=0
   fi
 done

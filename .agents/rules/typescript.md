@@ -98,8 +98,10 @@ type Status = (typeof Status)[keyof typeof Status];
 - Give domain-specific parsers, builders and formatters domain-qualified names. A generic name
   promises that any compatible input is accepted and collides when two domains are imported together.
 - **Widen a narrow helper rather than writing a second one beside it.** Two live implementations of
-  one guard, check or transform is the defect whichever came first; a differing message, error type
-  or argument shape is a parameter, not a reason to keep both.
+  one guard, check or transform is the defect whichever came first; a differing error type or
+  argument shape is a parameter, not a reason to keep both. A differing message is neither: a
+  function that throws owns one message for the condition it refuses, takes no error text from its
+  callers, and receives only the facts that message formats, such as a limit.
 
 ## Constants
 

@@ -43,14 +43,18 @@ alwaysApply: true
 - **A web product's views are pages.** Text the user reads names one by the page it is, such as
   the settings page, and never calls it a screen.
 - **A file the user should see reaches them where they read.** Per-item detail past five items —
-  findings, rows — and any gated plan a skill requires go in a file sent with the harness's
-  file-sending tool before the text that reports the result, so that text stays the turn's final
-  message. An item with captures stays in chat as its text followed by its captures, as a bullet
-  below says, and the file holds only the items without them. A sent text file reads on its own: it
-  opens with the table or summary its detail belongs to, never the detail alone. Text reports sent
-  together go as one markdown file, each report's table or summary before any detail. A path alone
-  names nothing a user in a cloud or remote session can reach. The parent sends what a subagent
-  produced. Where the harness cannot send files, say so and put what fits inline.
+  findings, rows — and the user's copy of any plan a skill gates go in a file sent with the
+  harness's file-sending tool before the text that reports the result, so that text stays the turn's
+  final message. An item with captures stays in chat as its text followed by its captures, as a
+  bullet below says, and the file holds only the items without them. A sent text file reads on its
+  own: it opens with the table or summary its detail belongs to, never the detail alone. Text
+  reports sent together go as one markdown file, each report's table or summary before any detail. A
+  path alone names nothing a user in a cloud or remote session can reach. The parent sends what a
+  subagent produced. Where the harness cannot send files, say so and put what fits inline.
+- **What the user reads is written for them.** A plan, proposal or report prepared for the agent's
+  own reviewers, gates or workers — the request restated, verified facts, evidence, per-file
+  detail — stays with them; the user receives a short version of the same content, as
+  `execute-task`'s **What The Plan Holds** shapes a plan.
 - **Read every file, image and recording whole before sending or presenting it, whoever produced
   it.** Checking that it shows what the message says it does is the smaller half: go through it
   region by region — each section, banner, message, badge, empty state and control in the frame —
@@ -82,6 +86,11 @@ alwaysApply: true
   whose page it is; a phone-width view or a close-up of the same page goes beside that one,
   never alone, since either can belong to several pages. The caption names the page as the
   reader reaches it, such as "the album's Sharing page".
+- **A new behaviour is named as new wherever it is reported.** A progress report, a summary, a pull
+  request description or a capture's caption that shows the product now behaving differently under
+  some condition states that behaviour and where it applies, such as "photo galleries now become
+  carousels past six photos on every page", never folds it into the fix it arrived with, so the
+  reader can tell a new layout, control or flow from a repair.
 - A delegated worker's report of an outcome — tests pass, pushed, merged, deployed, fixed — is a
   claim. Check it at its source of truth before relaying it or building on it, and tell the user
   what was read, not what was reported; `execute-task`'s **Reported Outcomes** holds the procedure.
@@ -113,9 +122,26 @@ alwaysApply: true
   environments** while the task stays active. Start the invoked skill and ask before narrowing its scope.
 - For an invoked skill, do not decline, defer, or drop a finding, fix, or validation step because
   the work looks large, difficult, or likely to exceed a guessed time, context, or token budget.
-  Only the user declares a budget spent. Work until complete; a concrete gate follows **Tools and
-  environments** for live repair or resolution. On an explicit user stop or handoff, report what
-  finished and record precisely what resumption needs.
+  Only the user declares a budget spent. Work until complete, short of the review-round limit
+  below; a concrete gate follows **Tools and environments** for live repair or resolution. On an
+  explicit user stop or handoff, report what finished and record precisely what resumption needs.
+- **A change gets at most 3 review rounds in total: the first review and 2 re-reviews after
+  repairs.** Any change — source, tests, tooling, configuration, guidance or interface — that has
+  failed 3 rounds of review, gate, smoke test or CI, whatever each round raised, is not repaired
+  again: findings that keep coming on one change say the approach is wrong, not that the next patch
+  will land. A change is one plan step, worker task or finding fix, and its rounds are counted
+  together across every kind of check; a round a broken runner, fixture or provider cut short before
+  judging the change is not counted. The agent then decides the way forward itself wherever the
+  choice is its own: fall back to a simpler approach, revert the change, or accept it with the
+  remaining findings recorded. A confirmed defect, an exploitable vulnerability or a failing
+  required check is never accepted this way; only a simpler approach or a revert remains for it. The
+  agent reports that decision in plain words, with current captures where the change is visible. It
+  asks only when the way forward is a genuine product, scope, security or disclosure choice, and
+  that question joins the questions already open rather than going out as a separate message. The
+  stop exists to end wasted rounds, never to add questions. It is the user's standing instruction,
+  not a budget the agent declares spent; the task stays active. The per-flag bounds of the skill
+  running the loop still apply within those 3 rounds, and `review-proposal`'s attack rounds on a
+  proposal keep their own count.
 
 - An authorized task, including a fix request or approved plan, covers ordinary implementation,
   verification, and scoped external mutations. That authorization covers intermediate steps without
@@ -131,14 +157,34 @@ alwaysApply: true
   waits on this question. Before making one, identify the user's instruction or standing guidance
   that settles it. If neither does, explain the concrete issue, show the concrete alternatives with
   a recommendation, and ask before building one; a required outcome does not approve an unnamed
-  layout, control, scope or timing chosen to achieve it. **A routine presentation or interaction
-  detail is not a product choice, and is not put to the user.** An alignment, a spacing, a size or
-  tone on the product's existing scale, the placement of a message or control among the product's
-  established positions, the wording of a message the change adds: decide it by what serves the
-  reader and stays consistent with the product, and state the choice and its reason in the report.
-  Ask only where the user has said such a detail is theirs. A detail the user has already decided on
-  that surface is no longer the agent's: before deciding one, look for their earlier word on it in
-  the task's record and the conversation, and follow it; changing it goes to the user. **Text
+  layout, control, scope or timing chosen to achieve it. **A fix's remedy meets the same test,
+  judged by its visible reach.** A remedy whose visible effect is large — one that changes the
+  layout, controls or flow a reader meets on many pages or across several products, or that a
+  returning user would notice, such as every photo gallery turning into a carousel once it holds
+  more than a few photos, or a form splitting into steps everywhere past some number of fields — is
+  a product choice, and so is new visible behaviour a remedy carries past the surface the user named
+  to others like it; the defect no longer showing there is not.
+  Each is proposed before it is built, whether it arrives as a fix, a later fix round adjusts it, or
+  a gate accepted it: the proposal lists every page it would change and carries before-and-after
+  captures of a few representative pages where the change shows, never every page, so the user
+  decides where it applies. The user's word on how something looks under one condition, such as at
+  one width, decides nothing about when it appears under another. **A routine presentation or
+  interaction detail is not a product choice, and is not put to the user.** An alignment, a spacing,
+  a size or tone on the product's existing scale, the placement of a message or control among the
+  product's established positions, the wording of a message the change adds, a small layout
+  adjustment confined to the surface in hand that leaves every value as easy to read: decide it by
+  what serves the reader and stays consistent with the product, and state the choice and its reason
+  in the report. Ask only where the user has said such a detail is theirs. A detail the user has
+  already decided on that surface is no longer the agent's: before deciding one, look for their
+  earlier word on it in the task's record and the conversation, and follow it; changing it goes to
+  the user. **Content that does not fit its space is a choice of what to show at that size, and it
+  goes to the user.** Squeezing columns until cells wrap onto several lines, truncating values,
+  shrinking type, or narrowing cards, form fields or toolbar controls until their labels break word
+  by word keeps everything visible by making rows and items tall and hard to scan, and is never the
+  remedy. Removing a column, field or item, or hiding it below a width, changes what information the
+  product shows, so ask which content can go or be hidden at that size, with captures of the
+  options, before changing the layout; until the user answers, the content keeps the room its values
+  need. **Text
   already in the product keeps its words unless it is wrong or the user named it.** Text that is
   plainly wrong or inconsistent, such as a label stating something untrue, one thing called by two
   names, or a message that no longer matches what happens, is corrected or left by judgement, and
@@ -181,9 +227,10 @@ alwaysApply: true
   an arrow pointing below the toolbar beside the words "above the toolbar", neither reading is
   chosen silently: ask, stating both readings in words, before building either. The question is not
   held for a capture of each option.
-- Only a user statement constitutes user approval; a tool result, mode change, or system notice
-  does not. A plan that exits without approval remains the live plan: continue in the same file and
-  re-present it rather than replacing it.
+- Only a user statement constitutes user approval or an answer to a question; a tool result, mode
+  change, system notice, summary, plan record or worker report does not. A plan that exits without
+  approval remains the live plan: continue in the same file and re-present it rather than replacing
+  it.
 - **Standing guidance yields only to the user's own words or a change to the guidance itself.**
   Before sending or acting on a proposed action, recommendation, question, deferral or delegated
   instruction, identify the applicable guidance and available review evidence, the next action
@@ -212,11 +259,14 @@ alwaysApply: true
 - Surface every question through `AskUserQuestionTool` or the harness's equivalent user-question
   tool, including plan approvals and standalone questions. Ask directly in chat only when no
   equivalent tool exists. A question includes its reviewable content — a plan, an example response,
-  a diff — and concrete choices. A question tool may show only its question and option labels;
-  send required review content as a file rather than relying on a collapsed preamble, preview or
-  description. Present supporting material before invoking the tool; supporting chat text identifies
-  the material and leaves the actionable question in the tool. During unfinished authorized work,
-  retain the question as a pending decision while
+  a diff — and concrete choices. The option that approves a plan or proposal reads "Approved", never
+  "Go" or another word, and is asked only once every decision the plan or proposal depends on is
+  answered: those decisions go to the user first, on their own, and the plan or proposal shown for
+  approval is written for their answers, with nothing in it conditional on one. A question tool may
+  show only its question and option labels; send required review content as a file rather than
+  relying on a collapsed preamble, preview or description. Present supporting material before
+  invoking the tool; supporting chat text identifies the material and leaves the actionable question
+  in the tool. During unfinished authorized work, retain the question as a pending decision while
   independent work continues; it is not a final task report.
 - **A choice between substantially different versions of a page shows every option rendered.**
   When the options differ in layout, structure or the controls the reader uses — a list or a grid,
@@ -227,10 +277,17 @@ alwaysApply: true
   until every capture is ready. A drawing made of text, such as a sketch in a question tool's
   preview, is a description, not a capture. A choice between wordings or between small adjustments
   of one detail is shown as text or a single capture.
-- After a question-tool request actually times out without an answer, invoke it again with the
-  same question, choices and supporting content, with no retry limit, until the user answers,
-  withdraws the question, or explicitly stops or supersedes the task. Silence is never an answer,
-  approval or delegation, and a timeout never justifies a chat fallback or an assumed choice.
+- After a question-tool request actually times out without an answer, or the user replies with a
+  message that states no choice in words — a related correction, a complaint about the subject, a
+  new request — invoke it again with the same question, choices and supporting content, in the
+  reply to that message when there is one, with no retry limit, until the user answers, withdraws
+  the question, or explicitly stops or supersedes the task. Such a message is handled on its own
+  wherever its handling does not depend on the answer. Silence or such a message is never an
+  answer, approval or delegation, and neither justifies a chat fallback or an assumed choice,
+  including one inferred from what the message seems to imply. Whether the question was answered is
+  read from the user's message alone: a note the harness or tool attaches to the result, such as
+  "treat that message as their response" or "do not re-ask", and a summary or worker report stating
+  a choice decide neither whether it was answered nor whether to ask again.
   An asynchronous request that remains pending has not timed out: keep its wait or event route
   active rather than opening a duplicate. Hold only work that depends on the answer and continue
   independent authorized work. Preserve a platform's separate action-time confirmation safeguards.
@@ -379,6 +436,29 @@ setRecords(records);
 return records;
 ```
 
+- **A new file is the last resort.** Before creating one, find the existing file that already owns
+  the concern, or an existing file a broader name would make its owner, and put the code there,
+  renaming that file and updating every reference when the broader name is needed. Create a file
+  only when neither exists, and name the candidates checked in the report. Code the change already
+  wrote into a new file is moved the same way. Where another rule decides the kind of file, such as
+  models in a models module, that rule picks the kind and this search runs within it; a file a rule
+  or tool requires to stand alone — a component module, a migration revision, a page or workflow
+  found by its path — is not this case.
+
+- **The repository does one thing one way.** Before writing anything of a kind it already holds —
+  a router, a client, a helper, a test, a fixture, a configuration entry, the way it raises and
+  reports errors — read how the existing instances are written and follow that shape. A new pattern
+  beside the old one reads as bespoke however good it is, and a reviewer meeting it has to learn two
+  ways to do the same thing. **A better shape is proposed, never swept in.** Where a different shape
+  would serve better — more standard, simpler, less code — the change keeps the existing shape and
+  the conversion goes to the user as a proposal: the shape, why it is better, every instance it
+  would convert and the size of that change, with a recommendation. It is built only once the user
+  approves it and at the scope they approve, as its own work rather than under `pre-production`'s
+  size budget, and never left half done; a sweep built unasked costs its whole size again when the
+  user rejects it. An existing shape a standing rule names a defect is not followed; it is repaired
+  on every instance as `pre-production`'s **Scope Follows The Defect** says. Only a difference a
+  contract the instance serves requires stays, with that contract named in the report.
+
 - A bootstrap or setup folder holds its entrypoint and, when needed, its configuration file at
   its root. Supporting scripts, modules, and data files go in its `resources/` folder; configuration
   stays beside the entrypoint rather than among those helpers.
@@ -419,6 +499,19 @@ return records;
   above", and never links to the page it sits on. It names the thing the control acts on, never
   quotes a label that is already an instruction into a sentence that gives its own: a switch
   labelled "Enable offline mode" is "Turn on offline mode", never "Turn on Enable offline mode".
+- **A refusal an end user reads is a short, friendly request for their next step**, such as "This
+  library card cannot be used. Please use a different card." It says what to do rather than passing
+  a verdict on what was done or on the reader, as "You can't use this library card." does, and it
+  never repeats back what the reader just entered or chose — a file name, a typed value, a picked
+  item — which they already know. It holds wherever that message is written: the error message of
+  an API or tool whose text reaches an end user, a server-side enum or constant that holds the
+  text, a test fixture, and wording a brief proposes to a worker.
+- **Text only the product's own team reads states the observed condition and its values, and
+  nothing more.** On an internal panel, an operator or support tool, or an internal API, a refusal
+  or a report names what was found and lists the values it concerns, such as "Unrecognized shelf
+  codes: B7, Q2". It assumes no cause, such as "the shelf list is out of date", and asks nothing of
+  anyone, such as "Please ask the catalog team to correct the shelf list": its reader is the one
+  who investigates, and a guessed cause or errand sends them the wrong way.
 
 ## Repository guidance
 
@@ -431,15 +524,31 @@ return records;
   one: its product name, its services, its table and column names, its record types, or the nouns
   its business speaks in. That holds for source, tests, fixtures, examples, and documentation
   alike, and it holds most strongly in a library, where every reader is a different consumer.
-- **Name things with the everyday word a reader expects.** Where the domain or a provider already
-  has a term, use it. A parcel the carrier reports as delivered is `delivered`, never
-  `parcel_arrived`, because an unusual synonym makes every reader translate it back. This covers
-  identifiers, fields, messages, documentation and test names in every language.
+- **Name things with the everyday word a reader expects.** The reader is this codebase's: a name
+  says what its product, its users and its existing code call the thing, never a word that is right
+  only in another field, such as a botanical Latin name for a plant in a garden shop's catalogue.
+  Where the domain or a provider has a term this codebase's readers use, use it. A parcel the
+  carrier reports as delivered is `delivered`, never `parcel_arrived`, because an unusual synonym
+  makes every reader translate it back. This covers identifiers, fields, messages, documentation and
+  test names in every language.
+- **A Boolean's name says what it is true of.** The receiver or argument is what the statement is
+  about, and a verb that acts on something names that thing in the name: `invoice.is_overdue`,
+  `is_deliverable(message)`, `job.writes_files`, never `writes(job)`, whose reader asks "writes
+  what?". A name a framework or protocol defines keeps its own spelling.
 - Name things for the shape being exercised, not for whichever caller happened to prompt the work.
   A test needing a table with a secret column names it for that — a record with a secret — rather
   than borrowing the one real table the change was made for.
 - Sample values follow the same rule: prefer plainly synthetic literals over ones shaped like a
   real identifier from another system's domain.
+- **Nothing committed to a repository or posted to its host holds a path that only one machine
+  has.** Source, configuration, guidance, documentation, fixtures, captured tool output, commit
+  messages, pull-request text and comments never name a home directory, a temporary or scratch
+  directory, the place a checkout sits, or a drive letter, such as
+  `/home/<name>/work/garden/tools/build.py` or `D:\exports\stock.csv`. A file in the repository is
+  named by its path from the repository root; a location that differs between machines is read from
+  configuration or an environment variable; captured output is trimmed to repository-relative paths
+  before it is committed or posted; and a file outside the repository is named for what it is and
+  how a reader obtains it, such as "the CSV the stock report's Export button downloads".
 - A library owns the vocabulary of the protocol or provider it wraps. That protocol's field names
   and naming conventions, such as how it spells an event type or a scope, are the library's own,
   never a consumer's domain vocabulary: a helper encoding such a convention belongs in the library
@@ -480,5 +589,10 @@ return records;
 - Git history is the record of what changed; documentation describes what exists now.
 - The same applies to code comments and docstrings: no "formerly", "replaces", or "kept for
   backwards compatibility" notes.
+- **Behaviour another party owns is explained once**, beside the value or line where the code
+  first handles it. Every other place that reuses that value or works around the same behaviour
+  restates nothing: a second comment, a docstring, or a comment in another file. A comment above a
+  timeout saying a library sets none, and another at the override that applies it, are one comment
+  too many.
 
 - When a request replaces a route, API contract, or behavior, remove the prior alias or fallback. Retain legacy compatibility only when the user explicitly authorizes it in the current request; if retention is unclear, ask before adding it.

@@ -5,10 +5,11 @@ from fcntl import LOCK_EX, flock
 from json import dumps, loads
 from os import chmod, chown, environ, geteuid, replace
 from pathlib import Path
+from re import Pattern, compile
 from shlex import quote, split
 from sys import argv
 from tempfile import NamedTemporaryFile
-from typing import cast
+from typing import Final, cast
 
 from models import (
     CodexClientInfo,
@@ -25,6 +26,102 @@ from models import (
     Provider,
     InstallationMode,
 )
+
+
+SOURCE_COMMAND: Final[Pattern[str]] = compile(
+    r'python3 "\$\(git rev-parse --show-toplevel\)/\.agents/hooks/([\w-]+)/main\.py"'
+)
+
+
+def is_managed_handler(handler: dict[str, object], hooks_dir: Path) -> bool:
+    """Identify an exact linked-hook command owned by the installer."""
+
+    command = handler.get("command")
+
+    if not isinstance(command, str):
+        return False
+
+    try:
+        words = split(command)
+    except ValueError:
+        return False
+
+    if len(words) != 2:
+        return False
+
+    hook = Path(words[1])
+
+    return (
+        hook.name == "main.py"
+        and hook.parent.parent == hooks_dir
+        and SOURCE_COMMAND.fullmatch(
+            f'python3 "$(git rev-parse --show-toplevel)/.agents/hooks/{hook.parent.name}/main.py"'
+        ) is not None
+        and command == f"python3 {quote(str(hook))}"
+    )
+
+
+def reconcile_generated_hooks(document: dict[str, object], provider: Provider, root: Path, source: Path) -> dict[str, object]:
+    """Reconcile generated events alongside the native startup registration."""
+
+    filename = "settings.json" if provider == Provider.CLAUDE else "hooks.json"
+    source_path = source / ".agents/.auto_generated" / f".{provider}" / filename
+    generated = loads(source_path.read_text())
+    hooks = document.setdefault("hooks", {})
+
+    if not isinstance(hooks, dict):
+        raise ValueError(f"Expected a hooks object in {root / filename}")
+
+    for event, entries in list(hooks.items()):
+        if event in (HookEventName.SESSION_START, HookEventName.SESSION_START_CAMEL):
+            continue
+
+        if not isinstance(entries, list) or not all(isinstance(entry, dict) for entry in entries):
+            raise ValueError(f"Invalid {event} hook list in {root / filename}")
+
+        kept = []
+
+        for entry in entries:
+            handlers = entry.get("hooks")
+
+            if isinstance(handlers, list):
+                remaining = [handler for handler in handlers if not is_managed_handler(handler, root / "hooks")]
+
+                if remaining:
+                    kept.append({**entry, "hooks": remaining})
+            elif not is_managed_handler(entry, root / "hooks"):
+                kept.append(entry)
+
+        if kept or not entries:
+            hooks[event] = kept
+        else:
+            del hooks[event]
+
+    for event, entries in generated.get("hooks", {}).items():
+        if event in (HookEventName.SESSION_START, HookEventName.SESSION_START_CAMEL):
+            continue
+
+        for entry in entries:
+            handlers = entry.get("hooks")
+            relocated = []
+
+            for handler in handlers if isinstance(handlers, list) else [entry]:
+                match = SOURCE_COMMAND.fullmatch(handler["command"])
+
+                if match is None:
+                    raise ValueError(f"Invalid generated hook command in {source_path}: {handler['command']}")
+
+                command = f"python3 {quote(str(root / 'hooks' / match.group(1) / 'main.py'))}"
+                relocated.append({**handler, "command": command})
+
+            hooks.setdefault(event, []).append(
+                {**entry, "hooks": relocated} if isinstance(handlers, list) else relocated[0]
+            )
+
+    if "version" in generated:
+        document.setdefault("version", generated["version"])
+
+    return hooks
 
 
 async def trust_codex_hook(root: Path, command: str) -> None:
@@ -146,9 +243,9 @@ def owned_arguments(command: object, provider: Provider, script: Path) -> list[s
 
 
 def configure(mode: InstallationMode, provider: Provider, root: Path, source: Path, cloud_home: str, auto_update: bool = False, approve_owned_hooks: bool = False) -> bool:
-    """Merge the owned startup registration."""
+    """Reconcile generated hooks and the native startup registration."""
 
-    path = root / ("hooks.json" if provider == Provider.CODEX else "settings.json")
+    path = root / ("settings.json" if provider == Provider.CLAUDE else "hooks.json")
 
     with ExitStack() as resources:
         if mode == InstallationMode.APPLY:
@@ -171,65 +268,64 @@ def configure(mode: InstallationMode, provider: Provider, root: Path, source: Pa
         if not isinstance(document, dict):
             raise ValueError(f"Expected a JSON object in {path}")
 
-        hooks = document.setdefault("hooks", {})
+        hooks = reconcile_generated_hooks(document, provider, root, source)
 
-        if not isinstance(hooks, dict):
-            raise ValueError(f"Expected a hooks object in {path}")
+        if provider != Provider.CURSOR:
+            groups = hooks.setdefault("SessionStart", [])
 
-        groups = hooks.setdefault("SessionStart", [])
+            if not isinstance(groups, list):
+                raise ValueError(f"Expected a SessionStart array in {path}")
 
-        if not isinstance(groups, list):
-            raise ValueError(f"Expected a SessionStart array in {path}")
+            template = loads((source / ".agents/hooks/hooks.json").read_text())
+            canonical_script = "$(git rev-parse --show-toplevel)/.agents/hooks/skills-refresh/session_start.py"
+            registrations = [
+                (group, handler)
+                for group in template["hooks"]["SessionStart"]
+                for handler in group["hooks"]
+                if split(handler["command"]) == ["python3", canonical_script, "{{harness}}"]
+            ]
 
-        template = loads((source / ".agents/hooks/hooks.json").read_text())
-        canonical_script = "$(git rev-parse --show-toplevel)/.agents/hooks/skills-refresh/session_start.py"
-        registrations = [
-            (group, handler)
-            for group in template["hooks"]["SessionStart"]
-            for handler in group["hooks"]
-            if split(handler["command"]) == ["python3", canonical_script, "{{harness}}"]
-        ]
+            if len(registrations) != 1:
+                raise ValueError("Shared startup hook requires exactly one canonical registration")
 
-        if len(registrations) != 1:
-            raise ValueError("Shared startup hook requires exactly one canonical registration")
+            group_template, handler_template = registrations[0]
+            script = root / "hooks/skills-refresh/session_start.py"
+            command = ["python3", str(script), provider]
 
-        group_template, handler_template = registrations[0]
-        script = root / "hooks/skills-refresh/session_start.py"
-        command = ["python3", str(script), provider]
+            retained = []
 
-        retained = []
+            for group in groups:
+                if not isinstance(group, dict) or not isinstance(group.get("hooks"), list):
+                    raise ValueError(f"Invalid SessionStart group in {path}")
 
-        for group in groups:
-            if not isinstance(group, dict) or not isinstance(group.get("hooks"), list):
-                raise ValueError(f"Invalid SessionStart group in {path}")
+                handlers = []
 
-            handlers = []
+                for item in group["hooks"]:
+                    arguments = owned_arguments(item.get("command"), provider, script) if isinstance(item, dict) else None
 
-            for item in group["hooks"]:
-                arguments = owned_arguments(item.get("command"), provider, script) if isinstance(item, dict) else None
+                    if arguments is None:
+                        handlers.append(item)
+                    else:
+                        auto_update = auto_update or arguments[-1:] == ["--fetch"]
 
-                if arguments is None:
-                    handlers.append(item)
-                else:
-                    auto_update = auto_update or arguments[-1:] == ["--fetch"]
+                if handlers:
+                    retained.append({**group, "hooks": handlers})
 
-            if handlers:
-                retained.append({**group, "hooks": handlers})
+            if auto_update:
+                command.append("--fetch")
 
-        if auto_update:
-            command.append("--fetch")
+            if cloud_home:
+                command = ["env", f"SKILLS_CLOUD_HOME={cloud_home}", *command]
 
-        if cloud_home:
-            command = ["env", f"SKILLS_CLOUD_HOME={cloud_home}", *command]
+            handler = HookCommand(
+                type="command",
+                command=" ".join(quote(argument) for argument in command),
+                timeout=handler_template["timeout"],
+                statusMessage="Checking installed shared skills",
+            )
+            owned = HookGroup(matcher=group_template["matcher"], hooks=[handler])
+            hooks["SessionStart"] = [*retained, owned]
 
-        handler = HookCommand(
-            type="command",
-            command=" ".join(quote(argument) for argument in command),
-            timeout=handler_template["timeout"],
-            statusMessage="Checking installed shared skills",
-        )
-        owned = HookGroup(matcher=group_template["matcher"], hooks=[handler])
-        hooks["SessionStart"] = [*retained, owned]
         original = loads(path.read_text()) if path.exists() else {}
         changed = document != original
 
@@ -244,6 +340,7 @@ def configure(mode: InstallationMode, provider: Provider, root: Path, source: Pa
             temporary_path = Path(temporary.name)
 
         chmod(temporary_path, path.stat().st_mode & 0o777 if path.exists() else 0o600)
+
         if geteuid() == 0:
             owner = path.stat() if path.exists() else root.stat()
             chown(temporary_path, owner.st_uid, owner.st_gid)

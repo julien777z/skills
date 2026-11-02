@@ -24,7 +24,8 @@ request, fix what that finds, then merge.
   remaining step.** The answer was given when the skill was invoked. When the gates are green and the
   head is the accepted one, merge it.
 - The same invocation authorizes `review-pass` and `merge-gate` for every selected pull request. It
-  does not authorize a release workflow, a deployment, or an unrelated provider mutation.
+  does not authorize separately dispatching a release workflow, creating a deployment, or an
+  unrelated provider mutation.
 - Once started, the run keeps its authorization, targets and merge authority through ordinary user
   interruptions, status requests and separately requested work, as `review-pass`'s **Session
   Continuity** says. Only an explicit pause, stop, handoff, replacement, or terminal result ends it.

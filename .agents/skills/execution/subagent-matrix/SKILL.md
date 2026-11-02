@@ -96,8 +96,7 @@ context and returns its verdict into the step waiting on it; nothing else does b
 - **An independent step gets a newly launched subagent for every question it answers when available.** A gate,
   finding validator or smoke reader that has answered about an item is never resumed, messaged or
   reused for a later round on it — not to judge the repair of its own flag or a revised item — since
-  its answer would then rest on its own earlier verdict. A skill whose procedure reuses a reviewer
-  on purpose, such as a simplification rescan, says so where it does.
+  its answer would then rest on its own earlier verdict.
 - **A worker whose host gives it no agent tool hands the step up.** It writes the complete
   assignment — the inputs, the question, the reading list, the output shape — to a file, asks the
   agent that delegated to it to run that file as a subagent at the chosen capability level, and waits for the
@@ -107,7 +106,7 @@ context and returns its verdict into the step waiting on it; nothing else does b
   that agent is its final message asks by returning: it ends its turn with the file path and the
   request, and resumes when the verdict comes back. The delegating agent runs it and returns the verdict unedited; when the
   finished worker cannot be resumed, the delegating agent carries out what the verdict calls for,
-  such as the fix steps a flag names, itself. With no
+  such as the fix steps a flag names, under the follow-up bullet below. With no
   delegating agent to ask, perform the assigned step in process and report the loss of independence.
 - **An early final does not finish the assignment.** Reconcile its retained results and live child
   jobs before replacing anything. The parent takes over unfinished coordination and keeps waiting
@@ -140,6 +139,12 @@ context and returns its verdict into the step waiting on it; nothing else does b
   only when their edits and resources do not overlap and neither needs an unsettled output from the
   other. A worker ends with its task; the next gets a fresh context. Read-only gates and reviews may
   run alongside building at the cadence their owning skill sets.
+- **A delegated task is one plan step or one fix round, never a phase**, so each worker's context
+  stays the size of its step. A follow-up after a worker's task ended — a gate's fix steps, a
+  review's findings, a reviewer's question — is a new task: the delegating agent applies it itself
+  when it touches one or two files, and otherwise briefs a fresh worker with the findings, the files
+  they name, the branch and its head. A finished worker is never resumed for a follow-up, since
+  resuming reloads its whole earlier context to make a small change.
 
 ## Launch Failure Reporting
 

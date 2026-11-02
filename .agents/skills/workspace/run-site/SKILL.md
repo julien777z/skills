@@ -11,9 +11,11 @@ Start and verify the stack within the requested scope. When browser verification
 
 ## Dependencies
 
-- `agent-browser` — the browser automation CLI this skill drives.
+- `use-browser` — the browser this skill drives, through the `agent-browser` CLI.
 - `execute-task` — what happens to a defect a walkthrough finds, under its **Encountered Issues**.
 - `proton-pass` — a sign-in password the repository provides no source for.
+- `test-fixture` — the tests a scenario added or updated carries.
+- `subagent-matrix` — the capture worker a long list of captures can be handed to.
 
 ## Principles
 
@@ -81,7 +83,7 @@ preserve configured ports.
 |---|---|---|
 | Every authenticated request returns 401 | A checked-in placeholder shadowed the real value from the session environment | Make the environment win over the dotenv layers; read the running process's environment to confirm |
 | A service starts but every query fails | The database has no schemas | Run schema provisioning before launch and read its output for the failing service |
-| A module is missing at import though the manifest names it | It is declared where the package manager does not install it | Declare it in the manifest's install list, re-lock, and install; never patch the environment by hand |
+| A module is missing at import though the manifest names it | It is declared where the package manager does not install it | Declare it in the manifest's install list, regenerate the lock, and install; never patch the environment by hand |
 | A setup command reports missing settings before doing anything | It imports something that builds the application config at import time | Import only what build tooling needs, and keep a test guarding it |
 | A `run`-style script reports command not found | Its entry point is registered only by an install that has not run since | Invoke bootstrap commands as modules so they need no registration |
 | A dependency service refuses connections | It is not in the started set | Start it through the launcher's service selection |
@@ -105,6 +107,21 @@ comment, prose in Markdown — is verified by reading it and by finding the new 
 output and the old text nowhere in the tree. Judge by what the edit touches, not how small it looks:
 moving text into a shared constant stays a copy change only while every call site keeps its slot. Where a component has no surface in the running app,
 say so and name what only a harness rendered.
+
+### Scenarios
+
+Where the repository provides commands to start an isolated stack instance, bring it to a named
+state (a scenario) and capture pages, the walkthrough reaches its state with the scenario command
+and captures with the capture command, as project guidance names them, never by seeding records by
+hand; the control the change touches is still operated as **Drive the change** says. A list of
+pages the capture command reads holds only the pages the change reaches. A long capture list can
+go to a capture worker at the capability `subagent-matrix` names for one, and every image it
+returns is read whole before it is used.
+
+**The scenario command grows with the product.** A change that adds a state a person would want to
+test — a new status, a flow step, a kind of record a page shows — adds its scenario, with its tests,
+in the same change, and a change that alters a state updates its scenario. A walkthrough that needs
+a state no scenario reaches adds that scenario rather than seeding it by hand.
 
 ### Sign in
 
@@ -144,9 +161,10 @@ EOF
 
 ### Drive the change
 
-- Drive the **local** production build the startup command serves, never a dev server and never the
-  deployed domain: prefetching, caching, and middleware behave differently under a dev server, and a
-  deployed site proves nothing about this checkout. Snapshot after every navigation; refs do not
+- The final walkthrough drives the **local** production build the startup command serves, never a
+  dev server and never the deployed domain: prefetching, caching, and middleware behave differently
+  under a dev server, and a deployed site proves nothing about this checkout. Interim captures while
+  the work is in flight may come from dev servers. Snapshot after every navigation; refs do not
   survive it.
 - **Operate the control the change touched, not the page that holds it**, with real input events on
   every screen that mounts it, then read the state it was meant to leave — where the element landed,

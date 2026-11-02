@@ -126,8 +126,13 @@ check_link() {
           return 0
         fi
         ;;
-      hooks:.agents/hooks/skills-refresh)
-        return 0 ;;
+      hooks:.agents/hooks/*|hooks:.agents/.auto_generated/.*/hooks/*)
+        artifact="${relative#*/hooks/}"
+
+        if [[ "$artifact" != */* ]] && { [ ! -e "$resolved" ] || [ -d "$resolved" ]; }; then
+          return 0
+        fi
+        ;;
     esac
   fi
 
@@ -154,7 +159,7 @@ check_directory() {
 }
 
 preflight_provider() {
-  local provider="$1" root="$2" skill agent rule resource name failed=0
+  local provider="$1" root="$2" skill agent rule resource hook name failed=0
 
   check_directory "$root/skills" || return 1
 
@@ -170,10 +175,14 @@ preflight_provider() {
     return "$failed"
   fi
 
-  if [ "$provider" = codex ] || [ "$provider" = claude ]; then
-    check_directory "$root/hooks" || failed=1
-    check_link "$root/hooks/skills-refresh" || failed=1
-  fi
+  check_directory "$root/hooks" || failed=1
+
+  for hook in "$CANONICAL_HOOKS"/*; do
+    [ -d "$hook" ] || continue
+
+    check_link "$root/hooks/${hook##*/}" || failed=1
+  done
+
 
   check_directory "$root/resources" || failed=1
 
@@ -261,7 +270,7 @@ prune_links() {
 }
 
 install_provider() {
-  local provider="$1" root="$2" skill agent rule resource name skills=0 agents=0 rules=0 resources=0
+  local provider="$1" root="$2" skill agent rule resource hook name skills=0 agents=0 rules=0 resources=0 hooks=0
 
   if [ ! -d "$root" ]; then
     install_changed=1
@@ -354,15 +363,24 @@ install_provider() {
 
   [ "$INSTALL_MODE" = check ] || echo "$root: $skills skills, $agents agents, $rules rules, $resources resources linked"
 
-  if [ "$provider" = codex ] || [ "$provider" = claude ]; then
-    [ "$INSTALL_MODE" = check ] || mkdir -p "$root/hooks"
-    install_link "$REPO_ROOT/.agents/hooks/skills-refresh" "$root/hooks/skills-refresh"
+  [ "$INSTALL_MODE" = check ] || mkdir -p "$root/hooks"
 
-    python3 "$REPO_ROOT/.agents/hooks/skills-refresh/configuration.py" "$INSTALL_MODE" "$provider" "$root" "$REPO_ROOT" "${CLOUD_HOME:-}" "$AUTO_UPDATE" "$APPROVE_OWNED_HOOKS" || {
-      [ "$?" -eq 3 ] || return 1
-      install_changed=1
-    }
-  fi
+  for hook in "$CANONICAL_HOOKS"/*; do
+    [ -d "$hook" ] || continue
+
+    name="${hook##*/}"
+
+    install_link "$(link_source "$provider" hooks "$name" "$hook")" "$root/hooks/$name"
+    hooks=$((hooks + 1))
+  done
+
+  prune_links "$root/hooks"
+
+  python3 "$REPO_ROOT/.agents/hooks/skills-refresh/configuration.py" "$INSTALL_MODE" "$provider" "$root" "$REPO_ROOT" "${CLOUD_HOME:-}" "$AUTO_UPDATE" "$APPROVE_OWNED_HOOKS" || {
+    [ "$?" -eq 3 ] || return 1
+
+    install_changed=1
+  }
 }
 
 

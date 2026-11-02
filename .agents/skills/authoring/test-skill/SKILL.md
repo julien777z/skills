@@ -101,7 +101,9 @@ confuse those conclusions.
    where authorized; keep coupled instructions and their required repairs together. This assessment
    recommends which changes should merge; the caller still completes acceptance and the authorized
    merge gate. A passing smoke test alone never decides that a pull request should merge.
-7. **Repair and rerun until verified.** Diagnose each reported issue at its owner. Fix guidance
+7. **Repair and rerun until verified**, within the global rules' review-round limit of 3 rounds
+   per change: after the third failing round over the same edit, that bullet's decision replaces
+   another repair. Diagnose each reported issue at its owner. Fix guidance
    that permits the wrong behavior; fix an invalid fixture, unavailable simulated operation, wrong
    reading list, ambiguous criterion or broken runner before judging guidance. Retain the diagnosis
    and earlier results. Recover missing evidence from the actual run or rerun the affected task;

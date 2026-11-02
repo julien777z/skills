@@ -209,7 +209,8 @@ Canonical guidance lives in `.agents/`.
 - Surface every question through `AskUserQuestionTool` or the harness's equivalent user-question
   tool, including plan approvals and standalone questions. Ask directly in chat only when no
   equivalent tool exists. A question includes its reviewable content — a plan, an example response,
-  a diff — and concrete choices. A question tool may show only its question and option labels;
+  a diff — and concrete choices. The option that approves a plan or proposal reads "Approved",
+  never "Go" or another word. A question tool may show only its question and option labels;
   send required review content as a file rather than relying on a collapsed preamble, preview or
   description. Present supporting material before invoking the tool; supporting chat text identifies
   the material and leaves the actionable question in the tool. During unfinished authorized work,
@@ -224,10 +225,14 @@ Canonical guidance lives in `.agents/`.
   until every capture is ready. A drawing made of text, such as a sketch in a question tool's
   preview, is a description, not a capture. A choice between wordings or between small adjustments
   of one detail is shown as text or a single capture.
-- After a question-tool request actually times out without an answer, invoke it again with the
-  same question, choices and supporting content, with no retry limit, until the user answers,
-  withdraws the question, or explicitly stops or supersedes the task. Silence is never an answer,
-  approval or delegation, and a timeout never justifies a chat fallback or an assumed choice.
+- After a question-tool request actually times out without an answer, or the user replies with a
+  message that states no choice in words — a related correction, a complaint about the subject, a
+  new request — invoke it again with the same question, choices and supporting content, in the
+  reply to that message when there is one, with no retry limit, until the user answers, withdraws
+  the question, or explicitly stops or supersedes the task. Such a message is handled on its own
+  wherever its handling does not depend on the answer. Silence or such a message is never an
+  answer, approval or delegation, and neither justifies a chat fallback or an assumed choice,
+  including one inferred from what the message seems to imply.
   An asynchronous request that remains pending has not timed out: keep its wait or event route
   active rather than opening a duplicate. Hold only work that depends on the answer and continue
   independent authorized work. Preserve a platform's separate action-time confirmation safeguards.
@@ -376,6 +381,29 @@ setRecords(records);
 return records;
 ```
 
+- **A new file is the last resort.** Before creating one, find the existing file that already owns
+  the concern, or an existing file a broader name would make its owner, and put the code there,
+  renaming that file and updating every reference when the broader name is needed. Create a file
+  only when neither exists, and name the candidates checked in the report. Code the change already
+  wrote into a new file is moved the same way. Where another rule decides the kind of file, such as
+  models in a models module, that rule picks the kind and this search runs within it; a file a rule
+  or tool requires to stand alone — a component module, a migration revision, a page or workflow
+  found by its path — is not this case.
+
+- **The repository does one thing one way.** Before writing anything of a kind it already holds —
+  a router, a client, a helper, a test, a fixture, a configuration entry, the way it raises and
+  reports errors — read how the existing instances are written and follow that shape. A new pattern
+  beside the old one reads as bespoke however good it is, and a reviewer meeting it has to learn two
+  ways to do the same thing. **A better shape is proposed, never swept in.** Where a different shape
+  would serve better — more standard, simpler, less code — the change keeps the existing shape and
+  the conversion goes to the user as a proposal: the shape, why it is better, every instance it
+  would convert and the size of that change, with a recommendation. It is built only once the user
+  approves it and at the scope they approve, as its own work rather than under `pre-production`'s
+  size budget, and never left half done; a sweep built unasked costs its whole size again when the
+  user rejects it. An existing shape a standing rule names a defect is not followed; it is repaired
+  on every instance as `pre-production`'s **Scope Follows The Defect** says. Only a difference a
+  contract the instance serves requires stays, with that contract named in the report.
+
 - A bootstrap or setup folder holds its entrypoint and, when needed, its configuration file at
   its root. Supporting scripts, modules, and data files go in its `resources/` folder; configuration
   stays beside the entrypoint rather than among those helpers.
@@ -416,6 +444,19 @@ return records;
   above", and never links to the page it sits on. It names the thing the control acts on, never
   quotes a label that is already an instruction into a sentence that gives its own: a switch
   labelled "Enable offline mode" is "Turn on offline mode", never "Turn on Enable offline mode".
+- **A refusal an end user reads is a short, friendly request for their next step**, such as "This
+  library card cannot be used. Please use a different card." It says what to do rather than passing
+  a verdict on what was done or on the reader, as "You can't use this library card." does, and it
+  never repeats back what the reader just entered or chose — a file name, a typed value, a picked
+  item — which they already know. It holds wherever that message is written: the error message of
+  an API or tool whose text reaches an end user, a server-side enum or constant that holds the
+  text, a test fixture, and wording a brief proposes to a worker.
+- **Text only the product's own team reads states the observed condition and its values, and
+  nothing more.** On an internal panel, an operator or support tool, or an internal API, a refusal
+  or a report names what was found and lists the values it concerns, such as "Unrecognized shelf
+  codes: B7, Q2". It assumes no cause, such as "the shelf list is out of date", and asks nothing of
+  anyone, such as "Please ask the catalog team to correct the shelf list": its reader is the one
+  who investigates, and a guessed cause or errand sends them the wrong way.
 
 ## Repository guidance
 
@@ -428,15 +469,31 @@ return records;
   one: its product name, its services, its table and column names, its record types, or the nouns
   its business speaks in. That holds for source, tests, fixtures, examples, and documentation
   alike, and it holds most strongly in a library, where every reader is a different consumer.
-- **Name things with the everyday word a reader expects.** Where the domain or a provider already
-  has a term, use it. A parcel the carrier reports as delivered is `delivered`, never
-  `parcel_arrived`, because an unusual synonym makes every reader translate it back. This covers
-  identifiers, fields, messages, documentation and test names in every language.
+- **Name things with the everyday word a reader expects.** The reader is this codebase's: a name
+  says what its product, its users and its existing code call the thing, never a word that is right
+  only in another field, such as a botanical Latin name for a plant in a garden shop's catalogue.
+  Where the domain or a provider has a term this codebase's readers use, use it. A parcel the
+  carrier reports as delivered is `delivered`, never `parcel_arrived`, because an unusual synonym
+  makes every reader translate it back. This covers identifiers, fields, messages, documentation and
+  test names in every language.
+- **A Boolean's name says what it is true of.** The receiver or argument is what the statement is
+  about, and a verb that acts on something names that thing in the name: `invoice.is_overdue`,
+  `is_deliverable(message)`, `job.writes_files`, never `writes(job)`, whose reader asks "writes
+  what?". A name a framework or protocol defines keeps its own spelling.
 - Name things for the shape being exercised, not for whichever caller happened to prompt the work.
   A test needing a table with a secret column names it for that — a record with a secret — rather
   than borrowing the one real table the change was made for.
 - Sample values follow the same rule: prefer plainly synthetic literals over ones shaped like a
   real identifier from another system's domain.
+- **Nothing committed to a repository or posted to its host holds a path that only one machine
+  has.** Source, configuration, guidance, documentation, fixtures, captured tool output, commit
+  messages, pull-request text and comments never name a home directory, a temporary or scratch
+  directory, the place a checkout sits, or a drive letter, such as
+  `/home/<name>/work/garden/tools/build.py` or `D:\exports\stock.csv`. A file in the repository is
+  named by its path from the repository root; a location that differs between machines is read from
+  configuration or an environment variable; captured output is trimmed to repository-relative paths
+  before it is committed or posted; and a file outside the repository is named for what it is and
+  how a reader obtains it, such as "the CSV the stock report's Export button downloads".
 - A library owns the vocabulary of the protocol or provider it wraps. That protocol's field names
   and naming conventions, such as how it spells an event type or a scope, are the library's own,
   never a consumer's domain vocabulary: a helper encoding such a convention belongs in the library
@@ -477,6 +534,11 @@ return records;
 - Git history is the record of what changed; documentation describes what exists now.
 - The same applies to code comments and docstrings: no "formerly", "replaces", or "kept for
   backwards compatibility" notes.
+- **Behaviour another party owns is explained once**, beside the value or line where the code
+  first handles it. Every other place that reuses that value or works around the same behaviour
+  restates nothing: a second comment, a docstring, or a comment in another file. A comment above a
+  timeout saying a library sets none, and another at the override that applies it, are one comment
+  too many.
 
 - When a request replaces a route, API contract, or behavior, remove the prior alias or fallback. Retain legacy compatibility only when the user explicitly authorizes it in the current request; if retention is unclear, ask before adding it.
 
@@ -780,6 +842,11 @@ The descriptions also cover work that file patterns alone cannot identify.
 | `sqlalchemy.md` | Defining tables or relationships, writing queries, or handling sessions. |
 | `testing.md` | Planning or running tests, or writing or moving tests, fixtures, assertions, or test configuration. |
 | `typescript.md` | Editing types, modules, imports, functions, or external-data boundaries. |
+
+## Tests
+
+- This repository holds no tests: no test files, test folders or test workflows. A change to a hook,
+  a skill's script or the installer is checked by running it, never by adding a test here.
 
 ## Scoped rules
 
