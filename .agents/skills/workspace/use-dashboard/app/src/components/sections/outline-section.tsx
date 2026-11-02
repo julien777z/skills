@@ -56,36 +56,38 @@ function PlainGroup({ group, first }: { group: OutlineGroup; first: boolean }): 
       <Text as="h3" size="sm" weight="medium" tone="muted">
         <RichText text={group.title} />
       </Text>
-      <Stack gap="sm">
+      <dl className="grid grid-cols-1 gap-x-6 gap-y-1 sm:grid-cols-[minmax(0,11rem)_minmax(0,1fr)] sm:gap-y-2">
         {withKeys(group.items, (item) => item.title).map(({ key, item }) => (
-          <Stack key={key} gap="xs">
-            <Stack direction="row" align="start" gap="sm">
-              {item.tone && <ToneDot tone={item.tone} offset />}
-              {item.tag && <StatusBadge label={item.tag} tone={item.tone} dot={false} />}
-              <Text size="sm" breakAnywhere>
-                <Text as="span" size="sm" weight="medium">
+          <div key={key} className="contents">
+            <dt className="pt-1 sm:pt-0">
+              <Stack direction="row" align="start" gap="sm">
+                {item.tone && <ToneDot tone={item.tone} offset />}
+                <Text size="sm" tone="muted" breakAnywhere>
                   <RichText text={item.title} />
-                </Text>{' '}
-                <Text as="span" size="sm" tone="muted">
-                  <RichText text={item.detail} />
-                  {item.meta && (
-                    <>
-                      {' · '}
-                      <RichText text={item.meta} />
-                    </>
-                  )}
                 </Text>
-              </Text>
-            </Stack>
-            {item.points && (
-              <Stack inset="item">
-                <TextList items={item.points} />
               </Stack>
-            )}
-            {item.links && <SourceLinks links={item.links} />}
-          </Stack>
+            </dt>
+            <dd>
+              <Stack gap="xs">
+                <Stack direction="row" align="start" gap="sm" wrap>
+                  {item.tag && <StatusBadge label={item.tag} tone={item.tone} dot={false} />}
+                  <Text size="sm" breakAnywhere>
+                    <RichText text={item.detail} />
+                    {item.meta && (
+                      <Text as="span" size="sm" tone="muted">
+                        {' · '}
+                        <RichText text={item.meta} />
+                      </Text>
+                    )}
+                  </Text>
+                </Stack>
+                {item.points && <TextList items={item.points} />}
+                {item.links && <SourceLinks links={item.links} />}
+              </Stack>
+            </dd>
+          </div>
         ))}
-      </Stack>
+      </dl>
     </Grid>
   );
 }

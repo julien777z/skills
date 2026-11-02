@@ -67,7 +67,7 @@ of a process, carries no count. Section types:
 | `table` | `title`, `columns`, `rows`, `details?` | each row a list of strings, one per column; `details`, one section per row, makes each row open a dialog holding that section, with its title and description as the dialog's |
 | `notes` | `title`, `items` | each item a string |
 | `changes` | `title`, `items`, `page_size?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`, `links?`: a named part with its change as a colored badge |
-| `outline` | `title`, `groups: [{title, items}]`, `expanded?` (every item starts open when true), `stacked?` (groups run in one column, each across the full width, for groups read in order), `collapsible?` (false shows every item in full with no toggle, for a short write-up read top to bottom) | `title`, `detail`, `tone?`, `tag?`, `meta?`, `links?`, `points?`: a headline that opens to its detail, with `points` as a bulleted list under it, with `tag` as a badge in the item's tone (neutral without one) and `meta` as small text; without `expanded`, a group of one or two items shows them open |
+| `outline` | `title`, `groups: [{title, items}]`, `expanded?` (every item starts open when true), `stacked?` (groups run in one column, each across the full width, for groups read in order), `collapsible?` (false shows every item in full with no toggle, its `title` as a muted label beside its `detail`, for a short write-up of facts read top to bottom) | `title`, `detail`, `tone?`, `tag?`, `meta?`, `links?`, `points?`: a headline that opens to its detail, with `points` as a bulleted list under it, with `tag` as a badge in the item's tone (neutral without one) and `meta` as small text; without `expanded`, a group of one or two items shows them open |
 | `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `meta` beside its label, and `details`, one section, opening in a dialog from the entry's label; for a whole made of parts made of parts |
 | `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?` | node: `id`, `label`, `detail?`, `pr?`, `change?`; edge: `from`, `to`, `label?`, `step?`, `change?`; pr: `ref`, `url`; each step a string |
 
@@ -137,6 +137,9 @@ Dashboards look alike because they are built alike:
   or a pull request's state takes a pill; a label that only says what kind of thing an item is or
   which group it belongs to, such as its plan or its type, is plain text. When most items on a page
   would carry a pill, the pill has stopped meaning anything.
+- **Text says what it means where it stands.** A line never sends the reader elsewhere to make
+  sense of it, such as "at step 2" or "see above": it says what happens then, such as "after the
+  batch is frozen". A numbered title keeps its number; the text about it never leans on one.
 - **A label names only what it marks.** A segment, tag, group or row label never restates the
   dashboard's `topic` or the heading above it: the reader already has both, so a progress segment
   is labelled with its step, such as "Offer rules", never "Plot waitlist: Offer rules", and an outline

@@ -105,8 +105,7 @@ the request asks for a new page.
        its skill write-up; a step's or a launch's, its entry write-up. A step with no subagents anywhere beneath it is left
        out, so the tree holds only where subagents start;
      - an `outline` `Same scope read twice`, `collapsible` false, one item per scope two or more
-       skills' launches read in one run, titled with the scope and naming each skill and step that
-       reads it, toned `warning` when every one of those launches always runs; left out when none
+       skills' launches read in one run, titled with the scope and naming each skill and what it is doing when it reads it, toned `warning` when every one of those launches always runs; left out when none
        overlap.
    - Each kind-of-work page, `layout` `rows`: a `diagram` `Flow` whose nodes are the skills the
      page's starting skills reach directly, each labelled with its name and its role in a few words,
@@ -118,16 +117,19 @@ the request asks for a new page.
      item per launch saying who, how many and when, toned `warning` for a launch that always runs
      and neutral for a conditional one; then a `table` `Skills` with the columns Skill, Role and
      Started by, and `details` holding each row's skill write-up, so clicking a skill opens it.
-   - **Skill write-up**: an `outline` with `stacked` set and `collapsible` false, `title` the skill's name and
-     `description` its `short_description`. Its groups: "About", with an item "Modes", one of `points` per choice its menu declares
-     with the choice's label and detail, or "One mode" when it declares none, and an item "Started
-     by", whether only a person starts it or an agent may too, from its frontmatter; "Subagents", with an item "How many", the
-     subagents one run starts, always-run and conditional launches counted apart, and an item "When
-     they start", the steps that launch them, or a single item "None" when it starts none; "Review
-     rounds", whether it runs review rounds, how many it allows and what ends them, or "None"; and
-     "What happens", one item per step in order, titled "<n>. <step>", `detail` what the step does,
-     and `points` one per launch in that step, "<count> <role>: <what they do>", left out for a step
-     that launches none.
+   - **Skill write-up**: an `outline` with `stacked` set and `collapsible` false, `title` the
+     skill's name and `description` its `short_description`. Each item is a label and a short fact,
+     never a sentence repeating the label. Its groups:
+     - "About": "Modes", the number of modes with one of `points` per choice its menu declares, its
+       label and detail, or "One"; and "Started by", "A person only" or "A person or an agent",
+       from its frontmatter.
+     - "Subagents": one item per launch, labelled "<count> <role>", its fact whether it runs every
+       time or only under its condition, then what is happening when it starts, such as "Every run,
+       after the batch is frozen"; or "Count", "None", when it starts none.
+     - "Review rounds": "Rounds", "None" or the most allowed, such as "Up to 3"; and, when it has
+       rounds, "Ends when" and "Later rounds rerun".
+     - "What happens": one item per step in order, labelled "<n>. <step>", `detail` what the step
+       does, and `points` one per launch in that step, "<count> <role>: <what they do>".
    - **Entry write-up**: an `outline` with `stacked` set and `collapsible` false, `title` the
      entry's label and `description` what it does in a sentence. Its groups, each only when it has
      something in it: "Why subagents start", one item per launch at or beneath the entry, saying
