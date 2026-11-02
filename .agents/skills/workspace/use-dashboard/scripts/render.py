@@ -272,6 +272,12 @@ def check_page_sections(page: dict[str, object], path: str) -> None:
         )
 
 
+def check_tree_nodes(value: object, path: str) -> None:
+    """Require a list of tree nodes, each of which may hold more."""
+
+    check_objects(value, path, shape=TREE_NODE_SHAPE)
+
+
 def check_sections(value: object, path: str) -> None:
     """Require a list of sections."""
 
@@ -495,6 +501,17 @@ REFERENCE_SHAPE: Final[ObjectShape] = ObjectShape(
     fields={"text": TEXT, "url": TEXT},
     required=frozenset({"text", "url"}),
 )
+TREE_NODE_SHAPE: Final[ObjectShape] = ObjectShape(
+    name="TreeNode",
+    fields={
+        "label": TEXT,
+        "detail": TEXT,
+        "meta": TEXT,
+        "tone": TONE,
+        "children": Field(check=check_tree_nodes, typescript="TreeNode[]"),
+    },
+    required=frozenset({"label"}),
+)
 NOTICE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Notice",
     fields={"title": TEXT, "body": TEXT, "tone": TONE},
@@ -564,6 +581,18 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
             "collapsible": FLAG,
         },
         frozenset({"groups"}),
+    ),
+    SectionType.TREE: section_shape(
+        SectionType.TREE,
+        {
+            "items": Field(
+                check=check_tree_nodes,
+                typescript="TreeNode[]",
+                shape=TREE_NODE_SHAPE,
+            ),
+            "open_depth": WHOLE_NUMBER,
+        },
+        frozenset({"items"}),
     ),
     SectionType.TABLE: section_shape(
         SectionType.TABLE,

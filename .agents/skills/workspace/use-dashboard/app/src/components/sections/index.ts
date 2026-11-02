@@ -11,3 +11,4 @@ export { QuestionsSection } from './questions-section';
 export { SectionCard } from './section-card';
 export { TableSection } from './table-section';
 export { TextList } from './text-list';
+export { TreeSection } from './tree-section';

@@ -1,0 +1,72 @@
+import { ChevronRight } from 'lucide-react';
+import { type ReactNode, useState } from 'react';
+
+import { RichText, ToneDot } from '@/components';
+import { Stack, Text } from '@/components/primitives';
+import { cn, withKeys } from '@/lib/utils';
+import type { TreeNode, TreeSection as TreeSectionSpec } from '@/spec';
+import { SectionCard } from './section-card';
+
+const DEFAULT_OPEN_DEPTH: number = 1;
+
+function TreeBranch({ nodes, depth, openDepth }: { nodes: TreeNode[]; depth: number; openDepth: number }): ReactNode {
+  return (
+    <ul className={cn('flex flex-col gap-1', depth > 0 && 'ml-2 border-l pl-4')}>
+      {withKeys(nodes, (node) => node.label).map(({ key, item: node }) => (
+        <TreeItem key={key} node={node} depth={depth} openDepth={openDepth} />
+      ))}
+    </ul>
+  );
+}
+
+function TreeItem({ node, depth, openDepth }: { node: TreeNode; depth: number; openDepth: number }): ReactNode {
+  const [open, setOpen] = useState(depth < openDepth);
+  const children = node.children ?? [];
+
+  return (
+    <li>
+      <Stack direction="row" align="start" gap="sm">
+        {children.length > 0 ? (
+          <button
+            type="button"
+            aria-expanded={open}
+            aria-label={`${open ? 'Collapse' : 'Expand'} ${node.label}`}
+            onClick={() => setOpen(!open)}
+            className="mt-0.5 rounded-sm text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+          >
+            <ChevronRight className={cn('size-4 transition-transform', open && 'rotate-90')} />
+          </button>
+        ) : (
+          <ToneDot tone={node.tone} offset />
+        )}
+        <Stack gap="none" grow>
+          <Text size="sm" breakAnywhere>
+            <Text as="span" size="sm" weight="medium">
+              <RichText text={node.label} />
+            </Text>
+            {node.meta && (
+              <Text as="span" size="sm" tone="muted" numeric>
+                {' '}
+                <RichText text={node.meta} />
+              </Text>
+            )}
+          </Text>
+          {node.detail && (
+            <Text size="sm" tone="muted" breakAnywhere>
+              <RichText text={node.detail} />
+            </Text>
+          )}
+        </Stack>
+      </Stack>
+      {open && children.length > 0 && <TreeBranch nodes={children} depth={depth + 1} openDepth={openDepth} />}
+    </li>
+  );
+}
+
+export function TreeSection({ section }: { section: TreeSectionSpec }): ReactNode {
+  return (
+    <SectionCard title={section.title} description={section.description} wide>
+      <TreeBranch nodes={section.items} depth={0} openDepth={section.open_depth ?? DEFAULT_OPEN_DEPTH} />
+    </SectionCard>
+  );
+}

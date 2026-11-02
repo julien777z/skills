@@ -70,18 +70,20 @@ the request asks for a new page.
      each in a few words); then `notes` `How to read the flows`, one line each for an invocation
      arrow, a launch arrow and a borrowed-rubric arrow as their labels show them.
    - `Usage`, `icon` `chart` and `layout` `rows`, across every skill the dashboard maps:
-     - a `table` `Subagent launches`, one row per launch point, most subagents per run first, with
-       the columns Skill, Step ("<n>. <step>"), Subagents (how many per round), Rounds (the most a
-       run allows, 1 without review rounds), Most per run (subagents per round times rounds), Scope
-       (what each subagent reads, as recorded in step 3) and Runs (always, or only when its
-       condition holds, naming it);
-     - a `table` `Review rounds`, one row per skill with review rounds, with the columns Skill,
-       Rounds (the most allowed), Ends when, and Each later round reruns (every reviewer, only the
-       reviewers a repair affects, or only the repaired lines);
+     - a `tree` `Where subagents go`, `open_depth` 2, one root per skill a person starts directly,
+       most subagents first, with `meta` the most subagents one run of it can start, everything
+       beneath it counted, such as "up to 24 subagents". Beneath a skill, its steps in order,
+       labelled "<n>. <step>" with the same total for what sits beneath them; beneath a step, each
+       skill it runs, nested the same way wherever it runs so every total counts it, and each
+       launch as an entry labelled "<count> <role>", `meta` its rounds and what it reads, such as
+       "up to 3 rounds · diff and whole touched files", and `detail` what the subagents do, what a
+       later round reruns, and the condition it runs under when it only sometimes runs. A launch
+       that always runs is toned `warning`. A step with no subagents anywhere beneath it is left
+       out, so the tree holds only where subagents start;
      - an `outline` `Same scope read twice`, `collapsible` false, one item per scope two or more
-       skills' launches read in one task's run, titled with the scope and naming each skill and step
-       that reads it, toned `warning` when every one of those launches always runs; left out when
-       none overlap.
+       skills' launches read in one run, titled with the scope and naming each skill and step that
+       reads it, toned `warning` when every one of those launches always runs; left out when none
+       overlap.
    - Each kind-of-work page, `layout` `rows`: a `diagram` `Flow` whose nodes are the skills the
      page's starting skills reach directly, each labelled with its name and its role in a few words,
      and one node per launch named for the subagents it starts and how many, such as `Plan
