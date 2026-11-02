@@ -81,7 +81,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **Pages.** The dashboard's `icon` is `progress`, and its pages run in this order. `Overview`,
   `icon` `overview` and `layout` `rows`, holds the pull requests and the `table` "Plans", in that
   order. `Plan`, `icon` `checklist` and `layout` `rows`, follows with one plan write-up per
-  approved plan, in approval order, and is `locked` with no sections until a plan is approved.
+  approved plan, in approval order, and is `locked`, with `sections` `[]`, until a plan is approved.
   `Progress`, `icon` `board`, holds the board, the answered questions, the notes and any other
   table. Once step 3 gives the page a pull request to cover, `Architecture`
   follows, with `icon` `diagram` and `layout` `rows`: the diagram, then `changes` "Config changes",
@@ -98,7 +98,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   by step, and `details` holding each row's plan write-up, so a row opens the plan.
 - **Plan write-up**: the plan as a reader who missed the conversation needs it, from the ledger's
   `plan` entry: an `outline` with `expanded` and `stacked` set, `title` the plan's title and `description` its
-  goal, then "Approved <time> · ~<total> min". Its groups, each only when it has something in it:
+  goal, then "Approved · ~<total> min", or "Proposed · ~<total> min" for a plan not yet approved. Its groups, each only when it has something in it:
   "Context", why the plan exists and what it starts from, one item per point; "Steps", one item per
   step titled "<n>. <step title>", `detail` what the step changes and how, `meta` "~<n> min" and
   `tag` its status (Done, Running, Blocked, Next or Skipped) toned as the progress segments are;
@@ -115,7 +115,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 | Column | `tone` | Cards |
 | --- | --- | --- |
 | Waiting on you | `warning` | Each open question: `title` the question, `detail` "Recommended: <recommendation>", `tag` "Question". |
-| In progress | `accent` | Active and blocked steps: `detail` the step's note, `tag` the plan's title when the task has several plans, followed by " · blocked" when blocked, or "Blocked" alone when it has one, `meta` its estimate, adding "· <done> of <n> parts" for a step with parts, counting parts not skipped. Each question whose evidence is still owed: `title` the question, `detail` the evidence being gathered, `tag` "Question". |
+| In progress | `accent` | Active and blocked steps: `detail` what the step changes, from its ledger entry, `tag` the plan's title when the task has several plans, followed by " · blocked" when blocked, or "Blocked" alone when it has one, `meta` its estimate, adding "· <done> of <n> parts" for a step with parts, counting parts not skipped. Each question whose evidence is still owed: `title` the question, `detail` the evidence being gathered, `tag` "Question". |
 | Up next | — | Steps not started, in plan order, with `meta` as above and `tag` the plan's title when the task has several plans. |
 | Done | `good` | Finished steps, `meta` their measured duration. |
 
@@ -145,7 +145,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   arrows it releases; pull requests with no order between them share a step.
 - **`outline` "Between merges"**: each action a merge needs done before the next one can go, grouped
   by the step it follows, such as `After PR #119 merges`: repointing a dependency to the branch it
-  merged into, relocking, publishing a build.
+  merged into, regenerating the lock, publishing a build.
 - **`outline` "Deploy"**: per environment, what reaching it needs that the pull requests do not
   carry — a secret or setting to set, a grant, a build to publish, a migration to run by hand — and
   what deploying sets off, such as a migration running.

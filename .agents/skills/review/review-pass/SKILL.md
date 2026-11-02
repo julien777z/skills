@@ -54,6 +54,14 @@ assignment and report the loss of independence. The `acceptance-gate` remains a 
 
 ## Review Scope
 
+**Guidance gets one reviewer.** Every guidance change — skills with their own scripts, assets and
+templates, rules, agent definitions, project guidance and the references it points to — is
+reviewed by one independent reviewer that covers every lens `code-review` would split, a skill's
+scripts and app code included, never a reviewer per lens or one for the prose and another for the
+code. In a pull request that also changes source, the guidance adds no reviewer of its own: one of
+the source review's reviewers reads it. Pass this into `code-review high fix`; it overrides that
+skill's lens fanout.
+
 **A canonical guidance batch uses one coordinated review route.** Freeze every included head and
 complete diff, then have the independent edited reader complete its smoke work before inspecting
 the combined batch diff. That reader's prose review receipt replaces this route's redundant

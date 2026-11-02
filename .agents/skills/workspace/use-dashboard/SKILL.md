@@ -39,7 +39,7 @@ Every other field is optional, and an absent one leaves its part of the page out
 | `notice` | `{title, body, tone?}`: a banner with an icon for its tone under every page's title, for the one thing the reader must see first wherever they are. |
 | `progress` | `{value: 0–1, label, detail?, segments?}`: a stat card twice as wide as the others, with the percentage, `detail` as its badge, and a bar. `segments` is `[{label, details?, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1, and its `label`, with each of `details` on a line under it, shown in a tooltip while the pointer rests on it; without `segments` the bar is a plain fill. |
 | `metrics` | `[{label, value, detail?}]`: at most four stat cards beside the progress, `detail` under the figure. |
-| `pages` | `[{title, icon, layout?, status?, locked?, sections}]`: one navbar link each, with `status` (`{label, tone?}`) shown as a dot in its tone after the page's name, and its label read out to screen readers, while the page holds something that needs the reader. A `locked` page has no `sections` yet: its link shows a lock in place of its icon and cannot be opened. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. `sections` render in order; with `layout` `columns`, the default, boards, tables, outlines and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
+| `pages` | `[{title, icon, layout?, status?, locked?, sections}]`: one navbar link each, with `status` (`{label, tone?}`) shown as a dot in its tone after the page's name, and its label read out to screen readers, for the page's current state, such as something that needs the reader. A `locked` page sets `sections` to `[]` until it has content: its link shows a lock in place of its icon and cannot be opened. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. `sections` render in order; with `layout` `columns`, the default, boards, tables, outlines and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
 | `references` | `[{text, url}]`: every whole-word occurrence of `text` in any page's text becomes a link to `url`, apart from the navbar, page titles, stat card figures and badges, which stay plain. |
 
 An `icon` is one of `overview`, `progress`, `board`, `checklist`, `list`, `chart`, `activity`,
@@ -78,7 +78,7 @@ a whole number of at least 1, shows that many at a time, with Previous and Next.
 
 Every text field is a non-empty string; unknown fields are refused, so a typo fails the render
 instead of vanishing from the page. `ref`s, node `id`s and reference `text`s are each unique; every
-list in the spec holds at least one entry, apart from a board column's cards, so a list with nothing
+list in the spec holds at least one entry, apart from a board column's cards and a locked page's `sections`, so a list with nothing
 to show is left out, and so is the entry that requires it. A URL renders as a link only when it is
 `http` or `https`.
 
@@ -86,7 +86,7 @@ to show is left out, and so is the entry that requires it. A URL renders as a li
 {
   "title": "Progress Dashboard",
   "topic": "Search rewrite",
-  "icon": "activity",
+  "icon": "progress",
   "updated_at": "2026-01-05T14:20:00+00:00",
   "status": {"label": "On track", "tone": "good"},
   "progress": {
@@ -112,8 +112,9 @@ Dashboards look alike because they are built alike:
 - **Overview first, then one page per subject.** Every dashboard opens on `Overview`, the page
   that tells the reader where things stand: the `progress` and `metrics` stat cards, then sections
   that summarize, such as counts per subject
-  or one line per theme naming the page that holds it. Overview repeats no item another page lists;
-  each later page goes deeper on one subject and is named for it.
+  or one line per theme naming the page that holds it. Overview repeats no item another page lists,
+  apart from a summary row that opens an item's full write-up, or a link to it; each later page
+  goes deeper on one subject and is named for it.
 - **A page serves a stage of the reader's work, never one narrow artifact.** When a request asks for
   a page about one thing, such as the order pull requests merge in, find the stage that thing
   belongs to, such as wrapping up to merge and deploy, and build the page for that stage, with the
@@ -138,9 +139,10 @@ Dashboards look alike because they are built alike:
   group is headed with the area it covers, never with the task's name.
 - **Labels and headings are written in sentence case and shown as written.** The dashboard's
   `title` and the preview `topic` `Synthetic Preview` are names, in title case.
-- **Tone means the same everywhere.** `good` is fine or matches, `warning` needs the reader's look
-  or action, `critical` is wrong or blocking, `accent` is in progress or informational, and `done`,
-  a purple, is finished work. Leave it out for neutral; never tone an item only to decorate it.
+- **Tone means the same everywhere.** `good` is fine, matches or finished, `warning` needs the
+  reader's look or action, `critical` is wrong or blocking, `accent` is in progress or
+  informational, and `done`, a purple, is finished work that must read apart from what is merely
+  fine, such as a merged pull request beside open ones. Leave it out for neutral; never tone an item only to decorate it.
 - **Every section says what it holds.** Give each one a `description`: one sentence on what the
   reader finds or does there, never a narration of its controls.
 - **Sources are links, never paths in text.** Anything a reader can check, such as a file and line,

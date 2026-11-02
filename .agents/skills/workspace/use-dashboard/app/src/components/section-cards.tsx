@@ -59,11 +59,12 @@ function ProgressBar({ progress, percent }: { progress: ProgressSummary; percent
             {withKeys(progress.segments, (segment) => segment.label).map(({ key, item: segment }) => (
               <Tooltip key={key}>
                 <TooltipTrigger asChild>
-                  <span
-                    aria-hidden="true"
+                  <button
+                    type="button"
+                    aria-label={[segment.label, ...(segment.details ?? [])].join(', ')}
                     style={{ flexGrow: segment.weight ?? 1 }}
                     className={cn(
-                      'basis-0 rounded-[2px] transition-[opacity,transform] duration-150 group-hover/bar:opacity-40 hover:scale-y-150 hover:opacity-100!',
+                      'basis-0 rounded-[2px] outline-none transition-[opacity,transform] duration-150 group-hover/bar:opacity-40 group-has-focus-visible/bar:opacity-40 hover:scale-y-150 hover:opacity-100! focus-visible:scale-y-150 focus-visible:opacity-100!',
                       segment.tone ? TONES[segment.tone].dot : 'bg-foreground/15',
                     )}
                   />
