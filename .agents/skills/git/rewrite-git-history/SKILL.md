@@ -24,11 +24,16 @@ rewriting history does not establish that restriction.
 Stop and say so when any of these fails; none is worked around.
 
 - **The branch is yours**: you created it, or its author handed it over. A branch somebody else is
-  working is never rewritten, and a commit already on the default branch is never touched.
+  working is never rewritten, and a commit already on its base branch is never touched.
 - **The working tree is clean.** Commit or stash everything first; the rebuild reads only committed
   content, and anything uncommitted would be read as part of no change.
-- **The remote default branch is freshly fetched**, and the branch's merge base with it is known:
-  `git merge-base origin/<default> HEAD`. Every step below builds on that merge base and nothing
+- **The base branch is the one the branch's pull request targets**, read from the hosting service,
+  and the default branch only when no pull request exists. A pull request stacked on another
+  branch has that branch as its base: measured against the default branch instead, the rebuild
+  regroups the base branch's commits into this branch's and drops the base from its history, so
+  the pull request conflicts with its base afterwards.
+- **The remote base branch is freshly fetched**, and the branch's merge base with it is known:
+  `git merge-base origin/<base> HEAD`. Every step below builds on that merge base and nothing
   newer, so the rebuild never incorporates the base by accident.
 
 ## Workflow
@@ -39,7 +44,7 @@ Stop and say so when any of these fails; none is worked around.
    the merge base to the last commit that mixes changes; call that commit the range end. Commits
    after it that each already carry one change are kept as they are and cherry-picked in step 6.
    `git diff --name-status <merge base> <range end>` is the complete list of paths to regroup;
-   where the branch contains a merge from the default branch, the merge base already sits after
+   where the branch contains a merge from the base branch, the merge base already sits after
    it, so the list holds only the branch's work.
 3. **Group the paths by material change.** One group per change a reviewer would name: a contract
    broken on purpose, a mechanism replaced, a behaviour added, a shared owner introduced. Tests go
@@ -61,7 +66,7 @@ Stop and say so when any of these fails; none is worked around.
    check in step 7 to show exactly its hunks removed and nothing else.
 5. **Build the new history on the merge base.** Start a scratch branch there with
    `git checkout -b <scratch> <merge base>`; never an orphan branch, and never a reset onto the
-   default branch. Then, for each group in order: `git checkout <range end> -- <paths>` for the
+   base branch. Then, for each group in order: `git checkout <range end> -- <paths>` for the
    group's surviving whole paths, `git checkout --patch <range end> -- <path>` for each split
    file, `git rm` the paths the range end deletes, and commit with a message naming that one
    change. The tree is dirty between taking a group's content and committing it; that is the one
@@ -75,8 +80,8 @@ Stop and say so when any of these fails; none is worked around.
    kept change therefore shows only the dropped hunks gone, with the kept hunks still in place; a
    shared file that reverts wholly to the merge base is the kept change lost, and a per-path
    listing (`--name-status`) cannot tell the two apart, so it is never the proof. In both cases
-   `git diff --name-only origin/<default>...<scratch branch>` names no path the branch never
-   touched. Any failure means a group was wrong: fix the grouping and rebuild from step 5; never
+   `git diff --name-only origin/<base>...<scratch branch>` names no path the branch never
+   touched, and `git merge-base origin/<base> <scratch branch>` is the merge base the old head had. Any failure means a group was wrong: fix the grouping and rebuild from step 5; never
    push.
 8. **Move the branch and push with lease.** `git branch -f <branch> <scratch branch>`, then
    `git push --force-with-lease=<branch>:<old head> origin <branch>`. The lease refuses the push if
@@ -99,14 +104,14 @@ Commit the hunk with `git commit --fixup=<that commit>`, then:
 1. Keep the old head as step 1 does: a fresh `refs/backups/<branch>/<utc timestamp>` at the fixup
    commit, and its SHA as the old head.
 2. `GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash <merge base>`. The rebase target is the
-   merge base the branch sits on, never the default branch: onto the default branch, the same
+   merge base the branch sits on, never the base branch: onto the base branch, the same
    command also replays the branch onto every commit the base gained since, which is a base
    incorporation nobody reviewed. A conflict while replaying is resolved to the content the fixup
    commit carried, never by dropping either side.
 3. Prove the tree as step 7 does: `git diff <old head> HEAD` reads empty, because an autosquash
    moves content between commits and changes nothing about the result;
-   `git diff --name-only origin/<default>...HEAD` names no path the branch never touched; and
-   `git merge-base origin/<default> HEAD` is unchanged. Any failure means the rebase went wrong:
+   `git diff --name-only origin/<base>...HEAD` names no path the branch never touched; and
+   `git merge-base origin/<base> HEAD` is unchanged. Any failure means the rebase went wrong:
    `git reset --hard <old head>` and start again; never push.
 4. Push with the lease as step 8 does, against the head the remote held before the fixup.
 
@@ -121,7 +126,7 @@ A fixup reports the same line with `Fixed up <commit> on <branch>` in place of t
 - Never a soft reset onto a newer base followed by one commit: it records the old merge base's copy
   of every untouched file and silently reverts the base's work. The scratch branch starts at the
   merge base the branch already sits on.
-- Never a rewrite of a branch that is not yours, of any commit already on the default branch, or of
+- Never a rewrite of a branch that is not yours, of any commit already on its base branch, or of
   a range that contains a merge you did not perform.
 - Never a push without the lease, a push after step 7 failed, or a backup deleted before the
   merge.
