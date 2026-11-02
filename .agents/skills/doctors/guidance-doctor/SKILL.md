@@ -133,7 +133,7 @@ the task, because the listing carries it and the reader deciding already has it;
 `Use this skill to`; and what the skill does elaborated past the point a reader needs to recognise
 the situation.
 
-Score each by the substitution test `edit-skill`'s **Description** states; where the remainder names
+Score each by the substitution test the `agent-guidance` rule's **Descriptions** states; where the remainder names
 no situation and no file names the skill either, it is a finding under **Unreachable** as well.
 
 Evidence: the description, quoted, with the clause that earns nothing marked and its length. Remedy:

@@ -20,12 +20,6 @@ alwaysApply: true
   canonical source. Report it missing only when those sources do not contain it; never substitute a
   manual approximation for an installed action skill.
 
-- Never add `agents/openai.yaml` to a repository skill. Repository skills contain `SKILL.md` and
-  only supporting files required by the skill; provider UI metadata stays outside repositories
-  and is never propagated.
-
-- In repositories that provide an agent CLI or otherwise interact with agents, store every agent prompt in a dedicated Markdown file rather than inline in application code so it is easy to find, review, and maintain. Application code may load a prompt file and interpolate runtime values into it.
-
 - Never stage generated provider output manually. Only the repository's Agent Sync workflow may generate and commit provider mirrors.
 
 ## User-Facing Output
@@ -560,19 +554,6 @@ return records;
 - Apply that rule only when a name denotes an environment. Product branding, company names, service
   names, and their visual marks retain their own canonical terminology even when it shares an apex
   label with an environment.
-
-- `.agents/global.md` states guidance that holds in every repository, and every `.agents/rules/*.md`
-  file guidance that holds in any repository using its technology. Keep their examples generic —
-  invented names and placeholder shapes, never this repository's modules, helpers, packages, paths,
-  or domain vocabulary, and never the product, tool, or platform whose incident prompted the change.
-- `.agents/project.md` is the home for repository-specific guidance: its base classes, helpers,
-  packages, layout, documentation structure, inventories, and generated sections.
-- Repository facts only some work needs — a local stack, test accounts, deployment targets, a
-  migration layout — go in `.agents/references/<name>.md`, named for their content and read on
-  demand, and `.agents/project.md` points to each file in one line. A repository's project guidance
-  is `project.md` together with the reference files it points to.
-- A rule that cannot be stated without naming something this repository owns belongs in
-  `.agents/project.md`. Move it there rather than rewording it into something generic but untrue.
 
 - **Every document holds only what its reader needs for its purpose.** A README, project guidance, a
   skill, a rule, a design document, a pull request description, a code comment: each has one reader

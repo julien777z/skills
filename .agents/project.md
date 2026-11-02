@@ -6,6 +6,7 @@ The descriptions also cover work that file patterns alone cannot identify.
 
 | Rule | Read it when… |
 | --- | --- |
+| `agent-guidance.md` | Writing, creating, or editing skills, rules, agent definitions, project guidance, or agent prompts. |
 | `biome.md` | Formatting or linting TypeScript and TSX, or changing `biome.json`. |
 | `fastapi.md` | Changing Python routes, dependencies, request handling, or responses. |
 | `github.md` | Working with Actions, pull requests, commits, or repository documentation. |
