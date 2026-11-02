@@ -74,7 +74,10 @@ the request asks for a new page.
    counts, never measured time or cost. For each skill on a page, also record its own run in
    order: each step it takes, the subagents that step launches with how many and what they do, and
    its review rounds — whether it has any, how many it allows, what ends them, and what a later
-   round reruns. For every launch, also record the scope each subagent reads: the change's diff,
+   round reruns. Record every other loop the same way: a repair loop that fixes and checks again, a
+   wait that polls until something finishes, and a retry, each with its cap, what ends it, what a
+   repeat reruns, and the loop it runs inside, if any. For every launch, also record the scope each
+   subagent reads: the change's diff,
    only what changed since the last review, the whole files it touches, related files such as
    callers and siblings, one area of the repository, or the whole repository.
 4. **Recheck the sources** before building. When a file the map cites changed while you read, map it
@@ -104,16 +107,33 @@ the request asks for a new page.
        that always runs is toned `warning`. Every entry's `details` open what it is: a skill's,
        its skill write-up; a step's or a launch's, its entry write-up. A step with no subagents anywhere beneath it is left
        out, so the tree holds only where subagents start;
-     - an `outline` `Same scope read twice`, `collapsible` false, one item per scope two or more
-       skills' launches read in one run, titled with the scope and naming each skill and what it is doing when it reads it, toned `warning` when every one of those launches always runs; left out when none
-       overlap.
+     - a `tree` `Loops`, `open_depth` 2, one root per kind of loop the skills run, each only when
+       one exists: `Review loops`, rounds of reviewers; `Repair loops`, fixing and checking again;
+       `Wait loops`, polling until something finishes; and `Retry loops`. A root's `meta` counts
+       its loops and the most subagents they can start. Beneath a root, each loop, labelled
+       "<skill>: <what repeats>", most subagents first, `meta` "up to <n> rounds · up to <m>
+       subagents across them", or "no cap" when nothing bounds it, and `detail` what ends it and
+       what each later round reruns. Beneath a loop, what one round starts, as the launch entries
+       above, and any loop that runs inside it, its counts multiplied by the outer loop's rounds.
+       A loop is toned `warning` when its later rounds rerun everything rather than only what a
+       repair touched, or when nothing caps it. Its `details` open its entry write-up;
+     - an `outline` `Overlapping scope`, `collapsible` false, one item per stretch of code more
+       than one skill's subagents read in one run, whether the same scope or one that contains
+       another, such as the diff and the diff with its callers, titled with that code and naming
+       each skill and what it is doing when it reads it, toned `warning` when every one of those
+       launches always runs; left out when nothing overlaps.
    - Each kind-of-work page, `layout` `rows`: a `diagram` `Flow` whose nodes are the skills the
      page's starting skills reach directly, each labelled with its name and its role in a few words,
      and one node per launch named for the subagents it starts and how many, such as `Plan
      attackers ×3 per round`, as its outline item is titled. Edges are labelled `invokes`,
      `launches` (from the skill to its launch node) or `borrows`, and `steps` say in order how the
      work moves through them; a skill reached only further down appears in the `Skills` table
-     alone. Then an `outline` `Where subagents start`, grouped by the skill that launches them, one
+     alone. Then a `tree` `How it runs`, `open_depth` 2, one root per skill the page's work starts
+     from, nested as the Usage tree is but with every step, each with `detail` what it does and
+     `meta` the most subagents beneath it when there are any, and, on a step that repeats, an entry
+     saying how many rounds and what each repeat reruns, toned `warning` when it reruns everything;
+     its entries' `details` open the same write-ups. Then an `outline` `Where subagents start`,
+     grouped by the skill that launches them, one
      item per launch saying who, how many and when, toned `warning` for a launch that always runs
      and neutral for a conditional one; then a `table` `Skills` with the columns Skill, Role and
      Started by, and `details` holding each row's skill write-up, so clicking a skill opens it.
