@@ -105,15 +105,15 @@ During A Task** for the edit's timing.
   has none; this holds for a source pull request step 7.1 selects as for an agent-configuration
   one. When the checkout holds the active task's uncommitted or source-branch work, write and
   commit the edit from a separate worktree on the selected branch, leave the task's tree
-  untouched, and stage only the guidance files. Record the branch, the `commits` list and the
-  pull request in the entry's `data`, then run `update-skills` at once so the installed copy
-  every agent loads, subagents included, carries the edit; agents still running hold no refresh,
-  since each skill is read through its link when it is used. Nothing else of delivery runs while the task does: no review,
-  gate, smoke round, merge or worker, except the checks a batch in flight reruns for an edit that
-  joined it, as `process-ledger`'s **Batches** says. A standing instruction about how guidance
-  pull requests are reviewed or merged governs that delivery when it runs, never when. A gate
-  result that arrives for a guidance pull request already open is recorded as its entry's stage
-  result, and its repair waits with the rest.
+  untouched, and stage only the guidance files. Record the branch, the `commits` list and the pull
+  request in the entry's `data`, then run `update-skills` at once so the installed copy every
+  agent loads, subagents included, carries the edit; agents still running hold no refresh, since
+  each skill is read through its link when it is used. Nothing else of delivery runs while the
+  task does: no review, gate, smoke round, merge or worker, except the checks a batch in flight
+  reruns for an edit that joined it, as `process-ledger`'s **Batches** says. A standing
+  instruction about how guidance pull requests are reviewed or merged governs that delivery when
+  it runs, never when. A gate result that arrives for a guidance pull request already open is
+  recorded as its entry's stage result, and its repair waits with the rest.
 - **Every `guidance_correction` entry keeps one generic recovery comment of its own on the pull
   request that carries its edit**, posted once the edit is pushed, its URL recorded in the entry in
   the same step, and kept current as `session-ledger`'s **Backup** section says.
