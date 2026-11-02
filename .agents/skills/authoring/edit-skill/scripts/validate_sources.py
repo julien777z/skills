@@ -31,7 +31,7 @@ class SourceCommand(StrEnum):
     MIRROR = "mirror"
 
 
-class SourceCheckOutcome(StrEnum):
+class SyncOutcome(StrEnum):
     """What one run of the sync tool concluded."""
 
     VALID = "valid"
@@ -46,14 +46,14 @@ class ActionReference(TypedDict):
     reference: str
 
 
-EXIT_CODES: Final[dict[SourceCheckOutcome, int]] = {
-    SourceCheckOutcome.VALID: 0,
-    SourceCheckOutcome.INVALID: 1,
-    SourceCheckOutcome.UNAVAILABLE: 2,
+EXIT_CODES: Final[dict[SyncOutcome, int]] = {
+    SyncOutcome.VALID: 0,
+    SyncOutcome.INVALID: 1,
+    SyncOutcome.UNAVAILABLE: 2,
 }
-TOOL_EXIT_OUTCOMES: Final[dict[int, SourceCheckOutcome]] = {
-    0: SourceCheckOutcome.VALID,
-    2: SourceCheckOutcome.INVALID,
+TOOL_EXIT_OUTCOMES: Final[dict[int, SyncOutcome]] = {
+    0: SyncOutcome.VALID,
+    2: SyncOutcome.INVALID,
 }
 
 
@@ -148,9 +148,7 @@ def install_tool(action: ActionReference, commit: str) -> Path:
     return tool_python(install_dir)
 
 
-def run_sync_tool(
-    python: Path, root: Path, agents_dirname: str, command: list[str]
-) -> SourceCheckOutcome:
+def run_sync_tool(python: Path, root: Path, agents_dirname: str, command: list[str]) -> SyncOutcome:
     """Run one sync tool command over a canonical tree and report its outcome."""
 
     arguments = [
@@ -164,15 +162,15 @@ def run_sync_tool(
         agents_dirname,
     ]
     run = subprocess.run(arguments, check=False, capture_output=True, text=True)
-    outcome = TOOL_EXIT_OUTCOMES.get(run.returncode, SourceCheckOutcome.UNAVAILABLE)
+    outcome = TOOL_EXIT_OUTCOMES.get(run.returncode, SyncOutcome.UNAVAILABLE)
 
-    if outcome is not SourceCheckOutcome.VALID:
+    if outcome is not SyncOutcome.VALID:
         logger.error("The sync tool reported:\n%s", (run.stdout + run.stderr).strip())
 
     return outcome
 
 
-def mirror_in_scratch(python: Path, root: Path, agents_dirname: str) -> SourceCheckOutcome:
+def mirror_in_scratch(python: Path, root: Path, agents_dirname: str) -> SyncOutcome:
     """Validate external resources and mirror canonical sources in a scratch copy."""
 
     with tempfile.TemporaryDirectory(prefix="agent-sync-") as scratch:
@@ -188,10 +186,10 @@ def mirror_in_scratch(python: Path, root: Path, agents_dirname: str) -> SourceCh
         for command in commands:
             outcome = run_sync_tool(python, Path(scratch), agents_dirname, command)
 
-            if outcome is not SourceCheckOutcome.VALID:
+            if outcome is not SyncOutcome.VALID:
                 return outcome
 
-    return SourceCheckOutcome.VALID
+    return SyncOutcome.VALID
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -237,7 +235,7 @@ def parse_arguments() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def main() -> SourceCheckOutcome:
+def main() -> SyncOutcome:
     """Run the requested command from the command line."""
 
     arguments = parse_arguments()
@@ -293,16 +291,16 @@ if __name__ == "__main__":
     except (OSError, RuntimeError, subprocess.CalledProcessError) as exc:
         logger.error("%s", exc)
 
-        outcome = SourceCheckOutcome.UNAVAILABLE
+        outcome = SyncOutcome.UNAVAILABLE
 
     match outcome:
-        case SourceCheckOutcome.VALID:
+        case SyncOutcome.VALID:
             logger.info("Valid: the sync tool accepted every canonical source.")
-        case SourceCheckOutcome.INVALID:
+        case SyncOutcome.INVALID:
             logger.error(
                 "Invalid: the sync tool refused the canonical tree; fix what it reported above."
             )
-        case SourceCheckOutcome.UNAVAILABLE:
-            logger.error("Unavailable: the check did not reach a verdict.")
+        case SyncOutcome.UNAVAILABLE:
+            logger.error("Unavailable: the sync tool did not run to completion.")
 
     raise SystemExit(EXIT_CODES[outcome])

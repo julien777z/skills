@@ -118,9 +118,9 @@ remains a decision while independent recovery continues.
    the checkout, complete or not; this step alone removes overlays. First compare each with the
    built head step 2 recorded for it, or for each of this run's abandoned builds the head it
    reached, or, for a markerless overlay this run never recorded, its starting commit: preserve a
-   commit after it, or a working tree that differs from it outside the regenerated provider mirrors
-   under `.agents/.auto_generated`, on a named branch, and report it. Then
-   remove the worktree and delete its `skills-overlay/` branch, along with every `skills-overlay/`
+   commit after it, or a working tree that differs from it outside the files the mirror regenerates,
+   `.agents/.auto_generated` and the root `AGENTS.md`, on a named branch, and report it. Then remove
+   the worktree and delete its `skills-overlay/` branch, along with every `skills-overlay/`
    branch left without a worktree.
 7. Read every shared rule and shared skill that differs between the recorded and the new installed
    source, with each changed skill's supporting files, before using them in the current session.

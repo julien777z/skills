@@ -60,13 +60,12 @@ def session_ledgers(hook_input: HookInput) -> list[Path]:
         return []
 
     try:
-        with open(transcript_path, "rb") as handle:
-            if os.fstat(handle.fileno()).st_size == 0:
-                return []
-
-            with mmap.mmap(handle.fileno(), 0, access=mmap.ACCESS_READ) as transcript:
-                names = {match.group(1) for match in LEDGER_NAME_PATTERN.finditer(transcript)}
-                started = session_start(transcript)
+        with (
+            open(transcript_path, "rb") as handle,
+            mmap.mmap(handle.fileno(), 0, access=mmap.ACCESS_READ) as transcript,
+        ):
+            names = {match.group(1) for match in LEDGER_NAME_PATTERN.finditer(transcript)}
+            started = session_start(transcript)
     except (OSError, ValueError):
         return []
 
