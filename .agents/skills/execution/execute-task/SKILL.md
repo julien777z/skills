@@ -85,7 +85,7 @@ Every task that changes files starts here, and so does every follow-up that arri
   take a person.** Build it from what the run does and waits on, never from how big the change
   feels, round each step to the nearest whole minute, never below 1, and list what the plan needs
   from the user — an approval, a merge, a manual action — separately and outside the total, with
-  no time: the agent cannot know how long the user takes:
+  no time, since the agent cannot know how long the user takes:
   - an edit step — read, edit, commit, push — is 2–3 minutes whatever the file count;
   - each run of a local check, test suite or build is its observed duration, counted once per run
     the plan makes;
@@ -219,7 +219,7 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
 
 - **The ledger holds the plan's current state, so nothing about progress depends on what the chat
   still remembers.** When a plan goes to the user, record it with `session-ledger` as a `plan`
-  entry with its steps, estimates, overlaps and what it needs from the user. Work the user adds to
+  entry holding the fields `session-ledger` names for one. Work the user adds to
   an active task, with or without a plan of its own, becomes a step on that plan or a plan entry of
   its own, with its approval time, or the time the user added it when it has no plan, before the
   first edit or dispatch it authorizes; a harness task list, the chat or a summary is never where it

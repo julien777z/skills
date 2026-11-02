@@ -97,8 +97,12 @@ function PageLinks({
             >
               <Icon />
               {page.title}
-              {page.status && <ToneDot tone={page.status.tone} />}
-              {page.status && <Text hidden>{`, ${page.status.label}`}</Text>}
+              {page.status && (
+                <>
+                  <ToneDot tone={page.status.tone} />
+                  <Text srOnly>{`, ${page.status.label}`}</Text>
+                </>
+              )}
             </Button>
           </li>
         );

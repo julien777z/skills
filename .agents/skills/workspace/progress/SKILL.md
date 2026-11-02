@@ -56,10 +56,9 @@ and deliver the same dashboard again on every request so the user keeps one page
 
 - **Header.** `title`: `Progress Dashboard`. `topic`: the task in a few words, such as "Bulk
   export". `subtitle`: the task's goal, such as "Let admins download a month of invoices as one
-  file". `status`: `Waiting on you` (`warning`) while a question
-  is open, which covers a step an open question blocks; `Blocked` (`critical`) while a step is
-  blocked on anything else; `Done` (`good`) once every plan is complete; otherwise `On track`
-  (`good`).
+  file". `status`: `Waiting on you` (`warning`) while a question is open, which covers a step an
+  open question blocks; `Blocked` (`critical`) while a step is blocked on anything else; `Done`
+  (`good`) once every plan is complete; otherwise `On track` (`good`).
 - **Progress.** A step's work is its estimate, or for a step with parts the estimates of its parts
   not skipped; a skipped step has none. `value`: finished work over all work, across every plan
   that is not withdrawn, where finished work is each done step's work and each done part of a step
@@ -82,8 +81,9 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **Pages.** The dashboard's `icon` is `progress`, and its pages run in this order. `Overview`,
   `icon` `overview` and `layout` `rows`, holds the pull requests and the `table` "Plans", in that
   order. `Plan`, `icon` `checklist` and `layout` `rows`, follows with one plan write-up per
-  approved plan, in approval order, and is `locked` with no sections until a plan is approved. `Progress`, `icon` `board`, holds the board, the answered questions, the
-  notes and any other table. Once step 3 gives the page a pull request to cover, `Architecture`
+  approved plan, in approval order, and is `locked` with no sections until a plan is approved.
+  `Progress`, `icon` `board`, holds the board, the answered questions, the notes and any other
+  table. Once step 3 gives the page a pull request to cover, `Architecture`
   follows, with `icon` `diagram` and `layout` `rows`: the diagram, then `changes` "Config changes",
   then `changes` "Migration changes", then an `outline` "What changed in <pull request name>" for
   each pull request it covers, then an `outline` "Keep in mind". While the task has an open or draft

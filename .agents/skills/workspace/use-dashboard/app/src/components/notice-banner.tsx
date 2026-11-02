@@ -2,7 +2,6 @@ import type { ReactNode } from 'react';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { TONES, ToneName } from '@/lib/tone';
-import { cn } from '@/lib/utils';
 import type { Notice } from '@/spec';
 import { RichText } from './rich-text';
 
@@ -11,7 +10,7 @@ export function NoticeBanner({ notice }: { notice: Notice }): ReactNode {
   const Icon = style.icon;
 
   return (
-    <Alert className={cn('col-span-full', style.alert)}>
+    <Alert className={style.alert}>
       <Icon />
       <AlertTitle className="line-clamp-none">
         <RichText text={notice.title} />

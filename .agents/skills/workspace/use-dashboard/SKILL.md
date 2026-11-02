@@ -136,7 +136,8 @@ Dashboards look alike because they are built alike:
   dashboard's `topic` or the heading above it: the reader already has both, so a progress segment
   is labelled with its step, such as "Offer rules", never "Plot waitlist: Offer rules", and an outline
   group is headed with the area it covers, never with the task's name.
-  Labels and headings are written in sentence case and shown as written.
+- **Labels and headings are written in sentence case and shown as written.** The dashboard's
+  `title` and the preview `topic` `Synthetic Preview` are names, in title case.
 - **Tone means the same everywhere.** `good` is fine or matches, `warning` needs the reader's look
   or action, `critical` is wrong or blocking, `accent` is in progress or informational, and `done`,
   a purple, is finished work. Leave it out for neutral; never tone an item only to decorate it.

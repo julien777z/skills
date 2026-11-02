@@ -38,7 +38,7 @@ CACHE_ROOT: Final[Path] = (
 )
 DATA_PLACEHOLDER: Final[str] = "__DASHBOARD_DATA__"
 PAGE_HEAD_TEMPLATE: Final[str] = "<title>{title} - {topic}</title>\n"
-TITLE_SUFFIX: Final[str] = " Dashboard"
+TITLE_SUFFIX: Final[str] = "Dashboard"
 DOCUMENT_PREAMBLE: Final[str] = (
     '<!doctype html>\n<html lang="en">\n<meta charset="utf-8">\n'
     '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
@@ -238,33 +238,37 @@ def check_diagram(diagram: dict[str, object], path: str) -> None:
 
 
 def check_navbar(dashboard: dict[str, object], path: str) -> None:
-    """Require a "<name> Dashboard" title, an unlocked Overview page first, sections only on unlocked pages and a different icon for the dashboard and each page."""
+    """Require a "<name> Dashboard" title, an unlocked Overview page first and a different icon for the dashboard and each page."""
 
     pages = cast(list[dict[str, object]], dashboard["pages"])
     icons = [dashboard["icon"], *(page["icon"] for page in pages)]
 
-    if not str(dashboard["title"]).endswith(TITLE_SUFFIX):
+    if not str(dashboard["title"]).endswith(f" {TITLE_SUFFIX}"):
         raise DashboardSpecError(
-            f"{path}.title must name the dashboard and end with '{TITLE_SUFFIX.strip()}', such as 'Progress{TITLE_SUFFIX}'"
+            f"{path}.title must name the dashboard and end with '{TITLE_SUFFIX}', such as 'Progress {TITLE_SUFFIX}'"
         )
 
-    if pages[0]["title"] != OVERVIEW_TITLE or pages[0]["icon"] != IconName.OVERVIEW:
+    if (
+        pages[0]["title"] != OVERVIEW_TITLE
+        or pages[0]["icon"] != IconName.OVERVIEW
+        or pages[0].get("locked")
+    ):
         raise DashboardSpecError(
-            f"{path}.pages[0] must be the {OVERVIEW_TITLE} page, with icon {IconName.OVERVIEW.value}"
+            f"{path}.pages[0] must be the unlocked {OVERVIEW_TITLE} page, with icon {IconName.OVERVIEW.value}"
         )
-
-    for index, page in enumerate(pages):
-        if bool(page.get("locked")) == bool(page["sections"]):
-            raise DashboardSpecError(
-                f"{path}.pages[{index}].sections must be empty on a locked page and hold a section otherwise"
-            )
-
-    if pages[0].get("locked"):
-        raise DashboardSpecError(f"{path}.pages[0] must not be locked")
 
     if len(set(icons)) != len(icons):
         raise DashboardSpecError(
             f"{path}.icon and every {path}.pages[].icon must differ"
+        )
+
+
+def check_page_sections(page: dict[str, object], path: str) -> None:
+    """Require sections on an unlocked page and none on a locked one."""
+
+    if bool(page.get("locked")) == bool(page["sections"]):
+        raise DashboardSpecError(
+            f"{path}.sections must be empty on a locked page and hold a section otherwise"
         )
 
 
@@ -614,6 +618,7 @@ PAGE_SHAPE: Final[ObjectShape] = ObjectShape(
         ),
     },
     required=frozenset({"title", "icon", "sections"}),
+    relations=check_page_sections,
 )
 DASHBOARD_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Dashboard",

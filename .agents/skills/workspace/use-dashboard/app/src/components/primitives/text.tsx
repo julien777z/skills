@@ -15,7 +15,7 @@ const TEXT_VARIANTS = {
   breakAnywhere: { true: '[overflow-wrap:anywhere]', false: '' },
   truncate: { true: 'truncate', false: '' },
   measure: { true: 'max-w-[75ch]', false: '' },
-  hidden: { true: 'sr-only', false: '' },
+  srOnly: { true: 'sr-only', false: '' },
 } as const;
 
 const textVariants: ReturnType<typeof cva<typeof TEXT_VARIANTS>> = cva('', {
@@ -26,7 +26,7 @@ const textVariants: ReturnType<typeof cva<typeof TEXT_VARIANTS>> = cva('', {
     breakAnywhere: false,
     truncate: false,
     measure: false,
-    hidden: false,
+    srOnly: false,
   },
 });
 

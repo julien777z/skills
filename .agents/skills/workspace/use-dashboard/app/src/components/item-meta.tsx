@@ -5,10 +5,6 @@ import { formatMoment } from '@/lib/time';
 import { RichText } from './rich-text';
 
 export function ItemMeta({ tag, meta, at }: { tag?: string; meta?: string; at?: string }): ReactNode {
-  if (!tag && !meta && !at) {
-    return null;
-  }
-
   const parts: ReactNode[] = [
     tag && <RichText key="tag" text={tag} />,
     meta && <RichText key="meta" text={meta} />,
@@ -18,6 +14,10 @@ export function ItemMeta({ tag, meta, at }: { tag?: string; meta?: string; at?: 
       </time>
     ),
   ].filter(Boolean);
+
+  if (parts.length === 0) {
+    return null;
+  }
 
   return (
     <Text size="xs" tone="muted" numeric>

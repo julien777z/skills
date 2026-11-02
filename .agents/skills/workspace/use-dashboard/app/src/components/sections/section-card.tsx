@@ -1,4 +1,4 @@
-import { createContext, type ReactNode, useContext } from 'react';
+import { type Context, createContext, type ReactNode, useContext } from 'react';
 
 import { RichText } from '@/components';
 import { Stack, Text } from '@/components/primitives';
@@ -6,7 +6,7 @@ import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle }
 import { DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
-export const InDialog: React.Context<boolean> = createContext(false);
+export const InDialogContext: Context<boolean> = createContext(false);
 
 interface SectionCardProps {
   title: string;
@@ -25,7 +25,7 @@ export function SectionCard({
   flush = false,
   children,
 }: SectionCardProps): ReactNode {
-  const inDialog = useContext(InDialog);
+  const inDialog = useContext(InDialogContext);
 
   if (inDialog) {
     return (
