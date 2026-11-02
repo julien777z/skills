@@ -270,7 +270,7 @@ prune_links() {
 }
 
 install_provider() {
-  local provider="$1" root="$2" skill agent rule resource hook name skills=0 agents=0 rules=0 resources=0 hooks=0
+  local provider="$1" root="$2" skill agent rule resource hook name skills=0 agents=0 rules=0 resources=0
 
   if [ ! -d "$root" ]; then
     install_changed=1
@@ -371,7 +371,6 @@ install_provider() {
     name="${hook##*/}"
 
     install_link "$(link_source "$provider" hooks "$name" "$hook")" "$root/hooks/$name"
-    hooks=$((hooks + 1))
   done
 
   prune_links "$root/hooks"
