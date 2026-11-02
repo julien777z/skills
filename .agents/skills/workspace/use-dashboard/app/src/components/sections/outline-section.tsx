@@ -1,4 +1,4 @@
-import { type ReactNode, useId, useState } from 'react';
+import { Fragment, type ReactNode, useId, useState } from 'react';
 
 import { RichText, SourceLinks, StatusBadge, ToneDot } from '@/components';
 import { Grid, Stack, Text } from '@/components/primitives';
@@ -58,8 +58,8 @@ function PlainGroup({ group, first }: { group: OutlineGroup; first: boolean }): 
       </Text>
       <Grid as="dl" columns="labelBeside" gap="pairs">
         {withKeys(group.items, (item) => item.title).map(({ key, item }) => (
-          <div key={key} className="contents">
-            <dt className="pt-1 sm:pt-0">
+          <Fragment key={key}>
+            <dt>
               <Stack direction="row" align="start" gap="sm">
                 {item.tone && <ToneDot tone={item.tone} offset />}
                 <Text size="sm" tone="muted" breakAnywhere>
@@ -85,7 +85,7 @@ function PlainGroup({ group, first }: { group: OutlineGroup; first: boolean }): 
                 {item.links && <SourceLinks links={item.links} />}
               </Stack>
             </dd>
-          </div>
+          </Fragment>
         ))}
       </Grid>
     </Grid>

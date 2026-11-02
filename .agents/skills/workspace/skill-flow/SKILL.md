@@ -31,8 +31,11 @@ choices:
     when: the request asks to question, configure, tune or change how a skill or flow runs
 ```
 
-**Show** follows **Pages** and **Workflow**. **Interrogate** follows **Interrogate**, and asks
-its scope, when the request gives none, through `interactive-skill` with this menu:
+**Show** follows **Pages** and **Workflow**; **Interrogate** follows **Interrogate**.
+
+## Scope
+
+Interrogate asks which flows to cover, when the request names none, with this menu:
 
 ```yaml
 prompt: Which flows should I interrogate?
@@ -193,7 +196,7 @@ Walk a skill or a flow with the user and change what they decide should change. 
 flows that start fewer subagents and read less without missing what the step exists to catch.
 
 1. **Set the scope.** Context the user gives — a skill, a kind of work, a concern such as review
-   rounds — sets it. With none, ask the scope menu in **Modes**.
+   rounds — sets it. With none, ask the **Scope** menu.
 2. **Map it** as **Workflow** steps 1 to 4 do, recording every launch, its scope and condition, and
    every review loop with what a later round reruns.
 3. **Pick the steps worth a question.** A step is worth one when changing it would change how many
