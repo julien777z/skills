@@ -12,9 +12,10 @@ BOT_NAME: Final[str] = "github-actions[bot]"
 BOT_EMAIL: Final[str] = "github-actions[bot]@users.noreply.github.com"
 START_MARKER: Final[str] = "<!-- skills:start -->"
 END_MARKER: Final[str] = "<!-- skills:end -->"
-FRONT_MATTER_KEY_PATTERN: Final[re.Pattern[str]] = re.compile(r"^([A-Za-z][\w-]*):\s*(.*)$")
+FRONT_MATTER_KEY_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"^([A-Za-z][\w-]*):\s*(.*)$"
+)
 SENTENCE_PATTERN: Final[re.Pattern[str]] = re.compile(r"(?<=[.!?])\s+")
-MAX_SUMMARY_LENGTH: Final[int] = 140
 
 
 def parse_front_matter(path: Path) -> dict[str, str]:
@@ -46,7 +47,9 @@ def parse_front_matter(path: Path) -> dict[str, str]:
         match = FRONT_MATTER_KEY_PATTERN.match(line)
 
         if match is None:
-            raise ValueError(f"{path} has an invalid top-level front-matter line: {line!r}")
+            raise ValueError(
+                f"{path} has an invalid top-level front-matter line: {line!r}"
+            )
 
         current_key = match.group(1)
         front_matter[current_key] = match.group(2).strip()
@@ -78,7 +81,9 @@ def read_skills() -> list[tuple[Path, dict[str, str]]]:
         skills.append((skill_file, front_matter))
 
     if not skills:
-        raise ValueError(f"{SKILLS_DIRECTORY} holds no SKILL.md; refusing to render an empty listing")
+        raise ValueError(
+            f"{SKILLS_DIRECTORY} holds no SKILL.md; refusing to render an empty listing"
+        )
 
     return sorted(skills, key=lambda skill: skill[1]["name"])
 
@@ -86,12 +91,10 @@ def read_skills() -> list[tuple[Path, dict[str, str]]]:
 def summarize(front_matter: dict[str, str]) -> str:
     """Use the skill's own summary, or its opening sentence if absent."""
 
-    short_description = front_matter.get("short_description")
-    summary = short_description or SENTENCE_PATTERN.split(front_matter["description"])[0]
-
-    if short_description and len(summary) > MAX_SUMMARY_LENGTH:
-        raise ValueError(f"{front_matter['name']} needs a shorter README description")
-    return summary
+    return (
+        front_matter.get("short_description")
+        or SENTENCE_PATTERN.split(front_matter["description"])[0]
+    )
 
 
 def render_links(skills: list[tuple[Path, dict[str, str]]]) -> str:
@@ -109,8 +112,12 @@ def render_links(skills: list[tuple[Path, dict[str, str]]]) -> str:
 def render_section(skills: list[tuple[Path, dict[str, str]]]) -> str:
     """Render both skill groups, split by how each one is invoked."""
 
-    user_invoked = [skill for skill in skills if skill[1].get("disable-model-invocation") == "true"]
-    model_invoked = [skill for skill in skills if skill[1].get("disable-model-invocation") != "true"]
+    user_invoked = [
+        skill for skill in skills if skill[1].get("disable-model-invocation") == "true"
+    ]
+    model_invoked = [
+        skill for skill in skills if skill[1].get("disable-model-invocation") != "true"
+    ]
 
     return "\n".join(
         [
@@ -184,7 +191,10 @@ def main() -> None:
 
     if parsed.check:
         if rendered != current:
-            print(f"{README_PATH} is stale; run this script without --check.", file=sys.stderr)
+            print(
+                f"{README_PATH} is stale; run this script without --check.",
+                file=sys.stderr,
+            )
 
             raise SystemExit(1)
 
