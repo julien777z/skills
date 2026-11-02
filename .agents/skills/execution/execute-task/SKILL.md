@@ -226,9 +226,11 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
   still remembers.** When a plan goes to the user, record it with `session-ledger` as a `plan`
   entry with its steps, estimates, overlaps and what it needs from the user. Work the user adds to
   an active task, with or without a plan of its own, becomes a step on that plan or a plan entry of
-  its own, with its approval time, or the time the user added it when it has no plan, before the
-  first edit or dispatch it authorizes; a harness task list, the chat or a summary is never where it
-  first lives. Update it when the
+  its own, with the user's words and its approval time, or the time the user added it when it has
+  no plan, before the first edit or dispatch it authorizes; a harness task list, the chat or a
+  summary is never where it first lives. A step the agent adds, or widens past what the user asked,
+  is recorded as agent-originated and unapproved, and one that is a product choice goes to the user
+  before it is built, as the global rules' product-choice bullet says. Update it when the
   state changes, not when a report is due: approval, a step starting, finishing, blocking or being
   skipped, a follow-up's plan. A resumed session, a handoff and a progress view all read this
   record rather than reconstructing it.
