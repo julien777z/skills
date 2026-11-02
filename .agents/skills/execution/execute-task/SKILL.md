@@ -693,6 +693,13 @@ request. A guidance change rides the source branch in flight only where that rul
 Verify selected pull requests remotely, and leave another session's branch and pull request
 untouched unless the selected route explicitly directs continuing it.
 
+**A pull request's title and description are brought up to date at every milestone, not at every
+push.** A milestone is a plan step or worker task that passed its gates under **Ongoing
+Simplification**, and a guidance correction pushed onto a batch pull request. After it, rewrite
+whatever no longer describes the branch, as the GitHub rule's description bullets say, before the
+milestone is reported. A push inside a step, such as a repair or a rebase, leaves the description
+for that step's milestone. `review-pass`'s **Description Refresh** still checks it before review.
+
 ### Multi-Repository Delivery
 
 When one change spans multiple repositories, treat each repository as an independent delivery
