@@ -71,15 +71,17 @@ identity, never a second authoritative copy of its records.
      context needed to resume: decisions and constraints, affected callers, dependencies, check
      results and their validity conditions, open questions and next actions. Choose useful `data`
      fields for the record; local work is never an externally verified artifact claim.
-   - For a plan put to the user, record a `plan` entry: its title, goal, the context it starts
-     from, status (`proposed`, `approved`, `complete` or `withdrawn`) with the time it was
-     approved, which steps overlap, the decisions it settled with their reasons, how its result
-     will be verified, what it needs from the user, and its ordered steps, each with a title, what
-     the step changes and how, status
-     (`next`, `active`, `done`, `blocked` or `skipped`), wall-clock estimate, the observed
-     start and finish times once known, and any parts, each with a title, a status from that same
-     set and an estimate. Change a step's status when the work changes it, with an
-     observation for the transition; a follow-up plan is an entry of its own.
+   - For a plan put to the user, record a `plan` entry: its title, goal, the context it starts from,
+     status (`proposed`, `approved`, `complete` or `withdrawn`) with the user's words approving it,
+     the message they came in and its time, which steps overlap, the decisions it settled with their
+     reasons, how its result will be verified, what it needs from the user, and its ordered steps,
+     each with a title, what the step changes and how, origin (`user` for a step the user saw in
+     that form, `agent` for one the agent added or widened past what the user asked), status
+     (`next`, `active`, `done`, `blocked` or `skipped`), wall-clock estimate, the observed start and
+     finish times once known, and any parts, each with a title, a status from that same set and an
+     estimate. An `agent` step proceeds under the task's authorization unless it is a product
+     choice, and is never recorded or shown as user-approved. Change a step's status when the work
+     changes it, with an observation for the transition; a follow-up plan is an entry of its own.
    - For a question put to the user, record a `question` entry: the question, its options, the
      recommendation, the work that depends on it, its status (`open`, `evidence_pending`,
      `answered` or `withdrawn`), and the user's answer in their words with when it was given.
@@ -88,6 +90,12 @@ identity, never a second authoritative copy of its records.
      what a feature does, a scope — record a `decision` entry when it is given: the surface it
      governs and the user's words with when they were given. A later decision on that surface is
      checked against it, and a correction that reverses it records the user's new words.
+   - **A record rebuilt from evidence holds only what the user's own messages show.** A plan, step,
+     question or decision reconstructed after a loss records the user's words and the message they
+     came in, and records approval or an answer only from those words. Agent-written sources — a
+     harness task list, worker reports, a summary after compaction, a brief, a gate verdict — show
+     what was done, never what the user approved or decided: a step or decision found only there is
+     recorded with origin `agent` and unapproved, never folded into an approved plan.
    - For active work, record its owner, priority, status, next action, dependencies and concrete
      blockers so a handoff can resume it without reconstructing the task. Record a priority change
      with its user instruction or urgency evidence and preserve the displaced step. Follow-ups keep

@@ -18,6 +18,10 @@ exact host dispatch identifier and classifies its actual assignment. Reasoning e
 setting; no capability level implies a particular effort or permission to change repository or
 global configuration.
 
+A capture worker, mechanically capturing the pages and states a brief lists, takes the `cheap`
+family on every host. It captures without judging; the delegating agent reads every image whole
+before relying on it or sending it.
+
 ## Codex role selections
 
 Resolve the assignment's role before applying the general family table. These exact Codex
@@ -28,6 +32,7 @@ a direct user override for that assignment still takes precedence.
 | --- | --- |
 | Review or simplification, including their coordinators, lenses, validators and refuters | `gpt-5.6-terra` |
 | Acceptance gate | `gpt-6.1-sol` |
+| Capture worker: mechanical browser capture of pages and states a brief lists | `gpt-6-luna` |
 
 Classify what the assignment does, not its worker name. Ordinary implementation workers checking
 their own changes are not independent review assignments. An acceptance gate remains its own role

@@ -19,6 +19,12 @@ is one the author would answer in its own favour, so a different subagent answer
 Ground intent in the user's accepted requirements, the change's history, and the current diff.
 The statement names:
 
+- the user's request in their own words, quoted, with every later word of theirs that widened or
+  narrowed it. Those words bound the change's scope: a restatement in the agent's words, a plan step
+  it wrote or a brief never widens it, and a remedy whose product effect — what a feature does or
+  shows, or a visible change on surfaces the user did not name — reaches past them is flagged as a
+  product choice not yet put to the user. Work the change's scope requires without such an effect,
+  such as moving consumers onto one owner or repairing the same defect beside it, is not;
 - the required behavior and ownership boundaries, with the accepted requirements that establish them;
 - the applicable target-contract instruction, the one canonical representation of each owned boundary
   it changes, and every prior or candidate representation the change removes or rejects;
@@ -265,35 +271,35 @@ ends the question.
    arguable — a redesign, a sweep across many files somebody could reasonably decline; an external
    blocker stands, which is something outside every repository the user owns that the fix cannot be
    written without — a credential nobody has issued, a vendor change, an answer only a third party
-   can give; a decision
-   that is somebody else's is already put to that person and still open, or the user declined it in
-   the current request; or an attempted fix, shown to the gate, could not be completed without the
-   removed shape or a rubric finding. Work owed by a library or service the user owns is never an
-   external blocker: its fix is written in that repository and the consuming change is written
-   against it, the other tests deciding the item as if the library lived here — so it is never closed
-   by handing the work to that repository's backlog. Ownership is read from whose repository the
-   dependency is, never from where it sits or from a record calling it out of scope. That the code
-   under change is deployed or running somewhere, a backfill in flight on live data included, is the order the fix rolls out in, stated in the pull
-   request; it is never a blocker. The gate never routes work to a decision on its own: where a fix
-   has a product dimension, the change takes the cleanest fix and states the trade-off in the pull
-   request, or the fork is put to the user now, never filed as theirs unasked. A defer also requires
-   that the record's resolution criteria describe an end state and name the intent a fix has to
-   preserve, never a mechanical condition a relocated shape could satisfy.
-   Size is not that arguability and never stands in for it. The test is a question somebody could
-   answer differently, so a conversion repeated across a hundred call sites is long rather than
-   arguable and the number of files it touches decides nothing. A conversion of existing instances
-   to a better shape that no defect or requirement owes is the user's decision whatever its size:
-   triage returns defer on that ground alone, naming the fork — the shape, every instance it would
-   convert, the size of that change and the recommendation — which the caller puts to the user now;
-   it is built only at the scope the user approves, never returned as do. Incidental work past
-   `pre-production`'s size budget never reaches this test: it is listed in the change's report, not
-   deferred or done. Nor are the size and shape of the
-   work inputs the gate may take on trust: "large", "not mechanical", "each site needs its own
-   judgement" and "it spans suites the change does not touch" are the asker's characterisation of
-   the asker's own record. Check the count against the tree and open enough of the actual call sites
-   to see whether the edit repeats. This is the inverse of the fix test's treatment of a measured
-   rate, which is taken as given precisely because reading the tree cannot produce one — size is
-   exactly what reading the tree can.
+   can give; a decision that is somebody else's is already put to that person and still open, or the
+   user declined it in the current request; or an attempted fix, shown to the gate, could not be
+   completed without the removed shape or a rubric finding. Work owed by a library or service the
+   user owns is never an external blocker: its fix is written in that repository and the consuming
+   change is written against it, the other tests deciding the item as if the library lived here — so
+   it is never closed by handing the work to that repository's backlog. Ownership is read from whose
+   repository the dependency is, never from where it sits or from a record calling it out of scope.
+   That the code under change is deployed or running somewhere, a backfill in flight on live data
+   included, is the order the fix rolls out in, stated in the pull request; it is never a blocker.
+   The gate never routes work to a decision on its own: where a fix's remedy is a product choice the
+   global rules reserve to the user, the fork is put to the user now, before that remedy is built,
+   never filed as theirs unasked; a trade-off inside a choice the user's words already settled takes
+   the cleanest fix and states it in the pull request. A defer also requires that the record's
+   resolution criteria describe an end state and name the intent a fix has to preserve, never a
+   mechanical condition a relocated shape could satisfy. Size is not that arguability and never
+   stands in for it. The test is a question somebody could answer differently, so a conversion
+   repeated across a hundred call sites is long rather than arguable and the number of files it
+   touches decides nothing. A conversion of existing instances to a better shape that no defect or
+   requirement owes is the user's decision whatever its size: triage returns defer on that ground
+   alone, naming the fork — the shape, every instance it would convert, the size of that change and
+   the recommendation — which the caller puts to the user now; it is built only at the scope the
+   user approves, never returned as do. Incidental work past `pre-production`'s size budget never
+   reaches this test: it is listed in the change's report, not deferred or done. Nor are the size
+   and shape of the work inputs the gate may take on trust: "large", "not mechanical", "each site
+   needs its own judgement" and "it spans suites the change does not touch" are the asker's
+   characterisation of the asker's own record. Check the count against the tree and open enough of
+   the actual call sites to see whether the edit repeats. This is the inverse of the fix test's
+   treatment of a measured rate, which is taken as given precisely because reading the tree cannot
+   produce one — size is exactly what reading the tree can.
 4. **do** — none of the above: the item is worth doing and its cleanest fix is within reach, so it is
    done in the change in flight, or on a branch off the default when nothing is in flight.
 
@@ -338,6 +344,10 @@ a slow test in a way the testing rules list; the remedy is making it cheap or re
 rubric and `pre-production` decide. Apply `test-fixture`'s existing-reporting procedure: missing
 available evidence holds a clean verdict; attribution the native route cannot provide is recorded
 unmeasured and does not hold an otherwise validated repair.
+
+**A new state ships with its scenario.** Flag a diff that adds or alters a state `run-site`'s
+**Scenarios** says grows the scenario command without adding or updating that scenario; the remedy
+is that scenario, in the same change.
 
 **An added guard is priced like a missing one.** For every guard, refusal, validation, or branch a
 diff adds, the gate opens the writers `code-simplify`'s standard 1 says to read and names them in the

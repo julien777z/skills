@@ -18,7 +18,6 @@ The descriptions also cover work that file patterns alone cannot identify.
 | `testing.md` | Planning or running tests, or writing or moving tests, fixtures, assertions, or test configuration. |
 | `typescript.md` | Editing types, modules, imports, functions, or external-data boundaries. |
 
-## Tests
+## Verification
 
-- This repository holds no tests: no test files, test folders or test workflows. A change to a hook,
-  a skill's script or the installer is checked by running it, never by adding a test here.
+- Do not add or maintain tests, test fixtures, test-support modules, test runners, or test CI in this repository, including for bootstrap and tooling code. Validate changes with source checks and temporary, untracked execution checks; do not commit those checks or introduce a replacement test suite.
