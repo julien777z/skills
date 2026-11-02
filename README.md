@@ -13,8 +13,9 @@ For a local installation, run `bash bootstrap/install.sh` from the main checkout
 point into that checkout; pull `main` there after a merge to update installed guidance. While skill
 changes are pending, the agent's refresh links them into an overlay worktree beside the checkout
 instead, and installed guidance updates when the next refresh rebuilds it. Installing from an
-overlay regenerates its provider mirrors with the sync tool the Agent Sync workflow pins, which
-needs `python3` and, the first time, network access to install that tool. Edit skills on a separate
+overlay regenerates its provider mirrors with the sync tool the Agent Sync workflow pins. That
+needs Python 3.12 or newer as `python3`, and network access on every overlay install to resolve the
+pinned revision, then to install the tool when that revision is new. Edit skills on a separate
 branch or worktree. For Claude cloud, put this at the start of the environment setup script, before
 project-specific setup commands:
 
@@ -205,5 +206,5 @@ the acceptance gate, and the smoke test before the pull request merges.
 
 ```bash
 bootstrap/install.sh                                            # link into this machine's roots
-python3.12 .agents/skills/authoring/edit-skill/scripts/validate_sources.py # mirror with the pinned sync tool
+python3.12 .agents/skills/authoring/edit-skill/scripts/validate_sources.py check # validate with the pinned sync tool
 ```
