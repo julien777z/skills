@@ -209,9 +209,12 @@ flows that start fewer subagents and read less without missing what the step exi
    its later rounds rerun, a scope wider than the step's job, a scope another skill reads in the
    same run, or a launch that always runs where a condition would do. Every other step passes
    without a question, and the report lists them in one line.
-4. **Ask, most subagents first, up to four questions per call** of the question tool. Each says
-   what the step does now in a sentence: the skill and step, how many subagents, when, what they
-   read and for how many rounds. Its choices are keeping it as it is and one or two concrete changes,
+4. **Ask one question at a time, most subagents first**, through the question tool, and wait for
+   its answer before asking the next. Each says when the flow runs — what starts it and how often in
+   a task, such as "once per pull request, when its task finishes, and again for each follow-up" —
+   then what the step does in a sentence: the skill and step, how many subagents, what they read and
+   for how many rounds. Every fact it states is read from the lines that state it before it is
+   asked, so a question never rests on a repeat or a gap the sources do not have. Its choices are keeping it as it is and one or two concrete changes,
    such as fewer subagents, a narrower scope, a condition on the launch, fewer rounds, or later
    rounds that rerun only the reviewers a repair affects. The recommended choice comes first, with
    its reason in what it saves and what it could miss.
