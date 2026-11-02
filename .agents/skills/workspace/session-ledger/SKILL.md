@@ -66,7 +66,8 @@ identity, never a second authoritative copy of its records.
      or observing an automated output establishes only a reference, never task work. Acting on a
      pre-existing artifact never makes it session-created.
    - For a correction, keep the observed issue, evidence or user instruction, reproduction scenario,
-     intended behavior, canonical files, local branch, checkpoint and delivery status. Keep other
+     intended behavior, canonical files, local branch, checkpoint and delivery `status` (`pending`,
+     `complete` or `withdrawn`). Keep other
      context needed to resume: decisions and constraints, affected callers, dependencies, check
      results and their validity conditions, open questions and next actions. Choose useful `data`
      fields for the record; local work is never an externally verified artifact claim.
@@ -144,6 +145,12 @@ This skill authorizes those comments and their edits under the GitHub rule's **C
   changes — a new commit, a stage result, a step's status, a later answer — edit that comment in
   place rather than posting another.
 - The comment shapes and what they may say are in [references/backup.md](references/backup.md).
+- **The backup check reads three `data` fields.** `status` is a plan's or question's status from
+  **Workflow**, or a `guidance_correction`'s delivery status: `pending`, `complete` or `withdrawn`;
+  a decision has none. `commits` lists a `guidance_correction`'s pushed commits. `recovery_comment`
+  is one string: the backup comment's URL, or `awaiting_pull_request`. An entry that is `complete`
+  or `withdrawn`, a question not yet `answered`, and a `guidance_correction` with no commit owe no
+  backup.
 - The installed turn-end hook `ledger` refuses to end a turn while a ledger this
   session names owes a backup, listing each entry and what it lacks; posting or editing the comment
   and recording its URL clears it.

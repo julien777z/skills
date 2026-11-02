@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. First carry out the requested action; only a verified success, or a direct guidance request in the user's words, is recorded in the session ledger and delivered as a guidance edit. While another task is active, every correction, a direct request to edit guidance included, is pushed to a draft guidance pull request and recorded, with a generic recovery comment there, and the rest of its delivery runs in bulk when that task completes; one arriving while a guidance batch is in flight joins that batch's pull request, which reruns only the checks the new edit invalidates. Deliver every behavior-changing guidance edit through `review-pass`, the acceptance gate, and `test-skill` before its pull request merges.
+description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. First carry out the requested action; only a verified success, or a direct guidance request in the user's words, is recorded in the session ledger and delivered as a guidance edit. While another task is active, every correction, a direct request to edit guidance included, is pushed to a draft guidance pull request and recorded, with a generic backup comment there, and the rest of its delivery runs in bulk when that task completes; one arriving while a guidance batch is in flight joins that batch's pull request, which reruns only the checks the new edit invalidates. Deliver every behavior-changing guidance edit through `review-pass`, the acceptance gate, and `test-skill` before its pull request merges.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -82,7 +82,7 @@ During A Task** for the edit's timing.
   way.
 - After verified success, record the correction as a `guidance_correction` entry with
   `session-ledger`: the successful action and its evidence, a reproduction scenario, the intended
-  behavior, the canonical files it will change, and `pending` as its delivery status. Steps 1–4
+  behavior, the canonical files it will change, and `pending` as its `status`. Steps 1–4
   of **Behavior** run now, while the evidence is fresh, and their result goes into the entry; the
   edit itself (steps 5, 6 and 7.1) is written as the bullet on writing the edit below says, and step
   7.2 onward waits.
@@ -114,9 +114,7 @@ During A Task** for the edit's timing.
   instruction about how guidance pull requests are reviewed or merged governs that delivery when
   it runs, never when. A gate result that arrives for a guidance pull request already open is
   recorded as its entry's stage result, and its repair waits with the rest.
-- **Every `guidance_correction` entry keeps one generic recovery comment of its own on the pull
-  request that carries its edit**, posted once the edit is pushed, its URL recorded in the entry in
-  the same step, and kept current as `session-ledger`'s **Backup** section says.
+- **Every `guidance_correction` entry is backed up** as `session-ledger`'s **Backup** section says.
 - A related correction recorded before its batch is frozen joins the same entry or sits beside it
   in that batch; the batch is one pull request, apart from edits the GitHub rule puts on a source
   pull request or holds for another repository. One recorded while a batch is in flight joins that
@@ -133,7 +131,7 @@ another repository, waits for that merge. Run it as a delegated worker when the 
 user's review of the source pull request overlaps it.
 
 1. Read every entry in the batch `process-ledger` froze and resume at its recorded first
-   nonterminal stage, rebuilding a lost or truncated entry from its recovery
+   nonterminal stage, rebuilding a lost or truncated entry from its backup
    comment as `session-ledger` accepts it; the comment's existence records that the action
    succeeded, its Intended behavior stands as the intent statement for step 3, and step 7.5
    rebuilds the reproduction scenario from its failure class and invariant, with anything else
@@ -163,7 +161,7 @@ user's review of the source pull request overlaps it.
 5. After each completed or failed stage, record its exact head, stage result, and first
    nonterminal next stage in each entry. Resume from that stage without repeating completed work.
    After the smoke round, record the pull request, its head, the smoke results and the merge or
-   hold. Keep delivery `pending` while a hold remains, with its concrete dependency and saved next
+   hold. Keep its `status` `pending` while a hold remains, with its concrete dependency and saved next
    action. `process-ledger` owns the record's terminal disposition after the complete delivery
    outcome is verified.
 - Before the surrounding task ends or hands off, every `pending` entry is processed, or carries its

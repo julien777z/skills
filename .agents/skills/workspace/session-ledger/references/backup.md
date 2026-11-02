@@ -15,8 +15,6 @@ The shapes of the backup comments the **Backup** section requires, and what they
 
 ## Guidance correction
 
-One comment per `guidance_correction` entry:
-
 ```markdown
 ## Ledger entry
 `<entry id>`
@@ -31,9 +29,6 @@ Task: `<task token>`
 ```
 
 ## Plans, decisions and questions
-
-One comment per kind on a pull request, headed `## Ledger plans`, `## Ledger decisions` or
-`## Ledger questions`, with one section per entry:
 
 ```markdown
 ## Ledger plans
