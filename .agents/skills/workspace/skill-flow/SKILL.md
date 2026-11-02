@@ -135,7 +135,7 @@ the request asks for a new page.
    - **Entry write-up**: an `outline` with `stacked` set and `collapsible` false, `title` the
      entry's label and `description` what it does in a sentence. Its groups, each only when it has
      something in it: "Why subagents start", one item per launch at or beneath the entry, saying
-     what those subagents exist to catch or produce; and "Gotchas", what a reader tuning the flow
+     what those subagents exist to catch or produce; and "Good to know", what a reader tuning the flow
      should know, such as the condition that starts a launch, what a later round reruns, a scope
      another skill also reads in the same run, or a count that grows with the size of the change.
    - `references` make each skill's name a link to its whole `SKILL.md`, at the commit read,
