@@ -64,7 +64,7 @@ newest_overlay() {
 }
 
 check_link() {
-  local link="$1" resolved old_root old_remote kind relative artifact
+  local link="$1" resolved old_root old_remote objects_dir kind relative artifact
 
   [ -e "$link" ] || [ -L "$link" ] || return 0
 
@@ -80,8 +80,10 @@ check_link() {
     "$REPO_ROOT"/*) old_root="$REPO_ROOT" ;;
     "$MAIN_CHECKOUT"/*) old_root="$MAIN_CHECKOUT" ;;
     *)
-      old_root="$(git -c safe.directory='*' -C "$(dirname "$resolved")" rev-parse --show-toplevel 2>/dev/null || true)"
-      old_remote="$(git -c safe.directory='*' -C "$old_root" config --get remote.origin.url 2>/dev/null || true)"
+      objects_dir="$(source_git -C "$MAIN_CHECKOUT" rev-parse --path-format=absolute --git-path objects)" || return 1
+
+      old_root="$(GIT_OBJECT_DIRECTORY="$objects_dir" git -c safe.directory='*' -C "$(dirname "$resolved")" rev-parse --show-toplevel 2>/dev/null || true)"
+      old_remote="$(GIT_OBJECT_DIRECTORY="$objects_dir" git -c safe.directory='*' -C "$old_root" config --get remote.origin.url 2>/dev/null || true)"
 
       is_skills_remote "$old_remote" || old_root=""
       ;;
