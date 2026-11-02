@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 MINIMUM_PYTHON: Final[tuple[int, int]] = (3, 12)
 WORKFLOWS_DIRNAME: Final[str] = ".github/workflows"
 ACTION_USE_PATTERN: Final[re.Pattern[str]] = re.compile(
-    r"uses:\s*([\w.-]+/agent-sync-action)@(\S+)"
+    r"^\s*(?:-\s*)?uses:\s*(julien777z/agent-sync-action)@(\S+)\s*$", re.MULTILINE
 )
 CACHE_DIRNAME: Final[str] = "agent-sync-action"
 INSTALL_MARKER_FILENAME: Final[str] = "installed"
