@@ -24,10 +24,11 @@ renders every value as text, so data never runs as markup or script.
 
 ## Spec
 
-Top level: `title`, `icon`, `updated_at` (ISO 8601) and `pages` are required. The navbar shows
-`title` beside `icon`, then a link to each page, how long ago `updated_at` was and the `status`
+Top level: `title`, `icon`, `updated_at` (ISO 8601) and `pages` are required. `title` is the
+dashboard's name followed by "Dashboard", such as `Progress Dashboard`, and what it is about goes in
+`subtitle`. The navbar shows `title` beside `icon`, then a link to each page, how long ago `updated_at` was and the `status`
 badge, and each page opens with its own title; the page's own name, which a browser tab or a
-published link shows, is always `Dashboard - <title>`. Every other field is optional, and an absent
+published link shows, is `title`. Every other field is optional, and an absent
 one leaves its part of the page out.
 
 | Field | Shape |
@@ -36,7 +37,7 @@ one leaves its part of the page out.
 | `status` | `{label, tone?}`: the badge at the right of the navbar. |
 | `progress` | `{value: 0–1, label, detail?, segments?}`: a stat card twice as wide as the others, with the percentage, `detail` as its badge, and a bar. `segments` is `[{label, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1, and its `label` shown in a tooltip while the pointer rests on it; without `segments` the bar is a plain fill. |
 | `metrics` | `[{label, value, detail?}]`: at most four stat cards beside the progress, `detail` under the figure. |
-| `pages` | `[{title, icon, layout?, status?, sections}]`: one navbar link each, with `status` (`{label, tone?}`) shown as a dot in its tone right after the page's icon, and its label read out to screen readers, while the page holds something that needs the reader. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. `sections` render in order; with `layout` `columns`, the default, callouts, boards, tables, outlines and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
+| `pages` | `[{title, icon, layout?, status?, sections}]`: one navbar link each, with `status` (`{label, tone?}`) shown as a dot in its tone after the page's name, and its label read out to screen readers, while the page holds something that needs the reader. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. `sections` render in order; with `layout` `columns`, the default, callouts, boards, tables, outlines and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
 | `references` | `[{text, url}]`: every whole-word occurrence of `text` in any page's text becomes a link to `url`, apart from the navbar, page titles, stat card figures and badges, which stay plain. |
 
 An `icon` is one of `overview`, `progress`, `board`, `checklist`, `list`, `chart`, `activity`,
@@ -55,7 +56,7 @@ its title. Section types:
 
 | `type` | Fields | Item fields |
 | --- | --- | --- |
-| `board` | `title`, `columns: [{title, tone?, page_size?, items}]` | `title`, `detail?`, `meta?`, `tag?`, `url?`, `at?`, `links?` |
+| `board` | `title`, `columns: [{title, tone?, page_size?, items}]` | `title`, `detail?`, `meta?`, `tag?`, `url?`, `at?`, `links?`: `tag`, `meta` and `at` share one line of small text, in that order |
 | `questions` | `title`, `items`, `page_size?` | `question`, `status` (`open`, `answered`), `context?`, `options?`, `recommendation?`, `answer?`, `meta?`, `at?` |
 | `links` | `title`, `items`, `page_size?` | `label`, `url`, `detail?`, `status?`, `tone?`, `state?`: a pull request's `open`, `draft`, `merged` or `closed`, drawn with GitHub's icon for it in place of the arrow |
 | `table` | `title`, `columns`, `rows` | each row a list of strings, one per column |
@@ -125,6 +126,10 @@ Dashboards look alike because they are built alike:
   `questions`. Where do I click? `links`. What does each part say, in a sentence I can open?
   `outline`. What was added or removed? `changes`. Values across the same columns? `table`. Short
   remarks? `notes`. How do the parts connect? `diagram`.
+- **A pill is for a state the reader scans for.** A status, a mark such as Matches or Out of date,
+  or a pull request's state takes a pill; a label that only says what kind of thing an item is or
+  which group it belongs to, such as its plan or its type, is plain text. When most items on a page
+  would carry a pill, the pill has stopped meaning anything.
 - **Tone means the same everywhere.** `good` is fine or matches, `warning` needs the reader's look
   or action, `critical` is wrong or blocking, `accent` is in progress or informational, and `done`,
   a purple, is finished work. Leave it out for neutral; never tone an item only to decorate it.
@@ -148,8 +153,10 @@ A preview, sample or test render — showing a caller's layout, a page someone a
 data exists, or a change to the app — runs on one made-up scenario, never on real data.
 
 - **Invent the scenario first**: a fictional product, its repositories, people, pull request numbers,
-  environments, settings and dates, then a task that fits them, such as a small team adding bulk
-  export to a fictional invoicing app.
+  environments, settings and dates, then a task that fits them, such as a community garden adding
+  a waitlist for its plots. Its domain shares nothing with the user's own projects: not their
+  product's kind, its vocabulary, its providers or the problems it solves, so nothing in the preview
+  reads as their work.
 - **Every value comes from that scenario**: titles, references, links, diffs, checks, questions and
   notes. No real repository, pull request, person, task, setting or address appears, and links point
   at `example.com`.

@@ -35,7 +35,8 @@ APP_LOCKFILE: Final[str] = "package-lock.json"
 APP_TYPES_PATH: Final[str] = "src/spec.ts"
 CACHE_ROOT: Final[Path] = Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache") / "use-dashboard"
 DATA_PLACEHOLDER: Final[str] = "__DASHBOARD_DATA__"
-PAGE_HEAD_TEMPLATE: Final[str] = "<title>Dashboard - {title}</title>\n"
+PAGE_HEAD_TEMPLATE: Final[str] = "<title>{title}</title>\n"
+TITLE_SUFFIX: Final[str] = " Dashboard"
 DOCUMENT_PREAMBLE: Final[str] = (
     '<!doctype html>\n<html lang="en">\n<meta charset="utf-8">\n'
     '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
@@ -212,10 +213,15 @@ def check_diagram(diagram: dict[str, object], path: str) -> None:
 
 
 def check_navbar(dashboard: dict[str, object], path: str) -> None:
-    """Require the Overview page first and a different icon for the dashboard and each page."""
+    """Require a "<name> Dashboard" title, the Overview page first and a different icon for the dashboard and each page."""
 
     pages = cast(list[dict[str, object]], dashboard["pages"])
     icons = [dashboard["icon"], *(page["icon"] for page in pages)]
+
+    if not str(dashboard["title"]).endswith(TITLE_SUFFIX):
+        raise DashboardSpecError(
+            f"{path}.title must name the dashboard and end with '{TITLE_SUFFIX.strip()}', such as 'Progress{TITLE_SUFFIX}'"
+        )
 
     if pages[0]["title"] != OVERVIEW_TITLE or pages[0]["icon"] != IconName.OVERVIEW:
         raise DashboardSpecError(f"{path}.pages[0] must be the {OVERVIEW_TITLE} page, with icon {IconName.OVERVIEW.value}")

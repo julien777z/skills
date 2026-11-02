@@ -54,8 +54,8 @@ and deliver the same dashboard again on every request so the user keeps one page
 
 ## Spec
 
-- **Header.** `title`: a summary of the task in a few words, such as `Add bulk export`.
-  `subtitle`: the task's goal in one line. `status`: `Waiting on you` (`warning`) while a question
+- **Header.** `title`: `Progress Dashboard`. `subtitle`: the task in a few words, then its goal,
+  such as "Add bulk export: let admins download a month of invoices as one file". `status`: `Waiting on you` (`warning`) while a question
   is open, which covers a step an open question blocks; `Blocked` (`critical`) while a step is
   blocked on anything else; `Done` (`good`) once every plan is complete; otherwise `On track`
   (`good`).
@@ -87,8 +87,8 @@ and deliver the same dashboard again on every request so the user keeps one page
   to merge", the `diagram` "Merge and deploy order", then the `outline` sections "Between merges",
   "Deploy" and "Once live", each only when it has something in it. Its `status` is "<n> need you"
   (`warning`) while anything on it waits on the user — a pull request held on their review or
-  answer, or an action under Between merges, Deploy or Once live that only they can take — and is
-  left out otherwise.
+  answer, or an action under Between merges, Deploy or Once live that only they can take — and
+  "Ready" (`good`) once nothing does.
 - **`table` "Plans"**: one row per plan that is not withdrawn, with the columns Plan, Steps done
   ("<done> of <n>"), Running, Waiting on you and Time left, the summary of what the board shows step
   by step.
