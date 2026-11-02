@@ -1,24 +1,24 @@
 import type { ReactNode } from 'react';
 
-import { RichText } from '@/components';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { TONES, ToneName } from '@/lib/tone';
 import { cn } from '@/lib/utils';
-import type { CalloutSection as CalloutSectionSpec } from '@/spec';
+import type { Notice } from '@/spec';
+import { RichText } from './rich-text';
 
-export function CalloutSection({ section }: { section: CalloutSectionSpec }): ReactNode {
-  const style = TONES[section.tone ?? ToneName.NEUTRAL];
+export function NoticeBanner({ notice }: { notice: Notice }): ReactNode {
+  const style = TONES[notice.tone ?? ToneName.NEUTRAL];
   const Icon = style.icon;
 
   return (
     <Alert className={cn('col-span-full', style.alert)}>
       <Icon />
       <AlertTitle className="line-clamp-none">
-        <RichText text={section.title} />
+        <RichText text={notice.title} />
       </AlertTitle>
       <AlertDescription className="text-foreground/80">
         <p>
-          <RichText text={section.body} />
+          <RichText text={notice.body} />
         </p>
       </AlertDescription>
     </Alert>

@@ -1,5 +1,4 @@
 export { BoardSection } from './board-section';
-export { CalloutSection } from './callout-section';
 export { ChangesSection } from './changes-section';
 export { DashboardSection } from './dashboard-section';
 export { DiagramSection } from './diagram-section';

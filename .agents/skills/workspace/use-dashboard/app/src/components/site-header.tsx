@@ -11,6 +11,7 @@ import {
   LayoutDashboard,
   List,
   ListChecks,
+  Lock,
   type LucideIcon,
   Menu,
   Package,
@@ -77,7 +78,7 @@ function PageLinks({
   return (
     <Stack as="ul" direction={vertical ? 'column' : 'row'} gap="xs">
       {pages.map((page, position) => {
-        const Icon = ICONS[page.icon];
+        const Icon = page.locked ? Lock : ICONS[page.icon];
         const active = position === current;
 
         return (
@@ -86,6 +87,7 @@ function PageLinks({
               variant="ghost"
               size="sm"
               aria-current={active ? 'page' : undefined}
+              disabled={page.locked}
               onClick={() => onSelectPage(position)}
               className={cn(
                 'text-muted-foreground hover:text-foreground',

@@ -192,11 +192,15 @@ def check_objects(
 
 
 def check_table_rows(table: dict[str, object], path: str) -> None:
-    """Require every table row to hold one cell per column."""
+    """Require every table row to hold one cell per column and, with details, one detail per row."""
 
     width = len(cast(list[str], table["columns"]))
+    rows = cast(list[list[str]], table["rows"])
 
-    for index, row in enumerate(cast(list[list[str]], table["rows"])):
+    if "details" in table and len(cast(list[object], table["details"])) != len(rows):
+        raise DashboardSpecError(f"{path}.details must hold one entry per row")
+
+    for index, row in enumerate(rows):
         if len(row) != width:
             raise DashboardSpecError(f"{path}.rows[{index}] must hold {width} cells")
 
@@ -234,7 +238,7 @@ def check_diagram(diagram: dict[str, object], path: str) -> None:
 
 
 def check_navbar(dashboard: dict[str, object], path: str) -> None:
-    """Require a "<name> Dashboard" title, the Overview page first and a different icon for the dashboard and each page."""
+    """Require a "<name> Dashboard" title, an unlocked Overview page first, sections only on unlocked pages and a different icon for the dashboard and each page."""
 
     pages = cast(list[dict[str, object]], dashboard["pages"])
     icons = [dashboard["icon"], *(page["icon"] for page in pages)]
@@ -249,6 +253,15 @@ def check_navbar(dashboard: dict[str, object], path: str) -> None:
             f"{path}.pages[0] must be the {OVERVIEW_TITLE} page, with icon {IconName.OVERVIEW.value}"
         )
 
+    for index, page in enumerate(pages):
+        if bool(page.get("locked")) == bool(page["sections"]):
+            raise DashboardSpecError(
+                f"{path}.pages[{index}].sections must be empty on a locked page and hold a section otherwise"
+            )
+
+    if pages[0].get("locked"):
+        raise DashboardSpecError(f"{path}.pages[0] must not be locked")
+
     if len(set(icons)) != len(icons):
         raise DashboardSpecError(
             f"{path}.icon and every {path}.pages[].icon must differ"
@@ -258,7 +271,7 @@ def check_navbar(dashboard: dict[str, object], path: str) -> None:
 def check_sections(value: object, path: str) -> None:
     """Require a list of sections."""
 
-    for index, section in enumerate(check_list(value, path)):
+    for index, section in enumerate(check_list(value, path, allow_empty=True)):
         section_path = f"{path}[{index}]"
         raw_type = section.get("type") if isinstance(section, dict) else None
         section_type = check_choice(raw_type, f"{section_path}.type", SectionType)
@@ -477,6 +490,17 @@ REFERENCE_SHAPE: Final[ObjectShape] = ObjectShape(
     fields={"text": TEXT, "url": TEXT},
     required=frozenset({"text", "url"}),
 )
+ROW_DETAIL_SHAPE: Final[ObjectShape] = ObjectShape(
+    name="RowDetail",
+    fields={"title": TEXT, "description": TEXT, "columns": TEXTS, "rows": ROWS},
+    required=frozenset({"title", "columns", "rows"}),
+    relations=check_table_rows,
+)
+NOTICE_SHAPE: Final[ObjectShape] = ObjectShape(
+    name="Notice",
+    fields={"title": TEXT, "body": TEXT, "tone": TONE},
+    required=frozenset({"title", "body"}),
+)
 SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
     SectionType.BOARD: section_shape(
         SectionType.BOARD,
@@ -540,12 +564,17 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
         },
         frozenset({"groups"}),
     ),
-    SectionType.CALLOUT: section_shape(
-        SectionType.CALLOUT, {"body": TEXT, "tone": TONE}, frozenset({"body"})
-    ),
     SectionType.TABLE: section_shape(
         SectionType.TABLE,
-        {"columns": TEXTS, "rows": ROWS},
+        {
+            "columns": TEXTS,
+            "rows": ROWS,
+            "details": Field(
+                check=partial(check_objects, shape=ROW_DETAIL_SHAPE),
+                typescript="RowDetail[]",
+                shape=ROW_DETAIL_SHAPE,
+            ),
+        },
         frozenset({"columns", "rows"}),
         check_table_rows,
     ),
@@ -586,6 +615,7 @@ PAGE_SHAPE: Final[ObjectShape] = ObjectShape(
             choices=PageLayout,
         ),
         "sections": SECTIONS,
+        "locked": FLAG,
         "status": Field(
             check=partial(check_object, shape=LABEL_SHAPE),
             typescript="Label",
@@ -606,6 +636,11 @@ DASHBOARD_SHAPE: Final[ObjectShape] = ObjectShape(
             check=partial(check_object, shape=LABEL_SHAPE),
             typescript="Label",
             shape=LABEL_SHAPE,
+        ),
+        "notice": Field(
+            check=partial(check_object, shape=NOTICE_SHAPE),
+            typescript="Notice",
+            shape=NOTICE_SHAPE,
         ),
         "progress": Field(
             check=partial(check_object, shape=PROGRESS_SHAPE),

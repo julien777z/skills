@@ -36,9 +36,10 @@ Every other field is optional, and an absent one leaves its part of the page out
 | --- | --- |
 | `subtitle` | One line under every page's title. |
 | `status` | `{label, tone?}`: the badge at the right of the navbar. |
+| `notice` | `{title, body, tone?}`: a banner with an icon for its tone under every page's title, for the one thing the reader must see first wherever they are. |
 | `progress` | `{value: 0–1, label, detail?, segments?}`: a stat card twice as wide as the others, with the percentage, `detail` as its badge, and a bar. `segments` is `[{label, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1, and its `label` shown in a tooltip while the pointer rests on it; without `segments` the bar is a plain fill. |
 | `metrics` | `[{label, value, detail?}]`: at most four stat cards beside the progress, `detail` under the figure. |
-| `pages` | `[{title, icon, layout?, status?, sections}]`: one navbar link each, with `status` (`{label, tone?}`) shown as a dot in its tone after the page's name, and its label read out to screen readers, while the page holds something that needs the reader. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. `sections` render in order; with `layout` `columns`, the default, callouts, boards, tables, outlines and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
+| `pages` | `[{title, icon, layout?, status?, locked?, sections}]`: one navbar link each, with `status` (`{label, tone?}`) shown as a dot in its tone after the page's name, and its label read out to screen readers, while the page holds something that needs the reader. A `locked` page has no `sections` yet: its link shows a lock in place of its icon and cannot be opened. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. `sections` render in order; with `layout` `columns`, the default, boards, tables, outlines and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
 | `references` | `[{text, url}]`: every whole-word occurrence of `text` in any page's text becomes a link to `url`, apart from the navbar, page titles, stat card figures and badges, which stay plain. |
 
 An `icon` is one of `overview`, `progress`, `board`, `checklist`, `list`, `chart`, `activity`,
@@ -60,11 +61,10 @@ its title. Section types:
 | `board` | `title`, `columns: [{title, tone?, page_size?, items}]` | `title`, `detail?`, `meta?`, `tag?`, `url?`, `at?`, `links?`: `tag`, `meta` and `at` share one line of small text, in that order |
 | `questions` | `title`, `items`, `page_size?` | `question`, `status` (`open`, `answered`), `context?`, `options?`, `recommendation?`, `answer?`, `meta?`, `at?` |
 | `links` | `title`, `items`, `page_size?` | `label`, `url`, `detail?`, `status?`, `tone?`, `state?`: a pull request's `open`, `draft`, `merged` or `closed`, drawn with GitHub's icon for it in place of the arrow |
-| `table` | `title`, `columns`, `rows` | each row a list of strings, one per column |
+| `table` | `title`, `columns`, `rows`, `details?` | each row a list of strings, one per column; `details`, one `{title, description?, columns, rows}` per row, makes each row open a dialog holding that table |
 | `notes` | `title`, `items` | each item a string |
 | `changes` | `title`, `items`, `page_size?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`, `links?`: a named part with its change as a colored badge |
 | `outline` | `title`, `groups: [{title, items}]`, `expanded?` (every item starts open when true) | `title`, `detail`, `tone?`, `tag?`, `meta?`, `links?`: a headline that opens to its detail, with `tag` as a badge in the item's tone (neutral without one) and `meta` as small text; without `expanded`, a group of one or two items shows them open |
-| `callout` | `title`, `body`, `tone?` | — : a banner across the page with an icon for its tone, for the one thing the reader must see first |
 | `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?` | node: `id`, `label`, `detail?`, `pr?`, `change?`; edge: `from`, `to`, `label?`, `step?`, `change?`; pr: `ref`, `url`; each step a string |
 
 A diagram draws each node as a box inside a frame titled with the `ref` its `pr` names, and each
@@ -110,8 +110,8 @@ to show is left out, and so is the entry that requires it. A URL renders as a li
 Dashboards look alike because they are built alike:
 
 - **Overview first, then one page per subject.** Every dashboard opens on `Overview`, the page
-  that tells the reader where things stand: the `progress` and `metrics` stat cards, then a
-  `callout` when one thing needs them now, then sections that summarize, such as counts per subject
+  that tells the reader where things stand: the `progress` and `metrics` stat cards, then sections
+  that summarize, such as counts per subject
   or one line per theme naming the page that holds it. Overview repeats no item another page lists;
   each later page goes deeper on one subject and is named for it.
 - **A page serves a stage of the reader's work, never one narrow artifact.** When a request asks for

@@ -84,8 +84,8 @@ Every task that changes files starts here, and so does every follow-up that arri
 - **An estimate is the executing agent's own wall-clock, never the effort the same work would
   take a person.** Build it from what the run does and waits on, never from how big the change
   feels, round each step to the nearest whole minute, never below 1, and list what the plan needs
-  from the user — an approval, a merge, a manual action — separately, with its time, outside the
-  total:
+  from the user — an approval, a merge, a manual action — separately and outside the total, with
+  no time: the agent cannot know how long the user takes:
   - an edit step — read, edit, commit, push — is 2–3 minutes whatever the file count;
   - each run of a local check, test suite or build is its observed duration, counted once per run
     the plan makes;
@@ -117,7 +117,7 @@ Every task that changes files starts here, and so does every follow-up that arri
 1. <step> (~<n> min)
 2. <step> (~<n> min)
 
-**Total: ~<n> min.** Then <what the user does next, with its time>.
+**Total: ~<n> min.** Then <what the user does next>.
 
 **Decision needed:**
 1. **<subject>** — <question>? I recommend <option>, because <reason>. Step <n> depends on this answer.

@@ -71,15 +71,16 @@ and deliver the same dashboard again on every request so the user keeps one page
   first segment, toned `good`, then its remaining work as a second, toned by the step's status as
   above, when any remains, so the bar fills as the percentage does.
 - **Metrics,** in this order: **Time remaining**, the work not yet finished, totalled as
-  `execute-task` totals a plan, prefixed `~` because it is an estimate, with any time the user owes
-  in `detail` and outside the figure; **Waiting on you**, the count of open questions; **Pull
+  `execute-task` totals a plan, prefixed `~` because it is an estimate, counting only the agent's work, with no
+  `detail` for anything the user owes; **Waiting on you**, the count of open questions; **Pull
   requests**, the count of open and draft pull requests, with "<n> open · <n> draft" in `detail`;
   **Elapsed**, measured from the first plan's recorded approval time.
 - **Pull request names.** The page names each pull request "PR #<number> - <short title>": a few
   words saying what it does, not necessarily its title, such as `PR #1337 - Add bulk export`.
 - **Pages.** The dashboard's `icon` is `progress`, and its pages run in this order. `Overview`,
-  `icon` `overview` and `layout` `rows`, holds the callout, the pull requests and the `table`
-  "Plans", in that order. `Progress`, `icon` `board`, holds the board, the answered questions, the
+  `icon` `overview` and `layout` `rows`, holds the pull requests and the `table` "Plans", in that
+  order. `Plan`, `icon` `checklist` and `layout` `rows`, follows with one plan steps table per
+  approved plan, in approval order, and is `locked` with no sections until a plan is approved. `Progress`, `icon` `board`, holds the board, the answered questions, the
   notes and any other table. Once step 3 gives the page a pull request to cover, `Architecture`
   follows, with `icon` `diagram` and `layout` `rows`: the diagram, then `changes` "Config changes",
   then `changes` "Migration changes", then an `outline` "What changed in <pull request name>" for
@@ -92,8 +93,12 @@ and deliver the same dashboard again on every request so the user keeps one page
   "Ready" (`good`) once nothing does.
 - **`table` "Plans"**: one row per plan that is not withdrawn, with the columns Plan, Steps done
   ("<done> of <n>"), Running, Waiting on you and Time left, the summary of what the board shows step
-  by step.
-- **`callout`**, only while something waits on the user: `tone` `warning`, `title` "<n> question(s)
+  by step, and `details` holding each row's plan steps table, so a row opens the plan.
+- **Plan steps table**: `title` the plan's title; `description` "Approved <time> · ~<total> min",
+  then what the plan leaves to the user, such as "Then you review and merge", never with a time,
+  since the agent cannot know how long the user takes; the columns Step ("<n>. <step title>"),
+  Estimate ("~<n> min") and Status (Done, Running, Blocked, Next or Skipped), one row per step.
+- **`notice`**, only while something waits on the user: `tone` `warning`, `title` "<n> question(s)
   waiting on you" when a question is open, and `body` the first open question in a sentence and
   the step it blocks; otherwise, while a step is blocked, `tone` `critical`, `title` "<step title> is
   blocked" and `body` what it waits for.
