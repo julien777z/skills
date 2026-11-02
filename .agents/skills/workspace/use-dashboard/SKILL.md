@@ -36,7 +36,7 @@ one leaves its part of the page out.
 | `status` | `{label, tone?}`: the badge at the right of the navbar. |
 | `progress` | `{value: 0–1, label, detail?, segments?}`: a stat card twice as wide as the others, with the percentage, `detail` as its badge, and a bar. `segments` is `[{label, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1; without `segments` the bar is a plain fill. |
 | `metrics` | `[{label, value, detail?}]`: at most four stat cards beside the progress, `detail` under the figure. |
-| `pages` | `[{title, icon, layout?, status?, sections}]`: one navbar link each, with `status` (`{label, tone?}`) as a pill beside its name while the page holds something that needs the reader. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. `sections` render in order; with `layout` `columns`, the default, callouts, boards, tables, outlines and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
+| `pages` | `[{title, icon, layout?, status?, sections}]`: one navbar link each, with `status` (`{label, tone?}`) shown as a dot in its tone right after the page's icon, and its label read out to screen readers, while the page holds something that needs the reader. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. `sections` render in order; with `layout` `columns`, the default, callouts, boards, tables, outlines and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
 | `references` | `[{text, url}]`: every whole-word occurrence of `text` in any page's text becomes a link to `url`, apart from the navbar, page titles, stat card figures and badges, which stay plain. |
 
 An `icon` is one of `overview`, `progress`, `board`, `checklist`, `list`, `chart`, `activity`,
@@ -141,6 +141,22 @@ Dashboards look alike because they are built alike:
 - **Text is plain.** Titles say what is true in a few words; `detail` explains in a sentence or two
   that reads without the source. A file, section or line is named by its `links` pill, never in the
   title, `detail` or `meta`.
+
+## Previews
+
+A preview, sample or test render — showing a caller's layout, a page someone asked for before real
+data exists, or a change to the app — runs on one made-up scenario, never on real data.
+
+- **Invent the scenario first**: a fictional product, its repositories, people, pull request numbers,
+  environments, settings and dates, then a task that fits them, such as a small team adding bulk
+  export to a fictional invoicing app.
+- **Every value comes from that scenario**: titles, references, links, diffs, checks, questions and
+  notes. No real repository, pull request, person, task, setting or address appears, and links point
+  at `example.com`.
+- **The pages agree with one another**: the same pull requests, counts and names recur on every page,
+  and each section fills its slot as the caller's skill describes, so the preview shows what a real
+  run of that skill would produce.
+- The `subtitle` says it is a sample, such as "Sample dashboard for a made-up task".
 
 ## Render
 

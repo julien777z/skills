@@ -16,6 +16,7 @@ const TEXT_VARIANTS = {
   truncate: { true: 'truncate', false: '' },
   caps: { true: 'uppercase tracking-wide', false: '' },
   measure: { true: 'max-w-[75ch]', false: '' },
+  hidden: { true: 'sr-only', false: '' },
 } as const;
 
 const textVariants: ReturnType<typeof cva<typeof TEXT_VARIANTS>> = cva('', {
@@ -27,6 +28,7 @@ const textVariants: ReturnType<typeof cva<typeof TEXT_VARIANTS>> = cva('', {
     truncate: false,
     caps: false,
     measure: false,
+    hidden: false,
   },
 });
 

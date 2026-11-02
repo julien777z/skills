@@ -32,6 +32,7 @@ import { relativeTime } from '@/lib/time';
 import { cn } from '@/lib/utils';
 import { IconName, type Label, type Page } from '@/spec';
 import { StatusBadge } from './status-badge';
+import { ToneDot } from './tone-dot';
 
 const ICONS: Record<IconName, LucideIcon> = {
   [IconName.OVERVIEW]: LayoutDashboard,
@@ -93,8 +94,9 @@ function PageLinks({
               )}
             >
               <Icon />
+              {page.status && <ToneDot tone={page.status.tone} />}
               {page.title}
-              {page.status && <StatusBadge label={page.status.label} tone={page.status.tone} />}
+              {page.status && <Text hidden>{`, ${page.status.label}`}</Text>}
             </Button>
           </li>
         );
