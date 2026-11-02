@@ -111,6 +111,10 @@ Dashboards look alike because they are built alike:
   `callout` when one thing needs them now, then sections that summarize, such as counts per subject
   or one line per theme naming the page that holds it. Overview repeats no item another page lists;
   each later page goes deeper on one subject and is named for it.
+- **A page serves a stage of the reader's work, never one narrow artifact.** When a request asks for
+  a page about one thing, such as the order pull requests merge in, find the stage that thing
+  belongs to, such as wrapping up to merge and deploy, and build the page for that stage, with the
+  requested thing as one section among what the reader needs there. Name the page for the stage.
 - **Icons say what each thing is.** Give the dashboard the icon that best names its subject, such as
   `progress` for a task's progress or `legal` for legal documents, and each page the icon for what
   it holds, such as `board` for a board of work or `diagram` for a diagram.

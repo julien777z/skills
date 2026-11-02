@@ -1,6 +1,6 @@
 ---
 name: progress
-description: Show the current task's progress as a dashboard built from the session ledger — its plans, which steps are done, running, next or blocked, percent complete, estimated time remaining, questions waiting on the user, the answers already given, the task's pull requests, a Merge order page with a diagram of the order its pull requests merge in and what each merge needs or sets off, and an Architecture page with a diagram of how they work, what each changes, the settings they add, change or remove, and what to keep in mind. Use whenever the user asks for progress, status, a dashboard, what is left or what is waiting on them, at any point in a task.
+description: Show the current task's progress as a dashboard built from the session ledger — its plans, which steps are done, running, next or blocked, percent complete, estimated time remaining, questions waiting on the user, the answers already given, the task's pull requests, a Wrap up page with what is left to get them merged and deployed — readiness, merge and deploy order, deploy needs and checks once live — and an Architecture page with a diagram of how they work, what each changes, the settings they add, change or remove, and what to keep in mind. Use whenever the user asks for progress, status, a dashboard, what is left or what is waiting on them, at any point in a task.
 short_description: 'Show the task’s progress as a dashboard.'
 ---
 
@@ -79,13 +79,13 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **Pages.** The dashboard's `icon` is `progress`. `Overview`, `icon` `overview` and `layout`
   `rows`, holds the callout, the pull requests and the `table` "Plans", in that order. `Progress`,
   `icon` `board`, holds the board, the answered questions, the notes and any other table. While the
-  task has an open or draft pull request, `Merge order` follows, with `icon` `pull-request` and
-  `layout` `rows`: the `diagram` "Merge order", then the `table` "Merge steps", then an `outline`
-  "Between merges" when a merge needs something done before the next. Once step 3 gives the page a
-  pull request to cover, `Architecture` follows them, with `icon` `diagram` and `layout` `rows`: the
-  diagram, then `changes` "Config changes", then `changes` "Migration changes", then an `outline`
-  "What changed in <pull request name>" for each pull request it covers, then an `outline` "Keep in
-  mind".
+  task has an open or draft pull request, `Wrap up` follows, with `icon` `release` and `layout`
+  `rows`: the `table` "Ready to merge", the `diagram` "Merge and deploy order", then the `outline`
+  sections "Between merges", "Deploy" and "Once live", each only when it has something in it. Once
+  step 3 gives the page a pull request to cover, `Architecture` follows them, with `icon` `diagram`
+  and `layout` `rows`: the diagram, then `changes` "Config changes", then `changes` "Migration
+  changes", then an `outline` "What changed in <pull request name>" for each pull request it covers,
+  then an `outline` "Keep in mind".
 - **`table` "Plans"**: one row per plan that is not withdrawn, with the columns Plan, Steps done
   ("<done> of <n>"), Running, Waiting on you and Time left, the summary of what the board shows step
   by step.
@@ -112,24 +112,31 @@ and deliver the same dashboard again on every request so the user keeps one page
   `label` what passes and `change` when a pull request adds or removes the connection. `steps`: how
   the change works, in order, one sentence each, with each step's number on the arrows it describes.
   Keep to the boxes the explanation needs, a dozen at most.
-- **`diagram` "Merge order"**: every open and draft pull request of the task as a node, `label` its
-  name, which `references` makes a link, and `detail` its repository; it uses no `prs` frames, since
-  each box is a pull request already. A merged pull request another one still depends on joins with
-  `change` `removed`, labelled as merged. `edges` run from a pull request to the one that merges
-  after it, `label` what the later one needs from it, such as "its migration", "its published
-  package" or "its API". `steps` say in merge order, one sentence each, what to merge and what that
-  merge sets off, with each step's number on the arrows it releases. Pull requests with no order
-  between them carry no arrow between them, and one step names them together.
-- **`table` "Merge steps"**: one row per open or draft pull request, in merge order, with the
-  columns Step, Pull request, Waits on, Ready and After merge. Waits on names the pull requests or
-  actions it needs first, or "Nothing". Ready is "Yes" only when its checks pass and nothing it
-  waits on is left; otherwise it names what is missing, such as "Checks failing" or "Waits on PR
-  #16". After merge says what merging it sets off, such as a deployment or a migration running, or
-  "Nothing".
+- **`table` "Ready to merge"**: one row per open or draft pull request, in merge order, with the
+  columns Pull request, Checks, Conflicts, Open threads, Waits on and Ready. Checks is "Passing",
+  "Failing: <check>" or "Running"; Conflicts "None" or "With <base>"; Open threads the count of
+  unresolved review threads; Waits on the pull requests or actions it needs first, or "Nothing".
+  Ready is "Yes" only when its checks pass, it has no conflict or open thread, and nothing it waits
+  on is left; otherwise it names the first thing missing.
+- **`diagram` "Merge and deploy order"**: each open or draft pull request as a node, `label` its
+  name, which `references` makes a link, and `detail` its repository, with no `prs` frames; a merged
+  pull request another still depends on joins with `change` `removed`, labelled as merged; and each
+  environment a merge deploys to, such as a staging or production deployment, as a node with
+  `detail` "deploys on merge" or "deployed by hand". `edges` run from a pull request to the one that
+  merges after it, `label` what the later one needs from it, such as "its migration" or "its
+  published package", and from a pull request to each environment its merge deploys. `steps` say in
+  order, one sentence each, what to merge or deploy and what that sets off, each number on the
+  arrows it releases; pull requests with no order between them share a step.
 - **`outline` "Between merges"**: each action a merge needs done before the next one can go, grouped
   by the step it follows, such as `After PR #119 merges`: repointing a dependency to the branch it
-  merged into, relocking, publishing a build. `tone` `critical` when skipping it breaks the next
-  merge, `warning` otherwise.
+  merged into, relocking, publishing a build.
+- **`outline` "Deploy"**: per environment, what reaching it needs that the pull requests do not
+  carry — a secret or setting to set, a grant, a build to publish, a migration to run by hand — and
+  what deploying sets off, such as a migration running.
+- **`outline` "Once live"**: per environment, what to check after it deploys to know the change
+  works there, such as a page to open, a job to watch or a log line to look for, each with a link
+  where one exists. In these three outlines, `tone` is `critical` when skipping the item breaks the
+  next step and `warning` otherwise.
 - **`links` "Pull requests"**: each open and draft pull request, leaving out merged and closed
   ones, which need nothing more from the reader. `label` its name, `url`, `detail` "<owner>/<repo>"
   and the checks and review state just read, `state` its `open` or `draft`, and `status` and
@@ -159,9 +166,8 @@ and deliver the same dashboard again on every request so the user keeps one page
   <what it does to the schema or stored data> · <what the user has to do, or Nothing>", with a
   `diff` link to the migration file in the pull request's diff.
 - **`outline` "Keep in mind"**: what a reviewer or the user needs to know about the changes
-  themselves before relying on them — a risk, a limit, a setting a deployment needs, an effect a
-  merge or deploy has — grouped by when it applies, such as `Before merge`, `Before deploy` and
-  `After deploy`. The order pull requests merge in belongs to the Merge order page, and nothing here
+  themselves before relying on them — a risk, a limit, a behaviour that surprises — grouped by area.
+  What merging and deploying needs or sets off belongs to the Wrap up page, and nothing here
   restates how the work is delivered, such as that a pull request waits for the user's approval,
   stays a draft or runs its checks. `tone` is `critical` for what breaks something if missed and
   `warning` for what needs an action.
