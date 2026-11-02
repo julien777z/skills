@@ -1,6 +1,6 @@
 import type { ComponentProps, ReactNode } from 'react';
 
-import { Grid, Text } from '@/components/primitives';
+import { Grid, Stack, Text } from '@/components/primitives';
 import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -68,7 +68,14 @@ function ProgressBar({ progress, percent }: { progress: ProgressSummary; percent
                     )}
                   />
                 </TooltipTrigger>
-                <TooltipContent>{segment.label}</TooltipContent>
+                <TooltipContent>
+                  <Stack gap="xs">
+                    <Text size="sm" weight="medium">
+                      {segment.label}
+                    </Text>
+                    {segment.detail && <Text size="xs">{segment.detail}</Text>}
+                  </Stack>
+                </TooltipContent>
               </Tooltip>
             ))}
           </div>
