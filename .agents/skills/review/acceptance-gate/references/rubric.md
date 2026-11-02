@@ -19,6 +19,10 @@ is one the author would answer in its own favour, so a different subagent answer
 Ground intent in the user's accepted requirements, the change's history, and the current diff.
 The statement names:
 
+- the user's request in their own words, quoted, with every later word of theirs that widened or
+  narrowed it. Those words bound the change's scope: a restatement in the agent's words, a plan step
+  it wrote or a brief never widens it, and a remedy reaching past them is flagged as a product choice
+  not yet put to the user;
 - the required behavior and ownership boundaries, with the accepted requirements that establish them;
 - the applicable target-contract instruction, the one canonical representation of each owned boundary
   it changes, and every prior or candidate representation the change removes or rejects;

@@ -86,8 +86,9 @@ other hosts. Dispatch the gate with that exact identifier, and retain catalogue 
 state and host receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. It
 receives five things and nothing else:
 
-1. the intent statement, carrying every decision the task has recorded that the item's subject
-   touches, with the user's words, so earlier settled behaviour is not judged as new;
+1. the intent statement, quoting the user's request in their words and carrying every decision the
+   task has recorded that the item's subject touches, with the user's words, so earlier settled
+   behaviour is not judged as new and scope is judged against what the user asked;
 2. the originating diff, with its deletions first; for a Proposal before implementation when no
    change is in flight, explicitly declare that no implementation diff exists and name the current
    source snapshot instead; every Diff, Final acceptance and Base incorporation still requires its

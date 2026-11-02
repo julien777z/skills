@@ -82,6 +82,11 @@ alwaysApply: true
   whose page it is; a phone-width view or a close-up of the same page goes beside that one,
   never alone, since either can belong to several pages. The caption names the page as the
   reader reaches it, such as "the album's Sharing page".
+- **A new behaviour is named as new wherever it is reported.** A progress report, a summary, a pull
+  request description or a capture's caption that shows the product now behaving differently under
+  some condition states that behaviour and where it applies, such as "lists now switch to cards
+  below a set width on every page", never folds it into the fix it arrived with, so the reader can
+  tell a new layout, control or flow from a repair.
 - A delegated worker's report of an outcome — tests pass, pushed, merged, deployed, fixed — is a
   claim. Check it at its source of truth before relaying it or building on it, and tell the user
   what was read, not what was reported; `execute-task`'s **Reported Outcomes** holds the procedure.
