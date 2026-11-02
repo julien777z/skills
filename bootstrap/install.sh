@@ -297,26 +297,18 @@ check_directory() {
   done
 }
 
-hook_registration() {
-  case "$1" in
-    claude) printf '%s %s\n' "$GENERATED_ROOT/.claude/settings.json" "$2/settings.json" ;;
-    *) printf '%s %s\n' "$GENERATED_ROOT/.$1/hooks.json" "$2/hooks.json" ;;
-  esac
-}
-
 register_hooks() {
-  local action="$1" provider="$2" root="$3" source target
+  local action="$1" provider="$2" root="$3" settings=hooks.json
 
-  read -r source target < <(hook_registration "$provider" "$root")
-
-  [ -f "$source" ] || return 0
+  [ "$provider" = claude ] && settings=settings.json
 
   if ! command -v python3 >/dev/null; then
-    [ "$action" = install ] && echo "python3 not found; hooks are linked but not registered in $target" >&2
+    [ "$action" = install ] && echo "python3 not found; hooks are linked but not registered in $root/$settings" >&2
     return 0
   fi
 
-  python3 "$HOOK_REGISTRAR" "$action" "$target" "$source" "$root/hooks"
+  python3 -B "$HOOK_REGISTRAR" "$action" --target "$root/$settings" \
+    --source "$GENERATED_ROOT/.$provider/$settings" --hooks-dir "$root/hooks" --repo-root "$REPO_ROOT"
 }
 
 preflight_provider() {
@@ -356,9 +348,9 @@ preflight_provider() {
 
       check_link "$root/hooks/$(basename "$hook")" || failed=1
     done
-
-    register_hooks check "$provider" "$root" || failed=1
   fi
+
+  register_hooks check "$provider" "$root" || failed=1
 
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -d "$CANONICAL_AGENTS" ]; then
     check_directory "$root/agents" || failed=1
@@ -496,10 +488,7 @@ install_provider() {
   fi
 
   prune_links "$root/hooks"
-
-  if [ -d "$CANONICAL_HOOKS" ]; then
-    register_hooks install "$provider" "$root"
-  fi
+  register_hooks install "$provider" "$root"
 
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -d "$CANONICAL_AGENTS" ]; then
     mkdir -p "$root/agents"
