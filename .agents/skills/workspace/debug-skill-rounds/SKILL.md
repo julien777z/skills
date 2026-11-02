@@ -52,10 +52,10 @@ at once; it is never moved to a file.
   and its scope; then one closing line with its fresh tokens so far, cached tokens beside them when
   the record separates them, its longest subagent, how many subagents read each scope, and each
   pair of overlapping scopes.
-- **Previous loops**: the last five loops not running, the most recent activity first, each as a short block:
-  its skills, when it started and how long it ran, how many rounds and subagents, its fresh tokens
-  with cached tokens beside them when the record separates them, its longest subagent, how many
-  subagents read each scope, and each pair of overlapping scopes.
+- **Previous loops**: the last five loops not running, the most recent activity first, each as a
+  short block: its skills, when it started and how long it ran, how many rounds and subagents, its
+  fresh tokens with cached tokens beside them when the record separates them, its longest subagent,
+  how many subagents read each scope, and each pair of overlapping scopes.
 - **Where the usage went**: at most five lines across both, ranking what cost the most by time and
   by fresh tokens — a subagent, a round that repeated, a scope read several times — each saying
   what it was and its numbers, such as "Final acceptance of the skills PR: 15.2 min, 1.05M fresh
