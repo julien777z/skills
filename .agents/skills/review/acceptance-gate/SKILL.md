@@ -273,16 +273,15 @@ above.
 
 **Repair rounds are counted per objection and per change.** A change gets at most 3 rounds across
 every kind of check, the first and 2 after repairs, as the global rules' review-round limit counts
-them: once 3 have failed it, whatever each raised, the decision that bullet calls for replaces another repair, and an acceptance
-with recorded findings that decision makes is the one exception to the rules below on flagged
-diffs; an in-process check of a small repair is not one of those 3 rounds. While the change is
-under that limit, a flag gets at most two repair rounds of its own, and one a fresh gate raises for
-the first time starts at zero. A flag the gate still raises after its own second repair, with the
-change still under the limit, goes to the user as a report, never as a choice about whether to fix
-it or leave it in place: the open flag,
-each remedy tried and its evidence, the gate's proposed remedy and the recommended next step. Every
-other flag keeps its own repair and gate meanwhile, and the user's reply directs only the flag the
-report names.
+them: once 3 have failed it, whatever each raised, the decision that bullet calls for replaces
+another repair, and an acceptance with recorded findings that decision makes is the one exception to
+the rules below on flagged diffs; an in-process check of a small repair is not one of those 3
+rounds. While the change is under that limit, a flag gets at most two repair rounds of its own, and
+one a fresh gate raises for the first time starts at zero. A flag the gate still raises after its
+own second repair, with the change still under the limit, goes to the user as a report, never as a
+choice about whether to fix it or leave it in place: the open flag, each remedy tried and its
+evidence, the gate's proposed remedy and the recommended next step. Every other flag keeps its own
+repair and gate meanwhile, and the user's reply directs only the flag the report names.
 
 Never rerun an unchanged item hoping for acceptance, argue it through the same gate, rename it to
 reset its history, or keep flagged code because the caller can authorize its merge. Carry unresolved
