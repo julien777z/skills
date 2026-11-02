@@ -3,14 +3,6 @@
   "resources": [
     {
       "kind": "skill",
-      "name": "agent-browser",
-      "repo": "vercel-labs/agent-browser",
-      "skill": "agent-browser",
-      "category": "workspace",
-      "update_on_sync": true
-    },
-    {
-      "kind": "skill",
       "name": "async-python-patterns",
       "repo": "wshobson/agents",
       "skill": "async-python-patterns",

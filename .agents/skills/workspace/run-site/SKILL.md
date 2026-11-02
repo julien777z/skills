@@ -11,7 +11,7 @@ Start and verify the stack within the requested scope. When browser verification
 
 ## Dependencies
 
-- `agent-browser` — the browser automation CLI this skill drives.
+- `use-browser` — the browser this skill drives, through the `agent-browser` CLI.
 - `execute-task` — what happens to a defect a walkthrough finds, under its **Encountered Issues**.
 - `proton-pass` — a sign-in password the repository provides no source for.
 
@@ -81,7 +81,7 @@ preserve configured ports.
 |---|---|---|
 | Every authenticated request returns 401 | A checked-in placeholder shadowed the real value from the session environment | Make the environment win over the dotenv layers; read the running process's environment to confirm |
 | A service starts but every query fails | The database has no schemas | Run schema provisioning before launch and read its output for the failing service |
-| A module is missing at import though the manifest names it | It is declared where the package manager does not install it | Declare it in the manifest's install list, re-lock, and install; never patch the environment by hand |
+| A module is missing at import though the manifest names it | It is declared where the package manager does not install it | Declare it in the manifest's install list, regenerate the lock, and install; never patch the environment by hand |
 | A setup command reports missing settings before doing anything | It imports something that builds the application config at import time | Import only what build tooling needs, and keep a test guarding it |
 | A `run`-style script reports command not found | Its entry point is registered only by an install that has not run since | Invoke bootstrap commands as modules so they need no registration |
 | A dependency service refuses connections | It is not in the started set | Start it through the launcher's service selection |
@@ -109,21 +109,25 @@ say so and name what only a harness rendered.
 ### Sign in
 
 Use the repository's normal sign-in flow and the test identity, tenant, fixtures, provider modes,
-and persistence checks its project guidance names. Use those facts exactly and reuse
-what exists: never invent a test identity or turn a provider fixture into a generic workflow. **Never work around the sign-in wall**: a
-preview route, a stubbed page, a component mounted where it does not ship, or a widened public-route
-matcher proves the component renders and nothing about the screen a user reaches. If sign-in
-genuinely cannot complete, report the walkthrough as not done. Drive browser automation through the
-tab selected under the global browser procedure; never read the user's saved passwords, cookies,
-local storage, or session files.
+and persistence checks its project guidance names. **Walk the change as each kind of user whose
+pages it reaches**, signing in with the identity project guidance names for each role: one role's
+walkthrough says nothing about what another sees. Where the repository provides a one-time sign-in
+link or token, sign in with it and leave the identity's password alone. Use those facts exactly and
+reuse what exists: never invent a test identity or turn a provider fixture into a generic workflow.
+**Never work around the sign-in wall**: a preview route, a stubbed page, a component mounted where
+it does not ship, or a widened public-route matcher proves the component renders and nothing about
+the screen a user reaches. If sign-in genuinely cannot complete, report the walkthrough as not done.
+Drive browser automation through the tab selected under the global browser procedure; never read the
+user's saved passwords, cookies, local storage, or session files.
 
-Keep a password out of argv and the transcript: put it in an environment variable for the one
-command that fills the field, build the script that fills the field, and pipe it to the browser
-command through stdin. The password comes from what the repository provides — the file project
-guidance names, or the helper its tooling uses to set or generate a test identity's password, run
-first when the identity has none yet — and through `proton-pass` only for an account the
-repository provides no source for, such as a deployed or third-party one. Set the value through the native setter and dispatch a bubbling `input` event so a
-framework-controlled input registers it:
+Keep a password or one-time sign-in token out of argv and the transcript: put it in an environment
+variable for the one command that fills the field or opens the link, build that script, and pipe it
+to the browser command through stdin. The password comes from what the repository provides — the
+file project guidance names, or the helper its tooling uses to set or generate a test identity's
+password, run first when the identity has none yet — and through `proton-pass` only for an account
+the repository provides no source for, such as a deployed or third-party one. Set the value through
+the native setter and dispatch a bubbling `input` event so a framework-controlled input registers
+it:
 
 ```bash
 # Account with no repository source: SIGN_IN_PASSWORD="$(PROTON_PASS_AGENT_REASON="<why>" pass-cli item view \

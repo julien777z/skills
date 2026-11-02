@@ -16,8 +16,8 @@ run; each doctor owns only its domain.
 - `execute-task` — present the validated remediation plan through its **Plan** and require explicit
   approval before editing, then implement it under its **Execution**.
 - `code-simplify` — simplify each wave and the complete result.
-- `acceptance-gate` — judge the remediation plan before it is presented and the complete diff
-  before it lands.
+- `acceptance-gate` — judge findings and the complete diff before it lands; execute-task owns
+  remediation-plan approval preparation through its shared proposal-review dependency.
 - `defer-scope` — record work consciously left undone; it runs the gate's admission question itself.
 - `pre-production` — apply the encountered-issue and target-contract policy while implementing.
 - `merge-gate` — for a doctor that delivers in merged batches, the check gate, conflict resolution and
@@ -115,10 +115,10 @@ and check their completion against the change history and final diff.
 
 If no justified correction remains, report the completed coverage and stop.
 
-Otherwise write a decision-complete remediation plan and put it to `acceptance-gate`'s proposal
-question as one item. A flag names the entries to rewrite, and the rewritten plan goes to a fresh
-gate under `acceptance-gate`'s **Bounds**; a flag that section sends to the user is reported in the
-plan as it directs, never silently dropped.
+Otherwise write a decision-complete remediation plan for `execute-task`'s **Plan**. Its
+review-proposal preparation supplies the attacker rounds and independent Proposal verdict before
+presentation; do not run another standalone Proposal gate here. Preserve objections and their
+required dispositions through that shared workflow.
 
 Check each entry against the doctor's change boundary before presenting it. Exclude entries whose
 required exception evidence is absent; approval of a generated plan cannot supply that evidence.

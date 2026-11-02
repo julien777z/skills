@@ -1,6 +1,6 @@
 ---
 name: test-fixture
-description: Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Rejects hard-coded domain test data when a canonical fixture or factory owns it, and enforces existing-coverage reuse before new tests, one class per file with small cases folded into existing owning classes, concise parametrized cases, honest doubles, and regression-proof validation. Its rubric owns what makes a test worth keeping, changing or removing, and its Sweep applies that to a finished change's tests and their neighbours.
+description: Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Rejects hard-coded domain test data when a canonical fixture or factory owns it, and enforces existing-coverage reuse before new tests, one class per file with small cases folded into existing owning classes, concise parametrized cases, honest doubles, and regression validation through existing tools. Its rubric owns what makes a test worth keeping, changing or removing, and its Sweep applies that to a finished change's tests and their neighbours.
 short_description: 'Check test data and fixtures before changing tests or running tests after a fixture change.'
 ---
 
@@ -11,14 +11,24 @@ exercise, and prove that each test protects behavior or an independent contract.
 
 ## Dependencies
 
+- `session-ledger` — owns private task-plan and evidence persistence. The task owner writes the
+  boundary matrix; a worker returns its proposed rows to that owner.
+
 Read the repository's product-constraints skill when the skill listing declares one, found by its
 description rather than assumed by name. It says how broad the fix for an issue encountered while
 tracing a test surface is; without one, fix what the focused pass can finish.
 
 ## Workflow
 
-1. Read the complete [rubric](references/rubric.md) before inspecting, reviewing, changing, or
-   executing any covered test surface. Discover the repository's test roots, distribution and build
+1. Read the repository’s test eligibility policy and applicable testing, framework, and organization
+   guidance before selecting a test surface. Classify the proposed verification by what it does,
+   not its name: a committed assertion does not escape a no-tests policy by being called a check,
+   smoke, or wrapper. If tests are prohibited, use the permitted verification and do not add test
+   files or test infrastructure. Where tests are allowed, compare existing patterns with the
+   applicable guidance; do not adopt a conflicting pattern merely because it already exists or
+   matches the source language. The runtime under test and the assertion framework are separate
+   choices. Read the complete [rubric](references/rubric.md) before inspecting, reviewing, changing,
+   or executing any covered test surface. Discover the repository's test roots, distribution and build
    roots, artifact boundaries, fixture packages, factory owner, shared test utilities, runner
    targets, and analogous sibling tests. For a test of shell, process, container, browser, network,
    or operating-system behavior, identify the runtime CI or the deployment declares before writing
@@ -36,7 +46,10 @@ tracing a test surface is; without one, fix what the focused pass can finish.
    validation unless the test exposes a source defect that changes the implementation. Existing tests
    may still be run to diagnose development failures.
 4. Identify the source owner and its existing test module beneath the corresponding suite and classification. Extend that module before creating another; apply the rubric's class/file boundary test before splitting or relocating a suite.
-   Trace reused imports to their defining owners under the rubric before treating them as canonical.
+   Extend an existing module only when its organization and framework comply with the applicable
+   guidance. When it conflicts, write the coverage in the required framework and organization;
+   an existing test or missing runner does not make the conflicting pattern canonical. Trace reused
+   imports to their defining owners under the rubric before treating them as canonical.
    Reuse the canonical fixture or factory for every domain value. When it lacks required data,
    extend that owner and update its consumers instead of spelling the value in the test.
 5. Reuse an existing case when setup, execution, and assertions match. Parametrize cases that vary
@@ -46,6 +59,21 @@ tracing a test surface is; without one, fix what the focused pass can finish.
    asserting behavior.
 7. Run real deterministic application code and real domain models. Double only boundaries the
    process cannot cross or faults the real path cannot produce, using the shallowest declared seam.
+   At an external, serialized, or persisted boundary, construct values from the canonical model or
+   fixture and then emit the exact representation the production consumer receives. Do not let a
+   model's permissive internal-field input stand in for the boundary contract. Before selecting
+   cases, trace every field and cardinality condition that can change the decision; cover its
+   observable outcomes through the rubric's decision matrix rather than stopping at the reported
+   input shape. When the production path filters, selects, stops, retries, falls back, merges, or
+   persists based on those inputs, prepare a `Boundary matrix` before modifying cases. A task owner
+   writes and reads back the matrix in the task's `session-ledger` plan entry; when the task has no
+   plan entry, the owner creates and reads back a `test-fixture` evidence record in that same
+   private ledger instead. A worker returns proposed rows to the owner and waits for that owner’s
+   persistence receipt. Each row names the boundary reader, emitted representation,
+   behavior-changing condition, and expected observable outcome. In the completion report,
+   reproduce safe matrix rows — field names, shape, and outcome rather than raw payload values —
+   and their test-case mapping, then cite the private ledger entry that established them before
+   implementation.
 8. Before completion, inspect every literal added or changed in tests and test support.
    Replace domain data, sample identities, addresses, names, identifiers, payload fields, and fixture
    facts with values read from the canonical fixture or factory. A provider request or response body
@@ -54,15 +82,25 @@ tracing a test surface is; without one, fix what the focused pass can finish.
    disposition of every changed literal family, including allowed protocol, parametrized-case, and
    ownerless local-control values. A review is incomplete until each family is listed with one of the
    rubric's dispositions, even when that disposition permits it.
-9. Prove every distinct new behavioral guarantee through the mutation workflow below, restore the
-   exact baseline, and run the affected repository targets once on the completed tree with the
-   runner's per-test durations reported. Apply the rubric's cost question to every test added or
-   changed, and to the module holding it, before reporting it done, and report each one's duration
-   and that module's total.
+9. Validate new or strengthened behavioral guarantees through the existing repository checks.
+   Use a temporary mutation experiment below when it resolves a concrete uncertainty, not as a
+   mandatory gate for every changed guarantee. Run the affected targets once on the completed tree
+   using its existing duration reporting. Apply the rubric's cost question to every test added or
+   changed and the module holding it. Report the available test, module and suite durations; mark
+   missing attribution unmeasured. Do not add reporting infrastructure or withhold an ordinary
+   repair's completion because that attribution is unavailable.
 
 ## Mutation Proof
 
-After writing new or materially strengthened behavioral tests, prove each distinct guarantee:
+Mutation experiments are temporary diagnostic work, not a maintained validation system. Reuse
+existing tools and native test selections; do not turn an experiment into committed runners,
+registries, workflow inputs, CI jobs, or recurring gates, including steps hidden inside an existing
+job. Such infrastructure requires a separate explicit user request; approval of a test-repair plan
+or a CI-only execution constraint does not supply it. When the existing route cannot perform the
+experiment, record the limitation and validate the repair with the ordinary existing checks rather
+than building tooling or withholding completion for its absence.
+
+When a focused experiment is useful and supported by the existing route:
 
 1. Select the nearest editable canonical first-party implementation. Never mutate generated or
    vendored output, run generation for proof, or mutate the test itself. Mutate test support only
@@ -85,8 +123,8 @@ After writing new or materially strengthened behavioral tests, prove each distin
    or checkout, and release an exclusive window only after restoration and the passing control.
 
 Never commit or push while a mutation is present. Pure placement, naming, or prose changes that
-claim no new behavior do not need mutation proof. If no canonical owned source can be mutated
-safely, report the exact blocker and do not claim the test was proven effective.
+claim no new behavior need no mutation experiment. If canonical source cannot be mutated safely,
+report that limitation and the ordinary validation performed; do not claim mutation effectiveness.
 
 Report each mutation, the intended regression failure it demonstrated, and the restored passing run.
 
@@ -104,11 +142,11 @@ Apply the complete rubric to every test in that scope — **Test Value And Reten
 dispositions, the **Naming Checks**, **Factory Contents**, **Auditing Existing Doubles**, and the
 **Literal Sweep** — and fix what it finds: repair or rewrite a weak test, fold a duplicate into its
 keeper, and delete one that proves nothing once the rubric's deletion evidence is recorded. A
-repaired or strengthened guarantee takes its mutation proof. The fixes count toward the
+repaired or strengthened guarantee follows the existing-check validation procedure above. The fixes count toward the
 product-constraints skill's size budget like any other incidental change; past it, list what is left
-in the change's report. The rubric's cost question is part of the sweep: read the per-test durations
-from the run that verified the change, and a disproportionate test, parametrized family or module
-in scope is made cheap or removed as the product-constraints skill decides.
+in the change's report. Apply the cost-reporting procedure above to the run that verified the
+change. A disproportionate test, parametrized family or module in scope is made cheap or removed
+as the product-constraints skill decides.
 
 Report each test in scope with its disposition, and for each deletion the evidence the rubric asks
 for.
@@ -123,5 +161,5 @@ Run the locally available targets reached by the final diff. Run the full suite 
 is relevant or the user explicitly requests it.
 
 Report source-to-test placement, sibling conventions checked, fixture and factory owners reused or
-extended, parametrized cases reused, encountered corrections, literal-sweep corrections, mutation
-proofs, and final affected targets.
+extended, parametrized cases reused, encountered corrections, literal-sweep corrections, any mutation
+experiments, and final affected targets.

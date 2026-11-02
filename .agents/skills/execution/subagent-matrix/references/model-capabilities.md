@@ -51,4 +51,4 @@ to test, not supported-model claims or replacements for a newer matching catalog
 Retain the exact request and host receipt. An unsupported rejection invokes only the calling
 workflow's permitted fallback; it never authorizes changing capability policy or repository
 settings. For another host, resolve an identifier from its selection surface or an exact user
-override; a family with no documented or host-resolved candidate remains an identifier hold.
+override; a family with no documented or host-resolved candidate triggers the in-process fallback.

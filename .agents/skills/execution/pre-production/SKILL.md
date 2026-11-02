@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: Apply target-contract constraints to every implementation and review task, including tooling and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply to relevant CI failures after validation classification.
+description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including maintenance, cleanup, tooling, and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply to relevant CI failures after validation classification.
 short_description: 'Apply target-contract constraints to implementation and review tasks.'
 ---
 
@@ -19,6 +19,12 @@ Build the clean target contract instead of preserving transitional behavior.
   valuable stored evidence exist. Apply an explicit statement that affected data is nonexistent or
   disposable; ask only about a concrete conflicting fact or a genuinely unresolved retention choice.
   Do not invent a production environment or require queries against one to confirm that statement.
+- **Operational safeguards enforce evidenced requirements.** Before adding an execution limit,
+  preservation step, or restriction to authorized work, identify the user or repository requirement,
+  service contract, or observed resource risk it enforces. A remote environment, a large dataset, or
+  a hypothetical production concern alone supplies none. Do not invent a cutoff or reduce the
+  requested outcome on that basis; carry out the authorized work and verify it. Preserve limits
+  required by an established contract, and handle measured failures under **Encountered Issues**.
 - Migrate affected users and retained data onto the target contract before removing the old one.
   Release state changes the migration work; it does not by itself justify a legacy runtime path.
 
@@ -78,12 +84,27 @@ with an obsolete owned contract or revision.
   change — in a file it opened, a check it ran, a capture it read — is fixed. A file opened or edited
   only to make such an incidental fix is never itself a source of more incidental cleanup: what else
   it holds is listed, not chased.
-- **A defect the work notices is always fixed, wherever it lives.** Anything the product does that a
-  reader would call broken — an image that never loads, a wrong value, a state shown in the
-  wrong place, a control that does nothing — is fixed in the change in flight, outside both the hop
-  limit and the size budget below. Sitting in a shared component, an owned library or another owned
-  repository the pull request does not otherwise touch is no reason to leave it: the fix goes to that
-  repository's pull request for this work. It is never listed as noticed, offered or deferred.
+- **A defect the work notices is always fixed, wherever it lives.** A defect is what
+  `acceptance-gate`'s rubric calls one: an image that never loads, a wrong value, a state shown in
+  the wrong place, a control that does nothing, a test suite that fails in a fresh checkout, a
+  fixture that builds data the code would never hold, a setup step or documented command that
+  errors. It is fixed in the change in flight, outside both the hop limit and the size budget below.
+  Sitting in a shared component, an owned library or another owned repository the pull request does
+  not otherwise touch is no reason to leave it: the fix goes to that repository's pull request for
+  this work. It is never listed as noticed, offered or deferred.
+- **A security vulnerability the work finds is such a defect, whoever finds it and whenever it
+  arrived.** One a gate, reviewer or audit reports in code the change never touched, one that
+  predates the change, and one another layer is said to stop before that layer is traced on every
+  path the attack takes are all fixed in the change in flight, with a test that reproduces the
+  attack first where one can exist. A shape that may be exploitable is traced to an attacker or
+  ruled out in the same run. It is always closed in the change with the fix that enforces the access
+  the product already intends; only a change that widens access or changes who the feature serves
+  goes to the user, as the global rules' **Task execution and authorization** says. Every mitigation
+  within reach is carried in the change, and a remaining step only another party can take, such as
+  rotating a credential they hold, is reported as a gate with its owner and saved next action, as
+  the global rules' **Tools and environments** says. It is never put to the user as something to
+  consider or an option, recorded as deferred, left as a hardening note, or answered with a
+  recommendation to run an audit or a doctor later.
 - **Incidental cleanup has a size budget.** The incidental part of a change — everything the request
   did not ask for that is not a defect — stays about the size of the requested part, or within 150
   changed lines across 10 files when the requested part is smaller. Inside the budget, everything
@@ -101,7 +122,10 @@ with an obsolete owned contract or revision.
   is applied there, and other pages with the same shape are listed for the user to decide on,
   never changed in the same pass. A shape a standing rule already named as a defect, and a broken
   mechanism, a wrong value, a missing guard or a parallel implementation, stay under the bullets
-  above on every page.
+  above on every page. A page that builds its own copy of a shared component moves onto the shared
+  one in the same pass even though its look changes with it: it takes the look the rest of the
+  product already has, which is no new choice about that page, unless the task's record or the
+  conversation shows the user decided that page's look, in which case the move goes to the user.
 - Inspect the complete mechanism before choosing its repair. Prefer the clean result that solves
   that defect throughout its affected paths; do not equate a broader cleanup with a better fix.
 - The bar is what the cleanest result requires, not what the smallest diff permits. Existing users
@@ -144,8 +168,8 @@ with an obsolete owned contract or revision.
   reaching a store it never reached before, a permission finally applying where it always should have,
   a value newly shown to or withheld from someone — that is the user's decision, and the way to put
   it to them is to state it plainly and carry on with the work that does not depend on the answer.
-  A shape change to an owned contract is not one of those: it is made, with every consumer, and
-  stated in the pull request.
+  A shape change to an owned contract that **Target Contract** admits without a proposal is not one
+  of those: it is made, with every consumer, and stated in the pull request.
 - **Never quietly narrow the work to avoid the conversation.** Choosing the option that changes nothing
   is choosing the sloppier result on the user's behalf while hiding that a choice existed. Silence
   reads as "there was no decision to make".
@@ -153,7 +177,9 @@ with an obsolete owned contract or revision.
   which one removes the most duplication and leaves the fewest mechanisms behind**. Recommend that one.
   A fork only in how the code is built — where shared behavior lives, which mechanism replaces
   parallel copies — is decided by that same test and stated in the pull request, never put to the
-  user.
+  user. Converting existing instances that are not defective to a different shape is not such a
+  fork: it is proposed to the user, as the global rules' **A better shape is proposed, never swept
+  in** says.
   A fork between designs of what the reader sees is ranked by what serves the reader and the flow
   instead, as the global rules' standing-guidance bullet says of design rules.
   The user may take the trade-off or refuse it; they cannot weigh what they were not told.
@@ -197,7 +223,10 @@ with an obsolete owned contract or revision.
   the approval above. Third-party contracts remain governed by **Owned And Third-Party Contracts**.
 - Prefer a deliberate break to an owned API, wire, schema, payload, or stored shape when it
   materially simplifies the result. Update affected consumers and migrate retained data, then remove
-  the old shape; update every consumer and generated contract in the same change.
+  the old shape; update every consumer and generated contract in the same change. A break the
+  requested work or a defect requires is made without a question. One chosen only because another
+  shape would serve better, on a contract the work does not otherwise alter, is proposed to the user
+  first, as the global rules' **A better shape is proposed, never swept in** says.
 - **An owned contract stays owned across repositories.** A consumer in a sibling repository the
   user owns makes the break multi-repository work, never somebody else's decision; only a consumer
   outside the user's control freezes a shape. **Scope Follows The Defect** holds for a break as for

@@ -1,6 +1,6 @@
 ---
 name: review-pass
-description: Run the complete pre-merge review loop over a pull request's changes not yet reviewed — thread triage, a test sweep, a security review of a trust-boundary change, fanned-out simplification, high-effort code review with fixes, base incorporation, final acceptance and two test passes — and record the head it reviewed. Never merges. Use from `execute-task`'s Completion once a task is finished, from `finish-pr` and `merge-now`, and from guidance delivery.
+description: Run the complete pre-merge review loop over a pull request's changes not yet reviewed — thread triage, a test sweep, a security review of a trust-boundary change, scope-sensitive simplification, high-effort code review with fixes, base incorporation, final acceptance and two test passes — and record the head it reviewed. Never merges. Use from `execute-task`'s Completion once a task is finished, from `finish-pr` and `merge-now`, and from guidance delivery.
 short_description: 'Review, simplify and fix what a pull request has not had reviewed yet, then record the reviewed head.'
 ---
 
@@ -29,10 +29,10 @@ happens next; this skill never readies, merges or deploys.
 
 ## Dependencies
 
-- `subagent-matrix` — select the standard tier for this workflow's own sub-agents.
+- `subagent-matrix` — resolve each dispatched role and its launch and handoff contract.
 - `code-simplify` — run the complete simplification and fix pass before any review, routed as
   **Simplification Gate** says.
-- `code-review` — run the complete review and fix workflow, delegated by this skill.
+- `code-review` — run the complete review and fix workflow with its independent lenses and validators.
 - `acceptance-gate` — admit deferrals, gate would-be-deferral fixes and base-incorporation
   refactors, and accept the final diff.
 - `merge-conflict` — resolve every base update this run performs.
@@ -43,17 +43,40 @@ happens next; this skill never readies, merges or deploys.
   dispatch receipts.
 - `agent-lock` — acquire the exact checkout key around every local snapshot capture and source delivery.
 
-Invoke `subagent-matrix` and use its **standard** tier for this workflow's own sub-agents.
-Delegated skills retain their explicitly selected tiers, subject to the user's model override. Record each
+Invoke `subagent-matrix` for each actual role before dispatch; a workflow's general capability tier
+never replaces its role selection. Follow its **Dispatch** ownership and handoff procedure rather
+than adding a coordinator layer for a dependent workflow. Record each
 launched worker's catalogue state, exact dispatch identifier, assignment state and host receipt in the
 task ledger through `session-ledger`. Follow the selector's dispatch and unavailable-model policy.
 
-An explicit unsupported receipt for the required tier's exact identifier, a `dispatch required` or
-`identifier required` result, and any rejection not explicitly unsupported all retain the concrete hold. This
-skill never substitutes an in-process pass for a review, simplification, or gate the required tier cannot
-spawn; the independent `acceptance-gate` remains a separate required checkpoint.
+When a required worker cannot launch, follow `subagent-matrix`'s in-process fallback for its
+assignment and report the loss of independence. The `acceptance-gate` remains a separate checkpoint.
 
 ## Review Scope
+
+**Guidance gets one reviewer.** Every guidance change — skills with their own scripts, assets and
+templates, rules, agent definitions, project guidance and the references it points to — is
+reviewed by one independent reviewer that covers every lens `code-review` would split, a skill's
+scripts and app code included, never a reviewer per lens or one for the prose and another for the
+code. In a pull request that also changes source, the guidance adds no reviewer of its own: one of
+the source review's reviewers reads it. Pass this into `code-review high fix`; it overrides that
+skill's lens fanout.
+
+**A canonical guidance batch uses one coordinated review route.** Freeze every included head and
+complete diff, then have the independent edited reader complete its smoke work before inspecting
+the combined batch diff. That reader's prose review receipt replaces this route's
+high-fix reviewer, not final acceptance; retain its coverage per head. Reuse the receipt
+only while its reviewed head, guidance inputs, and analysis scope remain exact, and rerun only the
+affected concern after a change. Add a reader only for a distinct named risk. This route never
+applies to runtime or source review, never lets an author review their own work, and leaves each
+head to the fresh final acceptance route below.
+
+For that route, the caller freezes the batch before this workflow's general review sequence: the
+edited reader runs the `test-skill` smoke scenarios first, then reviews the complete frozen guidance
+diff. Its clean per-head receipt replaces the generic Workflow step 2 high-fix reviewer and the
+duplicative general validation pass. This workflow then runs fresh final acceptance for each exact
+head through the shared gate. Findings, changed heads, or changed guidance inputs return to the
+ordinary repair and affected-receipt rules; no route for runtime or source work changes.
 
 **Each pass reviews only what no earlier pass reviewed.** A finished task gets its full review once;
 a follow-up after it gets a review of the follow-up, sized to the follow-up.
@@ -198,16 +221,11 @@ Code simplification is the first analysis and mutation phase. Before `code-revie
 sibling modules in their packages, and related code including callers, callees, consumers, analogous
 implementations, and candidate canonical owners.
 
-When the standard tier can spawn, fan this simplification pass out to multiple read-only
-subagents, even when `code-simplify` would ordinarily keep a small scope in process. Partition the
-pull request into coherent app, service, package, or cross-cutting slices that collectively cover
-the entire scope; never divide it by arbitrary file counts. Give every subagent the complete
-`code-simplify` rubric for its slice and require findings anchored to paths and lines with the
-proposed restructuring. An explicit unsupported receipt, a missing identifier, and every other selection
-state retain the concrete hold; the primary agent never performs an independent simplification pass in process
-before the code-review phase. A diff confined to canonical `.agents` Markdown is the exception: one
-reviewer holds a guidance diff whole, so this gate runs its simplification in process over the
-branch's own files with the prose-duplication checks `edit-skill`'s **Behavior** step 7.3 hands it.
+Use code-simplify's scope policy: hold a small coherent scope in process, and dispatch distinct
+read-only readers only for separable scopes needing that coverage. Do not force fanout by file
+count or add a competing size selector. Dispatch and launch-failure handling remain owned by
+subagent-matrix. A canonical guidance batch keeps its in-process prose-duplication pass under
+edit-skill's existing guidance route.
 When the pull request adds public concepts across slices, assign one reviewer the cross-cutting
 interfaces and their existing peers as a coherent slice. Require its receipt to assess whether the
 new concepts are variants of existing ones; do not accept a clean simplification gate until that
@@ -340,6 +358,12 @@ behind.** A suite costs minutes and reports on the tree as it stood when the pas
 outside those two — and outside the narrow repair loop the second one may open — is spent on a tree
 the next fix is about to change.
 
+Freeze a reviewable checkpoint after known implementation, test and formatting repairs. Keep a
+cohort on that input until its reports are collected before dispatching replacements. New fixes
+may be prepared separately; consolidate the surviving corrections into the next checkpoint, then
+apply **Review Continuity** to only the affected concerns. A finished worker or an advanced head
+alone does not start another cohort.
+
 ### Failure relevance
 
 Before a failed test or hosted check can hold either pass, classify it against the reviewed target.
@@ -411,6 +435,10 @@ Carry the pass's state throughout: the current workflow step, repository and PR,
 
 ## Workflow
 
+When the canonical guidance-batch route in **Review Scope** applies, use that route instead of the
+general Workflow step 2 high-fix review and its duplicative validation pass; retain thread triage,
+source validation, simplification, repair, and final acceptance requirements.
+
 Before beginning review, submit and verify a test deployment from the exact current head of a
 runtime pull request with a test-deployment path only when the current request explicitly authorizes
 that deployment. Record the repository and head together with the exact provider app, component,
@@ -442,11 +470,12 @@ to work around this gate.
    starts before all of these are clean. A trivial delta skips the first test pass, steps 2–4, and
    the **Simplification Gate** except for the guidance pass **Review Scope** keeps.
 2. Invoke `code-review high fix` on the open pull-request URL, the exact delegated ref range, or
-   the immutable local `currentSnapshot` artifact when this route has no working pull request. Delegate the
-   **Review Scope** delta as its review target, with the complete merge-base diff, the full touched
-   files and any working fix head as context. An explicit unsupported receipt, a
-   missing identifier, and every other selection state retain the concrete hold; the primary agent
-   never performs the independent high-fix review in process. For a merged range, pass the original
+   the immutable local `currentSnapshot` artifact when this route has no working pull request. The
+   current workflow owner coordinates that run; its independent lenses and validators receive the
+   **Review Scope** delta, complete merge-base diff, full touched files and any working fix head as
+   context. Do not delegate another agent only to coordinate those same producers. When a required
+   worker cannot launch, perform its lens in process under `subagent-matrix` and report the loss of
+   independence. For a merged range, pass the original
    pull request as metadata only and explicitly preserve the range through resolution and
    eligibility checks. Direct fixes to the matching working fix branch rather than changing the
    immutable target.

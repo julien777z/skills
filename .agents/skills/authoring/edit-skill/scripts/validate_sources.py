@@ -147,7 +147,7 @@ def mirror_in_scratch(python: Path, root: Path, agents_dirname: str) -> SourceCh
 
         shutil.copytree(root / agents_dirname, scratch_agents, symlinks=True)
 
-        commands: list[list[str]] = [["mirror-providers"]]
+        commands: list[list[str]] = [["mirror-harnesses"]]
 
         if (scratch_agents / EXTERNAL_RESOURCES_FILENAME).exists():
             commands.insert(0, ["refresh-external-resources", "--dry-run"])

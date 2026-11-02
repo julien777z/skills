@@ -100,8 +100,10 @@ protective attributes, unvalidated redirects, and errors returning internals.
 1. **Change boundary.** The fix for each confirmed finding: the code, tests, configuration,
    contracts and data migration it needs, and the guard that holds it. Refactoring and dependency
    upgrades are outside it.
-2. **A remedy that is a product decision** — requiring an invitation, dropping a feature,
-   narrowing who may act — is the user's; the finding stays open until they choose.
+2. **Every confirmed finding is closed in this run** with the smallest fix that enforces the access
+   the product already intends, as `pre-production`'s security bullet says. Only a change that
+   widens access or changes who the feature serves, such as dropping a feature, goes to the user,
+   offered beside the shipped fix and never in its place.
 3. **Each fix carries a regression test** that performs the attack and fails without the fix and
    passes with it, built under `test-fixture`.
 4. **A hardening note is reported, never changed** in this run.
@@ -115,12 +117,12 @@ protective attributes, unvalidated redirects, and errors returning internals.
 
 ## Report Additions
 
-Ahead of the protocol's skeleton, a summary line: the scope and effort, findings fixed, findings
-waiting on the user, hardening notes, and the pull request. Then:
+Ahead of the protocol's skeleton, a summary line: the scope and effort, findings fixed, product
+changes offered beside a shipped fix, hardening notes, and the pull request. Then:
 
 - a findings table — id, severity, the attack in one line, the fix shipped, and the simpler option
-  offered or `none`; a finding waiting on the user shows its options and the recommended one in the
-  fix cell;
+  offered or `none`; a product change offered beside the fix shows its options and the recommended
+  one in that last cell;
 - hardening notes by id, each with why it is not exploitable;
 - candidates rejected by a precedent, counted by precedent;
 - guards added, each with the shape it holds;

@@ -16,6 +16,7 @@ the rubric whole before any of them and apply it throughout.
 ## Dependencies
 
 - `subagent-matrix` — route every agent a level names through a subagent of the running session.
+- `interactive-skill` — the effort menu under **Effort**.
 
 ## While Writing Code
 
@@ -30,12 +31,13 @@ change writes. A finding in those lines is the change's own defect: it is fixed 
 A security review of a branch, a pull request or pending changes reviews the change, not the
 codebase. Its target is the merge-base diff against the repository's default branch plus any
 untracked files the branch adds, read with the callers, sinks and trust boundaries each changed line
-reaches, so a trace can run past the hunk. It reports only what the change adds or makes reachable,
-never a pre-existing finding the change does not touch.
+reaches, so a trace can run past the hunk. It hunts only what the change adds or makes reachable;
+a pre-existing finding it meets on that path is still reported as a finding.
 
 It runs every phase at the effort stated, over the changed lines and what they reach. A finding in
 lines the running task wrote is fixed in that task's change; any other finding is reported to the
-caller.
+caller, who fixes it in the change in flight, as `pre-production` says of a vulnerability the work
+finds.
 
 ## Effort
 
@@ -44,19 +46,29 @@ A **Diff Review** or codebase audit may state an effort level and a target: `/se
 the target — a path, or a branch, pull request or pending changes for **Diff Review** — which falls
 back to the current working directory.
 
-When a review or audit states no effort, ask, listing every accepted value with its actual coverage:
+When a review or audit states no effort, ask through `interactive-skill` with this menu, each value
+described by its actual coverage and never replaced by a vague label such as "quick" or
+"thorough". Only an effort token picks it, and nothing launches until it is settled:
 
-- `low` — One pass over the target against the rubric, with no delegated agents at all.
-- `medium` — Recon inline, one hunter per attack class recon surfaced, one validator per finding.
-- `high` — Recon fanned out, two hunters on the riskiest classes and one elsewhere, then a refuter
-  and an independent verifier per finding, repeated until a round finds nothing new.
+```yaml
+prompt: Which effort level should the audit run at?
+kind: choice
+choices:
+  - id: low
+    label: low
+    detail: one pass over the target against the rubric, with no delegated agents at all
+  - id: medium
+    label: medium
+    detail: recon inline, one hunter per attack class recon surfaced, one validator per finding
+  - id: high
+    label: high
+    detail: recon fanned out, two hunters on the riskiest classes and one elsewhere, then a refuter and an independent verifier per finding, repeated until a round finds nothing new
+```
 
-Keep each description to one or two sentences, and never replace them with vague labels such as
-"quick" or "thorough". Ask through the host's structured question tool when it has one and a plain
-chat question otherwise, and launch nothing until the answer arrives.
-
-When the host cannot ask, as in a non-interactive or automated run, fall back to `medium` and say the
-fallback was used.
+Follow the global rules' **Task execution and authorization** question-tool procedure, including
+timeout retries. If neither a question tool nor chat can reach the user, retain the missing effort
+as a gate with its saved next action rather than selecting it from silence. An effort explicitly
+supplied by the invocation or its calling workflow needs no question.
 
 | Effort | Recon | Hunters | Validation | Independent verification |
 |---|---|---|---|---|
