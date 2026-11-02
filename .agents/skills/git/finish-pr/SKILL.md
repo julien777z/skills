@@ -2,7 +2,6 @@
 name: finish-pr
 description: Finish the task's pull requests at the user's command — review and fix the whole of each pull request, with its touched files, related code and sibling modules, then merge each one at its accepted head. Use only when the user directly invokes it.
 short_description: 'Review and fix the whole pull request, then merge it.'
-disable-model-invocation: true
 ---
 
 # Finish PR
