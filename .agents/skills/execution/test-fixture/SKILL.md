@@ -20,8 +20,15 @@ tracing a test surface is; without one, fix what the focused pass can finish.
 
 ## Workflow
 
-1. Read the complete [rubric](references/rubric.md) before inspecting, reviewing, changing, or
-   executing any covered test surface. Discover the repository's test roots, distribution and build
+1. Read the repository’s test eligibility policy and applicable testing, framework, and organization
+   guidance before selecting a test surface. Classify the proposed verification by what it does,
+   not its name: a committed assertion does not escape a no-tests policy by being called a check,
+   smoke, or wrapper. If tests are prohibited, use the permitted verification and do not add test
+   files or test infrastructure. Where tests are allowed, compare existing patterns with the
+   applicable guidance; do not adopt a conflicting pattern merely because it already exists or
+   matches the source language. The runtime under test and the assertion framework are separate
+   choices. Read the complete [rubric](references/rubric.md) before inspecting, reviewing, changing,
+   or executing any covered test surface. Discover the repository's test roots, distribution and build
    roots, artifact boundaries, fixture packages, factory owner, shared test utilities, runner
    targets, and analogous sibling tests. For a test of shell, process, container, browser, network,
    or operating-system behavior, identify the runtime CI or the deployment declares before writing
@@ -39,7 +46,10 @@ tracing a test surface is; without one, fix what the focused pass can finish.
    validation unless the test exposes a source defect that changes the implementation. Existing tests
    may still be run to diagnose development failures.
 4. Identify the source owner and its existing test module beneath the corresponding suite and classification. Extend that module before creating another; apply the rubric's class/file boundary test before splitting or relocating a suite.
-   Trace reused imports to their defining owners under the rubric before treating them as canonical.
+   Extend an existing module only when its organization and framework comply with the applicable
+   guidance. When it conflicts, write the coverage in the required framework and organization;
+   an existing test or missing runner does not make the conflicting pattern canonical. Trace reused
+   imports to their defining owners under the rubric before treating them as canonical.
    Reuse the canonical fixture or factory for every domain value. When it lacks required data,
    extend that owner and update its consumers instead of spelling the value in the test.
 5. Reuse an existing case when setup, execution, and assertions match. Parametrize cases that vary
