@@ -50,6 +50,41 @@ function splitColumns(groups: OutlineGroup[], expanded: boolean): OutlineGroup[]
   return [groups.slice(0, split), groups.slice(split)];
 }
 
+function PlainGroup({ group }: { group: OutlineGroup }): ReactNode {
+  return (
+    <Stack gap="sm">
+      <Text as="h3" size="sm" weight="medium" tone="muted">
+        <RichText text={group.title} />
+      </Text>
+      <Stack gap="md">
+        {withKeys(group.items, (item) => item.title).map(({ key, item }) => (
+          <Stack key={key} gap="xs">
+            <Stack direction="row" align="start" gap="sm">
+              <ToneDot tone={item.tone} offset />
+              {item.tag && <StatusBadge label={item.tag} tone={item.tone} dot={false} />}
+              <Text weight="medium" size="sm" breakAnywhere>
+                <RichText text={item.title} />
+              </Text>
+            </Stack>
+            <Stack gap="sm" inset="item">
+              {item.meta && (
+                <Text size="xs" tone="muted" breakAnywhere>
+                  <RichText text={item.meta} />
+                </Text>
+              )}
+              <Text size="sm" tone="muted" breakAnywhere>
+                <RichText text={item.detail} />
+              </Text>
+              {item.points && <TextList items={item.points} />}
+              {item.links && <SourceLinks links={item.links} />}
+            </Stack>
+          </Stack>
+        ))}
+      </Stack>
+    </Stack>
+  );
+}
+
 function Group({ group, expanded }: { group: OutlineGroup; expanded: boolean }): ReactNode {
   const [open, setOpen] = useState<string[]>(() =>
     opensAll(group, expanded) ? group.items.map((_, index) => String(index)) : [],
@@ -142,9 +177,13 @@ export function OutlineSection({ section }: { section: OutlineSectionSpec }): Re
       <Grid columns={columns.length > 1 ? 'pair' : 'single'} gap="loose">
         {columns.map((column) => (
           <Stack key={column.map((group) => group.title).join('|')} gap="xl">
-            {column.map((group) => (
-              <Group key={group.title} group={group} expanded={expanded} />
-            ))}
+            {column.map((group) =>
+              section.collapsible === false ? (
+                <PlainGroup key={group.title} group={group} />
+              ) : (
+                <Group key={group.title} group={group} expanded={expanded} />
+              ),
+            )}
           </Stack>
         ))}
       </Grid>

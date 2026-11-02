@@ -74,14 +74,15 @@ the request asks for a new page.
      item per launch saying who, how many and when, toned `warning` for a launch that always runs
      and neutral for a conditional one; then a `table` `Skills` with the columns Skill, Role and
      Started by, and `details` holding each row's skill write-up, so clicking a skill opens it.
-   - **Skill write-up**: an `outline` with `expanded` and `stacked` set, `title` the skill's name and
+   - **Skill write-up**: an `outline` with `stacked` set and `collapsible` false, `title` the skill's name and
      `description` its role in a sentence. Its groups: "Subagents", with an item "How many", the
      subagents one run starts, always-run and conditional launches counted apart, and an item "When
      they start", the steps that launch them, or a single item "None" when it starts none; "Review
      rounds", whether it runs review rounds, how many it allows and what ends them, or "None"; and
      "What happens", one item per step in order, titled "<n>. <step>", `detail` what the step does,
      and `points` one per launch in that step, "<count> <role>: <what they do>", left out for a step
-     that launches none. Each item's `links` take a `spec` link to the lines that state it.
+     that launches none. Its items carry no `links`: the page's outline already points at the
+     sources.
    - Every claim points at its source: each outline item's `links` take a `spec` link to the
      `SKILL.md` lines that state it, at the commit read, and `references` make each skill's name a
      link to its whole `SKILL.md` wherever the page's text names it. Each item's `meta` names the

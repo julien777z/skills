@@ -561,6 +561,7 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
             ),
             "expanded": FLAG,
             "stacked": FLAG,
+            "collapsible": FLAG,
         },
         frozenset({"groups"}),
     ),
