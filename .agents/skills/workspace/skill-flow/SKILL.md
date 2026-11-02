@@ -12,8 +12,9 @@ short_description: 'Show how the skills run, as a dashboard of flows by kind of 
 
 ## Pages
 
-The dashboard's `icon` is `diagram`. After `Overview`, one page per kind of work, each named and
-iconed as below and holding the skills that kind of work runs through. A skill sits on the page of
+The dashboard's `icon` is `diagram`. After `Overview` comes `Usage`, the view across every skill
+of where subagents start, what they read and how often review repeats, then one page per kind of
+work, each named and iconed as below and holding the skills that kind of work runs through. A skill sits on the page of
 the work it belongs to and appears on another only as a node that page's flow reaches.
 
 | Page | `icon` | Starts from |
@@ -25,7 +26,8 @@ the work it belongs to and appears on another only as a node that page's flow re
 | Doctors | `shield` | `doctor-protocol` and the doctors that run on it |
 | Deferrals | `checklist` | `defer-scope`, `execute-defer-scope` and `defer-execution` |
 
-A request that names one skill or one kind of work builds `Overview` and only the pages it reaches.
+A request that names one skill or one kind of work builds `Overview`, `Usage` and only the pages it
+reaches.
 A kind of work that gains or loses skills changes its page's flow, never this table's pages, unless
 the request asks for a new page.
 
@@ -48,7 +50,10 @@ the request asks for a new page.
    runs another's phases, the launch belongs to the skill whose run starts it. These are structural
    counts, never measured time or cost. For each skill on a page, also record its own run in
    order: each step it takes, the subagents that step launches with how many and what they do, and
-   its review rounds — whether it has any, how many it allows, and what ends them.
+   its review rounds — whether it has any, how many it allows, what ends them, and what a later
+   round reruns. For every launch, also record the scope each subagent reads: the change's diff,
+   only what changed since the last review, the whole files it touches, related files such as
+   callers and siblings, one area of the repository, or the whole repository.
 4. **Recheck the sources** before building. When a file the map cites changed while you read, map it
    again; never show a mix of two snapshots as current. A change to a file the map does not cite
    leaves it standing, and links stay on the commit read. A source that is missing or still
@@ -64,6 +69,19 @@ the request asks for a new page.
      launches (the launch points its flow reaches) and Loops (how many repair or rerun loops, then
      each in a few words); then `notes` `How to read the flows`, one line each for an invocation
      arrow, a launch arrow and a borrowed-rubric arrow as their labels show them.
+   - `Usage`, `icon` `chart` and `layout` `rows`, across every skill the dashboard maps:
+     - a `table` `Subagent launches`, one row per launch point, most subagents per run first, with
+       the columns Skill, Step ("<n>. <step>"), Subagents (how many per round), Rounds (the most a
+       run allows, 1 without review rounds), Most per run (subagents per round times rounds), Scope
+       (what each subagent reads, as recorded in step 3) and Runs (always, or only when its
+       condition holds, naming it);
+     - a `table` `Review rounds`, one row per skill with review rounds, with the columns Skill,
+       Rounds (the most allowed), Ends when, and Each later round reruns (every reviewer, only the
+       reviewers a repair affects, or only the repaired lines);
+     - an `outline` `Same scope read twice`, `collapsible` false, one item per scope two or more
+       skills' launches read in one task's run, titled with the scope and naming each skill and step
+       that reads it, toned `warning` when every one of those launches always runs; left out when
+       none overlap.
    - Each kind-of-work page, `layout` `rows`: a `diagram` `Flow` whose nodes are the skills the
      page's starting skills reach directly, each labelled with its name and its role in a few words,
      and one node per launch named for the subagents it starts and how many, such as `Plan
