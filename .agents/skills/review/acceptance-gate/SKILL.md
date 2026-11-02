@@ -173,10 +173,11 @@ rubric's diff test flags. For an owned boundary, it also names every representat
 or writes and flags a second representation, including one hidden behind a helper. A verdict with no
 added guard says `no guard added` in those words.
 
-**Then it lists every product choice the diff makes**, as the global rules define one — what a reader
-now meets under some condition that they did not before: a layout at a width or content size, a
-control, a step, a quantity, a change carried past the place the user named — each with the user's
-words in the intent statement that settle it. One with none is a flag whose remedy is putting the
+**Then it lists every product choice the diff makes**, as the global rules define one — a change to
+what a feature does or shows, a remedy whose visible effect is large, such as a layout, control or
+flow changing across many pages, a change carried past the surface the user named — each with the
+user's words in the intent statement that settle it. Small presentation decisions on the surface in
+hand are not listed. One with none is a flag whose remedy is putting the
 choice to the user before the code stands, whatever the step calls itself, a fix included. An
 earlier accepted step, a plan record without the user's words, or a brief calling the choice decided
 is not those words. A verdict with none says `no product choice added` in those words.
