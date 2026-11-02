@@ -1,11 +1,13 @@
 import { ChevronRight } from 'lucide-react';
-import { type ReactNode, useState } from 'react';
+import { type ReactNode, useRef, useState } from 'react';
 
 import { RichText, ToneDot } from '@/components';
 import { Stack, Text } from '@/components/primitives';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { cn, withKeys } from '@/lib/utils';
 import type { TreeNode, TreeSection as TreeSectionSpec } from '@/spec';
-import { SectionCard } from './section-card';
+import { DashboardSection } from './dashboard-section';
+import { InDialogContext, SectionCard } from './section-card';
 
 const DEFAULT_OPEN_DEPTH: number = 1;
 
@@ -21,6 +23,8 @@ function TreeBranch({ nodes, depth, openDepth }: { nodes: TreeNode[]; depth: num
 
 function TreeItem({ node, depth, openDepth }: { node: TreeNode; depth: number; openDepth: number }): ReactNode {
   const [open, setOpen] = useState(depth < openDepth);
+  const [showDetails, setShowDetails] = useState(false);
+  const opener = useRef<HTMLButtonElement | null>(null);
   const children = node.children ?? [];
 
   return (
@@ -41,9 +45,20 @@ function TreeItem({ node, depth, openDepth }: { node: TreeNode; depth: number; o
         )}
         <Stack gap="none" grow>
           <Text size="sm" breakAnywhere>
-            <Text as="span" size="sm" weight="medium">
-              <RichText text={node.label} />
-            </Text>
+            {node.details ? (
+              <button
+                ref={opener}
+                type="button"
+                onClick={() => setShowDetails(true)}
+                className="text-left font-medium underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
+              >
+                {node.label}
+              </button>
+            ) : (
+              <Text as="span" size="sm" weight="medium">
+                <RichText text={node.label} />
+              </Text>
+            )}
             {node.meta && (
               <Text as="span" size="sm" tone="muted" numeric>
                 {' '}
@@ -59,6 +74,21 @@ function TreeItem({ node, depth, openDepth }: { node: TreeNode; depth: number; o
         </Stack>
       </Stack>
       {open && children.length > 0 && <TreeBranch nodes={children} depth={depth + 1} openDepth={openDepth} />}
+      {node.details && (
+        <Dialog open={showDetails} onOpenChange={setShowDetails}>
+          <DialogContent
+            className="max-h-[85vh] overflow-y-auto sm:max-w-3xl"
+            onCloseAutoFocus={(event) => {
+              event.preventDefault();
+              opener.current?.focus();
+            }}
+          >
+            <InDialogContext.Provider value>
+              <DashboardSection section={node.details} />
+            </InDialogContext.Provider>
+          </DialogContent>
+        </Dialog>
+      )}
     </li>
   );
 }

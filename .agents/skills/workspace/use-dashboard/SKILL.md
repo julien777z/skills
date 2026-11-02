@@ -54,7 +54,10 @@ each led by its `kind` — `doc`, `code`, `diff`, `spec`, `pull-request`, `confi
 `terms-of-service.md L324` or `export.py L40–L58`. `at` is an ISO 8601
 timestamp the page shows in the viewer's own timezone on a 12-hour clock, such as `9:05 PM`, with the
 date when it is not today. Every section takes an optional `description`, one sentence shown under
-its title. Section types:
+its title, and `counted`, which shows how many items a `table`, `notes`, `links` or `changes`
+section holds beside its title. Set it only on a list whose length changes as the work does, such as
+the session's pull requests or the findings still open; a fixed list, such as a legend or the steps
+of a process, carries no count. Section types:
 
 | `type` | Fields | Item fields |
 | --- | --- | --- |
@@ -65,7 +68,7 @@ its title. Section types:
 | `notes` | `title`, `items` | each item a string |
 | `changes` | `title`, `items`, `page_size?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`, `links?`: a named part with its change as a colored badge |
 | `outline` | `title`, `groups: [{title, items}]`, `expanded?` (every item starts open when true), `stacked?` (groups run in one column, each across the full width, for groups read in order), `collapsible?` (false shows every item in full with no toggle, for a short write-up read top to bottom) | `title`, `detail`, `tone?`, `tag?`, `meta?`, `links?`, `points?`: a headline that opens to its detail, with `points` as a bulleted list under it, with `tag` as a badge in the item's tone (neutral without one) and `meta` as small text; without `expanded`, a group of one or two items shows them open |
-| `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `meta?`, `tone?`, `children?`: nested entries, each with children opening and closing from a chevron, `meta` beside its label, for a whole made of parts made of parts |
+| `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `meta` beside its label, and `details`, one section, opening in a dialog from the entry's label; for a whole made of parts made of parts |
 | `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?` | node: `id`, `label`, `detail?`, `pr?`, `change?`; edge: `from`, `to`, `label?`, `step?`, `change?`; pr: `ref`, `url`; each step a string |
 
 A diagram draws each node as a box inside a frame titled with the `ref` its `pr` names, and each
@@ -197,7 +200,8 @@ data exists, or a change to the app — runs on one made-up scenario, never on r
    published page or browser tab.
 
 Change a delivered dashboard only by re-rendering its whole spec, never by editing the page's
-HTML, which skips the renderer's validation. Change the page itself only in `app/`: its shadcn
+HTML, which skips the renderer's validation. Everything the reader can click, a table row or tree
+entry that opens a dialog included, shows the pointer cursor. Change the page itself only in `app/`: its shadcn
 components live in `app/src/components/ui/` and are added with the shadcn CLI. The spec is declared
 once, in `scripts/` (its enums in `models.py`, its shapes in `render.py`), and `render.py` writes the
 app's TypeScript types from it into the build. Run `npm ci` once and then `npm run check` in `app/`

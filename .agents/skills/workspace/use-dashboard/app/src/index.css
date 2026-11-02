@@ -104,6 +104,12 @@ body {
     @apply border-border outline-ring/50;
   }
 
+  /* Tailwind v4's preflight gives buttons the default arrow cursor. */
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+
   a:not([data-slot]) {
     @apply font-medium text-info underline-offset-4 hover:underline;
   }

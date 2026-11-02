@@ -22,7 +22,12 @@ export function TableSection({ section }: { section: TableSectionSpec }): ReactN
   }
 
   return (
-    <SectionCard title={section.title} description={section.description} summary={section.rows.length} wide>
+    <SectionCard
+      title={section.title}
+      description={section.description}
+      summary={section.counted ? section.rows.length : undefined}
+      wide
+    >
       <div className="overflow-hidden rounded-lg border">
         <Table>
           <TableHeader className="bg-muted">

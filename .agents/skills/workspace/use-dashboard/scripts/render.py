@@ -278,15 +278,20 @@ def check_tree_nodes(value: object, path: str) -> None:
     check_objects(value, path, shape=TREE_NODE_SHAPE)
 
 
+def check_section(section: object, path: str) -> None:
+    """Require one section of a known type."""
+
+    raw_type = section.get("type") if isinstance(section, dict) else None
+    section_type = check_choice(raw_type, f"{path}.type", SectionType)
+
+    check_object(section, path, SECTION_SHAPES[section_type])
+
+
 def check_sections(value: object, path: str) -> None:
     """Require a list of sections."""
 
     for index, section in enumerate(check_list(value, path, allow_empty=True)):
-        section_path = f"{path}[{index}]"
-        raw_type = section.get("type") if isinstance(section, dict) else None
-        section_type = check_choice(raw_type, f"{section_path}.type", SectionType)
-
-        check_object(section, section_path, SECTION_SHAPES[section_type])
+        check_section(section, f"{path}[{index}]")
 
 
 TEXT: Final[Field] = Field(check=check_text, typescript="string")
@@ -328,6 +333,7 @@ def section_shape(
         ),
         "title": TEXT,
         "description": TEXT,
+        "counted": FLAG,
     } | fields
     section_required = frozenset({"type", "title"}) | required
 
@@ -509,6 +515,7 @@ TREE_NODE_SHAPE: Final[ObjectShape] = ObjectShape(
         "meta": TEXT,
         "tone": TONE,
         "children": Field(check=check_tree_nodes, typescript="TreeNode[]"),
+        "details": Field(check=check_section, typescript="Section"),
     },
     required=frozenset({"label"}),
 )

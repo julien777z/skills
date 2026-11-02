@@ -1,14 +1,37 @@
 ---
 name: skill-flow
-description: "Show how the skills run as a dashboard: one page per kind of work (execution, review, delivery, guidance, doctors, deferrals), each a diagram of which skill invokes, spawns or borrows from which, where subagents start and how many, read from the current canonical guidance. Use when asked how skills run, what calls what, where subagents spawn, or for the flow of one skill or kind of work. Read-only: it never runs the workflows it shows."
-short_description: 'Show how the skills run, as a dashboard of flows by kind of work.'
+description: "Show how the skills run as a dashboard: one page per kind of work (execution, review, delivery, guidance, doctors, deferrals), each a diagram of which skill invokes, spawns or borrows from which, where subagents start and how many, read from the current canonical guidance; or interrogate a skill or a whole flow, asking the user about each substantial step with a recommendation for using fewer subagents to better effect, and applying what they agree. Use when asked how skills run, what calls what, where subagents spawn, for the flow of one skill or kind of work, or to review, tune or interrogate skill flows. It never runs the workflows it shows."
+short_description: 'Show how the skills run, or interrogate a flow to tune it.'
 ---
 
 # Skill Flow
 
 ## Dependencies
 
+- `interactive-skill` — offer the **Modes** menu when the request does not pick one.
 - `use-dashboard` — render the dashboard and deliver it.
+- `edit-skill` — make the changes the user agrees to in Interrogate.
+- `session-ledger` — record each answer the user gives in Interrogate.
+
+## Modes
+
+```yaml
+prompt: What do you want to do with the skill flows?
+kind: choice
+choices:
+  - id: show
+    label: Show
+    detail: build the dashboard of how the skills run
+    aliases: [dashboard, map, view]
+    when: the request asks how skills run, what calls what, or where subagents start
+  - id: interrogate
+    label: Interrogate
+    detail: walk a skill or flow with you, step by step, and tune it
+    aliases: [configure, tune, review the flow, audit the flow]
+    when: the request asks to question, configure, tune or change how a skill or flow runs
+```
+
+**Show** follows **Pages** and **Workflow**. **Interrogate** follows **Interrogate**.
 
 ## Pages
 
@@ -78,7 +101,8 @@ the request asks for a new page.
        launch as an entry labelled "<count> <role>", `meta` its rounds and what it reads, such as
        "up to 3 rounds · diff and whole touched files", and `detail` what the subagents do, what a
        later round reruns, and the condition it runs under when it only sometimes runs. A launch
-       that always runs is toned `warning`. A step with no subagents anywhere beneath it is left
+       that always runs is toned `warning`. Every entry's `details` open what it is: a skill's,
+       its skill write-up; a step's or a launch's, its entry write-up. A step with no subagents anywhere beneath it is left
        out, so the tree holds only where subagents start;
      - an `outline` `Same scope read twice`, `collapsible` false, one item per scope two or more
        skills' launches read in one run, titled with the scope and naming each skill and step that
@@ -95,22 +119,55 @@ the request asks for a new page.
      and neutral for a conditional one; then a `table` `Skills` with the columns Skill, Role and
      Started by, and `details` holding each row's skill write-up, so clicking a skill opens it.
    - **Skill write-up**: an `outline` with `stacked` set and `collapsible` false, `title` the skill's name and
-     `description` its role in a sentence. Its groups: "Subagents", with an item "How many", the
+     `description` its `short_description`. Its groups: "About", with an item "Modes", one of `points` per choice its menu declares
+     with the choice's label and detail, or "One mode" when it declares none, and an item "Started
+     by", whether only a person starts it or an agent may too, from its frontmatter; "Subagents", with an item "How many", the
      subagents one run starts, always-run and conditional launches counted apart, and an item "When
      they start", the steps that launch them, or a single item "None" when it starts none; "Review
      rounds", whether it runs review rounds, how many it allows and what ends them, or "None"; and
      "What happens", one item per step in order, titled "<n>. <step>", `detail` what the step does,
      and `points` one per launch in that step, "<count> <role>: <what they do>", left out for a step
-     that launches none. Its items carry no `links`: the page's outline already points at the
-     sources.
-   - Every claim points at its source: each outline item's `links` take a `spec` link to the
-     `SKILL.md` lines that state it, at the commit read, and `references` make each skill's name a
-     link to its whole `SKILL.md` wherever the page's text names it. Each item's `meta` names the
-     launch's capability level from `subagent-matrix`, or says it is unstated.
+     that launches none.
+   - **Entry write-up**: an `outline` with `stacked` set and `collapsible` false, `title` the
+     entry's label and `description` what it does in a sentence. Its groups, each only when it has
+     something in it: "Why subagents start", one item per launch at or beneath the entry, saying
+     what those subagents exist to catch or produce; and "Gotchas", what a reader tuning the flow
+     should know, such as the condition that starts a launch, what a later round reruns, a scope
+     another skill also reads in the same run, or a count that grows with the size of the change.
+   - `references` make each skill's name a link to its whole `SKILL.md`, at the commit read,
+     wherever the page's text names it; outline items carry no `links`. Each item in `Where
+     subagents start` has `meta` naming the launch's capability level from `subagent-matrix`, or
+     saying it is unstated.
 6. **Deliver** through `use-dashboard`. Name what is incomplete, if anything, in one line.
+
+## Interrogate
+
+Walk a skill or a flow with the user and change what they decide should change. The goal is skill
+flows that start fewer subagents and read less without missing what the step exists to catch.
+
+1. **Set the scope.** Context the user gives — a skill, a kind of work, a concern such as review
+   rounds — sets it. With none, ask through the question tool whether to interrogate every flow,
+   with each kind of work from **Pages** as the other choices.
+2. **Map it** as **Workflow** steps 1 to 4 do, recording every launch, its scope and condition, and
+   every review loop with what a later round reruns.
+3. **Pick the steps worth a question.** A step is worth one when changing it would change how many
+   subagents start, how much they read, or what a review can miss: a launch, a review loop and what
+   its later rounds rerun, a scope wider than the step's job, a scope another skill reads in the
+   same run, or a launch that always runs where a condition would do. Every other step passes
+   without a question, and the report lists them in one line.
+4. **Ask, most subagents first, up to four questions per call** of the question tool. Each says
+   what the step does now in a sentence: the skill and step, how many subagents, when, what they
+   read and for how many rounds. Its choices are keeping it as it is and one or two concrete changes,
+   such as fewer subagents, a narrower scope, a condition on the launch, fewer rounds, or later
+   rounds that rerun only the reviewers a repair affects. The recommended choice comes first, with
+   its reason in what it saves and what it could miss.
+5. **Record every answer** with `session-ledger` as a `decision` entry, in the user's words.
+6. **Make the agreed changes** through `edit-skill`, as one change across the skills they touch,
+   then report per skill what changed and what was kept.
 
 ## Guardrails
 
-- Never invoke or dispatch a workflow the dashboard shows; reading its sources is the whole job.
-- Show the current flow only. A proposed change, or a recommendation, appears only when the request
-  asks for it, as an outline beside the flow, never drawn into it.
+- Never invoke or dispatch a workflow the dashboard shows; reading its sources is the whole job of
+  Show, and of Interrogate until the user answers.
+- Show draws the current flow only. A proposed change, or a recommendation, appears only when the
+  request asks for it, as an outline beside the flow, never drawn into it.

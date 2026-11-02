@@ -50,38 +50,43 @@ function splitColumns(groups: OutlineGroup[], expanded: boolean): OutlineGroup[]
   return [groups.slice(0, split), groups.slice(split)];
 }
 
-function PlainGroup({ group }: { group: OutlineGroup }): ReactNode {
+function PlainGroup({ group, first }: { group: OutlineGroup; first: boolean }): ReactNode {
   return (
-    <Stack gap="sm">
+    <Grid gap="sm" divider={first ? 'none' : 'top'}>
       <Text as="h3" size="sm" weight="medium" tone="muted">
         <RichText text={group.title} />
       </Text>
-      <Stack gap="md">
+      <Stack gap="sm">
         {withKeys(group.items, (item) => item.title).map(({ key, item }) => (
           <Stack key={key} gap="xs">
             <Stack direction="row" align="start" gap="sm">
-              <ToneDot tone={item.tone} offset />
+              {item.tone && <ToneDot tone={item.tone} offset />}
               {item.tag && <StatusBadge label={item.tag} tone={item.tone} dot={false} />}
-              <Text weight="medium" size="sm" breakAnywhere>
-                <RichText text={item.title} />
-              </Text>
-            </Stack>
-            <Stack gap="sm" inset="item">
-              {item.meta && (
-                <Text size="xs" tone="muted" breakAnywhere>
-                  <RichText text={item.meta} />
+              <Text size="sm" breakAnywhere>
+                <Text as="span" size="sm" weight="medium">
+                  <RichText text={item.title} />
+                </Text>{' '}
+                <Text as="span" size="sm" tone="muted">
+                  <RichText text={item.detail} />
+                  {item.meta && (
+                    <>
+                      {' · '}
+                      <RichText text={item.meta} />
+                    </>
+                  )}
                 </Text>
-              )}
-              <Text size="sm" tone="muted" breakAnywhere>
-                <RichText text={item.detail} />
               </Text>
-              {item.points && <TextList items={item.points} />}
-              {item.links && <SourceLinks links={item.links} />}
             </Stack>
+            {item.points && (
+              <Stack inset="item">
+                <TextList items={item.points} />
+              </Stack>
+            )}
+            {item.links && <SourceLinks links={item.links} />}
           </Stack>
         ))}
       </Stack>
-    </Stack>
+    </Grid>
   );
 }
 
@@ -176,10 +181,10 @@ export function OutlineSection({ section }: { section: OutlineSectionSpec }): Re
     <SectionCard title={section.title} description={section.description} wide>
       <Grid columns={columns.length > 1 ? 'pair' : 'single'} gap="loose">
         {columns.map((column) => (
-          <Stack key={column.map((group) => group.title).join('|')} gap="xl">
-            {column.map((group) =>
+          <Stack key={column.map((group) => group.title).join('|')} gap={section.collapsible === false ? 'lg' : 'xl'}>
+            {column.map((group, position) =>
               section.collapsible === false ? (
-                <PlainGroup key={group.title} group={group} />
+                <PlainGroup key={group.title} group={group} first={position === 0} />
               ) : (
                 <Group key={group.title} group={group} expanded={expanded} />
               ),
