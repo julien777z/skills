@@ -69,7 +69,11 @@ the request asks for a new page.
    invoking another, one launching subagents, and one borrowing another's criteria. Invoking a skill
    or borrowing its rubric starts no extra agent. Record each subagent launch with its owner, role,
    capability, whether it always or only sometimes runs, how many run per round, and whether it
-   recurs. A launch always runs when it runs on every run of the step that starts it. When one skill
+   recurs. A count that depends on the work is recorded as what it grows with, such as "1 per
+   area touched" or "1 per finding", with the most the skill allows when it sets one, such as
+   "1 per area, 3–6": totals count that most, and a count with no limit shows as "grows with
+   <what>" instead of a number, toned `warning`, in every total above it. A launch always runs
+   when it runs on every run of the step that starts it. When one skill
    runs another's phases, the launch belongs to the skill whose run starts it. These are structural
    counts, never measured time or cost. For each skill on a page, also record its own run in
    order: each step it takes, the subagents that step launches with how many and what they do, and
