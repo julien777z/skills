@@ -217,6 +217,11 @@ Summarize the changed files and produce the intent statement as `acceptance-gate
 | **Simplification** | deep | Run the `code-simplify` skill as its rubric over the scope — redundancy, a module named or placed wrong, a file past a healthy size, a value modelled one way here and another way in a sibling |
 | **Security** | deep | Apply `security-audit`'s rubric and attack-class catalogue over the changed lines — injection, authentication and authorization defeats, sensitive data reaching a log or response, unsafe deserialization, secrets in source |
 
+**A caller's receipt replaces the lens it covers.** When the caller hands over a clean
+`code-simplify` receipt for the same head and scope, the Simplification lens does not run; when it
+hands over a `security-audit` **Diff Review** receipt for the same delta, the Security lens does not
+run. A fix that changes that head reruns the lens whose receipt it invalidates.
+
 Effort selects the cohort and the validation depth:
 
 | Effort | Rules | Bugs | Simplification | Security | Validation |

@@ -126,8 +126,9 @@ the request asks for a new page.
      arrow, a launch arrow and a borrowed-rubric arrow as their labels show them.
    - `Usage`, `icon` `chart` and `layout` `rows`, across every skill the dashboard maps:
      - a `tree` `Where subagents go`, `open_depth` 2, one root per skill a person starts directly,
-       most subagents first, with `meta` the most subagents one run of it can start, everything
-       beneath it counted, such as "up to 24 subagents". Beneath a skill, its steps in order,
+       most subagents first, with `meta` the subagents one run of it typically starts — launches
+       that always run, one round each — then the most it can start, everything beneath it
+       counted, such as "about 6 subagents, up to 24". Beneath a skill, its steps in order,
        labelled "<n>. <step>" with the same total for what sits beneath them; beneath a step, each
        skill it runs, nested the same way wherever it runs so every total counts it, and each
        launch as an entry labelled "<count> <role>", `meta` its rounds and what it reads, such as
