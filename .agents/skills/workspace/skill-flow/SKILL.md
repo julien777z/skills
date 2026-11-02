@@ -117,19 +117,21 @@ the request asks for a new page.
      item per launch saying who, how many and when, toned `warning` for a launch that always runs
      and neutral for a conditional one; then a `table` `Skills` with the columns Skill, Role and
      Started by, and `details` holding each row's skill write-up, so clicking a skill opens it.
-   - **Skill write-up**: an `outline` with `stacked` set and `collapsible` false, `title` the
-     skill's name and `description` its `short_description`. Each item is a label and a short fact,
-     never a sentence repeating the label. Its groups:
-     - "About": "Modes", the number of modes with one of `points` per choice its menu declares, its
-       label and detail, or "One"; and "Started by", "A person only" or "A person or an agent",
-       from its frontmatter.
-     - "Subagents": one item per launch, labelled "<count> <role>", its fact whether it runs every
-       time or only under its condition, then what is happening when it starts, such as "Every run,
-       after the batch is frozen"; or "Count", "None", when it starts none.
-     - "Review rounds": "Rounds", "None" or the most allowed, such as "Up to 3"; and, when it has
-       rounds, "Ends when" and "Later rounds rerun".
-     - "What happens": one item per step in order, labelled "<n>. <step>", `detail` what the step
-       does, and `points` one per launch in that step, "<count> <role>: <what they do>".
+   - **Skill write-up**: the dialog a reader opens to learn what a skill does and how it spends
+     subagents and rounds. An `outline` with `stacked` set and `collapsible` false, `title` the
+     skill's name and `description` what it does and why, in one or two sentences. Each item is a
+     label beside a fact that teaches something; an item with nothing to say is left out. Its
+     groups:
+     - "Summary": "Subagents", the most one run starts and who they are, such as "Up to 16 per
+       run: 3 inspectors and 1 checker each round, plus 1 safety inspector for sign-in or payment
+       changes", or "None"; and "Review rounds", how many and what ends them, or "None, it runs
+       once".
+     - "How it runs": one item per step in order, labelled "<n>. <step>", `detail` what happens,
+       and `points` for what that step spends: one per launch, "<count> <role> read <scope> and
+       <what they look for or produce>", and, on the step that repeats, how many rounds, what ends
+       them and what each repeat reruns.
+     - "Modes", only for a skill whose menu declares more than one: one item per choice, its
+       label beside what it changes about the subagents, rounds or steps.
    - **Entry write-up**: an `outline` with `stacked` set and `collapsible` false, `title` the
      entry's label and `description` what it does in a sentence. Its groups, each only when it has
      something in it: "Why subagents start", one item per launch at or beneath the entry, saying
