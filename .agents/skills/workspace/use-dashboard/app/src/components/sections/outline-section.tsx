@@ -56,7 +56,7 @@ function PlainGroup({ group, first }: { group: OutlineGroup; first: boolean }): 
       <Text as="h3" size="sm" weight="medium" tone="muted">
         <RichText text={group.title} />
       </Text>
-      <dl className="grid grid-cols-1 gap-x-6 gap-y-1 sm:grid-cols-[minmax(0,11rem)_minmax(0,1fr)] sm:gap-y-2">
+      <Grid as="dl" columns="labelBeside" gap="pairs">
         {withKeys(group.items, (item) => item.title).map(({ key, item }) => (
           <div key={key} className="contents">
             <dt className="pt-1 sm:pt-0">
@@ -87,7 +87,7 @@ function PlainGroup({ group, first }: { group: OutlineGroup; first: boolean }): 
             </dd>
           </div>
         ))}
-      </dl>
+      </Grid>
     </Grid>
   );
 }

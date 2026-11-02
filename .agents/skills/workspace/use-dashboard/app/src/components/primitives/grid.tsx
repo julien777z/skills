@@ -14,8 +14,15 @@ const GRID_VARIANTS = {
     stats4: 'grid grid-cols-1 @xl/page:grid-cols-2 @5xl/page:grid-cols-4',
     stats5: 'grid grid-cols-1 @xl/page:grid-cols-2 @5xl/page:grid-cols-5',
     stats6: 'grid grid-cols-1 @xl/page:grid-cols-2 @5xl/page:grid-cols-6',
+    labelBeside: 'grid grid-cols-1 sm:grid-cols-[minmax(0,11rem)_minmax(0,1fr)]',
   },
-  gap: { sm: 'gap-3', md: 'gap-4', lg: 'gap-4 md:gap-6', loose: 'gap-x-8 gap-y-6' },
+  gap: {
+    sm: 'gap-3',
+    md: 'gap-4',
+    lg: 'gap-4 md:gap-6',
+    loose: 'gap-x-8 gap-y-6',
+    pairs: 'gap-x-6 gap-y-1 sm:gap-y-2',
+  },
   inset: { none: '', page: 'px-4 lg:px-6' },
   align: { start: 'items-start', stretch: 'items-stretch' },
   divider: { none: '', top: 'border-t pt-4', side: 'border-t pt-4 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-7' },
@@ -27,7 +34,7 @@ const gridVariants: ReturnType<typeof cva<typeof GRID_VARIANTS>> = cva('', {
 });
 
 interface GridProps extends VariantProps<typeof gridVariants> {
-  as?: 'div' | 'ol';
+  as?: 'div' | 'ol' | 'dl';
   children: ReactNode;
 }
 

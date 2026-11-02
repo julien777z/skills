@@ -105,8 +105,7 @@ body {
   }
 
   /* Tailwind v4's preflight gives buttons the default arrow cursor. */
-  button:not(:disabled),
-  [role='button']:not(:disabled) {
+  button:not(:disabled) {
     cursor: pointer;
   }
 

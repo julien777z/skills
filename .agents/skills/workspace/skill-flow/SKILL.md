@@ -31,7 +31,29 @@ choices:
     when: the request asks to question, configure, tune or change how a skill or flow runs
 ```
 
-**Show** follows **Pages** and **Workflow**. **Interrogate** follows **Interrogate**.
+**Show** follows **Pages** and **Workflow**. **Interrogate** follows **Interrogate**, and asks
+its scope, when the request gives none, through `interactive-skill` with this menu:
+
+```yaml
+prompt: Which flows should I interrogate?
+kind: choice
+choices:
+  - id: all
+    label: Every flow
+    detail: every kind of work, most subagents first
+  - id: execution
+    label: Execution
+  - id: review
+    label: Review
+  - id: delivery
+    label: Delivery
+  - id: guidance
+    label: Guidance
+  - id: doctors
+    label: Doctors
+  - id: deferrals
+    label: Deferrals
+```
 
 ## Pages
 
@@ -96,8 +118,8 @@ the request asks for a new page.
      sources left open).
    - `Overview`, `icon` `overview` and `layout` `rows`: a `table` `By kind of work` with a row per
      page and the columns Page, Skills (every skill its flow reaches), Starts from, Subagent
-     launches (the launch points its flow reaches) and Loops (how many repair or rerun loops, then
-     each in a few words); then `notes` `How to read the flows`, one line each for an invocation
+     launches (the launch points its flow reaches) and Loops (how many of the loops the Usage
+     `Loops` tree shows run in its flow, then each in a few words); then `notes` `How to read the flows`, one line each for an invocation
      arrow, a launch arrow and a borrowed-rubric arrow as their labels show them.
    - `Usage`, `icon` `chart` and `layout` `rows`, across every skill the dashboard maps:
      - a `tree` `Where subagents go`, `open_depth` 2, one root per skill a person starts directly,
@@ -129,7 +151,7 @@ the request asks for a new page.
    - Each kind-of-work page, `layout` `rows`: a `diagram` `Flow` whose nodes are the skills the
      page's starting skills reach directly, each labelled with its name and its role in a few words,
      and one node per launch named for the subagents it starts and how many, such as `Plan
-     attackers ×3 per round`, as its outline item is titled. Edges are labelled `invokes`,
+     attackers ×3 per round`. Edges are labelled `invokes`,
      `launches` (from the skill to its launch node) or `borrows`, and `steps` say in order how the
      work moves through them; a skill reached only further down appears in the `Skills` table
      alone. Then a `tree` `How it runs`, `open_depth` 2, one root per skill the page's work starts
@@ -171,8 +193,7 @@ Walk a skill or a flow with the user and change what they decide should change. 
 flows that start fewer subagents and read less without missing what the step exists to catch.
 
 1. **Set the scope.** Context the user gives — a skill, a kind of work, a concern such as review
-   rounds — sets it. With none, ask through the question tool whether to interrogate every flow,
-   with each kind of work from **Pages** as the other choices.
+   rounds — sets it. With none, ask the scope menu in **Modes**.
 2. **Map it** as **Workflow** steps 1 to 4 do, recording every launch, its scope and condition, and
    every review loop with what a later round reruns.
 3. **Pick the steps worth a question.** A step is worth one when changing it would change how many
@@ -186,7 +207,8 @@ flows that start fewer subagents and read less without missing what the step exi
    such as fewer subagents, a narrower scope, a condition on the launch, fewer rounds, or later
    rounds that rerun only the reviewers a repair affects. The recommended choice comes first, with
    its reason in what it saves and what it could miss.
-5. **Record every answer** with `session-ledger` as a `decision` entry, in the user's words.
+5. **Record every question** with `session-ledger` as a `question` entry when it is asked, with
+   its options and recommendation, and mark it answered with the user's words.
 6. **Make the agreed changes** through `edit-skill`, as one change across the skills they touch,
    then report per skill what changed and what was kept.
 

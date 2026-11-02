@@ -3,21 +3,20 @@ import { type ReactNode, useRef, useState } from 'react';
 
 import { RichText, ToneDot } from '@/components';
 import { Stack, Text } from '@/components/primitives';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { cn, withKeys } from '@/lib/utils';
 import type { TreeNode, TreeSection as TreeSectionSpec } from '@/spec';
-import { DashboardSection } from './dashboard-section';
-import { InDialogContext, SectionCard } from './section-card';
+import { SectionCard } from './section-card';
+import { SectionDialog } from './section-dialog';
 
 const DEFAULT_OPEN_DEPTH: number = 1;
 
 function TreeBranch({ nodes, depth, openDepth }: { nodes: TreeNode[]; depth: number; openDepth: number }): ReactNode {
   return (
-    <ul className={cn('flex flex-col gap-1', depth > 0 && 'ml-2 border-l pl-4')}>
+    <Stack as="ul" gap="xs" inset={depth > 0 ? 'branch' : 'none'}>
       {withKeys(nodes, (node) => node.label).map(({ key, item: node }) => (
         <TreeItem key={key} node={node} depth={depth} openDepth={openDepth} />
       ))}
-    </ul>
+    </Stack>
   );
 }
 
@@ -34,15 +33,14 @@ function TreeItem({ node, depth, openDepth }: { node: TreeNode; depth: number; o
           <button
             type="button"
             aria-expanded={open}
-            aria-label={`${open ? 'Collapse' : 'Expand'} ${node.label}`}
+            aria-label={node.label}
             onClick={() => setOpen(!open)}
             className="mt-0.5 rounded-sm text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
           >
             <ChevronRight className={cn('size-4 transition-transform', open && 'rotate-90')} />
           </button>
-        ) : (
-          <ToneDot tone={node.tone} offset />
-        )}
+        ) : null}
+        {(node.tone || children.length === 0) && <ToneDot tone={node.tone} offset />}
         <Stack gap="none" grow>
           <Text size="sm" breakAnywhere>
             {node.details ? (
@@ -75,19 +73,7 @@ function TreeItem({ node, depth, openDepth }: { node: TreeNode; depth: number; o
       </Stack>
       {open && children.length > 0 && <TreeBranch nodes={children} depth={depth + 1} openDepth={openDepth} />}
       {node.details && (
-        <Dialog open={showDetails} onOpenChange={setShowDetails}>
-          <DialogContent
-            className="max-h-[85vh] overflow-y-auto sm:max-w-3xl"
-            onCloseAutoFocus={(event) => {
-              event.preventDefault();
-              opener.current?.focus();
-            }}
-          >
-            <InDialogContext.Provider value>
-              <DashboardSection section={node.details} />
-            </InDialogContext.Provider>
-          </DialogContent>
-        </Dialog>
+        <SectionDialog section={node.details} open={showDetails} onOpenChange={setShowDetails} opener={opener} />
       )}
     </li>
   );

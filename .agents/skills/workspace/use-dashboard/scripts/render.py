@@ -333,7 +333,6 @@ def section_shape(
         ),
         "title": TEXT,
         "description": TEXT,
-        "counted": FLAG,
     } | fields
     section_required = frozenset({"type", "title"}) | required
 
@@ -551,6 +550,7 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
     SectionType.LINKS: section_shape(
         SectionType.LINKS,
         {
+            "counted": FLAG,
             "items": Field(
                 check=partial(check_objects, shape=LINK_SHAPE),
                 typescript="LinkItem[]",
@@ -563,6 +563,7 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
     SectionType.CHANGES: section_shape(
         SectionType.CHANGES,
         {
+            "counted": FLAG,
             "items": Field(
                 check=partial(check_objects, shape=CHANGE_ITEM_SHAPE),
                 typescript="ChangeItem[]",
@@ -573,7 +574,7 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
         frozenset({"items"}),
     ),
     SectionType.NOTES: section_shape(
-        SectionType.NOTES, {"items": TEXTS}, frozenset({"items"})
+        SectionType.NOTES, {"items": TEXTS, "counted": FLAG}, frozenset({"items"})
     ),
     SectionType.OUTLINE: section_shape(
         SectionType.OUTLINE,
@@ -606,6 +607,7 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
         {
             "columns": TEXTS,
             "rows": ROWS,
+            "counted": FLAG,
             "details": SECTIONS,
         },
         frozenset({"columns", "rows"}),

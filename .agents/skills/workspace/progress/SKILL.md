@@ -77,8 +77,8 @@ and deliver the same dashboard again on every request so the user keeps one page
   requests**, the count of open and draft pull requests, with "<n> open · <n> draft" in `detail`;
   **Elapsed**, measured from the first plan's recorded approval time.
 - **Counts.** `counted` is set on the `links` "Pull requests", the `table`s "Plans" and "Ready to
-  merge", and the `changes` "Config changes" and "Migration changes", whose length changes as the
-  task does; no other section is counted.
+  merge", the `changes` "Config changes" and "Migration changes", and the `notes` "Decisions and
+  notes", whose length changes as the task does; no other section is counted.
 - **Pull request names.** The page names each pull request "PR #<number> - <short title>": a few
   words saying what it does, not necessarily its title, such as `PR #1337 - Add bulk export`.
 - **Pages.** The dashboard's `icon` is `progress`, and its pages run in this order. `Overview`,

@@ -9,7 +9,7 @@ const STACK_VARIANTS = {
   wrap: { true: 'flex-wrap', false: 'flex-nowrap' },
   grow: { true: 'flex-1', false: '' },
   divided: { true: 'divide-y border-t', false: '' },
-  inset: { none: '', row: 'px-6 py-3', page: 'px-4 lg:px-6', item: 'pb-3 pl-[18px]' },
+  inset: { none: '', row: 'px-6 py-3', page: 'px-4 lg:px-6', item: 'pb-3 pl-[18px]', branch: 'ml-2 border-l pl-4' },
   surface: {
     none: '',
     panel: 'rounded-lg border bg-muted/30 p-3',
