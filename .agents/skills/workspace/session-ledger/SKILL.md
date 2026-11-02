@@ -139,8 +139,9 @@ This skill authorizes those comments and their edits under the GitHub rule's **C
   `## Ledger plans`, `## Ledger decisions` or `## Ledger questions` — on the task's pull request in
   the repository each entry concerns, with one section per entry headed by its id. An entry that
   concerns several repositories is split, each comment holding its own repository's part and naming
-  no other. Until that repository has a task pull request, the entry records `recovery_comment:
-  awaiting_pull_request`, and opening the pull request posts its backup.
+  no other. Until that repository has a task pull request, the entry's `recovery_comment` list holds
+  `awaiting_pull_request` for that part, and opening the pull request posts its backup and puts
+  the comment's URL in that item's place.
 - **Posting and recording are one step.** Add the comment's URL to the entry's `recovery_comment`
   list in the ledger update that follows the post, before any other work. When an entry a comment
   holds changes — a new commit, a stage result, a step's status, a later answer — edit that comment
@@ -149,13 +150,18 @@ This skill authorizes those comments and their edits under the GitHub rule's **C
 - **The backup check reads three `data` fields.** `status` is a plan's or question's status from
   **Workflow**, or a `guidance_correction`'s delivery status: `pending`, `complete` or `withdrawn`;
   a decision has none. `commits` lists a `guidance_correction`'s pushed commits. `recovery_comment`
-  is a list of backup comment URLs, one per repository an entry is split across, or
-  `awaiting_pull_request`. An entry that is `complete`
-  or `withdrawn`, a question not yet `answered`, and a `guidance_correction` with no commit owe no
-  backup.
-- The installed turn-end hook `ledger` refuses to end a turn while a ledger this
-  session names owes a backup, listing each entry and what it lacks; posting or editing the comment
-  and recording its URL clears it.
+  is always a list with one item per repository part: its backup comment URL, or
+  `awaiting_pull_request` while that repository has no task pull request. An entry that is
+  `complete` or `withdrawn`, a question not yet `answered`, and a `guidance_correction` with no
+  commit owe no backup. Any other plan, decision or question owes one until its list has an item;
+  any other `guidance_correction` until its list holds a comment URL of its own.
+- The installed turn-end hook `ledger` checks each ledger this session writes: one under
+  `agent-ledgers/` that the session's transcript names and that changed at or after the session's
+  first recorded timestamp, or that the transcript names at all when it records no timestamp. While
+  one owes a backup or cannot be read, the hook lists each entry and what it lacks. In Claude Code
+  and Codex it refuses to end the turn; in Cursor it submits the list as the next message. It
+  holds a turn back at most once in a row, so post or edit the comment and record its URL, or
+  repair the ledger, in the turn it reopens. It runs only where `python3` is Python 3.11 or newer.
 
 ## Output
 

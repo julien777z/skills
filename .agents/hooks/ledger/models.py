@@ -22,7 +22,8 @@ class EntryStatus(StrEnum):
 class HookInput(TypedDict):
     """The turn-end payload fields the backup check reads."""
 
-    stop_hook_active: bool
+    is_continuation: bool
+    expects_followup_message: bool
     transcript_path: str | None
 
 
@@ -34,7 +35,7 @@ class BackupRecord(TypedDict):
     status: str | None
     has_commit: bool
     comment_urls: tuple[str, ...]
-    awaits_pull_request: bool
+    has_recovery_comment: bool
 
 
 class LedgerFormatError(Exception):

@@ -15,6 +15,15 @@ except ImportError:
 
 BLOCK_EXIT: Final[int] = 2
 UNCHECKED_EXIT: Final[int] = 1
+FOLLOWUP_EVENT_NAME: Final[str] = "stop"
+MISSING_BACKUPS_STEP: Final[str] = (
+    "Post or edit each backup comment as session-ledger's Backup section says, "
+    "record its URL in the entry, and then end the turn."
+)
+UNREADABLE_LEDGERS_STEP: Final[str] = (
+    "Repair each unreadable ledger so it follows session-ledger's Output format, "
+    "and then end the turn."
+)
 
 
 def read_hook_input() -> HookInput:
@@ -26,19 +35,22 @@ def read_hook_input() -> HookInput:
         raise TypeError("The hook input is not a JSON object")
 
     transcript_path = payload.get("transcript_path")
+    loop_count = payload.get("loop_count")
 
     return HookInput(
-        stop_hook_active=payload.get("stop_hook_active") is True,
+        is_continuation=payload.get("stop_hook_active") is True
+        or (isinstance(loop_count, int) and loop_count > 0),
+        expects_followup_message=payload.get("hook_event_name") == FOLLOWUP_EVENT_NAME,
         transcript_path=transcript_path if isinstance(transcript_path, str) else None,
     )
 
 
 def main() -> int:
-    """Block the turn's end while a ledger the session names owes a backup comment."""
+    """Keep the turn going while a ledger the session writes owes a backup comment."""
 
     hook_input = read_hook_input()
 
-    if hook_input["stop_hook_active"]:
+    if hook_input["is_continuation"]:
         return 0
 
     ledgers = session_ledgers(hook_input)
@@ -51,30 +63,41 @@ def main() -> int:
 
         return UNCHECKED_EXIT
 
-    reports: list[str] = []
+    unreadable: list[str] = []
+    missing: list[str] = []
 
     for ledger in ledgers:
         try:
             findings = ledger_findings(yaml.safe_load(ledger.read_text()))
         except (OSError, UnicodeDecodeError, yaml.YAMLError, LedgerFormatError) as error:
-            reports.append(f"{ledger} could not be read: {error}")
+            unreadable.append(f"{ledger} could not be read: {error}")
 
             continue
 
         if findings:
-            reports.append(
+            missing.append(
                 f"{ledger} has entries missing their backup comment:\n" + "\n".join(findings)
             )
+
+    reports = unreadable + missing
 
     if not reports:
         return 0
 
-    reports.append(
-        "Post or edit each backup comment as session-ledger's Backup section says, "
-        "record its URL in the entry, and then end the turn."
-    )
+    if unreadable:
+        reports.append(UNREADABLE_LEDGERS_STEP)
 
-    print("\n\n".join(reports), file=sys.stderr)
+    if missing:
+        reports.append(MISSING_BACKUPS_STEP)
+
+    message = "\n\n".join(reports)
+
+    if hook_input["expects_followup_message"]:
+        print(json.dumps({"followup_message": message}))
+
+        return 0
+
+    print(message, file=sys.stderr)
 
     return BLOCK_EXIT
 
