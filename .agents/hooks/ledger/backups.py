@@ -21,10 +21,7 @@ YAML_AVAILABLE: Final = yaml is not None
 def entry_field(entry: dict[object, object], name: str) -> object:
     data = entry.get("data")
 
-    if isinstance(data, dict) and name in data:
-        return data[name]
-
-    return entry.get(name)
+    return data.get(name) if isinstance(data, dict) else None
 
 
 def comment_urls(value: object) -> frozenset[str]:
@@ -54,7 +51,7 @@ def entry_record(entry: object, kind: str, fallback_id: str) -> BackupRecord | N
         id=str(entry_id) if entry_id else fallback_id,
         kind=kind,
         statuses=entry_statuses(entry),
-        has_commit=bool(entry_field(entry, "commits") or entry_field(entry, "commit")),
+        has_commit=bool(entry_field(entry, "commits")),
         urls=comment_urls(recovery_comment),
         awaits_pull_request=recovery_comment == AWAITING_PULL_REQUEST,
     )
@@ -71,22 +68,12 @@ def ledger_records(document: object) -> list[BackupRecord]:
 
     records: list[BackupRecord] = []
 
-    for scope, container in (("session_ledger.", session_ledger), ("", document)):
-        entries = container.get("entries")
-        decisions = container.get("decisions")
+    for index, entry in enumerate(session_ledger["entries"]):
+        kind = str(entry.get("kind")) if isinstance(entry, dict) else ""
+        record = entry_record(entry, kind, f"session_ledger.entries[{index}]")
 
-        for index, entry in enumerate(entries if isinstance(entries, list) else []):
-            kind = str(entry.get("kind")) if isinstance(entry, dict) else ""
-            record = entry_record(entry, kind, f"{scope}entries[{index}]")
-
-            if record is not None:
-                records.append(record)
-
-        for index, decision in enumerate(decisions if isinstance(decisions, list) else []):
-            record = entry_record(decision, "decision", f"{scope}decisions[{index}]")
-
-            if record is not None:
-                records.append(record)
+        if record is not None:
+            records.append(record)
 
     return records
 
