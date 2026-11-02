@@ -62,6 +62,7 @@ During A Task** for the edit's timing.
 
 - `code-simplify` — the pass over the guidance itself before it merges.
 - `acceptance-gate` — the diff question over the `.agents` change once it reads clean.
+- `pre-production` — a defect a guidance move brings to light is fixed in the change.
 - `test-skill` — exercise behavior-changing guidance safely, compare original and edited results,
   and repair failing guidance or tests before merge.
 - `subagent-matrix` — the model capability level for live verification chats and the delivery worker.
@@ -347,6 +348,13 @@ user's review of the source pull request overlaps it.
    - Write every added or changed instruction as the shared `agent-guidance.md` rule says: its
      frontmatter, headings and statements, its breadth and examples, its scripts, a skill's shape,
      output and section order, and its dependencies.
+   - **Moved text is added text.** Guidance moved between files — a skill relocated, bullets
+     gathered into a new rule or out of one — that lands beside a statement of the same requirement
+     is merged with it into one in the same change, keeping every distinct criterion and exception,
+     and any other defect a standing rule names that the move brings to light is fixed in it, as
+     `pre-production`'s **Scope Follows The Defect** says of a defect the work notices, with
+     `acceptance-gate` judging the repair's scope and size. Moving text unchanged proves it
+     survived; it is never a reason to report a defect as left for the user.
    - Before delivery, audit each edited skill's complete package and its affected callers: list every instruction to apply or invoke another skill, compare those names with the owning entry point's `## Dependencies`, and resolve missing, stale, or path-based entries and any user-only dependency lacking the explicit bounded delegation the shared `agent-guidance.md` rule requires. Check references separately for hidden invocations and cross-skill filesystem links; move the invocation to `SKILL.md` and refer to the other package by skill name. A passing source mirror does not replace this audit.
 
 6. Multi-target behavior.
@@ -464,15 +472,6 @@ user's review of the source pull request overlaps it.
       repository, checking that each one already states its answer where the skill now sends its
       reader; a repository that does not is the flag, because the merge silently gave it the other
       one's answer.
-
-      **Moving guidance unchanged proves it survived; it never keeps a defect the move exposes.**
-      Guidance moved between files — a skill relocated, bullets gathered into a new rule or out of
-      one — that lands beside a statement of the same requirement is merged with it into one in the
-      same change, keeping every distinct criterion and exception, as the shared `agent-guidance.md`
-      rule's **Writing** asks of every edit; so is any other defect a standing rule names that the
-      move brings to light. It is an encountered issue like any other: fixed in the change,
-      `acceptance-gate` judging its scope and size, and never reported as left for the user to
-      decide.
    6. **Hold each changed output to its concrete example.** For every skill whose output changed,
       compare one run of your own on the branch in flight and every required smoke run against that
       example: headings, columns, order, file shape. A divergence is the skill's wording, fixed and
