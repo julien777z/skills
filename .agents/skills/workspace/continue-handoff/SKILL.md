@@ -25,8 +25,9 @@ down, and carry on where it stopped, so the user does nothing but paste the mess
 - A merged or closed pull request is reported and skipped; the rest continue.
 - Before recording a takeover, resolve the existing task ledger from agent-consumed continuation
   context through `session-ledger`, verify any cross-environment transfer and take over its writing
-  ownership. An unavailable locator or file requires its recovery procedure, not a new empty ledger.
-  Record every pull request taken over as touched.
+  ownership. An unavailable locator or file requires its recovery procedure, not a new empty ledger:
+  the task token on each pull request's latest `## Hand-off` comment is the one its backup comments
+  must match. Record every pull request taken over as touched.
 
 ## Setting Up
 
