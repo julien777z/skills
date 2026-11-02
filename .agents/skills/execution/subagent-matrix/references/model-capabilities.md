@@ -28,6 +28,10 @@ a direct user override for that assignment still takes precedence.
 | --- | --- |
 | Review or simplification, including their coordinators, lenses, validators and refuters | `gpt-5.6-terra` |
 | Acceptance gate | `gpt-6.1-sol` |
+| Capture worker: mechanical browser capture of pages and states a brief lists | `gpt-6-luna` |
+
+A capture worker takes the `cheap` family on every host, Claude included. It captures without
+judging; the delegating agent reads every image whole before relying on it or sending it.
 
 Classify what the assignment does, not its worker name. Ordinary implementation workers checking
 their own changes are not independent review assignments. An acceptance gate remains its own role

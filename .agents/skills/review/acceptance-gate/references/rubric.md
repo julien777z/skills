@@ -344,6 +344,11 @@ rubric and `pre-production` decide. Apply `test-fixture`'s existing-reporting pr
 available evidence holds a clean verdict; attribution the native route cannot provide is recorded
 unmeasured and does not hold an otherwise validated repair.
 
+**A new state ships with its scenario.** Where project guidance names a command that brings a stack
+to a named state, flag a diff that adds a state a person would want to test — a new status, a flow
+step, a kind of record a page shows — or alters one, without adding or updating its scenario and the
+scenario's tests; the remedy is that scenario, in the same change.
+
 **An added guard is priced like a missing one.** For every guard, refusal, validation, or branch a
 diff adds, the gate opens the writers `code-simplify`'s standard 1 says to read and names them in the
 verdict. A guard that standard calls dead withholds nothing from anyone under **Product State**'s
