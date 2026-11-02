@@ -1,25 +1,40 @@
+from enum import StrEnum
 from typing import TypedDict
 
 
-class HookInput(TypedDict, total=False):
+class BackedUpKind(StrEnum):
+    """A ledger entry kind backed up in a pull-request comment."""
+
+    GUIDANCE_CORRECTION = "guidance_correction"
+    PLAN = "plan"
+    DECISION = "decision"
+    QUESTION = "question"
+
+
+class EntryStatus(StrEnum):
+    """A ledger entry status the backup check acts on."""
+
+    ANSWERED = "answered"
+    COMPLETE = "complete"
+    WITHDRAWN = "withdrawn"
+
+
+class HookInput(TypedDict):
+    """The turn-end payload fields the backup check reads."""
+
     stop_hook_active: bool
-    transcript_path: str
+    transcript_path: str | None
 
 
 class BackupRecord(TypedDict):
+    """The backup facts of one backed-up ledger entry."""
+
     id: str
-    kind: str
-    statuses: frozenset[str]
+    kind: BackedUpKind
+    status: str | None
     has_commit: bool
-    urls: frozenset[str]
-    awaits_pull_request: bool
-
-
-class LedgerStamp(TypedDict):
-    path: str
-    size: int
-    mtime_ns: int
+    recovery_comment: str | None
 
 
 class LedgerFormatError(Exception):
-    pass
+    """A ledger that does not follow the session-ledger schema."""

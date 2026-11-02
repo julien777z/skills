@@ -1,99 +1,113 @@
 from collections import defaultdict
-from pathlib import Path
 from typing import Final
 
-from models import BackupRecord, LedgerFormatError
+from models import BackedUpKind, BackupRecord, EntryStatus, LedgerFormatError
 
-try:
-    import yaml
-except ImportError:
-    yaml = None
-
-GUIDANCE_CORRECTION: Final = "guidance_correction"
-BACKUP_KINDS: Final = frozenset({GUIDANCE_CORRECTION, "plan", "decision", "question"})
-SKIPPED_STATUSES: Final = frozenset(
-    {"awaiting_action_verification", "withdrawn", "complete", "delivered", "merged"}
+AWAITING_PULL_REQUEST: Final[str] = "awaiting_pull_request"
+COMMENT_URL_PREFIX: Final[str] = "https://"
+SETTLED_STATUSES: Final[frozenset[EntryStatus]] = frozenset(
+    {EntryStatus.COMPLETE, EntryStatus.WITHDRAWN}
 )
-AWAITING_PULL_REQUEST: Final = "awaiting_pull_request"
-YAML_AVAILABLE: Final = yaml is not None
 
 
-def entry_field(entry: dict[object, object], name: str) -> object:
-    data = entry.get("data")
+def optional_string(data: dict[object, object], name: str, location: str) -> str | None:
+    """Read a data field that is a string when present."""
 
-    return data.get(name) if isinstance(data, dict) else None
+    value = data.get(name)
 
+    if value is not None and not isinstance(value, str):
+        raise LedgerFormatError(f"{location} has a {name} that is not a string")
 
-def comment_urls(value: object) -> frozenset[str]:
-    values = value if isinstance(value, list) else [value]
-
-    return frozenset(
-        url.strip() for url in values if isinstance(url, str) and url.strip().startswith("https://")
-    )
+    return value
 
 
-def entry_statuses(entry: dict[object, object]) -> frozenset[str]:
-    return frozenset(
-        value.strip().lower()
-        for value in (entry_field(entry, "status"), entry_field(entry, "delivery"))
-        if isinstance(value, str)
-    )
+def entry_record(entry: object, location: str) -> BackupRecord | None:
+    """Read the backup facts of one ledger entry, or None for a kind that is not backed up."""
 
-
-def entry_record(entry: object, fallback_id: str) -> BackupRecord | None:
     if not isinstance(entry, dict):
-        return None
+        raise LedgerFormatError(f"{location} is not a mapping")
 
     entry_id = entry.get("id")
-    recovery_comment = entry_field(entry, "recovery_comment")
+    kind = entry.get("kind")
+    data = entry.get("data")
+
+    if not isinstance(entry_id, str) or not entry_id:
+        raise LedgerFormatError(f"{location} has no id")
+
+    if not isinstance(kind, str):
+        raise LedgerFormatError(f"{location} has no kind")
+
+    if not isinstance(data, dict):
+        raise LedgerFormatError(f"{location} has no data mapping")
+
+    if kind not in BackedUpKind:
+        return None
+
+    commits = data.get("commits")
+
+    if commits is not None and not isinstance(commits, list):
+        raise LedgerFormatError(f"{location} has commits that are not a list")
 
     return BackupRecord(
-        id=str(entry_id) if entry_id else fallback_id,
-        kind=str(entry.get("kind")),
-        statuses=entry_statuses(entry),
-        has_commit=bool(entry_field(entry, "commits")),
-        urls=comment_urls(recovery_comment),
-        awaits_pull_request=recovery_comment == AWAITING_PULL_REQUEST,
+        id=entry_id,
+        kind=BackedUpKind(kind),
+        status=optional_string(data, "status", location),
+        has_commit=bool(commits),
+        recovery_comment=optional_string(data, "recovery_comment", location),
     )
 
 
 def ledger_records(document: object) -> list[BackupRecord]:
+    """Read the backup facts of every backed-up entry in a ledger document."""
+
     if not isinstance(document, dict) or not isinstance(document.get("session_ledger"), dict):
         raise LedgerFormatError("it has no session_ledger mapping")
 
-    session_ledger = document["session_ledger"]
+    entries = document["session_ledger"].get("entries")
 
-    if not isinstance(session_ledger.get("entries"), list):
+    if not isinstance(entries, list):
         raise LedgerFormatError("session_ledger has no entries list")
 
-    records: list[BackupRecord] = []
+    records = (
+        entry_record(entry, f"session_ledger.entries[{index}]")
+        for index, entry in enumerate(entries)
+    )
 
-    for index, entry in enumerate(session_ledger["entries"]):
-        record = entry_record(entry, f"session_ledger.entries[{index}]")
-
-        if record is not None:
-            records.append(record)
-
-    return records
+    return [record for record in records if record is not None]
 
 
-def missing_backup(record: BackupRecord, url_owners: dict[str, list[BackupRecord]]) -> str | None:
-    if record["kind"] not in BACKUP_KINDS or record["statuses"] & SKIPPED_STATUSES:
+def comment_url(record: BackupRecord) -> str | None:
+    """Return the backup comment URL an entry records."""
+
+    recovery_comment = record["recovery_comment"]
+
+    if recovery_comment is None or not recovery_comment.startswith(COMMENT_URL_PREFIX):
         return None
 
-    if record["kind"] == "question" and "answered" not in record["statuses"]:
+    return recovery_comment
+
+
+def missing_backup(record: BackupRecord, url_owners: dict[str, list[str]]) -> str | None:
+    """Describe what an entry's backup lacks, or None when it owes nothing."""
+
+    if record["status"] in SETTLED_STATUSES:
         return None
 
-    is_guidance = record["kind"] == GUIDANCE_CORRECTION
+    if record["kind"] is BackedUpKind.QUESTION and record["status"] != EntryStatus.ANSWERED:
+        return None
+
+    is_guidance = record["kind"] is BackedUpKind.GUIDANCE_CORRECTION
 
     if is_guidance and not record["has_commit"]:
         return None
 
-    if not record["urls"]:
+    url = comment_url(record)
+
+    if url is None:
         if is_guidance:
             return "has a commit but no recovery_comment URL"
 
-        if record["awaits_pull_request"]:
+        if record["recovery_comment"] == AWAITING_PULL_REQUEST:
             return None
 
         return "no recovery_comment URL"
@@ -101,14 +115,7 @@ def missing_backup(record: BackupRecord, url_owners: dict[str, list[BackupRecord
     if not is_guidance:
         return None
 
-    sharers = sorted(
-        {
-            owner["id"]
-            for url in record["urls"]
-            for owner in url_owners[url]
-            if owner["id"] != record["id"]
-        }
-    )
+    sharers = sorted({owner for owner in url_owners[url] if owner != record["id"]})
 
     if not sharers:
         return None
@@ -116,12 +123,17 @@ def missing_backup(record: BackupRecord, url_owners: dict[str, list[BackupRecord
     return f"recovery_comment URL is shared with {', '.join(sharers)}"
 
 
-def ledger_findings(records: list[BackupRecord]) -> list[str]:
-    url_owners: dict[str, list[BackupRecord]] = defaultdict(list)
+def ledger_findings(document: object) -> list[str]:
+    """List every entry in a ledger document that owes a backup comment."""
+
+    records = ledger_records(document)
+    url_owners: dict[str, list[str]] = defaultdict(list)
 
     for record in records:
-        for url in record["urls"]:
-            url_owners[url].append(record)
+        url = comment_url(record)
+
+        if url is not None:
+            url_owners[url].append(record["id"])
 
     findings: list[str] = []
 
@@ -132,17 +144,3 @@ def ledger_findings(records: list[BackupRecord]) -> list[str]:
             findings.append(f"- {record['id']} ({record['kind']}): {problem}")
 
     return findings
-
-
-def check_ledger(ledger: Path) -> list[str]:
-    if yaml is None:
-        raise LedgerFormatError("PyYAML is not installed")
-
-    loader = getattr(yaml, "CSafeLoader", yaml.SafeLoader)
-
-    try:
-        document: object = yaml.load(ledger.read_text(), Loader=loader)
-    except (OSError, UnicodeDecodeError, yaml.YAMLError) as error:
-        raise LedgerFormatError(str(error)) from error
-
-    return ledger_findings(ledger_records(document))
