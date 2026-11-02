@@ -180,7 +180,7 @@ added guard says `no guard added` in those words.
 what a feature does or shows, a remedy whose visible effect is large, such as a layout, control or
 flow changing across many pages, a change carried past the surface the user named — each with the
 user's words in the intent statement that settle it. Small presentation decisions on the surface in
-hand are not listed. One with none is a flag whose remedy is putting the
+hand are not listed. A product choice with no such words is a flag whose remedy is putting the
 choice to the user before the code stands, whatever the step calls itself, a fix included. An
 earlier accepted step, a plan record without the user's words, or a brief calling the choice decided
 is not those words. A verdict with none says `no product choice added` in those words.
@@ -255,7 +255,8 @@ introduced the behaviour it names. A flag that reopens a behaviour choice the us
 or an earlier accepted step settled, or that asks for work outside the scope the user set, is
 answered as settled or out of scope with that evidence; it is never repaired and never put to the
 user as a question. Only the user's words settle a product choice: one an accepted step or an
-agent-written record holds without them is still open, and goes to the user. A confirmed defect or a security vulnerability is never settled this way, whatever an
+agent-written record holds without them is still open, and goes to the user. A confirmed defect or a
+security vulnerability is never settled this way, whatever an
 earlier step accepted: it is repaired as below.
 Read every other objection and remedy against the intent and standing guidance, make the smallest
 coherent repair using the existing owner or mechanism, and send the changed increment with the
@@ -274,10 +275,11 @@ above.
 first and 2 after repairs, as the global rules' review-round limit says: once 3 have flagged it,
 whatever each raised, the decision that bullet calls for replaces another repair, and an acceptance
 with recorded findings that decision makes is the one exception to the rules below on flagged
-diffs. Within that, a flag gets at most two repair rounds of its own; one a
-fresh gate raises for the first time starts at zero and is repaired like any other, whatever round
-the change as a whole has reached. A flag the gate still raises after its own second repair goes to
-the user as a report, never as a choice about whether to fix it or leave it in place: the open flag,
+diffs; an in-process check of a small repair is not one of those 3 rounds. While the change is
+under that limit, a flag gets at most two repair rounds of its own, and one a fresh gate raises for
+the first time starts at zero. A flag the gate still raises after its own second repair, with the
+change still under the limit, goes to the user as a report, never as a choice about whether to fix
+it or leave it in place: the open flag,
 each remedy tried and its evidence, the gate's proposed remedy and the recommended next step. Every
 other flag keeps its own repair and gate meanwhile, and the user's reply directs only the flag the
 report names.

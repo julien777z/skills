@@ -75,7 +75,8 @@ not reasons for parallel copies.
 Consolidation updates every consumer the user controls, in any repository, and removes the superseded implementations; the
 newest copy is not the whole scope. It keeps what each consumer's reader sees: carrying one
 consumer's new visible behaviour to the others is a proposal for their pages under the global rules'
-product-choice bullet, never part of the consolidation. Keep implementations separate only when sharing would invert a
+product-choice bullet, never part of the consolidation. Keep implementations separate only when
+sharing would invert a
 dependency, couple unrelated domains, weaken a contract, or force a consumer to depend on capability
 it does not use, and establish that boundary from the actual dependency and consumer graph.
 

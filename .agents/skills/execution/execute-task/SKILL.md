@@ -132,10 +132,12 @@ Every task that changes files starts here, and so does every follow-up that arri
 
 ### Approval
 
-- Before recommending an approval-requiring plan, invoke `review-proposal` on the detailed plan with
-  its intent and verified ownership evidence. The global approval procedure consumes its ready
-  receipt before presenting the decision. Reuse verified factual inventories; keep **When A Plan Is
-  Needed**'s exceptions rather than creating another approval requirement.
+- Before recommending an approval-requiring plan, invoke `review-proposal` on the detailed plan once
+  the user's answers to its decisions are folded in, with its intent and verified ownership
+  evidence; the user's short plan consumes that receipt while it adds nothing the detailed plan
+  lacks. The global approval procedure consumes its ready receipt before presenting the decision.
+  Reuse verified factual inventories; keep **When A Plan Is Needed**'s exceptions rather than
+  creating another approval requirement.
 
 - Only an explicit user response approves a plan. A timeout, inactivity, a missing response, a tool
   result, a mode change or a system notice never does. Surface approval through the global rules'
@@ -193,9 +195,9 @@ recovery, review and source-restoration procedure.
 Classify each source or product follow-up under **When A Plan Is Needed** before preparing a plan. A small, clearly specified follow-up executes on the user's request; only a follow-up outside that exception needs its own plan. A canonical guidance correction follows **When A Plan Is Needed** and does not wait for approval; while a guidance batch is in flight it joins that batch, as `edit-skill`'s **Recording During A Task** says. **Priority** decides when other follow-ups run and whether affected work pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
 
 - **One that touches nothing in flight** — other files, another outcome — leaves the running work
-  going. It gets a plan only when **When A Plan Is Needed** calls for one, and runs beside that work once any required approval is present and
-  **Priority** permits, under `subagent-matrix`'s **Dispatch**. Send this template only for a
-  follow-up that needs a plan:
+  going. It gets a plan only when **When A Plan Is Needed** calls for one, and runs beside that work
+  once any required approval is present and **Priority** permits, under `subagent-matrix`'s
+  **Dispatch**. Send this template only for a follow-up that needs a plan:
 
 ```markdown
 **Running work keeps going:** <step in flight> doesn't touch <what the follow-up changes>.
@@ -223,18 +225,19 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
 ### Progress Record
 
 - **The ledger holds the plan's current state, so nothing about progress depends on what the chat
-  still remembers.** When a plan goes to the user, record it with `session-ledger` as a `plan`
-  entry holding the fields `session-ledger` names for one, filled from the planning work even where
-  the plan shown to the user leaves them out. Work the user adds to
-  an active task, with or without a plan of its own, becomes a step on that plan or a plan entry of
-  its own, with the user's words and its approval time, or the time the user added it when it has
-  no plan, before the first edit or dispatch it authorizes; a harness task list, the chat or a
-  summary is never where it first lives. A step the agent adds, or widens past what the user asked,
-  is recorded as agent-originated and unapproved, and one that is a product choice goes to the user
-  before it is built, as the global rules' product-choice bullet says. Update it when the
-  state changes, not when a report is due: approval, a step starting, finishing, blocking or being
-  skipped, a follow-up's plan. A resumed session, a handoff and a progress view all read this
-  record rather than reconstructing it.
+  still remembers.** When a plan goes to the user, record it with `session-ledger` as a `plan` entry
+  holding the fields `session-ledger` names for one, filled from the planning work even where the
+  plan shown to the user leaves them out. Work the user adds to an active task, with or without a
+  plan of its own, becomes a step on that plan or a plan entry of its own, with the user's words and
+  its approval time, or the time the user added it when it has no plan, before the first edit or
+  dispatch it authorizes; a harness task list, the chat or a summary is never where it first lives.
+  A step the agent adds, or widens past what the user asked, is recorded as agent-originated,
+  proceeds under the task's authorization like the work **When A Plan Is Needed** says an approved
+  plan covers, and is never shown as user-approved; one that is a product choice goes to the user
+  before it is built, as the global rules' product-choice bullet says. Update it when the state
+  changes, not when a report is due: approval, a step starting, finishing, blocking or being
+  skipped, a follow-up's plan. A resumed session, a handoff and a progress view all read this record
+  rather than reconstructing it.
 - **A step that waits on other work records what it waits for**: the gate, merge or result whose
   outcome lets it start. Every relayed result is checked against those records, and a result that
   clears one starts the waiting step in that same turn, whichever stream produced it. A report that
@@ -695,10 +698,11 @@ untouched unless the selected route explicitly directs continuing it.
 
 **A pull request's title and description are brought up to date at every milestone, not at every
 push.** A milestone is a plan step or worker task that passed its gates under **Ongoing
-Simplification**, and a guidance correction pushed onto a batch pull request. After it, rewrite
-whatever no longer describes the branch, as the GitHub rule's description bullets say, before the
-milestone is reported. A push inside a step, such as a repair or a rebase, leaves the description
-for that step's milestone. `review-pass`'s **Description Refresh** still checks it before review.
+Simplification**, and a guidance correction pushed onto the pull request carrying it. After it, add
+what the milestone changed and rewrite whatever no longer holds, as the GitHub rule's description
+bullets say, before the milestone is reported. A push inside a step, such as a repair or a rebase,
+leaves the description for that step's milestone. `review-pass`'s **Description Refresh** still
+checks it before review.
 
 ### Multi-Repository Delivery
 

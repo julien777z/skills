@@ -102,7 +102,8 @@ and deliver the same dashboard again on every request so the user keeps one page
   goal, then "Approved · ~<total> min", or "Proposed · ~<total> min" for a plan not yet approved. Its groups, each only when it has something in it:
   "Context", why the plan exists and what it starts from, one item per point; "Steps", one item per
   step titled "<n>. <step title>", `detail` what the step changes and how, `meta` "~<n> min" and
-  `tag` its status (Done, Running, Blocked, Next or Skipped) toned as the progress segments are;
+  `tag` its status (Done, Running, Blocked, Next or Skipped) toned as the progress segments are,
+  adding "· added by agent" for a step whose origin is `agent`;
   "Decisions", each choice the plan settled with the option taken and why; "Verification", how
   the result will be checked; and "After the plan", what it leaves to the user, such as reviewing
   and merging, never with a time, since the agent cannot know how long the user takes.

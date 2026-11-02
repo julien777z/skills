@@ -125,15 +125,19 @@ alwaysApply: true
   repairs.** Any change — source, tests, tooling, configuration, guidance or interface — that has
   failed 3 rounds of review, gate, smoke test or CI, whatever each round raised, is not repaired
   again: findings that keep coming on one change say the approach is wrong, not that the next patch
-  will land. The agent then decides the way forward itself wherever the choice is its own: fall back to
-  a simpler approach, revert the change, or accept it with the remaining findings recorded; it
-  reports that decision in plain words, with current captures where the change is visible. It asks
-  only when the way forward is a genuine product, scope, security or disclosure choice, and that
-  question joins the questions already open rather than going out on its own. The stop exists to end
-  wasted rounds, never to add questions. It is the user's standing instruction, not a budget the
-  agent declares spent; the task stays active. The per-flag bounds of the skill running the loop
-  still apply within those 3 rounds, and `review-proposal`'s attack rounds on a proposal keep their
-  own count.
+  will land. A change is one plan step, worker task or finding fix, and its rounds are counted
+  together across every kind of check; a round a broken runner, fixture or provider cut short before
+  judging the change is not counted. The agent then decides the way forward itself wherever the
+  choice is its own: fall back to a simpler approach, revert the change, or accept it with the
+  remaining findings recorded. A confirmed defect, an exploitable vulnerability or a failing
+  required check is never accepted this way; only a simpler approach or a revert remains for it. The
+  agent reports that decision in plain words, with current captures where the change is visible. It
+  asks only when the way forward is a genuine product, scope, security or disclosure choice, and
+  that question joins the questions already open rather than going out as a separate message. The
+  stop exists to end wasted rounds, never to add questions. It is the user's standing instruction,
+  not a budget the agent declares spent; the task stays active. The per-flag bounds of the skill
+  running the loop still apply within those 3 rounds, and `review-proposal`'s attack rounds on a
+  proposal keep their own count.
 
 - An authorized task, including a fix request or approved plan, covers ordinary implementation,
   verification, and scoped external mutations. That authorization covers intermediate steps without
@@ -154,7 +158,8 @@ alwaysApply: true
   layout, controls or flow a reader meets on many pages or across several products, or that a
   returning user would notice, such as every photo gallery turning into a carousel once it holds
   more than a few photos, or a form splitting into steps everywhere past some number of fields — is
-  a product choice, and so is a remedy carried past the surface the user named to others like it.
+  a product choice, and so is new visible behaviour a remedy carries past the surface the user named
+  to others like it; the defect no longer showing there is not.
   Each is proposed before it is built, whether it arrives as a fix, a later fix round adjusts it, or
   a gate accepted it: the proposal lists every page it would change and carries before-and-after
   captures of a few representative pages where the change shows, never every page, so the user

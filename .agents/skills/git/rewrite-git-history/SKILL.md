@@ -78,11 +78,11 @@ Stop and say so when any of these fails; none is worked around.
    drop, read that same diff hunk by hunk: every hunk in it removes lines the dropped change added
    or restores lines it removed, and nothing else appears. A file the dropped change shared with a
    kept change therefore shows only the dropped hunks gone, with the kept hunks still in place; a
-   shared file that reverts wholly to the merge base is the kept change lost, and a per-path
-   listing (`--name-status`) cannot tell the two apart, so it is never the proof. In both cases
-   `git diff --name-only origin/<base>...<scratch branch>` names no path the branch never
-   touched, and `git merge-base origin/<base> <scratch branch>` is the merge base the old head had. Any failure means a group was wrong: fix the grouping and rebuild from step 5; never
-   push.
+   shared file that reverts wholly to the merge base is the kept change lost, and a per-path listing
+   (`--name-status`) cannot tell the two apart, so it is never the proof. In both cases
+   `git diff --name-only origin/<base>...<scratch branch>` names no path the branch never touched,
+   and `git merge-base origin/<base> <scratch branch>` is the merge base the old head had. Any
+   failure means a group was wrong: fix the grouping and rebuild from step 5; never push.
 8. **Move the branch and push with lease.** `git branch -f <branch> <scratch branch>`, then
    `git push --force-with-lease=<branch>:<old head> origin <branch>`. The lease refuses the push if
    anything landed on the remote branch since the old head was read, which is the one case where a

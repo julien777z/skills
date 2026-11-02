@@ -14,6 +14,8 @@ Start and verify the stack within the requested scope. When browser verification
 - `use-browser` — the browser this skill drives, through the `agent-browser` CLI.
 - `execute-task` — what happens to a defect a walkthrough finds, under its **Encountered Issues**.
 - `proton-pass` — a sign-in password the repository provides no source for.
+- `test-fixture` — the tests a scenario added or updated carries.
+- `subagent-matrix` — the capture worker a long list of captures can be handed to.
 
 ## Principles
 
@@ -109,9 +111,12 @@ say so and name what only a harness rendered.
 ### Scenarios
 
 Where the repository provides commands to start an isolated stack instance, bring it to a named
-state (a scenario) and capture pages, the walkthrough uses them as project guidance names them,
-never records seeded or a browser driven by hand. A list of pages the capture command reads holds
-only the pages the change reaches.
+state (a scenario) and capture pages, the walkthrough reaches its state with the scenario command
+and captures with the capture command, as project guidance names them, never by seeding records by
+hand; the control the change touches is still operated as **Drive the change** says. A list of
+pages the capture command reads holds only the pages the change reaches. A long capture list can
+go to a capture worker at the capability `subagent-matrix` names for one, and every image it
+returns is read whole before it is used.
 
 **The scenario command grows with the product.** A change that adds a state a person would want to
 test — a new status, a flow step, a kind of record a page shows — adds its scenario, with its tests,
