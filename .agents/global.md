@@ -39,14 +39,18 @@ alwaysApply: true
 - **A web product's views are pages.** Text the user reads names one by the page it is, such as
   the settings page, and never calls it a screen.
 - **A file the user should see reaches them where they read.** Per-item detail past five items —
-  findings, rows — and any gated plan a skill requires go in a file sent with the harness's
-  file-sending tool before the text that reports the result, so that text stays the turn's final
-  message. An item with captures stays in chat as its text followed by its captures, as a bullet
-  below says, and the file holds only the items without them. A sent text file reads on its own: it
-  opens with the table or summary its detail belongs to, never the detail alone. Text reports sent
-  together go as one markdown file, each report's table or summary before any detail. A path alone
-  names nothing a user in a cloud or remote session can reach. The parent sends what a subagent
-  produced. Where the harness cannot send files, say so and put what fits inline.
+  findings, rows — and the user's copy of any plan a skill gates go in a file sent with the
+  harness's file-sending tool before the text that reports the result, so that text stays the turn's
+  final message. An item with captures stays in chat as its text followed by its captures, as a
+  bullet below says, and the file holds only the items without them. A sent text file reads on its
+  own: it opens with the table or summary its detail belongs to, never the detail alone. Text
+  reports sent together go as one markdown file, each report's table or summary before any detail. A
+  path alone names nothing a user in a cloud or remote session can reach. The parent sends what a
+  subagent produced. Where the harness cannot send files, say so and put what fits inline.
+- **What the user reads is written for them.** A plan, proposal or report prepared for the agent's
+  own reviewers, gates or workers — the request restated, verified facts, evidence, per-file
+  detail — stays with them; the user receives a short version of the same content, as
+  `execute-task`'s **What The Plan Holds** shapes a plan.
 - **Read every file, image and recording whole before sending or presenting it, whoever produced
   it.** Checking that it shows what the message says it does is the smaller half: go through it
   region by region — each section, banner, message, badge, empty state and control in the frame —
@@ -208,12 +212,14 @@ alwaysApply: true
 - Surface every question through `AskUserQuestionTool` or the harness's equivalent user-question
   tool, including plan approvals and standalone questions. Ask directly in chat only when no
   equivalent tool exists. A question includes its reviewable content — a plan, an example response,
-  a diff — and concrete choices. The option that approves a plan or proposal reads "Approved",
-  never "Go" or another word. A question tool may show only its question and option labels;
-  send required review content as a file rather than relying on a collapsed preamble, preview or
-  description. Present supporting material before invoking the tool; supporting chat text identifies
-  the material and leaves the actionable question in the tool. During unfinished authorized work,
-  retain the question as a pending decision while
+  a diff — and concrete choices. The option that approves a plan or proposal reads "Approved", never
+  "Go" or another word, and is asked only once every decision the plan or proposal depends on is
+  answered: those decisions go to the user first, on their own, and the plan or proposal shown for
+  approval is written for their answers, with nothing in it conditional on one. A question tool may
+  show only its question and option labels; send required review content as a file rather than
+  relying on a collapsed preamble, preview or description. Present supporting material before
+  invoking the tool; supporting chat text identifies the material and leaves the actionable question
+  in the tool. During unfinished authorized work, retain the question as a pending decision while
   independent work continues; it is not a final task report.
 - **A choice between substantially different versions of a page shows every option rendered.**
   When the options differ in layout, structure or the controls the reader uses — a list or a grid,

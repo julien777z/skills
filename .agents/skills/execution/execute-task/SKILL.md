@@ -77,10 +77,15 @@ Every task that changes files starts here, and so does every follow-up that arri
   shared testing rule's **Environments** section and invoke `run-site` to apply its **Principles**
   before selecting browser walkthroughs or rendered UI inspections, including when later review
   or **Completion** proposes additional verification.
-- At most five numbered steps, each one bounded action with its wall-clock estimate, then the
-  total and what the user does afterwards, then every decision the plan needs. Keep it under 200
-  words while `i-have-adhd` is active, and send any detail a caller requires — a gated plan, a
-  ledger — as a file, as the global rules' **User-Facing Output** says, instead of restating it.
+- **A plan is written twice: in detail for the run, and short for the user.** The detailed plan —
+  the request restated, verified facts, evidence, each step's files and checks — is what
+  `review-proposal` reviews and what workers and gates receive; it never goes to the user. While a
+  decision the plan depends on is open, the user receives the decisions alone, each with only the
+  context it needs; the steps follow once they are answered, written for the answers, never
+  conditional on one. The plan the user reads summarizes the detailed plan, adding no step or scope
+  it lacks: at most five numbered steps, each one plain line naming one bounded action with its
+  wall-clock estimate, as `i-have-adhd` numbers steps, then the total and what the user does
+  afterwards. Keep it under 200 words while `i-have-adhd` is active.
 - **An estimate is the executing agent's own wall-clock, never the effort the same work would
   take a person.** Build it from what the run does and waits on, never from how big the change
   feels, round each step to the nearest whole minute, never below 1, and list what the plan needs
@@ -107,9 +112,14 @@ Every task that changes files starts here, and so does every follow-up that arri
   identifier, assignment state and host receipt with the plan evidence. The plan states where common
   behavior will live and which policy or wiring stays consumer-specific; it never starts from a parallel
   structure and leaves ownership for implementation.
-- Send this supporting plan content as the global rules' **User-Facing Output** requires, leaving
-  out the decision block when there is none. Submit approval and any unresolved decisions through
-  the global question-tool procedure:
+- Ask through the global question-tool procedure, sending each message as the global rules'
+  **User-Facing Output** requires: any open decisions first, on their own; then, once they are
+  answered and folded into both plans, the user's plan and its approval:
+
+```markdown
+**Decision needed:**
+1. **<subject>** — <question>? <only the context it needs>. I recommend <option>, because <reason>.
+```
 
 ```markdown
 **Proposed plan**
@@ -118,17 +128,14 @@ Every task that changes files starts here, and so does every follow-up that arri
 2. <step> (~<n> min)
 
 **Total: ~<n> min.** Then <what the user does next, with its time>.
-
-**Decision needed:**
-1. **<subject>** — <question>? I recommend <option>, because <reason>. Step <n> depends on this answer.
 ```
 
 ### Approval
 
-- Before recommending an approval-requiring plan, invoke `review-proposal` with its intent and
-  verified ownership evidence. The global approval procedure consumes its ready receipt before
-  presenting the decision. Reuse verified factual inventories; keep **When A Plan Is Needed**'s
-  exceptions rather than creating another approval requirement.
+- Before recommending an approval-requiring plan, invoke `review-proposal` on the detailed plan with
+  its intent and verified ownership evidence. The global approval procedure consumes its ready
+  receipt before presenting the decision. Reuse verified factual inventories; keep **When A Plan Is
+  Needed**'s exceptions rather than creating another approval requirement.
 
 - Only an explicit user response approves a plan. A timeout, inactivity, a missing response, a tool
   result, a mode change or a system notice never does. Surface approval through the global rules'
@@ -193,10 +200,8 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
 ```markdown
 **Running work keeps going:** <step in flight> doesn't touch <what the follow-up changes>.
 
-**Proposed plan for the follow-up**
+<**Decision needed:** …, asked on its own first | **Proposed plan for the follow-up**, once no decision is open>
 1. <step> (~<n> min)
-
-<No decisions needed. | **Decision needed:** …>
 ```
 
 - **One that changes what is being built** — a source or product follow-up — records the affected
