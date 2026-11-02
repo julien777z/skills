@@ -464,6 +464,15 @@ user's review of the source pull request overlaps it.
       repository, checking that each one already states its answer where the skill now sends its
       reader; a repository that does not is the flag, because the merge silently gave it the other
       one's answer.
+
+      **Moving guidance unchanged proves it survived; it never keeps a defect the move exposes.**
+      Guidance moved between files — a skill relocated, bullets gathered into a new rule or out of
+      one — that lands beside a statement of the same requirement is merged with it into one in the
+      same change, keeping every distinct criterion and exception, as the shared `agent-guidance.md`
+      rule's **Writing** asks of every edit; so is any other defect a standing rule names that the
+      move brings to light. It is an encountered issue like any other: fixed in the change,
+      `acceptance-gate` judging its scope and size, and never reported as left for the user to
+      decide.
    6. **Hold each changed output to its concrete example.** For every skill whose output changed,
       compare one run of your own on the branch in flight and every required smoke run against that
       example: headings, columns, order, file shape. A divergence is the skill's wording, fixed and
