@@ -64,8 +64,8 @@ skill's lens fanout.
 
 **A canonical guidance batch uses one coordinated review route.** Freeze every included head and
 complete diff, then have the independent edited reader complete its smoke work before inspecting
-the combined batch diff. That reader's prose review receipt replaces this route's redundant
-high-fix reviewer fanout, not final acceptance; retain its coverage per head. Reuse the receipt
+the combined batch diff. That reader's prose review receipt replaces this route's
+high-fix reviewer, not final acceptance; retain its coverage per head. Reuse the receipt
 only while its reviewed head, guidance inputs, and analysis scope remain exact, and rerun only the
 affected concern after a change. Add a reader only for a distinct named risk. This route never
 applies to runtime or source review, never lets an author review their own work, and leaves each
