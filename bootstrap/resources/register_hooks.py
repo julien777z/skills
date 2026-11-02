@@ -1,6 +1,8 @@
 import argparse
 import json
 import os
+import re
+import shlex
 import sys
 import tempfile
 from enum import StrEnum
@@ -8,7 +10,11 @@ from pathlib import Path
 from typing import Final
 
 NEW_SETTINGS_MODE: Final[int] = 0o600
-CANONICAL_HOOKS_PREFIX: Final[str] = "$(git rev-parse --show-toplevel)/.agents/hooks/"
+SOURCE_COMMAND_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r'python3 "\$\(git rev-parse --show-toplevel\)/\.agents/hooks/([\w-]+)/main\.py"'
+)
+HOOK_NAME_PATTERN: Final[re.Pattern[str]] = re.compile(r"[\w-]+")
+HOOK_ENTRY_POINT: Final[str] = "main.py"
 CONFLICT_EXIT: Final[int] = 1
 
 
@@ -66,15 +72,22 @@ def entry_handlers(entry: dict[str, object]) -> list[dict[str, object]] | None:
     return grouped if isinstance(grouped, list) else None
 
 
+def installer_command(hooks_dir: Path, name: str) -> str:
+    """Return the command that runs one linked hook from the user-level hooks directory."""
+
+    return f"python3 {shlex.quote(str(hooks_dir / name / HOOK_ENTRY_POINT))}"
+
+
 def relocated_handler(handler: dict[str, object], hooks_dir: Path, path: Path) -> dict[str, object]:
     """Point a source handler's command at the hooks linked into the user-level root."""
 
     command = handler.get("command")
+    match = SOURCE_COMMAND_PATTERN.fullmatch(command) if isinstance(command, str) else None
 
-    if not isinstance(command, str) or CANONICAL_HOOKS_PREFIX not in command:
-        raise SettingsConflict(f"{path} has a hook command outside {CANONICAL_HOOKS_PREFIX}")
+    if match is None:
+        raise SettingsConflict(f"{path} has a hook command that is not a generated hook command")
 
-    return {**handler, "command": command.replace(CANONICAL_HOOKS_PREFIX, f"{hooks_dir}/")}
+    return {**handler, "command": installer_command(hooks_dir, match.group(1))}
 
 
 def relocated_entry(entry: dict[str, object], hooks_dir: Path, path: Path) -> dict[str, object]:
@@ -88,25 +101,35 @@ def relocated_entry(entry: dict[str, object], hooks_dir: Path, path: Path) -> di
     return {**entry, "hooks": [relocated_handler(handler, hooks_dir, path) for handler in handlers]}
 
 
-def is_installer_handler(handler: dict[str, object], hooks_dir: Path, repo_root: Path) -> bool:
-    """Tell whether a handler runs a hook the installer links or has since unlinked."""
+def is_installer_handler(handler: dict[str, object], hooks_dir: Path) -> bool:
+    """Tell whether a handler's command is exactly one the installer writes for this hooks folder."""
 
     command = handler.get("command")
-    prefix = f"{hooks_dir}/"
 
-    if not isinstance(command, str) or prefix not in command:
+    if not isinstance(command, str):
         return False
 
-    hook = hooks_dir / command.split(prefix, 1)[1].split("/", 1)[0]
+    try:
+        words = shlex.split(command)
+    except ValueError:
+        return False
 
-    if not os.path.lexists(hook):
-        return True
+    if len(words) != 2:
+        return False
 
-    return hook.is_symlink() and hook.resolve().is_relative_to(repo_root)
+    hook = Path(words[1])
+    name = hook.parent.name
+
+    return (
+        hook.name == HOOK_ENTRY_POINT
+        and hook.parent.parent == hooks_dir
+        and HOOK_NAME_PATTERN.fullmatch(name) is not None
+        and command == installer_command(hooks_dir, name)
+    )
 
 
 def without_installer_handlers(
-    entries: list[dict[str, object]], hooks_dir: Path, repo_root: Path
+    entries: list[dict[str, object]], hooks_dir: Path
 ) -> list[dict[str, object]]:
     """Drop the installer's handlers from one event's entries, keeping the user's."""
 
@@ -116,16 +139,12 @@ def without_installer_handlers(
         handlers = entry_handlers(entry)
 
         if handlers is None:
-            if not is_installer_handler(entry, hooks_dir, repo_root):
+            if not is_installer_handler(entry, hooks_dir):
                 kept_entries.append(entry)
 
             continue
 
-        kept = [
-            handler
-            for handler in handlers
-            if not is_installer_handler(handler, hooks_dir, repo_root)
-        ]
+        kept = [handler for handler in handlers if not is_installer_handler(handler, hooks_dir)]
 
         if kept:
             kept_entries.append({**entry, "hooks": kept})
@@ -139,7 +158,6 @@ def reconciled(
     source: dict[str, object],
     source_path: Path,
     hooks_dir: Path,
-    repo_root: Path,
 ) -> dict[str, object]:
     """Return the target settings with exactly the source's hooks registered for the installer."""
 
@@ -148,7 +166,7 @@ def reconciled(
     hooks: dict[str, list[dict[str, object]]] = {}
 
     for event, entries in target_hooks.items():
-        kept = without_installer_handlers(entries, hooks_dir, repo_root)
+        kept = without_installer_handlers(entries, hooks_dir)
 
         if kept or not entries:
             hooks[event] = kept
@@ -205,9 +223,6 @@ def parse_arguments() -> argparse.Namespace:
     files.add_argument("--target", type=Path, required=True, help="User-level settings file.")
     files.add_argument("--source", type=Path, required=True, help="Generated hook registrations.")
     files.add_argument("--hooks-dir", type=Path, required=True, help="User-level hooks directory.")
-    files.add_argument(
-        "--repo-root", type=Path, required=True, help="Checkout the hooks link into."
-    )
 
     parser = argparse.ArgumentParser(
         description="Register the linked hooks in a user-level settings file."
@@ -243,8 +258,7 @@ def main() -> int:
             target_path,
             read_json_object(source_path),
             source_path,
-            arguments.hooks_dir,
-            arguments.repo_root.resolve(),
+            Path(os.path.abspath(arguments.hooks_dir)),
         )
     except SettingsConflict as error:
         print(f"conflict: {error}", file=sys.stderr)

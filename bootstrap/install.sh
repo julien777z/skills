@@ -234,7 +234,13 @@ HOOK_REGISTRAR="$INSTALLER_DIR/resources/register_hooks.py"
 GENERATED_ROOT="$REPO_ROOT/$GENERATED_DIRNAME"
 PROVIDERS=(claude codex cursor)
 found_root=0
+hook_python=0
+hook_python_warned=0
 TARGET_HOMES=("$HOME")
+
+if python3 -c 'import sys; sys.exit(sys.version_info < (3, 11))' 2>/dev/null; then
+  hook_python=1
+fi
 
 if [ -n "${CLOUD_HOME:-}" ]; then
   TARGET_HOMES=("$CLOUD_HOME")
@@ -302,13 +308,17 @@ register_hooks() {
 
   [ "$provider" = claude ] && settings=settings.json
 
-  if ! command -v python3 >/dev/null; then
-    [ "$action" = install ] && echo "python3 not found; hooks are linked but not registered in $root/$settings" >&2
+  if [ "$hook_python" -eq 0 ]; then
+    if [ "$action" = install ] && [ "$hook_python_warned" -eq 0 ]; then
+      echo "python3 3.11 or newer not found; hooks are linked but not registered." >&2
+      hook_python_warned=1
+    fi
+
     return 0
   fi
 
   python3 -B "$HOOK_REGISTRAR" "$action" --target "$root/$settings" \
-    --source "$GENERATED_ROOT/.$provider/$settings" --hooks-dir "$root/hooks" --repo-root "$REPO_ROOT"
+    --source "$GENERATED_ROOT/.$provider/$settings" --hooks-dir "$root/hooks"
 }
 
 preflight_provider() {
