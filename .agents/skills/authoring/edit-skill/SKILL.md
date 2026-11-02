@@ -64,7 +64,7 @@ During A Task** for the edit's timing.
 - `acceptance-gate` — the diff question over the `.agents` change once it reads clean.
 - `test-skill` — exercise behavior-changing guidance safely, compare original and edited results,
   and repair failing guidance or tests before merge.
-- `subagent-matrix` — the model capability level for live verification chats.
+- `subagent-matrix` — the model capability level for live verification chats and the delivery worker.
 - `review-pass` — the review of the guidance pull request **Guidance Delivery** opens.
 - `merge-gate` — the verified squash merge of the pull request step 7 clears.
 - `session-ledger` — retain observed issues, reproduction scenarios and pending guidance delivery across the active task.
@@ -128,7 +128,7 @@ During A Task** for the edit's timing.
 `process-ledger` invokes this route only for the batch of `guidance_correction` entries it froze,
 beside the source stream. It holds the source pull request only for the checks its ridden edits
 need and the delivery of the batch carrying them; only an edit on that pull request, or one the GitHub rule's **Merge Authorization** holds for a source pull request in
-another repository, waits for that merge. Run it as a delegated worker when the session can, so the
+another repository, waits for that merge. Run it as a delegated worker, at `subagent-matrix`'s standard capability level, when the session can, so the
 user's review of the source pull request overlaps it.
 
 1. Read every entry in the batch `process-ledger` froze and resume at its recorded first

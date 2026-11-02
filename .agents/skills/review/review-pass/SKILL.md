@@ -62,21 +62,10 @@ code. In a pull request that also changes source, the guidance adds no reviewer 
 the source review's reviewers reads it. Pass this into `code-review high fix`; it overrides that
 skill's lens fanout.
 
-**A canonical guidance batch uses one coordinated review route.** Freeze every included head and
-complete diff, then have the independent edited reader complete its smoke work before inspecting
-the combined batch diff. That reader's prose review receipt replaces this route's
-high-fix reviewer, not final acceptance; retain its coverage per head. Reuse the receipt
-only while its reviewed head, guidance inputs, and analysis scope remain exact, and rerun only the
-affected concern after a change. Add a reader only for a distinct named risk. This route never
-applies to runtime or source review, never lets an author review their own work, and leaves each
-head to the fresh final acceptance route below.
-
-For that route, the caller freezes the batch before this workflow's general review sequence: the
-edited reader runs the `test-skill` smoke scenarios first, then reviews the complete frozen guidance
-diff. Its clean per-head receipt replaces the generic Workflow step 2 high-fix reviewer and the
-duplicative general validation pass. This workflow then runs fresh final acceptance for each exact
-head through the shared gate. Findings, changed heads, or changed guidance inputs return to the
-ordinary repair and affected-receipt rules; no route for runtime or source work changes.
+**A canonical guidance batch is reviewed before its smoke round.** Freeze every included head and
+complete diff, and review the combined batch diff with the one guidance reviewer above; each head
+then takes the fresh final acceptance route below. `test-skill`'s smoke round runs after, on the
+head this workflow accepted, as `edit-skill`'s **Guidance Delivery** orders it.
 
 **Each pass reviews only what no earlier pass reviewed.** A finished task gets its full review once;
 a follow-up after it gets a review of the follow-up, sized to the follow-up.

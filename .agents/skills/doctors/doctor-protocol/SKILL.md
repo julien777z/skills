@@ -154,7 +154,7 @@ never the absence of a retired implementation.
 ## Implement In Waves
 
 After explicit plan approval, workers implement the complete approved plan side by side. Invoke
-`subagent-matrix` at the capability level each implementation role requires, launch each exact resolved
+`subagent-matrix` at its standard capability level for each implementation role, launch each exact resolved
 identifier, and retain catalogue state, identifier, assignment state and host receipt in the ledger under
 `subagent-matrix`'s **Dispatch**. The parent keeps the ledger, the plan's order, every judgement over the
 combined result, and the full suite and every check that needs a shared resource; the edits fan out.

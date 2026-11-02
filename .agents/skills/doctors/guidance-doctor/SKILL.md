@@ -16,6 +16,7 @@ things that are gone, and the ones the repository lacks.
 - `doctor-protocol` — own the run.
 - `banned-terminology` — the wording findings.
 - `edit-skill` — deliver the remediation; its pull request is left open for the user.
+- `subagent-matrix` — the cheap capability level for the cut trial's task run.
 
 Also read the host's skill-authoring skill and skill diagnostics when the host has them, found by
 their descriptions: a description optimiser, a trigger evaluation, a report of listing cost and
@@ -156,8 +157,8 @@ trigger, or evaluation.
 - Cutting a whole rule file, skill, or registry entry is a user decision, presented with four
   things: the files that name it; the usage measurement over a stated window, or unmeasured with
   the reason; the sentences that survive the Restates and Redundant lenses, which are what it
-  uniquely says; and, when any survive, the result of one bounded task run on the weaker model
-  without the file, judged against the file's own stated outcomes. No surviving sentence is the
+  uniquely says; and, when any survive, the result of one bounded task run at `subagent-matrix`'s cheap
+  capability level without the file, judged against the file's own stated outcomes. No surviving sentence is the
   recommendation to cut; surviving sentences with no usage is the recommendation to fix the trigger
   first. Age, size, and a reference count on their own never cut a file.
 - A rule that must be deterministic becomes a hook, and the rule stays for hosts without hooks.
