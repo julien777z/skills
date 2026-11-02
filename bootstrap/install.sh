@@ -4,6 +4,7 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 INSTALLER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly SKILLS_REMOTE='https://github.com/julien777z/skills.git'
+readonly GENERATED_DIRNAME='.agents/.auto_generated'
 reexecuted=0
 
 if IFS= read -r -u 9 reexec_root 2>/dev/null && [ "$reexec_root" = "$REPO_ROOT" ]; then
@@ -210,6 +211,12 @@ overlay_root="$(newest_overlay "$REPO_ROOT")"
 if [ -n "$overlay_root" ]; then
   echo "Using the refresh overlay $overlay_root; update-skills rebuilds it from the latest default branch."
   REPO_ROOT="$overlay_root"
+
+  python3 -B "$REPO_ROOT/.agents/skills/authoring/edit-skill/scripts/validate_sources.py" mirror \
+    --root "$REPO_ROOT" --output-dir "$GENERATED_DIRNAME" || {
+    echo "Could not regenerate the provider mirrors in $REPO_ROOT; no links were changed." >&2
+    exit 1
+  }
 fi
 
 CANONICAL_SKILLS="$REPO_ROOT/.agents/skills"
@@ -222,10 +229,18 @@ if [ ! -f "$CANONICAL_GLOBAL" ]; then
 fi
 
 CANONICAL_RESOURCES="$REPO_ROOT/.agents/resources"
-GENERATED_ROOT="$REPO_ROOT/.agents/.auto_generated"
+CANONICAL_HOOKS="$REPO_ROOT/.agents/hooks"
+HOOK_REGISTRAR="$INSTALLER_DIR/resources/register_hooks.py"
+GENERATED_ROOT="$REPO_ROOT/$GENERATED_DIRNAME"
 PROVIDERS=(claude codex cursor)
 found_root=0
+hook_python=0
+hook_python_warned=0
 TARGET_HOMES=("$HOME")
+
+if python3 -c 'import sys; sys.exit(sys.version_info < (3, 11))' 2>/dev/null; then
+  hook_python=1
+fi
 
 if [ -n "${CLOUD_HOME:-}" ]; then
   TARGET_HOMES=("$CLOUD_HOME")
@@ -288,8 +303,26 @@ check_directory() {
   done
 }
 
+register_hooks() {
+  local action="$1" provider="$2" root="$3" settings=hooks.json
+
+  [ "$provider" = claude ] && settings=settings.json
+
+  if [ "$hook_python" -eq 0 ]; then
+    if [ "$action" = install ] && [ "$hook_python_warned" -eq 0 ]; then
+      echo "python3 3.11 or newer not found; hooks are linked but not registered." >&2
+      hook_python_warned=1
+    fi
+
+    return 0
+  fi
+
+  python3 -B "$HOOK_REGISTRAR" "$action" --target "$root/$settings" \
+    --source "$GENERATED_ROOT/.$provider/$settings" --hooks-dir "$root/hooks"
+}
+
 preflight_provider() {
-  local provider="$1" root="$2" skill agent rule resource name failed=0
+  local provider="$1" root="$2" skill agent rule resource hook name failed=0
 
   check_directory "$root/skills" || return 1
 
@@ -316,6 +349,18 @@ preflight_provider() {
       check_link "$root/resources/$name" || failed=1
     done
   fi
+
+  if [ -d "$CANONICAL_HOOKS" ]; then
+    check_directory "$root/hooks" || failed=1
+
+    for hook in "$CANONICAL_HOOKS"/*; do
+      [ -d "$hook" ] || continue
+
+      check_link "$root/hooks/$(basename "$hook")" || failed=1
+    done
+  fi
+
+  register_hooks check "$provider" "$root" || failed=1
 
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -d "$CANONICAL_AGENTS" ]; then
     check_directory "$root/agents" || failed=1
@@ -400,7 +445,7 @@ prune_links() {
 }
 
 install_provider() {
-  local provider="$1" root="$2" skill agent rule resource name skills=0 agents=0 rules=0 resources=0
+  local provider="$1" root="$2" skill agent rule resource hook name skills=0 agents=0 rules=0 resources=0 hooks=0
 
   [ -d "$root" ] || return 0
 
@@ -438,6 +483,22 @@ install_provider() {
   fi
 
   prune_links "$root/resources"
+
+  if [ -d "$CANONICAL_HOOKS" ]; then
+    mkdir -p "$root/hooks"
+
+    for hook in "$CANONICAL_HOOKS"/*; do
+      [ -d "$hook" ] || continue
+
+      name="$(basename "$hook")"
+
+      ln -sfn "$(link_source "$provider" hooks "$name" "$hook")" "$root/hooks/$name"
+      hooks=$((hooks + 1))
+    done
+  fi
+
+  prune_links "$root/hooks"
+  register_hooks install "$provider" "$root"
 
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -d "$CANONICAL_AGENTS" ]; then
     mkdir -p "$root/agents"
@@ -483,7 +544,7 @@ install_provider() {
     ln -sfn "$CANONICAL_GLOBAL" "$root/AGENTS.md"
   fi
 
-  echo "$root: $skills skills, $agents agents, $rules rules, $resources resources linked"
+  echo "$root: $skills skills, $agents agents, $rules rules, $resources resources, $hooks hooks linked"
 }
 
 INSTALL_PROVIDERS=()
@@ -532,7 +593,7 @@ for index in "${!INSTALL_ROOTS[@]}"; do
 done
 
 if [ "$preflight_ok" -eq 0 ]; then
-  echo "Resolve the listed skill conflicts before installing; no links were changed." >&2
+  echo "Resolve the listed conflicts before installing; no links or hook registrations were changed." >&2
   exit 1
 fi
 

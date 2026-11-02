@@ -15,16 +15,24 @@ logger = logging.getLogger(__name__)
 
 MINIMUM_PYTHON: Final[tuple[int, int]] = (3, 12)
 WORKFLOWS_DIRNAME: Final[str] = ".github/workflows"
-ACTION_USE_PATTERN: Final[re.Pattern[str]] = re.compile(r"uses:\s*([\w.-]+/agent-sync-action)@(\S+)")
-COMMIT_PATTERN: Final[re.Pattern[str]] = re.compile(r"^[0-9a-f]{40}$")
+ACTION_USE_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"^\s*(?:-\s*)?uses:\s*(julien777z/agent-sync-action)@(\S+)\s*$", re.MULTILINE
+)
 CACHE_DIRNAME: Final[str] = "agent-sync-action"
 INSTALL_MARKER_FILENAME: Final[str] = "installed"
 EXTERNAL_RESOURCES_FILENAME: Final[str] = "external_resources.json"
 REPOSITORY_URL_TEMPLATE: Final[str] = "https://github.com/{repository}"
 
 
-class SourceCheckOutcome(StrEnum):
-    """What one run of the source check concluded."""
+class SourceCommand(StrEnum):
+    """An operation the script runs with the pinned sync tool."""
+
+    CHECK = "check"
+    MIRROR = "mirror"
+
+
+class SyncOutcome(StrEnum):
+    """What one run of the sync tool concluded."""
 
     VALID = "valid"
     INVALID = "invalid"
@@ -38,14 +46,14 @@ class ActionReference(TypedDict):
     reference: str
 
 
-EXIT_CODES: Final[dict[SourceCheckOutcome, int]] = {
-    SourceCheckOutcome.VALID: 0,
-    SourceCheckOutcome.INVALID: 1,
-    SourceCheckOutcome.UNAVAILABLE: 2,
+EXIT_CODES: Final[dict[SyncOutcome, int]] = {
+    SyncOutcome.VALID: 0,
+    SyncOutcome.INVALID: 1,
+    SyncOutcome.UNAVAILABLE: 2,
 }
-TOOL_EXIT_OUTCOMES: Final[dict[int, SourceCheckOutcome]] = {
-    0: SourceCheckOutcome.VALID,
-    2: SourceCheckOutcome.INVALID,
+TOOL_EXIT_OUTCOMES: Final[dict[int, SyncOutcome]] = {
+    0: SyncOutcome.VALID,
+    2: SyncOutcome.INVALID,
 }
 
 
@@ -54,7 +62,9 @@ def find_action_reference(root: Path) -> ActionReference:
 
     workflows_dir = root / WORKFLOWS_DIRNAME
     workflow_paths = sorted(workflows_dir.glob("*.yml")) + sorted(workflows_dir.glob("*.yaml"))
-    matches = (ACTION_USE_PATTERN.search(path.read_text(encoding="utf-8")) for path in workflow_paths)
+    matches = (
+        ACTION_USE_PATTERN.search(path.read_text(encoding="utf-8")) for path in workflow_paths
+    )
     match = next(filter(None, matches), None)
 
     if match is None:
@@ -67,9 +77,6 @@ def find_action_reference(root: Path) -> ActionReference:
 
 def resolve_commit(action: ActionReference) -> str:
     """Resolve the pinned reference to the commit the workflow runs today."""
-
-    if COMMIT_PATTERN.match(action["reference"]):
-        return action["reference"]
 
     url = REPOSITORY_URL_TEMPLATE.format(repository=action["repository"])
     listing = subprocess.run(
@@ -97,7 +104,9 @@ def tool_python(install_dir: Path) -> Path:
 def install_tool(action: ActionReference, commit: str) -> Path:
     """Install the sync tool at one commit and return its interpreter."""
 
-    install_dir = Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache") / CACHE_DIRNAME / commit
+    install_dir = (
+        Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache") / CACHE_DIRNAME / commit
+    )
     marker = install_dir / INSTALL_MARKER_FILENAME
 
     if marker.exists():
@@ -139,7 +148,29 @@ def install_tool(action: ActionReference, commit: str) -> Path:
     return tool_python(install_dir)
 
 
-def mirror_in_scratch(python: Path, root: Path, agents_dirname: str) -> SourceCheckOutcome:
+def run_sync_tool(python: Path, root: Path, agents_dirname: str, command: list[str]) -> SyncOutcome:
+    """Run one sync tool command over a canonical tree and report its outcome."""
+
+    arguments = [
+        str(python),
+        "-m",
+        "agent_sync",
+        *command,
+        "--root",
+        str(root),
+        "--agents-dir",
+        agents_dirname,
+    ]
+    run = subprocess.run(arguments, check=False, capture_output=True, text=True)
+    outcome = TOOL_EXIT_OUTCOMES.get(run.returncode, SyncOutcome.UNAVAILABLE)
+
+    if outcome is not SyncOutcome.VALID:
+        logger.error("The sync tool reported:\n%s", (run.stdout + run.stderr).strip())
+
+    return outcome
+
+
+def mirror_in_scratch(python: Path, root: Path, agents_dirname: str) -> SyncOutcome:
     """Validate external resources and mirror canonical sources in a scratch copy."""
 
     with tempfile.TemporaryDirectory(prefix="agent-sync-") as scratch:
@@ -153,45 +184,62 @@ def mirror_in_scratch(python: Path, root: Path, agents_dirname: str) -> SourceCh
             commands.insert(0, ["refresh-external-resources", "--dry-run"])
 
         for command in commands:
-            arguments = [
-                str(python),
-                "-m",
-                "agent_sync",
-                *command,
-                "--root",
-                scratch,
-                "--agents-dir",
-                agents_dirname,
-            ]
-            run = subprocess.run(arguments, check=False, capture_output=True, text=True)
-            outcome = TOOL_EXIT_OUTCOMES.get(run.returncode, SourceCheckOutcome.UNAVAILABLE)
+            outcome = run_sync_tool(python, Path(scratch), agents_dirname, command)
 
-            if outcome is not SourceCheckOutcome.VALID:
-                logger.error("The sync tool reported:\n%s", (run.stdout + run.stderr).strip())
+            if outcome is not SyncOutcome.VALID:
                 return outcome
 
-    return SourceCheckOutcome.VALID
+    return SyncOutcome.VALID
 
 
-def main() -> SourceCheckOutcome:
-    """Run the source check from the command line."""
+def parse_arguments() -> argparse.Namespace:
+    """Parse the command and the tree it runs on."""
 
-    parser = argparse.ArgumentParser(
-        description="Validate canonical agent sources with the sync tool the workflow pins."
-    )
-    parser.add_argument(
+    tree = argparse.ArgumentParser(add_help=False)
+
+    tree.add_argument(
         "--root",
         type=Path,
         default=Path.cwd(),
         help="Repository root (default: the working directory).",
     )
-    parser.add_argument(
+    tree.add_argument(
         "--agents-dir",
         default=".agents",
         help="Canonical source directory name (default: .agents).",
     )
 
-    arguments = parser.parse_args()
+    parser = argparse.ArgumentParser(
+        description="Run the sync tool the repository's workflow pins over its canonical agent sources."
+    )
+    commands = parser.add_subparsers(dest="command", required=True)
+
+    commands.add_parser(
+        SourceCommand.CHECK,
+        parents=[tree],
+        help="Validate the canonical sources by mirroring them in a scratch copy.",
+    )
+
+    mirror = commands.add_parser(
+        SourceCommand.MIRROR,
+        parents=[tree],
+        help="Regenerate the provider mirrors of the canonical sources in place.",
+    )
+
+    mirror.add_argument(
+        "--output-dir",
+        required=True,
+        help="Directory, relative to the root, that receives the provider mirrors.",
+    )
+
+    return parser.parse_args()
+
+
+def main() -> SyncOutcome:
+    """Run the requested command from the command line."""
+
+    arguments = parse_arguments()
+    command = SourceCommand(arguments.command)
     root: Path = arguments.root.resolve()
     agents_dirname: str = arguments.agents_dir
 
@@ -208,6 +256,22 @@ def main() -> SourceCheckOutcome:
     action = find_action_reference(root)
     commit = resolve_commit(action)
     python = install_tool(action, commit)
+
+    if command is SourceCommand.MIRROR:
+        logger.info(
+            "Mirroring %s into %s with %s@%s",
+            agents_dirname,
+            arguments.output_dir,
+            action["repository"],
+            action["reference"],
+        )
+
+        return run_sync_tool(
+            python,
+            root,
+            agents_dirname,
+            ["mirror-harnesses", "--output-dir", arguments.output_dir],
+        )
 
     logger.info(
         "Validating %s in a scratch copy with %s@%s",
@@ -227,14 +291,16 @@ if __name__ == "__main__":
     except (OSError, RuntimeError, subprocess.CalledProcessError) as exc:
         logger.error("%s", exc)
 
-        outcome = SourceCheckOutcome.UNAVAILABLE
+        outcome = SyncOutcome.UNAVAILABLE
 
     match outcome:
-        case SourceCheckOutcome.VALID:
+        case SyncOutcome.VALID:
             logger.info("Valid: the sync tool accepted every canonical source.")
-        case SourceCheckOutcome.INVALID:
-            logger.error("Invalid: the sync tool refused the canonical tree; fix what it reported above.")
-        case SourceCheckOutcome.UNAVAILABLE:
-            logger.error("Unavailable: the check did not reach a verdict.")
+        case SyncOutcome.INVALID:
+            logger.error(
+                "Invalid: the sync tool refused the canonical tree; fix what it reported above."
+            )
+        case SyncOutcome.UNAVAILABLE:
+            logger.error("Unavailable: the sync tool did not run to completion.")
 
     raise SystemExit(EXIT_CODES[outcome])
