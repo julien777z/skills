@@ -132,10 +132,9 @@ the request asks for a new page.
      from, nested as the Usage tree is but with every step, each with `detail` what it does and
      `meta` the most subagents beneath it when there are any, and, on a step that repeats, an entry
      saying how many rounds and what each repeat reruns, toned `warning` when it reruns everything;
-     its entries' `details` open the same write-ups. Then an `outline` `Where subagents start`,
-     grouped by the skill that launches them, one
-     item per launch saying who, how many and when, toned `warning` for a launch that always runs
-     and neutral for a conditional one; then a `table` `Skills` with the columns Skill, Role and
+     its entries' `details` open the same write-ups. A launch's entry here also names in its `meta`
+     the capability level its subagents run at, from `subagent-matrix`, or says it is unstated.
+     Then a `table` `Skills` with the columns Skill, Role and
      Started by, and `details` holding each row's skill write-up, so clicking a skill opens it.
    - **Skill write-up**: the dialog a reader opens to learn what a skill does and how it spends
      subagents and rounds. An `outline` with `stacked` set and `collapsible` false, `title` the
@@ -159,9 +158,7 @@ the request asks for a new page.
      should know, such as the condition that starts a launch, what a later round reruns, a scope
      another skill also reads in the same run, or a count that grows with the size of the change.
    - `references` make each skill's name a link to its whole `SKILL.md`, at the commit read,
-     wherever the page's text names it; outline items carry no `links`. Each item in `Where
-     subagents start` has `meta` naming the launch's capability level from `subagent-matrix`, or
-     saying it is unstated.
+     wherever the page's text names it; outline items carry no `links`.
 6. **Deliver** through `use-dashboard`. Name what is incomplete, if anything, in one line.
 
 ## Interrogate
