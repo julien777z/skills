@@ -11,14 +11,24 @@ exercise, and prove that each test protects behavior or an independent contract.
 
 ## Dependencies
 
+- `session-ledger` — owns private task-plan and evidence persistence. The task owner writes the
+  boundary matrix; a worker returns its proposed rows to that owner.
+
 Read the repository's product-constraints skill when the skill listing declares one, found by its
 description rather than assumed by name. It says how broad the fix for an issue encountered while
 tracing a test surface is; without one, fix what the focused pass can finish.
 
 ## Workflow
 
-1. Read the complete [rubric](references/rubric.md) before inspecting, reviewing, changing, or
-   executing any covered test surface. Discover the repository's test roots, distribution and build
+1. Read the repository’s test eligibility policy and applicable testing, framework, and organization
+   guidance before selecting a test surface. Classify the proposed verification by what it does,
+   not its name: a committed assertion does not escape a no-tests policy by being called a check,
+   smoke, or wrapper. If tests are prohibited, use the permitted verification and do not add test
+   files or test infrastructure. Where tests are allowed, compare existing patterns with the
+   applicable guidance; do not adopt a conflicting pattern merely because it already exists or
+   matches the source language. The runtime under test and the assertion framework are separate
+   choices. Read the complete [rubric](references/rubric.md) before inspecting, reviewing, changing,
+   or executing any covered test surface. Discover the repository's test roots, distribution and build
    roots, artifact boundaries, fixture packages, factory owner, shared test utilities, runner
    targets, and analogous sibling tests. For a test of shell, process, container, browser, network,
    or operating-system behavior, identify the runtime CI or the deployment declares before writing
@@ -36,7 +46,10 @@ tracing a test surface is; without one, fix what the focused pass can finish.
    validation unless the test exposes a source defect that changes the implementation. Existing tests
    may still be run to diagnose development failures.
 4. Identify the source owner and its existing test module beneath the corresponding suite and classification. Extend that module before creating another; apply the rubric's class/file boundary test before splitting or relocating a suite.
-   Trace reused imports to their defining owners under the rubric before treating them as canonical.
+   Extend an existing module only when its organization and framework comply with the applicable
+   guidance. When it conflicts, write the coverage in the required framework and organization;
+   an existing test or missing runner does not make the conflicting pattern canonical. Trace reused
+   imports to their defining owners under the rubric before treating them as canonical.
    Reuse the canonical fixture or factory for every domain value. When it lacks required data,
    extend that owner and update its consumers instead of spelling the value in the test.
 5. Reuse an existing case when setup, execution, and assertions match. Parametrize cases that vary
@@ -46,6 +59,21 @@ tracing a test surface is; without one, fix what the focused pass can finish.
    asserting behavior.
 7. Run real deterministic application code and real domain models. Double only boundaries the
    process cannot cross or faults the real path cannot produce, using the shallowest declared seam.
+   At an external, serialized, or persisted boundary, construct values from the canonical model or
+   fixture and then emit the exact representation the production consumer receives. Do not let a
+   model's permissive internal-field input stand in for the boundary contract. Before selecting
+   cases, trace every field and cardinality condition that can change the decision; cover its
+   observable outcomes through the rubric's decision matrix rather than stopping at the reported
+   input shape. When the production path filters, selects, stops, retries, falls back, merges, or
+   persists based on those inputs, prepare a `Boundary matrix` before modifying cases. A task owner
+   writes and reads back the matrix in the task's `session-ledger` plan entry; when the task has no
+   plan entry, the owner creates and reads back a `test-fixture` evidence record in that same
+   private ledger instead. A worker returns proposed rows to the owner and waits for that owner’s
+   persistence receipt. Each row names the boundary reader, emitted representation,
+   behavior-changing condition, and expected observable outcome. In the completion report,
+   reproduce safe matrix rows — field names, shape, and outcome rather than raw payload values —
+   and their test-case mapping, then cite the private ledger entry that established them before
+   implementation.
 8. Before completion, inspect every literal added or changed in tests and test support.
    Replace domain data, sample identities, addresses, names, identifiers, payload fields, and fixture
    facts with values read from the canonical fixture or factory. A provider request or response body
