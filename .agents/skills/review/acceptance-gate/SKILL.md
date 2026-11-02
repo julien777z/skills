@@ -114,9 +114,11 @@ implemented twice, comments narrating code, confusing or near-duplicate names, d
 code, hand-written configuration or styling where an owner exists. The list illustrates the question
 and never bounds it. A rubric exemption that would excuse such a shape is named in the flag. A
 remedy that sends the author to an existing piece judges that piece the same way first: a wrapper or
-a duplicate is not an owner. An increment fixing an earlier flag is read the same way, over the
-modules it touches, never only against that flag; the rest of the originating diff, which the
-earlier gate judged, is context, re-judged only where the increment changes what it depends on.
+a duplicate is not an owner. An increment fixing an earlier flag is judged on the earlier flags it
+answers and on its own lines, read the same way, never only against that flag; the rest of the
+modules it touches and of the originating diff, which the earlier gate judged, is context, open to a
+new flag only where the increment changes what it depends on or it holds a confirmed defect or
+exploitable vulnerability.
 
 **Then make the design comparison.** Inventory the responsibilities and decisions the diff moves,
 duplicates, specializes, removes or introduces, reading both sides independently of the caller's
@@ -267,7 +269,11 @@ the step or the complete diff is the independent acceptance covering its resolut
 one that settles such a choice, or one the in-process check cannot settle goes to a fresh gate as
 above.
 
-**Repair rounds are counted per objection.** A flag gets at most two repair rounds of its own; one a
+**Repair rounds are counted per objection and per change.** A change gets at most 3 gate rounds, the
+first and 2 after repairs, as the global rules' review-round limit says: once 3 have flagged it,
+whatever each raised, the decision that bullet calls for replaces another repair, and an acceptance
+with recorded findings that decision makes is the one exception to the rules below on flagged
+diffs. Within that, a flag gets at most two repair rounds of its own; one a
 fresh gate raises for the first time starts at zero and is repaired like any other, whatever round
 the change as a whole has reached. A flag the gate still raises after its own second repair goes to
 the user as a report, never as a choice about whether to fix it or leave it in place: the open flag,

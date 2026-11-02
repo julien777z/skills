@@ -508,7 +508,8 @@ user's review of the source pull request overlaps it.
       Resolve each flag through that skill's **Bounds**: repair the owning instruction, push the
       changed increment, and put it to a fresh independent gate, or check it in process when those
       **Bounds** call it a small repair. Repeated flags do not permit
-      dropping owed work or merging flagged guidance; acceptance must cover the final wording before
+      dropping owed work or merging flagged guidance, apart from the decision the global rules'
+      review-round limit calls for after 3 rounds; acceptance must cover the final wording before
       delivery.
 
    5. **Run one `test-skill` round over the batch on the head `review-pass` accepted.** Give it every

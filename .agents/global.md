@@ -113,9 +113,22 @@ alwaysApply: true
   environments** while the task stays active. Start the invoked skill and ask before narrowing its scope.
 - For an invoked skill, do not decline, defer, or drop a finding, fix, or validation step because
   the work looks large, difficult, or likely to exceed a guessed time, context, or token budget.
-  Only the user declares a budget spent. Work until complete; a concrete gate follows **Tools and
-  environments** for live repair or resolution. On an explicit user stop or handoff, report what
-  finished and record precisely what resumption needs.
+  Only the user declares a budget spent. Work until complete, short of the review-round limit
+  below; a concrete gate follows **Tools and environments** for live repair or resolution. On an
+  explicit user stop or handoff, report what finished and record precisely what resumption needs.
+- **A change gets at most 3 review rounds in total: the first review and 2 re-reviews after
+  repairs.** Any change — source, tests, tooling, configuration, guidance or interface — that has
+  failed 3 rounds of review, gate, smoke test or CI, whatever each round raised, is not repaired
+  again: findings that keep coming on one change say the approach is wrong, not that the next patch
+  will land. The agent then decides the way forward itself wherever the choice is its own: fall back to
+  a simpler approach, revert the change, or accept it with the remaining findings recorded; it
+  reports that decision in plain words, with current captures where the change is visible. It asks
+  only when the way forward is a genuine product, scope, security or disclosure choice, and that
+  question joins the questions already open rather than going out on its own. The stop exists to end
+  wasted rounds, never to add questions. It is the user's standing instruction, not a budget the
+  agent declares spent; the task stays active. The per-flag bounds of the skill running the loop
+  still apply within those 3 rounds, and `review-proposal`'s attack rounds on a proposal keep their
+  own count.
 
 - An authorized task, including a fix request or approved plan, covers ordinary implementation,
   verification, and scoped external mutations. That authorization covers intermediate steps without
