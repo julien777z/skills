@@ -232,8 +232,10 @@ simplification or validation repair before `code-review` reads the target. For a
 freeze a replacement active review-scope snapshot after every pass-authored mutation while retaining
 the originating delta as context. Do not start `code-review` while a simplification finding remains
 unapplied or unresolved. Run `code-review high fix` only against the resolved review target,
-as **Workflow** step 2 hands it over, with the Simplification Gate's clean receipt and, when it
-ran, the **Diff Review**'s receipt, so `code-review` skips the lenses they cover.
+as **Workflow** step 2 hands it over. Hand it the Simplification Gate's pass and, when it ran, the
+**Diff Review**, the latter clean with its own fixes included, each brought to the snapshot
+`code-review` starts on through its continuity attestation, so `code-review` takes them as lens
+receipts as its Step 3 says; a later change that touches their material reruns that lens over it.
 
 ## GitHub Transport
 
