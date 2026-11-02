@@ -81,7 +81,7 @@ choices:
     detail: one Rules, one Bugs, one Simplification and one Security lens, with inline validation
   - id: high
     label: high
-    detail: one Rules, two independent Bugs, one Simplification and one Security lens, then one standard validator tries to refute every finding
+    detail: one Rules, two independent Bugs, one Simplification and one Security lens, then one standard validator tries to refute each doubtful finding
   - id: xhigh
     label: xhigh
     detail: two independent Rules and Bugs lenses plus one Simplification and one Security lens, then two standard validators per finding with majority rule
@@ -231,7 +231,7 @@ Effort selects the cohort and the validation depth:
 |---|---|---|---|---|---|
 | `low` | 1 | 1 | – | – | Inline |
 | `medium` | 1 | 1 | 1 | 1 | Inline |
-| `high` | 1 | 2 | 1 | 1 | One **standard** validator per finding |
+| `high` | 1 | 2 | 1 | 1 | One **standard** validator per doubtful finding |
 | `xhigh` | 2 | 2 | 1 | 1 | Two **standard** validators per finding, majority rules |
 | `max` | 2 | 3 | 2 | 2 | Three **deep** refuters per finding, majority rules |
 | `ultra` | 2 | 3 | 2 | 2 | Three **deep** refuters per finding, majority rules |
@@ -312,6 +312,13 @@ Do not classify validity by file extension or category. A lock file can change e
 ## Step 4 — Validate findings
 
 Deduplicate findings describing the same underlying issue, then validate each one against the diff as `references/rubric.md` — Validation directs: validators are told to refute, every finding resolves to CONFIRMED or refuted, the rubric lists what is dropped outright, and the one undecidable case — intent absent from the supplied instructions, accepted decisions and repository guidance — goes to the user in the shape step 8 uses for an ambiguous fix.
+
+**At `high`, a validator runs only for a doubtful finding.** A lens marks each finding
+certain or uncertain. A certain finding names a concrete trigger and the line it fails on, and its
+fix changes no contract; it is confirmed without a validator, and a wrong one is caught when the
+fix's lines are reviewed again. A finding its lens marks uncertain, or one whose fix changes a
+public interface, a stored shape or another contract, gets its validator; `xhigh` and above
+validate every finding.
 
 Require each validator to state the complete resolved target it inspected: the full pull-request range
 for PR targets, immutable range for ref targets, or snapshot identity with complete target-diff and
