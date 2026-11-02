@@ -114,7 +114,7 @@ function Group({
   return (
     <Stack>
       {start === 0 && (
-        <Text as="h3" size="xs" weight="medium" tone="muted" caps>
+        <Text as="h3" size="sm" weight="medium" tone="muted">
           <RichText text={group.title} />
         </Text>
       )}

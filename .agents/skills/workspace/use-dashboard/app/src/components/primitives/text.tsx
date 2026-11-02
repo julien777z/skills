@@ -14,7 +14,6 @@ const TEXT_VARIANTS = {
   numeric: { true: 'tabular-nums', false: '' },
   breakAnywhere: { true: '[overflow-wrap:anywhere]', false: '' },
   truncate: { true: 'truncate', false: '' },
-  caps: { true: 'uppercase tracking-wide', false: '' },
   measure: { true: 'max-w-[75ch]', false: '' },
   hidden: { true: 'sr-only', false: '' },
 } as const;
@@ -26,7 +25,6 @@ const textVariants: ReturnType<typeof cva<typeof TEXT_VARIANTS>> = cva('', {
     numeric: false,
     breakAnywhere: false,
     truncate: false,
-    caps: false,
     measure: false,
     hidden: false,
   },

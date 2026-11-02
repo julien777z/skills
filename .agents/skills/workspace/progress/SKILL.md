@@ -54,8 +54,9 @@ and deliver the same dashboard again on every request so the user keeps one page
 
 ## Spec
 
-- **Header.** `title`: `Progress Dashboard`. `subtitle`: the task in a few words, then its goal,
-  such as "Add bulk export: let admins download a month of invoices as one file". `status`: `Waiting on you` (`warning`) while a question
+- **Header.** `title`: `Progress Dashboard`. `topic`: the task in a few words, such as "Bulk
+  export". `subtitle`: the task's goal, such as "Let admins download a month of invoices as one
+  file". `status`: `Waiting on you` (`warning`) while a question
   is open, which covers a step an open question blocks; `Blocked` (`critical`) while a step is
   blocked on anything else; `Done` (`good`) once every plan is complete; otherwise `On track`
   (`good`).
@@ -64,7 +65,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   that is not withdrawn, where finished work is each done step's work and each done part of a step
   neither done nor skipped. `detail`: "<done> of <total> steps done", counting steps with work,
   adding "across <n> plans" when there are several.
-  `segments`: one per step with work, in plan order, labelled "<plan title>: <step title>",
+  `segments`: one per step with work, in plan order, labelled with the step's title,
   `weight` that work in minutes, toned `good` when done, `accent` when active, `critical` when
   blocked, and neutral otherwise. A step neither done nor skipped with done parts takes them as a
   first segment, toned `good`, then its remaining work as a second, toned by the step's status as
@@ -102,8 +103,8 @@ and deliver the same dashboard again on every request so the user keeps one page
 | Column | `tone` | Cards |
 | --- | --- | --- |
 | Waiting on you | `warning` | Each open question: `title` the question, `detail` "Recommended: <recommendation>", `tag` "Question". |
-| In progress | `accent` | Active and blocked steps: `detail` the step's note, `tag` "<plan title>" plus " · blocked" when blocked, `meta` its estimate, adding "· <done> of <n> parts" for a step with parts, counting parts not skipped. Each question whose evidence is still owed: `title` the question, `detail` the evidence being gathered, `tag` "Question". |
-| Up next | — | Steps not started, in plan order, with `tag` and `meta` as above. |
+| In progress | `accent` | Active and blocked steps: `detail` the step's note, `tag` the plan's title when the task has several plans, followed by " · blocked" when blocked, or "Blocked" alone when it has one, `meta` its estimate, adding "· <done> of <n> parts" for a step with parts, counting parts not skipped. Each question whose evidence is still owed: `title` the question, `detail` the evidence being gathered, `tag` "Question". |
+| Up next | — | Steps not started, in plan order, with `meta` as above and `tag` the plan's title when the task has several plans. |
 | Done | `good` | Finished steps, `meta` their measured duration. |
 
 - **`diagram` "Architecture diagram"**: one diagram covering every pull request the page covers, so
@@ -152,7 +153,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **`table`**, only when the ledger holds tabular facts worth a grid, such as checks per pull
   request head.
 - **`outline` "What changed in <pull request name>"**: the pull request's changes grouped by the area
-  they touch, such as `Report export` or `Search page`, with moves and renames last under
+  they touch, such as `Report export` or `Search page`, never the task itself, with moves and renames last under
   `No behaviour change`. Each item's `title` says in a few words what now happens, and its `detail`
   how and why it matters in one or two sentences a reader follows without the diff. Its `links`,
   of kind `diff`, open the diff of each file that makes the change, in the pull request's Files
@@ -169,7 +170,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   <what it does to the schema or stored data> · <what the user has to do, or Nothing>", with a
   `diff` link to the migration file in the pull request's diff.
 - **`outline` "Keep in mind"**: what a reviewer or the user needs to know about the changes
-  themselves before relying on them — a risk, a limit, a behaviour that surprises — grouped by area.
+  themselves before relying on them — a risk, a limit, a behaviour that surprises — grouped by area as above.
   What merging and deploying needs or sets off belongs to the Wrap up page, and nothing here
   restates how the work is delivered, such as that a pull request waits for the user's approval,
   stays a draft or runs its checks. `tone` is `critical` for what breaks something if missed and

@@ -24,12 +24,13 @@ renders every value as text, so data never runs as markup or script.
 
 ## Spec
 
-Top level: `title`, `icon`, `updated_at` (ISO 8601) and `pages` are required. `title` is the
-dashboard's name followed by "Dashboard", such as `Progress Dashboard`, and what it is about goes in
-`subtitle`. The navbar shows `title` beside `icon`, then a link to each page, how long ago `updated_at` was and the `status`
-badge, and each page opens with its own title; the page's own name, which a browser tab or a
-published link shows, is `title`. Every other field is optional, and an absent
-one leaves its part of the page out.
+Top level: `title`, `topic`, `icon`, `updated_at` (ISO 8601) and `pages` are required. `title` is
+the dashboard's name followed by "Dashboard", such as `Progress Dashboard`; `topic` names what this
+render covers in a few words, such as `Bulk export`, and `subtitle` can say more. The navbar shows
+`title` beside `icon`, then a link to each page, how long ago `updated_at` was and the `status`
+badge, and each page opens with its own title. The page's own name, which a browser tab or a
+published artifact shows, is "`title` - `topic`", such as "Progress Dashboard - Bulk export".
+Every other field is optional, and an absent one leaves its part of the page out.
 
 | Field | Shape |
 | --- | --- |
@@ -83,7 +84,8 @@ to show is left out, and so is the entry that requires it. A URL renders as a li
 
 ```json
 {
-  "title": "Search rewrite",
+  "title": "Progress Dashboard",
+  "topic": "Search rewrite",
   "icon": "activity",
   "updated_at": "2026-01-05T14:20:00+00:00",
   "status": {"label": "On track", "tone": "good"},
@@ -130,6 +132,11 @@ Dashboards look alike because they are built alike:
   or a pull request's state takes a pill; a label that only says what kind of thing an item is or
   which group it belongs to, such as its plan or its type, is plain text. When most items on a page
   would carry a pill, the pill has stopped meaning anything.
+- **A label names only what it marks.** A segment, tag, group or row label never restates the
+  dashboard's `topic` or the heading above it: the reader already has both, so a progress segment
+  is labelled with its step, such as "Offer rules", never "Plot waitlist: Offer rules", and an outline
+  group is headed with the area it covers, never with the task's name.
+  Labels and headings are written in sentence case and shown as written.
 - **Tone means the same everywhere.** `good` is fine or matches, `warning` needs the reader's look
   or action, `critical` is wrong or blocking, `accent` is in progress or informational, and `done`,
   a purple, is finished work. Leave it out for neutral; never tone an item only to decorate it.
@@ -163,7 +170,8 @@ data exists, or a change to the app — runs on one made-up scenario, never on r
 - **The pages agree with one another**: the same pull requests, counts and names recur on every page,
   and each section fills its slot as the caller's skill describes, so the preview shows what a real
   run of that skill would produce.
-- The `subtitle` says it is a sample, such as "Sample dashboard for a made-up task".
+- Its `topic` is `Synthetic Preview`, so the page is named such as "Progress Dashboard - Synthetic
+  Preview", and the `subtitle` says what made-up task it shows.
 
 ## Render
 
