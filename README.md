@@ -52,6 +52,12 @@ Claude, Codex, and Cursor user roots. Codex's global `AGENTS.md` links to the sa
 `project.md`. Re-running refreshes owned links and prunes obsolete ones; real content or foreign
 links at an installed path are reported before any links change.
 
+The hooks and their registration need Python 3.11 or newer as `python3`; without it the installer
+links the hooks, warns, and registers none. The `ledger` hook needs PyYAML. When a ledger the
+session writes lacks a backup comment, it keeps the turn going in Claude Code and Codex and submits
+a follow-up message in Cursor. Codex runs a newly registered hook once it has been reviewed and
+trusted there.
+
 ## Layout
 
 | Path | Purpose |
@@ -60,7 +66,7 @@ links at an installed path are reported before any links change.
 | `.agents/agents/` | Subagent definitions; the tier each runs on is stated by the skill that launches it. |
 | `.agents/rules/` | Reconciled reusable rules; technology-specific rules retain their file scopes. |
 | `.agents/hooks/<name>/` | One hook: its `main.py` entry point and supporting modules, linked into each user-level root under `hooks/<name>/`. `ledger/` is the turn-end check that every task ledger entry owing a backup comment has one. |
-| `.agents/hooks/hooks.json` | The event each hook runs on. The installer adds these registrations to Claude's `settings.json` and to Codex's and Cursor's `hooks.json` in each user-level root, pointing at the linked hooks. |
+| `.agents/hooks/hooks.json` | The event each hook runs on. Agent Sync turns it into each provider's registrations: Claude's `settings.json` and Codex's and Cursor's `hooks.json`. The installer reconciles those into each user-level root, pointing them at the linked hooks: it adds new registrations, replaces its earlier ones, and removes its own that no longer have a hook. |
 | `.agents/external_resources.json` | Third-party skills and reference directories vendored by the workflow. |
 | `.agents/resources/<name>/` | Vendored reference files, linked into each supported user-level root under `resources/<name>/`. |
 | `.agents/.auto_generated/` | Provider mirrors the workflow generates on `main`; never edited by hand. |

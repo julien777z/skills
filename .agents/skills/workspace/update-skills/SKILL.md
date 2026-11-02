@@ -108,8 +108,10 @@ remains a decision while independent recovery continues.
    regenerating that overlay's provider mirrors with the sync tool its workflow pins, so pending
    rule and agent edits reach the providers that link a generated copy. A failed regeneration stops
    the installer before any link changes; treat it as recovery work. Resolve each
-   installed skill and rule link in every existing user-level agent root and confirm it points into
-   the installed source. Check Codex's global `AGENTS.md` link when Codex is installed. Preserve
+   installed skill, rule and hook link in every existing user-level agent root and confirm it
+   points into the installed source. Confirm each hook registration the installer wrote — in
+   Claude's `settings.json` and Codex's and Cursor's `hooks.json` — runs a `main.py` that resolves
+   through a hook link in that root, unless the installer warned that it registered none. Check Codex's global `AGENTS.md` link when Codex is installed. Preserve
    real files and foreign links; the installer's conflict preflight reports them before changing
    links. Never reset, drop, or overwrite preserved work.
 6. Once the links point into the installed source, remove every other `skills-overlay/` worktree of
