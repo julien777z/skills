@@ -34,8 +34,8 @@ Group them for the report:
 - **A round** is the subagents a loop launched together, or a repeat the skill ran, such as a
   second review after a repair.
 - **A loop is running** while the record shows its outermost skill's run still active or any of
-  its subagents running, and finished once the record shows that run ended. Where the record does
-  not show the run's end, its state is reported as missing, never guessed from a pause.
+  its subagents running; every other loop is a previous loop, its end reported as missing when the
+  record does not show it.
 - **Two scopes overlap** when they share a file or one folder contains the other.
 
 A fact the record does not hold is reported as missing, never estimated.
@@ -52,7 +52,7 @@ at once; it is never moved to a file.
   and its scope; then one closing line with its fresh tokens so far, cached tokens beside them when
   the record separates them, its longest subagent, how many subagents read each scope, and each
   pair of overlapping scopes.
-- **Previous loops**: the last five finished loops, the most recent first, each as a short block:
+- **Previous loops**: the last five loops not running, the most recent activity first, each as a short block:
   its skills, when it started and how long it ran, how many rounds and subagents, its fresh tokens
   with cached tokens beside them when the record separates them, its longest subagent, how many
   subagents read each scope, and each pair of overlapping scopes.
