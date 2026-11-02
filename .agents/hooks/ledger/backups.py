@@ -40,7 +40,7 @@ def entry_statuses(entry: dict[object, object]) -> frozenset[str]:
     )
 
 
-def entry_record(entry: object, kind: str, fallback_id: str) -> BackupRecord | None:
+def entry_record(entry: object, fallback_id: str) -> BackupRecord | None:
     if not isinstance(entry, dict):
         return None
 
@@ -49,7 +49,7 @@ def entry_record(entry: object, kind: str, fallback_id: str) -> BackupRecord | N
 
     return BackupRecord(
         id=str(entry_id) if entry_id else fallback_id,
-        kind=kind,
+        kind=str(entry.get("kind")),
         statuses=entry_statuses(entry),
         has_commit=bool(entry_field(entry, "commits")),
         urls=comment_urls(recovery_comment),
@@ -69,8 +69,7 @@ def ledger_records(document: object) -> list[BackupRecord]:
     records: list[BackupRecord] = []
 
     for index, entry in enumerate(session_ledger["entries"]):
-        kind = str(entry.get("kind")) if isinstance(entry, dict) else ""
-        record = entry_record(entry, kind, f"session_ledger.entries[{index}]")
+        record = entry_record(entry, f"session_ledger.entries[{index}]")
 
         if record is not None:
             records.append(record)
