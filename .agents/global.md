@@ -9,11 +9,6 @@ alwaysApply: true
 
 - This guidance is used with multiple models and agent harnesses. Prefer one provider-neutral
   implementation and one canonical source for skills, rules, and agent prompts.
-- **A skill states the facts an agent gathers, never one harness's storage.** What an agent can
-  find out about its own session — its transcript, its task list, its subagents and their records —
-  is gathered by the agent in whichever harness runs it. A script or instruction that reads one
-  harness's files, environment variables or record layout is the narrow implementation this rule
-  forbids.
 - When a shared implementation is not possible, support both Claude and Codex explicitly: account
   for how each discovers, installs, and uses the guidance, and verify both paths. Include other
   supported harnesses where the same change reaches them.
