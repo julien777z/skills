@@ -26,16 +26,16 @@ paths:
 - **Shared or repository-owned.** Generic skills live in one shared skills repository and reach
   every session through a user-level skill root; repository-specific skills, every rule, and
   repository-specific agents live in the repository they describe. Inspect a skill's content and
-  dependencies to decide ownership, including for an existing skill: a user-level symlink shows
-  where it is installed, not where it belongs. A new or existing skill goes to the skills
+  dependencies to decide ownership, never its name, including for an existing skill: a user-level
+  symlink shows where it is installed, not where it belongs, and a generically named skill can
+  depend on one repository's contract. A new or existing skill goes to the skills
   repository only when it reads generically without losing required behavior. If making it
   generic would remove or misstate guidance it needs to give, put it in the repository it
   describes under `.agents/skills/`, at any depth; move a misplaced existing skill there.
   **Guidance whose correctness depends on a current repository's product, resources, topology, contracts, configuration, or relationships is project guidance.** It belongs in that repository's `.agents/project.md` or a repository-specific skill, regardless of the subject that exposed the gap. A shared skill may teach the classification procedure, but never carry a current repository's facts or boundaries.
   An agent definition that a shared skill runs on goes with that skill; every other agent, and
   every rule, is repository-owned.
-- **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract, and where a skill genuinely needs one local fact, take it from the repository's project guidance or a setting rather than baking it in. Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
-- **Generic ownership is determined by what the skill must do, not its name.** A generically named skill can depend on one repository's contract; keep that skill in the repository and its facts in project guidance. Language, platform, framework, and workflow skills that truly apply across products remain shared and read repository commands, identities, hosts, packages, and fixtures from project guidance rather than embedding them.
+- **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract, and where a skill genuinely needs one local fact — a command, an identity, a host, a package, a fixture — take it from the repository's project guidance or a setting rather than baking it in. Live file paths and copied application code go stale when files move or refactors land; use generic placeholders such as `services/<name>/...`, short pattern descriptions, or minimal invented examples instead. Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
 - **A file's name and description bound what it owns.** Before choosing a skill or rule, state
   the condition its name and description set — a release stage, a technology, a mode, a kind of
   task — and ask whether the guidance would still be true where that condition does not hold. If
@@ -186,8 +186,7 @@ a template where correct results genuinely vary in shape.
   done, and it is rewritten until the neighbour changes too. An agent delegating an edit
   passes the class and the evidence, not finished rule text for one case.
 - Describe reusable roles, boundaries, and decision criteria generically even in
-  repository-focused guidance when the pattern is not repository-specific. Keep concrete
-  repository names only when correctness depends on that local contract.
+  repository-focused guidance when the pattern is not repository-specific.
 - Guidance states a transferable decision or procedure. Incident dates, machine inventories,
   project identities, test outcomes, and recovery diaries belong in project records or verification
   evidence. Renaming a product or moving its anecdote to a reference does not make it generic.
@@ -218,7 +217,6 @@ a template where correct results genuinely vary in shape.
   harness runs it; outside such a compatibility section, a script or instruction that finds those
   session facts through one harness's files, environment variables or record layout is a
   defect, never a convenience.
-- Do not embed product-specific file paths or copy current application code into reusable skills; those go stale when files move or refactors land. Prefer generic placeholders (for example `services/<name>/...`), short pattern descriptions, or minimal invented examples that are not tied to live paths or current line-level code.
 
 ## Scripts
 
