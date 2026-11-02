@@ -453,6 +453,7 @@ OUTLINE_ITEM_SHAPE: Final[ObjectShape] = ObjectShape(
         "tag": TEXT,
         "meta": TEXT,
         "links": SOURCE_LINKS,
+        "points": TEXTS,
     },
     required=frozenset({"title", "detail"}),
 )

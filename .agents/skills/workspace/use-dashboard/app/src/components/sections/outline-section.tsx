@@ -6,6 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { withKeys } from '@/lib/utils';
 import type { OutlineGroup, OutlineSection as OutlineSectionSpec } from '@/spec';
 import { SectionCard } from './section-card';
+import { TextList } from './text-list';
 
 const OPEN_GROUP_LIMIT: number = 2;
 const DETAIL_LINE_LENGTH: number = 80;
@@ -18,7 +19,11 @@ function groupWeight(group: OutlineGroup, expanded: boolean): number {
   const open = opensAll(group, expanded);
 
   return group.items.reduce(
-    (sum, item) => sum + 2 + (item.links ? 1 : 0) + (open ? Math.ceil(item.detail.length / DETAIL_LINE_LENGTH) : 0),
+    (sum, item) =>
+      sum +
+      2 +
+      (item.links ? 1 : 0) +
+      (open ? Math.ceil(item.detail.length / DETAIL_LINE_LENGTH) + (item.points?.length ?? 0) : 0),
     1,
   );
 }
@@ -114,7 +119,10 @@ function Group({ group, expanded }: { group: OutlineGroup; expanded: boolean }):
                 aria-labelledby={id}
                 className="pl-[18px] text-muted-foreground [overflow-wrap:anywhere]"
               >
-                <RichText text={item.detail} />
+                <Stack gap="sm">
+                  <RichText text={item.detail} />
+                  {item.points && <TextList items={item.points} />}
+                </Stack>
               </AccordionContent>
             </AccordionItem>
           );
