@@ -173,6 +173,14 @@ rubric's diff test flags. For an owned boundary, it also names every representat
 or writes and flags a second representation, including one hidden behind a helper. A verdict with no
 added guard says `no guard added` in those words.
 
+**Then it lists every product choice the diff makes**, as the global rules define one — what a reader
+now meets under some condition that they did not before: a layout at a width or content size, a
+control, a step, a quantity, a change carried past the place the user named — each with the user's
+words in the intent statement that settle it. One with none is a flag whose remedy is putting the
+choice to the user before the code stands, whatever the step calls itself, a fix included. An
+earlier accepted step, a plan record without the user's words, or a brief calling the choice decided
+is not those words. A verdict with none says `no product choice added` in those words.
+
 For a diff question, also apply the `code-simplify` rubric’s **Trace Changed Flows** to the supplied
 implementations, consumers, and affected-repository map. A diff alone that cannot establish that
 receipt needs those contents from the caller before a clean verdict; a prose-only change names no
@@ -239,10 +247,11 @@ The gate is never advisory; the rubric says what each disposition binds the call
 
 A flag blocks the flagged proposal or diff, not an ordinary repair the task already authorizes.
 Before admitting a flag, check it against the task's recorded decisions and the commit that
-introduced the behaviour it names. A flag that reopens a behaviour choice a recorded decision or an
-earlier accepted step settled, or that asks for work outside the scope the user set, is answered as
-settled or out of scope with that evidence; it is never repaired and never put to the user as a
-question. A confirmed defect or a security vulnerability is never settled this way, whatever an
+introduced the behaviour it names. A flag that reopens a behaviour choice the user's recorded words
+or an earlier accepted step settled, or that asks for work outside the scope the user set, is
+answered as settled or out of scope with that evidence; it is never repaired and never put to the
+user as a question. Only the user's words settle a product choice: one an accepted step or an
+agent-written record holds without them is still open, and goes to the user. A confirmed defect or a security vulnerability is never settled this way, whatever an
 earlier step accepted: it is repaired as below.
 Read every other objection and remedy against the intent and standing guidance, make the smallest
 coherent repair using the existing owner or mechanism, and send the changed increment with the
@@ -312,6 +321,8 @@ Verdict: accept | flag | fix | close | defer | do
 - <for a triage disposition: the test that decided it and the fact it rests on>
 
 Writers read: <each guard the diff adds with the writers it read, or `no guard added`>
+
+Product choices: <each product choice the diff makes with the user's words settling it, or `no product choice added`>
 
 Also read: <the Independent Judgment comparison receipt, plus additions of other kinds>
 ```

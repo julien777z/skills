@@ -59,7 +59,9 @@ with an obsolete owned contract or revision.
   appears beside it — a second implementation of the mechanism, a sibling path answering the same
   question from a different input, a parallel copy nobody reconciled — that is one piece of work, the
   change's own scope rather than incidental work under the size budget or an item left for later,
-  and splitting it leaves the half that stays behind as the version the next person extends.
+  and splitting it leaves the half that stays behind as the version the next person extends. This
+  widens the repair, never a product choice: a remedy that changes what a reader meets goes to the
+  user before it is built at any site, as the global rules' product-choice bullet says.
 - **A parallel copy is reconciled by giving the mechanism one owner, never by keeping the copies in
   step.** Making copies identical, a test that they match, or a note to update both leaves the
   second mechanism in place. Pick the owner by the fewest-mechanisms test, across repositories as

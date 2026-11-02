@@ -274,9 +274,10 @@ ends the question.
    by handing the work to that repository's backlog. Ownership is read from whose repository the
    dependency is, never from where it sits or from a record calling it out of scope. That the code
    under change is deployed or running somewhere, a backfill in flight on live data included, is the order the fix rolls out in, stated in the pull
-   request; it is never a blocker. The gate never routes work to a decision on its own: where a fix
-   has a product dimension, the change takes the cleanest fix and states the trade-off in the pull
-   request, or the fork is put to the user now, never filed as theirs unasked. A defer also requires
+   request; it is never a blocker. The gate never routes work to a decision on its own: where a fix's
+   remedy is a product choice the global rules reserve to the user, the fork is put to the user now,
+   before that remedy is built, never filed as theirs unasked; a trade-off inside a choice the user's
+   words already settled takes the cleanest fix and states it in the pull request. A defer also requires
    that the record's resolution criteria describe an end state and name the intent a fix has to
    preserve, never a mechanical condition a relocated shape could satisfy.
    Size is not that arguability and never stands in for it. The test is a question somebody could

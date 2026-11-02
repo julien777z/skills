@@ -131,11 +131,19 @@ alwaysApply: true
   waits on this question. Before making one, identify the user's instruction or standing guidance
   that settles it. If neither does, explain the concrete issue, show the concrete alternatives with
   a recommendation, and ask before building one; a required outcome does not approve an unnamed
-  layout, control, scope or timing chosen to achieve it. **A routine presentation or interaction
-  detail is not a product choice, and is not put to the user.** An alignment, a spacing, a size or
-  tone on the product's existing scale, the placement of a message or control among the product's
-  established positions, the wording of a message the change adds: decide it by what serves the
-  reader and stays consistent with the product, and state the choice and its reason in the report.
+  layout, control, scope or timing chosen to achieve it. **A fix's remedy meets the same test.** A
+  remedy that changes which layout, control or flow a reader meets under some condition — a list
+  that turns into a card grid once its content passes a length, a form that splits into steps past
+  some number of fields, a menu that folds behind a button at a new width — or that carries a change
+  past the place the user named to every place like it, is a product choice, whether it arrives as a
+  fix, a later fix round adjusts it, or a gate accepted it. The user's word on how something looks
+  under one condition, such as on a phone, decides nothing about when it appears under another.
+  **A routine presentation or interaction detail is not a product choice, and is not put to the
+  user.** An alignment, a spacing, a size or tone on the product's existing scale, the placement of
+  a message or control among the product's established positions, the wording of a message the
+  change adds: decide it by what serves the reader and stays consistent with the product, and state
+  the choice and its reason in the report. Which layout a reader gets at a given width or content
+  size is never such a detail.
   Ask only where the user has said such a detail is theirs. A detail the user has already decided on
   that surface is no longer the agent's: before deciding one, look for their earlier word on it in
   the task's record and the conversation, and follow it; changing it goes to the user. **Text
