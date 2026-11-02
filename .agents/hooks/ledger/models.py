@@ -33,7 +33,8 @@ class BackupRecord(TypedDict):
     kind: BackedUpKind
     status: str | None
     has_commit: bool
-    recovery_comment: str | None
+    comment_urls: tuple[str, ...]
+    awaits_pull_request: bool
 
 
 class LedgerFormatError(Exception):

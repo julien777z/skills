@@ -21,6 +21,25 @@ def optional_string(data: dict[object, object], name: str, location: str) -> str
     return value
 
 
+def comment_urls(value: object, location: str) -> tuple[str, ...]:
+    """Read an entry's backup comment URLs from its recovery_comment field."""
+
+    if value is None or value == AWAITING_PULL_REQUEST:
+        return ()
+
+    if not isinstance(value, list):
+        raise LedgerFormatError(f"{location} has a recovery_comment that is not a list")
+
+    urls = tuple(
+        url for url in value if isinstance(url, str) and url.startswith(COMMENT_URL_PREFIX)
+    )
+
+    if len(urls) != len(value):
+        raise LedgerFormatError(f"{location} has a recovery_comment entry that is not a URL")
+
+    return urls
+
+
 def entry_record(entry: object, location: str) -> BackupRecord | None:
     """Read the backup facts of one ledger entry, or None for a kind that is not backed up."""
 
@@ -53,7 +72,8 @@ def entry_record(entry: object, location: str) -> BackupRecord | None:
         kind=BackedUpKind(kind),
         status=optional_string(data, "status", location),
         has_commit=bool(commits),
-        recovery_comment=optional_string(data, "recovery_comment", location),
+        comment_urls=comment_urls(data.get("recovery_comment"), location),
+        awaits_pull_request=data.get("recovery_comment") == AWAITING_PULL_REQUEST,
     )
 
 
@@ -76,17 +96,6 @@ def ledger_records(document: object) -> list[BackupRecord]:
     return [record for record in records if record is not None]
 
 
-def comment_url(record: BackupRecord) -> str | None:
-    """Return the backup comment URL an entry records."""
-
-    recovery_comment = record["recovery_comment"]
-
-    if recovery_comment is None or not recovery_comment.startswith(COMMENT_URL_PREFIX):
-        return None
-
-    return recovery_comment
-
-
 def missing_backup(record: BackupRecord, url_owners: dict[str, list[str]]) -> str | None:
     """Describe what an entry's backup lacks, or None when it owes nothing."""
 
@@ -101,13 +110,13 @@ def missing_backup(record: BackupRecord, url_owners: dict[str, list[str]]) -> st
     if is_guidance and not record["has_commit"]:
         return None
 
-    url = comment_url(record)
+    urls = record["comment_urls"]
 
-    if url is None:
+    if not urls:
         if is_guidance:
             return "has a commit but no recovery_comment URL"
 
-        if record["recovery_comment"] == AWAITING_PULL_REQUEST:
+        if record["awaits_pull_request"]:
             return None
 
         return "no recovery_comment URL"
@@ -115,7 +124,7 @@ def missing_backup(record: BackupRecord, url_owners: dict[str, list[str]]) -> st
     if not is_guidance:
         return None
 
-    sharers = sorted({owner for owner in url_owners[url] if owner != record["id"]})
+    sharers = sorted({owner for url in urls for owner in url_owners[url] if owner != record["id"]})
 
     if not sharers:
         return None
@@ -130,9 +139,7 @@ def ledger_findings(document: object) -> list[str]:
     url_owners: dict[str, list[str]] = defaultdict(list)
 
     for record in records:
-        url = comment_url(record)
-
-        if url is not None:
+        for url in record["comment_urls"]:
             url_owners[url].append(record["id"])
 
     findings: list[str] = []

@@ -133,22 +133,24 @@ This skill authorizes those comments and their edits under the GitHub rule's **C
 
 - **A `guidance_correction` entry keeps one comment of its own** on the pull request carrying its
   edit, posted once the edit is pushed; no other entry shares it. When the edit moves to another
-  pull request, post its comment there, record that URL, and leave the earlier comment untouched.
+  pull request, post its comment there, make that URL its only one, and leave the earlier comment
+  untouched.
 - **Plans, decisions and answered questions share one comment per kind per pull request** —
   `## Ledger plans`, `## Ledger decisions` or `## Ledger questions` — on the task's pull request in
   the repository each entry concerns, with one section per entry headed by its id. An entry that
   concerns several repositories is split, each comment holding its own repository's part and naming
   no other. Until that repository has a task pull request, the entry records `recovery_comment:
   awaiting_pull_request`, and opening the pull request posts its backup.
-- **Posting and recording are one step.** Write the comment's URL to the entry's `recovery_comment`
-  in the ledger update that follows the post, before any other work. When an entry a comment holds
-  changes — a new commit, a stage result, a step's status, a later answer — edit that comment in
-  place rather than posting another.
+- **Posting and recording are one step.** Add the comment's URL to the entry's `recovery_comment`
+  list in the ledger update that follows the post, before any other work. When an entry a comment
+  holds changes — a new commit, a stage result, a step's status, a later answer — edit that comment
+  in place rather than posting another.
 - The comment shapes and what they may say are in [references/backup.md](references/backup.md).
 - **The backup check reads three `data` fields.** `status` is a plan's or question's status from
   **Workflow**, or a `guidance_correction`'s delivery status: `pending`, `complete` or `withdrawn`;
   a decision has none. `commits` lists a `guidance_correction`'s pushed commits. `recovery_comment`
-  is one string: the backup comment's URL, or `awaiting_pull_request`. An entry that is `complete`
+  is a list of backup comment URLs, one per repository an entry is split across, or
+  `awaiting_pull_request`. An entry that is `complete`
   or `withdrawn`, a question not yet `answered`, and a `guidance_correction` with no commit owe no
   backup.
 - The installed turn-end hook `ledger` refuses to end a turn while a ledger this
