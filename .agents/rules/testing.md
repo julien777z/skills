@@ -19,17 +19,27 @@ paths:
   build, applicable browser verification and review once. Select browser verification under
   **Environments** before planning its prerequisites. Where it applies to a UI feature, inspect its
   rendered screen and comparable existing interactions at this checkpoint, and fix design or copy
-  defects before moving to unrelated work or the final combined checks. A task with several features
+  defects before moving to unrelated work or the final combined checks. Take browser captures only of
+  a change that alters what a page shows; a change with no visible effect, a backend or test-only
+  repair included, gets no walkthrough capture unless the user asks for one. A task with several features
   may verify each completed feature; an edit, file, commit, push, handoff or plan step is not a feature boundary.
 - Classify validation failures under `execute-task`'s **Encountered Issues** before expanding
   repair work. Fix a completed-feature batch's relevant failures together, then repeat only the
-  checks the fixes affect.
+  checks the fixes affect. While repairing a failure or a review or gate finding, run only the tests
+  that cover the changed code; a repository's full suites run once per pull request, on the head
+  delivery accepts, never once per repair.
   Reuse successful evidence for unchanged code and inputs. A new commit or reviewer is not itself
   a reason to repeat verification; a changed dependency, relevant input or unresolved concern is.
   Formatting, import ordering, comments, documentation, and an equivalent non-executable change
   preserve behavioral evidence once the diff establishes that they cannot affect the tested
   behavior. Run the formatter, linter, type checker, or other focused check that owns the edit;
   do not rerun a behavioral suite solely because its head changed.
+- **A run whose result a known change will supersede is stopped, never awaited.** Once a result, a
+  partial one included, shows a fix is needed, or another change to the same inputs is already
+  planned, stop your own in-flight local run of those inputs, make and push the change, then run
+  the batch once on the new head; hosted checks follow `merge-gate`. Stop it through its runner's own
+  interruption route so fixture teardown and stack and lock release run, and confirm it has exited
+  and released its resources before starting the next run. A superseded run holds no push.
 - Before delivery, complete the required repository checks and review the combined pull-request
   diff. Reuse still-valid completed-feature results; run the full required checks where the final
   repository state or integration needs them. This cadence changes when verification runs, never
@@ -236,18 +246,28 @@ class TreeNode(BaseModel):
   fails instead of holding a runner until the platform's six-hour default. A job that calls a
   reusable workflow cannot carry the key, so it goes on the job inside the reusable workflow that
   runs the suite. A local runner that wraps the suites bounds each suite's run at the same 15 minutes.
-- **A suite that needs longer than 15 minutes is a defect, never a reason to raise its timeout.**
-  Find what made it slow — a test that waits on a real clock, an immutable resource (a schema, a
-  compiled artifact, a client) rebuilt per test where it could be built once per session, work
-  repeated across parametrized cases — and fix that cause until the suite fits. Splitting the suite
-  across jobs only to stay under the limit, or giving any suite a timeout above 15 minutes, hides
-  the same defect.
-- **One test that dominates its suite's runtime is the cause, not the suite around it.** A test
-  disproportionate under `test-fixture`'s cost question is made cheap or removed, as that rubric and
-  `pre-production` decide. Absorbing it instead keeps the cost and hides it, exactly as a raised
-  timeout does: retuning the runner's distribution mode, worker count, ordering or grouping, giving
-  it a job of its own, skipping it, marking it for a run pull requests deselect, or moving it to a
-  scheduled workflow.
+- **Every suite finishes within five minutes of wall time**, or within a tighter budget the
+  repository configures. The 15-minute timeout only stops a hung run; a suite that needs longer than
+  its budget is a defect, never a reason to raise the timeout or the budget. Find what made it slow
+  — a test that waits on a real clock, an immutable resource (a schema, a compiled artifact, a
+  client) rebuilt per test where it could be built once per session, work repeated across
+  parametrized cases — and fix that cause, or remove what cannot be made cheap, until the suite
+  fits. Splitting the suite across jobs only to stay under the budget, or giving any suite a timeout
+  above 15 minutes, hides the same defect.
+- **A run that verifies a change is read for its cost as well as its counts.** Read each suite's
+  wall time against its budget. Where the native runner supplies call durations, compare their
+  sum with wall time; a large gap identifies time outside test bodies. Use existing setup and
+  fixture reporting to attribute that cost, recording unavailable attribution as unmeasured under
+  `test-fixture`'s cost-reporting procedure. The usual setup causes are a fixture whose setup,
+  summed over every test that uses it, dominates (an autouse one especially), an external account
+  or identity created per test though nothing per-test lives on it, and a stack torn down and
+  rebuilt each run though its inputs have not changed.
+- **A test, parametrized family or module that dominates its suite's runtime is the cause, not the
+  suite around it.** One disproportionate under `test-fixture`'s cost question is made cheap or
+  removed, as that rubric and `pre-production` decide. Absorbing it instead keeps the cost and hides
+  it, exactly as a raised timeout does: retuning the runner's distribution mode, worker count,
+  ordering or grouping, giving it a job of its own, skipping it, marking it for a run pull requests
+  deselect, or moving it to a scheduled workflow.
 - When CI tests fail and you cannot access the logs directly, ask the user to provide the failure output before attempting fixes.
 
 ## Environments

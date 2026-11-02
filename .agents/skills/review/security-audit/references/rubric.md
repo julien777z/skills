@@ -32,8 +32,11 @@ unless its trace shows the precedent's own condition broken.
   `bypassSecurityTrustHtml`, a raw or `safe` filter, or escaping turned off.
 - **Client code.** Missing authorization or validation in client-side code is not a finding: the
   server owns both, and the server is where the finding lives if either is missing.
-- **Logging.** Logging URLs or non-sensitive data is not a finding; logging a secret, a credential or
-  personal data is.
+- **Logging.** Logging URLs or non-sensitive data is not a finding; logging a secret or a credential
+  is, and so is personal data in a record that reports no failure. A failure's message, its
+  traceback and the values of a warning or error are never a finding for the personal data or other
+  values they hold; a secret or credential in them still is, since the global Logging rule conceals
+  it.
 - **Outbound requests.** Server-side request forgery needs control of the host or protocol;
   controlling only the path is not a finding.
 - **Model prompts.** User content placed in a model's prompt is not a finding on its own; what the
@@ -120,7 +123,7 @@ Ask in this order:
 3. **Does a product decision dissolve it?** Requiring an invitation, dropping an unused affordance,
    narrowing who a feature serves. That decision is not the auditor's, so the finding carries it as
    an option for whoever decides, priced honestly against the code fix — never silently taken and
-   never silently dropped.
+   never silently dropped. It is reported alongside the code fix that ships and never replaces it.
 4. **Only then, new enforcement.** A guard, a policy object, a claim check, a schema change.
 
 **Report the alternative whenever it is materially simpler, even when it is not the one recommended.**

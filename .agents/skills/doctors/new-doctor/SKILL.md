@@ -13,7 +13,7 @@ not a dependency this skill runs, so it is named here and not below.
 
 ## Dependencies
 
-- `subagent-selection` — select the standard tier for doctor smoke reviewers.
+- `subagent-matrix` — select the standard tier for doctor smoke reviewers.
 - `get-doctors` — the doctors that already exist.
 - `edit-skill` — deliver the new skill: its branch, its `code-simplify` pass, and its
   agent-configuration-only pull request, left open for the user.
@@ -58,9 +58,10 @@ not a dependency this skill runs, so it is named here and not below.
 A lens is only as good as what a reviewer reading it finds. Before delivery, prove each lens
 against a violation a reviewer has not been told about.
 
-- **Who reviews.** Invoke `subagent-selection` and use its **standard** tier for read-only
-  reviewers, following its dispatch and unavailable-model policy. Record the resolved model
-  each reviewer actually ran on.
+- **Who reviews.** Invoke `subagent-matrix` and use its **standard** tier for read-only
+  reviewers, following its dispatch and unavailable-model policy. Record each reviewer's catalogue
+  state, exact dispatch identifier, assignment state and receipt; record runtime identity only when
+  the host exposes it.
 - **What each reviewer gets.** The doctor's `SKILL.md`, the skills it depends on, one target tree,
   and the instruction to run the audit phase only: inventory the target, apply every lens, and
   return findings anchored to file and line, each naming the lens and the remedy. No plan, no

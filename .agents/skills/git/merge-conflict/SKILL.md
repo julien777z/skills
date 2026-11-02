@@ -32,7 +32,7 @@ answers to one question may now sit in one tree.
 ## Procedure
 
 1. **Record the previous base** — the merge-base commit before incorporation — and the base commit
-   being incorporated; both go to the gate at step 9.
+   being incorporated; both go to the gate at step 10.
 2. **Fetch the exact current base and head** with explicit refspecs, and confirm the fetched objects
    are the hosting service's current head and base. Merge the base into the branch, or rebase onto it
    where the repository's convention and the branch's ownership allow; never rewrite history on a
@@ -64,15 +64,14 @@ answers to one question may now sit in one tree.
 8. **Read the changed-file list against the base before anything else.** Every path in it is either
    one the branch touched or a regression: a path the branch never edited that now differs from the
    base is the base's own work being undone. Restore it from the base and look for its siblings.
-9. **Gate it.** Run `acceptance-gate`'s **Base incorporation** procedure with the previous base, the
-   incorporated base, the originating change with its intent, and the resolved result; that
-   procedure states what a flag obliges and what its verdict does not grant.
-10. **Push the resolved result once step 7's checks pass**, with step 9's gate run over the pushed
-    result, then re-query mergeability. Where the choice at step 4 is close
-    and changes an interface others build on, put it to the user with a recommendation, as
-    `pre-production`'s **Trade-Offs Are Surfaced, Never Enforced** directs, rather than settling it
-    silently; block only when a safe resolution needs an unauthorized product decision, or a change
-    to a contract a consumer outside the user's control speaks.
+9. **Push the resolved result once step 7's checks pass**, then re-query mergeability.
+10. **Gate the pushed result.** Run `acceptance-gate`'s **Base incorporation** procedure with the
+    previous base, the incorporated base, the originating change with its intent, and the resolved
+    result; that procedure states what a flag obliges and what its verdict does not grant. Where the
+    choice at step 4 is close and changes an interface others build on, put it to the user with a
+    recommendation, as `pre-production`'s **Trade-Offs Are Surfaced, Never Enforced** directs,
+    rather than settling it silently; block only when a safe resolution needs an unauthorized
+    product decision, or a change to a contract a consumer outside the user's control speaks.
 
 ## Output
 

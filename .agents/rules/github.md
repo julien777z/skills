@@ -44,6 +44,10 @@ alwaysApply: true
 - Do not add glue steps that only read versions or forward setup data. Pass repository-owned version files and inputs directly to the action that uses them whenever supported.
 - Keep workflow files concise: merge related setup and dependency commands into one clearly named generic step when their execution order and conditions allow it. Do not split tool or package installation into separate steps merely by dependency.
 - Keep each workflow job's `name` plain static text. Do not interpolate matrix or other GitHub expressions into a job name: skipped matrix jobs display the source expression instead of a resolved label. Keep matrix values in the strategy and use a concise generic job name that remains readable in every job state.
+- Name a workflow and its jobs the way the owner's other repositories name the same kind, such as a
+  test workflow whose job runs over a suite matrix or a lint job, and for the role each serves
+  across the repository, never for the one language, package or suite the repository holds today.
+  Read those repositories' workflows before naming one.
 - Environment configuration that tunes a tool — retry counts, timeouts, cache locations, path entries — belongs in the step that installs or runs that tool, not in a step of its own. A step whose whole body writes to `$GITHUB_ENV` is named for a concern rather than an action, and the reader has to look elsewhere to find out which later step it affects. Write those exports at the end of the owning step so the setting and its consumer stay together.
 - Add an explanatory comment when an edge case requires an explicit version override.
 - **A job that runs under a GitHub environment reads each secret and variable by one plain name**,
@@ -67,7 +71,7 @@ alwaysApply: true
 - Record every pull request with `session-ledger` immediately after the hosting service returns its canonical URL. A task-scoped pull-request lookup reconciles verified task records through that ledger and verifies each selected URL remotely; never infer task membership from the current checkout, a branch name, a transcript, or a broad hosting-service search.
 
 - **Open every pull request as a draft and keep it draft until it merges.** The user reviews it as
-  a draft; it leaves draft once, as the first step of an authorized merge through `land-pr`, so its
+  a draft; it leaves draft once, as the first step of an authorized merge through `merge-gate`, so its
   test jobs run once, on the head about to merge. Never mark one ready to start its tests, to show
   it finished, or to hand it to the user; a follow-up keeps pushing to the draft.
 - Keep pull requests focused and give them descriptive titles and descriptions; request appropriate reviewers when the repository workflow requires them.
@@ -87,7 +91,7 @@ alwaysApply: true
   repository's diff and evidence. Remove foreign references, including from dependency and delivery
   notes. Describe a consumed interface or unresolved delivery requirement in terms of this
   repository's own contract; disclose provider PR links and merge ordering to the user in chat.
-  `land-pr` still owns the complete dependency inventory and readiness gate.
+  `merge-gate` still owns the complete dependency inventory and readiness gate.
 - **Each session opens its own source pull request in each repository.** Later source work in the
   same session joins that pull request rather than creating one per concern or worker. Continue a
   source pull request from another session only when the user, an applicable invoked skill, or a
@@ -98,7 +102,10 @@ alwaysApply: true
 - **Agent configuration that depends on no still-open source pull request continues the open
   agent-configuration pull request for that work, whichever session opened it.** Agent configuration
   is the canonical `.agents` tree — skills, each with its own scripts, assets and templates; rules;
-  and agent definitions; everything else is source. List the repository's open pull requests before
+  and agent definitions. Nonbehavioral text and guidance-reference corrections in agent hooks and
+  installers also follow this workflow. Changes to execution, timing, installation, discovery,
+  permissions or mutation scope remain source work. Everything else is source.
+  List the repository's open pull requests before
   selecting a branch, and create an agent-configuration pull request only when none owns the work.
   Later guidance edits and worker tasks join it. Open another only when the user asks or the first
   has merged. Consolidate a duplicate this session opened onto the selected pull request and close
@@ -164,7 +171,8 @@ alwaysApply: true
   request once `code-simplify` has run and its findings are resolved and a skill's changed scripts
   pass the checks they own, such as a type check or a test render. One that adds a doctor skill
   waits instead for the user's review together with everything in its batch. A workflow, installer,
-  or repository tooling outside a skill's folder is source work even when it sits under `.agents`.
+  or repository tooling outside a skill's folder is source work when its execution changes, even
+  when it sits under `.agents`.
   When the user asked for the change to be tested, first run the smoke test against the exact
   pull-request head. Check that the complete pull request remains confined to this agent
   configuration before using this exception.
@@ -194,21 +202,16 @@ alwaysApply: true
 
 ### After Agent Sync
 
-- **The refresh runs before the next work, never on the merge alone.** After a pull request that
-  changes agent configuration merges and its default-branch Agent Sync run finishes, the refresh
-  below waits for the session's next work: a remaining step of an active task, a follow-up, or the
-  user's next request. The merge's own delivery is not that work: the Agent Sync poll, the
-  merged-text read-back, the generated-output check and the merge's report. The refresh runs
-  before that next work reads any skill or rule.
-  A merge that is the session's last work ends with no refresh, and its report reads `refresh:
-  deferred to the next request`. The next request, in this session or a later one, runs the refresh
-  first unless the installed copy already carries the merge, as one a cloud session installs at
-  start does.
-- Select the refresh route before checking local changes. When the repository supplies the
-  installed shared skills, invoke `reconcile-skills`; its preservation workflow governs dirty
-  checkouts as well as clean ones. The checkout-only restriction below does not apply to this route.
-  For the skill's first merge, read it from the merged commit before invoking it. A session follows
-  the copy it loaded until this refresh completes.
+- **Refresh immediately after Agent Sync succeeds.** After a pull request that changes agent
+  configuration merges and its default-branch Agent Sync run succeeds, complete the refresh below
+  and verify the installed links before reporting delivery complete. The refresh is part of the
+  merge's delivery, including when the merge is the session's final work. Report the installed
+  source and commit, or the concrete blocker preventing refresh.
+- Select the refresh route before checking local changes. When the repository supplies the installed
+  shared skills, invoke `update-skills`; it keeps pending agent-configuration changes in effect,
+  dirty checkouts and open pull requests alike. The checkout-only restriction below does not apply
+  to this route. For the skill's first merge, read it from the merged commit before invoking it. A
+  session follows the copy it loaded until this refresh completes.
 - For every other repository, refresh its main local checkout, not a task worktree: if it is clean,
   check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force
   this checkout-only refresh; report a skipped refresh and leave them untouched.
@@ -255,7 +258,13 @@ alwaysApply: true
   `.agents/project.md` or a reference it points to: an environment variable or credential an agent
   session reads, even one a person adds to a cloud environment for the agent; a tool installed for
   agents; a procedure only agents follow.
-- Describe available capabilities without assuming how consumers will use the project or framing guidance as prohibitions such as "never do X."
+- After drafting or editing READMEs and other reference documentation, compare each statement with
+  the current capabilities and required steps. When their positive description already communicates
+  the operation, delete corresponding claims about absent behavior or unneeded operations,
+  including positive paraphrases. Retain a limitation only when it contributes a supported input,
+  option, constraint or required step not otherwise stated. Remove historical comparisons. Describe
+  available capabilities without assuming how consumers will use the project or framing guidance as
+  prohibitions such as "never do X."
 - Remove repeated explanations and prefer short sections, bullets, tables, and focused examples over long prose.
 - Write in plain language, as if explaining the repository to a colleague. Avoid repeating internal
   terms such as `canonical`; name the file or say `source` when that is clearer.

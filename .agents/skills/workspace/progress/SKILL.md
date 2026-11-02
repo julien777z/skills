@@ -21,15 +21,20 @@ and deliver the same dashboard again on every request so the user keeps one page
 1. **Read the ledger.** Resolve and read the task's ledger through `session-ledger`. A plan or
    question the task has put to the user that the ledger lacks is reconstructed and recorded first,
    from verified task evidence, as that skill's recovery rules say; the dashboard never shows a step
-   the ledger does not hold. An active or blocked step that `execute-task`'s **Progress Record**
+   the ledger does not hold. The figures cover the whole task since its first approved plan, so
+   that check spans every plan it has had, finished ones included: a plan another entry names, such
+   as one a later plan continues or supersedes, and finished work the task's record shows that no
+   recorded step holds, such as completed items on the harness task list, are each a plan the ledger
+   lacks. A plan that continues or supersedes another replaces only the steps it names; the earlier
+   plan's finished steps stay in the count. An active or blocked step that `execute-task`'s **Progress Record**
    records with parts, held in the ledger without them, gets them recorded the same way, with the
    parts already finished marked done.
 2. **Find the task's pull requests** with `list-prs`, requesting every state, then read each one's
    current state from its host: open, draft, merged or closed, the checks on its head, and review
    state.
 3. **Write the Architecture page** once the task has a pull request the page covers. It covers the
-   task's pull requests except those closed without merging; a closed one appears only in the Pull
-   requests list. The `dashboard` entry records the page's sections as last written and the head of
+   task's pull requests except those closed without merging, which the dashboard leaves out. The
+   `dashboard` entry records the page's sections as last written and the head of
    each pull request they were written from: reuse them while the page covers the same pull requests
    and every head is unchanged; otherwise read the diffs of the pull requests it covers, write them
    again, and record them with the new heads.
@@ -37,8 +42,9 @@ and deliver the same dashboard again on every request so the user keeps one page
 5. **Select the delivery route, then render.** Before invoking `use-dashboard`, choose the
    host's ongoing-work channel when authorized work remains, or the normal reply route for
    standalone reporting. Pass that route to the renderer for its delivery. When the ledger records
-   an earlier delivery of this task's dashboard, update that same page; otherwise record a
-   `dashboard` entry with the page path and any published link, so the next request finds it.
+   an earlier delivery of this task's dashboard, update that same page through `use-dashboard`.
+   Otherwise record a `dashboard` entry with the page path and any published link, so the next
+   request finds it.
 6. **Report and return to the caller.** Through the selected route, send the link or file and one
    line: percent complete, time remaining, and how many questions wait on the user, each the figure
    the dashboard shows. When reporting interrupts unfinished authorized work, carry out the active
@@ -69,14 +75,23 @@ and deliver the same dashboard again on every request so the user keeps one page
   requests**, the count of open and draft pull requests, with "<n> open · <n> draft" in `detail`;
   **Elapsed**, measured from the first plan's recorded approval time.
 - **Pull request names.** The page names each pull request "PR #<number> - <short title>": a few
-  words saying what it does, not necessarily its title, such as `PR #1337 - Migrate admin to
-  Tailscale`.
-- **Pages.** `Progress` holds the board, the pull requests, the answered questions, the notes and
-  any table, in that order. Once step 3 gives the page a pull request to cover, `Architecture`
-  follows it, with `layout` `rows`: the diagram, then `changes` "Config changes", then `changes`
-  "Migration changes", then an `outline` "What changed in <pull request name>" for each pull request
-  it covers, then an `outline` "Keep in mind".
-- **`board` "Work"**, four columns:
+  words saying what it does, not necessarily its title, such as `PR #1337 - Add bulk export`.
+- **Pages.** The dashboard's `icon` is `progress`. `Overview`, `icon` `overview` and `layout`
+  `rows`, holds the callout, the pull requests and the `table` "Plans", in that order. `Progress`,
+  `icon` `board`, holds the board, the answered questions, the notes and any other table. Once step
+  3 gives the page a pull request to cover, `Architecture` follows them, with `icon` `diagram` and
+  `layout` `rows`: the diagram, then `changes` "Config changes", then `changes` "Migration changes",
+  then an `outline` "What changed in <pull request name>" for each pull request it covers, then an
+  `outline` "Keep in mind".
+- **`table` "Plans"**: one row per plan that is not withdrawn, with the columns Plan, Steps done
+  ("<done> of <n>"), Running, Waiting on you and Time left, the summary of what the board shows step
+  by step.
+- **`callout`**, only while something waits on the user: `tone` `warning`, `title` "<n> question(s)
+  waiting on you" when a question is open, and `body` the first open question in a sentence and
+  the step it blocks; otherwise, while a step is blocked, `tone` `critical`, `title` "<step title> is
+  blocked" and `body` what it waits for.
+- **`board` "Work"**, described as "Each step of the task's plans, by where it stands", four
+  columns, with Up next and Done setting `page_size` 5 so each shows five cards at a time:
 
 | Column | `tone` | Cards |
 | --- | --- | --- |
@@ -94,29 +109,34 @@ and deliver the same dashboard again on every request so the user keeps one page
   `label` what passes and `change` when a pull request adds or removes the connection. `steps`: how
   the change works, in order, one sentence each, with each step's number on the arrows it describes.
   Keep to the boxes the explanation needs, a dozen at most.
-- **`links` "Pull requests"**: `label` its name, `url`, `detail` "<owner>/<repo>" and the checks and
-  review state just read, `state` its `open`, `draft`, `merged` or `closed`, and `status` and
-  `tone`: Open `good`, Draft neutral, Merged `done`, Closed `critical`, and Failing checks
-  `critical` in place of Open or Draft when the head's checks fail.
+- **`links` "Pull requests"**: each open and draft pull request, leaving out merged and closed
+  ones, which need nothing more from the reader. `label` its name, `url`, `detail` "<owner>/<repo>"
+  and the checks and review state just read, `state` its `open` or `draft`, and `status` and
+  `tone`: Open `good`, Draft neutral, and Failing checks `critical` in place of either when the
+  head's checks fail.
 - **`questions` "Answered"**: each answered question with the user's `answer` in their words and
-  `meta` the time it was given.
+  `at` the time it was given, with `page_size` 5.
 - **`notes` "Decisions and notes"**: each recorded decision and each assumption made without the
   user, labelled as an assumption.
 - **`table`**, only when the ledger holds tabular facts worth a grid, such as checks per pull
   request head.
 - **`outline` "What changed in <pull request name>"**: the pull request's changes grouped by the area
-  they touch, such as `Admin sign-in` or `Admin site`, with moves and renames last under
+  they touch, such as `Report export` or `Search page`, with moves and renames last under
   `No behaviour change`. Each item's `title` says in a few words what now happens, and its `detail`
-  how and why it matters in one or two sentences a reader follows without the diff.
+  how and why it matters in one or two sentences a reader follows without the diff. Its `links`,
+  of kind `diff`, open the diff of each file that makes the change, in the pull request's Files
+  changed view.
 - **`changes` "Config changes"**: each value the application reads while it runs that a pull request
   adds, changes or removes, such as an environment variable, a settings field or its default, a
   feature flag, a secret it reads, or a key in its configuration file. A setting only CI, a workflow
   or a deployment pipeline reads stays out — a GitHub Actions input, a workflow variable, a job's
   timeout. `name` the name a reader sets, `change`, and `detail` "<pull request name> · <its default
-  or new value> · <what the user has to do, or Nothing>". A secret is named, never its value.
+  or new value> · <what the user has to do, or Nothing>", with a `diff` link to the line in
+  the pull request's diff that sets it. A secret is named, never its value.
 - **`changes` "Migration changes"**: each database migration a pull request adds, changes or
   removes. `name` the migration's file or revision, `change`, and `detail` "<pull request name> ·
-  <what it does to the schema or stored data> · <what the user has to do, or Nothing>".
+  <what it does to the schema or stored data> · <what the user has to do, or Nothing>", with a
+  `diff` link to the migration file in the pull request's diff.
 - **`outline` "Keep in mind"**: what a reviewer or the user needs before relying on the change —
   risks, limits, the order the pull requests merge in, anything a merge or deploy needs from the
   user — grouped by when it applies, such as `Before merge`, `Before deploy` and `After deploy`.

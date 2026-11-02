@@ -11,16 +11,16 @@ run; each doctor owns only its domain.
 
 ## Dependencies
 
-- `subagent-selection` — route every reviewer, final reviewer and implementation worker through a
+- `subagent-matrix` — route every reviewer, final reviewer and implementation worker through a
   subagent of the running session.
 - `execute-task` — present the validated remediation plan through its **Plan** and require explicit
   approval before editing, then implement it under its **Execution**.
 - `code-simplify` — simplify each wave and the complete result.
-- `acceptance-gate` — judge the remediation plan before it is presented and the complete diff
-  before it lands.
+- `acceptance-gate` — judge findings and the complete diff before it lands; execute-task owns
+  remediation-plan approval preparation through its shared proposal-review dependency.
 - `defer-scope` — record work consciously left undone; it runs the gate's admission question itself.
 - `pre-production` — apply the encountered-issue and target-contract policy while implementing.
-- `land-pr` — for a doctor that delivers in merged batches, the check gate, conflict resolution and
+- `merge-gate` — for a doctor that delivers in merged batches, the check gate, conflict resolution and
   verified squash merge of each batch pull request its run opens.
 
 Read the applicable dependencies before beginning. Apply their approval, compatibility, migration,
@@ -73,7 +73,9 @@ measurement that cannot be taken is recorded as unmeasured with the reason.
 
 ## Delegate The Audit
 
-Use multiple read-only subagents for every run. The parent owns the unified ledger.
+Use multiple read-only subagents for every run. Invoke `subagent-matrix` at its standard capability level
+for each reviewer, launch the exact resolved identifier, and retain catalogue state, identifier, assignment state
+and host receipt in the unified ledger. The parent owns that ledger.
 
 1. Launch at least two independent reviewers. Partition a multi-domain scope by coherent ownership
    boundaries discovered from the repository. For a narrow single-domain scope, give two reviewers
@@ -113,10 +115,10 @@ and check their completion against the change history and final diff.
 
 If no justified correction remains, report the completed coverage and stop.
 
-Otherwise write a decision-complete remediation plan and put it to `acceptance-gate`'s proposal
-question as one item. A flag names the entries to rewrite, and the rewritten plan goes to a fresh
-gate under `acceptance-gate`'s **Bounds**; a flag that section sends to the user is reported in the
-plan as it directs, never silently dropped.
+Otherwise write a decision-complete remediation plan for `execute-task`'s **Plan**. Its
+review-proposal preparation supplies the attacker rounds and independent Proposal verdict before
+presentation; do not run another standalone Proposal gate here. Preserve objections and their
+required dispositions through that shared workflow.
 
 Check each entry against the doctor's change boundary before presenting it. Exclude entries whose
 required exception evidence is absent; approval of a generated plan cannot supply that evidence.
@@ -151,10 +153,11 @@ never the absence of a retired implementation.
 
 ## Implement In Waves
 
-After explicit plan approval, workers implement the complete approved plan side by side, under
-`subagent-selection`'s **Dispatch**. The parent keeps the ledger, the plan's order, every judgement
-over the combined result, and the full suite and every check that needs a shared resource; the
-edits fan out.
+After explicit plan approval, workers implement the complete approved plan side by side. Invoke
+`subagent-matrix` at the capability level each implementation role requires, launch each exact resolved
+identifier, and retain catalogue state, identifier, assignment state and host receipt in the ledger under
+`subagent-matrix`'s **Dispatch**. The parent keeps the ledger, the plan's order, every judgement over the
+combined result, and the full suite and every check that needs a shared resource; the edits fan out.
 
 - **A wave is the groups that can run at once:** groups whose files do not overlap and none of which
   needs what another group in flight produces. A group that reaches into other groups' files — a
@@ -200,7 +203,9 @@ configured rather than inventing one.
 
 ## Review The Result
 
-Launch at least two independent read-only final reviewers:
+Launch at least two independent read-only final reviewers. Invoke `subagent-matrix` at its standard
+capability level for each, launch the exact resolved identifier, and retain catalogue state, identifier,
+assignment state and host receipt in the unified ledger:
 
 - one verifies that every approved disposition was carried out completely;
 - one tries to disprove the decisions, checks what was retained, and reviews unresolved evidence.
@@ -248,7 +253,7 @@ request it depends on.
   - Before merging, the batch passes **Run Repository-Native Checks**, **Review The Result**, and
     **Accept The Complete Diff** on its own diff, gated against the run's full intent statement kept
     current with the batches already merged; the batch's entries say only what this diff must
-    complete. It then merges through `land-pr`, which polls its checks to a terminal state. Between
+    complete. It then merges through `merge-gate`, which polls its checks to a terminal state. Between
     polls the next batch's first wave runs, its workers pushing each step through `execute-task`'s
     **Pre-Push Gate** to the next batch's branch, stacked on the batch's branch as the GitHub rule's
     **Branches and Pull Requests** allows; nothing more is pushed to the batch's branch.

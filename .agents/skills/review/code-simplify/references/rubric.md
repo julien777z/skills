@@ -22,7 +22,7 @@ already owns that concern. The edit answering a tool is the one most likely to e
 report reads as the whole specification and going green reads as done; a green tool says a check
 passed, never that the code earned its shape.
 
-**Preserve what a consumer outside the user's control observes — including on the default pre-push pass.** A third-party provider, a released client the change cannot update, and data persisted without a migration freeze their shapes: public routes and their request/response shapes, durable identifiers (handler, event, queue, and state keys), and on-disk and on-the-wire formats. A contract whose every consumer the change can update is simplification scope, whichever repository each consumer lives in: an owned route, response shape, shared DTO, or configuration changes deliberately, every consumer is updated in the same coordinated change, and the new shape reaches every other site of the same shape rather than one endpoint of it. Crossing a repository or breaking an owned contract is never a reason to leave a worthwhile simplification as a note or a question, and never a reason for a pass-through or compatibility shim — adjust the real call sites instead.
+**Preserve what a consumer outside the user's control observes — including on the default pre-push pass.** A third-party provider, a released client the change cannot update, and data persisted without a migration freeze their shapes: public routes and their request/response shapes, durable identifiers (handler, event, queue, and state keys), and on-disk and on-the-wire formats. A contract whose every consumer the change can update is simplification scope, whichever repository each consumer lives in, for a break `pre-production`'s **Target Contract** admits without a proposal: an owned route, response shape, shared DTO, or configuration changes deliberately, every consumer is updated in the same coordinated change, and the new shape reaches every other site of the same shape rather than one endpoint of it. Crossing a repository or breaking an owned contract is never by itself a reason to leave a worthwhile simplification as a note or a question, and never a reason for a pass-through or compatibility shim — adjust the real call sites instead.
 
 **Classify the issue before prescribing its scope.** `pre-production` owns that decision.
 Confirmed defects are repaired wherever their mechanism and necessary consumers live, regardless
@@ -238,7 +238,18 @@ Apply the baseline prompt above, plus these explicit review rules:
      outside this repository, so it could not be checked" leaves the question open; it never
      settles it, and nothing is called unreached until it is answered.
 
-2. **A module holding one symbol is a finding before anything else about it is judged.**
+2. **A module whose concern an existing module already owns is a finding before anything else about
+   it is judged, whatever its symbol count.**
+   - Name the concern each module in scope serves, then look, within the file kind the layout rules
+     decide (models with models, routers with routers), for an existing module whose concern contains
+     it, or one a broader name would make its owner, such as an avatar module beside the module that
+     stores a user's uploaded images. A module whose functions are built on one existing module's
+     policy or gateway calls belongs with that module; one built on another module's models belongs
+     with the module of its own kind that owns the same concept. When an owner exists, the module
+     merges into it, the owner renamed first when its name is too narrow to hold both, whether the
+     module holds one symbol or five; the global rules' **A new file is the last resort** is the same
+     test at the time of writing. A count of one is the plainest case of this finding, never its
+     threshold.
    - Count before you read: a module whose public surface is one function, one small class, or one
      constant plus its helper has not earned a file. Say the count in the finding.
    - A router is a container the same way, and a router carrying one handler is the same finding:
@@ -254,11 +265,15 @@ Apply the baseline prompt above, plus these explicit review rules:
      justifies a file per symbol. Two one-symbol modules with two importers each are still one module.
    - Merge it into the existing owner when one exists, and an owner is a module that already holds the
      concern, not the nearest small module with room: a destination that is itself one or two symbols
-     is another lone module, and moving into it changes the file name and nothing else. Keep a lone
-     symbol in its own module only for a dependency boundary you can show from declared dependencies
-     and importers, an entry point the framework or packaging looks up by path, or a UI component
-     module, which the React rules hold to exactly one exported component with its helper components
-     unexported in the same file; a folder of such modules is their area, never one module to merge.
+     is another lone module, and moving into it changes the file name and nothing else. Keep a module
+     this standard catches, at any count, in its own file only for a dependency boundary you can show
+     from declared dependencies and importers, an entry point the framework or packaging looks up by
+     path, or a UI component module, which the React rules hold to exactly one exported component
+     with its helper components unexported in the same file; a folder of such modules is their area,
+     never one module to merge.
+     The UI exemption holds only for a component that earns its place under the React rules'
+     **Components and Props**: a module whose component that rule calls another's variant or a
+     hook's wrapper, or one link of a chain each adding one prop, merges into its owner.
    - Re-count after every relocation, on the source and on the target, and say both counts.
    - History is not a disposition. Count a module as it stands in scope, whatever the diff calls it —
      new, renamed, moved, generalized, or already there when the change arrived. "It held one symbol
@@ -270,22 +285,24 @@ Apply the baseline prompt above, plus these explicit review rules:
      the rename did not, and leaving it alone under a new name spends that rewrite on a file that has
      still not earned its name.
    - **Declarative ownership outranks the count.** Never move a data model into a client, service,
-     route, entrypoint, or utility to eliminate a one-symbol model module. Models stay in a
-     `models.py` file or concept-specific `models/` package; only Pydantic `BaseSettings` classes
-     stay in `config.py` or `config/`. A lone declarative module may be merged only with another
-     declarative module under the same ownership boundary, never into operational code.
+     route, entrypoint, or utility to eliminate a model module this standard catches, at any count.
+     Models stay in a `models.py` file or concept-specific `models/` package; only Pydantic
+     `BaseSettings` classes stay in `config.py` or `config/`. A declarative module may be merged
+     only with another declarative module under the same ownership boundary, never into operational
+     code.
    - A concern no sibling shares is not a boundary. It is a symbol with no home yet, and "unique
      concern", "idiomatic for this package", "acceptable", "accepted", "stands", and "earns its file"
-     never appear against a count of one: each is the disposition this standard takes out of the
-     reviewer's hands. The report carries one finding per one-symbol module, headed with the path and
-     the count and closing with the module it merges into or the search still owed to find it.
+     never appear against a module this standard catches: each is the disposition it takes out of the
+     reviewer's hands. The report carries one finding per such module, headed with the path, the count
+     and the concern it serves, and closing with the module it merges into or the search still owed to
+     find it.
    - Nor is "no owner in this slice" or "several importers" a disposition. Importers are consumers,
      and a boundary is a dependency the module is not allowed to take, shown from declared
      dependencies rather than inferred from who calls it. Siblings that share the one-symbol shape are
      the finding above multiplied, never a convention that excuses one more. A slice that shows no
      owner shows only where the search has not reached: report the module as an open finding that
      names the search still owed, and never write "accepted", "not escalated", or "stands as
-     reviewed" against a count of one.
+     reviewed" against a module this standard catches.
 
 3. **A new declaration that names what the repository already declares is a second copy, wherever it is filed.**
    - Before accepting any new enum, constant set, mapping, alias, or model, search the repository for
@@ -293,10 +310,13 @@ Apply the baseline prompt above, plus these explicit review rules:
      enum's member names, search for a mapping's key set, for a model's discriminator. A duplicate
      arrives under a different name, with different values, in a different package, and a search by
      name never finds it.
-   - Two enums with the same member names are one enum. The second one's values — a display label, a
-     wire code, a file suffix — are a property on the first, never a sibling declaration and never a
-     second enum relocated to the shared package. A mapping keyed by a set an enum already declares
-     is the same case: its values belong on that enum's members.
+   - Matching member names are a reuse candidate, not proof of one concept. Establish that the
+     declarations answer the same question and that combining them preserves the authority and
+     lifetime distinctions their writers and consumers require. When they do represent
+     one concept, the second one's values — a display label, a wire code, a file suffix — are a
+     property on the first, never a sibling declaration or a second enum relocated to the shared
+     package. A mapping keyed by a set an enum already declares is the same case: its values belong
+     on that enum's members.
    - File a declaration where its consumers meet. One that two services or packages read belongs in
      the package that declares shared shapes, never beside the first consumer that needed it.
    - Report the search with the finding: the existing declaration found, or what was searched and
@@ -411,7 +431,7 @@ Apply the baseline prompt above, plus these explicit review rules:
 11. **Prefer direct, boring, maintainable code over hacky or magical code.**
    - Treat brittle, ad-hoc, or "magic" behavior as a code-quality problem.
    - Be skeptical of generic mechanisms that hide simple data-shape assumptions.
-   - Forbid slim pass-through shims: a function whose body is a single call to the canonical function is banned, whether it forwards its arguments unchanged or supplies a fixed value for one of them. Call the canonical function directly at the use site and name the argument there. Several call sites passing the same constant is not a defect on its own and does not earn a wrapper to hold it; where the argument genuinely must not vary, encode that in the callee's own signature or type.
+   - Forbid slim pass-through shims: a function whose body is a single call to the canonical function is banned, whether it forwards its arguments unchanged or supplies a fixed value for one of them. Call the canonical function directly at the use site and name the argument there. Several call sites passing the same constant is not a defect on its own and does not earn a wrapper to hold it; where the argument genuinely must not vary, encode that in the callee's own signature or type. Rendering is a call: a component that renders one other component with fixed or defaulted props is this shim, and the React rules' **Components and Props** says what replaces it.
 
 12. **Push hard on type and boundary cleanliness when they affect maintainability.**
    - Question unnecessary optionality, `unknown`, `any`, or cast-heavy code when a clearer type boundary could exist.
@@ -467,6 +487,8 @@ Apply the baseline prompt above, plus these explicit review rules:
    - Keep a comment only for externally owned behavior the code cannot make evident, such as a
      surprising third-party or protocol constraint. Make it factual and one physical line when
      possible, with two lines as the absolute maximum.
+   - Keep a migration revision's lock marker, the first-line comment `database-migrations` defines,
+     verbatim: it is a machine-read marker that counts the revision as applied, not prose.
    - Keep ordinary docstrings to one physical line that identifies the symbol rather than narrating
      its implementation. A migration revision file's `upgrade()` and `downgrade()` docstrings may
      use a few concise lines only when needed to name the concrete transformation and its purpose.
@@ -513,9 +535,11 @@ For every meaningful change, ask:
 - Does the module's name say what it holds, and does it sit in the package that owns that concept — or is it filed under the feature that happens to call it?
 - How many public symbols does each module in scope hold once its history is ignored — a rename
   or move that carried one symbol across is still one symbol — and do its siblings hold one each too?
+- What concern does each new module serve, and does an existing module's concern contain it, or would
+  a broader name make an existing module its owner?
 - Does any new enum, constant set, mapping, or model re-declare a set the repository already has,
   and does every module-level declaration carry its type?
-- Does this represent a value differently from how a sibling already represents the same thing — a bare string where an enum exists, a fresh constant where a canonical type is the established shape?
+- Does this build anything in a second shape beside how the repository already builds it — a bare string where an enum exists, a fresh constant where a canonical type is the established shape, a route factory where every other router declares its handlers, a helper, test or configuration entry written unlike its siblings, where no contract the instance serves requires the difference? A second shape counts whether or not it looks better, because the reader now has two ways to learn. The remedy is the existing shape; a second shape that would serve better is proposed to the user as a conversion with every instance it covers, and built at the scope they approve, never beside the first or swept in unasked. An existing shape a standing rule names a defect is repaired on every instance, never followed.
 - Does a branch or conditional produce a closed set of string states, including log-only statuses, that belongs on the language's canonical named finite-state type rather than inline literals?
 - Is this orchestration more sequential or less atomic than it needs to be?
 - Does any added docstring outside a migration revision file's `upgrade()` or `downgrade()` run
@@ -592,12 +616,23 @@ Escalate findings when you see:
 - Refactors that technically pass tests but make the code less modular or less readable.
 - Adjacent stages in a new or substantially edited function with no blank line between a completed guard and the next setup, validation and I/O, or copying and postprocessing. Report each missing paragraph break even when the formatter leaves it untouched.
 - A conditional selecting among a fixed set of status strings as inline literals, including when the selected value is only logged. Search for an existing named finite-state type by its values; use the representation required by the language's rules, such as `Enum` for internal Python states, `StrEnum` for string contracts, or a const object with an inferred union in TypeScript.
+- A sequence of conditionals testing one subject against enum members or literal values — an
+  `if`/`elif` chain or consecutive early-return `if` guards — where the language rule dispatches with
+  `match` or its equivalent. Read for the shape, not the keyword: guards with no `elif` between them
+  are the same dispatch.
+- A parameter a caller fills from the settings object or an environment check — grep added call
+  arguments for an attribute of the settings instance — even at one call site; the function reads
+  the setting itself, as the Python rule's **Configuration** says.
+- A parameter that carries error text, or per-caller messages for one refusal; the raising function
+  owns one message per condition, as the language rules say.
+- A normalizing call — `.lower()`, `.strip()`, `.upper()` — on a model field outside the model;
+  the field's type holds the canonical form.
 - "Temporary" branching that is likely to become permanent debt.
 - Bespoke helpers where the codebase already has a canonical utility for the job.
 - A generic helper with exactly one caller, especially one this diff just created by extraction. One caller is not proof a helper is unnecessary; it is usually proof the sweep stopped at the first site. Search for the rest by the operation it performs, not by its name, and either use it there or fold it back into its single caller.
-- A new enum, constant set, mapping, or model whose members mirror one the repository already
-  declares, however differently it is named and wherever it landed; the fix is a property, method,
-  or widening on the existing declaration, filed where its consumers meet.
+- A new enum, constant set, mapping, or model that duplicates an existing concept under standard 3;
+  the fix is a property, method, or widening on the existing declaration, filed where its consumers
+  meet.
 - A module-level constant, mapping, or handle declared without its type.
 - A models module holding something other than a declaration. For every module under a `models/`
   package the diff touches, list its module-level assignments; each is `__all__`, a type alias or
@@ -609,9 +644,11 @@ Escalate findings when you see:
   module holding only the moved values is the same problem under a different directory name. A set
   of one enum's members is a classmethod on that enum. The enums and models in the same file stay;
   only the values move.
-- A module with one public symbol — new, renamed, moved, or already in scope — and a package where
-  several modules each hold one, outside the exemptions standard 2 names. The
-  first is a file that has not earned its name; the second is one module split across several files.
+- A module with one public symbol — new, renamed, moved, or already in scope — a module of any size
+  whose concern an existing module's concern contains, and a package where several modules each hold
+  one, outside the exemptions standard 2 names. The first is a file that has not earned its name;
+  the second is a slice of its owner's concern filed apart; the third is one module split across
+  several files.
   Count symbols per module rather than judging by line count.
 - Two utilities performing one operation on different shapes, or with their own separate constants and sentinels for the same idea. Collapse them into one whose parameter covers both callers.
 - A helper written narrowly for its first caller when a slightly wider contract would serve places that currently go without. Widening it is the fix; a second near-duplicate later is the cost of not doing it.
@@ -659,7 +696,9 @@ When you identify a code-quality problem, prefer suggestions like:
 - Turn special-case logic into a simpler default flow with fewer exceptions.
 - Extract a helper or pure function.
 - Split a large file into smaller focused modules.
-- Collapse one-symbol modules into one module named for what they share, widening the existing one, except where standard 2 exempts them.
+- Merge a module whose concern an existing module owns into that owner, renaming the owner when its
+  name is too narrow, and collapse one-symbol modules into one module named for what they share,
+  widening the existing one, except where standard 2 exempts them.
 - Move feature-specific logic behind a dedicated abstraction.
 - Replace condition chains with a typed model or explicit dispatcher.
 - Separate orchestration from business logic.
@@ -725,10 +764,10 @@ Treat these as presumptive blockers unless the author can justify them clearly:
 - the PR leaves a function that only reads one declared shape, or a family of them, outside that shape
 - the PR carries code written after the review — for a tool, a red check, or a reviewer — that never went through the rubric
 - the PR adds an abstraction that was never needed, or one whose guarantee is weaker than its name claims
-- the PR adds a module holding one public symbol, or a second one-symbol module beside an existing one,
-  outside the exemptions standard 2 names
-- the PR adds a declaration whose members mirror one the repository already declares, or a
-  module-level constant without its type
+- the PR adds a module holding one public symbol, a module whose concern an existing module already
+  owns, or a second one-symbol module beside an existing one, outside the exemptions standard 2 names
+- the PR duplicates an existing declaration's concept under standard 3, or adds a module-level
+  constant without its type
 - the PR duplicates an existing helper, repeats a cross-consumer mechanism, or puts logic in the wrong
   layer when there is a clear canonical home
 

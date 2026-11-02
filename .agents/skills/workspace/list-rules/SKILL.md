@@ -6,9 +6,14 @@ short_description: 'List and reconcile canonical rules across a bounded collecti
 
 # List Rules
 
-## Dependencies
+## Discovery
 
-- `coordinate-repositories` — identifies the bounded repository collection and safely gathers the canonical artifacts.
+Determine the bounded repository collection from the user's scope, the current repository,
+accessible sibling repositories and worktrees, and targets already established in the task.
+Discover Git repositories independently of whether they contain rules, normalize remote identities,
+and deduplicate worktrees of the same remote. Do not crawl unrelated locations; when the environment
+cannot establish the collection, ask for the missing scope. Read each repository's current remote
+default branch without changing its checkout or unrelated work.
 
 Read each applicable repository's canonical `.agents/rules/<name>.md` files. Exclude repositories whose primary purpose is developing, packaging, testing, or operating the agent-synchronization system itself unless the user explicitly includes them.
 
