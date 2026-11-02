@@ -89,7 +89,8 @@ alwaysApply: true
 
 ## Task execution and authorization
 
-- Run a user-triggered action skill only after the user directly invokes it in the current request.
+- Run a user-triggered action skill only after the user directly invokes it — by its command or by
+  asking for it in words — in the current request.
   Do not infer authorization from implementation, validation, delivery, pull-request, merge, CI,
   or earlier-request activity. Guidance maintenance is the exception: `edit-skill` runs when the
   user reports a guidance failure or canonical guidance is being changed, so the failure and its

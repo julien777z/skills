@@ -124,8 +124,6 @@ trigger.
   bypassing the restriction. Naming a user-only skill or suggesting the user invoke it is not
   delegation or authorization.
 - Invoke dependent skills only from the owning `SKILL.md`. References and other supporting files are passive and must not invoke skills or identify dependencies through relative paths to another `SKILL.md`.
-- A skill may restate an ambient rule when it helps the reader act at the point of use; this does
-  not license a second copy of a decision boundary owned by a skill that necessarily runs.
 
 ### Output
 
@@ -148,6 +146,8 @@ a template where correct results genuinely vary in shape.
 
 ## Writing
 
+- A skill may restate an ambient rule when it helps the reader act at the point of use; this does
+  not license a second copy of a decision boundary owned by a skill that necessarily runs.
 - If target file does not exist, create it with a concise structure matching existing style.
 - Group frontmatter fields by subject. Put a field that summarizes, qualifies, or overrides
   another immediately after the field it relates to, unless the format requires another order.

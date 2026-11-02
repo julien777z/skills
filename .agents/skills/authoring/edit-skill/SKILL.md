@@ -142,11 +142,10 @@ user's review of the source pull request overlaps it.
    against the base from the host, which override the entry's and the comment's recorded commits
    and delivery stage; a merged or closed pull request resumes at verifying the merged text, never
    at review. An edit step 7.1 puts on a source pull request this session drives is pushed there and
-   passes step 7.2's source check and step 7.5's smoke round on the head carrying it before that
-   pull request's source stream proceeds, as `execute-task`'s **Completion** says. It carries step
-   7.3's prose-duplication checks into that pull request's simplification and step 7.4's incident
-   vocabulary into its final acceptance, so both gates read wording the smoke round has already
-   checked; a repair that review makes repeats the smoke round, as **Completion** says. An edit on
+   passes step 7.2's source check on the head carrying it before that pull request's source stream
+   proceeds, and step 7.5's smoke round on the head that pull request's review pass accepted, as
+   `execute-task`'s **Completion** says. It carries step 7.3's prose-duplication checks into that
+   pull request's simplification and step 7.4's incident vocabulary into its final acceptance. An edit on
    another session's source pull request runs steps 7.2 to 7.5 here on the head it pushed, and the
    delivery report says the push moved that pull request's head past its owner's acceptance. An
    edit on either source pull request is recorded as held for that pull request's merge once its
@@ -211,8 +210,9 @@ user's review of the source pull request overlaps it.
      When the owner necessarily runs before the action, remove equivalent conditions from callers;
      strengthen its trigger or invocation only if that owner would otherwise be missed. Explain the
      placement.
-   - **A file's name and description bound what it owns**, as the shared `agent-guidance.md`
-     rule's **Where Guidance Lives** says; test the candidate against it before choosing.
+   - Read the shared `agent-guidance.md` rule before choosing an owner. **A file's name and
+     description bound what it owns**, as its **Where Guidance Lives** says; test the candidate
+     against it before choosing.
    - **When the request names no target, find the guidance that let the gap through and change it
      there.** A request usually arrives as a symptom with no file attached — "that is a bad
      implementation, do not use X" — and the file to edit is the one that governs the thing X
@@ -285,7 +285,7 @@ user's review of the source pull request overlaps it.
    - When importing external guidance, inspect its actual entry points and file layout before registering it. If an owned sync tool cannot represent the source, extend that tool for the source's format and register the original content directly. Keep a standalone reference collection standalone: do not invent a substitute skill, relabel its files as skills, or bury it in another skill's references.
 
 5. Upsert behavior.
-   - Read the shared `agent-guidance.md` rule, then inventory and read the target entry point and
+   - Inventory and read the target entry point and
      its referenced files, scripts, templates, and examples. Follow supporting links within the
      package; reviewing only `SKILL.md` or the edited hunk is incomplete. Apply the same genericity,
      ownership, clarity, and evidence standards to every file.
@@ -312,9 +312,9 @@ user's review of the source pull request overlaps it.
      change. Removing a bad example while retaining a directive that regenerates it is incomplete.
      Put incident evidence in the project/verification record and state that destination explicitly.
      Fix the producing instruction and its output together.
-   - Apply the `agent-guidance` rule's **Skills** standards to skill shape and output, including
-     agent-consumed results and section order. Move inline criteria to a named reference when required, and add the appropriate
-     hard-coded output format or delivery report line when absent.
+   - Move inline criteria to a named reference when the shared `agent-guidance.md` rule's **Skills**
+     standards require it, and add the appropriate hard-coded output format or delivery report line
+     when absent.
    - Validate every added or changed instruction for conflicts before delivery. Search the canonical
      rules and skills by its subject, required action and opposite disposition. Read the complete
      changed skill or rule and its supporting files, plus relevant sections in other skills, rules,
@@ -343,9 +343,9 @@ user's review of the source pull request overlaps it.
      consumer against it. Never use an unpublished tag; use the default branch when the user chose it
      or applicable reference guidance permits it.
    - Write every added or changed instruction as the shared `agent-guidance.md` rule says: its
-     frontmatter, headings and statements, its breadth and examples, its scripts, and a skill's
-     dependencies.
-   - Before delivery, audit each edited skill's complete package and its affected callers: list every instruction to apply or invoke another skill, compare those names with the owning entry point's `## Dependencies`, and resolve missing, stale, or path-based entries and any user-only dependency lacking the explicit bounded delegation the `agent-guidance` rule requires. Check references separately for hidden invocations and cross-skill filesystem links; move the invocation to `SKILL.md` and refer to the other package by skill name. A passing source mirror does not replace this audit.
+     frontmatter, headings and statements, its breadth and examples, its scripts, a skill's shape,
+     output and section order, and its dependencies.
+   - Before delivery, audit each edited skill's complete package and its affected callers: list every instruction to apply or invoke another skill, compare those names with the owning entry point's `## Dependencies`, and resolve missing, stale, or path-based entries and any user-only dependency lacking the explicit bounded delegation the shared `agent-guidance.md` rule requires. Check references separately for hidden invocations and cross-skill filesystem links; move the invocation to `SKILL.md` and refer to the other package by skill name. A passing source mirror does not replace this audit.
 
 6. Multi-target behavior.
    - Apply multi-target updates for `agents`, `skills`, and `rules`.
@@ -401,7 +401,7 @@ user's review of the source pull request overlaps it.
       file whole, and act on what it reports: guidance duplicated
       between peer rules or skills, including a caller and a skill it always invokes; a section grown
       around a second subject; a heading named for a category with one member; a rubric left inline
-      that the `agent-guidance` rule's skill shape sends to a
+      that the shared `agent-guidance.md` rule's skill shape sends to a
       reference. Prose duplicates as readily as code, and nothing else catches it. Every `.agents`
       change gets that pass over its entry point and supporting files, a one-line rule edit as much as a
       new skill: a single bullet added to
@@ -412,7 +412,7 @@ user's review of the source pull request overlaps it.
       both.
    4. **Run `acceptance-gate`** with its diff question over the batch's complete `.agents` diff, one
       gate per round, the request as the intent statement. It judges whether the guidance answers
-      the request at the breadth the `agent-guidance` rule asks for and whether every mechanism it adds
+      the request at the breadth the shared `agent-guidance.md` rule asks for and whether every mechanism it adds
       earns its place. Treat a named tool, surface, or workaround in generic guidance as a finding
       unless the skill's contract depends on it; the incident's route must not narrow the durable
       decision boundary. Give the gate the incident's vocabulary — the product, its record and

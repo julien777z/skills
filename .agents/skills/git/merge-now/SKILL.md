@@ -7,8 +7,8 @@ disable-model-invocation: true
 
 # Merge Now
 
-Merge the work the user has reviewed without a review loop at merge time, and review afterwards
-whatever merged without an earlier `review-pass`.
+Merge the work the user has reviewed without a review loop at merge time, apart from the review of
+any fix `merge-gate` makes, and review afterwards whatever merged without an earlier `review-pass`.
 
 ## Authorization
 
@@ -65,7 +65,8 @@ depends on to merge.
    there.
 2. Confirmed findings go into one draft fix pull request per repository, cut from the freshly
    fetched default branch. The original merge is never amended or reopened.
-3. Each fix pull request takes **Merge** steps 1–3. It gets no further review round.
+3. Each fix pull request takes **Merge** steps 1–3. It gets no further review round beyond the fix rule's review of a
+   `merge-gate` fix.
 
 ## Report
 

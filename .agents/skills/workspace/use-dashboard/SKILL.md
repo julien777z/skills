@@ -222,9 +222,17 @@ Use the first route the session offers, and the same one for every update of one
    tool offers for dashboards, so every dashboard keeps this template. Follow the tool's own
    instructions for its icon and description, and give the user the link.
    - **One published page per dashboard.** Before publishing, look for the link already published
-     for this dashboard's purpose, in the caller's task state or earlier in the session. When there
-     is one, publish the update to it. A dashboard that changes its look, its data, or both is still
-     the same dashboard; only a dashboard with a different purpose gets a new page.
+     for this dashboard's purpose, and publish the update to it when there is one. A dashboard that
+     changes its look, its data, or both is still the same dashboard; only a dashboard with a
+     different purpose gets a new page. Where that search looks depends on what the dashboard
+     shows, which the caller states:
+     - **Session work**, such as one task's progress or a preview, looks only in the caller's task state and
+       earlier in this session. A new session publishes a new page and never updates one another
+       session published.
+     - **A subject that outlives the session**, such as a repository's structure, also looks among
+       the user's published pages for one with the same title, through the tool's own listing. Before
+       publishing to a page found that way, read it through the tool to confirm the user can edit it
+       and to build on its current version; when they cannot, publish a new page and say why.
    - Record each new link where the caller keeps task state, so the next render finds it.
 2. **The user's own browser, through `use-browser`**, when no such tool exists and its **Showing A
    Local Page** route applies. Render the full page; with one path per dashboard, that route reloads
