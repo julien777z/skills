@@ -1,11 +1,12 @@
 import { type ReactNode, useState } from 'react';
 
 import { RichText } from '@/components';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { withKeys } from '@/lib/utils';
-import type { RowDetail, TableSection as TableSectionSpec } from '@/spec';
-import { SectionCard } from './section-card';
+import type { TableSection as TableSectionSpec } from '@/spec';
+import { DashboardSection } from './dashboard-section';
+import { InDialog, SectionCard } from './section-card';
 
 interface DataTableProps {
   columns: string[];
@@ -59,30 +60,6 @@ function DataTable({ columns, rows, onOpenRow }: DataTableProps): ReactNode {
   );
 }
 
-function RowDetailDialog({ detail, onClose }: { detail: RowDetail | undefined; onClose: () => void }): ReactNode {
-  return (
-    <Dialog open={detail !== undefined} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-2xl">
-        {detail && (
-          <>
-            <DialogHeader>
-              <DialogTitle>
-                <RichText text={detail.title} />
-              </DialogTitle>
-              {detail.description && (
-                <DialogDescription>
-                  <RichText text={detail.description} />
-                </DialogDescription>
-              )}
-            </DialogHeader>
-            <DataTable columns={detail.columns} rows={detail.rows} />
-          </>
-        )}
-      </DialogContent>
-    </Dialog>
-  );
-}
-
 export function TableSection({ section }: { section: TableSectionSpec }): ReactNode {
   const [opened, setOpened] = useState<number | undefined>();
   const details = section.details;
@@ -91,10 +68,15 @@ export function TableSection({ section }: { section: TableSectionSpec }): ReactN
     <SectionCard title={section.title} description={section.description} summary={section.rows.length} wide>
       <DataTable columns={section.columns} rows={section.rows} onOpenRow={details ? setOpened : undefined} />
       {details && (
-        <RowDetailDialog
-          detail={opened === undefined ? undefined : details[opened]}
-          onClose={() => setOpened(undefined)}
-        />
+        <Dialog open={opened !== undefined} onOpenChange={(open) => !open && setOpened(undefined)}>
+          <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-3xl">
+            {opened !== undefined && (
+              <InDialog.Provider value>
+                <DashboardSection section={details[opened]} />
+              </InDialog.Provider>
+            )}
+          </DialogContent>
+        </Dialog>
       )}
     </SectionCard>
   );

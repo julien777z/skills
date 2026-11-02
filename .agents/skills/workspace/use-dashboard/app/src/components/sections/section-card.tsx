@@ -1,9 +1,12 @@
-import type { ReactNode } from 'react';
+import { createContext, type ReactNode, useContext } from 'react';
 
 import { RichText } from '@/components';
-import { Text } from '@/components/primitives';
+import { Stack, Text } from '@/components/primitives';
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
+
+export const InDialog: React.Context<boolean> = createContext(false);
 
 interface SectionCardProps {
   title: string;
@@ -22,6 +25,26 @@ export function SectionCard({
   flush = false,
   children,
 }: SectionCardProps): ReactNode {
+  const inDialog = useContext(InDialog);
+
+  if (inDialog) {
+    return (
+      <Stack gap="lg">
+        <DialogHeader>
+          <DialogTitle>
+            <RichText text={title} />
+          </DialogTitle>
+          {description && (
+            <DialogDescription>
+              <RichText text={description} />
+            </DialogDescription>
+          )}
+        </DialogHeader>
+        {children}
+      </Stack>
+    );
+  }
+
   return (
     <Card className={cn('@container/card min-w-0', wide && 'col-span-full', flush && 'gap-4 pb-2')}>
       <CardHeader>

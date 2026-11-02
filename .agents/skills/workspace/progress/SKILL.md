@@ -79,7 +79,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   words saying what it does, not necessarily its title, such as `PR #1337 - Add bulk export`.
 - **Pages.** The dashboard's `icon` is `progress`, and its pages run in this order. `Overview`,
   `icon` `overview` and `layout` `rows`, holds the pull requests and the `table` "Plans", in that
-  order. `Plan`, `icon` `checklist` and `layout` `rows`, follows with one plan steps table per
+  order. `Plan`, `icon` `checklist` and `layout` `rows`, follows with one plan write-up per
   approved plan, in approval order, and is `locked` with no sections until a plan is approved. `Progress`, `icon` `board`, holds the board, the answered questions, the
   notes and any other table. Once step 3 gives the page a pull request to cover, `Architecture`
   follows, with `icon` `diagram` and `layout` `rows`: the diagram, then `changes` "Config changes",
@@ -93,11 +93,16 @@ and deliver the same dashboard again on every request so the user keeps one page
   "Ready" (`good`) once nothing does.
 - **`table` "Plans"**: one row per plan that is not withdrawn, with the columns Plan, Steps done
   ("<done> of <n>"), Running, Waiting on you and Time left, the summary of what the board shows step
-  by step, and `details` holding each row's plan steps table, so a row opens the plan.
-- **Plan steps table**: `title` the plan's title; `description` "Approved <time> · ~<total> min",
-  then what the plan leaves to the user, such as "Then you review and merge", never with a time,
-  since the agent cannot know how long the user takes; the columns Step ("<n>. <step title>"),
-  Estimate ("~<n> min") and Status (Done, Running, Blocked, Next or Skipped), one row per step.
+  by step, and `details` holding each row's plan write-up, so a row opens the plan.
+- **Plan write-up**: the plan as a reader who missed the conversation needs it, from the ledger's
+  `plan` entry: an `outline` with `expanded` set, `title` the plan's title and `description` its
+  goal, then "Approved <time> · ~<total> min". Its groups, each only when it has something in it:
+  "Context", why the plan exists and what it starts from, one item per point; "Steps", one item per
+  step titled "<n>. <step title>", `detail` what the step changes and how, `meta` "~<n> min" and
+  `tag` its status (Done, Running, Blocked, Next or Skipped) toned as the progress segments are;
+  "Decisions", each choice the plan settled with the option taken and why; "Verification", how
+  the result will be checked; and "After the plan", what it leaves to the user, such as reviewing
+  and merging, never with a time, since the agent cannot know how long the user takes.
 - **`notice`**, only while something waits on the user: `tone` `warning`, `title` "<n> question(s)
   waiting on you" when a question is open, and `body` the first open question in a sentence and
   the step it blocks; otherwise, while a step is blocked, `tone` `critical`, `title` "<step title> is

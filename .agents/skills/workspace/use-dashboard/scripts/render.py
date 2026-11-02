@@ -192,7 +192,7 @@ def check_objects(
 
 
 def check_table_rows(table: dict[str, object], path: str) -> None:
-    """Require every table row to hold one cell per column and, with details, one detail per row."""
+    """Require every table row to hold one cell per column and, with details, one section per row."""
 
     width = len(cast(list[str], table["columns"]))
     rows = cast(list[list[str]], table["rows"])
@@ -490,12 +490,6 @@ REFERENCE_SHAPE: Final[ObjectShape] = ObjectShape(
     fields={"text": TEXT, "url": TEXT},
     required=frozenset({"text", "url"}),
 )
-ROW_DETAIL_SHAPE: Final[ObjectShape] = ObjectShape(
-    name="RowDetail",
-    fields={"title": TEXT, "description": TEXT, "columns": TEXTS, "rows": ROWS},
-    required=frozenset({"title", "columns", "rows"}),
-    relations=check_table_rows,
-)
 NOTICE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Notice",
     fields={"title": TEXT, "body": TEXT, "tone": TONE},
@@ -569,11 +563,7 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
         {
             "columns": TEXTS,
             "rows": ROWS,
-            "details": Field(
-                check=partial(check_objects, shape=ROW_DETAIL_SHAPE),
-                typescript="RowDetail[]",
-                shape=ROW_DETAIL_SHAPE,
-            ),
+            "details": SECTIONS,
         },
         frozenset({"columns", "rows"}),
         check_table_rows,
