@@ -7,8 +7,8 @@ disable-model-invocation: true
 
 # Merge Now
 
-Merge the work the user has reviewed without a review loop at merge time, and review afterwards
-whatever merged without an earlier `review-pass`.
+Merge the work the user has reviewed without a review loop at merge time, apart from the review of
+any fix `merge-gate` makes, and review afterwards whatever merged without an earlier `review-pass`.
 
 ## Authorization
 
@@ -48,8 +48,11 @@ depends on to merge.
    the current head, or a rewrite whose tree is identical to it. Otherwise put the head to the
    final-acceptance question. A flag is fixed and gated under that skill's **Bounds**; the
    target waits while one stands.
-2. **Check gate.** Invoke `merge-gate` with the accepted head, validation receipts and established
-   exclusions. Its **Check Gate** owns complete-diff classification, check inventory, failure
+2. **Check gate.** Invoke `merge-gate` with the accepted head, validation receipts, established
+   exclusions and the fix rule for every fix it makes — a check fix, a conflict resolution, a commit
+   someone else pushed: `review-pass` runs again over that fix's delta, and the fix is pushed through
+   `execute-task`'s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
+   passed. `merge-gate`'s **Check Gate** owns complete-diff classification, check inventory, failure
    handling and the evidence required before merging.
 3. **Merge.** `merge-gate` squash-merges at the gated head and verifies it. Record the merge commit and
    its first parent.
@@ -62,7 +65,8 @@ depends on to merge.
    there.
 2. Confirmed findings go into one draft fix pull request per repository, cut from the freshly
    fetched default branch. The original merge is never amended or reopened.
-3. Each fix pull request takes **Merge** steps 1–3. It gets no further review round.
+3. Each fix pull request takes **Merge** steps 1–3. It gets no further review round beyond the fix rule's review of a
+   `merge-gate` fix.
 
 ## Report
 

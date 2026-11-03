@@ -112,10 +112,10 @@ These run only when you ask for them by name, such as `/code-slop-doctor`.
 - [`ci-watch`](.agents/skills/git/ci-watch/SKILL.md) — Watch a pull request, resolve review findings, and check that CI passes.
 - [`code-slop-doctor`](.agents/skills/doctors/code-slop-doctor/SKILL.md) — Remove unneeded layers, wrappers, abstractions, duplicates, legacy paths, hand-written styling, code that reads as slop, configuration names and dependencies.
 - [`continue-handoff`](.agents/skills/workspace/continue-handoff/SKILL.md) — Pick up work another session handed off.
+- [`debug-skill-rounds`](.agents/skills/workspace/debug-skill-rounds/SKILL.md) — Show in chat which subagents and rounds are using time and tokens.
 - [`defer-execution`](.agents/skills/deferrals/defer-execution/SKILL.md) — Schedule separate work on its own branch, either now or after the current pull request merges.
 - [`docs-doctor`](.agents/skills/doctors/docs-doctor/SKILL.md) — Find and fix documentation that no longer matches the code.
 - [`execute-defer-scope`](.agents/skills/deferrals/execute-defer-scope/SKILL.md) — Review and resolve recorded deferred work for a chosen issue, path, or pull request.
-- [`finish-pr`](.agents/skills/git/finish-pr/SKILL.md) — Review and fix the whole pull request, then merge it.
 - [`grade-plans`](.agents/skills/execution/grade-plans/SKILL.md) — Compare, grade, rate, rank, or choose between two implementation plans written for the same goal or original agent prompt.
 - [`guidance-doctor`](.agents/skills/doctors/guidance-doctor/SKILL.md) — Review agent guidance for instructions to cut, clarify, or add.
 - [`handoff`](.agents/skills/workspace/handoff/SKILL.md) — Move the current session's work to another session with nothing lost and nothing left for the user to do.
@@ -152,6 +152,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`doctor-protocol`](.agents/skills/doctors/doctor-protocol/SKILL.md) — Set the audit, fix, review, and reporting process used by every doctor skill.
 - [`edit-skill`](.agents/skills/authoring/edit-skill/SKILL.md) — Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.
 - [`execute-task`](.agents/skills/execution/execute-task/SKILL.md) — Plan source and product changes for approval; validate canonical guidance changes through their delivery gates.
+- [`finish-pr`](.agents/skills/git/finish-pr/SKILL.md) — Review and fix the whole pull request, then merge it.
 - [`frontend-design`](.agents/skills/web/frontend-design/SKILL.md) — Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one.
 - [`generic-push`](.agents/skills/git/generic-push/SKILL.md) — Keep repository publishing metadata generic and isolated.
 - [`get-doctors`](.agents/skills/doctors/get-doctors/SKILL.md) — List every doctor skill the skill listing declares with a one-line summary of what it audits.
