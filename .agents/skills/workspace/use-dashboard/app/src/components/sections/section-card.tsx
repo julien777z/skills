@@ -4,7 +4,7 @@ import { RichText } from '@/components';
 import { Stack, Text } from '@/components/primitives';
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { cn } from '@/lib/utils';
+import { cn, sectionAnchor } from '@/lib/utils';
 
 export const InDialogContext: Context<boolean> = createContext(false);
 
@@ -47,7 +47,7 @@ export function SectionCard({
 
   return (
     <Card
-      data-section-title={title}
+      {...sectionAnchor(title)}
       className={cn('@container/card min-w-0 scroll-mt-20', wide && 'col-span-full', flush && 'gap-4 pb-2')}
     >
       <CardHeader>

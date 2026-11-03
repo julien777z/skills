@@ -5,7 +5,7 @@ import { Grid, Stack, Text } from '@/components/primitives';
 import { drawDiagram } from '@/lib/diagram';
 import { linkAttributes, type References, ReferencesContext } from '@/lib/references';
 import { CHANGES, ChangeName, TONES } from '@/lib/tone';
-import { cn, withKeys } from '@/lib/utils';
+import { cn, scrollToSection, withKeys } from '@/lib/utils';
 import type { DiagramEdge, DiagramSection as DiagramSectionSpec, Section } from '@/spec';
 import { SectionCard } from './section-card';
 import { SectionDialog } from './section-dialog';
@@ -124,11 +124,7 @@ function openEdgesOnClick(
       makeOpener(target, `Open ${node.label}`, () => open(details, target));
     } else if (jump && target) {
       target.dataset.jump = jump;
-      makeOpener(target, `Go to ${jump}`, () =>
-        document
-          .querySelector(`[data-section-title="${CSS.escape(jump)}"]`)
-          ?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
-      );
+      makeOpener(target, `Go to ${jump}`, () => scrollToSection(jump));
     }
   });
 }

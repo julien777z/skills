@@ -17,3 +17,13 @@ export function withKeys<T>(items: readonly T[], identify: (item: T) => string):
     return { key: `${identity}#${occurrence}`, item };
   });
 }
+
+export function sectionAnchor(title: string): { 'data-section-title': string } {
+  return { 'data-section-title': title };
+}
+
+export function scrollToSection(title: string): void {
+  document
+    .querySelector(`[data-section-title="${CSS.escape(title)}"]`)
+    ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}

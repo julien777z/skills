@@ -239,7 +239,8 @@ step exists to catch.
    one, then the other skills in asking order. A diagram holds that
    skill's steps in order, joined by `then` arrows, with each step's launches hanging off it and a
    `runs` arrow to a node for each skill it runs that has a diagram of its own on the page, its
-   `target` that diagram's title so clicking it scrolls there, so the questioned
+   `detail` what that skill does in a few words and its `target` that diagram's title, so clicking
+   it scrolls there, so the questioned
    step is seen beside the rest of the run and where it hands over. Its
    description says what the skill's run does in a sentence, never how to read the colors or that
    nodes can be clicked;
