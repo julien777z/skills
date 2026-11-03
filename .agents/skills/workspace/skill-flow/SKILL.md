@@ -209,20 +209,22 @@ step exists to catch.
 3. **Pick the steps worth a question.** A step is worth one when changing it would change how many
    subagents start, how much they read, or what a review can miss: a launch, a review loop and what
    its later rounds rerun, a scope wider than the step's job, a scope another skill reads in the
-   same run, or a launch that always runs where a condition would do. Weigh how often it runs: a
-   step on every task, pull request or round is worth a question for a modest saving, while one
-   that fires only on a narrow kind of change, such as a security review of trust-boundary code, is
-   worth one only when it wastes reads without adding coverage, never to trade coverage for a few
-   subagents. Every other step passes without a question, and the report lists them in one line.
-4. **Ask one question at a time, most usage first** — the subagents a step starts times how often
-   it runs — through the question tool, and wait for its answer before asking the next. Each says when the flow runs — what starts it and how often in
-   a task, such as "once per pull request, when its task finishes, and again for each follow-up" —
-   then what the step does in a sentence: the skill and step, how many subagents, what they read and
-   for how many rounds. Every fact it states is read from the lines that state it before it is
-   asked, so a question never rests on a repeat or a gap the sources do not have. Its choices are keeping it as it is and one or two concrete changes,
-   such as fewer subagents, a narrower scope, a condition on the launch, fewer rounds, or later
-   rounds that rerun only the reviewers a repair affects. The recommended choice comes first, with
-   its reason in what it saves and what it could miss.
+   same run, or a launch that always runs where a condition would do. Every other step passes
+   without a question, and the report lists them in one line.
+4. **Ask one question at a time, most usage first** — the subagents a step starts times how often it
+   runs — through the question tool, and wait for its answer before asking the next. Each says when
+   the flow runs — what starts it and how often in a task, such as "once per pull request, when its
+   task finishes, and again for each follow-up" — then what the step does in a sentence: the skill
+   and step, how many subagents, what they read and for how many rounds. How often the step runs
+   decides the recommendation, never whether it is asked: for a step on every task, pull request or
+   round, a change that saves a modest number of subagents can be the recommended choice; for one
+   that fires rarely, such as a security review of trust-boundary code or the review of a plan,
+   keeping it is recommended unless the change only removes reads that add no coverage. Every fact
+   it states is read from the lines that state it before it is asked, so a question never rests on a
+   repeat or a gap the sources do not have. Its choices are keeping it as it is and one or two
+   concrete changes, such as fewer subagents, a narrower scope, a condition on the launch, fewer
+   rounds, or later rounds that rerun only the reviewers a repair affects. The recommended choice
+   comes first, with its reason in what it saves and what it could miss.
 5. **Record every question** with `session-ledger` as a `question` entry when it is asked, with
    its options and recommendation, and mark it answered with the user's words.
 6. **Make the agreed changes** through `edit-skill`, as one change across the skills they touch,
