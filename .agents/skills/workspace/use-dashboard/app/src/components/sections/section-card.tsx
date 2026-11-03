@@ -8,6 +8,8 @@ import { cn, sectionAnchor } from '@/lib/utils';
 
 export const InDialogContext: Context<boolean> = createContext(false);
 
+export const InTabPanelContext: Context<boolean> = createContext(false);
+
 interface SectionCardProps {
   title: string;
   description?: string;
@@ -26,6 +28,34 @@ export function SectionCard({
   children,
 }: SectionCardProps): ReactNode {
   const inDialog = useContext(InDialogContext);
+  const inTabPanel = useContext(InTabPanelContext);
+
+  if (inTabPanel) {
+    return (
+      <div {...sectionAnchor(title)} className={cn('min-w-0 scroll-mt-20', wide && 'col-span-full')}>
+        <Stack gap="lg">
+          <Stack direction="row" align="start" justify="between" gap="md">
+            <Stack gap="xs">
+              <Text as="h3" size="sm" weight="semibold">
+                <RichText text={title} />
+              </Text>
+              {description && (
+                <Text size="sm" tone="muted">
+                  <RichText text={description} />
+                </Text>
+              )}
+            </Stack>
+            {summary === undefined ? null : (
+              <Text size="sm" tone="muted" numeric>
+                {summary}
+              </Text>
+            )}
+          </Stack>
+          {children}
+        </Stack>
+      </div>
+    );
+  }
 
   if (inDialog) {
     return (

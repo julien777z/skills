@@ -278,6 +278,15 @@ def check_tree_nodes(value: object, path: str) -> None:
     check_objects(value, path, shape=TREE_NODE_SHAPE)
 
 
+def check_tabs(tabs: dict[str, object], path: str) -> None:
+    """Require a tab with sections among a tabs section's tabs."""
+
+    entries = cast(list[dict[str, object]], tabs["tabs"])
+
+    if not any(entry["sections"] for entry in entries):
+        raise DashboardSpecError(f"{path}.tabs must hold a tab with sections")
+
+
 def check_section(section: object, path: str) -> None:
     """Require one section of a known type."""
 
@@ -535,6 +544,11 @@ TREE_NODE_SHAPE: Final[ObjectShape] = ObjectShape(
     },
     required=frozenset({"label"}),
 )
+TAB_SHAPE: Final[ObjectShape] = ObjectShape(
+    name="Tab",
+    fields={"label": TEXT, "sections": SECTIONS},
+    required=frozenset({"label", "sections"}),
+)
 NOTICE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Notice",
     fields={"title": TEXT, "body": TEXT, "tone": TONE},
@@ -618,6 +632,18 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
             "open_depth": WHOLE_NUMBER,
         },
         frozenset({"items"}),
+    ),
+    SectionType.TABS: section_shape(
+        SectionType.TABS,
+        {
+            "tabs": Field(
+                check=partial(check_objects, shape=TAB_SHAPE, unique="label"),
+                typescript="Tab[]",
+                shape=TAB_SHAPE,
+            )
+        },
+        frozenset({"tabs"}),
+        check_tabs,
     ),
     SectionType.TABLE: section_shape(
         SectionType.TABLE,

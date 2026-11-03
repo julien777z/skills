@@ -58,9 +58,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 
 - **Header.** `title`: `Progress Dashboard`. `topic`: the task in a few words, such as "Bulk
   export". `subtitle`: the task's goal, such as "Let admins download a month of invoices as one
-  file". `status`: `Waiting on you` (`warning`) while a question is open, which covers a step an
-  open question blocks; `Blocked` (`critical`) while a step is blocked on anything else; `Done`
-  (`good`) once every plan is complete; otherwise `On track` (`good`).
+  file".
 - **Progress.** A step's work is its estimate, or for a step with parts the estimates of its parts
   not skipped; a skipped step has none. `value`: finished work over all work, across every plan
   that is not withdrawn, where finished work is each done step's work and each done part of a step
@@ -85,13 +83,13 @@ and deliver the same dashboard again on every request so the user keeps one page
   words saying what it does, not necessarily its title, such as `PR #1337 - Add bulk export`.
 - **Pages.** The dashboard's `icon` is `progress`, and its pages run in this order. `Overview`,
   `icon` `overview` and `layout` `rows`, holds the pull requests and the `table` "Plans", in that
-  order. `Plan`, `icon` `checklist` and `layout` `rows`, follows with one plan write-up per
-  approved plan, in approval order, and is `locked`, with `sections` `[]`, until a plan is approved.
+  order. `Plan`, `icon` `checklist` and `layout` `rows`, follows with the `tree` "Plan tree", then
+  one plan write-up per approved plan, in approval order, and is `locked`, with `sections` `[]`,
+  until a plan is approved.
   `Progress`, `icon` `board`, holds the board, the answered questions, the notes and any other
   table. Once step 3 gives the page a pull request to cover, `Architecture`
-  follows, with `icon` `diagram` and `layout` `rows`: the diagram, then `changes` "Config changes",
-  then `changes` "Migration changes", then an `outline` "What changed in <pull request name>" for
-  each pull request it covers, then an `outline` "Keep in mind". While the task has an open or draft
+  follows, with `icon` `diagram` and `layout` `rows`: the diagram, then the `tree` "What each pull
+  request changes", then the `tabs` "Change details", then an `outline` "Keep in mind". While the task has an open or draft
   pull request, `Wrap up` comes last, with `icon` `release` and `layout` `rows`: the `table` "Ready
   to merge", the `diagram` "Merge and deploy order", then the `outline` sections "Between merges",
   "Deploy" and "Once live", each only when it has something in it. Its `status` is "<n> need you"
@@ -101,6 +99,15 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **`table` "Plans"**: one row per plan that is not withdrawn, with the columns Plan, Steps done
   ("<done> of <n>"), Running, Waiting on you and Time left, the summary of what the board shows step
   by step, and `details` holding each row's plan write-up, so a row opens the plan.
+- **`tree` "Plan tree"**, described as "Each plan, its steps and their parts, by where they stand",
+  with `open_depth` 2: one entry per plan that is not withdrawn, in approval order, `label` the
+  plan's title, `figure` "<done> of <n> steps" and `meta` "~<n> min left", or "Proposed" for a plan
+  not yet approved; under it one entry per step, in plan order, `label` "<n>. <step title>", `tone`
+  as its progress segment is toned, `meta` its status, then "~<n> min" while it is not done or its
+  measured duration once it is, and `figure` "<done> of <n> parts" for a step with parts, counting
+  parts not skipped; and under such a step one entry per part, `label` its title, `tone` `good`
+  when done, `accent` when active, `critical` when blocked and neutral otherwise, and `meta` its
+  status.
 - **Plan write-up**: the plan as a reader who missed the conversation needs it, from the ledger's
   `plan` entry: an `outline` with `expanded` and `stacked` set, `title` the plan's title and `description` its
   goal, then "Approved · ~<total> min", or "Proposed · ~<total> min" for a plan not yet approved. Its groups, each only when it has something in it:
@@ -170,6 +177,20 @@ and deliver the same dashboard again on every request so the user keeps one page
   user, labelled as an assumption.
 - **`table`**, only when the ledger holds tabular facts worth a grid, such as checks per pull
   request head.
+- **`tree` "What each pull request changes"**, described as "Each pull request, the areas it
+  touches and what changes in each", with `open_depth` 2: one entry per pull request the page
+  covers, `label` its name and `figure` "<n> changes"; under it one entry per area its "What changed
+  in" outline groups by, in that order, `label` the group's title and `figure` the count of its
+  items, followed by "Config" and "Migrations" entries when its config or migration changes hold
+  anything; and under each area one entry per change, `label` the item's title, or for config and
+  migrations the `name` with `meta` its `change` (Added, Changed or Removed). The tree is the map;
+  the details are in "Change details".
+- **`tabs` "Change details"**, described as "What each change does, one kind of change at a time":
+  the tabs "Code", holding an `outline` "What changed in <pull request name>" per pull request the
+  page covers, in the tree's order; "Config", holding the `changes` "Config changes"; and
+  "Migrations", holding the `changes` "Migration changes". A tab with nothing in it keeps its entry
+  with `sections` `[]`, which the renderer leaves off, so when only one kind of change is left, its
+  sections show without a tab bar.
 - **`outline` "What changed in <pull request name>"**: the pull request's changes grouped by the area
   they touch, such as `Report export` or `Search page`, never the task itself, with moves and renames last under
   `No behaviour change`. Each item's `title` says in a few words what now happens, and its `detail`
@@ -198,7 +219,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   number — with its `url`, so every mention of it is a link.
 
 Leave out withdrawn plans and questions, and a section with nothing in it, except the board,
-which keeps its four columns.
+which keeps its four columns, and the tabs of "Change details", which stay with `sections` `[]`.
 
 ## Guardrails
 
