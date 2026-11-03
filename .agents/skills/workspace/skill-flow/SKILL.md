@@ -232,8 +232,9 @@ step exists to catch.
    `Overview`, its `status` the count of questions still open and its `progress` how many are
    decided, `detail` "<decided> of <total> decided", with one segment per question in the order
    they are asked, toned `done` once answered and `accent` while asked. It holds one `diagram` per skill a
-   question concerns, after a `table` `All questions` listing every question in asking order with
-   its skill, subagents, status and decision, each row opening its proposal. A diagram holds that
+   question concerns, the skill being asked about first so its flow sits right under the progress
+   bar, then an `outline` `Decided so far` listing each answer and what it changes once there is
+   one, then the other skills in asking order. A diagram holds that
    skill's steps in order, joined by `then` arrows, with each step's launches hanging off it and a
    `runs` arrow to each skill it runs that has a diagram of its own on the page, so the questioned
    step is seen beside the rest of the run and where it hands over. Its
