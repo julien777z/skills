@@ -238,24 +238,25 @@ step exists to catch.
    bar, then an `outline` `Decided so far` listing each answer and what it changes once there is
    one, then the other skills in asking order. A diagram holds that
    skill's steps in order, joined by `then` arrows, with each step's launches hanging off it and a
-   `runs` arrow to each skill it runs that has a diagram of its own on the page, so the questioned
+   `runs` arrow to a node for each skill it runs that has a diagram of its own on the page, its
+   `target` that diagram's title so clicking it scrolls there, so the questioned
    step is seen beside the rest of the run and where it hands over. Its
    description says what the skill's run does in a sentence, never how to read the colors or that
-   arrows can be clicked;
-   its `legend` is `[{tone: accent, label: Being asked}, {tone: done, label: Decided}]`. The edge a
-   question concerns — the arrow from the step into the launch it questions — carries
+   nodes can be clicked;
+   its `legend` is `[{tone: accent, label: Being asked}, {tone: done, label: Decided}]`. The node a
+   question concerns — the launch it questions — carries
    `tone` `accent` while it is asked and `done` once answered, and none before, and its `details`
    is an outline with `stacked` set and `collapsible` false whose groups are "What it does" (when
    the flow runs and what the step does now), "Proposed changes" (each choice, with what it saves
    and what it could miss), "Recommended" (the choice and why) and, once answered, "Decision" (the
    user's words and what changes). Publish the page before each question, with that question's
-   edge `accent`, and again after its answer, with the edge `done`, so the page always shows where
+   node `accent`, and again after its answer, with the node `done`, so the page always shows where
    the conversation is. The question names the page and the edge it concerns.
 5. **Ask one question at a time, in the order the run reaches them** — skill by skill, and within
    a skill from its first step to its last — through the question tool, and wait for its answer
    before asking the next. Pick every question before asking the first, so the page's progress
    shows the whole set from the start. The question leaves out which skill and step it concerns,
-   since the page's blue arrow shows it. Each says when
+   since the page's highlighted node shows it. Each says when
    the flow runs — what starts it and how often in a task, such as "once per pull request, when its
    task finishes, and again for each follow-up" — then what the step does in a sentence: the skill
    and step, how many subagents, what they read and for how many rounds. How often the step runs

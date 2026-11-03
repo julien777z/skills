@@ -6,7 +6,7 @@ import { drawDiagram } from '@/lib/diagram';
 import { linkAttributes, type References, ReferencesContext } from '@/lib/references';
 import { CHANGES, ChangeName, TONES } from '@/lib/tone';
 import { cn, withKeys } from '@/lib/utils';
-import type { DiagramEdge, DiagramSection as DiagramSectionSpec } from '@/spec';
+import type { DiagramEdge, DiagramSection as DiagramSectionSpec, Section } from '@/spec';
 import { SectionCard } from './section-card';
 import { SectionDialog } from './section-dialog';
 import { TextList } from './text-list';
@@ -26,7 +26,11 @@ function linkFigureText(root: HTMLElement, references: References): void {
   while (walker.nextNode()) {
     const node = walker.currentNode as Text;
 
-    if (node.parentElement?.namespaceURI === HTML_NAMESPACE && !node.parentElement.closest('a')) {
+    if (
+      node.parentElement?.namespaceURI === HTML_NAMESPACE &&
+      !node.parentElement.closest('a') &&
+      !node.parentElement.closest('[data-jump]')
+    ) {
       textNodes.push(node);
     }
   }
@@ -65,10 +69,25 @@ function edgeName(edge: DiagramEdge, labels: Map<string, string>): string {
   return `${labels.get(edge.from)} to ${labels.get(edge.to)}${edge.label ? `: ${edge.label}` : ''}`;
 }
 
+function makeOpener(target: SVGElement, name: string, open: () => void): void {
+  target.setAttribute('role', 'button');
+  target.setAttribute('tabindex', '0');
+  target.setAttribute('aria-label', name);
+  target.style.cursor = 'pointer';
+  target.style.pointerEvents = 'all';
+  target.addEventListener('click', open);
+  target.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      open();
+    }
+  });
+}
+
 function openEdgesOnClick(
   root: HTMLElement,
   section: DiagramSectionSpec,
-  open: (index: number, opener: SVGElement) => void,
+  open: (details: Section, opener: SVGElement) => void,
 ): void {
   const labels = new Map(section.nodes.map((node) => [node.id, node.label]));
   const paths = root.querySelectorAll<SVGElement>('.edgePaths path');
@@ -87,23 +106,29 @@ function openEdgesOnClick(
       return;
     }
 
-    for (const target of [paths[index], label]) {
-      if (!target) {
-        continue;
-      }
+    const details = edge.details;
 
-      target.setAttribute('role', 'button');
-      target.setAttribute('tabindex', '0');
-      target.setAttribute('aria-label', `Open ${edgeName(edge, labels)}`);
-      target.style.cursor = 'pointer';
-      target.style.pointerEvents = 'all';
-      target.addEventListener('click', () => open(index, target));
-      target.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          open(index, target);
-        }
-      });
+    for (const target of [paths[index], label]) {
+      if (target) {
+        makeOpener(target, `Open ${edgeName(edge, labels)}`, () => open(details, target));
+      }
+    }
+  });
+
+  section.nodes.forEach((node, index) => {
+    const target = root.querySelector<SVGElement>(`g.node[id*="-n${index}-"]`);
+    const details = node.details;
+    const jump = node.target;
+
+    if (details && target) {
+      makeOpener(target, `Open ${node.label}`, () => open(details, target));
+    } else if (jump && target) {
+      target.dataset.jump = jump;
+      makeOpener(target, `Go to ${jump}`, () =>
+        document
+          .querySelector(`[data-section-title="${CSS.escape(jump)}"]`)
+          ?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+      );
     }
   });
 }
@@ -113,7 +138,7 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
   const references = useContext(ReferencesContext);
   const [status, setStatus] = useState<DrawStatus>(DrawStatus.DRAWING);
   const [split, setSplit] = useState(false);
-  const [opened, setOpened] = useState<number | null>(null);
+  const [opened, setOpened] = useState<Section | null>(null);
   const opener = useRef<SVGElement | null>(null);
   const labels = new Map(section.nodes.map((node) => [node.id, node.label]));
   const used = new Set([...section.nodes, ...section.edges].map((part) => part.change).filter(Boolean));
@@ -140,11 +165,11 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
         target.replaceChildren(drawing.svg);
         target.scrollLeft = (target.scrollWidth - target.clientWidth) / 2;
 
-        linkFigureText(target, references);
-        openEdgesOnClick(target, section, (index, element) => {
+        openEdgesOnClick(target, section, (details, element) => {
           opener.current = element;
-          setOpened(index);
+          setOpened(details);
         });
+        linkFigureText(target, references);
 
         setSplit(Boolean(section.steps) && drawing.width < target.clientWidth * SPLIT_RATIO);
         setStatus(DrawStatus.DRAWN);
@@ -237,13 +262,8 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
           </Grid>
         )}
       </Grid>
-      {opened !== null && section.edges[opened]?.details && (
-        <SectionDialog
-          section={section.edges[opened].details}
-          open
-          onOpenChange={(open) => !open && setOpened(null)}
-          opener={opener}
-        />
+      {opened && (
+        <SectionDialog section={opened} open onOpenChange={(open) => !open && setOpened(null)} opener={opener} />
       )}
     </SectionCard>
   );

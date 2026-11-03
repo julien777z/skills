@@ -487,7 +487,16 @@ DIAGRAM_PULL_REQUEST_SHAPE: Final[ObjectShape] = ObjectShape(
 )
 DIAGRAM_NODE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="DiagramNode",
-    fields={"id": TEXT, "label": TEXT, "detail": TEXT, "pr": TEXT, "change": CHANGE},
+    fields={
+        "id": TEXT,
+        "label": TEXT,
+        "detail": TEXT,
+        "pr": TEXT,
+        "change": CHANGE,
+        "tone": TONE,
+        "details": Field(check=check_section, typescript="Section"),
+        "target": TEXT,
+    },
     required=frozenset({"id", "label"}),
 )
 DIAGRAM_EDGE_SHAPE: Final[ObjectShape] = ObjectShape(

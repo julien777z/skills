@@ -46,7 +46,10 @@ export function SectionCard({
   }
 
   return (
-    <Card className={cn('@container/card min-w-0', wide && 'col-span-full', flush && 'gap-4 pb-2')}>
+    <Card
+      data-section-title={title}
+      className={cn('@container/card min-w-0 scroll-mt-20', wide && 'col-span-full', flush && 'gap-4 pb-2')}
+    >
       <CardHeader>
         <CardTitle>
           <h2>

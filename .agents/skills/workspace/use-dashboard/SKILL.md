@@ -69,14 +69,16 @@ of a process, carries no count. Section types:
 | `changes` | `title`, `items`, `page_size?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`, `links?`: a named part with its change as a colored badge |
 | `outline` | `title`, `groups: [{title, items}]`, `expanded?` (every item starts open when true), `stacked?` (groups run in one column, each across the full width, for groups read in order), `collapsible?` (false shows every item in full with no toggle, its `title` as a muted label beside its `detail`, for a short write-up of facts read top to bottom) | `title`, `detail`, `tone?`, `tag?`, `meta?`, `links?`, `points?`: a headline that opens to its detail, with `points` as a bulleted list under it, with `tag` as a badge in the item's tone (neutral without one) and `meta` as small text; without `expanded`, a group of one or two items shows them open |
 | `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `figure?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `figure` a short count in the accent color right after its label, `meta` beside it, and `details`, one section, opening in a dialog from the entry's label; for a whole made of parts made of parts |
-| `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?`, `legend?` (`[{tone, label}]`, a line in each tone beside what it means) | node: `id`, `label`, `detail?`, `pr?`, `change?`; edge: `from`, `to`, `label?`, `step?`, `change?`, `tone?`, `details?`; pr: `ref`, `url`; each step a string |
+| `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?`, `legend?` (`[{tone, label}]`, a line in each tone beside what it means) | node: `id`, `label`, `detail?`, `pr?`, `change?`, `tone?`, `details?`, `target?`; edge: `from`, `to`, `label?`, `step?`, `change?`, `tone?`, `details?`; pr: `ref`, `url`; each step a string |
 
 A diagram draws each node as a box inside a frame titled with the `ref` its `pr` names, and each
 edge as an arrow numbered with its `step`; the numbered `steps` are listed beside or under it.
 `change` is `added`, `changed` or `removed` and colors the box or arrow; omit it for an unchanged
-part. An edge's `tone` colors its arrow and label instead, for a state the reader follows, such as
-the arrow under discussion; `legend` says what each tone means. An edge with `details`, one
-section, opens it in a dialog when its arrow or label is clicked. Every `pr`, `from` and `to` names a listed `ref` or node `id`, and every `step` a position in
+part. A node's or edge's `tone` colors its border or arrow instead, for a state the reader follows,
+such as the step under discussion; `legend` says what each tone means. A node or edge with
+`details`, one section, opens it in a dialog when it is clicked. A node's `target` names another
+section on the same page by its title: clicking the node scrolls smoothly to it, and its label
+stays plain text rather than a link. Every `pr`, `from` and `to` names a listed `ref` or node `id`, and every `step` a position in
 `steps`.
 
 A board column, `questions`, `links` or `changes` section with more entries than its `page_size`,
