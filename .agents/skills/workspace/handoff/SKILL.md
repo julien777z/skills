@@ -58,7 +58,8 @@ skill ends with.
    repository that is still in a temporary state. Classify each as **queued work**, **a question for
    the user**, **context**, or **deferred repository work**.
 4. **Record deferred repository work through `defer-scope`**, one scope per item, in the repository
-   that owns it, and link each resulting record from the hand-off comment. An item `defer-scope`
+   that owns it, and link each resulting record or Linear issue from the hand-off comments in that
+   repository alone. An item `defer-scope`
    refuses as a confirmed defect goes first in the queue on its pull request instead.
 5. **Secure every branch.** Every commit the session or a worker made reaches the pull request the
    work continues: a worktree's commits are pushed to that pull request's branch, merged in first
@@ -81,12 +82,12 @@ skill ends with.
    options as they were put, and every decision and constraint that governs this repository's work.
    It is published in this repository, so it follows the GitHub rule's independent publishing
    context exactly as `session-ledger`'s backup comments do: it states this repository's work in
-   this repository's own terms, paraphrasing a user decision where its words carry another
-   repository's product, environment or vocabulary, and never names or links another repository,
-   its pull requests or its constraints, a dependency included. A dependency is stated as this
-   repository's own contract, such as "a consumer of this branch's API repoints once it merges";
-   which pull request that is, and every cross-repository constraint, travels in the private
-   ledger step 9 transfers and in the paste message. It carries the task token `session-ledger`'s
+   this repository's own terms and never names or links another repository, its pull requests or
+   its constraints, a dependency included. The queue, the questions, the user's words and the plan
+   are carried verbatim except where they refer to another repository, its pull requests or its
+   vocabulary; each such reference is replaced by this repository's own contract, such as "a
+   consumer of this branch's API repoints once it merges". Which pull request that is, and every
+   cross-repository identity and constraint, lives in the private ledger step 9 transfers. It carries the task token `session-ledger`'s
    backup comments carry, so a session that cannot reach the ledger file can tell which of them
    are this task's. Never put a secret, credential or access token in it.
 9. **Transfer the finalized private ledger.** After all workers' receipts and final hand-off facts
@@ -121,7 +122,7 @@ Task: `<task token>`
 - <what this branch needs from, or offers to, other work, as this repository's own contract>
 
 ### Plan presented, not approved
-<the plan verbatim>
+<the plan verbatim, with references to other repositories replaced as step 8 says>
 
 ### Recorded elsewhere
 - <record link> — <scope>
