@@ -119,6 +119,19 @@ def refresh(source: Path, fetch: bool = False) -> RefreshOutcome:
         return RefreshOutcome(outcome.read_text())
 
 
+def read_prompts() -> dict[str, str]:
+    """Read the named sections of the shared prompt file."""
+
+    document = Path(__file__).with_name("prompts.md").read_text()
+    prompts: dict[str, str] = {}
+
+    for section in document.split("\n## ")[1:]:
+        name, _, body = section.partition("\n")
+        prompts[name] = body.strip()
+
+    return prompts
+
+
 def session_start(provider: Provider, fetch: bool = False) -> None:
     """Handle a supported provider startup event."""
 
@@ -132,17 +145,13 @@ def session_start(provider: Provider, fetch: bool = False) -> None:
         return
 
     source = Path(__file__).resolve().parents[3]
-    prompts = Path(__file__).resolve().parent / "prompts"
     outcome = refresh(source, fetch)
 
     if outcome == RefreshOutcome.CURRENT:
         return
 
-    if outcome in (RefreshOutcome.RECONCILE, RefreshOutcome.BUSY, RefreshOutcome.FAILED):
-        prompt = f"{outcome.value}.md"
-        context = (prompts / prompt).read_text().strip()
-    else:
-        context = (prompts / "repaired.md").read_text().strip()
+    prompts = read_prompts()
+    context = prompts[outcome.value]
 
     if cursor:
         print(dumps(CursorStartupResult(additional_context=context)))
@@ -157,7 +166,7 @@ def session_start(provider: Provider, fetch: bool = False) -> None:
     if outcome == RefreshOutcome.REPAIRED and provider == Provider.CLAUDE:
         output["reloadSkills"] = True
     elif outcome == RefreshOutcome.REPAIRED and provider == Provider.CODEX:
-        discovery = (prompts / "codex-discovery.md").read_text().strip()
+        discovery = prompts["codex-discovery"]
         output["additionalContext"] += f" {discovery}"
 
     print(dumps(StartupResult(hookSpecificOutput=output)))
@@ -172,7 +181,7 @@ if __name__ == "__main__":
         print(result.value)
 
         if result in (RefreshOutcome.RECONCILE, RefreshOutcome.BUSY, RefreshOutcome.FAILED):
-            print((Path(__file__).resolve().parent / "prompts" / f"{result.value}.md").read_text().strip())
+            print(read_prompts()[result.value])
 
         raise SystemExit(0 if result in (RefreshOutcome.CURRENT, RefreshOutcome.REPAIRED) else 1)
     elif argv[1:2] in ([Provider.CODEX], [Provider.CLAUDE], [Provider.CURSOR]) and argv[2:] in ([], ["--fetch"]):
