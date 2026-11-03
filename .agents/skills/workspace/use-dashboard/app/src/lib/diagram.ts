@@ -150,7 +150,9 @@ function flowchartSource(section: DiagramSection, direction: Direction, colors: 
   }
 
   section.edges.forEach((edge, index) => {
-    if (edge.change) {
+    if (edge.tone) {
+      lines.push(`linkStyle ${index} stroke:${colors[TONES[edge.tone].color]},stroke-width:3px`);
+    } else if (edge.change) {
       lines.push(`linkStyle ${index} ${strokeStyle(edge.change, colors)}`);
     }
   });

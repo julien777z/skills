@@ -6,8 +6,9 @@ import { drawDiagram } from '@/lib/diagram';
 import { linkAttributes, type References, ReferencesContext } from '@/lib/references';
 import { CHANGES, ChangeName, TONES } from '@/lib/tone';
 import { cn, withKeys } from '@/lib/utils';
-import type { DiagramSection as DiagramSectionSpec } from '@/spec';
+import type { DiagramEdge, DiagramSection as DiagramSectionSpec } from '@/spec';
 import { SectionCard } from './section-card';
+import { SectionDialog } from './section-dialog';
 import { TextList } from './text-list';
 
 const DrawStatus = { DRAWING: 'drawing', DRAWN: 'drawn', FAILED: 'failed' } as const;
@@ -60,11 +61,60 @@ function linkFigureText(root: HTMLElement, references: References): void {
   }
 }
 
+function edgeName(edge: DiagramEdge, labels: Map<string, string>): string {
+  return `${labels.get(edge.from)} to ${labels.get(edge.to)}${edge.label ? `: ${edge.label}` : ''}`;
+}
+
+function openEdgesOnClick(
+  root: HTMLElement,
+  section: DiagramSectionSpec,
+  open: (index: number, opener: SVGElement) => void,
+): void {
+  const labels = new Map(section.nodes.map((node) => [node.id, node.label]));
+  const paths = root.querySelectorAll<SVGElement>('.edgePaths path');
+  const edgeLabels = root.querySelectorAll<SVGElement>('.edgeLabels > .edgeLabel');
+
+  section.edges.forEach((edge, index) => {
+    const label = edgeLabels[index];
+
+    if (edge.tone && label) {
+      for (const text of label.querySelectorAll<HTMLElement>('span, p')) {
+        text.style.color = `var(--${TONES[edge.tone].color})`;
+      }
+    }
+
+    if (!edge.details) {
+      return;
+    }
+
+    for (const target of [paths[index], label]) {
+      if (!target) {
+        continue;
+      }
+
+      target.setAttribute('role', 'button');
+      target.setAttribute('tabindex', '0');
+      target.setAttribute('aria-label', `Open ${edgeName(edge, labels)}`);
+      target.style.cursor = 'pointer';
+      target.style.pointerEvents = 'all';
+      target.addEventListener('click', () => open(index, target));
+      target.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          open(index, target);
+        }
+      });
+    }
+  });
+}
+
 export function DiagramSection({ section }: { section: DiagramSectionSpec }): ReactNode {
   const figure = useRef<HTMLDivElement>(null);
   const references = useContext(ReferencesContext);
   const [status, setStatus] = useState<DrawStatus>(DrawStatus.DRAWING);
   const [split, setSplit] = useState(false);
+  const [opened, setOpened] = useState<number | null>(null);
+  const opener = useRef<SVGElement | null>(null);
   const labels = new Map(section.nodes.map((node) => [node.id, node.label]));
   const used = new Set([...section.nodes, ...section.edges].map((part) => part.change).filter(Boolean));
   const legend = Object.values(ChangeName).filter((change) => change === ChangeName.UNCHANGED || used.has(change));
@@ -91,6 +141,10 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
         target.scrollLeft = (target.scrollWidth - target.clientWidth) / 2;
 
         linkFigureText(target, references);
+        openEdgesOnClick(target, section, (index, element) => {
+          opener.current = element;
+          setOpened(index);
+        });
 
         setSplit(Boolean(section.steps) && drawing.width < target.clientWidth * SPLIT_RATIO);
         setStatus(DrawStatus.DRAWN);
@@ -126,6 +180,18 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
             ref={figure}
             className="grid justify-items-center overflow-x-auto [&_.cluster-label_div]:!max-w-none [&_.cluster-label_div]:!whitespace-nowrap [&_.cluster-label_foreignObject]:overflow-visible [&_svg]:h-auto"
           />
+          {section.legend && (
+            <Stack direction="row" gap="lg" wrap>
+              {section.legend.map((entry) => (
+                <Stack key={entry.label} direction="row" align="center" gap="xs">
+                  <span className={cn('h-0.5 w-4 rounded-full', TONES[entry.tone].dot)} />
+                  <Text size="xs" tone="muted">
+                    {entry.label}
+                  </Text>
+                </Stack>
+              ))}
+            </Stack>
+          )}
           {used.size > 0 && (
             <Stack direction="row" gap="lg" wrap>
               {legend.map((change) => (
@@ -171,6 +237,14 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
           </Grid>
         )}
       </Grid>
+      {opened !== null && section.edges[opened]?.details && (
+        <SectionDialog
+          section={section.edges[opened].details}
+          open
+          onOpenChange={(open) => !open && setOpened(null)}
+          opener={opener}
+        />
+      )}
     </SectionCard>
   );
 }

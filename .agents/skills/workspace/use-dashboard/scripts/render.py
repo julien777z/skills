@@ -498,8 +498,15 @@ DIAGRAM_EDGE_SHAPE: Final[ObjectShape] = ObjectShape(
         "label": TEXT,
         "step": WHOLE_NUMBER,
         "change": CHANGE,
+        "tone": TONE,
+        "details": Field(check=check_section, typescript="Section"),
     },
     required=frozenset({"from", "to"}),
+)
+DIAGRAM_LEGEND_SHAPE: Final[ObjectShape] = ObjectShape(
+    name="DiagramLegendEntry",
+    fields={"tone": TONE, "label": TEXT},
+    required=frozenset({"tone", "label"}),
 )
 REFERENCE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Reference",
@@ -634,6 +641,11 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
                 shape=DIAGRAM_EDGE_SHAPE,
             ),
             "steps": TEXTS,
+            "legend": Field(
+                check=partial(check_objects, shape=DIAGRAM_LEGEND_SHAPE),
+                typescript="DiagramLegendEntry[]",
+                shape=DIAGRAM_LEGEND_SHAPE,
+            ),
         },
         frozenset({"nodes", "edges"}),
         check_diagram,

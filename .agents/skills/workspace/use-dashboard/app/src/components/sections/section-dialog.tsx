@@ -9,7 +9,7 @@ interface SectionDialogProps {
   section: Section;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  opener: RefObject<HTMLButtonElement | null>;
+  opener: RefObject<HTMLOrSVGElement | null>;
 }
 
 export function SectionDialog({ section, open, onOpenChange, opener }: SectionDialogProps): ReactNode {

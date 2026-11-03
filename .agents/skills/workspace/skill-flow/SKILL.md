@@ -117,13 +117,22 @@ the request asks for a new page.
    - `title` `Skill Flow Dashboard`, `topic` the repository's name, `icon` `diagram`, and `subtitle` "How the skills run, read from
      <repository> at <short commit>.", with `references` linking the repository and the commit.
    - `metrics`: **Skills mapped**, **Pages** (the kind-of-work pages), **Subagent launches** (each
-     launch point counted once, however many pages reach it), and **Unknown** (connections the
-     sources left open).
-   - `Overview`, `icon` `overview` and `layout` `rows`: a `table` `By kind of work` with a row per
-     page and the columns Page, Skills (every skill its flow reaches), Starts from, Subagent
-     launches (the launch points its flow reaches) and Loops (how many of the loops the Usage
-     `Loops` tree shows run in its flow, then each in a few words); then `notes` `How to read the flows`, one line each for an invocation
-     arrow, a launch arrow and a borrowed-rubric arrow as their labels show them.
+     launch point counted once, however many pages reach it), and **Gaps** (things the sources
+     leave open).
+   - `Overview`, `icon` `overview` and `layout` `rows`, read at a glance:
+     - a `table` `By kind of work` with a row per page and the columns Page, What it covers (a few
+       words), Subagents per run (the typical and most figures, such as "about 6, up to 24") and
+       Loops (how many of each kind, such as "3 review · 2 repair · 1 wait", or "None"). Each row's
+       `details` opens an outline of that page's loops, one item per loop titled "<skill>: <what
+       repeats>" with its cap as `meta` and what ends it as `detail`. The table never lists a
+       page's skills: its page shows them;
+     - an `outline` `Gaps in the sources`, `expanded` false, its groups the kinds of gap — "No limit
+       set", "No capability level", "Unclear who does it", "Unclear order or route" and "Other",
+       each only when it has items — with one item per gap: `title` the gap in a few plain words,
+       such as "Bugs reviewers have no maximum", `tag` the skill it sits in, and `detail` one or two
+       sentences on what is open and why it matters, with no line numbers;
+     - `notes` `How to read the flows`, one line each for an invocation arrow, a launch arrow and a
+       borrowed-rubric arrow as their labels show them.
    - `Usage`, `icon` `chart` and `layout` `rows`, across every skill the dashboard maps:
      - a `tree` `Where subagents go`, `open_depth` 2, one root per skill a person starts directly,
        most subagents first, with `meta` the subagents one run of it typically starts, then the most
@@ -211,7 +220,20 @@ step exists to catch.
    its later rounds rerun, a scope wider than the step's job, a scope another skill reads in the
    same run, or a launch that always runs where a condition would do. Every other step passes
    without a question, and the report lists them in one line.
-4. **Ask one question at a time, most usage first** — the subagents a step starts times how often it
+4. **Show the questions on the dashboard.** Deliver the dashboard as **Workflow** steps 5 and 6
+   build it, with a page `Interrogation`, `icon` `settings` and `layout` `rows`, right after
+   `Overview`, its `status` the count of questions still open. It holds one `diagram` per flow a
+   question concerns, drawn as that kind-of-work page's `Flow` plus the launch nodes the questions
+   concern, with `legend` `[{tone: accent, label: Being asked}, {tone: done, label: Decided}]`. The
+   edge a question concerns — the arrow into the launch or skill whose step it questions — carries
+   `tone` `accent` while it is asked and `done` once answered, and none before, and its `details`
+   is an outline with `stacked` set and `collapsible` false whose groups are "What it does" (when
+   the flow runs and what the step does now), "Proposed changes" (each choice, with what it saves
+   and what it could miss), "Recommended" (the choice and why) and, once answered, "Decision" (the
+   user's words and what changes). Publish the page before each question, with that question's
+   edge `accent`, and again after its answer, with the edge `done`, so the page always shows where
+   the conversation is. The question names the page and the edge it concerns.
+5. **Ask one question at a time, most usage first** — the subagents a step starts times how often it
    runs — through the question tool, and wait for its answer before asking the next. Each says when
    the flow runs — what starts it and how often in a task, such as "once per pull request, when its
    task finishes, and again for each follow-up" — then what the step does in a sentence: the skill
@@ -225,9 +247,9 @@ step exists to catch.
    concrete changes, such as fewer subagents, a narrower scope, a condition on the launch, fewer
    rounds, or later rounds that rerun only the reviewers a repair affects. The recommended choice
    comes first, with its reason in what it saves and what it could miss.
-5. **Record every question** with `session-ledger` as a `question` entry when it is asked, with
+6. **Record every question** with `session-ledger` as a `question` entry when it is asked, with
    its options and recommendation, and mark it answered with the user's words.
-6. **Make the agreed changes** through `edit-skill`, as one change across the skills they touch,
+7. **Make the agreed changes** through `edit-skill`, as one change across the skills they touch,
    then report per skill what changed and what was kept.
 
 ## Guardrails
