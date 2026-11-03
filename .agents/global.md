@@ -110,6 +110,12 @@ alwaysApply: true
   complete entry point rather than waiting for an edit to load it. This execution workflow does
   not authorize user-triggered action skills. Keep its run active and apply its **Work You Have
   Already Named** procedure before handling the interruption and before any final response.
+- Delegate nontrivial execution to subagents when the host supports it. The primary agent coordinates
+  the work, retains integration and decisions, and starts independent tasks concurrently when their
+  ownership, dependencies and resources permit. A worker hands required independent reviews, gates
+  and additional capacity needs up to its delegating agent when it cannot launch them itself. Follow
+  `subagent-matrix` for assignment, isolation and the documented fallback when a launch cannot start.
+  Delegation does not extend the user's authorization or relax safety and sequencing requirements.
 - Record consciously deferred work immediately in its owning repository. A chat note is not a
   durable deferral record; no separate invitation is needed.
 - A direct invocation authorizes one full run at the requested scope. An explicit request to

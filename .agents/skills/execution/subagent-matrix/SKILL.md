@@ -141,9 +141,9 @@ context and returns its verdict into the step waiting on it; nothing else does b
   run alongside building at the cadence their owning skill sets.
 - **A delegated task is one plan step or one fix round, never a phase**, so each worker's context
   stays the size of its step. A follow-up after a worker's task ended — a gate's fix steps, a
-  review's findings, a reviewer's question — is a new task: the delegating agent applies it itself
-  when it touches one or two files, and otherwise briefs a fresh worker with the findings, the files
-  they name, the branch and its head. A finished worker is never resumed for a follow-up, since
+  review's findings, a reviewer's question — is a new task: assign nontrivial execution to a fresh
+  worker with the findings, the files they name, the branch and its head. File count alone does not
+  make a task trivial. A finished worker is never resumed for a follow-up, since
   resuming reloads its whole earlier context to make a small change.
 
 ## Launch Failure Reporting

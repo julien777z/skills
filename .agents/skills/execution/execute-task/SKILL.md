@@ -251,6 +251,17 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
 
 Execution starts once a required plan is approved, or immediately when **When A Plan Is Needed** requires no plan. Canonical guidance corrections follow `edit-skill`'s **Recording During A Task** timing.
 
+### Assigning Work
+
+Before implementation begins and whenever new work is admitted, identify each coherent nontrivial
+execution task, its owner, dependencies and resources. Delegate it through `subagent-matrix`, and
+launch independent tasks together when their prerequisites are settled. The primary agent coordinates,
+checks results and integrates them while workers execute; a task waiting on a worker does not hold
+another independent task. Keep coupled changes with one owner and sequence work that shares mutable
+resources or depends on an unsettled result. If a native launch cannot start, record its receipt and
+use the fallback that `subagent-matrix` specifies. Reassess ownership after a finding or follow-up;
+file count alone does not decide whether its execution is trivial.
+
 ### Task Authorization
 
 - Carry the user's authorization for the task through its ordinary implementation, verification,
