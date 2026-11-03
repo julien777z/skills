@@ -40,8 +40,11 @@ request, fix what that finds, then merge.
 
 ## Targets
 
-- An explicit pull-request URL or recognized identifier is the sole set: verify and resolve it
-  directly.
+- An explicit pull-request URL or recognized identifier in the user's own message is the sole set:
+  verify and resolve it directly. A pull request the message does not name is never added: not one
+  the agent offered to merge earlier, not the dependency a held unit waits on, and not one a bare
+  "yes" beside the request might answer. Such a dependency stays a gate under **Dependent Pull
+  Requests**.
 - Otherwise use every open pull request `list-prs` returns for the task, including task work in
   other repositories. Do not ask the user to select one, or select only the current repository or
   branch: the complete list is the set.
