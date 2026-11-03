@@ -197,8 +197,10 @@ the request asks for a new page.
 
 ## Interrogate
 
-Walk a skill or a flow with the user and change what they decide should change. The goal is skill
-flows that start fewer subagents and read less without missing what the step exists to catch.
+Walk a skill or a flow with the user and change what they decide should change. The goal is to cut
+excess usage: subagents and reading that buy little, in steps that run often. A step that fires
+rarely, or a saving of a few subagents across a whole pull request, is not worth weakening what the
+step exists to catch.
 
 1. **Set the scope.** Context the user gives — a skill, a kind of work, a concern such as review
    rounds — sets it. With none, ask the **Scope** menu.
@@ -207,9 +209,12 @@ flows that start fewer subagents and read less without missing what the step exi
 3. **Pick the steps worth a question.** A step is worth one when changing it would change how many
    subagents start, how much they read, or what a review can miss: a launch, a review loop and what
    its later rounds rerun, a scope wider than the step's job, a scope another skill reads in the
-   same run, or a launch that always runs where a condition would do. Every other step passes
-   without a question, and the report lists them in one line.
-4. **Ask one question at a time, most subagents first**, through the question tool, and wait for
+   same run, or a launch that always runs where a condition would do. Weigh how often it runs: a
+   step on every task, pull request or round is worth a question for a modest saving, while one
+   that fires only on a narrow kind of change, such as a security review of trust-boundary code, is
+   worth one only when it wastes reads without adding coverage, never to trade coverage for a few
+   subagents. Every other step passes without a question, and the report lists them in one line.
+4. **Ask one question at a time, most usage first** — subagents a step starts times how often it runs — through the question tool, and wait for
    its answer before asking the next. Each says when the flow runs — what starts it and how often in
    a task, such as "once per pull request, when its task finishes, and again for each follow-up" —
    then what the step does in a sentence: the skill and step, how many subagents, what they read and
