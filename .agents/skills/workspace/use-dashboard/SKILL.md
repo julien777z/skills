@@ -220,6 +220,10 @@ to write those types and type-check and lint the app.
 
 ## Delivery
 
+A dashboard is rendered and delivered only when the user asks for it, by invoking the skill that
+builds it or in words, or on an update schedule that skill states itself. Finished work, a merge, a
+changed record or an earlier request to update it never re-renders one on its own.
+
 Every render the user is shown goes out through this section, including a preview, a sample, or a
 test of a change to the page: a screenshot of a render is a capture of the page, never its delivery.
 Use the first route the session offers, and the same one for every update of one dashboard.
