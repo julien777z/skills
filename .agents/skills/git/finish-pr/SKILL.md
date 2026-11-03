@@ -66,8 +66,8 @@ A selected pull request whose build or behavior resolves another pull request's 
 manifest, lockfile, submodule or checkout reference — that this session is also changing is a
 dependent unit. Its dependency gates its merge, never its review:
 
-- Review the dependency's unit first, and review the dependent once against the dependency's
-  accepted head. When a later fix to the dependency changes what the dependent consumes, adapting
+- When the dependency is a selected unit, review it first and review the dependent once against
+  its accepted head; a dependency that is not a target is only a gate on the dependent's merge. When a later fix to the dependency changes what the dependent consumes, adapting
   the dependent is a fix under `review-pass`'s **Review Continuity**. A dependency that merged
   before the dependent's review starts is repointed first, as below, and the dependent is then
   reviewed once on that head.
@@ -97,11 +97,9 @@ Process each unit through these steps before starting the next.
 
 1. Invoke `review-pass` on the pull request with its intent statement, asking for the whole pull
    request: its complete merge-base diff, the full contents of every touched file, related code and
-   sibling modules, whatever an earlier pass already accepted. A pull request whose latest `review`
-   record is already a whole-pull-request pass — one an earlier run held for a dependency, say — is
-   not reviewed whole again: `review-pass` reviews only its delta since that accepted head, such as
-   a dependency repoint, a base incorporation or new commits, as its **Review Scope** says. It
-   returns the accepted head.
+   sibling modules. Its **Review Scope** decides what an earlier whole pass already covers, so a pull
+   request already reviewed whole — one an earlier run held for a dependency, say — gets only its
+   delta since that accepted head. It returns the accepted head.
 2. When merge is withheld, the unit ends at that head, its pull request left draft. A dependent unit
    holds at that head until its dependency merges and then repoints, as **Dependent Pull Requests**
    says. Otherwise invoke `merge-gate` with:

@@ -92,11 +92,12 @@ a follow-up after it gets a review of the follow-up, sized to the follow-up.
   local snapshot. A local delta is empty only when the two snapshots satisfy `session-ledger`'s **Snapshot Evidence** equivalence predicate and every retained receipt's supporting-input identity
   still matches. A changed base or candidate may retain coverage only through **Review Continuity**'s
   recorded attestation; otherwise it is a new delta.
-- **A caller can ask for the whole pull request.** The delta is then the complete merge-base diff
-  whatever the record says, sized as **Anything else** below, and the `review` entry records the
-  pass as `whole`. When the latest `review` record for the pull request is already `whole`, the ask
-  is met: the delta is measured from that record as above, so an unchanged pull request gets only
-  thread triage and a moved one only its new delta.
+- **A caller can ask for the whole pull request, and the pass that answers it records `whole`.**
+  When the latest `review` record for the pull request is already `whole`, that record meets the
+  ask: the delta is measured from it as above, so an unchanged pull request gets only thread triage
+  and a moved one only its new delta, and the pass records `whole` because the earlier whole
+  coverage is preserved. Otherwise the delta is the complete merge-base diff, sized as **Anything
+  else** below. Every other pass records `delta`.
 - **Size the pass from the delta**, using `execute-task`'s definition of a trivial change — no
   design choice in it: a typo, a one-line fix, a rename the user named.
   - **Empty**: a working-pull-request route runs only **Review Thread Triage** when its current
@@ -281,7 +282,7 @@ pushed unless an authorized working-pull-request route is established.
 
 A finding the repository's deferral process has recorded is discharged, not outstanding. Recording it is what makes it durable, so the pass carries on: a recorded deferral never holds the review loop open, never holds the caller's check gate, and never holds the merge.
 
-The record rides the session's source pull request in its repository, as `defer-scope` says — usually the pull request under review — so it adds no pull request to wait for and is never a dependency of the merge. Never ask the user to settle the deferred question before merging. That the decision outlives this session is the whole reason for recording it, so treating it as a gate defeats the mechanism.
+A recorded deferral is a Linear issue, or under `defer-scope`'s repository fallback a record riding the session's source pull request in its repository — usually the pull request under review — so it adds no pull request to wait for and is never a dependency of the merge. Never ask the user to settle the deferred question before merging. That the decision outlives this session is the whole reason for recording it, so treating it as a gate defeats the mechanism.
 
 Defer only what the repository's own rules allow to be deferred — never a confirmed defect, which `acceptance-gate`'s admission question defines as anything the system does that a reader would call broken, a measured throughput collapse and an unbounded resource included — and only what **Confirmed Findings** above does not already require fixing. A deferral is not a route around a confirmed finding, and moving one there to reach the merge gate sooner is the failure this section must not enable. Recording runs `acceptance-gate`'s admission question, and a refusal naming fix or do means the finding is fixed in this pass; one naming close is recorded cancelled with its reason and reconsideration criterion. A finding that is neither fixed nor recorded is still a blocker.
 
