@@ -201,12 +201,12 @@ and deliver the same dashboard again on every request so the user keeps one page
   adds, changes or removes, such as an environment variable, a settings field or its default, a
   feature flag, a secret it reads, or a key in its configuration file. A setting only CI, a workflow
   or a deployment pipeline reads stays out — a GitHub Actions input, a workflow variable, a job's
-  timeout. `name` the name a reader sets, `change`, and `detail` "<pull request name> · <its default
-  or new value> · <what the user has to do, or Nothing>", with a `diff` link to the line in
+  timeout. `name` the name a reader sets, `change`, and `detail` "<pull request name> · Default
+  <value>, or New value <value> · <what the user has to do, or No action needed>", with a `diff` link to the line in
   the pull request's diff that sets it. A secret is named, never its value.
 - **`changes` "Migration changes"**: each database migration a pull request adds, changes or
   removes. `name` the migration's file or revision, `change`, and `detail` "<pull request name> ·
-  <what it does to the schema or stored data> · <what the user has to do, or Nothing>", with a
+  <what it does to the schema or stored data> · <what the user has to do, or No action needed>", with a
   `diff` link to the migration file in the pull request's diff.
 - **`outline` "Keep in mind"**: what a reviewer or the user needs to know about the changes
   themselves before relying on them — a risk, a limit, a behaviour that surprises — grouped by area as above.
