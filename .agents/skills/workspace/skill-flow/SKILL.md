@@ -174,7 +174,15 @@ the request asks for a new page.
      attackers ×3 per round`. Edges are labelled `invokes`,
      `launches` (from the skill to its launch node) or `borrows`, and `steps` say in order how the
      work moves through them; a skill reached only further down appears in the `Skills` table
-     alone. Then a `tree` `How it runs`, `open_depth` 2, one root per skill the page's work starts
+     alone. Then a `tree` `Scenarios`, `open_depth` 1: two to four situations that work commonly
+     meets, such as a small fix described exactly, a planned feature, or a correction made mid-task,
+     each a root labelled with the situation, `figure` the subagents it typically starts as a range
+     such as "~5–7 subagents", and `meta` what sets it apart. Beneath it, its steps in run order,
+     each labelled "<skill>: <step>", `figure` the subagents that step starts in that situation,
+     such as "3 attackers", and `meta` why, or "In process" when it starts none; a step that runs
+     another skill holds that skill's steps beneath it the same way. Each root's range is the sum of
+     its steps', read from the steps and conditions the sources state for that situation. Then a
+     `tree` `How it runs`, `open_depth` 2, one root per skill the page's work starts
      from, nested as the Usage tree is but with every step, each with `detail` what it does and
      `meta` the most subagents beneath it when there are any, and, on a step that repeats, an entry
      saying how many rounds and what each repeat reruns, toned `warning` when it reruns everything;
