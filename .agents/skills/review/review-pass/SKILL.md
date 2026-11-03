@@ -49,8 +49,8 @@ than adding a coordinator layer for a dependent workflow. Record each
 launched worker's catalogue state, exact dispatch identifier, assignment state and host receipt in the
 task ledger through `session-ledger`. Follow the selector's dispatch and unavailable-model policy.
 
-When a required worker cannot launch, follow `subagent-matrix`'s in-process fallback for its
-assignment and report the loss of independence. The `acceptance-gate` remains a separate checkpoint.
+When a required worker cannot launch, apply `subagent-matrix`'s launch fallback: hand the
+assignment up to the delegating agent, never absorb it. The `acceptance-gate` remains a separate checkpoint.
 
 ## Review Scope
 
@@ -479,8 +479,7 @@ to work around this gate.
    current workflow owner coordinates that run; its independent lenses and validators receive the
    **Review Scope** delta, complete merge-base diff, full touched files and any working fix head as
    context. Do not delegate another agent only to coordinate those same producers. When a required
-   worker cannot launch, perform its lens in process under `subagent-matrix` and report the loss of
-   independence. For a merged range, pass the original
+   worker cannot launch, apply `subagent-matrix`'s launch fallback for its lens. For a merged range, pass the original
    pull request as metadata only and explicitly preserve the range through resolution and
    eligibility checks. Direct fixes to the matching working fix branch rather than changing the
    immutable target.

@@ -30,7 +30,7 @@ agent; the calling agent launches the actual assignment with the selected model.
    required` and proceed to step 3; never turn catalogue omission into an identifier hold or an override
    question while that candidate exists. Only when neither the host nor the reference nor an exact override
    for that assignment supplies a candidate, or the host has no explicit model-selection mechanism, record
-   an identifier-resolution failure and use the in-process fallback for the assignment. Do not invent
+   an identifier-resolution failure and use the launch fallback for the assignment. Do not invent
    versions or aliases or silently substitute another family.
 3. Before a caller marks a requested capability level or explicit model unavailable, follows an
    unavailable-model fallback, or takes an in-process route, launch the actual assigned work once with its exact
@@ -45,8 +45,8 @@ agent; the calling agent launches the actual assignment with the selected model.
    calling skill declares its direction and limits and it respects the user's explicit model or capability
    constraint. Report the original request as unavailable and name the actual fallback capability and model;
    never relabel it as the requested level. Without that policy, report the unsupported request and host
-   receipt; do not substitute another model. If the required worker cannot launch, perform its assigned
-   work in process and disclose the loss of independence. Preserve one
+   receipt; do not substitute another model. If the required worker cannot launch, apply the launch
+   fallback below. Preserve one
    resolved model within comparison pairs.
 5. The calling agent chooses a capability level for each role or chat. Honor the user's
    explicit model or capability-level constraint first, then the configured role selection, then the
@@ -89,10 +89,16 @@ context and returns its verdict into the step waiting on it; nothing else does b
   routine, or a message asking any session but the delegating agent to run it. Those run outside
   the step, can fail setup or leave branches behind, and their verdict never returns to the run
   that waits on it.
-- **When a required subagent cannot launch, perform its assignment in process.** Attempt the native
-  dispatch when available, then apply the same scope and rubric in process if it cannot start or
-  complete. Record the launch outcome and report that the result lacked independent review; never
-  describe the in-process result as an independent verdict.
+- **When a required subagent cannot launch, hand the assignment up; never absorb it.** Attempt the
+  native dispatch when available. A worker that cannot start the subagents its step needs, whether
+  reviewers, lenses, validators, gates or further implementation workers, hands each assignment to
+  its delegating agent as the bullet on handing a step up says, and that agent launches the workers
+  the step calls for or coordinates the work so each one runs with its own context. One worker
+  carrying a whole review or a multi-scope job alone cannot do it thoroughly, so it never performs
+  those assignments itself. Only the top-level agent, with no delegating agent to ask, performs an
+  assignment in process after its own launch fails, records the launch outcome, and reports that the
+  result lacked independent review; never describe an in-process result as an independent verdict.
+  A brief never tells a worker to fall back to in-process review or gating.
 - **An independent step gets a newly launched subagent for every question it answers when available.** A gate,
   finding validator or smoke reader that has answered about an item is never resumed, messaged or
   reused for a later round on it — not to judge the repair of its own flag or a revised item — since
@@ -148,8 +154,9 @@ context and returns its verdict into the step waiting on it; nothing else does b
 
 ## Launch Failure Reporting
 
-When a required direct subagent dispatch cannot start, preserve its exact attempted dispatch and
-record it and perform the assigned work in process. Do not turn a tool inventory from a nested bridge or an unrelated agent tool
+When a required direct subagent dispatch cannot start, preserve its exact attempted dispatch,
+record it, and apply the launch fallback: hand the assignment up, or, at the top level only, perform
+it in process. Do not turn a tool inventory from a nested bridge or an unrelated agent tool
 into evidence about the native launcher's availability.
 
 - Attempt the selected native dispatch once whenever its direct tool is exposed. Never claim an
@@ -162,8 +169,8 @@ into evidence about the native launcher's availability.
 - Classify the outcome as one of: native tool not exposed, no resolved dispatch identifier, explicit
   unsupported-model receipt, rejected dispatch, capacity refusal, or accepted dispatch whose worker
   later failed. Do not collapse these into a generic unavailable-agent claim.
-- Name the in-process fallback and its loss of independence; do not substitute an unrelated agent
-  or claim it performed the assignment.
+- Name the fallback taken, the hand-up or the top-level in-process run with its loss of
+  independence; do not substitute an unrelated agent or claim it performed the assignment.
 
 Use this user-facing shape whenever a launch failure is material to the task:
 
@@ -176,7 +183,7 @@ Use this user-facing shape whenever a launch failure is material to the task:
 - **Arguments:** `<complete argument names and safe values>`
 - **Host receipt:** <verbatim receipt, or `none — <why no invocation was possible>`>
 - **Classification:** <one permitted classification and its evidence>
-- **Fallback:** <in-process work and its loss of independence>
+- **Fallback:** <handed up to the delegating agent, or top-level in-process work and its loss of independence>
 ```
 
 ## Output
@@ -187,7 +194,7 @@ with a resolved candidate is `dispatch required` until the actual assignment est
 explicitly rejects it as unsupported; after acceptance, record `accepted` while retaining `catalogue-hidden`.
 Use `identifier required` only for an identifier-resolution failure established by Workflow step 2; report that
 step's resolved candidate and state rather than independently selecting candidate sources here. Apply the
-in-process fallback; do not describe the missing identifier as an unsupported-model receipt. Use `unavailable` only
+launch fallback; do not describe the missing identifier as an unsupported-model receipt. Use `unavailable` only
 when a host receipt explicitly rejects the exact candidate as unsupported. The calling agent then records the
 selected capability level per role or chat, or the explicit user override.
 

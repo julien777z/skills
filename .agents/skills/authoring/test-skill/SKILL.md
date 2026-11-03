@@ -126,8 +126,8 @@ resolve its exact identifier, and launch the actual reader assignment. Advance a
 receives its own explicit unsupported receipt; never move upward or inherit the orchestrator's model. This
 fallback applies to this skill's default, never against the user's explicit model or capability constraint. A
 `dispatch required` result with an exact identifier launches the actual required reader set. When a
-required reader cannot launch, perform its scenario in process under `subagent-matrix` and disclose
-that the result is not independent or blind.
+required reader cannot launch, apply `subagent-matrix`'s launch fallback for its scenario; a
+top-level in-process run discloses that the result is not independent or blind.
 
 Classify a rejected reader dispatch from the host receipt. Only a receipt establishing that the
 requested capability or model is unsupported makes it unavailable for that attempt and permits the
