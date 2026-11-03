@@ -232,8 +232,11 @@ step exists to catch.
    `Overview`, its `status` the count of questions still open and its `progress` how many are
    decided, `detail` "<decided> of <total> decided", with one segment per question in the order
    they are asked, toned `done` once answered and `accent` while asked. It holds one `diagram` per skill a
-   question concerns: that skill's steps in order, joined by `then` arrows, with each step's
-   launches hanging off it, so the questioned step is seen beside the rest of the run. Its
+   question concerns, after a `table` `All questions` listing every question in asking order with
+   its skill, subagents, status and decision, each row opening its proposal. A diagram holds that
+   skill's steps in order, joined by `then` arrows, with each step's launches hanging off it and a
+   `runs` arrow to each skill it runs that has a diagram of its own on the page, so the questioned
+   step is seen beside the rest of the run and where it hands over. Its
    description says what the interrogation is for — whether each step's subagents are worth their
    cost given how often the step runs — never how to read the colors or that arrows can be clicked;
    its `legend` is `[{tone: accent, label: Being asked}, {tone: done, label: Decided}]`. The edge a
