@@ -108,6 +108,12 @@ Canonical guidance lives in `.agents/`.
   complete entry point rather than waiting for an edit to load it. This execution workflow does
   not authorize user-triggered action skills. Keep its run active and apply its **Work You Have
   Already Named** procedure before handling the interruption and before any final response.
+- Delegate nontrivial execution to subagents when the host supports it. The primary agent coordinates
+  the work, retains integration and decisions, and starts independent tasks concurrently when their
+  ownership, dependencies and resources permit. A worker hands required independent reviews, gates
+  and additional capacity needs up to its delegating agent when it cannot launch them itself. Follow
+  `subagent-matrix` for assignment, isolation and the documented fallback when a launch cannot start.
+  Delegation does not extend the user's authorization or relax safety and sequencing requirements.
 - Record consciously deferred work immediately in its owning repository. A chat note is not a
   durable deferral record; no separate invitation is needed.
 - A direct invocation authorizes one full run at the requested scope. An explicit request to
@@ -171,14 +177,17 @@ Canonical guidance lives in `.agents/`.
   in the report. Ask only where the user has said such a detail is theirs. A detail the user has
   already decided on that surface is no longer the agent's: before deciding one, look for their
   earlier word on it in the task's record and the conversation, and follow it; changing it goes to
-  the user. **Content that does not fit its space is a choice of what to show at that size, and it
-  goes to the user.** Squeezing columns until cells wrap onto several lines, truncating values,
-  shrinking type, or narrowing cards, form fields or toolbar controls until their labels break word
-  by word keeps everything visible by making rows and items tall and hard to scan, and is never the
-  remedy. Removing a column, field or item, or hiding it below a width, changes what information the
-  product shows, so ask which content can go or be hidden at that size, with captures of the
-  options, before changing the layout; until the user answers, the content keeps the room its values
-  need. **Text
+  the user. **Making content fit its space is the agent's work; only what to remove or hide goes to
+  the user.** A remedy that keeps every value readable — a strip that scrolls with its scrollbar
+  shown, a long value broken at its natural boundaries, items stacked, a control moved to one of the
+  product's established positions — is a routine detail as above, decided and fixed at whatever
+  width the defect shows, and so is a defect a capture shows that predates the change. Squeezing
+  columns until cells wrap onto several lines, truncating values, shrinking type, or narrowing
+  cards, form fields or toolbar controls until their labels break word by word keeps everything
+  visible by making rows and items tall and hard to scan, and is never the remedy. Removing a
+  column, field or item, or hiding it below a width, changes what information the product shows, so
+  ask which content can go or be hidden at that size, with captures of the options, before changing
+  the layout; until the user answers, the content keeps the room its values need. **Text
   already in the product keeps its words unless it is wrong or the user named it.** Text that is
   plainly wrong or inconsistent, such as a label stating something untrue, one thing called by two
   names, or a message that no longer matches what happens, is corrected or left by judgement, and
@@ -360,7 +369,7 @@ Canonical guidance lives in `.agents/`.
   work. Completing incidental guidance work does not make the surrounding task's pending result
   terminal. Keep the task active under **Task execution and authorization** while resolving its gate.
 
-- **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The records a local stack holds are the same: create, edit, reset, reopen or convert them whenever the work needs them in a given state — a test account to sign in with, a submission held in review to show a banner, a record a new rule no longer accepts — as the repository's data policy says, report what was done, and never put the choice to the user. The same holds for what the session's own work leaves behind when disk, memory or a port runs short: build caches and the leases and snapshots holding them, stopped containers, orphaned processes and build output. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. A route that limit rules out, such as restarting a daemon a running test still uses, leaves narrower ones, such as removing only the leases, records or processes the session's own work created; recovery is exhausted, and reported as a gate, only once no route remains. Deployed and shared remote environments are not local; the following live-deployment rules govern them.
+- **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The records a local stack holds are the same: create, edit, reset, reopen or convert them whenever the work needs them in a given state — a test account to sign in with, a submission held in review to show a banner, a record a new rule no longer accepts — as the repository's data policy says, report what was done, and never put the choice to the user. The tooling that brings a local stack to a state is the agent's in the same way: a scenario command, the test accounts and records it creates, and what each scenario seeds are added, changed or redesigned as the work needs, never put to the user in a plan, a question or a gate's remedy, and never a product choice, since no user of the product meets them. The same holds for what the session's own work leaves behind when disk, memory or a port runs short: build caches and the leases and snapshots holding them, stopped containers, orphaned processes and build output. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. A route that limit rules out, such as restarting a daemon a running test still uses, leaves narrower ones, such as removing only the leases, records or processes the session's own work created; recovery is exhausted, and reported as a gate, only once no route remains. Deployed and shared remote environments are not local; the following live-deployment rules govern them.
 
 - Do not rebuild, republish, or redeploy an already validated artifact solely because its source
   head advanced. Compare the edits with the artifact's actual source: cleanup proven to preserve
@@ -679,10 +688,10 @@ return records;
   state, or recorded touch does not supply that instruction. Verify the selected pull request's
   owner, state and scope before updating it; leave other sessions' pull requests and branches untouched,
   except for the guidance files the dependent-guidance bullet below puts on them.
-- **Agent configuration that depends on no still-open source pull request continues the open
-  agent-configuration pull request for that work, whichever session opened it.** Agent configuration
-  is the canonical `.agents` tree — skills, each with its own scripts, assets and templates; rules;
-  and agent definitions. Nonbehavioral text and guidance-reference corrections in agent hooks and
+- **Agent configuration that depends on no still-open source pull request in this repository
+  continues the open agent-configuration pull request for that work, whichever session opened it.**
+  Agent configuration is the canonical `.agents` tree — skills, each with its own scripts, assets
+  and templates; rules; and agent definitions. Nonbehavioral text and guidance-reference corrections in agent hooks and
   installers also follow this workflow. Changes to execution, timing, installation, discovery,
   permissions or mutation scope remain source work. Everything else is source.
   List the repository's open pull requests before
@@ -703,9 +712,9 @@ return records;
   only the guidance files, under the worker rule above. Fold a separate agent-configuration pull
   request this session opened for such guidance into the source pull request and close it, saying
   where the work went. Guidance in one repository that depends on a source pull request in another
-  cannot share it: it goes on its own agent-configuration pull request, never the one carrying
-  independent guidance, and is held as **Merge Authorization** says, so the hold stops nothing
-  else.
+  cannot share that pull request: it joins the repository's one agent-configuration pull request
+  the work continues, like any other guidance, and that pull request is held as **Merge
+  Authorization** says. A dependency never opens a second agent-configuration pull request.
 - **Every other agent configuration and source never share a branch**, even when a guidance change
   follows the source work checked out; a pull request found carrying both is split by moving one
   kind's files onto the pull request of that kind the work continues. Sharing one holds the guidance
@@ -730,7 +739,9 @@ return records;
 - Merging any pull request requires explicit user authorization in the current request or explicit
   applicable guidance in a rule or invoked skill for that pull request. A fix request, CI-test
   request, successful check, review, or request to implement a plan that lists a merge does not
-  itself authorize merging. If neither authorization source applies, do not merge or enable auto-merge.
+  itself authorize merging. A reply that could be read as accepting a merge the agent offered, such
+  as a bare "yes" beside another request, authorizes no merge it does not name. If neither
+  authorization source applies, do not merge or enable auto-merge.
 - Before asking for merge permission, classify the complete actual diff against the standing
   permissions below. A filename, extension, line count or change label is not a behavioral
   classification. Preserve genuine edits; never remove them merely to qualify for an exception.
