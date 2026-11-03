@@ -96,7 +96,7 @@ the request asks for a new page.
    capability, whether it always or only sometimes runs, how many run per round, and whether it
    recurs. A count that depends on the work is recorded as what it grows with, such as "1 per
    area touched" or "1 per finding", with the most the skill allows when it sets one, such as
-   "1 per area, 3–6": totals count that most, and a count with no limit shows as "grows with
+   "1 per area, 3–6": the most a total shows counts that most, and a count with no limit shows as "grows with
    <what>" instead of a number, toned `warning`, in every total above it. A launch always runs
    when it runs on every run of the step that starts it. When one skill
    runs another's phases, the launch belongs to the skill whose run starts it. These are structural
@@ -126,9 +126,12 @@ the request asks for a new page.
      arrow, a launch arrow and a borrowed-rubric arrow as their labels show them.
    - `Usage`, `icon` `chart` and `layout` `rows`, across every skill the dashboard maps:
      - a `tree` `Where subagents go`, `open_depth` 2, one root per skill a person starts directly,
-       most subagents first, with `meta` the most subagents one run of it can start, everything
-       beneath it counted, such as "up to 24 subagents". Beneath a skill, its steps in order,
-       labelled "<n>. <step>" with the same total for what sits beneath them; beneath a step, each
+       most subagents first, with `meta` the subagents one run of it typically starts, then the most
+       it can start, everything beneath it counted, such as "about 6 subagents, up to 24". The
+       typical figure counts, for one round each, only launches whose every ancestor always runs; a
+       count that depends on the work counts at its stated least, or at one, and shows "grows with
+       <what>" only when such a launch always runs. Beneath a skill, its steps in order,
+       labelled "<n>. <step>" with the same typical and most figures for what sits beneath them; beneath a step, each
        skill it runs, nested the same way wherever it runs so every total counts it, and each
        launch as an entry labelled "<count> <role>", `meta` its rounds and what it reads, such as
        "up to 3 rounds · diff and whole touched files", and `detail` what the subagents do, what a
@@ -188,7 +191,9 @@ the request asks for a new page.
      another skill also reads in the same run, or a count that grows with the size of the change.
    - `references` make each skill's name a link to its whole `SKILL.md`, at the commit read,
      wherever the page's text names it; outline items carry no `links`.
-6. **Deliver** through `use-dashboard`. Name what is incomplete, if anything, in one line.
+6. **Deliver** through `use-dashboard`, as a dashboard of a subject that outlives the session, so an
+   existing page with the same title and topic, the repository, is updated when this session can
+   update it. Name what is incomplete, if anything, in one line.
 
 ## Interrogate
 

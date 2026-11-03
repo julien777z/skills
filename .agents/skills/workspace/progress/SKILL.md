@@ -42,7 +42,8 @@ and deliver the same dashboard again on every request so the user keeps one page
 4. **Build the spec** in the shape below, with `updated_at` set to now.
 5. **Select the delivery route, then render.** Before invoking `use-dashboard`, choose the
    host's ongoing-work channel when authorized work remains, or the normal reply route for
-   standalone reporting. Pass that route to the renderer for its delivery. When the ledger records
+   standalone reporting. Pass that route to the renderer for its delivery, as a dashboard of session
+   work. When the ledger records
    an earlier delivery of this task's dashboard, update that same page through `use-dashboard`.
    Otherwise record a `dashboard` entry with the page path and any published link, so the next
    request finds it.

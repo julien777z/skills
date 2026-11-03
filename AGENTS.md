@@ -21,10 +21,6 @@ Canonical guidance lives in `.agents/`.
   canonical source. Report it missing only when those sources do not contain it; never substitute a
   manual approximation for an installed action skill.
 
-- Never add `agents/openai.yaml` to a repository skill. Repository skills contain `SKILL.md` and
-  only supporting files required by the skill; provider UI metadata stays outside repositories
-  and is never propagated.
-
 - In repositories that provide an agent CLI or otherwise interact with agents, store every agent prompt in a dedicated Markdown file rather than inline in application code so it is easy to find, review, and maintain. Application code may load a prompt file and interpolate runtime values into it.
 
 - Never stage generated provider output manually. Only the repository's Agent Sync workflow may generate and commit provider mirrors.
@@ -94,7 +90,8 @@ Canonical guidance lives in `.agents/`.
 
 ## Task execution and authorization
 
-- Run a user-triggered action skill only after the user directly invokes it in the current request.
+- Run a user-triggered action skill only after the user directly invokes it — by its command or by
+  asking for it in words — in the current request.
   Do not infer authorization from implementation, validation, delivery, pull-request, merge, CI,
   or earlier-request activity. Guidance maintenance is the exception: `edit-skill` runs when the
   user reports a guidance failure or canonical guidance is being changed, so the failure and its
@@ -512,6 +509,9 @@ return records;
 
 ## Repository guidance
 
+- A repository's project guidance is `.agents/project.md` together with the reference files it
+  points to.
+
 - Reference external code and automation by a maintained version tag when available, or by a
   maintained branch while developing or when no release tag exists. Do not pin dependency manifests,
   shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
@@ -561,19 +561,6 @@ return records;
 - Apply that rule only when a name denotes an environment. Product branding, company names, service
   names, and their visual marks retain their own canonical terminology even when it shares an apex
   label with an environment.
-
-- `.agents/global.md` states guidance that holds in every repository, and every `.agents/rules/*.md`
-  file guidance that holds in any repository using its technology. Keep their examples generic —
-  invented names and placeholder shapes, never this repository's modules, helpers, packages, paths,
-  or domain vocabulary, and never the product, tool, or platform whose incident prompted the change.
-- `.agents/project.md` is the home for repository-specific guidance: its base classes, helpers,
-  packages, layout, documentation structure, inventories, and generated sections.
-- Repository facts only some work needs — a local stack, test accounts, deployment targets, a
-  migration layout — go in `.agents/references/<name>.md`, named for their content and read on
-  demand, and `.agents/project.md` points to each file in one line. A repository's project guidance
-  is `project.md` together with the reference files it points to.
-- A rule that cannot be stated without naming something this repository owns belongs in
-  `.agents/project.md`. Move it there rather than rewording it into something generic but untrue.
 
 - **Every document holds only what its reader needs for its purpose.** A README, project guidance, a
   skill, a rule, a design document, a pull request description, a code comment: each has one reader
@@ -883,6 +870,7 @@ The descriptions also cover work that file patterns alone cannot identify.
 
 | Rule | Read it when… |
 | --- | --- |
+| `agent-guidance.md` | Writing, creating, or editing skills, rules, agent definitions, or project guidance. |
 | `biome.md` | Formatting or linting TypeScript and TSX, or changing `biome.json`. |
 | `fastapi.md` | Changing Python routes, dependencies, request handling, or responses. |
 | `github.md` | Working with Actions, pull requests, commits, or repository documentation. |
@@ -901,6 +889,7 @@ The descriptions also cover work that file patterns alone cannot identify.
 
 ## Scoped rules
 
+- Read `.agents/rules/agent-guidance.md` for files matching `.agents/**`, `**/SKILL.md`: Apply when writing, creating, or editing agent guidance — skills, rules, agent definitions, and project guidance.
 - Read `.agents/rules/biome.md` for files matching `**/*.ts`, `**/*.tsx`, `biome.json`: biome
 - Read `.agents/rules/fastapi.md` for files matching `**/*.py`: Use APIRouter-based route organization, validate in models, and keep response handling consistent.
 - Read `.agents/rules/http.md` for files matching `**/*.py`, `**/*.ts`, `**/*.tsx`: Apply when designing or changing HTTP clients, provider calls, server API operations and policy, or response statuses.

@@ -1,8 +1,7 @@
 ---
 name: finish-pr
-description: Finish the task's pull requests at the user's command — review and fix the whole of each pull request, with its touched files, related code and sibling modules, then merge each one at its accepted head. Use only when the user directly invokes it.
+description: Finish the task's pull requests at the user's command — review and fix the whole of each pull request, with its touched files, related code and sibling modules, then merge each one at its accepted head. Use when the user asks for it, by `/finish-pr` or in words — asking to finish the task's pull requests, or to review the whole of each and merge it; never on the agent's own initiative.
 short_description: 'Review and fix the whole pull request, then merge it.'
-disable-model-invocation: true
 ---
 
 # Finish PR
@@ -12,9 +11,10 @@ request, fix what that finds, then merge.
 
 ## Authorization
 
-- Only a direct user invocation starts this workflow. Nothing else is one: not a reference to it in
-  a quoted plan, checklist, summary, transcript or future step; not approval of a plan that contains
-  it; not a request to review, validate, open a pull request, fix CI, finish implementation, or merge.
+- Only the user's own request in the current message starts this workflow: its command, or asking
+  for it in words. Nothing else is one: not a reference to it in a quoted plan, checklist, summary,
+  transcript or future step; not approval of a plan that contains it; not a request to review,
+  validate, open a pull request, fix CI, finish implementation, or merge.
 - **The invocation authorizes the squash merge of every selected target** at the head its
   `review-pass` accepted, unless the user explicitly withholds merge, in which case each unit ends at
   that head with its pull request left draft. When merge is authorized, nothing reopens it: not the

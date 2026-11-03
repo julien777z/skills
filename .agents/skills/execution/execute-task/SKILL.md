@@ -898,12 +898,11 @@ Two streams run side by side from here: the guidance stream and the source strea
   `guidance_correction` batch it freezes to `edit-skill`'s **Guidance Delivery** route, delegated
   so it never waits on the source stream. Before a source pull request's source-stream step 1,
   every pending `guidance_correction` entry the GitHub rule's **Branches and Pull Requests** puts
-  on it, in the batch in flight or the one after it, is pushed to it and passes its source check and
-  smoke round, as **Guidance Delivery** step 1 says, so its review pass, history and ready message
-  cover them. An entry recorded after the batch in flight merged is delivered in the batch frozen
+  on it, in the batch in flight or the one after it, is pushed to it and passes its source check,
+  as **Guidance Delivery** step 1 says, so its review pass, history and ready message cover them. An entry recorded after the batch in flight merged is delivered in the batch frozen
   once that one is done, so the source stream then waits for that delivery too, and for nothing
-  else before step 1. A repair step 1's review pass makes to such an entry's wording repeats that entry's smoke
-  round on the repaired head before step 2. A task with none has no guidance stream.
+  else before step 1. Each such entry's smoke round runs on the head step 1's review pass accepted, before
+  step 2, and a repair it makes returns to review as **Guidance Delivery** step 4 says. A task with none has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:
 
