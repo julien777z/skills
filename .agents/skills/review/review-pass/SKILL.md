@@ -82,8 +82,8 @@ ordinary repair and affected-receipt rules; no route for runtime or source work 
 a follow-up after it gets a review of the follow-up, sized to the follow-up.
 
 - **The reviewed head.** When a pass's final acceptance passes, record a `review` entry with
-  `session-ledger` for the pull request: repository, number, the accepted head, its tree, and the
-  accepted target-snapshot identity. For a local route, record a `local_review` entry keyed by
+  `session-ledger` for the pull request: repository, number, the accepted head, its tree, the
+  accepted target-snapshot identity, and its scope, `whole` or `delta`. For a local route, record a `local_review` entry keyed by
   repository and route with its full accepted snapshot identity, durable snapshot locator and digest,
   target-patch digest, layered intended-entry manifest, final receipt and gate locators, and every
   receipt's supporting-input identity. A history rewrite or base incorporation whose continuity
@@ -104,7 +104,10 @@ a follow-up after it gets a review of the follow-up, sized to the follow-up.
   still matches. A changed base or candidate may retain coverage only through **Review Continuity**'s
   recorded attestation; otherwise it is a new delta.
 - **A caller can ask for the whole pull request.** The delta is then the complete merge-base diff
-  whatever the record says, sized as **Anything else** below; `finish-pr` always asks for it.
+  whatever the record says, sized as **Anything else** below, and the `review` entry records the
+  pass as `whole`. When the latest `review` record for the pull request is already `whole`, the ask
+  is met: the delta is measured from that record as above, so an unchanged pull request gets only
+  thread triage and a moved one only its new delta.
 - **Size the pass from the delta**, using `execute-task`'s definition of a trivial change — no
   design choice in it: a typo, a one-line fix, a rename the user named.
   - **Empty**: a working-pull-request route runs only **Review Thread Triage** when its current

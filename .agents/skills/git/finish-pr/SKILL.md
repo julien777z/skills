@@ -94,7 +94,11 @@ Process each unit through these steps before starting the next.
 
 1. Invoke `review-pass` on the pull request with its intent statement, asking for the whole pull
    request: its complete merge-base diff, the full contents of every touched file, related code and
-   sibling modules, whatever an earlier pass already accepted. It returns the accepted head.
+   sibling modules, whatever an earlier pass already accepted. A pull request whose latest `review`
+   record is already a whole-pull-request pass — one an earlier run held for a dependency, say — is
+   not reviewed whole again: `review-pass` reviews only its delta since that accepted head, such as
+   a dependency repoint, a base incorporation or new commits, as its **Review Scope** says. It
+   returns the accepted head.
 2. When merge is withheld, the unit ends at that head, its pull request left draft. A dependent unit
    holds at that head until its dependency merges and then repoints, as **Dependent Pull Requests**
    says. Otherwise invoke `merge-gate` with:
