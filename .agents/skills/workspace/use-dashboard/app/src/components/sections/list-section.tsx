@@ -6,7 +6,7 @@ import { withKeys } from '@/lib/utils';
 import { Paged } from './paged';
 import { SectionCard } from './section-card';
 
-const ALL_GROUPS = '';
+const ALL_GROUPS: string = '';
 
 interface ListRowContent {
   icon?: ReactNode;
@@ -91,28 +91,24 @@ export function ListSection<Item extends GroupedItem>({
   row,
 }: ListSectionProps<Item>): ReactNode {
   const [selected, setSelected] = useState(ALL_GROUPS);
+
   const groups = [...new Set(items.flatMap((item) => (item.group ? [item.group] : [])))];
-  const grouped = [
-    ...groups.flatMap((group) => items.filter((item) => item.group === group)),
-    ...items.filter((item) => !item.group),
-  ];
-  const shown = selected === ALL_GROUPS ? grouped : grouped.filter((item) => item.group === selected);
-  const filterable = groups.length > 1;
+  const grouped = groups.length ? groups.flatMap((group) => items.filter((item) => item.group === group)) : items;
   const headed = selected === ALL_GROUPS;
+  const shown = headed ? grouped : grouped.filter((item) => item.group === selected);
+  const filterable = groupLabel !== undefined && groups.length > 1;
 
   return (
     <SectionCard title={title} description={description} summary={summary(shown)} flush>
       <Stack gap="md">
-        {filterable && (
-          <GroupFilter label={groupLabel ?? 'Group'} groups={groups} selected={selected} onSelect={setSelected} />
-        )}
+        {filterable && <GroupFilter label={groupLabel} groups={groups} selected={selected} onSelect={setSelected} />}
         <Stack>
           <Paged key={selected} items={shown} pageSize={pageSize} label={title} flush>
             {(visible) => (
               <Stack as="ul" divided>
                 {withKeys(visible, (item) => JSON.stringify(item)).map(({ key, item }, index) => (
                   <Fragment key={key}>
-                    {headed && item.group && item.group !== visible[index - 1]?.group && (
+                    {headed && item.group !== visible[index - 1]?.group && (
                       <Stack as="li" inset="row">
                         <Text size="xs" tone="muted" weight="medium">
                           {item.group}
