@@ -27,9 +27,10 @@ export function LinksSection({ section }: { section: LinksSectionSpec }): ReactN
     <ListSection
       title={section.title}
       description={section.description}
-      summary={section.counted ? section.items.length : undefined}
+      summary={(items) => (section.counted ? items.length : undefined)}
       items={section.items}
       pageSize={section.page_size}
+      groupLabel={section.group_label}
       row={(item) => ({
         icon: <LinkIcon item={item} />,
         title: <ExternalLink href={item.url}>{item.label}</ExternalLink>,

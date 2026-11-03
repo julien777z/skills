@@ -29,7 +29,7 @@ export function Paged<Item>({ items, pageSize, label, flush = false, children }:
           align="center"
           justify="between"
           gap="sm"
-          inset={flush ? 'page' : 'none'}
+          inset={flush ? 'card' : 'none'}
         >
           <Button variant="outline" size="sm" disabled={page === 0} onClick={() => setPage(page - 1)}>
             Previous

@@ -237,6 +237,23 @@ def check_diagram(diagram: dict[str, object], path: str) -> None:
             )
 
 
+def check_groups(section: dict[str, object], path: str) -> None:
+    """Require a group on every item or on none, and a group label exactly when items are grouped."""
+
+    items = cast(list[dict[str, object]], section["items"])
+    grouped = sum("group" in item for item in items)
+
+    if grouped not in (0, len(items)):
+        raise DashboardSpecError(
+            f"{path}.items must each set group when one of them does"
+        )
+
+    if bool(grouped) != ("group_label" in section):
+        raise DashboardSpecError(
+            f"{path}.group_label must be set exactly when its items set group"
+        )
+
+
 def check_navbar(dashboard: dict[str, object], path: str) -> None:
     """Require a "<name> Dashboard" title, an unlocked Overview page first and a different icon for the dashboard and each page."""
 
@@ -431,6 +448,7 @@ QUESTION_SHAPE: Final[ObjectShape] = ObjectShape(
         "answer": TEXT,
         "meta": TEXT,
         "at": TIMESTAMP,
+        "group": TEXT,
     },
     required=frozenset({"question", "status"}),
 )
@@ -447,12 +465,19 @@ LINK_SHAPE: Final[ObjectShape] = ObjectShape(
             typescript=PullRequestState.__name__,
             choices=PullRequestState,
         ),
+        "group": TEXT,
     },
     required=frozenset({"label", "url"}),
 )
 CHANGE_ITEM_SHAPE: Final[ObjectShape] = ObjectShape(
     name="ChangeItem",
-    fields={"name": TEXT, "change": CHANGE, "detail": TEXT, "links": SOURCE_LINKS},
+    fields={
+        "name": TEXT,
+        "change": CHANGE,
+        "detail": TEXT,
+        "links": SOURCE_LINKS,
+        "group": TEXT,
+    },
     required=frozenset({"name", "change"}),
 )
 OUTLINE_ITEM_SHAPE: Final[ObjectShape] = ObjectShape(
@@ -544,8 +569,10 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
                 shape=QUESTION_SHAPE,
             ),
             "page_size": WHOLE_NUMBER,
+            "group_label": TEXT,
         },
         frozenset({"items"}),
+        check_groups,
     ),
     SectionType.LINKS: section_shape(
         SectionType.LINKS,
@@ -557,8 +584,10 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
                 shape=LINK_SHAPE,
             ),
             "page_size": WHOLE_NUMBER,
+            "group_label": TEXT,
         },
         frozenset({"items"}),
+        check_groups,
     ),
     SectionType.CHANGES: section_shape(
         SectionType.CHANGES,
@@ -570,8 +599,10 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
                 shape=CHANGE_ITEM_SHAPE,
             ),
             "page_size": WHOLE_NUMBER,
+            "group_label": TEXT,
         },
         frozenset({"items"}),
+        check_groups,
     ),
     SectionType.NOTES: section_shape(
         SectionType.NOTES, {"items": TEXTS, "counted": FLAG}, frozenset({"items"})
