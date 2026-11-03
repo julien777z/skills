@@ -21,7 +21,7 @@ from utils import (
 )
 
 DEFAULT_TTL: Final = timedelta(minutes=10)
-MAX_TTL: Final = timedelta(minutes=30)
+MAX_TTL: Final = timedelta(minutes=15)
 
 
 def resource_path(directory: Path, key: str) -> Path:
@@ -61,7 +61,7 @@ def read_ownership(path: Path) -> Ownership | None:
         raise ValueError("Ownership timestamps must include a timezone")
 
     if not timedelta() < expires_at - acquired_at <= MAX_TTL:
-        raise ValueError("Ownership duration must be positive and at most thirty minutes")
+        raise ValueError(f"Ownership duration must be positive and at most {MAX_TTL}")
 
     return Ownership(
         version=1,
@@ -117,7 +117,7 @@ def acquire_resource(request: Acquisition) -> LockResult:
         raise ValueError("Owner and activity must identify this assignment")
 
     if not timedelta() < request["ttl"] <= MAX_TTL:
-        raise ValueError("Lock duration must be positive and at most thirty minutes")
+        raise ValueError(f"Lock duration must be positive and at most {MAX_TTL}")
 
     deadline = monotonic() + request["wait"].total_seconds()
 

@@ -48,7 +48,7 @@ an untrusted one is left out and reported.
 
 ## Refresh
 
-Hold `agent-lock` on the key `skills-install`, acquired with `--ttl-seconds 1800`, from step 2 until
+Hold `agent-lock` on the key `skills-install`, acquired with `--ttl-seconds 900`, from step 2 until
 step 6 finishes, so two sessions never build or remove overlays at once. Run its `check` before
 every write to shared state: step 3's stash, fast-forward and marker deletion, step 4.4's marker,
 step 5, and each removal in step 6. On a failed check, stop writes immediately, reacquire the lock, restore any stash this run pushed

@@ -26,7 +26,7 @@ def parse_ttl(value: str) -> float:
     seconds = positive_seconds(value)
 
     if seconds > MAX_TTL.total_seconds():
-        raise ArgumentTypeError("must not exceed 1800 seconds (30 minutes)")
+        raise ArgumentTypeError(f"must not exceed {MAX_TTL.total_seconds():.0f} seconds")
 
     return seconds
 
