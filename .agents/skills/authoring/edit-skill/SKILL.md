@@ -118,7 +118,7 @@ During A Task** for the edit's timing.
 - **Every `guidance_correction` entry is backed up** as `session-ledger`'s **Backup** section says.
 - A related correction recorded before its batch is frozen joins the same entry or sits beside it
   in that batch; the batch is one pull request, apart from edits the GitHub rule puts on a source
-  pull request or holds for another repository. One recorded while a batch is in flight joins that
+  pull request. One recorded while a batch is in flight joins that
   batch, and one recorded after the batch's pull request merged starts the next, as
   `process-ledger`'s **Batches** says; tell the user which.
 - The task's next step is never held by a correction: record it and carry on.
@@ -567,8 +567,8 @@ user's review of the source pull request overlaps it.
       in `.agents`, merge it through `merge-gate` with the head `acceptance-gate` accepted — but first
       ask whether any line it adds or drops is true only once a still-open source pull request
       merges. A line depending on one in this repository moves onto it under step 1; one depending
-      on another repository's moves to its own agent-configuration pull request, held as the GitHub
-      rule's **Merge Authorization** says, and is reported as that rule directs. Otherwise a pull request carrying a
+      on another repository's stays, and the pull request is held as the GitHub rule's **Merge
+      Authorization** says and reported as that rule directs. Otherwise a pull request carrying a
       skill change merges once step 6 found every changed output matching its concrete example, and
       one carrying only rules merges on sight as the GitHub rules say. **A pull request that adds a
       doctor skill is left for the user as a whole** — every other skill, rule and agent file in

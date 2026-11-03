@@ -123,9 +123,9 @@ alwaysApply: true
   only the guidance files, under the worker rule above. Fold a separate agent-configuration pull
   request this session opened for such guidance into the source pull request and close it, saying
   where the work went. Guidance in one repository that depends on a source pull request in another
-  cannot share it: it goes on its own agent-configuration pull request, never the one carrying
-  independent guidance, and is held as **Merge Authorization** says, so the hold stops nothing
-  else.
+  cannot share that pull request: it joins the repository's one agent-configuration pull request
+  the work continues, like any other guidance, and that pull request is held as **Merge
+  Authorization** says. A dependency never opens a second agent-configuration pull request.
 - **Every other agent configuration and source never share a branch**, even when a guidance change
   follows the source work checked out; a pull request found carrying both is split by moving one
   kind's files onto the pull request of that kind the work continues. Sharing one holds the guidance

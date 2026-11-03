@@ -285,11 +285,11 @@ pushed unless an authorized working-pull-request route is established.
 
 A finding the repository's deferral process has recorded is discharged, not outstanding. Recording it is what makes it durable, so the pass carries on: a recorded deferral never holds the review loop open, never holds the caller's check gate, and never holds the merge.
 
-The deferral's own pull request is independent by construction — it branches from the default branch and carries nothing but the deferral — so it is never a dependency of the pull request under review. Do not wait for it to be reviewed, approved, or merged, and never ask the user to settle the deferred question before merging. That the decision outlives this session is the whole reason for recording it, so treating it as a gate defeats the mechanism.
+The record rides the session's source pull request in its repository, as `defer-scope` says — usually the pull request under review — so it adds no pull request to wait for and is never a dependency of the merge. Never ask the user to settle the deferred question before merging. That the decision outlives this session is the whole reason for recording it, so treating it as a gate defeats the mechanism.
 
 Defer only what the repository's own rules allow to be deferred — never a confirmed defect, which `acceptance-gate`'s admission question defines as anything the system does that a reader would call broken, a measured throughput collapse and an unbounded resource included — and only what **Confirmed Findings** above does not already require fixing. A deferral is not a route around a confirmed finding, and moving one there to reach the merge gate sooner is the failure this section must not enable. Recording runs `acceptance-gate`'s admission question, and a refusal naming fix or do means the finding is fixed in this pass; one naming close is recorded cancelled with its reason and reconsideration criterion. A finding that is neither fixed nor recorded is still a blocker.
 
-Report a recorded deferral as recorded. Link its pull request in the result and say in a sentence what it covers, without presenting it as pending user action or as a caveat on the merge.
+Report a recorded deferral as recorded. Link its record in the result and say in a sentence what it covers, without presenting it as pending user action or as a caveat on the merge.
 
 ## Review Continuity
 
