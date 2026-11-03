@@ -229,7 +229,9 @@ step exists to catch.
    them in one line.
 4. **Show the questions on the dashboard.** Deliver the dashboard as **Workflow** steps 5 and 6
    build it, with a page `Interrogation`, `icon` `settings` and `layout` `rows`, right after
-   `Overview`, its `status` the count of questions still open and its `progress` how many are
+   `Overview`, its `subtitle` what the interrogation is for, such as "Deciding, step by step, which
+   subagents are worth what they cost, so the skills start fewer without missing what they catch.",
+   its `status` the count of questions still open and its `progress` how many are
    decided, `detail` "<decided> of <total> decided", with one segment per question in the order
    they are asked, toned `done` once answered and `accent` while asked. It holds one `diagram` per skill a
    question concerns, the skill being asked about first so its flow sits right under the progress
@@ -238,8 +240,8 @@ step exists to catch.
    skill's steps in order, joined by `then` arrows, with each step's launches hanging off it and a
    `runs` arrow to each skill it runs that has a diagram of its own on the page, so the questioned
    step is seen beside the rest of the run and where it hands over. Its
-   description says what the interrogation is for — whether each step's subagents are worth their
-   cost given how often the step runs — never how to read the colors or that arrows can be clicked;
+   description says what the skill's run does in a sentence, never how to read the colors or that
+   arrows can be clicked;
    its `legend` is `[{tone: accent, label: Being asked}, {tone: done, label: Decided}]`. The edge a
    question concerns — the arrow from the step into the launch it questions — carries
    `tone` `accent` while it is asked and `done` once answered, and none before, and its `details`

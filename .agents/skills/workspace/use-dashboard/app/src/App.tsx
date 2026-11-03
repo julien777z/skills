@@ -37,9 +37,9 @@ export function App({ dashboard }: { dashboard: Dashboard }): ReactNode {
           <Text as="h1" size="title" weight="bold">
             {page.title}
           </Text>
-          {dashboard.subtitle && (
+          {(page.subtitle ?? dashboard.subtitle) && (
             <Text as="p" tone="muted" measure>
-              <RichText text={dashboard.subtitle} />
+              <RichText text={page.subtitle ?? dashboard.subtitle ?? ''} />
             </Text>
           )}
         </Stack>

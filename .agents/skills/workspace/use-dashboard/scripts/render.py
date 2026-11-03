@@ -662,6 +662,7 @@ PAGE_SHAPE: Final[ObjectShape] = ObjectShape(
             typescript=PageLayout.__name__,
             choices=PageLayout,
         ),
+        "subtitle": TEXT,
         "sections": SECTIONS,
         "progress": Field(
             check=partial(check_object, shape=PROGRESS_SHAPE),
