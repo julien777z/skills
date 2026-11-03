@@ -222,8 +222,11 @@ step exists to catch.
 3. **Pick the steps worth a question.** A step is worth one when changing it would change how many
    subagents start, how much they read, or what a review can miss: a launch, a review loop and what
    its later rounds rerun, a scope wider than the step's job, a scope another skill reads in the
-   same run, or a launch that always runs where a condition would do. Every other step passes
-   without a question, and the report lists them in one line.
+   same run, or a launch that always runs where a condition would do. So every subagent launch and
+   every review loop in scope gets its own question, a launch two pages share asked once; none is
+   skipped because no saving is apparent, since keeping it is then the recommended choice. Every
+   step that starts no subagent and repeats nothing passes without a question, and the report lists
+   them in one line.
 4. **Show the questions on the dashboard.** Deliver the dashboard as **Workflow** steps 5 and 6
    build it, with a page `Interrogation`, `icon` `settings` and `layout` `rows`, right after
    `Overview`, its `status` the count of questions still open and its `progress` how many are
