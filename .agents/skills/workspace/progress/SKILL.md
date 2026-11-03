@@ -43,10 +43,9 @@ and deliver the same dashboard again on every request so the user keeps one page
 5. **Select the delivery route, then render.** Before invoking `use-dashboard`, choose the
    host's ongoing-work channel when authorized work remains, or the normal reply route for
    standalone reporting. Pass that route to the renderer for its delivery, as a dashboard of session
-   work. When the ledger records
-   an earlier delivery of this task's dashboard, update that same page through `use-dashboard`.
-   Otherwise record a `dashboard` entry with the page path and any published link, so the next
-   request finds it.
+   work; whether it updates an earlier page is `use-dashboard`'s **Session work** rule. Record a
+   new page in a `dashboard` entry with its path and any published link, so the next request finds
+   it.
 6. **Report and return to the caller.** Through the selected route, send the link or file and one
    line: percent complete, time remaining, and how many questions wait on the user, each the figure
    the dashboard shows. When reporting interrupts unfinished authorized work, carry out the active
@@ -81,6 +80,11 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **Counts.** `counted` is set on the `links` "Pull requests", the `table`s "Plans" and "Ready to
   merge", the `changes` "Config changes" and "Migration changes", and the `notes` "Decisions and
   notes", whose length changes as the task does; no other section is counted.
+- **Order.** Every list and table on the page is sorted by a logical key — its group first, then
+  merge order, plan order or status — never by when an entry was recorded. The `links` "Pull
+  requests", for one, runs repository by repository, the repositories in the order their first pull
+  request merges, or by `<owner>/<repo>` when no merge order is set, and each repository's pull
+  requests in merge order, then by number.
 - **Pull request names.** The page names each pull request "PR #<number> - <short title>": a few
   words saying what it does, not necessarily its title, such as `PR #1337 - Add bulk export`.
 - **Pages.** The dashboard's `icon` is `progress`, and its pages run in this order. `Overview`,
@@ -160,10 +164,10 @@ and deliver the same dashboard again on every request so the user keeps one page
   where one exists. In these three outlines, `tone` is `critical` when skipping the item breaks the
   next step and `warning` otherwise.
 - **`links` "Pull requests"**: each open and draft pull request, leaving out merged and closed
-  ones, which need nothing more from the reader. `label` its name, `url`, `detail` "<owner>/<repo>"
-  and the checks and review state just read, `state` its `open` or `draft`, and `status` and
-  `tone`: Open `good`, Draft neutral, and Failing checks `critical` in place of either when the
-  head's checks fail.
+  ones, which need nothing more from the reader, with `group_label` "Repository". `label` its name,
+  `url`, `group` "<owner>/<repo>", `detail` the checks and review state just read, `state` its
+  `open` or `draft`, and `status` and `tone`: Open `good`, Draft neutral, and Failing checks
+  `critical` in place of either when the head's checks fail.
 - **`questions` "Answered"**: each answered question with the user's `answer` in their words and
   `at` the time it was given, with `page_size` 5.
 - **`notes` "Decisions and notes"**: each recorded decision and each assumption made without the
@@ -180,13 +184,14 @@ and deliver the same dashboard again on every request so the user keeps one page
   adds, changes or removes, such as an environment variable, a settings field or its default, a
   feature flag, a secret it reads, or a key in its configuration file. A setting only CI, a workflow
   or a deployment pipeline reads stays out — a GitHub Actions input, a workflow variable, a job's
-  timeout. `name` the name a reader sets, `change`, and `detail` "<pull request name> · <its default
-  or new value> · <what the user has to do, or Nothing>", with a `diff` link to the line in
-  the pull request's diff that sets it. A secret is named, never its value.
+  timeout. `name` the name a reader sets, `change`, `group` the pull request's name, and `detail`
+  "<its default or new value> · <what the user has to do, or Nothing>", with a `diff` link to the
+  line in the pull request's diff that sets it. A secret is named, never its value.
 - **`changes` "Migration changes"**: each database migration a pull request adds, changes or
-  removes. `name` the migration's file or revision, `change`, and `detail` "<pull request name> ·
-  <what it does to the schema or stored data> · <what the user has to do, or Nothing>", with a
-  `diff` link to the migration file in the pull request's diff.
+  removes. `name` the migration's file or revision, `change`, `group` the pull request's name, and
+  `detail` "<what it does to the schema or stored data> · <what the user has to do, or Nothing>",
+  with a `diff` link to the migration file in the pull request's diff.
+- **Both `changes` sections** set `group_label` "Pull request".
 - **`outline` "Keep in mind"**: what a reviewer or the user needs to know about the changes
   themselves before relying on them — a risk, a limit, a behaviour that surprises — grouped by area as above.
   What merging and deploying needs or sets off belongs to the Wrap up page, and nothing here

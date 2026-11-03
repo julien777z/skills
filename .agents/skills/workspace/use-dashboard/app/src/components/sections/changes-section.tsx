@@ -10,9 +10,10 @@ export function ChangesSection({ section }: { section: ChangesSectionSpec }): Re
     <ListSection
       title={section.title}
       description={section.description}
-      summary={section.counted ? section.items.length : undefined}
+      summary={(items) => (section.counted ? items.length : undefined)}
       items={section.items}
       pageSize={section.page_size}
+      groupLabel={section.group_label}
       row={(item) => ({
         title: <RichText text={item.name} />,
         detail: item.detail && <RichText text={item.detail} />,

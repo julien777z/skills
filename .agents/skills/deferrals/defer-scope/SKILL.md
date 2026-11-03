@@ -113,13 +113,15 @@ Use the pre-transition repository workflow only when Linear preflight is unavail
 write:
 
 1. In the resolved affected repository, search `deferrals/<key>/`, `deferrals/declined/<key>/`, and
-   open record pull-request diffs from its fetched remote default branch. Reuse an active match and
+   the `deferrals/` diffs of its open pull requests, from its fetched remote default branch. Reuse an active match and
    never reactivate a declined one without explicit user direction.
 2. After the same admission, write `deferrals/<key>/DEFERRAL.md` with the problem, why it remains
    open — the admission verdict goes here — pickup scope, and a table of supporting files. Copy only
    supporting material required to keep the record durable.
-3. From a fresh branch off that repository's remote default, commit only that directory, push, and
-   open one ready record pull request. Return to the interrupted branch.
+3. Commit only that directory on this session's source pull request in that repository, the one
+   the GitHub rules' source-ownership bullet selects, and push it there. Only when the session has
+   no source pull request there does the record open one, as a draft that later records and source
+   work join.
 
 Never mix Linear and repository records for one deferral. Existing repository records remain in
 place until separately migrated or resolved through `execute-defer-scope`.
@@ -127,7 +129,7 @@ place until separately migrated or resolved through `execute-defer-scope`.
 ## Reading
 
 Read active issues carrying the deferral label the repository's project guidance names through `linear`, then read every direct
-`deferrals/` child on the fetched remote default branch and every open record pull request. Exclude
+`deferrals/` child on the fetched remote default branch and every open pull request's `deferrals/` diff. Exclude
 `deferrals/declined/` from the ordinary active view. Deduplicate only on strong repository, stable-key,
 pull-request, and problem evidence.
 

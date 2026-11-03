@@ -8,15 +8,18 @@ import { ListSection } from './list-section';
 import { TextList } from './text-list';
 
 export function QuestionsSection({ section }: { section: QuestionsSectionSpec }): ReactNode {
-  const open = section.items.filter((question) => question.status === QuestionStatus.OPEN).length;
-
   return (
     <ListSection
       title={section.title}
       description={section.description}
-      summary={open ? `${open} waiting on you` : 'All answered'}
+      summary={(questions) => {
+        const open = questions.filter((question) => question.status === QuestionStatus.OPEN).length;
+
+        return open ? `${open} waiting on you` : 'All answered';
+      }}
       items={section.items}
       pageSize={section.page_size}
+      groupLabel={section.group_label}
       row={(question) => {
         const answered = question.status === QuestionStatus.ANSWERED;
 
