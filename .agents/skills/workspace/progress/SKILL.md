@@ -43,10 +43,9 @@ and deliver the same dashboard again on every request so the user keeps one page
 5. **Select the delivery route, then render.** Before invoking `use-dashboard`, choose the
    host's ongoing-work channel when authorized work remains, or the normal reply route for
    standalone reporting. Pass that route to the renderer for its delivery, as a dashboard of session
-   work. When the ledger records
-   an earlier delivery of this task's dashboard, update that same page through `use-dashboard`.
-   Otherwise record a `dashboard` entry with the page path and any published link, so the next
-   request finds it.
+   work; whether it updates an earlier page is `use-dashboard`'s **Session work** rule. Record a
+   new page in a `dashboard` entry with its path and any published link, so the next request finds
+   it.
 6. **Report and return to the caller.** Through the selected route, send the link or file and one
    line: percent complete, time remaining, and how many questions wait on the user, each the figure
    the dashboard shows. When reporting interrupts unfinished authorized work, carry out the active
@@ -85,8 +84,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   merge order, plan order or status — never by when an entry was recorded. The `links` "Pull
   requests", for one, runs repository by repository, the repositories in the order their first pull
   request merges, or by `<owner>/<repo>` when no merge order is set, and each repository's pull
-  requests in merge order, then by number. A list this section gives an order keeps it, such as the
-  `table` "Ready to merge" in merge order and the board's Up next in plan order.
+  requests in merge order, then by number.
 - **Pull request names.** The page names each pull request "PR #<number> - <short title>": a few
   words saying what it does, not necessarily its title, such as `PR #1337 - Add bulk export`.
 - **Pages.** The dashboard's `icon` is `progress`, and its pages run in this order. `Overview`,
@@ -193,8 +191,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   removes. `name` the migration's file or revision, `change`, `group` the pull request's name, and
   `detail` "<what it does to the schema or stored data> · <what the user has to do, or Nothing>",
   with a `diff` link to the migration file in the pull request's diff.
-- **Both `changes` sections** set `group_label` "Pull request" and run pull request by pull request
-  in merge order.
+- **Both `changes` sections** set `group_label` "Pull request".
 - **`outline` "Keep in mind"**: what a reviewer or the user needs to know about the changes
   themselves before relying on them — a risk, a limit, a behaviour that surprises — grouped by area as above.
   What merging and deploying needs or sets off belongs to the Wrap up page, and nothing here
