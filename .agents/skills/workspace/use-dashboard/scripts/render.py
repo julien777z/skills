@@ -518,6 +518,7 @@ TREE_NODE_SHAPE: Final[ObjectShape] = ObjectShape(
     fields={
         "label": TEXT,
         "detail": TEXT,
+        "figure": TEXT,
         "meta": TEXT,
         "tone": TONE,
         "children": Field(check=check_tree_nodes, typescript="TreeNode[]"),

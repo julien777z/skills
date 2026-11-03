@@ -697,6 +697,10 @@ request. A guidance change rides the source branch in flight only where that rul
 Verify selected pull requests remotely, and leave another session's branch and pull request
 untouched unless the selected route explicitly directs continuing it.
 
+**A pull request exists from the first push.** The push that first carries a change opens its
+draft pull request, whatever is still being decided or built for it: an open question, a later
+step, or a batch still collecting changes holds none of it back.
+
 **A pull request's title and description are brought up to date at every milestone, not at every
 push.** A milestone is a plan step or worker task that passed its gates under **Ongoing
 Simplification**, and a guidance correction pushed onto the pull request carrying it. After it, add

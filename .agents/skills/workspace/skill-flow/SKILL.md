@@ -121,7 +121,7 @@ the request asks for a new page.
      leave open).
    - `Overview`, `icon` `overview` and `layout` `rows`, read at a glance:
      - a `table` `By kind of work` with a row per page and the columns Page, What it covers (a few
-       words), Subagents per run (the typical and most figures, such as "about 6, up to 24") and
+       words), Subagents per run (the usual figure and what adds more, such as "~6, more per finding") and
        Loops (how many of each kind, such as "3 review · 2 repair · 1 wait", or "None"). Each row's
        `details` opens an outline of that page's loops, one item per loop titled "<skill>: <what
        repeats>" with its cap as `meta` and what ends it as `detail`. The table never lists a
@@ -135,14 +135,18 @@ the request asks for a new page.
        borrowed-rubric arrow as their labels show them.
    - `Usage`, `icon` `chart` and `layout` `rows`, across every skill the dashboard maps:
      - a `tree` `Where subagents go`, `open_depth` 2, one root per skill a person starts directly,
-       most subagents first, with `meta` the subagents one run of it typically starts, then the most
-       it can start, everything beneath it counted, such as "about 6 subagents, up to 24". The
-       typical figure counts, for one round each, only launches whose every ancestor always runs; a
-       count that depends on the work counts at its stated least, or at one, and shows "grows with
-       <what>" only when such a launch always runs. Beneath a skill, its steps in order,
-       labelled "<n>. <step>" with the same typical and most figures for what sits beneath them; beneath a step, each
+       most subagents first. Its `figure` is the subagents one run usually starts, everything
+       beneath it counted, such as "~6 subagents"; its `meta` names what adds more, such as "more
+       per finding and per area", or "fixed" when nothing does. The usual figure counts, for one
+       round each, only launches whose every ancestor always runs, a skill a step runs only under a
+       condition counting as one that does not; a count that depends on the work counts at its stated
+       least, or at one. No figure sums a worst case across the whole graph, and none reads "0+": a
+       range shows as its range, such as "2–4", and a count that only varies shows what it varies
+       with, such as "1 per finding". Beneath a skill, its steps in order, labelled "<n>. <step>"
+       with the same `figure` and `meta` for what sits beneath them; beneath a step, each
        skill it runs, nested the same way wherever it runs so every total counts it, and each
-       launch as an entry labelled "<count> <role>", `meta` its rounds and what it reads, such as
+       launch as an entry labelled with its role, `figure` its count, such as "3", "2–4" or "1 per
+       finding", and `meta` its rounds and what it reads, such as
        "up to 3 rounds · diff and whole touched files", and `detail` what the subagents do, what a
        later round reruns, and the condition it runs under when it only sometimes runs. A launch
        that always runs is toned `warning`. Every entry's `details` open what it is: a skill's,
@@ -249,8 +253,10 @@ step exists to catch.
    comes first, with its reason in what it saves and what it could miss.
 6. **Record every question** with `session-ledger` as a `question` entry when it is asked, with
    its options and recommendation, and mark it answered with the user's words.
-7. **Make the agreed changes** through `edit-skill`, as one change across the skills they touch,
-   then report per skill what changed and what was kept.
+7. **Make each agreed change as soon as it is answered** through `edit-skill`, on one draft pull
+   request every answer of the interrogation joins: push the first change and open the draft then,
+   never holding it until the remaining questions are answered. Report per skill what changed and
+   what was kept.
 
 ## Guardrails
 

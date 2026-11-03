@@ -57,6 +57,12 @@ function TreeItem({ node, depth, openDepth }: { node: TreeNode; depth: number; o
                 <RichText text={node.label} />
               </Text>
             )}
+            {node.figure && (
+              <Text as="span" size="sm" weight="medium" tone="accent" numeric>
+                {' '}
+                {node.figure}
+              </Text>
+            )}
             {node.meta && (
               <Text as="span" size="sm" tone="muted" numeric>
                 {' '}
