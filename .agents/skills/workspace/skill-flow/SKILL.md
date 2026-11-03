@@ -226,10 +226,13 @@ step exists to catch.
    without a question, and the report lists them in one line.
 4. **Show the questions on the dashboard.** Deliver the dashboard as **Workflow** steps 5 and 6
    build it, with a page `Interrogation`, `icon` `settings` and `layout` `rows`, right after
-   `Overview`, its `status` the count of questions still open. It holds one `diagram` per flow a
-   question concerns, drawn as that kind-of-work page's `Flow` plus the launch nodes the questions
-   concern, with `legend` `[{tone: accent, label: Being asked}, {tone: done, label: Decided}]`. The
-   edge a question concerns — the arrow into the launch or skill whose step it questions — carries
+   `Overview`, its `status` the count of questions still open. It holds one `diagram` per skill a
+   question concerns: that skill's steps in order, joined by `then` arrows, with each step's
+   launches hanging off it, so the questioned step is seen beside the rest of the run. Its
+   description says what the interrogation is for — whether each step's subagents are worth their
+   cost given how often the step runs — never how to read the colors or that arrows can be clicked;
+   its `legend` is `[{tone: accent, label: Being asked}, {tone: done, label: Decided}]`. The edge a
+   question concerns — the arrow from the step into the launch it questions — carries
    `tone` `accent` while it is asked and `done` once answered, and none before, and its `details`
    is an outline with `stacked` set and `collapsible` false whose groups are "What it does" (when
    the flow runs and what the step does now), "Proposed changes" (each choice, with what it saves
