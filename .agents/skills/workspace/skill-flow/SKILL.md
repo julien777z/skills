@@ -116,9 +116,10 @@ the request asks for a new page.
 5. **Build the spec** for `use-dashboard`:
    - `title` `Skill Flow Dashboard`, `topic` the repository's name, `icon` `diagram`, and `subtitle` "How the skills run, read from
      <repository> at <short commit>.", with `references` linking the repository and the commit.
-   - `metrics`: **Skills mapped**, **Pages** (the kind-of-work pages), **Subagent launches** (each
-     launch point counted once, however many pages reach it), and **Gaps** (things the sources
-     leave open).
+   - `metrics`: **Skills mapped**; **Subagents in a typical task**, the usual figure for
+     `execute-task`'s run from start to merge, `detail` "from start to merge, before findings add
+     more"; **Skills that start subagents**, `detail` "of <n> mapped"; and **Launches with no
+     limit**, the "No limit set" gaps, `detail` "where usage can grow unchecked".
    - `Overview`, `icon` `overview` and `layout` `rows`, read at a glance:
      - a `table` `By kind of work` with a row per page and the columns Page, What it covers (a few
        words), Subagents per run (the usual figure and what adds more, such as "~6, more per finding") and
@@ -233,7 +234,7 @@ step exists to catch.
    subagents are worth what they cost, so the skills start fewer without missing what they catch.",
    its `status` the count of questions still open and its `progress` how many are
    decided, `detail` "<decided> of <total> decided", with one segment per question in the order
-   they are asked, toned `done` once answered and `accent` while asked. It holds one `diagram` per skill a
+   they are asked, toned `done` once answered and `warning` while asked. It holds one `diagram` per skill a
    question concerns, the skill being asked about first so its flow sits right under the progress
    bar, then an `outline` `Decided so far` listing each answer and what it changes once there is
    one, then the other skills in asking order. A diagram holds that
@@ -244,14 +245,14 @@ step exists to catch.
    step is seen beside the rest of the run and where it hands over. Its
    description says what the skill's run does in a sentence, never how to read the colors or that
    nodes can be clicked;
-   its `legend` is `[{tone: accent, label: Being asked}, {tone: done, label: Decided}]`. The node a
+   its `legend` is `[{tone: warning, label: Being asked}, {tone: done, label: Decided}]`. The node a
    question concerns — the launch it questions — carries
-   `tone` `accent` while it is asked and `done` once answered, and none before, and its `details`
+   `tone` `warning` while it is asked and `done` once answered, and none before, and its `details`
    is an outline with `stacked` set and `collapsible` false whose groups are "What it does" (when
    the flow runs and what the step does now), "Proposed changes" (each choice, with what it saves
    and what it could miss), "Recommended" (the choice and why) and, once answered, "Decision" (the
    user's words and what changes). Publish the page before each question, with that question's
-   node `accent`, and again after its answer, with the node `done`, so the page always shows where
+   node `warning`, and again after its answer, with the node `done`, so the page always shows where
    the conversation is. The question names the page and the edge it concerns.
 5. **Ask one question at a time, in the order the run reaches them** — skill by skill, and within
    a skill from its first step to its last — through the question tool, and wait for its answer

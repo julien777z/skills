@@ -96,12 +96,6 @@ function openEdgesOnClick(
   section.edges.forEach((edge, index) => {
     const label = edgeLabels[index];
 
-    if (edge.tone && label) {
-      for (const text of label.querySelectorAll<HTMLElement>('span, p')) {
-        text.style.color = `var(--${TONES[edge.tone].color})`;
-      }
-    }
-
     if (!edge.details) {
       return;
     }
@@ -246,7 +240,7 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
             {withKeys(section.steps, (step) => step).map(({ key, item: step }, index) => (
               <Stack key={key} as="li" direction="row" align="start" gap="sm">
                 <Stack align="center" justify="center" badge="accentRing">
-                  <Text size="xxs" weight="bold" tone="accent">
+                  <Text size="xxs" weight="bold">
                     {index + 1}
                   </Text>
                 </Stack>

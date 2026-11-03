@@ -68,7 +68,7 @@ of a process, carries no count. Section types:
 | `notes` | `title`, `items` | each item a string |
 | `changes` | `title`, `items`, `page_size?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`, `links?`: a named part with its change as a colored badge |
 | `outline` | `title`, `groups: [{title, items}]`, `expanded?` (every item starts open when true), `stacked?` (groups run in one column, each across the full width, for groups read in order), `collapsible?` (false shows every item in full with no toggle, its `title` as a muted label beside its `detail`, for a short write-up of facts read top to bottom) | `title`, `detail`, `tone?`, `tag?`, `meta?`, `links?`, `points?`: a headline that opens to its detail, with `points` as a bulleted list under it, with `tag` as a badge in the item's tone (neutral without one) and `meta` as small text; without `expanded`, a group of one or two items shows them open |
-| `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `figure?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `figure` a short count in the accent color right after its label, `meta` beside it, and `details`, one section, opening in a dialog from the entry's label; for a whole made of parts made of parts |
+| `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `figure?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `figure` a short count in a neutral badge right after its label, `meta` beside it, and `details`, one section, opening in a dialog from the entry's label; for a whole made of parts made of parts |
 | `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?`, `legend?` (`[{tone, label}]`, a line in each tone beside what it means) | node: `id`, `label`, `detail?`, `pr?`, `change?`, `tone?`, `details?`, `target?`; edge: `from`, `to`, `label?`, `step?`, `change?`, `tone?`, `details?`; pr: `ref`, `url`; each step a string |
 
 A diagram draws each node as a box inside a frame titled with the `ref` its `pr` names, and each
@@ -154,6 +154,9 @@ Dashboards look alike because they are built alike:
   reader's look or action, `critical` is wrong or blocking, `accent` is in progress or
   informational, and `done`, a purple, is finished work that must read apart from what is merely
   fine, such as a merged pull request beside open ones. Leave it out for neutral; never tone an item only to decorate it.
+- **Blue text is a link.** A reader clicks blue text, so only links take it, and a tone colors a
+  dot, border, line or bar, never text. A figure, number or label meant to stand out sits in a
+  neutral badge rather than taking a color or the weight its neighbouring names already use.
 - **Every section says what it holds.** Give each one a `description`: one sentence on what the
   reader finds or does there, never a narration of its controls.
 - **Sources are links, never paths in text.** Anything a reader can check, such as a file and line,
