@@ -78,12 +78,17 @@ skill ends with.
    bullets say — from the session's own record of the work, not a walk through its commits. Every open pull request in the ledger gets this, however long its body.
 8. **Post the hand-off comment** on each pull request in the template below, written so an agent with
    no other context can continue: the queue in order with exact files, every question with the
-   options as they were put, and every user decision and constraint that governs the work, in the
-   user's words. Where the work depends on another pull request — another repository's included —
-   the comment names and links it; that is the one comment a pull request carries about another
-   repository. It carries the task token `session-ledger`'s backup comments carry, so a session
-   that cannot reach the ledger file can tell which of them are this task's. Never put a secret,
-   credential or access token in it.
+   options as they were put, and every decision and constraint that governs this repository's work.
+   It is published in this repository, so it follows the GitHub rule's independent publishing
+   context exactly as `session-ledger`'s backup comments do: it states this repository's work in
+   this repository's own terms, paraphrasing a user decision where its words carry another
+   repository's product, environment or vocabulary, and never names or links another repository,
+   its pull requests or its constraints, a dependency included. A dependency is stated as this
+   repository's own contract, such as "a consumer of this branch's API repoints once it merges";
+   which pull request that is, and every cross-repository constraint, travels in the private
+   ledger step 9 transfers and in the paste message. It carries the task token `session-ledger`'s
+   backup comments carry, so a session that cannot reach the ledger file can tell which of them
+   are this task's. Never put a secret, credential or access token in it.
 9. **Transfer the finalized private ledger.** After all workers' receipts and final hand-off facts
    are recorded, follow `session-ledger` to verify the receiver's complete file, exact locator and
    writing-ownership takeover. Retain the source until that verification succeeds; never release
@@ -110,10 +115,10 @@ Task: `<task token>`
 - <question, with the options as they were put and the recommendation> — <what waits on the answer>
 
 ### Decisions and constraints
-- <decision or standing constraint, in the user's words>
+- <decision or standing constraint governing this repository, in the user's words or paraphrased in this repository's terms>
 
 ### Depends on
-- <link to the other pull request> — <what this one needs from it, and what changes once it merges>
+- <what this branch needs from, or offers to, other work, as this repository's own contract>
 
 ### Plan presented, not approved
 <the plan verbatim>
