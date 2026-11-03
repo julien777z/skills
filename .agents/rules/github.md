@@ -99,10 +99,10 @@ alwaysApply: true
   state, or recorded touch does not supply that instruction. Verify the selected pull request's
   owner, state and scope before updating it; leave other sessions' pull requests and branches untouched,
   except for the guidance files the dependent-guidance bullet below puts on them.
-- **Agent configuration that depends on no still-open source pull request continues the open
-  agent-configuration pull request for that work, whichever session opened it.** Agent configuration
-  is the canonical `.agents` tree — skills, each with its own scripts, assets and templates; rules;
-  and agent definitions. Nonbehavioral text and guidance-reference corrections in agent hooks and
+- **Agent configuration that depends on no still-open source pull request in this repository
+  continues the open agent-configuration pull request for that work, whichever session opened it.**
+  Agent configuration is the canonical `.agents` tree — skills, each with its own scripts, assets
+  and templates; rules; and agent definitions. Nonbehavioral text and guidance-reference corrections in agent hooks and
   installers also follow this workflow. Changes to execution, timing, installation, discovery,
   permissions or mutation scope remain source work. Everything else is source.
   List the repository's open pull requests before
