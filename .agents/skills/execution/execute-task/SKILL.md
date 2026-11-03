@@ -402,6 +402,12 @@ how those issues are handled.
   Missing comparison evidence is not a baseline exclusion; inspect the failure at its native owner
   before choosing its disposition. Pass established exclusions and their evidence to every later
   validation or merge gate.
+  **This classification comes first**, before the failure is diagnosed, handed to a worker to
+  diagnose, or mentioned to the user as anything but a baseline: read the default branch's latest
+  run of the same check, hosted or local, and reproduce there only when no such run exists. A brief
+  that hands a validation failure to a worker carries the classification's result, and never asks
+  the worker to fix a baseline failure. A baseline failure's cause, even one only the user could
+  remove such as a provider setting or credential, is never put to the user as a gate or a request.
 
 - **A confirmed defect the work turns up, or a finding against the task's changed design, is fixed
   in the change in flight, in a shape the standing guidance allows as the next bullet says, and
