@@ -60,8 +60,8 @@ def read_ownership(path: Path) -> Ownership | None:
     if acquired_at.tzinfo is None or expires_at.tzinfo is None:
         raise ValueError("Ownership timestamps must include a timezone")
 
-    if not timedelta() < expires_at - acquired_at <= MAX_TTL:
-        raise ValueError(f"Ownership duration must be positive and at most {MAX_TTL}")
+    if expires_at <= acquired_at:
+        raise ValueError("Ownership must expire after it was acquired")
 
     return Ownership(
         version=1,
@@ -115,9 +115,6 @@ def acquire_resource(request: Acquisition) -> LockResult:
 
     if not request["owner"].strip() or not request["activity"].strip():
         raise ValueError("Owner and activity must identify this assignment")
-
-    if not timedelta() < request["ttl"] <= MAX_TTL:
-        raise ValueError(f"Lock duration must be positive and at most {MAX_TTL}")
 
     deadline = monotonic() + request["wait"].total_seconds()
 
