@@ -51,10 +51,14 @@ an untrusted one is left out and reported.
 Hold `agent-lock` on the key `skills-install`, acquired with `--ttl-seconds 900`, from step 2 until
 step 6 finishes, so two sessions never build or remove overlays at once. Run its `check` before
 every write to shared state: step 3's stash, fast-forward and marker deletion, step 4.4's marker,
-step 5, and each removal in step 6. On a failed check, stop writes immediately, reacquire the lock, restore any stash this run pushed
-and verify its paths, then restart at step 2. Keep step 2's first record whole and the head each
-abandoned build reached; the restarted step 2 adds only overlays that record lacks. Repeat recovery
-after each lost lease until verification succeeds. After safe cleanup, release the lock with
+step 5, and each removal in step 6. A check that passes with under 300 seconds left ends that lease
+at this boundary: release it with `--resource-idle` and acquire a fresh one before the write, so a
+refresh longer than one lease goes on; a fresh acquisition that finds another holder is a lost
+lease. On a failed check or a lost lease, stop writes immediately, reacquire the lock, restore any
+stash this run pushed and verify its paths, then restart at step 2. Keep step 2's first record whole
+and the head each abandoned build reached; the restarted step 2 adds only overlays that record
+lacks. Recover from at most two lost leases; a third stops the refresh, reported with the overlays
+already built and the step it stopped at. After safe cleanup, release the lock with
 `--resource-idle` once step 6 finishes or an authority conflict holds further writes. A release the tool refuses means a successor took the lock after its deadline:
 release nothing, and report that the lock expired and which overlays were removed after its
 deadline.

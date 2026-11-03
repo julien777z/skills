@@ -29,7 +29,7 @@ def recovery_comment_items(value: object, location: str) -> list[str]:
         return []
 
     if not isinstance(value, list):
-        raise LedgerFormatError(f"{location} has a recovery_comment that is not a list")
+        raise LedgerFormatError(f"{location} has a data.recovery_comment that is not a list")
 
     items = [
         item
@@ -40,7 +40,7 @@ def recovery_comment_items(value: object, location: str) -> list[str]:
 
     if len(items) != len(value):
         raise LedgerFormatError(
-            f"{location} has a recovery_comment item that is neither a URL "
+            f"{location} has a data.recovery_comment item that is neither a URL "
             f"nor {AWAITING_PULL_REQUEST}"
         )
 

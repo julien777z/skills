@@ -15,8 +15,7 @@ The user is waiting to deploy, so the run is the next work in the session, ahead
 numbered steps are the plan the user approved by invoking it, so a fold needs no separate
 `execute-task` plan. It never asks whether a revision was applied: the lock marker and a deploy the
 user reported are the only record, and a revision with neither is locked, folded first when a chain
-has several unlocked branch revisions, as steps 1-2 say. It asks the user nothing: when revisions
-may resume is theirs to say, unprompted.
+has several unlocked branch revisions, as steps 1-2 say.
 
 ## Dependencies
 

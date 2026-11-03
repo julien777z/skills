@@ -119,10 +119,9 @@ write:
    open — the admission verdict goes here — pickup scope, and a table of supporting files. Copy only
    supporting material required to keep the record durable.
 3. Commit only that directory on this session's source pull request in that repository, the one
-   the GitHub rules' source-ownership bullet selects, and push it there. A record is source work like
-   any other, so it never opens a pull request of its own: every record a session makes in a
-   repository rides that one pull request. Only when the session has no source pull request there
-   does the record open one, as a draft that later records and source work join.
+   the GitHub rules' source-ownership bullet selects, and push it there. Only when the session has
+   no source pull request there does the record open one, as a draft that later records and source
+   work join.
 
 Never mix Linear and repository records for one deferral. Existing repository records remain in
 place until separately migrated or resolved through `execute-defer-scope`.
