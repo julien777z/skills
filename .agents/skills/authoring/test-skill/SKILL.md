@@ -135,12 +135,12 @@ lower-tier fallback. Retry a transient, concurrency, timeout, or unknown rejecti
 same resolved selection; do not lower the comparison tier. When no required reader launched, retry
 the required reader set. When one required reader launched, wait for its terminal report and retry
 only the rejected or unattempted required counterpart, never a duplicate of the accepted reader.
-When that retry cannot complete the required set, record its receipts and perform the missing
-assignment in process. Record every failed attempt separately from reader-run evidence,
+When that retry cannot complete the required set, record its receipts and apply `subagent-matrix`'s
+launch fallback for the missing assignment. Record every failed attempt separately from reader-run evidence,
 including every required reader's receipt; do not score an incomplete required set as a reader
 result. When an unsupported request has a permitted fallback, wait for any accepted counterpart's
-terminal report, record the incomplete attempt, then launch a fresh required set. When no permitted model fallback remains, record the rejection and perform the missing assignment
-in process.
+terminal report, record the incomplete attempt, then launch a fresh required set. When no permitted model fallback remains, record the rejection and apply `subagent-matrix`'s launch
+fallback for the missing assignment.
 
 Run one edited reader across the frozen scenarios and one original control only when the recorded
 comparison requires it, with the same resolved model and reasoning effort where both run. Record
@@ -148,7 +148,7 @@ the catalogue state, requested capability and family, exact dispatch identifier,
 effort, selector resolution, and accepted actual-assignment dispatch receipt with those explicit
 parameters in each run's evidence entry. Record catalogue state separately
 from assignment state: a catalogue-hidden family is `dispatch required` until its exact identifier is resolved
-and the assigned worker accepts it, then it is `accepted`; a missing identifier triggers the in-process
+and the assigned worker accepts it, then it is `accepted`; a missing identifier triggers the launch
 fallback and is not an unsupported-model receipt. Selector resolution retains an explicit unsupported request,
 the exact fallback capability and dispatch identifier when one is permitted, why that fallback was selected,
 and any explicit user override. Record the runtime-identity and runtime-label evidence as

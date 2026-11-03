@@ -21,7 +21,7 @@ are validated by their evidence, smoke-test, review, and acceptance gates.
 - `acceptance-gate` — judge each finished plan step's and worker task's diff before later work builds on it, the finished task's complete diff before local completion, before the pull request is sent for review and before it merges, and each fix for a flag it raises that its **Bounds** do not leave to an in-process check.
 - `generic-push` — keep each repository's publishing metadata independent during multi-repository changes.
 - `merge-conflict` — bring in a conflicting base as soon as a push read-back shows it.
-- `subagent-matrix` — the hand-up a worker without an agent tool uses for an independent step.
+- `subagent-matrix` — assignment, dispatch and launch fallback for every delegated task.
 - `merge-gate` — at **Completion**, when the merge is authorized, ready the pull request, drive its checks to green and merge it.
 - `security-audit` — **Building It Safely** while writing code that crosses a trust boundary;
   `review-pass` runs its **Diff Review** of such a change at **Completion**.
@@ -253,14 +253,9 @@ Execution starts once a required plan is approved, or immediately when **When A 
 
 ### Assigning Work
 
-Before implementation begins and whenever new work is admitted, identify each coherent nontrivial
-execution task, its owner, dependencies and resources. Delegate it through `subagent-matrix`, and
-launch independent tasks together when their prerequisites are settled. The primary agent coordinates,
-checks results and integrates them while workers execute; a task waiting on a worker does not hold
-another independent task. Keep coupled changes with one owner and sequence work that shares mutable
-resources or depends on an unsettled result. If a native launch cannot start, record its receipt and
-use the fallback that `subagent-matrix` specifies. Reassess ownership after a finding or follow-up;
-file count alone does not decide whether its execution is trivial.
+Before implementation begins and whenever new work is admitted, delegate each coherent nontrivial
+execution task under `subagent-matrix`'s **Dispatch** assignment bullets; a task waiting on a worker
+never holds another independent one. Reassess ownership after each finding or follow-up.
 
 ### Task Authorization
 
@@ -399,10 +394,11 @@ delivery. A formatter passing is not a substitute for that comparison.
 Apply `pre-production`'s encountered-issues policy while making the change. The rules below govern
 how those issues are handled.
 
-- **Classify validation failures before expanding the task.** When existing run evidence or a
-  reproduction through the native check on the default branch establishes the same failure under
-  comparable inputs, and the change neither introduces nor worsens it, report the check and that
-  evidence as a baseline failure. Continue the requested work and its relevant validation; do not
+- **Classify validation failures first, before the failure is diagnosed, handed to a worker, or
+  mentioned to the user as anything but a baseline.** Read the default branch's latest run of the
+  same check, hosted or local, and reproduce there only when no such run exists. When that evidence
+  establishes the same failure under comparable inputs, and the change neither introduces nor
+  worsens it, report the check and that evidence as a baseline failure. Continue the requested work and its relevant validation; do not
   repair, rerun, investigate further, ask a product question, or record a deferral for that failure
   merely because validation encountered it. Keep the failed result visible and never report the
   whole check as passing. This exclusion does not cover a defect the user assigned, a failure of
@@ -413,12 +409,11 @@ how those issues are handled.
   Missing comparison evidence is not a baseline exclusion; inspect the failure at its native owner
   before choosing its disposition. Pass established exclusions and their evidence to every later
   validation or merge gate.
-  **This classification comes first**, before the failure is diagnosed, handed to a worker to
-  diagnose, or mentioned to the user as anything but a baseline: read the default branch's latest
-  run of the same check, hosted or local, and reproduce there only when no such run exists. A brief
-  that hands a validation failure to a worker carries the classification's result, and never asks
-  the worker to fix a baseline failure. A baseline failure's cause, even one only the user could
-  remove such as a provider setting or credential, is never put to the user as a gate or a request.
+  A brief that hands a validation failure to a worker carries the classification's result, and
+  never asks the worker to fix a baseline failure. A baseline failure's cause, even one only the
+  user could remove such as a provider setting or credential, is never put to the user as a gate or
+  a request, apart from the branch-protection rejection the GitHub rules' **Merge Authorization**
+  says to report.
 
 - **A confirmed defect the work turns up, or a finding against the task's changed design, is fixed
   in the change in flight, in a shape the standing guidance allows as the next bullet says, and

@@ -33,7 +33,7 @@ agent; the calling agent launches the actual assignment with the selected model.
    an identifier-resolution failure and use the launch fallback for the assignment. Do not invent
    versions or aliases or silently substitute another family.
 3. Before a caller marks a requested capability level or explicit model unavailable, follows an
-   unavailable-model fallback, or takes an in-process route, launch the actual assigned work once with its exact
+   unavailable-model fallback, or takes the launch fallback, launch the actual assigned work once with its exact
    candidate identifier and explicit reasoning effort when the native tool is available. A successful dispatch establishes that the host accepted
    the requested identifier for that launch; it does not establish catalogue availability or runtime identity.
    An explicit host receipt that the candidate is unsupported establishes unavailability. The accepted worker
@@ -89,31 +89,29 @@ context and returns its verdict into the step waiting on it; nothing else does b
   routine, or a message asking any session but the delegating agent to run it. Those run outside
   the step, can fail setup or leave branches behind, and their verdict never returns to the run
   that waits on it.
-- **When a required subagent cannot launch, hand the assignment up; never absorb it.** Attempt the
-  native dispatch when available. A worker that cannot start the subagents its step needs, whether
-  reviewers, lenses, validators, gates or further implementation workers, hands each assignment to
-  its delegating agent as the bullet on handing a step up says, and that agent launches the workers
-  the step calls for or coordinates the work so each one runs with its own context. One worker
-  carrying a whole review or a multi-scope job alone cannot do it thoroughly, so it never performs
-  those assignments itself. Only the top-level agent, with no delegating agent to ask, performs an
-  assignment in process after its own launch fails, records the launch outcome, and reports that the
-  result lacked independent review; never describe an in-process result as an independent verdict.
-  A brief never tells a worker to fall back to in-process review or gating.
+- **Launch fallback: a worker that cannot launch a subagent its step needs hands the step up; never
+  absorb it.** Attempt the native dispatch when available. This covers a host that gives the worker
+  no agent tool and a native dispatch that fails, for reviewers, lenses, validators, gates and
+  further implementation workers alike. The worker writes the complete assignment — the inputs, the
+  question, the reading list, the output shape — to a file, asks the agent that delegated to it to
+  run that file as a subagent at the chosen capability level, and waits for the verdict before going
+  past the step; that agent launches the workers the step calls for, so each runs with its own
+  context. Work the step splits among several workers is never carried by one of them alone, which
+  cannot do it thoroughly. The gate over a finished task's diff is not such a step: the delegating
+  agent runs it from the branch and head the worker reports, under the delegated-edits bullet of
+  `execute-task`'s **Pre-Push Gate**. A worker whose only channel to that agent is its final message
+  asks by returning: it ends its turn with the file path and the request, and resumes when the
+  verdict comes back. The delegating agent runs it and returns the verdict unedited; when the
+  finished worker cannot be resumed, the delegating agent carries out what the verdict calls for,
+  such as the fix steps a flag names, under the follow-up bullet below. Only the top-level agent,
+  with no delegating agent to ask, performs an assignment in process after its own launch fails,
+  records the launch outcome, and reports that the result lacked independent review; never describe
+  an in-process result as an independent verdict. A brief never tells a worker to fall back to
+  in-process review or gating.
 - **An independent step gets a newly launched subagent for every question it answers when available.** A gate,
   finding validator or smoke reader that has answered about an item is never resumed, messaged or
   reused for a later round on it — not to judge the repair of its own flag or a revised item — since
   its answer would then rest on its own earlier verdict.
-- **A worker whose host gives it no agent tool hands the step up.** It writes the complete
-  assignment — the inputs, the question, the reading list, the output shape — to a file, asks the
-  agent that delegated to it to run that file as a subagent at the chosen capability level, and waits for the
-  verdict before going past the step. The gate over a finished task's diff is not such a step: the
-  delegating agent runs it from the branch and head the worker reports, under the delegated-edits bullet
-  of `execute-task`'s **Pre-Push Gate**. A worker whose only channel to
-  that agent is its final message asks by returning: it ends its turn with the file path and the
-  request, and resumes when the verdict comes back. The delegating agent runs it and returns the verdict unedited; when the
-  finished worker cannot be resumed, the delegating agent carries out what the verdict calls for,
-  such as the fix steps a flag names, under the follow-up bullet below. With no
-  delegating agent to ask, perform the assigned step in process and report the loss of independence.
 - **An early final does not finish the assignment.** Reconcile its retained results and live child
   jobs before replacing anything. The parent takes over unfinished coordination and keeps waiting
   for existing producers; it does not launch another coordinator to relay the same work. Replace
@@ -155,8 +153,7 @@ context and returns its verdict into the step waiting on it; nothing else does b
 ## Launch Failure Reporting
 
 When a required direct subagent dispatch cannot start, preserve its exact attempted dispatch,
-record it, and apply the launch fallback: hand the assignment up, or, at the top level only, perform
-it in process. Do not turn a tool inventory from a nested bridge or an unrelated agent tool
+record it, and apply the launch fallback in **Dispatch**. Do not turn a tool inventory from a nested bridge or an unrelated agent tool
 into evidence about the native launcher's availability.
 
 - Attempt the selected native dispatch once whenever its direct tool is exposed. Never claim an
@@ -169,8 +166,7 @@ into evidence about the native launcher's availability.
 - Classify the outcome as one of: native tool not exposed, no resolved dispatch identifier, explicit
   unsupported-model receipt, rejected dispatch, capacity refusal, or accepted dispatch whose worker
   later failed. Do not collapse these into a generic unavailable-agent claim.
-- Name the fallback taken, the hand-up or the top-level in-process run with its loss of
-  independence; do not substitute an unrelated agent or claim it performed the assignment.
+- Name the fallback taken, with its loss of independence when it ran in process; do not substitute an unrelated agent or claim it performed the assignment.
 
 Use this user-facing shape whenever a launch failure is material to the task:
 

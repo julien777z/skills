@@ -80,7 +80,7 @@ checks analogous implementations and the evidence for retained differences; miss
 pull-request context is a flag to obtain that context, not permission to assume consistency.
 
 The gate is read-only and normally distinct from the author. If its reader cannot launch, apply
-`subagent-matrix`'s launch fallback: hand the gate up to the delegating agent. Invoke `subagent-matrix` for the
+`subagent-matrix`'s launch fallback. Invoke `subagent-matrix` for the
 acceptance-gate role, using its configured Codex role selection and the advanced capability level on
 other hosts. Dispatch the gate with that exact identifier, and retain catalogue state, identifier, assignment
 state and host receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. It

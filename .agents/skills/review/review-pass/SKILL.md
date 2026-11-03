@@ -49,8 +49,8 @@ than adding a coordinator layer for a dependent workflow. Record each
 launched worker's catalogue state, exact dispatch identifier, assignment state and host receipt in the
 task ledger through `session-ledger`. Follow the selector's dispatch and unavailable-model policy.
 
-When a required worker cannot launch, apply `subagent-matrix`'s launch fallback: hand the
-assignment up to the delegating agent, never absorb it. The `acceptance-gate` remains a separate checkpoint.
+When a required worker cannot launch, apply `subagent-matrix`'s launch fallback for its
+assignment. The `acceptance-gate` remains a separate checkpoint.
 
 ## Review Scope
 
