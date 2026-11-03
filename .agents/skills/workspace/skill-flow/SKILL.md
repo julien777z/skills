@@ -214,8 +214,8 @@ step exists to catch.
    that fires only on a narrow kind of change, such as a security review of trust-boundary code, is
    worth one only when it wastes reads without adding coverage, never to trade coverage for a few
    subagents. Every other step passes without a question, and the report lists them in one line.
-4. **Ask one question at a time, most usage first** — subagents a step starts times how often it runs — through the question tool, and wait for
-   its answer before asking the next. Each says when the flow runs — what starts it and how often in
+4. **Ask one question at a time, most usage first** — the subagents a step starts times how often
+   it runs — through the question tool, and wait for its answer before asking the next. Each says when the flow runs — what starts it and how often in
    a task, such as "once per pull request, when its task finishes, and again for each follow-up" —
    then what the step does in a sentence: the skill and step, how many subagents, what they read and
    for how many rounds. Every fact it states is read from the lines that state it before it is
