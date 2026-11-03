@@ -226,7 +226,9 @@ step exists to catch.
    without a question, and the report lists them in one line.
 4. **Show the questions on the dashboard.** Deliver the dashboard as **Workflow** steps 5 and 6
    build it, with a page `Interrogation`, `icon` `settings` and `layout` `rows`, right after
-   `Overview`, its `status` the count of questions still open. It holds one `diagram` per skill a
+   `Overview`, its `status` the count of questions still open and its `progress` how many are
+   decided, `detail` "<decided> of <total> decided", with one segment per question in the order
+   they are asked, toned `done` once answered and `accent` while asked. It holds one `diagram` per skill a
    question concerns: that skill's steps in order, joined by `then` arrows, with each step's
    launches hanging off it, so the questioned step is seen beside the rest of the run. Its
    description says what the interrogation is for — whether each step's subagents are worth their
@@ -240,8 +242,11 @@ step exists to catch.
    user's words and what changes). Publish the page before each question, with that question's
    edge `accent`, and again after its answer, with the edge `done`, so the page always shows where
    the conversation is. The question names the page and the edge it concerns.
-5. **Ask one question at a time, most usage first** — the subagents a step starts times how often it
-   runs — through the question tool, and wait for its answer before asking the next. Each says when
+5. **Ask one question at a time, in the order the run reaches them** — skill by skill, and within
+   a skill from its first step to its last — through the question tool, and wait for its answer
+   before asking the next. Pick every question before asking the first, so the page's progress
+   shows the whole set from the start. The question leaves out which skill and step it concerns,
+   since the page's blue arrow shows it. Each says when
    the flow runs — what starts it and how often in a task, such as "once per pull request, when its
    task finishes, and again for each follow-up" — then what the step does in a sentence: the skill
    and step, how many subagents, what they read and for how many rounds. How often the step runs

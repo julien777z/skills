@@ -663,6 +663,11 @@ PAGE_SHAPE: Final[ObjectShape] = ObjectShape(
             choices=PageLayout,
         ),
         "sections": SECTIONS,
+        "progress": Field(
+            check=partial(check_object, shape=PROGRESS_SHAPE),
+            typescript="ProgressSummary",
+            shape=PROGRESS_SHAPE,
+        ),
         "locked": FLAG,
         "status": Field(
             check=partial(check_object, shape=LABEL_SHAPE),
