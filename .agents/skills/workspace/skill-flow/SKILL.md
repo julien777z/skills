@@ -183,7 +183,8 @@ the request asks for a new page.
      what it sets off — a validator, a fix, a fresh gate — with an outcome that settles it toned
      `good`. A step that starts none says "In process" in its `meta`, and a round that reruns fewer
      subagents says why, such as a lens retired or a slice the fix left untouched. Every node with
-     subagents beneath it has `figure` their count, so each root's figure is the sum of its leaves;
+     subagents beneath it has `figure` their count, so each root's figure is the sum of its leaves,
+     and a node with none beneath it, a story included, shows no count;
      the counts and conditions come from the sources, never from a guess. Then a
      `tree` `How it runs`, `open_depth` 2, one root per skill the page's work starts
      from, nested as the Usage tree is but with every step, each with `detail` what it does and
