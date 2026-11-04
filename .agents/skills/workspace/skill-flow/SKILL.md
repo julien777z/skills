@@ -206,9 +206,9 @@ the request asks for a new page.
      label beside a fact that teaches something; an item with nothing to say is left out. Its
      groups:
      - "Summary": "Subagents", the usual figure one run starts, what adds more and who they
-       are, such as "~4 per round, more per finding: 3 inspectors and 1 checker each round, plus 1
-       safety inspector for sign-in or payment changes", or "None"; and "Review rounds", how many and what ends them, or "None, it runs
-       once".
+       are, such as "~4 per run, more for sign-in or payment changes: 3 inspectors and 1 checker
+       each round, plus 1 safety inspector for those changes", or "None"; and "Review rounds", how
+       many and what ends them, or "None, it runs once".
      - "How it runs": one item per step in order, labelled "<n>. <step>", `detail` what happens,
        and `points` for what that step spends: one per launch, "<count> <role> read <scope> and
        <what they look for or produce>", and, on the step that repeats, how many rounds, what ends
