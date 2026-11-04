@@ -184,7 +184,12 @@ the request asks for a new page.
      `good`. A step that starts none says "In process" in its `meta`, and a round that reruns fewer
      subagents says why, such as a lens retired or a slice the fix left untouched. Every node with
      subagents beneath it has `figure` their count, so each root's figure is the sum of its leaves,
-     and a node with none beneath it, a story included, shows no count;
+     and a node with none beneath it, a story included, shows no count. Every entry below a story
+     has `details`, an `outline` with `stacked` set and `collapsible` false, `title` its label and
+     `description` what that kind of subagent, round or step does, and one group "In this scenario":
+     the story; for a subagent, the step that started it and the subagents running alongside it;
+     otherwise what it is part of and why it is there; what comes before and after it in the run;
+     and its subagent count;
      the counts and conditions come from the sources, never from a guess. Then a
      `tree` `How it runs`, `open_depth` 2, one root per skill the page's work starts
      from, nested as the Usage tree is but with every step, each with `detail` what it does and
