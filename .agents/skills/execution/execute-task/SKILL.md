@@ -404,15 +404,16 @@ how those issues are handled.
   mentioned to the user as anything but a baseline.** Read the default branch's latest run of the
   same check, hosted or local, and reproduce there only when no such run exists. When that evidence
   establishes the same failure under comparable inputs, and the change neither introduces nor
-  worsens it, report the check and that evidence as a baseline failure. Continue the requested work and its relevant validation; do not
-  repair, rerun, investigate further, ask a product question, or record a deferral for that failure
-  merely because validation encountered it. Keep the failed result visible and never report the
-  whole check as passing. This exclusion does not cover a defect the user assigned, a suite past
-  its runtime budget, as the testing rule's **Every suite finishes within five minutes of wall
-  time** bullet says, a failure of the behavior the task must establish, or a confirmed finding
-  independently established by a review or source inspection apart from diagnosis of the excluded check. Do not reopen an
-  exclusion by relabeling that same failure as a review or source finding. Assigned defects and
-  independent findings remain fix responsibilities even when older code caused them.
+  worsens it, report the check and that evidence as a baseline failure. Continue the requested work
+  and its relevant validation; do not repair, rerun, investigate further, ask a product question, or
+  record a deferral for that failure merely because validation encountered it. Keep the failed
+  result visible and never report the whole check as passing. This exclusion does not cover a defect
+  the user assigned, a suite past its runtime budget, as the testing rule's **Every suite finishes
+  within five minutes of wall time** bullet says, a failure of the behavior the task must establish,
+  or a confirmed finding independently established by a review or source inspection apart from
+  diagnosis of the excluded check. Do not reopen an exclusion by relabeling that same failure as a
+  review or source finding. Assigned defects and independent findings remain fix responsibilities
+  even when older code caused them.
   Missing comparison evidence is not a baseline exclusion; inspect the failure at its native owner
   before choosing its disposition. Pass established exclusions and their evidence to every later
   validation or merge gate.
