@@ -122,7 +122,6 @@ function openEdgesOnClick(
     if (details && target) {
       makeOpener(target, `Open ${node.label}`, () => open(details, target));
     } else if (jump && target) {
-      target.dataset.jump = jump;
       makeOpener(target, `Go to ${jump}`, () => scrollToSection(jump));
     }
   });

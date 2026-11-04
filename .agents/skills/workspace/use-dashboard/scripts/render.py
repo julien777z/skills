@@ -280,6 +280,29 @@ def check_navbar(dashboard: dict[str, object], path: str) -> None:
         )
 
 
+def nested_diagrams(value: object, path: str) -> list[tuple[str, dict[str, object]]]:
+    """List every diagram in a spec value, with its path, including those in tabs and dialogs."""
+
+    if isinstance(value, list):
+        return [
+            found
+            for index, item in enumerate(cast(list[object], value))
+            for found in nested_diagrams(item, f"{path}[{index}]")
+        ]
+
+    if not isinstance(value, dict):
+        return []
+
+    entries = cast(dict[str, object], value)
+    found = [(path, entries)] if entries.get("type") == SectionType.DIAGRAM else []
+
+    return found + [
+        diagram
+        for key, item in entries.items()
+        for diagram in nested_diagrams(item, f"{path}.{key}")
+    ]
+
+
 def check_page_sections(page: dict[str, object], path: str) -> None:
     """Require sections on an unlocked page and none on a locked one, and every diagram node's target to name a section the page always shows."""
 
@@ -291,13 +314,8 @@ def check_page_sections(page: dict[str, object], path: str) -> None:
         )
 
     titles = {section["title"] for section in sections}
-    diagrams = [
-        (f"{path}.sections[{index}]", section)
-        for index, section in enumerate(sections)
-        if section["type"] == SectionType.DIAGRAM
-    ]
 
-    for diagram_path, diagram in diagrams:
+    for diagram_path, diagram in nested_diagrams(sections, f"{path}.sections"):
         for index, node in enumerate(cast(list[dict[str, object]], diagram["nodes"])):
             if "target" in node and node["target"] not in titles:
                 raise DashboardSpecError(

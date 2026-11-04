@@ -157,9 +157,9 @@ the request asks for a new page.
      - a `tree` `Loops`, `open_depth` 2, one root per kind of loop the skills run, each only when
        one exists: `Review loops`, rounds of reviewers; `Repair loops`, fixing and checking again;
        `Wait loops`, polling until something finishes; and `Retry loops`. A root's `meta` counts
-       its loops and the most subagents they can start. Beneath a root, each loop, labelled
-       "<skill>: <what repeats>", most subagents first, `meta` "up to <n> rounds · up to <m>
-       subagents across them", or "no cap" when nothing bounds it, and `detail` what ends it and
+       its loops and the usual subagents a round starts. Beneath a root, each loop, labelled
+       "<skill>: <what repeats>", most subagents first, `meta` "up to <n> rounds · ~<m> per round,
+       more per <what>", or "no cap" when nothing bounds the rounds, and `detail` what ends it and
        what each later round reruns. Beneath a loop, what one round starts, as the launch entries
        above, and any loop that runs inside it, its counts multiplied by the outer loop's rounds.
        A loop is toned `warning` when its later rounds rerun everything rather than only what a
@@ -205,9 +205,9 @@ the request asks for a new page.
      skill's name and `description` what it does and why, in one or two sentences. Each item is a
      label beside a fact that teaches something; an item with nothing to say is left out. Its
      groups:
-     - "Summary": "Subagents", the most one run starts and who they are, such as "Up to 16 per
-       run: 3 inspectors and 1 checker each round, plus 1 safety inspector for sign-in or payment
-       changes", or "None"; and "Review rounds", how many and what ends them, or "None, it runs
+     - "Summary": "Subagents", the usual figure one run starts, what adds more and who they
+       are, such as "~4 per round, more per finding: 3 inspectors and 1 checker each round, plus 1
+       safety inspector for sign-in or payment changes", or "None"; and "Review rounds", how many and what ends them, or "None, it runs
        once".
      - "How it runs": one item per step in order, labelled "<n>. <step>", `detail` what happens,
        and `points` for what that step spends: one per launch, "<count> <role> read <scope> and
