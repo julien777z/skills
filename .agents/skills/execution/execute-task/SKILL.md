@@ -449,7 +449,9 @@ how those issues are handled.
   also takes in an item adding a stop, a question or an approval the guidance does not call for,
   such as a brief telling a worker to stop and ask before adding the schema revision a migration
   skill puts its change in: the guidance settled that step, and the added gate hands the user a
-  question with one answer.
+  question with one answer. And it takes in an item setting a looser target than the rule does,
+  such as a brief asking a worker to keep a suite under its timeout where the testing rule's budget
+  is five minutes: the item states the rule's target.
   - **The agent writing it** rewrites an item a rule forbids into a shape the rule allows, or drops
     it where none exists. One the user asked for in their own words goes out with those words quoted
     and the rule they set aside named; a rule the agent thinks is wrong is put to the user, never

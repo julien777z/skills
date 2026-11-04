@@ -132,7 +132,9 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    without reentering that skill's active run. Record an exclusion's evidence, remove it from
    required coverage, and do not repair, rerun, or wait for it. Apply the
    GitHub rule's runner-infrastructure exclusion automatically: record a qualified check as skipped
-   and do not rerun or wait for a green hosted result. Every other failure is relevant. Read its
+   and do not rerun or wait for a green hosted result. Every other failure is relevant, a job
+   stopped by its time limit and a suite past its runtime budget included, as the testing rule's
+   time-limit bullet says. Read its
    annotations and complete log, fix the repository
    input responsible — code, test, configuration or workflow — and commit it. **Every relevant
    failure on the head goes into one push**: read all of them before fixing any, reproduce each
