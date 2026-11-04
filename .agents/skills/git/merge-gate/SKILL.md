@@ -101,7 +101,8 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    duplicate attempt, and each caller-supplied exclusion with its evidence. A completed successful
    representative supplies coverage for an equivalent duplicate that remains pending; a changed
    trigger, condition, execution input, or affected behavior does not. Every unsuccessful terminal
-   duplicate remains subject to step 8.
+   duplicate remains subject to step 8. Read each test job's suite wall time against the testing
+   rule's budget; a suite past it is an unsuccessful result for step 8 even when its job passed.
    A skipped or neutral job supplies no coverage: establish whether its native condition makes it
    inapplicable, or required validation is missing. Draft skips never supply test coverage. A job
    without a check run or status needs the same applicability decision, not an assumed pass.
@@ -132,9 +133,7 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    without reentering that skill's active run. Record an exclusion's evidence, remove it from
    required coverage, and do not repair, rerun, or wait for it. Apply the
    GitHub rule's runner-infrastructure exclusion automatically: record a qualified check as skipped
-   and do not rerun or wait for a green hosted result. Every other failure is relevant, a job
-   stopped by its time limit and a suite past its runtime budget included, as the testing rule's
-   five-minute budget bullet says. Read its
+   and do not rerun or wait for a green hosted result. Every other failure is relevant. Read its
    annotations and complete log, fix the repository
    input responsible — code, test, configuration or workflow — and commit it. **Every relevant
    failure on the head goes into one push**: read all of them before fixing any, reproduce each
@@ -178,9 +177,9 @@ An excluded failed check does not prevent that ordinary authorized merge attempt
 rejects it because branch protection requires the excluded check, leave the pull request open and
 report that actual rejection and its provider evidence; do not bypass protection.
 
-A verified merge ends the pull request's work, as the global rules' merge-end bullet says: do not
-inspect or follow merge-triggered release, publication, artifact or deployment workflows, or check
-by any other route whether the change is live.
+Once the merge is verified, as the global rules' **A merge leaves no deploy work** bullet says, do
+not inspect or follow merge-triggered release, publication, artifact or deployment workflows, or
+check by any other route whether the change is live.
 
 When the merged diff changes agent configuration, poll the default-branch Agent Sync run the merge
 started as **Check Gate** steps 6–7 poll a check. A run ending in anything but success is diagnosed

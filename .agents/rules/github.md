@@ -271,9 +271,8 @@ alwaysApply: true
 - **Order sections for a reader arriving cold, never by what landed most recently.** A section goes
   where its vocabulary is already established: one whose examples are all of some construct follows
   the section that introduces that construct, however central the behavior it describes is.
-- A section grown into a wall of prose carries rules a table states better: move the composition
-  rules into the table and leave the prose only what a table cannot say, such as caveats, reasons,
-  and when to reach for the explicit form.
+- A section grown into a wall of prose carries rules a table states better: move those rules into a
+  table and leave the prose only what a table cannot say, such as caveats, reasons and exceptions.
 - Write in plain language, as if explaining the repository to a colleague. Avoid repeating internal
   terms such as `canonical`; name the file or say `source` when that is clearer.
 

@@ -86,10 +86,10 @@ Every task that changes files starts here, and so does every follow-up that arri
   it lacks: at most five numbered steps, each one plain line naming one bounded action with its
   wall-clock estimate, as `i-have-adhd` numbers steps, then the total and what the user does
   afterwards. Keep it under 200 words while `i-have-adhd` is active.
-- **A plan's last step is the merge**, or the reviewable pull request when no merge is authorized.
-  Its verification runs on the branch before that; no step, verification or user action after it
-  walks the deployed site, checks a rollout or waits for a deploy, apart from the exception the
-  global rules' merge-end bullet names.
+- **A plan's last step is the merge**, the reviewable pull request when no merge is authorized, or
+  the verified local result when there is no pull request. Its verification runs before that; no
+  step, verification or user action after it walks the deployed site, checks a rollout or waits for
+  a deploy, apart from the tasks the global rules' **A merge leaves no deploy work** bullet excepts.
 - **An estimate is the executing agent's own wall-clock, never the effort the same work would
   take a person.** Build it from what the run does and waits on, never from how big the change
   feels, round each step to the nearest whole minute, never below 1, and list what the plan needs
@@ -132,7 +132,7 @@ Every task that changes files starts here, and so does every follow-up that arri
 1. <step> (~<n> min)
 2. <step> (~<n> min)
 
-**Total: ~<n> min.** Then <what the user does next>.
+**Total: ~<n> min.** Then <what the user does next, such as review or merge; never a deploy the request does not name>.
 ```
 
 ### Approval
@@ -407,9 +407,10 @@ how those issues are handled.
   worsens it, report the check and that evidence as a baseline failure. Continue the requested work and its relevant validation; do not
   repair, rerun, investigate further, ask a product question, or record a deferral for that failure
   merely because validation encountered it. Keep the failed result visible and never report the
-  whole check as passing. This exclusion does not cover a defect the user assigned, a failure of
-  the behavior the task must establish, or a confirmed finding independently established by a
-  review or source inspection apart from diagnosis of the excluded check. Do not reopen an
+  whole check as passing. This exclusion does not cover a defect the user assigned, a suite past
+  its runtime budget, as the testing rule's **Every suite finishes within five minutes of wall
+  time** bullet says, a failure of the behavior the task must establish, or a confirmed finding
+  independently established by a review or source inspection apart from diagnosis of the excluded check. Do not reopen an
   exclusion by relabeling that same failure as a review or source finding. Assigned defects and
   independent findings remain fix responsibilities even when older code caused them.
   Missing comparison evidence is not a baseline exclusion; inspect the failure at its native owner
@@ -449,9 +450,7 @@ how those issues are handled.
   also takes in an item adding a stop, a question or an approval the guidance does not call for,
   such as a brief telling a worker to stop and ask before adding the schema revision a migration
   skill puts its change in: the guidance settled that step, and the added gate hands the user a
-  question with one answer. And it takes in an item setting a looser target than the rule does,
-  such as a brief asking a worker to keep a suite under its timeout where the testing rule's budget
-  is five minutes: the item states the rule's target.
+  question with one answer.
   - **The agent writing it** rewrites an item a rule forbids into a shape the rule allows, or drops
     it where none exists. One the user asked for in their own words goes out with those words quoted
     and the rule they set aside named; a rule the agent thinks is wrong is put to the user, never
@@ -965,8 +964,7 @@ The ready-for-review message takes exactly this shape, one message per pull requ
 
 The run stays open until both streams finish: the source stream when its message is sent, or when
 `merge-gate` returns from an authorized merge; the guidance stream when `process-ledger` reports no
-remaining entries other than kept `review` records, or a concrete retained hold. Neither stream
-waits on a deploy, as the global rules' merge-end bullet says.
+remaining entries other than kept `review` records, or a concrete retained hold.
 
 A workflow that already runs `review-pass` runs step 1 as its own; one that already invokes
 `merge-gate` runs step 4 as its own.

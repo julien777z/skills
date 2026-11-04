@@ -168,9 +168,9 @@ and deliver the same dashboard again on every request so the user keeps one page
   what deploying sets off, such as a migration running.
 - **`outline` "Once live"**: per environment, what the user can check after it deploys to know the
   change works there, such as a page to open, a job to watch or a log line to look for, each with a
-  link where one exists; the agent checks none of it, as the global rules' merge-end bullet says. In
-  these three outlines, `tone` is `critical` when skipping the item breaks the next step and
-  `warning` otherwise.
+  link where one exists; the agent checks none of it, as the global rules' **A merge leaves no
+  deploy work** bullet says. In these three outlines, `tone` is `critical` when skipping the item
+  breaks the next step and `warning` otherwise.
 - **`links` "Pull requests"**: each open and draft pull request, leaving out merged and closed
   ones, which need nothing more from the reader, with `group_label` "Repository". `label` its name,
   `url`, `group` "<owner>/<repo>", `detail` the checks and review state just read, `state` its
