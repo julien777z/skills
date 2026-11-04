@@ -36,7 +36,10 @@ globs:
   on a combination. An operation runs for anyone holding its own permission. Data in its response
   that another permission guards is withheld or masked unless the caller holds that permission too.
   A field revealed at several levels gets one permission per level, and the most revealing one held
-  applies.
+  applies. One composition is allowed: an action inside a page or tab that a permission gates may
+  also require that permission beside its own, so its control and its route agree, where the
+  product owner decided the two compose and the repository's project guidance records that
+  decision.
 - The disclosure rule lives on the response field and is published in the API schema. The server
   sends a masked value already masked. A client works out what is withheld from the caller's
   permissions and that published rule, never from a per-response list. A write to a field the
