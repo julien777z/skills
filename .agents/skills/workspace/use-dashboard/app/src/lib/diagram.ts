@@ -149,8 +149,16 @@ function flowchartSource(section: DiagramSection, direction: Direction, colors: 
     lines.push(`${ids.get(edge.from)} --> ${label ? `|"${mermaidString(label)}"| ` : ''}${ids.get(edge.to)}`);
   }
 
+  section.nodes.forEach((node) => {
+    if (node.tone) {
+      lines.push(`style ${ids.get(node.id)} stroke:${colors[TONES[node.tone].color]},stroke-width:3px`);
+    }
+  });
+
   section.edges.forEach((edge, index) => {
-    if (edge.change) {
+    if (edge.tone) {
+      lines.push(`linkStyle ${index} stroke:${colors[TONES[edge.tone].color]},stroke-width:3px`);
+    } else if (edge.change) {
       lines.push(`linkStyle ${index} ${strokeStyle(edge.change, colors)}`);
     }
   });

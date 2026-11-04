@@ -1,13 +1,15 @@
 ---
 name: acceptance-gate
-description: Required checkpoint over an authorized change's complete diff before local completion, draft readiness or merge; run as a workflow dependency without a separate user invocation. Passing tests or the author's own review never substitute for its verdict. Judge an issue, finding, proposal or diff against product state, intent and the quality rubric through a read-only subagent; a worker that cannot launch one hands it up to its delegating agent. Run over each finished plan step or worker task before later work builds on it, for triage, before recording a deferral, before and after fixing or resolving one, after base incorporation, and on a fix for a gate or review flag larger than a small repair.
+description: Required checkpoint over an authorized change's complete diff before local completion, draft readiness or merge; run as a workflow dependency without a separate user invocation. Passing tests or an informal self-review never substitute for its verdict; an in-process gate still runs this skill's question and rubric. Judge an issue, finding, proposal or diff against product state, intent and the quality rubric through a read-only subagent, or in process for the primary agent's own plan step; a worker that cannot launch one hands it up to its delegating agent. Run over each finished plan step or worker task before later work builds on it, for triage, before recording a deferral, before and after fixing or resolving one, after base incorporation, and on a fix for a gate or review flag larger than a small repair.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 
 # Acceptance Gate
 
 Put a decision the author cannot judge about its own work to a subagent that reads the product's
-state and the change's intent, applies the repository's rubric, and answers one question.
+state and the change's intent, applies the repository's rubric, and answers one question. The one
+exception, a plan step the primary agent made itself, is gated in process, as **The Gate Subagent**
+says.
 `references/rubric.md` holds what it judges by; this file holds how it is run.
 
 ## Dependencies
@@ -79,8 +81,10 @@ applicable task pull requests, not only default-branch or local checkout compari
 checks analogous implementations and the evidence for retained differences; missing applicable
 pull-request context is a flag to obtain that context, not permission to assume consistency.
 
-The gate is read-only and normally distinct from the author. If its reader cannot launch, apply
-`subagent-matrix`'s launch fallback. Invoke `subagent-matrix` for the
+The gate is read-only and normally distinct from the author. A plan step the primary agent made
+itself is gated in process instead, as `execute-task`'s step gates say, because the task's final
+acceptance reads every line again. If its reader cannot launch, apply `subagent-matrix`'s launch
+fallback. Invoke `subagent-matrix` for the
 acceptance-gate role, using its configured Codex role selection and the advanced capability level on
 other hosts. Dispatch the gate with that exact identifier, and retain catalogue state, identifier, assignment
 state and host receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. It

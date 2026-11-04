@@ -280,19 +280,62 @@ def check_navbar(dashboard: dict[str, object], path: str) -> None:
         )
 
 
-def check_page_sections(page: dict[str, object], path: str) -> None:
-    """Require sections on an unlocked page and none on a locked one."""
+def nested_diagrams(value: object, path: str) -> list[tuple[str, dict[str, object]]]:
+    """List every diagram in a spec value, with its path, including those in tabs and dialogs."""
 
-    if bool(page.get("locked")) == bool(page["sections"]):
+    if isinstance(value, list):
+        return [
+            found
+            for index, item in enumerate(cast(list[object], value))
+            for found in nested_diagrams(item, f"{path}[{index}]")
+        ]
+
+    if not isinstance(value, dict):
+        return []
+
+    entries = cast(dict[str, object], value)
+    found = [(path, entries)] if entries.get("type") == SectionType.DIAGRAM else []
+
+    return found + [
+        diagram
+        for key, item in entries.items()
+        for diagram in nested_diagrams(item, f"{path}.{key}")
+    ]
+
+
+def check_page_sections(page: dict[str, object], path: str) -> None:
+    """Require sections on an unlocked page and none on a locked one, and every diagram node's target to name a section the page always shows."""
+
+    sections = cast(list[dict[str, object]], page["sections"])
+
+    if bool(page.get("locked")) == bool(sections):
         raise DashboardSpecError(
             f"{path}.sections must be empty on a locked page and hold a section otherwise"
         )
+
+    titles = {section["title"] for section in sections}
+
+    for diagram_path, diagram in nested_diagrams(sections, f"{path}.sections"):
+        for index, node in enumerate(cast(list[dict[str, object]], diagram["nodes"])):
+            if "target" in node and node["target"] not in titles:
+                raise DashboardSpecError(
+                    f"{diagram_path}.nodes[{index}].target must name a section title on this page outside tabs"
+                )
 
 
 def check_tree_nodes(value: object, path: str) -> None:
     """Require a list of tree nodes, each of which may hold more."""
 
     check_objects(value, path, shape=TREE_NODE_SHAPE)
+
+
+def check_tabs(tabs: dict[str, object], path: str) -> None:
+    """Require a tab with sections among a tabs section's tabs."""
+
+    entries = cast(list[dict[str, object]], tabs["tabs"])
+
+    if not any(entry["sections"] for entry in entries):
+        raise DashboardSpecError(f"{path}.tabs must hold a tab with sections")
 
 
 def check_section(section: object, path: str) -> None:
@@ -512,7 +555,16 @@ DIAGRAM_PULL_REQUEST_SHAPE: Final[ObjectShape] = ObjectShape(
 )
 DIAGRAM_NODE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="DiagramNode",
-    fields={"id": TEXT, "label": TEXT, "detail": TEXT, "pr": TEXT, "change": CHANGE},
+    fields={
+        "id": TEXT,
+        "label": TEXT,
+        "detail": TEXT,
+        "pr": TEXT,
+        "change": CHANGE,
+        "tone": TONE,
+        "details": Field(check=check_section, typescript="Section"),
+        "target": TEXT,
+    },
     required=frozenset({"id", "label"}),
 )
 DIAGRAM_EDGE_SHAPE: Final[ObjectShape] = ObjectShape(
@@ -523,8 +575,15 @@ DIAGRAM_EDGE_SHAPE: Final[ObjectShape] = ObjectShape(
         "label": TEXT,
         "step": WHOLE_NUMBER,
         "change": CHANGE,
+        "tone": TONE,
+        "details": Field(check=check_section, typescript="Section"),
     },
     required=frozenset({"from", "to"}),
+)
+DIAGRAM_LEGEND_SHAPE: Final[ObjectShape] = ObjectShape(
+    name="DiagramLegendEntry",
+    fields={"tone": TONE, "label": TEXT},
+    required=frozenset({"tone", "label"}),
 )
 REFERENCE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Reference",
@@ -536,12 +595,18 @@ TREE_NODE_SHAPE: Final[ObjectShape] = ObjectShape(
     fields={
         "label": TEXT,
         "detail": TEXT,
+        "figure": TEXT,
         "meta": TEXT,
         "tone": TONE,
         "children": Field(check=check_tree_nodes, typescript="TreeNode[]"),
         "details": Field(check=check_section, typescript="Section"),
     },
     required=frozenset({"label"}),
+)
+TAB_SHAPE: Final[ObjectShape] = ObjectShape(
+    name="Tab",
+    fields={"label": TEXT, "sections": SECTIONS},
+    required=frozenset({"label", "sections"}),
 )
 NOTICE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Notice",
@@ -633,6 +698,18 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
         },
         frozenset({"items"}),
     ),
+    SectionType.TABS: section_shape(
+        SectionType.TABS,
+        {
+            "tabs": Field(
+                check=partial(check_objects, shape=TAB_SHAPE, unique="label"),
+                typescript="Tab[]",
+                shape=TAB_SHAPE,
+            )
+        },
+        frozenset({"tabs"}),
+        check_tabs,
+    ),
     SectionType.TABLE: section_shape(
         SectionType.TABLE,
         {
@@ -665,6 +742,11 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
                 shape=DIAGRAM_EDGE_SHAPE,
             ),
             "steps": TEXTS,
+            "legend": Field(
+                check=partial(check_objects, shape=DIAGRAM_LEGEND_SHAPE),
+                typescript="DiagramLegendEntry[]",
+                shape=DIAGRAM_LEGEND_SHAPE,
+            ),
         },
         frozenset({"nodes", "edges"}),
         check_diagram,
@@ -680,7 +762,13 @@ PAGE_SHAPE: Final[ObjectShape] = ObjectShape(
             typescript=PageLayout.__name__,
             choices=PageLayout,
         ),
+        "subtitle": TEXT,
         "sections": SECTIONS,
+        "progress": Field(
+            check=partial(check_object, shape=PROGRESS_SHAPE),
+            typescript="ProgressSummary",
+            shape=PROGRESS_SHAPE,
+        ),
         "locked": FLAG,
         "status": Field(
             check=partial(check_object, shape=LABEL_SHAPE),

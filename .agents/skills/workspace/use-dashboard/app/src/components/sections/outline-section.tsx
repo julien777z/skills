@@ -162,7 +162,9 @@ function Group({ group, expanded }: { group: OutlineGroup; expanded: boolean }):
                 className="pl-[18px] text-muted-foreground [overflow-wrap:anywhere]"
               >
                 <Stack gap="sm">
-                  <RichText text={item.detail} />
+                  <Text as="p">
+                    <RichText text={item.detail} />
+                  </Text>
                   {item.points && <TextList items={item.points} />}
                 </Stack>
               </AccordionContent>
