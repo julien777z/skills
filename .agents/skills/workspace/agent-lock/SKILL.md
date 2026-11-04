@@ -12,7 +12,7 @@ Use [resources/main.py](resources/main.py) with Python 3.12+ on macOS or Linux. 
 
 ## Consume ownership
 
-Prefer ownership scoped to the actual operation. **No heartbeat or renewal commands are needed.** Every lock expires after **600 seconds (10 minutes)** by default. Set `--ttl-seconds` when needed; the CLI rejects durations over **1800 seconds (30 minutes)**, zero, negative, or nonfinite values. Expiry is a fixed deadline, not an inactivity timer. Finish cleanup before that deadline.
+Prefer ownership scoped to the actual operation. **No heartbeat or renewal commands are needed.** Every lock expires after **600 seconds (10 minutes)** by default. Set `--ttl-seconds` when needed; the CLI rejects durations over **900 seconds (15 minutes)**, zero, negative, or nonfinite values. An operation that needs longer is too slow, never a reason for a longer lease: a test suite past its time budget is fixed, as the testing rules say, and a long multi-step job is split into operations that each take the lock. Expiry is a fixed deadline, not an inactivity timer. Finish cleanup before that deadline.
 
 For work represented by a foreground command, use `consume`:
 

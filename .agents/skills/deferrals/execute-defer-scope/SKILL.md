@@ -23,7 +23,7 @@ Resolve recorded deferrals instead of treating their proposed work as automatica
 
 With no explicit scope, retrieve session-created pull requests from `session-ledger`. Query Linear
 issues carrying the deferral label the repository's project guidance names using the repository and origin or resolution PR metadata
-written by `defer-scope`. Include legacy records and record pull requests created in the session.
+written by `defer-scope`. Include legacy records and pull requests carrying records created in the session.
 Never infer an issue, stable key, path, or pull-request number.
 
 An explicit scope replaces that default:
@@ -32,7 +32,7 @@ An explicit scope replaces that default:
   match. A pull request selects every record whose exact origin or resolution metadata names it;
   ambiguous fuzzy references select nothing until the user resolves them.
 - `all` selects every active Linear deferral issue for the repository plus active legacy records
-  on the fetched remote default branch and open record pull requests.
+  on the fetched remote default branch and in open pull requests.
 - `all including declined` also selects canceled or archived Linear issues and records under
   `deferrals/declined/`.
 - An exact canceled issue or declined legacy path selects it without the broader phrase.
@@ -48,7 +48,7 @@ could not be inventoried, and do not claim an aggregate or session scope is comp
 ## Assess Every Record
 
 Read the complete Linear issue with comments or the complete legacy record with supporting files and
-record pull request. Read the current implementation and history of the code it names. Confirm that
+the pull request carrying it. Read the current implementation and history of the code it names. Confirm that
 the problem still exists before considering its proposed solution.
 
 Put each record whose problem still exists to `acceptance-gate`'s triage question and carry its
@@ -146,11 +146,14 @@ Do not migrate existing repository records to Linear in this run. Preserve their
 - implemented, simplified, and already-resolved records are removed in the resolution pull request;
 - declined records and evidence move under `deferrals/declined/<key>/` with the reason and
   reconsideration criterion;
-- blocked records and their record pull requests remain unchanged.
+- blocked records remain unchanged, wherever they ride.
 
 Once the validated
-resolution pull request is ready, comment on and close each superseded open record pull request with
-the replacement and disposition. Close only records included in that replacement.
+resolution pull request is ready, comment on and close each superseded open pull request that
+carries nothing but records included in that replacement, with the replacement and disposition. A
+superseded record riding a pull request that carries other work is removed from it when this
+session owns that pull request; on any other, report the record and its pull request and let the
+resolution pull request carry the disposition.
 
 ## Validate And Report
 
@@ -160,7 +163,7 @@ migration or contract check. A legacy disposition-only documentation diff gets a
 and `git diff --check`, not application tests.
 
 Report every selected record, source, disposition, both gate outcomes, Linear state change,
-replacement pull request, closed legacy record pull request, and active blocker. A gate objection
+replacement pull request, closed or updated pull request carrying a record, and active blocker. A gate objection
 or flag is reported with what it named, whether or not the resolution went on to land. If Linear becomes unavailable after a record
 was found or updated, keep its identifier and report the blocked update rather than dual-writing a
 repository record.

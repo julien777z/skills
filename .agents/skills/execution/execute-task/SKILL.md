@@ -21,7 +21,7 @@ are validated by their evidence, smoke-test, review, and acceptance gates.
 - `acceptance-gate` — judge each finished plan step's and worker task's diff before later work builds on it, the finished task's complete diff before local completion, before the pull request is sent for review and before it merges, and each fix for a flag it raises that its **Bounds** do not leave to an in-process check.
 - `generic-push` — keep each repository's publishing metadata independent during multi-repository changes.
 - `merge-conflict` — bring in a conflicting base as soon as a push read-back shows it.
-- `subagent-matrix` — the hand-up a worker without an agent tool uses for an independent step.
+- `subagent-matrix` — assignment, dispatch and launch fallback for every delegated task.
 - `merge-gate` — at **Completion**, when the merge is authorized, ready the pull request, drive its checks to green and merge it.
 - `security-audit` — **Building It Safely** while writing code that crosses a trust boundary;
   `review-pass` runs its **Diff Review** of such a change at **Completion**.
@@ -251,6 +251,12 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
 
 Execution starts once a required plan is approved, or immediately when **When A Plan Is Needed** requires no plan. Canonical guidance corrections follow `edit-skill`'s **Recording During A Task** timing.
 
+### Assigning Work
+
+Before implementation begins and whenever new work is admitted, delegate each coherent nontrivial
+execution task under `subagent-matrix`'s **Dispatch** assignment bullets; a task waiting on a worker
+never holds another independent one. Reassess ownership after each finding or follow-up.
+
 ### Task Authorization
 
 - Carry the user's authorization for the task through its ordinary implementation, verification,
@@ -388,10 +394,11 @@ delivery. A formatter passing is not a substitute for that comparison.
 Apply `pre-production`'s encountered-issues policy while making the change. The rules below govern
 how those issues are handled.
 
-- **Classify validation failures before expanding the task.** When existing run evidence or a
-  reproduction through the native check on the default branch establishes the same failure under
-  comparable inputs, and the change neither introduces nor worsens it, report the check and that
-  evidence as a baseline failure. Continue the requested work and its relevant validation; do not
+- **Classify validation failures first, before the failure is diagnosed, handed to a worker, or
+  mentioned to the user as anything but a baseline.** Read the default branch's latest run of the
+  same check, hosted or local, and reproduce there only when no such run exists. When that evidence
+  establishes the same failure under comparable inputs, and the change neither introduces nor
+  worsens it, report the check and that evidence as a baseline failure. Continue the requested work and its relevant validation; do not
   repair, rerun, investigate further, ask a product question, or record a deferral for that failure
   merely because validation encountered it. Keep the failed result visible and never report the
   whole check as passing. This exclusion does not cover a defect the user assigned, a failure of
@@ -402,6 +409,11 @@ how those issues are handled.
   Missing comparison evidence is not a baseline exclusion; inspect the failure at its native owner
   before choosing its disposition. Pass established exclusions and their evidence to every later
   validation or merge gate.
+  A brief that hands a validation failure to a worker carries the classification's result, and
+  never asks the worker to fix a baseline failure. A baseline failure's cause, even one only the
+  user could remove such as a provider setting or credential, is never put to the user as a gate or
+  a request, apart from the branch-protection rejection the GitHub rules' **Merge Authorization**
+  says to report.
 
 - **A confirmed defect the work turns up, or a finding against the task's changed design, is fixed
   in the change in flight, in a shape the standing guidance allows as the next bullet says, and
@@ -582,7 +594,9 @@ checks before delivery; retain evidence that the change has not invalidated.
   guidance that lists those commands is a shortcut to the workflows, never a
   substitute; where the two disagree, the workflow is right. A job that needs a hosted service or a
   running stack, or is too slow to run before every push, joins the slow verification below and is
-  named in the report.
+  named in the report. Room on this machine never leaves a job to its hosted run: a shortage of
+  disk, memory or ports is recovered as the global rules' local-stack bullet says, and the job runs
+  here. Only a hosted service, credentials the session lacks or runner-specific behaviour does.
 - **A local variant of a CI check is not that check**, and each of these passes locally and fails
   in CI: lint or type checks scoped to the changed files, where CI's whole-tree run finds an import
   another change left unused in a file the branch never touched; a formatter or linter in write

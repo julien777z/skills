@@ -1,6 +1,6 @@
 ---
 name: acceptance-gate
-description: Required checkpoint over an authorized change's complete diff before local completion, draft readiness or merge; run as a workflow dependency without a separate user invocation. Passing tests or the author's own review never substitute for its verdict. Judge an issue, finding, proposal or diff against product state, intent and the quality rubric through a read-only subagent, or in process for the primary agent's own plan step or when it cannot launch. Run over each finished plan step or worker task before later work builds on it, for triage, before recording a deferral, before and after fixing or resolving one, after base incorporation, and on a fix for a gate or review flag larger than a small repair.
+description: Required checkpoint over an authorized change's complete diff before local completion, draft readiness or merge; run as a workflow dependency without a separate user invocation. Passing tests or the author's own review never substitute for its verdict. Judge an issue, finding, proposal or diff against product state, intent and the quality rubric through a read-only subagent, or in process for the primary agent's own plan step; a worker that cannot launch one hands it up to its delegating agent. Run over each finished plan step or worker task before later work builds on it, for triage, before recording a deferral, before and after fixing or resolving one, after base incorporation, and on a fix for a gate or review flag larger than a small repair.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 
@@ -79,10 +79,10 @@ applicable task pull requests, not only default-branch or local checkout compari
 checks analogous implementations and the evidence for retained differences; missing applicable
 pull-request context is a flag to obtain that context, not permission to assume consistency.
 
-The gate is read-only and normally distinct from the author. Two cases run it in process instead:
-a plan step the primary agent made itself, which `execute-task`'s step gates check in process
-because the task's final acceptance reads every line again, and a reader that cannot launch, where
-the gate runs under `subagent-matrix` and discloses the loss of independence. Invoke `subagent-matrix` for the
+The gate is read-only and normally distinct from the author. A plan step the primary agent made
+itself is gated in process instead, as `execute-task`'s step gates say, because the task's final
+acceptance reads every line again. If its reader cannot launch, apply `subagent-matrix`'s launch
+fallback. Invoke `subagent-matrix` for the
 acceptance-gate role, using its configured Codex role selection and the advanced capability level on
 other hosts. Dispatch the gate with that exact identifier, and retain catalogue state, identifier, assignment
 state and host receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. It
@@ -182,10 +182,12 @@ added guard says `no guard added` in those words.
 what a feature does or shows, a remedy whose visible effect is large, such as a layout, control or
 flow changing across many pages, a change carried past the surface the user named — each with the
 user's words in the intent statement that settle it. Small presentation decisions on the surface in
-hand are not listed. A product choice with no such words is a flag whose remedy is putting the
-choice to the user before the code stands, whatever the step calls itself, a fix included. An
-earlier accepted step, a plan record without the user's words, or a brief calling the choice decided
-is not those words. A verdict with none says `no product choice added` in those words.
+hand are not listed, and neither is local test tooling or the records it seeds, which the global
+rules' local-stack bullet leaves to the agent. A product choice with no such words is a flag whose
+remedy is putting the choice to the user before the code stands, whatever the step calls itself, a
+fix included. An earlier accepted step, a plan record without the user's words, or a brief calling
+the choice decided is not those words. A verdict with none says `no product choice added` in those
+words.
 
 For a diff question, also apply the `code-simplify` rubric’s **Trace Changed Flows** to the supplied
 implementations, consumers, and affected-repository map. A diff alone that cannot establish that
@@ -197,8 +199,8 @@ findings in the verdict and summarize clean flow evidence under `Also read`.
 It returns the verdict its question defines, shaped as `references/rubric.md` — What A Verdict Names
 requires.
 
-Route the gate through `subagent-matrix`'s **Dispatch**, including its disclosed in-process
-fallback when the required reader cannot launch.
+Route the gate through `subagent-matrix`'s **Dispatch**, including its launch fallback when the
+required reader cannot launch.
 
 For a canonical guidance batch, one fresh gate may inspect the complete frozen diffs together and
 return a distinct verdict for each exact head. Its prompt names every head and intent, and its

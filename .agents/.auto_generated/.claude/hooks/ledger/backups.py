@@ -29,7 +29,7 @@ def recovery_comment_items(value: object, location: str) -> list[str]:
         return []
 
     if not isinstance(value, list):
-        raise LedgerFormatError(f"{location} has a recovery_comment that is not a list")
+        raise LedgerFormatError(f"{location} has a data.recovery_comment that is not a list")
 
     items = [
         item
@@ -40,7 +40,7 @@ def recovery_comment_items(value: object, location: str) -> list[str]:
 
     if len(items) != len(value):
         raise LedgerFormatError(
-            f"{location} has a recovery_comment item that is neither a URL "
+            f"{location} has a data.recovery_comment item that is neither a URL "
             f"nor {AWAITING_PULL_REQUEST}"
         )
 
@@ -116,7 +116,7 @@ def missing_backup(record: BackupRecord, url_owners: dict[str, list[str]]) -> st
         return None
 
     if record["kind"] is not BackedUpKind.GUIDANCE_CORRECTION:
-        return None if record["has_recovery_comment"] else "recovery_comment is empty"
+        return None if record["has_recovery_comment"] else "data.recovery_comment is empty"
 
     if not record["has_commit"]:
         return None
@@ -124,14 +124,14 @@ def missing_backup(record: BackupRecord, url_owners: dict[str, list[str]]) -> st
     urls = record["comment_urls"]
 
     if not urls:
-        return "has a commit but no recovery_comment URL"
+        return "has a commit but no comment URL in data.recovery_comment"
 
     sharers = sorted({owner for url in urls for owner in url_owners[url] if owner != record["id"]})
 
     if not sharers:
         return None
 
-    return f"recovery_comment URL is shared with {', '.join(sharers)}"
+    return f"data.recovery_comment URL is shared with {', '.join(sharers)}"
 
 
 def ledger_findings(document: object) -> list[str]:

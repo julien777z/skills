@@ -99,10 +99,10 @@ alwaysApply: true
   state, or recorded touch does not supply that instruction. Verify the selected pull request's
   owner, state and scope before updating it; leave other sessions' pull requests and branches untouched,
   except for the guidance files the dependent-guidance bullet below puts on them.
-- **Agent configuration that depends on no still-open source pull request continues the open
-  agent-configuration pull request for that work, whichever session opened it.** Agent configuration
-  is the canonical `.agents` tree — skills, each with its own scripts, assets and templates; rules;
-  and agent definitions. Nonbehavioral text and guidance-reference corrections in agent hooks and
+- **Agent configuration that depends on no still-open source pull request in this repository
+  continues the open agent-configuration pull request for that work, whichever session opened it.**
+  Agent configuration is the canonical `.agents` tree — skills, each with its own scripts, assets
+  and templates; rules; and agent definitions. Nonbehavioral text and guidance-reference corrections in agent hooks and
   installers also follow this workflow. Changes to execution, timing, installation, discovery,
   permissions or mutation scope remain source work. Everything else is source.
   List the repository's open pull requests before
@@ -123,9 +123,9 @@ alwaysApply: true
   only the guidance files, under the worker rule above. Fold a separate agent-configuration pull
   request this session opened for such guidance into the source pull request and close it, saying
   where the work went. Guidance in one repository that depends on a source pull request in another
-  cannot share it: it goes on its own agent-configuration pull request, never the one carrying
-  independent guidance, and is held as **Merge Authorization** says, so the hold stops nothing
-  else.
+  cannot share that pull request: it joins the repository's one agent-configuration pull request
+  the work continues, like any other guidance, and that pull request is held as **Merge
+  Authorization** says. A dependency never opens a second agent-configuration pull request.
 - **Every other agent configuration and source never share a branch**, even when a guidance change
   follows the source work checked out; a pull request found carrying both is split by moving one
   kind's files onto the pull request of that kind the work continues. Sharing one holds the guidance
@@ -150,7 +150,9 @@ alwaysApply: true
 - Merging any pull request requires explicit user authorization in the current request or explicit
   applicable guidance in a rule or invoked skill for that pull request. A fix request, CI-test
   request, successful check, review, or request to implement a plan that lists a merge does not
-  itself authorize merging. If neither authorization source applies, do not merge or enable auto-merge.
+  itself authorize merging. A reply that could be read as accepting a merge the agent offered, such
+  as a bare "yes" beside another request, authorizes no merge it does not name. If neither
+  authorization source applies, do not merge or enable auto-merge.
 - Before asking for merge permission, classify the complete actual diff against the standing
   permissions below. A filename, extension, line count or change label is not a behavioral
   classification. Preserve genuine edits; never remove them merely to qualify for an exception.

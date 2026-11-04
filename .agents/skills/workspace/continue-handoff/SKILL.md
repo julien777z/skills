@@ -41,7 +41,8 @@ For each pull request, in the order given:
 - Read the base, draft state, mergeability, latest check state, and unresolved review threads.
 - Read the whole body, the most recent comment whose first line is `## Hand-off`, and any earlier
   `## Hand-off` comment it refers to. Their queue, questions, decisions, constraints and dependencies are this
-  session's starting context, binding as the user's own words where they quote the user.
+  session's starting context, binding as the user's own words where they quote the user; the
+  cross-repository dependencies and constraints they leave out come from the transferred ledger.
 - Treat inherited factual claims as leads, not verified state. Before a claim determines an action,
   recommendation, reported outcome or approval request, check its authoritative source against the
   current target and relevant environment. A pull request's body, hand-off, ledger or worker report

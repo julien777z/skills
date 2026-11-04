@@ -62,11 +62,11 @@ of a process, carries no count. Section types:
 | `type` | Fields | Item fields |
 | --- | --- | --- |
 | `board` | `title`, `columns: [{title, tone?, page_size?, items}]` | `title`, `detail?`, `meta?`, `tag?`, `url?`, `at?`, `links?`: `tag`, `meta` and `at` share one line of small text, in that order |
-| `questions` | `title`, `items`, `page_size?` | `question`, `status` (`open`, `answered`), `context?`, `options?`, `recommendation?`, `answer?`, `meta?`, `at?` |
-| `links` | `title`, `items`, `page_size?` | `label`, `url`, `detail?`, `status?`, `tone?`, `state?`: a pull request's `open`, `draft`, `merged` or `closed`, drawn with GitHub's icon for it in place of the arrow |
+| `questions` | `title`, `items`, `page_size?`, `group_label?` | `question`, `status` (`open`, `answered`), `context?`, `options?`, `recommendation?`, `answer?`, `meta?`, `at?`, `group?` |
+| `links` | `title`, `items`, `page_size?`, `group_label?` | `label`, `url`, `detail?`, `status?`, `tone?`, `state?`, `group?`: `state` is a pull request's `open`, `draft`, `merged` or `closed`, drawn with GitHub's icon for it in place of the arrow |
 | `table` | `title`, `columns`, `rows`, `details?` | each row a list of strings, one per column; `details`, one section per row, makes each row open a dialog holding that section, with its title and description as the dialog's |
 | `notes` | `title`, `items` | each item a string |
-| `changes` | `title`, `items`, `page_size?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`, `links?`: a named part with its change as a colored badge |
+| `changes` | `title`, `items`, `page_size?`, `group_label?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`, `links?`, `group?`: a named part with its change as a colored badge |
 | `outline` | `title`, `groups: [{title, items}]`, `expanded?` (every item starts open when true), `stacked?` (groups run in one column, each across the full width, for groups read in order), `collapsible?` (false shows every item in full with no toggle, its `title` as a muted label beside its `detail`, for a short write-up of facts read top to bottom) | `title`, `detail`, `tone?`, `tag?`, `meta?`, `links?`, `points?`: a headline that opens to its detail, with `points` as a bulleted list under it, with `tag` as a badge in the item's tone (neutral without one) and `meta` as small text; without `expanded`, a group of one or two items shows them open |
 | `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `figure?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `figure` a short count in a neutral badge right after its label, `meta` beside it, and `details`, one section, opening in a dialog from the entry's label; for a whole made of parts made of parts |
 | `tabs` | `title`, `tabs: [{label, sections}]` | each tab a `label` and the `sections` it shows: a bar of tab labels, read with the arrow keys as well as the pointer, over the selected tab's sections, which render inside this card in order; a tab whose `sections` is `[]` is left off the bar, and with one tab left no bar shows, only its sections; for one subject split into kinds the reader looks at one at a time |
@@ -84,6 +84,14 @@ stays plain text rather than a link. Every `pr`, `from` and `to` names a listed 
 
 A board column, `questions`, `links` or `changes` section with more entries than its `page_size`,
 a whole number of at least 1, shows that many at a time, with Previous and Next.
+
+A `questions`, `links` or `changes` item's `group` names what it belongs to, such as a pull
+request's repository as `owner/repo`; when one item sets it, every item and the section's
+`group_label`, the name of what the groups are, such as `Repository`, are set too. The section
+shows its items group by group, in the order each group first appears, with each group's name above
+its items. With two or more groups it also shows a select labelled `group_label`, offering All and
+each group; choosing a group shows only its items, without the group names above them, and the
+count, the questions' summary and the pages follow what is shown.
 
 Every text field is a non-empty string; unknown fields are refused, so a typo fails the render
 instead of vanishing from the page. `ref`s, node `id`s and reference `text`s are each unique; every
@@ -220,6 +228,10 @@ app's TypeScript types from it into the build. Run `npm ci` once and then `npm r
 to write those types and type-check and lint the app.
 
 ## Delivery
+
+A dashboard is rendered and delivered only when the user asks for it, by invoking the skill that
+builds it or in words, or on an update schedule that skill states itself. Finished work, a merge, a
+changed record or an earlier one-time request to update it never re-renders one on its own.
 
 Every render the user is shown goes out through this section, including a preview, a sample, or a
 test of a change to the page: a screenshot of a render is a capture of the page, never its delivery.

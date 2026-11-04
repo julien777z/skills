@@ -49,8 +49,8 @@ than adding a coordinator layer for a dependent workflow. Record each
 launched worker's catalogue state, exact dispatch identifier, assignment state and host receipt in the
 task ledger through `session-ledger`. Follow the selector's dispatch and unavailable-model policy.
 
-When a required worker cannot launch, follow `subagent-matrix`'s in-process fallback for its
-assignment and report the loss of independence. The `acceptance-gate` remains a separate checkpoint.
+When a required worker cannot launch, apply `subagent-matrix`'s launch fallback for its
+assignment. The `acceptance-gate` remains a separate checkpoint.
 
 ## Review Scope
 
@@ -71,8 +71,8 @@ head this workflow accepted, as `edit-skill`'s **Guidance Delivery** orders it.
 a follow-up after it gets a review of the follow-up, sized to the follow-up.
 
 - **The reviewed head.** When a pass's final acceptance passes, record a `review` entry with
-  `session-ledger` for the pull request: repository, number, the accepted head, its tree, and the
-  accepted target-snapshot identity. For a local route, record a `local_review` entry keyed by
+  `session-ledger` for the pull request: repository, number, the accepted head, its tree, the
+  accepted target-snapshot identity, and its scope, `whole` or `delta`. For a local route, record a `local_review` entry keyed by
   repository and route with its full accepted snapshot identity, durable snapshot locator and digest,
   target-patch digest, layered intended-entry manifest, final receipt and gate locators, and every
   receipt's supporting-input identity. A history rewrite or base incorporation whose continuity
@@ -92,8 +92,12 @@ a follow-up after it gets a review of the follow-up, sized to the follow-up.
   local snapshot. A local delta is empty only when the two snapshots satisfy `session-ledger`'s **Snapshot Evidence** equivalence predicate and every retained receipt's supporting-input identity
   still matches. A changed base or candidate may retain coverage only through **Review Continuity**'s
   recorded attestation; otherwise it is a new delta.
-- **A caller can ask for the whole pull request.** The delta is then the complete merge-base diff
-  whatever the record says, sized as **Anything else** below; `finish-pr` always asks for it.
+- **A caller can ask for the whole pull request, and the pass that answers it records `whole`.**
+  When the latest `review` record for the pull request is already `whole`, that record meets the
+  ask: the delta is measured from it as above, so an unchanged pull request gets only thread triage
+  and a moved one only its new delta, and the pass records `whole` because the earlier whole
+  coverage is preserved. Otherwise the delta is the complete merge-base diff, sized as **Anything
+  else** below. Every other pass records `delta`.
 - **Size the pass from the delta**, using `execute-task`'s definition of a trivial change — no
   design choice in it: a typo, a one-line fix, a rename the user named.
   - **Empty**: a working-pull-request route runs only **Review Thread Triage** when its current
@@ -278,11 +282,11 @@ pushed unless an authorized working-pull-request route is established.
 
 A finding the repository's deferral process has recorded is discharged, not outstanding. Recording it is what makes it durable, so the pass carries on: a recorded deferral never holds the review loop open, never holds the caller's check gate, and never holds the merge.
 
-The deferral's own pull request is independent by construction — it branches from the default branch and carries nothing but the deferral — so it is never a dependency of the pull request under review. Do not wait for it to be reviewed, approved, or merged, and never ask the user to settle the deferred question before merging. That the decision outlives this session is the whole reason for recording it, so treating it as a gate defeats the mechanism.
+A recorded deferral is a Linear issue, or under `defer-scope`'s repository fallback a record riding the session's source pull request in its repository — usually the pull request under review — so it adds no pull request to wait for and is never a dependency of the merge. Never ask the user to settle the deferred question before merging. That the decision outlives this session is the whole reason for recording it, so treating it as a gate defeats the mechanism.
 
 Defer only what the repository's own rules allow to be deferred — never a confirmed defect, which `acceptance-gate`'s admission question defines as anything the system does that a reader would call broken, a measured throughput collapse and an unbounded resource included — and only what **Confirmed Findings** above does not already require fixing. A deferral is not a route around a confirmed finding, and moving one there to reach the merge gate sooner is the failure this section must not enable. Recording runs `acceptance-gate`'s admission question, and a refusal naming fix or do means the finding is fixed in this pass; one naming close is recorded cancelled with its reason and reconsideration criterion. A finding that is neither fixed nor recorded is still a blocker.
 
-Report a recorded deferral as recorded. Link its pull request in the result and say in a sentence what it covers, without presenting it as pending user action or as a caveat on the merge.
+Report a recorded deferral as recorded. Link its record in the result and say in a sentence what it covers, without presenting it as pending user action or as a caveat on the merge.
 
 ## Review Continuity
 
@@ -466,8 +470,7 @@ to work around this gate.
    current workflow owner coordinates that run; its independent lenses and validators receive the
    **Review Scope** delta, complete merge-base diff, full touched files and any working fix head as
    context. Do not delegate another agent only to coordinate those same producers. When a required
-   worker cannot launch, perform its lens in process under `subagent-matrix` and report the loss of
-   independence. For a merged range, pass the original
+   worker cannot launch, apply `subagent-matrix`'s launch fallback for its lens. For a merged range, pass the original
    pull request as metadata only and explicitly preserve the range through resolution and
    eligibility checks. Direct fixes to the matching working fix branch rather than changing the
    immutable target.

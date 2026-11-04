@@ -15,15 +15,14 @@ The user is waiting to deploy, so the run is the next work in the session, ahead
 numbered steps are the plan the user approved by invoking it, so a fold needs no separate
 `execute-task` plan. It never asks whether a revision was applied: the lock marker and a deploy the
 user reported are the only record, and a revision with neither is locked, folded first when a chain
-has several unlocked branch revisions, as steps 1-2 say. Its one question is step 5's, after the
-push.
+has several unlocked branch revisions, as steps 1-2 say.
 
 ## Dependencies
 
 - `database-migrations` — the lock marker and how a revision is locked, the revision rules a locked
   revision falls under, and how later revisions are added and validated.
 - `execute-task` — the priority of work a waiting deploy needs.
-- `session-ledger` — record a held revision and its pending question.
+- `session-ledger` — record the hold and any held local branch.
 
 ## Workflow
 
@@ -43,10 +42,11 @@ push.
 4. **Commit and push** the marker lines and any fold on the branch's pull request, one commit per
    repository (`chore(migrations): lock revisions <ids>`), as soon as those checks pass.
 5. **Report** each locked revision by chain and file, end with the pushed commit the user can
-   deploy, and **ask the user to confirm when revisions may resume**: a revision pushed before that
-   deploy runs would ride into it. Record the hold and the pending question with `session-ledger`,
-   so both survive compaction and handoff; once a held local branch exists, the hold's entry names
-   that branch and its head.
+   deploy, and **state that new revisions stay local until the user says they may resume**: a
+   revision pushed before that deploy runs would ride into it. That line is a notice, never a
+   question: put it in the report, not to a question tool, and record no pending question. Record
+   the hold with `session-ledger`, so it survives compaction and handoff; once a held local branch
+   exists, the hold's entry names that branch and its head.
 
 ## After Locking
 
@@ -59,6 +59,5 @@ next invocation locks the revision that next change opens, and the cycle repeats
 revision, and the code that depends on its schema or stored data, is committed on a local branch
 off the pushed head and never pushed, while work that needs no revision keeps pushing as usual, so
 no push carries it. Only the user's own words lift the hold; once they do, rebase that work onto the
-pull request's branch, validate it as `database-migrations` says, push it, and mark the hold's
-question `answered` with the user's words and the time they gave them. Each invocation starts a new
-hold.
+pull request's branch, validate it as `database-migrations` says, push it, and mark the hold
+lifted with the user's words and the time they gave them. Each invocation starts a new hold.
