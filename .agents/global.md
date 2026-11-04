@@ -204,6 +204,15 @@ alwaysApply: true
   request, approved plan, or instruction to implement a plan does not itself authorize these
   outcomes, even when the plan lists them. A task-wide "all approved" covers ordinary sub-tasks
   within its stated outcome without overriding this separate boundary.
+- **A merge leaves no deploy work.** Once a pull request's merge is verified, never check by any
+  route whether the change is live, such as a provider's deployment status, a release run or the
+  site itself; never walk or test the site the merge deployed; never schedule a re-check, wait for
+  a deploy, or assume one is coming. Nothing waits on a deploy: the remaining work proceeds, and a
+  report names no deploy step as remaining. Other authorized work after a merge is unaffected, such
+  as a run's next batch, a consumer repointed once its dependency merged, or the refresh the GitHub
+  rules' **After Agent Sync** section requires. A task whose own outcome the user stated as a
+  deployment, publication or release, or as restoring a broken deployed operation, follows that
+  outcome past the merge.
 - Authorization to send messages to another agent or external session covers only the messages and
   purpose the user specified. Permission for a bounded exchange does not authorize later updates
   to the same recipient; ask before sending more unless the user explicitly approved an ongoing

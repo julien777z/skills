@@ -253,7 +253,12 @@ class TreeNode(BaseModel):
   client) rebuilt per test where it could be built once per session, work repeated across
   parametrized cases — and fix that cause, or remove what cannot be made cheap, until the suite
   fits. Splitting the suite across jobs only to stay under the budget, or giving any suite a timeout
-  above 15 minutes, hides the same defect.
+  above 15 minutes, hides the same defect. A suite stopped by its time limit, or past its budget,
+  is fixed this way in the change in flight even when the default branch overruns too: the
+  runtime is the defect itself, so the baseline exclusion in `execute-task`'s **Encountered
+  Issues** never covers it. Every instruction about a suite's runtime — a worker's brief, a fix
+  step, a gate's remedy — states the budget as its target, never only the timeout, since a suite
+  that merely stays under the timeout can still be three times over budget.
 - **A run that verifies a change is read for its cost as well as its counts.** Read each suite's
   wall time against its budget. Where the native runner supplies call durations, compare their
   sum with wall time; a large gap identifies time outside test bodies. Use existing setup and

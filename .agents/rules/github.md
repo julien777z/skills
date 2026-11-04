@@ -268,6 +268,11 @@ alwaysApply: true
   available capabilities without assuming how consumers will use the project or framing guidance as
   prohibitions such as "never do X."
 - Remove repeated explanations and prefer short sections, bullets, tables, and focused examples over long prose.
+- **Order sections for a reader arriving cold, never by what landed most recently.** A section goes
+  where its vocabulary is already established: one whose examples are all of some construct follows
+  the section that introduces that construct, however central the behavior it describes is.
+- A section grown into a wall of prose carries rules a table states better: move those rules into a
+  table and leave the prose only what a table cannot say, such as caveats, reasons and exceptions.
 - Write in plain language, as if explaining the repository to a colleague. Avoid repeating internal
   terms such as `canonical`; name the file or say `source` when that is clearer.
 

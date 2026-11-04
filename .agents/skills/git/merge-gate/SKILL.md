@@ -101,7 +101,8 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    duplicate attempt, and each caller-supplied exclusion with its evidence. A completed successful
    representative supplies coverage for an equivalent duplicate that remains pending; a changed
    trigger, condition, execution input, or affected behavior does not. Every unsuccessful terminal
-   duplicate remains subject to step 8.
+   duplicate remains subject to step 8. Read each test job's suite wall time against the testing
+   rule's budget; a suite past it is an unsuccessful result for step 8 even when its job passed.
    A skipped or neutral job supplies no coverage: establish whether its native condition makes it
    inapplicable, or required validation is missing. Draft skips never supply test coverage. A job
    without a check run or status needs the same applicability decision, not an assumed pass.
@@ -176,8 +177,9 @@ An excluded failed check does not prevent that ordinary authorized merge attempt
 rejects it because branch protection requires the excluded check, leave the pull request open and
 report that actual rejection and its provider evidence; do not bypass protection.
 
-Do not inspect or follow merge-triggered release, publication, artifact, or deployment workflows.
-A separate direct delivery or release task owns that work and its verification.
+Once the merge is verified, as the global rules' **A merge leaves no deploy work** bullet says, do
+not inspect or follow merge-triggered release, publication, artifact or deployment workflows, or
+check by any other route whether the change is live.
 
 When the merged diff changes agent configuration, poll the default-branch Agent Sync run the merge
 started as **Check Gate** steps 6–7 poll a check. A run ending in anything but success is diagnosed
