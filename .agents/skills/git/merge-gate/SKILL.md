@@ -176,8 +176,10 @@ An excluded failed check does not prevent that ordinary authorized merge attempt
 rejects it because branch protection requires the excluded check, leave the pull request open and
 report that actual rejection and its provider evidence; do not bypass protection.
 
-Do not inspect or follow merge-triggered release, publication, artifact, or deployment workflows.
-A separate direct delivery or release task owns that work and its verification.
+A verified merge ends the pull request's work, as the global rules' merge-end bullet says: do not
+inspect or follow merge-triggered release, publication, artifact or deployment workflows, or check
+by any other route whether the change is live. Only a task whose outcome the user stated as that
+release or deployment owns it and its verification.
 
 When the merged diff changes agent configuration, poll the default-branch Agent Sync run the merge
 started as **Check Gate** steps 6–7 poll a check. A run ending in anything but success is diagnosed

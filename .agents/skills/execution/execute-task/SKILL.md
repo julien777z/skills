@@ -86,6 +86,10 @@ Every task that changes files starts here, and so does every follow-up that arri
   it lacks: at most five numbered steps, each one plain line naming one bounded action with its
   wall-clock estimate, as `i-have-adhd` numbers steps, then the total and what the user does
   afterwards. Keep it under 200 words while `i-have-adhd` is active.
+- **A plan's last step is the merge**, or the reviewable pull request when no merge is authorized.
+  Its verification runs on the branch before that; no step, verification or user action after it
+  walks the deployed site, checks a rollout or waits for a deploy, as the global rules' merge-end
+  bullet says, unless the user's request names that deployment as the outcome.
 - **An estimate is the executing agent's own wall-clock, never the effort the same work would
   take a person.** Build it from what the run does and waits on, never from how big the change
   feels, round each step to the nearest whole minute, never below 1, and list what the plan needs
@@ -99,7 +103,8 @@ Every task that changes files starts here, and so does every follow-up that arri
     trivial one;
   - a round of parallel readers or reviewers is about a minute, and a round of auditing reviewers
     over a tree is 5–10 minutes;
-  - CI, a deployment or a merge with its follow-up is the observed duration of that job.
+  - CI, a merge's check gate, or a deployment the user's request names is the observed duration of
+    that job.
 - Schedule steps by `subagent-matrix`'s **Dispatch**: coupled work stays sequential, and
   independent scopes with separate owners, files and resources overlap once their inputs are
   settled. Estimate the elapsed time with that overlap, counting overlapping work once at the
@@ -266,8 +271,9 @@ never holds another independent one. Reassess ownership after each finding or fo
   scoped external changes above. "Implement this plan" is not an explicit instruction for any of
   those outcomes, even when the plan names the action and target. Before acting, identify the
   user's separate explicit instruction for that action and target or applicable guidance or an
-  invoked skill that expressly authorizes it; otherwise complete the reviewable work and leave
-  that outcome pending.
+  invoked skill that expressly authorizes it; otherwise complete the reviewable work and stop
+  there. An unauthorized merge leaves the pull request draft for the user; a deployment,
+  publication or release the request does not name is no part of the task, and nothing waits on it.
 - Ask only for a decision that materially changes the authorized target, recipient, or outcome, or
   for an action-time confirmation a platform actually requires. Make that question specific to the
   new decision or action; never ask the user to reconfirm the task or say "continue" to resume it.
@@ -843,8 +849,9 @@ end or pause the surrounding task. Report a blocker only on that boundary's conc
 
 ### Completion
 
-First reconcile **Priority** against the actual deployed operation. Its unmet branch checkpoint
-or failed default-source retry keeps this checkpoint paused; a completed diagnostic or implementation
+When **Priority**'s broken-deployed-operation recovery applies, first reconcile it against the
+actual deployed operation. Its unmet branch checkpoint or failed default-source retry keeps this
+checkpoint paused; a completed diagnostic or implementation
 substep does not start either delivery stream.
 
 When an operational, external, or other non-source outcome reaches its authoritative terminal state,
@@ -951,7 +958,8 @@ The ready-for-review message takes exactly this shape, one message per pull requ
 
 The run stays open until both streams finish: the source stream when its message is sent, or when
 `merge-gate` returns from an authorized merge; the guidance stream when `process-ledger` reports no
-remaining entries other than kept `review` records, or a concrete retained hold.
+remaining entries other than kept `review` records, or a concrete retained hold. Neither stream
+waits on a deploy, as the global rules' merge-end bullet says.
 
 A workflow that already runs `review-pass` runs step 1 as its own; one that already invokes
 `merge-gate` runs step 4 as its own.
