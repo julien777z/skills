@@ -9,7 +9,7 @@ const TEXT_VARIANTS = {
     figure: 'text-2xl @[250px]/card:text-3xl',
     title: 'text-2xl tracking-tight sm:text-3xl',
   },
-  tone: { default: '', muted: 'text-muted-foreground', accent: 'text-info' },
+  tone: { default: '', muted: 'text-muted-foreground' },
   weight: { medium: 'font-medium', semibold: 'font-semibold', bold: 'font-bold' },
   numeric: { true: 'tabular-nums', false: '' },
   breakAnywhere: { true: '[overflow-wrap:anywhere]', false: '' },

@@ -531,8 +531,9 @@ compatibility, generated-output drift.
 ### Ongoing Simplification
 
 **Every finished step is gated before anything builds on it.** When a plan step or a worker task
-finishes, whoever made it, in process or delegated, run `code-simplify` and then `acceptance-gate`'s
-diff question over that step's diff before the step is recorded or reported done and before a later
+finishes, run `code-simplify` and then `acceptance-gate`'s diff question over that step's diff
+before the step is recorded or reported done — in process for a step the primary agent made itself,
+and through a fresh gate subagent for a delegated worker's task — and before a later
 step, worker or consumer builds on it; what they flag is fixed within that step. A step that skipped
 its gates is gated before the next step starts, however much has been built on it since. The step
 gates for a step a waiting deploy needs run after its push and report, as **Priority** orders. The
@@ -717,6 +718,10 @@ Apply that ownership decision before preserving a checked-out branch or updating
 request. A guidance change rides the source branch in flight only where that rule puts it there.
 Verify selected pull requests remotely, and leave another session's branch and pull request
 untouched unless the selected route explicitly directs continuing it.
+
+**A pull request exists from the first push.** The push that first carries a change opens its
+draft pull request, whatever is still being decided or built for it: an open question, a later
+step, or a batch still collecting changes holds none of it back.
 
 **A pull request's title and description are brought up to date at every milestone, not at every
 push.** A milestone is a plan step or worker task that passed its gates under **Ongoing

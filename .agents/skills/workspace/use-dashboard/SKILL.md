@@ -39,7 +39,7 @@ Every other field is optional, and an absent one leaves its part of the page out
 | `notice` | `{title, body, tone?}`: a banner with an icon for its tone under every page's title, for the one thing the reader must see first wherever they are. |
 | `progress` | `{value: 0–1, label, detail?, segments?}`: a stat card twice as wide as the others, with the percentage, `detail` as its badge, and a bar. `segments` is `[{label, details?, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1, and its `label`, with each of `details` on a line under it, shown in a tooltip while the pointer rests on it; without `segments` the bar is a plain fill. |
 | `metrics` | `[{label, value, detail?}]`: at most four stat cards beside the progress, `detail` under the figure. |
-| `pages` | `[{title, icon, layout?, status?, locked?, sections}]`: one navbar link each, with `status` (`{label, tone?}`) shown as a dot in its tone after the page's name, and its label read out to screen readers, for the page's current state, such as something that needs the reader. A `locked` page sets `sections` to `[]` until it has content: its link shows a lock in place of its icon and cannot be opened. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. `sections` render in order; with `layout` `columns`, the default, boards, tables, outlines and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
+| `pages` | `[{title, icon, layout?, subtitle?, status?, progress?, locked?, sections}]`: one navbar link each, a page's `subtitle` replacing the dashboard's under its title, a page's `progress`, in the shape above, shown at its top, with `status` (`{label, tone?}`) shown as a dot in its tone after the page's name, and its label read out to screen readers, for the page's current state, such as something that needs the reader. A `locked` page sets `sections` to `[]` until it has content: its link shows a lock in place of its icon and cannot be opened. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. `sections` render in order; with `layout` `columns`, the default, boards, tables, outlines, trees, tabs and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
 | `references` | `[{text, url}]`: every whole-word occurrence of `text` in any page's text becomes a link to `url`, apart from the navbar, page titles, stat card figures, badges, progress segment tooltips and the first cell of a table row that opens a dialog, which stay plain. |
 
 An `icon` is one of `overview`, `progress`, `board`, `checklist`, `list`, `chart`, `activity`,
@@ -68,13 +68,18 @@ of a process, carries no count. Section types:
 | `notes` | `title`, `items` | each item a string |
 | `changes` | `title`, `items`, `page_size?`, `group_label?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`, `links?`, `group?`: a named part with its change as a colored badge |
 | `outline` | `title`, `groups: [{title, items}]`, `expanded?` (every item starts open when true), `stacked?` (groups run in one column, each across the full width, for groups read in order), `collapsible?` (false shows every item in full with no toggle, its `title` as a muted label beside its `detail`, for a short write-up of facts read top to bottom) | `title`, `detail`, `tone?`, `tag?`, `meta?`, `links?`, `points?`: a headline that opens to its detail, with `points` as a bulleted list under it, with `tag` as a badge in the item's tone (neutral without one) and `meta` as small text; without `expanded`, a group of one or two items shows them open |
-| `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `meta` beside its label, and `details`, one section, opening in a dialog from the entry's label; for a whole made of parts made of parts |
-| `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?` | node: `id`, `label`, `detail?`, `pr?`, `change?`; edge: `from`, `to`, `label?`, `step?`, `change?`; pr: `ref`, `url`; each step a string |
+| `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `figure?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `figure` a short count in a neutral badge right after its label, `meta` beside it, and `details`, one section, opening in a dialog from the entry's label; for a whole made of parts made of parts |
+| `tabs` | `title`, `tabs: [{label, sections}]` | each tab a `label` and the `sections` it shows: a bar of tab labels, read with the arrow keys as well as the pointer, over the selected tab's sections, which render inside this card in order; a tab whose `sections` is `[]` is left off the bar, and with one tab left no bar shows, only its sections; for one subject split into kinds the reader looks at one at a time |
+| `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?`, `legend?` (`[{tone, label}]`, a line in each tone beside what it means) | node: `id`, `label`, `detail?`, `pr?`, `change?`, `tone?`, `details?`, `target?`; edge: `from`, `to`, `label?`, `step?`, `change?`, `tone?`, `details?`; pr: `ref`, `url`; each step a string |
 
 A diagram draws each node as a box inside a frame titled with the `ref` its `pr` names, and each
 edge as an arrow numbered with its `step`; the numbered `steps` are listed beside or under it.
 `change` is `added`, `changed` or `removed` and colors the box or arrow; omit it for an unchanged
-part. Every `pr`, `from` and `to` names a listed `ref` or node `id`, and every `step` a position in
+part. A node's or edge's `tone` colors its border or arrow instead, for a state the reader follows,
+such as the step under discussion; `legend` says what each tone means. A node or edge with
+`details`, one section, opens it in a dialog when it is clicked. A node's `target` names another
+section on the same page, outside tabs, by its title: clicking the node scrolls smoothly to it, and its label
+stays plain text rather than a link. Every `pr`, `from` and `to` names a listed `ref` or node `id`, and every `step` a position in
 `steps`.
 
 A board column, `questions`, `links` or `changes` section with more entries than its `page_size`,
@@ -90,8 +95,9 @@ count, the questions' summary and the pages follow what is shown.
 
 Every text field is a non-empty string; unknown fields are refused, so a typo fails the render
 instead of vanishing from the page. `ref`s, node `id`s and reference `text`s are each unique; every
-list in the spec holds at least one entry, apart from a board column's cards and a locked page's `sections`, so a list with nothing
-to show is left out, and so is the entry that requires it. A URL renders as a link only when it is
+list in the spec holds at least one entry, apart from a board column's cards, a locked page's `sections` and a tab's `sections`, so a list with nothing
+to show is left out, and so is the entry that requires it; a `tabs` section holds at least one tab
+with sections, and its tab labels are unique. A URL renders as a link only when it is
 `http` or `https`.
 
 ```json
@@ -100,7 +106,6 @@ to show is left out, and so is the entry that requires it. A URL renders as a li
   "topic": "Search rewrite",
   "icon": "progress",
   "updated_at": "2026-01-05T14:20:00+00:00",
-  "status": {"label": "On track", "tone": "good"},
   "progress": {
     "value": 0.5,
     "label": "Overall progress",
@@ -140,7 +145,8 @@ Dashboards look alike because they are built alike:
 - **Pick the section by the reader's question.** Where is each item? `board`. What needs my answer?
   `questions`. Where do I click? `links`. What does each part say, in a sentence I can open?
   `outline`. What was added or removed? `changes`. Values across the same columns? `table`. Short
-  remarks? `notes`. How do the parts connect? `diagram`.
+  remarks? `notes`. How do the parts connect? `diagram`. What is this made of, part by part? `tree`.
+  One subject in several kinds, read one kind at a time? `tabs`.
 - **A pill is for a state the reader scans for.** A status, a mark such as Matches or Out of date,
   or a pull request's state takes a pill; a label that only says what kind of thing an item is or
   which group it belongs to, such as its plan or its type, is plain text. When most items on a page
@@ -158,6 +164,9 @@ Dashboards look alike because they are built alike:
   reader's look or action, `critical` is wrong or blocking, `accent` is in progress or
   informational, and `done`, a purple, is finished work that must read apart from what is merely
   fine, such as a merged pull request beside open ones. Leave it out for neutral; never tone an item only to decorate it.
+- **Blue text is a link.** A reader clicks blue text, so only links take it, and a tone colors a
+  dot, border, line or bar, never text. A figure, number or label meant to stand out sits in a
+  neutral badge rather than taking a color or the weight its neighbouring names already use.
 - **Every section says what it holds.** Give each one a `description`: one sentence on what the
   reader finds or does there, never a narration of its controls.
 - **Sources are links, never paths in text.** Anything a reader can check, such as a file and line,

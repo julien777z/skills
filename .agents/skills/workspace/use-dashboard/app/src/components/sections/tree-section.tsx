@@ -1,7 +1,7 @@
 import { ChevronRight } from 'lucide-react';
 import { type ReactNode, useRef, useState } from 'react';
 
-import { RichText, ToneDot } from '@/components';
+import { RichText, StatusBadge, ToneDot } from '@/components';
 import { Stack, Text } from '@/components/primitives';
 import { cn, withKeys } from '@/lib/utils';
 import type { TreeNode, TreeSection as TreeSectionSpec } from '@/spec';
@@ -56,6 +56,12 @@ function TreeItem({ node, depth, openDepth }: { node: TreeNode; depth: number; o
               <Text as="span" size="sm" weight="medium">
                 <RichText text={node.label} />
               </Text>
+            )}
+            {node.figure && (
+              <>
+                {' '}
+                <StatusBadge label={node.figure} dot={false} />
+              </>
             )}
             {node.meta && (
               <Text as="span" size="sm" tone="muted" numeric>

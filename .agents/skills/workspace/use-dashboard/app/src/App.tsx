@@ -12,7 +12,9 @@ export function App({ dashboard }: { dashboard: Dashboard }): ReactNode {
   const references = useMemo(() => new References(dashboard.references ?? []), [dashboard.references]);
   const page = dashboard.pages[current];
   const metrics = dashboard.metrics ?? [];
-  const showSummary = current === 0 && (dashboard.progress || metrics.length > 0);
+  const progress = page.progress ?? (current === 0 ? dashboard.progress : undefined);
+  const pageMetrics = current === 0 ? metrics : [];
+  const showSummary = Boolean(progress) || pageMetrics.length > 0;
 
   function handleSelectPage(position: number) {
     setCurrent(position);
@@ -35,9 +37,9 @@ export function App({ dashboard }: { dashboard: Dashboard }): ReactNode {
           <Text as="h1" size="title" weight="bold">
             {page.title}
           </Text>
-          {dashboard.subtitle && (
+          {(page.subtitle ?? dashboard.subtitle) && (
             <Text as="p" tone="muted" measure>
-              <RichText text={dashboard.subtitle} />
+              <RichText text={page.subtitle ?? dashboard.subtitle ?? ''} />
             </Text>
           )}
         </Stack>
@@ -46,7 +48,7 @@ export function App({ dashboard }: { dashboard: Dashboard }): ReactNode {
             <NoticeBanner notice={dashboard.notice} />
           </Stack>
         )}
-        {showSummary && <SectionCards progress={dashboard.progress} metrics={metrics} />}
+        {showSummary && <SectionCards progress={progress} metrics={pageMetrics} />}
         <Grid key={current} inset="page" gap="lg" columns={page.layout === PageLayout.ROWS ? 'single' : 'wide'}>
           {withKeys(page.sections, (section) => section.title).map(({ key, item: section }) => (
             <DashboardSection key={key} section={section} />

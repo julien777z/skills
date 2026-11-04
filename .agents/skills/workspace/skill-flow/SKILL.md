@@ -96,8 +96,9 @@ the request asks for a new page.
    capability, whether it always or only sometimes runs, how many run per round, and whether it
    recurs. A count that depends on the work is recorded as what it grows with, such as "1 per
    area touched" or "1 per finding", with the most the skill allows when it sets one, such as
-   "1 per area, 3–6": the most a total shows counts that most, and a count with no limit shows as "grows with
-   <what>" instead of a number, toned `warning`, in every total above it. A launch always runs
+   "1 per area, 3–6". A total shows the usual figure and what adds more, such as "~6, more per
+   finding", never the most or a sum of every worst case, and a count with no limit is recorded as a
+   "No limit set" gap. A launch always runs
    when it runs on every run of the step that starts it. When one skill
    runs another's phases, the launch belongs to the skill whose run starts it. These are structural
    counts, never measured time or cost. For each skill on a page, also record its own run in
@@ -116,24 +117,38 @@ the request asks for a new page.
 5. **Build the spec** for `use-dashboard`:
    - `title` `Skill Flow Dashboard`, `topic` the repository's name, `icon` `diagram`, and `subtitle` "How the skills run, read from
      <repository> at <short commit>.", with `references` linking the repository and the commit.
-   - `metrics`: **Skills mapped**, **Pages** (the kind-of-work pages), **Subagent launches** (each
-     launch point counted once, however many pages reach it), and **Unknown** (connections the
-     sources left open).
-   - `Overview`, `icon` `overview` and `layout` `rows`: a `table` `By kind of work` with a row per
-     page and the columns Page, Skills (every skill its flow reaches), Starts from, Subagent
-     launches (the launch points its flow reaches) and Loops (how many of the loops the Usage
-     `Loops` tree shows run in its flow, then each in a few words); then `notes` `How to read the flows`, one line each for an invocation
-     arrow, a launch arrow and a borrowed-rubric arrow as their labels show them.
+   - `metrics`: **Skills mapped**; **Subagents in a typical task**, the usual figure for
+     `execute-task`'s run from start to merge, `detail` "from start to merge, before findings add
+     more"; **Skills that start subagents**, `detail` "of <n> mapped"; and **Launches with no
+     limit**, the "No limit set" gaps, `detail` "where usage can grow unchecked".
+   - `Overview`, `icon` `overview` and `layout` `rows`, read at a glance:
+     - a `table` `By kind of work` with a row per page and the columns Page, What it covers (a few
+       words), Subagents per run (the usual figure and what adds more, such as "~6, more per finding") and
+       Loops (how many of each kind, such as "3 review · 2 repair · 1 wait", or "None"). Each row's
+       `details` opens an outline of that page's loops, one item per loop titled "<skill>: <what
+       repeats>" with its cap as `meta` and what ends it as `detail`. The table never lists a
+       page's skills: its page shows them;
+     - an `outline` `Gaps in the sources`, `expanded` false, its groups the kinds of gap — "No limit
+       set", "No capability level", "Unclear who does it", "Unclear order or route" and "Other",
+       each only when it has items — with one item per gap: `title` the gap in a few plain words,
+       such as "Bugs reviewers have no maximum", `tag` the skill it sits in, and `detail` one or two
+       sentences on what is open and why it matters, with no line numbers;
+     - `notes` `How to read the flows`, one line each for an invocation arrow, a launch arrow and a
+       borrowed-rubric arrow as their labels show them.
    - `Usage`, `icon` `chart` and `layout` `rows`, across every skill the dashboard maps:
      - a `tree` `Where subagents go`, `open_depth` 2, one root per skill a person starts directly,
-       most subagents first, with `meta` the subagents one run of it typically starts, then the most
-       it can start, everything beneath it counted, such as "about 6 subagents, up to 24". The
-       typical figure counts, for one round each, only launches whose every ancestor always runs; a
-       count that depends on the work counts at its stated least, or at one, and shows "grows with
-       <what>" only when such a launch always runs. Beneath a skill, its steps in order,
-       labelled "<n>. <step>" with the same typical and most figures for what sits beneath them; beneath a step, each
+       most subagents first. Its `figure` is the subagents one run usually starts, everything
+       beneath it counted, such as "~6 subagents"; its `meta` names what adds more, such as "more
+       per finding and per area", or "fixed" when nothing does. The usual figure counts, for one
+       round each, only launches whose every ancestor always runs, a skill a step runs only under a
+       condition counting as one that does not; a count that depends on the work counts at its stated
+       least, or at one. No figure sums a worst case across the whole graph, and none reads "0+": a
+       range shows as its range, such as "2–4", and a count that only varies shows what it varies
+       with, such as "1 per finding". Beneath a skill, its steps in order, labelled "<n>. <step>"
+       with the same `figure` and `meta` for what sits beneath them; beneath a step, each
        skill it runs, nested the same way wherever it runs so every total counts it, and each
-       launch as an entry labelled "<count> <role>", `meta` its rounds and what it reads, such as
+       launch as an entry labelled with its role, `figure` its count, such as "3", "2–4" or "1 per
+       finding", and `meta` its rounds and what it reads, such as
        "up to 3 rounds · diff and whole touched files", and `detail` what the subagents do, what a
        later round reruns, and the condition it runs under when it only sometimes runs. A launch
        that always runs is toned `warning`. Every entry's `details` open what it is: a skill's,
@@ -142,9 +157,9 @@ the request asks for a new page.
      - a `tree` `Loops`, `open_depth` 2, one root per kind of loop the skills run, each only when
        one exists: `Review loops`, rounds of reviewers; `Repair loops`, fixing and checking again;
        `Wait loops`, polling until something finishes; and `Retry loops`. A root's `meta` counts
-       its loops and the most subagents they can start. Beneath a root, each loop, labelled
-       "<skill>: <what repeats>", most subagents first, `meta` "up to <n> rounds · up to <m>
-       subagents across them", or "no cap" when nothing bounds it, and `detail` what ends it and
+       its loops and the usual subagents a round starts. Beneath a root, each loop, labelled
+       "<skill>: <what repeats>", most subagents first, `meta` "up to <n> rounds · ~<m> per round,
+       more per <what>", or "no cap" when nothing bounds the rounds, and `detail` what ends it and
        what each later round reruns. Beneath a loop, what one round starts, as the launch entries
        above, and any loop that runs inside it, its counts multiplied by the outer loop's rounds.
        A loop is toned `warning` when its later rounds rerun everything rather than only what a
@@ -160,9 +175,26 @@ the request asks for a new page.
      attackers ×3 per round`. Edges are labelled `invokes`,
      `launches` (from the skill to its launch node) or `borrows`, and `steps` say in order how the
      work moves through them; a skill reached only further down appears in the `Skills` table
-     alone. Then a `tree` `How it runs`, `open_depth` 2, one root per skill the page's work starts
+     alone. Then a `tree` `Scenarios`, `open_depth` 1: two to four stories this work commonly
+     meets, each one concrete run told in order, such as a review that finds nothing, a lens that
+     finds a bug, or findings that keep coming for three rounds. A root names the story. Beneath it,
+     what happens in run order: each round or step, such as "code-review round 1", holding one leaf
+     per subagent it starts, named for its role, such as "Bugs 2 lens"; and each event that changes
+     the path, such as "Bugs 2 lens reports a missing empty-list check", toned `warning`, holding
+     what it sets off — a validator, a fix, a fresh gate — with an outcome that settles it toned
+     `good`. A step that starts none says "In process" in its `meta`, and a round that reruns fewer
+     subagents says why, such as a lens retired or a slice the fix left untouched. Every node with
+     subagents beneath it has `figure` their count, so each root's figure is the sum of its leaves,
+     and a node with none beneath it, a story included, shows no count. Every entry below a story
+     has `details`, an `outline` with `stacked` set and `collapsible` false, `title` its label and
+     `description` what that kind of subagent, round or step does, and one group "In this scenario":
+     the story; for a subagent, the step that started it and the subagents running alongside it;
+     otherwise what it is part of and why it is there; what comes before and after it in the run;
+     and its subagent count;
+     the counts and conditions come from the sources, never from a guess. Then a
+     `tree` `How it runs`, `open_depth` 2, one root per skill the page's work starts
      from, nested as the Usage tree is but with every step, each with `detail` what it does and
-     `meta` the most subagents beneath it when there are any, and, on a step that repeats, an entry
+     `figure` the usual subagents beneath it when there are any and `meta` what adds more, and, on a step that repeats, an entry
      saying how many rounds and what each repeat reruns, toned `warning` when it reruns everything;
      its entries' `details` open the same write-ups. A launch's entry here also names in its `meta`
      the capability level its subagents run at, from `subagent-matrix`, or says it is unstated.
@@ -173,10 +205,10 @@ the request asks for a new page.
      skill's name and `description` what it does and why, in one or two sentences. Each item is a
      label beside a fact that teaches something; an item with nothing to say is left out. Its
      groups:
-     - "Summary": "Subagents", the most one run starts and who they are, such as "Up to 16 per
-       run: 3 inspectors and 1 checker each round, plus 1 safety inspector for sign-in or payment
-       changes", or "None"; and "Review rounds", how many and what ends them, or "None, it runs
-       once".
+     - "Summary": "Subagents", the usual figure one run starts, what adds more and who they
+       are, such as "~4 per run, more for sign-in or payment changes: 3 inspectors and 1 checker
+       each round, plus 1 safety inspector for those changes", or "None"; and "Review rounds", how
+       many and what ends them, or "None, it runs once".
      - "How it runs": one item per step in order, labelled "<n>. <step>", `detail` what happens,
        and `points` for what that step spends: one per launch, "<count> <role> read <scope> and
        <what they look for or produce>", and, on the step that repeats, how many rounds, what ends
@@ -197,8 +229,10 @@ the request asks for a new page.
 
 ## Interrogate
 
-Walk a skill or a flow with the user and change what they decide should change. The goal is skill
-flows that start fewer subagents and read less without missing what the step exists to catch.
+Walk a skill or a flow with the user and change what they decide should change. The goal is to cut
+excess usage: subagents and reading that buy little, in steps that run often. A step that fires
+rarely, or a saving of a few subagents across a whole pull request, is not worth weakening what the
+step exists to catch.
 
 1. **Set the scope.** Context the user gives — a skill, a kind of work, a concern such as review
    rounds — sets it. With none, ask the **Scope** menu.
@@ -207,18 +241,60 @@ flows that start fewer subagents and read less without missing what the step exi
 3. **Pick the steps worth a question.** A step is worth one when changing it would change how many
    subagents start, how much they read, or what a review can miss: a launch, a review loop and what
    its later rounds rerun, a scope wider than the step's job, a scope another skill reads in the
-   same run, or a launch that always runs where a condition would do. Every other step passes
-   without a question, and the report lists them in one line.
-4. **Ask, most subagents first, up to four questions per call** of the question tool. Each says
-   what the step does now in a sentence: the skill and step, how many subagents, when, what they
-   read and for how many rounds. Its choices are keeping it as it is and one or two concrete changes,
-   such as fewer subagents, a narrower scope, a condition on the launch, fewer rounds, or later
-   rounds that rerun only the reviewers a repair affects. The recommended choice comes first, with
-   its reason in what it saves and what it could miss.
-5. **Record every question** with `session-ledger` as a `question` entry when it is asked, with
+   same run, or a launch that always runs where a condition would do. So every subagent launch and
+   every review loop in scope gets its own question, a launch two pages share asked once; none is
+   skipped because no saving is apparent, since keeping it is then the recommended choice. Every
+   step that starts no subagent and repeats nothing passes without a question, and the report lists
+   them in one line. Every question is picked before the first is asked, so the page's progress
+   shows the whole set from the start.
+4. **Show the questions on the dashboard.** Deliver the dashboard as **Workflow** steps 5 and 6
+   build it, with a page `Interrogation`, `icon` `settings` and `layout` `rows`, right after
+   `Overview`, its `subtitle` what the interrogation is for, such as "Deciding, step by step, which
+   subagents are worth what they cost, so the skills start fewer without missing what they catch.",
+   its `status` the count of questions still open and its `progress` how many are
+   decided, `label` "Questions decided" and `detail` "<decided> of <total> decided", with one segment per question in the order
+   they are asked, toned `done` once answered and `warning` while asked. It holds one `diagram` per skill a
+   question concerns, the skill being asked about first so its flow sits right under the progress
+   bar, then an `outline` `Decided so far` listing each answer and what it changes once there is
+   one, then the other skills in asking order. A diagram holds that
+   skill's steps in order, joined by `then` arrows, with each step's launches hanging off it and a
+   `runs` arrow to a node for each skill it runs that has a diagram of its own on the page, its
+   `detail` what that skill does in a few words and its `target` that diagram's title, so clicking
+   it scrolls there, so the questioned
+   step is seen beside the rest of the run and where it hands over. Its
+   description says what the skill's run does in a sentence, never how to read the colors or that
+   nodes can be clicked;
+   its `legend` is `[{tone: warning, label: Being asked}, {tone: done, label: Decided}]`. The node a
+   question concerns — the launch it questions — carries
+   `tone` `warning` while it is asked and `done` once answered, and none before, and its `details`
+   is an outline with `stacked` set and `collapsible` false whose groups are "What it does" (when
+   the flow runs and what the step does now), "Proposed changes" (each choice, with what it saves
+   and what it could miss), "Recommended" (the choice and why) and, once answered, "Decision" (the
+   user's words and what changes). Publish the page before each question, with that question's
+   node `warning`, and again after its answer, with the node `done`, so the page always shows where
+   the conversation is.
+5. **Ask one question at a time, in the order the run reaches them** — skill by skill, and within
+   a skill from its first step to its last — through the question tool, and wait for its answer
+   before asking the next. The question leaves out its number and where it sits on the dashboard,
+   since the page's highlighted node shows that. Each says when
+   the flow runs — what starts it and how often in a task, such as "once per pull request, when its
+   task finishes, and again for each follow-up" — then what the step does in a sentence: the skill
+   and step, how many subagents, what they read and for how many rounds. How often the step runs
+   decides the recommendation, never whether it is asked: for a step on every task, pull request or
+   round, a change that saves a modest number of subagents can be the recommended choice; for one
+   that fires rarely, such as a security review of trust-boundary code or the review of a plan,
+   keeping it is recommended unless the change only removes reads that add no coverage. Every fact
+   it states is read from the lines that state it before it is asked, so a question never rests on a
+   repeat or a gap the sources do not have. Its choices are keeping it as it is and one or two
+   concrete changes, such as fewer subagents, a narrower scope, a condition on the launch, fewer
+   rounds, or later rounds that rerun only the reviewers a repair affects. The recommended choice
+   comes first, with its reason in what it saves and what it could miss.
+6. **Record every question** with `session-ledger` as a `question` entry when it is asked, with
    its options and recommendation, and mark it answered with the user's words.
-6. **Make the agreed changes** through `edit-skill`, as one change across the skills they touch,
-   then report per skill what changed and what was kept.
+7. **Make each agreed change as soon as it is answered** through `edit-skill`, on one draft pull
+   request every answer of the interrogation joins: push the first change and open the draft then,
+   never holding it until the remaining questions are answered. Report per skill what changed and
+   what was kept.
 
 ## Guardrails
 
