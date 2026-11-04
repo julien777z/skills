@@ -134,7 +134,7 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    GitHub rule's runner-infrastructure exclusion automatically: record a qualified check as skipped
    and do not rerun or wait for a green hosted result. Every other failure is relevant, a job
    stopped by its time limit and a suite past its runtime budget included, as the testing rule's
-   time-limit bullet says. Read its
+   five-minute budget bullet says. Read its
    annotations and complete log, fix the repository
    input responsible — code, test, configuration or workflow — and commit it. **Every relevant
    failure on the head goes into one push**: read all of them before fixing any, reproduce each
@@ -180,8 +180,7 @@ report that actual rejection and its provider evidence; do not bypass protection
 
 A verified merge ends the pull request's work, as the global rules' merge-end bullet says: do not
 inspect or follow merge-triggered release, publication, artifact or deployment workflows, or check
-by any other route whether the change is live. Only a task whose outcome the user stated as that
-release or deployment owns it and its verification.
+by any other route whether the change is live.
 
 When the merged diff changes agent configuration, poll the default-branch Agent Sync run the merge
 started as **Check Gate** steps 6–7 poll a check. A run ending in anything but success is diagnosed

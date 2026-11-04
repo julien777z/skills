@@ -88,8 +88,8 @@ Every task that changes files starts here, and so does every follow-up that arri
   afterwards. Keep it under 200 words while `i-have-adhd` is active.
 - **A plan's last step is the merge**, or the reviewable pull request when no merge is authorized.
   Its verification runs on the branch before that; no step, verification or user action after it
-  walks the deployed site, checks a rollout or waits for a deploy, as the global rules' merge-end
-  bullet says, unless the user's request names that deployment as the outcome.
+  walks the deployed site, checks a rollout or waits for a deploy, apart from the exception the
+  global rules' merge-end bullet names.
 - **An estimate is the executing agent's own wall-clock, never the effort the same work would
   take a person.** Build it from what the run does and waits on, never from how big the change
   feels, round each step to the nearest whole minute, never below 1, and list what the plan needs

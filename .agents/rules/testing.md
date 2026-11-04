@@ -253,14 +253,12 @@ class TreeNode(BaseModel):
   client) rebuilt per test where it could be built once per session, work repeated across
   parametrized cases — and fix that cause, or remove what cannot be made cheap, until the suite
   fits. Splitting the suite across jobs only to stay under the budget, or giving any suite a timeout
-  above 15 minutes, hides the same defect.
-- **A suite stopped by its time limit, or one that ran past its budget, has failed.** It is a
-  relevant failure of the change in flight, fixed there by removing or refactoring the slow tests
-  until the suite fits its budget, never a slow or flaky run to retry, an infrastructure stop, or a
-  pending result to wait out. Every instruction about a suite's runtime — a worker's brief, a fix
-  step, a gate's remedy — states the five-minute budget, or the repository's tighter one, as its
-  target; the timeout is never the target, since a suite that merely stays under it can still be
-  three times over budget.
+  above 15 minutes, hides the same defect. A suite stopped by its time limit, or one past its
+  budget, has therefore failed: a relevant failure the change in flight fixes this way, never a slow
+  or flaky run to retry, an infrastructure stop, or a pending result to wait out. Every instruction
+  about a suite's runtime — a worker's brief, a fix step, a gate's remedy — states the budget as its
+  target, never the timeout, since a suite that merely stays under the timeout can still be three
+  times over budget.
 - **A run that verifies a change is read for its cost as well as its counts.** Read each suite's
   wall time against its budget. Where the native runner supplies call durations, compare their
   sum with wall time; a large gap identifies time outside test bodies. Use existing setup and
