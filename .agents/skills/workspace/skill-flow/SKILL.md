@@ -96,8 +96,9 @@ the request asks for a new page.
    capability, whether it always or only sometimes runs, how many run per round, and whether it
    recurs. A count that depends on the work is recorded as what it grows with, such as "1 per
    area touched" or "1 per finding", with the most the skill allows when it sets one, such as
-   "1 per area, 3–6": the most a total shows counts that most, and a count with no limit shows as "grows with
-   <what>" instead of a number, toned `warning`, in every total above it. A launch always runs
+   "1 per area, 3–6". A total shows the usual figure and what adds more, such as "~6, more per
+   finding", never the most or a sum of every worst case, and a count with no limit is recorded as a
+   "No limit set" gap. A launch always runs
    when it runs on every run of the step that starts it. When one skill
    runs another's phases, the launch belongs to the skill whose run starts it. These are structural
    counts, never measured time or cost. For each skill on a page, also record its own run in
@@ -193,7 +194,7 @@ the request asks for a new page.
      the counts and conditions come from the sources, never from a guess. Then a
      `tree` `How it runs`, `open_depth` 2, one root per skill the page's work starts
      from, nested as the Usage tree is but with every step, each with `detail` what it does and
-     `meta` the most subagents beneath it when there are any, and, on a step that repeats, an entry
+     `figure` the usual subagents beneath it when there are any and `meta` what adds more, and, on a step that repeats, an entry
      saying how many rounds and what each repeat reruns, toned `warning` when it reruns everything;
      its entries' `details` open the same write-ups. A launch's entry here also names in its `meta`
      the capability level its subagents run at, from `subagent-matrix`, or says it is unstated.
@@ -244,13 +245,14 @@ step exists to catch.
    every review loop in scope gets its own question, a launch two pages share asked once; none is
    skipped because no saving is apparent, since keeping it is then the recommended choice. Every
    step that starts no subagent and repeats nothing passes without a question, and the report lists
-   them in one line.
+   them in one line. Every question is picked before the first is asked, so the page's progress
+   shows the whole set from the start.
 4. **Show the questions on the dashboard.** Deliver the dashboard as **Workflow** steps 5 and 6
    build it, with a page `Interrogation`, `icon` `settings` and `layout` `rows`, right after
    `Overview`, its `subtitle` what the interrogation is for, such as "Deciding, step by step, which
    subagents are worth what they cost, so the skills start fewer without missing what they catch.",
    its `status` the count of questions still open and its `progress` how many are
-   decided, `detail` "<decided> of <total> decided", with one segment per question in the order
+   decided, `label` "Questions decided" and `detail` "<decided> of <total> decided", with one segment per question in the order
    they are asked, toned `done` once answered and `warning` while asked. It holds one `diagram` per skill a
    question concerns, the skill being asked about first so its flow sits right under the progress
    bar, then an `outline` `Decided so far` listing each answer and what it changes once there is
@@ -270,12 +272,11 @@ step exists to catch.
    and what it could miss), "Recommended" (the choice and why) and, once answered, "Decision" (the
    user's words and what changes). Publish the page before each question, with that question's
    node `warning`, and again after its answer, with the node `done`, so the page always shows where
-   the conversation is. The question names the page and the edge it concerns.
+   the conversation is.
 5. **Ask one question at a time, in the order the run reaches them** — skill by skill, and within
    a skill from its first step to its last — through the question tool, and wait for its answer
-   before asking the next. Pick every question before asking the first, so the page's progress
-   shows the whole set from the start. The question leaves out which skill and step it concerns,
-   since the page's highlighted node shows it. Each says when
+   before asking the next. The question leaves out its number and where it sits on the dashboard,
+   since the page's highlighted node shows that. Each says when
    the flow runs — what starts it and how often in a task, such as "once per pull request, when its
    task finishes, and again for each follow-up" — then what the step does in a sentence: the skill
    and step, how many subagents, what they read and for how many rounds. How often the step runs

@@ -81,7 +81,7 @@ choices:
     detail: one Rules, one Bugs, one Simplification and one Security lens, with inline validation
   - id: high
     label: high
-    detail: one Rules, two independent Bugs, one Simplification and one Security lens, then one standard validator tries to refute each doubtful finding
+    detail: one Rules, two independent Bugs, one Simplification and one Security lens, then one standard validator tries to refute each doubtful finding, or every finding when it only reports
   - id: xhigh
     label: xhigh
     detail: two independent Rules and Bugs lenses plus one Simplification and one Security lens, then two standard validators per finding with majority rule
@@ -231,7 +231,7 @@ Effort selects the cohort and the validation depth:
 |---|---|---|---|---|---|
 | `low` | 1 | 1 | – | – | Inline |
 | `medium` | 1 | 1 | 1 | 1 | Inline |
-| `high` | 1 | 2 | 1 | 1 | One **standard** validator per doubtful finding |
+| `high` | 1 | 2 | 1 | 1 | One **standard** validator per doubtful finding, or per finding when it only reports |
 | `xhigh` | 2 | 2 | 1 | 1 | Two **standard** validators per finding, majority rules |
 | `max` | 2 | 3 | 2 | 2 | Three **deep** refuters per finding, majority rules |
 | `ultra` | 2 | 3 | 2 | 2 | Three **deep** refuters per finding, majority rules |
@@ -288,7 +288,7 @@ the complete changed-file list it received as context, its analysis-slice and su
 manifests, the exact rule and rubric inputs it used, its completion status, and a flat list of
 findings. Each finding carries path, line, anchor (`RIGHT` for added or current changed lines,
 `LEFT` for removed or base changed lines, or `OUTSIDE_DIFF` for an exact current line with no
-faithful diff anchor), a concrete trigger, and its reasoning.
+faithful diff anchor), a concrete trigger, its reasoning, and whether it is certain or doubtful.
 
 For `ultra`, deduplicate each round against every finding seen so far, not only against confirmed ones, or rejected findings resurface every round and the loop never converges.
 
@@ -311,14 +311,14 @@ Do not classify validity by file extension or category. A lock file can change e
 
 ## Step 4 — Validate findings
 
-Deduplicate findings describing the same underlying issue, then validate each one against the diff as `references/rubric.md` — Validation directs: validators are told to refute, every finding resolves to CONFIRMED or refuted, the rubric lists what is dropped outright, and the one undecidable case — intent absent from the supplied instructions, accepted decisions and repository guidance — goes to the user in the shape step 8 uses for an ambiguous fix.
+Deduplicate findings describing the same underlying issue, then validate each one, apart from the certain findings the next paragraph exempts, against the diff as `references/rubric.md` — Validation directs: validators are told to refute, every finding resolves to CONFIRMED or refuted, the rubric lists what is dropped outright, and the one undecidable case — intent absent from the supplied instructions, accepted decisions and repository guidance — goes to the user in the shape step 8 uses for an ambiguous fix.
 
-**At `high`, a validator runs only for a doubtful finding.** A lens marks each finding
-certain or uncertain. A certain finding names a concrete trigger and the line it fails on, and its
-fix changes no contract; it is confirmed without a validator, and a wrong one is caught when the
-fix's lines are reviewed again. A finding its lens marks uncertain, or one whose fix changes a
-public interface, a stored shape or another contract, gets its validator; `xhigh` and above
-validate every finding.
+**At `high` in fix mode, a validator runs only for a doubtful finding.** A certain finding names a
+concrete trigger and the line it fails on, and its fix changes no contract; it is confirmed without
+a validator, and a wrong one is caught when the fix's lines are reviewed again. A finding its lens
+marks doubtful, or one whose fix changes a public interface, a stored shape or another contract,
+gets its validator. A report-only review, where no fix's lines are reviewed again, and `xhigh` and
+above validate every finding.
 
 Require each validator to state the complete resolved target it inspected: the full pull-request range
 for PR targets, immutable range for ref targets, or snapshot identity with complete target-diff and

@@ -78,7 +78,7 @@ edge as an arrow numbered with its `step`; the numbered `steps` are listed besid
 part. A node's or edge's `tone` colors its border or arrow instead, for a state the reader follows,
 such as the step under discussion; `legend` says what each tone means. A node or edge with
 `details`, one section, opens it in a dialog when it is clicked. A node's `target` names another
-section on the same page by its title: clicking the node scrolls smoothly to it, and its label
+section on the same page, outside tabs, by its title: clicking the node scrolls smoothly to it, and its label
 stays plain text rather than a link. Every `pr`, `from` and `to` names a listed `ref` or node `id`, and every `step` a position in
 `steps`.
 

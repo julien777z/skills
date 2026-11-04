@@ -81,7 +81,7 @@ export function TabsSection({ section }: { section: TabsSectionSpec }): ReactNod
                 variant="ghost"
                 size="sm"
                 aria-selected={active}
-                aria-controls={`${baseId}-panel-${position}`}
+                aria-controls={active ? `${baseId}-panel-${position}` : undefined}
                 tabIndex={active ? 0 : -1}
                 onClick={() => setCurrent(position)}
                 className={cn(

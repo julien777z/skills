@@ -281,12 +281,28 @@ def check_navbar(dashboard: dict[str, object], path: str) -> None:
 
 
 def check_page_sections(page: dict[str, object], path: str) -> None:
-    """Require sections on an unlocked page and none on a locked one."""
+    """Require sections on an unlocked page and none on a locked one, and every diagram node's target to name a section the page always shows."""
 
-    if bool(page.get("locked")) == bool(page["sections"]):
+    sections = cast(list[dict[str, object]], page["sections"])
+
+    if bool(page.get("locked")) == bool(sections):
         raise DashboardSpecError(
             f"{path}.sections must be empty on a locked page and hold a section otherwise"
         )
+
+    titles = {section["title"] for section in sections}
+    diagrams = [
+        (f"{path}.sections[{index}]", section)
+        for index, section in enumerate(sections)
+        if section["type"] == SectionType.DIAGRAM
+    ]
+
+    for diagram_path, diagram in diagrams:
+        for index, node in enumerate(cast(list[dict[str, object]], diagram["nodes"])):
+            if "target" in node and node["target"] not in titles:
+                raise DashboardSpecError(
+                    f"{diagram_path}.nodes[{index}].target must name a section title on this page outside tabs"
+                )
 
 
 def check_tree_nodes(value: object, path: str) -> None:

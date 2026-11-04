@@ -3,7 +3,7 @@ import type { ReactNode, RefObject } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import type { Section } from '@/spec';
 import { DashboardSection } from './dashboard-section';
-import { InDialogContext } from './section-card';
+import { InDialogContext, InTabPanelContext } from './section-card';
 
 interface SectionDialogProps {
   section: Section;
@@ -22,9 +22,11 @@ export function SectionDialog({ section, open, onOpenChange, opener }: SectionDi
           opener.current?.focus();
         }}
       >
-        <InDialogContext.Provider value>
-          <DashboardSection section={section} />
-        </InDialogContext.Provider>
+        <InTabPanelContext.Provider value={false}>
+          <InDialogContext.Provider value>
+            <DashboardSection section={section} />
+          </InDialogContext.Provider>
+        </InTabPanelContext.Provider>
       </DialogContent>
     </Dialog>
   );

@@ -29,7 +29,7 @@ function linkFigureText(root: HTMLElement, references: References): void {
     if (
       node.parentElement?.namespaceURI === HTML_NAMESPACE &&
       !node.parentElement.closest('a') &&
-      !node.parentElement.closest('[data-jump]')
+      !node.parentElement.closest('[role="button"]')
     ) {
       textNodes.push(node);
     }
@@ -90,24 +90,29 @@ function openEdgesOnClick(
   open: (details: Section, opener: SVGElement) => void,
 ): void {
   const labels = new Map(section.nodes.map((node) => [node.id, node.label]));
-  const paths = root.querySelectorAll<SVGElement>('.edgePaths path');
-  const edgeLabels = root.querySelectorAll<SVGElement>('.edgeLabels > .edgeLabel');
 
-  section.edges.forEach((edge, index) => {
-    const label = edgeLabels[index];
+  // Mermaid draws a subgraph's edges in a nested group, so document order need not follow the
+  // source; each path's id ends with its source index, and its label sits at the same position in
+  // the sibling labels group.
+  for (const group of root.querySelectorAll<SVGElement>('.edgePaths')) {
+    const paths = group.querySelectorAll<SVGElement>(':scope > path');
+    const groupLabels = group.parentElement?.querySelectorAll<SVGElement>(':scope > .edgeLabels > .edgeLabel') ?? [];
 
-    if (!edge.details) {
-      return;
-    }
+    paths.forEach((path, position) => {
+      const edge = section.edges[Number(path.id.match(/_(\d+)$/)?.[1])];
+      const details = edge?.details;
 
-    const details = edge.details;
-
-    for (const target of [paths[index], label]) {
-      if (target) {
-        makeOpener(target, `Open ${edgeName(edge, labels)}`, () => open(details, target));
+      if (!edge || !details) {
+        return;
       }
-    }
-  });
+
+      for (const target of [path, groupLabels[position]]) {
+        if (target) {
+          makeOpener(target, `Open ${edgeName(edge, labels)}`, () => open(details, target));
+        }
+      }
+    });
+  }
 
   section.nodes.forEach((node, index) => {
     const target = root.querySelector<SVGElement>(`g.node[id*="-n${index}-"]`);
