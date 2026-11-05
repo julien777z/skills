@@ -12,8 +12,7 @@ disable-model-invocation: true
 - `subagent-matrix`
 - `agent-lock`
 - `roblox-studio`
-- `roblox-gameplay`
-- `roblox-react`
+- `edit-skill`
 
 ## Reuse the isolated research environment
 
@@ -94,7 +93,7 @@ Record the first success, time to understand the next action, meaningful decisio
 
 After all assignments have returned, validate/deduplicate the records against the selected chart entries. Compare notes and identify supported common patterns, genre-specific exceptions, and tradeoffs. Use the number of games with relevant evidence as each pattern's denominator; unknown UI/onboarding records are not evidence against a pattern. Popularity is correlation, not proof of causation or a measurement of dopamine. Translate observations into practical design guidance; avoid copying distinctive art, names, layouts, or mechanics wholesale.
 
-Update canonical `roblox-gameplay` with durable principles and a short sourced research reference. Preserve the user's scope and the game's identity. Do not silently turn research suggestions into new gameplay features. Save dated studies, ranks, per-game notes, sources, limitations, and raw captures in the invoking project's ignored verification output. Keep only lasting, transferable themes in the main skill. Refresh or replace conclusions when later observations contradict them; do not accumulate a catalogue of trendy features.
+Invoke `edit-skill` to update canonical `roblox-gameplay` with durable principles and a short sourced research reference, and to deliver the UI guidance below. Preserve the user's scope and the game's identity. Do not silently turn research suggestions into new gameplay features. Save dated studies, ranks, per-game notes, sources, limitations, and raw captures in the invoking project's ignored verification output. Keep only lasting, transferable themes in the main skill. Refresh or replace conclusions when later observations contradict them; do not accumulate a catalogue of trendy features.
 
 Put supported UI-specific conventions in `roblox-react`, with evidence retained in the invoking project. Keep gameplay/onboarding principles in `roblox-gameplay` and avoid duplicating the same rule across skills.
 
