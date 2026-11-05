@@ -604,8 +604,8 @@ checks before delivery; retain evidence that the change has not invalidated.
   running stack, or is too slow to run before every push, joins the slow verification below and is
   named in the report. Room on this machine never leaves a job to its hosted run: a shortage of
   disk, memory or ports is recovered as the global rules' local-stack bullet says, and the job runs
-  here. Only a hosted service, credentials the session lacks — established as `testing`'s
-  cannot-run bullet says — or runner-specific behaviour does.
+  here. Only a hosted service or credentials the session lacks, each established as the testing
+  rules' cannot-run bullet says, or runner-specific behaviour does.
 - **A local variant of a CI check is not that check**, and each of these passes locally and fails
   in CI: lint or type checks scoped to the changed files, where CI's whole-tree run finds an import
   another change left unused in a file the branch never touched; a formatter or linter in write

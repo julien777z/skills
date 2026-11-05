@@ -139,8 +139,9 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    failure on the head goes into one push**: read all of them before fixing any, reproduce each
    with the job's own command where it can run locally, and push only once each reproduced failure
    passes locally, so the next hosted run is the last. Only a failure that cannot run locally —
-   a hosted service, credentials, runner-specific behavior, never disk, memory or ports the session
-   can free — is pushed without local proof. A relevant
+   a hosted service or credentials, each established as the testing rules' cannot-run bullet says,
+   or runner-specific behavior, never disk, memory or ports the session can free — is pushed
+   without local proof. A relevant
    external-service failure is an encountered issue under `pre-production` and is fixed the same way;
    never re-run a job, or skip, disable, or quarantine a test or confine its job to drafts, to get
    past it. Report a blocker only when relevant missing coverage needs user input or unavailable
