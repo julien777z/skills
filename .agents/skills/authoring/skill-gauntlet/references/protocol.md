@@ -160,11 +160,8 @@ original or remove the isolated override and record the rollback. Move the expos
 sealed historical evidence, mark them contaminated and permanently ineligible, create and audit a
 fresh replacement set, and continue the gauntlet without giving failed held-out details to builders.
 
-For `Green — retire`, prepare a scoped retirement change as a draft pull request for user review.
-Keep active installations intact. A green evaluation is evidence for the proposed change, not an
-installation or deactivation of the user's active skill.
-
-After the final gate succeeds, deliver upgrade or retirement source changes as scoped draft pull
-requests for user review. Do not run the ordinary testing, review, acceptance, readiness, or merge
-pipeline, auto-merge, or apply an agent-configuration merge exception. Later explicit user
-instructions govern further action.
+For `Green — retire`, validate deactivation in the task-owned isolated evaluation installation,
+then prepare a scoped retirement change as a draft pull request for user review. Keep active
+installations intact. A green evaluation is evidence for the proposed change, not an installation
+or deactivation of the user's active skill. Deliver upgrades and retirements under `execute-task`'s
+**Review-Only Delivery**.

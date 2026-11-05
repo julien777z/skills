@@ -13,6 +13,8 @@ evaluation roles independent, and prefer honest retirement over a manufactured i
 ## Dependencies
 
 - `use-dashboard` — validate, render, and publish the run dashboard.
+- `execute-task` — record actual Gauntlet run or maintenance provenance on the already active
+  execution run and follow its **Review-Only Delivery** route; do not start another execution run.
 
 ## Resources
 
@@ -67,11 +69,9 @@ evaluation roles independent, and prefer honest retirement over a manufactured i
 
 - Preserve original snapshots and the evidence supporting every evaluated upgrade or retirement.
 - After the protocol succeeds, deliver upgrade or retirement changes as scoped draft pull requests
-  for user review. A green evaluation does not mean the active skill was installed or deactivated;
-  leave active skills intact pending explicit user review and merge instructions. Do not run the ordinary testing, review, acceptance, readiness, or merge pipeline,
-  auto-merge them, or apply a standing agent-configuration merge exception. Later explicit user
-  instructions govern further action. This review-only delivery also applies to changes to Skill
-  Gauntlet itself.
+  for user review under `execute-task`'s **Review-Only Delivery**. A green evaluation does not mean
+  the active skill was installed or deactivated; leave active skills intact pending explicit user
+  review and merge instructions.
 - Do not edit managed or provider-owned skill sources in place.
 - Report the dashboard URL, selected-skill evaluation outcomes, isolated installation destinations, restored originals,
   exact models, final held-out results, and any unresolved external blocker.
