@@ -18,19 +18,19 @@ and deliver the same dashboard again on every request so the user keeps one page
 
 ## Workflow
 
-1. **Read the ledger.** Resolve and read the task's ledger through `session-ledger`. A question
-   the task has put to the user, or a plan it put to them for approval once `review-proposal` had
+1. **Read the ledger.** Resolve and read the task's ledger through `session-ledger`. A question the
+   task has put to the user, or a plan it put to them for approval in the question carrying the
+   "Approved" option, which `execute-task`'s **Approval** sends only once `review-proposal` has
    accepted it, that the ledger lacks is reconstructed and recorded first, from verified task
-   evidence, as that skill's recovery rules say, approved only where the user's own message
-   approved it; the dashboard never shows a step
-   the ledger does not hold. The figures cover the whole task since its first approved plan, so
-   that check spans every plan it has had, finished ones included: a plan another entry names, such
-   as one a later plan continues or supersedes, and finished work the task's record shows that no
-   recorded step holds, such as completed items on the harness task list, are each a plan the ledger
-   lacks. A plan that continues or supersedes another replaces only the steps it names; the earlier
-   plan's finished steps stay in the count. An active or blocked step that `execute-task`'s **Progress Record**
-   records with parts, held in the ledger without them, gets them recorded the same way, with the
-   parts already finished marked done.
+   evidence, as that skill's recovery rules say, approved only where the user's own message approved
+   it; the dashboard never shows a step the ledger does not hold. The figures cover the whole task
+   since its first approved plan, so that check spans every plan it has had, finished ones included:
+   a plan another entry names, such as one a later plan continues or supersedes, and finished work
+   the task's record shows that no recorded step holds, such as completed items on the harness task
+   list, are each a plan the ledger lacks. A plan that continues or supersedes another replaces only
+   the steps it names; the earlier plan's finished steps stay in the count. An active or blocked
+   step that `execute-task`'s **Progress Record** records with parts, held in the ledger without
+   them, gets them recorded the same way, with the parts already finished marked done.
 2. **Find the task's pull requests** with `list-prs`, requesting every state, then read each one's
    current state from its host: open, draft, merged or closed, the checks on its head, and review
    state.
