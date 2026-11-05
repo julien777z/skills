@@ -15,7 +15,7 @@ destination, create a private Page. Keep the dashboard itself in this skill's sh
    When it exceeds that limit but fits the current `write_page_reference` upload limit, upload the
    rendered HTML file to the selected Page. Confirm `file_access_confirmed` in the receipt and
    compare its byte size and SHA-256 with the rendered file before inserting it. From the returned
-   `library-file:<file-id>` reference, use the exact opaque ID after `library-file:` unchanged in
+   `library-file:<file-id>` or `project-file:<file-id>` reference, use its exact opaque file ID unchanged in
    a standalone `![Title](visualize:<file-id>)` block. Read the Page again and use `edit_page` with
    fresh sequence and block guards to insert or replace that block. If access is unconfirmed or the
    upload outcome is unknown, inspect Files or Library before another upload. If the file exceeds
