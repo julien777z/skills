@@ -19,6 +19,7 @@ renders every value as text, so data never runs as markup or script.
 
 ## Dependencies
 
+- `pages:write-page` — publish through Pages when Codex offers that plugin's tools.
 - `use-browser` — open the page in the user's browser, and reload it after each change, when no tool
   publishes it.
 
@@ -210,7 +211,7 @@ data exists, or a change to the app — runs on one made-up scenario, never on r
    its publishing tool reads only there.
 2. Run `python3 -B scripts/render.py --input <spec.json> --output <page.html>`, resolving `scripts/`
    from this skill's directory; `-B` keeps the run from writing bytecode into the skill. Add
-   `--fragment` when **Delivery** says to. The script prints the written path, or names the first
+   `--fragment` and `--compress` when **Delivery** says to. The script prints the written path, or names the first
    field that does not match the spec and exits non-zero; fix the spec and run it again.
    The first render after the app changes builds it with npm into the user cache directory
    (`$XDG_CACHE_HOME/use-dashboard`, or `~/.cache/use-dashboard`), which needs Node.js 20 or newer,
@@ -237,11 +238,12 @@ Every render the user is shown goes out through this section, including a previe
 test of a change to the page: a screenshot of a render is a capture of the page, never its delivery.
 Use the first route the session offers, and the same one for every update of one dashboard.
 
-1. **A tool that publishes an HTML page for the user to open**, such as an artifact tool, whenever
-   the harness offers one. Render with `--fragment` when the tool wraps the file in its own document
-   skeleton, and the full page otherwise. Publish it as a plain page, never through a page type the
-   tool offers for dashboards, so every dashboard keeps this template. Follow the tool's own
-   instructions for its icon and description, and give the user the link.
+1. **A publishing tool**, whenever the harness offers one. In Codex with Pages tools, apply
+   `pages:write-page` and follow the [Spaces publishing reference](references/spaces.md). In Claude,
+   follow the [Artifacts publishing reference](references/artifacts.md). Both publish this renderer's
+   interactive page and return its link. A local file or a screenshot does not replace publication
+   when the session offers the publishing route. For another publisher, use its current instructions
+   and render with `--fragment` when it supplies the document skeleton, the full page otherwise.
    - **One published page per dashboard.** Before publishing, look for the link already published
      for this dashboard's purpose, and publish the update to it when there is one. A dashboard that
      changes its look, its data, or both is still the same dashboard; only a dashboard with a
