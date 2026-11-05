@@ -291,6 +291,60 @@ while IFS=$'\t' read -r provider root; do
   add_install_root "$provider" "$root"
 done <<< "$profile_list"
 
+# Freeze and validate every skills root before writing target skills or configuration.
+SKILL_ROOTS=()
+SKILL_CONTRACTS=()
+SKILL_KEYS=()
+SKIP_SKILL_ROOTS=()
+SOURCE_KEYS=("$(physical_path_key "$REPO_ROOT")" "$(physical_path_key "$CANONICAL_SKILLS")" "$(physical_path_key "$GENERATED_ROOT")")
+
+for index in "${!INSTALL_ROOTS[@]}"; do
+  root="${INSTALL_ROOTS[$index]}"
+  provider="${INSTALL_PROVIDERS[$index]}"
+  check_directory "$root/skills" || exit 1
+
+  skills_root="$(python3 -c 'import os, sys; print(os.path.realpath(sys.argv[1]))' "$root/skills")"
+  skills_key="$(physical_path_key "$skills_root")"
+  root_key="$(dirname "$skills_key")"
+  contract="$(skill_contract "$provider")" || exit 1
+  SKIP_SKILL_ROOTS+=(0)
+
+  for source_key in "${SOURCE_KEYS[@]}"; do
+    case "$source_key/" in
+      "${root_key%/}/"*) echo "conflict: installation root contains installation source: $root" >&2; exit 1 ;;
+    esac
+    case "$root_key/" in
+      "${source_key%/}/"*) echo "conflict: installation root is inside installation source: $root" >&2; exit 1 ;;
+    esac
+  done
+
+  for previous in "${!SKILL_ROOTS[@]}"; do
+    other="${SKILL_ROOTS[$previous]}"
+    other_key="${SKILL_KEYS[$previous]}"
+
+    if [ "$skills_key" = "$other_key" ]; then
+      if [ "$contract" != "${SKILL_CONTRACTS[$previous]}" ]; then
+        echo "conflict: incompatible skills contracts for $skills_root" >&2
+        exit 1
+      fi
+
+      SKIP_SKILL_ROOTS[$index]=1
+    else
+      case "$skills_key/" in
+        "$other_key/"*) echo "conflict: nested skills roots: $other and $skills_root" >&2; exit 1 ;;
+      esac
+      case "$other_key/" in
+        "$skills_key/"*) echo "conflict: nested skills roots: $skills_root and $other" >&2; exit 1 ;;
+      esac
+    fi
+  done
+
+  SKILL_ROOTS+=("$skills_root")
+  SKILL_KEYS+=("$skills_key")
+  SKILL_CONTRACTS+=("$contract")
+  INSTALL_ROOTS[$index]="$root_key"
+done
+
 preflight_ok=1
 
 for index in "${!INSTALL_ROOTS[@]}"; do
@@ -314,7 +368,7 @@ install_changed=0
 
 for index in "${!INSTALL_ROOTS[@]}"; do
   [ "$INSTALL_MODE" = check ] || mkdir -p "${INSTALL_ROOTS[$index]}"
-  install_provider "${INSTALL_PROVIDERS[$index]}" "${INSTALL_ROOTS[$index]}"
+  SKIP_SKILLS="${SKIP_SKILL_ROOTS[$index]}" install_provider "${INSTALL_PROVIDERS[$index]}" "${INSTALL_ROOTS[$index]}"
 done
 
 if [ "$INSTALL_MODE" = check ]; then

@@ -71,8 +71,9 @@ Claude requests a skill re-scan after a startup repair. Codex discovers skills b
 SessionStart hook; newly repaired skills appear in the next session, and the hook reports that
 limitation rather than claiming the active catalogue was reloaded.
 
-Re-running refreshes owned links and prunes obsolete ones; real content or foreign
-links at an installed path are reported before any links change.
+Re-running reconciles user skill entries to the selected catalogue, replacing extra entries and
+collisions while preserving hidden provider packages and Claude account-synced skills. Other
+artifact types retain their owned-link pruning and conflict checks.
 
 The hooks and their registration need Python 3.11 or newer as `python3`; without it the installer
 links the hooks, warns, and registers none. The `ledger` hook needs PyYAML. When a ledger the

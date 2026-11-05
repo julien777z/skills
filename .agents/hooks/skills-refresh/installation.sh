@@ -158,18 +158,55 @@ check_directory() {
   done
 }
 
+physical_path_key() {
+  python3 - "$1" <<'PYCODE'
+import os
+import sys
+from pathlib import Path
+
+path = Path(os.path.realpath(sys.argv[1]))
+current = Path(path.anchor)
+missing = False
+case_insensitive = False
+
+for part in path.parts[1:]:
+    candidate = current / part
+
+    if not missing and os.path.exists(candidate):
+        identity = os.stat(candidate)
+
+        with os.scandir(current) as entries:
+            actual = next((entry.name for entry in entries if entry.stat(follow_symlinks=False).st_ino == identity.st_ino and entry.stat(follow_symlinks=False).st_dev == identity.st_dev), part)
+
+        current /= actual
+        continue
+
+    if not missing:
+        probe = current
+
+        while probe != probe.parent:
+            alternate = probe.with_name(probe.name.swapcase())
+
+            if alternate != probe and alternate.exists() and os.path.samefile(probe, alternate):
+                case_insensitive = True
+                break
+
+            probe = probe.parent
+
+        missing = True
+
+    current /= part.casefold() if case_insensitive else part
+
+print(current)
+PYCODE
+}
+
 preflight_provider() {
-  local provider="$1" root="$2" skill agent rule resource hook name failed=0
+  local provider="$1" root="$2" agent rule resource hook name failed=0
 
   check_directory "$root/skills" || return 1
 
   [ -d "$root" ] || return 0
-
-  while IFS= read -r skill; do
-    name="${skill##*/}"
-
-    [ "$root/skills/$name" -ef "$skill" ] || check_link "$root/skills/$name" || failed=1
-  done < <(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)
 
   if [ "$provider" = agents ]; then
     return "$failed"
@@ -253,6 +290,78 @@ link_source() {
   fi
 }
 
+# Hidden provider packages are outside the user catalogue. Claude also owns synced skills.
+protected_skill() {
+  case "$2" in
+    .*) return 0 ;;
+    synced) [ "$1" = claude ] ;;
+    *) return 1 ;;
+  esac
+}
+
+skill_contract() {
+  local provider="$1" skill name
+
+  if [ "$provider" = claude ]; then
+    printf 'protected:synced\n'
+  fi
+
+  while IFS= read -r skill; do
+    name="${skill##*/}"
+
+    if protected_skill "$provider" "$name"; then
+      echo "conflict: canonical skill $name occupies a protected namespace for $provider" >&2
+      return 1
+    fi
+
+    printf '%s\n' "$(link_source "$provider" skills "$name" "$skill")"
+  done < <(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)
+}
+
+reconcile_skills() {
+  local provider="$1" root="$2" skill name entry source
+  local expected_links=""
+
+  [ "$INSTALL_MODE" = check ] || mkdir -p "$root/skills"
+
+  while IFS= read -r skill; do
+    name="${skill##*/}"
+    source="$(link_source "$provider" skills "$name" "$skill")"
+    entry="$root/skills/$name"
+    expected_links="$expected_links|$entry|"
+    skills=$((skills + 1))
+
+    if [ -L "$entry" ] && [ "$(readlink "$entry")" = "$source" ]; then
+      continue
+    fi
+
+    install_changed=1
+
+    if [ "$INSTALL_MODE" = apply ]; then
+      if [ -L "$entry" ] || [ -e "$entry" ]; then
+        rm -rf -- "$entry"
+      fi
+
+      ln -s "$source" "$entry"
+    fi
+  done < <(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)
+
+  for entry in "$root/skills"/*; do
+    [ -e "$entry" ] || [ -L "$entry" ] || continue
+    protected_skill "$provider" "${entry##*/}" && continue
+
+    case "$expected_links" in
+      *"|$entry|"*) continue ;;
+    esac
+
+    install_changed=1
+
+    if [ "$INSTALL_MODE" = apply ]; then
+      rm -rf -- "$entry"
+    fi
+  done
+}
+
 prune_links() {
   local dir="$1" link
 
@@ -283,16 +392,9 @@ install_provider() {
   found_root=1
   expected_links=""
 
-  [ "$INSTALL_MODE" = check ] || mkdir -p "$root/skills"
-
-  while IFS= read -r skill; do
-    name="${skill##*/}"
-
-    install_link "$(link_source "$provider" skills "$name" "$skill")" "$root/skills/$name"
-    skills=$((skills + 1))
-  done < <(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)
-
-  prune_links "$root/skills"
+  if [ "${SKIP_SKILLS:-0}" -eq 0 ]; then
+    reconcile_skills "$provider" "$root"
+  fi
 
   if [ "$provider" = agents ]; then
     [ "$INSTALL_MODE" = check ] || echo "$root: $skills skills linked"
