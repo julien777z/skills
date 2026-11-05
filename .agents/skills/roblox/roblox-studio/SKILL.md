@@ -16,9 +16,10 @@ Carry a Roblox game request through implementation, visual polish, real playtest
 - `roblox-gameplay`
 - `agent-lock`
 
-Apply `luau` when reading or changing Luau, `roblox-react` when inspecting, changing, or testing React-rendered interfaces, `roblox-building` for environments, assets, traversal, and map/place architecture, and `roblox-gameplay` when modifying gameplay.
-
 ## Work autonomously within the requested scope
+
+Apply the listed technical dependencies whose own discovery conditions match the work, retaining
+any guidance already active for the task.
 
 - Treat an approved plan as an implementation request. Make routine design and engineering choices, fix failures, and continue through verification with minimal user input.
 - Continue until the stated issue is resolved and verified, or a concrete blocker leaves no safe, authorized way to make further progress. An unresolved defect, passing CI, a pushed PR, a failed recovery attempt, or a status report is not a stopping point. Investigate the next supported hypothesis, repair the failed capability, or use an authorized alternative; do not make the user repeatedly say "continue".
