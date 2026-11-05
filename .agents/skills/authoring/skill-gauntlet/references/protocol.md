@@ -51,9 +51,6 @@ python3 scripts/gauntlet.py verify RUN_DIR
 python3 scripts/gauntlet.py dashboard RUN_DIR --output SPEC.json
 ```
 
-Pass the exported spec to `use-dashboard` for validation, rendering, and publication. After each
-phase, export again and update the same recorded dashboard page.
-
 The public state may include inventory, outcome contracts, benchmark coverage, model identities,
 trial counts, anonymized iteration judgments, regressions, iterations, candidate summaries,
 installation state, recovery events, and final held-out pass or fail with violated-requirement
