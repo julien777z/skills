@@ -346,14 +346,10 @@ user's review of the source pull request overlaps it.
      release for a bug fix; verify any moving major tag points to that release and validate the
      consumer against it. Never use an unpublished tag; use the default branch when the user chose it
      or applicable reference guidance permits it.
-   - **Write it for every harness that loads it**, as the global rule **Everything under `.agents`
-     works in every harness that loads it** says. Before writing a hook, its matcher, a skill's
-     script, a setting or an instruction naming a tool, read each loading harness's contract for it
-     and run each path before delivery; a gap found in existing guidance or configuration is fixed
-     in the same change.
    - Write every added or changed instruction as the shared `agent-guidance.md` rule says: its
-     frontmatter, headings and statements, its breadth and examples, its scripts, a skill's shape,
-     output and section order, and its dependencies.
+     frontmatter, headings and statements, its breadth and examples, its scripts, hooks and
+     settings and every harness that loads them, a skill's shape, output and section order, and
+     its dependencies.
    - **Moved text is added text.** Guidance moved between files — a skill relocated, bullets
      gathered into a new rule or out of one — that lands beside a statement of the same requirement
      is merged with it into one in the same change, keeping every distinct criterion and exception,

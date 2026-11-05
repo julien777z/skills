@@ -7,18 +7,8 @@ alwaysApply: true
 
 ## Agent sources
 
-- This guidance is used with multiple models and agent harnesses. Prefer one provider-neutral
-  implementation and one canonical source for skills, rules, and agent prompts.
-- **Everything under `.agents` works in every harness that loads it.** That covers what the
-  harness runs or reads, not only prose: a hook script and the matcher that selects it, a skill's
-  script, a setting, an instruction naming a tool, and how each harness discovers and installs the
-  guidance. Each depends on a harness contract — its tool names, the payload a hook receives and the
-  output it answers with, its settings keys — so read every loading harness's contract and handle
-  each, such as a hook that reads one harness's edited file path and another's patch. Only a
-  capability a single harness alone has, such as a tool no other harness offers, stays that
-  harness's, and the change says so. Verify each path, such as running a hook against each
-  harness's payload. A harness left unserved is a defect, fixed in the change that finds it: never
-  new behaviour, a follow-up, or a question for the user.
+- Guidance about anything under `.agents` — writing, placing, harness support and validating it —
+  lives in the shared `agent-guidance.md` rule.
 - Read the other shared rules relevant to the current repository and task. If a harness does not
   load them automatically, open the applicable files from its user-level rules directory.
 - A skill catalogue is one discovery surface, not proof that a directly requested skill is absent.
@@ -28,8 +18,6 @@ alwaysApply: true
   manual approximation for an installed action skill.
 
 - In repositories that provide an agent CLI or otherwise interact with agents, store every agent prompt in a dedicated Markdown file rather than inline in application code so it is easy to find, review, and maintain. Application code may load a prompt file and interpolate runtime values into it.
-
-- Never stage generated provider output manually. Only the repository's Agent Sync workflow may generate and commit provider mirrors.
 
 ## User-Facing Output
 
