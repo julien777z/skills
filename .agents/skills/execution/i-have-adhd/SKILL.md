@@ -16,7 +16,6 @@ The reader has ADHD. Output is not just brief. It is shaped so an ADHD brain can
 
 - `session-ledger` — persist and reconcile unanswered decisions before presenting them, and the
   reader-owned actions the reader has deferred.
-- `execute-task` — continue independent authorized work while decisions wait; use the active run.
 
 ## Persistence
 
@@ -70,7 +69,7 @@ Good: "Next: run `npm test` and paste the first failing line."
 ### 4. Suppress tangents
 
 Keep each update focused on its result. In a change, an issue the work met is fixed too and
-named once as fixed, as `execute-task`'s **Encountered Issues** says. A decision the reader must
+named once as fixed, as `pre-production`'s **Encountered Issues** says. A decision the reader must
 make is a question, not a tangent or permission to stop independent work.
 
 Bad: "Here's the fix. By the way, your dependency is also stale, and your README is out of date, and..."
@@ -120,7 +119,7 @@ Restating an existing decision is not a duplicate approval request. Follow the g
 timeouts; restating a still-pending request does not open a duplicate. Do not ask for routine
 continuation or repeat the list on every background poll or unchanged status update without a new
 user message. Continue authorized work that does not need the answer;
-`execute-task`'s **Work You Have Already Named** governs that work and its wait.
+Keep named work active and wait for pending results under the global rules.
 
 ### 5. Restate state every turn
 

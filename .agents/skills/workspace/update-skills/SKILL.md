@@ -19,12 +19,11 @@ This skill never copies provider mirrors by hand.
 
 ## What Takes Effect
 
-Apply `execute-task`'s **Review-Only Delivery** using the task and workflow provenance before
-selecting overlay inputs. Exclude Gauntlet-generated upgrades and retirements until the user reviews
-them, including changes present in a recorded pull request, branch, working tree or prior overlay.
+Honor the selected workflow's installation hold using task and workflow provenance before selecting
+overlay inputs, including changes in a recorded pull request, branch, working tree or prior overlay.
 Keep unrelated pending changes in effect; when an input cannot be separated safely, leave that input
 out and report the concrete limitation. Never infer provenance from a title, label, branch or path
-substring. This does not prevent isolated installs used by Gauntlet's experimental gates.
+substring. Task-owned isolated installations remain available when the workflow permits them.
 
 **The installed guidance is the default branch plus eligible pending skill changes.** Refreshing never
 parks eligible pending work where it stops taking effect: the latest default branch, the agent configuration

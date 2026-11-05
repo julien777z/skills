@@ -22,7 +22,6 @@ is two invocations, and the user asks for both.
 
 ## Dependencies
 
-- `execute-task` — plan a scope that needs one, and the commit and push cadence of its branch.
 - `subagent-matrix` — dispatch the worker that executes a scope now, in its worktree.
 - `session-ledger` — record a queued-on-merge scope as a step a later turn reads, and the dispatch
   receipt of a scope executed now.
@@ -33,7 +32,7 @@ Every invocation resolves to one of two routes. Make the call explicitly and say
 taken and why.
 
 **Execute now, in a worktree.** Take this route whenever the scope cannot conflict with the change
-in flight, whatever its size. A scope that needs a plan gets one through `execute-task`'s **Plan** and still
+in flight, whatever its size. A scope that needs a plan gets one through the task coordinator and still
 runs now, beside the change.
 
 **Execute after the merge.** Take this route only when the merge supplies something the scope
@@ -73,7 +72,7 @@ The worktree leaves the current branch's working tree untouched.
    and host receipt with the scope's evidence in the task ledger through `session-ledger`, as
    `subagent-matrix`'s **Dispatch** requires. This keeps the
    parent session's own state and working directory where they were. Give the worker the scope, the worktree
-   path, and the commit and push cadence `execute-task`'s **Pre-Push Gate** sets for delegated edits.
+   path, and the commit and push cadence the GitHub rule’s **Pre-Push Gate** sets for delegated edits.
 
 3. **Validate inside the worktree** with the repository's own checks for what changed.
 

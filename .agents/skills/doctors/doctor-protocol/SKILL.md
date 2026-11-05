@@ -13,11 +13,9 @@ run; each doctor owns only its domain.
 
 - `subagent-matrix` — route every reviewer, final reviewer and implementation worker through a
   subagent of the running session.
-- `execute-task` — present the validated remediation plan through its **Plan** and require explicit
-  approval before editing, then implement it under its **Execution**.
+- `review-proposal`
 - `code-simplify` — simplify each wave and the complete result.
-- `acceptance-gate` — judge findings and the complete diff before it lands; execute-task owns
-  remediation-plan approval preparation through its shared proposal-review dependency.
+- `acceptance-gate` — judge findings and the complete diff before it lands.
 - `defer-scope` — record work consciously left undone; it runs the gate's admission question itself.
 - `pre-production` — apply the encountered-issue and target-contract policy while implementing.
 
@@ -121,10 +119,9 @@ and check their completion against the change history and final diff.
 
 If no justified correction remains, report the completed coverage and stop.
 
-Otherwise write a decision-complete remediation plan for `execute-task`'s **Plan**. Its
-review-proposal preparation supplies the attacker rounds and independent Proposal verdict before
-presentation; do not run another standalone Proposal gate here. Preserve objections and their
-required dispositions through that shared workflow.
+Otherwise write a decision-complete remediation plan. Invoke `review-proposal` for its attacker
+rounds and independent Proposal verdict before presentation. Preserve objections and their required
+dispositions through that workflow.
 
 Check each entry against the doctor's change boundary before presenting it. Exclude entries whose
 required exception evidence is absent; approval of a generated plan cannot supply that evidence.
@@ -143,7 +140,7 @@ sequencing it late and describing it clearly in the pull request, not for a seco
 that split, only the user asking to hold work apart puts an entry anywhere else. The plan may name
 checkpoints that group related entries on the same draft pull request.
 
-Then present it through `execute-task`'s **Plan**. The audit and its ledger are read-only; neither authorizes an edit. A
+Then present the reviewed plan for explicit user approval. The audit and its ledger are read-only; neither authorizes an edit. A
 user decision a disposition produces — a test to cut, a flag whose removal changes behavior — is
 presented as options with each consequence and a recommendation.
 
@@ -171,7 +168,7 @@ combined result, and the full suite and every check that needs a shared resource
   as one finishes, the next group in the wave starts.
 - **Each worker gets one group.** Its brief carries the group's entries and files, the remedies the
   lenses state, the intent statement and the run's branch it pushes to. It works in its own git
-  worktree detached at that branch's remote head, changes only its group's files, runs the pre-push checks `execute-task`'s **Pre-Push Gate**
+  worktree detached at that branch's remote head, changes only its group's files, runs the pre-push checks the GitHub rule’s **Pre-Push Gate**
   defines, and pushes each step with `git push origin HEAD:<branch>` after fetching and rebasing,
   as the GitHub rule's **Branches and Pull Requests** says.
 - **A shared resource is never used by two workers at once** — a database, a port, a running stack.
@@ -179,18 +176,18 @@ combined result, and the full suite and every check that needs a shared resource
   goes back out as fix steps.
 - **A worker that finds work outside its group reports it instead of editing it.** The parent
   records it in the ledger and schedules it into a later wave.
-- **Each wave's combined diff is the finished task** `execute-task`'s delegated-edits bullet gates:
-  the parent reads each worker's reported head under its **Reported Outcomes**, runs one
+- **Each wave's combined diff is gated before dependent work:**
+  the parent reads each worker's reported head under the global rules' **Reported Outcomes**, runs one
   `code-simplify` pass and one `acceptance-gate` diff question over the wave's pushed heads, and
   returns what they flag as fix steps in the next wave. Neither pass, nor a merge the parent makes
   of the wave, holds a worker's push. `code-simplify` runs again across the final result.
 
-Return to `execute-task`'s **Plan** for a newly discovered decision that changes the approved outcome;
+Present a newly discovered decision that changes the approved outcome to the user;
 do not silently narrow the correction.
 
 The plan is implemented to its last entry in one continuous run, into the branch in flight.
 A finished wave is not a finished plan, and neither is a pushed commit or a green suite; start the
-next wave in the same turn. `execute-task` owns what may and may not stop that run.
+next wave in the same turn. A genuine gate holds only its dependent work.
 
 Do not add source comments that narrate the change, its previous shape, or why something was added,
 removed, merged, or tightened. Make the result express the current state; tests validate that
@@ -198,7 +195,7 @@ behavior.
 
 ## Run Repository-Native Checks
 
-Run the pre-push checks `execute-task`'s **Pre-Push Gate** defines, then any further
+Run the pre-push checks the GitHub rule’s **Pre-Push Gate** defines, then any further
 repository-native check applicable to the changed files and their consumers: formatting, static
 analysis, tests, builds, code generation, and contract checks. Report a check category that is not
 configured rather than inventing one.
@@ -224,7 +221,7 @@ prevents completion.
 
 Once review is clean, put the complete diff to `acceptance-gate`'s final-acceptance question
 against the intent statement. Fix every flag under `acceptance-gate`'s **Bounds** and push each fix
-as its own increment, whose `execute-task` **Pre-Push Gate** verdict is the fresh gate.
+as its own increment, whose **Pre-Push Gate** verdict is the fresh gate.
 
 ## Defer Leftovers
 
@@ -240,8 +237,9 @@ stated only in chat, the plan, or the report is not recorded.
 
 ## Deliver
 
-Keep each repository's run on its draft pull request under `execute-task`'s **Review-Only
-Delivery**. A run that changes both agent configuration and source carries each on its own pull
+Keep each repository's run on its draft pull request for the user's review. Standing merge
+exceptions and approval of the audit plan do not authorize merge or auto-merge; a later explicit
+user instruction naming the target may authorize merge. A run that changes both agent configuration and source carries each on its own pull
 request, except guidance the GitHub rule puts on the source pull request it depends on. Complete
 every approved entry continuously; checkpoints sequence work on those drafts and never wait for a
 merge. Run **Run Repository-Native Checks**, **Review The Result**, and **Accept The Complete Diff**

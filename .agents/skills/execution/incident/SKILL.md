@@ -115,7 +115,7 @@ visible.
 
 ## Tests And Checks
 
-Apply `execute-task`'s **Priority** to recovery and follow-ups. After its branch checkpoint,
+Give active recovery priority over follow-ups. After the branch checkpoint,
 complete **One Review Round** and ordinary delivery validation before an authorized
 merge; **Restore Deployment Sources** then verifies the default-source deployment. A failure there
 resumes recovery and pauses ordinary work again.
@@ -125,7 +125,7 @@ end, after the push, over a tree that has stopped changing. An active run suspen
 because the tree changes with every diagnosis and the service is down the whole time.
 
 - During active recovery, a fix push uses the applicable source and whitespace checks from
-  `execute-task`'s **Pre-Push Gate**, without waiting for tests, static analysis or independent
+  the GitHub rule’s **Pre-Push Gate**, without waiting for tests, static analysis or independent
   review. Preserve current-user validation pauses. The original failed operation, repeated on the
   deployed branch, is the recovery check; a green check run never gates that deployment.
 - Do not run, investigate or fix ordinary test, lint, formatter or type-check findings during
@@ -142,9 +142,8 @@ it. Keep credentials out of that record.
 
 Build and publish release images through the repository's GitHub Actions workflow, never locally.
 Use the exact fix branch and only the authorized environments through the designated entrypoint
-and its supported source selection. Apply `execute-task`'s **Completion** check of the actual loaded
-branch code, event path and workflow identity before accepting that run as fix verification; its
-isolated fallback cannot establish this skill's required live restoration. Follow the GitHub rule's **Workflows** recovery boundary;
+and its supported source selection. Verify the actual loaded branch code, event path and workflow identity before accepting that run as
+fix verification; an isolated fallback cannot establish this skill's required live restoration. Follow the GitHub rule's **Workflows** recovery boundary;
 never add a temporary workflow mode or wrapper to bypass identity, permission or ref selection.
 Verify the workflow's terminal result and image revision before deploying.
 

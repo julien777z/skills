@@ -15,8 +15,8 @@ at their owners.
 - `session-ledger` — resolve, validate, update, and preserve the private task ledger.
 - `edit-skill` — deliver admitted `guidance_correction` records into canonical guidance.
 
-Apply `execute-task`'s **Review-Only Delivery** to each entry's recorded provenance before
-freezing or delivering a batch; preserve that provenance and its review hold across handoffs.
+Honor each entry's recorded workflow sequence and delivery hold before freezing or delivering a
+batch; preserve provenance and holds across handoffs.
 
 ## Batches
 
@@ -48,9 +48,7 @@ does not keep its batch in flight.
 
 ## Workflow
 
-1. Resolve and read the active task's ledger through `session-ledger`. Honor `execute-task`'s
-   **Priority** before starting permanent guidance delivery; retain its saved next action while
-   recovery holds that work. Before freezing or prioritizing a batch, reconcile every recorded hold
+1. Resolve and read the active task's ledger through `session-ledger`. Honor active recovery priority before permanent guidance delivery; retain its saved next action. Before freezing or prioritizing a batch, reconcile every recorded hold
    with its current owner and authoritative dependency evidence. Discharge a completed dependency,
    retain a genuine authorization or dependency hold with its saved next action, and resume any
    nonterminal delivery stage without repeating a verified receipt. Verify each entry's evidence

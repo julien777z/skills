@@ -163,5 +163,4 @@ fresh replacement set, and continue the gauntlet without giving failed held-out 
 For `Green — retire`, validate deactivation in the task-owned isolated evaluation installation,
 then prepare a scoped retirement change as a draft pull request for user review. Keep active
 installations intact. A green evaluation is evidence for the proposed change, not an installation
-or deactivation of the user's active skill. Deliver upgrades and retirements under `execute-task`'s
-**Review-Only Delivery**.
+or deactivation of the user's active skill. Deliver upgrades and retirements under the entrypoint's **Delivery** contract.

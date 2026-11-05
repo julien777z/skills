@@ -41,7 +41,7 @@ caller or native validation evidence identifying its command and covered behavio
 resolved dependencies, configuration, toolchain and runner inputs, successful result, and durable
 output. Missing evidence prevents reusing that result or admitting a local-coverage exclusion; it
 never waives hosted coverage. The caller also supplies each validation exclusion: a current-user
-direction to leave a named test or check alone, a baseline exclusion established by `execute-task`'s
+direction to leave a named test or check alone, a baseline exclusion established by `pre-production`'s
 **Encountered Issues** classification with its default-branch evidence, or evidence that a hosted
 runner or provider cancellation meets the GitHub rule's pre-validation and local-coverage
 conditions. A caller with no such rule has each fix's diff judged the way it judged the accepted
@@ -129,7 +129,7 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    hang, push a speculative fix, cancel, re-run, or report the run stuck from a pending status alone.
 8. **Classify every unsuccessful check before repair.** A caller-supplied exclusion, a current-user
    waiver for its named test or check is excluded. Preserve established baseline classifications;
-   classify a newly encountered possible baseline under `execute-task`'s **Encountered Issues**,
+   classify a newly encountered possible baseline under `pre-production`'s **Encountered Issues**,
    without reentering that skill's active run. Record an exclusion's evidence, remove it from
    required coverage, and do not repair, rerun, or wait for it. Apply the
    GitHub rule's runner-infrastructure exclusion automatically: record a qualified check as skipped

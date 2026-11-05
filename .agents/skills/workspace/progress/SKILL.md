@@ -14,7 +14,6 @@ and deliver the same dashboard again on every request so the user keeps one page
 - `session-ledger` — read the task's records and keep the dashboard's own.
 - `list-prs` — find the task's pull requests.
 - `use-dashboard` — render the spec this skill builds and deliver the page.
-- `execute-task` — its already-active run owns the saved next action after reporting; standalone reporting does not start a run.
 
 ## Workflow
 
@@ -27,7 +26,7 @@ and deliver the same dashboard again on every request so the user keeps one page
    as one a later plan continues or supersedes, and finished work the task's record shows that no
    recorded step holds, such as completed items on the harness task list, are each a plan the ledger
    lacks. A plan that continues or supersedes another replaces only the steps it names; the earlier
-   plan's finished steps stay in the count. An active or blocked step that `execute-task`'s **Progress Record**
+   plan's finished steps stay in the count. An active or blocked step that the task's progress record
    records with parts, held in the ledger without them, gets them recorded the same way, with the
    parts already finished marked done.
 2. **Find the task's pull requests** with `list-prs`, requesting every state, then read each one's
@@ -49,7 +48,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 6. **Report and return to the caller.** Through the selected route, send the link or file and one
    line: percent complete, time remaining, and how many questions wait on the user, each the figure
    the dashboard shows. When reporting interrupts unfinished authorized work, carry out the active
-   run's saved next action under `execute-task`'s **Work You Have Already Named**. A report without
+   run's saved next action under the global rules' pending-work boundary. A report without
    that action does not complete this step; when an awaited result holds the action, retain that
    owner's wait and resume route.
 
@@ -71,7 +70,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   first segment, toned `good`, then its remaining work as a second, toned by the step's status as
   above, when any remains, so the bar fills as the percentage does.
 - **Metrics,** in this order: **Time remaining**, the work not yet finished, totalled as
-  `execute-task` totals a plan, prefixed `~` because it is an estimate, counting only the agent's work, with no
+  the task coordinator totals a plan, prefixed `~` because it is an estimate, counting only the agent's work, with no
   `detail` for anything the user owes; **Waiting on you**, the count of open questions; **Pull
   requests**, the count of open and draft pull requests, with "<n> open · <n> draft" in `detail`;
   **Elapsed**, measured from the first plan's recorded approval time.

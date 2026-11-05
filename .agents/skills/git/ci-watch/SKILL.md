@@ -16,7 +16,7 @@ Monitor a pull request through the delayed-review window and act on valid feedba
 
 ## Workflow
 
-1. Resolve the pull request from an explicit number or URL, or retrieve the matching current-repository record from `session-ledger` and verify its current branch and state with the hosting service. If the current branch is the repository default branch and changes are needed, create a new work branch before editing; after making and verifying changes, commit, push through `execute-task`'s **Pre-Push Gate**, create a draft PR if one does not already exist for that branch, record its returned canonical URL with `session-ledger`, then poll CI for that PR. If no matching record exists, ask for the target; never infer it from local branch relationships.
+1. Resolve the pull request from an explicit number or URL, or retrieve the matching current-repository record from `session-ledger` and verify its current branch and state with the hosting service. If the current branch is the repository default branch and changes are needed, create a new work branch before editing; after making and verifying changes, commit, push through the GitHub rule’s **Pre-Push Gate**, create a draft PR if one does not already exist for that branch, record its returned canonical URL with `session-ledger`, then poll CI for that PR. If no matching record exists, ask for the target; never infer it from local branch relationships.
 2. Record a baseline containing the head SHA, review submissions, conversation comments, inline review threads, resolution state, and latest finding timestamp. Prefer thread-aware GitHub reads so duplicate, outdated, and resolved findings are distinguishable.
 3. Check and investigate existing review threads, comments, and issue/PR conversation items as part of the baseline, not only new findings. Classify each unresolved or recently-updated item as legitimate, duplicate, already fixed, stale/outdated, ambiguous, or incorrect before deciding whether the watch can be quiet.
 4. Start a 15-minute quiet timer from the most recent finding, from the latest baseline item that still needs investigation, or from the baseline check when no findings exist.
@@ -26,7 +26,7 @@ Monitor a pull request through the delayed-review window and act on valid feedba
    - Read the cited code and relevant surrounding behavior.
    - Classify it as legitimate, duplicate, already fixed, stale/outdated, ambiguous, or incorrect.
    - Fix legitimate issues with the smallest behaviorally complete change.
-   - Commit each verified fix and push it promptly to the PR branch through `execute-task`'s **Pre-Push Gate**. Re-read remote state before pushing if the branch changed concurrently.
+   - Commit each verified fix and push it promptly to the PR branch through the GitHub rule’s **Pre-Push Gate**. Re-read remote state before pushing if the branch changed concurrently.
    - Resolve review threads that are fixed, stale/outdated, duplicates, false positives, not applicable, or otherwise incorrect; leave ambiguous or still-actionable threads unresolved.
 7. After every push, restart the 15-minute quiet timer from the push time and continue polling because new automated reviews may target the new commit.
 8. Stop the watch loop when the PR is ready to merge: either all available code-review bots approve or report no findings, or the only remaining review items are unactionable, false positives, stale/outdated, or otherwise incorrect and GitHub checks are green. For cleanup-only feedback, apply the **counted-review-round completion rule**:

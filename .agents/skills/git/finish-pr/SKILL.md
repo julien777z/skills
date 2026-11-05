@@ -108,7 +108,7 @@ Process each unit through these steps before starting the next.
    - every exclusion it returned, with its evidence;
    - the fix rule for every fix `merge-gate` makes — a check fix, a conflict resolution, a commit
      someone else pushed: `review-pass` runs again over that fix's delta, and the fix is pushed through
-     `execute-task`'s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
+     the GitHub rule’s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
      passed.
 3. Record the merge, or the gate that holds, with `session-ledger`, and continue to the next unit.
 

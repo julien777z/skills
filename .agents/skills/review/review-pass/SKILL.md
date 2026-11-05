@@ -98,7 +98,7 @@ a follow-up after it gets a review of the follow-up, sized to the follow-up.
   and a moved one only its new delta, and the pass records `whole` because the earlier whole
   coverage is preserved. Otherwise the delta is the complete merge-base diff, sized as **Anything
   else** below. Every other pass records `delta`.
-- **Size the pass from the delta**, using `execute-task`'s definition of a trivial change — no
+- **Size the pass from the delta**, where a trivial change has no
   design choice in it: a typo, a one-line fix, a rename the user named.
   - **Empty**: a working-pull-request route runs only **Review Thread Triage** when its current
     target snapshot and retained supporting inputs are exact matches for the accepted record, or a
@@ -169,7 +169,7 @@ named that was taken back out, a shape the change replaced, a contract the diff 
 Check each claim against the head rather than against the memory of writing it, because the sentences
 most likely to be wrong are the ones that were true when they were written.
 
-Apply `execute-task`'s **Multi-Repository Delivery** when rewriting. The title and description
+Apply the GitHub rule's independent publishing context when rewriting. The title and description
 describe the target branch's own contract; make that ownership check during the first refresh and
 again before the final gate.
 
@@ -274,7 +274,7 @@ whatever shape its fix takes, including a schema migration, it is fixed in this 
 merely inconvenient, unfamiliar, or larger than expected is not a deferral justification.
 
 Each working-pull-request fix is committed and pushed as its own increment, and that increment's
-`execute-task` **Pre-Push Gate** verdict is its gate. A local-snapshot fix is committed in its
+the GitHub rule’s **Pre-Push Gate** verdict is its gate. A local-snapshot fix is committed in its
 task-owned checkout, freezes a replacement snapshot, validates and re-gates locally, and is never
 pushed unless an authorized working-pull-request route is established.
 
@@ -368,7 +368,7 @@ alone does not start another cohort.
 Before a failed test or hosted check can hold either pass, classify it against the reviewed target.
 An explicit current-user instruction to leave a named test or check alone is an exclusion.
 Preserve established baseline classifications; classify a newly encountered possible baseline
-under `execute-task`'s **Encountered Issues**, without reentering that skill's active run. Record the
+under `pre-production`'s **Encountered Issues**, without reentering that skill's active run. Record the
 test or check, its evidence and exclusion in the result; do not repair, rerun, or wait for an
 excluded failure, and do not let it prevent the review. Return every exclusion with its exact
 evidence so the caller can pass it to `merge-gate`.
@@ -382,7 +382,7 @@ Run the affected targets first, before the **Simplification Gate** opens, select
 diff as the testing rules direct. For a working-pull-request route, fix what that run reports and push,
 so every reviewer reads a tree that already passes and spends its findings on design rather than on a
 break the suite was going to name anyway. That repair is ordinary work in the pull request, pushed
-through `execute-task`'s **Pre-Push Gate** like any push; it starts no review. For a local route,
+through the GitHub rule’s **Pre-Push Gate** like any push; it starts no review. For a local route,
 commit the repair only in the task-owned checkout, persist and read back a replacement `currentSnapshot`,
 and continue local validation and review without pushing.
 

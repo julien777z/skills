@@ -37,7 +37,7 @@ not a dependency this skill runs, so it is named here and not below.
    user's — is cited by its section in Dispositions, never restated or reclassified. A reviewer
    partition the domain dictates may take its own heading; nothing that restates a protocol
    section may. Declare no delivery cadence: the protocol leaves the run's pull requests draft for
-   the user under `execute-task`'s **Review-Only Delivery**.
+   the user under the doctor's review-only delivery contract.
 4. **Keep it generic.** Discover layouts, tools, frameworks, and budgets at runtime. Never name the
    current repository's paths, packages, products, commands, or thresholds. State a default
    threshold as one the repository's configuration overrides. Refer to a repository-specific skill

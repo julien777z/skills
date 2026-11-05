@@ -99,7 +99,7 @@ context and returns its verdict into the step waiting on it; nothing else does b
   context. Work the step splits among several workers is never carried by one of them alone, which
   cannot do it thoroughly. The gate over a finished task's diff is not such a step: the delegating
   agent runs it from the branch and head the worker reports, under the delegated-edits bullet of
-  `execute-task`'s **Pre-Push Gate**. A worker whose only channel to that agent is its final message
+  the GitHub rule’s **Pre-Push Gate**. A worker whose only channel to that agent is its final message
   asks by returning: it ends its turn with the file path and the request, and resumes when the
   verdict comes back. The delegating agent runs it and returns the verdict unedited; when the
   finished worker cannot be resumed, the delegating agent carries out what the verdict calls for,
