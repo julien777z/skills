@@ -1,7 +1,7 @@
 ---
 name: skill-gauntlet
-description: Audit installed agent skills across every visible scope, then autonomously benchmark, upgrade, retire, and install user-selected skills through isolated blind evaluations and a resumable shared dashboard. Use to inventory skill quality, compare a skill with model-only behavior, improve skills experimentally, or run a skill-upgrade gauntlet.
-short_description: 'Audit installed agent skills and test which ones to improve, retire, or install.'
+description: Audit installed agent skills across every visible scope, then benchmark user-selected skills and propose upgrades or retirement through isolated blind evaluations and a resumable shared dashboard. Use to inventory skill quality, compare a skill with model-only behavior, improve skills experimentally, or run a skill-upgrade gauntlet.
+short_description: 'Audit installed agent skills and evaluate upgrades or retirement.'
 disable-model-invocation: true
 ---
 
@@ -43,13 +43,14 @@ evaluation roles independent, and prefer honest retirement over a manufactured i
    builders or contestants before final evaluation.
 7. Keep the lead agent as the only state writer. Serialize every utility mutation after receiving
    independent-agent results; never let parallel agents call `snapshot` or `update` concurrently.
-8. Provisionally install a candidate in an isolated evaluation environment only after it satisfies
+8. Provisionally install a candidate in a task-owned isolated evaluation environment only after it satisfies
    the frozen iteration acceptance gate. Preserve the original and verify the candidate resolves
    under the intended precedence. Report an isolation or precedence blocker.
-9. Run the final held-out acceptance gate after installation. If it fails, restore the verified
+9. Run the final held-out acceptance gate after installation. If it fails, restore the isolated
    original snapshot, record the rollback, archive and replace the contaminated held-out set, and
    resume iteration.
-10. Finish only when every selected skill is honestly green as an upgrade or `Green — retire`.
+10. Finish only when every selected skill is honestly green as an evaluated upgrade or
+    `Green — retire`, with its proposed change ready for user review.
 
 ## Independence Rules
 
@@ -65,14 +66,12 @@ evaluation roles independent, and prefer honest retirement over a manufactured i
 ## Delivery
 
 - Preserve original snapshots and the evidence supporting every evaluated upgrade or retirement.
-- After the protocol succeeds, deliver candidate source changes as scoped draft pull requests for
-  user review. Do not run the ordinary testing, review, acceptance, readiness, or merge pipeline,
+- After the protocol succeeds, deliver upgrade or retirement changes as scoped draft pull requests
+  for user review. A green evaluation does not mean the active skill was installed or deactivated;
+  leave active skills intact pending explicit user review and merge instructions. Do not run the ordinary testing, review, acceptance, readiness, or merge pipeline,
   auto-merge them, or apply a standing agent-configuration merge exception. Later explicit user
   instructions govern further action. This review-only delivery also applies to changes to Skill
   Gauntlet itself.
-- Treat `Green — retire` as reversible deactivation, not a recommendation: move a writable skill
-  outside every discovered skill root into the run's `retired/` directory, or use the harness's
-  documented disable mechanism for managed skills. If neither is supported, report a blocker.
 - Do not edit managed or provider-owned skill sources in place.
-- Report the dashboard URL, selected-skill outcomes, installed destinations, restored originals,
+- Report the dashboard URL, selected-skill evaluation outcomes, isolated installation destinations, restored originals,
   exact models, final held-out results, and any unresolved external blocker.
