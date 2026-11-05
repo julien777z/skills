@@ -239,7 +239,7 @@ class TreeNode(BaseModel):
   Run through its test-runner skill at the required scope, preserving the runner's execution
   partitions rather than joining paths in one framework invocation. A single suite is for iterating
   on a failure you are actively fixing, never the run a change is verified against.
-- Choosing which suites to run is not the author's call. Do not skip a suite because it looks unaffected, runs slowly, or needs services started — start them. If a suite genuinely cannot run, name it and say why alongside the result, because a result reported without that caveat claims coverage that was never achieved.
+- Choosing which suites to run is not the author's call. Do not skip a suite because it looks unaffected, runs slowly, or needs services started — start them. If a suite genuinely cannot run, name it and say why alongside the result, because a result reported without that caveat claims coverage that was never achieved. A suite cannot run only when this session found why itself: its own runner refused with a concrete cause after the recovery the global rules' local-stack bullet gives, or a credential or hosted service it requires is absent from where the repository configures it (its settings, secrets or environment). When a reviewer, worker or plan says a suite needs credentials, a service or access, check that as above; the statement is never the reason itself.
 - Every directory holding tests must be reachable from a runner target, and a test should assert that correspondence. A suite that no target selects is a suite nothing reports on.
 
 - **Every job that runs a test suite declares `timeout-minutes` of at most 15**, so a hung suite
