@@ -153,6 +153,8 @@ alwaysApply: true
   itself authorize merging. A reply that could be read as accepting a merge the agent offered, such
   as a bare "yes" beside another request, authorizes no merge it does not name. If neither
   authorization source applies, do not merge or enable auto-merge.
+- Apply `execute-task`'s **Review-Only Delivery** before the standing permissions below; its
+  review-only pull requests cannot use those exceptions or auto-merge.
 - Before asking for merge permission, classify the complete actual diff against the standing
   permissions below. A filename, extension, line count or change label is not a behavioral
   classification. Preserve genuine edits; never remove them merely to qualify for an exception.
@@ -181,7 +183,7 @@ alwaysApply: true
 - **An agent-configuration pull request whose guidance depends on a still-open source pull request in another repository is held until that merge**, whatever its other gates say; dependent guidance in the same repository rides its source pull request instead, as **Branches and Pull Requests** says, and guidance true on the default branch as it stands waits for nothing.
 - A hold does not authorize merging the source pull request or asking for its merge solely to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. The session that merges the source pull request lands the held one next: incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
 - When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request; one held for a source pull request becomes eligible once that pull request has merged. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, including one begun by another task. Do not close or leave it open merely because it is draft or conflicts with the base; close only one this session opened, and only when its change is superseded or no longer wanted.
-- An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each batch pull request a skill declaring merged-batch delivery opens during its run, and each fix pull request a directly user-invoked skill's own authorization names, once that skill's merge gates pass; that authorization ends with the run.
+- An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each fix pull request a directly user-invoked skill's own authorization names, once that skill's merge gates pass; that authorization ends with the run.
 - An authorized merge is not held for a failing check the current user explicitly waives or an
   established baseline exclusion under `execute-task`'s **Encountered Issues** classification.
   Name the check and its exclusion evidence in chat, then attempt the authorized merge without

@@ -451,15 +451,8 @@ a later reader can act on. Ranked in one place, the next run has its baseline an
 what to cut can see what the time is being spent on.
 
 Post it once per pull request, updating the same comment when a later push changes the numbers
-rather than adding a second; each batch's pull request carries the ranking measured at its merge
-head, so the last one holds the final numbers against the baseline. Give it measured durations and
-unmeasured dispositions, without narration of the repairs the body and diff already carry.
-
-## Delivery
-
-Tests-doctor delivers in merged batches under `doctor-protocol`'s **Deliver**. A test remediation
-touches files across every suite, and one pull request held open for the whole plan conflicts with
-every change landing beside it.
+rather than adding a second; the draft pull request carries the final ranking against the baseline.
+Give it measured durations and unmeasured dispositions, without narration of the repairs the body and diff already carry.
 
 ## Report Additions
 

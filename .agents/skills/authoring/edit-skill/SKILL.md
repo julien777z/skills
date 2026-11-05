@@ -71,6 +71,10 @@ During A Task** for the edit's timing.
 - `session-ledger` — retain observed issues, reproduction scenarios and pending guidance delivery across the active task.
 - `update-skills` — put a pushed pending edit into the installed copy every agent loads.
 
+Apply `execute-task`'s **Review-Only Delivery** before recording or delivering a batch. Its
+Gauntlet route bypasses this skill's normal review, acceptance and smoke-test delivery while retaining
+source checks; doctor runs retain these checks and remain draft for the user.
+
 ## Recording During A Task
 
 - Carry out the user's requested action in the current work first and verify that it achieved the
@@ -175,7 +179,7 @@ user's review of the source pull request overlaps it.
 - At a checkpoint and before reporting its state, record the complete pull-request head and file
   list, the target repository's lifecycle, its current state, and its next transition. A draft
   confined to canonical agent configuration records `agent-configuration exception`
-  and `merge-gate` as its next action unless step 7.7 holds it for the user or for a source pull request
+  and `merge-gate` as its next action unless **Review-Only Delivery** or step 7.7 holds it for the user or for a source pull request
   in another repository; it never records `await user authorization` otherwise.
 
 ## Behavior
@@ -369,7 +373,7 @@ user's review of the source pull request overlaps it.
 7. **Guidance Delivery** delivers the batch in this order, with `review-pass` carrying steps 3–4. Ordinary
    repairs and verification remain authorized throughout this delivery; resolve flagged gates under `acceptance-gate`'s **Bounds** and failing smoke runs under
    `test-skill`. A pull request confined to agent configuration has merge authorization under the
-   GitHub rule after its stated gates; ask neither to repeat that authorization nor to continue
+   GitHub rule after its stated gates, subject to **Review-Only Delivery**; ask neither to repeat that authorization nor to continue
    an ordinary repair. That merge authority settles no genuine unresolved product, scope, or
    authorization choice: put that concrete choice to the user under **Bounds** while independent
    work continues. It does not authorize a release workflow. A changed output's concrete example, under **Upsert behavior**, is task evidence before writing that output; it does not wait for approval.

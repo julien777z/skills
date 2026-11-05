@@ -47,6 +47,22 @@ are validated by their evidence, smoke-test, review, and acceptance gates.
   delegated them. A read-only turn does not close an open run either: a run still holding named
   work stays active through such a turn, and that turn moves its items.
 
+## Review-Only Delivery
+
+Classify the work from its actual task and workflow context, and retain that provenance in the
+session ledger and any handoff. A Skill Gauntlet run keeps its own experimental gates. Its generated
+changes and direct maintenance of Skill Gauntlet bypass ordinary test suites, `test-skill`,
+`code-simplify`, `review-pass`, `code-review`, step or final `acceptance-gate`, and merge delivery
+in this skill and `edit-skill`. Required source and packaging checks still run; record them as such, never as a
+behavioral-test pass. Route this classification
+before step gates, pre-push checks and guidance delivery, so none reintroduces the omitted pipeline.
+
+A doctor run keeps its native checks, reviews and acceptance gates. Pull requests created by either
+workflow, and direct Skill Gauntlet maintenance pull requests, stay draft for the user's review;
+standing merge exceptions and approval of an audit plan do not authorize their merge or auto-merge.
+A later explicit user instruction naming the target may authorize a merge. Identify provenance from
+the run and task records, never from a pull request title, label, branch or path substring.
+
 ## Plan
 
 Every task that changes files starts here, and so does every follow-up that arrives while one runs.
@@ -530,7 +546,7 @@ compatibility, generated-output drift.
 
 ### Ongoing Simplification
 
-**Every finished step is gated before anything builds on it.** When a plan step or a worker task
+**Every finished step is gated before anything builds on it**, subject to **Review-Only Delivery**. When a plan step or a worker task
 finishes, run `code-simplify` and then `acceptance-gate`'s diff question over that step's diff
 before the step is recorded or reported done — in process for a step the primary agent made itself,
 and through a fresh gate subagent for a delegated worker's task — and before a later
@@ -900,6 +916,9 @@ after the streams ran is built, then
 reaches this checkpoint again when it is finished; `review-pass` reviews only what changed since the
 head it last accepted, so a small follow-up costs a small review and a large one a full review of the
 new work.
+
+Apply **Review-Only Delivery** before selecting either stream. For Gauntlet work, retain any experimental
+results, source checks and draft pull request; do not enter the normal streams below.
 
 Two streams run side by side from here: the guidance stream and the source stream.
 
