@@ -13,6 +13,7 @@ metadata:
 The reader has ADHD. Output is not just brief. It is shaped so an ADHD brain can act on it.
 
 ## Dependencies
+- `pre-production`
 - `session-ledger`
 
 ## Persistence

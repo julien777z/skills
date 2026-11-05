@@ -11,6 +11,7 @@ through `session-ledger`; it stays private task state, while permanent guidance 
 at their owners.
 
 ## Dependencies
+- `acceptance-gate`
 - `session-ledger`
 - `edit-skill`
 

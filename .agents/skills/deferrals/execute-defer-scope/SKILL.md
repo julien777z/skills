@@ -59,10 +59,9 @@ from the tree read before the gate. The dispositions:
 - **Implement** — correct a real release problem with the clean target implementation.
 - **Simplify and incorporate** — solve it through a smaller correction, reuse, deletion,
   consolidation, or better owner.
-- **Already resolved** — retire a stale record after proving the default branch no longer has it.
+- **Already resolved** — retire a stale record using `defer-scope`'s **Changing A Record** evidence.
 - **Decline** — retain the evidence while rejecting obsolete, speculative, or harmful work.
-- **Void** — remove a record that never described work: a mistake, a duplicate, or a finding that
-  proved wrong.
+- **Void** — remove a record using `defer-scope`'s **Changing A Record** evidence.
 - **Blocked** — keep it active only for a genuine external dependency or unresolved user decision.
 
 A record is evidence, not an implementation instruction. Consolidate duplicate records under the

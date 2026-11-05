@@ -12,6 +12,7 @@ protocol already does. Read the protocol first: it is the contract a new doctor 
 not a dependency this skill runs, so it is named here and not below.
 
 ## Dependencies
+- `doctor-protocol`
 - `subagent-matrix`
 - `get-doctors`
 - `edit-skill`

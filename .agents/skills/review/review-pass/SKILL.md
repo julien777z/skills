@@ -300,7 +300,7 @@ invalidate affected receipts and resume the active pass at its first nonterminal
 review fixes remain phases of the active pass. Pass this continuity rule into `code-review high fix`;
 it overrides that skill's generic restart-on-any-new-task instruction.
 
-A dependent unit's repoint under `finish-pr`'s **Dependent Pull Requests**, confined to its
+A dependent unit's repoint, confined to its
 reference edits and the lockfile entries they change, reconciles the current target snapshot through
 `code-review`'s continuity attestation and coverage map. When any receipt or target material changes,
 rerun every invalidated or newly applicable lens and exact-head acceptance before returning the

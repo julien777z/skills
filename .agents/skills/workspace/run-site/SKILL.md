@@ -10,6 +10,7 @@ Start and verify the stack within the requested scope. When browser verification
 **Principles**, its deliverable includes screenshots and a recording showing signed-in functionality.
 
 ## Dependencies
+- `pre-production`
 - `use-browser`
 - `proton-pass`
 - `test-fixture`
