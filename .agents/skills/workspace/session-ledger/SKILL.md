@@ -133,6 +133,12 @@ identity, never a second authoritative copy of its records.
    - For an artifact created before this skill was available, reconstruct its missing entry from
      verified task evidence, then use the ledger for later lookups.
 
+## Guidance Batches
+
+One guidance batch is in flight at a time. It is frozen when delivery starts. An entry admitted
+while it is in flight joins it until its pull request merges. A batch is in flight from its freeze
+until every entry has a verified delivery or a recorded hold; a held entry does not keep it in flight.
+
 ## Backup
 
 Every `guidance_correction`, `plan` and `decision` entry, and every answered `question`, is backed up

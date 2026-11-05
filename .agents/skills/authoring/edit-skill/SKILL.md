@@ -14,7 +14,7 @@ doing other work. An edit that skipped this is unverified, and the report says s
 recording a guidance correction. Record only a verified success, or a direct guidance request,
 under **Recording During A Task**, which sets when its edit is delivered. A failed, blocked, or
 unavailable action is task evidence only: it does not create a ledger correction or a guidance edit.
-With no other task running and no guidance batch in flight, as `process-ledger`'s **Batches**
+With no other task running and no guidance batch in flight, as `session-ledger`'s **Guidance Batches**
 defines it, first perform the requested action and record it only after it succeeds.
 
 An open `.agents` pull request is not a delivery result. Processing continues through its source
@@ -113,7 +113,7 @@ Validate skill dependencies and their actual call and policy-read paths under th
   copy every agent loads, subagents included, carries them; agents still running hold no refresh, since each skill is
   read through its link when it is used. Nothing else of delivery runs while the task does: no
   review, gate, smoke round, merge or worker, except the checks a batch in flight reruns for an edit
-  that joined it, as `process-ledger`'s **Batches** says. A standing instruction about how guidance
+  that joined it, as `session-ledger`'s **Guidance Batches** says. A standing instruction about how guidance
   pull requests are reviewed or merged governs that delivery when it runs, never when. A gate result
   that arrives for a guidance pull request already open is recorded as its entry's stage result, and
   its repair waits with the rest.
@@ -122,7 +122,7 @@ Validate skill dependencies and their actual call and policy-read paths under th
   in that batch; the batch is one pull request, apart from edits the GitHub rule puts on a source
   pull request. One recorded while a batch is in flight joins that
   batch, and one recorded after the batch's pull request merged starts the next, as
-  `process-ledger`'s **Batches** says; tell the user which.
+  `session-ledger`'s **Guidance Batches** says; tell the user which.
 - The task's next step is never held by a correction: record it and carry on.
 
 ## Guidance Delivery

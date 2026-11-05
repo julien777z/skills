@@ -20,10 +20,7 @@ at their owners.
 Honor each entry's recorded workflow sequence and delivery hold before freezing or delivering a
 batch; preserve provenance and holds across handoffs.
 
-**One guidance batch is in flight at a time.** It is frozen when its delivery starts, and an entry
-admitted while it is in flight joins it until its pull request merges. A batch is in flight from its
-freeze until it is done: every entry in it has a verified delivery or a recorded hold. A held entry
-does not keep its batch in flight.
+Apply `session-ledger`'s **Guidance Batches** boundary.
 
 - **Freezing.** Mark with one batch id every `pending` `guidance_correction` entry that `edit-skill`'s
   **Recording During A Task** admits and that either carries no batch id or is held by a hold that
