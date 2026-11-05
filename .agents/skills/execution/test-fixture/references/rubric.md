@@ -53,12 +53,7 @@ a deletion reason, and neither is ordinary slowness; a disproportionate cost und
 as the repository's product-constraints skill decides. A baseline failure may expose a product bug; reproduce it and repair the
 owner rather than deleting its test.
 
-Before deleting an existing test, record its exact name and location, the failure it can detect,
-non-test callers of the covered source or support seam, the proof of the same classification that
-remains (or why none is needed), relevant history, the source or support deletion it unlocks, risk,
-and a focused validation command. Missing evidence leaves the candidate unready for deletion.
-Read the complete test and production owner, entry point, callers, callees, sibling implementations,
-overlapping tests, and CI routing; inspect dependency source or types for dependency-backed claims.
+Before deleting an existing test, apply the testing rule's **Test Deletion Evidence** requirements.
 
 ### Dispositions For Existing Tests
 

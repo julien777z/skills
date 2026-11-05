@@ -289,6 +289,15 @@ way of absorbing a slow test that the testing rules list. Below those lines the 
 applies: a test whose runtime is large beside the failure it could catch is folded into a case
 already paying that setup, or cut.
 
+## Test Deletion Evidence
+
+Before deleting an existing test, record its exact name and location, the failure it can detect,
+non-test callers of the covered source or support seam, the proof of the same classification that
+remains (or why none is needed), relevant history, the source or support deletion it unlocks, risk,
+and a focused validation command. Missing evidence leaves the candidate unready for deletion.
+Read the complete test and production owner, entry point, callers, callees, sibling implementations,
+overlapping tests, and CI routing; inspect dependency source or types for dependency-backed claims.
+
 ## Environments
 
 - Before planning browser walkthroughs or rendered UI inspections, read `run-site`'s **Principles**
