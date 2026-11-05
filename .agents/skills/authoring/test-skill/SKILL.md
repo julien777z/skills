@@ -30,15 +30,18 @@ confuse those conclusions.
 - Recognise one from the diff rather than from how it is described, and least of all from how small
   it looks: read each changed line against the line it replaces and confirm the instruction is
   identical. A line that gains, loses, sharpens or reorders one is an ordinary edit however few
-  words moved, and the whole edit is smoke-tested.
+  words moved. Test the semantic instruction or behavior delta and any dependencies it concretely
+  affects, not unchanged behavior merely because it shares a skill, file, batch, or head. Verify
+  moved unchanged text against its source, links, and reachability; replay behavior only where
+  meaning or reachability changed.
 - **A canonical guidance batch is tested in one coordinated round.** Freeze the exact head and
   guidance package for every related guidance pull request, use one edited reader across the
   batch's isolated scenarios, and retain results per head. Run an isolated original control when an
   improvement claim or conflicting instruction needs comparison; a straightforward clarification
   may omit it only with that justification recorded. The original control stays blind to the edited
   diff, criteria, and reports. The round runs when, and on the head, `edit-skill`'s **Guidance Delivery** orders it.
-  Add readers only for a distinct named risk, and rerun only scenarios invalidated by the changed
-  head or guidance.
+  Add readers only for a distinct named risk. Retain valid evidence across heads and rerun only
+  scenarios materially invalidated by changed guidance, inputs, or environment, not the whole reader package.
 - A new skill has no original to run against. Its control runs carry no skill text at all, which
   shows what the skill adds over the model alone.
 - `skill-gauntlet` asks whether a skill is worth keeping; this skill asks whether one edit does
@@ -46,9 +49,10 @@ confuse those conclusions.
 
 ## Workflow
 
-1. **Define the behavior.** Record the observed miss and the outcome the user requires. Default to
-   two or three cases covering the triggering case, a different member of that failure class, and
-   its likeliest loophole; add a case only for a distinct named risk. Include relevant conflicting
+1. **Define the behavior.** Record the observed miss and the outcome the user requires. Choose the
+   smallest set of scenarios sufficient to cover the changed behavior and its affected dependencies;
+   one scenario may suffice. Map each scenario to the changed boundary and expected outcome before
+   dispatch, adding cases for distinct risks or meaningful boundaries. Include relevant conflicting
    guidance in the edited reading list and, when a control is required, in its matching reading
    list. Keep expected answers and scoring criteria
    outside everything the testing agents read.
@@ -69,8 +73,8 @@ confuse those conclusions.
    implementation and interface inputs remain unchanged; repair and recheck a changed contract
    before spending reader runs on it.
 3. **Freeze the inputs and criteria.** Save the scenario, environment baseline, reading list,
-   edited guidance, any required original guidance, and two to four observable pass criteria in private task evidence
-   storage through `session-ledger` before dispatch. Criteria measure actions, resulting state or
+   edited guidance, any required original guidance, and the observable pass criteria needed to judge
+   each scenario in private task evidence storage through `session-ledger` before dispatch. Criteria measure actions, resulting state or
    substantiated findings, not recitation of new wording. Use the branch copy and, when required,
    the original from the freshly fetched default branch. Record their revisions or content digests. Give every
    required control an equivalent independent environment so neither run inherits the other's
@@ -108,8 +112,8 @@ confuse those conclusions.
    reading list, ambiguous criterion or broken runner before judging guidance. Retain the diagnosis
    and earlier results. Recover missing evidence from the actual run or rerun the affected task;
    never reconstruct a result from a summary. A failed worker is replaced on the same assignment.
-   A guidance change reruns every affected edited run; an environment or scenario change reruns
-   the edited run and any required control affected by the change; a scoring correction rescores all applicable retained results.
+   Rerun only edited runs and required controls materially affected by a guidance, environment, or
+   scenario change; a scoring correction rescores all applicable retained results.
    Inconclusive, improperly tested and missing-evidence states are work to repair, never final
    smoke verdicts or reasons to abandon an authorized change. Keep working through recovery;
    genuine external authorization or host boundaries follow the global rules and **Reviewer

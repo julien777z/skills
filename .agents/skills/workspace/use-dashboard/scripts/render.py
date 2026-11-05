@@ -1,9 +1,11 @@
 import fcntl
+import gzip
 import logging
 import os
 import shutil
 import subprocess
 from argparse import ArgumentParser
+from base64 import b64encode
 from collections.abc import Callable
 from datetime import datetime
 from enum import StrEnum
@@ -1038,6 +1040,11 @@ def main() -> int:
         action="store_true",
         help="omit the document preamble, for hosts that wrap the page in their own document",
     )
+    parser.add_argument(
+        "--compress",
+        action="store_true",
+        help="wrap the page in a browser-decompressed HTML fragment",
+    )
 
     arguments = parser.parse_args()
 
@@ -1055,6 +1062,32 @@ def main() -> int:
         page = render_dashboard(
             loads(arguments.input.read_text(encoding="utf-8")), arguments.fragment
         )
+
+        if arguments.compress:
+            data = b64encode(gzip.compress(page.encode("utf-8"), mtime=0)).decode("ascii")
+
+            page = f"""<script id="dashboard-compressed-data" type="application/octet-stream">{data}</script>
+<script>
+(async () => {{
+  try {{
+    const data = atob(document.getElementById('dashboard-compressed-data').textContent);
+    const bytes = Uint8Array.from(data, character => character.charCodeAt(0));
+    const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+    const page = await new Response(stream).text();
+
+    const range = document.createRange();
+    range.selectNodeContents(document.body);
+    const fragment = range.createContextualFragment(page);
+
+    document.title = fragment.querySelector('title').textContent;
+    document.body.replaceChildren(fragment);
+  }} catch (error) {{
+    document.body.textContent = `Could not load the dashboard: ${{error}}`;
+    console.error(error);
+  }}
+}})();
+</script>"""
+
         encoded_page = page.encode("utf-8")
     except (
         OSError,
@@ -1063,7 +1096,7 @@ def main() -> int:
         DashboardSpecError,
         DashboardBuildError,
     ) as error:
-        logger.error("use-dashboard: %s", error)
+        logger.exception("use-dashboard: %s", error)
 
         return 1
 
