@@ -27,6 +27,7 @@ are validated by their evidence, smoke-test, review, and acceptance gates.
 - `list-prs`
 - `session-ledger`
 - `edit-skill`
+- `i-have-adhd`
 
 ## One Run Per Task
 
