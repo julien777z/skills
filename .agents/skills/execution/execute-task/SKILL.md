@@ -731,10 +731,8 @@ An outcome is what its source of truth shows, never what an action or a worker s
 
 ### Pull Requests
 
-The GitHub rule's **Branches and Pull Requests** owns pull-request selection: source work defaults
-to this session's pull request, while agent configuration follows its shared batching route.
-Apply that ownership decision before preserving a checked-out branch or updating an existing pull
-request. A guidance change rides the source branch in flight only where that rule puts it there.
+The GitHub rule's **Branches and Pull Requests** owns pull-request selection. Apply that ownership
+decision before preserving a checked-out branch or updating an existing pull request. A guidance change rides the source branch in flight only where that rule puts it there.
 Verify selected pull requests remotely, and leave another session's branch and pull request
 untouched unless the selected route explicitly directs continuing it.
 
