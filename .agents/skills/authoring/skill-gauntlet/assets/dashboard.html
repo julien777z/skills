@@ -251,6 +251,7 @@
         const response = await fetch(`/state.json?ts=${Date.now()}`, { cache: "no-store" });
         if (!response.ok) throw new Error(`State request failed: ${response.status}`);
         render(await response.json());
+        byId("status").classList.remove("error");
       } catch (error) {
         byId("status").classList.add("error");
         byId("status").textContent = error.message;
