@@ -347,8 +347,9 @@ user's review of the source pull request overlaps it.
      consumer against it. Never use an unpublished tag; use the default branch when the user chose it
      or applicable reference guidance permits it.
    - Write every added or changed instruction as the shared `agent-guidance.md` rule says: its
-     frontmatter, headings and statements, its breadth and examples, its scripts, a skill's shape,
-     output and section order, and its dependencies.
+     frontmatter, headings and statements, its breadth and examples, its scripts, hooks and
+     settings and every harness that loads them, a skill's shape, output and section order, and
+     its dependencies.
    - **Moved text is added text.** Guidance moved between files — a skill relocated, bullets
      gathered into a new rule or out of one — that lands beside a statement of the same requirement
      is merged with it into one in the same change, keeping every distinct criterion and exception,
