@@ -48,7 +48,7 @@ alwaysApply: true
   and ask of each whether the product should show that, there. A defect anywhere in it, in a region
   the message never mentions as much as the one it does — a state or error shown in a section it
   does not concern, a message repeated, a wrong value or tone — is named with the capture and fixed
-  rather than offered, as `execute-task`'s **Encountered Issues** says.
+  rather than offered, as `pre-production`'s **Encountered Issues** says.
 - **A capture of a change reaches the user while the work is still running.** A screenshot, a
   recording, or a generated image that shows something the run changed — the screen after an edit, a
   before-and-after pair, a design it generated — is sent as a file as soon as the agent that made it
@@ -254,7 +254,7 @@ alwaysApply: true
   guidance governing its subject or the scope the user last set: an item outside that scope is
   answered as out of scope, never relayed as a fix, unless the change itself introduced a defect.
   That defect remains a required fix. Its sender checks before sending and its receiver before
-  acting; `execute-task`'s **Encountered Issues** holds what each does with an item
+  acting; `pre-production`'s **Encountered Issues** holds what each does with an item
   a rule forbids.
 - Before presenting a proposed change at an existing user-approval boundary, use `review-proposal`.
   First check for its valid ready receipt for the exact proposal and reviewed inputs; when present,

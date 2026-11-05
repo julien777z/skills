@@ -150,8 +150,8 @@ alwaysApply: true
   itself authorize merging. A reply that could be read as accepting a merge the agent offered, such
   as a bare "yes" beside another request, authorizes no merge it does not name. If neither
   authorization source applies, do not merge or enable auto-merge.
-- Apply `execute-task`'s **Review-Only Delivery** before the standing permissions below; its
-  review-only pull requests cannot use those exceptions or auto-merge.
+- Honor the selected workflow's delivery hold before the standing permissions below; a pull
+  request held for user review cannot use those exceptions or auto-merge.
 - Before asking for merge permission, classify the complete actual diff against the standing
   permissions below. A filename, extension, line count or change label is not a behavioral
   classification. Preserve genuine edits; never remove them merely to qualify for an exception.
@@ -182,7 +182,7 @@ alwaysApply: true
 - When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request; one held for a source pull request becomes eligible once that pull request has merged. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, when selected under the ownership rules above. Do not close or leave it open merely because it is draft or conflicts with the base; close only one this session opened, and only when its change is superseded or no longer wanted.
 - An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each fix pull request a directly user-invoked skill's own authorization names, once that skill's merge gates pass; that authorization ends with the run.
 - An authorized merge is not held for a failing check the current user explicitly waives or an
-  established baseline exclusion under `execute-task`'s **Encountered Issues** classification.
+  established baseline exclusion under `pre-production`'s **Encountered Issues** classification.
   Name the check and its exclusion evidence in chat, then attempt the authorized merge without
   asking the user. Preserve that classification rather than excluding a required repair merely
   because the same failure also appears on the default branch.
@@ -230,8 +230,7 @@ alwaysApply: true
 ## Commits
 
 - Use conventional commit messages when applicable and keep commits atomic and focused.
-- Commit each small coherent step and push it promptly once the pre-push checks `execute-task`'s
-  **Pre-Push Gate** defines pass, sub-agents included; work only one machine holds is lost with it.
+- Commit each small coherent step and push it promptly once the pre-push checks **Pre-Push Gate** defines pass, sub-agents included; work only one machine holds is lost with it.
 - Do not commit generated files unless the repository explicitly requires them.
 
 ## Dependency Installation
