@@ -19,8 +19,15 @@ This skill never copies provider mirrors by hand.
 
 ## What Takes Effect
 
-**The installed guidance is the default branch plus pending skill changes.** Refreshing never
-parks pending work where it stops taking effect: the latest default branch, the agent configuration
+Apply `execute-task`'s **Review-Only Delivery** using the task and workflow provenance before
+selecting overlay inputs. Exclude Gauntlet-generated upgrades and retirements until the user reviews
+them, including changes present in a recorded pull request, branch, working tree or prior overlay.
+Keep unrelated pending changes in effect; when an input cannot be separated safely, leave that input
+out and report the concrete limitation. Never infer provenance from a title, label, branch or path
+substring. This does not prevent isolated installs used by Gauntlet's experimental gates.
+
+**The installed guidance is the default branch plus eligible pending skill changes.** Refreshing never
+parks eligible pending work where it stops taking effect: the latest default branch, the agent configuration
 of every pull request in effect and of the checked-out branch, and the checkout's uncommitted edits
 all take effect together. The merge is local; it never merges, pushes or rebases a pull request. In
 a cloud session the source checkout is the attached skills checkout; with nothing attached, the

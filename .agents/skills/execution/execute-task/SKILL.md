@@ -60,7 +60,9 @@ before step gates, pre-push checks and guidance delivery, so none reintroduces t
 A doctor run keeps its native checks, reviews and acceptance gates. Pull requests created by either
 workflow, and direct Skill Gauntlet maintenance pull requests, stay draft for the user's review;
 standing merge exceptions and approval of an audit plan do not authorize their merge or auto-merge.
-A later explicit user instruction naming the target may authorize a merge. Identify provenance from
+Do not activate Gauntlet-generated upgrades or retirements in the shared install before the user
+reviews them; isolated installs used by the experimental gates remain allowed. A later explicit
+user instruction naming the target may authorize a merge. Identify provenance from
 the run and task records, never from a pull request title, label, branch or path substring.
 
 ## Plan

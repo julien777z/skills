@@ -15,6 +15,9 @@ at their owners.
 - `session-ledger` — resolve, validate, update, and preserve the private task ledger.
 - `edit-skill` — deliver admitted `guidance_correction` records into canonical guidance.
 
+Apply `execute-task`'s **Review-Only Delivery** to each entry's recorded provenance before
+freezing or delivering a batch; preserve that provenance and its review hold across handoffs.
+
 ## Batches
 
 **One guidance batch is in flight at a time.** It is frozen when its delivery starts, and an entry
