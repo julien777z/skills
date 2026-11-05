@@ -6,18 +6,12 @@ import re
 import shutil
 import stat
 import uuid
-import webbrowser
 from datetime import UTC, datetime
-from http import HTTPStatus
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Final
-from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
 
-SKILL_ROOT: Final[Path] = Path(__file__).resolve().parent.parent
-DASHBOARD_TEMPLATE: Final[Path] = SKILL_ROOT / "assets" / "dashboard.html"
 DEFAULT_RUNS_ROOT: Final[Path] = Path.home() / ".agents" / "skill-gauntlet" / "runs"
 PUBLIC_STATE_FILENAME: Final[str] = "state.json"
 SENSITIVE_PUBLIC_KEYS: Final[frozenset[str]] = frozenset(
@@ -162,8 +156,6 @@ def initialize_run(arguments: argparse.Namespace) -> None:
     for directory_name in ("candidates", "evidence", "retired", "sealed", "snapshots"):
         (run_dir / directory_name).mkdir(mode=0o700)
 
-    shutil.copy2(DASHBOARD_TEMPLATE, run_dir / "dashboard.html")
-
     timestamp = utc_now()
     state: dict[str, object] = {
         "schema_version": 1,
@@ -281,8 +273,6 @@ def verify_run(arguments: argparse.Namespace) -> None:
     sensitive_location = find_sensitive_key(state)
     if sensitive_location:
         raise ValueError(f"Sealed evaluation data found in public state: {sensitive_location}")
-    if not (run_dir / "dashboard.html").is_file():
-        raise FileNotFoundError("Missing dashboard.html")
     for directory_name in ("retired", "sealed", "snapshots"):
         if not (run_dir / directory_name).is_dir():
             raise FileNotFoundError(f"Missing {directory_name} directory")
@@ -309,60 +299,108 @@ def verify_run(arguments: argparse.Namespace) -> None:
     logger.info("Verified %d snapshots in %s", len(verified_snapshots), run_dir)
 
 
-class DashboardHandler(BaseHTTPRequestHandler):
-    """Serve only the public dashboard and state files."""
+def display_value(value: object) -> str:
+    """Format a public value without dropping nested details."""
 
-    run_dir: Path
+    if isinstance(value, str) and value:
+        return value
 
-    def do_GET(self) -> None:
-        """Serve one public dashboard request."""
-
-        request_path = urlparse(self.path).path
-        if request_path in ("/", "/dashboard.html"):
-            target_path = self.run_dir / "dashboard.html"
-            content_type = "text/html; charset=utf-8"
-        elif request_path == f"/{PUBLIC_STATE_FILENAME}":
-            target_path = self.run_dir / PUBLIC_STATE_FILENAME
-            content_type = "application/json; charset=utf-8"
-        else:
-            self.send_error(HTTPStatus.NOT_FOUND)
-
-            return
-
-        content = target_path.read_bytes()
-        self.send_response(HTTPStatus.OK)
-        self.send_header("Content-Type", content_type)
-        self.send_header("Content-Length", str(len(content)))
-        self.send_header("Cache-Control", "no-store")
-        self.end_headers()
-        self.wfile.write(content)
-
-    def log_message(self, format_string: str, *arguments: object) -> None:
-        """Route HTTP request logging through the module logger."""
-
-        logger.debug(format_string, *arguments)
+    return json.dumps(value, ensure_ascii=False, sort_keys=True)
 
 
-def serve_dashboard(arguments: argparse.Namespace) -> None:
-    """Serve a run's view-only dashboard over loopback."""
+def detail_section(title: str, value: object) -> dict[str, object]:
+    """Describe all public fields of one record."""
+
+    if isinstance(value, dict) and value:
+        items = [f"{key}: {display_value(item)}" for key, item in value.items()]
+    else:
+        items = [display_value(value)]
+
+    return {
+        "type": "notes",
+        "title": title,
+        "description": "All public details for this record.",
+        "items": items,
+    }
+
+
+def records_section(title: str, records: list[tuple[str, object]]) -> dict[str, object]:
+    """Make public records available in full through row details."""
+
+    if not records:
+        return {
+            "type": "notes",
+            "title": title,
+            "description": "Public records for this part of the run.",
+            "items": ["No records yet."],
+        }
+
+    return {
+        "type": "table",
+        "title": title,
+        "description": "Public records for this part of the run.",
+        "counted": True,
+        "columns": ["Name", "Status"],
+        "rows": [
+            [name, display_value(value.get("status", value.get("activation", "unknown")))
+             if isinstance(value, dict) else "Recorded"]
+            for name, value in records
+        ],
+        "details": [detail_section(name, value) for name, value in records],
+    }
+
+
+def export_dashboard(arguments: argparse.Namespace) -> None:
+    """Export only the run's public state as a shared dashboard spec."""
 
     run_dir = Path(arguments.run_dir).expanduser().resolve()
-    load_state(run_dir)
+    state = load_state(run_dir)
+    sensitive_location = find_sensitive_key(state)
 
-    handler_type = type("BoundDashboardHandler", (DashboardHandler,), {"run_dir": run_dir})
-    server = ThreadingHTTPServer(("127.0.0.1", arguments.port), handler_type)
-    host, port = server.server_address[:2]
-    url = f"http://{host}:{port}/"
-    logger.info("%s", url)
-    if arguments.open:
-        webbrowser.open(url)
+    if sensitive_location:
+        raise ValueError(f"Sealed evaluation data found in public state: {sensitive_location}")
 
-    try:
-        server.serve_forever()
-    except KeyboardInterrupt:
-        logger.info("Dashboard server stopped")
-    finally:
-        server.server_close()
+    inventory = state.get("inventory", [])
+    selection = state.get("selection", [])
+    models = state.get("models", {})
+    skills = state.get("skills", {})
+    activity = state.get("activity", [])
+
+    if not isinstance(inventory, list) or not isinstance(selection, list) or not isinstance(activity, list):
+        raise ValueError("Inventory, selection, and activity must be lists")
+    if not isinstance(models, dict) or not isinstance(skills, dict):
+        raise ValueError("Models and skills must be objects")
+
+    inventory_records = [
+        (str(item.get("name") or f"Installation {index + 1}") if isinstance(item, dict)
+         else f"Installation {index + 1}", item)
+        for index, item in enumerate(inventory)
+    ]
+    activity_records = [(f"Event {index + 1}", item) for index, item in enumerate(activity)]
+    run_details = {key: value for key, value in state.items()
+                   if key not in {"inventory", "models", "skills", "activity"}}
+    spec: dict[str, object] = {
+        "title": "Skill Gauntlet Dashboard",
+        "topic": str(state.get("run_id") or "Run"),
+        "icon": "shield",
+        "updated_at": str(state["updated_at"]),
+        "metrics": [
+            {"label": "Installations", "value": str(len(inventory))},
+            {"label": "Selected", "value": str(len(selection))},
+            {"label": "Experiments", "value": str(len(skills))},
+        ],
+        "pages": [
+            {"title": "Overview", "icon": "overview", "sections": [detail_section("Run status", run_details)]},
+            {"title": "Inventory", "icon": "package", "sections": [records_section("Installations", inventory_records)]},
+            {"title": "Models", "icon": "people", "sections": [records_section("Models", list(models.items()))]},
+            {"title": "Experiments", "icon": "chart", "sections": [records_section("Skills", list(skills.items()))]},
+            {"title": "Activity", "icon": "activity", "sections": [records_section("Events", activity_records)]},
+        ],
+    }
+    output = Path(arguments.output).expanduser().resolve()
+    atomic_write_json(output, spec)
+
+    logger.info("%s", output)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -398,11 +436,10 @@ def build_parser() -> argparse.ArgumentParser:
     verify_parser.add_argument("run_dir")
     verify_parser.set_defaults(handler=verify_run)
 
-    serve_parser = subparsers.add_parser("serve", help="serve the view-only dashboard")
-    serve_parser.add_argument("run_dir")
-    serve_parser.add_argument("--port", type=int, default=0)
-    serve_parser.add_argument("--open", action="store_true")
-    serve_parser.set_defaults(handler=serve_dashboard)
+    dashboard_parser = subparsers.add_parser("dashboard", help="export a shared dashboard spec")
+    dashboard_parser.add_argument("run_dir")
+    dashboard_parser.add_argument("--output", required=True)
+    dashboard_parser.set_defaults(handler=export_dashboard)
 
     return parser
 

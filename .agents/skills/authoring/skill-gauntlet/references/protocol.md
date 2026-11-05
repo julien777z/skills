@@ -48,8 +48,11 @@ Maintain progress through atomic JSON patches:
 ```bash
 python3 scripts/gauntlet.py update RUN_DIR --patch patch.json
 python3 scripts/gauntlet.py verify RUN_DIR
-python3 scripts/gauntlet.py serve RUN_DIR --open
+python3 scripts/gauntlet.py dashboard RUN_DIR --output SPEC.json
 ```
+
+Pass the exported spec to `use-dashboard` for validation, rendering, and publication. After each
+phase, export again and update the same recorded dashboard page.
 
 The public state may include inventory, outcome contracts, benchmark coverage, model identities,
 trial counts, anonymized iteration judgments, regressions, iterations, candidate summaries,
@@ -146,9 +149,9 @@ repeatedly wins, record `Green — retire`; do not manufacture a replacement.
 
 ## Installation and Recovery
 
-Provisionally install only a candidate that passed iteration acceptance. For an editable source,
-replace the skill through its owning workflow. For a managed or read-only source, install a
-user-owned override only when the harness's precedence rules make that supported and unambiguous.
+Provisionally install only a candidate that passed iteration acceptance. Install in an isolated
+evaluation environment using the intended source and precedence. For a managed or read-only
+source, use an override only when precedence rules make it supported and unambiguous.
 Retain the original snapshot and manifest.
 
 After installation, run a final clean evaluation with fresh contestants, fresh judges, and the
@@ -162,3 +165,8 @@ installation into `RUN_DIR/retired/` and record its original path and digest so 
 possible. For a managed installation, use only a documented harness disable or masking mechanism.
 If the harness cannot deactivate it safely, report an installation blocker rather than calling the
 retirement complete. Finish with evidence for the installed upgrade or reversible retirement.
+
+After the final gate succeeds, deliver candidate source changes as scoped draft pull requests for
+user review. Do not run the ordinary testing, review, acceptance, readiness, or merge pipeline,
+auto-merge, or apply an agent-configuration merge exception. Later explicit user instructions
+govern further action.

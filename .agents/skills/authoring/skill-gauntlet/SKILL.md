@@ -1,6 +1,6 @@
 ---
 name: skill-gauntlet
-description: Audit installed agent skills across every visible scope, then autonomously benchmark, upgrade, retire, and install user-selected skills through isolated blind evaluations and a resumable local dashboard. Use to inventory skill quality, compare a skill with model-only behavior, improve skills experimentally, or run a skill-upgrade gauntlet.
+description: Audit installed agent skills across every visible scope, then autonomously benchmark, upgrade, retire, and install user-selected skills through isolated blind evaluations and a resumable shared dashboard. Use to inventory skill quality, compare a skill with model-only behavior, improve skills experimentally, or run a skill-upgrade gauntlet.
 short_description: 'Audit installed agent skills and test which ones to improve, retire, or install.'
 disable-model-invocation: true
 ---
@@ -10,13 +10,17 @@ disable-model-invocation: true
 Build evidence that a skill adds durable value to the current model. Preserve originals, keep
 evaluation roles independent, and prefer honest retirement over a manufactured improvement.
 
+## Dependencies
+
+- `use-dashboard` — validate, render, and publish the run dashboard.
+
 ## Resources
 
 - Read [references/protocol.md](references/protocol.md) completely before starting a run.
 - Use `scripts/gauntlet.py` to initialize resumable run state, snapshot skills, verify snapshot
-  integrity, and serve the view-only dashboard.
-- Use [assets/dashboard.html](assets/dashboard.html) only through that utility so sealed artifacts
-  are never served.
+  integrity, and export public dashboard state.
+- Invoke `use-dashboard` to validate, render, publish, and update the dashboard using the exported
+  spec. Record its published link in run state and reuse that page for every update.
 
 ## Workflow
 
@@ -26,21 +30,22 @@ evaluation roles independent, and prefer honest retirement over a manufactured i
 2. Initialize a run under `~/.agents/skill-gauntlet/runs/<run-id>/`. Snapshot every complete skill
    directory before analysis, verify its digest, and mark whether its installed source is editable.
 3. Record each skill's purpose, origin, dependencies, overlaps, precedence, and editability in the
-   public state. Start the loopback dashboard, open it with the available system browser, give the
-   user its URL in chat, present the inventory in chat, and wait for the user's selection. Never
+   public state. Export and publish the dashboard with `use-dashboard`, give the user its URL in
+   chat, present the inventory in chat, and wait for the user's selection. Never
    put selection controls in the dashboard or treat dashboard activity as approval.
 4. After selection, run the complete protocol independently for each selected skill. Do not ask
    the user to choose experiments, interpret results, approve revisions, or direct iterations.
 5. Pause only for a genuine external blocker, an action that can affect live systems or data,
    unavailable isolation needed to protect evaluation integrity, or unverifiable model identity.
-6. Keep public dashboard state current after each completed phase. Persist sealed tasks and
-   evaluation packets only in the run's non-served `sealed/` directory and never disclose them to
+6. After each completed phase, export public state and use `use-dashboard` to re-render and
+   republish the same recorded dashboard. Persist sealed tasks and evaluation packets only in the
+   run's private `sealed/` directory and never disclose them to
    builders or contestants before final evaluation.
 7. Keep the lead agent as the only state writer. Serialize every utility mutation after receiving
    independent-agent results; never let parallel agents call `snapshot` or `update` concurrently.
-8. Provisionally install a candidate only after it satisfies the frozen iteration acceptance gate.
-   Install a writable user-scope override when a managed source cannot be edited and precedence
-   rules support an override. Otherwise report the installation blocker.
+8. Provisionally install a candidate in an isolated evaluation environment only after it satisfies
+   the frozen iteration acceptance gate. Preserve the original and verify the candidate resolves
+   under the intended precedence. Report an isolation or precedence blocker.
 9. Run the final held-out acceptance gate after installation. If it fails, restore the verified
    original snapshot, record the rollback, archive and replace the contaminated held-out set, and
    resume iteration.
@@ -59,7 +64,12 @@ evaluation roles independent, and prefer honest retirement over a manufactured i
 
 ## Delivery
 
-- Preserve original snapshots and the evidence supporting every installed upgrade or retirement.
+- Preserve original snapshots and the evidence supporting every evaluated upgrade or retirement.
+- After the protocol succeeds, deliver candidate source changes as scoped draft pull requests for
+  user review. Do not run the ordinary testing, review, acceptance, readiness, or merge pipeline,
+  auto-merge them, or apply a standing agent-configuration merge exception. Later explicit user
+  instructions govern further action. This review-only delivery also applies to changes to Skill
+  Gauntlet itself.
 - Treat `Green — retire` as reversible deactivation, not a recommendation: move a writable skill
   outside every discovered skill root into the run's `retired/` directory, or use the harness's
   documented disable mechanism for managed skills. If neither is supported, report a blocker.
