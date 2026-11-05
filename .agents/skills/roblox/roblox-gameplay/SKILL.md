@@ -12,9 +12,9 @@ short_description: 'Apply every time actively modifying a Roblox game, including
 - `roblox-building`
 - `luau`
 
-Apply this skill whenever actively modifying a game. Preserve the authorized scope, genre, established identity, and current gameplay contract. Use it to improve the affected player experience; it does not require adding a new feature, economy, pet system, or chart research to every code change.
-
 ## Make success clear and satisfying
+
+Apply this skill whenever actively modifying a game. Preserve the authorized scope, genre, established identity, and current gameplay contract. Use it to improve the affected player experience; it does not require adding a new feature, economy, pet system, or chart research to every code change.
 
 Fit the rhythm of success to the requested genre, audience, and mood. Establish an understandable first action and a visible result early, then connect smaller achievements to meaningful longer goals. Fast rewards suit some games; quieter discovery, mastery, or social play can be equally intentional. Do not infer a fixed reward cadence or neurological effect from chart popularity.
 

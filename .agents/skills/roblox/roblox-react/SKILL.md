@@ -11,11 +11,11 @@ short_description: 'Design and change React-rendered Roblox interfaces, includin
 - `luau`
 - `roblox-building`
 
+## Clarity and visual quality
+
 Follow `luau`'s required UI framework. Make React-rendered interfaces clean, easy to use, beginner friendly, and visually pleasing. Treat these as acceptance criteria, not optional polish after code compiles. Preserve the game's established artwork and visual identity unless a redesign is requested.
 
 Apply `luau` whenever reading or editing its Luau code. Return required engine setup and playtest work to the caller. Read [Framework and component practices](references/components.md) before changing architecture, dependencies, lifecycle, or layout.
-
-## Clarity and visual quality
 
 Give each screen one clear purpose and a recognizable primary action. Use plain player-facing labels, readable type, consistent spacing, alignment, color, and shared controls. Keep related actions together; avoid crowded panels and redundant instructions. Make the next step understandable to someone seeing the game for the first time. Explain unfamiliar actions when needed without exposing internal IDs or implementation details.
 
