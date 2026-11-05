@@ -274,14 +274,15 @@ user's review of the source pull request overlaps it.
      skills-repository session only when no writable checkout can be obtained, never by editing
      the installed clone.
      The originating session supplies the observed miss and its failure class, original task,
-     relevant diff or small file set, repository commit, original skill text, and two to four
-     observable pass criteria.
+     relevant diff or small file set, repository commit, original skill text, and the observable
+     pass criteria needed for the scenario.
      Include a sanitized fixture when the skills session cannot read the originating repository.
      The skills session tests original and proposed wording against the same case and names the
      exact proposed pull-request head. For repository-dependent behavior, the originating session
      then reads that head's `SKILL.md` explicitly and replays the case in its own context before
-     merge; fetch the head when accessible or receive the exact file as a scratch artifact. A new
-     head invalidates that replay. Do not assume a pull request automatically installs its skill.
+     merge; fetch the head when accessible or receive the exact file as a scratch artifact. Retain
+     the replay across heads unless changed guidance, inputs, or environment materially invalidate
+     it. Do not assume a pull request automatically installs its skill.
    - Never read or write `.cursor/*`, `.claude/*`, `.codex/*`, or any other non-`.agents` agent or provider folder.
    - Do not manually create, update, or sync mirrored command/skill/rule files in those folders; repository automation propagates changes from `.agents` to Cursor, Claude, Codex, and similar targets. This holds with no exception, including where the change leaves a mirror pointing at a path it renames or deletes: the workflow reconciles those on the default branch, and a branch carrying a stale or broken one meanwhile is expected.
    - This path restriction applies to the agent-content update, not to source changes required to fix an underlying issue from step 3.
