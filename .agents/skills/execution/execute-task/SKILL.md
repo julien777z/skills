@@ -139,10 +139,11 @@ Every task that changes files starts here, and so does every follow-up that arri
 
 - **The user sees a plan once `review-proposal` has accepted it, and never before.** A plan still
   being drafted or reviewed stays with the run: nothing the user reads — a report, a summary, a
-  status line, a task list, a dashboard or a question — shows its steps, estimates or an outline of
-  them, and a draft is never offered as a preview pending approval. While it is in review, a report says only that a plan is being
-  prepared, and the user's next sight of it is the accepted plan put for approval. Decisions it
-  depends on still go to the user first, on their own, as **What The Plan Holds** says.
+  status line, a task list, a dashboard or a question — shows its steps, estimates or an outline
+  of them, and a draft is never offered as a preview pending approval. While it is in review, a
+  report says only that a plan is being prepared, and the user's next sight of it is the accepted
+  plan put for approval. This holds back the plan, not its open decisions, which go first as
+  **What The Plan Holds** says.
 - Before recommending an approval-requiring plan, invoke `review-proposal` on the detailed plan once
   the user's answers to its decisions are folded in, with its intent and verified ownership
   evidence; the user's short plan consumes that receipt while it adds nothing the detailed plan
@@ -156,7 +157,8 @@ Every task that changes files starts here, and so does every follow-up that arri
   Keep the plan pending and begin no work that needs its approval; independent authorized work
   continues.
 - An interruption continues the same plan. Never replace or silently revise an unapproved plan;
-  fold the user's amendments in and present the complete revised plan again.
+  fold the user's amendments into the detailed plan, take it through `review-proposal` again, and
+  present the complete revised plan.
 - Approval authorizes ordinary implementation and verification, never a merge, deployment,
   publication or release the plan happens to list; **Task Authorization** says what does.
 - **Offering the next step as a choice is a stop wearing a question mark.** "Say the word and I will
@@ -220,7 +222,8 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
 - **One that changes what is being built** — a source or product follow-up — records the affected
   work and its saved next step under **Work You Have Already Named**, then updates the active
   plan record. Present an amended plan for approval only when **When A Plan Is Needed** requires
-  one; a small, clearly specified follow-up starts without another approval request.
+  one, once `review-proposal` has accepted the amendment; a small, clearly specified follow-up
+  starts without another approval request.
   Pause affected work when **Priority** brings the amendment into execution; otherwise retain it
   for after the active work. Resume once any required approval is present and its priority permits. Unaffected work keeps
   running while the user decides.
@@ -238,10 +241,11 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
 - **The ledger holds the plan's current state, so nothing about progress depends on what the chat
   still remembers.** When an accepted plan goes to the user, record it with `session-ledger` as a
   `plan` entry holding the fields `session-ledger` names for one, filled from the planning work even
-  where the plan shown to the user leaves them out. Work the user adds to an active task, with or without a
-  plan of its own, becomes a step on that plan or a plan entry of its own, with the user's words and
-  its approval time, or the time the user added it when it has no plan, before the first edit or
-  dispatch it authorizes; a harness task list, the chat or a summary is never where it first lives.
+  where the plan shown to the user leaves them out. Work the user adds to an active task, with or
+  without a plan of its own, becomes a step on that plan or a plan entry of its own, with the
+  user's words and its approval time, or the time the user added it when it has no plan, before
+  the first edit or dispatch it authorizes; a harness task list, the chat or a summary is never
+  where it first lives.
   A step the agent adds, or widens past what the user asked, is recorded as agent-originated,
   proceeds under the task's authorization like the work **When A Plan Is Needed** says an approved
   plan covers, and is never shown as user-approved; one that is a product choice goes to the user
