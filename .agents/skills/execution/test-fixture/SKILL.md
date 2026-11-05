@@ -11,12 +11,11 @@ exercise, and prove that each test protects behavior or an independent contract.
 
 ## Dependencies
 - `session-ledger`
+- `pre-production`
 
 ## Workflow
 
-Read the repository's product-constraints skill when the skill listing declares one, found by its
-description rather than assumed by name. It says how broad the fix for an issue encountered while
-tracing a test surface is; without one, fix what the focused pass can finish.
+Apply `pre-production` to the scope of issues encountered while tracing a test surface.
 
 1. Read the repository’s test eligibility policy and applicable testing, framework, and organization
    guidance before selecting a test surface. Classify the proposed verification by what it does,
@@ -141,10 +140,10 @@ dispositions, the **Naming Checks**, **Factory Contents**, **Auditing Existing D
 **Literal Sweep** — and fix what it finds: repair or rewrite a weak test, fold a duplicate into its
 keeper, and delete one that proves nothing once the rubric's deletion evidence is recorded. A
 repaired or strengthened guarantee follows the existing-check validation procedure above. The fixes count toward the
-product-constraints skill's size budget like any other incidental change; past it, list what is left
+`pre-production`'s size budget like any other incidental change; past it, list what is left
 in the change's report. Apply the cost-reporting procedure above to the run that verified the
 change. A disproportionate test, parametrized family or module in scope is made cheap or removed
-as the product-constraints skill decides.
+as `pre-production` decides.
 
 Report each test in scope with its disposition, and for each deletion the evidence the rubric asks
 for.
@@ -152,7 +151,7 @@ for.
 ## Completion
 
 Fix concrete violations encountered in the relevant tests, sibling tests, fixtures, factories, and
-shared utilities at the breadth the product-constraints skill sets. Do not turn a focused change
+shared utilities at the breadth `pre-production` sets. Do not turn a focused change
 into an unrelated repository-wide audit.
 
 Run the locally available targets reached by the final diff. Run the full suite only when every test

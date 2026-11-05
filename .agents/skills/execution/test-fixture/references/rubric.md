@@ -50,7 +50,7 @@ package, release, or architecture contract. Also keep observable call ordering a
 a credible failure mode. Source inspection can be the cheapest independent guard when it fails as
 the user-facing key, byte, or path changes and survives an identifier-only refactor. Static is not
 a deletion reason, and neither is ordinary slowness; a disproportionate cost under question 5 is,
-as the repository's product-constraints skill decides. A baseline failure may expose a product bug; reproduce it and repair the
+as `pre-production` decides. A baseline failure may expose a product bug; reproduce it and repair the
 owner rather than deleting its test.
 
 Before deleting an existing test, apply the testing rule's **Test Deletion Evidence** requirements.

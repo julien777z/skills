@@ -14,6 +14,7 @@ at their owners.
 - `acceptance-gate`
 - `session-ledger`
 - `edit-skill`
+- `test-skill`
 
 ## Batches
 
