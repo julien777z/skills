@@ -15,8 +15,9 @@ paths:
   goes, which harnesses it serves, how its generated mirrors are produced, and how a change to it is
   validated. Any other rule or `.agents/global.md` keeps only what its own subject needs and points
   here for the rest.
-- `.agents/global.md` states every other guidance that holds in every repository, and every
-  `.agents/rules/*.md` file guidance that holds in any repository using its technology. Keep their examples generic —
+- `.agents/global.md` states guidance that holds in every repository and that no rule's subject
+  covers, and every `.agents/rules/*.md` file guidance that holds in any repository using its
+  technology. Keep their examples generic —
   invented names and placeholder shapes, never this repository's modules, helpers, packages, paths,
   or domain vocabulary, and never the product, tool, or platform whose incident prompted the change.
 - `.agents/project.md` is the home for repository-specific guidance: its base classes, helpers,
@@ -43,9 +44,10 @@ paths:
   the condition its name and description set — a release stage, a technology, a mode, a kind of
   task — and ask whether the guidance would still be true where that condition does not hold. If
   it would, that file is too narrow, however close its neighbouring section: the guidance goes to
-  the file whose scope matches its own, and a global rule takes what holds everywhere. The scope
-  is the guidance's subject, never its reach: guidance about `.agents` content holds in every
-  repository and still belongs here, never in `.agents/global.md`. Neither
+  the file whose subject matches its own. Scope is judged by subject, never reach: guidance that
+  holds in every repository still goes to the rule owning its subject, as the first bullet places
+  guidance about `.agents` content, and `.agents/global.md` takes only what no rule's subject
+  covers. Neither
   running on every task nor already holding a related rule, such as one on required fields when
   the guidance is about required settings, makes a narrower file the owner.
 - Paths inside a repository's `.agents`:
@@ -68,7 +70,7 @@ paths:
   output it answers with, its settings keys — so read every loading harness's contract and handle
   each, such as a hook that reads one harness's edited file path and another's patch. Only a
   capability a single harness alone has, such as a tool no other harness offers, stays that
-  harness's, and the change says so. Verify each path, such as running a hook against each
+  harness's, in the scoped compatibility section the next bullet describes. Verify each path, such as running a hook against each
   harness's payload. A harness left unserved is a defect, fixed in the change that finds it: never
   new behaviour, a follow-up, or a question for the user.
 - Keep reusable skill names, instructions, scripts, and interfaces model-agnostic. Name a client or
@@ -248,8 +250,9 @@ a template where correct results genuinely vary in shape.
 
 - A pull request confined to canonical agent configuration and generated provider mirrors contains
   no application or package behavior change. Validate the Markdown, the synchronization contract,
-  and the checks a changed skill script or hook owns, such as its type check, a test render or a run
-  against each harness's payload; do not run application suites or gate the pull request on them.
+  and the checks a changed skill script or hook owns, such as its type check, a test render or the
+  per-harness verification **Harnesses** requires; do not run application suites or gate the pull
+  request on them.
 - Keep CI change-detection paths scoped to application, package, dependency, test, or runtime files
   so an agent-configuration-only pull request selects no application test job.
 - The exemption applies to the complete pull request, not individual files. If a pull request also
