@@ -17,8 +17,12 @@ says.
 - `list-prs`
 - `code-simplify`
 - `security-audit`
+- `pre-production`
+- `test-fixture`
 
 ## The Intent Statement
+
+Apply `pre-production` to the scope decision and `test-fixture` to test costs and existing reporting evidence.
 
 Apply `security-audit` at `low` effort as a single in-process rubric pass without delegated agents; take its exploitable findings into the verdict.
 

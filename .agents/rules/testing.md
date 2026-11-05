@@ -23,7 +23,7 @@ paths:
   a change that alters what a page shows; a change with no visible effect, a backend or test-only
   repair included, gets no walkthrough capture unless the user asks for one. A task with several features
   may verify each completed feature; an edit, file, commit, push, handoff or plan step is not a feature boundary.
-- Classify validation failures under `execute-task`'s **Encountered Issues** before expanding
+- Classify validation failures under `pre-production`'s **Encountered Issues** before expanding
   repair work. Fix a completed-feature batch's relevant failures together, then repeat only the
   checks the fixes affect. While repairing a failure or a review or gate finding, run only the tests
   that cover the changed code; a repository's full suites run once per pull request, on the head
@@ -255,25 +255,39 @@ class TreeNode(BaseModel):
   fits. Splitting the suite across jobs only to stay under the budget, or giving any suite a timeout
   above 15 minutes, hides the same defect. A suite stopped by its time limit, or past its budget,
   is fixed this way in the change in flight even when the default branch overruns too: the
-  runtime is the defect itself, so the baseline exclusion in `execute-task`'s **Encountered
-  Issues** never covers it. Every instruction about a suite's runtime — a worker's brief, a fix
+  runtime is the defect itself, so the baseline exclusion in `pre-production`'s **Encountered Issues** never covers it. Every instruction about a suite's runtime — a worker's brief, a fix
   step, a gate's remedy — states the budget as its target, never only the timeout, since a suite
   that merely stays under the timeout can still be three times over budget.
 - **A run that verifies a change is read for its cost as well as its counts.** Read each suite's
   wall time against its budget. Where the native runner supplies call durations, compare their
   sum with wall time; a large gap identifies time outside test bodies. Use existing setup and
   fixture reporting to attribute that cost, recording unavailable attribution as unmeasured under
-  `test-fixture`'s cost-reporting procedure. The usual setup causes are a fixture whose setup,
+  existing runner reports. The usual setup causes are a fixture whose setup,
   summed over every test that uses it, dominates (an autouse one especially), an external account
   or identity created per test though nothing per-test lives on it, and a stack torn down and
   rebuilt each run though its inputs have not changed.
 - **A test, parametrized family or module that dominates its suite's runtime is the cause, not the
-  suite around it.** One disproportionate under `test-fixture`'s cost question is made cheap or
-  removed, as that rubric and `pre-production` decide. Absorbing it instead keeps the cost and hides
+  suite around it.** One disproportionate under **Test Cost** is made cheap or
+  removed, as **Test Cost** decides. Absorbing it instead keeps the cost and hides
   it, exactly as a raised timeout does: retuning the runner's distribution mode, worker count,
   ordering or grouping, giving it a job of its own, skipping it, marking it for a run pull requests
   deselect, or moving it to a scheduled workflow.
 - When CI tests fail and you cannot access the logs directly, ask the user to provide the failure output before attempting fixes.
+
+## Test Cost
+
+Use existing runner duration reporting,
+including setup where existing reporting attributes it. Missing attribution remains unmeasured;
+use available suite timing without inferring individual costs. A test or
+parametrized family whose durations sum to more than a minute, or a module whose tests together
+take two minutes or more, is disproportionate. Make it cheap through its own setup —
+build an immutable resource once, cut the cases to the ones that differ — or remove the tests
+that still cost more than they prove, keeping a cheaper test of the same classification where
+the contract still needs one. A speedup that needs code existing only for tests — a production
+seam, flag, shortened timer or test-only branch — does not make it cheap, and neither does any
+way of absorbing a slow test that the testing rules list. Below those lines the same trade still
+applies: a test whose runtime is large beside the failure it could catch is folded into a case
+already paying that setup, or cut.
 
 ## Environments
 

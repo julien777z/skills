@@ -38,6 +38,8 @@ fixed values in that type. A receipt without the conditional list is incomplete 
 
 ## Invocation
 
+Apply `pre-production` when validating a contract change and `acceptance-gate`'s **Bounds** when a repair conflicts with the intent.
+
 Use `agent-lock` with the exact checkout key to protect local snapshot capture.
 
 - Run this skill only when the user directly invokes it, or `review-pass` or `incident` delegates it. `review-pass` supplies high effort and fix mode; do not ask for standalone review options on that route.

@@ -43,8 +43,6 @@ confuse those conclusions.
   scenarios materially invalidated by changed guidance, inputs, or environment, not the whole reader package.
 - A new skill has no original to run against. Its control runs carry no skill text at all, which
   shows what the skill adds over the model alone.
-- `skill-gauntlet` asks whether a skill is worth keeping; this skill asks whether one edit does
-  what it was made for. Neither replaces the other.
 
 ## Workflow
 

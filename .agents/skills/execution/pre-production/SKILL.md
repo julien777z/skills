@@ -69,9 +69,13 @@ with an obsolete owned contract or revision.
   survives the next one.
 
 - **A test that costs far more than it covers is removed.** When one test, parametrized family or
-  module is disproportionate under `test-fixture`'s cost question and cannot be made cheap as that
-  question allows, delete it with the deletion record `test-fixture`'s rubric asks for, and keep
-  or extend a cheaper test of the same classification where the contract needs one. Never keep it
+  module is disproportionate under the testing rule's **Test Cost** criteria and cannot be made cheap as those
+  criteria allow, record its exact name and location, detectable failure, non-test callers of its
+  covered source or support seam, remaining proof of the same classification or why none is needed,
+  relevant history, source or support deletion unlocked, risk and focused validation command.
+  Missing evidence leaves deletion unready. Read the complete test and production owner, entry
+  point, callers, callees, sibling implementations, overlapping tests and CI routing; inspect
+  dependency source or types for dependency-backed claims. Delete it, and keep or extend a cheaper test of the same classification where the contract needs one. Never keep it
   in any of the ways the testing rules list for absorbing a slow test.
 
 ## Scope Follows The Defect, Not The Request
