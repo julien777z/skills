@@ -19,10 +19,12 @@ says.
 - `security-audit`
 - `pre-production`
 - `test-fixture`
+- `run-site`
 
 ## The Intent Statement
 
-Apply `pre-production` to the scope decision and `test-fixture` to test costs and existing reporting evidence.
+Apply `pre-production` to the scope decision, `test-fixture` to test costs and existing reporting
+evidence, and `run-site`'s **Scenarios** to changes that add or alter product states.
 
 Apply `security-audit` at `low` effort as a single in-process rubric pass without delegated agents; take its exploitable findings into the verdict.
 

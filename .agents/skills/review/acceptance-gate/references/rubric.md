@@ -344,8 +344,7 @@ rubric and `pre-production` decide. For existing-reporting evidence, missing
 available evidence holds a clean verdict; attribution the native route cannot provide is recorded
 unmeasured and does not hold an otherwise validated repair.
 
-**A new state ships with its scenario.** Flag a diff that adds or alters a state `run-site`'s
-**Scenarios** says grows the scenario command without adding or updating that scenario; the remedy
+**A new state ships with its scenario.** Flag a diff that adds or alters a state that requires extending the scenario command without adding or updating that scenario; the remedy
 is that scenario, in the same change.
 
 **An added guard is priced like a missing one.** For every guard, refusal, validation, or branch a
