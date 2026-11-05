@@ -36,8 +36,10 @@ A doctor declares this skill as a dependency and supplies five things:
 4. **domain dependencies** — the skills whose policy it applies and never restates;
 5. **report additions** — the rows it appends to the skeleton below.
 
-Anything else a doctor states is either this protocol restated, which is skill-to-skill
-duplication, or a rule the repository already owns.
+A doctor runs one fixed workflow: it offers no effort levels, mode menus, or hidden switches.
+Scope, phase, lens, and path selectors remain available. Declare fixed dependency settings in the
+doctor entrypoint. Anything else a doctor states is either this protocol restated, which is
+skill-to-skill duplication, or a rule the repository already owns.
 
 ## Resolve The Scope
 
@@ -74,18 +76,24 @@ Use multiple read-only subagents for every run. Invoke `subagent-matrix` at its 
 for each reviewer, launch the exact resolved identifier, and retain catalogue state, identifier, assignment state
 and host receipt in the unified ledger. The parent owns that ledger.
 
-1. Launch at least two independent reviewers. Partition a multi-domain scope by coherent ownership
+1. Launch at least two independent reviewers. Qualifying independent hunters launched by a domain
+   dependency count toward this minimum; run that dependency once for the audit, never once per
+   doctor reviewer. Partition a multi-domain scope by coherent ownership
    boundaries discovered from the repository. For a narrow single-domain scope, give two reviewers
    independent passes over that domain rather than inventing arbitrary file slices.
-2. Launch a cross-cutting reviewer to compare the partitions, trace items that cross boundaries,
+2. After those reviewers and any dependency audit return their results, launch a fresh cross-cutting
+   reviewer to compare the partitions, trace items that cross boundaries,
    find what a single-slice reviewer cannot see, and challenge every proposed disposition whose
    evidence does not establish the full picture. The doctor names what its cross-cutting reviewer
    compares.
-3. Give every reviewer the complete lens catalogue. Require findings anchored to concrete
+3. Give every reviewer the complete lens catalogue; dependency hunters apply the audit's assigned
+   attack classes and scopes. Require findings anchored to concrete
    declarations, files, and lines. A lens that lists its checks is run check by check, and each
    check's result is reported, an empty result included: a check whose result is not reported was
    not run. Reviewers edit nothing.
-4. The parent verifies the evidence in the current tree, reconciles duplicates and disagreements,
+4. A cross-cutting candidate subject to a domain dependency’s validation and verification passes
+   those phases before ledger acceptance. The parent verifies the evidence in the current tree,
+   reconciles duplicates and disagreements,
    rejects unsupported churn, and records every item's disposition.
 
 ## Keep The Ledger

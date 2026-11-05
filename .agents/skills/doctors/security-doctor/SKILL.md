@@ -13,7 +13,7 @@ one that makes that attack fail and a test that proves it does.
 ## Dependencies
 
 - `doctor-protocol` — own the run.
-- `security-audit` — its rubric is the bar for every finding, its precedents and its smallest-fix
+- `security-audit` at `high` — its rubric is the bar for every finding, its precedents and its smallest-fix
   order; its reconnaissance, hunting, validation and independent verification are how a finding is
   found and proven; its attack-class catalogue holds each lens's checks.
 - `pre-production` — a fix that changes behavior is stated, and no fix keeps a vulnerable path
@@ -28,10 +28,11 @@ mechanism, and every input surface — routes, handlers, jobs, webhooks, message
 entry points, file and archive readers, outbound requests, and configuration that reaches
 behavior. Reviewers partition by that map: by subsystem and attack class, the riskiest first.
 
-Findings a supplied `security-audit` report names enter as candidates by their ids. Reviewers hunt
-as a `security-audit` codebase audit does, at `high`, or at `medium` when the invocation states
-`medium` or `low`, and every candidate passes that skill's validation and independent verification
-against the current tree before it enters the ledger. A candidate a precedent rejects is kept
+Findings a supplied `security-audit` report names enter as candidates by their ids. Run one
+`security-audit` codebase audit at `high`; its qualifying hunters count toward the protocol's
+independent reviewer minimum. Every candidate, including one from the fresh cross-cutting reviewer,
+passes the audit's validation and independent verification against the current tree before it
+enters the ledger. A candidate a precedent rejects is kept
 outside the findings with its location and the precedent that rejected it, and counted in the
 report.
 
@@ -117,8 +118,8 @@ protective attributes, unvalidated redirects, and errors returning internals.
 
 ## Report Additions
 
-Ahead of the protocol's skeleton, a summary line: the scope and effort, findings fixed, product
-changes offered beside a shipped fix, hardening notes, and the pull request. Then:
+Ahead of the protocol's skeleton, a summary line: the scope and dependency audit coverage, findings
+fixed, product changes offered beside a shipped fix, hardening notes, and the pull request. Then:
 
 - a findings table — id, severity, the attack in one line, the fix shipped, and the simpler option
   offered or `none`; a product change offered beside the fix shows its options and the recommended

@@ -82,7 +82,7 @@ Think about these angles:
     that reveal whether a record exists. Response size differences. HTTP headers that
     disclose versions. Debug endpoints that survived into production.
 
-YOU CAN SPAWN SUB-AGENTS. If you need to understand a subsystem in depth to evaluate
+AT MEDIUM OR HIGH, YOU CAN SPAWN SUB-AGENTS. If you need to understand a subsystem in depth to evaluate
 a potential finding — use the Task tool to launch a research agent. Don't try to hold
 everything in your own context. Go deep where it matters.
 

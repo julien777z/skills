@@ -62,7 +62,7 @@ choices:
     detail: recon inline, one hunter per attack class recon surfaced, one validator per finding
   - id: high
     label: high
-    detail: recon fanned out, two hunters on the riskiest classes and one elsewhere, then a refuter and an independent verifier per finding, repeated until a round finds nothing new
+    detail: recon fanned out, two hunters on the riskiest classes and one elsewhere, then a refuter and an independent verifier per finding, repeated until a completed round finds no new confirmed and independently verified finding
 ```
 
 Follow the global rules' **Task execution and authorization** question-tool procedure, including
@@ -76,8 +76,8 @@ supplied by the invocation or its calling workflow needs no question.
 | `medium` | Inline | 1 per class recon surfaced | 1 validator per finding | Inline |
 | `high` | 3 agents | 2 on the riskiest classes, 1 elsewhere | 1 refuter per finding | 1 verifier per finding |
 
-At `low` every phase runs in process. From `medium` upward, launch the agents each phase names in
-parallel; capacity limits force batching, never omission and never an undeclared local skim. For each named
+At `low` every phase, including supplemental research, runs in process with no agents. From
+`medium` upward, launch the agents each phase names in parallel; capacity limits force batching, never omission and never an undeclared local skim. For each named
 agent, invoke `subagent-matrix` at its standard capability level, launch the exact resolved identifier, and
 retain catalogue state, identifier, assignment state and host receipt in the audit evidence; a research sub-agent a
 hunter starts launches the same way. Each agent a level
@@ -130,9 +130,13 @@ Every level runs every phase; **Effort** above says with what cohort.
 3. **Validate** — Use Phase 3 in [validation and reporting](references/validation-and-reporting.md)
    to consolidate duplicates and independently try to disprove every finding, against the rubric's
    **What A Surviving Finding Has Been Put Through**.
-4. **Verify independently** — Use Phase 4 there: a fresh agent per surviving finding checks every
-   factual claim against the source.
-5. **Report** — Use Phase 5 there, then stop: the report is the audit's result.
+4. **Verify independently** — Use Phase 4 there: at `high`, a fresh agent per surviving finding
+   checks every factual claim against the source; lower levels verify inline.
+5. **Repeat at high** — Recon runs once. Repeat hunt, validation and verification with prior findings
+   available to the hunters until a completed round yields no new confirmed, independently verified
+   finding. Rejected candidates and duplicates do not extend the loop. Incomplete coverage is
+   incomplete, never a clean round.
+6. **Report** — Use Phase 5 there, then stop: the report is the audit's result.
 
 Give each finding a stable id (`F1`, `F2`, …) and each hardening note its own (`H1`, `H2`, …) when the
 report is first presented, and refer to it by that id everywhere afterwards — in chat, in a plan,
