@@ -220,14 +220,12 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
 ```
 
 - **One that changes what is being built** — a source or product follow-up — records the affected
-  work and its saved next step under **Work You Have Already Named**, then marks the affected
-  steps in the active plan record; the amended steps join it when the accepted amendment goes to
-  the user, and a small follow-up's steps as **Progress Record** says. Present an amended plan for
-  approval only when **When A Plan Is Needed** requires one, once `review-proposal` has accepted
-  the amendment; a small, clearly specified follow-up starts without another approval request.
+  work and its saved next step under **Work You Have Already Named**, then updates the active
+  plan record. Present an amended plan for approval only when **When A Plan Is Needed** requires
+  one; a small, clearly specified follow-up starts without another approval request.
   Pause affected work when **Priority** brings the amendment into execution; otherwise retain it
-  for after the active work. Resume once any required approval is present and its priority
-  permits. Unaffected work keeps running while the user decides.
+  for after the active work. Resume once any required approval is present and its priority permits. Unaffected work keeps
+  running while the user decides.
 - **One that narrows scope reaches the work already in flight, at once.** Message every running
   worker to stop the work the cut removes and has not yet done, keeping what it already finished,
   and record the cut in the intent statement every later gate and review receives. A finding in
