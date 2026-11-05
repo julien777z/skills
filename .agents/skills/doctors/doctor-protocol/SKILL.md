@@ -82,8 +82,8 @@ and host receipt in the unified ledger. The parent owns that ledger.
    doctor reviewer. Partition a multi-domain scope by coherent ownership
    boundaries discovered from the repository. For a narrow single-domain scope, give two reviewers
    independent passes over that domain rather than inventing arbitrary file slices.
-2. After those reviewers and any dependency audit return their results, launch a fresh cross-cutting
-   reviewer to compare the partitions, trace items that cross boundaries,
+2. After those reviewers finish and any dependency audit completes all its rounds and returns its
+   final results, launch a fresh cross-cutting reviewer to compare the partitions, trace items that cross boundaries,
    find what a single-slice reviewer cannot see, and challenge every proposed disposition whose
    evidence does not establish the full picture. The doctor names what its cross-cutting reviewer
    compares.
