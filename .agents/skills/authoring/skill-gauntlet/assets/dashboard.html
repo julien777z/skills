@@ -210,8 +210,8 @@
         const status = document.createElement("span");
         status.className = "tag";
         status.textContent = text(skill.status, "pending");
-        const detail = document.createElement("pre");
-        detail.textContent = [
+        const details = document.createElement("pre");
+        details.textContent = [
           `Contract: ${detail(skill.outcome_contract, "Not frozen")}`,
           `Coverage: ${detail(skill.benchmark_coverage, "Not frozen")}`,
           `Trials: ${text(skill.completed_trials, 0)}`,
@@ -225,7 +225,8 @@
           `Decision: ${text(skill.decision, "Pending")}`,
           `Why: ${detail(skill.status_reason, "Not decided")}`
         ].join("\n");
-        card.append(title, status, detail);
+
+        card.append(title, status, details);
         container.append(card);
       });
     }
@@ -250,6 +251,7 @@
         const response = await fetch(`/state.json?ts=${Date.now()}`, { cache: "no-store" });
         if (!response.ok) throw new Error(`State request failed: ${response.status}`);
         render(await response.json());
+        byId("status").classList.remove("error");
       } catch (error) {
         byId("status").classList.add("error");
         byId("status").textContent = error.message;
