@@ -96,14 +96,16 @@ remains a decision while independent recovery continues.
    1. Create a new linked worktree beside the checkout, on a fresh local branch named
       `skills-overlay/<UTC timestamp>` that is never pushed, at the fetched default branch.
    2. Bring in each pull request in effect, then the checked-out branch: apply the input's
-      `.agents` diff from its merge base with the default branch three-way, and commit it. A
-      conflict, between the default branch and an input or between two inputs, is resolved through
-      `merge-conflict` steps 3 to 8, with the overlay as built so far as the base and the input as
-      the head; leave out step 7's regeneration and pre-push checks, since the overlay is local.
-      The report names each pull request that will need the same resolution.
+      `.agents` diff from its merge base with the default branch three-way. For a
+      conflict between the default branch and an input or between two inputs, invoke `merge-conflict`
+      with the overlay as built so far, the applied input and its comparison base. Commit the resolved
+      tree it returns; otherwise commit the applied input. The report names each pull request that
+      will need the same resolution.
    3. Snapshot the source checkout's working tree, untracked files included, through a temporary
       index without touching the checkout, apply its `.agents` diff from the checkout's branch head
-      onto the overlay, resolving a conflict the same way, and commit it in the overlay.
+      onto the overlay. For a conflict, invoke `merge-conflict` with the overlay as built so far, the
+      applied snapshot and the checkout's branch head as its comparison base; commit the resolved
+      tree it returns; otherwise commit the applied snapshot in the overlay.
    4. Write the overlay's inputs last, to a `skills-overlay` file in its own Git directory: each
       pull request in effect, the checked-out branch, and the overlay's built head commit. That file
       marks the overlay complete, and the installer then installs from the newest complete overlay
