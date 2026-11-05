@@ -46,8 +46,9 @@ not a dependency this skill runs, so it is named here and not below.
 5. **Write the frontmatter.** `name` equals the directory. The description's first sentence is the
    summary `get-doctors` quotes, so it stands alone; its last sentence says when to use the skill.
 6. **Validate.** Grep the file for repository-specific names; confirm every dependency names an
-   existing skill; confirm no heading restates a protocol section; run `get-doctors` and see the
-   new doctor listed with the intended summary.
+   existing skill; check the entrypoint against `doctor-protocol`'s **Declare What The Doctor Owns**;
+   confirm no heading restates a protocol section; run `get-doctors` and see the new doctor listed
+   with the intended summary.
 7. **Smoke-test it** as the section below states, and rewrite any lens a reviewer missed.
 8. **Deliver** through `edit-skill`, whose step 7.7 holds a pull request adding a doctor for the
    user's review; the report hands the user its link.
