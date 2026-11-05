@@ -8,8 +8,8 @@ disable-model-invocation: true
 # New Doctor
 
 A doctor is a skill that audits one hygiene class on `doctor-protocol` and owns nothing the
-protocol already does. Read the protocol first: it is the contract a new doctor is written against,
-not a dependency this skill runs, so it is named here and not below.
+protocol already does. Read the protocol first to apply its authoring contract; creating a doctor
+does not start a doctor audit.
 
 ## Dependencies
 - `doctor-protocol`
