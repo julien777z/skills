@@ -592,6 +592,9 @@ Escalate findings when you see:
 - A complicated implementation where a cleaner reframing could delete whole categories of complexity.
 - Refactors that move code around but fail to reduce the number of concepts a reader must hold in their head.
 - A file over 1000 lines anywhere in scope, whatever put it there.
+- A name the diff adds or renames whose verb lacks its object or whose noun says nothing of what it
+  holds, as the global rules' naming bullet says, such as `may_change` on a check about a club's
+  bookings or `result` for a parsed invoice. The remedy is the specific name at every reference.
 - Any suppression the diff adds — `pyright: ignore`, `type: ignore`, `noqa`, `pylint: disable`, a
   broadened `except`, a new linter-ignore entry, a lowered threshold, a hand-written stub — outside
   generated output and the configuration entries item 9 admits; a cast or wrapper

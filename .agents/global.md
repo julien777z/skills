@@ -540,10 +540,15 @@ return records;
   carrier reports as delivered is `delivered`, never `parcel_arrived`, because an unusual synonym
   makes every reader translate it back. This covers identifiers, fields, messages, documentation and
   test names in every language.
-- **A Boolean's name says what it is true of.** The receiver or argument is what the statement is
-  about, and a verb that acts on something names that thing in the name: `invoice.is_overdue`,
-  `is_deliverable(message)`, `job.writes_files`, never `writes(job)`, whose reader asks "writes
-  what?". A name a framework or protocol defines keeps its own spelling.
+- **A name says what it acts on and what it holds.** A name built on a verb names the verb's
+  object, whether it names a function, a guard, a Boolean, a field or an event: `invoice.is_overdue`,
+  `job.writes_files`, `assert_may_book_rooms`, never `writes(job)` or `assert_may_book`, whose reader
+  asks "writes what?", "book what?". A receiver or argument supplies the object only when it is the
+  very thing acted on: `is_deliverable(message)` delivers the message, but a check on whether a
+  member may change a club's bookings takes the club and is about its bookings, so `bookings` is in
+  its name. A generic noun says what it holds the same way: a payout's bank-transfer state is
+  `transfer_status`, never `status`, and a parsed invoice is `invoice`, never `result` or `data`. A
+  name a framework or protocol defines keeps its own spelling.
 - Name things for the shape being exercised, not for whichever caller happened to prompt the work.
   A test needing a table with a secret column names it for that — a record with a secret — rather
   than borrowing the one real table the change was made for.
