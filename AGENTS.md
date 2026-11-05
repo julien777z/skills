@@ -8,11 +8,8 @@ Canonical guidance lives in `.agents/`.
 
 ## Agent sources
 
-- This guidance is used with multiple models and agent harnesses. Prefer one provider-neutral
-  implementation and one canonical source for skills, rules, and agent prompts.
-- When a shared implementation is not possible, support both Claude and Codex explicitly: account
-  for how each discovers, installs, and uses the guidance, and verify both paths. Include other
-  supported harnesses where the same change reaches them.
+- Guidance about anything under `.agents` — writing, placing, harness support and validating it —
+  lives in the shared `agent-guidance.md` rule.
 - Read the other shared rules relevant to the current repository and task. If a harness does not
   load them automatically, open the applicable files from its user-level rules directory.
 - A skill catalogue is one discovery surface, not proof that a directly requested skill is absent.
@@ -22,8 +19,6 @@ Canonical guidance lives in `.agents/`.
   manual approximation for an installed action skill.
 
 - In repositories that provide an agent CLI or otherwise interact with agents, store every agent prompt in a dedicated Markdown file rather than inline in application code so it is easy to find, review, and maintain. Application code may load a prompt file and interpolate runtime values into it.
-
-- Never stage generated provider output manually. Only the repository's Agent Sync workflow may generate and commit provider mirrors.
 
 ## User-Facing Output
 
@@ -895,7 +890,7 @@ The descriptions also cover work that file patterns alone cannot identify.
 
 | Rule | Read it when… |
 | --- | --- |
-| `agent-guidance.md` | Writing, creating, or editing skills, rules, agent definitions, or project guidance. |
+| `agent-guidance.md` | Writing, creating, placing, or validating anything under `.agents` — skills, rules, agent definitions, hooks, settings, references, or project guidance — and the harnesses it serves. |
 | `biome.md` | Formatting or linting TypeScript and TSX, or changing `biome.json`. |
 | `fastapi.md` | Changing Python routes, dependencies, request handling, or responses. |
 | `github.md` | Working with Actions, pull requests, commits, or repository documentation. |
@@ -914,7 +909,7 @@ The descriptions also cover work that file patterns alone cannot identify.
 
 ## Scoped rules
 
-- Read `.agents/rules/agent-guidance.md` for files matching `.agents/**`, `**/SKILL.md`: Apply when writing, creating, or editing agent guidance — skills, rules, agent definitions, and project guidance.
+- Read `.agents/rules/agent-guidance.md` for files matching `.agents/**`, `**/SKILL.md`: Apply when writing, creating, placing, or validating anything under `.agents` — skills, rules, agent definitions, hooks, settings, references, and project guidance — and the harnesses it serves.
 - Read `.agents/rules/biome.md` for files matching `**/*.ts`, `**/*.tsx`, `biome.json`: biome
 - Read `.agents/rules/fastapi.md` for files matching `**/*.py`: Use APIRouter-based route organization, validate in models, and keep response handling consistent.
 - Read `.agents/rules/http.md` for files matching `**/*.py`, `**/*.ts`, `**/*.tsx`: Apply when designing or changing HTTP clients, provider calls, server API operations and policy, or response statuses.
