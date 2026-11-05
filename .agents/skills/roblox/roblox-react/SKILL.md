@@ -1,6 +1,6 @@
 ---
 name: roblox-react
-description: Apply whenever a React-rendered Roblox UI is opened, inspected, designed, created, modified, or playtested, including HUDs, menus, tutorials, selection screens, viewport previews, and React-owned world-space messages. Require readable, visually inspected desktop/touch interfaces, explicit cleanup, and repeated real-input Play tests.
+description: Apply whenever a React-rendered Roblox UI is opened, read, reviewed, inspected, designed, created, modified, or playtested, including HUDs, menus, tutorials, selection screens, viewport previews, and React-owned world-space messages. Require readable, visually inspected desktop/touch interfaces, explicit cleanup, and repeated real-input Play tests.
 short_description: 'Design and change React-rendered Roblox interfaces, including HUDs and menus.'
 ---
 
@@ -8,13 +8,12 @@ short_description: 'Design and change React-rendered Roblox interfaces, includin
 
 ## Dependencies
 
-- `luau` — apply when reading or editing Luau code.
-- `roblox-studio` — apply for Studio setup and playtest orchestration.
-- `roblox-building` — apply for authored or runtime world-space text.
+- `luau`
+- `roblox-building`
 
 Follow `luau`'s required UI framework. Make React-rendered interfaces clean, easy to use, beginner friendly, and visually pleasing. Treat these as acceptance criteria, not optional polish after code compiles. Preserve the game's established artwork and visual identity unless a redesign is requested.
 
-Apply `luau` whenever reading or editing its Luau code. Apply `roblox-studio` for engine setup and playtest orchestration. Read [Framework and component practices](references/components.md) before changing architecture, dependencies, lifecycle, or layout.
+Apply `luau` whenever reading or editing its Luau code. Return required engine setup and playtest work to the caller. Read [Framework and component practices](references/components.md) before changing architecture, dependencies, lifecycle, or layout.
 
 ## Clarity and visual quality
 
@@ -49,7 +48,7 @@ Keep domain state authoritative and component props typed. Use stable keys and p
 
 ## Play test: click repeatedly and inspect the result
 
-Use Studio's supported input and viewport capture in a qualified runner, as described in `roblox-studio`'s testing reference. Test actual player-facing controls; direct state mutation is not proof a button works. Do not take over the user's host keyboard/mouse or open obstructive host test windows.
+Require Studio's supported input and viewport capture in a qualified runner; return runner setup and playtest orchestration to the caller. Test actual player-facing controls; direct state mutation is not proof a button works. Do not take over the user's host keyboard/mouse or open obstructive host test windows.
 
 Run the repeated-click pass at the **start of a UI testing session**, when **creating or materially changing a UI**, and during **final verification / before an authorized publication**. A Play restart or routine retest within the same session is not a new session requiring the entire pass. Reuse recorded coverage; repeat an affected check only when a change, failure, or unresolved issue justifies it.
 
