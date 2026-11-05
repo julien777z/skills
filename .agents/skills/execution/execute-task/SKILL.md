@@ -138,9 +138,9 @@ Every task that changes files starts here, and so does every follow-up that arri
 ### Approval
 
 - **The user sees a plan once `review-proposal` has accepted it, and never before.** A plan still
-  being drafted or reviewed stays with the run: no report, summary, status line, dashboard or
-  question shows its steps, estimates or an outline of them, and a draft is never offered as a
-  preview pending approval. While it is in review, a report says only that a plan is being
+  being drafted or reviewed stays with the run: nothing the user reads — a report, a summary, a
+  status line, a task list, a dashboard or a question — shows its steps, estimates or an outline of
+  them, and a draft is never offered as a preview pending approval. While it is in review, a report says only that a plan is being
   prepared, and the user's next sight of it is the accepted plan put for approval. Decisions it
   depends on still go to the user first, on their own, as **What The Plan Holds** says.
 - Before recommending an approval-requiring plan, invoke `review-proposal` on the detailed plan once
@@ -236,9 +236,9 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
 ### Progress Record
 
 - **The ledger holds the plan's current state, so nothing about progress depends on what the chat
-  still remembers.** When an accepted plan goes to the user, record it with `session-ledger` as a `plan` entry
-  holding the fields `session-ledger` names for one, filled from the planning work even where the
-  plan shown to the user leaves them out. Work the user adds to an active task, with or without a
+  still remembers.** When an accepted plan goes to the user, record it with `session-ledger` as a
+  `plan` entry holding the fields `session-ledger` names for one, filled from the planning work even
+  where the plan shown to the user leaves them out. Work the user adds to an active task, with or without a
   plan of its own, becomes a step on that plan or a plan entry of its own, with the user's words and
   its approval time, or the time the user added it when it has no plan, before the first edit or
   dispatch it authorizes; a harness task list, the chat or a summary is never where it first lives.

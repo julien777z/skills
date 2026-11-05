@@ -224,8 +224,9 @@ and deliver the same dashboard again on every request so the user keeps one page
   "<owner>/<repo>#<number>", and "#<number>" when no other pull request of the task shares the
   number — with its `url`, so every mention of it is a link.
 
-Leave out withdrawn plans and questions, plans `review-proposal` has not accepted yet, and a section with nothing in it, except the board,
-which keeps its four columns, and the tabs of "Change details", which stay with `sections` `[]`.
+Leave out withdrawn plans and questions, plans `review-proposal` has not accepted yet, and a
+section with nothing in it, except the board, which keeps its four columns, and the tabs of "Change
+details", which stay with `sections` `[]`.
 
 ## Guardrails
 
