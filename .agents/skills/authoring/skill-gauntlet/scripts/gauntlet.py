@@ -308,46 +308,61 @@ def display_value(value: object) -> str:
     return json.dumps(value, ensure_ascii=False, sort_keys=True)
 
 
+def field_label(key: object) -> str:
+    """Turn public state field names into readable labels."""
+
+    return str(key).replace("_", " ").capitalize()
+
+
 def detail_section(title: str, value: object) -> dict[str, object]:
     """Describe all public fields of one record."""
 
     if isinstance(value, dict) and value:
-        items = [f"{key}: {display_value(item)}" for key, item in value.items()]
+        items = [f"{field_label(key)}: {display_value(item)}" for key, item in value.items()]
     else:
         items = [display_value(value)]
 
     return {
         "type": "notes",
         "title": title,
-        "description": "All public details for this record.",
+        "description": "Complete public record.",
         "items": items,
     }
 
 
-def records_section(title: str, records: list[tuple[str, object]]) -> dict[str, object]:
-    """Make public records available in full through row details."""
+def table_section(
+    title: str,
+    description: str,
+    columns: list[str],
+    rows: list[list[str]],
+    details: list[dict[str, object]] | None = None,
+) -> dict[str, object]:
+    """Display records in a table or explain that none exist yet."""
 
-    if not records:
-        return {
-            "type": "notes",
-            "title": title,
-            "description": "Public records for this part of the run.",
-            "items": ["No records yet."],
-        }
+    if not rows:
+        return {"type": "notes", "title": title, "description": description, "items": ["No records yet."]}
 
-    return {
+    section: dict[str, object] = {
         "type": "table",
         "title": title,
-        "description": "Public records for this part of the run.",
+        "description": description,
         "counted": True,
-        "columns": ["Name", "Status"],
-        "rows": [
-            [name, display_value(value.get("status", value.get("activation", "unknown")))
-             if isinstance(value, dict) else "Recorded"]
-            for name, value in records
-        ],
-        "details": [detail_section(name, value) for name, value in records],
+        "columns": columns,
+        "rows": rows,
     }
+    if details:
+        section["details"] = details
+
+    return section
+
+
+def record_field(record: object, key: str) -> str:
+    """Show a public field, including an explicit absence."""
+
+    if not isinstance(record, dict) or key not in record:
+        return "Not recorded"
+
+    return display_value(record[key])
 
 
 def export_dashboard(arguments: argparse.Namespace) -> None:
@@ -371,17 +386,58 @@ def export_dashboard(arguments: argparse.Namespace) -> None:
     if not isinstance(models, dict) or not isinstance(skills, dict):
         raise ValueError("Models and skills must be objects")
 
-    inventory_records = [
-        (str(item.get("name") or f"Installation {index + 1}") if isinstance(item, dict)
-         else f"Installation {index + 1}", item)
-        for index, item in enumerate(inventory)
+    inventory_fields = [
+        ("Skill", "name"), ("Purpose", "purpose"), ("Scope", "scope"), ("Origin", "origin"),
+        ("Source", "canonical_source"), ("Activation", "activation"), ("Editability", "editability"),
+        ("Precedence", "precedence"), ("Digest", "content_hash"),
+        ("Dependencies", "dependencies"), ("Overlaps", "overlaps"),
     ]
-    activity_records = [(f"Event {index + 1}", item) for index, item in enumerate(activity)]
+    inventory_section = table_section(
+        "Installations", "Installed skills and their public inventory details.",
+        [label for label, _ in inventory_fields],
+        [[record_field(item, key) for _, key in inventory_fields] for item in inventory],
+        [detail_section(record_field(item, "name"), item) for item in inventory],
+    )
+    model_section = table_section(
+        "Models", "Models recorded for each role.", ["Role", "Model"],
+        [[str(role), display_value(model)] for role, model in models.items()],
+        [detail_section(str(role), model) for role, model in models.items()],
+    )
+    experiment_section = table_section(
+        "Experiments", "Evaluation progress for selected skills.", ["Skill", "Status", "Trials", "Iteration"],
+        [[str(name), record_field(record, "status"), record_field(record, "completed_trials"),
+          record_field(record, "iteration")] for name, record in skills.items()],
+        [detail_section(str(name), record) for name, record in skills.items()],
+    )
+    events = []
+    for event in activity:
+        if isinstance(event, dict):
+            item = {"title": record_field(event, "message")}
+            if event.get("at"):
+                item["at"] = str(event["at"])
+            extra = {key: value for key, value in event.items() if key not in {"message", "at"}}
+            if extra:
+                item["detail"] = "; ".join(f"{field_label(key)}: {display_value(value)}" for key, value in extra.items())
+        else:
+            item = {"title": display_value(event)}
+        events.append(item)
+
+    activity_sections: list[dict[str, object]] = [{
+        "type": "board", "title": "Activity", "description": "Events recorded during the run.",
+        "columns": [{"title": "Events", "items": events}],
+    }]
     run_details = {key: value for key, value in state.items()
-                   if key not in {"inventory", "models", "skills", "activity"}}
+                   if key not in {"inventory", "selection", "models", "skills", "activity", "phase", "status", "updated_at"}}
+    if run_details:
+        activity_sections.append(table_section(
+            "Run record", "Additional public run information.", ["Record"], [["Run details"]],
+            [detail_section("Run details", run_details)],
+        ))
+
+    selected = ", ".join(display_value(item) for item in selection) if selection else "Skill inventory"
     spec: dict[str, object] = {
         "title": "Skill Gauntlet Dashboard",
-        "topic": str(state.get("run_id") or "Run"),
+        "topic": selected,
         "icon": "shield",
         "updated_at": str(state["updated_at"]),
         "metrics": [
@@ -390,11 +446,15 @@ def export_dashboard(arguments: argparse.Namespace) -> None:
             {"label": "Experiments", "value": str(len(skills))},
         ],
         "pages": [
-            {"title": "Overview", "icon": "overview", "sections": [detail_section("Run status", run_details)]},
-            {"title": "Inventory", "icon": "package", "sections": [records_section("Installations", inventory_records)]},
-            {"title": "Models", "icon": "people", "sections": [records_section("Models", list(models.items()))]},
-            {"title": "Experiments", "icon": "chart", "sections": [records_section("Skills", list(skills.items()))]},
-            {"title": "Activity", "icon": "activity", "sections": [records_section("Events", activity_records)]},
+            {"title": "Overview", "icon": "overview", "sections": [{
+                "type": "notes", "title": "Run status", "description": "Current phase and selected skills.",
+                "items": [f"Phase: {record_field(state, 'phase')}", f"Status: {record_field(state, 'status')}",
+                          f"Selected skills: {selected}"],
+            }]},
+            {"title": "Inventory", "icon": "package", "sections": [inventory_section]},
+            {"title": "Models", "icon": "people", "sections": [model_section]},
+            {"title": "Experiments", "icon": "chart", "sections": [experiment_section]},
+            {"title": "Activity", "icon": "activity", "sections": activity_sections},
         ],
     }
     output = Path(arguments.output).expanduser().resolve()
