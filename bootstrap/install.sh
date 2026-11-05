@@ -303,6 +303,10 @@ check_directory() {
   done
 }
 
+physical_path_key() {
+  python3 "$INSTALLER_DIR/resources/path_key.py" "$@"
+}
+
 register_hooks() {
   local action="$1" provider="$2" root="$3" settings=hooks.json
 
@@ -322,17 +326,11 @@ register_hooks() {
 }
 
 preflight_provider() {
-  local provider="$1" root="$2" skill agent rule resource hook name failed=0
+  local provider="$1" root="$2" agent rule resource hook name failed=0
 
   check_directory "$root/skills" || return 1
 
   [ -d "$root" ] || return 0
-
-  while IFS= read -r skill; do
-    name="$(basename "$skill")"
-
-    check_link "$root/skills/$name" || failed=1
-  done < <(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)
 
   if [ "$provider" = agents ]; then
     return "$failed"
@@ -419,6 +417,82 @@ link_source() {
   fi
 }
 
+# Hidden provider packages are outside the user catalogue. Claude also owns synced skills.
+protected_skill() {
+  local provider="$1" name="$2" root="$3"
+
+  case "$name" in
+    .*) return 0 ;;
+  esac
+
+  [ "$provider" = claude ] || return 1
+
+  [[ "$name" =~ ^[sS][yY][nN][cC][eE][dD]$ ]] || return 1
+
+  [ "$(physical_path_key "$root/skills/$name" --entry)" = "$(physical_path_key "$root/skills/synced" --entry)" ]
+}
+
+skill_contract() {
+  local provider="$1" root="$2" skill name
+
+  if [ "$provider" = claude ]; then
+    printf 'protected:synced\n'
+  fi
+
+  for skill in ${CANONICAL_CATALOGUE[@]+"${CANONICAL_CATALOGUE[@]}"}; do
+    name="${skill##*/}"
+
+    if protected_skill "$provider" "$name" "$root"; then
+      echo "conflict: canonical skill $name occupies a protected namespace for $provider" >&2
+      return 1
+    fi
+
+    printf '%s\n' "$(link_source "$provider" skills "$name" "$skill")"
+  done
+}
+
+reconcile_skills() {
+  local provider="$1" root="$2" skill name entry source expected found
+  local expected_links=()
+
+  mkdir -p "$root/skills"
+
+  for skill in ${CANONICAL_CATALOGUE[@]+"${CANONICAL_CATALOGUE[@]}"}; do
+    name="${skill##*/}"
+    source="$(link_source "$provider" skills "$name" "$skill")"
+    entry="$root/skills/$name"
+    expected_links+=("$entry")
+    skills=$((skills + 1))
+
+    if [ -L "$entry" ] && [ "$(readlink "$entry")" = "$source" ]; then
+      continue
+    fi
+
+    if [ -L "$entry" ] || [ -e "$entry" ]; then
+      rm -rf -- "$entry"
+    fi
+
+    ln -s "$source" "$entry"
+  done
+
+  for entry in "$root/skills"/*; do
+    [ -e "$entry" ] || [ -L "$entry" ] || continue
+    protected_skill "$provider" "${entry##*/}" "$root" && continue
+
+    found=0
+
+    for expected in ${expected_links[@]+"${expected_links[@]}"}; do
+      if [ "$entry" = "$expected" ]; then
+        found=1
+        break
+      fi
+    done
+
+    [ "$found" -eq 0 ] || continue
+    rm -rf -- "$entry"
+  done
+}
+
 prune_links() {
   local dir="$1" link target old_root relative
 
@@ -451,16 +525,9 @@ install_provider() {
 
   found_root=1
 
-  mkdir -p "$root/skills"
-
-  while IFS= read -r skill; do
-    name="$(basename "$skill")"
-
-    ln -sfn "$(link_source "$provider" skills "$name" "$skill")" "$root/skills/$name"
-    skills=$((skills + 1))
-  done < <(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)
-
-  prune_links "$root/skills"
+  if [ "${SKIP_SKILLS:-0}" -eq 0 ]; then
+    reconcile_skills "$provider" "$root"
+  fi
 
   if [ "$provider" = agents ]; then
     echo "$root: $skills skills linked"
@@ -586,6 +653,76 @@ if [ -n "${CODEX_HOME:-}" ]; then
   add_install_root codex "$CODEX_HOME"
 fi
 
+# Freeze and validate every skills root before writing target skills or configuration.
+command -v python3 >/dev/null 2>&1 || { echo "python3 is required to validate installation roots." >&2; exit 1; }
+
+# Enumerate once before any target writes so source failures cannot look like an empty catalogue.
+if ! catalogue_output="$(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)"; then
+  echo "Could not enumerate canonical skills; no targets were changed." >&2
+  exit 1
+fi
+
+CANONICAL_CATALOGUE=()
+
+while IFS= read -r skill; do
+  [ -n "$skill" ] || continue
+
+  CANONICAL_CATALOGUE+=("$skill")
+done <<< "$catalogue_output"
+
+SKILL_ROOTS=()
+SKILL_CONTRACTS=()
+SKILL_KEYS=()
+SKIP_SKILL_ROOTS=()
+SOURCE_KEYS=("$(physical_path_key "$REPO_ROOT")" "$(physical_path_key "$CANONICAL_SKILLS")" "$(physical_path_key "$GENERATED_ROOT")")
+
+for index in "${!INSTALL_ROOTS[@]}"; do
+  root="${INSTALL_ROOTS[$index]}"
+  provider="${INSTALL_PROVIDERS[$index]}"
+  check_directory "$root/skills" || exit 1
+
+  skills_key="$(physical_path_key "$root/skills")"
+  skills_root="$skills_key"
+  root_key="$(dirname "$skills_key")"
+  contract="$(skill_contract "$provider" "$root")" || exit 1
+  SKIP_SKILL_ROOTS+=(0)
+
+  for source_key in "${SOURCE_KEYS[@]}"; do
+    case "$source_key/" in
+      "${root_key%/}/"*) echo "conflict: installation root contains installation source: $root" >&2; exit 1 ;;
+    esac
+    case "$root_key/" in
+      "${source_key%/}/"*) echo "conflict: installation root is inside installation source: $root" >&2; exit 1 ;;
+    esac
+  done
+
+  for previous in "${!SKILL_ROOTS[@]}"; do
+    other="${SKILL_ROOTS[$previous]}"
+    other_key="${SKILL_KEYS[$previous]}"
+
+    if [ "$skills_key" = "$other_key" ]; then
+      if [ "$contract" != "${SKILL_CONTRACTS[$previous]}" ]; then
+        echo "conflict: incompatible skills contracts for $skills_root" >&2
+        exit 1
+      fi
+
+      SKIP_SKILL_ROOTS[$index]=1
+    else
+      case "$skills_key/" in
+        "$other_key/"*) echo "conflict: nested skills roots: $other and $skills_root" >&2; exit 1 ;;
+      esac
+      case "$other_key/" in
+        "$skills_key/"*) echo "conflict: nested skills roots: $skills_root and $other" >&2; exit 1 ;;
+      esac
+    fi
+  done
+
+  SKILL_ROOTS+=("$skills_root")
+  SKILL_KEYS+=("$skills_key")
+  SKILL_CONTRACTS+=("$contract")
+  INSTALL_ROOTS[$index]="$root_key"
+done
+
 preflight_ok=1
 
 for index in "${!INSTALL_ROOTS[@]}"; do
@@ -599,7 +736,7 @@ fi
 
 for index in "${!INSTALL_ROOTS[@]}"; do
   mkdir -p "${INSTALL_ROOTS[$index]}"
-  install_provider "${INSTALL_PROVIDERS[$index]}" "${INSTALL_ROOTS[$index]}"
+  SKIP_SKILLS="${SKIP_SKILL_ROOTS[$index]}" install_provider "${INSTALL_PROVIDERS[$index]}" "${INSTALL_ROOTS[$index]}"
 done
 
 if [ "$found_root" -eq 0 ]; then
