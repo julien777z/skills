@@ -12,6 +12,15 @@ alwaysApply: true
 - When a shared implementation is not possible, support both Claude and Codex explicitly: account
   for how each discovers, installs, and uses the guidance, and verify both paths. Include other
   supported harnesses where the same change reaches them.
+- **Everything under `.agents` works in every harness that loads it.** That covers what the
+  harness runs or reads, not only prose: a hook script and the matcher that selects it, a skill's
+  script, a setting, and an instruction naming a tool. Each depends on a harness contract — its tool
+  names, the payload a hook receives and the output it answers with, its settings keys — so read
+  every loading harness's contract and handle each, such as a hook that reads one harness's edited
+  file path and another's patch. Only a capability a single harness alone has, such as a tool no
+  other harness offers, stays that harness's, and the change says so. Verify each path, such as
+  running a hook against each harness's payload. A harness left unserved is a defect, fixed in the
+  change that finds it: never new behaviour, a follow-up, or a question for the user.
 - Read the other shared rules relevant to the current repository and task. If a harness does not
   load them automatically, open the applicable files from its user-level rules directory.
 - A skill catalogue is one discovery surface, not proof that a directly requested skill is absent.
