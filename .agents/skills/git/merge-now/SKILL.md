@@ -22,7 +22,6 @@ any fix `merge-gate` makes, and review afterwards whatever merged without an ear
   **Merge**, reported with its evidence.
 
 ## Dependencies
-
 - `list-prs`
 - `acceptance-gate`
 - `merge-gate`

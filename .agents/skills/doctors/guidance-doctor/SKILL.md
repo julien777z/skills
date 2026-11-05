@@ -12,7 +12,6 @@ sentences that no longer earn that cost, the ones that fight each other, the one
 things that are gone, and the ones the repository lacks.
 
 ## Dependencies
-
 - `doctor-protocol`
 - `banned-terminology`
 - `edit-skill`

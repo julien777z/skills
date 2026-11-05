@@ -14,7 +14,6 @@ through `session-ledger`; its contents never go into those published comments. T
 skill ends with.
 
 ## Dependencies
-
 - `list-prs`
 - `defer-scope`
 - `session-ledger`

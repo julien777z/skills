@@ -9,7 +9,6 @@ short_description: 'Record unfinished work in the repository it affects, or read
 Keep a problem alive after the conversation ends without scheduling its implementation.
 
 ## Dependencies
-
 - `linear`
 - `acceptance-gate`
 

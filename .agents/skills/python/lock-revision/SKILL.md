@@ -18,10 +18,8 @@ user reported are the only record, and a revision with neither is locked, folded
 has several unlocked branch revisions, as steps 1-2 say.
 
 ## Dependencies
-
-- `database-migrations` — the lock marker and how a revision is locked, the revision rules a locked
-  revision falls under, and how later revisions are added and validated.
-- `session-ledger` — record the hold and any held local branch.
+- `database-migrations`
+- `session-ledger`
 
 ## Workflow
 

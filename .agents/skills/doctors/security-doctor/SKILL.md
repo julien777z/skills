@@ -11,7 +11,6 @@ Every finding names an attacker, what they send and what they get, and every fix
 one that makes that attack fail and a test that proves it does.
 
 ## Dependencies
-
 - `doctor-protocol`
 - `security-audit`
 - `pre-production`

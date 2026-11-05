@@ -18,7 +18,6 @@ cannot load. The page is dark unless the host's viewer is explicitly set to ligh
 renders every value as text, so data never runs as markup or script.
 
 ## Dependencies
-
 - `pages:write-page`
 - `use-browser`
 

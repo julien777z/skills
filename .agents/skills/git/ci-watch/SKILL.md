@@ -10,7 +10,6 @@ disable-model-invocation: true
 Monitor a pull request through the delayed-review window and act on valid feedback instead of merely reporting it.
 
 ## Dependencies
-
 - `code-simplify`
 - `session-ledger`
 

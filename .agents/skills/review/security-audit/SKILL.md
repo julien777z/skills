@@ -14,7 +14,6 @@ holds how that judgement is applied: while writing code, over a change, and over
 the rubric whole before any of them and apply it throughout.
 
 ## Dependencies
-
 - `subagent-matrix`
 - `interactive-skill`
 

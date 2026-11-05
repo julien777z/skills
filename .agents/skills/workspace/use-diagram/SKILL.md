@@ -7,7 +7,6 @@ short_description: 'Draw a Mermaid diagram with an explicit direction.'
 # Use Diagram
 
 ## Dependencies
-
 - `interactive-skill`
 
 ## Inputs

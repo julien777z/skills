@@ -10,7 +10,6 @@ disable-model-invocation: true
 Resolve recorded deferrals instead of treating their proposed work as automatically owed.
 
 ## Dependencies
-
 - `defer-scope`
 - `linear`
 - `pre-production`

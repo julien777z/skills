@@ -10,7 +10,6 @@ Build tests from the repository's canonical test surfaces, keep them beside the 
 exercise, and prove that each test protects behavior or an independent contract.
 
 ## Dependencies
-
 - `session-ledger`
 
 ## Workflow

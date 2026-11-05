@@ -11,11 +11,10 @@ Use this skill for an unusually strict review focused on implementation quality,
 Be ambitious about simplifying the implementation under judgment: seek restructurings that remove complexity from its actual mechanism. Judge their complete dependency updates and cumulative scope before applying them; a new cleanup objective does not become relevant merely because the pass discovered it.
 
 ## Dependencies
-
-- `pre-production` — classify required repairs and bounded local refactoring before widening edits.
-- `subagent-matrix` — route each reviewer subagent through the running session.
-- `test-fixture` — own test value, fixture, and class/file boundaries when the scope reaches tests.
-- `list-prs` — reconcile task-work pull requests for the affected-repository comparison.
+- `pre-production`
+- `subagent-matrix`
+- `test-fixture`
+- `list-prs`
 
 ## Applying fixes
 

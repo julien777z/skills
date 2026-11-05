@@ -10,10 +10,9 @@ Build the task's dashboard from what the ledger records, never from what the cha
 and deliver the same dashboard again on every request so the user keeps one page.
 
 ## Dependencies
-
-- `session-ledger` — read the task's records and keep the dashboard's own.
-- `list-prs` — find the task's pull requests.
-- `use-dashboard` — render the spec this skill builds and deliver the page.
+- `session-ledger`
+- `list-prs`
+- `use-dashboard`
 
 ## Workflow
 

@@ -16,7 +16,6 @@ Building a maintained audit system is outside this run. Apply `test-fixture`'s v
 to diagnostic experiments and any separately requested infrastructure work.
 
 ## Dependencies
-
 - `doctor-protocol`
 - `test-fixture`
 

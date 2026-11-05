@@ -291,7 +291,8 @@ alwaysApply: true
 ## Pre-Push Gate
 
 Every push goes out once the pre-push checks below pass, on a draft and on a pull request ready for
-review alike; nothing holds committed work on one machine — not a gate, review or simplification
+review alike. Follow an explicitly selected workflow’s own declared check sequence and delivery
+constraints where it specifies them; nothing holds committed work on one machine — not a gate, review or simplification
 pass pending on it, an integration merge, or a plan that orders one first. The one exception is
 commits that `lock-revision`'s **After Locking** hold keeps local until the user lets revisions
 resume. `code-simplify` and `acceptance-gate`'s diff question do not run per push; the selected workflow sets when they run. A fix pushed for a flag a gate or review raised gets one fresh

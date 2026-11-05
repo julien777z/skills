@@ -12,10 +12,9 @@ installer when a session starts.
 This skill never copies provider mirrors by hand.
 
 ## Dependencies
-
-- `session-ledger` — the open pull requests this task created or worked on.
-- `merge-conflict` — its comparison and resolution of a conflict inside the overlay.
-- `agent-lock` — one refresh at a time on the machine's shared install.
+- `session-ledger`
+- `merge-conflict`
+- `agent-lock`
 
 ## What Takes Effect
 

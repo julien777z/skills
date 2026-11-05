@@ -11,26 +11,29 @@ Plan source and product changes, get them approved, then run them the same way e
 are validated by their evidence, smoke-test, review, and acceptance gates.
 
 ## Dependencies
-
-- `review-proposal` — prepare approval-requiring plans for independent Proposal acceptance.
-
-- `pre-production` — the target-contract policy for every repository and its data obligations.
-- `run-site` — select browser verification applicability before proposing it in a plan or brief.
-- `code-simplify` — the pass over each finished plan step and delegated worker task, and the ownership analysis a plan settles.
-- `review-pass` — review, simplify and fix the finished task's unreviewed changes before delivery.
-- `acceptance-gate` — judge each finished plan step's and worker task's diff before later work builds on it, the finished task's complete diff before local completion, before the pull request is sent for review and before it merges, and each fix for a flag it raises that its **Bounds** do not leave to an in-process check.
-- `generic-push` — keep each repository's publishing metadata independent during multi-repository changes.
-- `merge-conflict` — bring in a conflicting base as soon as a push read-back shows it.
-- `subagent-matrix` — assignment, dispatch and launch fallback for every delegated task.
-- `merge-gate` — at **Completion**, when the merge is authorized, ready the pull request, drive its checks to green and merge it.
-- `security-audit` — **Building It Safely** while writing code that crosses a trust boundary;
-  `review-pass` runs its **Diff Review** of such a change at **Completion**.
-- `rewrite-git-history` — one commit per material change before the pull request is sent for review.
-- `process-ledger` — process the task's private ledger at **Completion**, including verified guidance corrections.
-- `list-prs` — the task's pull requests for the ready-for-review message.
-- `session-ledger` — keep the plan and its steps' status current as they change.
+- `review-proposal`
+- `pre-production`
+- `run-site`
+- `code-simplify`
+- `review-pass`
+- `acceptance-gate`
+- `generic-push`
+- `merge-conflict`
+- `subagent-matrix`
+- `merge-gate`
+- `security-audit`
+- `rewrite-git-history`
+- `process-ledger`
+- `list-prs`
+- `session-ledger`
+- `edit-skill`
 
 ## One Run Per Task
+
+Follow the explicitly selected workflow’s own declared sequence, checks and delivery holds throughout
+the task. Where it owns a stage, return its result to this run rather than starting a parallel stage.
+
+Invoke `merge-conflict` when a push read-back shows a conflicting base.
 
 - Invoke this skill once when a task is authorized to change files, before its implementation
   recommendation, delegated edits, or first edit. A run stays active until

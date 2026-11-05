@@ -11,7 +11,6 @@ Documentation describes what exists now. This doctor finds every sentence that d
 else.
 
 ## Dependencies
-
 - `doctor-protocol`
 - `pre-production`
 

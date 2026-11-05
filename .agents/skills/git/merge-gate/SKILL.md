@@ -26,13 +26,13 @@ handling after an agent-configuration change.
   authorization.
 
 ## Dependencies
-
-- `merge-conflict` — resolve every base incorporation this skill performs.
-- `pre-production` — the encountered-issue policy a failed check falls under.
-- `update-skills` — refresh the installed shared guidance after successful Agent Sync when the
-  GitHub rules select that route.
+- `merge-conflict`
+- `pre-production`
+- `update-skills`
 
 ## Inputs
+
+After successful Agent Sync, invoke `update-skills` when the GitHub rules select that route.
 
 The caller supplies the repository, the pull request, the head SHA its final acceptance passed, the
 affected behaviors its local tests already cover, and the rule that decides what a fix made here

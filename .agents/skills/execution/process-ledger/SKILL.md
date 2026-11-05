@@ -11,14 +11,13 @@ through `session-ledger`; it stays private task state, while permanent guidance 
 at their owners.
 
 ## Dependencies
+- `session-ledger`
+- `edit-skill`
 
-- `session-ledger` — resolve, validate, update, and preserve the private task ledger.
-- `edit-skill` — deliver admitted `guidance_correction` records into canonical guidance.
+## Batches
 
 Honor each entry's recorded workflow sequence and delivery hold before freezing or delivering a
 batch; preserve provenance and holds across handoffs.
-
-## Batches
 
 **One guidance batch is in flight at a time.** It is frozen when its delivery starts, and an entry
 admitted while it is in flight joins it until its pull request merges. A batch is in flight from its

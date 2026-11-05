@@ -28,31 +28,26 @@ happens next; this skill never readies, merges or deploys.
   head to its caller; every later gate is the caller's.
 
 ## Dependencies
+- `subagent-matrix`
+- `code-simplify`
+- `code-review`
+- `acceptance-gate`
+- `merge-conflict`
+- `pre-production`
+- `test-fixture`
+- `security-audit`
+- `session-ledger`
+- `agent-lock`
 
-- `subagent-matrix` — resolve each dispatched role and its launch and handoff contract.
-- `code-simplify` — run the complete simplification and fix pass before any review, routed as
-  **Simplification Gate** says.
-- `code-review` — run the complete review and fix workflow with its independent lenses and validators.
-- `acceptance-gate` — admit deferrals, gate would-be-deferral fixes and base-incorporation
-  refactors, and accept the final diff.
-- `merge-conflict` — resolve every base update this run performs.
-- `pre-production` — the size budget for cleanup beyond confirmed findings.
-- `test-fixture` — the sweep over the tests the delta adds or changes.
-- `security-audit` — the **Diff Review** of a delta that crosses a trust boundary.
-- `session-ledger` — read and record the reviewed head of each pull request, and the pass's worker
-  dispatch receipts.
-- `agent-lock` — acquire the exact checkout key around every local snapshot capture and source delivery.
+## Review Scope
 
 Invoke `subagent-matrix` for each actual role before dispatch; a workflow's general capability tier
 never replaces its role selection. Follow its **Dispatch** ownership and handoff procedure rather
 than adding a coordinator layer for a dependent workflow. Record each
 launched worker's catalogue state, exact dispatch identifier, assignment state and host receipt in the
 task ledger through `session-ledger`. Follow the selector's dispatch and unavailable-model policy.
-
 When a required worker cannot launch, apply `subagent-matrix`'s launch fallback for its
 assignment. The `acceptance-gate` remains a separate checkpoint.
-
-## Review Scope
 
 **Guidance gets one reviewer.** Every guidance change — skills with their own scripts, assets and
 templates, rules, agent definitions, project guidance and the references it points to — is
@@ -65,7 +60,7 @@ skill's lens fanout.
 **A canonical guidance batch is reviewed before its smoke round.** Freeze every included head and
 complete diff, and review the combined batch diff with the one guidance reviewer above; each head
 then takes the fresh final acceptance route below. `test-skill`'s smoke round runs after, on the
-head this workflow accepted, as `edit-skill`'s **Guidance Delivery** orders it.
+head this workflow accepted, when the caller requires that smoke round.
 
 **Each pass reviews only what no earlier pass reviewed.** A finished task gets its full review once;
 a follow-up after it gets a review of the follow-up, sized to the follow-up.
@@ -108,8 +103,7 @@ a follow-up after it gets a review of the follow-up, sized to the follow-up.
     retained supporting input before returning its recorded verdict without thread triage. A thread
     fix is a new delta, sized again here.
   - **Trivial**: the route **Workflow** step 1 states. A delta confined to canonical `.agents`
-    Markdown keeps the in-process `code-simplify` pass `edit-skill`'s **Guidance Delivery** step 3
-    requires.
+    Markdown keeps the in-process `code-simplify` pass for guidance changes.
   - **Anything else**: the full **Workflow**, with the delta as every lens's review target and the
     complete merge-base diff and full touched files as context. A defect found in that context is
     still fixed under **Confirmed Findings**.

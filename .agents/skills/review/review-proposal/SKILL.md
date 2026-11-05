@@ -10,14 +10,14 @@ The calling agent runs this workflow directly. It prepares the decision; the cal
 and obtains the user's approval under the global question procedure.
 
 ## Dependencies
-
-- `pre-production` — apply the full target-contract guidance to the proposal and every alternative.
-- `subagent-matrix` — select and dispatch fresh reviewers and the separate acceptance role; retain
-  their original results and recover incomplete producers under its Dispatch procedure.
-- `acceptance-gate` — the independent Proposal verdict and its binding repair procedure.
-- `session-ledger` — retain the proposal, inputs, review evidence, dispositions and pending decision.
+- `pre-production`
+- `subagent-matrix`
+- `acceptance-gate`
+- `session-ledger`
 
 ## Scope
+
+Apply `pre-production` to the proposal and each alternative. Invoke `acceptance-gate` for the independent Proposal verdict and its repair procedure. Use `session-ledger` to retain the proposal, inputs, evidence, dispositions and pending decision.
 
 Use where approval of a proposed change is already required: implementation plans and explicit
 product, security, disclosure or scope alternatives. This creates no new approval requirement.

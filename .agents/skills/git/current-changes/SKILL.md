@@ -11,7 +11,6 @@ change as a whole, then each material change as one sentence with a link to exac
 makes it.
 
 ## Dependencies
-
 - `rewrite-git-history`
 
 ## Workflow

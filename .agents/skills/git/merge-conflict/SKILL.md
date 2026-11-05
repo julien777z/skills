@@ -11,7 +11,6 @@ nothing here: a hunk that merges cleanly and a hunk it marks conflicting are bot
 answers to one question may now sit in one tree.
 
 ## Dependencies
-
 - `acceptance-gate`
 - `pre-production`
 

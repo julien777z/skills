@@ -10,7 +10,6 @@ Return a deduplicated list of open pull requests created or worked on for the en
 including work continued from a handoff or earlier chat. Honor explicit scope and state requests.
 
 ## Dependencies
-
 - `session-ledger`
 
 ## Workflow

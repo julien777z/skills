@@ -10,13 +10,14 @@ Start and verify the stack within the requested scope. When browser verification
 **Principles**, its deliverable includes screenshots and a recording showing signed-in functionality.
 
 ## Dependencies
-
-- `use-browser` — the browser this skill drives, through the `agent-browser` CLI.
-- `proton-pass` — a sign-in password the repository provides no source for.
-- `test-fixture` — the tests a scenario added or updated carries.
-- `subagent-matrix` — the capture worker a long list of captures can be handed to.
+- `use-browser`
+- `proton-pass`
+- `test-fixture`
+- `subagent-matrix`
 
 ## Principles
+
+Use `use-browser` for browser control through its supported route. Apply `test-fixture` to any tests the scenario adds or updates.
 
 - Select browser verification applicability before starting its stack, browser or sign-in
   prerequisites. Guidance-required walkthroughs and rendered UI inspections apply only when the

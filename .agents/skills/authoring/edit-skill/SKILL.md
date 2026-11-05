@@ -59,24 +59,21 @@ task is active, or a guidance batch is in flight, preserve its execution and fol
 During A Task** for the edit's timing.
 
 ## Dependencies
+- `code-simplify`
+- `acceptance-gate`
+- `pre-production`
+- `test-skill`
+- `subagent-matrix`
+- `review-pass`
+- `merge-gate`
+- `session-ledger`
+- `update-skills`
 
-- `code-simplify` — the pass over the guidance itself before it merges.
-- `acceptance-gate` — the diff question over the `.agents` change once it reads clean.
-- `pre-production` — a defect a guidance move brings to light is fixed in the change.
-- `test-skill` — exercise behavior-changing guidance safely, compare original and edited results,
-  and repair failing guidance or tests before merge.
-- `subagent-matrix` — the model capability level for live verification chats and the delivery worker.
-- `review-pass` — the review of the guidance pull request **Guidance Delivery** opens.
-- `merge-gate` — the verified squash merge of the pull request step 7 clears.
-- `session-ledger` — retain observed issues, reproduction scenarios and pending guidance delivery across the active task.
-- `update-skills` — put a pushed pending edit into the installed copy every agent loads.
+## Recording During A Task
 
 Honor the selected workflow's verification sequence and any delivery or installation hold when
 recording or delivering a batch.
-
 Validate skill dependencies and their actual call and policy-read paths under the shared agent-guidance rule’s **Dependencies** and **Validation** sections.
-
-## Recording During A Task
 
 - Carry out the user's requested action in the current work first and verify that it achieved the
   requested result. Do not make a ledger entry merely because the user proposed a method or a

@@ -13,9 +13,7 @@ metadata:
 The reader has ADHD. Output is not just brief. It is shaped so an ADHD brain can act on it.
 
 ## Dependencies
-
-- `session-ledger` — persist and reconcile unanswered decisions before presenting them, and the
-  reader-owned actions the reader has deferred.
+- `session-ledger`
 
 ## Persistence
 

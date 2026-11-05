@@ -21,10 +21,8 @@ When a scope should be both — done after the merge *and* durable if this sessi
 is two invocations, and the user asks for both.
 
 ## Dependencies
-
-- `subagent-matrix` — dispatch the worker that executes a scope now, in its worktree.
-- `session-ledger` — record a queued-on-merge scope as a step a later turn reads, and the dispatch
-  receipt of a scope executed now.
+- `subagent-matrix`
+- `session-ledger`
 
 ## The decision
 

@@ -31,7 +31,6 @@ request, fix what that finds, then merge.
   Continuity** says. Only an explicit pause, stop, handoff, replacement, or terminal result ends it.
 
 ## Dependencies
-
 - `list-prs`
 - `review-pass`
 - `code-review`

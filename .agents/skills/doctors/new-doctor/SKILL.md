@@ -12,11 +12,9 @@ protocol already does. Read the protocol first: it is the contract a new doctor 
 not a dependency this skill runs, so it is named here and not below.
 
 ## Dependencies
-
-- `subagent-matrix` — select the standard tier for doctor smoke reviewers.
-- `get-doctors` — the doctors that already exist.
-- `edit-skill` — deliver the new skill: its branch, its `code-simplify` pass, and its
-  agent-configuration-only pull request, left open for the user.
+- `subagent-matrix`
+- `get-doctors`
+- `edit-skill`
 
 ## Workflow
 

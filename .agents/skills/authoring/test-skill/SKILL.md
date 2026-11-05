@@ -12,7 +12,6 @@ behavior establishes conformance; a difference between the runs establishes impr
 confuse those conclusions.
 
 ## Dependencies
-
 - `subagent-matrix`
 - `code-simplify`
 - `session-ledger`
@@ -39,7 +38,7 @@ confuse those conclusions.
   batch's isolated scenarios, and retain results per head. Run an isolated original control when an
   improvement claim or conflicting instruction needs comparison; a straightforward clarification
   may omit it only with that justification recorded. The original control stays blind to the edited
-  diff, criteria, and reports. The round runs when, and on the head, `edit-skill`'s **Guidance Delivery** orders it.
+  diff, criteria, and reports. The round runs when, and on the head the caller supplies.
   Add readers only for a distinct named risk. Retain valid evidence across heads and rerun only
   scenarios materially invalidated by changed guidance, inputs, or environment, not the whole reader package.
 - A new skill has no original to run against. Its control runs carry no skill text at all, which

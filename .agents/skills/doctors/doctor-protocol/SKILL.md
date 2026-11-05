@@ -10,20 +10,20 @@ A doctor audits one class of repository hygiene and corrects what it finds. This
 run; each doctor owns only its domain.
 
 ## Dependencies
-
-- `subagent-matrix` — route every reviewer, final reviewer and implementation worker through a
-  subagent of the running session.
+- `subagent-matrix`
 - `review-proposal`
-- `code-simplify` — simplify each wave and the complete result.
-- `acceptance-gate` — judge findings and the complete diff before it lands.
-- `defer-scope` — record work consciously left undone; it runs the gate's admission question itself.
-- `pre-production` — apply the encountered-issue and target-contract policy while implementing.
+- `code-simplify`
+- `acceptance-gate`
+- `defer-scope`
+- `pre-production`
+
+## Declare What The Doctor Owns
 
 Read the applicable dependencies before beginning. Apply their approval, compatibility, migration,
 and encountered-issue policies within the invoking doctor's declared change boundary; they do not
 expand that boundary.
 
-## Declare What The Doctor Owns
+Apply `pre-production` to encountered issues and target contracts while implementing within the doctor’s declared boundary.
 
 A doctor declares this skill as a dependency and supplies five things:
 
@@ -36,8 +36,7 @@ A doctor declares this skill as a dependency and supplies five things:
 
 A doctor runs one fixed workflow: it defines no effort levels, mode menus, or hidden switches,
 and does not infer alternate execution from an effort word, flag, or implicit setting. Scope,
-phase, lens, and path selectors only bound the inventory. Declare fixed dependency settings in the
-doctor entrypoint; they are not caller-selectable doctor options. Anything else a doctor states is
+phase, lens, and path selectors only bound the inventory. Declare fixed dependency settings at the actual call in the doctor entrypoint body; they are not caller-selectable doctor options. Anything else a doctor states is
 either this protocol restated, which is skill-to-skill duplication, or a rule the repository already owns.
 
 ## Resolve The Scope

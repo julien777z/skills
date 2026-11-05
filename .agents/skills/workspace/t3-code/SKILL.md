@@ -41,7 +41,6 @@ select existing SSH files when needed. Omit `--ssh` to manage the local T3 envir
 selects a non-default T3 data directory, and `--t3` selects its installed CLI executable.
 
 ## Dependencies
-
 - `tailscale-config`
 - `security-audit`
 - `proton-pass`

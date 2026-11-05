@@ -12,7 +12,6 @@ and storage, then replace unjustified nullability, model complexity, and access 
 contract and index design.
 
 ## Dependencies
-
 - `doctor-protocol`
 - `pre-production`
 

@@ -12,7 +12,6 @@ something it does, and every line should read as a careful author wrote it; this
 does nothing or makes a reader wince, and takes it out.
 
 ## Dependencies
-
 - `doctor-protocol`
 - `pre-production`
 - `code-simplify`

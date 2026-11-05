@@ -11,8 +11,7 @@ Become the session that handed off: set up every pull request it named, load eve
 down, and carry on where it stopped, so the user does nothing but paste the message.
 
 ## Dependencies
-
-- `session-ledger` — recover the private task ledger and record each pull request taken over as touched.
+- `session-ledger`
 
 ## Resolving The Targets
 

@@ -11,7 +11,6 @@ configuration, credential identity, deployed environment and automated runner ar
 of that proof; agreement in one never establishes agreement in another.
 
 ## Dependencies
-
 - `edit-skill`
 - `proton-pass`
 
