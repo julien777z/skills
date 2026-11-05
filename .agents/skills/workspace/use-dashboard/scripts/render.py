@@ -1096,7 +1096,7 @@ def main() -> int:
         DashboardSpecError,
         DashboardBuildError,
     ) as error:
-        logger.error("use-dashboard: %s", error)
+        logger.exception("use-dashboard: %s", error)
 
         return 1
 
