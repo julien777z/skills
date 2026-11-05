@@ -61,18 +61,18 @@ paths:
 
 ## Harnesses
 
-- This guidance is used with multiple models and agent harnesses. Prefer one provider-neutral
-  implementation and one canonical source for skills, rules, and agent prompts.
-- **Everything under `.agents` works in every harness that loads it.** That covers what the
+- **Everything under `.agents` works in every harness that loads it**, from one provider-neutral
+  implementation and one canonical source for skills, rules, and agent prompts. That covers what the
   harness runs or reads, not only prose: a hook script and the matcher that selects it, a skill's
   script, a setting, an instruction naming a tool, and how each harness discovers and installs the
   guidance. Each depends on a harness contract — its tool names, the payload a hook receives and the
   output it answers with, its settings keys — so read every loading harness's contract and handle
   each, such as a hook that reads one harness's edited file path and another's patch. Only a
   capability a single harness alone has, such as a tool no other harness offers, stays that
-  harness's, in the scoped compatibility section the next bullet describes. Verify each path, such as running a hook against each
-  harness's payload. A harness left unserved is a defect, fixed in the change that finds it: never
-  new behaviour, a follow-up, or a question for the user.
+  harness's, confined to a scoped compatibility section or a file only that harness loads. Verify
+  each path, such as running a hook against each harness's payload. A harness left unserved is a
+  defect, fixed in the change that finds it: never new behaviour, a follow-up, or a question for
+  the user.
 - Keep reusable skill names, instructions, scripts, and interfaces model-agnostic. Name a client or
   model only in a scoped compatibility section where its behavior genuinely differs. A skill states
   the facts an agent gathers about its own session — its transcript, its task list, its subagents
