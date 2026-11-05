@@ -7,11 +7,8 @@ alwaysApply: true
 
 ## Agent sources
 
-- This guidance is used with multiple models and agent harnesses. Prefer one provider-neutral
-  implementation and one canonical source for skills, rules, and agent prompts.
-- When a shared implementation is not possible, support both Claude and Codex explicitly: account
-  for how each discovers, installs, and uses the guidance, and verify both paths. Include other
-  supported harnesses where the same change reaches them.
+- Guidance about anything under `.agents` — writing, placing, harness support and validating it —
+  lives in the shared `agent-guidance.md` rule.
 - Read the other shared rules relevant to the current repository and task. If a harness does not
   load them automatically, open the applicable files from its user-level rules directory.
 - A skill catalogue is one discovery surface, not proof that a directly requested skill is absent.
@@ -21,8 +18,6 @@ alwaysApply: true
   manual approximation for an installed action skill.
 
 - In repositories that provide an agent CLI or otherwise interact with agents, store every agent prompt in a dedicated Markdown file rather than inline in application code so it is easy to find, review, and maintain. Application code may load a prompt file and interpolate runtime values into it.
-
-- Never stage generated provider output manually. Only the repository's Agent Sync workflow may generate and commit provider mirrors.
 
 ## User-Facing Output
 

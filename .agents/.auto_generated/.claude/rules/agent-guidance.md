@@ -1,5 +1,5 @@
 ---
-description: Apply when writing, creating, or editing agent guidance — skills, rules, agent definitions, and project guidance.
+description: Apply when writing, creating, placing, or validating anything under `.agents` — skills, rules, agent definitions, hooks, settings, references, and project guidance — and the harnesses it serves.
 alwaysApply: false
 paths:
 - .agents/**
@@ -12,8 +12,14 @@ paths:
 
 ## Where Guidance Lives
 
-- `.agents/global.md` states guidance that holds in every repository, and every `.agents/rules/*.md`
-  file guidance that holds in any repository using its technology. Keep their examples generic —
+- **Guidance about anything under `.agents` lives in this rule**, however widely it holds: how a
+  skill, rule, agent definition, hook, setting, reference or project guidance is written, where it
+  goes, which harnesses it serves, how its generated mirrors are produced, and how a change to it is
+  validated. Any other rule or `.agents/global.md` keeps only what its own subject needs and points
+  here for the rest.
+- `.agents/global.md` states guidance that holds in every repository and that no rule's subject
+  covers, and every `.agents/rules/*.md` file guidance that holds in any repository using its
+  technology. Keep their examples generic —
   invented names and placeholder shapes, never this repository's modules, helpers, packages, paths,
   or domain vocabulary, and never the product, tool, or platform whose incident prompted the change.
 - `.agents/project.md` is the home for repository-specific guidance: its base classes, helpers,
@@ -40,7 +46,10 @@ paths:
   the condition its name and description set — a release stage, a technology, a mode, a kind of
   task — and ask whether the guidance would still be true where that condition does not hold. If
   it would, that file is too narrow, however close its neighbouring section: the guidance goes to
-  the file whose scope matches its own, and a global rule takes what holds everywhere. Neither
+  the file whose subject matches its own. Scope is judged by subject, never reach: guidance that
+  holds in every repository still goes to the rule owning its subject, as the first bullet places
+  guidance about `.agents` content, and `.agents/global.md` takes only what no rule's subject
+  covers. Neither
   running on every task nor already holding a related rule, such as one on required fields when
   the guidance is about required settings, makes a narrower file the owner.
 - Paths inside a repository's `.agents`:
@@ -51,6 +60,29 @@ paths:
     change the name a skill installs under.
   - repository facts only some skills need -> `.agents/references/<name>.md`, as the references
     bullet above places them; Agent Sync neither mirrors nor validates them.
+
+## Harnesses
+
+- **Everything under `.agents` works in every harness that loads it**, from one provider-neutral
+  implementation and one canonical source for skills, rules, and agent prompts. That covers what the
+  harness runs or reads, not only prose: a hook script and the matcher that selects it, a skill's
+  script, a setting, an instruction naming a tool, and how each harness discovers and installs the
+  guidance. Each depends on a harness contract — its tool names, the payload a hook receives and the
+  output it answers with, its settings keys — so read every loading harness's contract and handle
+  each, such as a hook that reads one harness's edited file path and another's patch. Only a
+  capability a single harness alone has, such as a tool no other harness offers, stays that
+  harness's, confined to a scoped compatibility section or a file only that harness loads. Verify
+  each path, such as running a hook against each harness's payload. A harness left unserved is a
+  defect, fixed in the change that finds it: never new behaviour, a follow-up, or a question for
+  the user.
+- Keep reusable skill names, instructions, scripts, and interfaces model-agnostic. Name a client or
+  model only in a scoped compatibility section where its behavior genuinely differs. A skill states
+  the facts an agent gathers about its own session — its transcript, its task list, its subagents
+  and their records — and leaves finding them to the agent in whichever harness runs it; outside
+  such a compatibility section, a script or instruction that finds those session facts through one
+  harness's files, environment variables or record layout is a defect, never a convenience.
+- Never stage generated provider output manually. Only the repository's Agent Sync workflow may
+  generate and commit provider mirrors.
 
 ## Rules
 
@@ -210,15 +242,21 @@ a template where correct results genuinely vary in shape.
 - Separate temporary task, session, and pull-request directions from lasting guidance before
   writing. Apply the former to the current work only; never encode them as canonical rules or
   skills.
-- Keep reusable skill names, instructions, scripts, and interfaces model-agnostic.
-  Name a client or model only in a scoped compatibility section where its behavior genuinely
-  differs. A skill states the facts an agent gathers about its own session — its transcript, its
-  task list, its subagents and their records — and leaves finding them to the agent in whichever
-  harness runs it; outside such a compatibility section, a script or instruction that finds those
-  session facts through one harness's files, environment variables or record layout is a
-  defect, never a convenience.
 
 ## Scripts
 
 - Write new or substantially rewritten skill helper scripts in Python by default. Use another language when the execution platform requires it, such as browser JavaScript, and state that constraint. Keep executable helpers inside the owning skill's `scripts/` directory, resolve supporting files relative to the skill package, and take private endpoints, credentials, and environment-specific values from private configuration rather than committed source.
 - Do not add committed tests for skills or their helper scripts, inside or outside the skill directory. Keep any needed execution checks temporary and untracked.
+
+## Validation
+
+- A pull request confined to canonical agent configuration and generated provider mirrors contains
+  no application or package behavior change. Validate the Markdown, the synchronization contract,
+  and the checks a changed skill script or hook owns, such as its type check, a test render or the
+  per-harness verification **Harnesses** requires; do not run application suites or gate the pull
+  request on them.
+- Keep CI change-detection paths scoped to application, package, dependency, test, or runtime files
+  so an agent-configuration-only pull request selects no application test job.
+- The exemption applies to the complete pull request, not individual files. If a pull request also
+  changes application code, package source, dependencies, tests, runtime configuration, or CI
+  behavior, run its normal validation.
