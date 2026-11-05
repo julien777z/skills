@@ -29,8 +29,8 @@ entry points, file and archive readers, outbound requests, and configuration tha
 behavior. Reviewers partition by that map: by subsystem and attack class, the riskiest first.
 
 Findings a supplied `security-audit` report names enter as candidates by their ids. Run one
-`security-audit` codebase audit at `high`; its qualifying hunters count toward the protocol's
-independent reviewer minimum. Every candidate, including one from the fresh cross-cutting reviewer,
+`security-audit` codebase audit at the fixed effort declared above, composed through
+`doctor-protocol`'s **Delegate The Audit**. Every candidate, including one from the cross-cutting reviewer,
 passes the audit's validation and independent verification against the current tree before it
 enters the ledger. A candidate a precedent rejects is kept
 outside the findings with its location and the precedent that rejected it, and counted in the

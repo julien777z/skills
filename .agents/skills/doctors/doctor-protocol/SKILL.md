@@ -36,10 +36,11 @@ A doctor declares this skill as a dependency and supplies five things:
 4. **domain dependencies** — the skills whose policy it applies and never restates;
 5. **report additions** — the rows it appends to the skeleton below.
 
-A doctor runs one fixed workflow: it offers no effort levels, mode menus, or hidden switches.
-Scope, phase, lens, and path selectors remain available. Declare fixed dependency settings in the
-doctor entrypoint. Anything else a doctor states is either this protocol restated, which is
-skill-to-skill duplication, or a rule the repository already owns.
+A doctor runs one fixed workflow: it defines no effort levels, mode menus, or hidden switches,
+and does not infer alternate execution from an effort word, flag, or implicit setting. Scope,
+phase, lens, and path selectors only bound the inventory. Declare fixed dependency settings in the
+doctor entrypoint; they are not caller-selectable doctor options. Anything else a doctor states is
+either this protocol restated, which is skill-to-skill duplication, or a rule the repository already owns.
 
 ## Resolve The Scope
 
