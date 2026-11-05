@@ -690,35 +690,32 @@ return records;
   source pull request from another session only when the user, an applicable invoked skill, or a
   repository rule explicitly directs that continuation. A matching topic, existing branch, open
   state, or recorded touch does not supply that instruction. Verify the selected pull request's
-  owner, state and scope before updating it; leave other sessions' pull requests and branches untouched,
-  except for the guidance files the dependent-guidance bullet below puts on them.
-- **Agent configuration that depends on no still-open source pull request in this repository
-  continues the open agent-configuration pull request for that work, whichever session opened it.**
-  Agent configuration is the canonical `.agents` tree — skills, each with its own scripts, assets
-  and templates; rules; and agent definitions. Nonbehavioral text and guidance-reference corrections in agent hooks and
-  installers also follow this workflow. Changes to execution, timing, installation, discovery,
-  permissions or mutation scope remain source work. Everything else is source.
-  List the repository's open pull requests before
-  selecting a branch, and create an agent-configuration pull request only when none owns the work.
-  Later guidance edits and worker tasks join it. Open another only when the user asks or the first
-  has merged. Consolidate a duplicate this session opened onto the selected pull request and close
-  it, saying where the work went; never retarget, close or fold in one this session did not open,
-  including one the selected pull request is stacked on.
+  owner, state and scope before updating it; leave other sessions' pull requests and branches untouched.
+- **Each session opens its own agent-configuration pull request in each repository.** Agent
+  configuration is the canonical `.agents` tree — skills, each with its own scripts, assets and
+  templates; rules; and agent definitions. Nonbehavioral text and guidance-reference corrections in
+  agent hooks and installers also follow this workflow. Changes to execution, timing, installation,
+  discovery, permissions or mutation scope remain source work. Everything else is source.
+  Select an open pull request only when the current session's ledger records its creation receipt,
+  or the user explicitly directs continuation of that pull request. A touch or reference receipt,
+  matching topic, branch, open state or batch record alone does not establish creation or authorize
+  continuation. Verify its state and scope remotely. If none qualifies, open a new pull request from
+  the freshly fetched default branch. Later guidance edits and worker tasks join the selected pull
+  request. Consolidate a duplicate this session opened onto it and close the duplicate, saying where
+  the work went; never retarget, close or fold in one this session did not open.
 - **Every worker pushes to the branch of the pull request the work continues**, fetching and
   rebasing its unpushed commits onto the remote branch before each push. A branch per worker,
   integrated later, is the same split with the integration deferred.
 - **Guidance that is true only once a still-open source pull request merges goes on that pull
-  request, whichever session opened it**: it describes behaviour that pull request introduces, drops guidance about something it
-  removes, or needs a workflow or tool change it carries — a project guidance bullet about a helper
-  the source branch adds is the common case. It merges with the change that makes it true, so it is
-  never held on a pull request of its own. For another session's source pull request in the same
-  repository, this bullet is the explicit continuation the session-ownership bullet requires: push
-  only the guidance files, under the worker rule above. Fold a separate agent-configuration pull
-  request this session opened for such guidance into the source pull request and close it, saying
-  where the work went. Guidance in one repository that depends on a source pull request in another
-  cannot share that pull request: it joins the repository's one agent-configuration pull request
-  the work continues, like any other guidance, and that pull request is held as **Merge
-  Authorization** says. A dependency never opens a second agent-configuration pull request.
+  request when the current session created it, as its ledger receipt proves, or the user explicitly
+  directs its continuation**: it describes
+  behaviour that pull request introduces, drops guidance about something it removes, or needs a
+  workflow or tool change it carries. It merges with the change that makes it true. Fold a separate
+  agent-configuration pull request this session opened for such guidance into the source pull request
+  and close it, saying where the work went. Otherwise the guidance joins the agent-configuration pull
+  request selected above and is held until the source pull request merges, whether that source is in
+  this repository or another. A dependency never authorizes continuing another session's pull request
+  or opening a second agent-configuration pull request.
 - **Every other agent configuration and source never share a branch**, even when a guidance change
   follows the source work checked out; a pull request found carrying both is split by moving one
   kind's files onto the pull request of that kind the work continues. Sharing one holds the guidance
@@ -771,9 +768,9 @@ return records;
   When the user asked for the change to be tested, first run the smoke test against the exact
   pull-request head. Check that the complete pull request remains confined to this agent
   configuration before using this exception.
-- **An agent-configuration pull request whose guidance depends on a still-open source pull request in another repository is held until that merge**, whatever its other gates say; dependent guidance in the same repository rides its source pull request instead, as **Branches and Pull Requests** says, and guidance true on the default branch as it stands waits for nothing.
-- A hold does not authorize merging the source pull request or asking for its merge solely to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. The session that merges the source pull request lands the held one next: incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
-- When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request; one held for a source pull request becomes eligible once that pull request has merged. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, including one begun by another task. Do not close or leave it open merely because it is draft or conflicts with the base; close only one this session opened, and only when its change is superseded or no longer wanted.
+- **An agent-configuration pull request whose guidance depends on a still-open source pull request is held until that merge**, whatever its other gates say, unless the guidance rides that source pull request under **Branches and Pull Requests**. Guidance true on the default branch as it stands waits for nothing.
+- A hold does not authorize merging the source pull request or asking for its merge solely to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. After the source pull request merges, continue the held one under the selection rule above: incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
+- When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request; one held for a source pull request becomes eligible once that pull request has merged. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, when selected under the ownership rules above. Do not close or leave it open merely because it is draft or conflicts with the base; close only one this session opened, and only when its change is superseded or no longer wanted.
 - An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each batch pull request a skill declaring merged-batch delivery opens during its run, and each fix pull request a directly user-invoked skill's own authorization names, once that skill's merge gates pass; that authorization ends with the run.
 - An authorized merge is not held for a failing check the current user explicitly waives or an
   established baseline exclusion under `execute-task`'s **Encountered Issues** classification.
