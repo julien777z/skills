@@ -19,11 +19,9 @@ run; each doctor owns only its domain.
 
 ## Declare What The Doctor Owns
 
-Read the applicable dependencies before beginning. Apply their approval, compatibility, migration,
+Read the applicable dependencies before beginning. Apply their approval, target-contract, compatibility, migration,
 and encountered-issue policies within the invoking doctor's declared change boundary; they do not
 expand that boundary.
-
-Apply `pre-production` to encountered issues and target contracts while implementing within the doctor’s declared boundary.
 
 A doctor declares this skill as a dependency and supplies five things:
 

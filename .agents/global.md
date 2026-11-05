@@ -621,13 +621,13 @@ An outcome is what its source of truth shows, never what an action or a worker s
   parallel implementation or a shape a standing rule names goes back to the worker or is fixed
   here; only an item those bullets leave to the user, or one over the size budget, is reported, as
   what it is and never as a question whether to fix it.
-- **A deferral inside a report — "I'll do X next" — is named work of this run** under **Work You
-  Have Already Named**, tracked until done; the report does not close it.
+- **A deferral inside a report — "I'll do X next" — is named work of this run** under **Task
+  execution and authorization**, tracked until done; the report does not close it.
 - Before a milestone report, gate classification or final response, read the authorized outcome's
   current state and owning diagnostics, then reconcile every required step with the task record.
   A successful substep does not establish the parent outcome: resume its saved next action when
   that outcome remains unmet. Report intermediate results in commentary while an authorized
-  remedy remains; a gate must meet **Environment Refusals** or **Task Authorization**, not merely
+  remedy remains; a gate must meet **Tools and environments** or **Task execution and authorization**, not merely
   repeat the last failed attempt.
 - **A status sent to the user states what was just read and where**, never what was reported or
   expected: conflicted, failing, running, or passing, on the head or target named. "Done" or

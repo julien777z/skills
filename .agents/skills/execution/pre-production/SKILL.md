@@ -53,7 +53,7 @@ Build the clean target contract instead of preserving transitional behavior.
   a request, apart from the branch-protection rejection the GitHub rules' **Merge Authorization**
   says to report.
 
-Classify validation failures before choosing work from a failed check. Fix and validate every issue that remains in the task, even when it predates the task
+Fix and validate every issue that remains in the task, even when it predates the task
 or sits outside the initial file set. Follow the evidence through affected callers and owners.
 That obligation is not a licence to audit areas the evidence never reaches; it is also not a reason
 to stop at the first file, and the section below governs how far it does reach.
