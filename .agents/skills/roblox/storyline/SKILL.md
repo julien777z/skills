@@ -10,7 +10,7 @@ Create a story players want to act in, not a synopsis pasted over chores. Work a
 
 ## Dependencies
 
-- `subagent-matrix` — select explicit reviewer models for independent proposals.
+- `subagent-matrix`
 
 ## Workflow
 

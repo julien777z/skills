@@ -15,8 +15,8 @@ the rubric whole before any of them and apply it throughout.
 
 ## Dependencies
 
-- `subagent-matrix` — route every agent a level names through a subagent of the running session.
-- `interactive-skill` — the effort menu under **Effort**.
+- `subagent-matrix`
+- `interactive-skill`
 
 ## While Writing Code
 

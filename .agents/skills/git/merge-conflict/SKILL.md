@@ -12,9 +12,8 @@ answers to one question may now sit in one tree.
 
 ## Dependencies
 
-- `acceptance-gate` — its **Base incorporation** procedure judges the resolved result.
-- `pre-production` — apply the target-contract policy to every collision and use it to resolve
-  design ties.
+- `acceptance-gate`
+- `pre-production`
 
 ## Neither Side Is Authoritative
 

@@ -13,15 +13,16 @@ contract and index design.
 
 ## Dependencies
 
-- `doctor-protocol` — own the run: scope, reviewers, ledger, gated plan, implementation, final
-  review, deferrals, and the report skeleton.
-- `pre-production` — govern deliberate contract breaks and staging-data requiredness migrations.
+- `doctor-protocol`
+- `pre-production`
+
+## Inventory Fields And Contract Models
+
+Run `doctor-protocol`.
 
 Also read the repository's migration skill when the skill listing declares one, found by its
 description. Its migration mechanics, data survivorship, and validation rules govern every
 requiredness cascade and index change; this doctor never restates them.
-
-## Inventory Fields And Contract Models
 
 Trace each selected declaration across repository ownership boundaries far enough to cover its
 authoritative source, every producer and live consumer, persistence, generated contracts, and

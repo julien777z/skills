@@ -9,17 +9,17 @@ disable-model-invocation: true
 
 ## Dependencies
 
-- `subagent-matrix` — return the frontier model for research sub-agents.
-- `agent-lock` — serialize access to shared interactive runners.
-- `roblox-studio` — apply its testing guidance when research uses Studio or an isolated runner.
-- `roblox-gameplay` — own the resulting gameplay design guidance.
-- `roblox-react` — own the resulting UI guidance.
+- `subagent-matrix`
+- `agent-lock`
+- `roblox-studio`
+- `roblox-gameplay`
+- `roblox-react`
+
+## Reuse the isolated research environment
 
 Run only when explicitly invoked or requested by the user. Do not automatically research charts during ordinary game edits.
 
 Accept `mode: passive | play` and a game count `N`. Default to **passive** and **25 games** when omitted. An explicit count, genre, audience, or selection overrides that default. Choose the chart device, region, and category from the user's request or the current game's audience; when neither identifies them, state the selected chart filters as assumptions. Start at the current [Roblox charts](https://www.roblox.com/charts). Record the observation date, chart category, filters, visible order, and each selected experience's title, creator, and exact URL. Rankings change; never substitute remembered hit games for the requested chart. If ranking content is unavailable, explain the gap and use only identifiable entries actually retrieved, without inventing their rank.
-
-## Reuse the isolated research environment
 
 Read `roblox-studio`'s testing reference. Use a qualified isolated runner for published-client play or browsing that would obstruct the user's desktop. Reuse a configured runner when available. Studio MCP alone is not evidence that the published client can be controlled; qualify browser/media and published-client input and capture separately. Read-only API retrieval can assist, but it does not replace the requested observation or play.
 

@@ -10,9 +10,8 @@ Keep a problem alive after the conversation ends without scheduling its implemen
 
 ## Dependencies
 
-- `linear` — find, create, and update the primary durable issue.
-- `acceptance-gate` — admit a record before anything is written, and triage one before it leaves
-  the active set.
+- `linear`
+- `acceptance-gate`
 
 ## Modes
 

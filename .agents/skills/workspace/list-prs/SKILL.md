@@ -11,7 +11,7 @@ including work continued from a handoff or earlier chat. Honor explicit scope an
 
 ## Dependencies
 
-- `session-ledger` — provides the task's verified pull-request records and reconstructs missing entries.
+- `session-ledger`
 
 ## Workflow
 

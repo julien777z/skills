@@ -15,9 +15,9 @@ skill ends with.
 
 ## Dependencies
 
-- `list-prs` — the task’s verified open pull-request list.
-- `defer-scope` — record repository work consciously left undone; it runs the admission gate.
-- `session-ledger` — provides verified task artifacts outside the current repository.
+- `list-prs`
+- `defer-scope`
+- `session-ledger`
 
 ## Scope
 

@@ -11,13 +11,12 @@ Resolve recorded deferrals instead of treating their proposed work as automatica
 
 ## Dependencies
 
-- `defer-scope` — supply the record and ownership contract.
-- `linear` — find and update Linear-owned records.
-- `pre-production` — decide which problems and target contracts belong in the release.
-- `code-simplify` — find the smallest coherent resolution for each legitimate problem.
-- `acceptance-gate` — judge the proposed resolution and the finished diff against the originating
-  change.
-- `session-ledger` — retrieves session-created pull requests without reconstructing task history.
+- `defer-scope`
+- `linear`
+- `pre-production`
+- `code-simplify`
+- `acceptance-gate`
+- `session-ledger`
 
 ## Select The Records
 
@@ -46,6 +45,8 @@ If Linear preflight is unavailable, continue any selected legacy records, report
 could not be inventoried, and do not claim an aggregate or session scope is complete.
 
 ## Assess Every Record
+
+Apply `pre-production` to decide which problems and target contracts belong in the release.
 
 Read the complete Linear issue with comments or the complete legacy record with supporting files and
 the pull request carrying it. Read the current implementation and history of the code it names. Confirm that

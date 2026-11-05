@@ -11,14 +11,13 @@ exercise, and prove that each test protects behavior or an independent contract.
 
 ## Dependencies
 
-- `session-ledger` — owns private task-plan and evidence persistence. The task owner writes the
-  boundary matrix; a worker returns its proposed rows to that owner.
+- `session-ledger`
+
+## Workflow
 
 Read the repository's product-constraints skill when the skill listing declares one, found by its
 description rather than assumed by name. It says how broad the fix for an issue encountered while
 tracing a test surface is; without one, fix what the focused pass can finish.
-
-## Workflow
 
 1. Read the repository’s test eligibility policy and applicable testing, framework, and organization
    guidance before selecting a test surface. Classify the proposed verification by what it does,

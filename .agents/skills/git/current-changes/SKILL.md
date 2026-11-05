@@ -12,8 +12,7 @@ makes it.
 
 ## Dependencies
 
-- `rewrite-git-history` — run only when a commit mixes changes, so the branch's commits
-  correspond to them before they are linked.
+- `rewrite-git-history`
 
 ## Workflow
 

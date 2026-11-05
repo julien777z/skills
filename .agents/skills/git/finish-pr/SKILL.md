@@ -32,11 +32,11 @@ request, fix what that finds, then merge.
 
 ## Dependencies
 
-- `list-prs` — the task's open pull requests when the user names none.
-- `review-pass` — the review and fix loop over each target's whole pull request.
-- `code-review` — its branch and commit setup rules for a pull request **Targets** creates.
-- `merge-gate` — the exact-head check gate, conflict resolution and the verified squash merge.
-- `session-ledger` — record each target, its accepted head and its merge.
+- `list-prs`
+- `review-pass`
+- `code-review`
+- `merge-gate`
+- `session-ledger`
 
 ## Targets
 

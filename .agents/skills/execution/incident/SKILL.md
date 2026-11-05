@@ -9,16 +9,16 @@ disable-model-invocation: true
 
 ## Dependencies
 
-- `chrome:control-chrome` — reproduce and verify browser-visible failures in connected Chrome.
-- `code-review` — supply the Bugs lens and finding validation.
-- `code-simplify` — supply the Simplification lens rubric.
-- `acceptance-gate` — filter findings and judge fixes against the recovery's intent.
+- `chrome:control-chrome`
+- `code-review`
+- `code-simplify`
+- `acceptance-gate`
+
+## Opening The Run
 
 A deployed service is broken and the only thing that matters is getting it working. Ordinary
 delivery habits — asking before looking, waiting for a suite, waiting for a merge — each add a
 round trip, and a service stays down for the sum of them.
-
-## Opening The Run
 
 The invocation carries no argument. Read what the incident is out of the session itself and state it
 first, in four lines:
@@ -84,7 +84,7 @@ Do these without asking, and report what they showed:
 - Re-run, cancel or dispatch a workflow.
 - Fix, commit and push a change the plan or the diagnosis already covers.
 - Create or reuse the pull request carrying the fix.
-- Use connected Chrome to reproduce and test the affected flow, following the global rules' **Tools and environments** browser selection and stable-tab binding procedure.
+- Use `chrome:control-chrome` to reproduce and test the affected flow in connected Chrome, following the global rules' **Tools and environments** browser selection and stable-tab binding procedure.
 - Merge scoped fix pull requests after **One Review Round** completes and live verification succeeds.
 
 Stop and ask only for: a secret the user holds, a destructive action (deleting or truncating data, a

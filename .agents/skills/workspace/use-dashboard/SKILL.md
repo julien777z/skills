@@ -19,9 +19,8 @@ renders every value as text, so data never runs as markup or script.
 
 ## Dependencies
 
-- `pages:write-page` — publish through Pages when Codex offers that plugin's tools.
-- `use-browser` — open the page in the user's browser, and reload it after each change, when no tool
-  publishes it.
+- `pages:write-page`
+- `use-browser`
 
 ## Spec
 

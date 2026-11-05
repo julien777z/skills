@@ -13,10 +13,14 @@ things that are gone, and the ones the repository lacks.
 
 ## Dependencies
 
-- `doctor-protocol` — own the run.
-- `banned-terminology` — the wording findings.
-- `edit-skill` — deliver the remediation; its pull request is left open for the user.
-- `subagent-matrix` — the cheap capability level for the cut trial's task run.
+- `doctor-protocol`
+- `banned-terminology`
+- `edit-skill`
+- `subagent-matrix`
+
+## Inventory
+
+Run `doctor-protocol`. Apply `banned-terminology` to wording findings and deliver remediation through `edit-skill`, leaving its pull request open for the user.
 
 Also read the host's skill-authoring skill and skill diagnostics when the host has them, found by
 their descriptions: a description optimiser, a trigger evaluation, a report of listing cost and
@@ -25,8 +29,6 @@ unused skills. They are measurements this doctor reads, never re-implements.
 `references/vendor-guidance.md` holds the vendor and host tables and the dated summary of what the
 vendors' authoring guidance said when last fetched. Read it before the inventory; the measurement
 below refreshes it.
-
-## Inventory
 
 Every rule file: bytes, lines, bullets, whether it loads unconditionally or by path scope, and the
 globs. Every skill: body lines and approximate tokens, description length and grammatical person,

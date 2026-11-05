@@ -13,16 +13,16 @@ does nothing or makes a reader wince, and takes it out.
 
 ## Dependencies
 
-- `doctor-protocol` — own the run.
-- `pre-production` — the target contract is the authority for every removal; nothing is kept for an
-  obsolete owned contract, and a removal that changes behavior is a surfaced trade-off. A doctor run
-  sets its own scope, so `pre-production`'s incidental size budget does not apply to it.
-- `code-simplify` — the ownership analysis that decides where shared code lives, and its **Reuse,
-  Ownership And Deletions** rubric when two implementations collapse into one.
-- `test-fixture` — the per-test checks the test phase runs.
-- `defer-scope` — report a migration-test deferral record whose path no longer exists.
-- `acceptance-gate` — its diff review's slop question is the **Reads As Slop** test; reviewers are
-  given that question.
+- `doctor-protocol`
+- `pre-production`
+- `code-simplify`
+- `test-fixture`
+- `defer-scope`
+- `acceptance-gate`
+
+## Phases
+
+A doctor run sets its own scope, so `pre-production`'s incidental size budget does not apply.
 
 Also read, when the skill listing declares them and found by their descriptions, the repository's
 database-migration skill, its test-runner skill, its checklist for adding a configuration value and
@@ -30,8 +30,6 @@ its deployment skill, and follow its packaging rules for each language it builds
 every correction in their areas and are cited here, never restated; the deployment skill's
 read-only guidance is how a deployment's environment is read, and reading activates nothing else it
 offers.
-
-## Phases
 
 The run works in five phases, in this order, and each phase is one batch:
 
@@ -51,6 +49,8 @@ A phase the repository has nothing for is skipped and reported. A scope argument
 lenses, or paths; a run scoped to one lens or phase applies only that lens or phase.
 
 ## Inventory
+
+Run `doctor-protocol`.
 
 Exclude generated code by the repository's own markers. Enumerate, per phase in scope, every item a
 lens's checks name, and build these tables before judging anything:

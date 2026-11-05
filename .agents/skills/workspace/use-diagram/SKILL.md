@@ -8,7 +8,7 @@ short_description: 'Draw a Mermaid diagram with an explicit direction.'
 
 ## Dependencies
 
-- `interactive-skill` — the direction menu under **Inputs**.
+- `interactive-skill`
 
 ## Inputs
 

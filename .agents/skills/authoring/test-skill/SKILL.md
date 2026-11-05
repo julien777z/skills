@@ -13,9 +13,9 @@ confuse those conclusions.
 
 ## Dependencies
 
-- `subagent-matrix` — return model capabilities for explicit reviewer dispatch.
-- `code-simplify` — the pass every skill pull request gets before it merges; this skill runs after it.
-- `session-ledger` — resolve retained private evidence storage and preserve verification inputs and results.
+- `subagent-matrix`
+- `code-simplify`
+- `session-ledger`
 
 ## When It Runs
 
@@ -48,6 +48,8 @@ confuse those conclusions.
   what it was made for. Neither replaces the other.
 
 ## Workflow
+
+Run after `code-simplify` completes its pass.
 
 1. **Define the behavior.** Record the observed miss and the outcome the user requires. Choose the
    smallest set of scenarios sufficient to cover the changed behavior and its affected dependencies;

@@ -12,15 +12,14 @@ one that makes that attack fail and a test that proves it does.
 
 ## Dependencies
 
-- `doctor-protocol` — own the run.
-- `security-audit` at `high` — its rubric is the bar for every finding, its precedents and its smallest-fix
-  order; its reconnaissance, hunting, validation and independent verification are how a finding is
-  found and proven; its attack-class catalogue holds each lens's checks.
-- `pre-production` — a fix that changes behavior is stated, and no fix keeps a vulnerable path
-  alive for compatibility.
-- `test-fixture` — the regression test each fix carries.
+- `doctor-protocol`
+- `security-audit`
+- `pre-production`
+- `test-fixture`
 
 ## Inventory
+
+Run `doctor-protocol`.
 
 `security-audit`'s Phase 1 reconnaissance, taken once before fan-out: what the application is and
 its comparable baseline; per deployable, its trust boundaries, authentication and authorization
@@ -29,7 +28,7 @@ entry points, file and archive readers, outbound requests, and configuration tha
 behavior. Reviewers partition by that map: by subsystem and attack class, the riskiest first.
 
 Findings a supplied `security-audit` report names enter as candidates by their ids. Run one
-`security-audit` codebase audit at the fixed effort declared above, composed through
+`security-audit` codebase audit at `high` effort, composed through
 `doctor-protocol`'s **Delegate The Audit**. Every candidate, including one from the cross-cutting reviewer,
 passes the audit's validation and independent verification against the current tree before it
 enters the ledger. A candidate a precedent rejects is kept

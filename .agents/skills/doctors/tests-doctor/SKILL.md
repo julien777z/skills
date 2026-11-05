@@ -17,16 +17,16 @@ to diagnostic experiments and any separately requested infrastructure work.
 
 ## Dependencies
 
-- `doctor-protocol` — own the run.
-- `test-fixture` — every per-test check this doctor runs — value and dispositions, naming, factory
-  contents, doubles — and the standard every added or rewritten test meets for data, placement,
-  doubles, and regression validation through existing tools.
+- `doctor-protocol`
+- `test-fixture`
+
+## Inventory
+
+Run `doctor-protocol`.
 
 Also read the repository's test-runner skill when the skill listing declares one, found by its
 description rather than assumed by name. Its locking, service, and pacing rules hold for every run
 this doctor makes and are never restated here.
-
-## Inventory
 
 Discover at runtime: source roots and test roots; the classifications the runner distinguishes; each suite,
 the ownership boundary it belongs to, and the source it mirrors; where each suite keeps fixtures,

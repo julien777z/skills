@@ -10,7 +10,7 @@ Read the repository's migration layouts, runner commands, CI jobs, and fixture o
 
 ## Dependencies
 
-- `pre-production` — owns affected-data retention classification before migration planning.
+- `pre-production`
 
 ## Data Scope
 
