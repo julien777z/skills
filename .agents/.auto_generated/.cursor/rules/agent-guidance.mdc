@@ -148,7 +148,24 @@ trigger.
 ### Dependencies
 
 - **Refer to a skill, and to anything inside it, by the skill's name, never by path.** `the `code-simplify` skill's rubric reference` is right; a relative path into another skill's directory is wrong, because the directories move between repositories and user-level roots and the name is the only stable handle.
-- Declare every invoked skill by canonical skill name in a near-top `## Dependencies` section of the owning `SKILL.md`. That section lists skills only, never tools, plugins, scripts, references, assets, executables, or filesystem paths.
+- Declare every invoked skill by canonical skill name in a near-top `## Dependencies` section of
+  the owning `SKILL.md`. Each entry is only `- ` followed by the backtick-quoted skill name: no
+  description, role, arguments, or surrounding workflow prose. That section lists skills only,
+  never tools, plugins, scripts, references, assets, executables, or filesystem paths.
+- A dependency's frontmatter owns its purpose and discovery conditions. If a caller needs to
+  explain when that dependency applies, correct the dependency's description instead of keeping
+  another description in the caller. Put invocation-specific effort, scope, inputs, order, and
+  conditions at the actual call in the caller's workflow body.
+- Keep dependency direction acyclic. A coordinator invokes lower-level operations; an operation
+  returns results, required follow-up work, and unresolved decisions to its caller instead of
+  invoking the coordinator or importing its workflow sections as policy. Put shared policy at an
+  existing lower-level owner. Select independently applicable companion skills from their own
+  frontmatter at the task boundary rather than making peers invoke each other.
+- A reference explaining another skill, a caller, or an example is not an invocation. Reading
+  another skill's operative policy is still a dependency, not a way around dependency direction.
+  Check declarations against actual calls and policy reads throughout entrypoints and supporting
+  files; declare real invocations and resolve cycles at their owners, including undeclared edges.
+  Do not replace a removed cycle with flags, copied policy, or a call hidden in a reference.
 - **A skill restricted to user invocation is never an automatic dependency.** A directly
   user-invoked workflow may delegate such an action only when its contract explicitly authorizes
   that action and bounds its targets, and the restricted action's own entry point recognizes
@@ -260,3 +277,7 @@ a template where correct results genuinely vary in shape.
 - The exemption applies to the complete pull request, not individual files. If a pull request also
   changes application code, package source, dependencies, tests, runtime configuration, or CI
   behavior, run its normal validation.
+- For a dependency change, inspect the declared graph and the actual invocation and policy-read
+  paths together. Check names-only entries, target discovery descriptions, body call arguments,
+  undeclared invocations, and cycles. A names-only manifest or an acyclic declared graph alone
+  does not establish that the workflow is acyclic or that its required work remains reachable.

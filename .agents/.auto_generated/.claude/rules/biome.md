@@ -13,7 +13,7 @@ paths:
 ## Usage and Configuration
 
 - Use the repository's configured lint command to apply fixes. The check that gates a push is the
-  command CI runs, as `execute-task`'s **Pre-Push Gate** defines.
+  command CI runs, as the GitHub rule’s **Pre-Push Gate** defines.
 - Respect any checked-in hook that runs Biome automatically.
 
 Discover the active Biome configuration from the repository. Do not change formatting or lint policy unless the task requires it.
