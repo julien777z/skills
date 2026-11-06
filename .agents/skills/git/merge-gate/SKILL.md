@@ -7,8 +7,8 @@ short_description: 'Ready a pull request for its authorized merge, gate its exac
 # Merge Gate
 
 Merge one pull request at the head its caller accepted, and only after every check that head needs
-has reached a terminal result. A verified merge completes this skill, except for required Agent Sync
-handling after an agent-configuration change.
+has reached a terminal result. After verifying the merge, complete required consumer handling and,
+for an agent-configuration change, Agent Sync handling before this skill finishes.
 
 ## Authorization
 

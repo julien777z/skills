@@ -1,7 +1,7 @@
 ---
 name: build-types
-description: Regenerate generated API types from an OpenAPI document, using a local API checkout when it is present and the deployed API otherwise. Use when API request or response shapes change, including on an API branch this branch deploys with, when tsc reports a property missing on a generated schema, or when asked to refresh, rebuild, or sync the API types.
-short_description: 'Regenerate generated API types from an OpenAPI document, using a local API checkout when it is present and the deployed API otherwise.'
+description: Regenerate generated API types from an OpenAPI document, using the API contract this branch deploys with. Use when API request or response shapes change, including on an API branch this branch deploys with, when tsc reports a property missing on a generated schema, or when asked to refresh, rebuild, or sync the API types.
+short_description: 'Regenerate generated API types from an OpenAPI document, using the API contract this branch deploys with.'
 ---
 
 # Build Types
