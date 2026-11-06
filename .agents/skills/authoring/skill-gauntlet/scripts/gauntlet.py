@@ -33,16 +33,13 @@ def safe_slug(value: str) -> str:
     return slug or "skill"
 
 
-def tree_manifest(root: Path, ignored_paths: frozenset[str] = frozenset()) -> list[dict[str, str]]:
+def tree_manifest(root: Path) -> list[dict[str, str]]:
     """Describe a directory tree deterministically."""
 
     entries: list[dict[str, str]] = []
 
     for path in sorted(root.rglob("*"), key=lambda item: item.as_posix()):
         relative_path = path.relative_to(root).as_posix()
-
-        if relative_path in ignored_paths:
-            continue
 
         if path.is_symlink():
             entries.append({"path": relative_path, "type": "symlink", "target": path.readlink().as_posix()})
@@ -246,8 +243,10 @@ def snapshot_skill(arguments: argparse.Namespace) -> None:
             "entries": entries,
         }
 
-        atomic_write_json(snapshot_path / "manifest.json", manifest)
+        manifest_path = snapshot_path.with_name(f"{snapshot_id}.manifest.json")
 
+        atomic_write_json(manifest_path, manifest)
+        make_read_only(manifest_path)
         make_read_only(snapshot_path)
 
     inventory.append(
@@ -321,7 +320,7 @@ def verify_run(arguments: argparse.Namespace) -> None:
         if snapshot_path in verified_snapshots:
             continue
 
-        entries = tree_manifest(snapshot_path, frozenset({"manifest.json"}))
+        entries = tree_manifest(snapshot_path)
         content_hash = manifest_digest(entries)
 
         if content_hash != item.get("content_hash"):
