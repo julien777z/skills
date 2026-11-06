@@ -658,7 +658,8 @@ Escalate findings when you see:
 - Several hand-rolled call sites doing one job — four log lines each formatting a response their own way, three places assembling the same payload, two sentinels for one masked value. Count them by the job they do, not by how alike their code looks: the point of collapsing them is that a fix to one currently reaches none of the others.
 - **That each variant does something slightly different is not a reason to keep it.** A differing field, level, or label is a parameter of the one helper, not a second helper. Fold the variations in as arguments and let every caller reach the whole behaviour; keep them apart only where merging would genuinely make one caller do something wrong, and say which caller and what.
 - Logic added in the wrong layer/package when it should live somewhere more central.
-- A module named for what it returns rather than the question it answers, or one sitting in a package that does not own its concept — a billing rule filed under the feature that consumes it.
+- A module named for what it returns rather than the question it answers, or one sitting in a package that does not own its concept — a late-fee rule for library loans filed under the feature that consumes it.
+- A name the diff adds or renames that does not say what it is about, as the global rules' **A name says what it is about** bullet says, such as `may_change(member, club)` for a check on a club's bookings. The remedy is the specific name at every reference.
 - The same kind of value modelled two ways across siblings: a bare string or one-off constant on one path where a shared enum already covers it on another, especially for anything persisted or sent across a service boundary.
 - Sequential async flow where obviously independent work could stay simpler and clearer with parallel execution.
 - Partial-update logic that leaves state less atomic than necessary.
