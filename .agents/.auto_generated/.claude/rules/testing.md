@@ -102,7 +102,7 @@ paths:
 
 ## Fixtures and Test Data
 
-- Use clearly synthetic data that is unique to each test or parametrized case unless an exact protocol or catalog literal is the contract under test; never paste exact user-provided examples into tests, and preserve only the shape or edge case being verified when inventing replacements.
+- Use clearly synthetic data that is unique to each test or parametrized case unless an exact protocol or catalog literal is the contract under test.
 - Define test helper functions at module level.
 - Keep helper docstrings to a single line.
 - Use Polyfactory for structured Pydantic and SQLAlchemy test data. Define concrete `ModelFactory` or `SQLAlchemyFactory` classes in the shared test-utilities owner selected by the rubric, set `__model__`, provide deterministic domain defaults, and call `.build(**overrides)` directly from tests.
