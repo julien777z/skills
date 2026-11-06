@@ -103,7 +103,7 @@ These run only when you ask for them by name, such as `/code-slop-doctor`.
 - [`placeholder-data`](.agents/skills/workspace/placeholder-data/SKILL.md) — Turn a pasted API payload into the same shape with obviously fake values.
 - [`schema-doctor`](.agents/skills/doctors/schema-doctor/SKILL.md) — Check models and schemas for unnecessary nulls, complexity, keys, and indexes.
 - [`security-doctor`](.agents/skills/doctors/security-doctor/SKILL.md) — Find and fix the exploitable vulnerabilities in a codebase, each proven by a concrete attack.
-- [`skill-gauntlet`](.agents/skills/authoring/skill-gauntlet/SKILL.md) — Audit installed agent skills and test which ones to improve, retire, or install.
+- [`skill-gauntlet`](.agents/skills/authoring/skill-gauntlet/SKILL.md) — Audit installed agent skills and evaluate upgrades or retirement.
 - [`study-games`](.agents/skills/roblox/study-games/SKILL.md) — Explicit user-invoked research of Roblox charts for the requested audience and region.
 - [`tests-doctor`](.agents/skills/doctors/tests-doctor/SKILL.md) — Audit tests for contract value, redundant proof, weak assertions, runtime, provider rate limits, and determinism.
 - [`where-time-went`](.agents/skills/workspace/where-time-went/SKILL.md) — Show where session time and usage went.
@@ -118,7 +118,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`banned-terminology`](.agents/skills/review/banned-terminology/SKILL.md) — Owns the banned-terms list in resources/banned_words.json and enforces it.
 - [`brag`](.agents/skills/media/brag/SKILL.md) — Turn the current project website into a short, polished, shareable launch video using Hyperframes.
 - [`brag-slim`](.agents/skills/media/brag-slim/SKILL.md) — Turn a project directory or a website URL into a short, shareable launch video with music, motion, and share copy.
-- [`build-types`](.agents/skills/web/build-types/SKILL.md) — Regenerate generated API types from an OpenAPI document, using a local API checkout when it is present and the deployed API otherwise.
+- [`build-types`](.agents/skills/web/build-types/SKILL.md) — Regenerate generated API types from an OpenAPI document, using the API contract this branch deploys with.
 - [`clerk-nextjs-patterns`](.agents/skills/web/clerk-nextjs-patterns/SKILL.md) — Advanced Next.js patterns - middleware, Server Actions, caching with Clerk.
 - [`code-review`](.agents/skills/review/code-review/SKILL.md) — Code review a pull request or the current working changes with independent reviewer lenses, validated findings, and severity-rated results.
 - [`code-simplify`](.agents/skills/review/code-simplify/SKILL.md) — Strictly review the branch's changes for reuse, simplification, abstraction quality, and maintainability, then fix the issues.
