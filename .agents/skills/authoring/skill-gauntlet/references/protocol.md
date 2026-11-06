@@ -48,7 +48,6 @@ Maintain progress through atomic JSON patches:
 ```bash
 python3 scripts/gauntlet.py update RUN_DIR --patch patch.json
 python3 scripts/gauntlet.py verify RUN_DIR
-python3 scripts/gauntlet.py dashboard RUN_DIR --output SPEC.json
 ```
 
 The public state may include inventory, outcome contracts, benchmark coverage, model identities,
