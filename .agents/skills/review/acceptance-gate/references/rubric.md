@@ -40,9 +40,11 @@ The statement names:
 - the shapes removed and their replacements, read from current deletions and the originating commits;
 - the pull request's title and body and the change's commit messages, checked against those
   requirements and the implementation;
-- every example value the user supplied during the task — a name, an identifier, an amount, a
-  message, a record or capture from their data — listed verbatim as the task's example vocabulary,
-  or stated as none;
+- the caller's example search: each example value the user supplied during the task — a name, an
+  identifier, an amount, a message, a record or capture from their data — searched for in the
+  diff's added lines, the pull request's title and body and the commit messages, with each value
+  named by its kind, such as "the customer's full name", never by the value itself, and its hits;
+  or a statement that the user supplied none;
 - the target repository's purpose and scope, as its README and project guidance state them;
 - for each kind of code the diff adds, renames or reshapes, such as a router, a handler, a client,
   a fixture or an error, how the repository's own existing instances of that kind are written, read
@@ -341,12 +343,11 @@ manifests, policies, provider payloads, and response schemas remain models. All 
 code-simplify opens with; the gate runs them over the diff's added lines and lists their hits before
 anything else.
 
-**An example the user gave is never reproduced.** Search the diff's added lines, the pull
-request's title and body and the commit messages for every value in the intent statement's example
-vocabulary, and for any other literal that looks lifted from real data rather than invented. A hit is
-a flag whose remedy is an invented value keeping only the trait the case turns on, as the global
-rules' **Repository guidance** says. A missing example vocabulary holds a clean verdict, as a missing
-input.
+**An example the user gave is never reproduced.** Each hit in the intent statement's example
+search is a flag, and so is any literal in those same places that looks lifted from real data rather
+than invented. The remedy is an invented value keeping only the trait the case turns on, as the
+global rules' **Repository guidance** says. A missing example search holds a clean verdict, as a
+missing input.
 
 **A test is priced by what it costs to run.** Flag a test the diff adds or changes, or the module
 holding it, that `test-fixture`'s cost question calls disproportionate, and any change that absorbs
