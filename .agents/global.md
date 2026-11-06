@@ -540,10 +540,20 @@ return records;
   carrier reports as delivered is `delivered`, never `parcel_arrived`, because an unusual synonym
   makes every reader translate it back. This covers identifiers, fields, messages, documentation and
   test names in every language.
-- **A Boolean's name says what it is true of.** The receiver or argument is what the statement is
-  about, and a verb that acts on something names that thing in the name: `invoice.is_overdue`,
-  `is_deliverable(message)`, `job.writes_files`, never `writes(job)`, whose reader asks "writes
-  what?". A name a framework or protocol defines keeps its own spelling.
+- **A name says what it is about, so a reader never opens the body to learn what it acts on or
+  holds.** That holds for every name: a function, Boolean, field, event, constant, class, module,
+  file or package. A name built on a verb names the verb's object: `job.writes_files`,
+  `assert_may_book_rooms`, never `writes(job)` or `assert_may_book`, whose reader asks "writes
+  what?", "book what?". A receiver or argument supplies the subject only when it is the very thing
+  the name is about: `loan.is_overdue` and `is_deliverable(message)` need nothing more, but a check
+  on whether a member may change a club's bookings takes the club and is about its bookings, so it is
+  `may_change_bookings(member, club)`, never `may_change(member, club)`. A generic noun says what it
+  holds unless its receiver already does: `shipment.status` is the shipment's own state, but the
+  state of its customs check is `customs_status`; a parsed recipe in a local variable is `recipe`,
+  never `result` or `data`; a constant is `MAX_GUESTS_PER_TABLE`, never `LIMIT`; and a module of
+  date helpers is `dates.py`, never `helpers.py` or `misc.py`. The one generic container name is
+  the category package a language rule assigns, such as `utils/`, whose topic-named modules carry
+  what it holds. A name a framework or protocol defines keeps its own spelling.
 - Name things for the shape being exercised, not for whichever caller happened to prompt the work.
   A test needing a table with a secret column names it for that — a record with a secret — rather
   than borrowing the one real table the change was made for.

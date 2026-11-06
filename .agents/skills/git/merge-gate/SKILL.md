@@ -174,6 +174,17 @@ with the accepted head SHA in the request —
 refuses a concurrent head change. After the merge, re-read the pull request and require it to report
 merged.
 
+**A merge moves its consumers off the merged branch in the same run.** Every open pull request,
+in any repository, that pins the merged branch or a revision on it — a private checkout, a manifest
+or lockfile entry, a workflow or action reference, a generated artifact's source — is repointed to
+the maintained target containing the merge, as [Delivery dependencies](references/delivery-dependencies.md)
+says, and adapted to every contract the merge changed, such as a renamed export, until its own
+checks pass on that head. Find them by searching the provider's open pull requests and their
+consumers for the branch name and its head revision, never from memory. A consumer this session
+drives is repointed now and pushed, never left for its own merge to discover. One that another
+session owns is named in the report with its pinned reference and what the merge changed. Deleting
+the merged branch never waits on this, so a consumer left pinned stops installing.
+
 An excluded failed check does not prevent that ordinary authorized merge attempt. If the provider
 rejects it because branch protection requires the excluded check, leave the pull request open and
 report that actual rejection and its provider evidence; do not bypass protection.
@@ -190,7 +201,7 @@ rules' **After Agent Sync** section and verify its installed links before report
 ## Report
 
 ```markdown
-Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only | names of hosted checks and results> — sync: <run result | not agent configuration>; refresh: <installed source and commit | blocked: exact reason | not agent configuration>
+Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only | names of hosted checks and results> — consumers: <none pinned | repointed: <consumer PR> at <short sha> | owned elsewhere: <consumer PR> pins <reference>> — sync: <run result | not agent configuration>; refresh: <installed source and commit | blocked: exact reason | not agent configuration>
 ```
 
 Or, when a gate holds: `Not merged: <link> — <gate>: <evidence>`. The evidence includes each
