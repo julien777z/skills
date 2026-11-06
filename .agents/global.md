@@ -21,6 +21,7 @@ alwaysApply: true
 
 ## User-Facing Output
 
+- A report or a question follows **Repository guidance**'s rule on example values the user gave.
 - Invoke `i-have-adhd` before the first response a user reads in the session, whether or not the
   user invoked it or the running skill names it. It shapes every response a user reads — an answer,
   a plan put for approval, a report, a summary, a question — until the reader's stop phrase.
@@ -557,8 +558,27 @@ return records;
 - Name things for the shape being exercised, not for whichever caller happened to prompt the work.
   A test needing a table with a secret column names it for that — a record with a secret — rather
   than borrowing the one real table the change was made for.
-- Sample values follow the same rule: prefer plainly synthetic literals over ones shaped like a
-  real identifier from another system's domain.
+- **An example the user gives is never reproduced.** A value the user quotes or shows to
+  illustrate a case — a name, an address, an amount, an identifier, a message, a record read from
+  their data, a capture or a log — appears in nothing the agent writes, such as source, tests,
+  fixtures, comments, documentation, guidance, records, commit messages, branch names, pull-request
+  and issue text, posts, worker briefs and the reports the user reads. Each place uses a newly
+  invented, plainly synthetic value that keeps only the trait the case turns on, such as a hyphen, a
+  long value or an accented letter: a reported plant code `FERN-EXAMPLE-0042` becomes
+  `PLANT-SAMPLE-0001`, and a reported total of `$9,876.54` becomes `$1,000.50`.
+  - A quote of the user's words that holds such a value — an intent statement, a recorded answer, a
+    handoff, a dashboard — keeps the rest of their words exactly and names the value by its kind in
+    brackets, such as `[the reported plant code]`.
+  - A value naming the record or account the work operates on, or one the code must match, appears
+    only where the work acts on it — a query, a command, a brief that sends a worker to it, the code
+    or configuration that matches it — and tests, comments, descriptions and other committed,
+    posted or published text use an invented one.
+  - Two kinds of value are not examples and keep their exact text: fixed text the product shows
+    every reader that the user asks to add or reword, such as a label or a message, never a value
+    the product shows from a record; and a literal a protocol or provider defines for every caller,
+    such as a status value a provider sends.
+  - Every other sample value is plainly synthetic too, never shaped like a real identifier from
+    another system's domain.
 - **Nothing committed to a repository or posted to its host holds a path that only one machine
   has.** Source, configuration, guidance, documentation, fixtures, captured tool output, commit
   messages, pull-request text and comments never name a home directory, a temporary or scratch
