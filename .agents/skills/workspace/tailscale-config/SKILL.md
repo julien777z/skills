@@ -11,9 +11,8 @@ configuration, credential identity, deployed environment and automated runner ar
 of that proof; agreement in one never establishes agreement in another.
 
 ## Dependencies
-
-- `edit-skill` — diagnose every encountered Tailscale failure while operational repair continues.
-- `proton-pass` — retrieve only the credential fields a required operation needs without exposing them.
+- `edit-skill`
+- `proton-pass`
 
 ## Workflow
 

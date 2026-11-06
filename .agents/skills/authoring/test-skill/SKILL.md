@@ -12,10 +12,9 @@ behavior establishes conformance; a difference between the runs establishes impr
 confuse those conclusions.
 
 ## Dependencies
-
-- `subagent-matrix` — return model capabilities for explicit reviewer dispatch.
-- `code-simplify` — the pass every skill pull request gets before it merges; this skill runs after it.
-- `session-ledger` — resolve retained private evidence storage and preserve verification inputs and results.
+- `subagent-matrix`
+- `code-simplify`
+- `session-ledger`
 
 ## When It Runs
 
@@ -39,15 +38,15 @@ confuse those conclusions.
   batch's isolated scenarios, and retain results per head. Run an isolated original control when an
   improvement claim or conflicting instruction needs comparison; a straightforward clarification
   may omit it only with that justification recorded. The original control stays blind to the edited
-  diff, criteria, and reports. The round runs when, and on the head, `edit-skill`'s **Guidance Delivery** orders it.
+  diff, criteria, and reports. The round runs when, and on the head the caller supplies.
   Add readers only for a distinct named risk. Retain valid evidence across heads and rerun only
   scenarios materially invalidated by changed guidance, inputs, or environment, not the whole reader package.
 - A new skill has no original to run against. Its control runs carry no skill text at all, which
   shows what the skill adds over the model alone.
-- `skill-gauntlet` asks whether a skill is worth keeping; this skill asks whether one edit does
-  what it was made for. Neither replaces the other.
 
 ## Workflow
+
+Run after `code-simplify` completes its pass.
 
 1. **Define the behavior.** Record the observed miss and the outcome the user requires. Choose the
    smallest set of scenarios sufficient to cover the changed behavior and its affected dependencies;

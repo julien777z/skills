@@ -7,13 +7,14 @@ short_description: 'Show how the skills run, or interrogate a flow to tune it.'
 # Skill Flow
 
 ## Dependencies
-
-- `interactive-skill` — offer the **Modes** menu when the request does not pick one.
-- `use-dashboard` — render the dashboard and deliver it.
-- `edit-skill` — make the changes the user agrees to in Interrogate.
-- `session-ledger` — record each answer the user gives in Interrogate.
+- `interactive-skill`
+- `use-dashboard`
+- `edit-skill`
+- `session-ledger`
 
 ## Modes
+
+When the request does not select a mode, offer this menu through `interactive-skill`.
 
 ```yaml
 prompt: What do you want to do with the skill flows?

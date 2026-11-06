@@ -9,10 +9,8 @@ short_description: 'Record unfinished work in the repository it affects, or read
 Keep a problem alive after the conversation ends without scheduling its implementation.
 
 ## Dependencies
-
-- `linear` — find, create, and update the primary durable issue.
-- `acceptance-gate` — admit a record before anything is written, and triage one before it leaves
-  the active set.
+- `linear`
+- `acceptance-gate`
 
 ## Modes
 
@@ -23,8 +21,8 @@ before any write.
 **Read** when no scope is given. Report the combined active set from Linear and the legacy
 repository ledger, and write nothing.
 
-Use `execute-defer-scope` when the user wants a recorded item assessed and resolved. Use
-`defer-execution` only for an unrecorded scope already committed to separate execution.
+A recorded item is assessed and resolved by `execute-defer-scope`; `defer-execution` handles
+only unrecorded scope already committed to separate execution.
 
 ## When Recording Runs
 
@@ -64,9 +62,9 @@ prose are not durable records.
 ## Changing A Record
 
 A record whose problem still exists leaves the active set only on `acceptance-gate`'s triage
-verdict, put with its evidence and who owns the work, so it is declined only on a close. A record a
-change resolves, or shows was never real, is retired only with the tree evidence
-`execute-defer-scope`'s **Already resolved** and **Void** require. No record is declined, voided or
+verdict, put with its evidence and who owns the work, so it is declined only on a close. A resolved record is retired only after tree evidence proves the default branch no longer has the
+problem. A record that never described work is void only with evidence of the mistake, duplication,
+or finding proved wrong. No record is declined, voided or
 retired inline on the author's own reading; report the verdict or the evidence with the change.
 
 ## Ownership And Identity

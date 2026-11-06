@@ -6,9 +6,9 @@ rubric.
 
 ### Phase 3: Validate findings
 
-Collect all findings from Phase 2 agents and **consolidate duplicates first**. Phase 2 deliberately overlaps agent scopes, so the same issue is frequently reported by more than one hunter — merge findings that share a root cause before validating, or you'll validate and report the same bug multiple times. For each remaining finding, launch a **separate `research` validation agent** that tries to disprove it. The hunting agents are biased toward finding things; the validation agents are biased toward killing false positives. This adversarial step is critical.
+Collect all findings from Phase 2 agents and **consolidate duplicates first**. Phase 2 deliberately overlaps agent scopes, so the same issue is frequently reported by more than one hunter — merge findings that share a root cause before validating, or you'll validate and report the same bug multiple times. For each remaining finding, try to disprove it using the cohort in the entrypoint. The hunting agents are biased toward finding things; the validation agents are biased toward killing false positives. This adversarial step is critical.
 
-For findings from the same attack surface, batch them into one validation agent. Launch validation agents in parallel where they cover independent areas.
+At `medium` and `high`, assign one validator or refuter to each deduplicated finding; never batch findings. Launch agents in parallel where they cover independent areas. At `low`, validate inline.
 
 Each validation agent prompt should:
 1. State the specific finding being validated (title, claimed attack, claimed impact)
@@ -39,9 +39,9 @@ verify it or reject it.
 ### Phase 4: Independent verification
 
 The agent that found a vulnerability also wrote its trace, and it will not catch its own blind spots.
-A fresh agent verifies every claim.
+At `high`, a fresh agent verifies every claim; at lower levels, verify inline.
 
-Launch **one `research` agent per confirmed finding** via the Task tool, all in parallel. Each agent gets exactly one finding and verifies it independently. Give each agent that finding and this prompt:
+At `high`, launch **one fresh `research` agent per confirmed finding** via the Task tool, all in parallel. Each agent gets exactly one finding and verifies it independently. Give each agent that finding and this prompt:
 
 ```
 You are an independent verifier. You did NOT write this finding. Your job is to read the actual source code and verify that every factual claim is correct.

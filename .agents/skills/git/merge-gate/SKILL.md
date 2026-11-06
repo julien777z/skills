@@ -1,14 +1,14 @@
 ---
 name: merge-gate
-description: Merge a pull request its caller is authorized to merge — verify its delivery dependencies before taking it out of draft, gate its exact head, resolve merge conflicts, squash-merge and verify the merge. Use when a workflow reaches an authorized merge — `execute-task`'s Completion, a guidance batch's delivery, a user-invoked `finish-pr` or `merge-now`, or a doctor's merged batch. A pull request leaves draft only here; newly introduced PR or testing dependencies block that transition and merge. Unchanged references already on the default branch are exempt from that dependency gate.
+description: Merge a pull request its caller is authorized to merge — verify its delivery dependencies before taking it out of draft, gate its exact head, resolve merge conflicts, squash-merge and verify the merge. Use when a workflow reaches an authorized merge — `execute-task`'s Completion, a guidance batch's delivery, a user-invoked `finish-pr` or `merge-now`. A pull request leaves draft only here; newly introduced PR or testing dependencies block that transition and merge. Unchanged references already on the default branch are exempt from that dependency gate.
 short_description: 'Ready a pull request for its authorized merge, gate its exact head, and merge it.'
 ---
 
 # Merge Gate
 
 Merge one pull request at the head its caller accepted, and only after every check that head needs
-has reached a terminal result. A verified merge completes this skill, except for required Agent Sync
-handling after an agent-configuration change.
+has reached a terminal result. After verifying the merge, complete required consumer handling and,
+for an agent-configuration change, Agent Sync handling before this skill finishes.
 
 ## Authorization
 
@@ -26,13 +26,13 @@ handling after an agent-configuration change.
   authorization.
 
 ## Dependencies
-
-- `merge-conflict` — resolve every base incorporation this skill performs.
-- `pre-production` — the encountered-issue policy a failed check falls under.
-- `update-skills` — refresh the installed shared guidance after successful Agent Sync when the
-  GitHub rules select that route.
+- `merge-conflict`
+- `pre-production`
+- `update-skills`
 
 ## Inputs
+
+After successful Agent Sync, invoke `update-skills` when the GitHub rules select that route.
 
 The caller supplies the repository, the pull request, the head SHA its final acceptance passed, the
 affected behaviors its local tests already cover, and the rule that decides what a fix made here
@@ -41,7 +41,7 @@ caller or native validation evidence identifying its command and covered behavio
 resolved dependencies, configuration, toolchain and runner inputs, successful result, and durable
 output. Missing evidence prevents reusing that result or admitting a local-coverage exclusion; it
 never waives hosted coverage. The caller also supplies each validation exclusion: a current-user
-direction to leave a named test or check alone, a baseline exclusion established by `execute-task`'s
+direction to leave a named test or check alone, a baseline exclusion established by `pre-production`'s
 **Encountered Issues** classification with its default-branch evidence, or evidence that a hosted
 runner or provider cancellation meets the GitHub rule's pre-validation and local-coverage
 conditions. A caller with no such rule has each fix's diff judged the way it judged the accepted
@@ -129,7 +129,7 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    hang, push a speculative fix, cancel, re-run, or report the run stuck from a pending status alone.
 8. **Classify every unsuccessful check before repair.** A caller-supplied exclusion, a current-user
    waiver for its named test or check is excluded. Preserve established baseline classifications;
-   classify a newly encountered possible baseline under `execute-task`'s **Encountered Issues**,
+   classify a newly encountered possible baseline under `pre-production`'s **Encountered Issues**,
    without reentering that skill's active run. Record an exclusion's evidence, remove it from
    required coverage, and do not repair, rerun, or wait for it. Apply the
    GitHub rule's runner-infrastructure exclusion automatically: record a qualified check as skipped

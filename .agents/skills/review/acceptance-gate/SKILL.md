@@ -13,17 +13,20 @@ says.
 `references/rubric.md` holds what it judges by; this file holds how it is run.
 
 ## Dependencies
-
-- `subagent-matrix` — route the gate through a subagent of the running session.
-- `list-prs` — the caller supplies verified task-work pull requests for cross-repository context.
-- `code-simplify` — its `references/rubric.md` defines slop and prices a mechanism. The gate borrows
-  that file and never the applying-fixes workflow; this gate owns the review order.
-- `security-audit` — run at its `low` effort, which is defined as a single in-process pass against
-  its `references/rubric.md` and names no delegated agents, because a read-only gate cannot spawn
-  one. The rubric defines what counts as an exploitable finding, what it is worth, and in what order
-  to look for the smallest remedy; the gate takes the findings into its own verdict.
+- `subagent-matrix`
+- `list-prs`
+- `code-simplify`
+- `security-audit`
+- `pre-production`
+- `test-fixture`
+- `run-site`
 
 ## The Intent Statement
+
+Apply `pre-production` to the scope decision, `test-fixture` to test costs and existing reporting
+evidence, and `run-site`'s **Scenarios** to changes that add or alter product states.
+
+Apply `security-audit` at `low` effort as a single in-process rubric pass without delegated agents; take its exploitable findings into the verdict.
 
 The caller produces the statement once per change, updates it when accepted requirements or the
 user's scope change, and passes it to every gate. The gate judges within the scope the user set,
@@ -82,7 +85,7 @@ checks analogous implementations and the evidence for retained differences; miss
 pull-request context is a flag to obtain that context, not permission to assume consistency.
 
 The gate is read-only and normally distinct from the author. A plan step the primary agent made
-itself is gated in process instead, as `execute-task`'s step gates say, because the task's final
+itself is gated in process instead, under the caller's step gates, because the task's final
 acceptance reads every line again. If its reader cannot launch, apply `subagent-matrix`'s launch
 fallback. Invoke `subagent-matrix` for the
 acceptance-gate role, using its configured Codex role selection and the advanced capability level on

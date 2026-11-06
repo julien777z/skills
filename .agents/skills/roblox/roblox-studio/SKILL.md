@@ -1,6 +1,6 @@
 ---
 name: roblox-studio
-description: Create, update, polish, and playtest Roblox games in Roblox Studio, including maps, assets, interfaces, playtests, and authorized place delivery. Apply companion skills for code, interfaces, world design, and gameplay when relevant.
+description: Apply when Roblox work requires editor operations, source/place synchronization, imports, playtests, or authorized place delivery. Coordinate implementation, artwork, testing, and relevant technical guidance for the verified place.
 short_description: 'Create, polish, and playtest Roblox games in Studio.'
 ---
 
@@ -10,13 +10,16 @@ Carry a Roblox game request through implementation, visual polish, real playtest
 
 ## Dependencies
 
-- `luau` — apply when reading or changing Luau; owns code, types, server authority, and lifecycle cleanup.
-- `roblox-react` — apply when inspecting, changing, or testing React-rendered interfaces; owns responsive layout, visual quality, and interaction checks.
-- `roblox-building` — apply for environments, assets, traversal, and map/place architecture.
-- `roblox-gameplay` — apply when modifying gameplay.
-- `agent-lock` — coordinate exclusive access before controlling a shared runner.
+- `luau`
+- `roblox-react`
+- `roblox-building`
+- `roblox-gameplay`
+- `agent-lock`
 
 ## Work autonomously within the requested scope
+
+Apply the listed technical dependencies whose own discovery conditions match the work, retaining
+any guidance already active for the task.
 
 - Treat an approved plan as an implementation request. Make routine design and engineering choices, fix failures, and continue through verification with minimal user input.
 - Continue until the stated issue is resolved and verified, or a concrete blocker leaves no safe, authorized way to make further progress. An unresolved defect, passing CI, a pushed PR, a failed recovery attempt, or a status report is not a stopping point. Investigate the next supported hypothesis, repair the failed capability, or use an authorized alternative; do not make the user repeatedly say "continue".

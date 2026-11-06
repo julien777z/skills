@@ -11,17 +11,14 @@ Become the session that handed off: set up every pull request it named, load eve
 down, and carry on where it stopped, so the user does nothing but paste the message.
 
 ## Dependencies
-
-- `execute-task` — the run the continued work goes through.
-- `session-ledger` — recover the private task ledger and record each pull request taken over as touched.
+- `session-ledger`
 
 ## Resolving The Targets
 
 - The arguments are one or more pull request links or `owner/repo#N` references, across any number
   of repositories. Without one, ask exactly: **"Which pull requests should this session continue?"**
   and wait for the answer.
-- A repository missing from the session is attached or cloned, as `execute-task`'s **Environment
-  Refusals** says; it is never a reason to skip a pull request.
+- A repository missing from the session is attached or cloned, using the normal repository setup route; it is never a reason to skip a pull request.
 - A merged or closed pull request is reported and skipped; the rest continue.
 - Before recording a takeover, resolve the existing task ledger from agent-consumed continuation
   context through `session-ledger`, verify any cross-environment transfer and take over its writing
@@ -56,11 +53,11 @@ For each pull request, in the order given:
 ## Continuing
 
 1. **Reassess the open questions before putting them to the user**: validate their factual premises
-   under Setting Up and apply `execute-task`'s question boundary. Preserve the user's prior answers;
+   under Setting Up and apply the global question boundary. Preserve the user's prior answers;
    resolve questions current evidence or governing guidance already answers. Put only the remaining
    genuine decisions to the user, with current options, recommendation and supporting evidence.
    Work that depends on an answer waits; everything else proceeds.
-2. **Invoke `execute-task`** and work the queues in the order the hand-off gave, under the decisions
+2. **Resume the task** and work the queues in the order the hand-off gave, under the decisions
    and constraints it recorded. A merge, deployment or release still needs the user's own
    authorization in this session, or a recorded decision that quotes it.
 3. **Keep each pull request's queue current**: when an item finishes, the next hand-off or the final

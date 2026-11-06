@@ -16,17 +16,17 @@ Building a maintained audit system is outside this run. Apply `test-fixture`'s v
 to diagnostic experiments and any separately requested infrastructure work.
 
 ## Dependencies
+- `pre-production`
+- `doctor-protocol`
+- `test-fixture`
 
-- `doctor-protocol` — own the run.
-- `test-fixture` — every per-test check this doctor runs — value and dispositions, naming, factory
-  contents, doubles — and the standard every added or rewritten test meets for data, placement,
-  doubles, and regression validation through existing tools.
+## Inventory
+
+Run `doctor-protocol`.
 
 Also read the repository's test-runner skill when the skill listing declares one, found by its
 description rather than assumed by name. Its locking, service, and pacing rules hold for every run
 this doctor makes and are never restated here.
-
-## Inventory
 
 Discover at runtime: source roots and test roots; the classifications the runner distinguishes; each suite,
 the ownership boundary it belongs to, and the source it mirrors; where each suite keeps fixtures,
@@ -451,15 +451,8 @@ a later reader can act on. Ranked in one place, the next run has its baseline an
 what to cut can see what the time is being spent on.
 
 Post it once per pull request, updating the same comment when a later push changes the numbers
-rather than adding a second; each batch's pull request carries the ranking measured at its merge
-head, so the last one holds the final numbers against the baseline. Give it measured durations and
-unmeasured dispositions, without narration of the repairs the body and diff already carry.
-
-## Delivery
-
-Tests-doctor delivers in merged batches under `doctor-protocol`'s **Deliver**. A test remediation
-touches files across every suite, and one pull request held open for the whole plan conflicts with
-every change landing beside it.
+rather than adding a second; the draft pull request carries the final ranking against the baseline.
+Give it measured durations and unmeasured dispositions, without narration of the repairs the body and diff already carry.
 
 ## Report Additions
 

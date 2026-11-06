@@ -6,18 +6,12 @@ import re
 import shutil
 import stat
 import uuid
-import webbrowser
 from datetime import UTC, datetime
-from http import HTTPStatus
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Final
-from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
 
-SKILL_ROOT: Final[Path] = Path(__file__).resolve().parent.parent
-DASHBOARD_TEMPLATE: Final[Path] = SKILL_ROOT / "assets" / "dashboard.html"
 DEFAULT_RUNS_ROOT: Final[Path] = Path.home() / ".agents" / "skill-gauntlet" / "runs"
 PUBLIC_STATE_FILENAME: Final[str] = "state.json"
 SENSITIVE_PUBLIC_KEYS: Final[frozenset[str]] = frozenset(
@@ -39,14 +33,14 @@ def safe_slug(value: str) -> str:
     return slug or "skill"
 
 
-def tree_manifest(root: Path, ignored_paths: frozenset[str] = frozenset()) -> list[dict[str, str]]:
+def tree_manifest(root: Path) -> list[dict[str, str]]:
     """Describe a directory tree deterministically."""
 
     entries: list[dict[str, str]] = []
+
     for path in sorted(root.rglob("*"), key=lambda item: item.as_posix()):
         relative_path = path.relative_to(root).as_posix()
-        if relative_path in ignored_paths:
-            continue
+
         if path.is_symlink():
             entries.append({"path": relative_path, "type": "symlink", "target": path.readlink().as_posix()})
         elif path.is_file():
@@ -75,6 +69,7 @@ def read_json(path: Path) -> dict[str, object]:
     """Read a JSON object from disk."""
 
     value = json.loads(path.read_text())
+
     if not isinstance(value, dict):
         raise ValueError(f"Expected a JSON object in {path}")
 
@@ -85,6 +80,7 @@ def atomic_write_json(path: Path, value: dict[str, object]) -> None:
     """Write JSON atomically."""
 
     temporary_path = path.with_suffix(f"{path.suffix}.{uuid.uuid4().hex}.tmp")
+
     temporary_path.write_text(f"{json.dumps(value, indent=2, sort_keys=True)}\n")
     temporary_path.replace(path)
 
@@ -93,6 +89,7 @@ def load_state(run_dir: Path) -> dict[str, object]:
     """Load one gauntlet run's public state."""
 
     state_path = run_dir / PUBLIC_STATE_FILENAME
+
     if not state_path.is_file():
         raise FileNotFoundError(f"Missing gauntlet state: {state_path}")
 
@@ -103,6 +100,7 @@ def save_state(run_dir: Path, state: dict[str, object]) -> None:
     """Save one gauntlet run's public state."""
 
     state["updated_at"] = utc_now()
+
     atomic_write_json(run_dir / PUBLIC_STATE_FILENAME, state)
 
 
@@ -112,7 +110,9 @@ def make_read_only(root: Path) -> None:
     for path in sorted(root.rglob("*"), reverse=True):
         if path.is_symlink():
             continue
+
         mode = path.stat().st_mode
+
         path.chmod(mode & ~(stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH))
 
     root.chmod(root.stat().st_mode & ~(stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH))
@@ -124,14 +124,18 @@ def find_sensitive_key(value: object, location: str = "state") -> str | None:
     if isinstance(value, dict):
         for key, child in value.items():
             key_name = str(key)
+
             if key_name in SENSITIVE_PUBLIC_KEYS:
                 return f"{location}.{key_name}"
+
             found = find_sensitive_key(child, f"{location}.{key_name}")
+
             if found:
                 return found
     elif isinstance(value, list):
         for index, child in enumerate(value):
             found = find_sensitive_key(child, f"{location}[{index}]")
+
             if found:
                 return found
 
@@ -142,8 +146,10 @@ def merge_objects(current: dict[str, object], patch: dict[str, object]) -> dict[
     """Recursively merge a JSON object patch."""
 
     merged = dict(current)
+
     for key, value in patch.items():
         existing = merged.get(key)
+
         if isinstance(existing, dict) and isinstance(value, dict):
             merged[key] = merge_objects(existing, value)
         else:
@@ -158,11 +164,10 @@ def initialize_run(arguments: argparse.Namespace) -> None:
     run_id = arguments.run_id or f"{datetime.now(UTC):%Y%m%dT%H%M%SZ}-{uuid.uuid4().hex[:8]}"
     runs_root = Path(arguments.runs_root).expanduser().resolve()
     run_dir = runs_root / run_id
+
     run_dir.mkdir(mode=0o700, parents=True, exist_ok=False)
     for directory_name in ("candidates", "evidence", "retired", "sealed", "snapshots"):
         (run_dir / directory_name).mkdir(mode=0o700)
-
-    shutil.copy2(DASHBOARD_TEMPLATE, run_dir / "dashboard.html")
 
     timestamp = utc_now()
     state: dict[str, object] = {
@@ -178,6 +183,7 @@ def initialize_run(arguments: argparse.Namespace) -> None:
         "skills": {},
         "activity": [],
     }
+
     atomic_write_json(run_dir / PUBLIC_STATE_FILENAME, state)
 
     logger.info("%s", run_dir)
@@ -189,13 +195,16 @@ def snapshot_skill(arguments: argparse.Namespace) -> None:
     run_dir = Path(arguments.run_dir).expanduser().resolve()
     installation_path = Path(arguments.path).expanduser().absolute()
     resolved_path = installation_path.resolve()
+
     if not resolved_path.is_dir() or not (resolved_path / "SKILL.md").is_file():
         raise ValueError(f"Not a complete skill directory: {installation_path}")
 
     state = load_state(run_dir)
     inventory = state.get("inventory")
+
     if not isinstance(inventory, list):
         raise ValueError("Public state inventory must be a list")
+
     if any(
         isinstance(item, dict) and item.get("installation_path") == str(installation_path)
         for item in inventory
@@ -208,6 +217,7 @@ def snapshot_skill(arguments: argparse.Namespace) -> None:
         (item for item in inventory if isinstance(item, dict) and item.get("content_hash") == content_hash),
         None,
     )
+
     if duplicate_record:
         snapshot_id = str(duplicate_record["snapshot_id"])
         snapshot_relative_path = str(duplicate_record["snapshot_path"])
@@ -218,6 +228,7 @@ def snapshot_skill(arguments: argparse.Namespace) -> None:
         )
         snapshot_relative_path = f"snapshots/{snapshot_id}"
         snapshot_path = run_dir / snapshot_relative_path
+
         shutil.copytree(resolved_path, snapshot_path, symlinks=True)
 
         manifest: dict[str, object] = {
@@ -231,7 +242,11 @@ def snapshot_skill(arguments: argparse.Namespace) -> None:
             "captured_at": utc_now(),
             "entries": entries,
         }
-        atomic_write_json(snapshot_path / "manifest.json", manifest)
+
+        manifest_path = snapshot_path.with_name(f"{snapshot_id}.manifest.json")
+
+        atomic_write_json(manifest_path, manifest)
+        make_read_only(manifest_path)
         make_read_only(snapshot_path)
 
     inventory.append(
@@ -253,6 +268,7 @@ def snapshot_skill(arguments: argparse.Namespace) -> None:
             "overlaps": [],
         }
     )
+
     save_state(run_dir, state)
 
     logger.info("%s", snapshot_id)
@@ -264,10 +280,12 @@ def update_state(arguments: argparse.Namespace) -> None:
     run_dir = Path(arguments.run_dir).expanduser().resolve()
     patch = read_json(Path(arguments.patch).expanduser().resolve())
     sensitive_location = find_sensitive_key(patch)
+
     if sensitive_location:
         raise ValueError(f"Sealed evaluation data cannot enter public state: {sensitive_location}")
 
     state = merge_objects(load_state(run_dir), patch)
+
     save_state(run_dir, state)
 
     logger.info("%s", run_dir / PUBLIC_STATE_FILENAME)
@@ -279,90 +297,42 @@ def verify_run(arguments: argparse.Namespace) -> None:
     run_dir = Path(arguments.run_dir).expanduser().resolve()
     state = load_state(run_dir)
     sensitive_location = find_sensitive_key(state)
+
     if sensitive_location:
         raise ValueError(f"Sealed evaluation data found in public state: {sensitive_location}")
-    if not (run_dir / "dashboard.html").is_file():
-        raise FileNotFoundError("Missing dashboard.html")
+
     for directory_name in ("retired", "sealed", "snapshots"):
         if not (run_dir / directory_name).is_dir():
             raise FileNotFoundError(f"Missing {directory_name} directory")
 
     inventory = state.get("inventory")
+
     if not isinstance(inventory, list):
         raise ValueError("Public state inventory must be a list")
+
     verified_snapshots: set[Path] = set()
     for item in inventory:
         if not isinstance(item, dict):
             raise ValueError("Inventory entries must be objects")
+
         snapshot_path = run_dir / str(item["snapshot_path"])
+
         if snapshot_path in verified_snapshots:
             continue
-        entries = tree_manifest(snapshot_path, frozenset({"manifest.json"}))
+
+        entries = tree_manifest(snapshot_path)
         content_hash = manifest_digest(entries)
+
         if content_hash != item.get("content_hash"):
             raise ValueError(f"Snapshot digest mismatch: {snapshot_path}")
+
         for path in (snapshot_path, *snapshot_path.rglob("*")):
             if not path.is_symlink() and path.stat().st_mode & (stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH):
                 raise ValueError(f"Writable snapshot path: {path}")
+
         verified_snapshots.add(snapshot_path)
 
     logger.info("Verified %d snapshots in %s", len(verified_snapshots), run_dir)
-
-
-class DashboardHandler(BaseHTTPRequestHandler):
-    """Serve only the public dashboard and state files."""
-
-    run_dir: Path
-
-    def do_GET(self) -> None:
-        """Serve one public dashboard request."""
-
-        request_path = urlparse(self.path).path
-        if request_path in ("/", "/dashboard.html"):
-            target_path = self.run_dir / "dashboard.html"
-            content_type = "text/html; charset=utf-8"
-        elif request_path == f"/{PUBLIC_STATE_FILENAME}":
-            target_path = self.run_dir / PUBLIC_STATE_FILENAME
-            content_type = "application/json; charset=utf-8"
-        else:
-            self.send_error(HTTPStatus.NOT_FOUND)
-
-            return
-
-        content = target_path.read_bytes()
-        self.send_response(HTTPStatus.OK)
-        self.send_header("Content-Type", content_type)
-        self.send_header("Content-Length", str(len(content)))
-        self.send_header("Cache-Control", "no-store")
-        self.end_headers()
-        self.wfile.write(content)
-
-    def log_message(self, format_string: str, *arguments: object) -> None:
-        """Route HTTP request logging through the module logger."""
-
-        logger.debug(format_string, *arguments)
-
-
-def serve_dashboard(arguments: argparse.Namespace) -> None:
-    """Serve a run's view-only dashboard over loopback."""
-
-    run_dir = Path(arguments.run_dir).expanduser().resolve()
-    load_state(run_dir)
-
-    handler_type = type("BoundDashboardHandler", (DashboardHandler,), {"run_dir": run_dir})
-    server = ThreadingHTTPServer(("127.0.0.1", arguments.port), handler_type)
-    host, port = server.server_address[:2]
-    url = f"http://{host}:{port}/"
-    logger.info("%s", url)
-    if arguments.open:
-        webbrowser.open(url)
-
-    try:
-        server.serve_forever()
-    except KeyboardInterrupt:
-        logger.info("Dashboard server stopped")
-    finally:
-        server.server_close()
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -398,12 +368,6 @@ def build_parser() -> argparse.ArgumentParser:
     verify_parser.add_argument("run_dir")
     verify_parser.set_defaults(handler=verify_run)
 
-    serve_parser = subparsers.add_parser("serve", help="serve the view-only dashboard")
-    serve_parser.add_argument("run_dir")
-    serve_parser.add_argument("--port", type=int, default=0)
-    serve_parser.add_argument("--open", action="store_true")
-    serve_parser.set_defaults(handler=serve_dashboard)
-
     return parser
 
 
@@ -412,6 +376,7 @@ def main() -> None:
 
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     arguments = build_parser().parse_args()
+
     arguments.handler(arguments)
 
 

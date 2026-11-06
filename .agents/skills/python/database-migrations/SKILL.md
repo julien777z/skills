@@ -9,8 +9,7 @@ short_description: 'Guide for authoring, rebasing, and troubleshooting Alembic d
 Read the repository's migration layouts, runner commands, CI jobs, and fixture ownership from its project guidance, opening every `.agents/references/` file its `project.md` points to, before applying this policy. Resolve every role below through it; do not invent local paths.
 
 ## Dependencies
-
-- `pre-production` — owns affected-data retention classification before migration planning.
+- `pre-production`
 
 ## Data Scope
 
@@ -172,7 +171,7 @@ format transition or recovery mechanism for data explicitly declared disposable 
   into one new revision on top, which the next `lock-revision` locks. Locking settles where that
   change goes, never whether it may be made: work that needs a schema change adds the revision
   without asking and, while a `lock-revision` hold is open, pushes it only once the user lets
-  revisions resume, as `lock-revision`'s **After Locking** says. A base update that adds revisions
+  revisions resume. A base update that adds revisions
   to its chain is joined with a merge revision. Where the migration tooling accepts only a
   linear chain, the base's revision moves instead, re-parented onto the branch's head, once the
   owner confirms no environment has applied it; one an environment has applied needs the tooling to

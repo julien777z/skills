@@ -27,18 +27,20 @@ findings. Use the representation required by the applicable language rule and pr
 fixed values in that type. A receipt without the conditional list is incomplete and must be rerun.
 
 ## Dependencies
-
-- `subagent-matrix` — return model capabilities for explicit reviewer dispatch.
-- `code-simplify` — its `references/rubric.md` is the complete simplification rubric for that review lens.
-- `pre-production` — supply the repository's target-contract and staging-data policy, and its rule
-  that every security vulnerability the work finds is fixed in the change in flight.
-- `security-audit` — its `references/rubric.md` defines an exploitable finding, its precedents and its remedy, and its attack-class catalogue supplies the Security lens. The review borrows both and never the audit workflow.
-- `acceptance-gate` — define the intent statement and gate the fixes the change did not itself
-  introduce.
-- `agent-lock` — protect local snapshot capture with the exact checkout key.
-- `interactive-skill` — the effort and modes menus under **Arguments**.
+- `subagent-matrix`
+- `code-simplify`
+- `pre-production`
+- `security-audit`
+- `acceptance-gate`
+- `agent-lock`
+- `session-ledger`
+- `interactive-skill`
 
 ## Invocation
+
+Apply `pre-production` when validating a contract change and `acceptance-gate`'s **Bounds** when a repair conflicts with the intent.
+
+Use `agent-lock` with the exact checkout key to protect local snapshot capture.
 
 - Run this skill only when the user directly invokes it, or `review-pass` or `incident` delegates it. `review-pass` supplies high effort and fix mode; do not ask for standalone review options on that route.
 
@@ -154,9 +156,9 @@ What happens next turns on whether the branch already carries commits of its own
 
 1. Separate the intended changes from unrelated worktree changes. If which changes are intended is ambiguous, stop and ask before staging anything.
 2. When the current branch is the default branch or HEAD is detached, create a collision-free branch named for the change, following whatever branch-naming convention the repository already uses. When already on a non-default branch, keep it.
-3. Stage only the intended changes, commit them with a concise message, and push with upstream tracking through `execute-task`'s **Pre-Push Gate**.
+3. Stage only the intended changes, commit them with a concise message, and push with upstream tracking through the GitHub rule’s **Pre-Push Gate**.
 
-**When it already carries commits**, leave the worktree alone. Never stage and never commit — uncommitted work stays uncommitted and is reviewed in place. Push existing local-only commits with upstream tracking, through `execute-task`'s **Pre-Push Gate**, so the branch exists on the remote. The gate's own fixes are the one commit made here: stage only the gate's edits, commit them alone, and leave every uncommitted worktree change untouched.
+**When it already carries commits**, leave the worktree alone. Never stage and never commit — uncommitted work stays uncommitted and is reviewed in place. Push existing local-only commits with upstream tracking, through the GitHub rule’s **Pre-Push Gate**, so the branch exists on the remote. The gate's own fixes are the one commit made here: stage only the gate's edits, commit them alone, and leave every uncommitted worktree change untouched.
 
 Then open a **draft** PR against the remote default branch when no open PR already has this branch as its head. Committing the first change above is what makes this always possible: a branch reaches this point with at least one commit, so there is never a state where a review runs with no PR behind it. If there is genuinely nothing to review — no commits and no uncommitted changes — stop before any of this.
 
@@ -382,7 +384,7 @@ Work findings in severity order:
 4. Escalate only a decision that is genuinely the user's: a change to intended product behavior, or a choice between defensible designs that neither the diff nor the guidance settles. Designs that differ only in how the code is built — where shared behavior lives, which repository owns a helper, which mechanism replaces parallel copies — are ranked by `pre-production` and `code-simplify`: apply the one that leaves the fewest mechanisms and report the choice. A reviewer or validator calling a finding an open decision, or a question for the user, is a claim this step classifies, never the classification. Ask the specific question through the host's question tool and act on the answer. An unanswered question is one of only three routes to reporting a CONFIRMED finding unfixed, and the report must say what was asked.
 5. Size keeps a confirmed finding out of this round only under the size bar in `references/rubric.md` — Fix Mode; a confirmed defect is fixed here whatever its size. A scope the bar admits is recorded through the repository's deferral mechanism so it outlives the review, and the record is named in the report: a finding described only in the report is not deferred, it is dropped. That mechanism's admission gate decides whether the scope may be recorded at all; a refusal naming fix or do means the finding is fixed here, and one naming close is recorded cancelled with its reason and reconsideration criterion.
 
-**Each fix is committed as its own increment. A working-pull-request fix is pushed and its `execute-task` **Pre-Push Gate** verdict is its gate; a local-snapshot fix freezes a replacement local snapshot and continues its local validation and review loop without pushing.** A pre-existing defect, an `OUTSIDE_DIFF` anchor, a defect the diff inherits, and anything this round considered deferring are the fixes most likely to take the shape the change is removing, because nothing about them was the change's purpose, and the gate reads each against the intent statement. Resolve each flag under `acceptance-gate`'s **Bounds**, retaining the finding and intent through each changed increment and fresh review. A repeated flag is neither a deferral justification nor permission to leave flagged code standing.
+**Each fix is committed as its own increment. A working-pull-request fix is pushed and the GitHub rule’s **Pre-Push Gate** verdict is its gate; a local-snapshot fix freezes a replacement local snapshot and continues its local validation and review loop without pushing.** A pre-existing defect, an `OUTSIDE_DIFF` anchor, a defect the diff inherits, and anything this round considered deferring are the fixes most likely to take the shape the change is removing, because nothing about them was the change's purpose, and the gate reads each against the intent statement. Resolve each flag under `acceptance-gate`'s **Bounds**, retaining the finding and intent through each changed increment and fresh review. A repeated flag is neither a deferral justification nor permission to leave flagged code standing.
 
 Preserve the requested behavior and any unrelated worktree changes. Re-review the fixed lines to confirm each correction holds, then re-report with an outcome per finding: `fixed`, `skipped`, or `no_change_needed`.
 

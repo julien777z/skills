@@ -10,14 +10,12 @@ disable-model-invocation: true
 Resolve recorded deferrals instead of treating their proposed work as automatically owed.
 
 ## Dependencies
-
-- `defer-scope` — supply the record and ownership contract.
-- `linear` — find and update Linear-owned records.
-- `pre-production` — decide which problems and target contracts belong in the release.
-- `code-simplify` — find the smallest coherent resolution for each legitimate problem.
-- `acceptance-gate` — judge the proposed resolution and the finished diff against the originating
-  change.
-- `session-ledger` — retrieves session-created pull requests without reconstructing task history.
+- `defer-scope`
+- `linear`
+- `pre-production`
+- `code-simplify`
+- `acceptance-gate`
+- `session-ledger`
 
 ## Select The Records
 
@@ -47,6 +45,8 @@ could not be inventoried, and do not claim an aggregate or session scope is comp
 
 ## Assess Every Record
 
+Apply `pre-production` to decide which problems and target contracts belong in the release.
+
 Read the complete Linear issue with comments or the complete legacy record with supporting files and
 the pull request carrying it. Read the current implementation and history of the code it names. Confirm that
 the problem still exists before considering its proposed solution.
@@ -59,10 +59,9 @@ from the tree read before the gate. The dispositions:
 - **Implement** — correct a real release problem with the clean target implementation.
 - **Simplify and incorporate** — solve it through a smaller correction, reuse, deletion,
   consolidation, or better owner.
-- **Already resolved** — retire a stale record after proving the default branch no longer has it.
+- **Already resolved** — retire a stale record using `defer-scope`'s **Changing A Record** evidence.
 - **Decline** — retain the evidence while rejecting obsolete, speculative, or harmful work.
-- **Void** — remove a record that never described work: a mistake, a duplicate, or a finding that
-  proved wrong.
+- **Void** — remove a record using `defer-scope`'s **Changing A Record** evidence.
 - **Blocked** — keep it active only for a genuine external dependency or unresolved user decision.
 
 A record is evidence, not an implementation instruction. Consolidate duplicate records under the

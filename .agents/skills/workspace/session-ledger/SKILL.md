@@ -106,8 +106,7 @@ identity, never a second authoritative copy of its records.
      record the basis rather than turning an estimate into an elapsed-time claim.
 3. Update an entry's current `data` and append observations for later lifecycle facts, checks and
    dispositions. Preserve its initial observation and provenance while the entry remains active.
-   `process-ledger` owns the complete-outcome disposition and removal criteria; keep the entry
-   and its evidence until that workflow establishes its terminal outcome or invalidity.
+   Keep the entry and its evidence until its caller establishes a terminal outcome or invalidity.
 4. Preserve the file locator, task identity and ownership across delegation, handoff and compaction.
    Merge worker receipts by stable entry ID, or canonical URL for an artifact, without replacing
    unrelated entries or reordering existing ones. Carry the locator in agent-consumed task metadata
@@ -132,6 +131,12 @@ identity, never a second authoritative copy of its records.
      another ledger record or a same-named branch.
    - For an artifact created before this skill was available, reconstruct its missing entry from
      verified task evidence, then use the ledger for later lookups.
+
+## Guidance Batches
+
+One guidance batch is in flight at a time. It is frozen when delivery starts. An entry admitted
+while it is in flight joins it until its pull request merges. A batch is in flight from its freeze
+until every entry has a verified delivery or a recorded hold; a held entry does not keep it in flight.
 
 ## Backup
 

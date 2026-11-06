@@ -14,10 +14,9 @@ through `session-ledger`; its contents never go into those published comments. T
 skill ends with.
 
 ## Dependencies
-
-- `list-prs` — the task’s verified open pull-request list.
-- `defer-scope` — record repository work consciously left undone; it runs the admission gate.
-- `session-ledger` — provides verified task artifacts outside the current repository.
+- `list-prs`
+- `defer-scope`
+- `session-ledger`
 
 ## Scope
 
@@ -27,8 +26,7 @@ skill ends with.
 - Cover every open pull request the session created or changed, across every repository the
   session was authorized for. Each pull request gets its own comment, written for the agent that
   continues it.
-- Complete every hand-off step, working through obstacles by `execute-task`'s **Environment
-  Refusals**. When private-ledger recovery or verified transfer is genuinely unavailable, preserve
+- Complete every hand-off step, working through environment obstacles. When private-ledger recovery or verified transfer is genuinely unavailable, preserve
   the source and report the concrete blocker. Use the completion template only after all steps,
   including ledger transfer and ownership verification, succeed.
 - Nothing in the hand-off or its report is addressed to the user as a task. An action that needs the
@@ -67,7 +65,7 @@ skill ends with.
    the merge is clean or named in the queue with the exact merge still to do. Commit uncommitted
    changes with a message that says what state they are in, using a `wip:` prefix when they are
    incomplete. Then run the pre-push checks
-   `execute-task`'s **Pre-Push Gate** defines, report-only: every failing check is pushed unfixed and
+   the GitHub rule’s **Pre-Push Gate** defines, report-only: every failing check is pushed unfixed and
    goes first in the queue — the one push that does not wait on its checks, because unpushed work
    is lost with the session. Apply and commit any stash. Never rewrite history or force-push.
 6. **Close the pull requests this session made stale.** One whose commits now live on the pull

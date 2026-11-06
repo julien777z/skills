@@ -14,7 +14,7 @@ doing other work. An edit that skipped this is unverified, and the report says s
 recording a guidance correction. Record only a verified success, or a direct guidance request,
 under **Recording During A Task**, which sets when its edit is delivered. A failed, blocked, or
 unavailable action is task evidence only: it does not create a ledger correction or a guidance edit.
-With no other task running and no guidance batch in flight, as `process-ledger`'s **Batches**
+With no other task running and no guidance batch in flight, as `session-ledger`'s **Guidance Batches**
 defines it, first perform the requested action and record it only after it succeeds.
 
 An open `.agents` pull request is not a delivery result. Processing continues through its source
@@ -59,19 +59,21 @@ task is active, or a guidance batch is in flight, preserve its execution and fol
 During A Task** for the edit's timing.
 
 ## Dependencies
-
-- `code-simplify` — the pass over the guidance itself before it merges.
-- `acceptance-gate` — the diff question over the `.agents` change once it reads clean.
-- `pre-production` — a defect a guidance move brings to light is fixed in the change.
-- `test-skill` — exercise behavior-changing guidance safely, compare original and edited results,
-  and repair failing guidance or tests before merge.
-- `subagent-matrix` — the model capability level for live verification chats and the delivery worker.
-- `review-pass` — the review of the guidance pull request **Guidance Delivery** opens.
-- `merge-gate` — the verified squash merge of the pull request step 7 clears.
-- `session-ledger` — retain observed issues, reproduction scenarios and pending guidance delivery across the active task.
-- `update-skills` — put a pushed pending edit into the installed copy every agent loads.
+- `code-simplify`
+- `acceptance-gate`
+- `pre-production`
+- `test-skill`
+- `subagent-matrix`
+- `review-pass`
+- `merge-gate`
+- `session-ledger`
+- `update-skills`
 
 ## Recording During A Task
+
+Honor the selected workflow's verification sequence and any delivery or installation hold when
+recording or delivering a batch.
+Validate skill dependencies and their actual call and policy-read paths under the shared agent-guidance rule’s **Dependencies** and **Validation** sections.
 
 - Carry out the user's requested action in the current work first and verify that it achieved the
   requested result. Do not make a ledger entry merely because the user proposed a method or a
@@ -96,7 +98,7 @@ During A Task** for the edit's timing.
   the user's own words: a merge, a deployment, a publication, a comment, or a push to another
   session's branch. A brief to any worker whose task a pending entry's subject covers carries that
   entry's intended behavior, with the user's words quoted and the installed text it amends named, as
-  `execute-task`'s brief rule requires.
+  the global rules require.
 - When the action fails, is blocked, or cannot be verified, keep its evidence in the task's
   verification record and continue its recovery or escalation. Do not create, amend, or process a
   `guidance_correction` entry, and do not edit canonical guidance from that outcome.
@@ -107,12 +109,11 @@ During A Task** for the edit's timing.
   When the checkout holds the active task's uncommitted or source-branch work, write and commit the
   edit from a separate worktree on the selected branch, leave the task's tree untouched, and stage
   only the guidance files. Record the branch, the `commits` list and the pull request in the entry's
-  `data`, bring that pull request's description up to date as `execute-task`'s **Pull Requests**
-  says for a milestone, then run `update-skills` at once so the installed copy every agent loads,
-  subagents included, carries the edit; agents still running hold no refresh, since each skill is
+  `data`, bring that pull request's description up to date at the milestone, then run `update-skills` at once for eligible edits under its **What Takes Effect**, so the installed
+  copy every agent loads, subagents included, carries them; agents still running hold no refresh, since each skill is
   read through its link when it is used. Nothing else of delivery runs while the task does: no
   review, gate, smoke round, merge or worker, except the checks a batch in flight reruns for an edit
-  that joined it, as `process-ledger`'s **Batches** says. A standing instruction about how guidance
+  that joined it, as `session-ledger`'s **Guidance Batches** says. A standing instruction about how guidance
   pull requests are reviewed or merged governs that delivery when it runs, never when. A gate result
   that arrives for a guidance pull request already open is recorded as its entry's stage result, and
   its repair waits with the rest.
@@ -121,7 +122,7 @@ During A Task** for the edit's timing.
   in that batch; the batch is one pull request, apart from edits the GitHub rule puts on a source
   pull request. One recorded while a batch is in flight joins that
   batch, and one recorded after the batch's pull request merged starts the next, as
-  `process-ledger`'s **Batches** says; tell the user which.
+  `session-ledger`'s **Guidance Batches** says; tell the user which.
 - The task's next step is never held by a correction: record it and carry on.
 
 ## Guidance Delivery
@@ -143,8 +144,7 @@ user's review of the source pull request overlaps it.
    and delivery stage; a merged or closed pull request resumes at verifying the merged text, never
    at review. An edit step 7.1 puts on a source pull request this session drives is pushed there and
    passes step 7.2's source check on the head carrying it before that pull request's source stream
-   proceeds, and step 7.5's smoke round on the head that pull request's review pass accepted, as
-   `execute-task`'s **Completion** says. It carries step 7.3's prose-duplication checks into that
+   proceeds, and step 7.5's smoke round on the head that pull request's review pass accepted, before the source review and delivery. It carries step 7.3's prose-duplication checks into that
    pull request's simplification and step 7.4's incident vocabulary into its final acceptance. An edit step 7.1 selects on
    another session's source pull request runs steps 7.2 to 7.5 here on the head it pushed, and the
    delivery report says the push moved that pull request's head past its owner's acceptance. An
@@ -174,7 +174,8 @@ user's review of the source pull request overlaps it.
 - At a checkpoint and before reporting its state, record the complete pull-request head and file
   list, the target repository's lifecycle, its current state, and its next transition. A draft
   confined to canonical agent configuration records `agent-configuration exception`
-  and `merge-gate` as its next action unless step 7.7 holds it for the user or for a source pull request; it never records `await user authorization` otherwise.
+  and `merge-gate` as its next action unless the selected workflow's delivery hold or step 7.7 holds it for the
+  user or for a source pull request; it never records `await user authorization` otherwise.
 
 ## Behavior
 
@@ -368,15 +369,15 @@ user's review of the source pull request overlaps it.
 7. **Guidance Delivery** delivers the batch in this order, with `review-pass` carrying steps 3–4. Ordinary
    repairs and verification remain authorized throughout this delivery; resolve flagged gates under `acceptance-gate`'s **Bounds** and failing smoke runs under
    `test-skill`. A pull request confined to agent configuration has merge authorization under the
-   GitHub rule after its stated gates; ask neither to repeat that authorization nor to continue
+   GitHub rule after its stated gates, subject to the selected workflow's delivery hold; ask neither to repeat that authorization nor to continue
    an ordinary repair. That merge authority settles no genuine unresolved product, scope, or
    authorization choice: put that concrete choice to the user under **Bounds** while independent
    work continues. It does not authorize a release workflow. A changed output's concrete example, under **Upsert behavior**, is task evidence before writing that output; it does not wait for approval.
    1. **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches and Pull Requests** — never put it onto a
       source branch, the one checked out included, except guidance that rule puts on the source pull
       request it depends on, which merges with it. Commit the `.agents` files, never a provider
-      mirror, and push each step once `execute-task`'s **Pre-Push Gate** checks pass to a draft pull
-      request; steps 3–4 are the review pass its **Completion** runs over what no earlier pass reviewed, and step 7's `merge-gate` merges it,
+      mirror, and push each step once the GitHub rule’s **Pre-Push Gate** checks pass to a draft pull
+      request; steps 3–4 are the review pass the selected workflow runs over what no earlier pass reviewed, and step 7's `merge-gate` merges it,
       taking it out of draft as the merge's first step. None of that waits to be asked: the decision was made when the edit was requested, and
       a pull request left open leaves the guidance this change replaces in use. A source fix required by step 3 is source work: it goes onto the source pull request
       the work continues in its repository under the same rule and merges as that work does.
@@ -390,7 +391,7 @@ user's review of the source pull request overlaps it.
       report it prints before pushing; a description holding a colon followed by a space is the usual
       one, and quoting the value is the fix.
       When the sync tool cannot reach an imported skill's source repository, that is an environment
-      refusal under `execute-task`, not a blocker: attach or clone the repository, and when the tool
+      refusal, not a blocker: attach or clone the repository, and when the tool
       fetches through a path the environment refuses, fix the tool to use one it serves.
       Check the entire canonical skills tree against repository packaging rules, including
       imported skills, rather than only the files being edited. Remove forbidden provider UI
@@ -484,10 +485,8 @@ user's review of the source pull request overlaps it.
       merges. Select where dependent guidance goes under the GitHub rule's **Branches and Pull Requests**,
       and report any hold under its **Merge Authorization**. Otherwise a pull request carrying a
       skill change merges once step 6 found every changed output matching its concrete example, and
-      one carrying only rules merges on sight as the GitHub rules say. **A pull request that adds a
-      doctor skill is left for the user as a whole** — every other skill, rule and agent file in
-      its batch with it — and so is one a doctor run opens: the steps above still run, the merge
-      does not, and the report names it held for the user's review.
+      one carrying only rules merges on sight as the GitHub rules say, subject to the selected
+      workflow's delivery hold. Report a held pull request for the user's review.
    8. **Nothing is copied by hand.** The skills repository is the only copy of a shared skill;
       sessions receive a merged edit through the refresh **After Agent Sync** runs, never through a copy
       placed in another repository or install. A skill that reads generically but was written into one repository's `.agents` is

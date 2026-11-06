@@ -48,7 +48,6 @@ Maintain progress through atomic JSON patches:
 ```bash
 python3 scripts/gauntlet.py update RUN_DIR --patch patch.json
 python3 scripts/gauntlet.py verify RUN_DIR
-python3 scripts/gauntlet.py serve RUN_DIR --open
 ```
 
 The public state may include inventory, outcome contracts, benchmark coverage, model identities,
@@ -146,19 +145,18 @@ repeatedly wins, record `Green — retire`; do not manufacture a replacement.
 
 ## Installation and Recovery
 
-Provisionally install only a candidate that passed iteration acceptance. For an editable source,
-replace the skill through its owning workflow. For a managed or read-only source, install a
-user-owned override only when the harness's precedence rules make that supported and unambiguous.
+Provisionally install only a candidate that passed iteration acceptance. Install in a task-owned isolated
+evaluation environment using the intended source and precedence. For a managed or read-only
+source, use an override only when precedence rules make it supported and unambiguous.
 Retain the original snapshot and manifest.
 
 After installation, run a final clean evaluation with fresh contestants, fresh judges, and the
-sealed held-out set. If the result fails the frozen acceptance standard, restore the verified
-original or remove the override and record the rollback. Move the exposed tasks and packets into
+sealed held-out set. If the result fails the frozen acceptance standard, restore the verified isolated
+original or remove the isolated override and record the rollback. Move the exposed tasks and packets into
 sealed historical evidence, mark them contaminated and permanently ineligible, create and audit a
 fresh replacement set, and continue the gauntlet without giving failed held-out details to builders.
 
-For `Green — retire`, deactivate the skill so it no longer resolves or triggers. Move a writable
-installation into `RUN_DIR/retired/` and record its original path and digest so restoration remains
-possible. For a managed installation, use only a documented harness disable or masking mechanism.
-If the harness cannot deactivate it safely, report an installation blocker rather than calling the
-retirement complete. Finish with evidence for the installed upgrade or reversible retirement.
+For `Green — retire`, validate deactivation in the task-owned isolated evaluation installation,
+then prepare a scoped retirement change as a draft pull request for user review. Keep active
+installations intact. A green evaluation is evidence for the proposed change, not an installation
+or deactivation of the user's active skill. Deliver upgrades and retirements under the entrypoint's **Delivery** contract.

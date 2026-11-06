@@ -22,21 +22,20 @@ any fix `merge-gate` makes, and review afterwards whatever merged without an ear
   **Merge**, reported with its evidence.
 
 ## Dependencies
-
-- `list-prs` — the task's open pull requests when the user names none.
-- `acceptance-gate` — the final-acceptance verdict on each head before it merges.
-- `merge-gate` — the exact-head check gate, conflict resolution and the verified squash merge.
-- `review-pass` — the review and fix loop over each merged range's unreviewed changes.
-- `session-ledger` — record each merge, fix pull request and outcome.
+- `list-prs`
+- `acceptance-gate`
+- `merge-gate`
+- `review-pass`
+- `session-ledger`
 
 ## Targets
 
 1. The pull requests the user names, or else every open pull request `list-prs` returns for the
    task. Freeze that set at invocation and verify each head and state on the host.
 2. Leave out a pull request confined to agent configuration; guidance delivery merges those.
-3. A pull request whose task's `execute-task` **Completion** has not sent its review message is
-   finished first: that **Completion** runs, unless the user named the pull request, in which case
-   it is taken as it stands. Every pull request is a draft until `merge-gate` merges it, so being a
+3. A pull request whose task has not supplied its reviewed result is finished first: return the
+   unfinished implementation and verification to the task coordinator and use the reviewed head it
+   returns, unless the user named the pull request, in which case it is taken as it stands. Every pull request is a draft until `merge-gate` merges it, so being a
    draft says nothing about whether it is finished.
 
 ## Merge
@@ -51,11 +50,10 @@ depends on to merge.
 2. **Check gate.** Invoke `merge-gate` with the accepted head, validation receipts, established
    exclusions and the fix rule for every fix it makes — a check fix, a conflict resolution, a commit
    someone else pushed: `review-pass` runs again over that fix's delta, and the fix is pushed through
-   `execute-task`'s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
+   the GitHub rule’s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
    passed. `merge-gate`'s **Check Gate** owns complete-diff classification, check inventory, failure
    handling and the evidence required before merging.
-3. **Merge.** `merge-gate` squash-merges at the gated head and verifies it. Record the merge commit and
-   its first parent.
+3. **Merge.** `merge-gate` squash-merges at the gated head and verifies it. Record the merge commit and its first parent with `session-ledger`.
 
 ## Review What Merged
 
@@ -64,7 +62,7 @@ depends on to merge.
    so a pull request merged unchanged since its automatic review needs nothing. A clean range ends
    there.
 2. Confirmed findings go into one draft fix pull request per repository, cut from the freshly
-   fetched default branch. The original merge is never amended or reopened.
+   fetched default branch. Record each fix pull request and its outcome with `session-ledger`. The original merge is never amended or reopened.
 3. Each fix pull request takes **Merge** steps 1–3. It gets no further review round beyond the fix rule's review of a
    `merge-gate` fix.
 

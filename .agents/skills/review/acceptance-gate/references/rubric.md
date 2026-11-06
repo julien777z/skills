@@ -156,8 +156,7 @@ the consequence or uncertainty, and the smallest repair or investigation that wo
 the available evidence before flagging; unresolved suspicion is stated as uncertainty, never as a
 proven failure. Acceptance explains why any material surprise is justified.
 
-Judge the whole result, not a succession of locally reasonable edits. Apply `pre-production`'s
-scope decision: necessary consumer updates or migrations can justify a wide diff; a chain of
+Judge the whole result, not a succession of locally reasonable edits. The scope decision establishes whether necessary consumer updates or migrations can justify a wide diff; a chain of
 incidental cleanups cannot justify itself by the files it has already touched. Existing user
 approval to retain a broad change settles retention, not whether its remaining design is sound.
 Do not reject work solely for file count, personal taste, or a large required repair, and do not
@@ -341,12 +340,11 @@ anything else.
 **A test is priced by what it costs to run.** Flag a test the diff adds or changes, or the module
 holding it, that `test-fixture`'s cost question calls disproportionate, and any change that absorbs
 a slow test in a way the testing rules list; the remedy is making it cheap or removing it, as that
-rubric and `pre-production` decide. Apply `test-fixture`'s existing-reporting procedure: missing
+rubric and `pre-production` decide. For existing-reporting evidence, missing
 available evidence holds a clean verdict; attribution the native route cannot provide is recorded
 unmeasured and does not hold an otherwise validated repair.
 
-**A new state ships with its scenario.** Flag a diff that adds or alters a state `run-site`'s
-**Scenarios** says grows the scenario command without adding or updating that scenario; the remedy
+**A new state ships with its scenario.** Flag a diff that adds or alters a state that requires extending the scenario command without adding or updating that scenario; the remedy
 is that scenario, in the same change.
 
 **An added guard is priced like a missing one.** For every guard, refusal, validation, or branch a

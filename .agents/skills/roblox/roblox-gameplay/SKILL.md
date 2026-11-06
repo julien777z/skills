@@ -8,14 +8,13 @@ short_description: 'Apply every time actively modifying a Roblox game, including
 
 ## Dependencies
 
-- `roblox-react` — apply for React-rendered UI.
-- `roblox-building` — apply for maps and world content.
-- `luau` — apply when reading or changing Luau.
-- `roblox-studio` — apply for Studio playtests.
-
-Apply this skill whenever actively modifying a game. Preserve the authorized scope, genre, established identity, and current gameplay contract. Use it to improve the affected player experience; it does not require adding a new feature, economy, pet system, or chart research to every code change.
+- `roblox-react`
+- `roblox-building`
+- `luau`
 
 ## Make success clear and satisfying
+
+Apply this skill whenever actively modifying a game. Preserve the authorized scope, genre, established identity, and current gameplay contract. Use it to improve the affected player experience; it does not require adding a new feature, economy, pet system, or chart research to every code change.
 
 Fit the rhythm of success to the requested genre, audience, and mood. Establish an understandable first action and a visible result early, then connect smaller achievements to meaningful longer goals. Fast rewards suit some games; quieter discovery, mastery, or social play can be equally intentional. Do not infer a fixed reward cadence or neurological effect from chart popularity.
 
@@ -71,7 +70,7 @@ Fit companions to the genre, progression, and production stage. A popular featur
 
 Play the affected loop through ordinary controls. Observe how quickly a beginner understands the next action, whether success is visible/audible, whether rewards agree with real state, and whether another attempt feels inviting. Check feedback at normal player pace and during rapid repeated successes, including overlap, audio buildup, cleanup, and performance. Keep stronger milestones distinct from routine hits.
 
-When the work involves React-rendered UI, apply `roblox-react` for clarity and its scheduled repeated-click checks. Apply `roblox-building` for coherent, interesting worlds, `luau` for authority and cleanup, and `roblox-studio` for non-interfering Play tests. Static checks cannot establish enjoyment; short playtests cannot prove long-term retention.
+When the work involves React-rendered UI, apply `roblox-react` for clarity and its scheduled repeated-click checks. Apply `roblox-building` for maps and world content and `luau` when reading or changing Luau, including authority and cleanup. Return non-interfering Play tests to the caller. Static checks cannot establish enjoyment; short playtests cannot prove long-term retention.
 
 ## Learn from evidence
 

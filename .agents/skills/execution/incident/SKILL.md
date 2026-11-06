@@ -8,17 +8,15 @@ disable-model-invocation: true
 # Incident
 
 ## Dependencies
+- `code-review`
+- `code-simplify`
+- `acceptance-gate`
 
-- `chrome:control-chrome` — reproduce and verify browser-visible failures in connected Chrome.
-- `code-review` — supply the Bugs lens and finding validation.
-- `code-simplify` — supply the Simplification lens rubric.
-- `acceptance-gate` — filter findings and judge fixes against the recovery's intent.
+## Opening The Run
 
 A deployed service is broken and the only thing that matters is getting it working. Ordinary
 delivery habits — asking before looking, waiting for a suite, waiting for a merge — each add a
 round trip, and a service stays down for the sum of them.
-
-## Opening The Run
 
 The invocation carries no argument. Read what the incident is out of the session itself and state it
 first, in four lines:
@@ -84,7 +82,7 @@ Do these without asking, and report what they showed:
 - Re-run, cancel or dispatch a workflow.
 - Fix, commit and push a change the plan or the diagnosis already covers.
 - Create or reuse the pull request carrying the fix.
-- Use connected Chrome to reproduce and test the affected flow, following the global rules' **Tools and environments** browser selection and stable-tab binding procedure.
+- Use the host browser control to reproduce and test the affected flow in connected Chrome, following the global rules' **Tools and environments** browser selection and stable-tab binding procedure.
 - Merge scoped fix pull requests after **One Review Round** completes and live verification succeeds.
 
 Stop and ask only for: a secret the user holds, a destructive action (deleting or truncating data, a
@@ -115,7 +113,7 @@ visible.
 
 ## Tests And Checks
 
-Apply `execute-task`'s **Priority** to recovery and follow-ups. After its branch checkpoint,
+Give active recovery priority over follow-ups. After the branch checkpoint,
 complete **One Review Round** and ordinary delivery validation before an authorized
 merge; **Restore Deployment Sources** then verifies the default-source deployment. A failure there
 resumes recovery and pauses ordinary work again.
@@ -125,7 +123,7 @@ end, after the push, over a tree that has stopped changing. An active run suspen
 because the tree changes with every diagnosis and the service is down the whole time.
 
 - During active recovery, a fix push uses the applicable source and whitespace checks from
-  `execute-task`'s **Pre-Push Gate**, without waiting for tests, static analysis or independent
+  the GitHub rule’s **Pre-Push Gate**, without waiting for tests, static analysis or independent
   review. Preserve current-user validation pauses. The original failed operation, repeated on the
   deployed branch, is the recovery check; a green check run never gates that deployment.
 - Do not run, investigate or fix ordinary test, lint, formatter or type-check findings during
@@ -142,9 +140,8 @@ it. Keep credentials out of that record.
 
 Build and publish release images through the repository's GitHub Actions workflow, never locally.
 Use the exact fix branch and only the authorized environments through the designated entrypoint
-and its supported source selection. Apply `execute-task`'s **Completion** check of the actual loaded
-branch code, event path and workflow identity before accepting that run as fix verification; its
-isolated fallback cannot establish this skill's required live restoration. Follow the GitHub rule's **Workflows** recovery boundary;
+and its supported source selection. Verify the actual loaded branch code, event path and workflow identity before accepting that run as
+fix verification; an isolated fallback cannot establish this skill's required live restoration. Follow the GitHub rule's **Workflows** recovery boundary;
 never add a temporary workflow mode or wrapper to bypass identity, permission or ref selection.
 Verify the workflow's terminal result and image revision before deploying.
 

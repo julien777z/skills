@@ -31,12 +31,11 @@ request, fix what that finds, then merge.
   Continuity** says. Only an explicit pause, stop, handoff, replacement, or terminal result ends it.
 
 ## Dependencies
-
-- `list-prs` — the task's open pull requests when the user names none.
-- `review-pass` — the review and fix loop over each target's whole pull request.
-- `code-review` — its branch and commit setup rules for a pull request **Targets** creates.
-- `merge-gate` — the exact-head check gate, conflict resolution and the verified squash merge.
-- `session-ledger` — record each target, its accepted head and its merge.
+- `list-prs`
+- `review-pass`
+- `code-review`
+- `merge-gate`
+- `session-ledger`
 
 ## Targets
 
@@ -108,7 +107,7 @@ Process each unit through these steps before starting the next.
    - every exclusion it returned, with its evidence;
    - the fix rule for every fix `merge-gate` makes — a check fix, a conflict resolution, a commit
      someone else pushed: `review-pass` runs again over that fix's delta, and the fix is pushed through
-     `execute-task`'s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
+     the GitHub rule’s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
      passed.
 3. Record the merge, or the gate that holds, with `session-ledger`, and continue to the next unit.
 

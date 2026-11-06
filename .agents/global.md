@@ -48,7 +48,7 @@ alwaysApply: true
   and ask of each whether the product should show that, there. A defect anywhere in it, in a region
   the message never mentions as much as the one it does — a state or error shown in a section it
   does not concern, a message repeated, a wrong value or tone — is named with the capture and fixed
-  rather than offered, as `execute-task`'s **Encountered Issues** says.
+  rather than offered, as `pre-production`'s **Encountered Issues** says.
 - **A capture of a change reaches the user while the work is still running.** A screenshot, a
   recording, or a generated image that shows something the run changed — the screen after an edit, a
   before-and-after pair, a design it generated — is sent as a file as soon as the agent that made it
@@ -80,7 +80,7 @@ alwaysApply: true
   reader can tell a new layout, control or flow from a repair.
 - A delegated worker's report of an outcome — tests pass, pushed, merged, deployed, fixed — is a
   claim. Check it at its source of truth before relaying it or building on it, and tell the user
-  what was read, not what was reported; `execute-task`'s **Reported Outcomes** holds the procedure.
+  what was read, not what was reported; **Reported Outcomes** holds the procedure.
 
 ## Task execution and authorization
 
@@ -254,7 +254,7 @@ alwaysApply: true
   guidance governing its subject or the scope the user last set: an item outside that scope is
   answered as out of scope, never relayed as a fix, unless the change itself introduced a defect.
   That defect remains a required fix. Its sender checks before sending and its receiver before
-  acting; `execute-task`'s **Encountered Issues** holds what each does with an item
+  acting; `pre-production`'s **Encountered Issues** holds what each does with an item
   a rule forbids.
 - Before presenting a proposed change at an existing user-approval boundary, use `review-proposal`.
   First check for its valid ready receipt for the exact proposal and reviewed inputs; when present,
@@ -602,3 +602,44 @@ return records;
   too many.
 
 - When a request replaces a route, API contract, or behavior, remove the prior alias or fallback. Retain legacy compatibility only when the user explicitly authorizes it in the current request; if retention is unclear, ask before adding it.
+
+## Reported Outcomes
+
+An outcome is what its source of truth shows, never what an action or a worker said about it.
+
+- **After any action that changes shared state, read the resulting state before reporting it or
+  starting the next item.** A push, merge, deployment, migration, or refresh reports that it ran,
+  not the state it left, so read that state where it lives. After a push, that is the pull request
+  on the pushed head, or, before one exists, the remote branch head: its mergeable state and the
+  checks that run for its state starting — a draft starts no test jobs — since the base can move
+  while the push runs.
+- **Whatever that read shows wrong is the next thing done**, ahead of every queued item, and is
+  never carried to "the next push" or bundled behind other work. A conflict is brought in
+  through `merge-conflict`, delivered under the GitHub rule’s **Pre-Push Gate**, and read back. A base that only
+  moved, with no conflict, is brought in once, by `review-pass` at the selected workflow’s completion, before the final
+  acceptance.
+- **A delegated worker's report of an outcome is a claim, never evidence.** Before relaying it or
+  building on it, check it at its source: "tests pass" against the run or the CI result on that
+  commit, "pushed" or "exists" against the branch, "merged" or "refreshed" against the default
+  branch or the installed copy, "deployed" or "healthy" against the host, "fixed" by reproducing it
+  or reading the evidence, "the screenshot shows it" by looking at the image, "no references
+  remain" by searching. A claim the check contradicts is the next thing done, ahead of queued
+  work: sent back to the worker with what the read showed, or fixed here. A verified report of
+  finished work is relayed as done, or built on, only after the selected workflow’s step gates have passed over it.
+- **What a worker reports leaving alone is classified before it reaches the user.** Read each item
+  against `pre-production`'s **Scope Follows The Defect, Not The Request** bullets: a defect, a
+  parallel implementation or a shape a standing rule names goes back to the worker or is fixed
+  here; only an item those bullets leave to the user, or one over the size budget, is reported, as
+  what it is and never as a question whether to fix it.
+- **A deferral inside a report — "I'll do X next" — is named work of this run** under **Task
+  execution and authorization**, tracked until done; the report does not close it.
+- Before a milestone report, gate classification or final response, read the authorized outcome's
+  current state and owning diagnostics, then reconcile every required step with the task record.
+  A successful substep does not establish the parent outcome: resume its saved next action when
+  that outcome remains unmet. Report intermediate results in commentary while an authorized
+  remedy remains; a gate must meet **Tools and environments** or **Task execution and authorization**, not merely
+  repeat the last failed attempt.
+- **A status sent to the user states what was just read and where**, never what was reported or
+  expected: conflicted, failing, running, or passing, on the head or target named. "Done" or
+  "ready" is written only when that read says so, and a file sent with it is checked first as the
+  global rules' **User-Facing Output** requires.

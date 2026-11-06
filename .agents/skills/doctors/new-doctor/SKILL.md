@@ -8,15 +8,14 @@ disable-model-invocation: true
 # New Doctor
 
 A doctor is a skill that audits one hygiene class on `doctor-protocol` and owns nothing the
-protocol already does. Read the protocol first: it is the contract a new doctor is written against,
-not a dependency this skill runs, so it is named here and not below.
+protocol already does. Read the protocol first to apply its authoring contract; creating a doctor
+does not start a doctor audit.
 
 ## Dependencies
-
-- `subagent-matrix` — select the standard tier for doctor smoke reviewers.
-- `get-doctors` — the doctors that already exist.
-- `edit-skill` — deliver the new skill: its branch, its `code-simplify` pass, and its
-  agent-configuration-only pull request, left open for the user.
+- `doctor-protocol`
+- `subagent-matrix`
+- `get-doctors`
+- `edit-skill`
 
 ## Workflow
 
@@ -36,9 +35,8 @@ not a dependency this skill runs, so it is named here and not below.
    settles — breaking an owned contract, what stored data owes, which product changes are the
    user's — is cited by its section in Dispositions, never restated or reclassified. A reviewer
    partition the domain dictates may take its own heading; nothing that restates a protocol
-   section may. Declare no delivery cadence: the protocol's default leaves the run's one pull
-   request open for the user, and a new doctor merges only what the user's request or another rule
-   authorizes, never through a merged-batch cadence of its own.
+   section may. Declare no delivery cadence: the protocol leaves the run's pull requests draft for
+   the user under the doctor's review-only delivery contract.
 4. **Keep it generic.** Discover layouts, tools, frameworks, and budgets at runtime. Never name the
    current repository's paths, packages, products, commands, or thresholds. State a default
    threshold as one the repository's configuration overrides. Refer to a repository-specific skill
@@ -47,8 +45,9 @@ not a dependency this skill runs, so it is named here and not below.
 5. **Write the frontmatter.** `name` equals the directory. The description's first sentence is the
    summary `get-doctors` quotes, so it stands alone; its last sentence says when to use the skill.
 6. **Validate.** Grep the file for repository-specific names; confirm every dependency names an
-   existing skill; confirm no heading restates a protocol section; run `get-doctors` and see the
-   new doctor listed with the intended summary.
+   existing skill; check the entrypoint against `doctor-protocol`'s **Declare What The Doctor Owns**;
+   confirm no heading restates a protocol section; run `get-doctors` and see the new doctor listed
+   with the intended summary.
 7. **Smoke-test it** as the section below states, and rewrite any lens a reviewer missed.
 8. **Deliver** through `edit-skill`, whose step 7.7 holds a pull request adding a doctor for the
    user's review; the report hands the user its link.

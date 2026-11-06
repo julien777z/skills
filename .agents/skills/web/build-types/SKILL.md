@@ -1,7 +1,7 @@
 ---
 name: build-types
-description: Regenerate generated API types from an OpenAPI document, using a local API checkout when it is present and the deployed API otherwise. Use when API request or response shapes change, including on an API branch this branch deploys with, when tsc reports a property missing on a generated schema, or when asked to refresh, rebuild, or sync the API types.
-short_description: 'Regenerate generated API types from an OpenAPI document, using a local API checkout when it is present and the deployed API otherwise.'
+description: Regenerate generated API types from an OpenAPI document, using the API contract this branch deploys with. Use when API request or response shapes change, including on an API branch this branch deploys with, when tsc reports a property missing on a generated schema, or when asked to refresh, rebuild, or sync the API types.
+short_description: 'Regenerate generated API types from an OpenAPI document, using the API contract this branch deploys with.'
 ---
 
 # Build Types
@@ -18,7 +18,7 @@ Read the repository's project guidance for the local exporter, generated-file pa
 
 ## After generating
 
-Run the pre-push checks `execute-task`'s **Pre-Push Gate** defines. Update every consumer to the generated API shape, including string-based field access that a type check can miss. Fix the upstream schema when the intended field is absent. Review the complete generated diff for unintended source or version drift.
+Run the pre-push checks the GitHub rule’s **Pre-Push Gate** defines. Update every consumer to the generated API shape, including string-based field access that a type check can miss. Fix the upstream schema when the intended field is absent. Review the complete generated diff for unintended source or version drift.
 
 ## Guardrails
 

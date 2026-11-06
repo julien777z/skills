@@ -11,16 +11,17 @@ through `session-ledger`; it stays private task state, while permanent guidance 
 at their owners.
 
 ## Dependencies
-
-- `session-ledger` — resolve, validate, update, and preserve the private task ledger.
-- `edit-skill` — deliver admitted `guidance_correction` records into canonical guidance.
+- `acceptance-gate`
+- `session-ledger`
+- `edit-skill`
+- `test-skill`
 
 ## Batches
 
-**One guidance batch is in flight at a time.** It is frozen when its delivery starts, and an entry
-admitted while it is in flight joins it until its pull request merges. A batch is in flight from its
-freeze until it is done: every entry in it has a verified delivery or a recorded hold. A held entry
-does not keep its batch in flight.
+Honor each entry's recorded workflow sequence and delivery hold before freezing or delivering a
+batch; preserve provenance and holds across handoffs.
+
+Apply `session-ledger`'s **Guidance Batches** boundary.
 
 - **Freezing.** Mark with one batch id every `pending` `guidance_correction` entry that `edit-skill`'s
   **Recording During A Task** admits and that either carries no batch id or is held by a hold that
@@ -45,9 +46,7 @@ does not keep its batch in flight.
 
 ## Workflow
 
-1. Resolve and read the active task's ledger through `session-ledger`. Honor `execute-task`'s
-   **Priority** before starting permanent guidance delivery; retain its saved next action while
-   recovery holds that work. Before freezing or prioritizing a batch, reconcile every recorded hold
+1. Resolve and read the active task's ledger through `session-ledger`. Honor active recovery priority before permanent guidance delivery; retain its saved next action. Before freezing or prioritizing a batch, reconcile every recorded hold
    with its current owner and authoritative dependency evidence. Discharge a completed dependency,
    retain a genuine authorization or dependency hold with its saved next action, and resume any
    nonterminal delivery stage without repeating a verified receipt. Verify each entry's evidence
