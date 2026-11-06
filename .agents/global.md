@@ -560,13 +560,14 @@ return records;
 - **An example the user gives is never reproduced.** A value the user quotes or shows to
   illustrate a case — a name, an address, an amount, an identifier, a message, a record read from
   their data, a capture or a log — appears in nothing the agent writes: source, tests, fixtures,
-  comments, documentation, guidance, commit messages, pull-request and issue text, posts, worker
-  briefs and the reports the user reads. Each place uses a newly invented, plainly synthetic value
-  that keeps only the trait the case turns on, such as a middle initial, a long value or an accented
-  letter: a reported customer `Mara J Oduya` becomes `Rowan Q Sample`, a reported total of `$1,284.17`
-  becomes `$1,000.50`. Text the user asks the product itself to show, such as a label to reword, is
-  the requested content, not an example. Every other sample value is plainly synthetic too, never
-  shaped like a real identifier from another system's domain.
+  comments, documentation, guidance, commit messages, branch names, pull-request and issue text,
+  posts, worker briefs and the reports the user reads. Each place uses a newly invented, plainly
+  synthetic value that keeps only the trait the case turns on, such as a middle initial, a long
+  value or an accented letter: a reported customer `Mara J Oduya` becomes `Rowan Q Sample`, a
+  reported total of `$1,284.17` becomes `$1,000.50`. Two kinds of value are not examples and keep
+  their exact text: text the user asks the product itself to show, such as a label to reword, and a
+  literal the code must match, such as a status value a provider sends. Every other sample value is
+  plainly synthetic too, never shaped like a real identifier from another system's domain.
 - **Nothing committed to a repository or posted to its host holds a path that only one machine
   has.** Source, configuration, guidance, documentation, fixtures, captured tool output, commit
   messages, pull-request text and comments never name a home directory, a temporary or scratch

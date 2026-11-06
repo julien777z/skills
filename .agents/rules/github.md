@@ -90,8 +90,9 @@ alwaysApply: true
 - Before publishing or updating those artifacts, check the final text against the target
   repository's diff and evidence. Remove foreign references, including from dependency and delivery
   notes, and replace every example value the user supplied with an invented one, as the global
-  rules' **Repository guidance** says. Describe a consumed interface or unresolved delivery requirement in terms of this
-  repository's own contract; disclose provider PR links and merge ordering to the user in chat.
+  rules' **Repository guidance** says. Describe a consumed interface or unresolved delivery
+  requirement in terms of this repository's own contract; disclose provider PR links and merge
+  ordering to the user in chat.
   `merge-gate` still owns the complete dependency inventory and readiness gate.
 - **Each session opens its own source pull request in each repository.** Later source work in the
   same session joins that pull request rather than creating one per concern or worker. Continue a
