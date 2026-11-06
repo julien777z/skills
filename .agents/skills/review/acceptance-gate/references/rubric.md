@@ -21,8 +21,8 @@ The statement names:
 
 - the user's request in their own words, quoted, with each example value it holds named by its kind
   in brackets as the global rules' **Repository guidance** says, and with every later word of theirs
-  that widened or narrowed it. Those words bound the change's scope: a restatement in the agent's words, a plan step
-  it wrote or a brief never widens it, and a remedy whose product effect — what a feature does or
+  that widened or narrowed it. Those words bound the change's scope: a restatement in the agent's
+  words, a plan step it wrote or a brief never widens it, and a remedy whose product effect — what a feature does or
   shows, or a visible change on surfaces the user did not name — reaches past them is flagged as a
   product choice not yet put to the user. Work the change's scope requires without such an effect,
   such as moving consumers onto one owner or repairing the same defect beside it, is not;
@@ -43,10 +43,10 @@ The statement names:
   requirements and the implementation;
 - the caller's example search: each example value the user supplied during the task — a name, an
   identifier, an amount, a message, a record or capture from their data — searched for
-  case-insensitively, whole and by its parts and reformattings, such as a surname alone, an amount
+  case-insensitively, whole and by its parts and reformattings, such as a code's prefix alone, an amount
   without separators or a slug, in the item under judgement, the diff's added lines, the branch
   name, the pull request's title and body and the commit messages. The receipt names each value by
-  its kind, such as "the customer's full name", never by the value itself, and lists the forms and
+  its kind, such as "the reported plant code", never by the value itself, and lists the forms and
   places searched and its hits; or it states that the user supplied none. Each bracketed kind in
   the quoted request appears in it;
 - the target repository's purpose and scope, as its README and project guidance state them;
@@ -244,7 +244,7 @@ run an audit or a doctor later never stands in for it.
 ## The Tests Behind Each Question
 
 **An example the user gave is never reproduced.** On every question, each hit in the intent
-statement's example search outside the two kinds the global rules' **Repository guidance** exempts
+statement's example search outside the uses the global rules' **Repository guidance** permits
 is a flag, and so is any literal in the searched places that looks lifted from real data rather than
 invented. The remedy is an invented value keeping only the trait the case turns on. A missing
 example search, or a bracketed kind in the quoted request the search does not list, holds a clean
