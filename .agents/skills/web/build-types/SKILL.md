@@ -14,7 +14,7 @@ Read the repository's project guidance for the local exporter, generated-file pa
 
 ## Keep the types on the pull request that consumes the change
 
-**The pull request that consumes an API change carries its regenerated types**, whenever that change lands on the API branch. Regenerate the whole file there, never in a pull request branched off it, in a follow-up once the API deploys, or by editing only the fields the change touched. That pull request then deploys with or after the API change, and its description states the API contract it needs in its own repository's terms. Keeping it deployable on its own is never a reason to put the types anywhere else, and where they go is not a question for the user.
+**The pull request that consumes an API change carries its regenerated types**, whenever that change lands on the API branch: never a pull request branched off it, and never a follow-up once the API deploys. That pull request then deploys with or after the API change, and its description states the API contract it needs in its own repository's terms. Keeping it deployable on its own is never a reason to put the types anywhere else, and where they go is not a question for the user.
 
 ## After generating
 
