@@ -38,7 +38,11 @@ The statement names:
   the user explicitly makes it a dependency. The
   comparison states why migrating consumers is insufficient before it accepts broadening an owner;
 - the shapes removed and their replacements, read from current deletions and the originating commits;
-- the pull request's title and body, checked against those requirements and the implementation;
+- the pull request's title and body and the change's commit messages, checked against those
+  requirements and the implementation;
+- every example value the user supplied during the task — a name, an identifier, an amount, a
+  message, a record or capture from their data — listed verbatim as the task's example vocabulary,
+  or stated as none;
 - the target repository's purpose and scope, as its README and project guidance state them;
 - for each kind of code the diff adds, renames or reshapes, such as a router, a handler, a client,
   a fixture or an error, how the repository's own existing instances of that kind are written, read
@@ -336,6 +340,13 @@ outside a model-owned module, and a typed parameter built as a dict literal inst
 manifests, policies, provider payloads, and response schemas remain models. All five are the greps
 code-simplify opens with; the gate runs them over the diff's added lines and lists their hits before
 anything else.
+
+**An example the user gave is never reproduced.** Search the diff's added lines, the pull
+request's title and body and the commit messages for every value in the intent statement's example
+vocabulary, and for any other literal that looks lifted from real data rather than invented. A hit is
+a flag whose remedy is an invented value keeping only the trait the case turns on, as the global
+rules' **Repository guidance** says. A missing example vocabulary holds a clean verdict, as a missing
+input.
 
 **A test is priced by what it costs to run.** Flag a test the diff adds or changes, or the module
 holding it, that `test-fixture`'s cost question calls disproportionate, and any change that absorbs
