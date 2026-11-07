@@ -119,7 +119,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`brag-slim`](.agents/skills/media/brag-slim/SKILL.md) — Turn a project directory or a website URL into a short, shareable launch video with music, motion, and share copy.
 - [`build-types`](.agents/skills/web/build-types/SKILL.md) — Regenerate generated API types from an OpenAPI document, using the API contract this branch deploys with.
 - [`clerk-nextjs-patterns`](.agents/skills/web/clerk-nextjs-patterns/SKILL.md) — Advanced Next.js patterns - middleware, Server Actions, caching with Clerk.
-- [`code-simplify`](.agents/skills/review/code-simplify/SKILL.md) — Strictly review the branch's changes for reuse, simplification, abstraction quality, and maintainability, then fix the issues.
+- [`code-simplify`](.agents/skills/review/code-simplify/SKILL.md) — Review a change for duplication and needless abstraction, then fix what it finds.
 - [`council`](.agents/skills/review/council/SKILL.md) — Ask three models from different providers for review, and loop until they agree.
 - [`current-changes`](.agents/skills/git/current-changes/SKILL.md) — Summarize the branch's changes against the default branch with links to the code.
 - [`database-migrations`](.agents/skills/python/database-migrations/SKILL.md) — Guide for authoring, rebasing, and troubleshooting Alembic database migrations, including how to avoid and fix branched migration graphs.

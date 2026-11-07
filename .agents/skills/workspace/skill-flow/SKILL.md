@@ -68,7 +68,7 @@ the work it belongs to and appears on another only as a node that page's flow re
 
 | Page | `icon` | Starts from |
 | --- | --- | --- |
-| Execution | `activity` | `execute-task`, through planning, `pre-production`, the per-step gates and completion |
+| Execution | `activity` | `execute-task`, through planning, `pre-production`, local checks and completion |
 | Review | `check` | `review-pass`, with `review-loop`, `council`, `acceptance-gate` and `security-audit` |
 | Delivery | `pull-request` | a draft pull request to its merge: `rewrite-git-history`, `merge-conflict`, `merge-gate`, `finish-pr`, `merge-now` |
 | Guidance | `guide` | `edit-skill`, through `session-ledger`, `process-ledger`, `test-skill`, `update-skills` and `review-proposal` |
