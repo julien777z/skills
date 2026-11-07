@@ -53,10 +53,11 @@ Build the clean target contract instead of preserving transitional behavior.
   a request, apart from the branch-protection rejection the GitHub rules' **Merge Authorization**
   says to report.
 
-Fix and validate every issue that remains in the task, even when it predates the task
-or sits outside the initial file set. Follow the evidence through affected callers and owners.
-That obligation is not a licence to audit areas the evidence never reaches; it is also not a reason
-to stop at the first file, and the section below governs how far it does reach.
+Fix and validate every issue that remains in the task within the size budget below, even when it
+predates the task or sits outside the initial file set; the rest is returned to the caller as
+deferred work.
+Follow the evidence through affected callers and owners. That obligation is not a licence to audit
+areas the evidence never reaches, and the section below governs how far it reaches.
 The repair must satisfy **Target Contract**; an encountered failure never authorizes compatibility
 with an obsolete owned contract or revision.
 
@@ -101,23 +102,23 @@ with an obsolete owned contract or revision.
   coherent repair, not the fewest lines at the expense of a complete contract.
 - Distinguish required repairs from optional structural improvements before widening the work.
   Fix confirmed broken behavior and defects introduced by the change; assess independent cleanup
-  against the bounded local-refactoring test above. Do not turn a sequence of individually useful
+  against the size budget below. Do not turn a sequence of individually useful
   cleanups into an unrequested redesign, or invent an umbrella concern to make them one defect.
   An explicitly requested broad refactor still receives its stated scope. File counts are evidence
   of spread, not a cap on the repair itself: a necessary migration may be wide, while a small
   unrelated rewrite may already be disproportionate.
 - **Incidental work goes one hop, never further.** What the work notices while making the requested
-  change — in a file it opened, a check it ran, a capture it read — is fixed. A file opened or edited
-  only to make such an incidental fix is never itself a source of more incidental cleanup: what else
-  it holds is listed, not chased.
-- **A defect the work notices is always fixed, wherever it lives.** A defect is what
+  change — in a file it opened, a check it ran, a capture it read — is handled under the size budget
+  below. A file opened or edited only to make such an incidental fix is never itself a source of
+  more incidental cleanup: what else it holds is deferred, not chased.
+- **A defect the work notices is fixed when its fix is small, wherever it lives.** A defect is what
   `acceptance-gate`'s rubric calls one: an image that never loads, a wrong value, a state shown in
   the wrong place, a control that does nothing, a test suite that fails in a fresh checkout, a
   fixture that builds data the code would never hold, a setup step or documented command that
-  errors. It is fixed in the change in flight, outside both the hop limit and the size budget below.
-  Sitting in a shared component, an owned library or another owned repository the pull request does
-  not otherwise touch is no reason to leave it: the fix goes to that repository's pull request for
-  this work. It is never listed as noticed, offered or deferred.
+  errors. One that fits the size budget below is fixed in the change in flight, outside the hop
+  limit. Sitting in a shared component, an owned library or another owned repository the pull
+  request does not otherwise touch is no reason to leave it: the fix goes to that repository's pull
+  request for this work. It is never offered to the user as a question.
 - **A security vulnerability the work finds is such a defect, whoever finds it and whenever it
   arrived.** One a gate, reviewer or audit reports in code the change never touched, one that
   predates the change, and one another layer is said to stop before that layer is traced on every
@@ -131,13 +132,17 @@ with an obsolete owned contract or revision.
   the global rules' **Tools and environments** says. It is never put to the user as something to
   consider or an option, recorded as deferred, left as a hardening note, or answered with a
   recommendation to run an audit or a doctor later.
-- **Incidental cleanup has a size budget.** The incidental part of a change — everything the request
-  did not ask for that is not a defect — stays about the size of the requested part, or within 150
-  changed lines across 10 files when the requested part is smaller. Inside the budget, everything
-  noticed is fixed. Once the next incidental fix would pass it, the rest is listed under **Noticed,
-  not changed** in the change's report, one line each, and is neither fixed, deferred, nor put to the
-  user as a question. An explicitly requested broad refactor and a doctor run set their own scope and
-  carry no budget.
+- **Incidental work has a size budget.** Incidental work is everything the request did not ask
+  for, outside the change's own design and the defect's shape above.
+  - A defect fits when its fix is one focused fix touching about two files or fewer.
+  - Cleanup that fixes no defect — duplication, dead code, a misplaced helper, layout — fits only
+    inside the files the change already edits and while it stays small beside the requested part.
+  - While the user has invoked `widen-scope` for the task, its limits replace these: about five
+    files per item, cleanup included.
+  - Everything past the budget is deferred work: returned to the caller to record, listed in the
+    change's report one line each with its record, and never fixed in the change or put to the user
+    as a question. A security vulnerability, above, is never past it. An explicitly requested broad
+    refactor and a doctor run set their own scope and carry no budget.
 - **A correction to how one screen looks or reads reaches every page when the user makes it a
   rule, and that screen alone when they do not.** A correction the user asks to have codified, or
   gives a reason for that holds wherever the shape appears, such as "labels sit above their fields
