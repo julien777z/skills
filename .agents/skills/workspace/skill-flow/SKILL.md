@@ -206,6 +206,10 @@ reaches. Pages follow the categories as the sources stand when they are read.
      the capability level its subagents run at, from `subagent-matrix`, or says it is unstated.
      Then a `table` `Skills` with the columns Skill, Role and
      Started by, and `details` holding each row's skill write-up, so clicking a skill opens it.
+   - **Every label is the short name of what it marks**, and so is the title of the dialog it
+     opens, such as `review-proposal reviewers` or `Bugs lens`. A count, condition, source or
+     explanation goes in the entry's `figure`, `meta`, `detail` or `description`, never in its name,
+     and a name is never cut short to fit.
    - **Skill write-up**: the dialog a reader opens to learn what a skill does and how it spends
      subagents and rounds. An `outline` with `stacked` set and `collapsible` false, `title` the
      skill's name and `description` what it does and why, in one or two sentences. Each item is a
