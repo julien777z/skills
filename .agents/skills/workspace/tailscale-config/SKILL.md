@@ -76,9 +76,9 @@ of that proof; agreement in one never establishes agreement in another.
    local credential test cannot establish their cutover. Use authorized read-only checks or the
    repository's designated mutation target as appropriate. A green workflow, an active deployment,
    a policy check or a health endpoint bypassing the boundary is insufficient alone. When
-   narrowing a grant, verify that the intended identity can use the service and that the previously
-   authorized identity cannot reach the backend directly. Record each result with its client ID,
-   target, operation and observed execution revision or run.
+   narrowing a grant, verify that permitted access still works and that the excluded identities,
+   routes, or operations are denied as intended. Record each result with its client ID, target,
+   operation and observed execution revision or run.
 8. Re-read the complete manifest and live references after cutover. Reconcile stale references,
    missing consumers and changed runtime identities; repeat the affected verification when new
    evidence invalidates it. Revoke an old client or remove old authority only after every affected
