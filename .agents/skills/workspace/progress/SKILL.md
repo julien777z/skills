@@ -16,11 +16,12 @@ and deliver the same dashboard again on every request so the user keeps one page
 
 ## Workflow
 
-1. **Read the ledger.** Resolve and read the task's ledger through `session-ledger`. A plan or
-   question the task has put to the user that the ledger lacks is reconstructed and recorded first,
-   from verified task evidence, as that skill's recovery rules say, approved only where the user's
-   own message approved it; the dashboard never shows a step
-   the ledger does not hold. The figures cover the whole task since its first approved plan, so
+1. **Read the ledger.** Resolve and read the task's ledger through `session-ledger`. A question the
+   task has put to the user, or a plan it put to them for approval in the question carrying the
+   "Approved" option, which goes out only once the plan's review has accepted it, that the ledger
+   lacks is reconstructed and recorded first, from verified task evidence, as that skill's recovery
+   rules say, approved only where the user's own message approved it; the dashboard never shows a
+   step the ledger does not hold. The figures cover the whole task since its first approved plan, so
    that check spans every plan it has had, finished ones included: a plan another entry names, such
    as one a later plan continues or supersedes, and finished work the task's record shows that no
    recorded step holds, such as completed items on the harness task list, are each a plan the ledger
