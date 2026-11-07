@@ -172,7 +172,7 @@ reaches. Pages follow the categories as the sources stand when they are read.
        another, such as the diff and the diff with its callers, titled with that code and naming
        each skill and what it is doing when it reads it, toned `warning` when every one of those
        launches always runs; left out when nothing overlaps.
-   - Each kind-of-work page, `layout` `rows`: a `diagram` `Flow` whose nodes are the skills the
+   - Each category page, `layout` `rows`: a `diagram` `Flow` whose nodes are the skills the
      page's starting skills reach directly, each labelled with its name and its role in a few words,
      and one node per launch named for the subagents it starts and how many, such as `Plan
      attackers ×3 per round`. Edges are labelled `invokes`,
