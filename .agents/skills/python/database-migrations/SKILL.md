@@ -18,9 +18,13 @@ on direct invocation. Reuse an already-established affected-data scope without r
 migration workflow.
 
 - When affected data is explicitly nonexistent or disposable, implement and validate the target
-  schema without inventing a preservation backfill, recovery store, or legacy reader. Any needed
-  reset remains an explicit operational action under that policy; it is not runtime reconciliation.
-  Keep the revision chain, destructive-operation declarations, and configured replay tests.
+  schema without inventing a preservation backfill, recovery store, or legacy reader. Disposability
+  decides what a revision must keep, never whether one exists: a change to what deployed databases
+  hold, a reset of stale stored values included, is a revision in the chain, so every environment
+  receives it the same way when it deploys. It may clear or drop disposable values under its
+  destructive-operation declarations. Never hand it to a one-time script, a statement run by hand,
+  or a reset an operator performs per environment. Keep the configured replay tests. Rebuilding a
+  local stack's database is not such a change.
 - When affected values must survive, apply the retained-data requirements below.
 
 ## Structure
@@ -32,8 +36,7 @@ exception: remove it and establish the revision chain when none exists. A runtim
 require operators to migrate; it must not infer a revision from inspected objects, stamp a baseline,
 or silently accept an unversioned database. Adopting a chain for an existing database requires an
 explicit operational baseline procedure that verifies the known starting schema before recording
-its revision. Keep retained-data transformations in revisions; disposable-data resets remain explicit
-operational actions under the repository's data policy.
+its revision. Keep every stored-data transformation in revisions, retained and disposable alike.
 
 Migrations live under the project's revision directory. Each service has one canonical migration
 chain shared by every configured deployment domain.

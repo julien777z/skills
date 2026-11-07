@@ -260,10 +260,12 @@ with an obsolete owned contract or revision.
   started from.
 - Do not weaken a compatibility gate to hide an intentional break. Report the exact failure and the
   contract change it detected so a reviewer can distinguish intended from accidental breakage.
-- For disposable development records, follow the repository's stated policy. A one-time conversion
-  of explicitly identified tester data may run outside shipped code when it is more useful than a
-  reset; verify its result and remove the conversion script. Never assume released user data is
-  disposable or carry a tester conversion as a runtime compatibility path.
+- For disposable development records, follow the repository's stated policy: it decides which
+  values a change may discard, never how the change reaches a deployed database. A conversion or
+  reset of what a deployed database holds ships as a migration revision under the
+  database-migration owner below, never as a one-time script or a step an operator runs. Never
+  assume released user data is disposable or carry a tester conversion as a runtime compatibility
+  path.
 
 ## Owned And Third-Party Contracts
 
