@@ -11,6 +11,7 @@ short_description: 'Show how the skills run, or interrogate a flow to tune it.'
 - `use-dashboard`
 - `edit-skill`
 - `session-ledger`
+- `subagent-matrix`
 
 ## Modes
 
@@ -88,8 +89,13 @@ the request asks for a new page.
 2. **Read each page's flow.** From each page's starting skills, read the entry points and follow
    every invocation, subagent launch and borrowed rubric the flow reaches, including conditional
    ones such as `security-audit` and `test-skill`. Read `subagent-matrix` and its capability
-   reference for who a launch uses, without dispatching anything. Note, for every claim, the
-   `SKILL.md` lines that state it.
+   reference for who each launch the flow describes uses. Note, for every claim, the `SKILL.md`
+   lines that state it.
+
+   The reading is split between at most two read-only subagents, launched under
+   `subagent-matrix`, each taking about half the pages and reading them itself without starting
+   subagents of its own. A scope of one or two pages takes one. Merging their maps, checking the
+   claims and building the spec stay with the agent running this skill.
 3. **Map it.** For each page, record the order, the choices, the parallel streams, the repair and
    rerun loops, and which skill owns each step. Keep three kinds of connection apart: one skill
    invoking another, one launching subagents, and one borrowing another's criteria. Invoking a skill
