@@ -426,8 +426,7 @@ user's review of the source pull request overlaps it.
       decision boundary. Give the gate the incident's vocabulary — the product, its record and
       screen nouns, the labels the request quoted — so an example carrying any of it is a finding.
       Resolve each flag through that skill's **Bounds**: repair the owning instruction, push the
-      changed increment, and put it to a fresh independent gate, or check it in process when those
-      **Bounds** call it a small repair. Repeated flags do not permit dropping owed work or merging
+      changed increment, and check it as those **Bounds** say. Repeated flags do not permit dropping owed work or merging
       flagged guidance, apart from the decision the global rules' review-round limit calls for after
       3 rounds; acceptance, or that recorded round-limit decision, must cover the final wording
       before delivery.

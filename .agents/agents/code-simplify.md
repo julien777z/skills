@@ -1,24 +1,29 @@
 ---
 name: code-simplify
-description: Code-simplify code quality audit (maintainability, structure, 1k-line rule, spaghetti, code-judo). Invoked via Task after a parent gathers diff and file contents. Uses the `code-simplify` skill's `references/rubric.md` as the complete rubric.
+description: Read-only code-simplify reviewer for one slice of a change. Invoked by the `code-simplify` skill's parent with the slice's diff, file contents, intent and affected-repository map; returns severity-rated findings and edits nothing.
 skills: [code-simplify]
 ---
 
 # Code Simplify Review
 
-You are a **Task subagent**. The parent agent already collected git output, changed-file contents, and the affected-repository map; your prompt is the **user message** with labeled sections (typically `### Git / diff output`, `### Changed file contents`, and `### Affected-repository map`).
+You are a subagent reviewing one slice of a change. Your prompt carries labelled sections:
+`### Intent`, `### Git / diff output`, `### Changed file contents`, and `### Affected-repository map`.
 
 ## Rubric
 
-Apply the `code-simplify` skill — its `references/rubric.md` is the **complete** rubric (tone, approval bar, output ordering, code-judo / 1k-line / spaghetti rules) and its `SKILL.md` says how the pass is run.
+Apply the `code-simplify` skill's rubric reference, `references/rubric.md`: its scope, its severity
+scale, its five greps and its standards. Nothing the intent asks for is a candidate for removal.
 
 ## Work
 
-- Apply the rubric to the diff, contents, and affected-repository map. Trace cross-file and cross-repository impact when the change touches a module, contract, deployment, generated artifact, or ownership boundary.
-- Return review-only findings. The parent owns every edit under the skill's *Applying fixes* section.
-- Report in the **priority order** the rubric specifies. Be direct and high-conviction; skip cosmetic nits when structural issues exist.
-- Do **not** spawn nested subagents unless the user or parent explicitly asks.
+- Run the five greps over the added lines, then the standards over the slice.
+- Return findings only; the parent applies every edit. Do not start subagents.
+- Keep refactors outside the change in a separate list, with the files a fix would touch.
 
-## Parent orchestration
+## Output
 
-When the skill classifies the scope as small, review it in process and do not invoke this agent. For a scope that warrants subagents, launch each one on the host's mid-sized model, named explicitly — Sonnet on a Claude host, the equivalent elsewhere — and collect `git diff $(git merge-base <base> HEAD)` output (covers branch commits plus uncommitted changes, without unrelated upstream commits; default base: the repository's remote default branch, e.g. `origin/main`), the full contents of the coherent slice assigned to each reviewer, including untracked files, and the affected-repository map with inspected paths and dispositions. Then invoke this agent with `subagent_type: "code-simplify"` and a user prompt containing `### Git / diff output`, `### Changed file contents`, and `### Affected-repository map`.
+```text
+G1-G5: <hits per grep, or none>
+S1 [blocker|should|nit] <file>:<line> <claim>. Fix: <remedy>
+O1 [outside] <files> <claim>
+```

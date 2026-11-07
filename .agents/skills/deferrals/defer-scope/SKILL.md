@@ -48,14 +48,11 @@ What counts as an external blocker is `acceptance-gate`'s defer test, owned libr
 Record work that is genuinely larger than the change in flight and whose need is arguable — a
 redesign, a broad sweep somebody could reasonably decline — or that is blocked externally, or that
 awaits a decision already put to its owner and still open, or one the user declined in the current
-request; a question nobody has asked yet is asked, not recorded. **A confirmed defect is never
-recorded** — and a defect is anything the system does that a reader would call broken, work it
-cannot finish in useful time, a resource nothing bounds and work a restart throws away included, as
-`acceptance-gate`'s admission question states. Whatever its size, however its fix has to be written,
-and even when a check would rediscover it, it is fixed in the change in flight, or on a branch off
-the default when nothing is in flight to carry it. Neither is the choice offered to the user: asking whether to record a
-confirmed defect is how the refusal gets laundered into somebody else's decision, and their answer
-settles nothing the gate would admit. When part is small, fix that part and record
+request; a question nobody has asked yet is asked, not recorded. **A confirmed defect the change
+introduced, or the task asked to fix, is never recorded**: it is fixed in the change in flight. A
+defect the work only runs into is fixed when it fits `pre-production`'s size budget and recorded
+here when it does not, as `widen-scope` widens that budget for the task it is invoked on. Never
+offer the user the choice between fixing and recording a defect that fits the budget. When part is small, fix that part and record
 only the remainder. Record at the moment work is consciously left undone; chat and pull-request
 prose are not durable records.
 
