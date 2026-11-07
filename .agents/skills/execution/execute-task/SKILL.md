@@ -508,8 +508,8 @@ compatibility, generated-output drift.
 
 A finished plan step or worker task gets its local checks under the **Pre-Push Gate** and nothing
 more: no simplification pass, review or acceptance gate runs per step, per worker task or per fix.
-`review-loop` and one final `acceptance-gate` run once over every change not yet reviewed, inside
-`review-pass` at **Completion**. A guidance correction recorded during a task follows `edit-skill`'s
+`review-pass`'s review loop and one final `acceptance-gate` run once over every change not yet
+reviewed at **Completion**. A guidance correction recorded during a task follows `edit-skill`'s
 timing instead.
 
 Own each coherent feature through integration: the primary agent settles dependencies, product
@@ -756,7 +756,7 @@ Two streams run side by side from here: the guidance stream and the source strea
   request belongs to the guidance stream:
 
 1. Invoke `review-pass` on the pull request, or on the local task diff when none exists, with the
-   intent statement. It runs `review-loop` and one final `acceptance-gate` over the changes no
+   intent statement. It runs its review loop and one final `acceptance-gate` over the changes no
    earlier pass reviewed, brings in a moved base, and returns the head its final acceptance passed.
 2. Shape the history with `rewrite-git-history`. The first time a pull request is sent for review,
    rebuild it into one commit per material change. Each later **Completion** of the same pull
@@ -786,7 +786,7 @@ The ready-for-review message takes exactly this shape, one message per pull requ
 **Ready for review:** <pull request URL>
 
 - **What landed:** <each requested outcome, one clause each>
-- **Review:** <full | delta `<reviewed head>..<head>` | trivial delta `<reviewed head>..<head>` | nothing new> · review-loop <n> round(s), <n> finding(s) fixed · acceptance passed on `<head>` — leave out each count `review-pass` did not run
+- **Review:** <full | delta `<reviewed head>..<head>` | trivial delta `<reviewed head>..<head>` | nothing new> · review loop <n> round(s), <n> finding(s) fixed · acceptance passed on `<head>` — leave out each count `review-pass` did not run
 - **History:** <n> commits (<subject> · <subject> · …)
 - **Fixed on the way:** <each incidental fix, or none>
 - **Deferred** (over the size budget):

@@ -69,7 +69,7 @@ the work it belongs to and appears on another only as a node that page's flow re
 | Page | `icon` | Starts from |
 | --- | --- | --- |
 | Execution | `activity` | `execute-task`, through planning, `pre-production`, local checks and completion |
-| Review | `check` | `review-pass`, with `review-loop`, `council`, `acceptance-gate` and `security-audit` |
+| Review | `check` | `review-pass`, with `council`, `acceptance-gate` and `security-audit` |
 | Delivery | `pull-request` | a draft pull request to its merge: `rewrite-git-history`, `merge-conflict`, `merge-gate`, `finish-pr`, `merge-now` |
 | Guidance | `guide` | `edit-skill`, through `session-ledger`, `process-ledger`, `test-skill`, `update-skills` and `review-proposal` |
 | Doctors | `shield` | `doctor-protocol` and the doctors that run on it |
@@ -179,7 +179,7 @@ the request asks for a new page.
      alone. Then a `tree` `Scenarios`, `open_depth` 1: two to four stories this work commonly
      meets, each one concrete run told in order, such as a review that finds nothing, a lens that
      finds a bug, or findings that keep coming for three rounds. A root names the story. Beneath it,
-     what happens in run order: each round or step, such as "review-loop round 1", holding one leaf
+     what happens in run order: each round or step, such as "review loop round 1", holding one leaf
      per subagent it starts, named for its role, such as "Reviewer"; and each event that changes
      the path, such as "Reviewer reports a missing empty-list check", toned `warning`, holding
      what it sets off — a validator, a fix, a fresh gate — with an outcome that settles it toned

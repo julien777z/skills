@@ -8,7 +8,7 @@ disable-model-invocation: true
 # Incident
 
 ## Dependencies
-- `review-loop`
+- `review-pass`
 - `acceptance-gate`
 
 ## Opening The Run
@@ -152,14 +152,14 @@ flow; a healthy deployment or passing suite does not substitute for it.
 
 ## One Review Round
 
-Every incident recovery gets exactly one `review-loop` round, whatever the failure or the remedy:
+Every incident recovery gets exactly one review round, whatever the failure or the remedy:
 application code, configuration, deployment, or infrastructure. Review each scoped fix pull
 request's complete diff; when recovery changes only live settings, review the redacted before and
 after configuration and the operations performed. Do not invent a code change or pull request for
 an operation with no repository change.
 
 Start this round only after the branch's live restoration checkpoint in **Tests And Checks**.
-Run `review-loop` with a budget of one round and the restoration as its intent. Apply
+Run `review-pass` in its **One round** mode with the restoration as its intent. Apply
 `acceptance-gate`'s filtering and fix dispositions without duplicating its rubric here. Resolve
 accepted findings, verify the corrections, and run affected checks; do not start a second round
 over the fixes. Apply final acceptance when the gate's intent rules call for it, respecting its

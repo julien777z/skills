@@ -11,7 +11,7 @@ run the relevant checks, so it reviews the current work. When the user wants to 
 implementation and explore new ideas, skip fixes to code that is being replaced.
 
 ## Dependencies
-- `review-loop`
+- `review-pass`
 
 ## Members
 
@@ -29,13 +29,13 @@ providers at high effort, such as Claude Opus, GPT Sol and Gemini Pro.
 
 1. Give each member the request, the intent, the diff or material, and the check results. For a
    review, keep members read-only and ask each for findings rated blocker, should or nit, as the
-   `review-loop` brief defines them, and a score out of 10.
+   `review-pass` skill's reviewer brief defines them, and a score out of 10.
 2. Collect the replies. Summarise the useful findings, where members disagree, and the next steps.
 3. Make the changes you agree with, then start a fresh round. Each full review pass is one round.
 4. Stop when every member is satisfied, or after three rounds; then show the open disagreements and
    let the user decide.
 
-Fight scope creep: a finding outside the request follows `review-loop`'s rule for problems outside
+Fight scope creep: a finding outside the request follows `review-pass`'s **Review Loop** rule for problems outside
 the change.
 
 ## Output

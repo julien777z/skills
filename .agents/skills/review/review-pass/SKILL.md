@@ -1,6 +1,6 @@
 ---
 name: review-pass
-description: Review and fix a pull request's not-yet-reviewed changes before merge, then record the reviewed head. Never merges. Use from `execute-task`'s Completion, `finish-pr`, `merge-now` and guidance delivery.
+description: Review a change and fix what the review finds, through one independent reviewer in a short loop. Use when the user asks for a code review, a review loop or "sol loop", and from `execute-task`'s Completion, `finish-pr`, `merge-now`, `incident` and guidance delivery. Never merges.
 short_description: 'Review and fix what a pull request has not had reviewed yet, then record the reviewed head.'
 ---
 
@@ -11,12 +11,12 @@ finds, and leave the pull request at an accepted head. The caller decides what h
 skill never readies, merges or deploys.
 
 ## Dependencies
-- `review-loop`
 - `acceptance-gate`
 - `merge-conflict`
 - `security-audit`
 - `defer-scope`
 - `session-ledger`
+- `pre-production`
 
 ## Invocation
 
@@ -27,8 +27,18 @@ skill never readies, merges or deploys.
   posting the replies **Review Threads** allows, and, on the merged-range route only, creating the
   fix pull request **Targets** describes. It authorizes no merge, readying a draft, release,
   deployment or unrelated provider mutation.
-- The one gate this skill holds is an unresolved `acceptance-gate` flag or a `review-loop` that
+- The one gate this skill holds is an unresolved `acceptance-gate` flag or a **Review Loop** that
   ends stuck. Every later gate is the caller's.
+
+## Modes
+
+- **Pass** (a caller's default): the whole **Workflow** below.
+- **Review only** (the user asks for a code review): run **Review Loop** round 1 over the target
+  and report its findings without fixing, posting or recording anything.
+- **Loop** (the user asks for a review loop or "sol loop"): run **Review Loop** over the target
+  with fixes, and push only when the user asked to push or update the pull request.
+- **One round** (a caller such as `incident` asks for it): the **Workflow** with a **Review Loop**
+  budget of one round and no new round over its fixes.
 
 ## Targets
 
@@ -85,7 +95,7 @@ voice. Push thread fixes before the review so it reads the refreshed head.
 ## Base
 
 When the base moved since the branch was cut or last incorporated, bring it in through
-`merge-conflict` before the review, so `review-loop` and the final gate read the head that will
+`merge-conflict` before the review, so the **Review Loop** and the final gate read the head that will
 merge. A refactor the incorporation requires is part of the delta the review reads. Name any
 incoming behavior reconciled with the change's intent in the description.
 
@@ -94,7 +104,7 @@ incoming behavior reconciled with the change's intent in the description.
 Run the checks CI runs on a pull request once, with each job's own command and scope, after the
 base is in and before the review; fix what the change broke and push. A failure the user waived, an
 established baseline failure, or a hosted check stopped by runner infrastructure before validation
-began is recorded with its evidence and not repaired, rerun or waited on. `review-loop` reruns the
+began is recorded with its evidence and not repaired, rerun or waited on. The **Review Loop** reruns the
 checks over its own fixes.
 
 ## Workflow
@@ -104,7 +114,7 @@ checks over its own fixes.
 2. Run **Base**, then **Checks**.
 3. When the delta crosses a trust boundary `security-audit` names, run its **Diff Review** at
    `medium` over the delta, with the merge-base diff as context, and fix what it confirms.
-4. Run `review-loop` once over the delta, with the intent statement, the merge-base diff and the
+4. Run **Review Loop** once over the delta, with the intent statement, the merge-base diff and the
    full touched files as context. Its brief already covers simplification: a re-implemented helper
    and a single-implementation abstraction. Push each fix as its own commit through the GitHub
    rule's **Pre-Push Gate**. A loop that ends stuck holds the pass: put the disputed finding to the
@@ -117,19 +127,56 @@ checks over its own fixes.
 7. Re-read the remote head, base and merge base. When they still match the accepted head, record
    it under **Range** and return the **Result**; otherwise bring the change in and return to step 6.
 
-A finding outside the change follows `review-loop`'s rule for it: a small fix lands here, the rest
+A finding outside the change follows **Review Loop**'s rule for it: a small fix lands here, the rest
 is recorded with `defer-scope`. A recorded deferral is discharged, never a gate on the review or
 the merge, and is never a route around a confirmed defect, which is fixed in this pass.
 
 Keep the session active until the pass reaches its result. A delegated reviewer is nonterminal
 until it returns; a quiet interval or a yielded wait is not completion.
 
+## Review Loop
+
+One reviewer reads the change, the author answers each finding, and a fresh round checks only what
+changed. Make the smallest changes that answer real findings, and push back on the rest.
+
+- **Budget:** three rounds. Round 1 reviews the whole target; later rounds review the changed code
+  and the findings still open. Five rounds only for security, permissions, auth, data loss or
+  concurrency while a blocker or should stays open with evidence, or when the user asks. Stop early
+  when a round returns only nits; a declined nit, or a fix to comments, docs or formatting, needs no
+  new round.
+- **Reviewer:** the strongest model of a different provider from the author when one is reachable,
+  so it does not share the author's blind spots; the user may name another. In T3 Code, call
+  `orchestrator_capabilities` once, pick the latest flagship of another provider at high effort, and
+  start each round with a new `delegate_task` (`role: "review"`), never `t3_thread_send`. Elsewhere,
+  start a native subagent on another provider's model where the harness offers one, otherwise a
+  fresh subagent on the strongest available model. One reviewer per round, starting no subagents
+  of its own. Do not edit the reviewed files while a round runs; a timeout, an error or no reply is
+  not approval.
+- **Brief:** send [the reviewer brief](references/reviewer-brief.md), this skill's reference holding
+  the round text and severity scale, with the repository, base, intent, out-of-scope note and check
+  results filled in. Use the same diff command every round.
+- **Answer each finding** after checking it and its severity against the code yourself:
+  - agree: make the smallest fix, preferring to delete or narrow code over a new lock, cache, helper
+    or option, and add one focused test that fails without the fix when the repository has a test
+    setup and the intent needs it;
+  - disagree: say why, with evidence such as a file and line, a test or output;
+  - nit: fix it when it is a one-line change in a line the change already touches, otherwise decline
+    it in one line;
+  - outside the change: fix a bug that fits `pre-production`'s size budget, and record everything
+    else with `defer-scope`, as `widen-scope` widens that budget when the user invoked it.
+- **Next round** only while budget remains and a blocker or should is open, or behaviour code
+  changed since the last approval. Rerun the checks and `git diff --shortstat <base>` first; if
+  review grew the diff past what the intent needs, cut it first. Never agree just to end the loop.
+- **Stop** when the reviewer approves the current diff with no blocker or should open and no concern
+  of your own. A finding still disputed after two replies, or a spent budget, ends the loop stuck:
+  show both sides in two or three lines each for the user to decide. A spent budget is not approval.
+
 ## Output
 
 ```markdown
 **Review pass:** <accepted head> · <full | delta `<reviewed head>..<head>` | empty> · recorded <whole | delta>
 
-- **Review loop:** <review-loop's summary line>
+- **Review loop:** <n> round(s) with <model> — <approved | stuck on <ids> | review only> · diff <shortstat before> → <shortstat after>
 - **Fixed:** <one line per fix, marking those review surfaced rather than the task required, or none>
 - **Threads:** <disposition per thread, or none>
 - **Checks:** <passed | exclusions with evidence>

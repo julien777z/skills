@@ -25,7 +25,7 @@ skills that borrow the rubric read this file.
 
 ## Severity
 
-Findings use the review scale shared with `review-loop`:
+Findings use this scale:
 
 | Severity | Meaning |
 | --- | --- |

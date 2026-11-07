@@ -89,7 +89,7 @@ keep its original value visible in the event details.
 
 Record run or direct maintenance provenance. Generated changes and direct maintenance use the
 experimental gates, source and packaging checks, and bypass ordinary test suites, `test-skill`,
-`code-simplify`, `review-pass`, `review-loop`, step and final `acceptance-gate`, and merge delivery.
+`code-simplify`, `review-pass`, step and final `acceptance-gate`, and merge delivery.
 Record source checks as such, never as a behavioral-test pass. Keep their pull requests draft for
 user review; standing merge exceptions do not authorize merge or auto-merge. Do not activate
 generated upgrades or retirements in the shared install before review; isolated experimental
