@@ -44,9 +44,13 @@ paths:
   A structure the skill reads — how skills or files are grouped, which folders exist, which skill a
   workflow starts from, what a page or section is called — comes from the repository when it has one,
   and the skill says what the agent does when it has none: choose the best fit itself, guided by a
-  few examples in the skill of what such a choice looks like. A list of one repository's categories,
-  page names or skill names written into a shared skill makes it that repository's copy, however
-  generic the rest reads, and the same skill then misreads every other repository it is added to.
+  few examples in the skill of what such a choice looks like. This differs from project guidance,
+  which holds facts a repository declares; here the skill reads the repository and carries its own
+  fallback. When a request makes a skill conditional on that structure, such as "use its
+  categories, or if it has none, pick them", the skill carries both branches. A list of one
+  repository's categories, page names or skill names written into a shared skill makes it that
+  repository's copy, however generic the rest reads, and the same skill then misreads every other
+  repository it is added to; shared skills may still name each other as collaborators.
 - **A file's name and description bound what it owns.** Before choosing a skill or rule, state
   the condition its name and description set — a release stage, a technology, a mode, a kind of
   task — and ask whether the guidance would still be true where that condition does not hold. If

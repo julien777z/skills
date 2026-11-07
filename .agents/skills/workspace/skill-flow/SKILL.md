@@ -67,11 +67,13 @@ category and appears on another only as a node that page's flow reaches.
   to completion), review (the review loop before a merge), delivery (a draft pull request to its
   merge) or guidance (editing and delivering skills).
 - A category whose skills invoke, launch and borrow nothing gets no page, and the Overview's
-  `notes` name it in one line.
-- Each page's `icon` is the one that best names its category, every one different and none of
-  `diagram`, `overview`, `chart` or `settings`, which the dashboard and its other pages use. A
-  page's starting skills are the skills in its category that a person, or a skill in another
-  category, starts.
+  `notes` name it in one line. Its skills still count in **Skills mapped** and appear as nodes on
+  the pages that reach them.
+- Each page's `icon` is the one from `use-dashboard`'s icons that best names its category, every
+  one different and none of `diagram`, `overview`, `chart` or `settings`, which the dashboard and
+  its other pages use; once the distinct icons run out, reuse the closest remaining one. A page's
+  starting skills are the skills in its category that no other skill in that category starts and
+  that a person, or a skill in another category, starts.
 
 A request that names one skill or one category builds `Overview`, `Usage` and only the pages it
 reaches. Pages follow the categories as the sources stand when they are read.
@@ -90,8 +92,9 @@ reaches. Pages follow the categories as the sources stand when they are read.
 
    The reading is split between at most two read-only subagents, launched under
    `subagent-matrix`, each taking about half the pages and reading them itself without starting
-   subagents of its own. A scope of one or two pages takes one. Merging their maps, checking the
-   claims and building the spec stay with the agent running this skill.
+   subagents of its own. A scope of one or two pages takes one. Each returns, per page, the map
+   facts and the `SKILL.md` lines that state them. Merging their maps, checking the claims and
+   building the spec stay with the agent running this skill.
 3. **Map it.** For each page, record the order, the choices, the parallel streams, the repair and
    rerun loops, and which skill owns each step. Keep three kinds of connection apart: one skill
    invoking another, one launching subagents, and one borrowing another's criteria. Invoking a skill
@@ -137,7 +140,8 @@ reaches. Pages follow the categories as the sources stand when they are read.
        such as "Bugs reviewers have no maximum", `tag` the skill it sits in, and `detail` one or two
        sentences on what is open and why it matters, with no line numbers;
      - `notes` `How to read the flows`, one line each for an invocation arrow, a launch arrow and a
-       borrowed-rubric arrow as their labels show them.
+       borrowed-rubric arrow as their labels show them, then one line naming each category left
+       without a page.
    - `Usage`, `icon` `chart` and `layout` `rows`, across every skill the dashboard maps:
      - a `tree` `Where subagents go`, `open_depth` 2, one root per skill a person starts directly,
        most subagents first. Its `figure` is the subagents one run usually starts, everything
