@@ -8,6 +8,9 @@ short_description: 'List every doctor skill the skill listing declares with a on
 
 Return the doctors the skill listing declares and what each one audits, and nothing else.
 
+## Dependencies
+- `doctor-protocol`
+
 ## Workflow
 
 1. Read the `SKILL.md` of every skill the host's skill listing declares, shared and repository-owned alike.

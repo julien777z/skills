@@ -15,6 +15,7 @@ Be ambitious about simplifying the implementation under judgment: seek restructu
 - `subagent-matrix`
 - `test-fixture`
 - `list-prs`
+- `database-migrations`
 
 ## Applying fixes
 

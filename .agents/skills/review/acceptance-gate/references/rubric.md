@@ -233,8 +233,8 @@ having no users of its own does not mean it has no attackers.
 **A clean read here is not an audit, and never reports as one.** The gate reads a diff with three
 read-only tools and answers one question; it cannot fan out, follow a data flow across a codebase, or
 try to disprove its own finding. A verdict that raises nothing says the diff's added lines carried no
-exploitable finding the gate could see. Only a `security-audit` run at a level that fans out, or a
-`security-doctor` run, says anything about the codebase.
+exploitable finding the gate could see. Only a `security-audit` run at a level that fans out says
+anything about the codebase.
 
 So a shape the gate can see but cannot chase to an attacker is not dropped: it is a flag whose
 remedy is the author tracing it to an attacker or ruling it out, and fixing it in the change when it

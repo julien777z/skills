@@ -127,7 +127,7 @@ Report each mutation, the intended regression failure it demonstrated, and the r
 
 ## Sweep
 
-Run once a change is otherwise finished — `review-pass` calls it over a pass's delta — over a scope
+Run once a change is otherwise finished — a review pass calls it over its delta — over a scope
 fixed before it starts:
 
 - every test the change added or edited;

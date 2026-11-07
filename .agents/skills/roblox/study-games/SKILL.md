@@ -13,6 +13,8 @@ disable-model-invocation: true
 - `agent-lock`
 - `roblox-studio`
 - `edit-skill`
+- `roblox-gameplay`
+- `roblox-react`
 
 ## Reuse the isolated research environment
 

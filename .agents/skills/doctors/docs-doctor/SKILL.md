@@ -13,6 +13,7 @@ else.
 ## Dependencies
 - `doctor-protocol`
 - `pre-production`
+- `code-simplify`
 
 ## Inventory
 
@@ -21,7 +22,7 @@ Run `doctor-protocol`.
 Apply the repository's documentation and README rules; this doctor never restates them.
 
 Every README and documentation tree; every docstring; and, for each, every path, command, symbol,
-variable, flag, URL, and described behavior it names. Agent guidance files are `guidance-doctor`'s,
+variable, flag, URL, and described behavior it names. Agent guidance files belong to a guidance audit,
 every lens included. Resolve each reference against the current tree, the commands the
 manifests declare, the runner's targets, and the settings models.
 

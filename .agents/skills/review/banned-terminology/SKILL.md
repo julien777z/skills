@@ -6,6 +6,9 @@ short_description: 'Owns the banned-terms list in resources/banned_words.json an
 
 # Banned Terminology
 
+## Dependencies
+- `pre-production`
+
 `resources/banned_words.json` is the list, and this skill is what makes it bind. Each entry carries
 the term, what to use instead, why the term fails, and any replacement already rejected.
 

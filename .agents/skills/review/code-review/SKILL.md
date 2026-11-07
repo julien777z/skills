@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Review a pull request or current changes with independent reviewer lenses, validated findings, and severity-rated results. Use when the user directly asks for a code review, or when `review-pass` or `incident` delegates to it; never on your own initiative.
+description: Review a pull request or current changes with independent reviewer lenses, validated findings, and severity-rated results. Use when the user directly asks for a code review, or when a workflow delegates one to it; never on your own initiative.
 short_description: 'Code review a pull request or the current working changes with independent reviewer lenses, validated findings, and severity-rated results.'
 ---
 
@@ -42,7 +42,7 @@ Apply `pre-production` when validating a contract change and `acceptance-gate`'s
 
 Use `agent-lock` with the exact checkout key to protect local snapshot capture.
 
-- Run this skill only when the user directly invokes it, or `review-pass` or `incident` delegates it. `review-pass` supplies high effort and fix mode; do not ask for standalone review options on that route.
+- Run this skill only when the user directly invokes it, or a workflow delegates it. A delegating workflow supplies the effort and modes; do not ask for standalone review options on that route.
 
 ```
 /code-review [low|medium|high|xhigh|max|ultra] [fix] [comment] [<target>]
@@ -168,7 +168,7 @@ In every review round, give each dispatched reviewer and validator the merge-bas
 SHA, complete pull-request diff, and complete changed-file list. When a previous reviewed head
 exists, also give the diff from that head to the current head so recent fixes receive focused
 attention. That incremental diff supplements the full pull-request target; never substitute the
-latest commit or fix diff for it. The one exception is a delta `review-pass` delegates: that delta is
+latest commit or fix diff for it. The one exception is a delta a delegating workflow names: that delta is
 the review target, and the complete pull-request diff is the context its reviewers read. Keep that
 complete context distinct from each lens's analysis slice: the exact changed hunks, files, and
 operations it evaluates, plus every supporting input whose semantics it uses. A reviewer may read
@@ -394,7 +394,7 @@ of its own; check it the same way as any other edit. Where a fix cannot satisfy 
 and a rule, correct the governing rule rather than shipping code that violates it.
 
 After fixing, rescan the affected ownership area and its consumers for the same class of finding,
-then apply the target classification from Step 1. For a non-runtime target, validate only the checks appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests or query or wait for CI. Otherwise, record which local services were already running before local validation. Never stop, restart, reconfigure, or claim ownership of a pre-existing service: another agent or user may be using it. When relevant validation requires local services and any were already running, do not run a competing service-managed test locally. A working-pull-request fix uses CI only at its exact pushed head; when no safe native command is available, CI is its fallback and its draft state records the local-validation limit until `merge-gate`. An unpushed local snapshot runs an isolated native check only when it can do so without disturbing external state; otherwise it records the concrete local-validation limit and remains gated or requires an authorized working-pull-request route. It never uses CI for an unpushed snapshot.
+then apply the target classification from Step 1. For a non-runtime target, validate only the checks appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests or query or wait for CI. Otherwise, record which local services were already running before local validation. Never stop, restart, reconfigure, or claim ownership of a pre-existing service: another agent or user may be using it. When relevant validation requires local services and any were already running, do not run a competing service-managed test locally. A working-pull-request fix uses CI only at its exact pushed head; when no safe native command is available, CI is its fallback and its draft state records the local-validation limit until the authorized merge. An unpushed local snapshot runs an isolated native check only when it can do so without disturbing external state; otherwise it records the concrete local-validation limit and remains gated or requires an authorized working-pull-request route. It never uses CI for an unpushed snapshot.
 
 Stage only the fix edits — never sweep in unrelated uncommitted work that Step 1 deliberately left alone — and commit in the verified writable checkout selected for the target, never on the default branch. Push only when that target has a working pull request; a local-snapshot fix creates a replacement local snapshot and remains unpushed unless an authorized working-pull-request route is established. A full re-review is a later phase of the same authorized logical fix review, not a new action-skill invocation: carry forward its receipts and lens-retirement counters, invalidate them against the new reviewed inputs, and rerun the required cohort.
 

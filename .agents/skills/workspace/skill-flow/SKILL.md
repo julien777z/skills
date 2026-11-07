@@ -1,6 +1,6 @@
 ---
 name: skill-flow
-description: "Show how the skills run as a dashboard: one page per kind of work (execution, review, delivery, guidance, doctors, deferrals), each a diagram of which skill invokes, spawns or borrows from which, where subagents start and how many, read from the current canonical guidance; or interrogate a skill or a whole flow, asking the user about each substantial step with a recommendation for using fewer subagents to better effect, and applying what they agree. Use when asked how skills run, what calls what, where subagents spawn, for the flow of one skill or kind of work, or to review, tune or interrogate skill flows. It never runs the workflows it shows."
+description: "Show how the skills run as a dashboard: one page per category of skills, taken from the skills repository or chosen by kind of work when it has none, each a diagram of which skill invokes, spawns or borrows from which, where subagents start and how many, read from the current canonical guidance; or interrogate a skill or a whole flow, asking the user about each substantial step with a recommendation for using fewer subagents to better effect, and applying what they agree. Use when asked how skills run, what calls what, where subagents spawn, for the flow of one skill or category, or to review, tune or interrogate skill flows. It never runs the workflows it shows."
 short_description: 'Show how the skills run, or interrogate a flow to tune it.'
 ---
 
@@ -11,6 +11,7 @@ short_description: 'Show how the skills run, or interrogate a flow to tune it.'
 - `use-dashboard`
 - `edit-skill`
 - `session-ledger`
+- `subagent-matrix`
 
 ## Modes
 
@@ -36,7 +37,8 @@ choices:
 
 ## Scope
 
-Interrogate asks which flows to cover, when the request names none, with this menu:
+Interrogate asks which flows to cover, when the request names none, with a menu built from the
+categories **Pages** finds: every flow first, then one choice per category page, in page order.
 
 ```yaml
 prompt: Which flows should I interrogate?
@@ -44,52 +46,54 @@ kind: choice
 choices:
   - id: all
     label: Every flow
-    detail: every kind of work, most subagents first
-  - id: execution
-    label: Execution
-  - id: review
-    label: Review
-  - id: delivery
-    label: Delivery
-  - id: guidance
-    label: Guidance
-  - id: doctors
-    label: Doctors
-  - id: deferrals
-    label: Deferrals
+    detail: every category, most subagents first
+  - id: <category>
+    label: <the category's page title>
 ```
 
 ## Pages
 
 The dashboard's `icon` is `diagram`. After `Overview` comes `Usage`, the view across every skill
-of where subagents start, what they read and how often review repeats, then one page per kind of
-work, each named and iconed as below and holding the skills that kind of work runs through. A skill sits on the page of
-the work it belongs to and appears on another only as a node that page's flow reaches.
+of where subagents start, what they read and how often review repeats, then one page per category
+of skills, holding the skills that category's flows run through. A skill sits on the page of its
+category and appears on another only as a node that page's flow reaches.
 
-| Page | `icon` | Starts from |
-| --- | --- | --- |
-| Execution | `activity` | `execute-task`, through planning, `pre-production`, the per-step gates and completion |
-| Review | `check` | `review-pass`, with `code-simplify`, `code-review`, `acceptance-gate` and `security-audit` |
-| Delivery | `pull-request` | a draft pull request to its merge: `rewrite-git-history`, `merge-conflict`, `merge-gate`, `finish-pr`, `merge-now` |
-| Guidance | `guide` | `edit-skill`, through `session-ledger`, `process-ledger`, `test-skill`, `update-skills` and `review-proposal` |
-| Doctors | `shield` | `doctor-protocol` and the doctors that run on it |
-| Deferrals | `checklist` | `defer-scope`, `execute-defer-scope` and `defer-execution` |
+- **The categories are the skills repository's own when it has them**: the grouping its skills are
+  filed under, such as a folder per category in its skills directory, or the category its catalogue
+  or README gives each skill. Each becomes a page titled with the category's name as words, in the
+  order the repository lists them, or alphabetically when it sets none.
+- **When the repository has none, choose them by kind of work**, so each page follows one flow from
+  the skill a person or workflow starts to where it hands over, such as execution (a task from plan
+  to completion), review (the review loop before a merge), delivery (a draft pull request to its
+  merge) or guidance (editing and delivering skills).
+- A category whose skills invoke, launch and borrow nothing gets no page, and the Overview's
+  `notes` name it in one line. Its skills still count in **Skills mapped** and appear as nodes on
+  the pages that reach them.
+- Each page's `icon` is the one from `use-dashboard`'s icons that best names its category, every
+  one different and none of `diagram`, `overview`, `chart` or `settings`, which the dashboard and
+  its other pages use. A page's starting skills are the skills in its category that no other skill
+  in that category starts and that a person, or a skill in another category, starts.
 
-A request that names one skill or one kind of work builds `Overview`, `Usage` and only the pages it
-reaches.
-A kind of work that gains or loses skills changes its page's flow, never this table's pages, unless
-the request asks for a new page.
+A request that names one skill or one category builds `Overview`, `Usage` and only the pages it
+reaches. Pages follow the categories as the sources stand when they are read.
 
 ## Workflow
 
 1. **Locate the sources.** Find the current canonical skills, from the skills repository's checkout
    or the installed canonical links, never by assuming the working directory holds them. Record the
-   repository, the commit read, and whether any source file is uncommitted.
+   repository, the commit read, whether any source file is uncommitted, and the categories
+   **Pages** finds.
 2. **Read each page's flow.** From each page's starting skills, read the entry points and follow
    every invocation, subagent launch and borrowed rubric the flow reaches, including conditional
-   ones such as `security-audit` and `test-skill`. Read `subagent-matrix` and its capability
-   reference for who a launch uses, without dispatching anything. Note, for every claim, the
-   `SKILL.md` lines that state it.
+   ones, such as a security review that runs only for some changes. Read `subagent-matrix` and its capability
+   reference for who each launch the flow describes uses. Note, for every claim, the `SKILL.md`
+   lines that state it.
+
+   The reading is split between at most two read-only subagents, launched under
+   `subagent-matrix`, each taking about half the pages and reading them itself without starting
+   subagents of its own. A scope of one or two pages takes one. Each returns, per page, the map
+   facts and the `SKILL.md` lines that state them. Merging their maps, checking the claims and
+   building the spec stay with the agent running this skill.
 3. **Map it.** For each page, record the order, the choices, the parallel streams, the repair and
    rerun loops, and which skill owns each step. Keep three kinds of connection apart: one skill
    invoking another, one launching subagents, and one borrowing another's criteria. Invoking a skill
@@ -119,11 +123,11 @@ the request asks for a new page.
    - `title` `Skill Flow Dashboard`, `topic` the repository's name, `icon` `diagram`, and `subtitle` "How the skills run, read from
      <repository> at <short commit>.", with `references` linking the repository and the commit.
    - `metrics`: **Skills mapped**; **Subagents in a typical task**, the usual figure for
-     `execute-task`'s run from start to merge, `detail` "from start to merge, before findings add
-     more"; **Skills that start subagents**, `detail` "of <n> mapped"; and **Launches with no
+     the run of the skill that carries a task from start to merge, or of the skill a person starts
+     most often when none does, `detail` "from start to merge, before findings add more"; **Skills that start subagents**, `detail` "of <n> mapped"; and **Launches with no
      limit**, the "No limit set" gaps, `detail` "where usage can grow unchecked".
    - `Overview`, `icon` `overview` and `layout` `rows`, read at a glance:
-     - a `table` `By kind of work` with a row per page and the columns Page, What it covers (a few
+     - a `table` `By category` with a row per page and the columns Page, What it covers (a few
        words), Subagents per run (the usual figure and what adds more, such as "~6, more per finding") and
        Loops (how many of each kind, such as "3 review · 2 repair · 1 wait", or "None"). Each row's
        `details` opens an outline of that page's loops, one item per loop titled "<skill>: <what
@@ -135,7 +139,8 @@ the request asks for a new page.
        such as "Bugs reviewers have no maximum", `tag` the skill it sits in, and `detail` one or two
        sentences on what is open and why it matters, with no line numbers;
      - `notes` `How to read the flows`, one line each for an invocation arrow, a launch arrow and a
-       borrowed-rubric arrow as their labels show them.
+       borrowed-rubric arrow as their labels show them, then one line naming each category left
+       without a page.
    - `Usage`, `icon` `chart` and `layout` `rows`, across every skill the dashboard maps:
      - a `tree` `Where subagents go`, `open_depth` 2, one root per skill a person starts directly,
        most subagents first. Its `figure` is the subagents one run usually starts, everything
@@ -170,7 +175,7 @@ the request asks for a new page.
        another, such as the diff and the diff with its callers, titled with that code and naming
        each skill and what it is doing when it reads it, toned `warning` when every one of those
        launches always runs; left out when nothing overlaps.
-   - Each kind-of-work page, `layout` `rows`: a `diagram` `Flow` whose nodes are the skills the
+   - Each category page, `layout` `rows`: a `diagram` `Flow` whose nodes are the skills the
      page's starting skills reach directly, each labelled with its name and its role in a few words,
      and one node per launch named for the subagents it starts and how many, such as `Plan
      attackers ×3 per round`. Edges are labelled `invokes`,
@@ -201,6 +206,10 @@ the request asks for a new page.
      the capability level its subagents run at, from `subagent-matrix`, or says it is unstated.
      Then a `table` `Skills` with the columns Skill, Role and
      Started by, and `details` holding each row's skill write-up, so clicking a skill opens it.
+   - **Every label is the short name of what it marks**, and so is the title of the dialog it
+     opens, such as `review-proposal reviewers` or `Bugs lens`. A count, condition, source or
+     explanation goes in the entry's `figure`, `meta`, `detail` or `description`, never in its name,
+     and a name is never cut short to fit.
    - **Skill write-up**: the dialog a reader opens to learn what a skill does and how it spends
      subagents and rounds. An `outline` with `stacked` set and `collapsible` false, `title` the
      skill's name and `description` what it does and why, in one or two sentences. Each item is a
@@ -235,7 +244,7 @@ excess usage: subagents and reading that buy little, in steps that run often. A 
 rarely, or a saving of a few subagents across a whole pull request, is not worth weakening what the
 step exists to catch.
 
-1. **Set the scope.** Context the user gives — a skill, a kind of work, a concern such as review
+1. **Set the scope.** Context the user gives — a skill, a category, a concern such as review
    rounds — sets it. With none, ask the **Scope** menu.
 2. **Map it** as **Workflow** steps 1 to 4 do, recording every launch, its scope and condition, and
    every review loop with what a later round reruns.

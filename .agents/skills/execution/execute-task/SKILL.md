@@ -28,6 +28,7 @@ are validated by their evidence, smoke-test, review, and acceptance gates.
 - `session-ledger`
 - `edit-skill`
 - `i-have-adhd`
+- `code-review`
 
 ## One Run Per Task
 
@@ -139,6 +140,13 @@ Every task that changes files starts here, and so does every follow-up that arri
 
 ### Approval
 
+- **The user sees a plan once `review-proposal` has accepted it, and never before.** A plan still
+  being drafted or reviewed stays with the run: nothing the user reads — a report, a summary, a
+  status line, a task list, a dashboard or a question — shows its steps, estimates or an outline
+  of them, and a draft is never offered as a preview pending approval. While it is in review, a
+  report says only that a plan is being prepared, and the user's next sight of it is the accepted
+  plan put for approval. This holds back the plan, not its open decisions, which go first as
+  **What The Plan Holds** says.
 - Before recommending an approval-requiring plan, invoke `review-proposal` on the detailed plan once
   the user's answers to its decisions are folded in, with its intent and verified ownership
   evidence; the user's short plan consumes that receipt while it adds nothing the detailed plan
@@ -152,7 +160,8 @@ Every task that changes files starts here, and so does every follow-up that arri
   Keep the plan pending and begin no work that needs its approval; independent authorized work
   continues.
 - An interruption continues the same plan. Never replace or silently revise an unapproved plan;
-  fold the user's amendments in and present the complete revised plan again.
+  fold the user's amendments into the detailed plan, take it through `review-proposal` again, and
+  present the complete revised plan.
 - Approval authorizes ordinary implementation and verification, never a merge, deployment,
   publication or release the plan happens to list; **Task Authorization** says what does.
 - **Offering the next step as a choice is a stop wearing a question mark.** "Say the word and I will
@@ -194,8 +203,8 @@ exception permitting continued ordinary work. Deploy through the authorized bran
 resume required delivery checks after that live proof. A successful child task,
 health response or merge does not establish it. After an authorized merge, repeat the operation
 from the default-source deployment; if it fails, resume recovery and pause ordinary delivery work
-again. This order grants no deployment or merge authority: **Task Authorization** still governs both. An invoked `incident` supplies its own
-recovery, review and source-restoration procedure.
+again. This order grants no deployment or merge authority: **Task Authorization** still governs both. A directly invoked incident recovery
+supplies its own recovery, review and source-restoration procedure.
 
 ### Follow-Ups
 
@@ -209,7 +218,7 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
 ```markdown
 **Running work keeps going:** <step in flight> doesn't touch <what the follow-up changes>.
 
-<**Decision needed:** …, asked on its own first | **Proposed plan for the follow-up**, once no decision is open>
+<**Decision needed:** …, asked on its own first | **Proposed plan for the follow-up**, once no decision is open and `review-proposal` has accepted it>
 1. <step> (~<n> min)
 ```
 
@@ -232,12 +241,13 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
 ### Progress Record
 
 - **The ledger holds the plan's current state, so nothing about progress depends on what the chat
-  still remembers.** When a plan goes to the user, record it with `session-ledger` as a `plan` entry
-  holding the fields `session-ledger` names for one, filled from the planning work even where the
-  plan shown to the user leaves them out. Work the user adds to an active task, with or without a
-  plan of its own, becomes a step on that plan or a plan entry of its own, with the user's words and
-  its approval time, or the time the user added it when it has no plan, before the first edit or
-  dispatch it authorizes; a harness task list, the chat or a summary is never where it first lives.
+  still remembers.** When an accepted plan goes to the user, record it with `session-ledger` as a
+  `plan` entry holding the fields `session-ledger` names for one, filled from the planning work even
+  where the plan shown to the user leaves them out. Work the user adds to an active task, with or
+  without a plan of its own, becomes a step on that plan or a plan entry of its own, with the
+  user's words and its approval time, or the time the user added it when it has no plan, before
+  the first edit or dispatch it authorizes; a harness task list, the chat or a summary is never
+  where it first lives.
   A step the agent adds, or widens past what the user asked, is recorded as agent-originated,
   proceeds under the task's authorization like the work **When A Plan Is Needed** says an approved
   plan covers, and is never shown as user-approved; one that is a product choice goes to the user

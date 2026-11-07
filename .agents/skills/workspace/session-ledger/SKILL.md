@@ -10,6 +10,9 @@ Keep one structured ledger in a private task file outside repository checkouts. 
 source of truth; chat context and native task state carry its exact absolute locator and task
 identity, never a second authoritative copy of its records.
 
+## Dependencies
+- `agent-lock`
+
 ## Storage
 
 - Resolve the locator from the active task's metadata before every retrieval or update. For a new

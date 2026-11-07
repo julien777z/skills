@@ -19,9 +19,9 @@ confuse those conclusions.
 ## When It Runs
 
 - **Run before merge for every behavior-changing skill, rule, or agent edit**, whether it came
-  through `edit-skill` or was made directly. A rule is reader guidance, so its source type never
+  through a guidance workflow or was made directly. A rule is reader guidance, so its source type never
   exempts it. An edit that changes what the skill returns the user runs against the concrete example
-  `edit-skill` records before the edit; a smoke run validates that format without proposing or
+  recorded before the edit; a smoke run validates that format without proposing or
   awaiting approval for it.
 - **An edit that changes no instruction a reader follows does not run.** A spelling correction or
   dead link repair asks the reader to do the same work. Its source validation and required reviews

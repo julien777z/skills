@@ -48,4 +48,4 @@ Give connections, render callbacks, tweens, spawned/delayed work, and camera own
 
 ## Keep guidance current
 
-Record verified reusable Luau/tooling issues and solutions here or in its references. Put React-specific lessons in `roblox-react`, Studio operations in `roblox-studio`, and game-specific rules in the project skill. Replace superseded guidance, label unresolved limits, and leave evidence/logs in the workspace. Edit canonical `.agents` content only; generated provider mirrors belong to Agent Sync.
+Record verified reusable Luau/tooling issues and solutions here or in its references. Put React-specific lessons in the React UI skill, Studio operations in the Studio skill, and game-specific rules in the project skill. Replace superseded guidance, label unresolved limits, and leave evidence/logs in the workspace. Edit canonical `.agents` content only; generated provider mirrors belong to Agent Sync.

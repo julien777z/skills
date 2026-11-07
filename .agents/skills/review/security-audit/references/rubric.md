@@ -3,7 +3,7 @@
 What counts as a finding, what it is worth, which precedents rule one out, how code that crosses a
 trust boundary is built, and what a remedy costs. This file is the judgement; the workflow that
 applies it lives in `SKILL.md` and the other references. Another skill may borrow this file on its
-own — `acceptance-gate` reads it to judge a diff — so it states criteria and never procedure.
+own — a gate reads it to judge a diff — so it states criteria and never procedure.
 
 ## Only Report What You Can Exploit
 

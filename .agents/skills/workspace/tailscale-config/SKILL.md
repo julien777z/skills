@@ -19,7 +19,7 @@ of that proof; agreement in one never establishes agreement in another.
 1. Establish the authorized outcome, environments and mutation boundaries. Apply the global
    Tailscale policy for naming, groups and tag ownership. Discover each repository's deployment
    procedure and configuration owner from its project guidance. This procedure reconciles a
-   Tailscale change; a general configuration audit remains owned by `code-slop-doctor`'s
+   Tailscale change; a general configuration audit remains owned by the configuration-drift audit's
    **Configuration Drift** lens, which runs only when that doctor is directly invoked. Reading a
    deployment procedure supplies its read-only inspection route and never authorizes a rollout.
 2. Discover Git repositories within the user's authorized collection, accessible sibling roots and
@@ -95,7 +95,7 @@ evidenced guidance gap at its canonical owner; let `edit-skill` determine the di
 gap is established rather than inferring noncompliance from existing text. Generalize the failure class,
 never the current environment or resource names. Follow `edit-skill`'s **Recording During A Task**:
 the current work is corrected immediately, and only a verified successful correction is recorded
-for `process-ledger` to deliver at task completion.
+for the task's ledger processing to deliver at task completion.
 
 ## Output
 
