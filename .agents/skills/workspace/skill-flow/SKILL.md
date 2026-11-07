@@ -84,7 +84,7 @@ reaches. Pages follow the categories as the sources stand when they are read.
    **Pages** finds.
 2. **Read each page's flow.** From each page's starting skills, read the entry points and follow
    every invocation, subagent launch and borrowed rubric the flow reaches, including conditional
-   ones such as `security-audit` and `test-skill`. Read `subagent-matrix` and its capability
+   ones, such as a security review that runs only for some changes. Read `subagent-matrix` and its capability
    reference for who each launch the flow describes uses. Note, for every claim, the `SKILL.md`
    lines that state it.
 
@@ -121,8 +121,8 @@ reaches. Pages follow the categories as the sources stand when they are read.
    - `title` `Skill Flow Dashboard`, `topic` the repository's name, `icon` `diagram`, and `subtitle` "How the skills run, read from
      <repository> at <short commit>.", with `references` linking the repository and the commit.
    - `metrics`: **Skills mapped**; **Subagents in a typical task**, the usual figure for
-     the run of the skill that carries a task from start to merge, such as `execute-task`, `detail` "from start to merge, before findings add
-     more"; **Skills that start subagents**, `detail` "of <n> mapped"; and **Launches with no
+     the run of the skill that carries a task from start to merge, or of the skill a person starts
+     most often when none does, `detail` "from start to merge, before findings add more"; **Skills that start subagents**, `detail` "of <n> mapped"; and **Launches with no
      limit**, the "No limit set" gaps, `detail` "where usage can grow unchecked".
    - `Overview`, `icon` `overview` and `layout` `rows`, read at a glance:
      - a `table` `By category` with a row per page and the columns Page, What it covers (a few

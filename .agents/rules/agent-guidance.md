@@ -40,6 +40,13 @@ paths:
   An agent definition that a shared skill runs on goes with that skill; every other agent, and
   every rule, is repository-owned.
 - **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract, and where a skill genuinely needs one local fact — a command, an identity, a host, a package, a fixture — take it from the repository's project guidance or a setting rather than baking it in. Live file paths and copied application code go stale when files move or refactors land; use generic placeholders such as `services/<name>/...`, short pattern descriptions, or minimal invented examples instead. Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
+- **What a skill builds on in the repository it runs in is looked up there, never written into the skill.**
+  A structure the skill reads — how skills or files are grouped, which folders exist, which skill a
+  workflow starts from, what a page or section is called — comes from the repository when it has one,
+  and the skill says what the agent does when it has none: choose the best fit itself, guided by a
+  few examples in the skill of what such a choice looks like. A list of one repository's categories,
+  page names or skill names written into a shared skill makes it that repository's copy, however
+  generic the rest reads, and the same skill then misreads every other repository it is added to.
 - **A file's name and description bound what it owns.** Before choosing a skill or rule, state
   the condition its name and description set — a release stage, a technology, a mode, a kind of
   task — and ask whether the guidance would still be true where that condition does not hold. If
