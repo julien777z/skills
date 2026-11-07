@@ -54,8 +54,14 @@ of that proof; agreement in one never establishes agreement in another.
    when sharing would grant a consumer authority belonging to another environment; retain sharing
    when the authorized consumers need the same authority. Do not prescribe either topology from
    the incident. Reconcile policy, service and route ownership with the chosen identities without
-   broadening permissions merely to make a failed operation pass. Surface any unsettled security
-   choice before applying it while continuing independent authorized work.
+   broadening permissions merely to make a failed operation pass. When Tailscale defines access to
+   a service, keep that decision in tailnet policy. Check every route to the backend, including
+   paths around a gateway. If a shared identity can bypass the intended access boundary, give the
+   intended consumer a narrowly owned identity and remove the broader grant. Do not compensate
+   with a second access policy, a service secret, or a forwarded proof header. Keep authentication
+   for distinct application operations and protections against requests from other browser origins.
+   Surface any unsettled security choice before applying it while continuing independent authorized
+   work.
 6. Prepare the replacement authority and a cutover sequence that keeps required consumers working.
    Update every affected consumer within the authorized scope through its existing configuration
    and credential owner: canonical source, live runtime bindings and automated runner references
@@ -69,8 +75,10 @@ of that proof; agreement in one never establishes agreement in another.
    that boundary. Verify automated jobs with their actual runner identity and secret scope; a
    local credential test cannot establish their cutover. Use authorized read-only checks or the
    repository's designated mutation target as appropriate. A green workflow, an active deployment,
-   a policy check or a health endpoint bypassing the boundary is insufficient alone. Record each
-   result with its client ID, target, operation and observed execution revision or run.
+   a policy check or a health endpoint bypassing the boundary is insufficient alone. When
+   narrowing a grant, verify that the intended identity can use the service and that the previously
+   authorized identity cannot reach the backend directly. Record each result with its client ID,
+   target, operation and observed execution revision or run.
 8. Re-read the complete manifest and live references after cutover. Reconcile stale references,
    missing consumers and changed runtime identities; repeat the affected verification when new
    evidence invalidates it. Revoke an old client or remove old authority only after every affected
