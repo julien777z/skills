@@ -105,8 +105,10 @@ required direct-chat result even when that skill says to return only its result 
 preserve the result’s own shape. This supplement never changes machine-consumed output.
 
 **An action the reader owns is not an unresolved decision**, and never joins that list: renewing
-a certificate, approving a sign-in on their phone, a manual step outside the session. Name it
-once, when it arises, with what it unblocks. Raise it again only when it now blocks the next step
+a certificate, approving a sign-in on their phone, a manual step outside the session. When the
+work waits on it, ask for it once through the question tool, as the global rules' user-action
+bullet says, with what it unblocks; otherwise name it once, when it arises, with what it unblocks.
+Raise it again only when it now blocks the next step
 or the reader asks what they owe; once they say they will do it later, it is settled and stays out
 of every later message. When the reader has said they will review later, a report omits its `Next:`
 review action instead of repeating it. Record the reader-owned action and the reader's deferral of

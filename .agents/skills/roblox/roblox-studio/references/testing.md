@@ -112,6 +112,31 @@ export ROBLOX_STUDIO_SSH="$ROBLOX_STUDIO_SSH_USER@$("$ROBLOX_STUDIO_TART" ip "$R
 
 Verify SSH host keys, the intended guest editor, and the source/place before running tests. The no-graphics, no-clipboard, no-audio options keep the VM from opening a host window or sharing clipboard/audio. Store versions and qualification evidence outside this skill. Do not provision or reset a working retained VM as routine setup.
 
+#### Provision a runner when none exists
+
+Provision only when the user authorizes an isolated runner and `runner.env` is absent. Each step
+ends with its check:
+
+1. **Install Tart** through the package manager the host uses. When that route fails, install the
+   official [GitHub release](https://github.com/cirruslabs/tart/releases): verify the archive
+   against the release's checksum file, unpack it outside checkouts, confirm the app's code
+   signature, and run its `--version`.
+2. **Create the VM** with `tart clone` from a Cirrus Labs macOS base image, then `tart set` its
+   CPU, memory, and display before the first boot. Start it with the options above and
+   `tart ip --wait <seconds>` for its address; `tart list` shows the stopped VM afterward.
+3. **Pin SSH before trusting it.** Generate a dedicated key in `~/.config/roblox-studio/`. Record
+   the guest's host key with `ssh-keyscan`, then compare its `ssh-keygen -lf` fingerprint with the
+   one `tart exec <vm> ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub` reports through the guest
+   agent; a mismatch stops setup. Append the public key to the guest's `authorized_keys` through
+   `tart exec -i`, so no guest password passes through a command line, and confirm a `BatchMode=yes`
+   login. Write the five `runner.env` values.
+4. **Install Studio in the guest** from Roblox's official macOS installer image. Mount it there,
+   confirm the installer's code-signing team matches the host Studio's, and `open` it in the
+   signed-in guest session; the check is `/Applications/RobloxStudio.app` in the guest and Studio's
+   window in a guest capture.
+5. **Sign in and qualify** as [authentication](#authentication-and-user-handoff) and
+   [Qualify input and capture](#qualify-input-and-capture) describe.
+
 ### Linux container runner
 
 A Linux host, such as a cloud agent container, can provide the Windows Studio build under Wine on an
@@ -167,6 +192,12 @@ that the guest renders game assets correctly.
 
 Follow an explicit user choice of local Studio. Use the verified editor through supported operations and keep host input and extra client windows within the user's authorization. Where a local installation defines `ROBLOX_ALLOW_HOST_STUDIO=1` as an intentional single-editor fallback, set it only for that documented path, never as a speculative isolation bypass.
 
+On a macOS host, native input and screen capture need Accessibility and Screen Recording granted to
+the app the agent runs under, identified by the agent's process ancestry, not to its shell or
+interpreter; macOS applies a new grant only after that app restarts. Check the grant with
+`AXIsProcessTrusted()` and a test capture before driving input, and name that exact app when the
+user must grant it.
+
 ## Direct guest control
 
 On a configured macOS guest, host Screen Sharing, guest SSH, and guest input are separate capabilities. When the host viewer
@@ -185,6 +216,14 @@ A helper should refuse host execution, target a verified process/window, confirm
 before input, and bound key holds. Check existing guest Accessibility and Screen Recording access;
 use normal guest permission/login UI when required, never disable authentication or edit privacy
 databases. SSH access alone does not establish UI permission or an unlocked guest.
+
+Input a helper posts from an SSH session is silently dropped until the guest grants that session
+Accessibility, and the first `screencapture` over SSH raises a guest Screen Recording prompt for it;
+both are answered in the guest desktop through a viewer, never by editing privacy databases. Tart's
+own `--vnc-experimental` endpoint returns black frames while the VM runs with `--no-graphics`, so a
+viewer connects to the guest's built-in Screen Sharing service on port 5900 instead. A scripted VNC
+client's clicks reaching a system dialog do not show that Studio's own pages accept them; qualify
+each target application before relying on that route.
 
 For a macOS helper using CoreGraphics input and window capture, capture the target window with
 `screencapture -x -o -l <window-id> <path>`: `-o` removes shadow padding. Map coordinates from the
@@ -214,11 +253,15 @@ connection options and verify the rendered application before handoff. Authentic
 viewer normally; one viewer's connection does not authenticate another.
 
 Reuse retained Roblox sessions and available authorized sign-in methods. If Roblox itself requires
-a step the agent cannot complete, automatically open its normal sign-in or Quick Sign-in page in
-the already-connected viewer and explain the exact remaining step. Do not request passwords in chat
-or transfer session cookies. Likewise, open the guest's actual Assistant/MCP settings when a concrete
-blocker requires user action. Continue independent work while waiting. After setup, close or minimize
-only the task's viewer so unattended guest windows stay out of the user's way.
+a step the agent cannot complete, bring the guest screen to the user yourself; never ask them to
+connect to the VM. Use the already-connected viewer, or open the guest's built-in Screen Sharing on
+the host with `open "vnc://<ssh-user>@<current guest address>"`, and verify from a capture of its
+window that it shows the normal sign-in or Quick Sign-in page. Then ask through the question tool,
+as the global rules' user-action bullet says, for the exact remaining step with a confirmation
+option. Do not request passwords in chat or transfer session cookies. Likewise, open the guest's
+actual Assistant/MCP settings when a concrete blocker requires user action. Continue independent
+work while waiting. After the user confirms, verify the result in a guest capture, then close only
+the task's viewer so unattended guest windows stay out of the user's way.
 
 Where the user can reach no viewer, relay Quick Sign-in by code. Read the newest
 `awaitQuickSignIn via polling: code=` line from Studio's log immediately before sending it: codes
