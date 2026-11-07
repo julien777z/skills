@@ -71,7 +71,7 @@ category and appears on another only as a node that page's flow reaches.
   the pages that reach them.
 - Each page's `icon` is the one from `use-dashboard`'s icons that best names its category, every
   one different and none of `diagram`, `overview`, `chart` or `settings`, which the dashboard and
-  its other pages use; once the distinct icons run out, reuse the closest remaining one. A page's
+  its other pages use. A page's
   starting skills are the skills in its category that no other skill in that category starts and
   that a person, or a skill in another category, starts.
 
