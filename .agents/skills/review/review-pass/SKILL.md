@@ -1,6 +1,6 @@
 ---
 name: review-pass
-description: Run the complete pre-merge review loop over a pull request's changes not yet reviewed — thread triage, a test sweep, a security review of a trust-boundary change, scope-sensitive simplification, high-effort code review with fixes, base incorporation, final acceptance and two test passes — and record the head it reviewed. Never merges. Use from `execute-task`'s Completion once a task is finished, from `finish-pr` and `merge-now`, and from guidance delivery.
+description: Run the complete pre-merge review loop over a pull request's changes not yet reviewed — thread triage, a test sweep, a security review of a trust-boundary change, scope-sensitive simplification, high-effort code review with fixes, base incorporation, final acceptance and two test passes — and record the head it reviewed. Never merges. Use when a workflow finishes a pull request, such as a task's completion, a user's command to finish or merge pull requests, or guidance delivery.
 short_description: 'Review, simplify and fix what a pull request has not had reviewed yet, then record the reviewed head.'
 ---
 
@@ -12,9 +12,8 @@ happens next; this skill never readies, merges or deploys.
 
 ## Invocation
 
-- Any workflow that finishes a pull request invokes this skill as a dependency: `execute-task`'s
-  **Completion**, `finish-pr`, `merge-now`, and `edit-skill`'s **Guidance Delivery**. The caller
-  names the target and supplies the intent statement.
+- Any workflow that finishes a pull request invokes this skill as a dependency. The caller names
+  the target and supplies the intent statement.
 - The invocation authorizes the declared `code-simplify`, `code-review`, `merge-conflict` and
   `acceptance-gate` dependencies over that target, `test-fixture`'s **Sweep** and `security-audit`'s
   **Diff Review** as **Workflow** step 1 sizes them, pushing fixes to its working pull request,
@@ -38,6 +37,7 @@ happens next; this skill never readies, merges or deploys.
 - `security-audit`
 - `session-ledger`
 - `agent-lock`
+- `defer-scope`
 
 ## Review Scope
 
@@ -59,8 +59,8 @@ skill's lens fanout.
 
 **A canonical guidance batch is reviewed before its smoke round.** Freeze every included head and
 complete diff, and review the combined batch diff with the one guidance reviewer above; each head
-then takes the fresh final acceptance route below. `test-skill`'s smoke round runs after, on the
-head this workflow accepted, when the caller requires that smoke round.
+then takes the fresh final acceptance route below. A smoke round the caller requires runs after,
+on the head this workflow accepted.
 
 **Each pass reviews only what no earlier pass reviewed.** A finished task gets its full review once;
 a follow-up after it gets a review of the follow-up, sized to the follow-up.
@@ -247,7 +247,7 @@ Use REST endpoints for every pull-request operation:
 - Refresh title or description prose: `PATCH /repos/{owner}/{repo}/pulls/{number}` with `title` or `body`.
 - Inspect reviews: the pull-request review endpoints.
 
-Create every pull request as a draft; it leaves draft only inside an authorized merge through `merge-gate`. A draft pull request is reviewable: complete the review and fix cycle on the draft. Review-thread resolution state and the `resolveReviewThread` mutation have no REST surface, so read thread state and resolve a thread through `gh api graphql` as well; replies to review comments stay on REST. For every GraphQL call, obtain node IDs through REST, re-read the result through REST, and return to REST for every subsequent operation. Do not use GraphQL for reads or reviews when their REST endpoints work. If a REST or required GraphQL request is rate-limited, report the response, wait until the documented reset through the host's event or wait mechanism, and retry the same transport. Treat the rate limit as a blocker only when the host cannot wait for the reset or the reset does not restore access; never switch transports to evade it.
+Create every pull request as a draft; it leaves draft only inside an authorized merge. A draft pull request is reviewable: complete the review and fix cycle on the draft. Review-thread resolution state and the `resolveReviewThread` mutation have no REST surface, so read thread state and resolve a thread through `gh api graphql` as well; replies to review comments stay on REST. For every GraphQL call, obtain node IDs through REST, re-read the result through REST, and return to REST for every subsequent operation. Do not use GraphQL for reads or reviews when their REST endpoints work. If a REST or required GraphQL request is rate-limited, report the response, wait until the documented reset through the host's event or wait mechanism, and retry the same transport. Treat the rate limit as a blocker only when the host cannot wait for the reset or the reset does not restore access; never switch transports to evade it.
 
 Pass this transport requirement into `code-review high fix`; it overrides that skill's generic GitHub fallback.
 
@@ -365,7 +365,7 @@ Preserve established baseline classifications; classify a newly encountered poss
 under `pre-production`'s **Encountered Issues**, without reentering that skill's active run. Record the
 test or check, its evidence and exclusion in the result; do not repair, rerun, or wait for an
 excluded failure, and do not let it prevent the review. Return every exclusion with its exact
-evidence so the caller can pass it to `merge-gate`.
+evidence so the caller can pass it to its merge step.
 
 Apply the GitHub rule's runner-infrastructure exclusion independently of a user waiver: record a
 qualified check as skipped and do not repair, rerun, or wait for a green hosted run. A failure not

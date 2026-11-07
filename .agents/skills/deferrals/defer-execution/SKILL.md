@@ -10,10 +10,10 @@ disable-model-invocation: true
 Take a scope of work and get it **done** on a branch of its own, off the default branch, instead
 of folding it into the change already in flight.
 
-**This skill accepts unrecorded scopes and creates no deferral record.** `defer-scope` records the
-durable Linear or repository-fallback entry, and `execute-defer-scope` resolves it. When work already
-has a Linear issue, legacy directory, or a record riding an open pull request, tell the user to invoke
-`execute-defer-scope` so its record and implementation receive one disposition. A scope handed here is already spoken for;
+**This skill accepts unrecorded scopes and creates no deferral record.** When work already has a
+Linear issue, legacy directory, or a record riding an open pull request, it is a recorded deferral:
+tell the user it is resolved through the deferral workflow, so its record and implementation receive
+one disposition. A scope handed here is already spoken for;
 recording it would leave the next reader to distinguish work awaiting a decision from work awaiting
 a merge.
 
@@ -132,7 +132,7 @@ later turn not to re-run skills that already ran does not reach it.
 
 The ledger step is the session's durable record of the scope, and a task-list item only mirrors it;
 neither is a deferral record. A scope that must outlive the session whatever happens is one to
-record with `defer-scope` as well, which the user asks for.
+record as a deferral as well, which the user asks for.
 
 ## Continuing deferred execution
 

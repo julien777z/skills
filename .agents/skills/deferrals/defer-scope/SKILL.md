@@ -21,8 +21,8 @@ before any write.
 **Read** when no scope is given. Report the combined active set from Linear and the legacy
 repository ledger, and write nothing.
 
-A recorded item is assessed and resolved by `execute-defer-scope`; `defer-execution` handles
-only unrecorded scope already committed to separate execution.
+A recorded item is assessed and resolved by the workflow that resolves recorded deferrals; scope
+already committed to separate execution and left unrecorded is not this skill's.
 
 ## When Recording Runs
 
@@ -122,7 +122,7 @@ write:
    work join.
 
 Never mix Linear and repository records for one deferral. Existing repository records remain in
-place until separately migrated or resolved through `execute-defer-scope`.
+place until separately migrated or resolved.
 
 ## Reading
 

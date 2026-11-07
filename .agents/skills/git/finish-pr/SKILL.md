@@ -36,6 +36,7 @@ request, fix what that finds, then merge.
 - `code-review`
 - `merge-gate`
 - `session-ledger`
+- `acceptance-gate`
 
 ## Targets
 

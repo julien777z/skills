@@ -170,11 +170,16 @@ trigger.
   invoking the coordinator or importing its workflow sections as policy. Put shared policy at an
   existing lower-level owner. Select independently applicable companion skills from their own
   frontmatter at the task boundary rather than making peers invoke each other.
-- A reference explaining another skill, a caller, or an example is not an invocation. Reading
-  another skill's operative policy is still a dependency, not a way around dependency direction.
-  Check declarations against actual calls and policy reads throughout entrypoints and supporting
-  files; declare real invocations and resolve cycles at their owners, including undeclared edges.
-  Do not replace a removed cycle with flags, copied policy, or a call hidden in a reference.
+- **A skill names only the skills it depends on, and declares every one it names.** Naming a skill
+  anywhere in its package — frontmatter, body, references, an example or an explanation — is an
+  edge from it to that skill, so it is declared and points the way the flow runs. A skill never
+  names a skill that runs it: not its caller, not a coordinator it returns to, not a workflow it
+  serves. It states its own behaviour and what it returns, and the caller's text says how the
+  caller uses it. Peers that never invoke each other name neither; each is found from its own
+  description. Resolve a reverse or cyclic edge at its owner by moving the policy to the caller or
+  to a lower-level skill both depend on, never with flags, copied policy, a call hidden in a
+  reference, or a name dropped while the policy read stays. `edit-skill`'s source check refuses a
+  named but undeclared skill and a dependency cycle anywhere in the tree.
 - **A skill restricted to user invocation is never an automatic dependency.** A directly
   user-invoked workflow may delegate such an action only when its contract explicitly authorizes
   that action and bounds its targets, and the restricted action's own entry point recognizes

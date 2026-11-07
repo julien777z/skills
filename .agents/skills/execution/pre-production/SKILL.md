@@ -110,8 +110,8 @@ with an obsolete owned contract or revision.
   change — in a file it opened, a check it ran, a capture it read — is fixed. A file opened or edited
   only to make such an incidental fix is never itself a source of more incidental cleanup: what else
   it holds is listed, not chased.
-- **A defect the work notices is always fixed, wherever it lives.** A defect is what
-  `acceptance-gate`'s rubric calls one: an image that never loads, a wrong value, a state shown in
+- **A defect the work notices is always fixed, wherever it lives.** A defect is a fault in
+  what the product does or shows: an image that never loads, a wrong value, a state shown in
   the wrong place, a control that does nothing, a test suite that fails in a fresh checkout, a
   fixture that builds data the code would never hold, a setup step or documented command that
   errors. It is fixed in the change in flight, outside both the hop limit and the size budget below.

@@ -22,6 +22,17 @@ CACHE_DIRNAME: Final[str] = "agent-sync-action"
 INSTALL_MARKER_FILENAME: Final[str] = "installed"
 EXTERNAL_RESOURCES_FILENAME: Final[str] = "external_resources.json"
 REPOSITORY_URL_TEMPLATE: Final[str] = "https://github.com/{repository}"
+SKILLS_DIRNAME: Final[str] = "skills"
+SKILL_ENTRY_FILENAME: Final[str] = "SKILL.md"
+DEPENDENCIES_SECTION_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"^## Dependencies\n(.*?)(?=^## |\Z)", re.MULTILINE | re.DOTALL
+)
+DEPENDENCY_ENTRY_PATTERN: Final[re.Pattern[str]] = re.compile(r"^- `([^`]+)`", re.MULTILINE)
+FENCED_BLOCK_PATTERN: Final[re.Pattern[str]] = re.compile(r"^```.*?^```", re.MULTILINE | re.DOTALL)
+BACKTICKED_PATTERN: Final[re.Pattern[str]] = re.compile(r"`([a-z0-9-]+)`")
+SKILL_CONTEXT_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"`NAME`'s|`NAME` skills?\b|\bskills? `NAME`|\binvok\w* `NAME`"
+)
 
 
 class SourceCommand(StrEnum):
@@ -192,6 +203,84 @@ def mirror_in_scratch(python: Path, root: Path, agents_dirname: str) -> SyncOutc
     return SyncOutcome.VALID
 
 
+def declared_dependencies(entry_point: str) -> set[str]:
+    """Return the skill names an entry point's Dependencies section lists."""
+
+    section = DEPENDENCIES_SECTION_PATTERN.search(entry_point)
+
+    if section is None:
+        return set()
+
+    return set(DEPENDENCY_ENTRY_PATTERN.findall(section.group(1)))
+
+
+def named_skills(text: str, skill_names: set[str]) -> set[str]:
+    """Return the skills a text names in backticks, outside fenced code blocks.
+
+    A one-word name also spells ordinary values, such as a field or a keyword, so it counts only
+    where the text uses it as a skill: followed by a possessive, or beside the word skill.
+    """
+
+    prose = FENCED_BLOCK_PATTERN.sub("", text)
+    named: set[str] = set()
+
+    for match in BACKTICKED_PATTERN.finditer(prose):
+        name = match.group(1)
+
+        if name not in skill_names:
+            continue
+
+        if "-" in name:
+            named.add(name)
+
+            continue
+
+        around = prose[max(0, match.start() - 20) : match.end() + 20]
+
+        if SKILL_CONTEXT_PATTERN.search(around.replace(match.group(0), "`NAME`")):
+            named.add(name)
+
+    return named
+
+
+def find_dependency_problems(skills_dir: Path) -> list[str]:
+    """Report skills named without being declared, and cycles among declared dependencies."""
+
+    packages = {entry.parent.name: entry.parent for entry in skills_dir.rglob(SKILL_ENTRY_FILENAME)}
+    skill_names = set(packages)
+    graph: dict[str, set[str]] = {}
+    problems: list[str] = []
+
+    for name, package in sorted(packages.items()):
+        declared = declared_dependencies((package / SKILL_ENTRY_FILENAME).read_text())
+        texts = [path.read_text() for path in sorted(package.rglob("*.md"))]
+        named = set().union(*(named_skills(text, skill_names) for text in texts)) - {name}
+
+        graph[name] = declared & skill_names
+
+        for missing in sorted(named - declared):
+            problems.append(f"{name} names `{missing}` without declaring it in its Dependencies")
+
+    finished: set[str] = set()
+
+    def visit(name: str, path: list[str]) -> None:
+        for dependency in sorted(graph.get(name, ())):
+            if dependency in path:
+                cycle = path[path.index(dependency) :] + [dependency]
+
+                problems.append("dependency cycle: " + " -> ".join(cycle))
+            elif dependency not in finished:
+                visit(dependency, path + [dependency])
+
+        finished.add(name)
+
+    for name in sorted(graph):
+        if name not in finished:
+            visit(name, [name])
+
+    return problems
+
+
 def parse_arguments() -> argparse.Namespace:
     """Parse the command and the tree it runs on."""
 
@@ -217,7 +306,7 @@ def parse_arguments() -> argparse.Namespace:
     commands.add_parser(
         SourceCommand.CHECK,
         parents=[tree],
-        help="Validate the canonical sources by mirroring them in a scratch copy.",
+        help="Validate skill dependencies, then the canonical sources by mirroring them in a scratch copy.",
     )
 
     mirror = commands.add_parser(
@@ -273,6 +362,11 @@ def main() -> SyncOutcome:
             ["mirror-harnesses", "--output-dir", arguments.output_dir],
         )
 
+    problems = find_dependency_problems(root / agents_dirname / SKILLS_DIRNAME)
+
+    for problem in problems:
+        logger.error("Skill dependencies: %s", problem)
+
     logger.info(
         "Validating %s in a scratch copy with %s@%s",
         agents_dirname,
@@ -280,7 +374,12 @@ def main() -> SyncOutcome:
         action["reference"],
     )
 
-    return mirror_in_scratch(python, root, agents_dirname)
+    outcome = mirror_in_scratch(python, root, agents_dirname)
+
+    if problems and outcome is SyncOutcome.VALID:
+        return SyncOutcome.INVALID
+
+    return outcome
 
 
 if __name__ == "__main__":
@@ -298,7 +397,7 @@ if __name__ == "__main__":
             logger.info("Valid: the sync tool accepted every canonical source.")
         case SyncOutcome.INVALID:
             logger.error(
-                "Invalid: the sync tool refused the canonical tree; fix what it reported above."
+                "Invalid: the canonical tree was refused; fix what is reported above."
             )
         case SyncOutcome.UNAVAILABLE:
             logger.error("Unavailable: the sync tool did not run to completion.")

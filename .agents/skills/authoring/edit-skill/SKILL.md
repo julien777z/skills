@@ -38,7 +38,7 @@ checking whether guidance allowed the miss. When the correction succeeds, record
 for permanent guidance so the next session does not repeat it.
 
 Correct the current behavior and trace its guidance path in the same turn. When a successful
-correction exposes a gap during another task, record it; `process-ledger` routes it into canonical
+correction exposes a gap during another task, record it; the task's ledger processing routes it into canonical
 guidance. Neither the issue nor its verification disappears when the surrounding task resumes.
 
 A correct instruction does not close a reported failure to follow it. Step 2 traces and repairs the
@@ -81,7 +81,7 @@ Validate skill dependencies and their actual call and policy-read paths under th
 - A direct request to change guidance, such as "use edit-skill to reflect that", is recorded the
   same way. While another task runs, the requested action is the behavior it describes, applied to
   the current work, and the guidance edit is its record. While a guidance batch is in flight, its
-  delivery is that action and the user's words are its evidence. `process-ledger` admits it either
+  delivery is that action and the user's words are its evidence. The ledger processing admits it either
   way.
 - After verified success, record the correction as a `guidance_correction` entry with
   `session-ledger`: the successful action and its evidence, a reproduction scenario, the intended
@@ -127,12 +127,12 @@ Validate skill dependencies and their actual call and policy-read paths under th
 
 ## Guidance Delivery
 
-`process-ledger` invokes this route only for the batch of `guidance_correction` entries it froze,
+The task's ledger processing invokes this route only for the batch of `guidance_correction` entries it froze,
 beside the source stream. It holds the source pull request only for the checks its ridden edits
 need and the delivery of the batch carrying them; only an edit on that pull request, or one the GitHub rule's **Merge Authorization** holds for a source pull request, waits for that merge. Run it as a delegated worker, at `subagent-matrix`'s standard capability level, when the session can, so the
 user's review of the source pull request overlaps it.
 
-1. Read every entry in the batch `process-ledger` froze and resume at its recorded first
+1. Read every entry in the frozen batch and resume at its recorded first
    nonterminal stage, rebuilding a lost or truncated entry from its backup
    comment as `session-ledger` accepts it; the comment's existence records that the action
    succeeded, its Intended behavior stands as the intent statement for step 3, and step 7.5
@@ -164,7 +164,7 @@ user's review of the source pull request overlaps it.
    nonterminal next stage in each entry. Resume from that stage without repeating completed work.
    After the smoke round, record the pull request, its head, the smoke results and the merge or
    hold. Keep its `status` `pending` while a hold remains, with its concrete dependency and saved next
-   action. `process-ledger` owns the record's terminal disposition after the complete delivery
+   action. The ledger processing owns the record's terminal disposition after the complete delivery
    outcome is verified.
 - Before the surrounding task ends or hands off, every `pending` entry is processed, or carries its
   concrete blocking decision, failed gate or unavailable dependency under the global rules' **Tools
@@ -356,7 +356,7 @@ user's review of the source pull request overlaps it.
      `pre-production`'s **Scope Follows The Defect** says of a defect the work notices, with
      `acceptance-gate` judging the repair's scope and size. Moving text unchanged proves it
      survived; it is never a reason to report a defect as left for the user.
-   - Before delivery, audit each edited skill's complete package and its affected callers: list every instruction to apply or invoke another skill, compare those names with the owning entry point's `## Dependencies`, and resolve missing, stale, or path-based entries and any user-only dependency lacking the explicit bounded delegation the shared `agent-guidance.md` rule requires. Check references separately for hidden invocations and cross-skill filesystem links; move the invocation to `SKILL.md` and refer to the other package by skill name. A passing source mirror does not replace this audit.
+   - Before delivery, audit each edited skill's complete package and its affected callers, every file a folded or incorporated pull request brings in included: list every skill each one names, compare those names with the owning entry point's `## Dependencies`, rewrite any name that points back at a caller or a peer as the shared `agent-guidance.md` rule says, and resolve missing, stale, or path-based entries and any user-only dependency lacking the explicit bounded delegation the shared `agent-guidance.md` rule requires. Check references separately for hidden invocations and cross-skill filesystem links; move the invocation to `SKILL.md` and refer to the other package by skill name. Step 7.2's source check refuses a named but undeclared skill and a dependency cycle anywhere in the tree; it cannot tell a declared edge that runs back toward a caller, so a passing check does not replace this audit.
 
 6. Multi-target behavior.
    - Apply multi-target updates for `agents`, `skills`, and `rules`.
