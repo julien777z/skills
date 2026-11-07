@@ -8,7 +8,8 @@ amend its merge, or substitute the current branch for this range.
 Initially there is no working pull request. Inspect and validate findings against the complete
 delivered range and its repository context. Read existing source-check and deployment evidence;
 do not create an empty branch or pull request just to rerun validation on unchanged delivered code.
-Simplification, thread triage, and review may each discover the first confirmed finding.
+Thread triage, the security review and the review loop may each discover the first confirmed
+finding.
 
 Once a finding requires a correction, fetch the default branch and create the fix branch there.
 Implement the correction, run its required source checks, push, and create the new draft fix pull

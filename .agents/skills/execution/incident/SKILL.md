@@ -1,6 +1,6 @@
 ---
 name: incident
-description: "Restore a broken deployed service using a browser and the repository's deployment skill as needed, deploy and test a fix branch, and merge scoped fix pull requests after one Bugs and Simplification review round. Use when something is down, degraded, stuck, or has to be working now."
+description: "Restore a broken deployed service using a browser and the repository's deployment skill as needed, deploy and test a fix branch, and merge scoped fix pull requests after one review round. Use when something is down, degraded, stuck, or has to be working now."
 short_description: 'Restore a broken deployed service, test the fix, and merge the scoped repair.'
 disable-model-invocation: true
 ---
@@ -8,8 +8,7 @@ disable-model-invocation: true
 # Incident
 
 ## Dependencies
-- `code-review`
-- `code-simplify`
+- `review-loop`
 - `acceptance-gate`
 
 ## Opening The Run
@@ -153,23 +152,19 @@ flow; a healthy deployment or passing suite does not substitute for it.
 
 ## One Review Round
 
-Every incident recovery gets exactly one Bugs and one Simplification lens, whatever the failure or
-the remedy: application code, configuration, deployment, or infrastructure. Review each scoped fix
-pull request's complete diff; when recovery changes only live settings, review the redacted before
-and after configuration and the operations performed. Do not invent a code change or pull request
-for an operation with no repository change.
+Every incident recovery gets exactly one `review-loop` round, whatever the failure or the remedy:
+application code, configuration, deployment, or infrastructure. Review each scoped fix pull
+request's complete diff; when recovery changes only live settings, review the redacted before and
+after configuration and the operations performed. Do not invent a code change or pull request for
+an operation with no repository change.
 
 Start this round only after the branch's live restoration checkpoint in **Tests And Checks**.
-Use `code-review`'s finding validation and the full `code-simplify` rubric. Apply `acceptance-gate`'s
-filtering and fix dispositions without duplicating its rubric here. Both lenses must finish; resolve
-accepted findings, verify the corrections, and run affected checks. Apply final acceptance when
-the gate's intent rules call for it, respecting its bounded rewrite and escalation rules.
-
-This is a single round, not the ordinary code-review workflow: do not launch the other lenses,
-restart the cohort after fixes, require consecutive clean rounds, or enter its fix-triggered
-re-review or Rules-lens loops. Targeted verification of corrections and recovery changes remains
-part of finishing the round. Report what the lenses reviewed and what was verified after them;
-never claim that changed material was covered by an earlier receipt.
+Run `review-loop` with a budget of one round and the restoration as its intent. Apply
+`acceptance-gate`'s filtering and fix dispositions without duplicating its rubric here. Resolve
+accepted findings, verify the corrections, and run affected checks; do not start a second round
+over the fixes. Apply final acceptance when the gate's intent rules call for it, respecting its
+bounded rewrite and escalation rules. Report what the round reviewed and what was verified after
+it; never claim that changed material was covered by an earlier review.
 
 An invocation authorizes merging the scoped fix pull requests once this round is complete and live
 verification succeeds, without another approval. A round with failed or incomplete coverage,

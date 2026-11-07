@@ -114,14 +114,13 @@ An agent reaches for these on its own whenever the work calls for them.
 
 - [`acceptance-gate`](.agents/skills/review/acceptance-gate/SKILL.md) — Have an independent reviewer decide whether a proposed change fits the task and the repository.
 - [`agent-lock`](.agents/skills/workspace/agent-lock/SKILL.md) — Coordinate exclusive use of a shared resource between agents using an exact string key.
-- [`async-python-patterns`](.agents/skills/python/async-python-patterns/SKILL.md) — Master Python asyncio, concurrent programming, and async/await patterns for high-performance applications.
 - [`banned-terminology`](.agents/skills/review/banned-terminology/SKILL.md) — Owns the banned-terms list in resources/banned_words.json and enforces it.
 - [`brag`](.agents/skills/media/brag/SKILL.md) — Turn the current project website into a short, polished, shareable launch video using Hyperframes.
 - [`brag-slim`](.agents/skills/media/brag-slim/SKILL.md) — Turn a project directory or a website URL into a short, shareable launch video with music, motion, and share copy.
 - [`build-types`](.agents/skills/web/build-types/SKILL.md) — Regenerate generated API types from an OpenAPI document, using the API contract this branch deploys with.
 - [`clerk-nextjs-patterns`](.agents/skills/web/clerk-nextjs-patterns/SKILL.md) — Advanced Next.js patterns - middleware, Server Actions, caching with Clerk.
-- [`code-review`](.agents/skills/review/code-review/SKILL.md) — Code review a pull request or the current working changes with independent reviewer lenses, validated findings, and severity-rated results.
 - [`code-simplify`](.agents/skills/review/code-simplify/SKILL.md) — Strictly review the branch's changes for reuse, simplification, abstraction quality, and maintainability, then fix the issues.
+- [`council`](.agents/skills/review/council/SKILL.md) — Ask three models from different providers for review, and loop until they agree.
 - [`current-changes`](.agents/skills/git/current-changes/SKILL.md) — Summarize the branch's changes against the default branch with links to the code.
 - [`database-migrations`](.agents/skills/python/database-migrations/SKILL.md) — Guide for authoring, rebasing, and troubleshooting Alembic database migrations, including how to avoid and fix branched migration graphs.
 - [`defer-scope`](.agents/skills/deferrals/defer-scope/SKILL.md) — Record unfinished work in the repository it affects, or read its active records.
@@ -151,19 +150,9 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`process-ledger`](.agents/skills/execution/process-ledger/SKILL.md) — Process verified private-ledger records into durable outcomes.
 - [`progress`](.agents/skills/workspace/progress/SKILL.md) — Show the task’s progress as a dashboard.
 - [`proton-pass`](.agents/skills/workspace/proton-pass/SKILL.md) — Retrieve credentials from Proton Pass with pass-cli.
-- [`python-anti-patterns`](.agents/skills/python/python-anti-patterns/SKILL.md) — Use this skill when reviewing Python code for common anti-patterns to avoid.
-- [`python-background-jobs`](.agents/skills/python/python-background-jobs/SKILL.md) — Python background job patterns including task queues, workers, and event-driven architecture.
-- [`python-configuration`](.agents/skills/python/python-configuration/SKILL.md) — Python configuration management via environment variables and typed settings.
-- [`python-design-patterns`](.agents/skills/python/python-design-patterns/SKILL.md) — Python design patterns including KISS, Separation of Concerns, Single Responsibility, and composition over inheritance.
-- [`python-error-handling`](.agents/skills/python/python-error-handling/SKILL.md) — Python error handling patterns including input validation, exception hierarchies, and partial failure handling.
-- [`python-performance-optimization`](.agents/skills/python/python-performance-optimization/SKILL.md) — Profile and optimize Python code using cProfile, memory profilers, and performance best practices.
-- [`python-project-structure`](.agents/skills/python/python-project-structure/SKILL.md) — Python project organization, module architecture, and public API design.
-- [`python-resilience`](.agents/skills/python/python-resilience/SKILL.md) — Python resilience patterns including automatic retries, exponential backoff, timeouts, and fault-tolerant decorators.
-- [`python-resource-management`](.agents/skills/python/python-resource-management/SKILL.md) — Python resource management with context managers, cleanup patterns, and streaming.
-- [`python-testing-patterns`](.agents/skills/python/python-testing-patterns/SKILL.md) — Implement comprehensive testing strategies with pytest, fixtures, mocking, and test-driven development.
-- [`python-type-safety`](.agents/skills/python/python-type-safety/SKILL.md) — Python type safety with type hints, generics, protocols, and strict type checking.
 - [`reverse-engineer-anything`](.agents/skills/workspace/reverse-engineer-anything/SKILL.md) — Reverse engineer native, managed, Electron/JavaScript, packaged, firmware, and browser targets with REA, and build agent environments (AgentEnv bundles) of web applications from a live instance or a capture.
-- [`review-pass`](.agents/skills/review/review-pass/SKILL.md) — Review, simplify and fix what a pull request has not had reviewed yet, then record the reviewed head.
+- [`review-loop`](.agents/skills/review/review-loop/SKILL.md) — Review a change with one independent reviewer, fix what it finds, and loop until both agree.
+- [`review-pass`](.agents/skills/review/review-pass/SKILL.md) — Review and fix what a pull request has not had reviewed yet, then record the reviewed head.
 - [`review-proposal`](.agents/skills/review/review-proposal/SKILL.md) — Challenge a proposal and obtain independent acceptance before presenting it for approval.
 - [`rewrite-git-history`](.agents/skills/git/rewrite-git-history/SKILL.md) — Rework your branch into focused commits while preserving and checking its content.
 - [`roblox-building`](.agents/skills/roblox/roblox-building/SKILL.md) — Build and improve Roblox worlds, terrain, structures, props, and assets.
@@ -190,6 +179,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`vercel-react-best-practices`](.agents/skills/web/vercel-react-best-practices/SKILL.md) — React and Next.js performance optimization guidelines from Vercel Engineering.
 - [`vercel-react-view-transitions`](.agents/skills/web/vercel-react-view-transitions/SKILL.md) — Guide for implementing smooth, native-feeling animations using React's View Transition API (`<ViewTransition>` component, `addTransitionType`, and CSS view transition pseudo-elements).
 - [`web-design-guidelines`](.agents/skills/web/web-design-guidelines/SKILL.md) — Review UI code for Web Interface Guidelines compliance.
+- [`widen-scope`](.agents/skills/execution/widen-scope/SKILL.md) — Let the current task also fix the problems it runs into, within a size budget.
 
 <!-- skills:end -->
 
