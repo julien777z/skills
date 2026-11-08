@@ -218,7 +218,9 @@ data exists, or a change to the app — runs on one made-up scenario, never on r
    npm and access to the npm registry, and takes up to a minute; later renders reuse that build. A
    failed build exits non-zero with npm's output.
 3. Keep one output path per dashboard, so each render replaces the last and updates the same
-   published page or browser tab.
+   published page or browser tab. A full page also writes `<page>.revision.js` beside itself; an
+   open local copy checks it every few seconds and reloads itself, on the same page and scroll
+   position, when a render replaces the file.
 
 Change a delivered dashboard only by re-rendering its whole spec, never by editing the page's
 HTML, which skips the renderer's validation. Everything the reader can click, a table row or tree
@@ -259,8 +261,9 @@ Use the first route the session offers, and the same one for every update of one
        page and say why.
    - Record each new link where the caller keeps task state, so the next render finds it.
 2. **The user's own browser, through `use-browser`**, when no such tool exists and its **Showing A
-   Local Page** route applies. Render the full page; with one path per dashboard, that route reloads
-   the tab it already opened instead of opening another.
+   Local Page** route applies. Render the full page and open it only on the dashboard's first render
+   in the session; every later render refreshes the open page by itself, so it opens nothing unless
+   the user asks to see the page again.
 3. **Otherwise**, send the full page with a tool that sends a file to the user, or, with none, give
    its absolute path.
 

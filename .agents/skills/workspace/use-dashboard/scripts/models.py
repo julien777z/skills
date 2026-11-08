@@ -115,3 +115,10 @@ class ObjectShape(TypedDict):
     fields: dict[str, Field]
     required: frozenset[str]
     relations: NotRequired[Callable[[dict[str, object], str], None]]
+
+
+class RenderedPage(TypedDict):
+    """A rendered dashboard page and the revision it embeds."""
+
+    page: str
+    revision: str

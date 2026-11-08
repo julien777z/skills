@@ -3,12 +3,18 @@ import { type ReactNode, useMemo, useState } from 'react';
 import { NoticeBanner, RichText, SectionCards, SiteHeader } from '@/components';
 import { Grid, Stack, Text } from '@/components/primitives';
 import { DashboardSection } from '@/components/sections';
+import { useReloadOnNewRevision } from '@/hooks/page-refresh';
 import { References, ReferencesContext } from '@/lib/references';
 import { withKeys } from '@/lib/utils';
 import { type Dashboard, PageLayout } from '@/spec';
 
 export function App({ dashboard }: { dashboard: Dashboard }): ReactNode {
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useState(() =>
+    Math.max(
+      0,
+      dashboard.pages.findIndex((candidate) => `#${encodeURIComponent(candidate.title)}` === window.location.hash),
+    ),
+  );
   const references = useMemo(() => new References(dashboard.references ?? []), [dashboard.references]);
   const page = dashboard.pages[current];
   const metrics = dashboard.metrics ?? [];
@@ -16,8 +22,15 @@ export function App({ dashboard }: { dashboard: Dashboard }): ReactNode {
   const pageMetrics = current === 0 ? metrics : [];
   const showSummary = Boolean(progress) || pageMetrics.length > 0;
 
+  useReloadOnNewRevision();
+
   function handleSelectPage(position: number) {
     setCurrent(position);
+
+    if (window.location.protocol === 'file:') {
+      window.history.replaceState(null, '', `#${encodeURIComponent(dashboard.pages[position].title)}`);
+    }
+
     window.scrollTo({ top: 0 });
   }
 
