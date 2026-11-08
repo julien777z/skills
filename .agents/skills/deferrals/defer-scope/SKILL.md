@@ -21,9 +21,6 @@ before any write.
 **Read** when no scope is given. Report the combined active set from Linear and the legacy
 repository ledger, and write nothing.
 
-A recorded item is assessed and resolved by the workflow that resolves recorded deferrals; scope
-already committed to separate execution and left unrecorded is not this skill's.
-
 ## When Recording Runs
 
 Fix work instead whenever one focused pass can finish it. A stale reference, rename, wrong path,

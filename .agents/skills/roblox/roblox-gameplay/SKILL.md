@@ -74,4 +74,4 @@ When the work involves React-rendered UI, apply `roblox-react` for clarity and i
 
 ## Learn from evidence
 
-Research across other published games runs only when the user directly requests it, never during ordinary gameplay work. Keep transferable design principles here and dated observations in the invoking project's verification evidence. Distinguish passive inspection from actual play, label popularity hypotheses, and apply only ideas that fit the current game. Update canonical `.agents` sources only and leave mirrors to Agent Sync.
+Keep transferable design principles here and dated observations in the invoking project's verification evidence. Distinguish passive inspection from actual play, label popularity hypotheses, and apply only ideas that fit the current game. Update canonical `.agents` sources only and leave mirrors to Agent Sync.

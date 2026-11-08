@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Review a pull request or current changes with independent reviewer lenses, validated findings, and severity-rated results. Use when the user directly asks for a code review, or when a workflow delegates one to it; never on your own initiative.
+description: Review a pull request or current changes with independent reviewer lenses, validated findings, and severity-rated results. Use when the user directly asks for a code review, or when a skill that declares it as a dependency runs it; never on your own initiative.
 short_description: 'Code review a pull request or the current working changes with independent reviewer lenses, validated findings, and severity-rated results.'
 ---
 
@@ -42,7 +42,7 @@ Apply `pre-production` when validating a contract change and `acceptance-gate`'s
 
 Use `agent-lock` with the exact checkout key to protect local snapshot capture.
 
-- Run this skill only when the user directly invokes it, or a workflow delegates it. A delegating workflow supplies the effort and modes; do not ask for standalone review options on that route.
+- Run this skill only when the user directly invokes it, or a skill that declares it as a dependency runs it. An invocation that states its effort and modes is run as stated; do not ask for standalone review options then.
 
 ```
 /code-review [low|medium|high|xhigh|max|ultra] [fix] [comment] [<target>]
@@ -168,7 +168,7 @@ In every review round, give each dispatched reviewer and validator the merge-bas
 SHA, complete pull-request diff, and complete changed-file list. When a previous reviewed head
 exists, also give the diff from that head to the current head so recent fixes receive focused
 attention. That incremental diff supplements the full pull-request target; never substitute the
-latest commit or fix diff for it. The one exception is a delta a delegating workflow names: that delta is
+latest commit or fix diff for it. The one exception is an invocation that names a delta: that delta is
 the review target, and the complete pull-request diff is the context its reviewers read. Keep that
 complete context distinct from each lens's analysis slice: the exact changed hunks, files, and
 operations it evaluates, plus every supporting input whose semantics it uses. A reviewer may read

@@ -167,7 +167,7 @@ One question answered twice.
 The remedy is one owner, placed by `code-simplify`'s ownership analysis — the shared package every
 consumer reads where more than one deployable needs it — with the copies and the bridge deleted and
 generated types used directly or derived from. Left alone: a generated mirror; a demonstrated
-dependency, domain or contract boundary; two contract models, which a schema audit owns.
+dependency, domain or contract boundary; two contract models.
 
 ### Fragmented Use Case
 
@@ -521,7 +521,7 @@ Tests that cost reading time and prove nothing, found after the code has settled
 
 The remedy is `test-fixture`'s dispositions: repair, fold into the keeper, or delete with its
 evidence, with coverage of a removed layer's behavior kept at the real boundary. Timing, suite
-budgets, cross-suite layout and coverage maps belong to a test-suite audit and are named, not run.
+budgets, cross-suite layout and coverage maps are outside this lens and are named, not run.
 
 ## Dispositions
 

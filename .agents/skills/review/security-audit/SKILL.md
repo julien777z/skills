@@ -23,8 +23,8 @@ the rubric whole before any of them and apply it throughout.
 Before writing or changing code that crosses a trust boundary — input handling, authentication,
 authorization, sessions, secrets, cryptography, deserialization, file paths, subprocesses,
 outbound requests, templates — read the rubric and apply **Building It Safely** to every line the
-change writes. A finding in those lines is the change's own defect: it is fixed in the change, as
-a simplification finding is, never reported for a later decision.
+change writes. A finding in those lines is the change's own defect: it is fixed in the change,
+never reported for a later decision.
 
 ## Diff Review
 
@@ -89,8 +89,8 @@ cohort is a reason to find less, never a reason to report worse.
 
 **What a level may claim is what it covered.** `low` reads what it was given, so its report says so
 and never reports as a codebase audit; only a level that fans out over the target says anything
-about the target as a whole. A read-only gate runs this skill at `low` against a diff, which is why
-`low` names no agents: a read-only gate cannot spawn one.
+about the target as a whole. `low` launches no agents, so it
+runs where none can be launched.
 
 **A skill that borrows this one takes the findings into its own verdict.** It writes no findings
 file and owns what happens to each finding.
@@ -110,8 +110,6 @@ Use the platform's equivalent capabilities while preserving the specified roles,
 
 The output is a report: one findings file in the session's scratch directory, sent to the user with
 the chat summary. Nothing is written inside the target repository, and the audit changes no code.
-What happens to a finding is its caller's: a task fixes a finding in its own change, and
-A codebase's findings are fixed by the workflow that ran the audit, through the remediation plan the user approves.
 
 A report is what this run found; it never asserts a codebase is clean. Each run explores different
 code paths depending on which agents find what and where they dig, and the best single run finds

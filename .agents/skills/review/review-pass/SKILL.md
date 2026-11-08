@@ -1,6 +1,6 @@
 ---
 name: review-pass
-description: Run the complete pre-merge review loop over a pull request's changes not yet reviewed — thread triage, a test sweep, a security review of a trust-boundary change, scope-sensitive simplification, high-effort code review with fixes, base incorporation, final acceptance and two test passes — and record the head it reviewed. Never merges. Use when a workflow finishes a pull request, such as a task's completion, a user's command to finish or merge pull requests, or guidance delivery.
+description: Run the complete pre-merge review loop over a pull request's changes not yet reviewed — thread triage, a test sweep, a security review of a trust-boundary change, scope-sensitive simplification, high-effort code review with fixes, base incorporation, final acceptance and two test passes — and record the head it reviewed. Never merges. Use when a pull request is to be reviewed before its merge.
 short_description: 'Review, simplify and fix what a pull request has not had reviewed yet, then record the reviewed head.'
 ---
 
@@ -12,8 +12,7 @@ happens next; this skill never readies, merges or deploys.
 
 ## Invocation
 
-- Any workflow that finishes a pull request invokes this skill as a dependency. The caller names
-  the target and supplies the intent statement.
+- The invocation names the target pull request and supplies its intent statement.
 - The invocation authorizes the declared `code-simplify`, `code-review`, `merge-conflict` and
   `acceptance-gate` dependencies over that target, `test-fixture`'s **Sweep** and `security-audit`'s
   **Diff Review** as **Workflow** step 1 sizes them, pushing fixes to its working pull request,
@@ -57,10 +56,9 @@ code. In a pull request that also changes source, the guidance adds no reviewer 
 the source review's reviewers reads it. Pass this into `code-review high fix`; it overrides that
 skill's lens fanout.
 
-**A canonical guidance batch is reviewed before its smoke round.** Freeze every included head and
-complete diff, and review the combined batch diff with the one guidance reviewer above; each head
-then takes the fresh final acceptance route below. A smoke round the caller requires runs after,
-on the head this workflow accepted.
+**A canonical guidance batch is reviewed as one.** Freeze every included head and complete diff,
+and review the combined batch diff with the one guidance reviewer above; each head then takes the
+fresh final acceptance route below.
 
 **Each pass reviews only what no earlier pass reviewed.** A finished task gets its full review once;
 a follow-up after it gets a review of the follow-up, sized to the follow-up.
@@ -365,7 +363,7 @@ Preserve established baseline classifications; classify a newly encountered poss
 under `pre-production`'s **Encountered Issues**, without reentering that skill's active run. Record the
 test or check, its evidence and exclusion in the result; do not repair, rerun, or wait for an
 excluded failure, and do not let it prevent the review. Return every exclusion with its exact
-evidence so the caller can pass it to its merge step.
+evidence.
 
 Apply the GitHub rule's runner-infrastructure exclusion independently of a user waiver: record a
 qualified check as skipped and do not repair, rerun, or wait for a green hosted run. A failure not

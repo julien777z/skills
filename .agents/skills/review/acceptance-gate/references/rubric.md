@@ -250,6 +250,15 @@ invented. The remedy is an invented value keeping only the trait the case turns 
 example search, or a bracketed kind in the quoted request the search does not list, holds a clean
 verdict, as a missing input.
 
+**A workaround is flagged on every question as the violation it keeps.** A change that meets a
+rule's, a check's or a reviewer's wording while keeping what it forbids is that violation, at its
+severity, and a disguised one besides: a name replaced by a description that still identifies the
+same thing, a call or policy moved to a file the check does not read, a value renamed, wrapped,
+aliased or split, a check narrowed, disabled, excluded or met by a special case, a test changed to
+accept the wrong result. Judge what the result still does or says, never what a search for the
+old form now finds. The remedy is the change the rule asks for, restructuring what depends on the
+forbidden thing where that is what it takes; a shape that only hides it is never accepted.
+
 **Triage — what should happen to this?** The item is an issue, a finding, or a proposed record, and
 the answer is one of four dispositions, decided by the tests below in order. The first that holds
 ends the question.
