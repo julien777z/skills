@@ -219,9 +219,9 @@ data exists, or a change to the app — runs on one made-up scenario, never on r
    npm and access to the npm registry, and takes up to a minute; later renders reuse that build. A
    failed build exits non-zero with npm's output.
 3. Keep one output path per dashboard, so each render replaces the last and updates the same
-   published page or browser tab. A full page also writes `<page>.revision.js` beside itself; an
-   open local copy checks it every few seconds and reloads itself, on the same page and scroll
-   position, when a render replaces the file.
+   published page or browser tab. A full page also writes `<page>.update.js` beside itself; an
+   open local copy checks it every few seconds and shows a new render's data in place, on the same
+   page and scroll position, with no reload; only a render from a changed app reloads it.
 
 Change a delivered dashboard only by re-rendering its whole spec, never by editing the page's
 HTML, which skips the renderer's validation. Everything the reader can click, a table row or tree

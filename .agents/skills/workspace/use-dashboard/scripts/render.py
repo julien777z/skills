@@ -40,9 +40,11 @@ CACHE_ROOT: Final[Path] = (
     Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache") / "use-dashboard"
 )
 DATA_PLACEHOLDER: Final[str] = "__DASHBOARD_DATA__"
-REVISION_PLACEHOLDER: Final[str] = "__DASHBOARD_REVISION__"
-REVISION_SCRIPT_SUFFIX: Final[str] = ".revision.js"
-REVISION_SCRIPT_TEMPLATE: Final[str] = "window.dashboardRevision = \"{revision}\";\n"
+APP_REVISION_PLACEHOLDER: Final[str] = "__DASHBOARD_APP_REVISION__"
+UPDATE_SCRIPT_SUFFIX: Final[str] = ".update.js"
+UPDATE_SCRIPT_TEMPLATE: Final[str] = (
+    'window.dashboardUpdate = {{ app: "{app}", dashboard: {dashboard} }};\n'
+)
 PAGE_HEAD_TEMPLATE: Final[str] = "<title>{title} - {topic}</title>\n"
 TITLE_SUFFIX: Final[str] = "Dashboard"
 DOCUMENT_PREAMBLE: Final[str] = (
@@ -1010,21 +1012,24 @@ def build_page() -> str:
 
 
 def render_dashboard(spec: object, fragment: bool) -> RenderedPage:
-    """Return the dashboard page for a spec and the revision it embeds."""
+    """Return the dashboard page for a spec and the update script an open copy reads."""
 
     dashboard = check_object(spec, "dashboard", DASHBOARD_SHAPE)
 
     head = PAGE_HEAD_TEMPLATE.format(
         title=escape(str(dashboard["title"])), topic=escape(str(dashboard["topic"]))
     )
-    page = head + build_page().replace(
-        DATA_PLACEHOLDER, embed_dashboard_spec(dashboard), 1
+    app = build_page()
+    app_revision = sha256(app.encode("utf-8")).hexdigest()[:16]
+    embedded_spec = embed_dashboard_spec(dashboard)
+
+    page = head + app.replace(DATA_PLACEHOLDER, embedded_spec, 1).replace(
+        APP_REVISION_PLACEHOLDER, app_revision, 1
     )
-    revision = sha256(page.encode("utf-8")).hexdigest()[:16]
-    page = page.replace(REVISION_PLACEHOLDER, revision, 1)
 
     return RenderedPage(
-        page=page if fragment else DOCUMENT_PREAMBLE + page, revision=revision
+        page=page if fragment else DOCUMENT_PREAMBLE + page,
+        update=UPDATE_SCRIPT_TEMPLATE.format(app=app_revision, dashboard=embedded_spec),
     )
 
 
@@ -1113,14 +1118,11 @@ def main() -> int:
     arguments.output.write_bytes(encoded_page)
 
     if not (arguments.fragment or arguments.compress):
-        revision_script = arguments.output.with_name(
-            arguments.output.name + REVISION_SCRIPT_SUFFIX
+        update_script = arguments.output.with_name(
+            arguments.output.name + UPDATE_SCRIPT_SUFFIX
         )
 
-        revision_script.write_text(
-            REVISION_SCRIPT_TEMPLATE.format(revision=rendered["revision"]),
-            encoding="utf-8",
-        )
+        update_script.write_text(rendered["update"], encoding="utf-8")
 
     logger.info("%s", arguments.output.resolve())
 

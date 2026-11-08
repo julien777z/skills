@@ -118,7 +118,7 @@ class ObjectShape(TypedDict):
 
 
 class RenderedPage(TypedDict):
-    """A rendered dashboard page and the revision it embeds."""
+    """A rendered dashboard page and the update script an open copy of it reads."""
 
     page: str
-    revision: str
+    update: str

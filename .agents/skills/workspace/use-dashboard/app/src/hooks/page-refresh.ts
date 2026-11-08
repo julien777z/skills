@@ -1,14 +1,21 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+import type { Dashboard } from '@/spec';
 
 declare global {
   interface Window {
-    dashboardRevision?: string;
+    dashboardUpdate?: DashboardUpdate;
   }
 }
 
-const REVISION_CHECK_INTERVAL_MS: number = 2_000;
+interface DashboardUpdate {
+  app: string;
+  dashboard: Dashboard;
+}
 
-const REVISION_SCRIPT_SUFFIX: string = '.revision.js';
+const UPDATE_CHECK_INTERVAL_MS: number = 2_000;
+
+const UPDATE_SCRIPT_SUFFIX: string = '.update.js';
 
 interface ReloadState {
   scroll: number;
@@ -18,7 +25,9 @@ function isReloadState(state: unknown): state is ReloadState {
   return typeof state === 'object' && state !== null && 'scroll' in state && typeof state.scroll === 'number';
 }
 
-export function useReloadOnNewRevision(): void {
+export function useDashboardUpdates(initial: Dashboard): Dashboard {
+  const [dashboard, setDashboard] = useState(initial);
+
   useEffect(() => {
     const reloadState: unknown = window.history.state;
 
@@ -27,15 +36,16 @@ export function useReloadOnNewRevision(): void {
       window.scrollTo({ top: reloadState.scroll });
     }
 
-    const revision = document.getElementById('dashboard-revision')?.textContent;
+    const appRevision = document.getElementById('dashboard-app-revision')?.textContent;
 
-    if (window.location.protocol !== 'file:' || !revision) {
+    if (window.location.protocol !== 'file:' || !appRevision) {
       return;
     }
 
-    const scriptAddress = window.location.href.split('#')[0] + REVISION_SCRIPT_SUFFIX;
+    const scriptAddress = window.location.href.split(/[?#]/)[0] + UPDATE_SCRIPT_SUFFIX;
+    let shown = JSON.stringify(initial);
 
-    function checkRevision() {
+    function checkForUpdate() {
       const script = document.createElement('script');
 
       script.src = `${scriptAddress}?checked=${Date.now()}`;
@@ -43,9 +53,26 @@ export function useReloadOnNewRevision(): void {
       script.onload = () => {
         script.remove();
 
-        if (window.dashboardRevision && window.dashboardRevision !== revision) {
+        const update = window.dashboardUpdate;
+
+        if (!update) {
+          return;
+        }
+
+        if (update.app !== appRevision) {
           window.history.replaceState({ scroll: window.scrollY } satisfies ReloadState, '', window.location.href);
           window.location.reload();
+
+          return;
+        }
+
+        const serialized = JSON.stringify(update.dashboard);
+
+        if (serialized !== shown) {
+          shown = serialized;
+          document.title = `${update.dashboard.title} - ${update.dashboard.topic}`;
+
+          setDashboard(update.dashboard);
         }
       };
 
@@ -54,8 +81,10 @@ export function useReloadOnNewRevision(): void {
       document.head.append(script);
     }
 
-    const timer = window.setInterval(checkRevision, REVISION_CHECK_INTERVAL_MS);
+    const timer = window.setInterval(checkForUpdate, UPDATE_CHECK_INTERVAL_MS);
 
     return () => window.clearInterval(timer);
-  }, []);
+  }, [initial]);
+
+  return dashboard;
 }
