@@ -68,7 +68,7 @@ it whole before the pass.
 - **Greps:** <hits per grep, or "no hits for any of the five greps">
 - **Fixed:** <id [severity] file:line — one clause each, or none>
 - **Declined:** <id [nit] — reason each, or none>
-- **Outside the change:** <fixed id | deferred id with record link, or none>
+- **Outside the change:** <fixed id | returned id: what the caller records, or none>
 - **Affected repositories:** <repo: disposition each, or "current repository only — <search>">
 - **Diff:** <shortstat before> → <shortstat after>
 ```
