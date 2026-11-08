@@ -105,10 +105,14 @@ This example applies only when the host already configures `ROBLOX_STUDIO_TART`,
 ```sh
 source "$HOME/.config/roblox-studio/runner.env"
 "$ROBLOX_STUDIO_TART" get "$ROBLOX_STUDIO_VM"
-# Start only when stopped, in an owned background process/session:
-"$ROBLOX_STUDIO_TART" run "$ROBLOX_STUDIO_VM" --no-graphics --no-clipboard --no-audio
-export ROBLOX_STUDIO_SSH="$ROBLOX_STUDIO_SSH_USER@$("$ROBLOX_STUDIO_TART" ip "$ROBLOX_STUDIO_VM")"
+# Start only when stopped, detached so the VM outlives the agent's own task limits:
+nohup "$ROBLOX_STUDIO_TART" run "$ROBLOX_STUDIO_VM" --no-graphics --no-clipboard --no-audio \
+  > "$HOME/.local/state/roblox-studio/vm.log" 2>&1 < /dev/null & disown
+export ROBLOX_STUDIO_SSH="$ROBLOX_STUDIO_SSH_USER@$("$ROBLOX_STUDIO_TART" ip "$ROBLOX_STUDIO_VM" --wait 180)"
 ```
+
+A harness that stops background commands after a time limit stops a `tart run` it owns, and the
+VM with it, so the VM runs detached and `tart stop` ends it.
 
 Verify SSH host keys, the intended guest editor, and the source/place before running tests. The no-graphics, no-clipboard, no-audio options keep the VM from opening a host window or sharing clipboard/audio. Store versions and qualification evidence outside this skill. Do not provision or reset a working retained VM as routine setup.
 
@@ -244,10 +248,12 @@ Tart's own `--vnc-experimental` endpoint returns black frames while the VM runs 
 
 To turn the guest Studio's MCP server on or off, copy
 [guest_studio_mcp.js](../scripts/guest_studio_mcp.js) into the guest and run
-`osascript -l JavaScript guest_studio_mcp.js <studio-pid> on` over SSH. It resets the window,
-opens Assistant → … → Settings → MCP Servers, sets the switch, closes the dialog, and exits nonzero
-unless the status bar reads the target state; `read` prints what it recognizes on screen when a
-step fails.
+`osascript -l JavaScript guest_studio_mcp.js <studio-pid> on` over SSH. It finds each control by
+its text or tooltip, so it does not depend on the guest's display size or Studio's panel layout,
+opens Assistant → … → Settings → MCP Servers, sets the switch, closes the dialog, and retries a
+pass that a dropped click spoiled. It exits nonzero unless the status bar reads the target state;
+`read` prints what it recognizes on screen when a step fails. Text recognition misses Studio's small
+labels unless its minimum text height is lowered, and misreads some, such as "AI" as "Al".
 
 For a macOS helper using CoreGraphics input and window capture, capture the target window with
 `screencapture -x -o -l <window-id> <path>`: `-o` removes shadow padding. Map coordinates from the
@@ -296,6 +302,16 @@ the runner.
 ## End of session for a retained VM
 
 These steps apply only to a task-owned or configured retained VM. Finish or record the task blocker before shutdown; a progress update does not end the test session.
+
+**Take a step only when the agent can undo it with the host locked.** The user's Mac can lock at any
+moment, and a locked host refuses host-side clicks, screenshots and window control. Everything a
+retained runner needs to come back runs without the host's screen: `tart run --no-graphics`, SSH,
+the guest's automatic desktop login, Studio relaunched in the guest, input posted inside the guest,
+and guest MCP. A full stop-and-restore cycle through these was verified on a locked host. Check
+that the route still holds before ending a session. Leave running, rather than closing, anything
+whose restoration needs the host's screen or the user: a host viewer the user is using, Studio on
+the host, a guest state only a host viewer could recreate, or a Roblox sign-in only the user can
+approve. Never end or sign out of the guest's desktop session or its Roblox session.
 
 When the game work is done, save the authorized project artifacts, close Roblox Studio normally,
 and **shut down the guest VM** so it is no longer running locally. Verify that Studio closed and the
