@@ -110,10 +110,12 @@ paths:
   entry point. They do not select the top-level workflow, hide a decision gate, declare a dependency,
   or invoke another skill. Scripts the skill runs go under `scripts/`; supporting files may live
   under `assets/`, `resources/`, or another directory named for their role. Keep only files the skill
-  needs. Data a skill's runs produce and keep, such as records, earlier results or accumulated
-  observations, lives in that skill's `verification/` folder, whichever run, skill or person reads it
-  later. It is data, never guidance a reader follows; a lesson drawn from it goes into the skill or
-  rule that owns its subject.
+  needs. Data a skill's runs keep about the skill's own subject, such as records, earlier results
+  or accumulated observations, lives in that skill's `verification/` folder, whichever run, skill or
+  person reads it later. A run's evidence about the repository it ran in, with its captures and
+  working state, stays in that repository's project records or verification output. Either is data,
+  never guidance a reader follows; a lesson drawn from it goes into the skill or rule that owns its
+  subject.
 - Never add `agents/openai.yaml` to a repository skill. Repository skills contain `SKILL.md` and
   only supporting files required by the skill; provider UI metadata stays outside repositories
   and is never propagated.
@@ -251,8 +253,8 @@ a template where correct results genuinely vary in shape.
   into a heading of its own. A restriction on one subject goes under that subject's heading;
   `## Guardrails`, always the last section when present, holds only constraints that span the
   file's subjects.
-- **An added section, subsection or bullet goes where its reader needs it, never beside the text
-  it most resembles.** Read the file's existing order first. Guidance every reader of the file needs
+- **A section, subsection or bullet, added, moved or reordered, goes where its reader needs it,
+  never beside the text it most resembles.** Read the file's existing order first. Guidance every reader of the file needs
   comes before guidance only some cases need, and each part follows the parts whose terms it uses.
   In a style guide, a section on footnotes, which only some documents use, follows the sections on
   headings and paragraphs that every document uses, even though footnotes extend paragraphs.
