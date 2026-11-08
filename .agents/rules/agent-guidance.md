@@ -128,10 +128,10 @@ paths:
 - **A skill whose guidance differs by one attribute of the task routes to a reference per value.**
   The attribute is something the task in hand has one value of, such as a platform, a provider, a
   framework or a genre. Guidance true for only some values goes to a folder named for the attribute
-  in the plural, `references/<attributes>/<value>.md` such as `references/platforms/ios.md`, so a reader loads only the variant that applies and a rule
-  meant for one value is never applied to all. Guidance true for every value stays in `SKILL.md`,
-  and guidance repeated across variant files moves up to it, narrowed to name the values it covers
-  when it does not hold for all.
+  in the plural, `references/<attributes>/<value>.md` such as `references/platforms/ios.md`, so a
+  reader loads only the variant that applies and a rule meant for one value is never applied to all.
+  Guidance true for every value stays in `SKILL.md`, and guidance repeated across variant files
+  moves up to it, narrowed to name the values it covers when it does not hold for all.
 - Add the router with the first variant file: a `## <Attribute> Router` section in `SKILL.md` that
   says how to tell the task's value, a table of each value and its linked file, and what a reader
   does when no file matches (follow `SKILL.md` alone) or the task spans several values (read each).
