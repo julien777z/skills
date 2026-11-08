@@ -28,10 +28,16 @@ DEPENDENCIES_SECTION_PATTERN: Final[re.Pattern[str]] = re.compile(
     r"^## Dependencies\n(.*?)(?=^## |\Z)", re.MULTILINE | re.DOTALL
 )
 DEPENDENCY_ENTRY_PATTERN: Final[re.Pattern[str]] = re.compile(r"^- `([^`]+)`", re.MULTILINE)
-FENCED_BLOCK_PATTERN: Final[re.Pattern[str]] = re.compile(r"^```.*?^```", re.MULTILINE | re.DOTALL)
-BACKTICKED_PATTERN: Final[re.Pattern[str]] = re.compile(r"`([a-z0-9-]+)`")
-SKILL_CONTEXT_PATTERN: Final[re.Pattern[str]] = re.compile(
-    r"`NAME`'s|`NAME` skills?\b|\bskills? `NAME`|\binvok\w* `NAME`"
+SKILL_NAME_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"(?<![\w/.-])(?P<slash>/)?(?P<tick>`)?(?P<name>[a-z0-9]+(?:-[a-z0-9]+)*)(?P=tick)?(?![\w-])"
+)
+SKILL_CONTEXT_BEFORE_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"\b(?:skills?|invok(?:e|es|ed|ing)|us(?:e|es|ed|ing)|run(?:s|ning)?|through|via"
+    r"|switch(?:es|ing)? to|hand(?:s|ing)? off to)\s+[\"'(]?$",
+    re.IGNORECASE,
+)
+SKILL_CONTEXT_AFTER_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"^(?:'s?\b|[\"')]?\s+skills?\b)", re.IGNORECASE
 )
 
 
@@ -215,29 +221,39 @@ def declared_dependencies(entry_point: str) -> set[str]:
 
 
 def named_skills(text: str, skill_names: set[str]) -> set[str]:
-    """Return the skills a text names in backticks, outside fenced code blocks.
+    """Return the skills a text names, code blocks included.
 
-    A one-word name also spells ordinary values, such as a field or a keyword, so it counts only
-    where the text uses it as a skill: followed by a possessive, or beside the word skill.
+    A `/name` command counts anywhere, and so does a hyphenated name in backticks. Any other
+    mention counts only in skill context, since a name also spells ordinary words, fields and
+    keywords: followed by a possessive or the word skill, or after the word skill or a verb that
+    runs one, such as invoke, use, run, switch to or hand off to. An unquoted one-word name counts
+    only as a command.
     """
 
-    prose = FENCED_BLOCK_PATTERN.sub("", text)
     named: set[str] = set()
 
-    for match in BACKTICKED_PATTERN.finditer(prose):
-        name = match.group(1)
+    for match in SKILL_NAME_PATTERN.finditer(text):
+        name = match.group("name")
 
         if name not in skill_names:
             continue
 
-        if "-" in name:
+        quoted = match.group("tick") is not None
+        command = match.group("slash") is not None
+        hyphenated = "-" in name
+
+        if command or (quoted and hyphenated):
             named.add(name)
 
             continue
 
-        around = prose[max(0, match.start() - 20) : match.end() + 20]
+        if not (quoted or hyphenated):
+            continue
 
-        if SKILL_CONTEXT_PATTERN.search(around.replace(match.group(0), "`NAME`")):
+        before = text[max(0, match.start() - 30) : match.start()]
+        after = text[match.end() : match.end() + 10]
+
+        if SKILL_CONTEXT_BEFORE_PATTERN.search(before) or SKILL_CONTEXT_AFTER_PATTERN.search(after):
             named.add(name)
 
     return named

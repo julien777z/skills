@@ -50,7 +50,7 @@ paths:
   categories, or if it has none, pick them", the skill carries both branches. A list of one
   repository's categories, page names or skill names written into a shared skill makes it that
   repository's copy, however generic the rest reads, and the same skill then misreads every other
-  repository it is added to; shared skills may still name each other as collaborators.
+  repository it is added to; shared skills still name the shared skills they depend on.
 - **A file's name and description bound what it owns.** Before choosing a skill or rule, state
   the condition its name and description set — a release stage, a technology, a mode, a kind of
   task — and ask whether the guidance would still be true where that condition does not hold. If
@@ -181,8 +181,12 @@ trigger.
   caller uses it. Peers that never invoke each other name neither; each is found from its own
   description. Resolve a reverse or cyclic edge at its owner by moving the policy to the caller or
   to a lower-level skill both depend on, never with flags, copied policy, a call hidden in a
-  reference, a name swapped for a description, or a name dropped while the policy read stays. `edit-skill`'s source check refuses a
-  named but undeclared skill and a dependency cycle anywhere in the tree.
+  reference, a name swapped for a description, or a name dropped while the policy read stays.
+  `edit-skill`'s source check refuses a dependency cycle and an undeclared skill named in any file of
+  a package, code blocks included: as a `/name` command, as a hyphenated name in backticks, or as
+  another mention beside a possessive, the word skill or a verb that runs one, an unquoted one-word
+  name counting only as a command. A description, or a name outside those forms, passes it, and so
+  does a declared edge that runs back toward a caller.
 - **A skill restricted to user invocation is never an automatic dependency.** A directly
   user-invoked workflow may delegate such an action only when its contract explicitly authorizes
   that action and bounds its targets, and the restricted action's own entry point recognizes
