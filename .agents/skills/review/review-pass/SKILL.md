@@ -123,7 +123,7 @@ checks over its own fixes.
    the reviewed delta marked. Fix a flag as one increment under `acceptance-gate`'s **Bounds**;
    that fix's own check is the **Pre-Push Gate** verdict the GitHub rule defines.
 7. Re-read the remote head, base and merge base. When they still match the accepted head, record
-   it under **Range** and return the **Result**; otherwise bring the change in and return to step 6.
+   it under **Range** and return its **Output**; otherwise bring the change in and return to step 6.
 
 A finding outside the change follows **Review Loop**'s rule for it: a small fix lands here, the rest
 is recorded with `defer-scope`. A recorded deferral is discharged, never a gate on the review or

@@ -122,5 +122,5 @@ rate limit, and any state `merge-gate` is still waiting on are nonterminal.
 
 Every terminal report includes a clickable Markdown link for every pull request created, updated,
 reviewed, or merged during the run; never replace links with repository names, numbers, counts, or
-bare URLs. For each unit, report `review-pass`'s output — its range, what it fixed, its acceptance
-verdict and thread dispositions — and the merge commit or the gate that holds it.
+bare URLs. For each unit, report `review-pass`'s **Output** in full and the merge commit or the
+gate that holds it.

@@ -786,7 +786,7 @@ Two streams run side by side from here: the guidance stream and the source strea
    cover each of them and every simplification, confirm intentional contract changes are reflected
    in the expected behavior, and confirm multi-repository delivery artifacts describe only their
    owning repository. Then build this pull request's ready-for-review message, in the shape below,
-   from `list-prs`, what the run did and `review-pass`'s output.
+   from `list-prs`, what the run did and `review-pass`'s **Output**.
 4. Send step 3's message; the pull request stays draft. Only when **Task Authorization** finds
    the merge authorized, invoke `merge-gate` with the accepted head and, as its fix rule, the
    **Pre-Push Gate** with each fix folded into its commit through `rewrite-git-history`'s fixup
