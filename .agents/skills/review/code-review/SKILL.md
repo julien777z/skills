@@ -35,6 +35,8 @@ fixed values in that type. A receipt without the conditional list is incomplete 
 - `agent-lock`
 - `session-ledger`
 - `interactive-skill`
+- `database-migrations`
+- `defer-scope`
 
 ## Invocation
 
@@ -373,8 +375,7 @@ Only in fix mode. Every reported finding is CONFIRMED, because step 4 refutes ev
 Fix mode is bound by `references/rubric.md` — Fix Mode and A Fix Inherits The Intent: every CONFIRMED finding gets fixed, severity ranks the work and never selects it, a round is not finished while confirmed findings remain, a test seam never softens a fix, and a fix takes the remedy the change itself would take rather than the shape the change is removing.
 
 Apply `pre-production` to compatibility and stored-data decisions. When its required-data policy
-calls for a schema migration, invoke the repository's migration skill, when the skill listing declares
-one, for the implementation and validation.
+calls for a schema migration, invoke `database-migrations` for the implementation and validation.
 
 Work findings in severity order:
 
@@ -382,7 +383,7 @@ Work findings in severity order:
 2. Follow the repository's own rules in the fix itself.
 3. When the minimal fix does not resolve the finding, fix its cause. A defect whose root lies outside the diff is still this review's to fix, and a rule the code knowingly breaks is resolved by correcting one of them, not by recording the contradiction. Where two rules genuinely conflict, make the governing rule state the real contract rather than leaving code that violates it.
 4. Escalate only a decision that is genuinely the user's: a change to intended product behavior, or a choice between defensible designs that neither the diff nor the guidance settles. Designs that differ only in how the code is built — where shared behavior lives, which repository owns a helper, which mechanism replaces parallel copies — are ranked by `pre-production` and `code-simplify`: apply the one that leaves the fewest mechanisms and report the choice. A reviewer or validator calling a finding an open decision, or a question for the user, is a claim this step classifies, never the classification. Ask the specific question through the host's question tool and act on the answer. An unanswered question is one of only three routes to reporting a CONFIRMED finding unfixed, and the report must say what was asked.
-5. Size keeps a confirmed finding out of this round only under the size bar in `references/rubric.md` — Fix Mode; a confirmed defect is fixed here whatever its size. A scope the bar admits is recorded through the repository's deferral mechanism so it outlives the review, and the record is named in the report: a finding described only in the report is not deferred, it is dropped. That mechanism's admission gate decides whether the scope may be recorded at all; a refusal naming fix or do means the finding is fixed here, and one naming close is recorded cancelled with its reason and reconsideration criterion.
+5. Size keeps a confirmed finding out of this round only under the size bar in `references/rubric.md` — Fix Mode; a confirmed defect is fixed here whatever its size. A scope the bar admits is recorded through `defer-scope` so it outlives the review, and the record is named in the report: a finding described only in the report is not deferred, it is dropped. `defer-scope`'s admission gate decides whether the scope may be recorded at all; a refusal naming fix or do means the finding is fixed here, and one naming close is recorded cancelled with its reason and reconsideration criterion.
 
 **Each fix is committed as its own increment. A working-pull-request fix is pushed and the GitHub rule’s **Pre-Push Gate** verdict is its gate; a local-snapshot fix freezes a replacement local snapshot and continues its local validation and review loop without pushing.** A pre-existing defect, an `OUTSIDE_DIFF` anchor, a defect the diff inherits, and anything this round considered deferring are the fixes most likely to take the shape the change is removing, because nothing about them was the change's purpose, and the gate reads each against the intent statement. Resolve each flag under `acceptance-gate`'s **Bounds**, retaining the finding and intent through each changed increment and fresh review. A repeated flag is neither a deferral justification nor permission to leave flagged code standing.
 

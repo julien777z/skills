@@ -14,13 +14,13 @@ contract and index design.
 ## Dependencies
 - `doctor-protocol`
 - `pre-production`
+- `database-migrations`
 
 ## Inventory Fields And Contract Models
 
 Run `doctor-protocol`.
 
-Also read the repository's migration skill when the skill listing declares one, found by its
-description. Its migration mechanics, data survivorship, and validation rules govern every
+Also read `database-migrations`. Its migration mechanics, data survivorship, and validation rules govern every
 requiredness cascade and index change; this doctor never restates them.
 
 Trace each selected declaration across repository ownership boundaries far enough to cover its
@@ -133,7 +133,7 @@ guarantee becomes true. Update the complete downstream cascade together: validat
 serialization, storage, reads, tests, and generated consumers. Do not fix only the database column
 or add a runtime fallback that hides an upstream mismatch.
 
-For a requiredness migration, invoke `pre-production` and the repository's migration skill. Their authoritative
+For a requiredness migration, invoke `pre-production` and `database-migrations`. Their authoritative
 data, migration-only placeholder, constraint, survivorship, and validation policies control the
 implementation. A placeholder is never evidence that a genuinely optional field should be required.
 
@@ -259,7 +259,7 @@ Add, reshape, or remove an index only when its live operations and database sema
 change. Mark workload-dependent decisions unresolved when the required plans or statistics are
 unavailable; continue correcting structurally provable gaps such as a referential action that must
 scan an unbounded referencing table. Apply approved changes through the canonical schema and
-the repository's migration skill, including its data safety, lock-risk, reversibility, and
+`database-migrations`, including its data safety, lock-risk, reversibility, and
 validation requirements. Never issue an ad hoc index change against a live database.
 
 ## Verify Third-Party Contracts

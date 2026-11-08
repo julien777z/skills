@@ -11,6 +11,7 @@ Keep a problem alive after the conversation ends without scheduling its implemen
 ## Dependencies
 - `linear`
 - `acceptance-gate`
+- `pre-production`
 
 ## Modes
 
@@ -46,9 +47,8 @@ Record work that is genuinely larger than the change in flight and whose need is
 redesign, a broad sweep somebody could reasonably decline — or that is blocked externally, or that
 awaits a decision already put to its owner and still open, or one the user declined in the current
 request; a question nobody has asked yet is asked, not recorded. **A confirmed defect is never
-recorded** — and a defect is anything the system does that a reader would call broken, work it
-cannot finish in useful time, a resource nothing bounds and work a restart throws away included, as
-`acceptance-gate`'s admission question states. Whatever its size, however its fix has to be written,
+recorded** — a defect as `pre-production`'s **Scope Follows The Defect, Not The Request** defines
+one. Whatever its size, however its fix has to be written,
 and even when a check would rediscover it, it is fixed in the change in flight, or on a branch off
 the default when nothing is in flight to carry it. Neither is the choice offered to the user: asking whether to record a
 confirmed defect is how the refusal gets laundered into somebody else's decision, and their answer
