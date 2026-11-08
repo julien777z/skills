@@ -190,6 +190,15 @@ with an obsolete owned contract or revision.
 
 ## Trade-Offs Are Surfaced, Never Enforced
 
+- **A bug fix restores the intended behavior where it fails.** Identify that behavior from the
+  request, owning contract, or working cases. Keep the rest of the experience and contract while
+  diagnosing, planning, and testing the repair. A failed implementation, a working alternate
+  path, or a cheaper substitute establishes nothing about whether the intended behavior can be
+  restored. Investigate viable repairs within the authorized scope and take the next one when an
+  approach fails. Offer a different outcome only when a verified constraint rules out restoring
+  the intended behavior within that scope, or the user explicitly requests alternatives. If a
+  constraint can be removed only by expanding scope or authority, explain the constraint and ask
+  about that expansion under the global rules.
 - **A behaviour change is not a blocker.** Where the cleanest result shifts behaviour — a value
   reaching a store it never reached before, a permission finally applying where it always should have,
   a value newly shown to or withheld from someone — that is the user's decision, and the way to put
@@ -218,7 +227,7 @@ with an obsolete owned contract or revision.
 - Say what changed for whom. "This is a change, not a refactor" belongs at the top of the description,
   not buried among the mechanics.
 - **A measured failure is never a trade-off.** A rate, a duration, a kill or a resource trail observed
-  on a live run is a defect; only the shape of its fix is put to the user. Whether it is fixed, or
+  on a live run is a defect. Fix it under the same rule as any other bug. Whether it is fixed, or
   whether it may be recorded and left, is not a fork to present.
 
 ## Target Contract

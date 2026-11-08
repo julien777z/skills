@@ -75,6 +75,9 @@ Every task that changes files starts here, and so does every follow-up that arri
 
 ### What The Plan Holds
 
+- For a bug, establish the intended behavior and apply `pre-production`'s **Trade-Offs Are
+  Surfaced, Never Enforced** before choosing the remedy or presenting an alternative. Use the
+  same check when a worker, reviewer, or failed approach changes the proposed remedy.
 - Select verification before recommending it, putting it in a plan, or delegating it. Read the
   shared testing rule's **Environments** section and invoke `run-site` to apply its **Principles**
   before selecting browser walkthroughs or rendered UI inspections, including when later review
