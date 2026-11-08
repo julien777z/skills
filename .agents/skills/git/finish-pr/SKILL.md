@@ -92,7 +92,10 @@ dependent unit. Its dependency gates its merge, never its review:
 
 ## Workflow
 
-Process each unit through these steps before starting the next.
+Process each eligible unit through these steps, preserving their order within that unit. A held unit
+does not delay starting another independent unit whose current work and dependencies permit it;
+hold only the unit that needs the unresolved result, recording its gate and saved next action. Apply
+`execute-task`'s **Priority** before choosing the next eligible unit.
 
 1. Invoke `review-pass` on the pull request with its intent statement, asking for the whole pull
    request: its complete merge-base diff, the full contents of every touched file, related code and

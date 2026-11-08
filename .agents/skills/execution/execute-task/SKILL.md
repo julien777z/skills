@@ -686,6 +686,10 @@ Each item's line records its current disposition:
 A held item remains outstanding; naming its gate or reporting it does not end the run. Withdrawal
 or supersession removes only the work the user's instruction actually cancels.
 
+**At the review-round limit, record the disposition under the global rule.** If the approved
+outcome still needs work, update the active plan and start the replacement's first Priority-permitted
+step under the existing authorization, without another plan approval.
+
 **A wait blocks only the work that depends on what is awaited.** While one item waits on something
 outside the run's hands — a background agent, CI, a review, a build, the user's answer to one
 question or confirmation — start the authorized, already-named work that **Priority** permits and that neither needs the
