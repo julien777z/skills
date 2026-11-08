@@ -818,7 +818,7 @@ The ready-for-review message takes exactly this shape, one message per pull requ
   1. <item>
 - **Still running:** <the authorized merge through `merge-gate` (CI ~<n> min) | the guidance fixes from this task that have their own pull request (<n> correction(s)) | nothing>
 
-**Next:** <review the pull request and send follow-ups here | review the pull request; it merges once its checks pass>
+**Next:** <review the pull request; send follow-ups here, `/finish-pr` to review the whole pull request and merge, or `/merge-now` to merge first and review after | review the pull request; it merges once its checks pass>
 ```
 
 The run stays open until both streams finish: the source stream when its message is sent, or when

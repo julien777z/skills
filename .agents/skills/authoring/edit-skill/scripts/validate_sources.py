@@ -1,4 +1,5 @@
 import argparse
+import json
 import logging
 import os
 import re
@@ -37,7 +38,7 @@ SKILL_CONTEXT_BEFORE_PATTERN: Final[re.Pattern[str]] = re.compile(
     re.IGNORECASE,
 )
 SKILL_CONTEXT_AFTER_PATTERN: Final[re.Pattern[str]] = re.compile(
-    r"^(?:'s?\b|[\"')]?\s+skills?\b)", re.IGNORECASE
+    r"^(?:'(?:s\b|(?=\s|$))|[\"')]?\s+skills?\b)", re.IGNORECASE
 )
 
 
@@ -223,11 +224,11 @@ def declared_dependencies(entry_point: str) -> set[str]:
 def named_skills(text: str, skill_names: set[str]) -> set[str]:
     """Return the skills a text names, code blocks included.
 
-    A `/name` command counts anywhere, and so does a hyphenated name in backticks. Any other
-    mention counts only in skill context, since a name also spells ordinary words, fields and
-    keywords: followed by a possessive or the word skill, or after the word skill or a verb that
-    runs one, such as invoke, use, run, switch to or hand off to. An unquoted one-word name counts
-    only as a command.
+    A hyphenated name in backticks counts anywhere. Any other backticked or hyphenated mention
+    counts only in skill context, since a name also spells ordinary words, fields and keywords:
+    followed by a possessive or the word skill, or after the word skill, a verb that runs one, such
+    as invoke, use, run, switch to or hand off to, or through or via. A `/name` command is one the
+    user is told to run, never a reference, and an unquoted one-word name never counts.
     """
 
     named: set[str] = set()
@@ -242,7 +243,10 @@ def named_skills(text: str, skill_names: set[str]) -> set[str]:
         command = match.group("slash") is not None
         hyphenated = "-" in name
 
-        if command or (quoted and hyphenated):
+        if command:
+            continue
+
+        if quoted and hyphenated:
             named.add(name)
 
             continue
@@ -259,20 +263,41 @@ def named_skills(text: str, skill_names: set[str]) -> set[str]:
     return named
 
 
+def third_party_skill_names(skills_dir: Path) -> set[str]:
+    """Return the skills the external resources file registers, whose text their upstream owns."""
+
+    registry = skills_dir.parent / EXTERNAL_RESOURCES_FILENAME
+
+    if not registry.exists():
+        return set()
+
+    resources = json.loads(registry.read_text())["resources"]
+
+    return {resource["name"] for resource in resources if resource["kind"] == "skill"}
+
+
 def find_dependency_problems(skills_dir: Path) -> list[str]:
-    """Report skills named without being declared, and cycles among declared dependencies."""
+    """Report skills named without being declared, and cycles among declared dependencies.
+
+    Third-party packages are not read for names, since their upstream owns their text.
+    """
 
     packages = {entry.parent.name: entry.parent for entry in skills_dir.rglob(SKILL_ENTRY_FILENAME)}
+    third_party = third_party_skill_names(skills_dir)
     skill_names = set(packages)
     graph: dict[str, set[str]] = {}
     problems: list[str] = []
 
     for name, package in sorted(packages.items()):
         declared = declared_dependencies((package / SKILL_ENTRY_FILENAME).read_text())
-        texts = [path.read_text() for path in sorted(package.rglob("*.md"))]
-        named = set().union(*(named_skills(text, skill_names) for text in texts)) - {name}
 
         graph[name] = declared & skill_names
+
+        if name in third_party:
+            continue
+
+        texts = [path.read_text() for path in sorted(package.rglob("*.md"))]
+        named = set().union(*(named_skills(text, skill_names) for text in texts)) - {name}
 
         for missing in sorted(named - declared):
             problems.append(f"{name} names `{missing}` without declaring it in its Dependencies")

@@ -531,7 +531,7 @@ budgets, cross-suite layout and coverage maps are outside this lens and are name
   `pre-production`'s **Target Contract** says; a removal is never narrowed, shimmed or dropped to
   keep an owned shape stable.
 - Data a removal leaves in the old shape — a flag whose retirement backfill has not run, a chain to
-  collapse — follows `pre-production`'s **Product State** and **Target Contract** and the
+  collapse — follows `pre-production`'s **Product State** and **Target Contract** and
   `database-migrations`, never a question.
 - The user decides what `pre-production`'s **Trade-Offs Are Surfaced, Never Enforced** reserves
   for them. A contract a consumer outside the user's control speaks stays as it is and is reported,

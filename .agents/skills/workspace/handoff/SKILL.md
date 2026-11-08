@@ -153,7 +153,7 @@ Hand-off complete
 
 Paste this into the next session:
 
-    Continue the hand-off on these pull requests, in order: https://github.com/owner/repository/pull/123 https://github.com/owner/other/pull/45
+    /continue-handoff https://github.com/owner/repository/pull/123 https://github.com/owner/other/pull/45
 ```
 
 The paste line lists every open pull request the hand-off covered, in the order the next session
