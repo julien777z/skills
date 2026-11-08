@@ -8,9 +8,10 @@ import subprocess
 import sys
 import tempfile
 import venv
-from enum import StrEnum
 from pathlib import Path
-from typing import Final, TypedDict
+from typing import Final
+
+from models import ActionReference, ExternalResource, SourceCommand, SyncOutcome
 
 logger = logging.getLogger(__name__)
 
@@ -43,36 +44,6 @@ SKILL_CONTEXT_AFTER_PATTERN: Final[re.Pattern[str]] = re.compile(
 CONTEXT_BEFORE_CHARS: Final[int] = 30
 CONTEXT_AFTER_CHARS: Final[int] = 10
 SKILL_RESOURCE_KIND: Final[str] = "skill"
-
-
-class SourceCommand(StrEnum):
-    """An operation the script runs with the pinned sync tool."""
-
-    CHECK = "check"
-    MIRROR = "mirror"
-
-
-class SyncOutcome(StrEnum):
-    """What one run of the sync tool concluded."""
-
-    VALID = "valid"
-    INVALID = "invalid"
-    UNAVAILABLE = "unavailable"
-
-
-class ActionReference(TypedDict):
-    """The sync action a workflow pins."""
-
-    repository: str
-    reference: str
-
-
-class ExternalResource(TypedDict):
-    """One entry of the external resources file the sync tool refreshes."""
-
-    kind: str
-    name: str
-    update_on_sync: bool
 
 
 EXIT_CODES: Final[dict[SyncOutcome, int]] = {

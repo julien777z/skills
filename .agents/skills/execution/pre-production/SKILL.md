@@ -122,13 +122,14 @@ with an obsolete owned contract or revision.
   a restart throws away where a sibling phase keeps its place, and a job that only advances because
   a container happens to stay alive are defects of the same standing. "The result is still correct",
   "it only costs time" and "how much to keep is a policy question" describe a defect and never
-  exempt one; a system that is right and too slow to use is broken. A missing safeguard is not a
-  defect, since the system does what it was built to do, unless its absence is an exploitable
-  security finding, because what the system does includes what an attacker can make it do. A defect
-  is fixed in the change in flight, outside both the hop limit and the size budget below.
-  Sitting in a shared component, an owned library or another owned repository the pull request does
-  not otherwise touch is no reason to leave it: the fix goes to that repository's pull request for
-  this work. It is never listed as noticed, offered or deferred.
+  exempt one; a system that is right and too slow to use is broken.
+- **Every defect is fixed in the change in flight.** A missing safeguard is not a defect, since the
+  system does what it was built to do, unless its absence is an exploitable security finding,
+  because what the system does includes what an attacker can make it do. A defect is fixed in the
+  change in flight, outside both the hop limit and the size budget below. Sitting in a shared
+  component, an owned library or another owned repository the pull request does not otherwise touch
+  is no reason to leave it: the fix goes to that repository's pull request for this work. It is
+  never listed as noticed, offered or deferred.
 - **A security vulnerability the work finds is such a defect, whoever finds it and whenever it
   arrived.** One a gate, reviewer or audit reports in code the change never touched, one that
   predates the change, and one another layer is said to stop before that layer is traced on every
