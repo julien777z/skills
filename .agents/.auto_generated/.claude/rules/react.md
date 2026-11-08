@@ -212,7 +212,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   content, such as an empty state, an error or a refusal: "Overview", "Contact details", "No
   playlists yet", "Sync off". A sentence, such as "This folder is shared with you as read-only", or
   a phrase addressed to the reader, such as "What you can do here" or "Let's get you set up", goes
-  in the line under the heading, which carries the explanation.
+  in the line under the heading, which carries the explanation. A title too long for its place is
+  given fewer words, never cut short with an ellipsis, whether by the text written into it or by
+  styling that truncates it: a title the reader cannot finish names nothing.
 - **Features offered side by side carry names no reader could mistake for each other.** Each name
   says what the feature holds or does in the reader's words, so a reader who has used neither picks
   the right one: "Collections" beside "Groups", or "Profiles" beside "Accounts", reads as two words
