@@ -194,8 +194,7 @@ exception permitting continued ordinary work. Deploy through the authorized bran
 resume required delivery checks after that live proof. A successful child task,
 health response or merge does not establish it. After an authorized merge, repeat the operation
 from the default-source deployment; if it fails, resume recovery and pause ordinary delivery work
-again. This order grants no deployment or merge authority: **Task Authorization** still governs both. An invoked `incident` supplies its own
-recovery, review and source-restoration procedure.
+again. This order grants no deployment or merge authority: **Task Authorization** still governs both.
 
 ### Follow-Ups
 

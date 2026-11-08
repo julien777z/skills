@@ -1,6 +1,6 @@
 ---
 name: review-pass
-description: Review a change and fix what the review finds, through one independent reviewer in a short loop. Use when the user asks for a code review, a review loop or "sol loop", and from `execute-task`'s Completion, `finish-pr`, `merge-now`, `incident` and guidance delivery. Never merges.
+description: Review a change and fix what the review finds, through one independent reviewer in a short loop. Use when the user asks for a code review, a review loop or "sol loop", and from `execute-task`'s Completion, `finish-pr`, `merge-now` and guidance delivery. Never merges.
 short_description: 'Review and fix what a pull request has not had reviewed yet, then record the reviewed head.'
 ---
 
@@ -37,8 +37,6 @@ skill never readies, merges or deploys.
   and report its findings without fixing, posting or recording anything.
 - **Loop** (the user asks for a review loop or "sol loop"): run **Review Loop** over the target
   with fixes, and push only when the user asked to push or update the pull request.
-- **One round** (a caller such as `incident` asks for it): the **Workflow** with a **Review Loop**
-  budget of one round and no new round over its fixes.
 
 ## Targets
 
