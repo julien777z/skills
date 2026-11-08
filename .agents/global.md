@@ -283,7 +283,13 @@ alwaysApply: true
   later. Where the step happens on a surface the agent can open — a viewer, a settings page, a
   sign-in page — the agent opens it at the exact place and verifies it shows before asking, so the
   user's part is the action alone. A confirmation is the user's word, not the outcome: check the
-  result at its source before building on it.
+  result at its source before building on it. **Whether a step is only the user's is settled
+  before asking.** A step the agent's tools can reach by any route — inside a machine or VM it
+  controls, through a viewer or settings page it can open, or briefly through the user's own
+  desktop input — is the agent's to take, never put to the user as a request or as a choice
+  between their doing it and the agent's. The agent prefers the route that leaves the user's
+  desktop alone and states any interruption, such as a moving cursor, when it happens. Only what
+  needs the user's own identity, device, password or physical presence goes to them.
 - **A choice between substantially different versions of a page shows every option rendered.**
   When the options differ in layout, structure or the controls the reader uses — a list or a grid,
   one column or two, a section moved or removed — the question carries, directly beneath it, a
