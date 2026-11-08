@@ -42,6 +42,18 @@ Opening a local place can launch a separate Studio process. An existing app-cont
 
 Multiple browser processes can have different tabs/accounts. An AppleScript browser query may reach a separate automation instance rather than the signed-in visible browser. Verify the actual page/account through the chosen surface. Do not browse unrelated user tabs to compensate.
 
+Before choosing this route, check the desktop session: whether the screen is locked
+(`CGSessionCopyCurrentDictionary()` reports `CGSSessionScreenIsLocked`) and whether the process
+sending input is trusted for accessibility (`AXIsProcessTrusted()`). A small Swift script run with
+`swift` reads both without extra packages. A locked screen drops synthetic input; that unlock is the
+user's step, while the settings change it unblocks stays the agent's.
+
+For a Studio setting an operation reports as missing, such as an upload directory or scope the
+Assistant MCP permissions must approve, open the setting the error names in the verified Studio
+window, make the narrowest change that admits the operation — the one directory holding the
+artifact, the scopes the endpoint lists — save it, and retry the original request. Never move or
+copy the artifact to a location that is already approved to avoid the setting.
+
 A locked desktop affects operations that depend on that desktop. Independent guest access follows the [testing reference](testing.md); independent file, build, and API work can continue.
 
 ## Delivery
