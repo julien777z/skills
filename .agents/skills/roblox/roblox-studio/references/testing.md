@@ -393,10 +393,8 @@ resuming normal controls.
 
 An empty inventory does not establish that MCP is disabled. The intended process may be waiting
 on sign-in, a recovery dialog, Assistant initialization, or the proxy connection. Inspect that
-editor's current UI. Resolve blocking dialogs, open **Assistant → … → Settings → MCP Servers** (in a
-guest, through the bundled script), and
-inspect
-the normal MCP setting before changing it. If remote pointer input cannot open Assistant, use its
+editor's current UI. Resolve blocking dialogs, then inspect the normal MCP setting before changing
+it under **Assistant → … → Settings → MCP Servers**; in a guest, the bundled script does both. If remote pointer input cannot open Assistant, use its
 native menu or the installed editor's shortcut configuration; inspect the current binding rather
 than assuming a key. Restore any temporary binding afterward. Keep the proxy alive during bounded
 discovery, then verify the intended editor with a read-only command against its explicit ID before

@@ -77,11 +77,11 @@ function resetStudioWindow(process) {
 function postMouse(type, x, y) {
   const event = $.CGEventCreateMouseEvent(source, type, $.CGPointMake(x, y), $.kCGMouseButtonLeft);
 
+  const pressure = type === $.kCGEventLeftMouseDown ? 1 : 0;
+
   // Studio's widgets ignore a press without a click count, and its web panels one without
   // pressure.
   $.CGEventSetIntegerValueField(event, $.kCGMouseEventClickState, 1);
-  const pressure = type === $.kCGEventLeftMouseDown ? 1 : 0;
-
   $.CGEventSetDoubleValueField(event, $.kCGMouseEventPressure, pressure);
   $.CGEventPost($.kCGHIDEventTap, event);
 }
@@ -111,9 +111,10 @@ function pressEscape() {
 
 // Returns recognized lines with their centers and right edges in screen points.
 function readScreen() {
-  $.NSFileManager.defaultManager.removeItemAtPathError(CAPTURE_PATH, null);
-
   const files = $.NSFileManager.defaultManager;
+
+  files.removeItemAtPathError(CAPTURE_PATH, null);
+
   const task = $.NSTask.launchedTaskWithLaunchPathArguments(
     "/usr/sbin/screencapture",
     $(["-x", CAPTURE_PATH]),
