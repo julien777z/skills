@@ -1,6 +1,6 @@
 ---
 name: skill-flow
-description: "Show how the skills run as a dashboard: one page per kind of work (execution, review, delivery, guidance, doctors, deferrals), each a diagram of which skill invokes, spawns or borrows from which, where subagents start and how many, read from the current canonical guidance; or interrogate a skill or a whole flow, asking the user about each substantial step with a recommendation for using fewer subagents to better effect, and applying what they agree. Use when asked how skills run, what calls what, where subagents spawn, for the flow of one skill or kind of work, or to review, tune or interrogate skill flows. It never runs the workflows it shows."
+description: "Show how the skills run as a dashboard: one page per kind of work (execution, review, delivery, guidance, doctors, deferrals), each a diagram of which skill invokes, spawns or borrows from which, where subagents start and how many, read from the current canonical guidance; or interrogate a skill or a whole flow, asking the user about each substantial step with a recommendation for using fewer subagents to better effect, and applying what they agree; or compare the current flows with a proposed set of skills. Use when asked how skills run, what calls what, where subagents spawn, for the flow of one skill or kind of work, to review, tune or interrogate skill flows, or how a change to the skills compares with what runs now. It never runs the workflows it shows."
 short_description: 'Show how the skills run, or interrogate a flow to tune it.'
 ---
 
@@ -30,9 +30,15 @@ choices:
     detail: walk a skill or flow with you, step by step, and tune it
     aliases: [configure, tune, review the flow, audit the flow]
     when: the request asks to question, configure, tune or change how a skill or flow runs
+  - id: proposed
+    label: Proposed flow
+    detail: compare the current flows with a proposed set and show what changes
+    aliases: [compare, diff, before and after]
+    when: the request asks how a change to the skills compares with what runs now
 ```
 
-**Show** follows **Pages** and **Workflow**; **Interrogate** follows **Interrogate**.
+**Show** follows **Pages** and **Workflow**; **Interrogate** follows **Interrogate**; **Proposed
+flow** follows **Proposed Flow**.
 
 ## Scope
 
@@ -227,6 +233,43 @@ the request asks for a new page.
 6. **Deliver** through `use-dashboard`, as a dashboard of a subject that outlives the session, so an
    existing page with the same title and topic, the repository, is updated when this session can
    update it. Name what is incomplete, if anything, in one line.
+
+## Proposed Flow
+
+Compare two sets of skills: the **current** flows, the default branch as freshly fetched, and the
+**proposed** flows, the set the request names — a branch, a pull request, a commit, or the
+checkout's uncommitted edits — or, when it names none, the checked-out branch. The page answers one
+question: what would change in how the skills run. It shows the change, not two whole dashboards.
+
+1. **Map both sets** as **Workflow** steps 1 to 4 do, recording each set's repository, commit and
+   uncommitted state. List the skills whose package differs between them, with the skills added and
+   removed, and map only the pages those skills reach; on the current side, read only those pages.
+   Split the reading by side between at most two read-only readers, one current and one proposed.
+2. **Compare the maps.** For each skill on a mapped page, record what was added, removed or changed:
+   a skill, a step, a launch, a loop, an invocation or a borrow, a count, a scope or a cap. A change
+   of wording that changes none of these is no change.
+3. **Build the spec** as **Workflow** step 5 does, with these differences:
+   - `title` `Skill Flow Dashboard`, `topic` "Proposed flow", `subtitle` "Current <short commit> →
+     proposed <ref>.", and `references` linking both commits.
+   - `metrics`: the four **Workflow** names, each `value` "<current> → <proposed>", such as "~25 →
+     ~12", and `detail` what moved it in a few words.
+   - `Overview`: a `table` `What changed` with a row per mapped page and the columns Page,
+     Subagents per run (current → proposed), Loops (current → proposed) and Change (a few words),
+     each row's `details` an outline of that page's changes; a `changes` section `Skills`, `counted`,
+     one item per added, removed or changed skill with what changed in one sentence; and `notes`
+     naming in one line the pages with no change, which get no page.
+   - `Usage`: a `table` `Subagents per run`, one row per skill a person starts that changed, with
+     the columns Skill, Current, Proposed and What changed, most subagents saved first; a `changes`
+     section `Loops`, one item per loop added, removed or changed, its `detail` the cap and what a
+     round reruns on each side.
+   - Each mapped page: a `diagram` `Flow` of the proposed flow with the current flow's removed
+     parts left in, each node and edge carrying `change` `added`, `removed` or `changed` and no
+     `change` when unchanged, with a `legend` and `steps` saying what changed in order; then a
+     `changes` section `What changed`, one item per change the diagram marks; then a `tabs` section
+     `How it runs` with the tabs `Proposed` and `Current`, each holding that side's **Workflow**
+     `How it runs` tree, so the reader opens one side at a time. Scenarios and the `Skills` table
+     are left out.
+4. **Deliver** as **Workflow** step 6 does, as its own dashboard beside the one Show builds.
 
 ## Interrogate
 
