@@ -109,7 +109,8 @@ body {
     cursor: pointer;
   }
 
-  a:not([data-slot]) {
+  a:not([data-slot]),
+  button[data-reference] {
     @apply font-medium text-info underline-offset-4 hover:underline;
   }
 

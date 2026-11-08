@@ -346,6 +346,13 @@ def check_tabs(tabs: dict[str, object], path: str) -> None:
         raise DashboardSpecError(f"{path}.tabs must hold a tab with sections")
 
 
+def check_reference_target(reference: dict[str, object], path: str) -> None:
+    """Require a reference to link to a URL or open details, never both or neither."""
+
+    if ("url" in reference) == ("details" in reference):
+        raise DashboardSpecError(f"{path} must have exactly one of url and details")
+
+
 def check_section(section: object, path: str) -> None:
     """Require one section of a known type."""
 
@@ -595,8 +602,13 @@ DIAGRAM_LEGEND_SHAPE: Final[ObjectShape] = ObjectShape(
 )
 REFERENCE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Reference",
-    fields={"text": TEXT, "url": TEXT},
-    required=frozenset({"text", "url"}),
+    fields={
+        "text": TEXT,
+        "url": TEXT,
+        "details": Field(check=check_section, typescript="Section"),
+    },
+    required=frozenset({"text"}),
+    relations=check_reference_target,
 )
 TREE_NODE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="TreeNode",

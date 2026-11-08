@@ -17,9 +17,18 @@ type DrawStatus = (typeof DrawStatus)[keyof typeof DrawStatus];
 
 const SPLIT_RATIO: number = 0.6;
 
+interface OpenedDetails {
+  details: Section;
+  references: References;
+}
+
 const HTML_NAMESPACE: string = 'http://www.w3.org/1999/xhtml';
 
-function linkFigureText(root: HTMLElement, references: References): void {
+function linkFigureText(
+  root: HTMLElement,
+  references: References,
+  open: (details: Section, opener: HTMLElement, reference: string) => void,
+): void {
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   const textNodes: Text[] = [];
 
@@ -48,7 +57,23 @@ function linkFigureText(root: HTMLElement, references: References): void {
           return document.createTextNode(part);
         }
 
-        const attributes = linkAttributes(part.href);
+        const details = part.details;
+
+        if (details) {
+          const button = document.createElement('button');
+
+          button.type = 'button';
+          button.dataset.reference = '';
+          button.textContent = part.text;
+          button.addEventListener('click', (event) => {
+            event.stopPropagation();
+            open(details, button, part.text);
+          });
+
+          return button;
+        }
+
+        const attributes = part.href ? linkAttributes(part.href) : null;
 
         if (!attributes) {
           return document.createTextNode(part.text);
@@ -132,8 +157,8 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
   const references = useContext(ReferencesContext);
   const [status, setStatus] = useState<DrawStatus>(DrawStatus.DRAWING);
   const [split, setSplit] = useState(false);
-  const [opened, setOpened] = useState<Section | null>(null);
-  const opener = useRef<SVGElement | null>(null);
+  const [opened, setOpened] = useState<OpenedDetails | null>(null);
+  const opener = useRef<HTMLOrSVGElement | null>(null);
   const labels = new Map(section.nodes.map((node) => [node.id, node.label]));
   const used = new Set([...section.nodes, ...section.edges].map((part) => part.change).filter(Boolean));
   const legend = Object.values(Change).filter((change) => used.has(change));
@@ -159,11 +184,13 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
         target.replaceChildren(drawing.svg);
         target.scrollLeft = (target.scrollWidth - target.clientWidth) / 2;
 
-        openEdgesOnClick(target, section, (details, element) => {
+        function openDetails(details: Section, element: HTMLOrSVGElement, reference?: string) {
           opener.current = element;
-          setOpened(details);
-        });
-        linkFigureText(target, references);
+          setOpened({ details, references: reference ? references.without(reference) : references });
+        }
+
+        openEdgesOnClick(target, section, openDetails);
+        linkFigureText(target, references, openDetails);
 
         setSplit(Boolean(section.steps) && drawing.width < target.clientWidth * SPLIT_RATIO);
         setStatus(DrawStatus.DRAWN);
@@ -251,7 +278,14 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
         )}
       </Grid>
       {opened && (
-        <SectionDialog section={opened} open onOpenChange={(open) => !open && setOpened(null)} opener={opener} />
+        <ReferencesContext.Provider value={opened.references}>
+          <SectionDialog
+            section={opened.details}
+            open
+            onOpenChange={(open) => !open && setOpened(null)}
+            opener={opener}
+          />
+        </ReferencesContext.Provider>
       )}
     </SectionCard>
   );
