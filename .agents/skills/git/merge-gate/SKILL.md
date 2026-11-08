@@ -196,9 +196,8 @@ check by any other route whether the change is live.
 When the merged diff changes agent configuration, poll the default-branch Agent Sync run the merge
 started as **Check Gate** steps 6–7 poll a check. A run ending in anything but success is diagnosed
 from its log and reported. After a successful run, complete the refresh selected by the GitHub
-rules' **After Agent Sync** section and verify its installed links before reporting completion.
-This skill has not returned, and the turn does not end, until that refresh is verified or a failed
-run or blocker is reported.
+rules' **After Agent Sync** section and verify its installed links; the skill does not return, and
+the turn does not end, until that refresh is verified or a failed run or blocker is reported.
 
 ## Report
 

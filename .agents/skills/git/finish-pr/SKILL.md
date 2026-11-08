@@ -116,8 +116,7 @@ Follow the active task's recorded priorities when choosing the next eligible uni
      someone else pushed: `review-pass` runs again over that fix's delta, and the fix is pushed through
      the GitHub rule’s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
      passed.
-3. Once `merge-gate` returns, record the merge, or the gate that holds, with `session-ledger`, and
-   continue to the next unit.
+3. Record the merge, or the gate that holds, with `session-ledger`, and continue to the next unit.
 
 Before concluding, require discovery to be complete and reconcile the recorded target inventory
 with its verified dispositions. Resume any unit without a disposition even if a different
