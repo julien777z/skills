@@ -6,8 +6,8 @@ short_description: 'Review and fix the whole pull request, then merge it.'
 
 # Finish PR
 
-Take every selected pull request from its current head to a verified merge: review the whole pull
-request, fix what that finds, then merge.
+Review, fix, and merge every open pull request for the active task unless the user names a
+specific set.
 
 ## Authorization
 
@@ -44,14 +44,18 @@ request, fix what that finds, then merge.
   the agent offered to merge earlier, not the dependency a held unit waits on, and not one a bare
   "yes" beside the request might answer. Such a dependency stays a gate under **Dependent Pull
   Requests**.
-- Otherwise use every open pull request `list-prs` returns for the task, including task work in
-  other repositories. Do not ask the user to select one, or select only the current repository or
-  branch: the complete list is the set.
+- Otherwise run `list-prs` before starting any individual review, even when the current branch
+  already has a pull request or the request uses the singular. Use its full task-wide result,
+  including work in other repositories.
 - When that list is empty, inspect every repository carrying reviewable task-local changes, use
   `code-review`'s branch and commit setup rules for each one, create one draft pull request per
   repository through REST, and record every returned canonical URL with `session-ledger`. An empty
   list ends the run only after that inspection finds no reviewable task work.
-- Verify each target's branch, head and state on the host before starting.
+- Before starting any individual review, record every selected canonical URL as a pending unit in
+  the run's target inventory through `session-ledger`. If discovery is incomplete, also record
+  discovery as pending and recover the missing records. Add all recovered targets before marking
+  discovery complete; known units can proceed while recovery runs.
+- Verify each target's branch, head and state on the host before starting its review.
 
 Each target is an independent unit with its own range, intent, threads, validation, acceptance, and
 exact-head merge gate. A compact agent-configuration unit may run right after its related source unit
@@ -94,8 +98,8 @@ dependent unit. Its dependency gates its merge, never its review:
 
 Process each eligible unit through these steps, preserving their order within that unit. A held unit
 does not delay starting another independent unit whose current work and dependencies permit it;
-hold only the unit that needs the unresolved result, recording its gate and saved next action. Apply
-`execute-task`'s **Priority** before choosing the next eligible unit.
+hold only the unit that needs the unresolved result, recording its gate and saved next action.
+Follow the active task's recorded priorities when choosing the next eligible unit.
 
 1. Invoke `review-pass` on the pull request with its intent statement, asking for the whole pull
    request: its complete merge-base diff, the full contents of every touched file, related code and
@@ -114,13 +118,15 @@ hold only the unit that needs the unresolved result, recording its gate and save
      passed.
 3. Record the merge, or the gate that holds, with `session-ledger`, and continue to the next unit.
 
-Conclude only after every selected unit is verified merged, ended at its accepted head with merge
-withheld, or held by a gate that is reported; GitHub head lag, a retryable rate limit, and any state
-`merge-gate` is still waiting on are nonterminal.
+Before concluding, require discovery to be complete and reconcile the recorded target inventory
+with its verified dispositions. Resume any unit without a disposition even if a different
+repository's pull request already merged. Every entry must be verified merged, ended at its
+accepted head with merge withheld, or held by a gate that is reported. GitHub head lag, a retryable
+rate limit, and any state `merge-gate` is still waiting on are nonterminal.
 
 ## Report
 
 Every terminal report includes a clickable Markdown link for every pull request created, updated,
 reviewed, or merged during the run; never replace links with repository names, numbers, counts, or
 bare URLs. For each unit, report `review-pass`'s **Result** — its size, what it fixed, every
-`acceptance-gate` verdict and thread disposition — and the merge commit or the gate that holds it.
+acceptance verdict and thread disposition — and the merge commit or the gate that holds it.
