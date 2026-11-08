@@ -199,10 +199,9 @@ with an obsolete owned contract or revision.
   the intended behavior within that scope, or the user explicitly requests alternatives. If a
   constraint can be removed only by expanding scope or authority, explain the constraint and ask
   about that expansion under the global rules.
-- **A behaviour change is not a blocker.** Where the cleanest result shifts behaviour — a value
-  reaching a store it never reached before, a permission finally applying where it always should have,
-  a value newly shown to or withheld from someone — that is the user's decision, and the way to put
-  it to them is to state it plainly and carry on with the work that does not depend on the answer.
+- **Keep independent work moving while a product choice waits.** If a remedy changes the intended
+  behaviour and the global rules reserve that decision for the user, state the choice plainly and
+  carry on with work that does not depend on the answer.
   A shape change to an owned contract that **Target Contract** admits without a proposal is not one
   of those: it is made, with every consumer, and stated in the pull request.
 - **Never quietly narrow the work to avoid the conversation.** Choosing the option that changes nothing
