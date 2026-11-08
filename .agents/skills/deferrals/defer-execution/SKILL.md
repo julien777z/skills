@@ -11,8 +11,8 @@ Take a scope of work and get it **done** on a branch of its own, off the default
 of folding it into the change already in flight.
 
 **This skill accepts unrecorded scopes and creates no deferral record.** Work `defer-scope` already
-records is a recorded deferral and not this skill's: decline it and name its record, so its record and implementation receive one
-disposition. A scope handed here is already spoken for;
+records is a recorded deferral and not this skill's: decline it, name its record, and tell the user
+to run `/execute-defer-scope` on it, so its record and implementation receive one disposition. A scope handed here is already spoken for;
 recording it would leave the next reader to distinguish work awaiting a decision from work awaiting
 a merge.
 
