@@ -70,7 +70,7 @@ If a game defines protected traversal areas, share their actual geometry between
 
 For a local geometry repair, focused desktop coverage is normally sufficient; broaden coverage for new maps, substantial changes, or device-specific concerns according to the selected test scope. Walk across repaired surfaces and joins in both directions, then move the camera around them at low, normal, and elevated supported angles. Inspect the perimeter as well as the main approach for grass penetration, flicker, gaps, floating edges, and collision snags. Fix defects found in that pass and recheck their immediate neighbors. Record representative views of the actual saved/rebuilt scene, not only the currently edited viewport.
 
-Use normal-input coverage for affected routes, and follow the selected Studio workflow for terrain archives, spatial-query performance, lighting, and delivery. Use [Blender and imported assets](blender-assets.md) for Blender/import details; keep those procedures canonical there.
+Use normal-input coverage for affected routes. Use [Blender and imported assets](blender-assets.md) for Blender/import details; keep those procedures canonical there.
 
 ## Frame-relative terrain and scenery
 

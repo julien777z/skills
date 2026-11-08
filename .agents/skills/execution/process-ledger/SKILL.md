@@ -57,12 +57,11 @@ Apply `session-ledger`'s **Guidance Batches** boundary.
      **Batches**. Send it to `edit-skill`'s **Guidance Delivery** route so canonical guidance
      completes its delivery gates.
    - `artifact`, `plan`, `question`, and `decision`: reconcile the state with the artifact owner,
-     plan workflow, or user answer. They never create guidance merely because they were processed.
-     A complete `plan` stays while its task is active, since `progress` counts the finished work of
-     every plan the task has had; remove it once the task's outcome is verified complete.
-   - `review`: `review-pass`'s reviewed head for a pull request. Keep it while that pull request is
-     open, since the next pass sizes itself from it; remove it once the pull request is merged or
-     closed.
+     the plan's recorded steps, or user answer. They never create guidance merely because they were
+     processed. A complete `plan` stays while its task is active; remove it once the task's outcome
+     is verified complete.
+   - `review`: a pull request's reviewed head. Keep it while that pull request is open; remove it
+     once the pull request is merged or closed.
    - An unrecognized kind: preserve it only when evidence identifies a concrete owning workflow or
      next action; otherwise remove it as invalid.
 3. A failed, blocked, unavailable, or unverified requested action — which a direct guidance request

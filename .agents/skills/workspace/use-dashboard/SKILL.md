@@ -24,11 +24,11 @@ renders every value as text, so data never runs as markup or script.
 ## Spec
 
 Top level: `title`, `topic`, `icon`, `updated_at` (ISO 8601) and `pages` are required. `title` is
-the dashboard's name followed by "Dashboard", such as `Progress Dashboard`; `topic` names what this
+the dashboard's name followed by "Dashboard", such as `Garden Dashboard`; `topic` names what this
 render covers in a few words, such as `Bulk export`, and `subtitle` can say more. The navbar shows
 `title` beside `icon`, then a link to each page, how long ago `updated_at` was and the `status`
 badge, and each page opens with its own title. The page's own name, which a browser tab or a
-published artifact shows, is "`title` - `topic`", such as "Progress Dashboard - Bulk export".
+published artifact shows, is "`title` - `topic`", such as "Garden Dashboard - Bulk export".
 Every other field is optional, and an absent one leaves its part of the page out.
 
 | Field | Shape |
@@ -101,7 +101,7 @@ with sections, and its tab labels are unique. A URL renders as a link only when 
 
 ```json
 {
-  "title": "Progress Dashboard",
+  "title": "Garden Dashboard",
   "topic": "Search rewrite",
   "icon": "progress",
   "updated_at": "2026-01-05T14:20:00+00:00",
@@ -132,14 +132,14 @@ Dashboards look alike because they are built alike:
   apart from a summary row that opens an item's full write-up, or a link to it; each later page
   goes deeper on one subject and is named for it.
 - **A page serves a stage of the reader's work, never one narrow artifact.** When a request asks for
-  a page about one thing, such as the order pull requests merge in, find the stage that thing
-  belongs to, such as wrapping up to merge and deploy, and build the page for that stage, with the
-  requested thing as one section among what the reader needs there. Name the page for the stage.
+  a page about one thing, such as the order parcels leave the warehouse in, find the stage that
+  thing belongs to, such as dispatching the week's orders, and build the page for that stage, with
+  the requested thing as one section among what the reader needs there. Name the page for the stage.
 - **Pages run in the order the reader's work does.** After Overview, pages that help the reader
-  understand the work come together, followed by pages for acting on it, such as wrapping up to
-  merge and deploy, which come last; a page never sits between two pages of another kind.
+  understand the work come together, followed by pages for acting on it, such as dispatching the
+  week's orders, which come last; a page never sits between two pages of another kind.
 - **Icons say what each thing is.** Give the dashboard the icon that best names its subject, such as
-  `progress` for a task's progress or `legal` for legal documents, and each page the icon for what
+  `chart` for sales figures or `legal` for legal documents, and each page the icon for what
   it holds, such as `board` for a board of work or `diagram` for a diagram.
 - **Pick the section by the reader's question.** Where is each item? `board`. What needs my answer?
   `questions`. Where do I click? `links`. What does each part say, in a sentence I can open?
@@ -199,7 +199,7 @@ data exists, or a change to the app — runs on one made-up scenario, never on r
 - **The pages agree with one another**: the same pull requests, counts and names recur on every page,
   and each section fills its slot as the caller's skill describes, so the preview shows what a real
   run of that skill would produce.
-- Its `topic` is `Synthetic Preview`, so the page is named such as "Progress Dashboard - Synthetic
+- Its `topic` is `Synthetic Preview`, so the page is named such as "Garden Dashboard - Synthetic
   Preview", and the `subtitle` says what made-up task it shows.
 
 ## Render
@@ -247,9 +247,9 @@ Use the first route the session offers, and the same one for every update of one
      changes its look, its data, or both is still the same dashboard; only a dashboard with a
      different purpose gets a new page. Where that search looks depends on what the dashboard
      shows, which the caller states:
-     - **Session work**, such as one task's progress or a preview, looks only in the caller's task state and
-       earlier in this session. A new session publishes a new page and never updates one another
-       session published.
+     - **Session work**, such as work in hand this session or a preview, looks only in the caller's
+       task state and earlier in this session. A new session publishes a new page and never updates
+       one another session published.
      - **A subject that outlives the session**, such as a repository's structure, also looks among
        the user's published pages for one with the same title and topic, through the tool's own
        listing. Before publishing to a page found that way, read it through the tool to confirm this

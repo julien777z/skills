@@ -247,16 +247,6 @@ verify the intended Studio/project. Create a replacement only when necessary and
 session is not a reason to rebuild or ask the user to sign in again. Open the viewer automatically
 only if normal authentication or another required user setup step is actually needed.
 
-## Qualification for game research on an isolated runner
-
-When research uses an isolated runner, qualify the guest browser/media path and the **published Roblox client** separately from Studio.
-Browser/media viewing and published-client play each require ordinary input and usable captures
-without host windows/focus/input interference. Studio MCP capability alone does not prove those
-capabilities. Record each result separately. If qualification fails, keep the dependent work
-incomplete; do not
-silently revert to host interaction. Host-side read-only APIs may assist data retrieval/aggregation,
-but must not become a workaround that opens host research/game windows.
-
 ## Studio MCP connection and input
 
 Prefer the [built-in Studio MCP server](https://create.roblox.com/docs/studio/mcp) when the installed Studio and tool surface support it. Inspect tool schemas and connect to the verified editor. MCP input can avoid host keyboard/mouse injection; qualify any windows it launches separately. Run unattended or multiplayer clients in a runner whose window behavior is safe for the user's desktop.

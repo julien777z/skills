@@ -16,6 +16,7 @@ things that are gone, and the ones the repository lacks.
 - `banned-terminology`
 - `edit-skill`
 - `subagent-matrix`
+- `get-doctors`
 
 ## Inventory
 
@@ -122,7 +123,7 @@ thresholded. Remedy: rewrite at the altitude the guidance describes, explaining 
 
 Nothing leads in: a skill no file names whose description carries no trigger, a hook on disk not
 registered, a skill the usage measurement shows never invoked. A flagged skill is reachable by its
-invocation name and, for a doctor, through the doctor listing; the flag alone is never the finding.
+invocation name and, for a doctor, through `get-doctors`; the flag alone is never the finding.
 Evidence: the reference counts and usage. Remedy: fix the trigger, or a whole-file cut under
 Dispositions.
 

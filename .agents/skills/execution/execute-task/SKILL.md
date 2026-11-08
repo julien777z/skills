@@ -28,6 +28,7 @@ are validated by their evidence, smoke-test, review, and acceptance gates.
 - `session-ledger`
 - `edit-skill`
 - `i-have-adhd`
+- `code-review`
 
 ## One Run Per Task
 
@@ -112,8 +113,7 @@ Every task that changes files starts here, and so does every follow-up that arri
     that job.
 - Schedule steps by `subagent-matrix`'s **Dispatch**: coupled work stays sequential, and
   independent scopes with separate owners, files and resources overlap once their inputs are
-  settled. Estimate the elapsed time with that overlap, counting overlapping work once at the
-  longest of the overlapping steps.
+  settled. Estimate the elapsed time with that overlap, totalled as `session-ledger` totals a plan.
 - **Settle ownership before the plan is final.** For a plan that introduces or changes a shared operation, contract, subsystem, runtime
   boundary, or independent consumer, apply `code-simplify`'s ownership analysis to the proposed
   shape and the analogous implementations already in the repository, with one read-only subagent
@@ -142,6 +142,13 @@ Every task that changes files starts here, and so does every follow-up that arri
 
 ### Approval
 
+- **The user sees a plan once `review-proposal` has accepted it, and never before.** A plan still
+  being drafted or reviewed stays with the run: nothing the user reads — a report, a summary, a
+  status line, a task list, a dashboard or a question — shows its steps, estimates or an outline
+  of them, and a draft is never offered as a preview pending approval. While it is in review, a
+  report says only that a plan is being prepared, and the user's next sight of it is the accepted
+  plan put for approval. This holds back the plan, not its open decisions, which go first as
+  **What The Plan Holds** says.
 - Before recommending an approval-requiring plan, invoke `review-proposal` on the detailed plan once
   the user's answers to its decisions are folded in, with its intent and verified ownership
   evidence; the user's short plan consumes that receipt while it adds nothing the detailed plan
@@ -155,7 +162,8 @@ Every task that changes files starts here, and so does every follow-up that arri
   Keep the plan pending and begin no work that needs its approval; independent authorized work
   continues.
 - An interruption continues the same plan. Never replace or silently revise an unapproved plan;
-  fold the user's amendments in and present the complete revised plan again.
+  fold the user's amendments into the detailed plan, take it through `review-proposal` again, and
+  present the complete revised plan.
 - Approval authorizes ordinary implementation and verification, never a merge, deployment,
   publication or release the plan happens to list; **Task Authorization** says what does.
 - **Offering the next step as a choice is a stop wearing a question mark.** "Say the word and I will
@@ -187,18 +195,17 @@ that code, provided what the deploy depends on stays the same and its owning tes
 revision, its database outcome.
 
 Restoring an authorized broken deployed operation takes priority over ordinary tests, review gates,
-guidance delivery and cleanup. Pause those activities until the actual failed operation succeeds
-on the fix branch in every affected environment; use only the reproduction, diagnosis and repairs
+guidance delivery and cleanup. Pause those activities until the actual failed operation succeeds on
+the fix branch in every affected environment; use only the reproduction, diagnosis and repairs
 needed for that checkpoint, respecting any narrower user restriction. This pause includes ordinary
 checks and task-owned workers already running, even on separate files or resources. Pause them at
 the runner's next safe boundary, honoring its interruption and cleanup contract; preserve completed
 evidence, frozen inputs and the saved next action. An already-started independent cohort is not an
 exception permitting continued ordinary work. Deploy through the authorized branch route, then
-resume required delivery checks after that live proof. A successful child task,
-health response or merge does not establish it. After an authorized merge, repeat the operation
-from the default-source deployment; if it fails, resume recovery and pause ordinary delivery work
-again. This order grants no deployment or merge authority: **Task Authorization** still governs both. An invoked `incident` supplies its own
-recovery, review and source-restoration procedure.
+resume required delivery checks after that live proof. A successful child task, health response or
+merge does not establish it. After an authorized merge, repeat the operation from the default-source
+deployment; if it fails, resume recovery and pause ordinary delivery work again. This order grants
+no deployment or merge authority: **Task Authorization** still governs both.
 
 ### Follow-Ups
 
@@ -235,19 +242,19 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
 ### Progress Record
 
 - **The ledger holds the plan's current state, so nothing about progress depends on what the chat
-  still remembers.** When a plan goes to the user, record it with `session-ledger` as a `plan` entry
-  holding the fields `session-ledger` names for one, filled from the planning work even where the
-  plan shown to the user leaves them out. Work the user adds to an active task, with or without a
-  plan of its own, becomes a step on that plan or a plan entry of its own, with the user's words and
-  its approval time, or the time the user added it when it has no plan, before the first edit or
-  dispatch it authorizes; a harness task list, the chat or a summary is never where it first lives.
+  still remembers.** When an accepted plan goes to the user, record it with `session-ledger` as a
+  `plan` entry holding the fields `session-ledger` names for one, filled from the planning work even
+  where the plan shown to the user leaves them out. Work the user adds to an active task, with or
+  without a plan of its own, becomes a step on that plan or a plan entry of its own, with the
+  user's words and its approval time, or the time the user added it when it has no plan, before
+  the first edit or dispatch it authorizes; a harness task list, the chat or a summary is never
+  where it first lives.
   A step the agent adds, or widens past what the user asked, is recorded as agent-originated,
   proceeds under the task's authorization like the work **When A Plan Is Needed** says an approved
   plan covers, and is never shown as user-approved; one that is a product choice goes to the user
   before it is built, as the global rules' product-choice bullet says. Update it when the state
   changes, not when a report is due: approval, a step starting, finishing, blocking or being
-  skipped, a follow-up's plan. A resumed session, a handoff and a progress view all read this record
-  rather than reconstructing it.
+  skipped, a follow-up's plan.
 - **A step that waits on other work records what it waits for**: the gate, merge or result whose
   outcome lets it start. Every relayed result is checked against those records, and a result that
   clears one starts the waiting step in that same turn, whichever stream produced it. A report that
@@ -646,8 +653,10 @@ it — the user asking about something else is not the user withdrawing what the
   finishes, mark the displaced work active again in the ledger and
   execute its saved next step without waiting for "continue". A promise to resume is not that
   step, and neither is a report that ends by naming what comes next: a turn that relays a worker's
-  result or finishes a unit starts the next named step before it ends, and every step that result
-  unblocks, as **Progress Record** records them. Completing
+  result, finishes a unit or answers a question starts the next named step before it ends, and
+  every step that result unblocks, as **Progress Record** records them. A defect a turn finds while
+  answering, one its own change made included, is fixed in that turn and the answer reports it
+  fixed; it never goes out as work the agent will do. Completing
   its own delivery — including a guidance merge and refresh, a diagnostic answer, or a local
   environment repair — does not complete the surrounding task. Report that intermediate result
   while continuing. A held item keeps its saved next action; repair, resolution and waiting follow
@@ -790,13 +799,13 @@ Two streams run side by side from here: the guidance stream and the source strea
    in the expected behavior, and confirm multi-repository delivery artifacts describe only their
    owning repository. Then build this pull request's ready-for-review message, in the shape below,
    from `list-prs`, what the run did and `review-pass`'s **Result**.
-4. Send step 3's message; the pull request stays draft. Only when **Task Authorization** finds
-   the merge authorized, invoke `merge-gate` with the accepted head and, as its fix rule, the
-   **Pre-Push Gate** with each fix folded into its commit through `rewrite-git-history`'s fixup
-   route. It readies the pull request, inventories its exact-head hosted coverage, obtains fresh
-   results only where no equivalent terminal coverage exists, fixes what relevant checks report and
-   merges; when it returns, send one line with the result it read: the merge, or the gate that
-   holds it.
+4. Send step 3's message; the pull request stays draft. Only when **Task Authorization** finds the
+   merge authorized, invoke `merge-gate` with the accepted head, every exclusion `review-pass`
+   returned with its evidence, and, as its fix rule, the **Pre-Push Gate** with each fix folded into
+   its commit through `rewrite-git-history`'s fixup route. It readies the pull request, inventories
+   its exact-head hosted coverage, obtains fresh results only where no equivalent terminal coverage
+   exists, fixes what relevant checks report and merges; when it returns, send one line with the
+   result it read: the merge, or the gate that holds it.
 
 When the task uses several independent final reviewers outside `code-review`, assign distinct
 concerns across the complete result rather than asking each the same question. After a repair,

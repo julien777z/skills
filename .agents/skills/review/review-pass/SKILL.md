@@ -1,6 +1,6 @@
 ---
 name: review-pass
-description: Run the complete pre-merge review loop over a pull request's changes not yet reviewed — thread triage, a test sweep, a security review of a trust-boundary change, scope-sensitive simplification, high-effort code review with fixes, base incorporation, final acceptance and two test passes — and record the head it reviewed. Never merges. Use from `execute-task`'s Completion once a task is finished, from `finish-pr` and `merge-now`, and from guidance delivery.
+description: Run the complete pre-merge review loop over a pull request's changes not yet reviewed — thread triage, a test sweep, a security review of a trust-boundary change, scope-sensitive simplification, high-effort code review with fixes, base incorporation, final acceptance and two test passes — and record the head it reviewed. Never merges. Use as a step of a workflow that finishes a pull request before its merge; a direct request to review code is `code-review`'s.
 short_description: 'Review, simplify and fix what a pull request has not had reviewed yet, then record the reviewed head.'
 ---
 
@@ -12,9 +12,7 @@ happens next; this skill never readies, merges or deploys.
 
 ## Invocation
 
-- Any workflow that finishes a pull request invokes this skill as a dependency: `execute-task`'s
-  **Completion**, `finish-pr`, `merge-now`, and `edit-skill`'s **Guidance Delivery**. The caller
-  names the target and supplies the intent statement.
+- The invocation names the target pull request and supplies its intent statement.
 - The invocation authorizes the declared `code-simplify`, `code-review`, `merge-conflict` and
   `acceptance-gate` dependencies over that target, `test-fixture`'s **Sweep** and `security-audit`'s
   **Diff Review** as **Workflow** step 1 sizes them, pushing fixes to its working pull request,
@@ -38,6 +36,7 @@ happens next; this skill never readies, merges or deploys.
 - `security-audit`
 - `session-ledger`
 - `agent-lock`
+- `defer-scope`
 
 ## Review Scope
 
@@ -57,10 +56,9 @@ code. In a pull request that also changes source, the guidance adds no reviewer 
 the source review's reviewers reads it. Pass this into `code-review high fix`; it overrides that
 skill's lens fanout.
 
-**A canonical guidance batch is reviewed before its smoke round.** Freeze every included head and
-complete diff, and review the combined batch diff with the one guidance reviewer above; each head
-then takes the fresh final acceptance route below. `test-skill`'s smoke round runs after, on the
-head this workflow accepted, when the caller requires that smoke round.
+**An invocation that names several heads is reviewed as one.** Freeze every named head and
+complete diff, and review the combined diff under the reviewer rule above; each head then takes the
+fresh final acceptance route below.
 
 **Each pass reviews only what no earlier pass reviewed.** A finished task gets its full review once;
 a follow-up after it gets a review of the follow-up, sized to the follow-up.
@@ -211,8 +209,7 @@ implementations, and candidate canonical owners.
 Use code-simplify's scope policy: hold a small coherent scope in process, and dispatch distinct
 read-only readers only for separable scopes needing that coverage. Do not force fanout by file
 count or add a competing size selector. Dispatch and launch-failure handling remain owned by
-subagent-matrix. A canonical guidance batch keeps its in-process prose-duplication pass under
-edit-skill's existing guidance route.
+subagent-matrix.
 When the pull request adds public concepts across slices, assign one reviewer the cross-cutting
 interfaces and their existing peers as a coherent slice. Require its receipt to assess whether the
 new concepts are variants of existing ones; do not accept a clean simplification gate until that
@@ -247,7 +244,7 @@ Use REST endpoints for every pull-request operation:
 - Refresh title or description prose: `PATCH /repos/{owner}/{repo}/pulls/{number}` with `title` or `body`.
 - Inspect reviews: the pull-request review endpoints.
 
-Create every pull request as a draft; it leaves draft only inside an authorized merge through `merge-gate`. A draft pull request is reviewable: complete the review and fix cycle on the draft. Review-thread resolution state and the `resolveReviewThread` mutation have no REST surface, so read thread state and resolve a thread through `gh api graphql` as well; replies to review comments stay on REST. For every GraphQL call, obtain node IDs through REST, re-read the result through REST, and return to REST for every subsequent operation. Do not use GraphQL for reads or reviews when their REST endpoints work. If a REST or required GraphQL request is rate-limited, report the response, wait until the documented reset through the host's event or wait mechanism, and retry the same transport. Treat the rate limit as a blocker only when the host cannot wait for the reset or the reset does not restore access; never switch transports to evade it.
+Create every pull request as a draft; it leaves draft only inside an authorized merge. A draft pull request is reviewable: complete the review and fix cycle on the draft. Review-thread resolution state and the `resolveReviewThread` mutation have no REST surface, so read thread state and resolve a thread through `gh api graphql` as well; replies to review comments stay on REST. For every GraphQL call, obtain node IDs through REST, re-read the result through REST, and return to REST for every subsequent operation. Do not use GraphQL for reads or reviews when their REST endpoints work. If a REST or required GraphQL request is rate-limited, report the response, wait until the documented reset through the host's event or wait mechanism, and retry the same transport. Treat the rate limit as a blocker only when the host cannot wait for the reset or the reset does not restore access; never switch transports to evade it.
 
 Pass this transport requirement into `code-review high fix`; it overrides that skill's generic GitHub fallback.
 
@@ -274,11 +271,11 @@ pushed unless an authorized working-pull-request route is established.
 
 ## Deferred Findings
 
-A finding the repository's deferral process has recorded is discharged, not outstanding. Recording it is what makes it durable, so the pass carries on: a recorded deferral never holds the review loop open, never holds the caller's check gate, and never holds the merge.
+A finding `defer-scope` has recorded is discharged, not outstanding. Recording it is what makes it durable, so the pass carries on: a recorded deferral never holds the review loop open and never holds the merge.
 
 A recorded deferral is a Linear issue, or under `defer-scope`'s repository fallback a record riding the session's source pull request in its repository — usually the pull request under review — so it adds no pull request to wait for and is never a dependency of the merge. Never ask the user to settle the deferred question before merging. That the decision outlives this session is the whole reason for recording it, so treating it as a gate defeats the mechanism.
 
-Defer only what the repository's own rules allow to be deferred — never a confirmed defect, which `acceptance-gate`'s admission question defines as anything the system does that a reader would call broken, a measured throughput collapse and an unbounded resource included — and only what **Confirmed Findings** above does not already require fixing. A deferral is not a route around a confirmed finding, and moving one there to reach the merge gate sooner is the failure this section must not enable. Recording runs `acceptance-gate`'s admission question, and a refusal naming fix or do means the finding is fixed in this pass; one naming close is recorded cancelled with its reason and reconsideration criterion. A finding that is neither fixed nor recorded is still a blocker.
+Defer only what the repository's own rules allow to be deferred — never a confirmed defect, as `pre-production`'s **Scope Follows The Defect, Not The Request** defines one — and only what **Confirmed Findings** above does not already require fixing. A deferral is not a route around a confirmed finding, and moving one there to reach the merge gate sooner is the failure this section must not enable. Recording runs `acceptance-gate`'s admission question, and a refusal naming fix or do means the finding is fixed in this pass; one naming close is recorded cancelled with its reason and reconsideration criterion. A finding that is neither fixed nor recorded is still a blocker.
 
 Report a recorded deferral as recorded. Link its record in the result and say in a sentence what it covers, without presenting it as pending user action or as a caveat on the merge.
 
@@ -313,18 +310,18 @@ completed reviewer receipt merely because it changes a test, fixture, documentat
 harness, formatting, lint compliance, or a type-only annotation. Classify it from what it changes,
 never from its path: it may change validation inputs, but must leave shipped product behavior,
 dependencies, effective runtime or deployment configuration, API and deployment contracts, and
-generated contracts unchanged. A prior reviewer having read the changed non-source artifact does
-not reopen that lens unless its analysis slice or supporting inputs include that artifact. Compare
-the follow-up against each receipt's analysis-slice and supporting-input manifests and retain only
-those that are byte-identical. Run `test-fixture`'s workflow over every changed fixture and its
-**Sweep** over every changed test, focused validation, and any other artifact-specific gate. A CI or
-check-harness change that alters a trigger, source or ref,
-permission, identity, runner, secret, environment, action, reusable workflow, deployment target,
-or validation target is a workflow/runtime input: rerun every dependent lens, including Bugs and
-Security, before exact-head acceptance. Return that accepted head to the caller’s
-applicable check gate; this pass does not launch that gate itself. A change to a review rubric or
-reviewer instruction reruns only the lenses that use it; a supposedly non-source change that affects
-shipped behavior or a contract invalidates only the affected receipts under this section.
+generated contracts unchanged. A prior reviewer having read the changed non-source artifact does not
+reopen that lens unless its analysis slice or supporting inputs include that artifact. Compare the
+follow-up against each receipt's analysis-slice and supporting-input manifests and retain only those
+that are byte-identical. Run `test-fixture`'s workflow over every changed fixture and its **Sweep**
+over every changed test, focused validation, and any other artifact-specific gate. A CI or
+check-harness change that alters a trigger, source or ref, permission, identity, runner, secret,
+environment, action, reusable workflow, deployment target, or validation target is a
+workflow/runtime input: rerun every dependent lens, including Bugs and Security, before exact-head
+acceptance. Return that accepted head; this pass launches no check gate itself. A change to a review
+rubric or reviewer instruction reruns only the lenses that use it; a supposedly non-source change
+that affects shipped behavior or a contract invalidates only the affected receipts under this
+section.
 
 When the user makes residual lint-only diagnostics non-blocking, they do not hold a behavior-complete
 source pull request. Retain any useful lint repair already in that pull request. Open a fresh
@@ -365,7 +362,7 @@ Preserve established baseline classifications; classify a newly encountered poss
 under `pre-production`'s **Encountered Issues**, without reentering that skill's active run. Record the
 test or check, its evidence and exclusion in the result; do not repair, rerun, or wait for an
 excluded failure, and do not let it prevent the review. Return every exclusion with its exact
-evidence so the caller can pass it to `merge-gate`.
+evidence.
 
 Apply the GitHub rule's runner-infrastructure exclusion independently of a user waiver: record a
 qualified check as skipped and do not repair, rerun, or wait for a green hosted run. A failure not
@@ -468,7 +465,7 @@ to work around this gate.
    pull request as metadata only and explicitly preserve the range through resolution and
    eligibility checks. Direct fixes to the matching working fix branch rather than changing the
    immutable target.
-3. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the pass continues; see **Deferred Findings**. A finding that can be neither fixed nor recorded remains an active gate: surface the needed resolution under the global rules' pending-result boundary and continue independent work.
+3. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through `defer-scope` only when the user declines or cannot answer, and the pass continues; see **Deferred Findings**. A finding that can be neither fixed nor recorded remains an active gate: surface the needed resolution under the global rules' pending-result boundary and continue independent work.
 4. Classify each correction under **Review Continuity**. When normal invalidation applies and a fix changes a reviewed target, freeze the replacement snapshot and rerun every invalidated lens, concern, and validator against it. For a local route, persist and read back the replacement `currentSnapshot`; for a pull-request route, advance the active review-scope snapshot to the repaired remote patch while retaining the originating delta. Repeat until the applicable review is clean.
 5. Once the review is clean, if a merged-range review has no working fix pull request, return a
    clean result. Otherwise run **Incorporating The Base**, then the second test pass **Validation
