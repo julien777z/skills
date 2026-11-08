@@ -14,7 +14,7 @@ card. Every dashboard gets that layout without the caller writing any markup. Th
 self-contained file; its web font loads from Google Fonts and falls back to system fonts, and a
 diagram is drawn by Mermaid, loaded from jsDelivr, with its connections listed as text when Mermaid
 cannot load. The page is dark unless the host's viewer is explicitly set to light
-(`data-theme="light"` on the root element), folds the page links into a menu below 1024 px, and
+(`data-theme="light"` on the root element), keeps its title whole and folds the page links into a menu below 1024 px or whenever they do not fit beside it, and
 renders every value as text, so data never runs as markup or script.
 
 ## Dependencies

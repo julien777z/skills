@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from 'class-variance-authority';
-import type { ReactNode } from 'react';
+import type { ReactNode, Ref } from 'react';
 
 const STACK_VARIANTS = {
   direction: { row: 'flex-row', column: 'flex-col' },
@@ -8,6 +8,7 @@ const STACK_VARIANTS = {
   justify: { start: 'justify-start', center: 'justify-center', between: 'justify-between', end: 'justify-end' },
   wrap: { true: 'flex-wrap', false: 'flex-nowrap' },
   grow: { true: 'flex-1', false: '' },
+  shrink: { always: '', belowLg: 'lg:shrink-0' },
   divided: { true: 'divide-y border-t', false: '' },
   inset: {
     none: '',
@@ -34,7 +35,8 @@ const STACK_VARIANTS = {
   block: { none: '', row: 'py-3', page: 'py-8' },
   push: { true: 'ml-auto shrink-0', false: '' },
   show: { always: '', fromSm: 'hidden sm:flex', fromLg: 'hidden lg:flex', belowLg: 'lg:hidden' },
-  scroll: { true: 'overflow-x-auto', false: '' },
+  clip: { true: 'overflow-hidden', false: '' },
+  concealed: { true: 'invisible', false: '' },
   marker: {
     none: 'list-none',
     bullet: 'list-disc pl-5 marker:text-muted-foreground',
@@ -51,6 +53,7 @@ const stackVariants: ReturnType<typeof cva<typeof STACK_VARIANTS>> = cva('flex m
     justify: 'start',
     wrap: false,
     grow: false,
+    shrink: 'always',
     divided: false,
     inset: 'none',
     surface: 'none',
@@ -60,7 +63,8 @@ const stackVariants: ReturnType<typeof cva<typeof STACK_VARIANTS>> = cva('flex m
     block: 'none',
     push: false,
     show: 'always',
-    scroll: false,
+    clip: false,
+    concealed: false,
     marker: 'none',
   },
 });
@@ -68,12 +72,13 @@ const stackVariants: ReturnType<typeof cva<typeof STACK_VARIANTS>> = cva('flex m
 interface StackProps extends VariantProps<typeof stackVariants> {
   as?: 'div' | 'main' | 'ul' | 'ol' | 'li' | 'nav';
   label?: string;
+  ref?: Ref<HTMLElement>;
   children: ReactNode;
 }
 
-export function Stack({ as: Element = 'div', label, children, ...variants }: StackProps): ReactNode {
+export function Stack({ as: Element = 'div', label, ref, children, ...variants }: StackProps): ReactNode {
   return (
-    <Element aria-label={label} className={stackVariants(variants)}>
+    <Element ref={ref as Ref<never>} aria-label={label} className={stackVariants(variants)}>
       {children}
     </Element>
   );

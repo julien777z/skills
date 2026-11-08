@@ -24,11 +24,12 @@ import {
   Users,
   Workflow,
 } from 'lucide-react';
-import { type ReactNode, useEffect, useState } from 'react';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
 
 import { Stack, Text } from '@/components/primitives';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { useContentOverflows } from '@/hooks/layout';
 import { relativeTime } from '@/lib/time';
 import { cn } from '@/lib/utils';
 import { IconName, type Label, type Page } from '@/spec';
@@ -122,6 +123,8 @@ export function SiteHeader({
 }: SiteHeaderProps): ReactNode {
   const [now, setNow] = useState(() => Date.now());
   const [menuOpen, setMenuOpen] = useState(false);
+  const pageLinks = useRef<HTMLElement>(null);
+  const linksOverflow = useContentOverflows(pageLinks);
   const hasPages = pages.length > 1;
   const BrandIcon = ICONS[icon];
 
@@ -140,7 +143,7 @@ export function SiteHeader({
     <header className="sticky top-[env(safe-area-inset-top,0px)] z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <Stack direction="row" align="center" gap="lg" inset="page" frame="page" height="bar">
         {hasPages && (
-          <Stack show="belowLg">
+          <Stack show={linksOverflow ? 'always' : 'belowLg'}>
             <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="-ml-2" aria-label="Open pages">
@@ -158,16 +161,14 @@ export function SiteHeader({
             </Sheet>
           </Stack>
         )}
-        <Stack direction="row" align="center" gap="sm">
+        <Stack direction="row" align="center" gap="sm" shrink="belowLg">
           <Stack align="center" justify="center" badge="brand">
             <BrandIcon className="size-4" />
           </Stack>
-          <Text weight="semibold" truncate>
-            {title}
-          </Text>
+          <Text weight="semibold">{title}</Text>
         </Stack>
         {hasPages && (
-          <Stack as="nav" label="Dashboard pages" show="fromLg" scroll>
+          <Stack as="nav" ref={pageLinks} label="Dashboard pages" show="fromLg" grow clip concealed={linksOverflow}>
             <PageLinks pages={pages} current={current} vertical={false} onSelectPage={onSelectPage} />
           </Stack>
         )}
