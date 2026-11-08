@@ -146,6 +146,31 @@ ends with its check:
    [direct guest control](#direct-guest-control) and
    [Qualify input and capture](#qualify-input-and-capture) describe.
 
+#### Add the published Roblox player
+
+Playing a published experience needs the Roblox player in the guest, which Studio does not include.
+Add it to any runner that lacks `/Applications/Roblox.app`, newly provisioned or retained. Each step
+ends with its check:
+
+1. **Download the macOS build in the guest.** Roblox's web download link serves the Windows
+   installer to a client that is not a browser, so read `clientVersionUpload` from
+   `https://clientsettingscdn.roblox.com/v2/client-version/MacPlayer` and download
+   `https://setup.rbxcdn.com/mac/arm64/<clientVersionUpload>-RobloxPlayer.zip`; `file` reports a
+   zip archive.
+2. **Verify and install it.** Unpack it with `ditto -x -k`, then confirm that
+   `codesign --verify --deep --strict` passes, that its team matches the guest Studio's, and that
+   `spctl -a -vv` reports a notarized Developer ID. Copy it to `/Applications/Roblox.app`; opening
+   it shows its sign-in page. It registers itself as a login item and keeps a windowless
+   `-launchToTray` process running after it quits, which is out of any experience.
+3. **Sign it in by QR code.** Choose Sign In, then QR code, capture the code it shows, and relay
+   the capture and code through the question tool with a confirmation option and one for a new
+   code, since a code expires in about two minutes. A prompt Roblox shows the account after
+   sign-in, such as updated terms, is the user's to accept: ask before clicking it.
+4. **Launch and qualify it.** `open "roblox://experiences/start?placeId=<place id>"` in the guest
+   starts an experience. Qualify input and capture on a neutral place, as
+   [direct guest control](#direct-guest-control) describes, before relying on it, and quit the
+   player afterward.
+
 ### Linux container runner
 
 A Linux host, such as a cloud agent container, can provide the Windows Studio build under Wine on an
