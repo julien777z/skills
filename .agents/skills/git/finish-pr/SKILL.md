@@ -46,15 +46,16 @@ specific set.
   Requests**.
 - Otherwise run `list-prs` before starting any individual review, even when the current branch
   already has a pull request or the request uses the singular. Use its full task-wide result,
-  including work in other repositories. If retrieval is incomplete, recover the missing task
-  records before treating the inventory as complete.
+  including work in other repositories.
 - When that list is empty, inspect every repository carrying reviewable task-local changes, use
   `code-review`'s branch and commit setup rules for each one, create one draft pull request per
   repository through REST, and record every returned canonical URL with `session-ledger`. An empty
   list ends the run only after that inspection finds no reviewable task work.
-- Verify each target's branch, head and state on the host and record it as a pending unit in the
-  run's target inventory before starting its review. Verified units can proceed while missing
-  task records are recovered; the run cannot finish on a partial inventory.
+- Before starting any individual review, record every selected canonical URL as a pending unit in
+  the run's target inventory through `session-ledger`. If discovery is incomplete, also record
+  discovery as pending and recover the missing records. Add all recovered targets before marking
+  discovery complete; known units can proceed while recovery runs.
+- Verify each target's branch, head and state on the host before starting its review.
 
 Each target is an independent unit with its own range, intent, threads, validation, acceptance, and
 exact-head merge gate. A compact agent-configuration unit may run right after its related source unit
@@ -117,11 +118,11 @@ Follow the active task's recorded priorities when choosing the next eligible uni
      passed.
 3. Record the merge, or the gate that holds, with `session-ledger`, and continue to the next unit.
 
-Before concluding, reconcile every entry in the recorded target inventory with its verified
-disposition. An omitted entry is pending: resume that unit even if a different repository's pull
-request already merged. Every entry must be verified merged, ended at its accepted head with merge
-withheld, or held by a gate that is reported. GitHub head lag, a retryable rate limit, and any state
-`merge-gate` is still waiting on are nonterminal.
+Before concluding, require discovery to be complete and reconcile the recorded target inventory
+with its verified dispositions. Resume any unit without a disposition even if a different
+repository's pull request already merged. Every entry must be verified merged, ended at its
+accepted head with merge withheld, or held by a gate that is reported. GitHub head lag, a retryable
+rate limit, and any state `merge-gate` is still waiting on are nonterminal.
 
 ## Report
 
