@@ -76,6 +76,9 @@ Every task that changes files starts here, and so does every follow-up that arri
 
 ### What The Plan Holds
 
+- For a bug, establish the intended behavior and apply `pre-production`'s **Trade-Offs Are
+  Surfaced, Never Enforced** before choosing the remedy or presenting an alternative. Use the
+  same check when a worker, reviewer, or failed approach changes the proposed remedy.
 - Select verification before recommending it, putting it in a plan, or delegating it. Read the
   shared testing rule's **Environments** section and invoke `run-site` to apply its **Principles**
   before selecting browser walkthroughs or rendered UI inspections, including when later review
@@ -694,6 +697,10 @@ Each item's line records its current disposition:
 
 A held item remains outstanding; naming its gate or reporting it does not end the run. Withdrawal
 or supersession removes only the work the user's instruction actually cancels.
+
+**At the review-round limit, record the disposition under the global rule.** If the approved
+outcome still needs work, update the active plan and start the replacement's first Priority-permitted
+step under the existing authorization, without another plan approval.
 
 **A wait blocks only the work that depends on what is awaited.** While one item waits on something
 outside the run's hands — a background agent, CI, a review, a build, the user's answer to one
