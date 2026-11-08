@@ -254,10 +254,11 @@ a template where correct results genuinely vary in shape.
   `## Guardrails`, always the last section when present, holds only constraints that span the
   file's subjects.
 - **A section, subsection or bullet, added, moved or reordered, goes where its reader needs it,
-  never beside the text it most resembles.** Read the file's existing order first. Guidance every reader of the file needs
-  comes before guidance only some cases need, and each part follows the parts whose terms it uses.
-  In a style guide, a section on footnotes, which only some documents use, follows the sections on
-  headings and paragraphs that every document uses, even though footnotes extend paragraphs.
+  never beside the text it most resembles.** Read the file's existing order first. Guidance every
+  reader of the file needs comes before guidance only some cases need, and each part follows the
+  parts whose terms it uses. In a style guide, a section on footnotes, which only some documents
+  use, follows the sections on headings and paragraphs that every document uses, even though
+  footnotes extend paragraphs.
 - Express each independent requirement once, as one concise statement or bullet, without padding. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
 - Normalize the touched file's nearby structure when needed: combine narrow sections and remove redundant wording.
 - **Prefer the broad statement, and let the request's shape be its example.** A request
