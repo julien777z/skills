@@ -330,6 +330,7 @@ checks before delivery; retain evidence that the change has not invalidated.
 
 Before each push, list the exact adjacent line pairs where setup, a guard, transformation, side effect,
 or return meets the next phase without the blank line required by the global code-layout rule.
+For changed Python files, `review-pass`'s `paragraph_candidates.py` script lists the candidate pairs.
 Fix every listed boundary in the lines the change writes or edits, and elsewhere in the changed files
 within `pre-production`'s incidental size budget, as the global code-layout rule says; an unrelated
 bug or a passing formatter does not satisfy this spacing check.

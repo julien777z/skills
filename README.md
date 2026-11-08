@@ -106,6 +106,7 @@ These run only when you ask for them by name, such as `/code-slop-doctor`.
 - [`study-games`](.agents/skills/roblox/study-games/SKILL.md) — Explicit user-invoked research of Roblox charts for the requested audience and region.
 - [`tests-doctor`](.agents/skills/doctors/tests-doctor/SKILL.md) — Audit tests for contract value, redundant proof, weak assertions, runtime, provider rate limits, and determinism.
 - [`where-time-went`](.agents/skills/workspace/where-time-went/SKILL.md) — Show where session time and usage went.
+- [`widen-scope`](.agents/skills/execution/widen-scope/SKILL.md) — Let the current task also fix the problems it runs into, within a size budget.
 
 ### Model-Invoked
 
@@ -177,7 +178,6 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`vercel-react-best-practices`](.agents/skills/web/vercel-react-best-practices/SKILL.md) — React and Next.js performance optimization guidelines from Vercel Engineering.
 - [`vercel-react-view-transitions`](.agents/skills/web/vercel-react-view-transitions/SKILL.md) — Guide for implementing smooth, native-feeling animations using React's View Transition API (`<ViewTransition>` component, `addTransitionType`, and CSS view transition pseudo-elements).
 - [`web-design-guidelines`](.agents/skills/web/web-design-guidelines/SKILL.md) — Review UI code for Web Interface Guidelines compliance.
-- [`widen-scope`](.agents/skills/execution/widen-scope/SKILL.md) — Let the current task also fix the problems it runs into, within a size budget.
 
 <!-- skills:end -->
 

@@ -2,6 +2,7 @@
 name: widen-scope
 description: Let the current task also fix the slop and maintainability problems it runs into, not only bugs. Use only when the user asks for it in their own words, such as "widen scope" or "clean up what you find"; never on the agent's own initiative.
 short_description: 'Let the current task also fix the problems it runs into, within a size budget.'
+disable-model-invocation: true
 ---
 
 # Widen Scope

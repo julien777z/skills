@@ -145,7 +145,7 @@ user's review of the source pull request overlaps it.
    at review. An edit step 7.1 puts on a source pull request this session drives is pushed there and
    passes step 7.2's source check on the head carrying it before that pull request's source stream
    proceeds, and step 7.5's smoke round on the head that pull request's review pass accepted, before the source review and delivery. It carries step 7.3's prose-duplication checks into that
-   pull request's review loop and step 7.4's incident vocabulary into its final acceptance. An edit step 7.1 selects on
+   pull request's simplification pass and step 7.4's incident vocabulary into its final acceptance. An edit step 7.1 selects on
    another session's source pull request runs steps 7.2 to 7.5 here on the head it pushed, and the
    delivery report says the push moved that pull request's head past its owner's acceptance. An
    edit on either source pull request is recorded as held for that pull request's merge once its
@@ -154,7 +154,7 @@ user's review of the source pull request overlaps it.
 2. Run step 7.2's source check.
 3. Run `review-pass` once over the batch, naming every head it carries. Give it the user's request
    and the recorded evidence as the intent statement, the incident vocabulary for its acceptance
-   gate as step 7.4 describes, and step 7.3's prose-duplication checks for its review loop's brief.
+   gate as step 7.4 describes, and step 7.3's prose-duplication checks for its simplification pass.
 4. Run step 7.5's `test-skill` smoke round once over the batch, naming every head `review-pass`
    accepted, with every entry's
    reproduction scenario as an input and entries that share a failure class grouped into one
@@ -406,8 +406,8 @@ user's review of the source pull request overlaps it.
       Pull Requests** says, and merges with it; that pull request waits for the tool through the
       same gate. After the tool merges, the consumer adopts and validates its maintained target under the reference guidance
       above. No merge here authorizes a release.
-   3. **Run `code-simplify`** across the delta `review-pass` selects, reading every touched `.agents`
-      file whole, and act on what it reports: guidance duplicated
+   3. **Check prose duplication** through the `code-simplify` pass `review-pass` runs over the delta,
+      reading every touched `.agents` file whole, and act on what it reports: guidance duplicated
       between peer rules or skills, including a caller and a skill it always invokes; a section grown
       around a second subject; a heading named for a category with one member; a rubric left inline
       that the shared `agent-guidance.md` rule's skill shape sends to a

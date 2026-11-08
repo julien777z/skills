@@ -12,6 +12,8 @@ skill never readies, merges or deploys.
 
 ## Dependencies
 - `acceptance-gate`
+- `code-simplify`
+- `test-fixture`
 - `merge-conflict`
 - `security-audit`
 - `defer-scope`
@@ -112,25 +114,40 @@ checks over its own fixes.
 2. Run **Base**, then **Checks**.
 3. When the delta crosses a trust boundary `security-audit` names, run its **Diff Review** at
    `medium` over the delta, with the merge-base diff as context, and fix what it confirms.
-4. Run **Review Loop** once over the delta, with the intent statement, the merge-base diff and the
-   full touched files as context. Its brief already covers simplification: a re-implemented helper
-   and a single-implementation abstraction. Push each fix as its own commit through the GitHub
-   rule's **Pre-Push Gate**. A loop that ends stuck holds the pass: put the disputed finding to the
-   user with both sides, and continue independent work.
-5. When the base moved again, run **Base** and rerun the checks the incoming change touches.
-6. Run **Description Refresh** once more, then put the complete merge-base diff and the refreshed
+4. Run **Local Passes** over the delta and push their fixes.
+5. Run **Review Loop** once over the delta, with the intent statement, the merge-base diff and the
+   full touched files as context. Push each fix as its own commit through the GitHub rule's
+   **Pre-Push Gate**. A loop that ends stuck holds the pass: put the disputed finding to the user
+   with both sides, and continue independent work.
+6. When the base moved again, run **Base** and rerun the checks the incoming change touches.
+7. Run **Description Refresh** once more, then put the complete merge-base diff and the refreshed
    prose to `acceptance-gate`'s **Final acceptance** question once, with the intent statement and
-   the reviewed delta marked. Fix a flag as one increment under `acceptance-gate`'s **Bounds**;
-   that fix's own check is the **Pre-Push Gate** verdict the GitHub rule defines.
-7. Re-read the remote head, base and merge base. When they still match the accepted head, record
-   it under **Range** and return its **Output**; otherwise bring the change in and return to step 6.
+   the reviewed delta marked. Fix a flag as one increment under `acceptance-gate`'s **Bounds**: a
+   repair checked in process there needs no second gate, and the head carrying it is the accepted
+   head; a repair those **Bounds** send to a fresh gate is accepted when that gate accepts it.
+8. Re-read the remote head, base and merge base. When they still match the accepted head, record
+   it under **Range** and return its **Output**; otherwise bring the change in and return to step 7.
 
 A finding outside the change follows **Review Loop**'s rule for it: a small fix lands here, the rest
 is recorded with `defer-scope`. A recorded deferral is discharged, never a gate on the review or
-the merge, and is never a route around a confirmed defect, which is fixed in this pass.
+the merge, and never covers a defect the change introduced, which is fixed in this pass.
 
 Keep the session active until the pass reaches its result. A delegated reviewer is nonterminal
 until it returns; a quiet interval or a yielded wait is not completion.
+
+## Local Passes
+
+These run in process, in the order below, and start no subagents.
+
+- **Layout:** for the delta's changed Python files, run this skill's
+  `scripts/paragraph_candidates.py` over them; each pair it lists that the global code-layout rule
+  makes a boundary gets its blank line.
+- **Simplification:** when the delta adds a module, a declaration (an enum, constant set, mapping or
+  model), a helper, or changes guidance under `.agents`, run `code-simplify` over the delta in
+  process, never by slice, with the intent statement. Its rubric holds the prose-duplication checks
+  a guidance change needs.
+- **Tests:** when the delta adds or changes tests, fixtures or test support, run `test-fixture`'s
+  **Sweep** over them in process.
 
 ## Review Loop
 
@@ -143,16 +160,14 @@ changed. Make the smallest changes that answer real findings, and push back on t
   when a round returns only nits; a declined nit, or a fix to comments, docs or formatting, needs no
   new round.
 - **Reviewer:** the strongest model of a different provider from the author when one is reachable,
-  so it does not share the author's blind spots; the user may name another. In T3 Code, call
-  `orchestrator_capabilities` once, pick the latest flagship of another provider at high effort, and
-  start each round with a new `delegate_task` (`role: "review"`), never `t3_thread_send`. Elsewhere,
-  start a native subagent on another provider's model where the harness offers one, otherwise a
-  fresh subagent on the strongest available model. One reviewer per round, starting no subagents
+  so it does not share the author's blind spots; the user may name another. Start it on another
+  provider's model where the harness offers one, as **Harness Compatibility** says for the harnesses
+  that need it, otherwise as a fresh subagent on the strongest available model. One reviewer per round, starting no subagents
   of its own. Do not edit the reviewed files while a round runs; a timeout, an error or no reply is
   not approval.
 - **Brief:** send [the reviewer brief](references/reviewer-brief.md), this skill's reference holding
-  the round text and severity scale, with the repository, base, intent, out-of-scope note and check
-  results filled in. Use the same diff command every round.
+  the round text and severity scale, with the repository, base, intent, out-of-scope note, check
+  results and the repository rules whose file patterns match the changed paths filled in. Use the same diff command every round.
 - **Answer each finding** after checking it and its severity against the code yourself:
   - agree: make the smallest fix, preferring to delete or narrow code over a new lock, cache, helper
     or option, and add one focused test that fails without the fix when the repository has a test
@@ -169,11 +184,18 @@ changed. Make the smallest changes that answer real findings, and push back on t
   of your own. A finding still disputed after two replies, or a spent budget, ends the loop stuck:
   show both sides in two or three lines each for the user to decide. A spent budget is not approval.
 
+## Harness Compatibility
+
+- **T3 Code:** call `orchestrator_capabilities` once, pick the latest flagship of another provider at
+  high effort, and start each round with a new `delegate_task` (`role: "review"`), never
+  `t3_thread_send`.
+
 ## Output
 
 ```markdown
 **Review pass:** <accepted head> · <full | delta `<reviewed head>..<head>` | empty> · recorded <whole | delta>
 
+- **Local passes:** <layout pairs fixed · code-simplify result · test sweep result, each or not run>
 - **Review loop:** <n> round(s) with <model> — <approved | stuck on <ids> | review only> · diff <shortstat before> → <shortstat after>
 - **Fixed:** <one line per fix, marking those review surfaced rather than the task required, or none>
 - **Threads:** <disposition per thread, or none>

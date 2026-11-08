@@ -160,9 +160,9 @@ with an obsolete owned contract or revision.
   and the rule written from it governs existing pages as much as new ones. A layout, a wording, a
   tone or a style changed on one page with no such reason is the user's choice about that page. It
   is applied there, and other pages with the same shape are listed for the user to decide on,
-  never changed in the same pass. A shape a standing rule already named as a defect, and a broken
-  mechanism, a wrong value, a missing guard or a parallel implementation, stay under the bullets
-  above on every page. A page that builds its own copy of a shared component moves onto the shared
+  never changed in the same pass. A shape a standing rule already named as a defect is fixed on
+  every page in the same pass too, as the change's scope; a broken mechanism, a wrong value, a
+  missing guard or a parallel implementation stays under the bullets above. A page that builds its own copy of a shared component moves onto the shared
   one in the same pass even though its look changes with it: it takes the look the rest of the
   product already has, which is no new choice about that page, unless the task's record or the
   conversation shows the user decided that page's look, in which case the move goes to the user.

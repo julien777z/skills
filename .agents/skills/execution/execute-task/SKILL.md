@@ -217,6 +217,15 @@ merge does not establish it. After an authorized merge, repeat the operation fro
 deployment; if it fails, resume recovery and pause ordinary delivery work again. This order grants
 no deployment or merge authority: **Task Authorization** still governs both.
 
+Recovery ends with the deployment back on its own sources. Record each component's deployment
+branch and every setting changed for the fix before changing it. Once the fix is on the default
+branch, point each component back at its recorded branch, or the default branch when that branch
+is gone, deploy image-backed components from that source rather than restoring an image that holds
+the fault, undo each temporary setting, and run the failed operation again. Logging added to find
+the cause either stays as instrumentation the service keeps, with a test, or comes out before the
+pull request carrying it is reported done. While the merge is withheld, the verified fix branch stays
+deployed and the report names the pending restoration.
+
 ### Follow-Ups
 
 Classify each source or product follow-up under **When A Plan Is Needed** before preparing a plan. A small, clearly specified follow-up executes on the user's request; only a follow-up outside that exception needs its own plan. A canonical guidance correction follows **When A Plan Is Needed** and does not wait for approval; while a guidance batch is in flight it joins that batch, as `edit-skill`'s **Recording During A Task** says. **Priority** decides when other follow-ups run and whether affected work pauses now; none of the routes below makes arrival order a reason to preempt active recovery.

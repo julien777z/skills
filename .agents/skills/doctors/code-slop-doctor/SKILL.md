@@ -221,7 +221,7 @@ Things of one kind built in different shapes.
 
 The remedy is one structure per kind: the shared shape lives in the shared package and each sibling
 supplies only what differs, its name, port, servicers or routes. The slot's best existing
-implementation becomes the shared one under `code-simplify`'s **Reuse, Ownership And Deletions**.
+implementation becomes the shared one under `code-simplify`'s rubric **Standards**.
 Left alone: a slot whose difference a contract requires, with the contract named.
 
 ### Scattered Structure

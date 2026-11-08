@@ -70,7 +70,7 @@ Follow the dependency's fallback procedure without inventing a compliant launch 
    Do not add a snapshot platform or truncate evidence. Verify the separate fresh gate's compliant
    dispatch, exact packet and complete original verdict before counting it.
 5. **Repair and return.** Apply acceptance-gate Bounds to flags, preserving original objections and
-   remedies. A flag never becomes readiness because a counter elapsed. Send repairs to a fresh gate;
+   remedies. A flag never becomes readiness because a counter elapsed. A plan repair settles a design choice, so under those Bounds it goes to one fresh gate;
    restart attacker review only if a repair changes approach, scope, ownership or verification. A new
    material design cycle retains its preceding history and the same four-round adjudication
    checkpoint; renaming or caller re-entry cannot erase objections or reset a cycle. Missing or lost
