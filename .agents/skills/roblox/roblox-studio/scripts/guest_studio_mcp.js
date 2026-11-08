@@ -35,7 +35,8 @@ const RUN_ATTEMPTS = 3;
 // Rows of icons without text are searched in steps of this many points.
 const PROBE_STEP = 8;
 
-// The Assistant panel's menu button sits within this many points right of the panel title.
+// The Assistant panel's menu button sits within this many points right of the panel title at
+// the panel's default width.
 const PANEL_MENU_REACH = 140;
 
 const systemEvents = Application("System Events");
@@ -343,13 +344,22 @@ function setMcpSwitch(process, frame) {
 
   click(page.x, page.y);
 
-  const row = waitFor(/^Enable/i, 6, dialog);
+  // "Setup instructions", behind a chevron icon, appears only on the MCP Servers page, and the server switch's row is the
+  // "Enable" line directly above it, so no other settings row can match.
+  const instructions = waitFor(/Setup instructions/i, 6, dialog);
+  const row = instructions && readScreen()
+    .filter((line) => /^Enable/i.test(line.text) && contains(dialog, line) && line.y < instructions.y)
+    .sort((a, b) => b.y - a.y)[0];
 
   if (!row) {
     throw new Error("The MCP server switch is not in Assistant Settings");
   }
 
   const before = mcpStatus();
+
+  if (before === "unknown") {
+    throw new Error("The MCP status is not readable, so a switch click could not be confirmed");
+  }
 
   // The switch sits at the right end of its row, inside the dialog's padding. The first click
   // that changes the status is the switch, and nothing is clicked after it.

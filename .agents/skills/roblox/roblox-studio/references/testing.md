@@ -233,7 +233,8 @@ guest input cannot reach. Read the guest's Accessibility list first: a Cirrus La
 grants `osascript`, `sshd-keygen-wrapper` and `tart-guest-agent`, so `osascript -l JavaScript`
 over SSH posts working CoreGraphics clicks. A missing grant is added in the guest's System Settings,
 opened over SSH with `open "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_Accessibility"`
-and operated by the agent through the guest's Screen Sharing, since posted input is what the grant
+and operated by the agent through the [guest desktop viewer](#optional-guest-desktop-viewer), or the
+host's Screen Sharing when no hidden viewer is available, since posted input is what the grant
 enables. Guest input behaves like this:
 
 - **Coordinates are points.** A HiDPI guest's captures have twice the pixels of its screen points;
@@ -246,7 +247,8 @@ enables. Guest input behaves like this:
 - **Studio's embedded web panels,** such as Assistant, take one click to focus and then toggle on
   each click; capture after every click rather than repeating one.
 - The first `screencapture` over SSH raises a guest Screen Recording prompt for the SSH session;
-  the agent approves it through the guest's Screen Sharing.
+  the agent approves it through the guest desktop viewer, or the host's Screen Sharing when no hidden
+  viewer is available.
 
 Tart's own `--vnc-experimental` endpoint returns black frames while the VM runs with
 `--no-graphics`; a viewer connects to the guest's built-in Screen Sharing service on port 5900.
@@ -255,7 +257,8 @@ To turn the guest Studio's MCP server on or off, copy
 [guest_studio_mcp.js](../scripts/guest_studio_mcp.js) into the guest and run
 `osascript -l JavaScript guest_studio_mcp.js <studio-pid> on` over SSH. It finds each control by
 its text or tooltip, so it does not depend on the guest's display size, and reaches the Assistant
-panel wherever it is docked in the main window. It opens Assistant → … → Settings → MCP Servers, sets the switch, closes the dialog, and retries a
+panel wherever it is docked in the main window at its default width. It opens Assistant → … →
+Settings → MCP Servers, sets the switch, closes the dialog, and retries a
 pass that a dropped click spoiled. It exits nonzero unless the status bar reads the target state;
 `osascript -l JavaScript guest_studio_mcp.js read` prints what it recognizes on screen when a step
 fails.
@@ -390,7 +393,9 @@ resuming normal controls.
 
 An empty inventory does not establish that MCP is disabled. The intended process may be waiting
 on sign-in, a recovery dialog, Assistant initialization, or the proxy connection. Inspect that
-editor's current UI. Resolve blocking dialogs, open **Assistant → … → Settings → MCP Servers** (in a guest, through the bundled script), and inspect
+editor's current UI. Resolve blocking dialogs, open **Assistant → … → Settings → MCP Servers** (in a
+guest, through the bundled script), and
+inspect
 the normal MCP setting before changing it. If remote pointer input cannot open Assistant, use its
 native menu or the installed editor's shortcut configuration; inspect the current binding rather
 than assuming a key. Restore any temporary binding afterward. Keep the proxy alive during bounded

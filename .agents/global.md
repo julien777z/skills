@@ -296,7 +296,8 @@ alwaysApply: true
   result at its source before building on it. **Whether a step is only the user's is settled
   before asking.** A step the agent's tools can reach by any route — inside a machine or VM it
   controls, through a viewer or settings page it can open, or briefly through the user's own
-  desktop input where the task's authorization and tool policy permit it — is the agent's to take, never put to the user as a request or as a choice
+  desktop input where the task's authorization and tool policy permit it — is the agent's to
+  take, never put to the user as a request or as a choice
   between their doing it and the agent's. The agent prefers the route that leaves the user's
   desktop alone and states any interruption, such as a moving cursor, when it happens. Only what
   needs the user's own identity, device, password or physical presence goes to them.
