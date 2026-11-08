@@ -43,7 +43,7 @@ choices:
 
 Run only when explicitly invoked or requested by the user. Do not automatically research charts during ordinary game edits.
 
-Accept a game count `N`, defaulting to **25 games** when none is given; an explicit count, genre, audience, or selection overrides that default. Choose the chart device, region, and category from the user's request or the current game's audience; when neither identifies them, state the selected chart filters as assumptions. Start at the current [Roblox charts](https://www.roblox.com/charts). Record the observation date, chart category, filters, visible order, and each selected experience's title, creator, and exact URL. Rankings change; never substitute remembered hit games for the requested chart. If ranking content is unavailable, explain the gap and use only identifiable entries actually retrieved, without inventing their rank.
+Accept a game count `N`, defaulting to **25 games** when none is given; an explicit count, genre, audience, or selection overrides that default. Choose the chart device and region from the user's request or the current game's audience, and state them as assumptions when neither identifies them. Draw the games from every category the charts page shows, round-robin by rank and skipping duplicates, unless the user names a genre or category; leave out categories whose games need a purchase or subscription to enter. Start at the current [Roblox charts](https://www.roblox.com/charts). Record the observation date, filters, each selected entry's category and rank, and each selected experience's title, creator, and exact URL. Rankings change; never substitute remembered hit games for the requested chart. If ranking content is unavailable, explain the gap and use only identifiable entries actually retrieved, without inventing their rank.
 
 Read `roblox-studio`'s testing reference. Use a qualified isolated runner for published-client play or browsing that would obstruct the user's desktop. Reuse a configured runner when available. Studio MCP alone is not evidence that the published client can be controlled; qualify browser/media and published-client input and capture separately, without host window, focus or input interference, and record each result separately. Read-only API retrieval can assist, but it does not replace the requested observation or play and never opens host research or game windows.
 
@@ -147,10 +147,9 @@ study:
     mode: "selected mode" # passive | play
     requested_games: 25
     completed_games: 0
-    reused_games: [] # {game_id, observed_at, chart_rank} for each record reused; chart_rank is this chart's
+    reused_games: [] # {game_id, observed_at, chart_category, chart_rank} for each record reused; category and rank are this chart's
     chart:
         url: "https://www.roblox.com/charts"
-        category: null
         device: "selected device"
         country: "selected region"
     assignments:
@@ -165,6 +164,7 @@ games:
       place_id: null
       url: "Exact experience URL"
       creator: null
+      chart_category: null
       chart_rank: null
       researcher: "researcher identifier"
       mode: "selected mode"
