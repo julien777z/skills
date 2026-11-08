@@ -110,8 +110,10 @@ paths:
   entry point. They do not select the top-level workflow, hide a decision gate, declare a dependency,
   or invoke another skill. Scripts the skill runs go under `scripts/`; supporting files may live
   under `assets/`, `resources/`, or another directory named for their role. Keep only files the skill
-  needs. A skill that reads its own earlier results on a later run keeps them in its `verification/`
-  folder, as data the skill reads, never guidance a reader follows.
+  needs. Data a skill's runs produce and keep, such as records, earlier results or accumulated
+  observations, lives in that skill's `verification/` folder, whichever run, skill or person reads it
+  later. It is data, never guidance a reader follows; a lesson drawn from it goes into the skill or
+  rule that owns its subject.
 - Never add `agents/openai.yaml` to a repository skill. Repository skills contain `SKILL.md` and
   only supporting files required by the skill; provider UI metadata stays outside repositories
   and is never propagated.
@@ -122,24 +124,6 @@ paths:
   a bare filename must not sound like an unexplained skill, mode, or prerequisite.
 - References carry supporting criteria and technical procedures. Moving text into one is not a fix for
   overly specific guidance, duplication, unsupported claims, or an unclear ownership boundary.
-
-### Routers
-
-- **A skill whose guidance differs by one attribute of the task routes to a reference per value.**
-  The attribute is something the task in hand has one value of, such as a platform, a provider, a
-  framework or a genre. Guidance true for only some values goes to a folder named for the attribute
-  in the plural, `references/<attributes>/<value>.md` such as `references/platforms/ios.md`, so a
-  reader loads only the variant that applies and a rule meant for one value is never applied to all.
-  Guidance true for every value stays in `SKILL.md`, and guidance repeated across variant files
-  moves up to it, narrowed to name the values it covers when it does not hold for all.
-- Add the router with the first variant file: a `## <Attribute> Router` section in `SKILL.md` that
-  says how to tell the task's value, a table of each value and its linked file, and what a reader
-  does when no file matches (follow `SKILL.md` alone) or the task spans several values (read each).
-  A new variant file adds its row in the same change; a file no row links is unreachable.
-- A variant specializes `SKILL.md` and never contradicts it. Where a variant needs the opposite,
-  narrow the shared statement to name that exception.
-- Use no router when the variants differ in workflow rather than content, which is two routes as the
-  skill-shape bullet says, or when a few lines in `SKILL.md` cover every value.
 
 ### Descriptions
 
@@ -235,6 +219,24 @@ edits, a merge, a deployment, or a running system carries the report line its de
 not a forced template for the execution result. Decide from what the skill returns, and leave out
 a template where correct results genuinely vary in shape.
 
+### Routers
+
+- **A skill whose guidance differs by one attribute of the task routes to a reference per value.**
+  The attribute is something the task in hand has one value of, such as a platform, a provider, a
+  framework or a genre. Guidance true for only some values goes to a folder named for the attribute
+  in the plural, `references/<attributes>/<value>.md` such as `references/platforms/ios.md`, so a
+  reader loads only the variant that applies and a rule meant for one value is never applied to all.
+  Guidance true for every value stays in `SKILL.md`, and guidance repeated across variant files
+  moves up to it, narrowed to name the values it covers when it does not hold for all.
+- Add the router with the first variant file: a `## <Attribute> Router` section in `SKILL.md` that
+  says how to tell the task's value, a table of each value and its linked file, and what a reader
+  does when no file matches (follow `SKILL.md` alone) or the task spans several values (read each).
+  A new variant file adds its row in the same change; a file no row links is unreachable.
+- A variant specializes `SKILL.md` and never contradicts it. Where a variant needs the opposite,
+  narrow the shared statement to name that exception.
+- Use no router when the variants differ in workflow rather than content, which is two routes as the
+  skill-shape bullet says, or when a few lines in `SKILL.md` cover every value.
+
 ## Writing
 
 - A skill may restate an ambient rule when it helps the reader act at the point of use; this does
@@ -249,8 +251,13 @@ a template where correct results genuinely vary in shape.
   into a heading of its own. A restriction on one subject goes under that subject's heading;
   `## Guardrails`, always the last section when present, holds only constraints that span the
   file's subjects.
+- **An added section, subsection or bullet goes where its reader needs it, never beside the text
+  it most resembles.** Read the file's existing order first. Guidance every reader of the file needs
+  comes before guidance only some cases need, and each part follows the parts whose terms it uses.
+  In a style guide, a section on footnotes, which only some documents use, follows the sections on
+  headings and paragraphs that every document uses, even though footnotes extend paragraphs.
 - Express each independent requirement once, as one concise statement or bullet, without padding. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
-- Normalize the touched file's nearby structure when needed: combine narrow sections, remove redundant wording, and order foundational guidance before specialized concerns.
+- Normalize the touched file's nearby structure when needed: combine narrow sections and remove redundant wording.
 - **Prefer the broad statement, and let the request's shape be its example.** A request
   arrives as one symptom, and the rule it needs names the class that symptom belongs to; the
   symptom's shape stays as one illustration of it. In shared guidance that illustration never
