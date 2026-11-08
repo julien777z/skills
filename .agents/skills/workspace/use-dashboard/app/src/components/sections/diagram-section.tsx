@@ -4,9 +4,9 @@ import { ExternalLink, RichText } from '@/components';
 import { Grid, Stack, Text } from '@/components/primitives';
 import { drawDiagram } from '@/lib/diagram';
 import { linkAttributes, type References, ReferencesContext } from '@/lib/references';
-import { CHANGES, ChangeName, TONES } from '@/lib/tone';
+import { CHANGES, TONES } from '@/lib/tone';
 import { cn, scrollToSection, withKeys } from '@/lib/utils';
-import type { DiagramEdge, DiagramSection as DiagramSectionSpec, Section } from '@/spec';
+import { Change, type DiagramEdge, type DiagramSection as DiagramSectionSpec, type Section } from '@/spec';
 import { SectionCard } from './section-card';
 import { SectionDialog } from './section-dialog';
 import { TextList } from './text-list';
@@ -136,7 +136,7 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
   const opener = useRef<SVGElement | null>(null);
   const labels = new Map(section.nodes.map((node) => [node.id, node.label]));
   const used = new Set([...section.nodes, ...section.edges].map((part) => part.change).filter(Boolean));
-  const legend = Object.values(ChangeName).filter((change) => change === ChangeName.UNCHANGED || used.has(change));
+  const legend = Object.values(Change).filter((change) => used.has(change));
 
   useEffect(() => {
     const target = figure.current;
@@ -211,17 +211,11 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
               ))}
             </Stack>
           )}
-          {used.size > 0 && (
+          {legend.length > 0 && (
             <Stack direction="row" gap="lg" wrap>
               {legend.map((change) => (
                 <Stack key={change} direction="row" align="center" gap="xs">
-                  <span
-                    className={cn(
-                      'size-3 rounded-[3px] border-[1.5px]',
-                      TONES[CHANGES[change].tone].border,
-                      CHANGES[change].dashed && 'border-dashed',
-                    )}
-                  />
+                  <span className={cn('h-0.5 w-4 rounded-full', TONES[CHANGES[change].tone].dot)} />
                   <Text size="xs" tone="muted">
                     {CHANGES[change].label}
                   </Text>

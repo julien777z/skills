@@ -264,7 +264,7 @@ question: what would change in how the skills run. It shows the change, not two 
      round reruns on each side.
    - Each mapped page: a `diagram` `Flow` of the proposed flow with the current flow's removed
      parts left in, each node and edge carrying `change` `added`, `removed` or `changed` and no
-     `change` when unchanged, with a `legend` and `steps` saying what changed in order; then a
+     `change` when unchanged, with `steps` saying what changed in order; then a
      `changes` section `What changed`, one item per change the diagram marks; then a `tabs` section
      `How it runs` with the tabs `Proposed` and `Current`, each holding that side's **Workflow**
      `How it runs` tree, so the reader opens one side at a time. Scenarios and the `Skills` table

@@ -8,11 +8,14 @@ import { References, ReferencesContext } from '@/lib/references';
 import { withKeys } from '@/lib/utils';
 import { type Dashboard, PageLayout } from '@/spec';
 
+// A reload, whether the page's own or a viewer's frame loading a new copy, keeps window.name.
+const OPEN_PAGE_PREFIX: string = 'dashboard-page:';
+
 export function App({ dashboard }: { dashboard: Dashboard }): ReactNode {
   const [current, setCurrent] = useState(() =>
     Math.max(
       0,
-      dashboard.pages.findIndex((candidate) => `#${encodeURIComponent(candidate.title)}` === window.location.hash),
+      dashboard.pages.findIndex((candidate) => `${OPEN_PAGE_PREFIX}${candidate.title}` === window.name),
     ),
   );
   const references = useMemo(() => new References(dashboard.references ?? []), [dashboard.references]);
@@ -27,9 +30,7 @@ export function App({ dashboard }: { dashboard: Dashboard }): ReactNode {
   function handleSelectPage(position: number) {
     setCurrent(position);
 
-    if (window.location.protocol === 'file:') {
-      window.history.replaceState(null, '', `#${encodeURIComponent(dashboard.pages[position].title)}`);
-    }
+    window.name = `${OPEN_PAGE_PREFIX}${dashboard.pages[position].title}`;
 
     window.scrollTo({ top: 0 });
   }

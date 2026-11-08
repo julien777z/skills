@@ -76,8 +76,9 @@ of a process, carries no count. Section types:
 A diagram draws each node as a box inside a frame titled with the `ref` its `pr` names, and each
 edge as an arrow numbered with its `step`; the numbered `steps` are listed beside or under it.
 `change` is `added`, `changed` or `removed` and colors the box or arrow; omit it for an unchanged
-part. A node's or edge's `tone` colors its border or arrow instead, for a state the reader follows,
-such as the step under discussion; `legend` says what each tone means. A node or edge with
+part. The diagram shows its own legend, a colored line beside each change it uses, so `legend`
+never repeats them. A node's or edge's `tone` colors its border or arrow instead, for a state the
+reader follows, such as the step under discussion; `legend` says what each tone means. A node or edge with
 `details`, one section, opens it in a dialog when it is clicked. A node's `target` names another
 section on the same page, outside tabs, by its title: clicking the node scrolls smoothly to it, and its label
 stays plain text rather than a link. Every `pr`, `from` and `to` names a listed `ref` or node `id`, and every `step` a position in
