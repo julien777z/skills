@@ -51,16 +51,16 @@ If the needed runner capability is unavailable, return the concrete blocker and 
 
 ## Study records
 
-Study records live in this skill's `verification/` folder in the shared skills repository. `verification/games/<universe_id>.yaml` holds the latest record of each game studied, as one `games` entry of the Output schema; `verification/studies/<YYYY-MM-DD>-<mode>.yaml` holds each study's `study` and `synthesis` blocks. Git history keeps a game's earlier records. Read them from the skills repository's freshly fetched default branch, plus any open pull request this session's studies created, never from an installed copy that may lag.
+Study records live in this skill's `verification/` folder in the shared skills repository. `verification/games/<universe_id>.yaml` holds the latest record of each game studied, as one `games` entry of the Output schema; `verification/studies/<YYYY-MM-DDTHHMMZ>-<mode>.yaml`, named from `study.observed_at` in UTC, holds each study's `study` and `synthesis` blocks. Git history keeps a game's earlier records. Read them from the skills repository's freshly fetched default branch, plus any open pull request this session's studies created, never from an installed copy that may lag.
 
 After selecting the chart entries, look up each entry's universe ID:
 
-- **Reuse** a record observed within the last 30 days with `observation_status: completed` whose mode covers the request: a play record covers passive, a passive record never covers play. List it under `study.reused_games` and count it in `completed_games`.
-- **Study again** every other entry, including an older, partial or blocked record or one whose mode does not cover the request. Give its researcher the earlier record; the new record sets `previous_observed_at` and lists what differs in `changes_since_previous`.
+- **Reuse** a record with `observation_status: completed` whose `observed_at` is within 30 days of this study's `observed_at` and whose mode covers the request: a play record covers passive, a passive record never covers play. List it under `study.reused_games` with this chart's rank and count it in `completed_games`.
+- **Study** every other entry: a game with no record, and one whose record is older, partial or blocked or whose mode does not cover the request. Give its researcher any earlier record; the new record sets `previous_observed_at` and lists what differs in `changes_since_previous`.
 
-Only the entries studied again are partitioned into researcher batches below.
+Only the entries to study are partitioned into researcher batches below.
 
-Raw captures, such as screenshots and recordings, stay in the invoking project's ignored verification output. A committed record names each capture by file name, never by its path.
+Raw captures, such as screenshots and recordings, and researchers' working notes stay in the invoking project's ignored verification output. A committed record names each capture by file name, never by its path.
 
 ## Delegate the observations
 
@@ -129,11 +129,9 @@ Record the first success, time to understand the next action, meaningful decisio
 
 ## Main-agent synthesis
 
-After all assignments have returned, validate/deduplicate the records against the selected chart entries. Compare notes and identify supported common patterns, genre-specific exceptions, and tradeoffs. Use the number of games with relevant evidence as each pattern's denominator; unknown UI/onboarding records are not evidence against a pattern. Popularity is correlation, not proof of causation or a measurement of dopamine. Translate observations into practical design guidance; avoid copying distinctive art, names, layouts, or mechanics wholesale.
+After all assignments have returned, validate/deduplicate the records against the selected chart entries. Compare notes and identify supported common patterns, genre-specific exceptions, and tradeoffs. Use the number of this study's games with relevant evidence, reused records included, as each pattern's denominator; unknown UI/onboarding records are not evidence against a pattern. Popularity is correlation, not proof of causation or a measurement of dopamine. Translate observations into practical design guidance; avoid copying distinctive art, names, layouts, or mechanics wholesale.
 
-Count each pattern over this study's games, reused records included.
-
-Route every supported theme to the skill that owns its subject, found by its description: gameplay, progression and onboarding to `roblox-gameplay`, UI conventions to `roblox-react`, story and characters to `storyline`, and maps and world presentation to `roblox-building`. A theme that recurs across games and that no skill owns gets a new skill. A theme that holds for one genre only goes to the owning skill's `references/genres/<genre>.md`, which that skill's genre router lists as the shared `agent-guidance.md` rule's **Routers** says; a theme that holds across genres goes in the skill's own text. Change a skill where its current text is silent on a theme or contradicted by it, keep each rule in one skill, and replace a conclusion when later observations contradict it rather than accumulating a catalogue of trendy features. Keep only lasting, transferable themes in skills; dated ranks, per-game notes and sources stay in the study records. Preserve the user's scope and the game's identity, and never turn research suggestions into new gameplay features.
+Route every supported theme to the skill that owns its subject, found by its description: gameplay systems, progression and onboarding to `roblox-gameplay`, UI conventions to `roblox-react`, narrative, characters and quest content to `storyline`, and maps and world presentation to `roblox-building`. A theme that recurs across games and that no skill owns gets a new skill. A theme that holds for one genre only goes to the owning skill's `references/genres/<genre>.md`, listed in that skill's genre router, which the first genre file creates, as the shared `agent-guidance.md` rule's **Routers** says; a theme that holds across genres goes in the skill's own text. Change a skill where its current text is silent on a theme or contradicted by it, keep each rule in one skill, and replace a conclusion when later observations contradict it rather than accumulating a catalogue of trendy features. Keep only lasting, transferable themes in skills; dated ranks, per-game notes and sources stay in the study records. Preserve the user's scope and the game's identity, and never turn research suggestions into new gameplay features.
 
 Invoke `edit-skill` once to deliver the study records and every skill change together as one guidance pull request.
 
@@ -149,7 +147,7 @@ study:
     mode: "selected mode" # passive | play
     requested_games: 25
     completed_games: 0
-    reused_games: [] # {game_id, observed_at} for each record reused
+    reused_games: [] # {game_id, observed_at, chart_rank} for each record reused; chart_rank is this chart's
     chart:
         url: "https://www.roblox.com/charts"
         category: null
@@ -170,6 +168,7 @@ games:
       chart_rank: null
       researcher: "researcher identifier"
       mode: "selected mode"
+      observed_at: "ISO-8601 timestamp"
       observation_status: completed # completed | partial | blocked
       previous_observed_at: null
       changes_since_previous: []
