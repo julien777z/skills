@@ -392,8 +392,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   among the states to restyle.
 - **A menu button that collapses the navigation, such as a hamburger, is for phone and tablet
   widths only.** On a desktop the navigation stays in its bar: when its destinations outgrow the
-  row, the bar first uses the width the screen offers, then the row scrolls sideways. Folding them
-  into a menu on a desktop, or cutting a title or label short to make room, is the defect.
+  row, the bar first uses the full width of the page frame, then the row scrolls sideways. Folding
+  them into a menu on a desktop is the defect.
 - **Settings is the last group in the primary navigation, and the reader's own account is the last
   item within it.** The work the product exists for comes first; settings about the shared
   workspace come before settings about the reader themselves.

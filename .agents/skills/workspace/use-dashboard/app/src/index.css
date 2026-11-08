@@ -122,3 +122,20 @@ body {
     background: var(--background);
   }
 }
+
+@layer utilities {
+  .scrollbar-visible::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .scrollbar-visible::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background: var(--border);
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    .scrollbar-visible {
+      scrollbar-width: thin;
+    }
+  }
+}

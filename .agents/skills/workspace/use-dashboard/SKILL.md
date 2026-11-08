@@ -14,8 +14,10 @@ card. Every dashboard gets that layout without the caller writing any markup. Th
 self-contained file; its web font loads from Google Fonts and falls back to system fonts, and a
 diagram is drawn by Mermaid, loaded from jsDelivr, with its connections listed as text when Mermaid
 cannot load. The page is dark unless the host's viewer is explicitly set to light
-(`data-theme="light"` on the root element), spans up to 1920 px so a wide screen shows more page links, keeps its title whole, scrolls the page links sideways when they still do not fit, and folds them into a menu only below 1024 px, and
-renders every value as text, so data never runs as markup or script.
+(`data-theme="light"` on the root element), and renders every value as text, so data never runs
+as markup or script. The navbar keeps the title whole and the page links beside it: the page spans
+up to 1920 px so a wide screen shows more links, the links scroll sideways with a visible scrollbar
+when they still do not fit, and they fold into a menu only below 1024 px.
 
 ## Dependencies
 - `pages:write-page`
@@ -265,5 +267,3 @@ Use the first route the session offers, and the same one for every update of one
 ## Guardrails
 
 - A spec carries what the user may see: never a credential, token or secret.
-- From 1024 px up, the page links stay in the navbar beside the whole title, scrolling sideways when
-  they do not fit; folding them into a menu or truncating the title at those widths is the defect.

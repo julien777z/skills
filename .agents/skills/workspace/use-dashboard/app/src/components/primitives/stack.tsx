@@ -31,11 +31,11 @@ const STACK_VARIANTS = {
     brand: 'size-7 shrink-0 rounded-md bg-primary text-primary-foreground',
   },
   frame: { none: '', page: '@container/page mx-auto w-full max-w-[120rem]' },
-  height: { auto: '', bar: 'h-14' },
+  height: { auto: '', bar: 'min-h-14' },
   block: { none: '', row: 'py-3', page: 'py-8' },
   push: { true: 'ml-auto shrink-0', false: '' },
   show: { always: '', fromSm: 'hidden sm:flex', fromLg: 'hidden lg:flex', belowLg: 'lg:hidden' },
-  scroll: { true: 'overflow-x-auto', false: '' },
+  scroll: { true: 'scrollbar-visible overflow-x-auto pb-1', false: '' },
   marker: {
     none: 'list-none',
     bullet: 'list-disc pl-5 marker:text-muted-foreground',
