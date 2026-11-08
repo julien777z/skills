@@ -110,7 +110,8 @@ paths:
   entry point. They do not select the top-level workflow, hide a decision gate, declare a dependency,
   or invoke another skill. Scripts the skill runs go under `scripts/`; supporting files may live
   under `assets/`, `resources/`, or another directory named for their role. Keep only files the skill
-  needs.
+  needs. A skill that reads its own earlier results on a later run keeps them in its `verification/`
+  folder, as data the skill reads, never guidance a reader follows.
 - Never add `agents/openai.yaml` to a repository skill. Repository skills contain `SKILL.md` and
   only supporting files required by the skill; provider UI metadata stays outside repositories
   and is never propagated.
@@ -121,6 +122,23 @@ paths:
   a bare filename must not sound like an unexplained skill, mode, or prerequisite.
 - References carry supporting criteria and technical procedures. Moving text into one is not a fix for
   overly specific guidance, duplication, unsupported claims, or an unclear ownership boundary.
+
+### Routers
+
+- **A skill whose guidance differs by one attribute of the task routes to a reference per value.**
+  The attribute is something the task in hand has one value of, such as a platform, a provider, a
+  framework or a genre. Guidance true for only some values goes to
+  `references/<attribute>/<value>.md`, so a reader loads only the variant that applies and a rule
+  meant for one value is never applied to all. Guidance true for every value stays in `SKILL.md`,
+  and guidance that turns up in two variant files moves up to it.
+- Add the router with the first variant file: a `## <Attribute> Router` section in `SKILL.md` that
+  says how to tell the task's value, a table of each value and its linked file, and what a reader
+  does when no file matches (follow `SKILL.md` alone) or the task spans several values (read each).
+  A new variant file adds its row in the same change; a file no row links is unreachable.
+- A variant specializes `SKILL.md` and never contradicts it. Where a variant needs the opposite,
+  narrow the shared statement to name that exception.
+- Use no router when the variants differ in workflow rather than content, which is two routes as the
+  skill-shape bullet says, or when a few lines in `SKILL.md` cover every value.
 
 ### Descriptions
 

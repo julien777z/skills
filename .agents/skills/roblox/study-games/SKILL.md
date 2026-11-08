@@ -1,6 +1,6 @@
 ---
 name: study-games
-description: Explicit user-invoked research of Roblox charts for the requested audience and region. Study 25 games by default, in passive mode (pages and footage) or play mode (up to five minutes of play each), asking which when the request names neither. Delegate two games per researcher, collect YAML notes on gameplay, UI and onboarding, and wait for all researchers before synthesizing supported patterns into the Roblox skills.
+description: Explicit user-invoked research of Roblox charts for the requested audience and region. Study 25 games by default, in passive mode (pages and footage) or play mode (up to five minutes of play each), asking which when the request names neither. Reuse recent records of games studied before, delegate two games per researcher, collect YAML notes on gameplay, UI and onboarding, and wait for all researchers before keeping the records and routing supported themes into the Roblox skills that own them.
 short_description: 'Explicit user-invoked research of Roblox charts for the requested audience and region.'
 disable-model-invocation: true
 ---
@@ -15,6 +15,8 @@ disable-model-invocation: true
 - `edit-skill`
 - `roblox-gameplay`
 - `roblox-react`
+- `roblox-building`
+- `storyline`
 - `interactive-skill`
 
 ## Mode
@@ -47,6 +49,19 @@ Read `roblox-studio`'s testing reference. Use a qualified isolated runner for pu
 
 If the needed runner capability is unavailable, return the concrete blocker and supported evidence rather than pretending the mode completed. At the end, close task-owned apps and stop task-owned runner processes; preserve retained runner software, accounts, files, and access for the next session. Coordinate shutdown with the main agent so it does not interrupt another active assignment or game test.
 
+## Study records
+
+Study records live in this skill's `verification/` folder in the shared skills repository. `verification/games/<universe_id>.yaml` holds the latest record of each game studied, as one `games` entry of the Output schema; `verification/studies/<YYYY-MM-DD>-<mode>.yaml` holds each study's `study` and `synthesis` blocks. Git history keeps a game's earlier records. Read them from the skills repository's freshly fetched default branch, plus any open pull request this session's studies created, never from an installed copy that may lag.
+
+After selecting the chart entries, look up each entry's universe ID:
+
+- **Reuse** a record observed within the last 30 days with `observation_status: completed` whose mode covers the request: a play record covers passive, a passive record never covers play. List it under `study.reused_games` and count it in `completed_games`.
+- **Study again** every other entry, including an older, partial or blocked record or one whose mode does not cover the request. Give its researcher the earlier record; the new record sets `previous_observed_at` and lists what differs in `changes_since_previous`.
+
+Only the entries studied again are partitioned into researcher batches below.
+
+Raw captures, such as screenshots and recordings, stay in the invoking project's ignored verification output. A committed record names each capture by file name, never by its path.
+
 ## Delegate the observations
 
 Invoke `subagent-matrix` and choose its **frontier** tier for every research sub-agent in both
@@ -57,7 +72,7 @@ other than an explicit unsupported receipt blocks research delegation. An explic
 frontier research as unavailable and also blocks it; do not silently use a lower tier or inherit the orchestrator's
 model. Model selection does not relax runner locks or concurrency limits.
 
-Partition the selected chart entries into batches of four. **Spawn two sub-agents for every four games, assigning exactly two distinct games to each researcher.** For a final partial batch, create only the researchers needed: one researcher for one or two games, or two researchers for three games (two games plus one). Thus the default 25-game study has 13 researcher assignments: twelve pairs and one final game. Respect available concurrency slots; run further batches as slots become available instead of exceeding the limit or silently increasing each researcher's workload.
+Partition the entries to study into batches of four. **Spawn two sub-agents for every four games, assigning exactly two distinct games to each researcher.** For a final partial batch, create only the researchers needed: one researcher for one or two games, or two researchers for three games (two games plus one). Thus a default 25-game study with nothing reused has 13 researcher assignments: twelve pairs and one final game. Respect available concurrency slots; run further batches as slots become available instead of exceeding the limit or silently increasing each researcher's workload.
 
 Give every researcher the exact assigned titles/URLs/IDs, mode, five-minute play limit, shared lock key/coordinator host, scoped ownership receipt and expiry, evidence rules, and output schema below. Researchers must read `agent-lock` before controlling the player or shared guest desktop. Researchers must not independently replace the selected games. The main agent tracks each assignment and **waits for every researcher to finish** before compiling cross-game findings or updating skills. A blocked researcher still returns a structured partial record with its blocker; missing results are not completed coverage. Do not compile a partial batch as the final study while other researchers are running.
 
@@ -116,15 +131,17 @@ Record the first success, time to understand the next action, meaningful decisio
 
 After all assignments have returned, validate/deduplicate the records against the selected chart entries. Compare notes and identify supported common patterns, genre-specific exceptions, and tradeoffs. Use the number of games with relevant evidence as each pattern's denominator; unknown UI/onboarding records are not evidence against a pattern. Popularity is correlation, not proof of causation or a measurement of dopamine. Translate observations into practical design guidance; avoid copying distinctive art, names, layouts, or mechanics wholesale.
 
-Invoke `edit-skill` to update canonical `roblox-gameplay` with durable principles and a short sourced research reference, and to deliver the UI guidance below. Preserve the user's scope and the game's identity. Do not silently turn research suggestions into new gameplay features. Save dated studies, ranks, per-game notes, sources, limitations, and raw captures in the invoking project's ignored verification output. Keep only lasting, transferable themes in the main skill. Refresh or replace conclusions when later observations contradict them; do not accumulate a catalogue of trendy features.
+Count each pattern over this study's games, reused records included.
 
-Put supported UI-specific conventions in `roblox-react`, with evidence retained in the invoking project. Keep gameplay/onboarding principles in `roblox-gameplay` and avoid duplicating the same rule across skills.
+Route every supported theme to the skill that owns its subject, found by its description: gameplay, progression and onboarding to `roblox-gameplay`, UI conventions to `roblox-react`, story and characters to `storyline`, and maps and world presentation to `roblox-building`. A theme that recurs across games and that no skill owns gets a new skill. A theme that holds for one genre only goes to the owning skill's `references/genres/<genre>.md`, which that skill's genre router lists as the shared `agent-guidance.md` rule's **Routers** says; a theme that holds across genres goes in the skill's own text. Change a skill where its current text is silent on a theme or contradicted by it, keep each rule in one skill, and replace a conclusion when later observations contradict it rather than accumulating a catalogue of trendy features. Keep only lasting, transferable themes in skills; dated ranks, per-game notes and sources stay in the study records. Preserve the user's scope and the game's identity, and never turn research suggestions into new gameplay features.
 
-Report sample, mode, findings, material evidence limits, and exactly which guidance changed. Leave generated agent mirrors to Agent Sync.
+Invoke `edit-skill` once to deliver the study records and every skill change together as one guidance pull request.
+
+Report the sample, mode, reused games, findings, material evidence limits, the pull request, and exactly which guidance changed. Leave generated agent mirrors to Agent Sync.
 
 ## Output: structured YAML notes
 
-Each researcher returns this structure for its assigned games. The orchestrator combines the game records and fills in the final synthesis only after all researchers finish. Use valid YAML, quote IDs as strings, use `null` for unknown values, and keep evidence separate from inference. The orchestrator writes the combined YAML to one file, sends it as the User-Facing Output rule requires, and summarizes its findings in chat. Store working notes under ignored `verification/`.
+Each researcher returns this structure for its assigned games. The orchestrator combines the game records and fills in the final synthesis only after all researchers finish. Use valid YAML, quote IDs as strings, use `null` for unknown values, and keep evidence separate from inference. The orchestrator writes each game record and the study file as **Study records** says, sends the study file as the User-Facing Output rule requires, and summarizes its findings in chat.
 
 ```yaml
 study:
@@ -132,6 +149,7 @@ study:
     mode: "selected mode" # passive | play
     requested_games: 25
     completed_games: 0
+    reused_games: [] # {game_id, observed_at} for each record reused
     chart:
         url: "https://www.roblox.com/charts"
         category: null
@@ -153,6 +171,8 @@ games:
       researcher: "researcher identifier"
       mode: "selected mode"
       observation_status: completed # completed | partial | blocked
+      previous_observed_at: null
+      changes_since_previous: []
       active_play_seconds: null
       play_coordination:
           resource_key: null # roblox-player for actual play
@@ -181,7 +201,7 @@ games:
             captured_at: null
             media_date_or_version: null
             timestamps: []
-            screenshot_paths: []
+            screenshots: [] # capture file names, never paths
             limitations: []
       gameplay:
           advertised_loop: null
