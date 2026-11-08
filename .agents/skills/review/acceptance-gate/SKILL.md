@@ -193,6 +193,14 @@ fix included. An earlier acceptance, a plan record without the user's words, or 
 the choice decided is not those words. A verdict with none says `no product choice added` in those
 words.
 
+**Then it lists every workaround the diff makes**: a remedy that makes the reported symptom go away
+while its cause stays, such as hiding or folding away what no longer fits instead of giving it
+room, moving a failing path behind a control, a flag, a fallback or a retry, catching and ignoring
+an error, special-casing the one reported value, or loosening a check until it passes. Each is a
+flag whose remedy is fixing the cause, whatever the change calls itself and however small; a
+workaround the user's words in the intent statement explicitly ask for is the only one that stands.
+A verdict with none says `no workaround added` in those words.
+
 For a diff question, also apply the `code-simplify` rubric’s **Trace Changed Flows** to the supplied
 implementations, consumers, and affected-repository map. A diff alone that cannot establish that
 receipt needs those contents from the caller before a clean verdict; a prose-only change names no

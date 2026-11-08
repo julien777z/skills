@@ -14,7 +14,7 @@ card. Every dashboard gets that layout without the caller writing any markup. Th
 self-contained file; its web font loads from Google Fonts and falls back to system fonts, and a
 diagram is drawn by Mermaid, loaded from jsDelivr, with its connections listed as text when Mermaid
 cannot load. The page is dark unless the host's viewer is explicitly set to light
-(`data-theme="light"` on the root element), keeps its title whole and folds the page links into a menu below 1024 px or whenever they do not fit beside it, and
+(`data-theme="light"` on the root element), keeps its title whole and shows every page link from 1024 px up, folding them into a menu only below that width, and
 renders every value as text, so data never runs as markup or script.
 
 ## Dependencies
@@ -265,3 +265,5 @@ Use the first route the session offers, and the same one for every update of one
 ## Guardrails
 
 - A spec carries what the user may see: never a credential, token or secret.
+- From 1024 px up, every page link and the dashboard's title are visible in full; a change that folds,
+  scrolls or truncates them at those widths is the defect, however many pages a spec holds.
