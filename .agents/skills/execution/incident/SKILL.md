@@ -118,7 +118,7 @@ complete **One Review Round** and ordinary delivery validation before an authori
 merge; **Restore Deployment Sources** then verifies the default-source deployment. A failure there
 resumes recovery and pauses ordinary work again.
 
-The repository's testing rule and `run-tests` order the suite for ordinary delivery: one run at the
+The repository's testing rule orders the suite for ordinary delivery: one run at the
 end, after the push, over a tree that has stopped changing. An active run suspends that ordering,
 because the tree changes with every diagnosis and the service is down the whole time.
 

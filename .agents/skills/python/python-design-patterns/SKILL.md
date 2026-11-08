@@ -80,8 +80,3 @@ Duplication that diverges in dangerous ways should be abstracted sooner. The rul
 
 **A service layer is importing from the API layer, breaking the dependency direction.**
 This is a layering violation. The service layer must not import from handlers. Introduce a shared types/models layer that both can import from, keeping the dependency arrow pointing downward (API → Service → Repository).
-
-## Related Skills
-
-- [python-testing-patterns](../python-testing-patterns/SKILL.md) — Test each layer in isolation using the dependency injection structure established here
-- [python-project-structure](../python-project-structure/SKILL.md) — Organize modules and directory layout so layer boundaries are explicit from the start
