@@ -8,7 +8,8 @@ short_description: 'Plan source and product changes for approval; validate canon
 
 Plan source and product changes, get them approved, then run them the same way every time.
 **Plan** decides what will be built; canonical guidance changes enter **Execution** directly and
-are validated by their evidence, smoke-test, review, and acceptance gates.
+are validated by their evidence, smoke-test, review, and acceptance gates, except a substantial
+skill change the user asks for, whose plan is a proposed flow.
 
 ## Dependencies
 - `review-proposal`
@@ -28,6 +29,7 @@ are validated by their evidence, smoke-test, review, and acceptance gates.
 - `list-prs`
 - `session-ledger`
 - `edit-skill`
+- `skill-flow`
 - `i-have-adhd`
 
 ## One Run Per Task
@@ -65,11 +67,19 @@ Every task that changes files starts here, and so does every follow-up that arri
   verification, even when more than one file or an internal dependency must change. Record the
   added work and state the next action; do not turn its implementation outline into another
   approval question. Ask only about a concrete unresolved choice and continue independent work.
-  Completing that choice does not require approval of a separate plan. Canonical guidance changes under `.agents` do not
-  wait for a plan or an output-format approval: their request or an encountered guidance gap starts
+  Completing that choice does not require approval of a separate plan. Canonical guidance changes
+  under `.agents`, apart from the skill changes the next bullet plans, do not wait for a plan or an output-format approval: their request or an encountered guidance gap starts
   the guidance-correction workflow, and their evidence, smoke-test, review, and acceptance gates
   verify it, on the timing `edit-skill`'s **Recording During A Task** sets for an active task,
   whether the user asked for the correction directly or the run noticed it.
+- **A skill change the user asks for gets a plan when a source change of its size would, and that
+  plan is a proposed flow.** A trivial skill change, or a small, clearly specified follow-up, is
+  delivered as the bullet above says. Any other change to how skills run goes on the draft guidance
+  pull request and is shown to the user as
+  `skill-flow`'s proposed-flow comparison of that branch against the default branch, in place of a
+  written plan, so they see what the change does to how the skills run. Until the user approves it
+  in their own words, that pull request gets no `test-skill` round, no merge and no auto-merge;
+  each edit they ask for lands on the same branch and the comparison is rendered again in place.
 - Work the approved plan already covers takes no new plan: an encountered issue, a gate's or a
   review's flag, a failing check, or a guidance correction discovered during the run. `edit-skill`
   records verified guidance corrections and `process-ledger` processes them at **Completion**.

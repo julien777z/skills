@@ -257,18 +257,20 @@ question: what would change in how the skills run. It shows the change, not two 
      Subagents per run (current → proposed), Loops (current → proposed) and Change (a few words),
      each row's `details` an outline of that page's changes; a `changes` section `Skills`, `counted`,
      one item per added, removed or changed skill with what changed in one sentence; and `notes`
-     naming in one line the pages with no change, which get no page.
+     naming in one line the pages with no change, which the `Changed` page leaves out.
    - `Usage`: a `table` `Subagents per run`, one row per skill a person starts that changed, with
      the columns Skill, Current, Proposed and What changed, most subagents saved first; a `changes`
      section `Loops`, one item per loop added, removed or changed, its `detail` the cap and what a
      round reruns on each side.
-   - Each mapped page: a `diagram` `Flow` of the proposed flow with the current flow's removed
-     parts left in, each node and edge carrying `change` `added`, `removed` or `changed` and no
-     `change` when unchanged, with `steps` saying what changed in order; then a
-     `changes` section `What changed`, one item per change the diagram marks; then a `tabs` section
-     `How it runs` with the tabs `Proposed` and `Current`, each holding that side's **Workflow**
-     `How it runs` tree, so the reader opens one side at a time. Scenarios and the `Skills` table
-     are left out.
+   - `Changed`, the second page, holds every mapped page in turn, in the order the Show dashboard
+     orders them, so the reader sees each change without opening a page per category: a `diagram`
+     `<page> flow` of the proposed flow with the current flow's removed parts left in, each node and
+     edge carrying `change` `added`, `removed` or `changed` and no `change` when unchanged, with
+     `steps` saying what changed in order; then a `changes` section `<page>: what changed`, one item
+     per change the diagram marks; then a `tabs` section `<page>: how it runs` with the tabs
+     `Proposed` and `Current`, each holding that side's **Workflow** `How it runs` tree, so the
+     reader opens one side at a time. Scenarios, the `Skills` table and a page per category are left
+     out.
 4. **Deliver** as **Workflow** step 6 does, as its own dashboard beside the one Show builds.
 
 ## Interrogate
