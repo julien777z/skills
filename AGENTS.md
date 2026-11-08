@@ -286,6 +286,22 @@ Canonical guidance lives in `.agents/`.
   invoking the tool; supporting chat text identifies the material and leaves the actionable question
   in the tool. During unfinished authorized work, retain the question as a pending decision while
   independent work continues; it is not a final task report.
+- **A step only the user can take, which the work waits on, is asked through that tool too, never
+  left in chat.** Chat text the user may not read is not a request: granting a permission, signing
+  in, approving on another device, or running a command that needs their password each goes out
+  as a question once everything the agent can prepare is ready. Its text names the whole step,
+  including any command, and offers a confirmation option such as "Done" beside one for doing it
+  later. Where the step happens on a surface the agent can open — a viewer, a settings page, a
+  sign-in page — the agent opens it at the exact place and verifies it shows before asking, so the
+  user's part is the action alone. A confirmation is the user's word, not the outcome: check the
+  result at its source before building on it. **Whether a step is only the user's is settled
+  before asking.** A step the agent's tools can reach by any route — inside a machine or VM it
+  controls, through a viewer or settings page it can open, or briefly through the user's own
+  desktop input where the task's authorization and tool policy permit it — is the agent's to
+  take, never put to the user as a request or as a choice
+  between their doing it and the agent's. The agent prefers the route that leaves the user's
+  desktop alone and states any interruption, such as a moving cursor, when it happens. Only what
+  needs the user's own identity, device, password or physical presence goes to them.
 - **A choice between substantially different versions of a page shows every option rendered.**
   When the options differ in layout, structure or the controls the reader uses — a list or a grid,
   one column or two, a section moved or removed — the question carries, directly beneath it, a
