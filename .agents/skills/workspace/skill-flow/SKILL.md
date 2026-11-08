@@ -136,7 +136,7 @@ reaches. Pages follow the categories as the sources stand when they are read.
      - an `outline` `Gaps in the sources`, `expanded` false, its groups the kinds of gap — "No limit
        set", "No capability level", "Unclear who does it", "Unclear order or route" and "Other",
        each only when it has items — with one item per gap: `title` the gap in a few plain words,
-       such as "Bugs reviewers have no maximum", `tag` the skill it sits in, and `detail` one or two
+       such as "Style reviewers have no maximum", `tag` the skill it sits in, and `detail` one or two
        sentences on what is open and why it matters, with no line numbers;
      - `notes` `How to read the flows`, one line each for an invocation arrow, a launch arrow and a
        borrowed-rubric arrow as their labels show them, then one line naming each category left
@@ -177,16 +177,16 @@ reaches. Pages follow the categories as the sources stand when they are read.
        launches always runs; left out when nothing overlaps.
    - Each category page, `layout` `rows`: a `diagram` `Flow` whose nodes are the skills the
      page's starting skills reach directly, each labelled with its name and its role in a few words,
-     and one node per launch named for the subagents it starts and how many, such as `Plan
-     attackers ×3 per round`. Edges are labelled `invokes`,
+     and one node per launch named for the subagents it starts and how many, such as `Draft
+     reviewers ×3 per round`. Edges are labelled `invokes`,
      `launches` (from the skill to its launch node) or `borrows`, and `steps` say in order how the
      work moves through them; a skill reached only further down appears in the `Skills` table
      alone. Then a `tree` `Scenarios`, `open_depth` 1: two to four stories this work commonly
      meets, each one concrete run told in order, such as a review that finds nothing, a lens that
      finds a bug, or findings that keep coming for three rounds. A root names the story. Beneath it,
-     what happens in run order: each round or step, such as "code-review round 1", holding one leaf
-     per subagent it starts, named for its role, such as "Bugs 2 lens"; and each event that changes
-     the path, such as "Bugs 2 lens reports a missing empty-list check", toned `warning`, holding
+     what happens in run order: each round or step, such as "Review round 1", holding one leaf
+     per subagent it starts, named for its role, such as "Style 2 lens"; and each event that changes
+     the path, such as "Style 2 lens reports an unused import", toned `warning`, holding
      what it sets off — a validator, a fix, a fresh gate — with an outcome that settles it toned
      `good`. A step that starts none says "In process" in its `meta`, and a round that reruns fewer
      subagents says why, such as a lens retired or a slice the fix left untouched. Every node with
@@ -207,7 +207,7 @@ reaches. Pages follow the categories as the sources stand when they are read.
      Then a `table` `Skills` with the columns Skill, Role and
      Started by, and `details` holding each row's skill write-up, so clicking a skill opens it.
    - **Every label is the short name of what it marks**, and so is the title of the dialog it
-     opens, such as `review-proposal reviewers` or `Bugs lens`. A count, condition, source or
+     opens, such as `Draft reviewers` or `Style lens`. A count, condition, source or
      explanation goes in the entry's `figure`, `meta`, `detail` or `description`, never in its name,
      and a name is never cut short to fit.
    - **Skill write-up**: the dialog a reader opens to learn what a skill does and how it spends
