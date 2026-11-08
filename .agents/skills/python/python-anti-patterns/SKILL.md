@@ -9,9 +9,6 @@ metadata:
 
 A reference checklist of common mistakes and anti-patterns in Python code. Review this before finalizing implementations to catch issues early.
 
-## Dependencies
-- `python-design-patterns`
-
 ## When to Use This Skill
 
 - Reviewing code before merge

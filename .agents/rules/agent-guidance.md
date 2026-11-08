@@ -186,10 +186,10 @@ trigger.
   skill does not, so it is no dependency and no cycle. The command form is for that alone.
   `edit-skill`'s source check refuses a dependency cycle and an undeclared skill named in any
   Markdown file of a package, code blocks included: as a hyphenated name in backticks, or as a
-  backticked or hyphenated name beside a possessive or the word skill, or after the word skill, a
-  verb that runs one, or `through` or `via`. It skips the third-party packages
-  `external_resources.json` registers, whose text their upstream owns. A description, a `/name`
-  command, a name outside those forms, a name in a non-Markdown file, and a declared edge that runs
+  backticked or hyphenated name followed by `'s` or the word skill, or after the word skill, a
+  verb that runs one, or `through` or `via`. It skips the packages
+  `external_resources.json` refreshes from upstream, whose text their upstream owns. A description, a `/name`
+  command, a possessive written with a bare apostrophe, a name outside those forms, a name in a non-Markdown file, and a declared edge that runs
   back toward a caller all pass it.
 - **A skill restricted to user invocation is never an automatic dependency.** A directly
   user-invoked workflow may delegate such an action only when its contract explicitly authorizes
