@@ -314,14 +314,8 @@ with an obsolete owned contract or revision.
   a validation error at a read site answered by widening the reader instead of asking what the store
   allows.
 - For a requiredness change, establish the affected data's retention scope under **Product State**
-  before selecting a migration or reset. The database-migration owner below applies that scope;
-  required columns do not themselves create an obligation to preserve disposable or nonexistent rows.
-- Before selecting an implementation for a schema or stored-representation change, invoke the
-  repository's database-migration skill, found through the skill listing by its description,
-  including when the repository has no migration runner or uses startup reconciliation. Resolve
-  its local commands and layout through project guidance; missing infrastructure is work to
-  establish, not permission to bypass that owner. It governs the mechanics, what the change owes
-  existing rows, and validation.
+  before selecting a migration or reset; required columns do not themselves create an obligation to
+  preserve disposable or nonexistent rows.
 - For retained values, use the authoritative source where one exists and a type-valid placeholder
   only where none exists. Never overwrite a known retained value, fabricate a placeholder in runtime
   code, or keep a permanent schema default solely to make a migration convenient.
