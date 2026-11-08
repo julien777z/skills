@@ -1,6 +1,6 @@
 ---
 name: review-pass
-description: Run the complete pre-merge review loop over a pull request's changes not yet reviewed — thread triage, a test sweep, a security review of a trust-boundary change, scope-sensitive simplification, high-effort code review with fixes, base incorporation, final acceptance and two test passes — and record the head it reviewed. Never merges. Use when a pull request is to be reviewed before its merge.
+description: Run the complete pre-merge review loop over a pull request's changes not yet reviewed — thread triage, a test sweep, a security review of a trust-boundary change, scope-sensitive simplification, high-effort code review with fixes, base incorporation, final acceptance and two test passes — and record the head it reviewed. Never merges. Use as a step of a workflow that finishes a pull request before its merge; a direct request to review code is `code-review`'s.
 short_description: 'Review, simplify and fix what a pull request has not had reviewed yet, then record the reviewed head.'
 ---
 

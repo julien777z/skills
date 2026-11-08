@@ -275,7 +275,8 @@ ends the question.
    serving nobody — an access control between the one admin and the data only that admin can see, a
    hardening against users the product does not have, neither of which retires a finding an attacker
    the product does have can still reach — or something in the repository rediscovers
-   it on demand, a lint or type rule, a structural test, so that running the check is
+   it on demand, a lint or type rule, a structural test, or an audit's lens found through the skill
+   listing by its description, so that running the check is
    the pickup and a record would be a second copy that goes stale. A close names the fact it rests on
    and the reconsideration criterion: the product-state change that would make the work real, or the
    check that owns it.

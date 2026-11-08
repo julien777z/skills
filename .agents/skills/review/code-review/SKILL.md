@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Review a pull request or current changes with independent reviewer lenses, validated findings, and severity-rated results. Use when the user directly asks for a code review, or when a skill that declares it as a dependency runs it; never on your own initiative.
+description: Review a pull request or current changes with independent reviewer lenses, validated findings, and severity-rated results. Use when the user directly asks for a code review, or when another skill's workflow runs it as one of its steps; never on your own initiative.
 short_description: 'Code review a pull request or the current working changes with independent reviewer lenses, validated findings, and severity-rated results.'
 ---
 
@@ -35,7 +35,6 @@ fixed values in that type. A receipt without the conditional list is incomplete 
 - `agent-lock`
 - `session-ledger`
 - `interactive-skill`
-- `database-migrations`
 - `defer-scope`
 
 ## Invocation
@@ -44,7 +43,7 @@ Apply `pre-production` when validating a contract change and `acceptance-gate`'s
 
 Use `agent-lock` with the exact checkout key to protect local snapshot capture.
 
-- Run this skill only when the user directly invokes it, or a skill that declares it as a dependency runs it. An invocation that states its effort and modes is run as stated; do not ask for standalone review options then.
+- Run this skill only when the user directly invokes it, or another skill's workflow runs it as one of its steps. An invocation that states its effort and modes is run as stated; do not ask for standalone review options then.
 
 ```
 /code-review [low|medium|high|xhigh|max|ultra] [fix] [comment] [<target>]
@@ -375,7 +374,8 @@ Only in fix mode. Every reported finding is CONFIRMED, because step 4 refutes ev
 Fix mode is bound by `references/rubric.md` — Fix Mode and A Fix Inherits The Intent: every CONFIRMED finding gets fixed, severity ranks the work and never selects it, a round is not finished while confirmed findings remain, a test seam never softens a fix, and a fix takes the remedy the change itself would take rather than the shape the change is removing.
 
 Apply `pre-production` to compatibility and stored-data decisions. When its required-data policy
-calls for a schema migration, invoke `database-migrations` for the implementation and validation.
+calls for a schema migration, invoke the repository's migration skill, when the skill listing declares
+one, for the implementation and validation.
 
 Work findings in severity order:
 

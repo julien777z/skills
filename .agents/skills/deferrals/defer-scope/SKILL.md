@@ -20,7 +20,8 @@ Keep a problem alive after the conversation ends without scheduling its implemen
 before any write.
 
 **Read** when no scope is given. Report the combined active set from Linear and the legacy
-repository ledger, and write nothing.
+repository ledger, and write nothing. A recorded item is resolved by the user running
+`/execute-defer-scope` on it.
 
 ## When Recording Runs
 

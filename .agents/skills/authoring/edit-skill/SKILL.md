@@ -151,10 +151,11 @@ user's review of the source pull request overlaps it.
    source check and smoke round pass, so its batch can be done. The steps below cover the
    agent-configuration pull request.
 2. Run step 7.2's source check.
-3. Run `review-pass` on the pull request. Give it the user's request and the
+3. Run `review-pass` once over the batch, naming every head it carries. Give it the user's request and the
    recorded evidence as the intent statement, the incident vocabulary for its acceptance gate as
    step 7.4 describes, and step 7.3's prose-duplication checks for its simplification gate.
-4. Run step 7.5's `test-skill` smoke round on the head `review-pass` accepted, with every entry's
+4. Run step 7.5's `test-skill` smoke round once over the batch, naming every head `review-pass`
+   accepted, with every entry's
    reproduction scenario as an input and entries that share a failure class grouped into one
    scenario, then steps 7.6–7.9. A guidance repair the smoke round makes, here or on a source pull
    request under step 1, goes back through `review-pass` over its delta, and the smoke round reruns

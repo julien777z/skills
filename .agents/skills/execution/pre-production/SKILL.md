@@ -114,13 +114,13 @@ with an obsolete owned contract or revision.
   system does or shows that a reader would call broken, and the system includes the repository's
   tooling: its tests, fixtures, build, setup and CI. An image that never loads, a wrong value, a
   state shown in the wrong place, a control that does nothing, a lost write or notification, a
-  crash, a test suite that fails in a fresh checkout, a fixture that builds data the code would
+  crash, an exhausted budget, a test suite that fails in a fresh checkout, a fixture that builds data the code would
   never hold, and a setup step or documented command that errors are its familiar shapes, not its
   boundary. Work the system cannot finish in useful time, a resource that grows with the data with
   nothing to bound it, a stored value nothing limits, work a restart throws away where a sibling
   phase keeps its place, and a job that only advances because a container happens to stay alive are
   defects of the same standing: "the result is still correct", "it only costs time" and "how much
-  to keep is a policy question" describe a defect and never exempt one. A missing safeguard is not
+  to keep is a policy question" describe a defect and never exempt one: a system that is right and too slow to use is broken. A missing safeguard is not
   a defect, since the system does what it was built to do, unless its absence is an exploitable
   security finding, because what the system does includes what an attacker can make it do. A
   defect is fixed in the change in flight, outside both the hop limit and the size budget below.
@@ -138,8 +138,8 @@ with an obsolete owned contract or revision.
   within reach is carried in the change, and a remaining step only another party can take, such as
   rotating a credential they hold, is reported as a gate with its owner and saved next action, as
   the global rules' **Tools and environments** says. It is never put to the user as something to
-  consider or an option, recorded as deferred, left as a hardening note, or left for a later
-  review.
+  consider or an option, recorded as deferred, left as a hardening note, or answered with a
+  recommendation to run an audit later.
 - **Incidental cleanup has a size budget.** The incidental part of a change — everything the request
   did not ask for that is not a defect — stays about the size of the requested part, or within 150
   changed lines across 10 files when the requested part is smaller. Inside the budget, everything
@@ -303,8 +303,14 @@ with an obsolete owned contract or revision.
   a validation error at a read site answered by widening the reader instead of asking what the store
   allows.
 - For a requiredness change, establish the affected data's retention scope under **Product State**
-  before selecting a migration or reset; required columns do not themselves create an obligation to
-  preserve disposable or nonexistent rows.
+  before selecting a migration or reset. The database-migration owner below applies that scope;
+  required columns do not themselves create an obligation to preserve disposable or nonexistent rows.
+- Before selecting an implementation for a schema or stored-representation change, invoke the
+  repository's database-migration skill, found through the skill listing by its description,
+  including when the repository has no migration runner or uses startup reconciliation. Resolve
+  its local commands and layout through project guidance; missing infrastructure is work to
+  establish, not permission to bypass that owner. It governs the mechanics, what the change owes
+  existing rows, and validation.
 - For retained values, use the authoritative source where one exists and a type-valid placeholder
   only where none exists. Never overwrite a known retained value, fabricate a placeholder in runtime
   code, or keep a permanent schema default solely to make a migration convenient.

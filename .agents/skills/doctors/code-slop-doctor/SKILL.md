@@ -18,12 +18,12 @@ does nothing or makes a reader wince, and takes it out.
 - `test-fixture`
 - `defer-scope`
 - `acceptance-gate`
-- `database-migrations`
+- `get-doctors`
 
 ## Phases
 
-Also read `database-migrations`, and, when the skill listing declares them and found by their
-descriptions, the repository's test-runner skill, its checklist for adding a configuration value and
+Also read, when the skill listing declares them and found by their descriptions, the repository's
+database-migration skill, its test-runner skill, its checklist for adding a configuration value and
 its deployment skill, and follow its packaging rules for each language it builds. Their rules govern
 every correction in their areas and are cited here, never restated; the deployment skill's
 read-only guidance is how a deployment's environment is read, and reading activates nothing else it
@@ -166,7 +166,7 @@ One question answered twice.
 The remedy is one owner, placed by `code-simplify`'s ownership analysis — the shared package every
 consumer reads where more than one deployable needs it — with the copies and the bridge deleted and
 generated types used directly or derived from. Left alone: a generated mirror; a demonstrated
-dependency, domain or contract boundary; two contract models.
+dependency, domain or contract boundary; two contract models, which belong to the doctor `get-doctors` lists for contract models.
 
 ### Fragmented Use Case
 
@@ -406,7 +406,7 @@ A chain, its registries and its tooling, held to one shape and no more machinery
 - **Downgrade** — every upgrade step reversed in the right order; an empty downgrade only where the
   policy mechanism records the loss with recovery material; a downgrade a fraction of its upgrade's
   size is read.
-- **Survivorship** — every revision meets `database-migrations`' **Authoring Rules** for a
+- **Survivorship** — every revision meets the migration skill's **Authoring Rules** for a
   destructive operation's policy entry and a data-reading migration's preparation hook, and its
   **What A Change Owes The Rows It Breaks** and **Stored-Format Transitions**; verify and reverse
   hooks that resolve to unconditional success verify nothing; an exactness check the tests already
@@ -414,7 +414,7 @@ A chain, its registries and its tooling, held to one shape and no more machinery
 - **Parity** — replay from empty matches the current models; a model change without a revision, a
   revision changing what no model declares, and a historical revision importing a current model are
   each a finding.
-- **Placement** — revision code, backfill packages and temporary tables where `database-migrations`'
+- **Placement** — revision code, backfill packages and temporary tables where the migration skill's
   **Migration Support Packages** and **Temporary Backfill Tables** place them; a value list a
   revision repeats is read from the migration package's own declaration where one holds it, and a
   historical revision never imports a current application model to get it.
@@ -422,10 +422,10 @@ A chain, its registries and its tooling, held to one shape and no more machinery
   hand-maintained path filter or table beside the manifest that derives it; every documented
   migration command exists.
 - **Tests** — lifecycle wiring only in the shared test setup; fixtures and helpers where the
-  `database-migrations`' **Where A Revision's Test Scaffolding Lives** puts them; a revision-to-test
+  migration skill's **Where A Revision's Test Scaffolding Lives** puts them; a revision-to-test
   pairing rule the repository states holds; a migration-test deferral record pointing at a path that
   no longer exists is reported to `defer-scope`.
-- **History** — `database-migrations`' **Applied Is What Makes History** decides whether a revision
+- **History** — the migration skill's **Applied Is What Makes History** decides whether a revision
   is corrected in place or by stacking; a create-then-rename across unapplied revisions collapses; a
   merge-of-main revision carrying unrelated operations is split or rebaselined; a hand edit to a
   generated revision is stated in the change.
@@ -440,8 +440,8 @@ A chain, its registries and its tooling, held to one shape and no more machinery
 The remedy is the one shape: re-pointed parents, regenerated headers and the shared helper in place
 of per-revision idioms, each only where **Applied Is What Makes History** allows editing that
 revision; the missing policy, hook or downgrade added; code moved to its owner, tooling the library
-makes redundant deleted with its callers switched to the library, and `database-migrations`
-followed for every correction. Where project guidance says no environment keeps data, a chain
+makes redundant deleted with its callers switched to the library, and the repository's migration
+skill followed for every correction. Where project guidance says no environment keeps data, a chain
 grown long is collapsed into one baseline revision.
 
 ### Build And Root
@@ -520,7 +520,7 @@ Tests that cost reading time and prove nothing, found after the code has settled
 
 The remedy is `test-fixture`'s dispositions: repair, fold into the keeper, or delete with its
 evidence, with coverage of a removed layer's behavior kept at the real boundary. Timing, suite
-budgets, cross-suite layout and coverage maps are outside this lens and are named, not run.
+budgets, cross-suite layout and coverage maps belong to the doctor `get-doctors` lists for test suites and are named with it, not run.
 
 ## Dispositions
 
@@ -531,15 +531,15 @@ budgets, cross-suite layout and coverage maps are outside this lens and are name
   `pre-production`'s **Target Contract** says; a removal is never narrowed, shimmed or dropped to
   keep an owned shape stable.
 - Data a removal leaves in the old shape — a flag whose retirement backfill has not run, a chain to
-  collapse — follows `pre-production`'s **Product State** and **Target Contract** and
-  `database-migrations`, never a question.
+  collapse — follows `pre-production`'s **Product State** and **Target Contract** and the
+  repository's database-migration skill, never a question.
 - The user decides what `pre-production`'s **Trade-Offs Are Surfaced, Never Enforced** reserves
   for them. A contract a consumer outside the user's control speaks stays as it is and is reported,
   under its **Target Contract**.
 - Fix the reader or the writer, never both. A tolerance that hides a wiring defect is a confirmed
   defect and is fixed. An unsupported historical record is never a finding and never receives a
   fallback.
-- A migration correction follows `database-migrations`' **Applied Is What Makes History**, stacked
+- A migration correction follows the migration skill's **Applied Is What Makes History**, stacked
   when applied state cannot be established; a data-loss path with no recovery is a blocker to
   report.
 - A configuration default its reader refuses is declared nowhere until the disagreement is settled:
@@ -550,8 +550,8 @@ budgets, cross-suite layout and coverage maps are outside this lens and are name
   ledger, or it is deleted with the branch its value selects.
 - An even split between two sibling structures equally fit for the kind goes to the one leaving the
   fewest mechanisms and moving the fewest importers, stated in the pull request.
-- A finding outside these lenses — documentation, a contract model, a deep test audit — is not
-  fixed here; the report names it.
+- A finding another doctor owns — documentation, a contract model, a deep test audit — is not
+  fixed here; the report names it with that doctor, found through `get-doctors`.
 
 The cross-cutting reviewer compares each kind's slot table across its deployables, one shape across
 packages, apps and languages, and every value defaulted in one package against its producer in
@@ -596,4 +596,4 @@ confirms it reads zero, and confirms that the repository's tests pass on each ba
 - each shape **Reads As Slop** rewrote, by check, with the test proving each executable rewrite's
   behavior unchanged and the test that carries each deleted comment's behavioral guarantee;
 - each test removed or repaired with the layer it exercised;
-- each finding outside these lenses, named.
+- each finding another doctor owns, named with that doctor.
