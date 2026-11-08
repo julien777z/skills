@@ -239,7 +239,7 @@ anything about the codebase.
 So a shape the gate can see but cannot chase to an attacker is not dropped: it is a flag whose
 remedy is the author tracing it to an attacker or ruling it out, and fixing it in the change when it
 is real. That is the gate declining to guess, not the gate finding nothing, and a recommendation to
-run an audit or a doctor later never stands in for it.
+run an audit later never stands in for it.
 
 ## The Tests Behind Each Question
 
@@ -250,28 +250,17 @@ invented. The remedy is an invented value keeping only the trait the case turns 
 example search, or a bracketed kind in the quoted request the search does not list, holds a clean
 verdict, as a missing input.
 
-**A workaround is flagged on every question as the violation it keeps.** A change that meets a
-rule's, a check's or a reviewer's wording while keeping what it forbids is that violation, at its
-severity, and a disguised one besides: a name replaced by a description that still identifies the
-same thing, a call or policy moved to a file the check does not read, a value renamed, wrapped,
-aliased or split, a check narrowed, disabled, excluded or met by a special case, a test changed to
-accept the wrong result. Judge what the result still does or says, never what a search for the
-old form now finds. The remedy is the change the rule asks for, restructuring what depends on the
-forbidden thing where that is what it takes; a shape that only hides it is never accepted.
+**A workaround is flagged on every question as the violation it keeps**, at that violation's
+severity, and a disguised one besides; the global rules' **A rule is met by doing what it
+requires** bullet says what counts as one. The remedy is the change the rule asks for; a shape that
+only hides the violation is never accepted.
 
 **Triage — what should happen to this?** The item is an issue, a finding, or a proposed record, and
 the answer is one of four dispositions, decided by the tests below in order. The first that holds
 ends the question.
 
-1. **fix** — the item is a confirmed defect. A defect is anything the system does that a reader would
-   call broken, and the system includes the repository's tooling: its tests, fixtures, build, setup
-   and CI. Wrong output, a lost write, a lost notification, a crash and an exhausted budget are
-   its familiar shapes, not its boundary. Work the system cannot finish in useful time, a resource
-   that grows with the data with nothing to bound it, a stored value nothing limits, work a restart
-   throws away where a sibling phase keeps its place, and a job that only advances because a
-   container happens to stay alive are defects of exactly the same standing. "The result is still
-   correct", "it only costs time" and "how much to keep is a policy question" describe a defect; they
-   never exempt one — a system that is right and too slow to use is broken. Measured evidence from a
+1. **fix** — the item is a confirmed defect, as `pre-production`'s **Scope Follows The Defect, Not
+   The Request** defines one. Measured evidence from a
    live run — a rate, a duration, a memory trail, a kill — is evidence of a defect the way a
    confirmed review finding is: the gate takes it as given and never re-derives the defect from the
    tree, because a tree read alone cannot see a rate. A defect is fixed in the change in flight, or
@@ -279,15 +268,14 @@ ends the question.
    fix takes. A migration is how a fix is written, never a reason to record it instead. A check that
    would rediscover the defect does not soften this: rediscovery excuses the record, never the fix.
    Product state never softens it either: broken is broken for one admin as for a thousand users.
-   A missing safeguard is not a defect — the system does what it was built to do, and the question is
-   whether it should do more — so it goes on to the tests below. The exception is a safeguard whose
-   absence is an exploitable finding under **Exploitable Findings**: what the system does includes
-   what an attacker can make it do, so that is a defect here and is fixed in the change in flight.
+   A missing safeguard that definition leaves out goes on to the tests below; one whose absence is an
+   exploitable finding under **Exploitable Findings** is a defect and is fixed in the change in
+   flight.
 2. **close** — the item is real but not worth doing. Either the product state leaves it protecting or
    serving nobody — an access control between the one admin and the data only that admin can see, a
    hardening against users the product does not have, neither of which retires a finding an attacker
    the product does have can still reach — or something in the repository rediscovers
-   it on demand, a doctor's lens, a lint or type rule, a structural test, so that running the check is
+   it on demand, a lint or type rule, a structural test, so that running the check is
    the pickup and a record would be a second copy that goes stale. A close names the fact it rests on
    and the reconsideration criterion: the product-state change that would make the work real, or the
    check that owns it.

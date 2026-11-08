@@ -110,11 +110,20 @@ with an obsolete owned contract or revision.
   change — in a file it opened, a check it ran, a capture it read — is fixed. A file opened or edited
   only to make such an incidental fix is never itself a source of more incidental cleanup: what else
   it holds is listed, not chased.
-- **A defect the work notices is always fixed, wherever it lives.** A defect is a fault in
-  what the product does or shows: an image that never loads, a wrong value, a state shown in
-  the wrong place, a control that does nothing, a test suite that fails in a fresh checkout, a
-  fixture that builds data the code would never hold, a setup step or documented command that
-  errors. It is fixed in the change in flight, outside both the hop limit and the size budget below.
+- **A defect the work notices is always fixed, wherever it lives.** A defect is anything the
+  system does or shows that a reader would call broken, and the system includes the repository's
+  tooling: its tests, fixtures, build, setup and CI. An image that never loads, a wrong value, a
+  state shown in the wrong place, a control that does nothing, a lost write or notification, a
+  crash, a test suite that fails in a fresh checkout, a fixture that builds data the code would
+  never hold, and a setup step or documented command that errors are its familiar shapes, not its
+  boundary. Work the system cannot finish in useful time, a resource that grows with the data with
+  nothing to bound it, a stored value nothing limits, work a restart throws away where a sibling
+  phase keeps its place, and a job that only advances because a container happens to stay alive are
+  defects of the same standing: "the result is still correct", "it only costs time" and "how much
+  to keep is a policy question" describe a defect and never exempt one. A missing safeguard is not
+  a defect, since the system does what it was built to do, unless its absence is an exploitable
+  security finding, because what the system does includes what an attacker can make it do. A
+  defect is fixed in the change in flight, outside both the hop limit and the size budget below.
   Sitting in a shared component, an owned library or another owned repository the pull request does
   not otherwise touch is no reason to leave it: the fix goes to that repository's pull request for
   this work. It is never listed as noticed, offered or deferred.
@@ -129,15 +138,15 @@ with an obsolete owned contract or revision.
   within reach is carried in the change, and a remaining step only another party can take, such as
   rotating a credential they hold, is reported as a gate with its owner and saved next action, as
   the global rules' **Tools and environments** says. It is never put to the user as something to
-  consider or an option, recorded as deferred, left as a hardening note, or answered with a
-  recommendation to run an audit or a doctor later.
+  consider or an option, recorded as deferred, left as a hardening note, or left for a later
+  review.
 - **Incidental cleanup has a size budget.** The incidental part of a change — everything the request
   did not ask for that is not a defect — stays about the size of the requested part, or within 150
   changed lines across 10 files when the requested part is smaller. Inside the budget, everything
   noticed is fixed. Once the next incidental fix would pass it, the rest is listed under **Noticed,
   not changed** in the change's report, one line each, and is neither fixed, deferred, nor put to the
-  user as a question. An explicitly requested broad refactor and a doctor run set their own scope and
-  carry no budget.
+  user as a question. An explicitly requested broad refactor sets its own scope and carries no
+  budget.
 - **A correction to how one screen looks or reads reaches every page when the user makes it a
   rule, and that screen alone when they do not.** A correction the user asks to have codified, or
   gives a reason for that holds wherever the shape appears, such as "labels sit above their fields
@@ -294,8 +303,8 @@ with an obsolete owned contract or revision.
   a validation error at a read site answered by widening the reader instead of asking what the store
   allows.
 - For a requiredness change, establish the affected data's retention scope under **Product State**
-  before selecting a migration or reset. The database-migration owner below applies that scope;
-  required columns do not themselves create an obligation to preserve disposable or nonexistent rows.
+  before selecting a migration or reset; required columns do not themselves create an obligation to
+  preserve disposable or nonexistent rows.
 - For retained values, use the authoritative source where one exists and a type-valid placeholder
   only where none exists. Never overwrite a known retained value, fabricate a placeholder in runtime
   code, or keep a permanent schema default solely to make a migration convenient.
@@ -307,8 +316,3 @@ with an obsolete owned contract or revision.
   from its authoritative source. The tell is a description or comment saying that rows from before
   the change keep the old behaviour; keeping it needs the user's approval, as any legacy support
   does.
-- Before selecting an implementation for a schema or stored-representation change, invoke the
-  database-migration skill for that role, including when the repository has no migration runner or
-  uses startup reconciliation. Resolve its local commands and layout through project guidance;
-  missing infrastructure is work to establish, not permission to bypass that owner. It governs the
-  mechanics, what the change owes existing rows, and validation.

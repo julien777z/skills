@@ -21,8 +21,6 @@ does nothing or makes a reader wince, and takes it out.
 
 ## Phases
 
-A doctor run sets its own scope, so `pre-production`'s incidental size budget does not apply.
-
 Also read, when the skill listing declares them and found by their descriptions, the repository's
 database-migration skill, its test-runner skill, its checklist for adding a configuration value and
 its deployment skill, and follow its packaging rules for each language it builds. Their rules govern
