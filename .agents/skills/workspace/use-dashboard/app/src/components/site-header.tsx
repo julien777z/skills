@@ -162,9 +162,7 @@ export function SiteHeader({
           <Stack align="center" justify="center" badge="brand">
             <BrandIcon className="size-4" />
           </Stack>
-          <Text weight="semibold" truncate>
-            {title}
-          </Text>
+          <Text weight="semibold">{title}</Text>
         </Stack>
         {hasPages && (
           <Stack as="nav" label="Dashboard pages" show="fromLg" scroll>

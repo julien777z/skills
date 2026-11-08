@@ -13,7 +13,6 @@ const TEXT_VARIANTS = {
   weight: { medium: 'font-medium', semibold: 'font-semibold', bold: 'font-bold' },
   numeric: { true: 'tabular-nums', false: '' },
   breakAnywhere: { true: '[overflow-wrap:anywhere]', false: '' },
-  truncate: { true: 'truncate', false: '' },
   measure: { true: 'max-w-[75ch]', false: '' },
   srOnly: { true: 'sr-only', false: '' },
 } as const;
@@ -24,7 +23,6 @@ const textVariants: ReturnType<typeof cva<typeof TEXT_VARIANTS>> = cva('', {
     tone: 'default',
     numeric: false,
     breakAnywhere: false,
-    truncate: false,
     measure: false,
     srOnly: false,
   },
