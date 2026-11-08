@@ -17,6 +17,6 @@ pull request while retaining the immutable range as the original review target. 
 same repository's confirmed findings into the appropriate working fix pull request.
 
 Pass both the complete original range and complete fix diff to reviewers and validators, with each
-remedy increment identified. Description refresh, tests for the changed behavior, final acceptance,
-and the caller's exact-head merge gating operate on the fix pull request. The original merge remains unchanged.
+remedy increment identified. Description refresh, tests for the changed behavior and final acceptance
+operate on the fix pull request, and the accepted head this pass returns is the fix pull request's. The original merge remains unchanged.
 A clean range with no correction has no working pull request and no merge step.

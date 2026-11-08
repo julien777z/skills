@@ -33,9 +33,9 @@ confuse those conclusions.
   affects, not unchanged behavior merely because it shares a skill, file, batch, or head. Verify
   moved unchanged text against its source, links, and reachability; replay behavior only where
   meaning or reachability changed.
-- **A canonical guidance batch is tested in one coordinated round.** Freeze the exact head and
-  guidance package for every related guidance pull request, use one edited reader across the
-  batch's isolated scenarios, and retain results per head. Run an isolated original control when an
+- **An invocation that names several heads is tested in one coordinated round.** Freeze the exact
+  head and guidance package for every named pull request, use one edited reader across their
+  isolated scenarios, and retain results per head. Run an isolated original control when an
   improvement claim or conflicting instruction needs comparison; a straightforward clarification
   may omit it only with that justification recorded. The original control stays blind to the edited
   diff, criteria, and reports. The round runs when, and on the head the caller supplies.
@@ -102,8 +102,8 @@ Run after `code-simplify` completes its pass.
    record the evidence for retaining or removing each independently meaningful edit. When independent
    edits deserve different outcomes, separate them through the repository's pull-request workflow
    where authorized; keep coupled instructions and their required repairs together. This assessment
-   recommends which changes should merge; the caller still completes acceptance and the authorized
-   merge gate. A passing smoke test alone never decides that a pull request should merge.
+   recommends which changes should merge and decides no merge itself. A passing smoke test alone
+   never decides that a pull request should merge.
 7. **Repair and rerun until verified**, within the global rules' review-round limit of 3 rounds
    per change: after the third failing round over the same edit, that bullet's decision replaces
    another repair. Diagnose each reported issue at its owner. Fix guidance

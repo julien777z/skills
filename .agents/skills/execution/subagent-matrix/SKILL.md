@@ -81,8 +81,7 @@ agent; the calling agent launches the actual assignment with the selected model.
 ## Dispatch
 
 **Launch every available subagent a skill calls for through the running session's agent tool.** It matters most for an independent step, one whose value is a judgement the
-author does not make about its own work: an acceptance gate, a simplification or review lens, a
-finding validator, a smoke-test reader, an audit's read-only reviewer. A subagent gives it a fresh
+author does not make about its own work. A subagent gives it a fresh
 context and returns its verdict into the step waiting on it; nothing else does both.
 
 - **Never route one elsewhere**: not through a new remote or cloud session, a scheduled trigger or
@@ -97,9 +96,7 @@ context and returns its verdict into the step waiting on it; nothing else does b
   run that file as a subagent at the chosen capability level, and waits for the verdict before going
   past the step; that agent launches the workers the step calls for, so each runs with its own
   context. Work the step splits among several workers is never carried by one of them alone, which
-  cannot do it thoroughly. The gate over a finished task's diff is not such a step: the delegating
-  agent runs it from the branch and head the worker reports, under the delegated-edits bullet of
-  the GitHub rule’s **Pre-Push Gate**. A worker whose only channel to that agent is its final message
+  cannot do it thoroughly. A worker whose only channel to that agent is its final message
   asks by returning: it ends its turn with the file path and the request, and resumes when the
   verdict comes back. The delegating agent runs it and returns the verdict unedited; when the
   finished worker cannot be resumed, the delegating agent carries out what the verdict calls for,

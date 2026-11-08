@@ -56,8 +56,8 @@ code. In a pull request that also changes source, the guidance adds no reviewer 
 the source review's reviewers reads it. Pass this into `code-review high fix`; it overrides that
 skill's lens fanout.
 
-**A canonical guidance batch is reviewed as one.** Freeze every included head and complete diff,
-and review the combined batch diff with the one guidance reviewer above; each head then takes the
+**An invocation that names several heads is reviewed as one.** Freeze every named head and
+complete diff, and review the combined diff under the reviewer rule above; each head then takes the
 fresh final acceptance route below.
 
 **Each pass reviews only what no earlier pass reviewed.** A finished task gets its full review once;
@@ -209,8 +209,7 @@ implementations, and candidate canonical owners.
 Use code-simplify's scope policy: hold a small coherent scope in process, and dispatch distinct
 read-only readers only for separable scopes needing that coverage. Do not force fanout by file
 count or add a competing size selector. Dispatch and launch-failure handling remain owned by
-subagent-matrix. A canonical guidance batch keeps its in-process prose-duplication pass under
-edit-skill's existing guidance route.
+subagent-matrix.
 When the pull request adds public concepts across slices, assign one reviewer the cross-cutting
 interfaces and their existing peers as a coherent slice. Require its receipt to assess whether the
 new concepts are variants of existing ones; do not accept a clean simplification gate until that
@@ -272,7 +271,7 @@ pushed unless an authorized working-pull-request route is established.
 
 ## Deferred Findings
 
-A finding the repository's deferral process has recorded is discharged, not outstanding. Recording it is what makes it durable, so the pass carries on: a recorded deferral never holds the review loop open, never holds the caller's check gate, and never holds the merge.
+A finding the repository's deferral process has recorded is discharged, not outstanding. Recording it is what makes it durable, so the pass carries on: a recorded deferral never holds the review loop open and never holds the merge.
 
 A recorded deferral is a Linear issue, or under `defer-scope`'s repository fallback a record riding the session's source pull request in its repository — usually the pull request under review — so it adds no pull request to wait for and is never a dependency of the merge. Never ask the user to settle the deferred question before merging. That the decision outlives this session is the whole reason for recording it, so treating it as a gate defeats the mechanism.
 
@@ -319,8 +318,7 @@ those that are byte-identical. Run `test-fixture`'s workflow over every changed 
 check-harness change that alters a trigger, source or ref,
 permission, identity, runner, secret, environment, action, reusable workflow, deployment target,
 or validation target is a workflow/runtime input: rerun every dependent lens, including Bugs and
-Security, before exact-head acceptance. Return that accepted head to the caller’s
-applicable check gate; this pass does not launch that gate itself. A change to a review rubric or
+Security, before exact-head acceptance. Return that accepted head; this pass launches no check gate itself. A change to a review rubric or
 reviewer instruction reruns only the lenses that use it; a supposedly non-source change that affects
 shipped behavior or a contract invalidates only the affected receipts under this section.
 

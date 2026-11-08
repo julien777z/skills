@@ -35,8 +35,7 @@ a direct user override for that assignment still takes precedence.
 | Capture worker: mechanical browser capture of pages and states a brief lists | `gpt-6-luna` |
 
 Classify what the assignment does, not its worker name. Ordinary implementation workers checking
-their own changes are not independent review assignments. An acceptance gate remains its own role
-when a review workflow invokes it. Other Codex assignments and Claude assignments retain the
+their own changes are not independent review assignments. Other Codex assignments and Claude assignments retain the
 capability-family selection above. An unavailable role selection is a concrete hold, never
 permission to inherit the coordinator's model or substitute another family.
 

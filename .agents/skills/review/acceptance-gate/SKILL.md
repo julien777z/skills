@@ -84,9 +84,8 @@ applicable task pull requests, not only default-branch or local checkout compari
 checks analogous implementations and the evidence for retained differences; missing applicable
 pull-request context is a flag to obtain that context, not permission to assume consistency.
 
-The gate is read-only and normally distinct from the author. A plan step the primary agent made
-itself is gated in process instead, under the caller's step gates, because the task's final
-acceptance reads every line again. If its reader cannot launch, apply `subagent-matrix`'s launch
+The gate is read-only and normally distinct from the author. An invocation that asks for an
+in-process gate runs this question and rubric in process instead. If its reader cannot launch, apply `subagent-matrix`'s launch
 fallback. Invoke `subagent-matrix` for the
 acceptance-gate role, using its configured Codex role selection and the advanced capability level on
 other hosts. Dispatch the gate with that exact identifier, and retain catalogue state, identifier, assignment
@@ -207,11 +206,11 @@ requires.
 Route the gate through `subagent-matrix`'s **Dispatch**, including its launch fallback when the
 required reader cannot launch.
 
-For a canonical guidance batch, one fresh gate may inspect the complete frozen diffs together and
-return a distinct verdict for each exact head. Its prompt names every head and intent, and its
-evidence retains the per-head disposition. Retain an earlier per-head acceptance only while that
+An invocation that names several frozen diffs, each with its exact head and intent, may get one
+fresh gate that inspects them together and returns a distinct verdict for each head. Its prompt
+names every head and intent, and its evidence retains the per-head disposition. Retain an earlier per-head acceptance only while that
 head, its inputs, and its affected-repository map remain exact; rerun the changed head and its
-dependent gates without invalidating unrelated batch heads. A shared question never lets an author
+dependent gates without invalidating unrelated heads. A shared question never lets an author
 judge their own work or collapse distinct verdicts.
 
 ## Questions

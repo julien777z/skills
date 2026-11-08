@@ -92,8 +92,8 @@ and never reports as a codebase audit; only a level that fans out over the targe
 about the target as a whole. `low` launches no agents, so it
 runs where none can be launched.
 
-**A skill that borrows this one takes the findings into its own verdict.** It writes no findings
-file and owns what happens to each finding.
+**An invocation that takes the findings into its own verdict gets them returned, never filed.**
+No findings file is written, and the invocation owns what happens to each finding.
 
 ## Platform terminology
 

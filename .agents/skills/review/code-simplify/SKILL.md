@@ -40,9 +40,8 @@ When the scope includes tests, fixtures, or test support, invoke `test-fixture` 
 batch that adds, moves, merges or deletes a module, or changes an interface other code reads, goes
 back for a rescan: a fresh reviewer gets the previous findings with their remedies, the fix diff and
 the files it touches, and checks both the remedies and anything else the fixes expose. A batch that
-only applies the findings' own remedies in place is checked by the acceptance gate over its
-increment instead, with no rescan. Unaffected clean scopes do not restart. A rescan is not a
-replacement for a separate acceptance gate or its requirement for a fresh independent gate reviewer.
+only applies the findings' own remedies in place gets no rescan. Unaffected clean scopes do not
+restart.
 
 **A remedy conforms to the rules governing the code it would write, and never silently reverses an
 earlier one.** Check each proposed remedy against the language and layout rules for its file before
@@ -136,7 +135,7 @@ The rubric's reuse, ownership and deletions section says what to search for acro
 and what holds a finding back; its section on dispositions says what may never hold one back, where
 the finding lives among them.
 
-When run as the pre-push pass (for example from the Stop hook), start from the **same diff as code-review's local / pre-push mode**: `git diff $(git merge-base <base> HEAD)` plus any untracked files the branch adds, where `<base>` is the repository's remote default branch (for example `origin/main` — use the actual default branch name; fall back to the local default branch if no remote is configured). This covers branch commits and uncommitted working-tree changes without unrelated upstream commits. Then resolve it into the three things above.
+When run as the pre-push pass (for example from the Stop hook), start from the **merge-base diff**: `git diff $(git merge-base <base> HEAD)` plus any untracked files the branch adds, where `<base>` is the repository's remote default branch (for example `origin/main` — use the actual default branch name; fall back to the local default branch if no remote is configured). This covers branch commits and uncommitted working-tree changes without unrelated upstream commits. Then resolve it into the three things above.
 
 When a caller provides a **scope** instead — for example the whole repository or specific directories or files — apply this rubric across **that** scope, not the pre-push diff. The merge-base diff above is only the default for the Stop-hook pre-push pass; always honor an explicit scope from the caller, preserve what a consumer outside the user's control observes, and expand to every owned consumer, in any repository, needed for a complete simplification.
 
