@@ -7,8 +7,8 @@ short_description: 'Have an independent reviewer decide whether a proposed chang
 # Acceptance Gate
 
 Put a decision the author cannot judge about its own work to a subagent that reads the product's
-state and the change's intent, applies the repository's rubric, and answers one question. An invocation
-that asks for an in-process gate is run in process, as **The Gate Subagent** says.
+state and the change's intent, applies the repository's rubric, and answers one question. An
+invocation that asks for an in-process gate is run in process, as **The Gate Subagent** says.
 `references/rubric.md` holds what it judges by; this file holds how it is run.
 
 ## Dependencies
@@ -84,11 +84,11 @@ checks analogous implementations and the evidence for retained differences; miss
 pull-request context is a flag to obtain that context, not permission to assume consistency.
 
 The gate is read-only and normally distinct from the author. An invocation that asks for an
-in-process gate runs this question and rubric in process instead. If its reader cannot launch, apply `subagent-matrix`'s launch
-fallback. Invoke `subagent-matrix` for the
-acceptance-gate role, using its configured Codex role selection and the advanced capability level on
-other hosts. Dispatch the gate with that exact identifier, and retain catalogue state, identifier, assignment
-state and host receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. It
+in-process gate runs this question and rubric in process instead. If its reader cannot launch, apply
+`subagent-matrix`'s launch fallback. Invoke `subagent-matrix` for the acceptance-gate role, using
+its configured Codex role selection and the advanced capability level on other hosts. Dispatch the
+gate with that exact identifier, and retain catalogue state, identifier, assignment state and host
+receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. It
 receives five things and nothing else:
 
 1. the intent statement, quoting the user's request in their words and carrying every decision the
@@ -207,10 +207,10 @@ required reader cannot launch.
 
 An invocation that names several frozen diffs, each with its exact head and intent, may get one
 fresh gate that inspects them together and returns a distinct verdict for each head. Its prompt
-names every head and intent, and its evidence retains the per-head disposition. Retain an earlier per-head acceptance only while that
-head, its inputs, and its affected-repository map remain exact; rerun the changed head and its
-dependent gates without invalidating unrelated heads. A shared question never lets an author
-judge their own work or collapse distinct verdicts.
+names every head and intent, and its evidence retains the per-head disposition. Retain an earlier
+per-head acceptance only while that head, its inputs, and its affected-repository map remain exact;
+rerun the changed head and its dependent gates without invalidating unrelated heads. A shared
+question never lets an author judge their own work or collapse distinct verdicts.
 
 ## Questions
 

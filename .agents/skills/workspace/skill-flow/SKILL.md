@@ -85,9 +85,9 @@ reaches. Pages follow the categories as the sources stand when they are read.
    **Pages** finds.
 2. **Read each page's flow.** From each page's starting skills, read the entry points and follow
    every invocation, subagent launch and borrowed rubric the flow reaches, including conditional
-   ones, such as a security review that runs only for some changes. Read `subagent-matrix` and its capability
-   reference for who each launch the flow describes uses. Note, for every claim, the `SKILL.md`
-   lines that state it.
+   ones, such as a security review that runs only for some changes. Read `subagent-matrix` and its
+   capability reference for who each launch the flow describes uses. Note, for every claim, the
+   `SKILL.md` lines that state it.
 
    The reading is split between at most two read-only subagents, launched under
    `subagent-matrix`, each taking about half the pages and reading them itself without starting
@@ -122,10 +122,11 @@ reaches. Pages follow the categories as the sources stand when they are read.
 5. **Build the spec** for `use-dashboard`:
    - `title` `Skill Flow Dashboard`, `topic` the repository's name, `icon` `diagram`, and `subtitle` "How the skills run, read from
      <repository> at <short commit>.", with `references` linking the repository and the commit.
-   - `metrics`: **Skills mapped**; **Subagents in a typical task**, the usual figure for
-     the run of the skill that carries a task from start to merge, or of the skill a person starts
-     most often when none does, `detail` "from start to merge, before findings add more"; **Skills that start subagents**, `detail` "of <n> mapped"; and **Launches with no
-     limit**, the "No limit set" gaps, `detail` "where usage can grow unchecked".
+   - `metrics`: **Skills mapped**; **Subagents in a typical task**, the usual figure for the run of
+     the skill that carries a task from start to merge, or of the skill a person starts most often
+     when none does, `detail` "from start to merge, before findings add more"; **Skills that start
+     subagents**, `detail` "of <n> mapped"; and **Launches with no limit**, the "No limit set" gaps,
+     `detail` "where usage can grow unchecked".
    - `Overview`, `icon` `overview` and `layout` `rows`, read at a glance:
      - a `table` `By category` with a row per page and the columns Page, What it covers (a few
        words), Subagents per run (the usual figure and what adds more, such as "~6, more per finding") and
@@ -136,8 +137,8 @@ reaches. Pages follow the categories as the sources stand when they are read.
      - an `outline` `Gaps in the sources`, `expanded` false, its groups the kinds of gap — "No limit
        set", "No capability level", "Unclear who does it", "Unclear order or route" and "Other",
        each only when it has items — with one item per gap: `title` the gap in a few plain words,
-       such as "Style reviewers have no maximum", `tag` the skill it sits in, and `detail` one or two
-       sentences on what is open and why it matters, with no line numbers;
+       such as "Style reviewers have no maximum", `tag` the skill it sits in, and `detail` one or
+       two sentences on what is open and why it matters, with no line numbers;
      - `notes` `How to read the flows`, one line each for an invocation arrow, a launch arrow and a
        borrowed-rubric arrow as their labels show them, then one line naming each category left
        without a page.

@@ -133,8 +133,8 @@ Dashboards look alike because they are built alike:
   goes deeper on one subject and is named for it.
 - **A page serves a stage of the reader's work, never one narrow artifact.** When a request asks for
   a page about one thing, such as the order parcels leave the warehouse in, find the stage that
-  thing belongs to, such as dispatching the week's orders, and build the page for that stage, with the
-  requested thing as one section among what the reader needs there. Name the page for the stage.
+  thing belongs to, such as dispatching the week's orders, and build the page for that stage, with
+  the requested thing as one section among what the reader needs there. Name the page for the stage.
 - **Pages run in the order the reader's work does.** After Overview, pages that help the reader
   understand the work come together, followed by pages for acting on it, such as dispatching the
   week's orders, which come last; a page never sits between two pages of another kind.
@@ -247,9 +247,9 @@ Use the first route the session offers, and the same one for every update of one
      changes its look, its data, or both is still the same dashboard; only a dashboard with a
      different purpose gets a new page. Where that search looks depends on what the dashboard
      shows, which the caller states:
-     - **Session work**, such as work in hand this session or a preview, looks only in the caller's task state and
-       earlier in this session. A new session publishes a new page and never updates one another
-       session published.
+     - **Session work**, such as work in hand this session or a preview, looks only in the caller's
+       task state and earlier in this session. A new session publishes a new page and never updates
+       one another session published.
      - **A subject that outlives the session**, such as a repository's structure, also looks among
        the user's published pages for one with the same title and topic, through the tool's own
        listing. Before publishing to a page found that way, read it through the tool to confirm this

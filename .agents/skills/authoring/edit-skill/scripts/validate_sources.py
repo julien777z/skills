@@ -40,6 +40,9 @@ SKILL_CONTEXT_BEFORE_PATTERN: Final[re.Pattern[str]] = re.compile(
 SKILL_CONTEXT_AFTER_PATTERN: Final[re.Pattern[str]] = re.compile(
     r"^(?:'s\b|[\"')]?\s+skills?\b)", re.IGNORECASE
 )
+CONTEXT_BEFORE_CHARS: Final[int] = 30
+CONTEXT_AFTER_CHARS: Final[int] = 10
+SKILL_RESOURCE_KIND: Final[str] = "skill"
 
 
 class SourceCommand(StrEnum):
@@ -62,6 +65,14 @@ class ActionReference(TypedDict):
 
     repository: str
     reference: str
+
+
+class ExternalResource(TypedDict):
+    """One entry of the external resources file the sync tool refreshes."""
+
+    kind: str
+    name: str
+    update_on_sync: bool
 
 
 EXIT_CODES: Final[dict[SyncOutcome, int]] = {
@@ -243,40 +254,40 @@ def named_skills(text: str, skill_names: set[str]) -> set[str]:
         command = match.group("slash") is not None
         hyphenated = "-" in name
 
-        if command:
+        if command or not (quoted or hyphenated):
             continue
 
-        if quoted and hyphenated:
-            named.add(name)
-
-            continue
-
-        if not (quoted or hyphenated):
-            continue
-
-        before = text[max(0, match.start() - 30) : match.start()]
-        after = text[match.end() : match.end() + 10]
-
-        if SKILL_CONTEXT_BEFORE_PATTERN.search(before) or SKILL_CONTEXT_AFTER_PATTERN.search(after):
+        if (quoted and hyphenated) or is_in_skill_context(text, match):
             named.add(name)
 
     return named
 
 
+def is_in_skill_context(text: str, match: re.Match[str]) -> bool:
+    """Report whether the words around a matched name show it names a skill."""
+
+    before = text[max(0, match.start() - CONTEXT_BEFORE_CHARS) : match.start()]
+    after = text[match.end() : match.end() + CONTEXT_AFTER_CHARS]
+
+    return bool(
+        SKILL_CONTEXT_BEFORE_PATTERN.search(before) or SKILL_CONTEXT_AFTER_PATTERN.search(after)
+    )
+
+
 def third_party_skill_names(skills_dir: Path) -> set[str]:
-    """Return the skills the external resources file refreshes from upstream, which owns their text."""
+    """Return the skills the external resources file refreshes from their upstream."""
 
     registry = skills_dir.parent / EXTERNAL_RESOURCES_FILENAME
 
     if not registry.exists():
         return set()
 
-    resources = json.loads(registry.read_text())["resources"]
+    resources: list[ExternalResource] = json.loads(registry.read_text())["resources"]
 
     return {
         resource["name"]
         for resource in resources
-        if resource["kind"] == "skill" and resource["update_on_sync"]
+        if resource["kind"] == SKILL_RESOURCE_KIND and resource["update_on_sync"]
     }
 
 
@@ -351,7 +362,7 @@ def parse_arguments() -> argparse.Namespace:
     commands.add_parser(
         SourceCommand.CHECK,
         parents=[tree],
-        help="Validate skill dependencies, then the canonical sources by mirroring them in a scratch copy.",
+        help="Validate skill dependencies and the canonical sources in a scratch copy.",
     )
 
     mirror = commands.add_parser(

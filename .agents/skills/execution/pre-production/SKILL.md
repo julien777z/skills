@@ -110,20 +110,22 @@ with an obsolete owned contract or revision.
   change — in a file it opened, a check it ran, a capture it read — is fixed. A file opened or edited
   only to make such an incidental fix is never itself a source of more incidental cleanup: what else
   it holds is listed, not chased.
-- **A defect the work notices is always fixed, wherever it lives.** A defect is anything the
-  system does or shows that a reader would call broken, and the system includes the repository's
-  tooling: its tests, fixtures, build, setup and CI. An image that never loads, a wrong value, a
-  state shown in the wrong place, a control that does nothing, a lost write or notification, a
-  crash, an exhausted budget, a test suite that fails in a fresh checkout, a fixture that builds data the code would
-  never hold, and a setup step or documented command that errors are its familiar shapes, not its
-  boundary. Work the system cannot finish in useful time, a resource that grows with the data with
-  nothing to bound it, a stored value nothing limits, work a restart throws away where a sibling
-  phase keeps its place, and a job that only advances because a container happens to stay alive are
-  defects of the same standing: "the result is still correct", "it only costs time" and "how much
-  to keep is a policy question" describe a defect and never exempt one: a system that is right and too slow to use is broken. A missing safeguard is not
-  a defect, since the system does what it was built to do, unless its absence is an exploitable
-  security finding, because what the system does includes what an attacker can make it do. A
-  defect is fixed in the change in flight, outside both the hop limit and the size budget below.
+- **A defect the work notices is always fixed, wherever it lives.** A defect is anything the system
+  does or shows that a reader would call broken, and the system includes the repository's tooling:
+  its tests, fixtures, build, setup and CI. An image that never loads, a wrong value, a state shown
+  in the wrong place, a control that does nothing, a lost write or notification, a crash, an
+  exhausted budget, a test suite that fails in a fresh checkout, a fixture that builds data the code
+  would never hold, and a setup step or documented command that errors are its familiar shapes, not
+  its boundary.
+- **Slow, unbounded or fragile work is a defect too.** Work the system cannot finish in useful time,
+  a resource that grows with the data with nothing to bound it, a stored value nothing limits, work
+  a restart throws away where a sibling phase keeps its place, and a job that only advances because
+  a container happens to stay alive are defects of the same standing. "The result is still correct",
+  "it only costs time" and "how much to keep is a policy question" describe a defect and never
+  exempt one; a system that is right and too slow to use is broken. A missing safeguard is not a
+  defect, since the system does what it was built to do, unless its absence is an exploitable
+  security finding, because what the system does includes what an attacker can make it do. A defect
+  is fixed in the change in flight, outside both the hop limit and the size budget below.
   Sitting in a shared component, an owned library or another owned repository the pull request does
   not otherwise touch is no reason to leave it: the fix goes to that repository's pull request for
   this work. It is never listed as noticed, offered or deferred.

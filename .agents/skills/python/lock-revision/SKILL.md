@@ -11,10 +11,10 @@ Invoking this skill means the user is about to deploy the branch's current chang
 environment, so its revisions may be applied there. From then on, each of those revisions is history.
 
 The user is waiting to deploy, so the run is the next work in the session, ahead of everything
-ordinary work ranks below a waiting deploy, and it does only the steps below. Those
-numbered steps are the plan the user approved by invoking it. It never asks whether a revision was applied: the lock marker and a deploy the
-user reported are the only record, and a revision with neither is locked, folded first when a chain
-has several unlocked branch revisions, as steps 1-2 say.
+ordinary work ranks below a waiting deploy, and it does only the steps below. Those numbered steps
+are the plan the user approved by invoking it. It never asks whether a revision was applied: the
+lock marker and a deploy the user reported are the only record, and a revision with neither is
+locked, folded first when a chain has several unlocked branch revisions, as steps 1-2 say.
 
 ## Dependencies
 - `database-migrations`

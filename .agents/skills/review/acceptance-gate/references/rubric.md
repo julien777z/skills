@@ -268,9 +268,8 @@ ends the question.
    fix takes. A migration is how a fix is written, never a reason to record it instead. A check that
    would rediscover the defect does not soften this: rediscovery excuses the record, never the fix.
    Product state never softens it either: broken is broken for one admin as for a thousand users.
-   A missing safeguard that definition leaves out goes on to the tests below; one whose absence is an
-   exploitable finding under **Exploitable Findings** is a defect and is fixed in the change in
-   flight.
+   A missing safeguard that definition leaves out goes on to the tests below, its exploitability
+   judged under **Exploitable Findings**.
 2. **close** — the item is real but not worth doing. Either the product state leaves it protecting or
    serving nobody — an access control between the one admin and the data only that admin can see, a
    hardening against users the product does not have, neither of which retires a finding an attacker

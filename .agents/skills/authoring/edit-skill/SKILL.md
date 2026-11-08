@@ -38,8 +38,9 @@ checking whether guidance allowed the miss. When the correction succeeds, record
 for permanent guidance so the next session does not repeat it.
 
 Correct the current behavior and trace its guidance path in the same turn. When a successful
-correction exposes a gap during another task, record it as **Recording During A Task** says; **Guidance Delivery** carries it into canonical
-guidance. Neither the issue nor its verification disappears when the surrounding task resumes.
+correction exposes a gap during another task, record it as **Recording During A Task** says;
+**Guidance Delivery** carries it into canonical guidance. Neither the issue nor its verification
+disappears when the surrounding task resumes.
 
 A correct instruction does not close a reported failure to follow it. Step 2 traces and repairs the
 application step that admitted the rejected decision, then verifies that repair against the miss.
@@ -151,9 +152,9 @@ user's review of the source pull request overlaps it.
    source check and smoke round pass, so its batch can be done. The steps below cover the
    agent-configuration pull request.
 2. Run step 7.2's source check.
-3. Run `review-pass` once over the batch, naming every head it carries. Give it the user's request and the
-   recorded evidence as the intent statement, the incident vocabulary for its acceptance gate as
-   step 7.4 describes, and step 7.3's prose-duplication checks for its simplification gate.
+3. Run `review-pass` once over the batch, naming every head it carries. Give it the user's request
+   and the recorded evidence as the intent statement, the incident vocabulary for its acceptance
+   gate as step 7.4 describes, and step 7.3's prose-duplication checks for its simplification gate.
 4. Run step 7.5's `test-skill` smoke round once over the batch, naming every head `review-pass`
    accepted, with every entry's
    reproduction scenario as an input and entries that share a failure class grouped into one
@@ -355,7 +356,7 @@ user's review of the source pull request overlaps it.
      `pre-production`'s **Scope Follows The Defect** says of a defect the work notices, with
      `acceptance-gate` judging the repair's scope and size. Moving text unchanged proves it
      survived; it is never a reason to report a defect as left for the user.
-   - Before delivery, audit each edited skill's complete package and its affected callers, every file a folded or incorporated pull request brings in included: list every skill each one refers to, by name or by a description that identifies it, compare them with the owning entry point's `## Dependencies`, remove every reference that points back at a caller or across to a peer and restructure the flow so the caller or a lower-level skill both depend on owns what it carried, as the shared `agent-guidance.md` rule says, since rewording or describing the skill instead of naming it leaves the reference in place. Resolve missing, stale, or path-based entries and any user-only dependency lacking the explicit bounded delegation the shared `agent-guidance.md` rule requires. Check references separately for hidden invocations and cross-skill filesystem links; move the invocation to `SKILL.md` and refer to the other package by skill name. Step 7.2's source check covers only the forms that rule's dependency bullet lists, so a passing check does not replace this audit.
+   - Before delivery, audit each edited skill's complete package and its affected callers, every file a folded or incorporated pull request brings in included: list every skill each one refers to, by name or by a description that identifies it, compare them with the owning entry point's `## Dependencies`, remove every reference that points back at a caller or across to a peer and restructure the flow so the caller or a lower-level skill both depend on owns what it carried, as the shared `agent-guidance.md` rule says. Resolve missing, stale, or path-based entries and any user-only dependency lacking the explicit bounded delegation the shared `agent-guidance.md` rule requires. Check references separately for hidden invocations and cross-skill filesystem links; move the invocation to `SKILL.md` and refer to the other package by skill name. Step 7.2's source check matches name forms only, so a passing check does not replace this audit.
 
 6. Multi-target behavior.
    - Apply multi-target updates for `agents`, `skills`, and `rules`.

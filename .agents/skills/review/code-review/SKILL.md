@@ -169,9 +169,9 @@ In every review round, give each dispatched reviewer and validator the merge-bas
 SHA, complete pull-request diff, and complete changed-file list. When a previous reviewed head
 exists, also give the diff from that head to the current head so recent fixes receive focused
 attention. That incremental diff supplements the full pull-request target; never substitute the
-latest commit or fix diff for it. The one exception is an invocation that names a delta: that delta is
-the review target, and the complete pull-request diff is the context its reviewers read. Keep that
-complete context distinct from each lens's analysis slice: the exact changed hunks, files, and
+latest commit or fix diff for it. The one exception is an invocation that names a delta: that delta
+is the review target, and the complete pull-request diff is the context its reviewers read. Keep
+that complete context distinct from each lens's analysis slice: the exact changed hunks, files, and
 operations it evaluates, plus every supporting input whose semantics it uses. A reviewer may read
 context without adding it to its analysis slice, but material it evaluates, uses as evidence, or
 relies on for a conclusion belongs in that slice. Record both manifests so a later pass can retain a
@@ -395,7 +395,17 @@ of its own; check it the same way as any other edit. Where a fix cannot satisfy 
 and a rule, correct the governing rule rather than shipping code that violates it.
 
 After fixing, rescan the affected ownership area and its consumers for the same class of finding,
-then apply the target classification from Step 1. For a non-runtime target, validate only the checks appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests or query or wait for CI. Otherwise, record which local services were already running before local validation. Never stop, restart, reconfigure, or claim ownership of a pre-existing service: another agent or user may be using it. When relevant validation requires local services and any were already running, do not run a competing service-managed test locally. A working-pull-request fix uses CI only at its exact pushed head; when no safe native command is available, CI is its fallback and its draft state records the local-validation limit until the authorized merge. An unpushed local snapshot runs an isolated native check only when it can do so without disturbing external state; otherwise it records the concrete local-validation limit and remains gated or requires an authorized working-pull-request route. It never uses CI for an unpushed snapshot.
+then apply the target classification from Step 1. For a non-runtime target, validate only the checks
+appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests
+or query or wait for CI. Otherwise, record which local services were already running before local
+validation. Never stop, restart, reconfigure, or claim ownership of a pre-existing service: another
+agent or user may be using it. When relevant validation requires local services and any were already
+running, do not run a competing service-managed test locally. A working-pull-request fix uses CI
+only at its exact pushed head; when no safe native command is available, CI is its fallback and its
+draft state records the local-validation limit until the authorized merge. An unpushed local
+snapshot runs an isolated native check only when it can do so without disturbing external state;
+otherwise it records the concrete local-validation limit and remains gated or requires an authorized
+working-pull-request route. It never uses CI for an unpushed snapshot.
 
 Stage only the fix edits — never sweep in unrelated uncommitted work that Step 1 deliberately left alone — and commit in the verified writable checkout selected for the target, never on the default branch. Push only when that target has a working pull request; a local-snapshot fix creates a replacement local snapshot and remains unpushed unless an authorized working-pull-request route is established. A full re-review is a later phase of the same authorized logical fix review, not a new action-skill invocation: carry forward its receipts and lens-retirement counters, invalidate them against the new reviewed inputs, and rerun the required cohort.
 

@@ -310,17 +310,18 @@ completed reviewer receipt merely because it changes a test, fixture, documentat
 harness, formatting, lint compliance, or a type-only annotation. Classify it from what it changes,
 never from its path: it may change validation inputs, but must leave shipped product behavior,
 dependencies, effective runtime or deployment configuration, API and deployment contracts, and
-generated contracts unchanged. A prior reviewer having read the changed non-source artifact does
-not reopen that lens unless its analysis slice or supporting inputs include that artifact. Compare
-the follow-up against each receipt's analysis-slice and supporting-input manifests and retain only
-those that are byte-identical. Run `test-fixture`'s workflow over every changed fixture and its
-**Sweep** over every changed test, focused validation, and any other artifact-specific gate. A CI or
-check-harness change that alters a trigger, source or ref,
-permission, identity, runner, secret, environment, action, reusable workflow, deployment target,
-or validation target is a workflow/runtime input: rerun every dependent lens, including Bugs and
-Security, before exact-head acceptance. Return that accepted head; this pass launches no check gate itself. A change to a review rubric or
-reviewer instruction reruns only the lenses that use it; a supposedly non-source change that affects
-shipped behavior or a contract invalidates only the affected receipts under this section.
+generated contracts unchanged. A prior reviewer having read the changed non-source artifact does not
+reopen that lens unless its analysis slice or supporting inputs include that artifact. Compare the
+follow-up against each receipt's analysis-slice and supporting-input manifests and retain only those
+that are byte-identical. Run `test-fixture`'s workflow over every changed fixture and its **Sweep**
+over every changed test, focused validation, and any other artifact-specific gate. A CI or
+check-harness change that alters a trigger, source or ref, permission, identity, runner, secret,
+environment, action, reusable workflow, deployment target, or validation target is a
+workflow/runtime input: rerun every dependent lens, including Bugs and Security, before exact-head
+acceptance. Return that accepted head; this pass launches no check gate itself. A change to a review
+rubric or reviewer instruction reruns only the lenses that use it; a supposedly non-source change
+that affects shipped behavior or a contract invalidates only the affected receipts under this
+section.
 
 When the user makes residual lint-only diagnostics non-blocking, they do not hold a behavior-complete
 source pull request. Retain any useful lint repair already in that pull request. Open a fresh

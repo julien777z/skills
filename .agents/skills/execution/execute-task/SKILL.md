@@ -195,17 +195,17 @@ that code, provided what the deploy depends on stays the same and its owning tes
 revision, its database outcome.
 
 Restoring an authorized broken deployed operation takes priority over ordinary tests, review gates,
-guidance delivery and cleanup. Pause those activities until the actual failed operation succeeds
-on the fix branch in every affected environment; use only the reproduction, diagnosis and repairs
+guidance delivery and cleanup. Pause those activities until the actual failed operation succeeds on
+the fix branch in every affected environment; use only the reproduction, diagnosis and repairs
 needed for that checkpoint, respecting any narrower user restriction. This pause includes ordinary
 checks and task-owned workers already running, even on separate files or resources. Pause them at
 the runner's next safe boundary, honoring its interruption and cleanup contract; preserve completed
 evidence, frozen inputs and the saved next action. An already-started independent cohort is not an
 exception permitting continued ordinary work. Deploy through the authorized branch route, then
-resume required delivery checks after that live proof. A successful child task,
-health response or merge does not establish it. After an authorized merge, repeat the operation
-from the default-source deployment; if it fails, resume recovery and pause ordinary delivery work
-again. This order grants no deployment or merge authority: **Task Authorization** still governs both.
+resume required delivery checks after that live proof. A successful child task, health response or
+merge does not establish it. After an authorized merge, repeat the operation from the default-source
+deployment; if it fails, resume recovery and pause ordinary delivery work again. This order grants
+no deployment or merge authority: **Task Authorization** still governs both.
 
 ### Follow-Ups
 
@@ -219,7 +219,7 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
 ```markdown
 **Running work keeps going:** <step in flight> doesn't touch <what the follow-up changes>.
 
-<**Decision needed:** …, asked on its own first | **Proposed plan for the follow-up**, once no decision is open and `review-proposal` has accepted it>
+<**Decision needed:** …, asked on its own first | **Proposed plan for the follow-up**, once no decision is open>
 1. <step> (~<n> min)
 ```
 
@@ -799,14 +799,13 @@ Two streams run side by side from here: the guidance stream and the source strea
    in the expected behavior, and confirm multi-repository delivery artifacts describe only their
    owning repository. Then build this pull request's ready-for-review message, in the shape below,
    from `list-prs`, what the run did and `review-pass`'s **Result**.
-4. Send step 3's message; the pull request stays draft. Only when **Task Authorization** finds
-   the merge authorized, invoke `merge-gate` with the accepted head, every exclusion `review-pass` returned with its
-   evidence, and, as its fix rule, the
-   **Pre-Push Gate** with each fix folded into its commit through `rewrite-git-history`'s fixup
-   route. It readies the pull request, inventories its exact-head hosted coverage, obtains fresh
-   results only where no equivalent terminal coverage exists, fixes what relevant checks report and
-   merges; when it returns, send one line with the result it read: the merge, or the gate that
-   holds it.
+4. Send step 3's message; the pull request stays draft. Only when **Task Authorization** finds the
+   merge authorized, invoke `merge-gate` with the accepted head, every exclusion `review-pass`
+   returned with its evidence, and, as its fix rule, the **Pre-Push Gate** with each fix folded into
+   its commit through `rewrite-git-history`'s fixup route. It readies the pull request, inventories
+   its exact-head hosted coverage, obtains fresh results only where no equivalent terminal coverage
+   exists, fixes what relevant checks report and merges; when it returns, send one line with the
+   result it read: the merge, or the gate that holds it.
 
 When the task uses several independent final reviewers outside `code-review`, assign distinct
 concerns across the complete result rather than asking each the same question. After a repair,
