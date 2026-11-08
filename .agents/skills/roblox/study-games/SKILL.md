@@ -64,12 +64,12 @@ Raw captures, such as screenshots and recordings, and researchers' working notes
 
 ## Delegate the observations
 
-Invoke `subagent-matrix` and choose its **frontier** tier for every research sub-agent in both
+Invoke `subagent-matrix` and choose its **advanced** tier for every research sub-agent in both
 passive and play modes. Use its exact dispatch identifier and reasoning effort for each actual researcher
 assignment. Record catalogue state separately from the assignment state and receipt: a catalogue-hidden family
 remains dispatch-required until that researcher assignment is accepted. A missing identifier or any rejection
 other than an explicit unsupported receipt blocks research delegation. An explicit unsupported receipt records
-frontier research as unavailable and also blocks it; do not silently use a lower tier or inherit the orchestrator's
+advanced-tier research as unavailable and also blocks it; do not silently use a lower tier or inherit the orchestrator's
 model. Model selection does not relax runner locks or concurrency limits.
 
 Partition the entries to study into batches of four. **Spawn two sub-agents for every four games, assigning exactly two distinct games to each researcher.** For a final partial batch, create only the researchers needed: one researcher for one or two games, or two researchers for three games (two games plus one). Thus a default 25-game study with nothing reused has 13 researcher assignments: twelve pairs and one final game. Respect available concurrency slots; run further batches as slots become available instead of exceeding the limit or silently increasing each researcher's workload.
