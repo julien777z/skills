@@ -17,11 +17,9 @@ disable-model-invocation: true
 - `roblox-react`
 - `interactive-skill`
 
-## Reuse the isolated research environment
+## Mode
 
-Run only when explicitly invoked or requested by the user. Do not automatically research charts during ordinary game edits.
-
-Accept a mode and a game count `N`. **Settle the mode through `interactive-skill` with the menu below before selecting games or dispatching researchers**; a request that names neither mode asks, and none is assumed. Default to **25 games** when no count is given; an explicit count, genre, audience, or selection overrides that default. Choose the chart device, region, and category from the user's request or the current game's audience; when neither identifies them, state the selected chart filters as assumptions. Start at the current [Roblox charts](https://www.roblox.com/charts). Record the observation date, chart category, filters, visible order, and each selected experience's title, creator, and exact URL. Rankings change; never substitute remembered hit games for the requested chart. If ranking content is unavailable, explain the gap and use only identifiable entries actually retrieved, without inventing their rank.
+Settle the mode through `interactive-skill` with this menu before selecting games or dispatching researchers. Only an argument naming a mode or one of its aliases, or words asking for the games to be played or only watched, picks it; a number is the game count, never a menu pick, and "play" describing the games, as in "games kids play", picks nothing.
 
 ```yaml
 prompt: Which mode should the study run in?
@@ -38,6 +36,12 @@ choices:
     aliases: [playtest]
     when: the request asks for the games to be played or playtested
 ```
+
+## Reuse the isolated research environment
+
+Run only when explicitly invoked or requested by the user. Do not automatically research charts during ordinary game edits.
+
+Accept a game count `N`, defaulting to **25 games** when none is given; an explicit count, genre, audience, or selection overrides that default. Choose the chart device, region, and category from the user's request or the current game's audience; when neither identifies them, state the selected chart filters as assumptions. Start at the current [Roblox charts](https://www.roblox.com/charts). Record the observation date, chart category, filters, visible order, and each selected experience's title, creator, and exact URL. Rankings change; never substitute remembered hit games for the requested chart. If ranking content is unavailable, explain the gap and use only identifiable entries actually retrieved, without inventing their rank.
 
 Read `roblox-studio`'s testing reference. Use a qualified isolated runner for published-client play or browsing that would obstruct the user's desktop. Reuse a configured runner when available. Studio MCP alone is not evidence that the published client can be controlled; qualify browser/media and published-client input and capture separately, without host window, focus or input interference, and record each result separately. Read-only API retrieval can assist, but it does not replace the requested observation or play and never opens host research or game windows.
 
@@ -125,7 +129,7 @@ Each researcher returns this structure for its assigned games. The orchestrator 
 ```yaml
 study:
     observed_at: "ISO-8601 timestamp"
-    mode: passive # passive | play
+    mode: "selected mode" # passive | play
     requested_games: 25
     completed_games: 0
     chart:
@@ -147,7 +151,7 @@ games:
       creator: null
       chart_rank: null
       researcher: "researcher identifier"
-      mode: passive
+      mode: "selected mode"
       observation_status: completed # completed | partial | blocked
       active_play_seconds: null
       play_coordination:
