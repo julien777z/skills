@@ -106,7 +106,7 @@ preserve the result’s own shape. This supplement never changes machine-consume
 
 **An action the reader owns is not an unresolved decision**, and never joins that list: renewing
 a certificate, approving a sign-in on their phone, a manual step outside the session. When the
-work waits on it, ask for it once through the question tool, as the global rules' user-action
+work waits on it, ask for it through the question tool, as the global rules' user-action
 bullet says, with what it unblocks; otherwise name it once, when it arises, with what it unblocks.
 Raise it again only when it now blocks the next step
 or the reader asks what they owe; once they say they will do it later, it is settled and stays out

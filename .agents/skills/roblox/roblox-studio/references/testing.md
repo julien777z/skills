@@ -106,6 +106,7 @@ This example applies only when the host already configures `ROBLOX_STUDIO_TART`,
 source "$HOME/.config/roblox-studio/runner.env"
 "$ROBLOX_STUDIO_TART" get "$ROBLOX_STUDIO_VM"
 # Start only when stopped, detached so the VM outlives the agent's own task limits:
+mkdir -p "$HOME/.local/state/roblox-studio"
 nohup "$ROBLOX_STUDIO_TART" run "$ROBLOX_STUDIO_VM" --no-graphics --no-clipboard --no-audio \
   > "$HOME/.local/state/roblox-studio/vm.log" 2>&1 < /dev/null & disown
 export ROBLOX_STUDIO_SSH="$ROBLOX_STUDIO_SSH_USER@$("$ROBLOX_STUDIO_TART" ip "$ROBLOX_STUDIO_VM" --wait 180)"
@@ -127,9 +128,12 @@ ends with its check:
    signature, and run its `--version`.
 2. **Create the VM** with `tart clone` from a Cirrus Labs macOS base image, then `tart set` its
    CPU, memory, and display before the first boot. Start it with the options above and
-   `tart ip --wait <seconds>` for its address; `tart list` shows the stopped VM afterward.
+   `tart ip --wait <seconds>` for its address; `tart list` shows the stopped VM afterward. The
+   guest must log its desktop user in on boot, which everything run while the host is locked
+   depends on: `defaults read /Library/Preferences/com.apple.loginwindow autoLoginUser` in the guest
+   names that user on a Cirrus Labs image.
 3. **Pin SSH before trusting it.** Generate a dedicated key in `~/.config/roblox-studio/`. Record
-   the guest's host key with `ssh-keyscan`, then compare its `ssh-keygen -lf` fingerprint with the
+   the guest's host key with `ssh-keyscan -t ed25519`, then compare its `ssh-keygen -lf` fingerprint with the
    one `tart exec <vm> ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub` reports through the guest
    agent; a mismatch stops setup. Append the public key to the guest's `authorized_keys` through
    `tart exec -i`, so no guest password passes through a command line, and confirm a `BatchMode=yes`
@@ -229,7 +233,8 @@ guest input cannot reach. Read the guest's Accessibility list first: a Cirrus La
 grants `osascript`, `sshd-keygen-wrapper` and `tart-guest-agent`, so `osascript -l JavaScript`
 over SSH posts working CoreGraphics clicks. A missing grant is added in the guest's System Settings,
 opened over SSH with `open "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_Accessibility"`
-and operated from inside the guest. Guest input behaves like this:
+and operated by the agent through the guest's Screen Sharing, since posted input is what the grant
+enables. Guest input behaves like this:
 
 - **Coordinates are points.** A HiDPI guest's captures have twice the pixels of its screen points;
   read `NSScreen.mainScreen.frame` and divide capture coordinates accordingly.
@@ -241,7 +246,7 @@ and operated from inside the guest. Guest input behaves like this:
 - **Studio's embedded web panels,** such as Assistant, take one click to focus and then toggle on
   each click; capture after every click rather than repeating one.
 - The first `screencapture` over SSH raises a guest Screen Recording prompt for the SSH session;
-  approve it in the guest.
+  the agent approves it through the guest's Screen Sharing.
 
 Tart's own `--vnc-experimental` endpoint returns black frames while the VM runs with
 `--no-graphics`; a viewer connects to the guest's built-in Screen Sharing service on port 5900.
@@ -249,10 +254,11 @@ Tart's own `--vnc-experimental` endpoint returns black frames while the VM runs 
 To turn the guest Studio's MCP server on or off, copy
 [guest_studio_mcp.js](../scripts/guest_studio_mcp.js) into the guest and run
 `osascript -l JavaScript guest_studio_mcp.js <studio-pid> on` over SSH. It finds each control by
-its text or tooltip, so it does not depend on the guest's display size or Studio's panel layout,
-opens Assistant → … → Settings → MCP Servers, sets the switch, closes the dialog, and retries a
+its text or tooltip, so it does not depend on the guest's display size, and reaches the Assistant
+panel wherever it is docked in the main window. It opens Assistant → … → Settings → MCP Servers, sets the switch, closes the dialog, and retries a
 pass that a dropped click spoiled. It exits nonzero unless the status bar reads the target state;
-`read` prints what it recognizes on screen when a step fails.
+`osascript -l JavaScript guest_studio_mcp.js read` prints what it recognizes on screen when a step
+fails.
 
 For a macOS helper using CoreGraphics input and window capture, capture the target window with
 `screencapture -x -o -l <window-id> <path>`: `-o` removes shadow padding. Map coordinates from the
@@ -291,11 +297,11 @@ option. Do not request passwords in chat or transfer session cookies. Continue i
 work while waiting. After the user confirms, verify the result in a guest capture, then close only
 the task's viewer so unattended guest windows stay out of the user's way.
 
-Where the user can reach no viewer, relay Quick Sign-in by code. Read the newest
-`awaitQuickSignIn via polling: code=` line from Studio's log immediately before sending it: codes
-expire after about two minutes and Studio logs each replacement. The user enters the code on a
-device already signed in to Roblox. Confirm sign-in from the Studio start page before relying on
-the runner.
+Where the user can reach no viewer, relay Quick Sign-in by code through the question tool, with a
+confirmation option. Read the newest `awaitQuickSignIn via polling: code=` line from Studio's log
+immediately before each asking, including a re-ask after a timeout: codes expire after about two
+minutes and Studio logs each replacement. The user enters the code on a device already signed in to
+Roblox. Confirm sign-in from the Studio start page before relying on the runner.
 
 ## End of session for a retained VM
 
@@ -308,7 +314,7 @@ the guest's automatic desktop login, Studio relaunched in the guest, input poste
 and guest MCP. Check that the route still holds before ending a session. Leave running, rather than closing, anything
 whose restoration needs the host's screen or the user: a host viewer the user is using, Studio on
 the host, a guest state only a host viewer could recreate, or a Roblox sign-in only the user can
-approve. Never end or sign out of the guest's desktop session or its Roblox session.
+approve. Powering the guest off is fine, because its automatic login brings the desktop back.
 
 When the game work is done, save the authorized project artifacts, close Roblox Studio normally,
 and **shut down the guest VM** so it is no longer running locally. Verify that Studio closed and the
@@ -339,8 +345,8 @@ On macOS installations, the stdio executable may be `/Applications/RobloxStudio.
 Enable Assistant → … → Settings → MCP Servers → Enable Studio as MCP server **yourself if disabled**;
 in a guest, [direct guest control](#direct-guest-control) runs the bundled script for it.
 This is part of the authorized setup and never a step for the user: the agent reaches the setting
-itself, through input posted inside the guest or, for an editor on an unlocked host, through the
-host's own input. A setting enabled in another machine
+itself, through input posted inside the guest or, for an editor on an unlocked host where the task
+authorizes host input, through the host's own input. A setting enabled in another machine
 or guest does not enable the local editor. Follow the [authentication procedure](#authentication-and-user-handoff):
 complete viewer/guest login yourself and verify the desktop before any user handoff. Reuse Roblox
 authentication and request help only for the specific remaining step you cannot complete. Never
@@ -365,7 +371,7 @@ The proxy can initialize and expose all tool schemas before Studio connects. Stu
 local WebSocket connection on an interval; terminating the proxy immediately can repeatedly return
 `studios: []` even while the toggle is enabled. Keep the session alive and await a nonempty inventory
 with a bounded timeout. Do not
-infer a toggle failure from an empty inventory or ask the user to repeatedly toggle it.
+infer a toggle failure from an empty inventory or toggle it repeatedly.
 
 A stdio client must handle notifications and responses sharing a read. With Python `select`, a
 buffered text `readline()` can leave the response in a Python buffer while `select` waits for OS
@@ -384,7 +390,7 @@ resuming normal controls.
 
 An empty inventory does not establish that MCP is disabled. The intended process may be waiting
 on sign-in, a recovery dialog, Assistant initialization, or the proxy connection. Inspect that
-editor's current UI. Resolve blocking dialogs, open **Assistant → Manage MCP Servers**, and inspect
+editor's current UI. Resolve blocking dialogs, open **Assistant → … → Settings → MCP Servers** (in a guest, through the bundled script), and inspect
 the normal MCP setting before changing it. If remote pointer input cannot open Assistant, use its
 native menu or the installed editor's shortcut configuration; inspect the current binding rather
 than assuming a key. Restore any temporary binding afterward. Keep the proxy alive during bounded

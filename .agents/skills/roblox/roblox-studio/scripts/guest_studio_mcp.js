@@ -1,27 +1,32 @@
 // Turn Roblox Studio's MCP server on or off from inside a macOS guest, without a viewer.
 //
-// Run in the guest's signed-in session, from a process the guest grants Accessibility
-// (for example `osascript` over SSH on a Cirrus Labs image):
+// Run in the guest's signed-in session over SSH:
 //
-//   osascript -l JavaScript guest_studio_mcp.js <studio-pid> on|off|read
+//   osascript -l JavaScript guest_studio_mcp.js <studio-pid> on|off
+//   osascript -l JavaScript guest_studio_mcp.js read
 //
-// It finds controls by their on-screen text and tooltips with Vision, so it does not depend
-// on the display size or Studio's panel layout, clicks in screen points, and checks the
-// screen after every click. It exits nonzero unless the status bar reaches the target state.
-// `read` prints each recognized line with its center in screen points.
+// JavaScript for Automation is used because `osascript` holds the guest's Accessibility grant on a
+// Cirrus Labs image and reaches Vision and CoreGraphics without extra packages.
+//
+// It finds controls by their on-screen text and tooltips with Vision, clicks in screen points, and
+// checks the screen after every click. It exits nonzero unless the status bar reaches the target
+// state. `read` prints each recognized line with its center in screen points.
 
 ObjC.import("AppKit");
 ObjC.import("CoreGraphics");
+ObjC.import("Foundation");
 ObjC.import("Vision");
 
 const CAPTURE_PATH = "/tmp/guest-studio-mcp.png";
 const ESCAPE_KEY_CODE = 53;
 
-// Text recognition misreads small labels slightly, so prompts are matched by their start.
+// Text recognition misreads small labels slightly, so labels are matched loosely: "AI" can
+// come back as "Al", a leading icon as a symbol, and a prompt with a wrong final letter.
 const ASK_PROMPT = /^Ask assist/i;
+const ASSISTANT_TOOLTIP = /^A[Il1] Assistant$/;
 
-// A click is retried this many times while the screen has not changed, because a panel can
-// take one click for focus before it acts.
+// A label click is retried this many times until the text it should produce appears, because a
+// panel can spend a click taking focus before it acts.
 const CLICK_ATTEMPTS = 4;
 
 // Whole passes through the settings before the run reports failure.
@@ -30,6 +35,9 @@ const RUN_ATTEMPTS = 3;
 // Rows of icons without text are searched in steps of this many points.
 const PROBE_STEP = 8;
 
+// The Assistant panel's menu button sits within this many points right of the panel title.
+const PANEL_MENU_REACH = 140;
+
 const systemEvents = Application("System Events");
 const source = $.CGEventSourceCreate($.kCGEventSourceStateHIDSystemState);
 
@@ -37,22 +45,32 @@ function studioWindow(process) {
   return process.windows.whose({ name: { _contains: "Roblox Studio" } })[0];
 }
 
-// Studio can hold a stale window origin and register clicks below where they land on
-// screen; setting the frame again makes it recompute.
+function bounds(window) {
+  const [x, y] = window.position();
+  const [width, height] = window.size();
+
+  return { x, y, width, height, right: x + width, bottom: y + height };
+}
+
+function contains(area, line) {
+  return line.x > area.x && line.x < area.right && line.y > area.y && line.y < area.bottom;
+}
+
+// Studio can hold a stale window origin and register clicks below where they land on screen;
+// setting the frame again makes it recompute.
 function resetStudioWindow(process) {
   process.frontmost = true;
 
   const window = studioWindow(process);
-  const [x, y] = window.position();
-  const [width, height] = window.size();
+  const frame = bounds(window);
 
-  window.position = [x, y + 8];
+  window.position = [frame.x, frame.y + 8];
   delay(0.4);
-  window.position = [x, y];
-  window.size = [width, height];
+  window.position = [frame.x, frame.y];
+  window.size = [frame.width, frame.height];
   delay(0.6);
 
-  return { x, y, width, height, right: x + width };
+  return frame;
 }
 
 function postMouse(type, x, y) {
@@ -90,16 +108,22 @@ function pressEscape() {
 
 // Returns recognized lines with their centers and right edges in screen points.
 function readScreen() {
+  $.NSFileManager.defaultManager.removeItemAtPathError(CAPTURE_PATH, null);
+
   const task = $.NSTask.launchedTaskWithLaunchPathArguments("/usr/sbin/screencapture", $(["-x", CAPTURE_PATH]));
 
   task.waitUntilExit;
+
+  if (task.terminationStatus !== 0 || !$.NSFileManager.defaultManager.fileExistsAtPath(CAPTURE_PATH)) {
+    throw new Error("Screen capture failed; the session needs Screen Recording access");
+  }
 
   const screen = $.NSScreen.mainScreen.frame.size;
   const url = $.NSURL.fileURLWithPath(CAPTURE_PATH);
   const request = $.VNRecognizeTextRequest.alloc.init;
 
-  // Vision skips text shorter than 1/32 of the image by default, which drops Studio's
-  // small labels on a 1x display.
+  // Vision skips text shorter than 1/32 of the image by default, which drops Studio's small
+  // labels on a 1x display.
   request.minimumTextHeight = 0.004;
 
   const handler = $.VNImageRequestHandler.alloc.initWithURLOptions(url, $({}));
@@ -128,11 +152,11 @@ function findLine(pattern, lines = readScreen()) {
   return lines.find((line) => pattern.test(line.text));
 }
 
-function waitFor(pattern, seconds) {
+function waitFor(pattern, seconds, area = null) {
   const deadline = Date.now() + seconds * 1000;
 
   do {
-    const line = findLine(pattern);
+    const line = readScreen().find((candidate) => pattern.test(candidate.text) && (!area || contains(area, candidate)));
 
     if (line) {
       return line;
@@ -144,17 +168,22 @@ function waitFor(pattern, seconds) {
   return null;
 }
 
-// Clicks until the expected text appears, checking the screen after each click.
-function clickUntil(x, y, pattern) {
-  for (let attempt = 0; attempt < CLICK_ATTEMPTS; attempt++) {
-    click(x, y);
+// Clicks a label until the text it should produce appears. Before each retry the label is
+// found again, so a retry never lands on whatever replaced it.
+function clickLabelUntil(label, labelPattern, expected) {
+  let target = label;
+
+  for (let attempt = 0; attempt < CLICK_ATTEMPTS && target; attempt++) {
+    click(target.x, target.y);
 
     // A web panel can take several seconds to draw; a retry too soon closes it again.
-    const line = waitFor(pattern, 6);
+    const line = waitFor(expected, 6);
 
     if (line) {
       return line;
     }
+
+    target = findLine(labelPattern);
   }
 
   return null;
@@ -166,10 +195,9 @@ function mcpStatus() {
   return line ? line.text.match(/MCP (Ready|off)/i)[0].toLowerCase() : "unknown";
 }
 
-// The Assistant toolbar button has no label, so it is found by its "AI Assistant" tooltip,
-// searching right of the Collaborate button or, without one, leftward from the window edge.
-// Text recognition can read a leading icon as a symbol and "AI" as "Al", so the patterns
-// allow both.
+// The Assistant toolbar button has no label, so it is found by its "AI Assistant" tooltip next to
+// the pointer, searching right of the Collaborate button or, without one, leftward from the
+// window edge.
 function findAssistantButton(frame) {
   const toolbar = readScreen().filter((line) => line.y > frame.y && line.y < frame.y + 90);
   const collaborate = findLine(/Collaborate$/, toolbar);
@@ -186,7 +214,9 @@ function findAssistantButton(frame) {
 
     hover(x, y);
 
-    if (waitFor(/^A[Il1] Assistant$/, 1.5)) {
+    const near = { x: x - 60, right: x + 260, y, bottom: y + 80 };
+
+    if (waitFor(ASSISTANT_TOOLTIP, 1.5, near)) {
       return { x, y };
     }
   }
@@ -206,17 +236,36 @@ function openAssistantPanel(frame) {
   pressEscape();
 
   const button = findAssistantButton(frame);
-  const opened = clickUntil(button.x, button.y, ASK_PROMPT);
 
-  if (!opened) {
-    throw new Error("The Assistant panel did not open");
+  for (let attempt = 0; attempt < CLICK_ATTEMPTS; attempt++) {
+    click(button.x, button.y);
+
+    const opened = waitFor(ASK_PROMPT, 6);
+
+    if (opened) {
+      return opened;
+    }
   }
 
-  return opened;
+  throw new Error("The Assistant panel did not open");
+}
+
+// A point in the panel between its header and prompt with no text near it, so a focus click
+// lands on empty chat area rather than a message or a suggestion.
+function emptyPanelPoint(lines, title, headerY, prompt) {
+  for (let y = headerY + 24; y < prompt.y - 24; y += 12) {
+    const crowded = lines.some((line) => Math.abs(line.y - y) < 12 && Math.abs(line.x - title.x) < 120);
+
+    if (!crowded) {
+      return { x: title.x, y };
+    }
+  }
+
+  return null;
 }
 
 // The panel's menu button has no label either; it is the rightmost control on the panel's
-// header row, so positions are tried from the window edge inward until its menu appears.
+// header row, so positions inside the panel are tried from the right until its menu appears.
 function openAssistantMenu(frame, prompt) {
   const lines = readScreen();
   const title = lines
@@ -232,15 +281,16 @@ function openAssistantMenu(frame, prompt) {
     .filter((line) => line.y > title.y + 10 && line.y < title.y + 60 && line.x > title.x - 120)
     .sort((a, b) => a.y - b.y)[0];
   const headerY = headerRow ? headerRow.y : title.y + 35;
+  const focus = emptyPanelPoint(lines, title, headerY, prompt);
 
-  // The panel is a web view that spends a click taking focus, and a click elsewhere takes
-  // focus away, so every attempt first clicks its chat area, between the header and the
-  // prompt; the prompt field itself can raise suggestions over the header.
-  const focusY = (headerY + prompt.y) / 2;
+  // The panel is a web view that spends a click taking focus, and a click elsewhere takes focus
+  // away, so every attempt first clicks empty chat area.
+  for (let x = Math.min(frame.right - 12, title.x + PANEL_MENU_REACH); x > title.x; x -= PROBE_STEP) {
+    if (focus) {
+      click(focus.x, focus.y);
+      delay(0.8);
+    }
 
-  for (let x = frame.right - 12; x > title.x; x -= PROBE_STEP) {
-    click(title.x, focusY);
-    delay(0.8);
     click(x, headerY);
 
     const settings = waitFor(/^Settings$/i, 2);
@@ -248,37 +298,11 @@ function openAssistantMenu(frame, prompt) {
     if (settings && findLine(/^Usage/i)) {
       return settings;
     }
+
+    pressEscape();
   }
 
   throw new Error("The Assistant menu did not open");
-}
-
-function setMcpSwitch(process, frame, target) {
-  const prompt = openAssistantPanel(frame);
-  const settings = openAssistantMenu(frame, prompt);
-  const page = clickUntil(settings.x, settings.y, /^MCP Servers$/i);
-
-  if (!page) {
-    throw new Error("Assistant Settings did not open");
-  }
-
-  const row = clickUntil(page.x, page.y, /^Enable/i);
-
-  if (!row) {
-    throw new Error("The MCP server switch is not on screen");
-  }
-
-  const dialog = process.windows.whose({ name: "Assistant Settings" })[0];
-  const [dialogX] = dialog.position();
-  const [dialogWidth] = dialog.size();
-
-  // The switch sits at the right end of its row, inside the dialog's padding.
-  for (let inset = 40; inset <= 90 && mcpStatus() !== target; inset += 6) {
-    click(dialogX + dialogWidth - inset, row.y);
-    delay(1.5);
-  }
-
-  closeAssistantSettings(process);
 }
 
 function closeAssistantSettings(process) {
@@ -290,13 +314,69 @@ function closeAssistantSettings(process) {
   }
 }
 
+function waitForStatusChange(previous, seconds) {
+  const deadline = Date.now() + seconds * 1000;
+
+  do {
+    const status = mcpStatus();
+
+    if (status !== "unknown" && status !== previous) {
+      return status;
+    }
+
+    delay(0.5);
+  } while (Date.now() < deadline);
+
+  return previous;
+}
+
+function setMcpSwitch(process, frame) {
+  const prompt = openAssistantPanel(frame);
+  const settings = openAssistantMenu(frame, prompt);
+  const page = clickLabelUntil(settings, /^Settings$/i, /^MCP Servers$/i);
+
+  if (!page) {
+    throw new Error("Assistant Settings did not open");
+  }
+
+  const dialog = bounds(process.windows.whose({ name: "Assistant Settings" })[0]);
+
+  click(page.x, page.y);
+
+  const row = waitFor(/^Enable/i, 6, dialog);
+
+  if (!row) {
+    throw new Error("The MCP server switch is not in Assistant Settings");
+  }
+
+  const before = mcpStatus();
+
+  // The switch sits at the right end of its row, inside the dialog's padding. The first click
+  // that changes the status is the switch, and nothing is clicked after it.
+  for (let inset = 40; inset <= 90; inset += 6) {
+    click(dialog.right - inset, row.y);
+
+    if (waitForStatusChange(before, 4) !== before) {
+      break;
+    }
+  }
+
+  closeAssistantSettings(process);
+}
+
 function run(argv) {
-  if (argv[1] === "read") {
+  if (argv[0] === "read") {
     return readScreen().map((line) => `${Math.round(line.x)},${Math.round(line.y)} ${line.text}`).join("\n");
   }
 
   const pid = Number(argv[0]);
-  const target = argv[1] === "off" ? "mcp off" : "mcp ready";
+  const mode = argv[1];
+
+  if (!Number.isInteger(pid) || !["on", "off"].includes(mode)) {
+    throw new Error("Usage: guest_studio_mcp.js <studio-pid> on|off, or guest_studio_mcp.js read");
+  }
+
+  const target = mode === "off" ? "mcp off" : "mcp ready";
   const process = systemEvents.processes.whose({ unixId: pid })[0];
 
   if (mcpStatus() === target) {
@@ -305,11 +385,11 @@ function run(argv) {
 
   let failure = null;
 
-  // Studio's web panels occasionally drop a click, so a failed pass starts over from a
-  // closed dialog and a reset window.
+  // Studio's web panels occasionally drop a click, so a failed pass starts over from a closed
+  // dialog and a reset window.
   for (let attempt = 0; attempt < RUN_ATTEMPTS && mcpStatus() !== target; attempt++) {
     try {
-      setMcpSwitch(process, resetStudioWindow(process), target);
+      setMcpSwitch(process, resetStudioWindow(process));
     } catch (error) {
       failure = error;
       closeAssistantSettings(process);
