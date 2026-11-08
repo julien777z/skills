@@ -134,7 +134,8 @@ ends with its check:
    confirm the installer's code-signing team matches the host Studio's, and `open` it in the
    signed-in guest session; the check is `/Applications/RobloxStudio.app` in the guest and Studio's
    window in a guest capture.
-5. **Sign in and qualify** as [authentication](#authentication-and-user-handoff) and
+5. **Sign in, enable MCP, and qualify** as [authentication](#authentication-and-user-handoff),
+   [direct guest control](#direct-guest-control) and
    [Qualify input and capture](#qualify-input-and-capture) describe.
 
 ### Linux container runner
@@ -217,13 +218,36 @@ before input, and bound key holds. Check existing guest Accessibility and Screen
 use normal guest permission/login UI when required, never disable authentication or edit privacy
 databases. SSH access alone does not establish UI permission or an unlocked guest.
 
-Input a helper posts from an SSH session is silently dropped until the guest grants that session
-Accessibility, and the first `screencapture` over SSH raises a guest Screen Recording prompt for it;
-both are answered in the guest desktop through a viewer, never by editing privacy databases. Tart's
-own `--vnc-experimental` endpoint returns black frames while the VM runs with `--no-graphics`, so a
-viewer connects to the guest's built-in Screen Sharing service on port 5900 instead. A scripted VNC
-client's clicks reaching a system dialog do not show that Studio's own pages accept them; qualify
-each target application before relying on that route.
+The agent controls the whole guest, so it makes every guest setting and permission change itself
+and never asks the user to do one. Input posted inside the guest leaves the host's cursor alone and
+is the route for guest UI work; a host viewer click moves the user's cursor and serves only where
+guest input cannot reach. Read the guest's Accessibility list first: a Cirrus Labs image already
+grants `osascript`, `sshd-keygen-wrapper` and `tart-guest-agent`, so `osascript -l JavaScript`
+over SSH posts working CoreGraphics clicks. A missing grant is added in the guest's System Settings,
+opened over SSH with `open "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_Accessibility"`
+and operated from inside the guest. Guest input behaves like this:
+
+- **Coordinates are points.** A HiDPI guest's captures have twice the pixels of its screen points;
+  read `NSScreen.mainScreen.frame` and divide capture coordinates accordingly.
+- **Studio can hold a stale window origin** and register clicks one title bar lower than they land.
+  Set its window's position and size through System Events before clicking, and check with a
+  visible control such as a ribbon tab.
+- **Studio's widgets need a real click shape:** move the pointer toward the target first, and give
+  each press a click count (`kCGMouseEventClickState`) from the HID system event source.
+- **Studio's embedded web panels,** such as Assistant, take one click to focus and then toggle on
+  each click; capture after every click rather than repeating one.
+- The first `screencapture` over SSH raises a guest Screen Recording prompt for the SSH session;
+  approve it in the guest.
+
+Tart's own `--vnc-experimental` endpoint returns black frames while the VM runs with
+`--no-graphics`; a viewer connects to the guest's built-in Screen Sharing service on port 5900.
+
+To turn the guest Studio's MCP server on or off, copy
+[guest_studio_mcp.js](../scripts/guest_studio_mcp.js) into the guest and run
+`osascript -l JavaScript guest_studio_mcp.js <studio-pid> on` over SSH. It resets the window,
+opens Assistant → … → Settings → MCP Servers, sets the switch, closes the dialog, and exits nonzero
+unless the status bar reads the target state; `read` prints what it recognizes on screen when a
+step fails.
 
 For a macOS helper using CoreGraphics input and window capture, capture the target window with
 `screencapture -x -o -l <window-id> <path>`: `-o` removes shadow padding. Map coordinates from the
@@ -309,7 +333,8 @@ If an installed isolated runner fails a capability, inspect and recover that cap
 ## Connect to the intended editor
 
 On macOS installations, the stdio executable may be `/Applications/RobloxStudio.app/Contents/MacOS/StudioMCP`; discover the installed location before connecting.
-Enable Assistant → … → Manage MCP Servers → Enable Studio as MCP server **yourself if disabled**.
+Enable Assistant → … → Settings → MCP Servers → Enable Studio as MCP server **yourself if disabled**;
+in a guest, [direct guest control](#direct-guest-control) runs the bundled script for it.
 This is part of the authorized setup, not a routine manual task for the user. If a concrete capability
 blocker requires their help, open that page for them and explain the blocker. A setting enabled in another machine
 or guest does not enable the local editor. Follow the [authentication procedure](#authentication-and-user-handoff):
