@@ -40,7 +40,8 @@ either this protocol restated, which is skill-to-skill duplication, or a rule th
 ## Resolve The Scope
 
 Use an explicit domain, service, path, or other concrete selection supplied by the caller.
-Otherwise audit the whole repository. Read the declined records for that scope through
+Otherwise audit the whole repository. A doctor run sets its own scope, so `pre-production`'s
+incidental size budget does not apply. Read the declined records for that scope through
 `defer-scope` before fan-out, so a finding the user already declined arrives as a decision.
 
 An explicit selection controls which inventory items are audited, not how little context may be

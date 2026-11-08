@@ -18,10 +18,9 @@ does nothing or makes a reader wince, and takes it out.
 - `test-fixture`
 - `defer-scope`
 - `acceptance-gate`
+- `get-doctors`
 
 ## Phases
-
-A doctor run sets its own scope, so `pre-production`'s incidental size budget does not apply.
 
 Also read, when the skill listing declares them and found by their descriptions, the repository's
 database-migration skill, its test-runner skill, its checklist for adding a configuration value and
@@ -167,7 +166,7 @@ One question answered twice.
 The remedy is one owner, placed by `code-simplify`'s ownership analysis — the shared package every
 consumer reads where more than one deployable needs it — with the copies and the bridge deleted and
 generated types used directly or derived from. Left alone: a generated mirror; a demonstrated
-dependency, domain or contract boundary; two contract models, which are `schema-doctor`'s.
+dependency, domain or contract boundary; two contract models, which another doctor owns.
 
 ### Fragmented Use Case
 
@@ -521,7 +520,7 @@ Tests that cost reading time and prove nothing, found after the code has settled
 
 The remedy is `test-fixture`'s dispositions: repair, fold into the keeper, or delete with its
 evidence, with coverage of a removed layer's behavior kept at the real boundary. Timing, suite
-budgets, cross-suite layout and coverage maps are `tests-doctor`'s and are named, not run.
+budgets, cross-suite layout and coverage maps belong to another doctor and are named, not run.
 
 ## Dispositions
 
@@ -551,8 +550,8 @@ budgets, cross-suite layout and coverage maps are `tests-doctor`'s and are named
   ledger, or it is deleted with the branch its value selects.
 - An even split between two sibling structures equally fit for the kind goes to the one leaving the
   fewest mechanisms and moving the fewest importers, stated in the pull request.
-- A finding another doctor owns — documentation, a contract model, a deep test audit — is not fixed
-  here; the report names it with that doctor.
+- A finding another doctor owns — documentation, a contract model, a deep test audit — is not
+  fixed here; the report names it with that doctor, found through `get-doctors`.
 
 The cross-cutting reviewer compares each kind's slot table across its deployables, one shape across
 packages, apps and languages, and every value defaulted in one package against its producer in

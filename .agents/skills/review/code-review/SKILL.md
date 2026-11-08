@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Review a pull request or current changes with independent reviewer lenses, validated findings, and severity-rated results. Use when the user directly asks for a code review, or when `review-pass` or `incident` delegates to it; never on your own initiative.
+description: Review a pull request or current changes with independent reviewer lenses, validated findings, and severity-rated results. Use when the user directly asks for a code review, or when another skill's workflow runs it as one of its steps; never on your own initiative.
 short_description: 'Code review a pull request or the current working changes with independent reviewer lenses, validated findings, and severity-rated results.'
 ---
 
@@ -35,6 +35,7 @@ fixed values in that type. A receipt without the conditional list is incomplete 
 - `agent-lock`
 - `session-ledger`
 - `interactive-skill`
+- `defer-scope`
 
 ## Invocation
 
@@ -42,7 +43,7 @@ Apply `pre-production` when validating a contract change and `acceptance-gate`'s
 
 Use `agent-lock` with the exact checkout key to protect local snapshot capture.
 
-- Run this skill only when the user directly invokes it, or `review-pass` or `incident` delegates it. `review-pass` supplies high effort and fix mode; do not ask for standalone review options on that route.
+- Run this skill only when the user directly invokes it, or another skill's workflow runs it as one of its steps. An invocation that states its effort and modes is run as stated; do not ask for standalone review options then.
 
 ```
 /code-review [low|medium|high|xhigh|max|ultra] [fix] [comment] [<target>]
@@ -168,9 +169,9 @@ In every review round, give each dispatched reviewer and validator the merge-bas
 SHA, complete pull-request diff, and complete changed-file list. When a previous reviewed head
 exists, also give the diff from that head to the current head so recent fixes receive focused
 attention. That incremental diff supplements the full pull-request target; never substitute the
-latest commit or fix diff for it. The one exception is a delta `review-pass` delegates: that delta is
-the review target, and the complete pull-request diff is the context its reviewers read. Keep that
-complete context distinct from each lens's analysis slice: the exact changed hunks, files, and
+latest commit or fix diff for it. The one exception is an invocation that names a delta: that delta
+is the review target, and the complete pull-request diff is the context its reviewers read. Keep
+that complete context distinct from each lens's analysis slice: the exact changed hunks, files, and
 operations it evaluates, plus every supporting input whose semantics it uses. A reviewer may read
 context without adding it to its analysis slice, but material it evaluates, uses as evidence, or
 relies on for a conclusion belongs in that slice. Record both manifests so a later pass can retain a
@@ -382,7 +383,7 @@ Work findings in severity order:
 2. Follow the repository's own rules in the fix itself.
 3. When the minimal fix does not resolve the finding, fix its cause. A defect whose root lies outside the diff is still this review's to fix, and a rule the code knowingly breaks is resolved by correcting one of them, not by recording the contradiction. Where two rules genuinely conflict, make the governing rule state the real contract rather than leaving code that violates it.
 4. Escalate only a decision that is genuinely the user's: a change to intended product behavior, or a choice between defensible designs that neither the diff nor the guidance settles. Designs that differ only in how the code is built — where shared behavior lives, which repository owns a helper, which mechanism replaces parallel copies — are ranked by `pre-production` and `code-simplify`: apply the one that leaves the fewest mechanisms and report the choice. A reviewer or validator calling a finding an open decision, or a question for the user, is a claim this step classifies, never the classification. Ask the specific question through the host's question tool and act on the answer. An unanswered question is one of only three routes to reporting a CONFIRMED finding unfixed, and the report must say what was asked.
-5. Size keeps a confirmed finding out of this round only under the size bar in `references/rubric.md` — Fix Mode; a confirmed defect is fixed here whatever its size. A scope the bar admits is recorded through the repository's deferral mechanism so it outlives the review, and the record is named in the report: a finding described only in the report is not deferred, it is dropped. That mechanism's admission gate decides whether the scope may be recorded at all; a refusal naming fix or do means the finding is fixed here, and one naming close is recorded cancelled with its reason and reconsideration criterion.
+5. Size keeps a confirmed finding out of this round only under the size bar in `references/rubric.md` — Fix Mode; a confirmed defect is fixed here whatever its size. A scope the bar admits is recorded through `defer-scope` so it outlives the review, and the record is named in the report: a finding described only in the report is not deferred, it is dropped. `defer-scope`'s admission gate decides whether the scope may be recorded at all; a refusal naming fix or do means the finding is fixed here, and one naming close is recorded cancelled with its reason and reconsideration criterion.
 
 **Each fix is committed as its own increment. A working-pull-request fix is pushed and the GitHub rule’s **Pre-Push Gate** verdict is its gate; a local-snapshot fix freezes a replacement local snapshot and continues its local validation and review loop without pushing.** A pre-existing defect, an `OUTSIDE_DIFF` anchor, a defect the diff inherits, and anything this round considered deferring are the fixes most likely to take the shape the change is removing, because nothing about them was the change's purpose, and the gate reads each against the intent statement. Resolve each flag under `acceptance-gate`'s **Bounds**, retaining the finding and intent through each changed increment and fresh review. A repeated flag is neither a deferral justification nor permission to leave flagged code standing.
 
@@ -394,7 +395,17 @@ of its own; check it the same way as any other edit. Where a fix cannot satisfy 
 and a rule, correct the governing rule rather than shipping code that violates it.
 
 After fixing, rescan the affected ownership area and its consumers for the same class of finding,
-then apply the target classification from Step 1. For a non-runtime target, validate only the checks appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests or query or wait for CI. Otherwise, record which local services were already running before local validation. Never stop, restart, reconfigure, or claim ownership of a pre-existing service: another agent or user may be using it. When relevant validation requires local services and any were already running, do not run a competing service-managed test locally. A working-pull-request fix uses CI only at its exact pushed head; when no safe native command is available, CI is its fallback and its draft state records the local-validation limit until `merge-gate`. An unpushed local snapshot runs an isolated native check only when it can do so without disturbing external state; otherwise it records the concrete local-validation limit and remains gated or requires an authorized working-pull-request route. It never uses CI for an unpushed snapshot.
+then apply the target classification from Step 1. For a non-runtime target, validate only the checks
+appropriate to its artifacts, exact contents, and `git diff --check`; do not run application tests
+or query or wait for CI. Otherwise, record which local services were already running before local
+validation. Never stop, restart, reconfigure, or claim ownership of a pre-existing service: another
+agent or user may be using it. When relevant validation requires local services and any were already
+running, do not run a competing service-managed test locally. A working-pull-request fix uses CI
+only at its exact pushed head; when no safe native command is available, CI is its fallback and its
+draft state records the local-validation limit until the authorized merge. An unpushed local
+snapshot runs an isolated native check only when it can do so without disturbing external state;
+otherwise it records the concrete local-validation limit and remains gated or requires an authorized
+working-pull-request route. It never uses CI for an unpushed snapshot.
 
 Stage only the fix edits — never sweep in unrelated uncommitted work that Step 1 deliberately left alone — and commit in the verified writable checkout selected for the target, never on the default branch. Push only when that target has a working pull request; a local-snapshot fix creates a replacement local snapshot and remains unpushed unless an authorized working-pull-request route is established. A full re-review is a later phase of the same authorized logical fix review, not a new action-skill invocation: carry forward its receipts and lens-retirement counters, invalidate them against the new reviewed inputs, and rerun the required cohort.
 

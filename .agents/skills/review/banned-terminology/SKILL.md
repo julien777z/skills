@@ -22,6 +22,9 @@ is accurate, because the reader has to be told what it stands for. Before a new 
 type, step or document heading takes a name, ask whether the user would say that word for the thing;
 if they would say something more concrete, that is the name.
 
+## Dependencies
+- `pre-production`
+
 ## Enforcing the list
 
 Read `resources/banned_words.json`, and the **Banned Terms** table in the repository's project

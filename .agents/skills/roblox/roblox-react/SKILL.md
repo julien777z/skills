@@ -83,4 +83,4 @@ Inspect transient notices together with the persistent HUD. A transient notice c
 
 ## Keep guidance current
 
-Record verified reusable UI/React issues and solutions in this skill. Put Studio connection/input orchestration in `roblox-studio`, general Luau lint/type guidance in `luau`, and game-specific UI contracts in the project skill. Keep one canonical owner for each rule and leave generated agent mirrors to Agent Sync.
+Record verified reusable UI/React issues and solutions in this skill. Put general Luau lint/type guidance in `luau`, a lesson whose subject another skill owns there, and game-specific UI contracts in the project skill. Keep one canonical owner for each rule and leave generated agent mirrors to Agent Sync.

@@ -42,6 +42,13 @@ paths:
   An agent definition that a shared skill runs on goes with that skill; every other agent, and
   every rule, is repository-owned.
 - **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract, and where a skill genuinely needs one local fact — a command, an identity, a host, a package, a fixture — take it from the repository's project guidance or a setting rather than baking it in. Live file paths and copied application code go stale when files move or refactors land; use generic placeholders such as `services/<name>/...`, short pattern descriptions, or minimal invented examples instead. Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
+- **What a skill builds on in the repository it runs in is looked up there, never written into the
+  skill.** A structure the skill reads — how skills or files are grouped, which folders exist, which
+  skill a workflow starts from, what a page or section is called — comes from the repository when it
+  has one, and the skill says what the agent does when it has none: choose the best fit itself,
+  guided by a few examples in the skill of what such a choice looks like. A list of one repository's
+  categories, page names or skill names written into a shared skill makes it that repository's copy;
+  shared skills still name the shared skills they depend on.
 - **A file's name and description bound what it owns.** Before choosing a skill or rule, state
   the condition its name and description set — a release stage, a technology, a mode, a kind of
   task — and ask whether the guidance would still be true where that condition does not hold. If
@@ -161,11 +168,27 @@ trigger.
   invoking the coordinator or importing its workflow sections as policy. Put shared policy at an
   existing lower-level owner. Select independently applicable companion skills from their own
   frontmatter at the task boundary rather than making peers invoke each other.
-- A reference explaining another skill, a caller, or an example is not an invocation. Reading
-  another skill's operative policy is still a dependency, not a way around dependency direction.
-  Check declarations against actual calls and policy reads throughout entrypoints and supporting
-  files; declare real invocations and resolve cycles at their owners, including undeclared edges.
-  Do not replace a removed cycle with flags, copied policy, or a call hidden in a reference.
+- **A skill refers only to the skills it depends on, and declares every one it refers to.**
+  Referring to a skill anywhere in its package — frontmatter, body, references, an example or an
+  explanation — is an edge from it to that skill, so it is declared and points the way the flow
+  runs. A description that identifies a skill is the same reference as its name: "a review pass
+  calls it", "the task's ledger processing" or "the Studio skill" is that skill named in other
+  words. A skill never refers to a skill that runs it: not its caller, not a coordinator it returns
+  to, not a workflow it serves. A collaborator it invokes, reads or hands work to and finds at run time
+  by its role, through the skill listing or a declared dependency that reads it, as the bullet on a
+  repository-specific collaborator says, is named by that role, never as a particular skill. A role its caller fills is still
+  a caller reference. It may state what its invocation supplies in terms any caller could meet, such
+  as "an invocation that names a delta reviews that delta". It states its own behaviour and what it
+  returns, and the caller's text says how the caller uses it. Peers that never invoke each other
+  name neither; each is found from its own description. Resolve a reverse or cyclic edge at its
+  owner by moving the policy to the caller or to a lower-level skill both depend on, never with
+  flags, copied policy, a call hidden in a reference, or a name dropped while the policy read stays.
+  A `/name` command the skill tells the user they can run is not a reference: the user runs it, the
+  skill does not, so it is no dependency and no cycle. The command form is for that alone.
+  `edit-skill`'s source check refuses a dependency cycle and an undeclared skill it finds named in a
+  package's Markdown, skipping the packages `external_resources.json` refreshes from upstream. It
+  matches name forms only, so a description, a `/name` command and a declared edge back toward a
+  caller pass it, and passing it never meets this bullet.
 - **A skill restricted to user invocation is never an automatic dependency.** A directly
   user-invoked workflow may delegate such an action only when its contract explicitly authorizes
   that action and bounds its targets, and the restricted action's own entry point recognizes

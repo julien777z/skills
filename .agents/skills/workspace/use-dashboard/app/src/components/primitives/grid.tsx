@@ -14,7 +14,7 @@ const GRID_VARIANTS = {
     stats4: 'grid grid-cols-1 @xl/page:grid-cols-2 @5xl/page:grid-cols-4',
     stats5: 'grid grid-cols-1 @xl/page:grid-cols-2 @5xl/page:grid-cols-5',
     stats6: 'grid grid-cols-1 @xl/page:grid-cols-2 @5xl/page:grid-cols-6',
-    labelBeside: 'grid grid-cols-1 sm:grid-cols-[minmax(0,11rem)_minmax(0,1fr)]',
+    labelBeside: 'grid grid-cols-1 sm:grid-cols-[fit-content(11rem)_minmax(0,1fr)]',
   },
   gap: {
     sm: 'gap-3',

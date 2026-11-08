@@ -38,11 +38,12 @@ was typed, say so in one line and offer it; the user declares an incident, the a
 
 ## Persistence
 
-One invocation covers the whole recovery, not one action. It holds across turns and across
-unrelated interruptions until the restored condition in the opening statement has been checked and
-the agent reports recovery complete, or the user says "incident over" or "normal mode". A completed
-code change, a green suite, an open or merged pull request, and a fixed narrow symptom do not close
-the run.
+One invocation covers the whole recovery, not one action, and while it is open this skill's
+recovery, review and source-restoration procedure replaces any other workflow's for that work. It
+holds across turns and across unrelated interruptions until the restored condition in the opening
+statement has been checked and the agent reports recovery complete, or the user says "incident over"
+or "normal mode". A completed code change, a green suite, an open or merged pull request, and a
+fixed narrow symptom do not close the run.
 
 Reporting recovery complete closes the invocation and ends its deployment, publication, monitoring,
 and merge authorization. That statement is valid only after every opening restoration condition has
@@ -118,7 +119,7 @@ complete **One Review Round** and ordinary delivery validation before an authori
 merge; **Restore Deployment Sources** then verifies the default-source deployment. A failure there
 resumes recovery and pauses ordinary work again.
 
-The repository's testing rule and `run-tests` order the suite for ordinary delivery: one run at the
+The repository's testing rule orders the suite for ordinary delivery: one run at the
 end, after the push, over a tree that has stopped changing. An active run suspends that ordering,
 because the tree changes with every diagnosis and the service is down the whole time.
 

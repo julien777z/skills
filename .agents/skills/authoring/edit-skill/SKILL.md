@@ -38,8 +38,9 @@ checking whether guidance allowed the miss. When the correction succeeds, record
 for permanent guidance so the next session does not repeat it.
 
 Correct the current behavior and trace its guidance path in the same turn. When a successful
-correction exposes a gap during another task, record it; `process-ledger` routes it into canonical
-guidance. Neither the issue nor its verification disappears when the surrounding task resumes.
+correction exposes a gap during another task, record it as **Recording During A Task** says;
+**Guidance Delivery** carries it into canonical guidance. Neither the issue nor its verification
+disappears when the surrounding task resumes.
 
 A correct instruction does not close a reported failure to follow it. Step 2 traces and repairs the
 application step that admitted the rejected decision, then verifies that repair against the miss.
@@ -81,8 +82,7 @@ Validate skill dependencies and their actual call and policy-read paths under th
 - A direct request to change guidance, such as "use edit-skill to reflect that", is recorded the
   same way. While another task runs, the requested action is the behavior it describes, applied to
   the current work, and the guidance edit is its record. While a guidance batch is in flight, its
-  delivery is that action and the user's words are its evidence. `process-ledger` admits it either
-  way.
+  delivery is that action and the user's words are its evidence.
 - After verified success, record the correction as a `guidance_correction` entry with
   `session-ledger`: the successful action and its evidence, a reproduction scenario, the intended
   behavior, the canonical files it will change, and `pending` as its `status`. Steps 1–4
@@ -127,12 +127,12 @@ Validate skill dependencies and their actual call and policy-read paths under th
 
 ## Guidance Delivery
 
-`process-ledger` invokes this route only for the batch of `guidance_correction` entries it froze,
+This route delivers the frozen batch of `guidance_correction` entries its invocation names,
 beside the source stream. It holds the source pull request only for the checks its ridden edits
 need and the delivery of the batch carrying them; only an edit on that pull request, or one the GitHub rule's **Merge Authorization** holds for a source pull request, waits for that merge. Run it as a delegated worker, at `subagent-matrix`'s standard capability level, when the session can, so the
 user's review of the source pull request overlaps it.
 
-1. Read every entry in the batch `process-ledger` froze and resume at its recorded first
+1. Read every entry in the frozen batch and resume at its recorded first
    nonterminal stage, rebuilding a lost or truncated entry from its backup
    comment as `session-ledger` accepts it; the comment's existence records that the action
    succeeded, its Intended behavior stands as the intent statement for step 3, and step 7.5
@@ -152,10 +152,11 @@ user's review of the source pull request overlaps it.
    source check and smoke round pass, so its batch can be done. The steps below cover the
    agent-configuration pull request.
 2. Run step 7.2's source check.
-3. Run `review-pass` on the pull request. Give it the user's request and the
-   recorded evidence as the intent statement, the incident vocabulary for its acceptance gate as
-   step 7.4 describes, and step 7.3's prose-duplication checks for its simplification gate.
-4. Run step 7.5's `test-skill` smoke round on the head `review-pass` accepted, with every entry's
+3. Run `review-pass` once over the batch, naming every head it carries. Give it the user's request
+   and the recorded evidence as the intent statement, the incident vocabulary for its acceptance
+   gate as step 7.4 describes, and step 7.3's prose-duplication checks for its simplification gate.
+4. Run step 7.5's `test-skill` smoke round once over the batch, naming every head `review-pass`
+   accepted, with every entry's
    reproduction scenario as an input and entries that share a failure class grouped into one
    scenario, then steps 7.6–7.9. A guidance repair the smoke round makes, here or on a source pull
    request under step 1, goes back through `review-pass` over its delta, and the smoke round reruns
@@ -164,8 +165,7 @@ user's review of the source pull request overlaps it.
    nonterminal next stage in each entry. Resume from that stage without repeating completed work.
    After the smoke round, record the pull request, its head, the smoke results and the merge or
    hold. Keep its `status` `pending` while a hold remains, with its concrete dependency and saved next
-   action. `process-ledger` owns the record's terminal disposition after the complete delivery
-   outcome is verified.
+   action. This route never sets an entry's terminal status.
 - Before the surrounding task ends or hands off, every `pending` entry is processed, or carries its
   concrete blocking decision, failed gate or unavailable dependency under the global rules' **Tools
   and environments** pending-result boundary. Never lose a correction, treat a recorded one as
@@ -356,7 +356,7 @@ user's review of the source pull request overlaps it.
      `pre-production`'s **Scope Follows The Defect** says of a defect the work notices, with
      `acceptance-gate` judging the repair's scope and size. Moving text unchanged proves it
      survived; it is never a reason to report a defect as left for the user.
-   - Before delivery, audit each edited skill's complete package and its affected callers: list every instruction to apply or invoke another skill, compare those names with the owning entry point's `## Dependencies`, and resolve missing, stale, or path-based entries and any user-only dependency lacking the explicit bounded delegation the shared `agent-guidance.md` rule requires. Check references separately for hidden invocations and cross-skill filesystem links; move the invocation to `SKILL.md` and refer to the other package by skill name. A passing source mirror does not replace this audit.
+   - Before delivery, audit each edited skill's complete package and its affected callers, every file a folded or incorporated pull request brings in included: list every skill each one refers to, by name or by a description that identifies it, compare them with the owning entry point's `## Dependencies`, remove every reference that points back at a caller or across to a peer and restructure the flow so the caller or a lower-level skill both depend on owns what it carried, as the shared `agent-guidance.md` rule says. Resolve missing, stale, or path-based entries and any user-only dependency lacking the explicit bounded delegation the shared `agent-guidance.md` rule requires. Check references separately for hidden invocations and cross-skill filesystem links; move the invocation to `SKILL.md` and refer to the other package by skill name. Step 7.2's source check matches name forms only, so a passing check does not replace this audit.
 
 6. Multi-target behavior.
    - Apply multi-target updates for `agents`, `skills`, and `rules`.
@@ -385,8 +385,9 @@ user's review of the source pull request overlaps it.
       request merges, and again whenever the branch changes after that run. Nothing on a pull request runs the sync: the workflow
       runs on the default branch after the merge, so a file it refuses is refused once every session
       is already reading it. The script installs the sync tool at the revision the workflow pins and
-      mirrors the canonical tree into a scratch copy, so what it refuses is exactly what the workflow
-      would. Run it from the root of the repository being edited, with that repository's own
+      mirrors the canonical tree into a scratch copy, so what its mirror refuses is exactly what the
+      workflow would; it also refuses the undeclared skill names and dependency cycles the shared
+      `agent-guidance.md` rule's dependency bullet describes. Run it from the root of the repository being edited, with that repository's own
       interpreter or any interpreter meeting the sync tool's version, and fix every
       report it prints before pushing; a description holding a colon followed by a space is the usual
       one, and quoting the value is the fix.

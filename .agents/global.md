@@ -126,15 +126,16 @@ alwaysApply: true
   again: findings that keep coming on one change say the approach is wrong, not that the next patch
   will land. A change is one plan step, worker task or finding fix, and its rounds are counted
   together across every kind of check; a round a broken runner, fixture or provider cut short before
-  judging the change is not counted. The agent then decides the way forward itself wherever the
-  choice is its own: fall back to a simpler approach, revert the change, or accept it with the
-  remaining findings recorded. A confirmed defect, an exploitable vulnerability or a failing
-  required check is never accepted this way; only a simpler approach or a revert remains for it. The
-  agent reports that decision in plain words, with current captures where the change is visible. It
-  asks only when the way forward is a genuine product, scope, security or disclosure choice, and
-  that question joins the questions already open rather than going out as a separate message. The
-  stop exists to end wasted rounds, never to add questions. It is the user's standing instruction,
-  not a budget the agent declares spent; the task stays active. The per-flag bounds of the skill
+  judging the change is not counted. Decide and record the disposition: use a simpler approach,
+  revert the change, or accept it with the remaining findings recorded. A confirmed defect, an
+  exploitable vulnerability or a failing required check is never accepted this way. If the authorized
+  outcome still needs work, update the active plan and start the first permitted step of the
+  replacement. A different implementation idea is not a new approval boundary. Ask only when
+  the replacement needs an unresolved product, scope, security, disclosure, or authorization decision, and join that
+  question to the questions already open rather than sending it separately. The agent reports the
+  decision in plain words, with current captures where the change is visible. The stop exists to end
+  wasted rounds, never to add questions. It is the user's standing instruction, not a budget the
+  agent declares spent; the task stays active. The per-flag bounds of the skill
   running the loop still apply within those 3 rounds, and `review-proposal`'s attack rounds on a
   proposal keep their own count.
 
@@ -257,6 +258,15 @@ alwaysApply: true
   That defect remains a required fix. Its sender checks before sending and its receiver before
   acting; `pre-production`'s **Encountered Issues** holds what each does with an item
   a rule forbids.
+- **A rule is met by doing what it requires, never by changing what a check or a reader can see.**
+  When the compliant change is hard, the forbidden thing is not renamed, described in other words,
+  wrapped, aliased, split, moved to a file the check does not read, or let through by a narrowed,
+  disabled or special-cased check, and a test is not loosened to accept it: each keeps the
+  violation and hides it, which is worse than leaving it visible. The test is what the result still
+  does or says, never whether a search for the old form still finds it. Make the change the rule
+  asks for, restructuring what depends on the forbidden thing when that is what it takes; where
+  that change cannot be made in the work in hand, leave the violation visible and say so in the
+  report, never pass a disguised form as compliance.
 - Before presenting a proposed change at an existing user-approval boundary, use `review-proposal`.
   First check for its valid ready receipt for the exact proposal and reviewed inputs; when present,
   present the supporting content and ask without re-entering it. Otherwise prepare that receipt

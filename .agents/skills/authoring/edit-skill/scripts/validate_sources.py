@@ -1,4 +1,5 @@
 import argparse
+import json
 import logging
 import os
 import re
@@ -7,9 +8,10 @@ import subprocess
 import sys
 import tempfile
 import venv
-from enum import StrEnum
 from pathlib import Path
-from typing import Final, TypedDict
+from typing import Final
+
+from models import ActionReference, ExternalResource, SourceCommand, SyncOutcome
 
 logger = logging.getLogger(__name__)
 
@@ -22,28 +24,27 @@ CACHE_DIRNAME: Final[str] = "agent-sync-action"
 INSTALL_MARKER_FILENAME: Final[str] = "installed"
 EXTERNAL_RESOURCES_FILENAME: Final[str] = "external_resources.json"
 REPOSITORY_URL_TEMPLATE: Final[str] = "https://github.com/{repository}"
-
-
-class SourceCommand(StrEnum):
-    """An operation the script runs with the pinned sync tool."""
-
-    CHECK = "check"
-    MIRROR = "mirror"
-
-
-class SyncOutcome(StrEnum):
-    """What one run of the sync tool concluded."""
-
-    VALID = "valid"
-    INVALID = "invalid"
-    UNAVAILABLE = "unavailable"
-
-
-class ActionReference(TypedDict):
-    """The sync action a workflow pins."""
-
-    repository: str
-    reference: str
+SKILLS_DIRNAME: Final[str] = "skills"
+SKILL_ENTRY_FILENAME: Final[str] = "SKILL.md"
+DEPENDENCIES_SECTION_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"^## Dependencies\n(.*?)(?=^## |\Z)", re.MULTILINE | re.DOTALL
+)
+DEPENDENCY_ENTRY_PATTERN: Final[re.Pattern[str]] = re.compile(r"^- `([^`]+)`", re.MULTILINE)
+SKILL_NAME_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"(?<![\w/.-])(?P<slash>/)?(?P<tick>`)?(?P<name>[a-z0-9]+(?:-[a-z0-9]+)*)(?P=tick)?(?![\w-])"
+)
+SKILL_CONTEXT_BEFORE_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"\b(?:skills?|invok(?:e|es|ed|ing)|us(?:e|es|ed|ing)|run(?:s|ning)?|through|via"
+    r"|switch(?:es|ing)? to|hand(?:s|ing)? off to)\s+[\"'(]?$",
+    re.IGNORECASE,
+)
+SKILL_CONTEXT_AFTER_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"^(?:['’]s\b|[\"')]?\s+skills?\b)", re.IGNORECASE
+)
+CONTEXT_BEFORE_CHARS: Final[int] = 30
+CONTEXT_AFTER_CHARS: Final[int] = 10
+SKILL_RESOURCE_KIND: Final[str] = "skill"
+INSTALLED_PACKAGES_DIRNAME: Final[str] = "node_modules"
 
 
 EXIT_CODES: Final[dict[SyncOutcome, int]] = {
@@ -192,6 +193,131 @@ def mirror_in_scratch(python: Path, root: Path, agents_dirname: str) -> SyncOutc
     return SyncOutcome.VALID
 
 
+def declared_dependencies(entry_point: str) -> set[str]:
+    """Return the skill names an entry point's Dependencies section lists."""
+
+    section = DEPENDENCIES_SECTION_PATTERN.search(entry_point)
+
+    if section is None:
+        return set()
+
+    return set(DEPENDENCY_ENTRY_PATTERN.findall(section.group(1)))
+
+
+def named_skills(text: str, skill_names: set[str]) -> set[str]:
+    """Return the skills a text names, code blocks included.
+
+    A hyphenated name in backticks counts anywhere. Any other backticked or hyphenated mention
+    counts only in skill context, since a name also spells ordinary words, fields and keywords:
+    followed by `'s` or the word skill, or after the word skill, a verb that runs one, such
+    as invoke, use, run, switch to or hand off to, or through or via. A `/name` command is one the
+    user is told to run, never a reference, and an unquoted one-word name never counts.
+    """
+
+    named: set[str] = set()
+
+    for match in SKILL_NAME_PATTERN.finditer(text):
+        name = match.group("name")
+
+        if name not in skill_names:
+            continue
+
+        quoted = match.group("tick") is not None
+        command = match.group("slash") is not None
+        hyphenated = "-" in name
+
+        if command or not (quoted or hyphenated):
+            continue
+
+        if (quoted and hyphenated) or is_in_skill_context(text, match):
+            named.add(name)
+
+    return named
+
+
+def is_in_skill_context(text: str, match: re.Match[str]) -> bool:
+    """Report whether the words around a matched name show it names a skill."""
+
+    before = text[max(0, match.start() - CONTEXT_BEFORE_CHARS) : match.start()]
+    after = text[match.end() : match.end() + CONTEXT_AFTER_CHARS]
+
+    return bool(
+        SKILL_CONTEXT_BEFORE_PATTERN.search(before) or SKILL_CONTEXT_AFTER_PATTERN.search(after)
+    )
+
+
+def third_party_skill_names(skills_dir: Path) -> set[str]:
+    """Return the skills the external resources file refreshes from their upstream."""
+
+    registry = skills_dir.parent / EXTERNAL_RESOURCES_FILENAME
+
+    if not registry.exists():
+        return set()
+
+    resources: list[ExternalResource] = json.loads(registry.read_text())["resources"]
+
+    return {
+        resource.get("skill_name_override", resource["name"])
+        for resource in resources
+        if resource["kind"] == SKILL_RESOURCE_KIND and resource["update_on_sync"]
+    }
+
+
+def source_files(directory: Path, pattern: str) -> list[Path]:
+    """Return the files under a directory that match a pattern, leaving out installed packages."""
+
+    return sorted(
+        path for path in directory.rglob(pattern) if INSTALLED_PACKAGES_DIRNAME not in path.parts
+    )
+
+
+def find_dependency_problems(skills_dir: Path) -> list[str]:
+    """Report skills named without being declared, and cycles among declared dependencies.
+
+    Packages refreshed from upstream are not read for names, since their upstream owns their text.
+    """
+
+    entries = source_files(skills_dir, SKILL_ENTRY_FILENAME)
+    packages = {entry.parent.name: entry.parent for entry in entries}
+    third_party = third_party_skill_names(skills_dir)
+    skill_names = set(packages)
+    graph: dict[str, set[str]] = {}
+    problems: list[str] = []
+
+    for name, package in sorted(packages.items()):
+        declared = declared_dependencies((package / SKILL_ENTRY_FILENAME).read_text())
+
+        graph[name] = declared & skill_names
+
+        if name in third_party:
+            continue
+
+        texts = [path.read_text() for path in source_files(package, "*.md")]
+        named = set().union(*(named_skills(text, skill_names) for text in texts)) - {name}
+
+        for missing in sorted(named - declared):
+            problems.append(f"{name} names `{missing}` without declaring it in its Dependencies")
+
+    finished: set[str] = set()
+
+    def visit(name: str, path: list[str]) -> None:
+        for dependency in sorted(graph.get(name, ())):
+            if dependency in path:
+                cycle = path[path.index(dependency) :] + [dependency]
+
+                problems.append("dependency cycle: " + " -> ".join(cycle))
+            elif dependency not in finished:
+                visit(dependency, path + [dependency])
+
+        finished.add(name)
+
+    for name in sorted(graph):
+        if name not in finished:
+            visit(name, [name])
+
+    return problems
+
+
 def parse_arguments() -> argparse.Namespace:
     """Parse the command and the tree it runs on."""
 
@@ -217,7 +343,7 @@ def parse_arguments() -> argparse.Namespace:
     commands.add_parser(
         SourceCommand.CHECK,
         parents=[tree],
-        help="Validate the canonical sources by mirroring them in a scratch copy.",
+        help="Validate skill dependencies and the canonical sources in a scratch copy.",
     )
 
     mirror = commands.add_parser(
@@ -273,6 +399,11 @@ def main() -> SyncOutcome:
             ["mirror-harnesses", "--output-dir", arguments.output_dir],
         )
 
+    problems = find_dependency_problems(root / agents_dirname / SKILLS_DIRNAME)
+
+    for problem in problems:
+        logger.error("Skill dependencies: %s", problem)
+
     logger.info(
         "Validating %s in a scratch copy with %s@%s",
         agents_dirname,
@@ -280,7 +411,12 @@ def main() -> SyncOutcome:
         action["reference"],
     )
 
-    return mirror_in_scratch(python, root, agents_dirname)
+    outcome = mirror_in_scratch(python, root, agents_dirname)
+
+    if problems and outcome is SyncOutcome.VALID:
+        return SyncOutcome.INVALID
+
+    return outcome
 
 
 if __name__ == "__main__":
@@ -298,7 +434,7 @@ if __name__ == "__main__":
             logger.info("Valid: the sync tool accepted every canonical source.")
         case SyncOutcome.INVALID:
             logger.error(
-                "Invalid: the sync tool refused the canonical tree; fix what it reported above."
+                "Invalid: the canonical tree was refused; fix what is reported above."
             )
         case SyncOutcome.UNAVAILABLE:
             logger.error("Unavailable: the sync tool did not run to completion.")
