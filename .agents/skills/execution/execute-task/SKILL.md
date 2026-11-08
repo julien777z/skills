@@ -110,8 +110,7 @@ Every task that changes files starts here, and so does every follow-up that arri
     that job.
 - Schedule steps by `subagent-matrix`'s **Dispatch**: coupled work stays sequential, and
   independent scopes with separate owners, files and resources overlap once their inputs are
-  settled. Estimate the elapsed time with that overlap, counting overlapping work once at the
-  longest of the overlapping steps.
+  settled. Estimate the elapsed time with that overlap, totalled as `session-ledger` totals a plan.
 - **Settle ownership before the plan is final.** For a plan that introduces or changes a shared operation, contract, subsystem, runtime
   boundary, or independent consumer, apply `code-simplify`'s ownership analysis to the proposed
   shape and the analogous implementations already in the repository, with one read-only subagent
@@ -252,8 +251,7 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
   plan covers, and is never shown as user-approved; one that is a product choice goes to the user
   before it is built, as the global rules' product-choice bullet says. Update it when the state
   changes, not when a report is due: approval, a step starting, finishing, blocking or being
-  skipped, a follow-up's plan. A resumed session, a handoff and a progress view all read this record
-  rather than reconstructing it.
+  skipped, a follow-up's plan.
 - **A step that waits on other work records what it waits for**: the gate, merge or result whose
   outcome lets it start. Every relayed result is checked against those records, and a result that
   clears one starts the waiting step in that same turn, whichever stream produced it. A report that
@@ -820,7 +818,7 @@ The ready-for-review message takes exactly this shape, one message per pull requ
   1. <item>
 - **Still running:** <the authorized merge through `merge-gate` (CI ~<n> min) | the guidance fixes from this task that have their own pull request (<n> correction(s)) | nothing>
 
-**Next:** <review the pull request; send follow-ups here, `/finish-pr` to review the whole pull request and merge, or `/merge-now` to merge first and review after | review the pull request; it merges once its checks pass>
+**Next:** <review the pull request and send follow-ups here | review the pull request; it merges once its checks pass>
 ```
 
 The run stays open until both streams finish: the source stream when its message is sent, or when

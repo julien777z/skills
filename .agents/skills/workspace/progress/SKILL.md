@@ -20,14 +20,14 @@ and deliver the same dashboard again on every request so the user keeps one page
    task has put to the user that the ledger lacks is reconstructed and recorded first, from
    verified task evidence, as that skill's recovery rules say, approved only where the user's own
    message approved it; so is a plan the task put to them in the question carrying the "Approved"
-   option, which goes out only once the plan's review has accepted it. The dashboard never shows a
+   option. The dashboard never shows a
    step the ledger does not hold. The figures cover the whole task since its first approved plan, so
    that check spans every plan it has had, finished ones included: a plan another entry names, such
    as one a later plan continues or supersedes, and finished work the task's record shows that no
    recorded step holds, such as completed items on the harness task list, are each a plan the ledger
    lacks. A plan that continues or supersedes another replaces only the steps it names; the earlier
-   plan's finished steps stay in the count. An active or blocked step that the task's progress record
-   records with parts, held in the ledger without them, gets them recorded the same way, with the
+   plan's finished steps stay in the count. An active or blocked step that verified task evidence shows
+   with parts, held in the ledger without them, gets them recorded the same way, with the
    parts already finished marked done.
 2. **Find the task's pull requests** with `list-prs`, requesting every state, then read each one's
    current state from its host: open, draft, merged or closed, the checks on its head, and review
@@ -70,7 +70,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   first segment, toned `good`, then its remaining work as a second, toned by the step's status as
   above, when any remains, so the bar fills as the percentage does.
 - **Metrics,** in this order: **Time remaining**, the work not yet finished, totalled as
-  the task coordinator totals a plan, prefixed `~` because it is an estimate, counting only the agent's work, with no
+  `session-ledger` totals a plan, prefixed `~` because it is an estimate, counting only the agent's work, with no
   `detail` for anything the user owes; **Waiting on you**, the count of open questions; **Pull
   requests**, the count of open and draft pull requests, with "<n> open · <n> draft" in `detail`;
   **Elapsed**, measured from the first plan's recorded approval time.
