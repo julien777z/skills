@@ -805,13 +805,14 @@ Two streams run side by side from here: the guidance stream and the source strea
    in the expected behavior, and confirm multi-repository delivery artifacts describe only their
    owning repository. Then build this pull request's ready-for-review message, in the shape below,
    from `list-prs`, what the run did and `review-pass`'s **Output**.
-4. Send step 3's message; the pull request stays draft. Only when **Task Authorization** finds the
-   merge authorized, invoke `merge-gate` with the accepted head, every exclusion `review-pass`
-   returned with its evidence, and, as its fix rule, the **Pre-Push Gate** with each fix folded into
-   its commit through `rewrite-git-history`'s fixup route. It readies the pull request, inventories
-   its exact-head hosted coverage, obtains fresh results only where no equivalent terminal coverage
+4. When **Task Authorization** finds the merge authorized, send step 3's message together with the
+   invocation of `merge-gate`, passing the accepted head, every exclusion `review-pass` returned with
+   its evidence, and, as its fix rule, the **Pre-Push Gate** with each fix folded into its commit
+   through `rewrite-git-history`'s fixup route. It readies the pull request, inventories its
+   exact-head hosted coverage, obtains fresh results only where no equivalent terminal coverage
    exists, fixes what relevant checks report and merges; when it returns, send one line with the
-   result it read: the merge, or the gate that holds it.
+   result it read: the merge, or the gate that holds it. Otherwise send step 3's message; the pull
+   request stays draft.
 
 The ready-for-review message takes exactly this shape, one message per pull request, leaving out
 **Deferred** when nothing was deferred:

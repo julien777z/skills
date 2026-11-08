@@ -392,7 +392,9 @@ alwaysApply: true
   recovery, a queued review or an unanswered request is pending until it has a terminal result;
   current unavailability, a quiet interval or a bounded wait yielding without a result is not
   failure. Continue independent authorized work, and when none remains, use the available host
-  wait or event route until the result arrives, then resume its saved next action. A genuine
+  wait or event route until the result arrives, then resume its saved next action. A message sent
+  while authorized work or a wait remains goes out together with the next wait or action, never as
+  the turn's last output, and is never the task's report. A genuine
   unresolved choice holds its dependent work, not the whole run. A terminal failure, exhausted
   recovery or missing host wait route is a concrete gate to surface for repair or resolution,
   with its evidence and saved next action; it is not completion or permission to end unfinished
