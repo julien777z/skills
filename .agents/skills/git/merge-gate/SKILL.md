@@ -197,10 +197,11 @@ When the merged diff changes agent configuration, poll the default-branch Agent 
 started as **Check Gate** steps 6–7 poll a check. A run ending in anything but success is diagnosed
 from its log and reported. After a successful run, complete the refresh selected by the GitHub
 rules' **After Agent Sync** section and verify its installed links before reporting completion.
-Until then this skill has not returned, and the turn does not end: wait on the run in the same turn
-through the host's wait route, never by ending on a report that names the run or the refresh as
-still to come. A message sent while it runs is a progress note, never this skill's report or its
-caller's.
+This skill has not returned until that refresh is verified or a failed run or blocker is reported,
+and the turn does not end before then: keep re-querying the run in the same turn through the host's
+wait mechanism, never by ending on a report that names the run or the refresh as still to come. A
+progress note goes out only together with the next wait, never as a turn's last output, and is never
+this skill's report or its caller's.
 
 ## Report
 
