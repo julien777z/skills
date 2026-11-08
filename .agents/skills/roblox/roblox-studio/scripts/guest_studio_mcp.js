@@ -17,7 +17,7 @@ ObjC.import("CoreGraphics");
 ObjC.import("Foundation");
 ObjC.import("Vision");
 
-const CAPTURE_PATH = "/tmp/guest-studio-mcp.png";
+const CAPTURE_PATH = `${$.NSTemporaryDirectory().js}guest-studio-mcp.png`;
 const ESCAPE_KEY_CODE = 53;
 
 // Text recognition misreads small labels slightly, so labels are matched loosely: "AI" can
@@ -80,7 +80,9 @@ function postMouse(type, x, y) {
   // Studio's widgets ignore a press without a click count, and its web panels one without
   // pressure.
   $.CGEventSetIntegerValueField(event, $.kCGMouseEventClickState, 1);
-  $.CGEventSetDoubleValueField(event, $.kCGMouseEventPressure, type === $.kCGEventLeftMouseDown ? 1 : 0);
+  const pressure = type === $.kCGEventLeftMouseDown ? 1 : 0;
+
+  $.CGEventSetDoubleValueField(event, $.kCGMouseEventPressure, pressure);
   $.CGEventPost($.kCGHIDEventTap, event);
 }
 
@@ -111,11 +113,15 @@ function pressEscape() {
 function readScreen() {
   $.NSFileManager.defaultManager.removeItemAtPathError(CAPTURE_PATH, null);
 
-  const task = $.NSTask.launchedTaskWithLaunchPathArguments("/usr/sbin/screencapture", $(["-x", CAPTURE_PATH]));
+  const files = $.NSFileManager.defaultManager;
+  const task = $.NSTask.launchedTaskWithLaunchPathArguments(
+    "/usr/sbin/screencapture",
+    $(["-x", CAPTURE_PATH]),
+  );
 
   task.waitUntilExit;
 
-  if (task.terminationStatus !== 0 || !$.NSFileManager.defaultManager.fileExistsAtPath(CAPTURE_PATH)) {
+  if (task.terminationStatus !== 0 || !files.fileExistsAtPath(CAPTURE_PATH)) {
     throw new Error("Screen capture failed; the session needs Screen Recording access");
   }
 
@@ -157,7 +163,9 @@ function waitFor(pattern, seconds, area = null) {
   const deadline = Date.now() + seconds * 1000;
 
   do {
-    const line = readScreen().find((candidate) => pattern.test(candidate.text) && (!area || contains(area, candidate)));
+    const line = readScreen().find(
+      (candidate) => pattern.test(candidate.text) && (!area || contains(area, candidate)),
+    );
 
     if (line) {
       return line;
@@ -255,7 +263,9 @@ function openAssistantPanel(frame) {
 // lands on empty chat area rather than a message or a suggestion.
 function emptyPanelPoint(lines, title, headerY, prompt) {
   for (let y = headerY + 24; y < prompt.y - 24; y += 12) {
-    const crowded = lines.some((line) => Math.abs(line.y - y) < 12 && Math.abs(line.x - title.x) < 120);
+    const crowded = lines.some(
+      (line) => Math.abs(line.y - y) < 12 && Math.abs(line.x - title.x) < 120,
+    );
 
     if (!crowded) {
       return { x: title.x, y };
@@ -286,7 +296,9 @@ function openAssistantMenu(frame, prompt) {
 
   // The panel is a web view that spends a click taking focus, and a click elsewhere takes focus
   // away, so every attempt first clicks empty chat area.
-  for (let x = Math.min(frame.right - 12, title.x + PANEL_MENU_REACH); x > title.x; x -= PROBE_STEP) {
+  const scanStart = Math.min(frame.right - 12, title.x + PANEL_MENU_REACH);
+
+  for (let x = scanStart; x > title.x; x -= PROBE_STEP) {
     if (focus) {
       click(focus.x, focus.y);
       delay(0.8);
@@ -344,11 +356,12 @@ function setMcpSwitch(process, frame) {
 
   click(page.x, page.y);
 
-  // "Setup instructions", behind a chevron icon, appears only on the MCP Servers page, and the server switch's row is the
-  // "Enable" line directly above it, so no other settings row can match.
+  // "Setup instructions", behind a chevron icon, appears only on the MCP Servers page, and the
+  // server switch's row is the "Enable" line directly above it, so no other row can match.
   const instructions = waitFor(/Setup instructions/i, 6, dialog);
   const row = instructions && readScreen()
-    .filter((line) => /^Enable/i.test(line.text) && contains(dialog, line) && line.y < instructions.y)
+    .filter((line) => /^Enable/i.test(line.text) && contains(dialog, line))
+    .filter((line) => line.y < instructions.y)
     .sort((a, b) => b.y - a.y)[0];
 
   if (!row) {
@@ -376,7 +389,9 @@ function setMcpSwitch(process, frame) {
 
 function run(argv) {
   if (argv[0] === "read") {
-    return readScreen().map((line) => `${Math.round(line.x)},${Math.round(line.y)} ${line.text}`).join("\n");
+    return readScreen()
+      .map((line) => `${Math.round(line.x)},${Math.round(line.y)} ${line.text}`)
+      .join("\n");
   }
 
   const pid = Number(argv[0]);
@@ -410,7 +425,9 @@ function run(argv) {
   const status = mcpStatus();
 
   if (status !== target) {
-    throw new Error(`Studio reports ${status}, expected ${target}${failure ? `; last step failed: ${failure.message}` : ""}`);
+    const cause = failure ? `; last step failed: ${failure.message}` : "";
+
+    throw new Error(`Studio reports ${status}, expected ${target}${cause}`);
   }
 
   return status;

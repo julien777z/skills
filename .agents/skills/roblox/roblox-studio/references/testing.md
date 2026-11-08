@@ -333,8 +333,8 @@ SSH access available for another session. Do not publish or commit the authentic
 At the next session, locate and start the existing VM with the same no-window/no-clipboard/no-audio
 options. Discover its current IP rather than assuming the prior address, reconnect via SSH, and
 verify the intended Studio/project. Create a replacement only when necessary and authorized; a new
-session is not a reason to rebuild or ask the user to sign in again. Open the viewer automatically
-only if normal authentication or another required user setup step is actually needed.
+session is not a reason to rebuild or ask the user to sign in again. Open a viewer automatically
+when a guest UI step needs one, whether the agent takes it or a sign-in needs the user.
 
 ## Studio MCP connection and input
 
@@ -501,7 +501,10 @@ prove fixture removal after restoring the game project. Delivery builds must rej
 
 ## Optional guest desktop viewer
 
-Use this optional fallback only when the configured guest and permitted browser support it, Studio viewport capture is unavailable or black, and the guest desktop renders a usable image. A hidden viewer is a normal remote-desktop client in
+Use this optional viewer when the configured guest and permitted browser support it, the guest
+desktop renders a usable image, and either Studio viewport capture is unavailable or black or a
+guest UI step needs input that posted guest input cannot give, such as a permission prompt or an
+Accessibility grant. A hidden viewer is a normal remote-desktop client in
 a background browser tab; it is not a second VM or a host-screen recorder. It can keep
 showing the guest after the native Screen Sharing window closes. Closing the browser tab
 ends that viewing connection, not the VM. Follow an explicit user request to use their
