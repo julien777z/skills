@@ -222,8 +222,8 @@ before input, and bound key holds. Check existing guest Accessibility and Screen
 use normal guest permission/login UI when required, never disable authentication or edit privacy
 databases. SSH access alone does not establish UI permission or an unlocked guest.
 
-The agent controls the whole guest, so it makes every guest setting and permission change itself
-and never asks the user to do one. Input posted inside the guest leaves the host's cursor alone and
+Every guest setting and permission change is the agent's own step under the global rules'
+user-action bullet, since the agent controls the whole guest. Input posted inside the guest leaves the host's cursor alone and
 is the route for guest UI work; a host viewer click moves the user's cursor and serves only where
 guest input cannot reach. Read the guest's Accessibility list first: a Cirrus Labs image already
 grants `osascript`, `sshd-keygen-wrapper` and `tart-guest-agent`, so `osascript -l JavaScript`
@@ -252,8 +252,7 @@ To turn the guest Studio's MCP server on or off, copy
 its text or tooltip, so it does not depend on the guest's display size or Studio's panel layout,
 opens Assistant → … → Settings → MCP Servers, sets the switch, closes the dialog, and retries a
 pass that a dropped click spoiled. It exits nonzero unless the status bar reads the target state;
-`read` prints what it recognizes on screen when a step fails. Text recognition misses Studio's small
-labels unless its minimum text height is lowered, and misreads some, such as "AI" as "Al".
+`read` prints what it recognizes on screen when a step fails.
 
 For a macOS helper using CoreGraphics input and window capture, capture the target window with
 `screencapture -x -o -l <window-id> <path>`: `-o` removes shadow padding. Map coordinates from the
@@ -306,8 +305,7 @@ These steps apply only to a task-owned or configured retained VM. Finish or reco
 moment, and a locked host refuses host-side clicks, screenshots and window control. Everything a
 retained runner needs to come back runs without the host's screen: `tart run --no-graphics`, SSH,
 the guest's automatic desktop login, Studio relaunched in the guest, input posted inside the guest,
-and guest MCP. A full stop-and-restore cycle through these was verified on a locked host. Check
-that the route still holds before ending a session. Leave running, rather than closing, anything
+and guest MCP. Check that the route still holds before ending a session. Leave running, rather than closing, anything
 whose restoration needs the host's screen or the user: a host viewer the user is using, Studio on
 the host, a guest state only a host viewer could recreate, or a Roblox sign-in only the user can
 approve. Never end or sign out of the guest's desktop session or its Roblox session.
