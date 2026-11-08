@@ -137,15 +137,16 @@ until it returns; a quiet interval or a yielded wait is not completion.
 
 ## Local Passes
 
-These run in process, in the order below, and start no subagents.
+These run in the order below, in process unless a pass says otherwise.
 
 - **Layout:** for the delta's changed Python files, run this skill's
   `scripts/paragraph_candidates.py` over them; each pair it lists that the global code-layout rule
   makes a boundary gets its blank line.
 - **Simplification:** when the delta adds a module, a declaration (an enum, constant set, mapping or
-  model), a helper, or changes guidance under `.agents`, run `code-simplify` over the delta in
-  process, never by slice, with the intent statement. Its rubric holds the prose-duplication checks
-  a guidance change needs.
+  model), a helper, or changes guidance under `.agents`, run `code-simplify` over the delta with the
+  intent statement: in process when one reader can hold the delta, its touched files and their
+  siblings, and by slice as its **Review** says when it cannot. Its rubric holds the
+  prose-duplication checks a guidance change needs.
 - **Tests:** when the delta adds or changes tests, fixtures or test support, run `test-fixture`'s
   **Sweep** over them in process.
 
