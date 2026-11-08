@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from 'class-variance-authority';
-import type { ReactNode, Ref } from 'react';
+import type { ReactNode } from 'react';
 
 const STACK_VARIANTS = {
   direction: { row: 'flex-row', column: 'flex-col' },
@@ -30,13 +30,12 @@ const STACK_VARIANTS = {
     accentRing: 'size-5 shrink-0 rounded-full border border-info',
     brand: 'size-7 shrink-0 rounded-md bg-primary text-primary-foreground',
   },
-  frame: { none: '', page: '@container/page mx-auto w-full max-w-screen-2xl' },
+  frame: { none: '', page: '@container/page mx-auto w-full max-w-[120rem]' },
   height: { auto: '', bar: 'h-14' },
   block: { none: '', row: 'py-3', page: 'py-8' },
   push: { true: 'ml-auto shrink-0', false: '' },
   show: { always: '', fromSm: 'hidden sm:flex', fromLg: 'hidden lg:flex', belowLg: 'lg:hidden' },
-  clip: { true: 'overflow-hidden', false: '' },
-  concealed: { true: 'invisible', false: '' },
+  scroll: { true: 'overflow-x-auto', false: '' },
   marker: {
     none: 'list-none',
     bullet: 'list-disc pl-5 marker:text-muted-foreground',
@@ -63,8 +62,7 @@ const stackVariants: ReturnType<typeof cva<typeof STACK_VARIANTS>> = cva('flex m
     block: 'none',
     push: false,
     show: 'always',
-    clip: false,
-    concealed: false,
+    scroll: false,
     marker: 'none',
   },
 });
@@ -72,13 +70,12 @@ const stackVariants: ReturnType<typeof cva<typeof STACK_VARIANTS>> = cva('flex m
 interface StackProps extends VariantProps<typeof stackVariants> {
   as?: 'div' | 'main' | 'ul' | 'ol' | 'li' | 'nav';
   label?: string;
-  ref?: Ref<HTMLElement>;
   children: ReactNode;
 }
 
-export function Stack({ as: Element = 'div', label, ref, children, ...variants }: StackProps): ReactNode {
+export function Stack({ as: Element = 'div', label, children, ...variants }: StackProps): ReactNode {
   return (
-    <Element ref={ref as Ref<never>} aria-label={label} className={stackVariants(variants)}>
+    <Element aria-label={label} className={stackVariants(variants)}>
       {children}
     </Element>
   );

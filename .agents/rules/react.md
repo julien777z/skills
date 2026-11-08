@@ -390,11 +390,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   wherever it sits, in a page, a layout or a gate: the check becomes the redirect and the screen is
   deleted, never restyled, moved into a shared message component, or kept because a task lists it
   among the states to restyle.
-- **Navigation shows every destination at desktop widths.** A menu button that collapses the
-  navigation, such as a hamburger, is for phone and tablet widths only. When destinations outgrow
-  their row on a desktop, the layout gives them room, such as a second row or a side rail; folding
-  them into a menu, scrolling them out of sight or cutting their labels short hides the product's
-  own pages and is the defect.
+- **A menu button that collapses the navigation, such as a hamburger, is for phone and tablet
+  widths only.** On a desktop the navigation stays in its bar: when its destinations outgrow the
+  row, the bar first uses the width the screen offers, then the row scrolls sideways. Folding them
+  into a menu on a desktop, or cutting a title or label short to make room, is the defect.
 - **Settings is the last group in the primary navigation, and the reader's own account is the last
   item within it.** The work the product exists for comes first; settings about the shared
   workspace come before settings about the reader themselves.
