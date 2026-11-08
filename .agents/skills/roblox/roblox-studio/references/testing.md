@@ -288,8 +288,7 @@ connect to the VM. Use the already-connected viewer, or open the guest's built-i
 the host with `open "vnc://<ssh-user>@<current guest address>"`, and verify from a capture of its
 window that it shows the normal sign-in or Quick Sign-in page. Then ask through the question tool,
 as the global rules' user-action bullet says, for the exact remaining step with a confirmation
-option. Do not request passwords in chat or transfer session cookies. Likewise, open the guest's
-actual Assistant/MCP settings when a concrete blocker requires user action. Continue independent
+option. Do not request passwords in chat or transfer session cookies. Continue independent
 work while waiting. After the user confirms, verify the result in a guest capture, then close only
 the task's viewer so unattended guest windows stay out of the user's way.
 
@@ -341,8 +340,9 @@ If an installed isolated runner fails a capability, inspect and recover that cap
 On macOS installations, the stdio executable may be `/Applications/RobloxStudio.app/Contents/MacOS/StudioMCP`; discover the installed location before connecting.
 Enable Assistant → … → Settings → MCP Servers → Enable Studio as MCP server **yourself if disabled**;
 in a guest, [direct guest control](#direct-guest-control) runs the bundled script for it.
-This is part of the authorized setup, not a routine manual task for the user. If a concrete capability
-blocker requires their help, open that page for them and explain the blocker. A setting enabled in another machine
+This is part of the authorized setup and never a step for the user: the agent reaches the setting
+itself, through input posted inside the guest or, for an editor on an unlocked host, through the
+host's own input. A setting enabled in another machine
 or guest does not enable the local editor. Follow the [authentication procedure](#authentication-and-user-handoff):
 complete viewer/guest login yourself and verify the desktop before any user handoff. Reuse Roblox
 authentication and request help only for the specific remaining step you cannot complete. Never
