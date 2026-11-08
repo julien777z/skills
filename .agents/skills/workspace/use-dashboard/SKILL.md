@@ -44,7 +44,7 @@ Every other field is optional, and an absent one leaves its part of the page out
 | `references` | `[{text, url?, details?}]`, each with exactly one of `url` and `details`: every whole-word occurrence of `text` in any page's text becomes a link to `url`, or opens `details`, one section, in a dialog, apart from the navbar, page titles, stat card figures, badges, progress segment tooltips and the first cell of a table row that opens a dialog, which stay plain. |
 
 An `icon` is one of `overview`, `progress`, `board`, `checklist`, `list`, `chart`, `activity`,
-`diagram`, `document`, `guide`, `legal`, `shield`, `people`, `data`, `package`, `release`,
+`compare`, `diagram`, `document`, `guide`, `legal`, `shield`, `people`, `data`, `package`, `release`,
 `pull-request`, `settings`, `alert`, `check` or `calendar`. The dashboard's icon and each page's icon
 all differ, so no glyph appears twice in the navbar.
 

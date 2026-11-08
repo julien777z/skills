@@ -267,7 +267,7 @@ question: what would change in how the skills run. It shows the change, not two 
      the columns Skill, Current, Proposed and What changed, most subagents saved first; a `changes`
      section `Loops`, one item per loop added, removed or changed, its `detail` the cap and what a
      round reruns on each side.
-   - `Changed`, the second page, holds one `tabs` section `Changed flows` with a tab per mapped
+   - `Changed`, `icon` `compare` and the second page, holds one `tabs` section `Changed flows` with a tab per mapped
      page, labelled with the page's name and in the order the Show dashboard orders them, so the
      reader moves between the changed categories on one page. Each tab holds a `diagram` `Flow` of
      the proposed flow with the current flow's removed parts left in, each node and edge carrying

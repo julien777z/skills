@@ -61,6 +61,7 @@ class IconName(StrEnum):
     LIST = "list"
     CHART = "chart"
     ACTIVITY = "activity"
+    COMPARE = "compare"
     DIAGRAM = "diagram"
     DOCUMENT = "document"
     GUIDE = "guide"
