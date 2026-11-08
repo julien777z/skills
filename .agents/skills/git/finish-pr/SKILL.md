@@ -123,7 +123,7 @@ Before concluding, require discovery to be complete and reconcile the recorded t
 with its verified dispositions. Resume any unit without a disposition even if a different
 repository's pull request already merged. Every entry must be verified merged with `merge-gate`
 returned, ended at its accepted head with merge withheld, or held by a gate that is reported. GitHub
-head lag, a retryable rate limit, and any state `merge-gate` is still waiting on are nonterminal.
+head lag and a retryable rate limit are nonterminal.
 
 ## Report
 
