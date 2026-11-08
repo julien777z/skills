@@ -1,6 +1,6 @@
 ---
 name: acceptance-gate
-description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation. Never run per plan step, worker task or fix.
+description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation; per plan step only for a finished step that later steps build on. Never run per fix.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 
@@ -9,8 +9,8 @@ short_description: 'Have an independent reviewer decide whether a proposed chang
 Put a decision the author cannot judge about its own work to a subagent that reads the product's
 state and the change's intent, applies the repository's rubric, and answers one question. It runs
 once over a pull request's complete diff, before its merge, and otherwise only for the questions
-below that a caller cannot settle alone; it never gates individual plan steps, worker tasks or
-fixes, whose authors check them against their own checks.
+below that a caller cannot settle alone. A plan step or worker task is gated only when later steps
+build on it; every other step, and every fix, is checked by its author against its own checks.
 `references/rubric.md` holds what it judges by; this file holds how it is run.
 
 ## Dependencies
@@ -232,9 +232,9 @@ it:
   or do for each.
 - **Admission — may this work be deferred?** The triage question asked of a proposed record.
 - **Proposal — should this be written?**
-- **Diff — should this stand?** A correction after base incorporation, or a repair that settles a
-  design, product or security choice of its own, read with the whole branch diff as its originating
-  diff.
+- **Diff — should this stand?** A finished plan step or worker task that later steps build on, a
+  correction after base incorporation, or a repair that settles a design, product or security
+  choice of its own, read with the whole branch diff as its originating diff.
 - **Base incorporation — what did the base bring in that the change must refactor?** The procedure
   below.
 - **Final acceptance — may this merge?** The complete pull-request diff, read once after review is

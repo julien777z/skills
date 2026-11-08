@@ -163,12 +163,18 @@ changed. Make the smallest changes that answer real findings, and push back on t
 - **Reviewer:** the strongest model of a different provider from the author when one is reachable,
   so it does not share the author's blind spots; the user may name another. Start it on another
   provider's model where the harness offers one, as **Harness Compatibility** says for the harnesses
-  that need it, otherwise as a fresh subagent on the strongest available model. One reviewer per round, starting no subagents
-  of its own. Do not edit the reviewed files while a round runs; a timeout, an error or no reply is
+  that need it, otherwise as a fresh subagent on the strongest available model. One reviewer per
+  round, apart from a split round 1, each starting no subagents of its own. Do not edit the reviewed files while a round runs; a timeout, an error or no reply is
   not approval.
+- **Split round 1 by area** when the delta spans several areas, such as packages, services or apps,
+  and is too large for one careful read: up to five reviewers, one per area group, each briefed with
+  its group's paths and the whole diff as context, so a finding that crosses groups is still seen.
+  Merge their findings into one ledger before answering. Later rounds go back to one reviewer over
+  the changed code and the open findings.
 - **Brief:** send [the reviewer brief](references/reviewer-brief.md), this skill's reference holding
   the round text and severity scale, with the repository, base, intent, out-of-scope note, check
-  results and the repository rules whose file patterns match the changed paths filled in. Use the same diff command every round.
+  results and the repository rules whose file patterns match the changed paths filled in. Use the
+  same diff command every round.
 - **Answer each finding** after checking it and its severity against the code yourself:
   - agree: make the smallest fix, preferring to delete or narrow code over a new lock, cache, helper
     or option, and add one focused test that fails without the fix when the repository has a test

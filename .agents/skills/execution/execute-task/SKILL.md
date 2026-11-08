@@ -534,8 +534,11 @@ compatibility, generated-output drift.
 
 ### Ongoing Simplification
 
-A finished plan step or worker task gets its local checks under the **Pre-Push Gate** and nothing
-more: no simplification pass, review or acceptance gate runs per step, per worker task or per fix.
+A finished plan step or worker task gets its local checks under the **Pre-Push Gate**. When a later
+step builds on it — reads its schema, calls its interface, extends its code — it also gets one
+`acceptance-gate` Diff question over its diff, with the intent statement, before that later step
+starts, so a wrong foundation is caught before more is built on it. A step nothing later depends
+on gets no gate, and no simplification pass or review runs per step, per worker task or per fix.
 `review-pass`'s review loop and one final `acceptance-gate` run once over every change not yet
 reviewed at **Completion**. A guidance correction recorded during a task follows `edit-skill`'s
 timing instead.
