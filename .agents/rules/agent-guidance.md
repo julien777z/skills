@@ -94,7 +94,7 @@ paths:
 - For a scoped rule, declare its file patterns once as `paths` in canonical frontmatter.
   Do not duplicate them as `globs`; Agent Sync writes each provider's required scope key.
   Use `alwaysApply: true` only when the rule belongs in every session.
-- Before adding a requirement to a shared rule, test it against a repository without the feature that prompted it. If it prescribes the current repository's documentation sections, inventory, or generation workflow, put it in `.agents/project.md`; keep the shared rule limited to guidance that still makes sense elsewhere.
+- Before adding a requirement to a shared rule, test it against a repository, skill or file without the feature that prompted it; a requirement true only for the skill that prompted it goes in that skill. If it prescribes the current repository's documentation sections, inventory, or generation workflow, put it in `.agents/project.md`; keep the shared rule limited to guidance that still makes sense elsewhere.
 
 ## Skills
 
@@ -110,12 +110,7 @@ paths:
   entry point. They do not select the top-level workflow, hide a decision gate, declare a dependency,
   or invoke another skill. Scripts the skill runs go under `scripts/`; supporting files may live
   under `assets/`, `resources/`, or another directory named for their role. Keep only files the skill
-  needs. Data a skill's runs keep about the skill's own subject, such as records, earlier results
-  or accumulated observations, lives in that skill's `verification/` folder, whichever run, skill or
-  person reads it later. A run's evidence about the repository it ran in, with its captures and
-  working state, stays in that repository's project records or verification output. Either is data,
-  never guidance a reader follows; a lesson drawn from it goes into the skill or rule that owns its
-  subject.
+  needs.
 - Never add `agents/openai.yaml` to a repository skill. Repository skills contain `SKILL.md` and
   only supporting files required by the skill; provider UI metadata stays outside repositories
   and is never propagated.
