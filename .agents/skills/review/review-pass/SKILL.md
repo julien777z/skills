@@ -271,7 +271,7 @@ pushed unless an authorized working-pull-request route is established.
 
 ## Deferred Findings
 
-A finding the repository's deferral process has recorded is discharged, not outstanding. Recording it is what makes it durable, so the pass carries on: a recorded deferral never holds the review loop open and never holds the merge.
+A finding `defer-scope` has recorded is discharged, not outstanding. Recording it is what makes it durable, so the pass carries on: a recorded deferral never holds the review loop open and never holds the merge.
 
 A recorded deferral is a Linear issue, or under `defer-scope`'s repository fallback a record riding the session's source pull request in its repository — usually the pull request under review — so it adds no pull request to wait for and is never a dependency of the merge. Never ask the user to settle the deferred question before merging. That the decision outlives this session is the whole reason for recording it, so treating it as a gate defeats the mechanism.
 
@@ -464,7 +464,7 @@ to work around this gate.
    pull request as metadata only and explicitly preserve the range through resolution and
    eligibility checks. Direct fixes to the matching working fix branch rather than changing the
    immutable target.
-3. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through the repository's deferral process only when the user declines or cannot answer, and the pass continues; see **Deferred Findings**. A finding that can be neither fixed nor recorded remains an active gate: surface the needed resolution under the global rules' pending-result boundary and continue independent work.
+3. Apply every confirmed finding. A finding whose fix turns on a decision that is the user's is asked first, as `code-review`'s escalation says; it is recorded through `defer-scope` only when the user declines or cannot answer, and the pass continues; see **Deferred Findings**. A finding that can be neither fixed nor recorded remains an active gate: surface the needed resolution under the global rules' pending-result boundary and continue independent work.
 4. Classify each correction under **Review Continuity**. When normal invalidation applies and a fix changes a reviewed target, freeze the replacement snapshot and rerun every invalidated lens, concern, and validator against it. For a local route, persist and read back the replacement `currentSnapshot`; for a pull-request route, advance the active review-scope snapshot to the repaired remote patch while retaining the originating delta. Repeat until the applicable review is clean.
 5. Once the review is clean, if a merged-range review has no working fix pull request, return a
    clean result. Otherwise run **Incorporating The Base**, then the second test pass **Validation
