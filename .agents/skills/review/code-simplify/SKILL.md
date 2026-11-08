@@ -1,6 +1,6 @@
 ---
 name: code-simplify
-description: Review a change for duplicated mechanisms, needless abstractions and maintainability, then fix what it admits. Use when the user asks to simplify or clean up a change, or when a skill such as `review-pass` calls it.
+description: Review a change for duplicated mechanisms, needless abstractions and maintainability, then fix what it admits. Use when the user asks to simplify or clean up a change, or when another skill's workflow runs it as one of its steps.
 short_description: 'Review a change for duplication and needless abstraction, then fix what it finds.'
 ---
 
@@ -12,7 +12,6 @@ criteria and the severity scale are in the skill's rubric reference, `references
 it whole before the pass.
 
 ## Dependencies
-- `defer-scope`
 - `list-prs`
 - `pre-production`
 - `subagent-matrix`
@@ -53,9 +52,8 @@ it whole before the pass.
   decision.
 - Fix a `nit` only when it is a one-line change in a line the change already touches; otherwise
   list it as declined.
-- Outside the change, fix a bug when it is one focused fix in about two files or fewer, and record
-  anything larger with `defer-scope`. Record non-bug cleanup outside the change with `defer-scope`
-  too, unless the user invoked `widen-scope` for this task, whose limits then apply.
+- Outside the change, fix a bug when it is one focused fix in about two files or fewer, and return
+  anything larger, and non-bug cleanup outside the change, to the caller to record as deferred work.
 - Check each remedy against the language and layout rules for its file before applying it.
 - After fixing, rescan only when the fixes added, moved, merged or deleted a module or changed an
   interface other code reads: a fresh reviewer gets the earlier findings, the fix diff and the files

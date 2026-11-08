@@ -10,6 +10,9 @@ Keep one structured ledger in a private task file outside repository checkouts. 
 source of truth; chat context and native task state carry its exact absolute locator and task
 identity, never a second authoritative copy of its records.
 
+## Dependencies
+- `agent-lock`
+
 ## Storage
 
 - Resolve the locator from the active task's metadata before every retrieval or update. For a new
@@ -79,9 +82,11 @@ identity, never a second authoritative copy of its records.
      that form, `agent` for one the agent added or widened past what the user asked), status
      (`next`, `active`, `done`, `blocked` or `skipped`), wall-clock estimate, the observed start and
      finish times once known, and any parts, each with a title, a status from that same set and an
-     estimate. An `agent` step proceeds under the task's authorization unless it is a product
-     choice, and is never recorded or shown as user-approved. Change a step's status when the work
-     changes it, with an observation for the transition; a follow-up plan is an entry of its own.
+     estimate. A plan's total is the sum of its step estimates, with steps the plan records as
+     overlapping counted once, at the longest of them. An `agent` step proceeds under the task's
+     authorization unless it is a product choice, and is never recorded or shown as user-approved.
+     Change a step's status when the work changes it, with an observation for the transition; a
+     follow-up plan is an entry of its own.
    - For a question put to the user, record a `question` entry: the question, its options, the
      recommendation, the work that depends on it, its status (`open`, `evidence_pending`,
      `answered` or `withdrawn`), and the user's answer in their words with when it was given.

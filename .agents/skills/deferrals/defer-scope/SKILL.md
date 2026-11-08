@@ -11,6 +11,7 @@ Keep a problem alive after the conversation ends without scheduling its implemen
 ## Dependencies
 - `linear`
 - `acceptance-gate`
+- `pre-production`
 
 ## Modes
 
@@ -19,10 +20,8 @@ Keep a problem alive after the conversation ends without scheduling its implemen
 before any write.
 
 **Read** when no scope is given. Report the combined active set from Linear and the legacy
-repository ledger, and write nothing.
-
-A recorded item is assessed and resolved by `execute-defer-scope`; `defer-execution` handles
-only unrecorded scope already committed to separate execution.
+repository ledger, and write nothing. A recorded item is resolved by the user running
+`/execute-defer-scope` on it.
 
 ## When Recording Runs
 
@@ -49,10 +48,11 @@ Record work that is genuinely larger than the change in flight and whose need is
 redesign, a broad sweep somebody could reasonably decline — or that is blocked externally, or that
 awaits a decision already put to its owner and still open, or one the user declined in the current
 request; a question nobody has asked yet is asked, not recorded. **A confirmed defect the change
-introduced, or the task asked to fix, is never recorded**: it is fixed in the change in flight. A
-defect the work only runs into is fixed when it fits `pre-production`'s size budget and recorded
-here when it does not, as `widen-scope` widens that budget for the task it is invoked on. Never
-offer the user the choice between fixing and recording a defect that fits the budget. When part is small, fix that part and record
+introduced, or the task asked to fix, is never recorded**, a defect as `pre-production`'s **Scope
+Follows The Defect, Not The Request** defines one: it is fixed in the change in flight. A defect the
+work only runs into is fixed when it fits `pre-production`'s size budget and recorded here when it
+does not. Never offer the user the choice between fixing and recording a defect that fits the
+budget. When part is small, fix that part and record
 only the remainder. Record at the moment work is consciously left undone; chat and pull-request
 prose are not durable records.
 
@@ -119,7 +119,7 @@ write:
    work join.
 
 Never mix Linear and repository records for one deferral. Existing repository records remain in
-place until separately migrated or resolved through `execute-defer-scope`.
+place until separately migrated or resolved.
 
 ## Reading
 

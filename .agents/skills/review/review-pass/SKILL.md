@@ -1,6 +1,6 @@
 ---
 name: review-pass
-description: Review a change and fix what the review finds, through one independent reviewer in a short loop. Use when the user asks for a code review, a review loop or "sol loop", and from `execute-task`'s Completion, `finish-pr`, `merge-now` and guidance delivery. Never merges.
+description: Review a change and fix what the review finds, through one independent reviewer in a short loop. Use when the user asks for a code review, a review loop or "sol loop", or as a step of a workflow that finishes a pull request before its merge. Never merges.
 short_description: 'Review and fix what a pull request has not had reviewed yet, then record the reviewed head.'
 ---
 
@@ -20,7 +20,7 @@ skill never readies, merges or deploys.
 
 ## Invocation
 
-- The caller names the target and supplies the intent statement: what the change is for and what
+- The invocation names the target and supplies the intent statement: what the change is for and what
   is out of scope.
 - The invocation authorizes the declared dependencies over that target, pushing fixes to its
   working pull request, refreshing its title and description, resolving its review threads and
@@ -161,7 +161,7 @@ changed. Make the smallest changes that answer real findings, and push back on t
   - nit: fix it when it is a one-line change in a line the change already touches, otherwise decline
     it in one line;
   - outside the change: fix a bug that fits `pre-production`'s size budget, and record everything
-    else with `defer-scope`, as `widen-scope` widens that budget when the user invoked it.
+    else with `defer-scope`.
 - **Next round** only while budget remains and a blocker or should is open, or behaviour code
   changed since the last approval. Rerun the checks and `git diff --shortstat <base>` first; if
   review grew the diff past what the intent needs, cut it first. Never agree just to end the loop.

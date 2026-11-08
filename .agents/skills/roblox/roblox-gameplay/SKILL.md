@@ -14,7 +14,7 @@ short_description: 'Apply every time actively modifying a Roblox game, including
 
 ## Make success clear and satisfying
 
-Apply this skill whenever actively modifying a game. Preserve the authorized scope, genre, established identity, and current gameplay contract. Use it to improve the affected player experience; it does not require adding a new feature, economy, pet system, or chart research to every code change.
+Apply this skill whenever actively modifying a game. Preserve the authorized scope, genre, established identity, and current gameplay contract. Use it to improve the affected player experience; it does not require adding a new feature, economy, or pet system to every code change.
 
 Fit the rhythm of success to the requested genre, audience, and mood. Establish an understandable first action and a visible result early, then connect smaller achievements to meaningful longer goals. Fast rewards suit some games; quieter discovery, mastery, or social play can be equally intentional. Do not infer a fixed reward cadence or neurological effect from chart popularity.
 
@@ -74,4 +74,4 @@ When the work involves React-rendered UI, apply `roblox-react` for clarity and i
 
 ## Learn from evidence
 
-Do not invoke `study-games` during ordinary gameplay work; it runs only when the user directly requests that research. Keep transferable design principles here and dated observations in the invoking project's verification evidence. Distinguish passive inspection from actual play, label popularity hypotheses, and apply only ideas that fit the current game. Update canonical `.agents` sources only and leave mirrors to Agent Sync.
+Keep transferable design principles here and dated observations in the invoking project's verification evidence. Distinguish passive inspection from actual play, label popularity hypotheses, and apply only ideas that fit the current game. Update canonical `.agents` sources only and leave mirrors to Agent Sync.

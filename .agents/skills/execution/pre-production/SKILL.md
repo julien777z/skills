@@ -111,14 +111,25 @@ with an obsolete owned contract or revision.
   change — in a file it opened, a check it ran, a capture it read — is handled under the size budget
   below. A file opened or edited only to make such an incidental fix is never itself a source of
   more incidental cleanup: what else it holds is deferred, not chased.
-- **A defect the work notices is fixed when its fix is small, wherever it lives.** A defect is what
-  `acceptance-gate`'s rubric calls one: an image that never loads, a wrong value, a state shown in
-  the wrong place, a control that does nothing, a test suite that fails in a fresh checkout, a
-  fixture that builds data the code would never hold, a setup step or documented command that
-  errors. One that fits the size budget below is fixed in the change in flight, outside the hop
-  limit. Sitting in a shared component, an owned library or another owned repository the pull
-  request does not otherwise touch is no reason to leave it: the fix goes to that repository's pull
-  request for this work. It is never offered to the user as a question.
+- **A defect is anything the system does or shows that a reader would call broken**, and the system
+  includes the repository's tooling: its tests, fixtures, build, setup and CI. An image that never
+  loads, a wrong value, a state shown in the wrong place, a control that does nothing, a lost write
+  or notification, a crash, an exhausted budget, a test suite that fails in a fresh checkout, a
+  fixture that builds data the code would never hold, and a setup step or documented command that
+  errors are its familiar shapes, not its boundary.
+- **Slow, unbounded or fragile work is a defect too.** Work the system cannot finish in useful time,
+  a resource that grows with the data with nothing to bound it, a stored value nothing limits, work
+  a restart throws away where a sibling phase keeps its place, and a job that only advances because
+  a container happens to stay alive are defects of the same standing. "The result is still correct",
+  "it only costs time" and "how much to keep is a policy question" describe a defect and never
+  exempt one; a system that is right and too slow to use is broken. A missing safeguard is not a
+  defect, since the system does what it was built to do, unless its absence is an exploitable
+  security finding, because what the system does includes what an attacker can make it do.
+- **A defect the work notices is fixed when its fix is small, wherever it lives.** One that fits the
+  size budget below is fixed in the change in flight, outside the hop limit. Sitting in a shared
+  component, an owned library or another owned repository the pull request does not otherwise touch
+  is no reason to leave it: the fix goes to that repository's pull request for this work. It is
+  never offered to the user as a question.
 - **A security vulnerability the work finds is such a defect, whoever finds it and whenever it
   arrived.** One a gate, reviewer or audit reports in code the change never touched, one that
   predates the change, and one another layer is said to stop before that layer is traced on every
@@ -131,18 +142,16 @@ with an obsolete owned contract or revision.
   rotating a credential they hold, is reported as a gate with its owner and saved next action, as
   the global rules' **Tools and environments** says. It is never put to the user as something to
   consider or an option, recorded as deferred, left as a hardening note, or answered with a
-  recommendation to run an audit or a doctor later.
+  recommendation to run an audit of any kind later.
 - **Incidental work has a size budget.** Incidental work is everything the request did not ask
   for, outside the change's own design and the defect's shape above.
   - A defect fits when its fix is one focused fix touching about two files or fewer.
   - Cleanup that fixes no defect — duplication, dead code, a misplaced helper, layout — fits only
     inside the files the change already edits and while it stays small beside the requested part.
-  - While the user has invoked `widen-scope` for the task, its limits replace these: about five
-    files per item, cleanup included.
   - Everything past the budget is deferred work: returned to the caller to record, listed in the
     change's report one line each with its record, and never fixed in the change or put to the user
     as a question. A security vulnerability, above, is never past it. An explicitly requested broad
-    refactor and a doctor run set their own scope and carry no budget.
+    refactor sets its own scope and carries no budget.
 - **A correction to how one screen looks or reads reaches every page when the user makes it a
   rule, and that screen alone when they do not.** A correction the user asks to have codified, or
   gives a reason for that holds wherever the shape appears, such as "labels sit above their fields
@@ -307,8 +316,8 @@ with an obsolete owned contract or revision.
   a validation error at a read site answered by widening the reader instead of asking what the store
   allows.
 - For a requiredness change, establish the affected data's retention scope under **Product State**
-  before selecting a migration or reset. The database-migration owner below applies that scope;
-  required columns do not themselves create an obligation to preserve disposable or nonexistent rows.
+  before selecting a migration or reset; required columns do not themselves create an obligation to
+  preserve disposable or nonexistent rows.
 - For retained values, use the authoritative source where one exists and a type-valid placeholder
   only where none exists. Never overwrite a known retained value, fabricate a placeholder in runtime
   code, or keep a permanent schema default solely to make a migration convenient.
@@ -320,8 +329,3 @@ with an obsolete owned contract or revision.
   from its authoritative source. The tell is a description or comment saying that rows from before
   the change keep the old behaviour; keeping it needs the user's approval, as any legacy support
   does.
-- Before selecting an implementation for a schema or stored-representation change, invoke the
-  database-migration skill for that role, including when the repository has no migration runner or
-  uses startup reconciliation. Resolve its local commands and layout through project guidance;
-  missing infrastructure is work to establish, not permission to bypass that owner. It governs the
-  mechanics, what the change owes existing rows, and validation.

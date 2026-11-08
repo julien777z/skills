@@ -105,12 +105,46 @@ This example applies only when the host already configures `ROBLOX_STUDIO_TART`,
 ```sh
 source "$HOME/.config/roblox-studio/runner.env"
 "$ROBLOX_STUDIO_TART" get "$ROBLOX_STUDIO_VM"
-# Start only when stopped, in an owned background process/session:
-"$ROBLOX_STUDIO_TART" run "$ROBLOX_STUDIO_VM" --no-graphics --no-clipboard --no-audio
-export ROBLOX_STUDIO_SSH="$ROBLOX_STUDIO_SSH_USER@$("$ROBLOX_STUDIO_TART" ip "$ROBLOX_STUDIO_VM")"
+# Start only when stopped, detached so the VM outlives the agent's own task limits:
+mkdir -p "$HOME/.local/state/roblox-studio"
+nohup "$ROBLOX_STUDIO_TART" run "$ROBLOX_STUDIO_VM" --no-graphics --no-clipboard --no-audio \
+  > "$HOME/.local/state/roblox-studio/vm.log" 2>&1 < /dev/null & disown
+export ROBLOX_STUDIO_SSH="$ROBLOX_STUDIO_SSH_USER@$("$ROBLOX_STUDIO_TART" ip "$ROBLOX_STUDIO_VM" --wait 180)"
 ```
 
+A harness that stops background commands after a time limit stops a `tart run` it owns, and the
+VM with it, so the VM runs detached and `tart stop` ends it.
+
 Verify SSH host keys, the intended guest editor, and the source/place before running tests. The no-graphics, no-clipboard, no-audio options keep the VM from opening a host window or sharing clipboard/audio. Store versions and qualification evidence outside this skill. Do not provision or reset a working retained VM as routine setup.
+
+#### Provision a runner when none exists
+
+Provision only when the user authorizes an isolated runner and `runner.env` is absent. Each step
+ends with its check:
+
+1. **Install Tart** through the package manager the host uses. When that route fails, install the
+   official [GitHub release](https://github.com/cirruslabs/tart/releases): verify the archive
+   against the release's checksum file, unpack it outside checkouts, confirm the app's code
+   signature, and run its `--version`.
+2. **Create the VM** with `tart clone` from a Cirrus Labs macOS base image, then `tart set` its
+   CPU, memory, and display before the first boot. Start it with the options above and
+   `tart ip --wait <seconds>` for its address; `tart list` shows the stopped VM afterward. The
+   guest must log its desktop user in on boot, which everything run while the host is locked
+   depends on: `defaults read /Library/Preferences/com.apple.loginwindow autoLoginUser` in the guest
+   names that user on a Cirrus Labs image.
+3. **Pin SSH before trusting it.** Generate a dedicated key in `~/.config/roblox-studio/`. Record
+   the guest's host key with `ssh-keyscan -t ed25519`, then compare its `ssh-keygen -lf` fingerprint with the
+   one `tart exec <vm> ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub` reports through the guest
+   agent; a mismatch stops setup. Append the public key to the guest's `authorized_keys` through
+   `tart exec -i`, so no guest password passes through a command line, and confirm a `BatchMode=yes`
+   login. Write the five `runner.env` values.
+4. **Install Studio in the guest** from Roblox's official macOS installer image. Mount it there,
+   confirm the installer's code-signing team matches the host Studio's, and `open` it in the
+   signed-in guest session; the check is `/Applications/RobloxStudio.app` in the guest and Studio's
+   window in a guest capture.
+5. **Sign in, enable MCP, and qualify** as [authentication](#authentication-and-user-handoff),
+   [direct guest control](#direct-guest-control) and
+   [Qualify input and capture](#qualify-input-and-capture) describe.
 
 ### Linux container runner
 
@@ -167,6 +201,12 @@ that the guest renders game assets correctly.
 
 Follow an explicit user choice of local Studio. Use the verified editor through supported operations and keep host input and extra client windows within the user's authorization. Where a local installation defines `ROBLOX_ALLOW_HOST_STUDIO=1` as an intentional single-editor fallback, set it only for that documented path, never as a speculative isolation bypass.
 
+On a macOS host, native input and screen capture need Accessibility and Screen Recording granted to
+the app the agent runs under, identified by the agent's process ancestry, not to its shell or
+interpreter; macOS applies a new grant only after that app restarts. Check the grant with
+`AXIsProcessTrusted()` and a test capture before driving input, and name that exact app when the
+user must grant it.
+
 ## Direct guest control
 
 On a configured macOS guest, host Screen Sharing, guest SSH, and guest input are separate capabilities. When the host viewer
@@ -185,6 +225,43 @@ A helper should refuse host execution, target a verified process/window, confirm
 before input, and bound key holds. Check existing guest Accessibility and Screen Recording access;
 use normal guest permission/login UI when required, never disable authentication or edit privacy
 databases. SSH access alone does not establish UI permission or an unlocked guest.
+
+Every guest setting and permission change is the agent's own step under the global rules'
+user-action bullet, since the agent controls the whole guest. Input posted inside the guest leaves the host's cursor alone and
+is the route for guest UI work; a host viewer click moves the user's cursor and serves only where
+guest input cannot reach. Read the guest's Accessibility list first: a Cirrus Labs image already
+grants `osascript`, `sshd-keygen-wrapper` and `tart-guest-agent`, so `osascript -l JavaScript`
+over SSH posts working CoreGraphics clicks. A missing grant is added in the guest's System Settings,
+opened over SSH with `open "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_Accessibility"`
+and operated by the agent through the [guest desktop viewer](#optional-guest-desktop-viewer), or the
+host's Screen Sharing when no hidden viewer is available, since posted input is what the grant
+enables. Guest input behaves like this:
+
+- **Coordinates are points.** A HiDPI guest's captures have twice the pixels of its screen points;
+  read `NSScreen.mainScreen.frame` and divide capture coordinates accordingly.
+- **Studio can hold a stale window origin** and register clicks one title bar lower than they land.
+  Set its window's position and size through System Events before clicking, and check with a
+  visible control such as a ribbon tab.
+- **Studio's widgets need a real click shape:** move the pointer toward the target first, and give
+  each press a click count (`kCGMouseEventClickState`) from the HID system event source.
+- **Studio's embedded web panels,** such as Assistant, take one click to focus and then toggle on
+  each click; capture after every click rather than repeating one.
+- The first `screencapture` over SSH raises a guest Screen Recording prompt for the SSH session;
+  the agent approves it through the guest desktop viewer, or the host's Screen Sharing when no hidden
+  viewer is available.
+
+Tart's own `--vnc-experimental` endpoint returns black frames while the VM runs with
+`--no-graphics`; a viewer connects to the guest's built-in Screen Sharing service on port 5900.
+
+To turn the guest Studio's MCP server on or off, copy
+[guest_studio_mcp.js](../scripts/guest_studio_mcp.js) into the guest and run
+`osascript -l JavaScript guest_studio_mcp.js <studio-pid> on` over SSH. It finds each control by
+its text or tooltip, so it does not depend on the guest's display size, and reaches the Assistant
+panel wherever it is docked in the main window at its default width. It opens Assistant → … →
+Settings → MCP Servers, sets the switch, closes the dialog, and retries a
+pass that a dropped click spoiled. It exits nonzero unless the status bar reads the target state;
+`osascript -l JavaScript guest_studio_mcp.js read` prints what it recognizes on screen when a step
+fails.
 
 For a macOS helper using CoreGraphics input and window capture, capture the target window with
 `screencapture -x -o -l <window-id> <path>`: `-o` removes shadow padding. Map coordinates from the
@@ -214,21 +291,33 @@ connection options and verify the rendered application before handoff. Authentic
 viewer normally; one viewer's connection does not authenticate another.
 
 Reuse retained Roblox sessions and available authorized sign-in methods. If Roblox itself requires
-a step the agent cannot complete, automatically open its normal sign-in or Quick Sign-in page in
-the already-connected viewer and explain the exact remaining step. Do not request passwords in chat
-or transfer session cookies. Likewise, open the guest's actual Assistant/MCP settings when a concrete
-blocker requires user action. Continue independent work while waiting. After setup, close or minimize
-only the task's viewer so unattended guest windows stay out of the user's way.
+a step the agent cannot complete, bring the guest screen to the user yourself; never ask them to
+connect to the VM. Use the already-connected viewer, or open the guest's built-in Screen Sharing on
+the host with `open "vnc://<ssh-user>@<current guest address>"`, and verify from a capture of its
+window that it shows the normal sign-in or Quick Sign-in page. Then ask through the question tool,
+as the global rules' user-action bullet says, for the exact remaining step with a confirmation
+option. Do not request passwords in chat or transfer session cookies. Continue independent
+work while waiting. After the user confirms, verify the result in a guest capture, then close only
+the task's viewer so unattended guest windows stay out of the user's way.
 
-Where the user can reach no viewer, relay Quick Sign-in by code. Read the newest
-`awaitQuickSignIn via polling: code=` line from Studio's log immediately before sending it: codes
-expire after about two minutes and Studio logs each replacement. The user enters the code on a
-device already signed in to Roblox. Confirm sign-in from the Studio start page before relying on
-the runner.
+Where the user can reach no viewer, relay Quick Sign-in by code through the question tool, with a
+confirmation option. Read the newest `awaitQuickSignIn via polling: code=` line from Studio's log
+immediately before each asking, including a re-ask after a timeout: codes expire after about two
+minutes and Studio logs each replacement. The user enters the code on a device already signed in to
+Roblox. Confirm sign-in from the Studio start page before relying on the runner.
 
 ## End of session for a retained VM
 
 These steps apply only to a task-owned or configured retained VM. Finish or record the task blocker before shutdown; a progress update does not end the test session.
+
+**Take a step only when the agent can undo it with the host locked.** The user's Mac can lock at any
+moment, and a locked host refuses host-side clicks, screenshots and window control. Everything a
+retained runner needs to come back runs without the host's screen: `tart run --no-graphics`, SSH,
+the guest's automatic desktop login, Studio relaunched in the guest, input posted inside the guest,
+and guest MCP. Check that the route still holds before ending a session. Leave running, rather than closing, anything
+whose restoration needs the host's screen or the user: a host viewer the user is using, Studio on
+the host, a guest state only a host viewer could recreate, or a Roblox sign-in only the user can
+approve. Powering the guest off is fine, because its automatic login brings the desktop back.
 
 When the game work is done, save the authorized project artifacts, close Roblox Studio normally,
 and **shut down the guest VM** so it is no longer running locally. Verify that Studio closed and the
@@ -244,18 +333,8 @@ SSH access available for another session. Do not publish or commit the authentic
 At the next session, locate and start the existing VM with the same no-window/no-clipboard/no-audio
 options. Discover its current IP rather than assuming the prior address, reconnect via SSH, and
 verify the intended Studio/project. Create a replacement only when necessary and authorized; a new
-session is not a reason to rebuild or ask the user to sign in again. Open the viewer automatically
-only if normal authentication or another required user setup step is actually needed.
-
-## Qualification for game research on an isolated runner
-
-When research uses an isolated runner, qualify the guest browser/media path and the **published Roblox client** separately from Studio.
-Browser/media viewing and published-client play each require ordinary input and usable captures
-without host windows/focus/input interference. Studio MCP capability alone does not prove those
-capabilities. Record each result separately. If qualification fails, keep the dependent work
-incomplete; do not
-silently revert to host interaction. Host-side read-only APIs may assist data retrieval/aggregation,
-but must not become a workaround that opens host research/game windows.
+session is not a reason to rebuild or ask the user to sign in again. Open a viewer automatically
+when a guest UI step needs one, whether the agent takes it or a sign-in needs the user.
 
 ## Studio MCP connection and input
 
@@ -266,9 +345,11 @@ If an installed isolated runner fails a capability, inspect and recover that cap
 ## Connect to the intended editor
 
 On macOS installations, the stdio executable may be `/Applications/RobloxStudio.app/Contents/MacOS/StudioMCP`; discover the installed location before connecting.
-Enable Assistant → … → Manage MCP Servers → Enable Studio as MCP server **yourself if disabled**.
-This is part of the authorized setup, not a routine manual task for the user. If a concrete capability
-blocker requires their help, open that page for them and explain the blocker. A setting enabled in another machine
+Enable Assistant → … → Settings → MCP Servers → Enable Studio as MCP server **yourself if disabled**;
+in a guest, [direct guest control](#direct-guest-control) runs the bundled script for it.
+This is part of the authorized setup and never a step for the user: the agent reaches the setting
+itself, through input posted inside the guest or, for an editor on an unlocked host where the task
+authorizes host input, through the host's own input. A setting enabled in another machine
 or guest does not enable the local editor. Follow the [authentication procedure](#authentication-and-user-handoff):
 complete viewer/guest login yourself and verify the desktop before any user handoff. Reuse Roblox
 authentication and request help only for the specific remaining step you cannot complete. Never
@@ -293,7 +374,7 @@ The proxy can initialize and expose all tool schemas before Studio connects. Stu
 local WebSocket connection on an interval; terminating the proxy immediately can repeatedly return
 `studios: []` even while the toggle is enabled. Keep the session alive and await a nonempty inventory
 with a bounded timeout. Do not
-infer a toggle failure from an empty inventory or ask the user to repeatedly toggle it.
+infer a toggle failure from an empty inventory or toggle it repeatedly.
 
 A stdio client must handle notifications and responses sharing a read. With Python `select`, a
 buffered text `readline()` can leave the response in a Python buffer while `select` waits for OS
@@ -312,8 +393,8 @@ resuming normal controls.
 
 An empty inventory does not establish that MCP is disabled. The intended process may be waiting
 on sign-in, a recovery dialog, Assistant initialization, or the proxy connection. Inspect that
-editor's current UI. Resolve blocking dialogs, open **Assistant → Manage MCP Servers**, and inspect
-the normal MCP setting before changing it. If remote pointer input cannot open Assistant, use its
+editor's current UI. Resolve blocking dialogs, then inspect the normal MCP setting before changing
+it under **Assistant → … → Settings → MCP Servers**; in a guest, the bundled script does both. If remote pointer input cannot open Assistant, use its
 native menu or the installed editor's shortcut configuration; inspect the current binding rather
 than assuming a key. Restore any temporary binding afterward. Keep the proxy alive during bounded
 discovery, then verify the intended editor with a read-only command against its explicit ID before
@@ -418,7 +499,10 @@ prove fixture removal after restoring the game project. Delivery builds must rej
 
 ## Optional guest desktop viewer
 
-Use this optional fallback only when the configured guest and permitted browser support it, Studio viewport capture is unavailable or black, and the guest desktop renders a usable image. A hidden viewer is a normal remote-desktop client in
+Use this optional viewer when the configured guest and permitted browser support it, the guest
+desktop renders a usable image, and either Studio viewport capture is unavailable or black or a
+guest UI step needs input that posted guest input cannot give, such as a permission prompt or an
+Accessibility grant. A hidden viewer is a normal remote-desktop client in
 a background browser tab; it is not a second VM or a host-screen recorder. It can keep
 showing the guest after the native Screen Sharing window closes. Closing the browser tab
 ends that viewing connection, not the VM. Follow an explicit user request to use their

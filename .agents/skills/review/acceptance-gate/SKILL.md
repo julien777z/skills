@@ -1,6 +1,6 @@
 ---
 name: acceptance-gate
-description: Independent read-only verdict on a pull request's complete diff before merge, run once from `review-pass`; also for a triage or deferral decision, `widen-scope`'s borderline list, and base incorporation. Never run per plan step, worker task or fix.
+description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation. Never run per plan step, worker task or fix.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 
@@ -8,7 +8,7 @@ short_description: 'Have an independent reviewer decide whether a proposed chang
 
 Put a decision the author cannot judge about its own work to a subagent that reads the product's
 state and the change's intent, applies the repository's rubric, and answers one question. It runs
-once over a pull request's complete diff, from `review-pass`, and otherwise only for the questions
+once over a pull request's complete diff, before its merge, and otherwise only for the questions
 below that a caller cannot settle alone; it never gates individual plan steps, worker tasks or
 fixes, whose authors check them against their own checks.
 `references/rubric.md` holds what it judges by; this file holds how it is run.
@@ -214,12 +214,12 @@ requires.
 Route the gate through `subagent-matrix`'s **Dispatch**, including its launch fallback when the
 required reader cannot launch.
 
-For a canonical guidance batch, one fresh gate may inspect the complete frozen diffs together and
-return a distinct verdict for each exact head. Its prompt names every head and intent, and its
-evidence retains the per-head disposition. Retain an earlier per-head acceptance only while that
-head, its inputs, and its affected-repository map remain exact; rerun the changed head and its
-dependent gates without invalidating unrelated batch heads. A shared question never lets an author
-judge their own work or collapse distinct verdicts.
+An invocation that names several frozen diffs, each with its exact head and intent, may get one
+fresh gate that inspects them together and returns a distinct verdict for each head. Its prompt
+names every head and intent, and its evidence retains the per-head disposition. Retain an earlier
+per-head acceptance only while that head, its inputs, and its affected-repository map remain exact;
+rerun the changed head and its dependent gates without invalidating unrelated heads. A shared
+question never lets an author judge their own work or collapse distinct verdicts.
 
 ## Questions
 
@@ -228,7 +228,7 @@ Whether an item is the change's doing or predates it is never asked, since no di
 it:
 
 - **Triage — what should happen to this?** An issue, a finding or a proposed record, or a list of
-  them such as `widen-scope`'s borderline items in one call; the answer is one of fix, close, defer
+  them in one call; the answer is one of fix, close, defer
   or do for each.
 - **Admission — may this work be deferred?** The triage question asked of a proposed record.
 - **Proposal — should this be written?**
