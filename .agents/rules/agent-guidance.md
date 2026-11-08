@@ -172,9 +172,9 @@ trigger.
   runs. A description that identifies a skill is the same reference as its name: "a review pass
   calls it", "the task's ledger processing" or "the Studio skill" is that skill named in other
   words. A skill never refers to a skill that runs it: not its caller, not a coordinator it returns
-  to, not a workflow it serves. A collaborator it invokes, reads or hands work to, found at run time
-  by its role through the skill listing or a declared dependency that reads it, as the bullet on a
-  repository-specific collaborator says, names no particular skill. A role its caller fills is still
+  to, not a workflow it serves. A collaborator it invokes, reads or hands work to and finds at run time
+  by its role, through the skill listing or a declared dependency that reads it, as the bullet on a
+  repository-specific collaborator says, is named by that role, never as a particular skill. A role its caller fills is still
   a caller reference. It may state what its invocation supplies in terms any caller could meet, such
   as "an invocation that names a delta reviews that delta". It states its own behaviour and what it
   returns, and the caller's text says how the caller uses it. Peers that never invoke each other

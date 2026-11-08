@@ -6,9 +6,6 @@ short_description: 'Owns the banned-terms list in resources/banned_words.json an
 
 # Banned Terminology
 
-## Dependencies
-- `pre-production`
-
 `resources/banned_words.json` is the list, and this skill is what makes it bind. Each entry carries
 the term, what to use instead, why the term fails, and any replacement already rejected.
 
@@ -24,6 +21,9 @@ concrete thing — an "entity" for a customer, a "target" for a server — is su
 is accurate, because the reader has to be told what it stands for. Before a new package, module,
 type, step or document heading takes a name, ask whether the user would say that word for the thing;
 if they would say something more concrete, that is the name.
+
+## Dependencies
+- `pre-production`
 
 ## Enforcing the list
 

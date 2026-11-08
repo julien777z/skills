@@ -1,5 +1,5 @@
 from enum import StrEnum
-from typing import TypedDict
+from typing import NotRequired, TypedDict
 
 
 class SourceCommand(StrEnum):
@@ -29,4 +29,5 @@ class ExternalResource(TypedDict):
 
     kind: str
     name: str
+    skill_name_override: NotRequired[str]
     update_on_sync: bool

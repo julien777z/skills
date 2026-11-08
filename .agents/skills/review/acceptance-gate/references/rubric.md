@@ -239,7 +239,7 @@ anything about the codebase.
 So a shape the gate can see but cannot chase to an attacker is not dropped: it is a flag whose
 remedy is the author tracing it to an attacker or ruling it out, and fixing it in the change when it
 is real. That is the gate declining to guess, not the gate finding nothing, and a recommendation to
-run an audit later never stands in for it.
+run an audit of any kind later never stands in for it.
 
 ## The Tests Behind Each Question
 

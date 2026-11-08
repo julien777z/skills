@@ -142,7 +142,7 @@ with an obsolete owned contract or revision.
   rotating a credential they hold, is reported as a gate with its owner and saved next action, as
   the global rules' **Tools and environments** says. It is never put to the user as something to
   consider or an option, recorded as deferred, left as a hardening note, or answered with a
-  recommendation to run an audit later.
+  recommendation to run an audit of any kind later.
 - **Incidental cleanup has a size budget.** The incidental part of a change — everything the request
   did not ask for that is not a defect — stays about the size of the requested part, or within 150
   changed lines across 10 files when the requested part is smaller. Inside the budget, everything

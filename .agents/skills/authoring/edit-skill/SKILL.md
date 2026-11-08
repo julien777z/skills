@@ -385,8 +385,9 @@ user's review of the source pull request overlaps it.
       request merges, and again whenever the branch changes after that run. Nothing on a pull request runs the sync: the workflow
       runs on the default branch after the merge, so a file it refuses is refused once every session
       is already reading it. The script installs the sync tool at the revision the workflow pins and
-      mirrors the canonical tree into a scratch copy, so what it refuses is exactly what the workflow
-      would. Run it from the root of the repository being edited, with that repository's own
+      mirrors the canonical tree into a scratch copy, so what its mirror refuses is exactly what the
+      workflow would; it also refuses the undeclared skill names and dependency cycles the shared
+      `agent-guidance.md` rule's dependency bullet describes. Run it from the root of the repository being edited, with that repository's own
       interpreter or any interpreter meeting the sync tool's version, and fix every
       report it prints before pushing; a description holding a colon followed by a space is the usual
       one, and quoting the value is the fix.

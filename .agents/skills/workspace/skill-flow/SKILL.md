@@ -177,9 +177,10 @@ reaches. Pages follow the categories as the sources stand when they are read.
        each skill and what it is doing when it reads it, toned `warning` when every one of those
        launches always runs; left out when nothing overlaps.
    - Each category page, `layout` `rows`: a `diagram` `Flow` whose nodes are the skills the
-     page's starting skills reach directly, each labelled with its name and its role in a few words,
-     and one node per launch named for the subagents it starts and how many, such as `Draft
-     reviewers ×3 per round`. Edges are labelled `invokes`,
+     page's starting skills reach directly, each labelled with its name and given its role in a few
+     words as its `detail`, and one node per launch labelled with the short name of the subagents it
+     starts, such as `Draft reviewers`, with how many and how often, such as "×3 per round", in its
+     `detail`. Edges are labelled `invokes`,
      `launches` (from the skill to its launch node) or `borrows`, and `steps` say in order how the
      work moves through them; a skill reached only further down appears in the `Skills` table
      alone. Then a `tree` `Scenarios`, `open_depth` 1: two to four stories this work commonly
@@ -187,7 +188,8 @@ reaches. Pages follow the categories as the sources stand when they are read.
      finds a bug, or findings that keep coming for three rounds. A root names the story. Beneath it,
      what happens in run order: each round or step, such as "Review round 1", holding one leaf
      per subagent it starts, named for its role, such as "Style 2 lens"; and each event that changes
-     the path, such as "Style 2 lens reports an unused import", toned `warning`, holding
+     the path, labelled with a short name such as "Unused import" and told in its `detail`, such
+     as "Style 2 lens reports an unused import", toned `warning`, holding
      what it sets off — a validator, a fix, a fresh gate — with an outcome that settles it toned
      `good`. A step that starts none says "In process" in its `meta`, and a round that reruns fewer
      subagents says why, such as a lens retired or a slice the fix left untouched. Every node with
@@ -309,7 +311,8 @@ step exists to catch.
 
 ## Guardrails
 
-- Never invoke or dispatch a workflow the dashboard shows; reading its sources is the whole job of
-  Show, and of Interrogate until the user answers.
+- Never invoke or dispatch a workflow the dashboard shows, apart from the read-only readers step 2
+  launches under `subagent-matrix`; reading the sources is the whole job of Show, and of
+  Interrogate until the user answers.
 - Show draws the current flow only. A proposed change, or a recommendation, appears only when the
   request asks for it, as an outline beside the flow, never drawn into it.

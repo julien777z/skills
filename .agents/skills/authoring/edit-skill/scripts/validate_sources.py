@@ -39,11 +39,12 @@ SKILL_CONTEXT_BEFORE_PATTERN: Final[re.Pattern[str]] = re.compile(
     re.IGNORECASE,
 )
 SKILL_CONTEXT_AFTER_PATTERN: Final[re.Pattern[str]] = re.compile(
-    r"^(?:'s\b|[\"')]?\s+skills?\b)", re.IGNORECASE
+    r"^(?:['’]s\b|[\"')]?\s+skills?\b)", re.IGNORECASE
 )
 CONTEXT_BEFORE_CHARS: Final[int] = 30
 CONTEXT_AFTER_CHARS: Final[int] = 10
 SKILL_RESOURCE_KIND: Final[str] = "skill"
+INSTALLED_PACKAGES_DIRNAME: Final[str] = "node_modules"
 
 
 EXIT_CODES: Final[dict[SyncOutcome, int]] = {
@@ -256,10 +257,18 @@ def third_party_skill_names(skills_dir: Path) -> set[str]:
     resources: list[ExternalResource] = json.loads(registry.read_text())["resources"]
 
     return {
-        resource["name"]
+        resource.get("skill_name_override", resource["name"])
         for resource in resources
         if resource["kind"] == SKILL_RESOURCE_KIND and resource["update_on_sync"]
     }
+
+
+def source_files(directory: Path, pattern: str) -> list[Path]:
+    """Return the files under a directory that match a pattern, leaving out installed packages."""
+
+    return sorted(
+        path for path in directory.rglob(pattern) if INSTALLED_PACKAGES_DIRNAME not in path.parts
+    )
 
 
 def find_dependency_problems(skills_dir: Path) -> list[str]:
@@ -268,7 +277,8 @@ def find_dependency_problems(skills_dir: Path) -> list[str]:
     Packages refreshed from upstream are not read for names, since their upstream owns their text.
     """
 
-    packages = {entry.parent.name: entry.parent for entry in skills_dir.rglob(SKILL_ENTRY_FILENAME)}
+    entries = source_files(skills_dir, SKILL_ENTRY_FILENAME)
+    packages = {entry.parent.name: entry.parent for entry in entries}
     third_party = third_party_skill_names(skills_dir)
     skill_names = set(packages)
     graph: dict[str, set[str]] = {}
@@ -282,7 +292,7 @@ def find_dependency_problems(skills_dir: Path) -> list[str]:
         if name in third_party:
             continue
 
-        texts = [path.read_text() for path in sorted(package.rglob("*.md"))]
+        texts = [path.read_text() for path in source_files(package, "*.md")]
         named = set().union(*(named_skills(text, skill_names) for text in texts)) - {name}
 
         for missing in sorted(named - declared):
