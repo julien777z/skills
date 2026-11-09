@@ -1,0 +1,309 @@
+name: "Build An Anime Character"
+game_id: "universe:10769279468"
+universe_id: "10769279468"
+place_id: "124617195142196"
+url: "https://www.roblox.com/games/124617195142196/Build-An-Anime-Character"
+creator: "Tomark Interactive (group 90953624, no verified badge)"
+chart_category: "Trending in Party & Casual"
+chart_rank: 1
+researcher: "R08"
+mode: passive
+play_ended_by: null
+onboarding_video_coverage: covered
+observed_at: "2026-11-09T00:36:00Z"
+observation_status: completed
+previous_observed_at: null
+changes_since_previous: []
+active_play_seconds: null
+play_coordination:
+    resource_key: null
+    wait_seconds: null
+    acquired_at: null
+    expires_at: null
+    released_at: null
+    release_verified: null
+    expiry_or_blocker: null
+context:
+    genre: "Character-building gacha with 1v1 stat battles (games API genre_l1 'Party & Casual')"
+    camera_perspective: "Video: third person in the hub; matches are full-screen 2D panels over a blurred hub"
+    device_and_input: "Video: PC with mouse in all three videos"
+    observation_environment: "Passive: games, votes, media, thumbnails, badges, game-pass and age-recommendation APIs retrieved over HTTP from the orchestrator host; no client launched"
+    visible_server_population: "API at retrieval: 7,748 playing; maxPlayers 25 per server"
+    solo_or_group: "Advertised as 1v1 battles against other players in a shared server; video shows 1v1 and four-seat tables and an AI opponent option"
+    game_version_if_known: "Universe created 2026-10-04; updated 2026-11-07T18:42:27Z; videos uploaded 2026-10-29 to 2026-11-07"
+    evidence: [description_1, stats_1, video_2, video_3, video_4]
+account_state:
+    freshness: unknown
+    evidence: ["Game not played; no in-game state observed by this study. Video accounts are the creators' own: video_2 looks new ('NOOB' title, $200), video_4 is returning (says he already tried the game, $1,805)."]
+evidence:
+    - id: description_1
+      kind: description
+      url: "https://games.roblox.com/v1/games?universeIds=10769279468"
+      captured_at: "2026-11-09T00:33:00Z"
+      media_date_or_version: "updated 2026-11-07T18:42:27Z"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Marketing text: 1v1 battles, spin for characters from anime series, combine the best stats from different characters, win battles to earn cash and climb ranks; update notes mention a community vote that added a character, a new series-themed mode, new characters and balance changes; two promo codes for a free spin and cash."
+    - id: stats_1
+      kind: description
+      url: "https://games.roblox.com/v1/games/votes?universeIds=10769279468"
+      captured_at: "2026-11-09T00:34:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "6,831,033 visits and 123,308 favourites about five weeks after creation; votes 5,784 up / 2,601 down (about 69% positive); avatar type MorphToR15; age recommendation Minimal (suitable for everyone)."
+          - "Badges API: 7 badges - 'You played!' (3,544,216 awarded), '1 Win' (3,063,587), '5 Wins' (1,777,888), '10 Wins' (966,824), 'Legendary Anime' (3,019,908), 'S Tier Anime' (1,372,964), 'Mythical' (rolled a mythical character, 1,848,714)."
+          - "Game-pass API: 9 passes - Luckier Spins! (119), Infinite Rerolls (199), VIP (49), 2x STREAK (75), 2x WINS (75), 2x BUX (75), and Brainrot Pack, One Piece Pack and Starter Pack with no listed price (off sale or priced elsewhere). Prices are as listed at retrieval, not permanent."
+    - id: thumbnail_1
+      kind: thumbnail
+      url: "https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=10769279468&size=768x432&format=Png"
+      captured_at: "2026-11-09T00:34:00Z"
+      media_date_or_version: "images 71471433290527, 116424154459354, 89356554734456"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Viewed all three. Image 1: a spiky-haired anime-style Roblox character behind five coloured stat cards on a table (IQ 88 yellow, Speed 92 blue, Strength 99 red, Abilities 91 purple, Durability 89 green), each with an illustrated icon and a large number, a hand pointing at Strength."
+          - "Image 2: a character in a glowing capsule with a SPIN button below, a column of other character portraits at left, and a 'CHOOSE A STAT!' panel of five colour-coded rows (icon, label, value) with the Abilities row highlighted and a hand pointing at it."
+          - "Image 3: a straw-hat anime character beside 'BEST STAT?' and the same five colour-coded stat rows with question marks for values."
+          - "Promotional art; it advertises the spin-then-pick-a-stat mechanic and a colour-per-stat convention but does not establish the actual in-game UI, sizes or flow."
+    - id: video_1
+      kind: gameplay_video
+      url: null
+      captured_at: null
+      media_date_or_version: "media list includes a GamePreviewVideo (video id 106240234596543)"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "The preview video is listed in the media API but could not be retrieved or watched from this environment (the videos API returned an error); no footage is described."
+    - id: video_2
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=p5xn6SfGtO0"
+      captured_at: "2026-11-09T02:50:00Z"
+      media_date_or_version: "uploaded 2026-11-07"
+      timestamps: ["0:23 game page", "0:30-0:50 hub at spawn, $200", "0:57 seated: Default Mode 1/2, Fight with AI", "1:08 GO!", "1:30 build screen", "2:00 showdown", "2:15 winner screen", "5:15 Shop gamepasses", "5:30 Roblox purchase dialog 'Troll All [SALE]'", "5:45 hub $1,000"]
+      screenshots:
+          - "p5xn6SfGtO0-join-sheet.jpg"
+          - "p5xn6SfGtO0-003.jpg"
+          - "p5xn6SfGtO0-004.jpg"
+          - "p5xn6SfGtO0-007.jpg"
+          - "p5xn6SfGtO0-010.jpg"
+          - "p5xn6SfGtO0-sheet-01.jpg"
+          - "p5xn6SfGtO0-sheet-02.jpg"
+          - "p5xn6SfGtO0-sheet-03.jpg"
+          - "p5xn6SfGtO0-sheet-05.jpg"
+      limitations:
+          - "Kind: onboarding (joins from the game page on a 'NOOB'-titled account) and session. Channel danielbieje CH, about 759,000 subscribers; 12,883 views at retrieval; 16:02 long, first 10:00 studied. Indonesian commentary."
+          - "Edited with jump cuts and an intro teaser (0:00-0:20); account freshness not confirmed. Captions unavailable (HTTP 429, then YouTube bot check)."
+    - id: video_3
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=vNHHGnPaHc8"
+      captured_at: "2026-11-09T02:50:00Z"
+      media_date_or_version: "uploaded 2026-11-05"
+      timestamps: ["0:00-1:45 a full draft", "1:45 showdown", "2:00 winner screen grade B", "6:00 legendary roll flame frames", "6:15 Top Streaks and Next Mythical Vote boards", "6:30 Choose Your Mode panel"]
+      screenshots:
+          - "vNHHGnPaHc8-sheet-01.jpg"
+          - "vNHHGnPaHc8-sheet-03.jpg"
+      limitations:
+          - "Kind: session. Channel Tio Gadi, about 62,100 subscribers; 899 views at retrieval; 13:16 long, 0:00-7:40 studied (a sponsor segment starts at 7:46). Portuguese commentary."
+          - "Facecam and a live-chat overlay cover the left edge; chat text not recorded. Returning progress unknown. Captions unavailable (YouTube bot check)."
+    - id: video_4
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=k7MOiKjq3pc"
+      captured_at: "2026-11-09T02:50:00Z"
+      media_date_or_version: "uploaded 2026-10-29"
+      timestamps: ["0:15 hub with 'needs an opponent' Join/Dismiss toast", "0:30 seated", "1:45 showdown", "5:00 lost showdown 44.2 vs 52.6", "5:30 Legendary Mode selected at a table", "5:45 four-seat table and Grand Prize wheel", "6:00 hub table showing Turn 4/5"]
+      screenshots:
+          - "k7MOiKjq3pc-sheet-01.jpg"
+          - "k7MOiKjq3pc-sheet-03.jpg"
+      limitations:
+          - "Kind: session, returning player ('I already tried this game'). Channel VectrUmair, about 24 subscribers; 979 views; chosen because it is the only English-language candidate with captions. 15:55 long, first 10:00 studied."
+          - "Uses English auto-captions (k7MOiKjq3pc.en.vtt) for commentary; profanity in commentary ignored. Uploaded ten days before the other two."
+gameplay:
+    advertised_loop: "Spin for a random anime character, choose which of its stats (Strength, Speed, Abilities, IQ, Durability) to keep, repeat to assemble one character from the best stats of several, then fight another player 1v1; wins earn cash and rank."
+    observed_loop: "Video (video_2, video_3, video_4): in a hub of tables, the player sits at a table; when an opponent sits (or the player presses 'Fight with AI') a full-screen build screen opens. Both players roll at the same time; each roll shows one character card (portrait, name, series, rarity) and the player places it into one of five empty stat slots with a '+' button before a per-pick countdown (about 20 s) ends. Stat values are hidden while building, so the player places characters by what they know of the anime. Opponent slots are visible as portraits, some marked 'STEAL'. After five picks a 'Showdown' reveals each slot's number and an average score; the higher average wins and a winner screen shows a letter grade, the average, a five-axis radar chart, and 'Rematch' (with a ready count and countdown) or 'Leave'. Cash rises after wins."
+    first_action: "Video_2: walk from spawn to an open table and sit (about 0:30-0:57)."
+    first_success_seconds: null
+    success_feedback:
+        - "Video: a legendary roll appears in a flaming frame on the card (video_3 6:00, video_4 1:15)."
+        - "Video: winner screen with gold 'WINNER' text, a crown on the winner's avatar portrait, a large green letter grade (B seen), the average score and a radar chart of the five stats (video_2 2:15, video_3 2:00)."
+        - "Video: cash counter rose from $200 to $500 to $1,000 across the first matches (video_2 0:45, 5:00, 5:45)."
+    progression:
+        - "Evidence (stats_1): win-count badges (1, 5, 10 wins) and build-quality badges (Legendary, S Tier) and a rarity badge (Mythical), suggesting tiered build grades and character rarities."
+        - "Video: a mode panel at the table offers Classic ($100 table, any character), Anime Decks ($100, pick an anime), Legendary ($150, legendaries only) and Reverse ($200, worst character wins); Legendary and Reverse show '3/5 WINS' and 'Win matches to unlock new modes!' (video_3 6:30)."
+        - "Video: a player title over the avatar ('NOOB' with level flame 1 on a new-looking account) (video_2 0:45)."
+        - "Video: hub leaderboards for top wins, top streaks and top playtime, a 'Next Mythical Vote' board, and a 'Grand Prize' spin wheel by a four-seat table (video_2 0:45, video_3 6:15, video_4 5:45)."
+    choices_and_variety:
+        - "Advertised (thumbnail_1): after each spin the player chooses one stat to take, a small per-spin decision under uncertainty ('BEST STAT?')."
+        - "Advertised (description_1): characters from several anime series and a series-themed mode."
+        - "Video: per roll, which of the remaining slots to fill; bottom actions 'Reveal All', 'See Best', 'Reroll', 'Steal' and 'Shuffle' (video_2 1:30). Their costs or limits were not shown in frames."
+        - "Video: table modes as above; a two-seat 1v1 table and a four-seat table (video_4 5:45)."
+    social_and_cooperative:
+        - "Advertised: 1v1 battles against other players; community vote decided a new character (description_1)."
+        - "Video: matchmaking toast '<player> needs an opponent...' with 'Join' and 'Dismiss' (video_4 0:15, 6:00)."
+        - "Video: while waiting alone at a table, 'Tired of waiting? Fight with AI! PLAY!', plus 'Invite Friends' and 'Change Mode' (video_2 0:55, video_4 5:30); captions: 'Do I play with a bot or do I leave?' (video_4)."
+        - "Video: other tables show live matches in the hub with 'PvP A VS B' and 'Turn 2/5' over a strip of picked portraits, so spectators can follow (video_2 0:45, video_4 6:00)."
+        - "Video: 'Invite a Friend!' toast on the winner screen and a 'Friends Boost: +0%' meter (video_2 0:45, 2:15)."
+    companions_and_pets: []
+    friction:
+        - "Inference: luck-boost and infinite-reroll passes sit directly on the core spin, so paid advantage likely affects 1v1 outcomes; unverified without play."
+        - "Evidence: about 31% of votes are downvotes (stats_1); cause unknown."
+        - "Video: stat values are hidden while placing, so a player who does not know a character guesses; captions: 'I don't know who she is, so I'm just going to put her in this' and 'What am I supposed to do with these?' (video_4)."
+        - "Video: waiting for an opponent; captions 'Can this load faster?' and the AI-fight prompt exists for this wait (video_4, video_2 0:55)."
+    evidence: [description_1, stats_1, thumbnail_1, video_2, video_3, video_4]
+pacing:
+    timing_start_definition: "Video_2: first frame showing the avatar in the hub after the game page (0:30); match timings from the build screen's 'GO!' to the winner screen."
+    loading_seconds: null
+    time_to_control_seconds: null
+    first_meaningful_choice_seconds: 41
+    first_reward_seconds: null
+    action_reward_cadence: "Video: one placement every 5-20 s within a countdown that restarts at about 20 per pick; five picks then a showdown, so a match runs about 60-75 s from 'GO!' to the winner screen (video_2 1:08-2:15, video_3 0:00-2:00). A rematch countdown of about 30 s follows."
+    active_play_versus_travel_or_waiting: "Video: walking from spawn to a table took about 25 s; waiting for an opponent varies and is cut in edited videos; the AI option removes it."
+    natural_stopping_points:
+        - "Inference: each completed build and its 1v1 battle is a natural session unit."
+        - "Video: the winner screen's Rematch or Leave choice after every match (video_2 2:15)."
+    measurement_method: "Video timings read from each video's own timestamps, frames sampled every 15 s and every 3 s for video_2 0:20-1:20; the videos are edited, so waits may be shortened."
+    evidence: [video_2, video_3, video_4]
+goals_and_progression:
+    next_goal_clarity: "Video: high inside a match (empty slots, a countdown, the opponent's board beside yours); in the hub, the next goal is any open table, shown by '0/2' seat counters."
+    short_term_goals:
+        - "Advertised: fill every stat slot with a high value, then win the battle."
+        - "Video: beat the opponent's average score in the showdown."
+    medium_term_goals:
+        - "Evidence (stats_1): reach 1, 5 and 10 wins; build an S Tier or Legendary character; roll a Mythical character."
+        - "Video: win matches to unlock Legendary and Reverse modes (3/5 wins shown) (video_3 6:30)."
+    advertised_long_term_goals:
+        - "Climb the ranks (description_1)."
+        - "Video: top wins, top streaks and top playtime boards in the hub (video_3 6:15, video_4 5:45)."
+    upgrade_choices: []
+    mastery_versus_stat_growth: "Video: knowledge mastery rather than stat growth: the build's numbers are hidden while placing, so knowing which character is strong in which stat is the skill; luck decides the rolls (video_3 title, video_4 captions)."
+    unlock_previews_and_optional_activities:
+        - "Video: locked modes shown with their win requirement in the mode panel (video_3 6:30)."
+        - "Video: Grand Prize wheel, mythical character vote board, Skins and Titles menus (video_4 5:45, video_3 6:15)."
+    evidence: [description_1, stats_1, video_2, video_3, video_4]
+failure_and_recovery:
+    observed_failure: "Video: losing a showdown (video_4 5:00: 44.2 against 52.6)."
+    explanation: "Video: both builds' per-stat numbers and averages are revealed side by side, so the loss is explained stat by stat (video_2 4:45, video_4 5:00)."
+    cost_or_lost_progress: "Video: tables show a $100-$200 entry figure; whether a loss costs it was not visible."
+    retry_seconds: 30
+    checkpoints: null
+    non_paid_recovery: "Video: Rematch or join another table immediately; the AI option is free as shown."
+    evidence: [video_2, video_3, video_4]
+agency_and_social:
+    meaningful_choices:
+        - "Advertised: which stat to keep from each spun character (thumbnail_1)."
+        - "Video: slot placement per roll, plus Reroll, Steal, Shuffle, Reveal All and See Best actions, and the table mode (video_2, video_3)."
+    customization_and_identity:
+        - "Advertised: the finished character is a personal mash-up of several series' characters."
+        - "Video: Skins and Titles menus; title shown over the avatar (video_2 0:45)."
+    cooperation_and_competition:
+        - "Advertised: 1v1 competition."
+        - "Video: 1v1 and four-seat tables; steal from the opponent's board (video_2, video_4)."
+    visible_social_feedback:
+        - "Video: live match strips over other tables, winner screen, hub leaderboards (video_2 0:45, video_4 5:45)."
+    solo_accessibility: "Video: playable without other people via 'Fight with AI'."
+    evidence: [thumbnail_1, description_1, video_2, video_3, video_4]
+ui:
+    evidence_status: observed
+    visual_style: "Video: bright, saturated simulator style: chunky rounded buttons in distinct colours, white display lettering with dark outlines, anime portrait cards, and the 3D hub blurred behind full-screen match panels (video_2 1:30)."
+    layout_and_hierarchy: "Build screen (video_2 1:30): title 'BUILD AN ANIME CHARACTER' and mode at top centre, large countdown number under it, two avatar heads, two character cards facing each other across a 'VS' slash in the centre, the player's five stat slots on the left and the opponent's on the right, a 'You rolled X' line with 'Luck 1x' under the cards, and a row of five action buttons along the bottom with the green Reroll largest in the middle. Hub HUD (video_2 0:45): left column of square buttons Free, Shop, Skins, Titles; bottom-left cash and Friends Boost with '+' buttons; right column of offer tiles (Starter Pack, Lucky Spins, 2x Bux, VIP); top-right Daily Rewards and Quests pills; top-centre 'Troll All' banner."
+    color_scheme: ["purple Reveal All", "orange See Best", "green Reroll", "red Steal", "blue Shuffle", "one colour and emoji icon per stat label", "bright green hub floor and red torii gates"]
+    typography:
+        font_appearance: "Heavy rounded sans-serif display type, white with dark outline, all caps for titles and buttons."
+        font_family_if_verified: null
+        size_observation: "In 960x540 frames: title about 20 px tall, countdown about 22 px, stat labels about 11 px, character names on cards about 13 px, the small 'Please select' hint under each stat label about 5 px."
+        size_basis: visual_estimate
+        viewport_resolution: "Video frames scaled to 960x540 from creators' 16:9 captures"
+        readability: "Titles, names and buttons are readable; the per-slot hint text and the picked character names beside slots are too small to read in 480p footage."
+    controls:
+        primary_actions: "Video: '+' beside each empty stat slot; bottom buttons Reveal All, See Best, Reroll, Steal, Shuffle; on the winner screen Rematch (yellow) and Leave (red)."
+        close_x_appearance_and_location: "Video: a white X on a red square at the top right of the mode panel and the Shop panel (video_3 6:30, video_2 5:15)."
+        modal_behavior: "Video: match screens take the whole view over a blurred hub; the mode panel shows its own countdown (17 s) because it applies to everyone at the table."
+        state_feedback: "Video: 'Rolling...', 'You rolled X', 'Waiting for opponent...', 'Get ready!', 'GO!'; filled slots show the character's thumbnail and name; mode panel shows 'Selected', 'Open' and locked states."
+        target_size_and_input: "Video: bottom action buttons about 80x25 px and '+' slot buttons about 20 px in 960x540 frames; mouse input on PC captures. Touch not observed."
+    graphics:
+        graphics_versus_text: "Video: each stat pairs a word with an emoji-style icon (bicep, wind, lightning, brain, shield); character cards are full anime portrait art with name, series and rarity text."
+        illustration_or_icon_style: "Glossy, outlined, 3D-ish icons on the hub buttons; flat emoji icons on stats."
+        framing_outlines_and_effects: "Thick dark outlines, gradients on buttons, a flame frame for legendary rolls, a crown on the winner portrait, red notification badges with counts."
+        placement_and_labels: "All hub buttons labelled under their icon; action buttons labelled with word plus icon."
+        clarity_or_clutter: "Build screen is clear and symmetric; the hub HUD is dense with offers on both edges and a banner on top."
+    evidence: [video_2, video_3, video_4]
+new_player_onboarding:
+    status: indeterminate
+    reason: "No video confirms a fresh first join. Video_2 cuts from the game page into the hub on an account titled 'NOOB' with $200 and shows no tutorial in frames sampled every 3 s from 0:20 to 1:20, but it is edited and the account's history is unknown; video_4's player says he already tried the game."
+    conventions:
+        - "Video: tables with seat counters ('0/2') near spawn as the only world prompt; an AI fallback offered at the table."
+    sequence:
+        - "Video_2 0:30: avatar in the hub beside rows of tables, cash $200."
+        - "Video_2 0:57: seated at a table; panel 'Default Mode 1/2 $100', 'Tired of waiting? Fight with AI! PLAY!', 'Change Mode', 'Invite Friends'."
+        - "Video_2 1:05-1:11: opponent seated, 'A VS B', then 'GO!' and the first roll."
+    first_independent_action: "Video_2: walking to a table."
+    skip_or_replay: null
+    completed: null
+    observed_seconds: null
+    completion_seconds: null
+    timing_basis: "Video timestamps of edited footage."
+    evidence: [video_2, video_4]
+accessibility_and_comfort:
+    text_and_contrast: "Video: outlined white text holds contrast over the blurred scene; small hint text is low contrast and tiny."
+    non_color_cues_and_icon_labels: "Video: every stat and action has a word plus an icon, not colour alone."
+    input_support_observed: ["Video: mouse on PC in all three videos"]
+    motion_audio_settings: []
+    settings_tested: []
+    clutter_and_interruptions:
+        - "Video: matchmaking toasts ('needs an opponent', 'Invite a Friend!') appear over the hub and the winner screen (video_4 0:15, video_2 2:15)."
+        - "Video: dense offer tiles on both hub edges (video_2 0:45)."
+    evidence: [video_2, video_3, video_4]
+commercial_and_return_prompts:
+    first_purchase_prompt_seconds: null
+    purchase_prompt_count_during_sample: 1
+    onboarding_interruption: "Video: no purchase prompt between the hub and the first match in video_2."
+    optional_versus_required_presentation: "Video: offers sit around the hub edges (Starter Pack, Lucky Spins, 2x Bux, VIP, Troll All banner, '+' on cash and Friends Boost); the Shop's Gamepasses page lists VIP (2 VIP chairs and a gold tag), 2x Bux, 2x Win, Double Win Streak (video_2 5:15). One Roblox purchase dialog for 'Troll All [SALE]' appeared at video_2 5:30; whether the creator clicked the banner is not visible. Matches themselves show no purchase prompt; the Reroll, Steal, Reveal All and See Best costs are not shown."
+    return_rewards_and_events:
+        - "Evidence: promo codes for a free spin and cash in the description; update notes announce a community character vote (description_1)."
+        - "Evidence: game passes for 2x streak, 2x wins and 2x currency imply a win-streak mechanic (stats_1)."
+        - "Video: Daily Rewards and Quests buttons with a notification badge, a 'Free' gift button with a badge, a Grand Prize wheel and a Next Mythical Vote board (video_2 0:45, video_4 5:45, video_3 6:15)."
+    urgency_or_streak_cues:
+        - "Video: '2x Streak' indicator and a Top Streaks board (video_3 6:30, 6:15); a countdown timer at the top right of the hub (video_2 5:45; purpose not shown)."
+    evidence: [description_1, stats_1, video_2, video_3, video_4]
+world_and_presentation:
+    navigation_and_objective_readability: "Video: compact hub where every table is visible from spawn, each with a seat counter and mode label; matches in progress show above their tables."
+    landmarks_and_variety: ["Video: red torii gates, leaderboard boards, vote board, spin wheel, statues of anime-style characters along the edge."]
+    environmental_storytelling: []
+    audiovisual_consistency: "Video: consistent bright Japanese-themed hub; anime portraits are 2D art cards rather than 3D models. Audio not assessed."
+    success_effect_intensity_and_clarity: "Video: strong and clear: flame frames for legendary rolls, a crown and grade letter on the winner screen."
+    evidence: [video_2, video_3, video_4]
+technical_quality:
+    loading_or_missing_assets: ["Video: one player asks 'Can this load faster?' while waiting at a table (video_4 captions); not measured."]
+    input_or_frame_issues: []
+    ui_defects: []
+    recovery_behavior: null
+    measurements: []
+    measurement_method_and_limits: "Video only; creators' native clients; nothing measured. No UI defect seen in the studied frames."
+    evidence: [video_4]
+transferable_ideas:
+    - "Video: hidden values during the draft. The player places each random character into a stat slot without seeing its number, so knowing the source material is the skill and the showdown reveal is the payoff (video_2, video_3, video_4)."
+    - "Video: a short, synchronised 1v1 draft (five picks, about a minute) with the opponent's board in view and a steal action, so every pick is also a reaction (video_2)."
+    - "Video: 'Fight with AI' on any table that waits, removing the empty-server wait without removing the PvP framing (video_2 0:57)."
+    - "Video: matches play out at physical tables in the hub with a pick strip and turn counter above them, so newcomers see the loop before sitting down (video_2 0:45)."
+    - "Spin-then-choose: a random draw followed by a small player choice (which one stat to keep) turns pure luck into a decision each roll."
+    - "A fixed set of five stats, each with its own colour and icon, used consistently in art and UI (video confirms the in-game UI follows the thumbnail convention)."
+    - "Build-grade badges (S Tier, Legendary) that reward the quality of an assembled result rather than time spent."
+    - "Video: modes unlocked by wins (Legendary, Reverse 'worst character wins') reuse the same draft with a twist (video_3 6:30)."
+practical_takeaway:
+    strongest_idea: "A one-minute draft where the player assigns random picks to slots with values hidden, then a side-by-side reveal: the reveal explains the result stat by stat and turns knowledge of the theme into skill (video_2, video_3)."
+    main_tradeoff: "Players who do not know a character can only guess, and the visible luck, reroll and steal actions plus a hub ringed with offers invite pay-to-win suspicion (video_4 captions, video_2 0:45; inference about perception)."
+    suitable_genres_and_stages: ["gacha and collection games", "character or loadout builders", "quick PvP lobby games", "early-game loadout drafts"]
+    testable_hypothesis: "In a pick-and-place draft, hiding values until a reveal increases rematch rate against showing values while placing, at the cost of more guessing by newcomers."
+    estimated_effort_and_assumptions: "Estimate: small to medium, assuming an existing random reward and attribute system to extend with a slot board, a timer and a reveal screen."
+inferences:
+    - "Very fast growth (about 6.8M visits in five weeks) with a single core mechanic advertised in every image suggests the hook is legible from the thumbnail alone; popularity cause is not established."
+    - "Video: the table seat counter, live match strips and the AI fallback do the onboarding work a tutorial would; no tutorial was seen in any studied footage, but none of it is a confirmed first join."
+uncertainties:
+    - "Battle has no player input after the draft as seen; whether any hidden rule beyond the average score decides it is unknown."
+    - "Costs and limits of Reroll, Steal, Shuffle, Reveal All and See Best."
+    - "Whether a loss costs the table's cash figure."
+    - "Preview video (video_1) unwatched; captions for video_2 and video_3 unavailable (YouTube bot check), so their creators' commentary was not used."
+    - "Captions missing for video_2 (p5xn6SfGtO0) and video_3 (vNHHGnPaHc8): YouTube's bot check blocked this machine and they were not retried after the obby retries failed; only video_4 has captions. A later central caption pass may add creator commentary."
+blockers: []

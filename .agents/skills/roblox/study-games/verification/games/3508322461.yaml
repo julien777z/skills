@@ -1,0 +1,380 @@
+---
+name: "[\U0001F383] Jujutsu Shenanigans"
+game_id: universe:3508322461
+universe_id: '3508322461'
+place_id: '9391468976'
+url: https://www.roblox.com/games/9391468976
+creator: Jujutsu Shenanigans! (group)
+chart_category: Most Popular
+chart_rank: 1
+researcher: R04
+mode: play
+onboarding_video_coverage: not_covered
+observed_at: '2026-11-09T00:15:47Z'
+observation_status: blocked
+previous_observed_at: 
+changes_since_previous: []
+active_play_seconds: 0
+play_coordination:
+  resource_key: roblox-player
+  wait_seconds: 506
+  acquired_at: '2026-11-09T00:15:11Z'
+  expires_at: '2026-11-09T00:30:11Z'
+  released_at: '2026-11-09T00:16:13Z'
+  release_verified: true
+  expiry_or_blocker: On join the game showed a modal 'GAME RULES' panel whose only control is 'Accept'. It lists actions that can lead to bans, including permanent ones. Under the brief's terms-prompt rule, play stopped before any input. The player was left in the experience on that panel, and both locks were released.
+context:
+  genre: Action / Battlegrounds & Fighting (API genre_l1 Action, genre_l2 Battlegrounds & Fighting)
+  camera_perspective: third-person (spawn view, not operated)
+  device_and_input: macOS Roblox player in a VM; no input sent Videos show PC keyboard and mouse (source_4), a gamepad with relabelled tiles (source_5) and mobile/iPad touch (source_6).
+  observation_environment: Isolated macOS guest VM over SSH, 1920x1200 points, captures downscaled to 1200 px
+  visible_server_population: About 12 players listed in the kill leaderboard at join; API maxPlayers 25, 106,003 playing at retrieval
+  solo_or_group: Public free-for-all server (inferred from leaderboard and other avatars in view)
+  game_version_if_known: Halloween title tag; place updated 2026-11-05T05:29:22Z
+  evidence:
+  - source_1
+  - source_3
+  - source_4
+  - source_5
+  - source_6
+account_state:
+  freshness: returning
+  evidence:
+  - The study account is the user's existing Roblox account (brief). The join screen alone did not show whether the game had seen this account before.
+evidence:
+- id: source_1
+  kind: description
+  url: https://games.roblox.com/v1/games?universeIds=3508322461
+  captured_at: '2026-11-08T23:26:00Z'
+  media_date_or_version: updated 2026-11-05T05:29:22Z
+  timestamps: []
+  screenshots: []
+  limitations:
+  - The description is a control list plus a joke tagline; it states combat is based on other battleground games and destruction on another title.
+- id: source_2
+  kind: thumbnail
+  url: https://tr.rbxcdn.com/180DAY-decec85a41b80e4ac0beca8bc2952a7f/768/432/Image/Png/noFilter
+  captured_at: '2026-11-08T23:26:00Z'
+  media_date_or_version: TN3
+  timestamps: []
+  screenshots: []
+  limitations:
+  - 'Only the first thumbnail was retrieved: a greyscale manga-style sketch of a hooded figure with a scribbled speech bubble reading ''The Jujutsu-est''. It shows no gameplay or UI.'
+- id: source_3
+  kind: actual_play
+  url: https://www.roblox.com/games/9391468976
+  captured_at: '2026-11-09T00:15:47Z'
+  media_date_or_version: Roblox player 0.746.0
+  timestamps:
+  - 00:15:31Z launch
+  - 00:15:47Z rules panel visible
+  screenshots:
+  - 3508322461-1.png
+  limitations:
+  - Join screen only; no input was sent because the rules panel requires acceptance.
+- id: source_4
+  kind: gameplay_video
+  url: https://www.youtube.com/watch?v=0JA_PgNyZxo
+  captured_at: '2026-11-09T02:15:00Z'
+  media_date_or_version: '2026-03-04'
+  timestamps:
+  - 0:45 'Characters' dropdown (Honored One, Vessel, Restless Gambler, Ten Shadows, Perfection)
+  - 1:30-2:15 Honored One skills and R teleport demonstrated
+  - 3:15 awakening bar 'Press G to activate' and 'USE TWICE' tile hint
+  - 4:15-5:00 slam through the street, rubble
+  - 9:30 Restless Gambler jackpot scenario text
+  screenshots:
+  - 0JA_PgNyZxo-004.jpg
+  - 0JA_PgNyZxo-007.jpg
+  - 0JA_PgNyZxo-009.jpg
+  - 0JA_PgNyZxo-014.jpg
+  - 0JA_PgNyZxo-017.jpg
+  - 0JA_PgNyZxo-021.jpg
+  - 0JA_PgNyZxo-039.jpg
+  limitations:
+  - 'Onboarding-oriented pick (an experienced player coaching a newcomer): channel KTG Gaming, about 1.59M subscribers, 568,699 views; 28-minute video, first 10 minutes studied.'
+  - 'Not a first join: the coached player is already in the server with the HUD showing; no rules panel or tutorial is shown. Appears to be a quiet or private server (only the two players visible).'
+  - About eight months old, before the Halloween update; character list and balance may differ.
+  - Edited with cuts and creator commentary; skills are demonstrated on a cooperating target, not in contested play.
+- id: source_5
+  kind: gameplay_video
+  url: https://www.youtube.com/watch?v=ygj6Tv4XvRU
+  captured_at: '2026-11-09T02:15:00Z'
+  media_date_or_version: '2026-10-27'
+  timestamps:
+  - 1:15 server event '5 doors have appeared around the map! go open them for candies'
+  - 2:00-3:00 awakened combat with building destruction
+  - 4:45 'You purchased a drink!'
+  - 6:00 '110 seconds left to capture a pumpkin'
+  - 8:45 several players attacking one ('jumped')
+  - 9:15 'The next event is starting in 20 seconds'
+  screenshots:
+  - ygj6Tv4XvRU-006.jpg
+  - ygj6Tv4XvRU-009.jpg
+  - ygj6Tv4XvRU-010.jpg
+  - ygj6Tv4XvRU-020.jpg
+  - ygj6Tv4XvRU-025.jpg
+  - ygj6Tv4XvRU-036.jpg
+  - ygj6Tv4XvRU-038.jpg
+  limitations:
+  - 'Skilled-play pick: channel Kade, about 128K subscribers, 102,605 views; 12-minute video, first 10 minutes studied.'
+  - Experienced returning player on a gamepad in a public server using a secret awakening; edited, with a skip to the awakening (1:30) and meme inserts (frames 002 and 007 discarded).
+  - Current Halloween version.
+- id: source_6
+  kind: gameplay_video
+  url: https://www.youtube.com/watch?v=o27MvK8Ot84
+  captured_at: '2026-11-09T02:15:00Z'
+  media_date_or_version: '2026-11-03'
+  timestamps:
+  - 1:15 mobile touch HUD
+  - 1:45 top bar expanded (Characters, $925, settings, workshop, players)
+  - 2:00 'Successfully loaded map from Workshop!'
+  - 3:15 Workshop Movesets list (1/11947 pages)
+  - 3:45 custom moveset with eleven skill tiles
+  - 5:30-9:00 PC exploration and parkour
+  screenshots:
+  - o27MvK8Ot84-006.jpg
+  - o27MvK8Ot84-008.jpg
+  - o27MvK8Ot84-009.jpg
+  - o27MvK8Ot84-014.jpg
+  - o27MvK8Ot84-016.jpg
+  - o27MvK8Ot84-025.jpg
+  - o27MvK8Ot84-031.jpg
+  limitations:
+  - 'Session pick (device-challenge video): channel FloatyZone, about 975K subscribers, 100,230 views; 17-minute video, first 10 minutes studied.'
+  - Challenge format (spinning wheels pick device and task); frames of wheels, an inserted short-form clip and the Roblox home page are discarded (001, 003, 005, 020, 023, 024, 038-040).
+  - Returning player; shows mobile/iPad and PC input but little ordinary PvP.
+gameplay:
+  advertised_loop: 'Battlegrounds-style melee PvP: M1 combo, skills on keys 1-4, Q dash (escapes stun), F block, R special, W+W sprint, G awaken, with environmental destruction (source_1).'
+  observed_loop: 'From video (not real play): pick a moveset from the Characters menu, find opponents in the open city map, chain M1 combos into numbered skills, dash and block to escape or defend, fill the awakening bar by fighting, press G to awaken into a stronger moveset, and finish opponents for kills; the map breaks apart under heavy hits. Timed server events (open doors for candies, capture a pumpkin) run between fights (source_4, source_5).'
+  first_action: Not observed from a first join. In source_4 the coached newcomer's first action is choosing a moveset from the 'Characters' dropdown (0:45).
+  first_success_seconds: 
+  success_feedback:
+  - Hits knock opponents through walls and floors, leaving rubble and craters in the street (source_4 4:15-5:00, source_5 2:00-3:00).
+  - Timed second-press skills produce a 'black flash' spark effect (source_4 captions).
+  - Finishers dismember the defeated avatar (source_4 captions, source_5 captions).
+  - Awakening bar fills and shows 'Press G to activate' (source_4 3:15).
+  progression:
+  - 'Within a life: awakening bar fills to unlock an awakened moveset with new skills (source_4, source_5).'
+  - Candy counter rises from event participation (26 to 93 during source_5).
+  - In-game cash shown in the top bar ($312 to $967) and spent at vending machines (source_5 4:45).
+  choices_and_variety:
+  - Join HUD shows a selected character labelled 'Six Eyes' with four named skill slots (Lapse Blue, Reversal Red, Rapid Punches, Twofold Kick) and a top-bar 'Characters' button, which suggests a choice of character movesets (3508322461-1).
+  - Characters list named by epithet (Honored One, Vessel, Restless Gambler, Ten Shadows, Perfection, King of Curses), each with four base skills, an R special and an awakening (source_4 0:45, captions).
+  - Workshop of player-made movesets and maps (1/11947 pages, sortable by month, with star, report, Robux and download buttons) (source_6 3:15).
+  - Secret awakenings triggered by specific matchups (source_5 captions).
+  social_and_cooperative:
+  - Kill leaderboard listing other players at top right on join (3508322461-1).
+  - Free-for-all where groups 'team' or 'jump' a single player (source_5 8:45, captions).
+  companions_and_pets: []
+  friction:
+  - A long rules panel with a single Accept button blocks the first screen before any play.
+  - Being attacked by several players at once leaves little counterplay; the skilled creator calls it 'so unfair' (source_5 8:45, captions).
+  - On mobile the creator's thumbs cover half the buttons and he could not combo a boss (source_6 captions, 1:15-2:30).
+  evidence:
+  - source_1
+  - source_3
+  - source_4
+  - source_5
+  - source_6
+pacing:
+  timing_start_definition: Launch command at 2026-11-09T00:15:31Z.
+  loading_seconds: 16
+  time_to_control_seconds: 
+  first_meaningful_choice_seconds: 
+  first_reward_seconds: 
+  action_reward_cadence: 'From video: hit feedback every second during fights; a server event announcement every few minutes, each with a countdown (110 s pumpkin capture, next event in 20-30 s) (source_5 1:15, 6:00, 9:15).'
+  active_play_versus_travel_or_waiting: 'From video: short runs across the city between fights; no queue or lobby before combat (source_5).'
+  natural_stopping_points:
+  - Death or a kill
+  - End of a timed server event (source_5)
+  measurement_method: Loading is measured to the first capture showing the rules panel. Control was never taken. Video timings are measured from each video's own timestamps (frames every 15 s) and are compressed by edits.
+  evidence:
+  - source_3
+  - source_4
+  - source_5
+  - source_6
+goals_and_progression:
+  next_goal_clarity: 
+  short_term_goals:
+  - Land combos and finish opponents (source_5)
+  - Fill the awakening bar (source_4)
+  - Complete the current server event (source_5)
+  medium_term_goals:
+  - Learn each moveset's combos and timed inputs (source_4)
+  - Collect Halloween candies (source_5)
+  advertised_long_term_goals: []
+  upgrade_choices: []
+  mastery_versus_stat_growth: 'Mastery: no stat growth is visible in the videos; progress is skill with combos, timed second presses, dash and block (source_4, source_5).'
+  unlock_previews_and_optional_activities:
+  - Workshop movesets and maps, including a boss map (source_6)
+  - Secret awakenings (source_5)
+  evidence:
+  - source_1
+  - source_4
+  - source_5
+  - source_6
+failure_and_recovery:
+  observed_failure: 'From video: dying in a fight, often to several players (source_5) or to a workshop boss on mobile (source_6 2:30).'
+  explanation: Health bar under the character name drains; no death-cause screen seen.
+  cost_or_lost_progress: No lasting cost visible beyond losing the awakening state (inference from source_5).
+  retry_seconds: 
+  checkpoints: 
+  non_paid_recovery: 
+  evidence:
+  - source_4
+  - source_5
+  - source_6
+agency_and_social:
+  meaningful_choices:
+  - Moveset choice (source_4)
+  - Engage, flee or join an event (source_5)
+  - Load workshop movesets and maps (source_6)
+  customization_and_identity:
+  - "'Characters' button in the top bar (not opened)"
+  - Player-made movesets from the Workshop (source_6)
+  cooperation_and_competition:
+  - Public PvP with a kill leaderboard
+  visible_social_feedback:
+  - Leaderboard of player kill counts visible from spawn
+  solo_accessibility: Solo play in public servers; fights are with strangers (source_5).
+  evidence:
+  - source_3
+  - source_4
+  - source_5
+  - source_6
+ui:
+  evidence_status: observed
+  visual_style: Muted, realistic night city street; flat grey translucent UI panels, in contrast to the bright cartoon style common on the charts.
+  layout_and_hierarchy: 'Top bar: Characters, a shop showing $0, settings and other icons. Top right: kill leaderboard. Bottom centre: character name, health bar, blue energy bar and four numbered skill tiles. Bottom right: candy currency counter (0) for the Halloween event. In video the same layout holds during combat: character name, health bar and awakening bar stacked over four skill tiles at bottom centre; event announcements as orange text at top centre (source_5).'
+  color_scheme:
+  - Dark navy night scene
+  - Translucent grey panels with black text
+  - Cyan bar accents
+  typography:
+    font_appearance: Plain sans-serif (Source Sans-like) in black on the rules panel and in white on the HUD; the rules title is in uppercase.
+    font_family_if_verified: 
+    size_observation: Rules body text about 11 px and skill labels about 8 px tall in the 1200-px capture of a 1920-point screen.
+    size_basis: visual_estimate
+    viewport_resolution: 1920x1200 points
+    readability: Rules text is small and grey-on-grey; skill tile labels are small.
+  controls:
+    primary_actions: 'Number keys 1-4 for skills, shown as numbered tiles; first tile tagged ''TARGET''. Gamepad: a glyph legend at bottom left (Melee, Dash, Block, Special, Shift Lock, Lock On) and tiles relabelled L1/L2/R2/R1 (source_5 1:15). Touch: round buttons at right (shield block, star special, runner dash, fist M1, jump) and a lock icon for shift lock at top left (source_6 1:15).'
+    close_x_appearance_and_location: The rules panel has no X; its only control is a rectangular 'Accept' button at the bottom centre of the panel.
+    modal_behavior: A rules panel at the centre of the screen covers the avatar on join.
+    state_feedback: Skill tiles carry hints such as 'USE TWICE'; tiles light cyan when available and grey while on cooldown (source_4 3:15, source_5).
+    target_size_and_input: Skill tiles about 40 px square in the capture (about 64 points).
+  graphics:
+    graphics_versus_text: Mostly text labels; skill tiles show names rather than icons in the captured state. Touch buttons are icon-only (source_6).
+    illustration_or_icon_style: Minimal flat icons in the top bar.
+    framing_outlines_and_effects: Thin outlines and translucency; no heavy framing.
+    placement_and_labels: Skill names sit inside numbered tiles under the health bar.
+    clarity_or_clutter: Sparse HUD; a large leaderboard on the right.
+  evidence:
+  - source_3
+  - source_4
+  - source_5
+  - source_6
+new_player_onboarding:
+  status: indeterminate
+  reason: 'Real play stopped at the rules panel. No video shows a first join: source_4 coaches a newcomer who is already in the server, and source_5 and source_6 are returning players. The rules panel does not appear in any video.'
+  conventions:
+  - 'Peer coaching in source_4 stands in for in-game guidance: the coach explains keys, R special and G awakening verbally (inference; no in-game tutorial seen).'
+  sequence:
+  - Rules panel requiring Accept
+  first_independent_action: 
+  skip_or_replay: 
+  completed: false
+  observed_seconds: 0
+  completion_seconds: 
+  timing_basis: 
+  evidence:
+  - source_3
+  - source_4
+  - source_5
+  - source_6
+accessibility_and_comfort:
+  text_and_contrast: Rules text is small, with low contrast on the translucent grey panel.
+  non_color_cues_and_icon_labels: Skill tiles have numbers and names.
+  input_support_observed:
+  - Keyboard and mouse (source_4)
+  - Gamepad with on-screen glyph legend (source_5)
+  - Touch on phone and iPad (source_6)
+  motion_audio_settings: []
+  settings_tested: []
+  clutter_and_interruptions:
+  - Rules panel on join
+  - Heavy debris, red particle effects and camera shake during awakened fights obscure the avatar (source_5 2:00-3:00)
+  evidence:
+  - source_3
+  - source_4
+  - source_5
+  - source_6
+commercial_and_return_prompts:
+  first_purchase_prompt_seconds: 
+  purchase_prompt_count_during_sample: 0
+  onboarding_interruption: 
+  optional_versus_required_presentation: A top-bar shop button showing $0 is visible; no prompt was seen. No Robux prompt appears in the studied video minutes; the top-bar '$' is in-game cash spent at vending machines (source_5 4:45), and workshop tiles carry a Robux icon (source_6 3:15, purpose not shown).
+  return_rewards_and_events:
+  - Halloween candy counter at bottom right; pumpkin tag in the title
+  - 'Rotating server events with countdowns: doors to open for candies, pumpkin capture (source_5)'
+  urgency_or_streak_cues:
+  - Event countdowns ('110 seconds left to capture a pumpkin', 'next event is starting in 20 seconds') (source_5)
+  evidence:
+  - source_3
+  - source_4
+  - source_5
+  - source_6
+world_and_presentation:
+  navigation_and_objective_readability: 
+  landmarks_and_variety:
+  - Night city street with crosswalk, street lamps and buildings
+  - Halloween lights and pumpkins, a subway station and tunnel, a station plaza (source_5)
+  - Workshop maps such as a snowy forest boss map (source_6)
+  environmental_storytelling:
+  - Destruction persists as rubble and craters during a fight (source_4, source_5)
+  audiovisual_consistency: 
+  success_effect_intensity_and_clarity: 'Very high: buildings shatter, players crash through floors, red particles and finishers (source_4, source_5).'
+  evidence:
+  - source_3
+  - source_4
+  - source_5
+  - source_6
+technical_quality:
+  loading_or_missing_assets:
+  - Workshop map on mobile needed a character reset before it worked (source_6 captions)
+  input_or_frame_issues: []
+  ui_defects: []
+  recovery_behavior: 
+  measurements:
+  - Launch to rules panel at or under 16 s
+  measurement_method_and_limits: One capture 16 s after the launch command, in a VM.
+  evidence:
+  - source_3
+  - source_4
+  - source_5
+  - source_6
+transferable_ideas:
+- 'Destructible environments as hit feedback: knocking an opponent through a wall or floor makes each heavy hit legible and memorable (source_4, source_5).'
+- 'Input-adaptive action labels: the same four skill tiles show 1-4, L1/R1 or touch icons by device, with a glyph legend for controller (source_5, source_6).'
+- Rotating server-wide mini-events with a countdown give a fighting sandbox short shared goals between duels (source_5).
+- A visible charge meter that turns into a 'Press G to activate' prompt teaches the awakening mechanic in place (source_4).
+practical_takeaway:
+  strongest_idea: 'Video shows the loop the description advertises: a small control set (M1, four skills, dash, block, special, awaken) whose payoff is spectacle, buildings breaking under each heavy hit (source_4, source_5).'
+  main_tradeoff: A long, small-type rules panel is the first thing a player meets, ahead of any action. In public servers groups 'jump' lone players, and on touch the dense button cluster is hard to use (source_5, source_6).
+  suitable_genres_and_stages:
+  - PvP fighting games
+  - Action sandboxes needing hit feedback
+  - Mid-session events in open-world games
+  testable_hypothesis: A charge meter that shows an in-place key prompt when full ('Press G to activate') gets more new players to use the special mechanic than a controls list alone.
+  estimated_effort_and_assumptions: Small for the prompt (one HUD state); large for physics destruction, which assumes a fracture system and server replication budget.
+inferences:
+- The 'Characters' button and the named moveset suggest selectable characters; this was not verified.
+- Teaming against lone players is likely a common frustration for newcomers in public servers (from source_5 commentary; one video).
+uncertainties:
+- Whether onboarding exists after the rules panel.
+- Whether this account had played the game before.
+- Whether the game has any tutorial after the rules panel remains unknown; no video shows a first join.
+- Respawn time and death cost were not measured from video.
+blockers:
+- Rules panel with 'Accept' as its only control at join (3508322461-1). Accepting it agrees to the game's moderation rules for the user's account, so it needs the user's decision under the brief's terms-prompt rule. The player was left in the experience on that panel.

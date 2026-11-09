@@ -1,0 +1,447 @@
+---
+name: "[☀️UPD 21\U0001F3D6️] Anime Adventures"
+game_id: universe:3183403065
+universe_id: '3183403065'
+place_id: '8304191830'
+url: https://www.roblox.com/games/8304191830
+creator: Gomu (group, verified badge)
+chart_category: Top Earning
+chart_rank: 1
+researcher: R03
+mode: play
+onboarding_video_coverage: not_covered
+observed_at: '2026-11-08T23:54:50Z'
+observation_status: partial
+previous_observed_at: 
+changes_since_previous: []
+active_play_seconds: 280
+play_coordination:
+  resource_key: roblox-player
+  wait_seconds: 284
+  acquired_at: '2026-11-08T23:54:35Z'
+  expires_at: '2026-11-09T00:04:35Z'
+  released_at: '2026-11-09T00:00:21Z'
+  release_verified: true
+  expiry_or_blocker: None. vm-desktop:roblox-studio acquired 23:54:50Z and released 00:00:21Z. Both receipts were checked before each input batch and passed. Player quit at 00:00:14Z and only the -launchToTray process remained.
+context:
+  genre: 'Anime-themed gacha tower defense (Roblox genre: Strategy > Tower Defense)'
+  camera_perspective: Third-person lobby; match camera not reached
+  device_and_input: Desktop keyboard and mouse (VM-injected clicks); HUD shows keyboard hints K (Units) and F (Store)
+  observation_environment: macOS guest VM running the published Roblox player at 1920x1200 points, client 0.746.0, public server
+  visible_server_population: Roughly 20+ names in the Roblox player list (scrolling); API maxPlayers 30; 88,385 playing at retrieval
+  solo_or_group: Solo in a shared public lobby
+  game_version_if_known: UPD 21 (title); in-game update log 'Summer 2026 + Return'
+  evidence:
+  - play_1
+  - description_1
+account_state:
+  freshness: fresh
+  evidence:
+  - On join the game revealed a starter unit ('Carrot', Rare) with 'Click anywhere to continue', showed Level 1 [0/100], Collection 1/100 with that unit marked NEW!!, Banner Tier 0, Mythic pity 0/400, and a Day 1 daily login (3183403065-2.png, 3183403065-8.png, 3183403065-9.png). This indicates no prior progress for the signed-in account.
+evidence:
+- id: description_1
+  kind: description
+  url: https://games.roblox.com/v1/games?universeIds=3183403065
+  captured_at: '2026-11-08T23:25:00Z'
+  media_date_or_version: updated 2026-11-08T23:24:03Z
+  timestamps: []
+  screenshots: []
+  limitations:
+  - Description read through the public games API; the web page HTML was not rendered.
+- id: thumbnail_1
+  kind: thumbnail
+  url: https://games.roblox.com/v2/games/3183403065/media
+  captured_at: '2026-11-08T23:25:00Z'
+  media_date_or_version: 1 approved image (12969693598)
+  timestamps: []
+  screenshots: []
+  limitations:
+  - Single illustrated promo image of a summon machine showing rarity percentages; no video in the media list, so no gameplay footage was watched.
+- id: play_1
+  kind: actual_play
+  url: https://www.roblox.com/games/8304191830
+  captured_at: '2026-11-08T23:54:50Z'
+  media_date_or_version: UPD 21
+  timestamps:
+  - 23:54:50Z launch
+  - 23:55:34Z first control (starter unit reveal)
+  - 23:56:03Z update log
+  - 23:56:32Z fan-made notice
+  - 23:57:17Z daily login
+  - 23:57:46Z first reward
+  - 23:59:46Z summon screen
+  - 00:00:14Z quit
+  screenshots:
+  - 3183403065-1.png
+  - 3183403065-2.png
+  - 3183403065-3.png
+  - 3183403065-4.png
+  - 3183403065-5.png
+  - 3183403065-6.png
+  - 3183403065-7.png
+  - 3183403065-8.png
+  - 3183403065-9.png
+  limitations:
+  - The 3D lobby world rendered as plain white/sky for the whole sample, so world layout, NPCs and portals were not seen and Play did not lead to a visible match.
+  - No tower-defense match was reached in 280 s; the observed sample is the lobby HUD and its modals.
+  - macOS notification banners covered the top-right corner of every capture.
+- id: video_1
+  kind: gameplay_video
+  url: https://www.youtube.com/watch?v=yP3_n7O51dc
+  captured_at: '2026-11-09T02:30:00Z'
+  media_date_or_version: 2026-11-04 (in-game UPD 21.0.0)
+  timestamps:
+  - 0:30 Summer 2026 + Return update log
+  - 1:15 summon rates popup beside Robux pearl packs
+  - 2:00 Traveling Merchant exchanging gems for Summer Pearls
+  - 2:30 Summer Bingo map list
+  - 3:00 summon reveals
+  - 3:30 weather effects list
+  - 3:45 vote-start panel
+  - 4:00 Summer Hunt match wave 2 with unit panel
+  - 4:45 placement on highlighted path
+  - 5:30 Water Goddess boss
+  - 6:45 wave 50 boss and Max Upgrade
+  - 7:30 global chat pull announcements
+  - 8:15 Return to lobby / Replay
+  - 8:30 travelling to Sky Island
+  screenshots:
+  - yP3_n7O51dc-003.jpg
+  - yP3_n7O51dc-006.jpg
+  - yP3_n7O51dc-007.jpg
+  - yP3_n7O51dc-008.jpg
+  - yP3_n7O51dc-009.jpg
+  - yP3_n7O51dc-011.jpg
+  - yP3_n7O51dc-013.jpg
+  - yP3_n7O51dc-015.jpg
+  - yP3_n7O51dc-016.jpg
+  - yP3_n7O51dc-017.jpg
+  - yP3_n7O51dc-020.jpg
+  - yP3_n7O51dc-023.jpg
+  - yP3_n7O51dc-028.jpg
+  - yP3_n7O51dc-031.jpg
+  - yP3_n7O51dc-034.jpg
+  - yP3_n7O51dc-035.jpg
+  limitations:
+  - Session video "i can't believe im back on this game again... | Anime Adventures Re-Re-Re-Re-Release" by HW5567 (about 1.02M subscribers), about 405K views; first 10 of 11.9 minutes studied.
+  - Returning level-175 player with a strong roster; edited with meme inserts (frames 001, 002, 029, 030 discarded) and a jump of four days mid-video.
+  - Creator commentary is negative and comedic; captions are auto-generated.
+- id: video_2
+  kind: gameplay_video
+  url: https://www.youtube.com/watch?v=nA3FANOfb60
+  captured_at: '2026-11-09T02:30:00Z'
+  media_date_or_version: 2026-11-05 (UPD 21 Summer Hunt)
+  timestamps:
+  - 0:00-3:00 team, summer skins and charms advice
+  - 3:00 "Bring slow units, bleed units" card
+  - 3:15 farm unit placed and upgraded first
+  - 4:30 weather-shift card vote
+  - 5:15 "Not enough money!" while upgrading
+  - 5:30 Choose a card modifier vote
+  screenshots:
+  - nA3FANOfb60-013.jpg
+  - nA3FANOfb60-014.jpg
+  - nA3FANOfb60-018.jpg
+  - nA3FANOfb60-019.jpg
+  - nA3FANOfb60-020.jpg
+  - nA3FANOfb60-022.jpg
+  - nA3FANOfb60-023.jpg
+  limitations:
+  - Skilled-play guide "DO THIS NOW To FARM The SUMMER EVENT In Anime Adventures!" by MrRhino (about 212K subscribers), about 124K views; first 10 of 22 minutes studied.
+  - Level-570 veteran in a party of the creator's alternate accounts; much footage shown at 3x speed.
+- id: video_3
+  kind: gameplay_video
+  url: https://www.youtube.com/watch?v=K8RgDsl_cdo
+  captured_at: '2026-11-09T02:30:00Z'
+  media_date_or_version: 2026-10-31 (footage shows winter and April events and an UPD 20.x label, so it was recorded before UPD 21)
+  timestamps:
+  - 0:30 lobby summon hall at player level 5
+  - 1:15 Limited Assassin banner (10 gems, Buy 1 / Buy 10, Mythic pity 0/200)
+  - 3:15 story world and act select with difficulty and Friends Only
+  - 3:30 wave 1 on a stone path map
+  - 5:15 currency and team hotbar with yen placement costs
+  - 5:30 vote start
+  - 5:45 Choose a card modifier vote
+  - 6:00-6:45 Unit Overview and upgrade panel
+  - 8:15 trading-area banner with "Units sold!"
+  - 9:15 Trait Reroll
+  - 9:45 Wave Completed!
+  screenshots:
+  - K8RgDsl_cdo-003.jpg
+  - K8RgDsl_cdo-004.jpg
+  - K8RgDsl_cdo-006.jpg
+  - K8RgDsl_cdo-014.jpg
+  - K8RgDsl_cdo-015.jpg
+  - K8RgDsl_cdo-016.jpg
+  - K8RgDsl_cdo-022.jpg
+  - K8RgDsl_cdo-023.jpg
+  - K8RgDsl_cdo-024.jpg
+  - K8RgDsl_cdo-027.jpg
+  - K8RgDsl_cdo-034.jpg
+  - K8RgDsl_cdo-038.jpg
+  - K8RgDsl_cdo-040.jpg
+  limitations:
+  - Progression series "NOOB to PRO with NO ROBUX in 7 DAYS on Anime Adventures Roblox" by NagBlox (about 202K subscribers), about 224K views; first 10 of 48.8 minutes studied.
+  - Starts on a new account already at level 5 with four units, so the first join is not shown; heavily cut with facecam.
+  - Older version than the real play (pre-UPD 21).
+  - Captions could not be fetched (YouTube HTTP 429 on three attempts); frames only.
+gameplay:
+  advertised_loop: Summon anime-inspired heroes from banners and place them as towers to defend multiple worlds against waves of threats (description and summon-machine promo art).
+  observed_loop: 'Lobby only: starter unit grant, daily login gems, unit collection and summon banners. The placement/wave loop was not reached. Video: choose a world and act (story) or event map, wait in a vote-start panel, then place units from a six-slot hotbar onto a map whose enemy path is highlighted; each placement and upgrade costs in-match yen that waves pay out; a farm unit is placed and upgraded first for income; every few waves the party votes on a modifier card; bosses arrive with "A great threat approaches..."; the match ends at a set wave (50 in Summer Hunt) with Return to lobby / Replay, then rewards feed summons in the lobby (video_1, video_2, video_3).'
+  first_action: Click anywhere to dismiss the starter unit reveal.
+  first_success_seconds: 
+  success_feedback:
+  - 'Starter unit reveal: large white unit name over a rarity label (''Rare'') with element icons on a line ornament (3183403065-2.png).'
+  - Gem counter rose 150 -> 210 after claiming Day 1.
+  - Red '1' notification badges on Units and Items after rewards.
+  - 'Video: "Wave Completed!" green banner with a yen payout per wave and floating +N currency numbers (video_1 frame 017; video_3 frame 040).'
+  - 'Video: full-screen summon reveal with unit name, rarity word in rarity color (Rare blue, Legendary gold) and a burst effect (video_1 frames 013-014).'
+  - 'Video: global chat broadcasts other players'' shiny pulls server-wide (video_1 frames 031-032).'
+  progression:
+  - Level bar at bottom 'Level 1 [0/100]'.
+  - 'Collection counter ''Units: 1/100'' with a NEW!! tag and Lv. 1 on the unit card, which shows its placement cost (300 yen symbol).'
+  - 'Summon banners: Summer (seasonal event units), Special (new units), Legacy; ''Your Banner Tier'', Mythic pity counter 0/400.'
+  - Six empty silhouetted team slots above the level bar.
+  - 'Video: per-unit upgrade panel shows current to next damage, cooldown and range with an Upgrade price in yen, a Sell value, a targeting mode button (First) and Max Upgrade at the cap (video_1 frame 028; video_3 frame 027).'
+  - 'Video: trait reroll, unit fusion, evolved units, skins that buff event rewards, and tiered charms as later layers (video_3 frame 038; video_2 captions 0:20-1:30).'
+  - 'Video: story worlds with six acts each and a minimum unit level, plus many event maps tracked on a Summer Bingo board (video_3 frame 014; video_1 frame 011).'
+  choices_and_variety:
+  - 'HUD entries: Units, Store, Items, Play, Trade, Summon, Dungeon, Servers on the left; Quests, Battlepass, Guild, Profile, Areas on the right.'
+  - Update log advertises a Summer event, Sky Portals to Sky Island, a Sky God boss for a secret unit, and a 'Summer Hunt' horde mode.
+  - 'Video: modifier cards voted by the party trade difficulty (enemy health, resistance, speed) for more event currency or drop rate (video_3 frame 024; video_2 frame 023).'
+  - 'Video: weather states change damage-type effectiveness (Blizzard, Inferno, Sandstorm, Magical, Flooded, Stormy, Starfall) so teams are built for physical or magic damage (video_1 frame 015).'
+  - 'Video: placing hybrid units on hills makes them hit flying enemies (video_1 captions 7:40).'
+  social_and_cooperative:
+  - Trade and Guild buttons on the HUD (not opened)
+  - Public server lobby shared with other players
+  - 'Video: party of up to six in a match, a vote-start panel and shared modifier votes; global chat announces rare pulls (video_1 frames 016, 031, 034; video_2).'
+  companions_and_pets: []
+  friction:
+  - 'Four sequential interruptions before free control: starter reveal, update log, fan-made notice requiring ''I Understand'', then daily login.'
+  - A 'Don't Miss Out!' side prompt for Infinity Mansion stayed on screen; its red X did not close it while other modals were open (3183403065-4.png onward).
+  - No pointer or guide toward the first match was seen in the lobby during the sample.
+  - 'Video: event secret units have very low odds (1 in 40,000 per the guide creator; 0.1% stated in a portal) and both veterans report hours of grinding with nothing (video_1 captions 8:20; video_2 captions).'
+  - 'Video: a returning player says the event is a reskin of older updates with the same UI (video_1 captions 1:30).'
+  - 'Video: "Not enough money!" stacks in red when an upgrade is clicked without yen (video_2 frame 022).'
+  evidence:
+  - play_1
+  - description_1
+  - thumbnail_1
+  - video_1
+  - video_2
+  - video_3
+pacing:
+  timing_start_definition: 'First control: starter unit reveal (23:55:34Z). Loading from the roblox:// launch (23:54:50Z).'
+  loading_seconds: 44
+  time_to_control_seconds: 44
+  first_meaningful_choice_seconds: 
+  first_reward_seconds: 0
+  action_reward_cadence: 'Video: within a match, a yen payout every wave and an upgrade or placement every few seconds; modifier card votes every few waves; a 50-wave Summer Hunt run took the veteran roughly ten minutes of edited footage (video_1, video_2). Not measured in real play.'
+  active_play_versus_travel_or_waiting: All 280 s spent dismissing modals and opening lobby menus; about 100 s before the first free HUD state.
+  natural_stopping_points:
+  - 'Video: end of a run (Return to lobby / Replay) (video_1 frame 034)'
+  - 'Video: each summon batch'
+  measurement_method: UTC timestamps of commands and captures on the coordinator; values accurate to roughly +/-5 s. first_reward_seconds counts the starter unit already granted at first control; the first claimed reward (Day 1, +60 gems) came at 132 s. Video observations use each video's own timestamps (frame index x 15 s) and are edited; no timing is derived from them.
+  evidence:
+  - play_1
+  - video_1
+  - video_2
+  - video_3
+goals_and_progression:
+  next_goal_clarity: 'Low in the sample: no objective marker or guide pointed to the first match; badges pointed at Units and Items.'
+  short_term_goals:
+  - Claim daily login
+  - Open newly badged Units and Items
+  - 'Video: survive to the set wave and beat its boss'
+  - 'Video: place and max-upgrade the farm unit first, then damage units (video_2 captions 4:00-5:00)'
+  medium_term_goals:
+  - 7-day login rising from 60 to 140 gems, with +1 Summon on day 6 and +1 Luck Boost on day 7
+  - Battlepass
+  - Quests
+  - 'Video: clear every map once for Summer Bingo rewards (video_1 frame 011)'
+  - 'Video: earn Summer Pearls or event coins to summon on the event banner'
+  advertised_long_term_goals:
+  - Collect 100 units
+  - Summer event Sky Island and a Sky God secret unit
+  - Mythic pity at 400
+  upgrade_choices:
+  - 'Video: which unit to upgrade first, targeting mode, which modifier card to take, which weather-suited team to bring (video_1, video_2)'
+  mastery_versus_stat_growth: 'Video: mostly stat growth via unit rarity, level, traits and skins; placement (hills for flying enemies, path intersections) and card choices add strategy (video_1, video_2).'
+  unlock_previews_and_optional_activities:
+  - Summon banners show featured-unit art and a guaranteed featured unit on a Mythic draw
+  - Dungeon, Areas and Infinity Mansion modes
+  evidence:
+  - play_1
+  - video_1
+  - video_2
+  - video_3
+failure_and_recovery:
+  observed_failure: 'Video: no loss screen captured; a veteran picks lower-risk cards to avoid losing a stage and calls 500% enemy health "too much" (video_2 captions). Real play did not reach a match.'
+  explanation: 'Video: boss and enemy HP shown as numeric bars; the base HP bar is at the top centre of the match HUD (video_1 frames 017, 023).'
+  cost_or_lost_progress: 
+  retry_seconds: 
+  checkpoints: 
+  non_paid_recovery: 
+  evidence:
+  - video_1
+  - video_2
+agency_and_social:
+  meaningful_choices:
+  - Which summon banner to view (not drawn)
+  - 'Video: team composition per weather, unit placement, upgrade order and modifier card votes (video_1, video_2)'
+  customization_and_identity:
+  - Lock Cosmetic and Teams buttons in Collection
+  - Profile button
+  cooperation_and_competition:
+  - Trade
+  - Guild
+  - 'Video: co-op parties of up to six with shared votes; one creator prefers playing with alternate accounts because strangers bring no buffs and pick bad cards (video_2 captions)'
+  visible_social_feedback:
+  - 'Video: server-wide global chat lines for shiny and rare pulls (video_1 frames 031-032)'
+  solo_accessibility: Lobby menus all usable solo.
+  evidence:
+  - play_1
+  - video_1
+  - video_2
+ui:
+  evidence_status: observed
+  visual_style: 'Saturated cartoon UI: chunky square buttons with thick colored borders and illustrated icons, glowing rainbow borders on modals, heavy outlined display text.'
+  layout_and_hierarchy: 'Two 2x4 / 1x5 grids of large illustrated buttons on the left and right edges; currency row and team slots bottom-center over a full-width level bar; modals centered. Video (match HUD): base HP bar and wave number top-centre, map name and mode above it, six-slot unit hotbar with yen costs bottom-centre over the level bar, minimap bottom-right, level-info and modifier list on the right edge, selected unit panel on the left, Unit Overview grid as a right-side panel (video_1 frame 017; video_3 frames 025-027).'
+  color_scheme:
+  - one distinct border color per HUD button (yellow, red, green, cyan, purple, blue, orange)
+  - green primary buttons (OK, Claim, I Understand, Teams)
+  - red for close X and Unequip All
+  - pink/purple for summon
+  typography:
+    font_appearance: Heavy rounded display sans with dark outlines for titles and buttons; plain sans for update-log body.
+    font_family_if_verified: 
+    size_observation: Button labels about 22-26 px, modal titles about 45 px, update-log body about 13 px at 1920x1200.
+    size_basis: visual_estimate
+    viewport_resolution: 1920x1200 points
+    readability: Button labels and titles clear; update-log and notice body text small and dense.
+  controls:
+    primary_actions: Single large green button centered under each modal.
+    close_x_appearance_and_location: 'Collection: large red parallelogram with white X at the top-right, slightly outside the panel (3183403065-8.png). Side prompt: small red square X at its top-right corner. Update log, notice and daily login: no X; only the green confirm button.'
+    modal_behavior: Modals queue one after another on join; the side prompt persists beside them.
+    state_feedback: 'Red numbered badges on HUD buttons; NEW!! tag on new units. Video: placement ghost shows Place / Rotate / Cancel labels beside the cursor; the enemy path is lit in bright green or red; Max Upgrade replaces the upgrade price at cap (video_1 frames 020, 028).'
+    target_size_and_input: HUD buttons about 100x100 px; keyboard letters K and F printed on button corners.
+  graphics:
+    graphics_versus_text: Every HUD button pairs an illustrated icon with a bold label; rewards drawn as gem illustrations with amounts above.
+    illustration_or_icon_style: Glossy illustrated icons (star, controller, swap arrows, capsule, dungeon gate).
+    framing_outlines_and_effects: Thick colored outlines, rainbow glow around modals, tilted parallelogram panel frames on Collection.
+    placement_and_labels: Currency icons labelled only by number; banner cards labelled with name and one-line description.
+    clarity_or_clutter: 'Dense: 13 HUD buttons plus side prompt and Roblox player list; robux packs shown beside the free summon banner. Video: matches with many units and effects become very busy; the right-side modifier list is small dense text (video_1 frames 023-027).'
+  evidence:
+  - play_1
+  - video_1
+  - video_2
+  - video_3
+new_player_onboarding:
+  status: observed
+  reason: 'Status comes from real play (play_1), which saw the starter unit grant. No video shows a first join: video_3 starts a new account at level 5 and the other videos are veterans, so tutorial steps in the first match remain unseen.'
+  conventions:
+  - Starter unit reveal on first join
+  - Notification badges on Units and Items
+  - Update log and fan-made disclaimer on join
+  sequence:
+  - Starter unit reveal 'Carrot', Rare (0 s)
+  - Update log 'Summer 2026 + Return' (29 s)
+  - Fan-made notice with 'I Understand' (58 s)
+  - Daily login rewards, Day 1 claimed (103-132 s)
+  first_independent_action: Opening Play from the HUD (164 s); no visible result because the world did not render.
+  skip_or_replay: 
+  completed: false
+  observed_seconds: 280
+  completion_seconds: 
+  timing_basis: From first control at the starter reveal (23:55:34Z) to quit (00:00:14Z).
+  evidence:
+  - play_1
+accessibility_and_comfort:
+  text_and_contrast: High-contrast outlined labels; small body text on dark modals.
+  non_color_cues_and_icon_labels: All HUD icons labelled.
+  input_support_observed:
+  - Mouse click
+  - Keyboard hints K and F (untested)
+  motion_audio_settings: []
+  settings_tested: []
+  clutter_and_interruptions:
+  - Four queued modals on join
+  - Persistent 'Don't Miss Out!' side prompt
+  - 'Video: heavy unit effects and floating numbers during late waves (video_1 frames 023-027)'
+  - 'Video: global chat pull announcements scroll over the lower-left view (video_1 frame 031)'
+  evidence:
+  - play_1
+  - video_1
+commercial_and_return_prompts:
+  first_purchase_prompt_seconds: 252
+  purchase_prompt_count_during_sample: 1
+  onboarding_interruption: No purchase modal interrupted the join sequence; the 'New!' Store badge is always on the HUD.
+  optional_versus_required_presentation: 'The Summon screen shows ''More SummerPearls'' packs with Robux prices (Huge +6000 for 1600 R$, Large +2775 for 800 R$, Medium +1425) and ''+90%/+65%/+58% More!'' tags beside the free 150-pearl banner (3183403065-9.png). Not clicked. Video: the summon popup lists rates by rarity (e.g. Legendary Skin 1.99%, Mythic Skin 0.249%) with the same Robux pearl packs beside it; gems can also be exchanged for event pearls at a Traveling Merchant, and a veteran using no Robux reaches matches and summons (video_1 frames 006, 009; video_3).'
+  return_rewards_and_events:
+  - 7-day daily login (gems, day 6 +1 Summon, day 7 +1 Luck Boost)
+  - Summer 2026 limited-time event
+  - Battlepass
+  - Quests
+  - 'Video: Summer Bingo board rewarding first clears of each map (video_1 frame 011)'
+  - 'Video: rotating limited events with their own currencies (AprilCoins, Summer Pearls) and 2x event weekends (video_3 frames 019-021; video_1)'
+  urgency_or_streak_cues:
+  - "'Limited-Time!' and 'Seasonal Event Units!' on banners"
+  - "'Don't Miss Out!' Infinity Mansion prompt"
+  - Mythic pity counter
+  - 'Video: "Limited-Time!" banner tags and event-only units (video_3 frame 006)'
+  evidence:
+  - play_1
+  - video_1
+  - video_3
+world_and_presentation:
+  navigation_and_objective_readability: 'Video: the lobby is a neon city plaza with a large lit SUMMON hall, staircases, seasonal decorations (candy canes, gifts) and labelled areas; match maps show the enemy path as a lit route with chevrons and a minimap, so the objective (stop enemies on the path) reads clearly (video_3 frames 003-004, 015; video_1 frames 020, 033). Real play saw only a white void because the VM did not render the world.'
+  landmarks_and_variety:
+  - 'Video: lobby summon hall, challenges arcade and event ship (video_3 frames 003, 032; video_1 frame 009)'
+  - 'Video: dozens of maps (Alien Spaceship underwater, Shibuya District, Assassin Park, Sky Island, Fiend City) (video_1 frame 011)'
+  environmental_storytelling:
+  - Loading screen 'Travelling to... Neo-Tokyo' with a seasonal gameplay tip
+  - 'Video: event NPCs with quest dialog on the summer ship ("Some members of my party got separated in a storm. Help find Armored...") (video_1 frame 010)'
+  audiovisual_consistency: 'Video: consistent saturated neon anime style across lobby, menus and maps; audio judged only through creator commentary.'
+  success_effect_intensity_and_clarity: 'Video: very intense summon reveals and unit ability effects; late-wave effects can hide enemies and paths (video_1 frames 013-014, 023-027).'
+  evidence:
+  - play_1
+  - video_1
+  - video_3
+technical_quality:
+  loading_or_missing_assets:
+  - Lobby world geometry never rendered in the VM (white view throughout)
+  - Summer banner art partly untextured (3183403065-9.png)
+  - 'Video: the same lobby renders fully on the creators'' machines, so the white world in play_1 is attributable to the VM, not the game (video_3 frames 003-004; video_1 frames 007-008)'
+  input_or_frame_issues: []
+  ui_defects:
+  - Side prompt close X unresponsive while other modals were open
+  recovery_behavior: 
+  measurements:
+  - Launch to first control 44 s
+  measurement_method_and_limits: Coordinator timestamps; VM environment without a dedicated GPU may explain missing world rendering; not representative of native devices.
+  evidence:
+  - play_1
+  - video_1
+  - video_3
+transferable_ideas:
+- Granting a starter unit with a full-screen rarity reveal at first control gives a new player something owned before any menu.
+- A 7-day login track that escalates and caps with a draw and a luck boost ties return visits to the core gacha.
+- A party vote on modifier cards that trade difficulty for more rewards gives every wave a small, readable risk choice (video_1, video_2, video_3).
+- Weather that changes which damage type is strong gives players a reason to build several teams without new units (video_1).
+- A bingo board of "clear each map once" goals turns a large back catalogue of maps into a visible checklist (video_1).
+practical_takeaway:
+  strongest_idea: Give the first owned item a short, celebratory reveal the moment control starts, then badge the menu where it lives. In matches, a per-wave risk-for-reward card vote keeps repeated maps fresh and lets the group set its own difficulty.
+  main_tradeoff: Four queued modals and a persistent side prompt delay the first match, and the summon screen places paid packs beside the free banner. Videos add that event chase units sit at very low odds, and veterans describe hours of grinding with no result.
+  suitable_genres_and_stages:
+  - Collection and gacha games
+  - First-join moment of any game with an inventory
+  testable_hypothesis: 'Collapsing join modals into one (or deferring the update log until after the first match) shortens time to the first match without lowering daily-login claims. Second hypothesis: offering one optional risk-for-reward card every few waves raises replays of an already-cleared map.'
+  estimated_effort_and_assumptions: Estimate 1 day to reorder a join modal queue, assuming modals are already data-driven.
+inferences:
+- The starter unit's 300-yen placement cost suggests a placement-currency economy inside matches; not observed.
+uncertainties:
+- Whether a guided tutorial starts in the first match is unknown; the match was not reached.
+- The first-match tutorial is still unseen; no video in the search showed a first join on the current version.
+- Video_3 predates UPD 21, so its lobby layout and banners may differ from the current version.
+blockers:
+- Lobby world did not render in the isolated VM, so the core tower-defense loop could not be played within the sample.
