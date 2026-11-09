@@ -131,8 +131,10 @@ exploitable vulnerability.
 
 Before the design comparison, verify that the supplied rule sources are complete and cover the
 file groups in the diff. Check preambles, imports, declarations and executable bodies in the
-scope above. Flag each violation by line and rule even when a narrower check passes. Formatting,
-type and CI checks prove only the rules they enforce. Flag missing evidence and say what to supply.
+scope above. For Python, check the opening statement and each data-holding declaration's bases
+and decorators against the language rules before judging its placement. Flag each violation by
+line and rule even when a narrower check passes. Formatting, type and CI checks prove only the
+rules they enforce. Flag missing evidence and say what to supply.
 
 **Then make the design comparison.** Inventory the responsibilities and decisions the diff moves,
 duplicates, specializes, removes or introduces, reading both sides independently of the caller's
