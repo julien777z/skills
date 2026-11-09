@@ -21,6 +21,7 @@ build on it; every other step, and every fix, is checked by its author against i
 - `pre-production`
 - `test-fixture`
 - `run-site`
+- `council`
 
 ## The Intent Statement
 
@@ -293,16 +294,19 @@ another repair, and an acceptance with recorded findings that decision makes is 
 the rules below on flagged diffs; an in-process check of a repair is not one of those 3
 rounds. While the change is under that limit, a flag gets at most two repair rounds of its own, and
 one a fresh gate raises for the first time starts at zero. A flag the gate still raises after its
-own second repair, with the change still under the limit, goes to the user as a report, never as a
-choice about whether to fix it or leave it in place: the open flag, each remedy tried and its
-evidence, the gate's proposed remedy and the recommended next step. Every other flag keeps its own
+own second repair, with the change still under the limit, goes first to `council` in **Ask** mode
+for its ruling on the remedy, then to the user as a report, never as a choice about whether to fix
+it or leave it in place: the open flag, each remedy tried and its evidence, the gate's proposed
+remedy, the council's ruling and the recommended next step. Every other flag keeps its own
 repair and gate meanwhile, and the user's reply directs only the flag the report names.
 
 Never rerun an unchanged item hoping for acceptance, argue it through the same gate, rename it to
 reset its history, or keep flagged code because the caller can authorize its merge. Carry unresolved
 objections and previous remedies into the next review; a remedy that reverses one given earlier
-names it and the evidence it was wrong. If evidence refutes an objection, send that
-evidence to a fresh gate for an explicit disposition; the caller cannot dismiss it unilaterally.
+names it and the evidence it was wrong. If evidence refutes an objection, put the
+objection, that evidence and the code it concerns to `council` in **Ask** mode for a ruling: a
+unanimous `drop` dismisses it, and anything else keeps it open for repair. The caller cannot dismiss
+it unilaterally.
 
 When the intent statement already schedules a flag's remedy as named work with its owner, such as
 a consumer's migration on its own pull request, the gate reports it as a hold on the merge that

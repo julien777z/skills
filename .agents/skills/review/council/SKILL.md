@@ -9,7 +9,6 @@ short_description: 'Ask three strong models what they think, or review with them
 ## Dependencies
 - `subagent-matrix`
 - `pre-production`
-- `defer-scope`
 
 ## Modes
 
@@ -48,8 +47,8 @@ explore new ideas, skip fixes to code that is being replaced.
 1. Send each member the brief and collect the replies. Summarise the useful findings, where members
    disagree, and the next steps.
 2. Make the changes you agree with, and answer each finding: fixed, or declined with evidence. A
-   finding outside the request is fixed when it fits `pre-production`'s size budget and recorded
-   with `defer-scope` otherwise.
+   finding outside the request is fixed when it fits `pre-production`'s size budget; the rest is
+   listed in the result as left for recording.
 3. Send the next round to the same members, with those answers and the diff since the last round.
    Each full review pass is one round.
 4. Stop when every member is satisfied, or after three rounds; then show the open disagreements and

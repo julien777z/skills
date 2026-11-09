@@ -14,6 +14,7 @@ and obtains the user's approval under the global question procedure.
 - `subagent-matrix`
 - `acceptance-gate`
 - `session-ledger`
+- `council`
 
 ## Scope
 
@@ -57,9 +58,10 @@ Follow the dependency's fallback procedure without inventing a compliant launch 
    byte-changing clarification without those effects, retain both identities and the comparison
    supporting carry-forward; never claim the old report reviewed new bytes.
 4. **Obtain independent acceptance.** After two clean rounds, send the current proposal to
-   acceptance-gate. After four attack rounds without the streak, send it for the same independent
-   Proposal adjudication instead of dispatching another cohort. This alternate route never claims
-   two clean rounds occurred. Supply its five native inputs and exactly `Proposal — should this be
+   acceptance-gate. After four attack rounds without the streak, put the same packet to `council` in
+   **Ask** mode instead of dispatching another cohort: each member returns accept or flag, the
+   proposal is accepted only when all three accept, and every flag goes to step 5 as a gate flag.
+   This alternate route never claims two clean rounds occurred. Supply its five native inputs and exactly `Proposal — should this be
    written?`. The proposal item includes the actual round history, every substantive finding or
    material alternative verbatim with evidence, benefit, tradeoff and disposition, coverage receipts,
    and locators/content identities for the directly available originals. An index is navigation,
