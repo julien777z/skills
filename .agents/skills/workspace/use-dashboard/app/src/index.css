@@ -109,7 +109,8 @@ body {
     cursor: pointer;
   }
 
-  a:not([data-slot]) {
+  a:not([data-slot]),
+  button[data-reference] {
     @apply font-medium text-info underline-offset-4 hover:underline;
   }
 
@@ -120,5 +121,22 @@ body {
     z-index: 50;
     height: env(safe-area-inset-top, 0px);
     background: var(--background);
+  }
+}
+
+@layer utilities {
+  .scrollbar-visible::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .scrollbar-visible::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background: var(--border);
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    .scrollbar-visible {
+      scrollbar-width: thin;
+    }
   }
 }

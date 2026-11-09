@@ -12,6 +12,7 @@ exercise, and prove that each test protects behavior or an independent contract.
 ## Dependencies
 - `session-ledger`
 - `pre-production`
+- `council`
 
 ## Workflow
 
@@ -42,7 +43,7 @@ Apply `pre-production` to the scope of issues encountered while tracing a test s
    After a test-only change, run the relevant test target; do not repeat source, manual, or external
    validation unless the test exposes a source defect that changes the implementation. Existing tests
    may still be run to diagnose development failures.
-4. Identify the source owner and its existing test module beneath the corresponding suite and classification. Extend that module before creating another; apply the rubric's class/file boundary test before splitting or relocating a suite.
+4. Identify the source owner and its existing test module beneath the corresponding suite and classification. Extend that module before creating another; apply the rubric's class/file boundary test before splitting or relocating a suite. When the rubric leaves equally valid layouts, put the choice to `council` in **Ask** mode and follow its ruling.
    Extend an existing module only when its organization and framework comply with the applicable
    guidance. When it conflicts, write the coverage in the required framework and organization;
    an existing test or missing runner does not make the conflicting pattern canonical. Trace reused
@@ -139,8 +140,8 @@ dispositions, the **Naming Checks**, **Factory Contents**, **Auditing Existing D
 **Literal Sweep** — and fix what it finds: repair or rewrite a weak test, fold a duplicate into its
 keeper, and delete one that proves nothing once the rubric's deletion evidence is recorded. A
 repaired or strengthened guarantee follows the existing-check validation procedure above. The fixes count toward the
-`pre-production`'s size budget like any other incidental change; past it, list what is left
-in the change's report. Apply the cost-reporting procedure above to the run that verified the
+`pre-production`'s size budget like any other incidental change; past it, return what is left
+to the caller as deferred work. Apply the cost-reporting procedure above to the run that verified the
 change. A disproportionate test, parametrized family or module in scope is made cheap or removed
 as `pre-production` decides.
 

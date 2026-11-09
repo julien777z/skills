@@ -296,11 +296,11 @@ review alike. Follow an explicitly selected workflow’s own declared check sequ
 constraints where it specifies them; nothing holds committed work on one machine — not a gate, review or simplification
 pass pending on it, an integration merge, or a plan that orders one first. The one exception is
 commits that `lock-revision`'s **After Locking** hold keeps local until the user lets revisions
-resume. `code-simplify` and `acceptance-gate`'s diff question do not run per push; the selected workflow sets when they run. A fix pushed for a flag a gate or review raised gets one fresh
-`acceptance-gate` run over that fix's increment, read with the whole branch diff as its originating
-diff, unless it is a small repair, as `acceptance-gate`'s **Bounds** define one, which the agent that
-made it checks in process; that fresh verdict, or that recorded check, is what other skills mean by an
-increment's **Pre-Push Gate** verdict.
+resume. `code-simplify` and `acceptance-gate` do not run per push; `execute-task` and `review-pass`
+set when they run. A fix pushed for a flag a review or gate raised is checked
+by the agent that made it: it re-reads the changed lines against the flag and reruns the checks
+covering that code, unless `acceptance-gate`'s **Bounds** send it to a fresh gate; that recorded
+check, or that gate's verdict, is what other skills mean by an increment's **Pre-Push Gate** verdict.
 
 Read the shared testing rule before planning test runs or briefing an implementation worker.
 Its **Verification Cadence** governs tests, builds, browser walkthroughs and reviews, including
@@ -330,6 +330,7 @@ checks before delivery; retain evidence that the change has not invalidated.
 
 Before each push, list the exact adjacent line pairs where setup, a guard, transformation, side effect,
 or return meets the next phase without the blank line required by the global code-layout rule.
+For changed Python files, `review-pass`'s `paragraph_candidates.py` script lists the candidate pairs.
 Fix every listed boundary in the lines the change writes or edits, and elsewhere in the changed files
 within `pre-production`'s incidental size budget, as the global code-layout rule says; an unrelated
 bug or a passing formatter does not satisfy this spacing check.
@@ -364,13 +365,10 @@ bug or a passing formatter does not satisfy this spacing check.
 - **Delegated edits run at this cadence.** A brief handing a worker edits states it, names the
   branch the worker pushes to — the branch of the pull request the work continues, under **Branches and Pull Requests** — and names the exact files to change, under `subagent-matrix`'s **Dispatch**. The
   worker pushes each step once its checks pass and reports the branch and head. The brief has the
-  worker fix every defect it meets, in the product or the repository's tooling, as `pre-production`
-  defines one, and report as left alone only cleanup past the size budget and any item
-  `pre-production`'s scope bullets leave to the user; a brief that only asks what was left alone
-  invites a defect into that list. The delegating
-  agent, which holds the intent statement, reads that head under the global rules’ **Reported Outcomes** and, once
-  the worker's task is finished, runs the selected workflow’s step gates over that
-  task's diff, returning what they flag as fix steps before any dependent work starts. The worker
+  worker fix every defect it meets within `pre-production`'s size budget, in the product or the
+  repository's tooling, and report as left alone only what is past that budget and any item
+  `pre-production`'s scope bullets leave to the user. The delegating agent reads that head under
+  the global rules’ **Reported Outcomes** before any dependent work starts. The worker
   ends with nothing uncommitted and nothing unpushed beyond the **Pre-Push Gate**'s one exception,
   never amends or rebases a pushed commit, and
   its report names the branch and head.

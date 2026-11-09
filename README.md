@@ -95,7 +95,6 @@ These run only when you ask for them by name, such as `/code-slop-doctor`.
 - [`grade-plans`](.agents/skills/execution/grade-plans/SKILL.md) — Compare, grade, rate, rank, or choose between two implementation plans written for the same goal or original agent prompt.
 - [`guidance-doctor`](.agents/skills/doctors/guidance-doctor/SKILL.md) — Review agent guidance for instructions to cut, clarify, or add.
 - [`handoff`](.agents/skills/workspace/handoff/SKILL.md) — Move the current session's work to another session with nothing lost and nothing left for the user to do.
-- [`incident`](.agents/skills/execution/incident/SKILL.md) — Restore a broken deployed service, test the fix, and merge the scoped repair.
 - [`lock-revision`](.agents/skills/python/lock-revision/SKILL.md) — Lock the current migration revisions before a test deploy; later changes go in a new revision, pushed once the user lets revisions resume.
 - [`manage-mcps`](.agents/skills/workspace/manage-mcps/SKILL.md) — Audit and repair managed MCP connectors across Claude Desktop and Codex.
 - [`merge-now`](.agents/skills/git/merge-now/SKILL.md) — Merge finished pull requests now, then review what merged unreviewed.
@@ -107,6 +106,7 @@ These run only when you ask for them by name, such as `/code-slop-doctor`.
 - [`study-games`](.agents/skills/roblox/study-games/SKILL.md) — Explicit user-invoked research of Roblox charts for the requested audience and region.
 - [`tests-doctor`](.agents/skills/doctors/tests-doctor/SKILL.md) — Audit tests for contract value, redundant proof, weak assertions, runtime, provider rate limits, and determinism.
 - [`where-time-went`](.agents/skills/workspace/where-time-went/SKILL.md) — Show where session time and usage went.
+- [`widen-scope`](.agents/skills/execution/widen-scope/SKILL.md) — Let the current task also fix the problems it runs into, within a size budget.
 
 ### Model-Invoked
 
@@ -114,14 +114,13 @@ An agent reaches for these on its own whenever the work calls for them.
 
 - [`acceptance-gate`](.agents/skills/review/acceptance-gate/SKILL.md) — Have an independent reviewer decide whether a proposed change fits the task and the repository.
 - [`agent-lock`](.agents/skills/workspace/agent-lock/SKILL.md) — Coordinate exclusive use of a shared resource between agents using an exact string key.
-- [`async-python-patterns`](.agents/skills/python/async-python-patterns/SKILL.md) — Master Python asyncio, concurrent programming, and async/await patterns for high-performance applications.
 - [`banned-terminology`](.agents/skills/review/banned-terminology/SKILL.md) — Owns the banned-terms list in resources/banned_words.json and enforces it.
 - [`brag`](.agents/skills/media/brag/SKILL.md) — Turn the current project website into a short, polished, shareable launch video using Hyperframes.
 - [`brag-slim`](.agents/skills/media/brag-slim/SKILL.md) — Turn a project directory or a website URL into a short, shareable launch video with music, motion, and share copy.
 - [`build-types`](.agents/skills/web/build-types/SKILL.md) — Regenerate generated API types from an OpenAPI document, using the API contract this branch deploys with.
 - [`clerk-nextjs-patterns`](.agents/skills/web/clerk-nextjs-patterns/SKILL.md) — Advanced Next.js patterns - middleware, Server Actions, caching with Clerk.
-- [`code-review`](.agents/skills/review/code-review/SKILL.md) — Code review a pull request or the current working changes with independent reviewer lenses, validated findings, and severity-rated results.
-- [`code-simplify`](.agents/skills/review/code-simplify/SKILL.md) — Strictly review the branch's changes for reuse, simplification, abstraction quality, and maintainability, then fix the issues.
+- [`code-simplify`](.agents/skills/review/code-simplify/SKILL.md) — Review a change for duplication and needless abstraction, then fix what it finds.
+- [`council`](.agents/skills/review/council/SKILL.md) — Ask three strong models what they think, or review with them in rounds until they agree.
 - [`current-changes`](.agents/skills/git/current-changes/SKILL.md) — Summarize the branch's changes against the default branch with links to the code.
 - [`database-migrations`](.agents/skills/python/database-migrations/SKILL.md) — Guide for authoring, rebasing, and troubleshooting Alembic database migrations, including how to avoid and fix branched migration graphs.
 - [`defer-scope`](.agents/skills/deferrals/defer-scope/SKILL.md) — Record unfinished work in the repository it affects, or read its active records.
@@ -151,19 +150,8 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`process-ledger`](.agents/skills/execution/process-ledger/SKILL.md) — Process verified private-ledger records into durable outcomes.
 - [`progress`](.agents/skills/workspace/progress/SKILL.md) — Show the task’s progress as a dashboard.
 - [`proton-pass`](.agents/skills/workspace/proton-pass/SKILL.md) — Retrieve credentials from Proton Pass with pass-cli.
-- [`python-anti-patterns`](.agents/skills/python/python-anti-patterns/SKILL.md) — Use this skill when reviewing Python code for common anti-patterns to avoid.
-- [`python-background-jobs`](.agents/skills/python/python-background-jobs/SKILL.md) — Python background job patterns including task queues, workers, and event-driven architecture.
-- [`python-configuration`](.agents/skills/python/python-configuration/SKILL.md) — Python configuration management via environment variables and typed settings.
-- [`python-design-patterns`](.agents/skills/python/python-design-patterns/SKILL.md) — Python design patterns including KISS, Separation of Concerns, Single Responsibility, and composition over inheritance.
-- [`python-error-handling`](.agents/skills/python/python-error-handling/SKILL.md) — Python error handling patterns including input validation, exception hierarchies, and partial failure handling.
-- [`python-performance-optimization`](.agents/skills/python/python-performance-optimization/SKILL.md) — Profile and optimize Python code using cProfile, memory profilers, and performance best practices.
-- [`python-project-structure`](.agents/skills/python/python-project-structure/SKILL.md) — Python project organization, module architecture, and public API design.
-- [`python-resilience`](.agents/skills/python/python-resilience/SKILL.md) — Python resilience patterns including automatic retries, exponential backoff, timeouts, and fault-tolerant decorators.
-- [`python-resource-management`](.agents/skills/python/python-resource-management/SKILL.md) — Python resource management with context managers, cleanup patterns, and streaming.
-- [`python-testing-patterns`](.agents/skills/python/python-testing-patterns/SKILL.md) — Implement comprehensive testing strategies with pytest, fixtures, mocking, and test-driven development.
-- [`python-type-safety`](.agents/skills/python/python-type-safety/SKILL.md) — Python type safety with type hints, generics, protocols, and strict type checking.
 - [`reverse-engineer-anything`](.agents/skills/workspace/reverse-engineer-anything/SKILL.md) — Reverse engineer native, managed, Electron/JavaScript, packaged, firmware, and browser targets with REA, and build agent environments (AgentEnv bundles) of web applications from a live instance or a capture.
-- [`review-pass`](.agents/skills/review/review-pass/SKILL.md) — Review, simplify and fix what a pull request has not had reviewed yet, then record the reviewed head.
+- [`review-pass`](.agents/skills/review/review-pass/SKILL.md) — Review and fix what a pull request has not had reviewed yet, then record the reviewed head.
 - [`review-proposal`](.agents/skills/review/review-proposal/SKILL.md) — Challenge a proposal and obtain independent acceptance before presenting it for approval.
 - [`rewrite-git-history`](.agents/skills/git/rewrite-git-history/SKILL.md) — Rework your branch into focused commits while preserving and checking its content.
 - [`roblox-building`](.agents/skills/roblox/roblox-building/SKILL.md) — Build and improve Roblox worlds, terrain, structures, props, and assets.

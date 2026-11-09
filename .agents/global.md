@@ -126,8 +126,10 @@ alwaysApply: true
   again: findings that keep coming on one change say the approach is wrong, not that the next patch
   will land. A change is one plan step, worker task or finding fix, and its rounds are counted
   together across every kind of check; a round a broken runner, fixture or provider cut short before
-  judging the change is not counted. Decide and record the disposition: use a simpler approach,
-  revert the change, or accept it with the remaining findings recorded. A confirmed defect, an
+  judging the change is not counted. Put the disposition to `council` in **Ask** mode, with the
+  change, each round's findings and remedies, and the three choices: use a simpler approach, revert
+  the change, or accept it with the remaining findings recorded; record its majority ruling and
+  follow it. A confirmed defect, an
   exploitable vulnerability or a failing required check is never accepted this way. If the authorized
   outcome still needs work, update the active plan and start the first permitted step of the
   replacement. A different implementation idea is not a new approval boundary. Ask only when
@@ -672,13 +674,13 @@ An outcome is what its source of truth shows, never what an action or a worker s
   branch or the installed copy, "deployed" or "healthy" against the host, "fixed" by reproducing it
   or reading the evidence, "the screenshot shows it" by looking at the image, "no references
   remain" by searching. A claim the check contradicts is the next thing done, ahead of queued
-  work: sent back to the worker with what the read showed, or fixed here. A verified report of
-  finished work is relayed as done, or built on, only after the selected workflow’s step gates have passed over it.
+  work: sent back to the worker with what the read showed, or fixed here.
 - **What a worker reports leaving alone is classified before it reaches the user.** Read each item
-  against `pre-production`'s **Scope Follows The Defect, Not The Request** bullets: a defect, a
-  parallel implementation or a shape a standing rule names goes back to the worker or is fixed
-  here; only an item those bullets leave to the user, or one over the size budget, is reported, as
-  what it is and never as a question whether to fix it.
+  against `pre-production`'s **Scope Follows The Defect, Not The Request** bullets: a defect within
+  its size budget, a parallel copy of the change's own mechanism or a shape a standing rule names
+  goes back to the worker or is fixed here; an item over the size budget is recorded with
+  `defer-scope`, and only it and an item those bullets leave to the user are reported, as what it
+  is and never as a question whether to fix it.
 - **A deferral inside a report — "I'll do X next" — is named work of this run** under **Task
   execution and authorization**, tracked until done; the report does not close it.
 - Before a milestone report, gate classification or final response, read the authorized outcome's

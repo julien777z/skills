@@ -1,13 +1,16 @@
 import { type Context, createContext } from 'react';
 
-import type { Reference } from '@/spec';
+import type { Reference, Section } from '@/spec';
 
 const REFERENCE_BOUNDARY: string = 'A-Za-z0-9_/-';
 
 export interface ReferenceLink {
   text: string;
-  href: string;
+  href?: string;
+  details?: Section;
 }
+
+type ReferenceTarget = Omit<ReferenceLink, 'text'>;
 
 export interface LinkAttributes {
   href: string;
@@ -38,26 +41,35 @@ function escapeRegExp(text: string): string {
 }
 
 export class References {
-  private readonly urls: Map<string, string>;
+  private readonly targets: Map<string, ReferenceTarget>;
   private readonly pattern: RegExp | null;
 
+  private readonly entries: Reference[];
+
   constructor(entries: Reference[]) {
-    this.urls = new Map();
+    this.entries = entries;
+    this.targets = new Map();
 
     for (const entry of entries) {
-      const link = linkAttributes(entry.url);
+      const link = entry.url ? linkAttributes(entry.url) : null;
 
-      if (link) {
-        this.urls.set(entry.text, link.href);
+      if (entry.details) {
+        this.targets.set(entry.text, { details: entry.details });
+      } else if (link) {
+        this.targets.set(entry.text, { href: link.href });
       }
     }
 
-    const texts = [...this.urls.keys()].sort((first, second) => second.length - first.length);
+    const texts = [...this.targets.keys()].sort((first, second) => second.length - first.length);
     const alternatives = texts.map(escapeRegExp).join('|');
 
     this.pattern = texts.length
       ? new RegExp(`(?<![${REFERENCE_BOUNDARY}])(?:${alternatives})(?![${REFERENCE_BOUNDARY}])`, 'g')
       : null;
+  }
+
+  without(text: string): References {
+    return new References(this.entries.filter((entry) => entry.text !== text));
   }
 
   split(text: string): (string | ReferenceLink)[] {
@@ -71,7 +83,7 @@ export class References {
     for (const match of text.matchAll(this.pattern)) {
       const index = match.index ?? 0;
 
-      parts.push(text.slice(start, index), { text: match[0], href: this.urls.get(match[0]) ?? '' });
+      parts.push(text.slice(start, index), { text: match[0], ...this.targets.get(match[0]) });
       start = index + match[0].length;
     }
 
