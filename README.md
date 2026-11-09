@@ -120,7 +120,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`build-types`](.agents/skills/web/build-types/SKILL.md) — Regenerate generated API types from an OpenAPI document, using the API contract this branch deploys with.
 - [`clerk-nextjs-patterns`](.agents/skills/web/clerk-nextjs-patterns/SKILL.md) — Advanced Next.js patterns - middleware, Server Actions, caching with Clerk.
 - [`code-simplify`](.agents/skills/review/code-simplify/SKILL.md) — Review a change for duplication and needless abstraction, then fix what it finds.
-- [`council`](.agents/skills/review/council/SKILL.md) — Ask three strong models for review, and loop until they agree.
+- [`council`](.agents/skills/review/council/SKILL.md) — Ask three strong models what they think, or review with them in rounds until they agree.
 - [`current-changes`](.agents/skills/git/current-changes/SKILL.md) — Summarize the branch's changes against the default branch with links to the code.
 - [`database-migrations`](.agents/skills/python/database-migrations/SKILL.md) — Guide for authoring, rebasing, and troubleshooting Alembic database migrations, including how to avoid and fix branched migration graphs.
 - [`defer-scope`](.agents/skills/deferrals/defer-scope/SKILL.md) — Record unfinished work in the repository it affects, or read its active records.

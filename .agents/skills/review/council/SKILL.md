@@ -1,49 +1,88 @@
 ---
 name: council
-description: Get review or feedback from three strong models, from more than one provider, and loop until they agree. Use when the user says "council".
-short_description: 'Ask three strong models for review, and loop until they agree.'
+description: Put a question, a review or a disputed finding to three strong models, from more than one provider, and return what each thinks; or review work with them in rounds, fixing what they find, until they agree. Use when the user says "council" or "use council", asks what several models think of something, or as a step that needs several models' independent read.
+short_description: 'Ask three strong models what they think, or review with them in rounds until they agree.'
 ---
 
 # Council
 
-Before the council reads anything, answer outstanding pull-request comments, fix known issues and
-run the relevant checks, so it reviews the current work. When the user wants to drop the
-implementation and explore new ideas, skip fixes to code that is being replaced.
-
 ## Dependencies
-- `review-pass`
 - `subagent-matrix`
+- `pre-production`
+- `defer-scope`
+
+## Modes
+
+- **Ask:** one round, and no edits. Use it when the user asks a question and wants the council's
+  view, such as "what do you think of this approach? use council", and when an invocation hands
+  the council a brief to answer: a review of a change, or a ruling on one disputed finding.
+  Return each member's answer under **Output**; the asker decides what to do with it.
+- **Loop:** the user asks the council to review or give feedback on work, such as "council this
+  pull request". Run **Rounds**, fixing between them.
 
 ## Members
 
-Use the members the user's instructions name. Otherwise take the three model families the
-`subagent-matrix` skill's model capabilities reference lists under **Council members**, each at
-its latest version on the host and at high effort, and resolve each launch through that skill.
+Use the members the user's instructions name. Otherwise take the three seats the `subagent-matrix`
+skill's model capabilities reference lists under **Review panel**, each at its latest version on
+the host and at high effort, and resolve each launch through that skill. Start the three in
+parallel, read-only, each starting no subagents of its own.
 
-- **T3 Code:** resolve the models with `orchestrator_capabilities`, then start one `delegate_task`
-  per member in parallel, each a new task.
-- **Elsewhere:** use the harness's subagents on those models.
 - When a listed family is unreachable, fill its seat with the strongest other reachable model and
   say so in the result. A named member who is unavailable is reported, never replaced silently.
+- **Brief:** a brief the invocation supplies is sent as it stands to every member. Otherwise give
+  each the question or request, the intent, the material (a diff, files, a plan), and any check
+  results. A review asks for findings, each with a file and line, rated `blocker` (the intended case
+  is wrong), `should` (a real bug, an unsafe input or a workaround) or `nit`, and a score out of 10.
+  A ruling asks for `fix` or `drop` with the reason.
+- **Members keep their context between rounds.** In **Loop**, each member is started once and every
+  later round is sent to that same member, carrying only the answers to its findings and what
+  changed, so it re-reads nothing it already holds. A member that has ended or errored is replaced
+  by a fresh one given the full brief and the ledger so far, and the result says so.
 
 ## Rounds
 
-1. Give each member the request, the intent, the diff or material, and the check results. For a
-   review, keep members read-only and ask each for findings rated blocker, should or nit, as the
-   `review-pass` skill's reviewer brief defines them, and a score out of 10.
-2. Collect the replies. Summarise the useful findings, where members disagree, and the next steps.
-3. Make the changes you agree with, then start a fresh round. Each full review pass is one round.
+Before round 1, answer outstanding pull-request comments, fix known issues and run the relevant
+checks, so the council reviews the current work. When the user wants to drop the implementation and
+explore new ideas, skip fixes to code that is being replaced.
+
+1. Send each member the brief and collect the replies. Summarise the useful findings, where members
+   disagree, and the next steps.
+2. Make the changes you agree with, and answer each finding: fixed, or declined with evidence. A
+   finding outside the request is fixed when it fits `pre-production`'s size budget and recorded
+   with `defer-scope` otherwise.
+3. Send the next round to the same members, with those answers and the diff since the last round.
+   Each full review pass is one round.
 4. Stop when every member is satisfied, or after three rounds; then show the open disagreements and
    let the user decide.
 
-Fight scope creep: a finding outside the request follows `review-pass`'s **Review Loop** rule for problems outside
-the change.
+## Harness Compatibility
+
+- **T3 Code:** resolve the models with `orchestrator_capabilities`, and start each member with its
+  own `delegate_task` (`role: "review"`). In **Loop**, send each later round to that member's own
+  thread rather than starting a new task, so it keeps its context.
+- **Claude Code:** start each member as a subagent, and send each later round to it with
+  `SendMessage`.
+- **Codex:** start each member as a subagent, and send each later round to that same agent.
 
 ## Output
 
-When the work ends in a pull request, put this section in its description, before the model and
-harness line; edit the description rather than posting a comment. With no pull request, put it in
-the final reply. Write `no score` for a member who gave none; never invent one.
+**Ask** returns this to its asker, the user or the calling step:
+
+```markdown
+**Council:** <the question, in one line>
+
+| Member | Answer |
+| --- | --- |
+| <model> | <its answer, verdict or ruling, with its reason> |
+
+- **Agree on:** <points every member made, or none>
+- **Split on:** <point: who holds which side, or none>
+- **Findings:** <id [severity] file:line claim — members raising it, or not a review>
+```
+
+**Loop** puts this section in the pull request's description, before the model and harness line,
+by editing the description rather than posting a comment; with no pull request, in the final reply.
+Write `no score` for a member who gave none; never invent one.
 
 ```markdown
 ## Council review

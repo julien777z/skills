@@ -1,6 +1,6 @@
 ---
 name: review-pass
-description: Review a change and fix what the review finds, through one independent reviewer in a short loop. Use when the user asks for a code review, a review loop or "sol loop", or as a step of a workflow that finishes a pull request before its merge. Never merges.
+description: Review a change and fix what the review finds, through an independent reviewer on another provider's model in a short loop. Use when the user asks for a code review, a review loop or "sol loop", or as a step of a workflow that finishes a pull request before its merge. Never merges.
 short_description: 'Review and fix what a pull request has not had reviewed yet, then record the reviewed head.'
 ---
 
@@ -19,6 +19,7 @@ skill never readies, merges or deploys.
 - `defer-scope`
 - `session-ledger`
 - `pre-production`
+- `council`
 
 ## Invocation
 
@@ -164,13 +165,17 @@ changed. Make the smallest changes that answer real findings, and push back on t
   so it does not share the author's blind spots; the user may name another. Start it on another
   provider's model where the harness offers one, as **Harness Compatibility** says for the harnesses
   that need it, otherwise as a fresh subagent on the strongest available model. One reviewer per
-  round, apart from a split round 1, each starting no subagents of its own. Do not edit the reviewed files while a round runs; a timeout, an error or no reply is
+  round, apart from a split or panel round 1, each starting no subagents of its own. Do not edit the reviewed files while a round runs; a timeout, an error or no reply is
   not approval.
 - **Split round 1 by area** when the delta spans several areas, such as packages, services or apps,
   and is too large for one careful read: up to five reviewers, one per area group, each briefed with
   its group's paths and the whole diff as context, so a finding that crosses groups is still seen.
   Merge their findings into one ledger before answering. Later rounds go back to one reviewer over
   the changed code and the open findings.
+- **Panel round 1 for risky deltas:** when the delta touches security, permissions, auth, data loss
+  or concurrency, round 1 goes to `council` in **Ask** mode with the round's brief, in place of the
+  single reviewer, and its findings become the ledger. When round 1 is also split, the risky area
+  group goes to `council` and the other groups share the remaining two of the five reviewers.
 - **Brief:** send [the reviewer brief](references/reviewer-brief.md), this skill's reference holding
   the round text and severity scale, with the repository, base, intent, out-of-scope note, check
   results and the repository rules whose file patterns match the changed paths filled in. Use the
@@ -188,14 +193,18 @@ changed. Make the smallest changes that answer real findings, and push back on t
   changed since the last approval. Rerun the checks and `git diff --shortstat <base>` first; if
   review grew the diff past what the intent needs, cut it first. Never agree just to end the loop.
 - **Stop** when the reviewer approves the current diff with no blocker or should open and no concern
-  of your own. A finding still disputed after two replies, or a spent budget, ends the loop stuck:
-  show both sides in two or three lines each for the user to decide. A spent budget is not approval.
+  of your own. A spent budget is not approval.
+- **A finding still disputed after two replies goes to `council`** in **Ask** mode for a ruling,
+  with the finding, the reviewer's case and yours with their evidence, and the code it concerns. A
+  unanimous ruling settles it: fix it, or record it declined with the ruling. A split ruling, or a spent budget with a blocker or should
+  still open, ends the loop stuck: show both sides in two or three lines each for the user to
+  decide.
 
 ## Harness Compatibility
 
 - **T3 Code:** call `orchestrator_capabilities` once, pick the latest flagship of another provider at
-  high effort, and start each round with a new `delegate_task` (`role: "review"`), never
-  `t3_thread_send`.
+  high effort, and start each round with a new `delegate_task`
+  (`role: "review"`), never `t3_thread_send`.
 
 ## Output
 
@@ -203,7 +212,7 @@ changed. Make the smallest changes that answer real findings, and push back on t
 **Review pass:** <accepted head> · <full | delta `<reviewed head>..<head>` | empty> · recorded <whole | delta>
 
 - **Local passes:** <layout pairs fixed · code-simplify result · test sweep result, each or not run>
-- **Review loop:** <n> round(s) with <model> — <approved | stuck on <ids> | review only> · diff <shortstat before> → <shortstat after>
+- **Review loop:** <n> round(s) with <model> — <approved | stuck on <ids> | review only> · panel <round 1 | ruled on <ids> | not used> · diff <shortstat before> → <shortstat after>
 - **Fixed:** <one line per fix, marking those review surfaced rather than the task required, or none>
 - **Threads:** <disposition per thread, or none>
 - **Checks:** <passed | exclusions with evidence>
