@@ -40,8 +40,10 @@ and bug fixes still have requirements for the gate to evaluate. Where no change 
 and judge the item on product state and the rubric.
 
 When work changes an owned boundary, the statement quotes the applicable target-contract instruction,
-names the canonical representation and its supported meanings, and identifies every prior or candidate
-representation and any explicit authorization to retain one.
+names the one canonical representation, and identifies every retained or candidate representation of
+that boundary. The gate cannot accept an abstract summary in place of that receipt; a second consumer
+layout, branch, probe, fallback, or compatibility helper is a flag unless the user explicitly approved
+retaining it.
 
 The owned-boundary receipt distinguishes the actor or execution owner from its destination and
 names the permitted resources and prohibited placements, disclosures or writes. Trace the actual
@@ -101,8 +103,8 @@ receives five things and nothing else:
    record; a diff that adds or changes tests carries the cost evidence from its verification run
    under `test-fixture`'s existing-reporting procedure, including any unmeasured attribution;
 4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**. For each
-   changed file group, the caller resolves the governing project guidance, scoped repository rules
-   and installed shared rules by their paths, and supplies the relevant source text and scope;
+   changed file group, resolve its project guidance, scoped repository rules and installed shared
+   rules by path. Supply the complete text and scope of each source inline or in a named file;
 5. exactly one question from the list below.
 
 **The gate has no shell, so every diff reaches it as content, never as a reference.** The caller
@@ -127,11 +129,10 @@ modules it touches and of the originating diff, which the earlier gate judged, i
 new flag only where the increment changes what it depends on or it holds a confirmed defect or
 exploitable vulnerability.
 
-Before the design comparison, verify that the supplied rules cover every file group in the diff.
-Apply them to preambles, imports, declarations and executable bodies in scope under the paragraph
-above, including moved files. Flag each independently observable violation by line and rule even
-when a narrower check passes. Passing format, type or CI checks do not prove compliance with rules
-they do not enforce. Flag a missing file or rule and name the evidence needed.
+Before the design comparison, verify that the supplied rule sources are complete and cover the
+file groups in the diff. Check preambles, imports, declarations and executable bodies in the
+scope above. Flag each violation by line and rule even when a narrower check passes. Formatting,
+type and CI checks prove only the rules they enforce. Flag missing evidence and say what to supply.
 
 **Then make the design comparison.** Inventory the responsibilities and decisions the diff moves,
 duplicates, specializes, removes or introduces, reading both sides independently of the caller's
@@ -184,13 +185,12 @@ A report that lists no hit for any of the five greps says so in those words.
 
 **Then it lists every guard, refusal, validation, or branch the diff adds with the writers of the
 value it tests and of what its path reads next**, by path and function, and flags each one the
-rubric's diff test flags. For an owned boundary, independently trace the current producers and
-consumers from the supplied code. In `Writers read`, name the inputs each consumer accepts and how
-its canonical parser rejects each obsolete representation. Compare that evidence with the current
-intent receipt. Flag any missing path or unapproved second encoding, including a branch, probe,
-fallback, helper, or widened validator. Distinct supported meanings in the canonical representation
-remain subject to the ordinary guard checks. A verdict with no added guard says `no guard added` in
-those words.
+rubric's diff test flags. For an owned boundary, it also names every representation each path reads
+or writes and flags a second representation, including one hidden behind a helper. Trace the
+actual producers and consumers from the supplied code. In `Writers read`, name the inputs each
+consumer accepts and how it excludes each obsolete representation. Flag missing paths or evidence.
+Distinct meanings carried by the canonical representation still receive the ordinary guard checks.
+A verdict with no added guard says `no guard added` in those words.
 
 **Then it lists every product choice the diff makes**, as the global rules define one — a change to
 what a feature does or shows, a remedy whose visible effect is large, such as a layout, control or
@@ -352,15 +352,15 @@ Gate: <question> — <item in one line>
 
 Verdict: accept | flag | fix | close | defer | do
 
-- <for a flag: the quoted line or missing evidence, the intent, rule or rubric item it violates, and
-  the remedy; one bullet per flag>
+- <for a flag: the quoted line or missing evidence, the shape it takes, the intent, rule or rubric
+  item it violates, and the remedy the change itself would take; one bullet per flag>
 - <for an acceptance: each addition whose kind matches a removed shape, the shape it takes, and why
   it is neither the removed shape nor a finding; one bullet per addition>
 - <for a triage disposition: the test that decided it and the fact it rests on>
 
-Writers read: <each added guard with its writers, or `no guard added`; owned-boundary input evidence>
+Writers read: <each guard the diff adds with the writers it read, or `no guard added`; owned-boundary input evidence>
 
 Product choices: <each product choice the diff makes with the user's words settling it, or `no product choice added`>
 
-Also read: <the Independent Judgment comparison receipt, the file groups and rules checked, and additions of other kinds>
+Also read: <the Independent Judgment comparison receipt, file groups and rules checked, plus additions of other kinds>
 ```
