@@ -102,7 +102,12 @@ receives five things and nothing else:
 3. the item under judgement — an issue or finding, a proposal, a diff, an incoming base diff, or a
    record; a diff that adds or changes tests carries the cost evidence from its verification run
    under `test-fixture`'s existing-reporting procedure, including any unmeasured attribution;
-4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**;
+4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**. For each
+   changed file group, resolve its project guidance, scoped repository rules and installed shared
+   rules by path. Supply the complete text and scope of each source inline or in a named file.
+   When the Python rules apply, run `scripts/python_rule_findings.py` with the project's Python
+   interpreter on the in-scope Python files. Supply the file list and every finding, including an
+   explicit empty result. The reader verifies each reported shape against the source and rule;
 5. exactly one question from the list below.
 
 **The gate has no shell, so every diff reaches it as content, never as a reference.** The caller
@@ -126,6 +131,13 @@ answers and on its own lines, read the same way, never only against that flag; t
 modules it touches and of the originating diff, which the earlier gate judged, is context, open to a
 new flag only where the increment changes what it depends on or it holds a confirmed defect or
 exploitable vulnerability.
+
+Before the design comparison, verify that the supplied rule sources are complete and cover the
+file groups in the diff. Check preambles, imports, declarations and executable bodies in the
+scope above. For Python, check the opening statement and each data-holding declaration's bases
+and decorators against the language rules before judging its placement. Flag each violation by
+line and rule even when a narrower check passes. Formatting, type and CI checks prove only the
+rules they enforce. Flag missing evidence and say what to supply.
 
 **Then make the design comparison.** Inventory the responsibilities and decisions the diff moves,
 duplicates, specializes, removes or introduces, reading both sides independently of the caller's
@@ -179,8 +191,11 @@ A report that lists no hit for any of the five greps says so in those words.
 **Then it lists every guard, refusal, validation, or branch the diff adds with the writers of the
 value it tests and of what its path reads next**, by path and function, and flags each one the
 rubric's diff test flags. For an owned boundary, it also names every representation each path reads
-or writes and flags a second representation, including one hidden behind a helper. A verdict with no
-added guard says `no guard added` in those words.
+or writes and flags a second representation, including one hidden behind a helper. Trace the
+actual producers and consumers from the supplied code. In `Writers read`, name the inputs each
+consumer accepts and how it excludes each obsolete representation. Flag missing paths or evidence.
+Distinct meanings carried by the canonical representation still receive the ordinary guard checks.
+A verdict with no added guard says `no guard added` in those words.
 
 **Then it lists every product choice the diff makes**, as the global rules define one — a change to
 what a feature does or shows, a remedy whose visible effect is large, such as a layout, control or
@@ -342,15 +357,15 @@ Gate: <question> — <item in one line>
 
 Verdict: accept | flag | fix | close | defer | do
 
-- <for a flag: the quoted line, the shape it takes, the intent or rubric item it violates, and the
-  remedy the change itself would take; one bullet per flag>
+- <for a flag: the quoted line or missing evidence, the shape it takes, the intent, rule or rubric
+  item it violates, and the remedy the change itself would take; one bullet per flag>
 - <for an acceptance: each addition whose kind matches a removed shape, the shape it takes, and why
   it is neither the removed shape nor a finding; one bullet per addition>
 - <for a triage disposition: the test that decided it and the fact it rests on>
 
-Writers read: <each guard the diff adds with the writers it read, or `no guard added`>
+Writers read: <each guard the diff adds with the writers it read, or `no guard added`; owned-boundary input evidence>
 
 Product choices: <each product choice the diff makes with the user's words settling it, or `no product choice added`>
 
-Also read: <the Independent Judgment comparison receipt, plus additions of other kinds>
+Also read: <the Independent Judgment comparison receipt, file groups and rules checked, plus additions of other kinds>
 ```
