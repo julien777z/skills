@@ -194,8 +194,8 @@ changed. Make the smallest changes that answer real findings, and push back on t
   - disagree: say why, with evidence such as a file and line, a test or output;
   - nit: fix it when it is a one-line change in a line the change already touches, otherwise decline
     it in one line;
-  - outside the change: fix a bug that fits `pre-production`'s size budget, and record everything
-    else with `defer-scope`.
+  - outside the change: fix every bug, and record cleanup past `pre-production`'s size budget with
+    `defer-scope`.
 - **Next round** only while budget remains and a blocker or should is open, or behaviour code
   changed since the last approval. Rerun the checks and `git diff --shortstat <base>` first; if
   review grew the diff past what the intent needs, cut it first. Never agree just to end the loop.
