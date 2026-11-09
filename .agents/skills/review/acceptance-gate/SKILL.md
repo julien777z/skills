@@ -104,7 +104,10 @@ receives five things and nothing else:
    under `test-fixture`'s existing-reporting procedure, including any unmeasured attribution;
 4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**. For each
    changed file group, resolve its project guidance, scoped repository rules and installed shared
-   rules by path. Supply the complete text and scope of each source inline or in a named file;
+   rules by path. Supply the complete text and scope of each source inline or in a named file.
+   When the Python rules apply, run `scripts/python_rule_findings.py` with the project's Python
+   interpreter on the in-scope Python files. Supply the file list and every finding, including an
+   explicit empty result. The reader verifies each reported shape against the source and rule;
 5. exactly one question from the list below.
 
 **The gate has no shell, so every diff reaches it as content, never as a reference.** The caller
