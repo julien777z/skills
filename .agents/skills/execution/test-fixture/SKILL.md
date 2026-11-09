@@ -139,9 +139,10 @@ Apply the complete rubric to every test in that scope — **Test Value And Reten
 dispositions, the **Naming Checks**, **Factory Contents**, **Auditing Existing Doubles**, and the
 **Literal Sweep** — and fix what it finds: repair or rewrite a weak test, fold a duplicate into its
 keeper, and delete one that proves nothing once the rubric's deletion evidence is recorded. A
-repaired or strengthened guarantee follows the existing-check validation procedure above. The fixes count toward the
-`pre-production`'s size budget like any other incidental change; past it, return what is left
-to the caller as deferred work. Apply the cost-reporting procedure above to the run that verified the
+repaired or strengthened guarantee follows the existing-check validation procedure above. A fix that repairs a defect —
+a test that cannot fail, guards the wrong behaviour or breaks in a fresh checkout — is always made,
+whatever its size; other cleanup the sweep finds counts toward `pre-production`'s size budget like
+any other incidental change, and past it, what is left returns to the caller as deferred work. Apply the cost-reporting procedure above to the run that verified the
 change. A disproportionate test, parametrized family or module in scope is made cheap or removed
 as `pre-production` decides.
 

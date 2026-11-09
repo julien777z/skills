@@ -10,7 +10,10 @@ disable-model-invocation: true
 By default the work fixes its own change and every bug it meets, and defers cleanup past
 `pre-production`'s size budget. This skill raises that cleanup limit as a session toggle: once the
 user turns it on, it holds for every task and follow-up in the session until the user says to stop.
-Record that it is on with `session-ledger` so it survives compaction and reaches every worker brief.
+Record that it is on with `session-ledger`, and carry it into every task the session starts: a new
+task's ledger copies the entry before the previous ledger is removed, a context summary or handoff
+names it, and every worker brief states it. When the user stops it, record it as stopped the same
+way, so no later task in the session picks it up again.
 
 ## Dependencies
 - `acceptance-gate`
@@ -26,8 +29,9 @@ Record that it is on with `session-ledger` so it survives compaction and reaches
   size.
 - Keep each fix in its own commit, named for what it repairs, so it can be reviewed or reverted on
   its own.
-- Defer with `defer-scope` cleanup larger than that, anything that changes what the product does,
-  and anything that would need its own plan.
+- Defer with `defer-scope` cleanup larger than that, cleanup that would change what the product
+  does, and cleanup that would need its own plan. A defect's remedy is never deferred here: it keeps
+  the planning and user-decision obligations `pre-production` and the global rules give it.
 
 ## Judging Borderline Items
 

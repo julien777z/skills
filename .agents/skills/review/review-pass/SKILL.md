@@ -133,9 +133,10 @@ began is recorded with its evidence and not repaired, rerun or waited on.
    and the pass returns to step 7; commits added to the head are a new delta, and the pass returns
    to step 1 for it.
 
-A finding outside the change follows **Review Loop**'s rule for it: a small fix lands here, the rest
-is recorded with `defer-scope`. A recorded deferral is discharged, never a gate on the review or
-the merge, and never covers a defect the change introduced, which is fixed in this pass.
+A finding outside the change follows **Review Loop**'s rule for it: every defect is fixed here,
+whatever its size, and only cleanup past `pre-production`'s size budget is recorded with
+`defer-scope`. A recorded deferral is discharged, never a gate on the review or the merge, and never
+covers a defect.
 
 Keep the session active until the pass reaches its result. A delegated reviewer is nonterminal
 until it returns; a quiet interval or a yielded wait is not completion.
