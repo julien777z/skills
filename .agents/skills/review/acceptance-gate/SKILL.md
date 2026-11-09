@@ -41,9 +41,11 @@ and judge the item on product state and the rubric.
 
 When work changes an owned boundary, the statement quotes the applicable target-contract instruction,
 names the one canonical representation, and identifies every retained or candidate representation of
-that boundary. The gate cannot accept an abstract summary in place of that receipt; a second consumer
-layout, branch, probe, fallback, or compatibility helper is a flag unless the user explicitly approved
-retaining it.
+that boundary. Trace the actual producers and consumers, enumerate the inputs each accepts, and show
+which obsolete representations they reject. Account for distinct supported semantics within the one
+protocol; a shared representation must not erase them. The gate cannot accept an abstract summary in
+place of that receipt; a second consumer layout, branch, probe, fallback, or compatibility helper is a
+flag unless the user explicitly approved retaining it.
 
 The owned-boundary receipt distinguishes the actor or execution owner from its destination and
 names the permitted resources and prohibited placements, disclosures or writes. Trace the actual
@@ -102,7 +104,8 @@ receives five things and nothing else:
 3. the item under judgement — an issue or finding, a proposal, a diff, an incoming base diff, or a
    record; a diff that adds or changes tests carries the cost evidence from its verification run
    under `test-fixture`'s existing-reporting procedure, including any unmeasured attribution;
-4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**;
+4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**, with the
+   applicable repository and language rules supplied for each changed file group;
 5. exactly one question from the list below.
 
 **The gate has no shell, so every diff reaches it as content, never as a reference.** The caller
@@ -126,6 +129,11 @@ answers and on its own lines, read the same way, never only against that flag; t
 modules it touches and of the originating diff, which the earlier gate judged, is context, open to a
 new flag only where the increment changes what it depends on or it holds a confirmed defect or
 exploitable vulnerability.
+
+For every changed file, identify and apply its repository and language-specific rules to the changed
+content, including rules that formatters, type checks and CI do not enforce. A shape satisfying one
+review criterion still fails if another applicable rule forbids it; name the rule and remedy in the
+verdict. Missing rule or file evidence holds a clean verdict.
 
 **Then make the design comparison.** Inventory the responsibilities and decisions the diff moves,
 duplicates, specializes, removes or introduces, reading both sides independently of the caller's
