@@ -35,11 +35,12 @@ it whole before the pass.
 
 - **Small scopes in process.** When one reviewer can hold the diff, the touched files and their
   siblings at once, review in process and start no subagents.
-- **Larger scopes by slice.** Partition by app, service or package and launch one read-only
-  `code-simplify` agent per slice through `subagent-matrix` at its standard capability level, each
-  with the rubric, its slice's diff and file contents, the intent and the affected-repository map.
-  Add one cross-cutting reviewer only when parallel implementations across slices will not fit in
-  one slice's context. Apply `subagent-matrix`'s launch fallback when a worker cannot start.
+- **Larger scopes by slice.** Partition by app, service or package into at most five slices,
+  grouping neighbouring areas when there are more, and launch one read-only `code-simplify` agent
+  per slice through `subagent-matrix` at its standard capability level, each with the rubric, its
+  slice's diff and file contents, the intent and the affected-repository map. Add one cross-cutting
+  reviewer, within those five, only when parallel implementations across slices will not fit in one
+  slice's context. Apply `subagent-matrix`'s launch fallback when a worker cannot start.
 - **Subagents review; the parent applies.** Each returns findings anchored to path and line with
   severity and remedy, and edits nothing. The parent drops duplicates and findings another subsumes,
   and checks each remaining finding against the code before acting on it.
