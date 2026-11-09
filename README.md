@@ -124,7 +124,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`current-changes`](.agents/skills/git/current-changes/SKILL.md) — Summarize the branch's changes against the default branch with links to the code.
 - [`database-migrations`](.agents/skills/python/database-migrations/SKILL.md) — Guide for authoring, rebasing, and troubleshooting Alembic database migrations, including how to avoid and fix branched migration graphs.
 - [`defer-scope`](.agents/skills/deferrals/defer-scope/SKILL.md) — Record unfinished work in the repository it affects, or read its active records.
-- [`design-taste-frontend`](.agents/skills/web/design-taste-frontend/SKILL.md) — tasteskill v2, the anti-slop frontend skill.
+- [`design-taste-frontend`](.agents/skills/web/design-taste-frontend/SKILL.md) — tasteskill 2.5.1, the anti-slop frontend skill.
 - [`doctor-protocol`](.agents/skills/doctors/doctor-protocol/SKILL.md) — Set the audit, fix, review, and reporting process used by every doctor skill.
 - [`edit-skill`](.agents/skills/authoring/edit-skill/SKILL.md) — Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.
 - [`execute-task`](.agents/skills/execution/execute-task/SKILL.md) — Plan source and product changes for approval; validate canonical guidance changes through their delivery gates.
@@ -150,7 +150,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`process-ledger`](.agents/skills/execution/process-ledger/SKILL.md) — Process verified private-ledger records into durable outcomes.
 - [`progress`](.agents/skills/workspace/progress/SKILL.md) — Show the task’s progress as a dashboard.
 - [`proton-pass`](.agents/skills/workspace/proton-pass/SKILL.md) — Retrieve credentials from Proton Pass with pass-cli.
-- [`reverse-engineer-anything`](.agents/skills/workspace/reverse-engineer-anything/SKILL.md) — Reverse engineer native, managed, Electron/JavaScript, packaged, firmware, and browser targets with REA, and build agent environments (AgentEnv bundles) of web applications from a live instance or a capture.
+- [`reverse-engineer-anything`](.agents/skills/workspace/reverse-engineer-anything/SKILL.md) — Reverse engineer native, managed, Electron/JavaScript, packaged, firmware, and browser targets with REA, and build agent environments (AgentEnv bundles) of web applications from a live instance or a capture, and of Linux desktop apps with a task from a request.
 - [`review-pass`](.agents/skills/review/review-pass/SKILL.md) — Review and fix what a pull request has not had reviewed yet, then record the reviewed head.
 - [`review-proposal`](.agents/skills/review/review-proposal/SKILL.md) — Challenge a proposal and obtain independent acceptance before presenting it for approval.
 - [`rewrite-git-history`](.agents/skills/git/rewrite-git-history/SKILL.md) — Rework your branch into focused commits while preserving and checking its content.
