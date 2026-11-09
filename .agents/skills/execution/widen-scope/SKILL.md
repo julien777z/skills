@@ -14,6 +14,7 @@ task only, until it finishes or the user says to stop.
 ## Dependencies
 - `acceptance-gate`
 - `defer-scope`
+- `pre-production`
 
 ## What It Allows
 
