@@ -94,9 +94,9 @@ successful published-client teleport.
 
 ## Choose and qualify a runner
 
-Use the environment the current project and user authorize. A local Studio editor is suitable when its windows and input will not interrupt the user's desktop. Use an isolated VM or another qualified machine for unattended Play, multiplayer clients, or native input that would interfere. A supported Studio MCP operation can avoid moving the host pointer, but may still launch native windows. Qualify editor identity, input, capture, rendering, and window/focus isolation separately before claiming unattended testing is safe.
+Studio work runs in an isolated runner: a Tart VM on a macOS host, the container runner below on Linux. The user's own desktop Studio is never the runner, even for an operation that sends no input, since opening a place, building or capturing still launches windows and takes focus there; a supported Studio MCP operation that avoids moving the host pointer does not change that. Qualify editor identity, input, capture, rendering, and window/focus isolation separately before claiming unattended testing is safe.
 
-When a reusable isolated runner is configured, reuse its installed Studio, authentication, and tooling. Keep each game's source and test data separate, verify the intended place before acting, and coordinate exclusive control of its desktop. Start a stopped runner when needed, discover its current address, and close task-owned windows and processes after testing. An unavailable isolated capability leaves only its dependent checks incomplete; continue independent source and build work. Do not silently switch to an intrusive host workflow.
+When a reusable isolated runner is configured, reuse its installed Studio, authentication, and tooling. Keep each game's source and test data separate, verify the intended place before acting, and coordinate exclusive control of its desktop. Start a stopped runner when needed, discover its current address, and close task-owned windows and processes after testing. An unavailable isolated capability leaves only its dependent checks incomplete; continue independent source and build work. Never switch to the host's desktop Studio instead. Inside the runner, install or update Studio and the tools the work needs, sign in with the retained session, create the upload staging directory, and grant Studio's settings and Assistant permissions there, without asking.
 
 ### Optional retained Tart/macOS runner
 
@@ -119,7 +119,7 @@ Verify SSH host keys, the intended guest editor, and the source/place before run
 
 #### Provision a runner when none exists
 
-Provision only when the user authorizes an isolated runner and `runner.env` is absent. Each step
+When `runner.env` is absent, ask the user through the question tool whether to install Tart and set up the runner, before any Studio work; once they agree, provision it and continue the work there. Each step
 ends with its check:
 
 1. **Install Tart** through the package manager the host uses. When that route fails, install the
@@ -188,10 +188,9 @@ dated qualification results in workspace evidence; do not recreate a working run
 Use MCP inside the guest wherever supported. Native setup actions may be performed through the guest
 desktop when necessary, but never drive the host's game input. If Roblox rejects virtualization or
 rendering/input is unreliable, attempt the applicable documented recovery and record the concrete
-remaining limitation. Local Studio may then serve as the fallback for an already-authorized,
-non-disruptive single-editor operation. Use its verified MCP connection, without native host HID
-control or extra client windows. Checks requiring obstructive launches remain incomplete until the
-isolated runner works. Continue independent lint, type, test, and build work; do not silently change runners.
+remaining limitation. Repair the runner itself, reinstalling Studio or recreating the VM where
+that is what it takes; the Studio work waits for it rather than moving to the host's desktop.
+Continue independent lint, type, test, and build work meanwhile.
 
 When viewport capture fails but the guest desktop is usable, the optional
 [guest desktop viewer](#optional-guest-desktop-viewer) provides background images and guest-native UI
@@ -199,7 +198,7 @@ without a visible Screen Sharing window. It describes connection requirements, a
 unencrypted-transport limitation, live-image check, and cleanup. It does not establish
 that the guest renders game assets correctly.
 
-Follow an explicit user choice of local Studio. Use the verified editor through supported operations and keep host input and extra client windows within the user's authorization. Where a local installation defines `ROBLOX_ALLOW_HOST_STUDIO=1` as an intentional single-editor fallback, set it only for that documented path, never as a speculative isolation bypass.
+Use the host's desktop Studio only when the user explicitly chooses it for the task. Then keep host input and extra client windows within their authorization, and set a local installation's host-Studio override, such as `ROBLOX_ALLOW_HOST_STUDIO=1`, only for that choice.
 
 On a macOS host, native input and screen capture need Accessibility and Screen Recording granted to
 the app the agent runs under, identified by the agent's process ancestry, not to its shell or
