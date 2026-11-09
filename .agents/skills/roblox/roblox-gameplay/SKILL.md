@@ -20,6 +20,12 @@ Fit the rhythm of success to the requested genre, audience, and mood. Establish 
 
 Make successful actions legible through appropriately scaled visual, audio, motion, and progress feedback. Attribute the result to the player's action without obscuring targets, text, or threats. Bound concurrent effects, clean them up, and respect motion, camera-shake, contrast, and audio preferences. Keep frequent feedback short enough that the next action remains available.
 
+## Judge the game as a player meets it
+
+Every result is judged in the game as a player would meet it, whether you built it or a worker did: from a capture or a playtest, not from the brief, the code or a report. Ask of each thing in view whether it makes sense in this world, not only whether it is broken: an object reads as what it is meant to be, a room's furnishings fit its purpose, a character holds what it holds, a creature belongs in its area's level band, a label sits where it can be read, a rule agrees with the game's other rules. Something that reads wrong is fixed, whoever made it and whenever, even when no brief, check or request mentioned it.
+
+Making the game read right is the agent's call: redesign an asset, a room, a placement, a balance value or a mechanic that does not make sense, including content built before the current task, and report each change with its captures, naming new behaviour as new. Only a change to the game's core loop or genre, to anything players pay for, or to something the user decided goes to the user first.
+
 ## Reward real progress and preserve player understanding
 
 Show what was earned and why using the game's actual rewards and progress states. Synchronize reward UI and effects with authoritative outcomes and prevent duplicates on retries, repeated clicks, or reconnects. A predicted hit animation must not claim an unconfirmed reward. Do not invent currency, misleading pickups, or progress that the game does not grant.
