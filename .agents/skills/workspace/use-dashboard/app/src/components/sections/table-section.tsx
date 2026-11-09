@@ -15,6 +15,11 @@ export function TableSection({ section }: { section: TableSectionSpec }): ReactN
   const rows = withKeys(section.rows, (cells) => cells.join('\u0000'));
   const openedDetails = details?.[rows.findIndex(({ key }) => key === openedRow)];
 
+  if (openedRow && !openedDetails) {
+    setOpenedRow('');
+    setOpen(false);
+  }
+
   function handleOpenRow(rowKey: string, button: HTMLButtonElement) {
     opener.current = button;
 
