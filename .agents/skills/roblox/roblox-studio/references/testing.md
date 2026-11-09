@@ -160,8 +160,7 @@ ends with its check:
 2. **Verify and install it.** Unpack it with `ditto -x -k`, then confirm that
    `codesign --verify --deep --strict` passes, that its team matches the guest Studio's, and that
    `spctl -a -vv` reports a notarized Developer ID. Copy it to `/Applications/Roblox.app`; opening
-   it shows its sign-in page. It registers itself as a login item and keeps a windowless
-   `-launchToTray` process running after it quits, which is out of any experience.
+   it shows its sign-in page. It registers itself as a login item.
 3. **Sign it in by QR code.** Choose Sign In, then QR code, capture the code it shows, and relay
    the capture and code through the question tool with a confirmation option and one for a new
    code, since a code expires in about two minutes. A prompt Roblox shows the account after
