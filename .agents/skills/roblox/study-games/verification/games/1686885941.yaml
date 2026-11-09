@@ -8,7 +8,7 @@ chart_category: "Trending in Roleplay & Avatar Sim"
 chart_rank: 1
 researcher: "R09"
 mode: play
-play_ended_by: loop_cycle
+play_ended_by: null # ended by loop_cycle under the earlier deep-play design, before this field's current values
 onboarding_video_coverage: not_covered
 observed_at: "2026-11-09T01:45:30Z"
 observation_status: partial

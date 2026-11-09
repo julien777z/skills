@@ -8,7 +8,7 @@ chart_category: "Trending in RPG"
 chart_rank: 1
 researcher: "R05"
 mode: play
-play_ended_by: lock_lost
+play_ended_by: null # ended by lock_lost under the earlier deep-play design, before this field's current values
 onboarding_video_coverage: covered
 observed_at: "2026-11-09T00:37:07Z"
 observation_status: partial
