@@ -53,8 +53,9 @@ Build the clean target contract instead of preserving transitional behavior.
   a request, apart from the branch-protection rejection the GitHub rules' **Merge Authorization**
   says to report.
 
-Fix and validate every defect that remains in the task, even when it predates the task or sits
-outside the initial file set; cleanup that fixes no defect follows the size budget below.
+Fix and validate every issue that remains in the task within the size budget below, even when it
+predates the task or sits outside the initial file set; the rest is returned to the caller as
+deferred work.
 Follow the evidence through affected callers and owners. That obligation is not a licence to audit
 areas the evidence never reaches, and the section below governs how far it reaches.
 The repair must satisfy **Target Contract**; an encountered failure never authorizes compatibility
@@ -107,10 +108,9 @@ with an obsolete owned contract or revision.
   of spread, not a cap on the repair itself: a necessary migration may be wide, while a small
   unrelated rewrite may already be disproportionate.
 - **Incidental work goes one hop, never further.** What the work notices while making the requested
-  change — in a file it opened, a check it ran, a capture it read — is a defect, fixed as below, or
-  cleanup, handled under the size budget below. A file opened or edited only to make such an
-  incidental fix is never itself a source of more incidental cleanup: what else it holds is deferred,
-  not chased.
+  change — in a file it opened, a check it ran, a capture it read — is handled under the size budget
+  below. A file opened or edited only to make such an incidental fix is never itself a source of
+  more incidental cleanup: what else it holds is deferred, not chased.
 - **A defect is anything the system does or shows that a reader would call broken**, and the system
   includes the repository's tooling: its tests, fixtures, build, setup and CI. An image that never
   loads, a wrong value, a state shown in the wrong place, a control that does nothing, a lost write
@@ -125,12 +125,11 @@ with an obsolete owned contract or revision.
   exempt one; a system that is right and too slow to use is broken. A missing safeguard is not a
   defect, since the system does what it was built to do, unless its absence is an exploitable
   security finding, because what the system does includes what an attacker can make it do.
-- **A defect the work notices is always fixed, wherever it lives.** It is fixed in the change in
-  flight, outside both the hop limit and the size budget below, however many files its fix takes.
-  Sitting in a shared
+- **A defect the work notices is fixed when its fix is small, wherever it lives.** One that fits the
+  size budget below is fixed in the change in flight, outside the hop limit. Sitting in a shared
   component, an owned library or another owned repository the pull request does not otherwise touch
   is no reason to leave it: the fix goes to that repository's pull request for this work. It is
-  never deferred or offered to the user as a question.
+  never offered to the user as a question.
 - **A security vulnerability the work finds is such a defect, whoever finds it and whenever it
   arrived.** One a gate, reviewer or audit reports in code the change never touched, one that
   predates the change, and one another layer is said to stop before that layer is traced on every
@@ -144,13 +143,14 @@ with an obsolete owned contract or revision.
   the global rules' **Tools and environments** says. It is never put to the user as something to
   consider or an option, recorded as deferred, left as a hardening note, or answered with a
   recommendation to run an audit of any kind later.
-- **Incidental cleanup has a size budget.** Incidental cleanup is everything the request did not
-  ask for that fixes no defect, outside the change's own design and the defect's shape above.
+- **Incidental work has a size budget.** Incidental work is everything the request did not ask
+  for, outside the change's own design and the defect's shape above.
+  - A defect fits when its fix is one focused fix touching about two files or fewer.
   - Cleanup that fixes no defect — duplication, dead code, a misplaced helper, layout — fits only
     inside the files the change already edits and while it stays small beside the requested part.
-  - Cleanup past the budget is deferred work: returned to the caller to record, listed in the
+  - Everything past the budget is deferred work: returned to the caller to record, listed in the
     change's report one line each with its record, and never fixed in the change or put to the user
-    as a question. A defect, a security vulnerability included, is never past it. An explicitly requested broad
+    as a question. A security vulnerability, above, is never past it. An explicitly requested broad
     refactor sets its own scope and carries no budget.
 - **A correction to how one screen looks or reads reaches every page when the user makes it a
   rule, and that screen alone when they do not.** A correction the user asks to have codified, or
