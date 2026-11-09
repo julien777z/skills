@@ -9,6 +9,7 @@ chart_category: Top Revisited
 chart_rank: 1
 researcher: R03
 mode: play
+play_ended_by: null # not recorded: the session predates this field
 onboarding_video_coverage: not_covered
 observed_at: '2026-11-08T23:38:21Z'
 observation_status: completed

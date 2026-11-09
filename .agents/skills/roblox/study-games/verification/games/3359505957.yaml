@@ -8,6 +8,7 @@ chart_category: "Fun with Friends"
 chart_rank: 1
 researcher: "R02"
 mode: play
+play_ended_by: null # not recorded: the session predates this field
 onboarding_video_coverage: not_covered
 observed_at: "2026-11-08T23:48:26Z"
 observation_status: completed

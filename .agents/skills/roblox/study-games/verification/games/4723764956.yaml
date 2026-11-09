@@ -92,7 +92,7 @@ evidence:
       captured_at: "2026-11-09T02:45:00Z"
       media_date_or_version: "uploaded 2026-10-28"
       timestamps: ["0:00 cinema lobby with bottom bar Store, Tickets, Create, Movies, Invite and Watch at right; ticket balance 460 top right", "0:30 'How does this game work? I am confused' then another player explains the tools", "0:30-0:45 picture browser with search, 'Need ideas?' chips, Backgrounds and Stickers panels", "1:30 editor: Pictures, Text, Sound, Avatars tiles, Invite, Play and Publish; slide strip with + tile", "1:18-1:30 avatar pose/emotion options", "1:45-2:05 new slide, copy slide, animation button to move a character across the stage", "6:48-6:53 publish; 'Good work on your movie!' dialog", "7:20-9:00 movies shown on the cinema screen with creator name and 'GRAND PREMIERE!' or 'PLAYED NEXT' tag, Comment and Like at left; balance 610"]
-      screenshots: ["videos/4723764956/DYGgfJPZkDM-001.jpg", "videos/4723764956/DYGgfJPZkDM-003.jpg", "videos/4723764956/DYGgfJPZkDM-007.jpg", "videos/4723764956/DYGgfJPZkDM-013.jpg", "videos/4723764956/DYGgfJPZkDM-028.jpg", "videos/4723764956/DYGgfJPZkDM-030.jpg", "videos/4723764956/DYGgfJPZkDM-037.jpg"]
+      screenshots: ["DYGgfJPZkDM-001.jpg", "DYGgfJPZkDM-003.jpg", "DYGgfJPZkDM-007.jpg", "DYGgfJPZkDM-013.jpg", "DYGgfJPZkDM-028.jpg", "DYGgfJPZkDM-030.jpg", "DYGgfJPZkDM-037.jpg"]
       limitations:
           - "Smarty Pants (810K subscribers), 59,206 views at retrieval; 11:35 long, first 10 minutes studied."
           - "Group 'we created a movie' video by three family-persona creators: real editor play, but scripted banter, heavy jump cuts and cartoon facecams cover parts of the frame. Not a first join; the account's prior use is unknown."
@@ -103,7 +103,7 @@ evidence:
       captured_at: "2026-11-09T02:45:00Z"
       media_date_or_version: "uploaded 2026-05-29"
       timestamps: ["0:00 cinema lobby, players walk to seats", "0:15 projector pad in the floor", "0:32 'if you guys don't know how this works, we can go to pictures right here'", "1:14 'If we go to avatars, we can get all of us'", "2:19 'how do you copy and paste it?'", "2:00 and 2:30 text entry modal 'Enter your text...' OK/Cancel over a dimmed editor", "2:27 'add a new slide' (spoken); 9:30 its dialog: New slide, Copy slide, Back", "3:03 another player's added pictures clutter the shared scene, 'just delete everything'", "8:30 background library grouped by room (Green Bedroom, Living Room, Lunchroom, My Movie Lobby)", "9:00 pose library with categories, lock icons and 'Buy 1,100' ticket packs (Creepy, Dances)"]
-      screenshots: ["videos/4723764956/JOwXnJy-J30-001.jpg", "videos/4723764956/JOwXnJy-J30-002.jpg", "videos/4723764956/JOwXnJy-J30-003.jpg", "videos/4723764956/JOwXnJy-J30-010.jpg", "videos/4723764956/JOwXnJy-J30-011.jpg", "videos/4723764956/JOwXnJy-J30-035.jpg", "videos/4723764956/JOwXnJy-J30-037.jpg", "videos/4723764956/JOwXnJy-J30-039.jpg"]
+      screenshots: ["JOwXnJy-J30-001.jpg", "JOwXnJy-J30-002.jpg", "JOwXnJy-J30-003.jpg", "JOwXnJy-J30-010.jpg", "JOwXnJy-J30-011.jpg", "JOwXnJy-J30-035.jpg", "JOwXnJy-J30-037.jpg", "JOwXnJy-J30-039.jpg"]
       limitations:
           - "Oren & Pinki (1.09M subscribers), 1,519,624 views at retrieval; 25:31 long, first 10 minutes studied."
           - "Four creators in one server co-editing a single movie with commentary; returning players who already know the editor, edited with cuts and cartoon facecams."

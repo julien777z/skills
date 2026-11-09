@@ -9,6 +9,7 @@ chart_category: Most Popular
 chart_rank: 1
 researcher: R04
 mode: play
+play_ended_by: null # not recorded: the session predates this field
 onboarding_video_coverage: not_covered
 observed_at: '2026-11-09T00:15:47Z'
 observation_status: blocked

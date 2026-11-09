@@ -8,6 +8,7 @@ chart_category: "Up-and-Coming"
 chart_rank: 1
 researcher: "R01"
 mode: play
+play_ended_by: null # not recorded: the session predates this field
 onboarding_video_coverage: covered
 observed_at: "2026-11-09T00:06:52Z"
 observation_status: partial

@@ -75,7 +75,7 @@ evidence:
       captured_at: "2026-11-09T02:40:00Z"
       media_date_or_version: "uploaded 2026-11-02"
       timestamps: ["0:15 POINT & CLICK prompt", "0:33 OOH NICE HAT", "0:53 nvm hats aren't cool anymore", "1:40 CRAZED SQUARE ATTACKS", "2:01 '(ya gotta catch 'em doing something interesting)' nudge", "2:30 CIRCLE FEARS SQUARES", "3:12 SQUARE SNOBS CIRCLES", "4:45 ALMOST EVERYONE HATES EVERYONE", "6:24 BE SCARED. BE ANGRY.", "7:10-7:30 viral ending card, 1/12 endings found", "8:15-9:52 second run toward the 'who paid the screamer' path"]
-      screenshots: ["videos/10771871836/o4yH-7QHNnY-002.jpg", "videos/10771871836/o4yH-7QHNnY-004.jpg", "videos/10771871836/o4yH-7QHNnY-008.jpg", "videos/10771871836/o4yH-7QHNnY-026.jpg", "videos/10771871836/o4yH-7QHNnY-029.jpg", "videos/10771871836/o4yH-7QHNnY-030.jpg", "videos/10771871836/o4yH-7QHNnY-031.jpg", "videos/10771871836/o4yH-7QHNnY-036.jpg"]
+      screenshots: ["o4yH-7QHNnY-002.jpg", "o4yH-7QHNnY-004.jpg", "o4yH-7QHNnY-008.jpg", "o4yH-7QHNnY-026.jpg", "o4yH-7QHNnY-029.jpg", "o4yH-7QHNnY-030.jpg", "o4yH-7QHNnY-031.jpg", "o4yH-7QHNnY-036.jpg"]
       limitations:
           - "Tyler & Snowi (6.51M subscribers), 1,766,155 views at retrieval; 21:58 long, first 10 minutes studied."
           - "Appears to be the creators' first play (first ending reads '1 / 12 endings found'), but heavily edited: the menu and intro are cut, shots are jump-cut, and a cartoon facecam and 'MY JOB' title card are overlaid. Video times are edited times, not play time."
@@ -86,7 +86,7 @@ evidence:
       captured_at: "2026-11-09T02:40:00Z"
       media_date_or_version: "uploaded 2026-10-28"
       timestamps: ["0:00 intro 'nothing ever happens in the park.' with SKIP and pause buttons", "0:15 OOH NICE HAT, crowd in hats", "0:45 CRAZED SQUARE ATTACKS", "2:30 ALMOST EVERYONE HATES EVERYONE...", "3:45 laptop pull-back, viral ending", "4:15-4:30 cricket photographed on the static intro screen -> 'ending 2 of 12 cricket ending'", "5:15 'THE TV IS... ON TV?'", "5:45 'Why shoot the TV? Shoot THEM! Please!'"]
-      screenshots: ["videos/10771871836/kyWrM9Bn1DA-001.jpg", "videos/10771871836/kyWrM9Bn1DA-002.jpg", "videos/10771871836/kyWrM9Bn1DA-004.jpg", "videos/10771871836/kyWrM9Bn1DA-010.jpg", "videos/10771871836/kyWrM9Bn1DA-019.jpg", "videos/10771871836/kyWrM9Bn1DA-021.jpg", "videos/10771871836/kyWrM9Bn1DA-023.jpg"]
+      screenshots: ["kyWrM9Bn1DA-001.jpg", "kyWrM9Bn1DA-002.jpg", "kyWrM9Bn1DA-004.jpg", "kyWrM9Bn1DA-010.jpg", "kyWrM9Bn1DA-019.jpg", "kyWrM9Bn1DA-021.jpg", "kyWrM9Bn1DA-023.jpg"]
       limitations:
           - "Roblox Master Guides (97.7K subscribers), 2,537,662 views at retrieval; 34:36 long, first 10 minutes studied; description chapter '30:51 - Say Cheese Ending'."
           - "Silent walkthrough (captions only '[music]'/'[screaming]'); an experienced player who already knows each trigger, so pace is a lower bound, not a new player's pace. Roblox top bar and the paid side cards are hidden or absent in this capture."
@@ -96,7 +96,7 @@ evidence:
       captured_at: "2026-11-09T02:40:00Z"
       media_date_or_version: "uploaded 2026-11-02"
       timestamps: ["15:00 main menu '5 / 12 endings found', ENDINGS marked NEW!", "15:15 alternate intro 'it was a slow day at the station.'", "15:40 POINT & CLICK", "16:50-17:20 repeated nudge '(ya gotta catch who's screaming at 'em)'", "18:10 player returns to the menu to read a hint", "20:30 ENDINGS album 6 / 12 found, hint line under the hovered card", "20:33 scared ending", "21:00-25:00 love/peace route attempt"]
-      screenshots: ["videos/10771871836/Le_8lgT_RLs-001.jpg", "videos/10771871836/Le_8lgT_RLs-002.jpg", "videos/10771871836/Le_8lgT_RLs-012.jpg", "videos/10771871836/Le_8lgT_RLs-020.jpg", "videos/10771871836/Le_8lgT_RLs-021.jpg", "videos/10771871836/Le_8lgT_RLs-023.jpg"]
+      screenshots: ["Le_8lgT_RLs-001.jpg", "Le_8lgT_RLs-002.jpg", "Le_8lgT_RLs-012.jpg", "Le_8lgT_RLs-020.jpg", "Le_8lgT_RLs-021.jpg", "Le_8lgT_RLs-023.jpg"]
       limitations:
           - "bunhat (749K subscribers), 970,997 views at retrieval; 55:07 livestream-style session with facecam and chat overlay; minutes 15-25 studied."
           - "Returning within the session (five endings already found); chat suggestions steer some choices."
