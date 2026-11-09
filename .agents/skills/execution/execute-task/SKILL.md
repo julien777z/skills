@@ -116,7 +116,8 @@ Every task that changes files starts here, and so does every follow-up that arri
   - each run of a local check, test suite or build is its observed duration, counted once per run
     the plan makes;
   - an independent gate or review dispatch is 2–4 minutes, and each repair round after it about 3
-    more, counted once for the pull request's `review-pass` at **Completion**, never per step;
+    more, counted once for each step later steps build on and once for the pull request's
+    `review-pass` at **Completion**;
   - a round of parallel readers or reviewers is about a minute, and a round of auditing reviewers
     over a tree is 5–10 minutes;
   - CI, a merge's check gate, or a deployment the user's request names is the observed duration of
@@ -665,8 +666,8 @@ it — the user asking about something else is not the user withdrawing what the
   step, and neither is a report that ends by naming what comes next: a turn that relays a worker's
   result, finishes a unit or answers a question starts the next named step before it ends, and
   every step that result unblocks, as **Progress Record** records them. A defect a turn finds while
-  answering, one its own change made included, is fixed in that turn and the answer reports it
-  fixed; it never goes out as work the agent will do. Completing
+  answering is handled in that turn as **Encountered Issues** says, one its own change made always
+  fixed, and the answer reports it fixed or recorded; it never goes out as work the agent will do. Completing
   its own delivery — including a guidance merge and refresh, a diagnostic answer, or a local
   environment repair — does not complete the surrounding task. Report that intermediate result
   while continuing. A held item keeps its saved next action; repair, resolution and waiting follow

@@ -177,7 +177,8 @@ combined result, and the full suite and every check that needs a shared resource
 - **Each wave's combined diff is gated before dependent work:**
   the parent reads each worker's reported head under the global rules' **Reported Outcomes**, runs one
   in-process `code-simplify` pass over the wave's pushed heads, and returns what it flags as fix
-  steps in the next wave. Neither that pass, nor a merge the parent makes of the wave, holds a
+  steps in the next wave. A wave a later wave builds on also gets `acceptance-gate`'s Diff question
+  before that wave starts. Neither that pass, nor a merge the parent makes of the wave, holds a
   worker's push.
 
 Present a newly discovered decision that changes the approved outcome to the user;

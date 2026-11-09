@@ -81,11 +81,9 @@ dependent unit. Its dependency gates its merge, never its review:
   the gate and the saved next action.
 - Once the dependency merges, repoint every consuming reference as `merge-gate`'s
   delivery-dependency gate says, regenerating any lockfile with the repository's tooling. The
-  repoint's diff holds only those reference edits and the lockfile entries they change, and
-  `review-pass` reviews it as a new delta before its checks. The repoint then passes only the validation it affects, the pre-push checks and `merge-gate`'s check gate, and
-  `merge-gate` receives the repointed head as the head to merge, with the repoint named as the sole
-  commit past the accepted head. Any other change in that push, another lockfile entry included, is
-  a new delta `review-pass` reviews.
+  repoint's diff holds only those reference edits and the lockfile entries they change.
+  `review-pass` reviews it as a new delta, it passes the validation it affects and the pre-push
+  checks, and `merge-gate` receives the head `review-pass` accepts.
 - Then land the dependent under the same invocation's merge authorization. A user's explicit
   withholding of merge still ends the unit at its accepted head.
 

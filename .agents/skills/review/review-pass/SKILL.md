@@ -120,13 +120,17 @@ began is recorded with its evidence and not repaired, rerun or waited on.
    **Pre-Push Gate**. A finding that is the user's decision holds the pass: put it to the user
    with both sides, and continue independent work.
 6. When the base moved again, run **Base** and rerun the checks the incoming change touches.
-7. Run **Description Refresh** once more, then put the complete merge-base diff and the refreshed
-   prose to `acceptance-gate`'s **Final acceptance** question once, with the intent statement and
+7. With a working pull request, run **Description Refresh** once more. Put the complete target diff,
+   the merge-base diff or the merged range, and any refreshed prose to `acceptance-gate`'s **Final
+   acceptance** question once, with the intent statement and
    the reviewed delta marked. Fix a flag as one increment under `acceptance-gate`'s **Bounds**: a
    repair checked in process there needs no second gate, and the head carrying it is the accepted
    head; a repair those **Bounds** send to a fresh gate is accepted when that gate accepts it.
-8. Re-read the remote head, base and merge base. When they still match the accepted head, record
-   it under **Range** and return its **Output**; otherwise bring the change in and return to step 7.
+8. Re-read the head, base and merge base where they live: the pull request's remote, or the local
+   checkout for a local target; a merged range does not move. When they match the accepted head,
+   record it under **Range** and return its **Output**. A moved base is brought in through **Base**
+   and the pass returns to step 7; commits added to the head are a new delta, and the pass returns
+   to step 1 for it.
 
 A finding outside the change follows **Review Loop**'s rule for it: a small fix lands here, the rest
 is recorded with `defer-scope`. A recorded deferral is discharged, never a gate on the review or
@@ -158,10 +162,11 @@ changed. Make the smallest changes that answer real findings, and push back on t
 - **Budget:** three rounds. Round 1 reviews the whole target; later rounds review the changed code
   and the findings still open. Five rounds only for security, permissions, auth, data loss or
   concurrency while a blocker or should stays open with evidence, or when the user asks. Stop early
-  when a round returns only nits; a declined nit, or a fix to comments, docs or formatting, needs no
+  when a round returns only nits. These count the pull request's review loop; one finding's fix
+  still follows the global rules' review-round limit; a declined nit, or a fix to comments, docs or formatting, needs no
   new round.
 - **Reviewer:** the strongest model of a different provider from the author when one is reachable,
-  so it does not share the author's blind spots; the user may name another. Start it on another
+  at medium effort, so it does not share the author's blind spots; the user may name another. Start it on another
   provider's model where the harness offers one, as **Harness Compatibility** says for the harnesses
   that need it, otherwise as a fresh subagent on the strongest available model. One reviewer per
   round, apart from a split or panel round 1, each starting no subagents of its own. Do not edit the reviewed files while a round runs; a timeout, an error or no reply is
@@ -202,7 +207,7 @@ changed. Make the smallest changes that answer real findings, and push back on t
 ## Harness Compatibility
 
 - **T3 Code:** call `orchestrator_capabilities` once, pick the latest flagship of another provider at
-  high effort, and start each round with a new `delegate_task`
+  medium effort, and start each round with a new `delegate_task`
   (`role: "review"`), never `t3_thread_send`.
 
 ## Output

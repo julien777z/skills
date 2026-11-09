@@ -1,6 +1,6 @@
 ---
 name: acceptance-gate
-description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation; per plan step only for a finished step that later steps build on. Never run per fix.
+description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation; per plan step only for a finished step that later steps build on. Never run per fix, apart from a repair that settles a design, product or security choice of its own.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 
@@ -87,9 +87,8 @@ checks analogous implementations and the evidence for retained differences; miss
 pull-request context is a flag to obtain that context, not permission to assume consistency.
 
 The gate is read-only and distinct from the author. If its reader cannot launch, apply
-`subagent-matrix`'s launch fallback. Invoke `subagent-matrix` for the
-acceptance-gate role, using its configured Codex role selection and the advanced capability level on
-other hosts. Dispatch the gate with that exact identifier, and retain catalogue state, identifier, assignment
+`subagent-matrix`'s launch fallback. Invoke `subagent-matrix` at its advanced
+capability level. Dispatch the gate with that exact identifier, and retain catalogue state, identifier, assignment
 state and host receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. It
 receives five things and nothing else:
 
@@ -322,7 +321,7 @@ mechanisms its gain cannot carry. A confirmed defect remains owed under the fix 
 safeguard or compatibility concern is judged against the target repository's product state and
 contract, not promoted to a defect merely because a reviewer flagged it.
 
-Escalate only a genuine unresolved product, scope, or authorization choice, stating the concrete
+Escalate only a genuine unresolved product, scope, security, disclosure or authorization choice, stating the concrete
 fork and why authorized remedies cannot settle it. Repair authority and merge authority are separate:
 a source pull request awaiting merge permission continues through authorized repairs and reviews.
 Keep unrelated authorized work moving while a real decision waits. No diff merges with a flag

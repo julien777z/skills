@@ -52,7 +52,8 @@ new owner under **Guidance Changes Proceed Automatically**.
 
 A user request or an encountered guidance gap, once **Behavior** step 1 confirms its premise,
 authorizes the canonical `.agents` correction. Do not
-ask for a plan or for approval of a guidance-output example. An example renders the settled
+ask for a plan or for approval of a guidance-output example; an approval hold the invoking workflow
+sets is that workflow's and still applies. An example renders the settled
 instruction and is task evidence, not a new product experience because a user reads it. A guidance
 edit that intentionally changes the product still follows the global product-decision boundary. The
 required smoke test, review, and acceptance gate validate the correction. When a separate source

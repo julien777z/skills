@@ -1,6 +1,6 @@
 ---
 name: code-simplify
-description: Read-only code-simplify reviewer for one slice of a change. Invoked by the `code-simplify` skill's parent with the slice's diff, file contents, intent and affected-repository map; returns severity-rated findings and edits nothing.
+description: Read-only code-simplify reviewer for one slice of a change. Takes the slice's diff, file contents, intent and affected-repository map; returns severity-rated findings and edits nothing.
 skills: [code-simplify]
 ---
 

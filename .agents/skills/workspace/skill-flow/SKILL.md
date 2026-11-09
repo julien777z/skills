@@ -255,7 +255,9 @@ question: what would change in how the skills run. It shows the change, not two 
 
 1. **Map both sets** as **Workflow** steps 1 to 4 do, recording each set's repository, commit and
    uncommitted state. List the skills whose package differs between them, with the skills added and
-   removed, and map only the pages those skills reach; on the current side, read only those pages.
+   removed. Map every page whose flow reaches one of those skills, through an invocation, a launch or
+   a borrowed rubric, on either side, so a caller whose totals the change moves is mapped too; on the
+   current side, read only those pages.
    Split the reading by side between at most two read-only readers, one current and one proposed.
 2. **Compare the maps.** For each skill on a mapped page, record what was added, removed or changed:
    a skill, a step, a launch, a loop, an invocation or a borrow, a count, a scope or a cap. A change

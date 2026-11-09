@@ -56,8 +56,8 @@ until it is under, by the dispositions below — the run is not finished while o
 breach, recording it, or carrying it into the plan as an observation is the failure this paragraph
 exists to prevent: the measurement was taken on day one and the number was already known, so a run
 that delivers with the same number has spent the measurement on nothing. Where the work genuinely
-cannot land in this run, that is the user's call to make in the current request, with the number and
-the cause in front of them; it is never the run's to assume.
+cannot land in this run, it goes to `council` as the last disposition below says; the run never
+assumes it.
 
 **Read setup against assertion before reading any single case.** Where existing reporting supplies
 per-test call durations, compare their sum with suite wall time. A large difference identifies cost
@@ -419,8 +419,7 @@ before delivery and verify that none enters the delivered diff.
   condition the name lost moves into the docstring, and a rename that would leave fewer than two
   words takes a hand-chosen label rather than the mechanical residue.
 - A layout finding moves to the pattern `test-fixture`'s ownership rules select; an even split
-  between equally valid patterns goes to the one leaving the fewest mechanisms, stated in the pull
-  request, under `pre-production`'s **Trade-Offs Are Surfaced, Never Enforced**.
+  between equally valid patterns is settled as `test-fixture` settles a layout tie.
 - A coverage gap is closed by the test that proves it, and a misplaced test moves between suites.
   Every added or rewritten test follows `test-fixture`'s validation through existing tools.
 - A construction finding moves the construction to the suite's shared home and reads identities

@@ -22,28 +22,11 @@ A capture worker, mechanically capturing the pages and states a brief lists, tak
 family on every host. It captures without judging; the delegating agent reads every image whole
 before relying on it or sending it.
 
-## Codex role selections
-
-Resolve the assignment's role before applying the general family table. These exact Codex
-selections take precedence over a caller's capability label and over the coordinator's model;
-a direct user override for that assignment still takes precedence.
-
-| Role | Codex dispatch identifier |
-| --- | --- |
-| Review or simplification, including their coordinators, lenses, validators and refuters | `gpt-5.6-terra` |
-| Acceptance gate | `gpt-6.1-sol` |
-| Capture worker: mechanical browser capture of pages and states a brief lists | `gpt-6-luna` |
-
-Classify what the assignment does, not its worker name or who launched it: an acceptance gate keeps
-its own role whatever workflow launches it. Ordinary implementation workers checking their own
-changes are not independent review assignments. Other Codex assignments and Claude assignments
-retain the capability-family selection above. An unavailable role selection is a concrete hold,
-never permission to inherit the coordinator's model or substitute another family.
-
 ## Review panel
 
-A review panel's three seats take these families, each at its latest host version. A seat is a
-model family, not a provider, so two seats may share a provider.
+A review panel's three seats take these families, each at its latest host version. A caller that
+asks for the panel names these families as its selection. A seat is a model family, not a provider,
+so two seats may share a provider.
 
 | Seat | Family |
 | --- | --- |

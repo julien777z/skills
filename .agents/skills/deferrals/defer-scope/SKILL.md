@@ -25,7 +25,7 @@ repository ledger, and write nothing. A recorded item is resolved by the user ru
 
 ## When Recording Runs
 
-Fix work instead whenever one focused pass can finish it. A stale reference, rename, wrong path,
+Fix work instead whenever one focused pass can finish it within `pre-production`'s size budget. A stale reference, rename, wrong path,
 missing assertion, lint or type finding, or small extraction costs less to fix than to record.
 Attempt the fix before concluding that work is deferrable; `acceptance-gate`'s admission question
 lists the only justifications for a record, and a flagged attempt is one of them.
@@ -50,8 +50,8 @@ awaits a decision already put to its owner and still open, or one the user decli
 request; a question nobody has asked yet is asked, not recorded. **A confirmed defect the change
 introduced, or the task asked to fix, is never recorded**, a defect as `pre-production`'s **Scope
 Follows The Defect, Not The Request** defines one: it is fixed in the change in flight. A defect the
-work only runs into is fixed when it fits `pre-production`'s size budget and recorded here when it
-does not. Never offer the user the choice between fixing and recording a defect that fits the
+work only runs into follows `pre-production`'s size budget; only what that budget defers is
+recorded here. Never offer the user the choice between fixing and recording a defect that fits the
 budget. When part is small, fix that part and record
 only the remainder. Record at the moment work is consciously left undone; chat and pull-request
 prose are not durable records.

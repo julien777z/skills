@@ -17,7 +17,10 @@ short_description: 'Ask three strong models what they think, or review with them
   the council a brief to answer: a review of a change, or a ruling on one disputed finding.
   Return each member's answer under **Output**; the asker decides what to do with it. A ruling is
   the majority of the three unless the asker sets another threshold, and a question that is a product, scope, security, disclosure or authorization choice
-  is the user's: the council's answers go to them as advice.
+  is the user's: the council's answers go to them as advice. A ruling between more than two
+  options, such as simplify, revert or accept, takes the option most members pick first; with no
+  majority, the two leading options go to a vote among all three, and a tie there takes the
+  option that changes least.
 - **Loop:** the user asks the council to review or give feedback on work, such as "council this
   pull request". Run **Rounds**, fixing between them.
 

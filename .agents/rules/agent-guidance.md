@@ -203,7 +203,7 @@ trigger.
   rules' product-choice bullet defines one, or a step only the user can take. Every other contested
   call a workflow's own checks cannot settle — a disputed finding, a flag that survives its
   repairs, a stuck review, the disposition of a change that keeps failing — goes to `council` in
-  **Ask** mode, and its majority ruling is followed and named in the skill's result. A skill whose
+  **Ask** mode, and its ruling, by majority unless the skill sets a stricter threshold, is followed and named in the skill's result. A skill whose
   workflow does this declares `council`. A ruling never accepts a confirmed defect, an exploitable
   vulnerability or a failing required check.
 
