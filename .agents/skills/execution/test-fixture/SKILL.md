@@ -12,6 +12,7 @@ exercise, and prove that each test protects behavior or an independent contract.
 ## Dependencies
 - `session-ledger`
 - `pre-production`
+- `council`
 
 ## Workflow
 
@@ -42,7 +43,7 @@ Apply `pre-production` to the scope of issues encountered while tracing a test s
    After a test-only change, run the relevant test target; do not repeat source, manual, or external
    validation unless the test exposes a source defect that changes the implementation. Existing tests
    may still be run to diagnose development failures.
-4. Identify the source owner and its existing test module beneath the corresponding suite and classification. Extend that module before creating another; apply the rubric's class/file boundary test before splitting or relocating a suite.
+4. Identify the source owner and its existing test module beneath the corresponding suite and classification. Extend that module before creating another; apply the rubric's class/file boundary test before splitting or relocating a suite. When the rubric leaves equally valid layouts, put the choice to `council` in **Ask** mode and follow its ruling.
    Extend an existing module only when its organization and framework comply with the applicable
    guidance. When it conflicts, write the coverage in the required framework and organization;
    an existing test or missing runner does not make the conflicting pattern canonical. Trace reused

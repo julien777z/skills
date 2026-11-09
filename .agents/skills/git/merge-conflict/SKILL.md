@@ -14,6 +14,7 @@ answers to one question may now sit in one tree.
 ## Dependencies
 - `acceptance-gate`
 - `pre-production`
+- `council`
 
 ## Neither Side Is Authoritative
 
@@ -58,8 +59,9 @@ source checkout, remote branches and unrelated edits throughout.
 5. **Preserve behaviour required by the target contract.** Migrate affected consumers and retained
    data before removing an obsolete shape. A resolution that drops required behaviour is a defect;
    preserving a legacy runtime path is not a way to avoid the migration. Where a close choice changes
-   an interface others build on, put it to the user with a recommendation, as `pre-production`'s
-   **Trade-Offs Are Surfaced, Never Enforced** directs; block only when a safe resolution needs an
+   an interface others build on, put it to `council` in **Ask** mode and follow its ruling; it goes
+   to the user only when it is a product, scope, security, disclosure or authorization choice, as `pre-production`'s
+   **Trade-Offs Are Surfaced, Never Enforced** directs. Block only when a safe resolution needs an
    unauthorized product decision or a change to a contract a consumer outside the user's control speaks.
 6. Remove every conflict marker and run `git diff --check`. Read the changed-file list against the
    target before proceeding. For a local overlay, preserve paths unrelated to the input and inspect
