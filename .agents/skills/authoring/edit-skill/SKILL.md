@@ -415,10 +415,7 @@ user's review of the source pull request overlaps it.
       change gets that pass over its entry point and supporting files, a one-line rule edit as much as a
       new skill: a single bullet added to
       the file that does not own it is exactly the duplication this catches, and it is the change
-      least likely to be looked at twice. Run it in process over the branch's own files, never
-      fanned out to subagents: a guidance diff is a scope one reviewer holds whole, and the reviewer
-      who has to compare a new bullet against the section it duplicates is the one already holding
-      both.
+      least likely to be looked at twice.
    4. **Brief `review-pass`'s final acceptance**, which judges the batch's complete `.agents` diff
       with the request as the intent statement; this step starts no gate of its own. The brief asks
       whether the guidance answers the request at the breadth the shared `agent-guidance.md` rule

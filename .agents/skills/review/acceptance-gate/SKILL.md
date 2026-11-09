@@ -297,8 +297,8 @@ one a fresh gate raises for the first time starts at zero. A flag the gate still
 own second repair, with the change still under the limit, goes to `council` in **Ask** mode with
 the open flag, each remedy tried and its evidence, and the gate's proposed remedy. Its ruling
 decides the remedy, which is applied and checked as any repair is, and the caller's result names
-the flag and the ruling. Only a flag whose remedy is a product, scope, security, disclosure or authorization choice goes to the
-user, as a report of those facts with a recommended next step, never as a choice about whether to
+the flag and the ruling. A flag the council returns as the user's choice goes to
+the user, as a report of those facts with a recommended next step, never as a choice about whether to
 fix it or leave it in place. Every other flag keeps its own repair and gate meanwhile.
 
 Never rerun an unchanged item hoping for acceptance, argue it through the same gate, rename it to

@@ -7,8 +7,8 @@ disable-model-invocation: true
 
 # Widen Scope
 
-By default a task fixes its own change and any bug it meets that is one focused fix in about two
-files or fewer; everything else it meets is deferred. This skill raises that limit for the current
+By default a task fixes its own change and any bug it meets within `pre-production`'s size budget;
+everything else it meets is deferred. This skill raises that limit for the current
 task only, until it finishes or the user says to stop.
 
 ## Dependencies

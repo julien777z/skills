@@ -404,8 +404,7 @@ before delivery and verify that none enters the delivered diff.
   test. Re-time after implementation against the
   same workload. A suite still over budget is unfinished work, not a line in the report: carry on
   with the next disposition; when none is left, put the remaining cause and its cost to `council`
-  in **Ask** mode and follow its ruling. Only a ruling that would drop coverage of a behaviour the
-  user asked for goes to the user.
+  in **Ask** mode and follow its ruling.
 - A third-party limit finding clears the refusal by the order in **Stay Inside Third-Party
   Limits**, and is verified by the per-run count, per account and per destination, fitting the
   provider's documented limit with room for the runs that overlap it, and by running the affected

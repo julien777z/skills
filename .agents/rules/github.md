@@ -296,9 +296,8 @@ review alike. Follow an explicitly selected workflow’s own declared check sequ
 constraints where it specifies them; nothing holds committed work on one machine — not a gate, review or simplification
 pass pending on it, an integration merge, or a plan that orders one first. The one exception is
 commits that `lock-revision`'s **After Locking** hold keeps local until the user lets revisions
-resume. `review-pass`'s review loop and its final `acceptance-gate` run once per pull request, never
-per push or fix; a plan step gets a gate of its own only when later steps build on it, as
-`execute-task` says. A fix pushed for a flag a review or gate raised is checked
+resume. `code-simplify` and `acceptance-gate` do not run per push; `execute-task` and `review-pass`
+set when they run. A fix pushed for a flag a review or gate raised is checked
 by the agent that made it: it re-reads the changed lines against the flag and reruns the checks
 covering that code; that recorded check is what other skills mean by an
 increment's **Pre-Push Gate** verdict.

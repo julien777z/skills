@@ -105,8 +105,7 @@ incoming behavior reconciled with the change's intent in the description.
 Run the checks CI runs on a pull request once, with each job's own command and scope, after the
 base is in and before the review; fix what the change broke and push. A failure the user waived, an
 established baseline failure, or a hosted check stopped by runner infrastructure before validation
-began is recorded with its evidence and not repaired, rerun or waited on. The **Review Loop** reruns the
-checks over its own fixes.
+began is recorded with its evidence and not repaired, rerun or waited on.
 
 ## Workflow
 
@@ -197,9 +196,8 @@ changed. Make the smallest changes that answer real findings, and push back on t
 - **A finding still disputed after two replies goes to `council`** in **Ask** mode for a ruling,
   with the finding, the reviewer's case and yours with their evidence, and the code it concerns. Its
   ruling settles it: fix it, or record it declined with the ruling. A spent budget with a blocker or
-  should still open follows the global rules' review-round limit. Only a finding that is
-  a product, scope, security, disclosure or authorization choice goes to the user, with both sides in two or three
-  lines each.
+  should still open follows the global rules' review-round limit. A finding the council returns as
+  the user's choice goes to the user, with both sides in two or three lines each.
 
 ## Harness Compatibility
 

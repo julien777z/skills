@@ -26,11 +26,3 @@ O1 [outside] <files> <claim>
 A later round sends this brief again with the ledger (`fixed:`, `disagree:`, `declined:`, each with
 evidence), the same base diff and the change since the last round, and asks the reviewer to check
 open ids and changed code only, marking each `resolved` or `still open: <reason>`.
-
-Severity is the same scale every review in this repository uses:
-
-| Severity | Meaning |
-| --- | --- |
-| `blocker` | The intended case is wrong. |
-| `should` | A real bug callers will hit, an unsafe input, a workaround, a duplicate of an existing helper, or a break of a listed repository rule. |
-| `nit` | Everything else. |

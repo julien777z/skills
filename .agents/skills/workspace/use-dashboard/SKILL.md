@@ -262,9 +262,7 @@ Use the first route the session offers, and the same one for every update of one
        page and say why.
    - Record each new link where the caller keeps task state, so the next render finds it.
 2. **The user's own browser, through `use-browser`**, when no such tool exists and its **Showing A
-   Local Page** route applies. Render the full page and open it only on the dashboard's first render
-   in the session; every later render refreshes the open page by itself, so it opens nothing unless
-   the user asks to see the page again.
+   Local Page** route applies, with the full page; the page refreshes itself on every later render.
 3. **Otherwise**, send the full page with a tool that sends a file to the user, or, with none, give
    its absolute path.
 
