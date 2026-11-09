@@ -25,7 +25,7 @@ repository ledger, and write nothing. A recorded item is resolved by the user ru
 
 ## When Recording Runs
 
-Fix work instead whenever one focused pass can finish it within `pre-production`'s size budget. A stale reference, rename, wrong path,
+A defect is never recorded: `pre-production` has it fixed in the change in flight, whatever its size. Fix other work instead whenever one focused pass can finish it within `pre-production`'s size budget. A stale reference, rename, wrong path,
 missing assertion, lint or type finding, or small extraction costs less to fix than to record.
 Attempt the fix before concluding that work is deferrable; `acceptance-gate`'s admission question
 lists the only justifications for a record, and a flagged attempt is one of them.
