@@ -40,6 +40,17 @@ changes are not independent review assignments. Other Codex assignments and Clau
 retain the capability-family selection above. An unavailable role selection is a concrete hold,
 never permission to inherit the coordinator's model or substitute another family.
 
+## Council members
+
+A council's three seats take these families, each at its latest host version. A seat is a model
+family, not a provider, so two seats may share a provider.
+
+| Seat | Family |
+| --- | --- |
+| 1 | Sol |
+| 2 | Opus |
+| 3 | Fable |
+
 ## Dispatch candidates
 
 Prefer the host's latest identifier matching the selected family. When a Codex catalogue omits the

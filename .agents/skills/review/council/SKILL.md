@@ -1,7 +1,7 @@
 ---
 name: council
-description: Get review or feedback from three models on different providers, and loop until they agree. Use when the user says "council".
-short_description: 'Ask three models from different providers for review, and loop until they agree.'
+description: Get review or feedback from three strong models, from more than one provider, and loop until they agree. Use when the user says "council".
+short_description: 'Ask three strong models for review, and loop until they agree.'
 ---
 
 # Council
@@ -12,18 +12,19 @@ implementation and explore new ideas, skip fixes to code that is being replaced.
 
 ## Dependencies
 - `review-pass`
+- `subagent-matrix`
 
 ## Members
 
-Use the members the user's instructions name. Otherwise pick the latest flagship of three different
-providers at high effort, such as Claude Opus, GPT Sol and Gemini Pro.
+Use the members the user's instructions name. Otherwise take the three model families the
+`subagent-matrix` skill's model capabilities reference lists under **Council members**, each at
+its latest version on the host and at high effort, and resolve each launch through that skill.
 
 - **T3 Code:** resolve the models with `orchestrator_capabilities`, then start one `delegate_task`
   per member in parallel, each a new task.
 - **Elsewhere:** use the harness's subagents on those models.
-- When fewer than three providers are reachable, fill the empty seats with the strongest other
-  model of a reachable provider and say so in the result. A named member who is unavailable is
-  reported, never replaced silently.
+- When a listed family is unreachable, fill its seat with the strongest other reachable model and
+  say so in the result. A named member who is unavailable is reported, never replaced silently.
 
 ## Rounds
 
