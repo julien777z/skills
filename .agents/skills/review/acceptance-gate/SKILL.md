@@ -130,10 +130,13 @@ modules it touches and of the originating diff, which the earlier gate judged, i
 new flag only where the increment changes what it depends on or it holds a confirmed defect or
 exploitable vulnerability.
 
-For every changed file, identify and apply its repository and language-specific rules to the changed
-content, including rules that formatters, type checks and CI do not enforce. A shape satisfying one
-review criterion still fails if another applicable rule forbids it; name the rule and remedy in the
-verdict. Missing rule or file evidence holds a clean verdict.
+Check each changed file against the supplied repository and language rules before the design
+comparison. Check each changed construct against every applicable rule, including its preamble,
+imports, declarations, and executable bodies where changed or added. Record each independently
+observable violation by line and rule in the verdict, even when several occur in the same file or a
+narrower check passes. State the file groups and rules checked in `Also read`. Passing format, type,
+or CI checks do not establish compliance with rules they do not enforce. Missing rule or file
+evidence holds a clean verdict.
 
 **Then make the design comparison.** Inventory the responsibilities and decisions the diff moves,
 duplicates, specializes, removes or introduces, reading both sides independently of the caller's
