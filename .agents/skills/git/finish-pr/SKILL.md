@@ -103,6 +103,7 @@ Follow the active task's recorded priorities when choosing the next eligible uni
    holds at that head until its dependency merges and then repoints, as **Dependent Pull Requests**
    says. Otherwise invoke `merge-gate` with:
    - the pull request and the head `review-pass` accepted, or a dependent unit's repointed head;
+   - its **Checks** results, with their commands and head, as the behaviors local tests already cover;
    - every exclusion it returned, with its evidence;
    - the fix rule for every fix `merge-gate` makes — a check fix, a conflict resolution, a commit
      someone else pushed: `review-pass` runs again over that fix's delta, and the fix is pushed through

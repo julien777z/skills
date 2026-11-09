@@ -56,8 +56,8 @@ until it is under, by the dispositions below — the run is not finished while o
 breach, recording it, or carrying it into the plan as an observation is the failure this paragraph
 exists to prevent: the measurement was taken on day one and the number was already known, so a run
 that delivers with the same number has spent the measurement on nothing. Where the work genuinely
-cannot land in this run, it goes to `council` as the last disposition below says; the run never
-assumes it.
+cannot land in this run, that is the user's call to make in the current request, with the number
+and the cause in front of them; it is never the run's to assume.
 
 **Read setup against assertion before reading any single case.** Where existing reporting supplies
 per-test call durations, compare their sum with suite wall time. A large difference identifies cost
@@ -403,7 +403,7 @@ before delivery and verify that none enters the delivered diff.
   across a shared database or lock and never in a way the testing rules list as absorbing a slow
   test. Re-time after implementation against the
   same workload. A suite still over budget is unfinished work, not a line in the report: carry on
-  with the next disposition; when none is left, put the remaining cause and its cost to `council`
+  with the next disposition; when the remaining choice is between dispositions, put it to `council`
   in **Ask** mode and follow its ruling.
 - A third-party limit finding clears the refusal by the order in **Stay Inside Third-Party
   Limits**, and is verified by the per-run count, per account and per destination, fitting the

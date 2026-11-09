@@ -44,8 +44,8 @@ parallel, read-only, each starting no subagents of its own.
 
 ## Rounds
 
-Before round 1, answer outstanding pull-request comments, fix known issues and run the relevant
-checks, so the council reviews the current work. When the user wants to drop the implementation and
+Before round 1, triage outstanding pull-request comments and fix what they raise, posting nothing
+the user did not ask for, fix known issues and run the relevant checks, so the council reviews the current work. When the user wants to drop the implementation and
 explore new ideas, skip fixes to code that is being replaced.
 
 1. Send each member the brief and collect the replies. Summarise the useful findings, where members

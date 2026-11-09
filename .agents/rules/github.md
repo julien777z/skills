@@ -299,8 +299,8 @@ commits that `lock-revision`'s **After Locking** hold keeps local until the user
 resume. `code-simplify` and `acceptance-gate` do not run per push; `execute-task` and `review-pass`
 set when they run. A fix pushed for a flag a review or gate raised is checked
 by the agent that made it: it re-reads the changed lines against the flag and reruns the checks
-covering that code; that recorded check is what other skills mean by an
-increment's **Pre-Push Gate** verdict.
+covering that code, unless `acceptance-gate`'s **Bounds** send it to a fresh gate; that recorded
+check, or that gate's verdict, is what other skills mean by an increment's **Pre-Push Gate** verdict.
 
 Read the shared testing rule before planning test runs or briefing an implementation worker.
 Its **Verification Cadence** governs tests, builds, browser walkthroughs and reviews, including

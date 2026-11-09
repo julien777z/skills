@@ -969,11 +969,10 @@ def remove_path(path: Path) -> None:
         path.unlink()
 
 
-def build_page() -> str:
+def build_page(declarations: str, app_revision: str) -> str:
     """Return the built dashboard page, building the app the first time its source changes."""
 
-    declarations = typescript_declarations()
-    page_path = CACHE_ROOT / f"page-{app_digest(declarations)}.html"
+    page_path = CACHE_ROOT / f"page-{app_revision}.html"
     workspace = (
         CACHE_ROOT
         / f"workspace-{sha256((APP_ROOT / APP_LOCKFILE).read_bytes()).hexdigest()[:16]}"
@@ -1031,8 +1030,9 @@ def render_dashboard(spec: object, fragment: bool) -> RenderedPage:
     head = PAGE_HEAD_TEMPLATE.format(
         title=escape(str(dashboard["title"])), topic=escape(str(dashboard["topic"]))
     )
-    app = build_page()
-    app_revision = sha256(app.encode("utf-8")).hexdigest()[:16]
+    declarations = typescript_declarations()
+    app_revision = app_digest(declarations)
+    app = build_page(declarations, app_revision)
     embedded_spec = embed_dashboard_spec(dashboard)
 
     page = head + app.replace(APP_REVISION_PLACEHOLDER, app_revision, 1).replace(

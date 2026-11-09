@@ -20,6 +20,7 @@ skill never readies, merges or deploys.
 - `session-ledger`
 - `pre-production`
 - `council`
+- `subagent-matrix`
 
 ## Invocation
 
@@ -162,15 +163,17 @@ changed. Make the smallest changes that answer real findings, and push back on t
 - **Budget:** three rounds. Round 1 reviews the whole target; later rounds review the changed code
   and the findings still open. Five rounds only for security, permissions, auth, data loss or
   concurrency while a blocker or should stays open with evidence, or when the user asks. Stop early
-  when a round returns only nits. These count the pull request's review loop; one finding's fix
-  still follows the global rules' review-round limit; a declined nit, or a fix to comments, docs or formatting, needs no
-  new round.
-- **Reviewer:** the strongest model of a different provider from the author when one is reachable,
-  at medium effort, so it does not share the author's blind spots; the user may name another. Start it on another
-  provider's model where the harness offers one, as **Harness Compatibility** says for the harnesses
-  that need it, otherwise as a fresh subagent on the strongest available model. One reviewer per
-  round, apart from a split or panel round 1, each starting no subagents of its own. Do not edit the reviewed files while a round runs; a timeout, an error or no reply is
-  not approval.
+  when a round returns only nits; a declined nit, or a fix to comments, docs or formatting, needs no
+  new round. These rounds count the pull request's review loop; one finding's fix still follows the
+  global rules' review-round limit.
+- **Reviewer:** a model of a different provider from the author when one is reachable, so it does
+  not share the author's blind spots; the user may name another. Resolve it through
+  `subagent-matrix` at the advanced level of that provider's families and medium effort, applying
+  its launch fallback, and start it on that provider's model where the harness offers one, as
+  **Harness Compatibility** says for the harnesses that need it, otherwise as a fresh subagent at
+  the advanced level. One reviewer per round, apart from a split or panel round 1, each starting no
+  subagents of its own. Do not edit the reviewed files while a round runs; a timeout, an error or
+  no reply is not approval.
 - **Split round 1 by area** when the delta spans several areas, such as packages, services or apps,
   and is too large for one careful read: up to five reviewers, one per area group, each briefed with
   its group's paths and the whole diff as context, so a finding that crosses groups is still seen.
@@ -206,7 +209,7 @@ changed. Make the smallest changes that answer real findings, and push back on t
 
 ## Harness Compatibility
 
-- **T3 Code:** call `orchestrator_capabilities` once, pick the latest flagship of another provider at
+- **T3 Code:** call `orchestrator_capabilities` once, pick that provider's advanced-level model at
   medium effort, and start each round with a new `delegate_task`
   (`role: "review"`), never `t3_thread_send`.
 

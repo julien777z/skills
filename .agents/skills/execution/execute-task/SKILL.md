@@ -810,7 +810,8 @@ Two streams run side by side from here: the guidance stream and the source strea
    owning repository. Then build this pull request's ready-for-review message, in the shape below,
    from `list-prs`, what the run did and `review-pass`'s **Output**.
 4. When **Task Authorization** finds the merge authorized, send step 3's message together with the
-   invocation of `merge-gate`, passing the accepted head, every exclusion `review-pass` returned with
+   invocation of `merge-gate`, passing the accepted head, `review-pass`'s **Checks** results with their
+   commands and head as the behaviors local tests already cover, every exclusion it returned with
    its evidence, and, as its fix rule, the **Pre-Push Gate** with each fix folded into its commit
    through `rewrite-git-history`'s fixup route. It readies the pull request, inventories its
    exact-head hosted coverage, obtains fresh results only where no equivalent terminal coverage
