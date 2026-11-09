@@ -1,36 +1,32 @@
 ---
 name: widen-scope
-description: Let the current task also fix the slop and maintainability problems it runs into, not only bugs. Use only when the user asks for it in their own words, such as "widen scope" or "clean up what you find"; never on the agent's own initiative.
-short_description: 'Let the current task also fix the problems it runs into, within a size budget.'
+description: Turn on, for the rest of the session, fixing the slop and maintainability problems the work runs into, not only bugs. Use only when the user asks for it in their own words, such as "widen scope" or "clean up what you find"; never on the agent's own initiative.
+short_description: 'Turn on cleanup of the problems the work runs into for the rest of the session.'
 disable-model-invocation: true
 ---
 
 # Widen Scope
 
-By default a task fixes its own change and any bug it meets within `pre-production`'s size budget;
-everything else it meets is deferred. This skill raises that limit for the current
-task only, until it finishes or the user says to stop.
+This skill switches on `pre-production`'s widened cleanup budget as a session toggle: once the user
+turns it on, it holds for every task and follow-up in the session until the user says to stop. Bugs
+are fixed whatever their size either way, as `pre-production` says.
 
 ## Dependencies
 - `acceptance-gate`
-- `defer-scope`
 - `pre-production`
+- `session-ledger`
 
-## What It Allows
+## Switching It On And Off
 
-- Fix a problem the work runs into — a bug, duplicated logic, dead code, a misplaced helper, an
-  abstraction with one implementation — when its fix touches about five files or fewer and needs no
-  design decision from the user.
-- Keep each fix in its own commit, named for what it repairs, so it can be reviewed or reverted on
-  its own.
-- Defer with `defer-scope` anything larger, anything that changes what the product does, and
-  anything that would need its own plan.
+- Record it with `session-ledger` as a decision the user scoped to the whole session, so it reaches
+  every later task, context summary, handoff and worker brief.
+- When the user stops it, record the stop the same way.
 
 ## Judging Borderline Items
 
 Collect the items you are unsure about rather than gating each one. Once the task's own change is
 done, put that list to `acceptance-gate` in a single triage call; it decides fix or defer for each,
-and its answer is final for this task.
+and its answer is final for that item.
 
 ## Output
 
