@@ -180,10 +180,12 @@ process, so a process listing does not show whether a game is open. Stop it with
 `pkill -KILL -x RobloxPlayer` and confirm from a guest capture that no game is on screen; the tray
 process restarts at once and is out of any experience.
 
-The guest's paravirtual GPU draws simple places correctly but can garble complex scenes: a white or
-dark world with only outlines and UI, stretched polygons, wrong textures. Graphics quality and the
-client's renderer flags leave it on Metal and do not fix it. Treat such a scene's 2D UI as evidence
-and its world visuals as untested.
+On a Tart macOS guest, whose player log names Apple's paravirtual Metal device, simple places have
+drawn correctly while some complex scenes showed a white or dark world with only outlines and UI,
+stretched polygons or wrong textures, though gameplay footage of the same scenes renders normally.
+Lowering graphics quality did not change it, and the client's OpenGL preference flag was ignored on
+macOS. Until a guest configuration is shown to draw such a scene, treat its 2D UI as evidence and
+its world visuals as untested.
 
 ### Linux container runner
 
