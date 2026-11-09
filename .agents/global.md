@@ -679,8 +679,7 @@ An outcome is what its source of truth shows, never what an action or a worker s
   remain" by searching. A claim the check contradicts is the next thing done, ahead of queued
   work: sent back to the worker with what the read showed, or fixed here.
 - **What a worker reports leaving alone is classified before it reaches the user.** Read each item
-  against `pre-production`'s **Scope Follows The Defect, Not The Request** bullets: a defect within
-  its size budget, a parallel copy of the change's own mechanism or a shape a standing rule names
+  against `pre-production`'s **Scope Follows The Defect, Not The Request** bullets: a defect, a parallel copy of the change's own mechanism or a shape a standing rule names
   goes back to the worker or is fixed here; an item over the size budget is recorded with
   `defer-scope`, and only it and an item those bullets leave to the user are reported, as what it
   is and never as a question whether to fix it.

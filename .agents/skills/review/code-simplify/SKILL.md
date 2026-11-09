@@ -53,8 +53,8 @@ it whole before the pass.
   decision.
 - Fix a `nit` only when it is a one-line change in a line the change already touches; otherwise
   list it as declined.
-- Outside the change, fix a bug when it is one focused fix in about two files or fewer, and return
-  anything larger, and non-bug cleanup outside the change, to the caller to record as deferred work.
+- Outside the change, fix every bug, whatever its size, and return non-bug cleanup outside the
+  change to the caller to record as deferred work.
 - Check each remedy against the language and layout rules for its file before applying it.
 - After fixing, rescan only when the fixes added, moved, merged or deleted a module or changed an
   interface other code reads: a fresh reviewer gets the earlier findings, the fix diff and the files

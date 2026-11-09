@@ -432,12 +432,11 @@ delivery. A formatter passing is not a substitute for that comparison.
 Apply `pre-production`'s encountered-issues policy while making the change. The rules below govern
 how those issues are handled.
 
-- **A finding against the task's changed design is fixed in the change in flight; a defect the work
-  only runs into is fixed there when it fits `pre-production`'s size budget — one focused fix in
-  about two files or fewer — and recorded with `defer-scope` otherwise, as is cleanup past that
-  budget.** The fix takes a shape the standing guidance allows, as the next bullet says, and offering it
+- **A finding against the task's changed design, and every defect the work runs into, is fixed in
+  the change in flight, whatever its size; cleanup that fixes no defect is recorded with
+  `defer-scope` once it passes `pre-production`'s size budget.** The fix takes a shape the standing guidance allows, as the next bullet says, and offering it
   to the user is not a disposition: "Want this handled, or shall I leave it?" spends a turn to obtain
-  permission the budget already settled. The question that is genuinely the user's is about a
+  permission the guidance already settled. The question that is genuinely the user's is about a
   **product change** — what a feature does or what information it presents, the steps of a
   workflow or a quantity the reader meets, a workaround for a constraint the user set, what a record keeps, who a surface serves, a
   contract a consumer outside the user's control speaks — never whether an encountered issue gets
@@ -514,7 +513,7 @@ how those issues are handled.
   action-time confirmation. Another file, component, or package in the same repository is never a
   new target, and neither is a repository the user owns that consumes a contract the change breaks:
   it is delivered under **Multi-Repository Delivery**. The obligation to fix a bug or returned
-  finding within the size budget remains; apply **Task Authorization** to its remedy rather than treating the finding
+  finding remains; apply **Task Authorization** to its remedy rather than treating the finding
   as permission for an unsettled product choice. Continue independent authorized work while that
   choice waits, and never ask whether the defect should be ignored.
 - When asking, state the trigger, impact, expected work, recommendation, and concrete choices.
