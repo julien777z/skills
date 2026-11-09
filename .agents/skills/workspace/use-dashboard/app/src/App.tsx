@@ -13,10 +13,12 @@ const OPEN_PAGE_PREFIX: string = 'dashboard-page:';
 
 export function App({ dashboard: initial }: { dashboard: Dashboard }): ReactNode {
   const dashboard = useDashboardUpdates(initial);
-  const [openTitle, setOpenTitle] = useState(() => window.name.slice(OPEN_PAGE_PREFIX.length));
+  const [openPage, setOpenPage] = useState(() => window.name.slice(OPEN_PAGE_PREFIX.length));
   const current = Math.max(
     0,
-    dashboard.pages.findIndex((candidate) => candidate.title === openTitle),
+    withKeys(dashboard.pages, (candidate) => candidate.title).findIndex(
+      ({ key, item }) => key === openPage && !item.locked,
+    ),
   );
   const references = useMemo(() => new References(dashboard.references ?? []), [dashboard.references]);
   const page = dashboard.pages[current];
@@ -26,11 +28,11 @@ export function App({ dashboard: initial }: { dashboard: Dashboard }): ReactNode
   const showSummary = Boolean(progress) || pageMetrics.length > 0;
 
   function handleSelectPage(position: number) {
-    const title = dashboard.pages[position].title;
+    const key = withKeys(dashboard.pages, (candidate) => candidate.title)[position].key;
 
-    setOpenTitle(title);
+    setOpenPage(key);
 
-    window.name = `${OPEN_PAGE_PREFIX}${title}`;
+    window.name = `${OPEN_PAGE_PREFIX}${key}`;
 
     window.scrollTo({ top: 0 });
   }

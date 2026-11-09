@@ -1035,8 +1035,8 @@ def render_dashboard(spec: object, fragment: bool) -> RenderedPage:
     app_revision = sha256(app.encode("utf-8")).hexdigest()[:16]
     embedded_spec = embed_dashboard_spec(dashboard)
 
-    page = head + app.replace(DATA_PLACEHOLDER, embedded_spec, 1).replace(
-        APP_REVISION_PLACEHOLDER, app_revision, 1
+    page = head + app.replace(APP_REVISION_PLACEHOLDER, app_revision, 1).replace(
+        DATA_PLACEHOLDER, embedded_spec, 1
     )
 
     return RenderedPage(

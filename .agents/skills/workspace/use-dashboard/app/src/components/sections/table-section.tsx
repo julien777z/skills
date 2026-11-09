@@ -9,14 +9,16 @@ import { SectionDialog } from './section-dialog';
 
 export function TableSection({ section }: { section: TableSectionSpec }): ReactNode {
   const [open, setOpen] = useState(false);
-  const [opened, setOpened] = useState(0);
+  const [openedRow, setOpenedRow] = useState('');
   const opener = useRef<HTMLButtonElement | null>(null);
   const details = section.details;
+  const rows = withKeys(section.rows, (cells) => cells.join('\u0000'));
+  const openedDetails = details?.[rows.findIndex(({ key }) => key === openedRow)];
 
-  function handleOpenRow(position: number, button: HTMLButtonElement) {
+  function handleOpenRow(rowKey: string, button: HTMLButtonElement) {
     opener.current = button;
 
-    setOpened(position);
+    setOpenedRow(rowKey);
     setOpen(true);
   }
 
@@ -39,17 +41,20 @@ export function TableSection({ section }: { section: TableSectionSpec }): ReactN
             </TableRow>
           </TableHeader>
           <TableBody>
-            {withKeys(section.rows, (cells) => cells.join('\u0000')).map(({ key: rowKey, item: cells }, position) => (
+            {rows.map(({ key: rowKey, item: cells }) => (
               <TableRow
                 key={rowKey}
-                className={details && 'relative focus-within:bg-muted/50 [&_a]:relative [&_a]:z-10'}
+                className={
+                  details &&
+                  'relative focus-within:bg-muted/50 [&_a]:relative [&_a]:z-10 [&_[data-reference]]:relative [&_[data-reference]]:z-10'
+                }
               >
                 {withKeys(cells, (cell) => cell).map(({ key, item: cell }, column) => (
                   <TableCell key={key} className="px-4 align-top whitespace-normal tabular-nums">
                     {details && column === 0 ? (
                       <button
                         type="button"
-                        onClick={(event) => handleOpenRow(position, event.currentTarget)}
+                        onClick={(event) => handleOpenRow(rowKey, event.currentTarget)}
                         className="text-left after:absolute after:inset-0 focus-visible:outline-none"
                       >
                         {cell}
@@ -64,7 +69,7 @@ export function TableSection({ section }: { section: TableSectionSpec }): ReactN
           </TableBody>
         </Table>
       </div>
-      {details && <SectionDialog section={details[opened]} open={open} onOpenChange={setOpen} opener={opener} />}
+      {openedDetails && <SectionDialog section={openedDetails} open={open} onOpenChange={setOpen} opener={opener} />}
     </SectionCard>
   );
 }
