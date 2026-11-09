@@ -7,30 +7,20 @@ disable-model-invocation: true
 
 # Widen Scope
 
-By default the work fixes its own change and every bug it meets, and defers cleanup past
-`pre-production`'s size budget. This skill raises that cleanup limit as a session toggle: once the
-user turns it on, it holds for every task and follow-up in the session until the user says to stop.
-Record it with `session-ledger` as a decision the user scoped to the whole session, so it reaches
-every later task, context summary, handoff and worker brief; record it as stopped the same way when
-the user stops it.
+This skill switches on `pre-production`'s widened cleanup budget as a session toggle: once the user
+turns it on, it holds for every task and follow-up in the session until the user says to stop. Bugs
+are fixed whatever their size either way, as `pre-production` says.
 
 ## Dependencies
 - `acceptance-gate`
-- `defer-scope`
 - `pre-production`
 - `session-ledger`
 
-## What It Allows
+## Switching It On And Off
 
-- Fix a problem the work runs into — duplicated logic, dead code, a misplaced helper, an
-  abstraction with one implementation — when its fix touches about five files or fewer and needs no
-  design decision from the user. Bugs are always fixed, as `pre-production` says, whatever their
-  size.
-- Keep each fix in its own commit, named for what it repairs, so it can be reviewed or reverted on
-  its own.
-- Defer with `defer-scope` cleanup larger than that, cleanup that would change what the product
-  does, and cleanup that would need its own plan. A defect's remedy is never deferred here: it keeps
-  the planning and user-decision obligations `pre-production` and the global rules give it.
+- Record it with `session-ledger` as a decision the user scoped to the whole session, so it reaches
+  every later task, context summary, handoff and worker brief.
+- When the user stops it, record the stop the same way.
 
 ## Judging Borderline Items
 
