@@ -15,7 +15,9 @@ short_description: 'Ask three strong models what they think, or review with them
 - **Ask:** one round, and no edits. Use it when the user asks a question and wants the council's
   view, such as "what do you think of this approach? use council", and when an invocation hands
   the council a brief to answer: a review of a change, or a ruling on one disputed finding.
-  Return each member's answer under **Output**; the asker decides what to do with it.
+  Return each member's answer under **Output**; the asker decides what to do with it. A ruling is
+  the majority of the three unless the asker sets another threshold, and a question that is a product, scope, security, disclosure or authorization choice
+  is the user's: the council's answers go to them as advice.
 - **Loop:** the user asks the council to review or give feedback on work, such as "council this
   pull request". Run **Rounds**, fixing between them.
 
@@ -51,8 +53,9 @@ explore new ideas, skip fixes to code that is being replaced.
    listed in the result as left for recording.
 3. Send the next round to the same members, with those answers and the diff since the last round.
    Each full review pass is one round.
-4. Stop when every member is satisfied, or after three rounds; then show the open disagreements and
-   let the user decide.
+4. Stop when every member is satisfied, or after three rounds. An open disagreement then is settled
+   by the members' majority and listed with its ruling; one that is a product, scope, security, disclosure or authorization choice goes
+   to the user.
 
 ## Harness Compatibility
 

@@ -128,8 +128,8 @@ alwaysApply: true
   together across every kind of check; a round a broken runner, fixture or provider cut short before
   judging the change is not counted. Put the disposition to `council` in **Ask** mode, with the
   change, each round's findings and remedies, and the three choices: use a simpler approach, revert
-  the change, or accept it with the remaining findings recorded; record its ruling and follow it. A
-  split ruling is settled by the agent on the evidence the members gave, and the record says so. A confirmed defect, an
+  the change, or accept it with the remaining findings recorded; record its majority ruling and
+  follow it. A confirmed defect, an
   exploitable vulnerability or a failing required check is never accepted this way. If the authorized
   outcome still needs work, update the active plan and start the first permitted step of the
   replacement. A different implementation idea is not a new approval boundary. Ask only when

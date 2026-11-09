@@ -30,8 +30,8 @@ skill never readies, merges or deploys.
   posting the replies **Review Threads** allows, and, on the merged-range route only, creating the
   fix pull request **Targets** describes. It authorizes no merge, readying a draft, release,
   deployment or unrelated provider mutation.
-- The one gate this skill holds is an unresolved `acceptance-gate` flag or a **Review Loop** that
-  ends stuck. Every later gate is the caller's.
+- The one gate this skill holds is an unresolved `acceptance-gate` flag or a finding that waits on
+  the user's decision. Every later gate is the caller's.
 
 ## Modes
 
@@ -118,7 +118,7 @@ checks over its own fixes.
 4. Run **Local Passes** over the delta and push their fixes.
 5. Run **Review Loop** once over the delta, with the intent statement, the merge-base diff and the
    full touched files as context. Push each fix as its own commit through the GitHub rule's
-   **Pre-Push Gate**. A loop that ends stuck holds the pass: put the disputed finding to the user
+   **Pre-Push Gate**. A finding that is the user's decision holds the pass: put it to the user
    with both sides, and continue independent work.
 6. When the base moved again, run **Base** and rerun the checks the incoming change touches.
 7. Run **Description Refresh** once more, then put the complete merge-base diff and the refreshed
@@ -195,10 +195,11 @@ changed. Make the smallest changes that answer real findings, and push back on t
 - **Stop** when the reviewer approves the current diff with no blocker or should open and no concern
   of your own. A spent budget is not approval.
 - **A finding still disputed after two replies goes to `council`** in **Ask** mode for a ruling,
-  with the finding, the reviewer's case and yours with their evidence, and the code it concerns. A
-  unanimous ruling settles it: fix it, or record it declined with the ruling. A split ruling, or a spent budget with a blocker or should
-  still open, ends the loop stuck: show both sides in two or three lines each for the user to
-  decide.
+  with the finding, the reviewer's case and yours with their evidence, and the code it concerns. Its
+  ruling settles it: fix it, or record it declined with the ruling. A spent budget with a blocker or
+  should still open follows the global rules' review-round limit. Only a finding that is
+  a product, scope, security, disclosure or authorization choice goes to the user, with both sides in two or three
+  lines each.
 
 ## Harness Compatibility
 
@@ -212,7 +213,7 @@ changed. Make the smallest changes that answer real findings, and push back on t
 **Review pass:** <accepted head> · <full | delta `<reviewed head>..<head>` | empty> · recorded <whole | delta>
 
 - **Local passes:** <layout pairs fixed · code-simplify result · test sweep result, each or not run>
-- **Review loop:** <n> round(s) with <model> — <approved | stuck on <ids> | review only> · panel <round 1 | ruled on <ids> | not used> · diff <shortstat before> → <shortstat after>
+- **Review loop:** <n> round(s) with <model> — <approved | waiting on the user for <ids> | review only> · panel <round 1 | ruled on <ids> | not used> · diff <shortstat before> → <shortstat after>
 - **Fixed:** <one line per fix, marking those review surfaced rather than the task required, or none>
 - **Threads:** <disposition per thread, or none>
 - **Checks:** <passed | exclusions with evidence>

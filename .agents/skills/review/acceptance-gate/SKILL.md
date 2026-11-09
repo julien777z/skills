@@ -294,11 +294,12 @@ another repair, and an acceptance with recorded findings that decision makes is 
 the rules below on flagged diffs; an in-process check of a repair is not one of those 3
 rounds. While the change is under that limit, a flag gets at most two repair rounds of its own, and
 one a fresh gate raises for the first time starts at zero. A flag the gate still raises after its
-own second repair, with the change still under the limit, goes first to `council` in **Ask** mode
-for its ruling on the remedy, then to the user as a report, never as a choice about whether to fix
-it or leave it in place: the open flag, each remedy tried and its evidence, the gate's proposed
-remedy, the council's ruling and the recommended next step. Every other flag keeps its own
-repair and gate meanwhile, and the user's reply directs only the flag the report names.
+own second repair, with the change still under the limit, goes to `council` in **Ask** mode with
+the open flag, each remedy tried and its evidence, and the gate's proposed remedy. Its ruling
+decides the remedy, which is applied and checked as any repair is, and the caller's result names
+the flag and the ruling. Only a flag whose remedy is a product, scope, security, disclosure or authorization choice goes to the
+user, as a report of those facts with a recommended next step, never as a choice about whether to
+fix it or leave it in place. Every other flag keeps its own repair and gate meanwhile.
 
 Never rerun an unchanged item hoping for acceptance, argue it through the same gate, rename it to
 reset its history, or keep flagged code because the caller can authorize its merge. Carry unresolved
