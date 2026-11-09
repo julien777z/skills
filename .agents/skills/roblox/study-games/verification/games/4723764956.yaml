@@ -1,0 +1,243 @@
+name: "🎥My Movie"
+game_id: "universe:4723764956"
+universe_id: "4723764956"
+place_id: "13600218266"
+url: "https://www.roblox.com/games/13600218266/My-Movie"
+creator: "Good Ape (group 3212936, no verified badge); description credits Kampfkarren & Megahammer"
+chart_category: "Trending in Entertainment"
+chart_rank: 1
+researcher: "R07"
+mode: passive
+play_ended_by: null
+onboarding_video_coverage: not_covered
+observed_at: "2026-11-09T00:19:00Z"
+observation_status: completed
+previous_observed_at: null
+changes_since_previous: []
+active_play_seconds: null
+play_coordination:
+    resource_key: null
+    wait_seconds: null
+    acquired_at: null
+    expires_at: null
+    released_at: null
+    release_verified: null
+    expiry_or_blocker: null
+context:
+    genre: "User-generated movie maker and video feed (games API: genre_l1 'Entertainment', genre_l2 'Video')"
+    camera_perspective: "Lobby: third-person 3D cinema hall; editor: flat 2D full-screen editor with a 16:9 stage, tool panel at right and a slide strip along the bottom (video_session_1, video_session_2)"
+    device_and_input: "Videos appear to be PC mouse and keyboard (Windows taskbar visible in some frames of video_session_1); touch not shown"
+    observation_environment: "Passive: games, votes, media, thumbnails, game-pass, badges and age-recommendation APIs plus the experience page HTML, retrieved over HTTP from the orchestrator host; no client launched"
+    visible_server_population: "API at retrieval: 15,479 playing; maxPlayers 50 per server"
+    solo_or_group: "Advertised creation is solo authoring; the watch feed shows videos made by other players (asynchronous social)"
+    game_version_if_known: "Universe updated 2026-11-04T01:55:50Z; created 2023-05-30"
+    evidence: [description_1, page_1, video_session_1, video_session_2]
+account_state:
+    freshness: unknown
+    evidence: ["Game not played; no in-game state observed."]
+evidence:
+    - id: description_1
+      kind: description
+      url: "https://games.roblox.com/v1/games?universeIds=4723764956"
+      captured_at: "2026-11-09T00:15:00Z"
+      media_date_or_version: "updated 2026-11-04T01:55:50Z"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Marketing text: 'Create your own movies, and watch a never-ending stream of videos by people just like you! It's just like YouTube!'; also explains how to report a video (Videos > My Videos > flag icon)."
+          - "Stats at retrieval: 626,802,876 visits, 973,427 favourites, 15,479 playing; votes 535,337 up / 36,358 down (about 94% positive)."
+    - id: page_1
+      kind: description
+      url: "https://www.roblox.com/games/13600218266/My-Movie"
+      captured_at: "2026-11-09T00:17:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Page HTML fetched, not rendered; read for structured metadata only (aggregate rating 93.6 from 571,697 ratings)."
+          - "Age-recommendation API: Maturity 'Minimal', descriptor 'Suitable for everyone'."
+    - id: thumbnail_1
+      kind: thumbnail
+      url: "https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=4723764956&countPerUniverse=10&size=768x432&format=Png"
+      captured_at: "2026-11-09T00:16:00Z"
+      media_date_or_version: "4 approved images (image IDs 16964087408, 108893401839823, 128475482243554, 18540621387)"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Promotional art; cannot establish actual UI, controls or onboarding."
+          - "Image 1 (alt text 'Use text, characters, pictures, and sound to create movies quick!') mocks up an editor: a scene with a pasted picture and a Roblox avatar with a speech bubble, a round four-segment radial menu (Avatars, Picture, Text, Sound) with illustrated icons, a filmstrip thumbnail with a blue '+' add tile, and the caption 'EASY TO USE VIDEO EDITOR!'."
+          - "Image 3 shows a video player frame with view (eye, '20,000+') and like (heart, '1,000+') counters and 'Create videos!'; images 2 and 4 are glossy mascot/clapperboard and theatre-screen 'YOU MAKE THE MOVIE!' key art."
+    - id: gamepass_1
+      kind: description
+      url: "https://apis.roblox.com/game-passes/v1/universes/4723764956/game-passes?passView=Full&pageSize=50"
+      captured_at: "2026-11-09T00:18:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Six passes listed: More Images! (+8) 399, Longer Movie Length 399, Infinite Speech 299, More Characters 399, Golden Tickets 129, Popcorn 149 (Robux, at retrieval; prices may change)."
+          - "No badges returned by the badges API."
+    - id: video_1
+      kind: gameplay_video
+      url: "https://games.roblox.com/v2/games/4723764956/media"
+      captured_at: "2026-11-09T00:17:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "The experience's media list holds images only; no gameplay video was available on the page. External footage was studied later as video_session_1 and video_session_2."
+    - id: video_session_1
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=DYGgfJPZkDM"
+      captured_at: "2026-11-09T02:45:00Z"
+      media_date_or_version: "uploaded 2026-10-28"
+      timestamps: ["0:00 cinema lobby with bottom bar Store, Tickets, Create, Movies, Invite and Watch at right; ticket balance 460 top right", "0:30 'How does this game work? I am confused' then another player explains the tools", "0:30-0:45 picture browser with search, 'Need ideas?' chips, Backgrounds and Stickers panels", "1:30 editor: Pictures, Text, Sound, Avatars tiles, Invite, Play and Publish; slide strip with + tile", "1:18-1:30 avatar pose/emotion options", "1:45-2:05 new slide, copy slide, animation button to move a character across the stage", "6:48-6:53 publish; 'Good work on your movie!' dialog", "7:20-9:00 movies shown on the cinema screen with creator name and 'GRAND PREMIERE!' or 'PLAYED NEXT' tag, Comment and Like at left; balance 610"]
+      screenshots: ["DYGgfJPZkDM-001.jpg", "DYGgfJPZkDM-003.jpg", "DYGgfJPZkDM-007.jpg", "DYGgfJPZkDM-013.jpg", "DYGgfJPZkDM-028.jpg", "DYGgfJPZkDM-030.jpg", "DYGgfJPZkDM-037.jpg"]
+      limitations:
+          - "Smarty Pants (810K subscribers), 59,206 views at retrieval; 11:35 long, first 10 minutes studied."
+          - "Group 'we created a movie' video by three family-persona creators: real editor play, but scripted banter, heavy jump cuts and cartoon facecams cover parts of the frame. Not a first join; the account's prior use is unknown."
+          - "Most-viewed My Movie videos (5-9M views) date from mid-2023 and were skipped as too old; this and video_session_2 are the most-viewed recent ones that showed this game."
+    - id: video_session_2
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=JOwXnJy-J30"
+      captured_at: "2026-11-09T02:45:00Z"
+      media_date_or_version: "uploaded 2026-05-29"
+      timestamps: ["0:00 cinema lobby, players walk to seats", "0:15 projector pad in the floor", "0:32 'if you guys don't know how this works, we can go to pictures right here'", "1:14 'If we go to avatars, we can get all of us'", "2:19 'how do you copy and paste it?'", "2:00 and 2:30 text entry modal 'Enter your text...' OK/Cancel over a dimmed editor", "2:27 'add a new slide' (spoken); 9:30 its dialog: New slide, Copy slide, Back", "3:03 another player's added pictures clutter the shared scene, 'just delete everything'", "8:30 background library grouped by room (Green Bedroom, Living Room, Lunchroom, My Movie Lobby)", "9:00 pose library with categories, lock icons and 'Buy 1,100' ticket packs (Creepy, Dances)"]
+      screenshots: ["JOwXnJy-J30-001.jpg", "JOwXnJy-J30-002.jpg", "JOwXnJy-J30-003.jpg", "JOwXnJy-J30-010.jpg", "JOwXnJy-J30-011.jpg", "JOwXnJy-J30-035.jpg", "JOwXnJy-J30-037.jpg", "JOwXnJy-J30-039.jpg"]
+      limitations:
+          - "Oren & Pinki (1.09M subscribers), 1,519,624 views at retrieval; 25:31 long, first 10 minutes studied."
+          - "Four creators in one server co-editing a single movie with commentary; returning players who already know the editor, edited with cuts and cartoon facecams."
+          - "Over five months old, so later UI changes may be missing."
+gameplay:
+    advertised_loop: "Author a short movie from avatars, pictures, text (speech bubbles) and sounds, publish it, then watch an endless feed of other players' movies and react (views and likes are advertised)."
+    observed_loop: "From videos, not play: players gather in a 3D cinema lobby, take seats and open Create, which switches to a full-screen 2D editor. Each movie is a strip of slides: on each slide players search a picture library (backgrounds, props, memes, stickers), add Roblox avatars (their own or others in the server), set poses and emotions, type speech text, add sounds, then add or copy a slide and change it; an animation option moves a character across the stage between slides. Several players in one server can edit the same movie at once (Invite button). Publish shows 'Good work on your movie!', and the movie then plays on the lobby's big screen with the creator's name and a 'GRAND PREMIERE!' or 'PLAYED NEXT' tag while others Comment or Like (video_session_1 0:30-9:00; video_session_2 0:32-9:30)."
+    first_action: "Video: from the lobby, take a seat or press Create, then open Pictures to place a background (video_session_1 0:28-0:50; video_session_2 0:25-0:40)"
+    first_success_seconds: null
+    success_feedback: ["Advertised: view and like counters on a published video (thumbnail_1).", "Video: 'Good work on your movie!' dialog on publish, naming a newly unlocked tool ('You just unlocked Timings!'), 'Your movie will play on the big screen soon.', and three next steps: Make more!, Watch movies!, Back to theater (video_session_1 6:50, frame DYGgfJPZkDM-028).", "Video: the published movie plays on the cinema screen in front of everyone in the server with the creator's name and a 'GRAND PREMIERE!' tag (video_session_1 7:20-9:00).", "Video: ticket balance rose from 460 to 610 across the publish (video_session_1 0:00 vs 6:50); the cause of the increase is inferred, not shown."]
+    progression: ["Inferred from passes: creation limits (images, characters, movie length, speech length) appear to be the expandable resource.", "Video: editor features unlock by use; the first publish unlocked 'Timings' (video_session_1 6:50).", "Video: pose categories (General 2, Creepy, Dances, Exercise, Fighting, Glitch and more) show lock icons and 'Buy 1,100' ticket prices, so tickets earned in game buy pose packs (video_session_2 9:00)."]
+    choices_and_variety: ["Advertised: four content types (avatars, pictures, text, sound) combined freely.", "Video: the picture search returns a very wide library, including memes and stock photos, plus a background library grouped by room (bedroom, living room, lunchroom, the game's own lobby) and animated stickers (video_session_1 0:30; video_session_2 8:30).", "Video: avatars take poses and emotions from a categorised library and can be animated across the stage (video_session_1 1:18-2:05; video_session_2 9:00)."]
+    social_and_cooperative: ["Advertised asynchronous audience: players watch each other's videos; a report flow exists for rule-breaking videos.", "Video: synchronous co-creation; several players in one server place their avatars and edit the same movie together, and the cinema screen gives a shared watch party with Comment and Like (video_session_1 1:09-1:30, 7:20; video_session_2 1:14-3:10)."]
+    companions_and_pets: []
+    friction: ["Description must explain how to report videos, which suggests moderation of user content is a live concern.", "Video: a newcomer said 'How does this game work? I am confused' and was taught by another player rather than by the game (video_session_1 0:31).", "Video: copy and paste was not discoverable ('how do you copy and paste it?') (video_session_2 2:19).", "Video: in a shared movie one player's added pictures cluttered the scene and the others cleared everything (video_session_2 3:03-3:13).", "Video: text entry is a full-screen dimmed modal with OK/Cancel that hides the scene being captioned (video_session_2 2:00, 2:30)."]
+    evidence: [description_1, thumbnail_1, gamepass_1, video_session_1, video_session_2]
+pacing:
+    timing_start_definition: "Video start (creators already in the lobby)"
+    loading_seconds: null
+    time_to_control_seconds: null
+    first_meaningful_choice_seconds: 30
+    first_reward_seconds: null
+    action_reward_cadence: "Building is continuous small edits; the large reward comes once per movie at publish and premiere, about 6:50 into an edited group video (video_session_1)."
+    active_play_versus_travel_or_waiting: "Almost all time is editing; a short walk to the cinema seats at the start and watching the premiere after publishing (video_session_1, video_session_2)."
+    natural_stopping_points: ["Publish and premiere of a movie, followed by the 'Make more! / Watch movies! / Back to theater' choice (video_session_1 6:50)"]
+    measurement_method: "Measured from each video's own timestamps, which include edits and jump cuts; first_meaningful_choice_seconds is the time the first editor panel appears in video_session_1, not a first-join time."
+    evidence: [video_session_1, video_session_2]
+goals_and_progression:
+    next_goal_clarity: "Self-directed: the game shows the tools, and the goal comes from the players. The publish dialog states the next step explicitly with three buttons (video_session_1 6:50)."
+    short_term_goals: ["Fill the next slide (video_session_1, video_session_2)"]
+    medium_term_goals: ["Publish a movie and see it premiere on the big screen; unlock editor features such as Timings (video_session_1 6:50-7:20)"]
+    advertised_long_term_goals: ["Audience growth (views and likes) on published videos, per thumbnail_1."]
+    upgrade_choices: ["Paid capacity expansions listed as passes (gamepass_1); no free upgrade path evidenced."]
+    mastery_versus_stat_growth: "Advertised appeal is creative expression and audience reaction, not stat growth (inference from description and art)."
+    unlock_previews_and_optional_activities: ["Locked pose categories are visible in the pose browser with their ticket price (video_session_2 9:00)", "Lobby 'claim tickets' stations and a ticket-reward display (video_session_1 0:00; purpose not shown)"]
+    evidence: [thumbnail_1, gamepass_1, video_session_1, video_session_2]
+failure_and_recovery:
+    observed_failure: "Video: no failure state; the closest is a shared scene spoiled by another player's additions (video_session_2 3:03)."
+    explanation: null
+    cost_or_lost_progress: "Clearing a slide loses its content; an undo arrow sits at the editor's top left (video_session_1 1:30)."
+    retry_seconds: null
+    checkpoints: "Slides persist in the strip while editing (video_session_1, video_session_2)."
+    non_paid_recovery: "Delete or clear and rebuild; undo button visible (video_session_1 1:30)."
+    evidence: [video_session_1, video_session_2]
+agency_and_social:
+    meaningful_choices: ["Advertised: what to put in each movie (characters, pictures, text, sound)."]
+    customization_and_identity: ["Advertised: player-authored content is the product."]
+    cooperation_and_competition: ["Video: co-editing one movie, and friendly rivalry over whose movie is best when shown in turn on the big screen (video_session_1 7:00-7:10; video_session_2 1:14)."]
+    visible_social_feedback: ["Advertised view and like counts (thumbnail_1).", "Video: creator name and 'GRAND PREMIERE!' banner under the cinema screen, Comment and Like controls at left during playback (video_session_1 7:20-9:00)."]
+    solo_accessibility: "Advertised authoring and watching both work solo."
+    evidence: [description_1, thumbnail_1, video_session_1, video_session_2]
+ui:
+    evidence_status: observed
+    visual_style: "From videos: a dark neon cinema lobby (red star carpet, glowing screens, projector) and a glossy, early-2010s-style editor: chrome-framed stage, dark carbon-fibre panels, blue gradient tiles with illustrated icons (video_session_1, video_session_2)."
+    layout_and_hierarchy: "Lobby: centred bottom bar of five icon buttons with labels (Store, Tickets, Create, Movies, Invite), Watch (eyes icon) bottom right, ticket balance top right. Editor: stage takes about three-quarters of the width; at right a 2x2 tile panel (Pictures, Text, Sound, Avatars) with an Invite bar, then Play and Publish below; slide strip across the bottom with a blue + tile at its right end; undo arrow top left, red X close top right (video_session_1 0:00, 1:30). The promotional radial menu (thumbnail_1) is in game a 2x2 grid."
+    color_scheme: ["dark charcoal panels", "glossy mid-blue tiles and buttons", "red close X", "neon green and purple lobby lights", "magenta and orange panel headers in the picture browser"]
+    typography:
+        font_appearance: "Small white sans labels under icons; bold white sans headline in dialogs ('Good work on your movie!'); user text in a thin sans on the stage (videos)"
+        font_family_if_verified: null
+        size_observation: "Tile labels roughly 8-10 px at the videos' 960 px frame width; dialog title about 20 px"
+        size_basis: visual_estimate
+        viewport_resolution: "960x540 frames from 480p video"
+        readability: "Tool labels small; icons carry the meaning (video_session_1 1:30)"
+    controls:
+        primary_actions: "Click a tile to open a library, click an item to place it, drag and stretch it on the stage, + to add a slide, Play to preview, Publish to release (video_session_1 0:45-1:57, 6:48)"
+        close_x_appearance_and_location: "Square red X with white cross at the top right of the editor and of each library overlay (video_session_1 0:30, 1:30)"
+        modal_behavior: "Text entry and 'Add a new slide...' are centred prompts over a dimmed editor with small blue OK/Cancel or New slide/Copy slide/Back buttons; the publish result is a centred dialog over the dimmed lobby (video_session_2 2:00, 9:30; video_session_1 6:50)"
+        state_feedback: "Selected objects show a thin bounding box with corner handles; the current slide is highlighted in the strip (video_session_1 1:45, 3:00)"
+        target_size_and_input: "Editor tiles about 60x55 px and the + tile about 32 px at 960 px width; library thumbnails about 85 px squares (video_session_1)"
+    graphics:
+        graphics_versus_text: "Tools are illustrated icons with one-word labels; libraries are thumbnail grids with a search bar; pose names are text under small stick-figure pose previews (video_session_1 1:30; video_session_2 9:00)."
+        illustration_or_icon_style: "Glossy skeuomorphic icons (paint palette, 'Abc', speaker, avatar bust, clapperboard, globe) (video_session_1 1:30)"
+        framing_outlines_and_effects: "Chrome bevelled stage frame with a red-to-blue edge glow, gradient tiles, star favourite marks on library items (video_session_1 0:30, 1:30)"
+        placement_and_labels: "Picture browser pairs the grid with side cards: 'Need ideas?' suggestion chips, 'Use backgrounds', 'Use stickers' (video_session_1 0:30)"
+        clarity_or_clutter: "Editor is uncluttered; the lobby HUD is light. Libraries are dense grids with very mixed content."
+    evidence: [thumbnail_1, video_session_1, video_session_2]
+new_player_onboarding:
+    status: indeterminate
+    reason: "Not played, and neither studied video shows a first join: both start with creators already in the lobby and explaining the editor to each other (video_session_1 0:31; video_session_2 0:32). A recent beginner-tutorial video was found but YouTube refused metadata and download ('Sign in to confirm you're not a bot') after retries."
+    conventions: ["Seen in videos, not a full first join: progressive feature unlock announced on publish ('You just unlocked Timings!') (video_session_1 6:50)", "'Need ideas?' suggestion chips in the picture browser (video_session_1 0:30)", "Peer teaching between players in the same server (video_session_1 0:31; video_session_2 0:32)"]
+    sequence: []
+    first_independent_action: null
+    skip_or_replay: null
+    completed: null
+    observed_seconds: null
+    completion_seconds: null
+    timing_basis: null
+    evidence: []
+accessibility_and_comfort:
+    text_and_contrast: "White labels on dark panels are high contrast but small; user-typed stage text varies (thin white text over sky backgrounds is hard to read) (video_session_1 1:30, video_session_2 2:30)."
+    non_color_cues_and_icon_labels: "Every editor tool has an icon plus a word label (video_session_1 1:30)."
+    input_support_observed: ["mouse and keyboard (video)"]
+    motion_audio_settings: []
+    settings_tested: []
+    clutter_and_interruptions: ["Full-screen text-entry modal hides the scene (video_session_2 2:00)", "Shared editing lets others add items to your scene (video_session_2 3:03)"]
+    evidence: [video_session_1, video_session_2]
+commercial_and_return_prompts:
+    first_purchase_prompt_seconds: null
+    purchase_prompt_count_during_sample: 0
+    onboarding_interruption: "None seen in about 20 minutes of studied video; Store and Tickets buttons sit in the lobby bar (video_session_1, video_session_2)."
+    optional_versus_required_presentation: "Passes sell creation capacity (more images, characters, length, speech) plus 'Golden Tickets' and 'Popcorn' whose function is not described. In video, pose packs are priced in tickets ('Buy 1,100') inside the pose browser beside free categories, and locked categories show a padlock (video_session_2 9:00)."
+    return_rewards_and_events: ["Lobby 'claim tickets' stations and a ticket counter (video_session_1 0:00; mechanics not shown)"]
+    urgency_or_streak_cues: []
+    evidence: [gamepass_1, video_session_1, video_session_2]
+world_and_presentation:
+    navigation_and_objective_readability: "Lobby is one cinema hall with the big screen as the focus and a PROJECTOR sign; seats face the screen (video_session_1 0:15, 8:00)."
+    landmarks_and_variety: ["Big cinema screen with red curtains", "Projector booth sign", "Glowing poster walls and claim-tickets kiosks (video_session_1 0:00)"]
+    environmental_storytelling: ["The lobby is staged as a premiere: seats, curtains and spotlights frame players' own movies (video_session_1 7:20)"]
+    audiovisual_consistency: "Lobby is modern neon 3D; editor is a separate glossy 2D look; player content is a mix of memes, stock photos and avatars (videos)"
+    success_effect_intensity_and_clarity: "Strong: the player's movie fills the cinema screen in front of the server with a GRAND PREMIERE banner (video_session_1 7:20)"
+    evidence: [video_session_1]
+technical_quality:
+    loading_or_missing_assets: []
+    input_or_frame_issues: []
+    ui_defects: []
+    recovery_behavior: null
+    measurements: []
+    measurement_method_and_limits: "Not played; videos show no visible defects in the studied 20 minutes, but cuts would hide loading and stalls."
+    evidence: [video_session_1, video_session_2]
+transferable_ideas:
+    - "Premiere the player's creation to the whole server: play it on a shared big screen with the creator's name and a banner, so publishing has an immediate audience (video_session_1 7:20)."
+    - "Close each creation with a 'what next' dialog that names a newly unlocked tool and offers make more / watch others / back, turning a stopping point into the next loop (video_session_1 6:50)."
+    - "Fight the blank canvas with 'Need ideas?' suggestion chips beside the search box (video_session_1 0:30)."
+    - "Player-made content as the endless feed: creation supplies the content others consume, and views/likes give creators a reason to return (advertised; retention effect not measured)."
+    - "A small fixed palette of content types (character, picture, text, sound) behind one radial menu keeps an editor approachable (advertised mock-up)."
+practical_takeaway:
+    strongest_idea: "Let players author short shareable scenes from a few simple building blocks, then premiere each one on a shared screen in the same server with the creator's name, so the reward for creating is an audience right away (video_session_1)."
+    main_tradeoff: "The editor relies on players teaching each other (videos show no in-game guidance), shared editing lets one player clutter another's scene, and user content needs moderation and reporting tools."
+    suitable_genres_and_stages: ["social hangouts", "roleplay", "sandbox/creative games (mid-game sharing feature)"]
+    testable_hypothesis: "Playing a player's first saved creation on a shared in-world screen with their name increases the share who make a second creation. Also: Adding a feed of other players' saved creations with a like count increases return visits among players who have saved at least one creation."
+    estimated_effort_and_assumptions: "Estimate: large; assumes persistent storage of user scenes, text filtering for all user text, and a report/moderation path."
+inferences:
+    - "Capacity-limit passes suggest the free tier caps movie size and length (inferred from pass names, not observed)."
+uncertainties:
+    - "Editor and premiere observed only in creator videos; first-join onboarding and the Watch feed's behaviour remain unobserved."
+    - "What tickets are earned for and what 'Timings' does are not shown."
+blockers: []

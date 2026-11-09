@@ -1,0 +1,204 @@
+name: "South Hell [HORROR]"
+game_id: "universe:10771743491"
+universe_id: "10771743491"
+place_id: "119901987045648"
+url: "https://www.roblox.com/games/119901987045648"
+creator: "S00NR (group, no verified badge)"
+chart_category: "Up-and-Coming"
+chart_rank: 2
+researcher: "R12"
+mode: passive
+play_ended_by: null
+onboarding_video_coverage: not_covered
+observed_at: "2026-11-09T03:04:00Z"
+observation_status: partial # no gameplay video studied: YouTube blocked this machine; a later run studies it again
+previous_observed_at: null
+changes_since_previous: []
+active_play_seconds: null
+play_coordination:
+  resource_key: null
+  wait_seconds: null
+  acquired_at: null
+  expires_at: null
+  released_at: null
+  release_verified: null
+  expiry_or_blocker: null
+context:
+  genre: "Survival / Escape (API genre_l1 Survival, genre_l2 Escape): first-person-styled school-basement horror escape with a single pursuing monster"
+  camera_perspective: null
+  device_and_input: null
+  observation_environment: "Passive: games, votes, media, thumbnails, game-pass, badge and age-recommendation APIs plus the experience page, read from the host over HTTPS. Not played; no YouTube."
+  visible_server_population: "API at 2026-11-09T03:02Z: 15,680 playing, maxPlayers 24 per server"
+  solo_or_group: "Description recommends voice chat ('Best with headphones and voice chat on'), implying group play in shared servers; solo viability unknown."
+  game_version_if_known: "Created 2026-10-18 (about three weeks old), updated 2026-11-09T01:09Z; description warns it 'just released' and may have bugs."
+  evidence: [source_1, source_4]
+account_state:
+  freshness: unknown
+  evidence: ["Not played; no in-game state observed."]
+evidence:
+  - id: source_1
+    kind: description
+    url: "https://games.roblox.com/v1/games?universeIds=10771743491"
+    captured_at: "2026-11-09T03:02:00Z"
+    media_date_or_version: "updated 2026-11-09T01:09:01Z"
+    timestamps: []
+    screenshots: []
+    limitations: ["Marketing text. Stats at capture: 9,654,113 visits, 138,012 favorites, 8,657 up / 1,133 down votes (about 88% positive). universeAvatarType MorphToR15."]
+  - id: source_2
+    kind: thumbnail
+    url: "https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=10771743491&size=768x432&format=Png&countPerUniverse=10"
+    captured_at: "2026-11-09T03:02:00Z"
+    media_date_or_version: "TN3, four images (asset IDs 89893776785602, 115327262821052, 89690639381661, 135544751510562)"
+    timestamps: []
+    screenshots: ["10771743491-thumbs.png"]
+    limitations: ["Promotional images: two title cards ('SOUTH HELL - ESCAPE THE SCHOOL.', 'SOUTH HELL - DON'T MAKE A SOUND.') in red serif glow over a grotesque, bloodshot-eyed version of a round cartoon schoolboy face; two very dark school corridors with Halloween bunting, pumpkins, teal lockers, a lit sign 'CAFETERIA / KITCHEN / LIBRARY / GYM' and wall labels 'MUSIC ROOM', 'NEWS / AV'. No HUD visible; cannot establish in-game UI.", "The media API lists only images; no game preview video exists."]
+  - id: source_3
+    kind: description
+    url: "https://badges.roblox.com/v1/universes/10771743491/badges?limit=100"
+    captured_at: "2026-11-09T03:03:00Z"
+    media_date_or_version: "five badges, all created 2026-10-29"
+    timestamps: []
+    screenshots: []
+    limitations: ["Badge names have no descriptions. Awarded counts at capture: 'Welcome to South Hell' 2,985,588; 'Gotcha, Hippie' 1,723,345; 'I Escaped!' 513,578; 'Untouchable' 167,390; 'Nothing But Net' 112,213. Meanings of the last three names are not stated."]
+  - id: source_4
+    kind: description
+    url: "https://apis.roblox.com/game-passes/v1/universes/10771743491/game-passes?passView=Full&pageSize=100"
+    captured_at: "2026-11-09T03:03:00Z"
+    media_date_or_version: null
+    timestamps: []
+    screenshots: []
+    limitations: ["Two game passes: NightVisionGoggles (99 Robux), Boombox (199 Robux). Prices at capture, not necessarily permanent. Age recommendation API: Maturity Moderate, descriptors Blood (light, realistic), Fear (repeated, mild), Violence (repeated, moderate)."]
+gameplay:
+  advertised_loop: "Wake in a locked school basement, evade one hunter ('HE is hunting you') while staying quiet ('Don't make a sound'), and escape the school."
+  observed_loop: null
+  first_action: null
+  first_success_seconds: null
+  success_feedback: ["Badge 'I Escaped!' marks a successful escape (source_3); in-game feedback not observed."]
+  progression: ["No progression system is advertised; five badges are the only visible long-term markers."]
+  choices_and_variety: ["Thumbnails show several named school areas (cafeteria, kitchen, library, gym, music room, news/AV), suggesting a multi-room map to explore (inference from promotional renders)."]
+  social_and_cooperative: ["Description recommends voice chat; servers hold up to 24 players."]
+  companions_and_pets: []
+  friction: ["Description admits a fresh release with bugs.", "Darkness is the core of the art; the sale of NightVisionGoggles suggests visibility is a limiting resource and a paid edge (inference, effect of the pass not verified).", "Only about 17% as many players hold 'I Escaped!' as hold 'Welcome to South Hell' (513,578 of 2,985,588), so most entrants have not escaped yet; this is a ratio of badge counts, not a measured success rate."]
+  evidence: [source_1, source_2, source_3, source_4]
+pacing:
+  timing_start_definition: null
+  loading_seconds: null
+  time_to_control_seconds: null
+  first_meaningful_choice_seconds: null
+  first_reward_seconds: null
+  action_reward_cadence: null
+  active_play_versus_travel_or_waiting: null
+  natural_stopping_points: ["Inferred: escaping the school, or being caught."]
+  measurement_method: null
+  evidence: []
+goals_and_progression:
+  next_goal_clarity: "Title cards state the goal in three words ('ESCAPE THE SCHOOL.') and the rule in four ('DON'T MAKE A SOUND.'); in-game clarity unknown."
+  short_term_goals: ["Stay quiet and avoid the hunter (advertised)."]
+  medium_term_goals: ["Escape the locked school (advertised)."]
+  advertised_long_term_goals: ["Badges: escape, 'Untouchable', 'Nothing But Net' (conditions unstated)."]
+  upgrade_choices: []
+  mastery_versus_stat_growth: "Inferred mastery-only (stealth and route knowledge); no stat growth advertised."
+  unlock_previews_and_optional_activities: ["Lobby mailbox for bug reports and ideas (description)."]
+  evidence: [source_1, source_2, source_3]
+failure_and_recovery:
+  observed_failure: null
+  explanation: null
+  cost_or_lost_progress: null
+  retry_seconds: null
+  checkpoints: null
+  non_paid_recovery: null
+  evidence: []
+agency_and_social:
+  meaningful_choices: []
+  customization_and_identity: ["universeAvatarType MorphToR15: players keep their avatars as R15."]
+  cooperation_and_competition: ["Advertised as shared survival against one hunter; whether players cooperate mechanically is unknown."]
+  visible_social_feedback: []
+  solo_accessibility: null
+  evidence: [source_1]
+ui:
+  evidence_status: unknown
+  visual_style: null
+  layout_and_hierarchy: null
+  color_scheme: []
+  typography:
+    font_appearance: null
+    font_family_if_verified: null
+    size_observation: null
+    size_basis: unknown
+    viewport_resolution: null
+    readability: null
+  controls:
+    primary_actions: null
+    close_x_appearance_and_location: null
+    modal_behavior: null
+    state_feedback: null
+    target_size_and_input: null
+  graphics:
+    graphics_versus_text: null
+    illustration_or_icon_style: null
+    framing_outlines_and_effects: null
+    placement_and_labels: null
+    clarity_or_clutter: null
+  evidence: []
+new_player_onboarding:
+  status: indeterminate
+  reason: "Passive only; no gameplay footage is listed in the media API, YouTube was not used, and the game was not played."
+  conventions: []
+  sequence: []
+  first_independent_action: null
+  skip_or_replay: null
+  completed: null
+  observed_seconds: null
+  completion_seconds: null
+  timing_basis: null
+  evidence: []
+accessibility_and_comfort:
+  text_and_contrast: null
+  non_color_cues_and_icon_labels: null
+  input_support_observed: []
+  motion_audio_settings: []
+  settings_tested: []
+  clutter_and_interruptions: []
+  evidence: []
+commercial_and_return_prompts:
+  first_purchase_prompt_seconds: null
+  purchase_prompt_count_during_sample: null
+  onboarding_interruption: null
+  optional_versus_required_presentation: "Two passes exist (night-vision goggles, boombox); how they are presented in game is unknown."
+  return_rewards_and_events: ["Halloween decoration in the promotional renders (bunting, pumpkins); no event is named in the description."]
+  urgency_or_streak_cues: []
+  evidence: [source_2, source_4]
+world_and_presentation:
+  navigation_and_objective_readability: "Promotional renders place lit directional signage ('CAFETERIA / KITCHEN / LIBRARY / GYM') and room labels in otherwise near-black corridors, a plausible wayfinding aid in the dark (renders only; in-game visibility unknown)."
+  landmarks_and_variety: ["Named school rooms and teal lockers in renders."]
+  environmental_storytelling: ["A school dressed for Halloween, decayed walls, a pumpkin at a doorway (renders)."]
+  audiovisual_consistency: null
+  success_effect_intensity_and_clarity: null
+  evidence: [source_2]
+technical_quality:
+  loading_or_missing_assets: []
+  input_or_frame_issues: []
+  ui_defects: []
+  recovery_behavior: null
+  measurements: []
+  measurement_method_and_limits: "Not played; nothing measured."
+  evidence: []
+transferable_ideas:
+  - "State the whole loop as a three-word goal plus a four-word rule on the title card ('Escape the school.' / 'Don't make a sound.'), so the page teaches the game before the player joins (from thumbnails)."
+  - "A lobby mailbox for bug reports and ideas turns early-release roughness into player participation (from description)."
+  - "Lit signs naming rooms inside a dark map give a navigable landmark system without HUD markers (from promotional renders)."
+practical_takeaway:
+  strongest_idea: "A single, sharply stated rule ('don't make a sound') attached to a single pursuer makes a horror escape understandable from the thumbnail alone."
+  main_tradeoff: "The game leans on a grotesque parody of a recognisable cartoon character and on darkness; the first is a brand and moderation risk, and the second sells a night-vision pass, so visibility may be partly monetised."
+  suitable_genres_and_stages: ["horror and stealth escapes", "short-session survival rounds", "a game's title card and first-join text"]
+  testable_hypothesis: "Putting the one core rule as a four-word line on the join screen raises the share of new players who complete a first round without being caught."
+  estimated_effort_and_assumptions: "Estimate: under a day for a join-screen rule line, assuming an existing round flow; measuring it needs analytics on first-round outcomes."
+inferences:
+  - "Reaching 9.6 million visits and 15k concurrent within about three weeks of release suggests strong pull from the parody-horror premise and thumbnail art, but passive material cannot establish why it is popular."
+  - "The pursuer's face in the art resembles a well-known TV cartoon schoolboy rendered grotesquely, and the title puns on that show's name; this is an inference from art and title only."
+uncertainties:
+  - "No gameplay video exists in the Roblox media API and YouTube was not used, so camera, controls, HUD, onboarding, the hunter's behaviour and round length are all unobserved."
+  - "What 'Gotcha, Hippie', 'Untouchable' and 'Nothing But Net' reward is not stated."
+  - "Badge counts start on 2026-10-29, eleven days after release, so they undercount early players; the escape ratio is only indicative."
+  - "Whether the night-vision pass changes play materially is unknown."
+blockers: []

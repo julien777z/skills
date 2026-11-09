@@ -20,11 +20,23 @@ Fit the rhythm of success to the requested genre, audience, and mood. Establish 
 
 Make successful actions legible through appropriately scaled visual, audio, motion, and progress feedback. Attribute the result to the player's action without obscuring targets, text, or threats. Bound concurrent effects, clean them up, and respect motion, camera-shake, contrast, and audio preferences. Keep frequent feedback short enough that the next action remains available.
 
+Where an action's quality can vary, tell the player how well it went, not only whether it worked: a short worded verdict, a grade or a medal for quality, attributed to the action that earned it. When an action fails, show why at the moment it fails, such as who or what caused it, which value fell short, or how close the attempt came, and, where the game allows another attempt, keep the way back to it clear and short. A failure the player can only work out by repeating it teaches slowly.
+
+## First session
+
+Put the first action before everything a new player does not yet need. Update notes, rules, daily rewards, events and offers wait until after the first success, or until the player opens them; a join that queues several panels before control delays the loop it is meant to introduce. When the game has an earn-and-spend economy and the work shapes its onboarding, carry the guidance through one whole cycle: the core action, its payout, and a first purchase or upgrade within reach of that payout. When the game guides a new player, lead that guidance all the way to the place the loop first pays, switched on by default for a new player, rather than stopping at the first menu step or hiding it behind an opt-in control. A new player stalls in the gap between the last guided step and the first earning spot, so check that the cue stays visible there, including when other players crowd the route.
+
+Where the end of the guided chain, or of a unit such as a round, a stage, a level or a published creation, leaves the next step unclear, hand off to it: a short card or line naming the next goals or choices, such as continue, try the real mode, or return to the hub, or a cue the world or existing controls already give. A newly unlocked tool or area belongs in that handoff. The end of guidance should never read as silence.
+
 ## Reward real progress and preserve player understanding
 
 Show what was earned and why using the game's actual rewards and progress states. Synchronize reward UI and effects with authoritative outcomes and prevent duplicates on retries, repeated clicks, or reconnects. A predicted hit animation must not claim an unconfirmed reward. Do not invent currency, misleading pickups, or progress that the game does not grant.
 
 Tie near-term actions to clear medium-term goals and recognizable milestones. New powers, useful upgrades, newly accessible areas, personalization, and increased player skill can all make progress tangible. Vary tasks, pacing, encounters, and scenery while retaining a familiar core action. Avoid extending play only through repetitive waiting or arbitrary travel; preserve intentional anticipation, exploration, and tactical pauses where they make the genre enjoyable.
+
+Show locked content where the player will use it, together with what unlocks it: a silhouetted collection entry, a padlocked slot, a greyed move labelled with the level or mastery that opens it, a mode showing the wins it needs, or a gate that states its requirement as a number the player can read from the approach. The condition shown must be the one the game actually checks. Content the progression contract keeps secret can stay hidden or appear as an unnamed slot.
+
+Where the game allows it, let what the player did stay visible in the world: ground they cleared, a structure that grows as they invest in it, NPCs that react to what they chose, their name on what they own. The world then shows progress without a meter. Drive these changes from authoritative state, bound them, and keep them consistent on rejoin and streaming.
 
 ## Navigation and travel presentation
 
@@ -34,7 +46,7 @@ Travel choices should describe their actual destination and action. Reveal locke
 
 ## Variety, identity, and playing together
 
-Give repeated play different decisions: tactical choices, complementary roles, discoveries, alternate approaches, or expressive customization that suits the game. Shared goals and visible contributions can reward cooperation before a large objective is complete. Support players who are learning or playing solo as well as groups. Comfortable controls and a world worth inhabiting matter alongside reward effects.
+Give repeated play different decisions: tactical choices, complementary roles, discoveries, alternate approaches, or expressive customization that suits the game. Shared goals and visible contributions can reward cooperation before a large objective is complete. Support players who are learning or playing solo as well as groups. Where players can attack, block or take from each other, protect a newcomer's first attempts: a clearly bounded spawn area that really is safe, a short opening in which combat is off, or a protected moment after death. Comfortable controls and a world worth inhabiting matter alongside reward effects.
 
 Treat design themes as hypotheses to test, not proof of what causes popularity. A tactical RPG, social roleplay game, and rapid collection game can be enjoyable for different reasons.
 
@@ -65,6 +77,10 @@ When a game has repeated creature types, share their definitions and lifecycle. 
 When companions fit the game, give them understandable useful behavior and a clear role rather than adding them as a checklist feature. Show their contribution with readable actions and feedback, give them character, and keep them from blocking controls, navigation, performance, or the player's own sense of agency.
 
 Fit companions to the genre, progression, and production stage. A popular feature is not automatically appropriate for every game.
+
+## Paid offers
+
+When a game sells items, a paid action never looks like free progression or help. Give paid controls their own shape and a price label, not only a colour or a small badge. Keep them off the routes and controls that guidance sends a new player through. A help, hint or "+" button either does what its label promises for free or shows its cost before it is pressed.
 
 ## Validate fun at the affected scale
 

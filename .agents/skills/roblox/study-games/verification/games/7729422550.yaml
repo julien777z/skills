@@ -1,0 +1,296 @@
+name: "obby but you get smaller every stage"
+game_id: "universe:7729422550"
+universe_id: "7729422550"
+place_id: "133466274094328"
+url: "https://www.roblox.com/games/133466274094328/obby-but-you-get-smaller-every-stage"
+creator: "Ewwer Inc. (group 622432741, no verified badge)"
+chart_category: "Trending in Obby & Platformer"
+chart_rank: 1
+researcher: "R08"
+mode: play
+play_ended_by: cap
+onboarding_video_coverage: covered
+observed_at: "2026-11-09T00:52:14Z"
+observation_status: partial
+previous_observed_at: null
+changes_since_previous: []
+active_play_seconds: 1460
+play_coordination:
+    resource_key: "roblox-player"
+    wait_seconds: 1003
+    acquired_at: "2026-11-09T00:51:44Z"
+    expires_at: "2026-11-09T01:20:02Z"
+    released_at: "2026-11-09T01:17:55Z"
+    release_verified: true
+    expiry_or_blocker: "Locks renewed once (released and re-acquired at 01:05:02Z). At acquisition the previous researcher's game was still running; it was killed and a capture confirmed an idle desktop before launch (7729422550-0.png, 7729422550-0b.png). After play the player was quit and killed and an idle desktop confirmed (7729422550-53.png) before release, desktop lock first."
+context:
+    genre: "Difficulty-chart obby (games API genre_l1 'Obby & Platformer')"
+    camera_perspective: "Third person, default Roblox follow camera with zoom (I/O) to first person"
+    device_and_input: "Mac keyboard (W/A/S/D, Space, arrow-key camera turns, I/O zoom, R reset) and mouse clicks, sent as timed key holds over SSH"
+    observation_environment: "macOS VM guest running the published Roblox player, full-screen, controlled over SSH; captures 1920x1200 scaled to 1200 wide"
+    visible_server_population: "About 10-12 players in the server (maxPlayers 10 per API plus joins seen in the player list); API: 16,077 playing at retrieval"
+    solo_or_group: "Solo progression in a shared server; other players visible on the same course"
+    game_version_if_known: "Universe updated 2026-11-07T15:07:50Z; description lists 142 stages"
+    evidence: [description_1, play_1, video_1, video_2, video_3]
+account_state:
+    freshness: fresh
+    evidence:
+        - "Stage counter showed 0 at spawn and the player list showed this account at stage 0 throughout (7729422550-1.png, 7729422550-47.png); no saved stage from an earlier visit."
+        - "No welcome screen or starter reward appeared, so freshness rests on the saved-stage evidence alone."
+evidence:
+    - id: description_1
+      kind: description
+      url: "https://games.roblox.com/v1/games?universeIds=7729422550"
+      captured_at: "2026-11-09T00:33:00Z"
+      media_date_or_version: "updated 2026-11-07T15:07:50Z"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Description: you get smaller each stage 'until you are an atom'; a player less than half your size can be picked up; mobile buttons are draggable; 142 stages; recent update notes add custom keybinds, alignment keys, a reset key, a manual save option, and fixes to data saving and to picking players up."
+          - "Stats: 13,411,109 visits, 32,278 favourites, created 2025-05-19; votes 10,614 up / 21,117 down (about 33% positive); age recommendation Minimal; avatar type MorphToR6; no badges; one game pass 'Money Trail' (25)."
+    - id: thumbnail_1
+      kind: thumbnail
+      url: "https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=7729422550&size=768x432&format=Png"
+      captured_at: "2026-11-09T00:34:00Z"
+      media_date_or_version: "images 83321273383837, 70500723110796, 112787548836686"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Viewed all three. Plain baseplate-style art: three blocky avatars of shrinking size labelled 'Stage 1' (green), 'Stage 20' (yellow) and 'Stage 69' (red); a white wall with diagonal red step chains, yellow pads and large green blocks under the title; 'The Entire Obby' showing the whole course as one cube wrapped by a step path over a red floor. No video in the media list."
+    - id: play_1
+      kind: actual_play
+      url: "https://www.roblox.com/games/133466274094328/obby-but-you-get-smaller-every-stage"
+      captured_at: "2026-11-09T00:52:14Z"
+      media_date_or_version: "Roblox player 0.746.0.7461264"
+      timestamps: ["00:52:14Z launch", "00:52:31Z control", "01:08:30Z settings panel timer 00:16:01", "01:17:15Z quit"]
+      screenshots:
+          - "7729422550-1.png"
+          - "7729422550-4.png"
+          - "7729422550-9.png"
+          - "7729422550-10.png"
+          - "7729422550-17.png"
+          - "7729422550-18.png"
+          - "7729422550-25.png"
+          - "7729422550-33.png"
+          - "7729422550-41.png"
+          - "7729422550-42.png"
+          - "7729422550-44.png"
+          - "7729422550-50.png"
+          - "7729422550-52.png"
+      limitations:
+          - "Keyboard input was sent as timed key holds over SSH with a capture after each batch, so movement precision and reaction time were far below a human player's; failure to progress mostly reflects this input path, not necessarily the game's difficulty."
+          - "Stage 1 was never reached in about 24 minutes; everything past the starting area is unobserved."
+          - "Some geometry near spawn rendered as stretched blue polygons (7729422550-2.png), the VM GPU limit; the course itself rendered cleanly."
+    - id: video_1
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=dMwzGfBSYnQ"
+      captured_at: "2026-11-09T02:40:00Z"
+      media_date_or_version: "uploaded 2026-11-06"
+      timestamps: ["0:00 stage 0 at spawn", "0:07 stage 1 reached", "2:00 stage 20", "3:00 'Stage 56 Required' pad in view", "4:15 stage 36", "7:30-8:45 'Stage 56 Required' pad before a doorway into the cube", "9:45 stage 56"]
+      screenshots:
+          - "dMwzGfBSYnQ-first12s-sheet.jpg"
+          - "dMwzGfBSYnQ-start-sheet.jpg"
+          - "dMwzGfBSYnQ-sheet-01.jpg"
+          - "dMwzGfBSYnQ-sheet-02.jpg"
+          - "dMwzGfBSYnQ-sheet-03.jpg"
+          - "dMwzGfBSYnQ-sheet-04.jpg"
+          - "dMwzGfBSYnQ-sheet-05.jpg"
+      limitations:
+          - "Kind: onboarding and session. Channel OTTER ON ROBLOX, about 767,000 subscribers; 179,835 views at retrieval; 31:34 long, first 10:00 studied."
+          - "Starts in-world at stage 0 with no join or loading shown; the save is fresh for this game (stage 0) but the creator is an experienced obby player, so speed is not a typical new player's."
+          - "Frames sampled every 15 s (1 s for 0:00-0:12, 3 s for 0:00-1:00); jump cuts are possible. Captions could not be downloaded (HTTP 429, then a YouTube bot check), so commentary was not used."
+    - id: video_2
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=XOWQeFxS5nc"
+      captured_at: "2026-11-09T02:40:00Z"
+      media_date_or_version: "uploaded 2026-11-07"
+      timestamps: ["5:30 stage 38", "5:45 confetti ring and size number at a checkpoint", "6:00-14:00 stages 39-45 climbing red step chains on the cube's faces", "14:15 stage 56", "14:30-15:15 stage 56 interior: blue and magenta rooms"]
+      screenshots:
+          - "XOWQeFxS5nc-002.jpg"
+          - "XOWQeFxS5nc-sheet-01.jpg"
+          - "XOWQeFxS5nc-sheet-03.jpg"
+          - "XOWQeFxS5nc-sheet-04.jpg"
+          - "XOWQeFxS5nc-sheet-05.jpg"
+      limitations:
+          - "Kind: session. Channel ItzVexo, about 1,200,000 subscribers; 2,598 views at retrieval (uploaded a day earlier); 15:35 long, 5:30-15:30 studied."
+          - "Edited: the jump from stage 45 to 56 between 14:00 and 14:15 is a cut. Returning progress not established. Captions unavailable (YouTube bot check)."
+    - id: video_3
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=TZRALH6Qs4A"
+      captured_at: "2026-11-09T02:40:00Z"
+      media_date_or_version: "uploaded 2026-11-03"
+      timestamps: ["0:00 stage 56", "0:15 stage 83", "0:30 stage 95", "0:45 stage 99", "1:00-2:00 stage 127 with on-screen guide text", "2:15-3:00 stage 141"]
+      screenshots:
+          - "TZRALH6Qs4A-sheet-01.jpg"
+          - "TZRALH6Qs4A-sheet-02.jpg"
+      limitations:
+          - "Kind: skilled play (a stage guide for stages 56, 83, 95, 99, 127 and 141). Channel aaa gaming, about 174 subscribers; 16,269 views. No established-channel alternative guide was found."
+          - "Heavily edited, partly at 2x speed, with the creator's on-screen captions; client debug stats overlay visible. Chat from other players is visible in frames and was not recorded."
+gameplay:
+    advertised_loop: "Clear a short parkour stage, touch its checkpoint, shrink, repeat for 142 stages; small players can be picked up by players more than twice their size."
+    observed_loop: "Spawn on a white strip facing a single white cube whose faces carry diagonal chains of small red steps, yellow pads and large green blocks over a red floor. Stepping onto the red floor drops the avatar through it into a long fall and respawn; touching the step chain or the 'Stage 50 Required' pad at the wall base also returned this avatar to spawn. Other new players in the server advanced fast (one went from stage 1 to 31 in about seven minutes, another from 0 to 14 in about three) while this session stayed at stage 0. Video (video_1, video_3): the whole obby is one white cube and every stage is a route over it at a finer scale. At stage 0 the route is the grey stepped blocks on the cube's right edge up to the white slab on top (stage 1 at 0:07); after each checkpoint the avatar is smaller, so the same cube's finer features become the next platforms: the small red step chains with yellow rest blocks across the faces, green blocks as checkpoints, then (from stage 56) a doorway at the base of the wall gated by a 'Stage 56 Required' pad that leads into coloured interior rooms (blue, magenta, cyan) where tiny gaps become routes. In video_1 the avatar stands and climbs on red steps throughout, so red steps are safe; the red floor is the hazard."
+    first_action: "Walk forward from spawn toward the course cube."
+    first_success_seconds: 7
+    success_feedback:
+        - "Video: at each checkpoint a ring of multicoloured confetti circles the avatar with a decimal number in it (for example 1.25 and 0.7) and the top-centre stage counter increments (video_1 0:07, video_2 5:45). Inference: the number is the new size."
+        - "Video: the camera does not zoom in as the avatar shrinks, so the world, other players and the cube grow on screen stage by stage; that growth is the visible reward (video_1 0:00-9:45)."
+    progression:
+        - "Observed: a top-centre stage counter flanked by '< < <' and '> > >' arrows (7729422550-1.png); clicking '>' at stage 0 did nothing."
+        - "Observed: world leaderboards at spawn for 'Best Players' (top entries 142-154 stages), 'Richest People' and 'Most Dedicated Players' (play time), each 'Updating in N' seconds (7729422550-3.png, 7729422550-4.png)."
+        - "Observed: a 'Stage 50 Required' pad at the base of the wall, a gate to a later area (7729422550-33.png). Video frames read it at close range as 'Stage 56 Required', in front of a small doorway into the cube (video_1 7:45, 8:45); the play capture read the small text from a distance."
+        - "Video: a competent player reached stage 56 within about 10 minutes from stage 0 (video_1); the guide creator said stages to 141 took about 19 hours in total (video_3 2:45, on-screen caption)."
+        - "Video: later stages move inside the cube into saturated single-colour rooms (blue, magenta, cyan, purple) with red floors, a visible change of setting past stage 56 (video_2 14:30, video_3)."
+        - "Video: further gate pads ('Stage 128 Required' at stage 127) recur inside (video_3 1:00)."
+    choices_and_variety:
+        - "Observed: two step routes up the cube's front, one rising left and one rising right (7729422550-44.png)."
+    social_and_cooperative:
+        - "Observed: an 'E Pick Up' prompt appeared over a much smaller nearby player (7729422550-17.png); not used."
+        - "Observed: a 'Hide Players' toggle in settings (7729422550-41.png)."
+    companions_and_pets: []
+    friction:
+        - "Observed: no on-screen instruction at spawn on where stage 1 begins or which colours are safe; the only text near the course is the 'Stage 50 Required' pad."
+        - "Observed: the red floor reads as a floor but is non-collidable; walking onto it causes a fall of more than ten seconds before respawn (7729422550-13.png, 7729422550-50.png, 7729422550-51.png), shortened by the R reset key."
+        - "Observed: the gated pad sits at the base of the wall between the two routes, where a new player naturally walks."
+        - "Video and play disagree on where stage 1 is: in play (play_1) the avatar tried the step chains and the gate pad and stayed at stage 0; in video_1 the stage 1 route is the grey block steps on the right edge of the cube to its top slab, done in 7 s. Nothing in the world marks that route; the step chains that look like the course are sized for later, smaller stages (inference)."
+        - "Video: late stages are hard enough that a guide video exists for six of them and its creator calls stage 127 a wrap through a tight gap (video_3 1:15-1:45)."
+    evidence: [play_1, description_1, thumbnail_1, video_1, video_2, video_3]
+pacing:
+    timing_start_definition: "Launch command at 00:52:14Z; control when the first in-game capture showed the avatar at spawn."
+    loading_seconds: 17
+    time_to_control_seconds: 17
+    first_meaningful_choice_seconds: null
+    first_reward_seconds: null
+    action_reward_cadence: "Play: not reached. Video (video_1): stages 0-20 in about 2:00, 20-36 in about 2:15, 36-56 in about 5:30, so one checkpoint every 5-20 s early and every 15-30 s by the 40s for a skilled player; video_3's creator reports about 19 hours to stage 141. Play note: Other players' player-list stage values rose by roughly 3-5 stages a minute early on, so early stages are seconds long for a competent player."
+    active_play_versus_travel_or_waiting: "Falls through the red floor took about 10-15 s each before respawn unless R was pressed; respawn itself was near instant."
+    natural_stopping_points:
+        - "Inference: every checkpoint; progress is saved per stage (settings has a manual Save)."
+    measurement_method: "Play: UTC timestamps of commands and captures; settings panel 'Time' counter (00:16:01 at about 01:08:30Z) agrees with control from about 00:52:30Z. Video: the video's own timestamps, read from frames sampled every 1-15 s; stage values read from the HUD counter; edited footage may hide time."
+    evidence: [play_1, video_1, video_3]
+goals_and_progression:
+    next_goal_clarity: "Low for a new player in play (play_1): the step chains look like the course but stage 1 is reached by the unmarked grey blocks on the cube's edge (video_1 0:00-0:07). Once moving, high: every next platform is on the same cube in view (video_1)."
+    short_term_goals: ["Observed: reach the next green block on the cube."]
+    medium_term_goals: ["Observed: gate pad, read as 'Stage 56 Required' in video (video_1 7:45), in front of a doorway into the cube's interior.", "Video: 'Stage 128 Required' pad later inside (video_3 1:00)."]
+    advertised_long_term_goals: ["Shrink 'until you are an atom'; 142 stages; top of the Best Players board."]
+    upgrade_choices: []
+    mastery_versus_stat_growth: "Pure movement mastery; no stats or upgrades seen in play or video. Shrinking changes the challenge rather than adding power: features of the cube too small to stand on at one size become the platforms at the next (video_1, video_2)."
+    unlock_previews_and_optional_activities:
+        - "Observed: Trails button on the left HUD (not opened)."
+        - "Observed: camera button on the left HUD (not opened)."
+        - "Video: the gated doorway at the base of the wall is visible from stage 0 and is a preview of the interior section reached at stage 56 (video_1 3:00, 7:45; video_2 14:30)."
+        - "Video: a 'Donate Machine' board and a green-text times board near spawn (video_1 7:45-8:00); contents not readable."
+    evidence: [play_1, video_1, video_2, video_3]
+failure_and_recovery:
+    observed_failure: "Fell through the red floor or was returned to spawn after touching the step chain or the stage-50 pad; no failure message."
+    explanation: "None shown; the cause had to be inferred from repeated attempts."
+    cost_or_lost_progress: "Return to the current checkpoint (spawn at stage 0); no other cost."
+    retry_seconds: 2
+    checkpoints: "Per stage. Play reached none. Video: the stage counter increments on reaching the top slab or a green block, with a confetti ring (video_1 0:07, video_2 5:45). Inference: the '<' and '>' arrows beside the counter select an earlier reached stage, since video_1 shows the counter at 0 at the spawn strip at 5:30 between stages 41 and 43; not confirmed."
+    non_paid_recovery: "Yes: free respawn, and the R key resets instantly."
+    evidence: [play_1, video_1, video_2]
+agency_and_social:
+    meaningful_choices: ["Observed: left or right route up the cube."]
+    customization_and_identity: ["Observed: Trails button; a 'Money Trail' game pass exists (description_1)."]
+    cooperation_and_competition:
+        - "Observed: shared course with visible progress of others in the player list and on leaderboards."
+        - "Advertised and prompted: picking up much smaller players."
+        - "Video: players at different stages share the cube, so a newcomer sees much smaller players climbing the same faces ahead of them, and larger players appear as giants beside a small avatar (video_1 1:00-3:00, video_2)."
+    visible_social_feedback: ["Observed: three world leaderboards at spawn, refreshing on a countdown.", "Video: Best Players board lists many players at 142-146 (video_1 0:30)."]
+    solo_accessibility: "Playable solo; 'Hide Players' removes other avatars. Videos show solo play throughout."
+    evidence: [play_1, video_1, video_2]
+ui:
+    evidence_status: observed
+    visual_style: "Minimal, near-default Roblox look: white baseplate textures, black panels, plain sans-serif white text."
+    layout_and_hierarchy: "Top centre: stage number between triple chevrons. Left edge: settings gear, a large 'Trails' text button and a camera icon button stacked vertically. Top right: the Roblox player list with each player's stage. World: three black leaderboard boards at spawn."
+    color_scheme: ["white/light grey world", "black UI panels", "red hazard floor", "green and yellow course blocks"]
+    typography:
+        font_appearance: "Plain sans-serif; the stage number and chevrons are large black glyphs; Trails is outlined white text on black."
+        font_family_if_verified: null
+        size_observation: "Stage number about 40 px tall and Trails label about 45 px tall at the 1200-px capture width (about 64 and 72 px on the 1920x1200 screen)."
+        size_basis: measured
+        viewport_resolution: "1920x1200"
+        readability: "HUD text is large and readable; the in-world 'Stage 50 Required' pad text is tiny and unreadable until very close."
+    controls:
+        primary_actions: "Keyboard movement and jump; R reset; comma and period as 'Alignment' keys (rebindable)."
+        close_x_appearance_and_location: "Settings panel has no close button; it closes by clicking the gear again."
+        modal_behavior: "Settings opens a large centred black panel framed by a white infinity-loop border, with 'Swipe / Scroll' and left/right arrows at its foot to page through it (7729422550-41.png)."
+        state_feedback: "Hide Players toggles to 'Show Players' with a darker green fill (7729422550-42.png)."
+        target_size_and_input: "Settings rows span the panel width at about 45 px tall (1200-px capture); left HUD buttons about 70-150 px wide."
+    graphics:
+        graphics_versus_text: "Mostly text; icons only for settings (gear) and camera."
+        illustration_or_icon_style: "Flat white glyph icons on black."
+        framing_outlines_and_effects: "Thick white infinity-loop frame on the settings panel; no gradients or shadows."
+        placement_and_labels: "Left-edge stack; the camera icon has no label."
+        clarity_or_clutter: "Sparse HUD; the course itself carries all goals by colour. Video: the HUD stays identical at every stage, and from stage 56 the saturated single-colour interiors make the white HUD and player list harder to separate from the scene (video_2 14:30, video_3)."
+    evidence: [play_1, video_1, video_2, video_3]
+new_player_onboarding:
+    status: observed
+    reason: "Play: fresh account at stage 0; no tutorial, arrow, prompt or text on where to start appeared during about 24 minutes. Video_1 starts at stage 0 (join not shown) and also shows no tutorial or prompt; its skilled player finds stage 1 in 7 s."
+    conventions: ["Colour-coded course (red hazard floor, yellow pads, green checkpoint blocks) with no legend."]
+    sequence:
+        - "Spawn on a white strip facing leaderboards and the course cube; stage counter 0."
+        - "No first-task prompt."
+        - "Video_1: walk along the white strip, climb the grey stepped blocks on the cube's right edge to its white top slab, stage counter goes 0 to 1 with a confetti ring (0:00-0:07)."
+        - "Video_1: the next stage starts beside a ladder and a new strip, with the avatar visibly smaller (0:07-0:12)."
+    first_independent_action: "Walking toward the course from spawn."
+    skip_or_replay: null
+    completed: false
+    observed_seconds: 1460
+    completion_seconds: null
+    timing_basis: "Play: from control at 00:52:31Z; the game showed no tutorial to complete. Video: from the first frame at stage 0."
+    evidence: [play_1, video_1]
+accessibility_and_comfort:
+    text_and_contrast: "HUD text high contrast (black on white sky, white on black panels)."
+    non_color_cues_and_icon_labels: "Course rules rely on colour alone; no labels on hazards."
+    input_support_observed: ["Keyboard; settings show rebindable Alignment and Reset keys; description mentions draggable mobile buttons"]
+    motion_audio_settings: []
+    settings_tested: ["Hide Players (turned on for the remainder of the session; a per-session game toggle)"]
+    clutter_and_interruptions: ["None from the game; no purchase prompts during the session.", "Video: no purchase prompts seen in 10 minutes of video_1 or the studied part of video_2.", "Video: the third-person camera clips into large hair accessories and walls on tight wall climbs, filling the view with translucent geometry (video_2 5:45)."]
+    evidence: [play_1, video_1, video_2]
+commercial_and_return_prompts:
+    first_purchase_prompt_seconds: null
+    purchase_prompt_count_during_sample: 0 # play; also 0 in the studied video footage
+    onboarding_interruption: "None"
+    optional_versus_required_presentation: "Only cosmetic: a Trails button and a 'Money Trail' pass; nothing required."
+    return_rewards_and_events: []
+    urgency_or_streak_cues: ["'Most Dedicated Players' play-time leaderboard at spawn."]
+    evidence: [play_1, description_1]
+world_and_presentation:
+    navigation_and_objective_readability: "The whole course is one compact cube visible from spawn, so the destination is obvious; the route's safe parts are not at stage 0. Video: as the avatar shrinks the cube's faces fill the screen and the red step chains read clearly as a path (video_1 4:30-9:45)."
+    landmarks_and_variety: ["Course cube, truss tower beside spawn, three leaderboard boards.", "Video: interior rooms in saturated blue, magenta, cyan and purple from stage 56 (video_2 14:30, video_3)."]
+    environmental_storytelling: []
+    audiovisual_consistency: "Consistent plain-block style outside; a deliberate colour shift inside. Audio not assessed (VM capture has no audio; video captions unavailable)."
+    success_effect_intensity_and_clarity: "Video: small, quick confetti ring with a size number at each checkpoint; the main reward is the world visibly growing (video_1, video_2)."
+    evidence: [play_1, video_1, video_2, video_3]
+technical_quality:
+    loading_or_missing_assets: ["Loaded to control in about 17 s."]
+    input_or_frame_issues: ["Stretched blue polygons near spawn in one view (7729422550-2.png), attributed to the VM GPU, not the game.", "Video: camera clipping into the avatar's accessories and walls during wall climbs (video_2 5:45); a native client, so not a VM artefact."]
+    ui_defects: ["In-world gate text unreadable at normal camera distance."]
+    recovery_behavior: "Falls ended in respawn; R reset worked instantly."
+    measurements: ["Launch to control about 17 s."]
+    measurement_method_and_limits: "Command and capture timestamps on a macOS VM; not representative of native performance."
+    evidence: [play_1]
+transferable_ideas:
+    - "Video: one structure read at ever finer scale. Each shrink turns details of the same cube that were decoration (small steps, gaps, a doorway) into the next platforms, so 142 stages reuse one build and a player can see stages far ahead as details on the object they stand on (video_1, video_2, video_3)."
+    - "Video: a gated doorway visible from spawn ('Stage 56 Required') previews a hidden interior section and gives the first long-term target (video_1 7:45)."
+    - "Video: the camera does not follow the shrink, so the world growing on screen is itself the progress feedback, with no reward UI needed (video_1)."
+    - "One-line premise shown in the title and thumbnail (you shrink every stage) that changes the challenge each stage without new content per stage."
+    - "Whole course visible from spawn as a single compact object, so the long-term goal is always in view."
+    - "Per-stage leaderboards and a play-time board at spawn give new players visible targets."
+    - "Settings expose a Hide Players toggle, rebindable reset and fine rotation (alignment) keys for precise platforming."
+practical_takeaway:
+    strongest_idea: "A single scaling rule (avatar shrinks each checkpoint) turns one compact structure into a long progression: the features of one cube become the next stage's platforms as the player shrinks, so progress is felt as the world growing (video_1, video_2)."
+    main_tradeoff: "No onboarding: stage 1 is reached by unmarked grey blocks on the cube's edge (video_1 0:00-0:07), while the conspicuous step chains, sized for later stages, and the gate pad draw a new player in (play_1); the non-solid red floor is learned by falling. The vote ratio is about one third positive."
+    suitable_genres_and_stages: ["obbies and platformers", "early-game movement tutorials", "challenge modes"]
+    testable_hypothesis: "Marking only the current stage's route (for example lighting the grey edge blocks at stage 0) raises the share of new players who reach stage 1 within one minute, without hiding the later-scale features that preview future stages."
+    estimated_effort_and_assumptions: "Estimate: small, assuming an existing checkpoint system and a world text label or arrow."
+inferences:
+    - "Play inference corrected by video: red step parts are not kill parts; video_1 shows the avatar standing on and climbing red steps at stages 41-55. The play resets more likely came from falling off the steps onto the non-solid red floor or from the gate pad. The step chains at stage 0 are sized for smaller avatars (inference)."
+    - "Popularity likely rides on the premise and thumbnail clarity rather than presentation; cause not established."
+uncertainties:
+    - "Whether the play resets came from the red floor, the gate pad, or both (video shows red steps are safe)."
+    - "Stage progression, the shrinking and checkpoint feedback are now seen in video only; the pick-up mechanic was not seen in play or video."
+    - "Video captions could not be downloaded (HTTP 429, then YouTube bot check), so creators' spoken commentary on confusion and strategy was not used."
+    - "Contents of the Trails and camera buttons were not opened."
+    - "Captions missing for all three videos (dMwzGfBSYnQ, XOWQeFxS5nc, TZRALH6Qs4A): YouTube's bot check blocked this machine; dMwzGfBSYnQ was retried after 1, 3 and 5 minutes and still failed, and the rest were not retried. A later central caption pass may add creator commentary."
+blockers:
+    - "Real play stayed at stage 0: timed key input sent to the runner was too imprecise for the course."
