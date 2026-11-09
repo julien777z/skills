@@ -25,7 +25,7 @@ repository ledger, and write nothing. A recorded item is resolved by the user ru
 
 ## When Recording Runs
 
-Fix work instead whenever one focused pass can finish it. A stale reference, rename, wrong path,
+A defect is never recorded: `pre-production` has it fixed in the change in flight, whatever its size. Fix other work instead whenever one focused pass can finish it within `pre-production`'s size budget. A stale reference, rename, wrong path,
 missing assertion, lint or type finding, or small extraction costs less to fix than to record.
 Attempt the fix before concluding that work is deferrable; `acceptance-gate`'s admission question
 lists the only justifications for a record, and a flagged attempt is one of them.
@@ -47,14 +47,12 @@ What counts as an external blocker is `acceptance-gate`'s defer test, owned libr
 Record work that is genuinely larger than the change in flight and whose need is arguable — a
 redesign, a broad sweep somebody could reasonably decline — or that is blocked externally, or that
 awaits a decision already put to its owner and still open, or one the user declined in the current
-request; a question nobody has asked yet is asked, not recorded. **A confirmed defect is never
-recorded** — a defect as `pre-production`'s **Scope Follows The Defect, Not The Request** defines
-one. Whatever its size, however its fix has to be written,
-and even when a check would rediscover it, it is fixed in the change in flight, or on a branch off
-the default when nothing is in flight to carry it. Neither is the choice offered to the user: asking whether to record a
-confirmed defect is how the refusal gets laundered into somebody else's decision, and their answer
-settles nothing the gate would admit. When part is small, fix that part and record
-only the remainder. Record at the moment work is consciously left undone; chat and pull-request
+request; a question nobody has asked yet is asked, not recorded. **A defect is never recorded**, a defect as `pre-production`'s **Scope
+Follows The Defect, Not The Request** defines one, whether the change introduced it, the task asked
+to fix it or the work only ran into it: it is fixed in the change in flight. Only cleanup that fixes
+no defect follows `pre-production`'s size budget, and only what that budget defers is recorded here.
+Never offer the user the choice between fixing and recording. When part of a cleanup is small, fix
+that part and record only the remainder. Record at the moment work is consciously left undone; chat and pull-request
 prose are not durable records.
 
 ## Changing A Record

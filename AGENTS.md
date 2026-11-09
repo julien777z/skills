@@ -127,8 +127,10 @@ Canonical guidance lives in `.agents/`.
   again: findings that keep coming on one change say the approach is wrong, not that the next patch
   will land. A change is one plan step, worker task or finding fix, and its rounds are counted
   together across every kind of check; a round a broken runner, fixture or provider cut short before
-  judging the change is not counted. Decide and record the disposition: use a simpler approach,
-  revert the change, or accept it with the remaining findings recorded. A confirmed defect, an
+  judging the change is not counted. Put the disposition to `council` in **Ask** mode, with the
+  change, each round's findings and remedies, and the three choices: use a simpler approach, revert
+  the change, or accept it with the remaining findings recorded; record its majority ruling and
+  follow it. A confirmed defect, an
   exploitable vulnerability or a failing required check is never accepted this way. If the authorized
   outcome still needs work, update the active plan and start the first permitted step of the
   replacement. A different implementation idea is not a new approval boundary. Ask only when
@@ -673,13 +675,12 @@ An outcome is what its source of truth shows, never what an action or a worker s
   branch or the installed copy, "deployed" or "healthy" against the host, "fixed" by reproducing it
   or reading the evidence, "the screenshot shows it" by looking at the image, "no references
   remain" by searching. A claim the check contradicts is the next thing done, ahead of queued
-  work: sent back to the worker with what the read showed, or fixed here. A verified report of
-  finished work is relayed as done, or built on, only after the selected workflow’s step gates have passed over it.
+  work: sent back to the worker with what the read showed, or fixed here.
 - **What a worker reports leaving alone is classified before it reaches the user.** Read each item
-  against `pre-production`'s **Scope Follows The Defect, Not The Request** bullets: a defect, a
-  parallel implementation or a shape a standing rule names goes back to the worker or is fixed
-  here; only an item those bullets leave to the user, or one over the size budget, is reported, as
-  what it is and never as a question whether to fix it.
+  against `pre-production`'s **Scope Follows The Defect, Not The Request** bullets: a defect, a parallel copy of the change's own mechanism or a shape a standing rule names
+  goes back to the worker or is fixed here; an item over the size budget is recorded with
+  `defer-scope`, and only it and an item those bullets leave to the user are reported, as what it
+  is and never as a question whether to fix it.
 - **A deferral inside a report — "I'll do X next" — is named work of this run** under **Task
   execution and authorization**, tracked until done; the report does not close it.
 - Before a milestone report, gate classification or final response, read the authorized outcome's
@@ -988,11 +989,11 @@ review alike. Follow an explicitly selected workflow’s own declared check sequ
 constraints where it specifies them; nothing holds committed work on one machine — not a gate, review or simplification
 pass pending on it, an integration merge, or a plan that orders one first. The one exception is
 commits that `lock-revision`'s **After Locking** hold keeps local until the user lets revisions
-resume. `code-simplify` and `acceptance-gate`'s diff question do not run per push; the selected workflow sets when they run. A fix pushed for a flag a gate or review raised gets one fresh
-`acceptance-gate` run over that fix's increment, read with the whole branch diff as its originating
-diff, unless it is a small repair, as `acceptance-gate`'s **Bounds** define one, which the agent that
-made it checks in process; that fresh verdict, or that recorded check, is what other skills mean by an
-increment's **Pre-Push Gate** verdict.
+resume. `code-simplify` and `acceptance-gate` do not run per push; `execute-task` and `review-pass`
+set when they run. A fix pushed for a flag a review or gate raised is checked
+by the agent that made it: it re-reads the changed lines against the flag and reruns the checks
+covering that code, unless `acceptance-gate`'s **Bounds** send it to a fresh gate; that recorded
+check, or that gate's verdict, is what other skills mean by an increment's **Pre-Push Gate** verdict.
 
 Read the shared testing rule before planning test runs or briefing an implementation worker.
 Its **Verification Cadence** governs tests, builds, browser walkthroughs and reviews, including
@@ -1022,6 +1023,7 @@ checks before delivery; retain evidence that the change has not invalidated.
 
 Before each push, list the exact adjacent line pairs where setup, a guard, transformation, side effect,
 or return meets the next phase without the blank line required by the global code-layout rule.
+For changed Python files, `review-pass`'s `paragraph_candidates.py` script lists the candidate pairs.
 Fix every listed boundary in the lines the change writes or edits, and elsewhere in the changed files
 within `pre-production`'s incidental size budget, as the global code-layout rule says; an unrelated
 bug or a passing formatter does not satisfy this spacing check.
@@ -1056,13 +1058,10 @@ bug or a passing formatter does not satisfy this spacing check.
 - **Delegated edits run at this cadence.** A brief handing a worker edits states it, names the
   branch the worker pushes to — the branch of the pull request the work continues, under **Branches and Pull Requests** — and names the exact files to change, under `subagent-matrix`'s **Dispatch**. The
   worker pushes each step once its checks pass and reports the branch and head. The brief has the
-  worker fix every defect it meets, in the product or the repository's tooling, as `pre-production`
-  defines one, and report as left alone only cleanup past the size budget and any item
-  `pre-production`'s scope bullets leave to the user; a brief that only asks what was left alone
-  invites a defect into that list. The delegating
-  agent, which holds the intent statement, reads that head under the global rules’ **Reported Outcomes** and, once
-  the worker's task is finished, runs the selected workflow’s step gates over that
-  task's diff, returning what they flag as fix steps before any dependent work starts. The worker
+  worker fix every defect it meets, in the product or the repository's tooling, and report as left
+  alone only cleanup past `pre-production`'s size budget and any item
+  `pre-production`'s scope bullets leave to the user. The delegating agent reads that head under
+  the global rules’ **Reported Outcomes** before any dependent work starts. The worker
   ends with nothing uncommitted and nothing unpushed beyond the **Pre-Push Gate**'s one exception,
   never amends or rebases a pushed commit, and
   its report names the branch and head.

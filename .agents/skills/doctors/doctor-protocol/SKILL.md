@@ -176,9 +176,10 @@ combined result, and the full suite and every check that needs a shared resource
   records it in the ledger and schedules it into a later wave.
 - **Each wave's combined diff is gated before dependent work:**
   the parent reads each worker's reported head under the global rules' **Reported Outcomes**, runs one
-  `code-simplify` pass and one `acceptance-gate` diff question over the wave's pushed heads, and
-  returns what they flag as fix steps in the next wave. Neither pass, nor a merge the parent makes
-  of the wave, holds a worker's push. `code-simplify` runs again across the final result.
+  in-process `code-simplify` pass over the wave's pushed heads, and returns what it flags as fix
+  steps in the next wave. A wave a later wave builds on also gets `acceptance-gate`'s Diff question
+  before that wave starts. Neither that pass, nor a merge the parent makes of the wave, holds a
+  worker's push.
 
 Present a newly discovered decision that changes the approved outcome to the user;
 do not silently narrow the correction.
@@ -219,7 +220,7 @@ prevents completion.
 
 Once review is clean, put the complete diff to `acceptance-gate`'s final-acceptance question
 against the intent statement. Fix every flag under `acceptance-gate`'s **Bounds** and push each fix
-as its own increment, whose **Pre-Push Gate** verdict is the fresh gate.
+as its own increment, checked as the GitHub rule's **Pre-Push Gate** says.
 
 ## Defer Leftovers
 

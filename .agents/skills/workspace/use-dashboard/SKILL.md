@@ -14,8 +14,10 @@ card. Every dashboard gets that layout without the caller writing any markup. Th
 self-contained file; its web font loads from Google Fonts and falls back to system fonts, and a
 diagram is drawn by Mermaid, loaded from jsDelivr, with its connections listed as text when Mermaid
 cannot load. The page is dark unless the host's viewer is explicitly set to light
-(`data-theme="light"` on the root element), folds the page links into a menu below 1024 px, and
-renders every value as text, so data never runs as markup or script.
+(`data-theme="light"` on the root element), and renders every value as text, so data never runs
+as markup or script. The navbar keeps the title whole and the page links beside it: the page spans
+up to 1920 px so a wide screen shows more links, the links scroll sideways with a visible scrollbar
+when they still do not fit, and they fold into a menu only below 1024 px.
 
 ## Dependencies
 - `pages:write-page`
@@ -39,10 +41,10 @@ Every other field is optional, and an absent one leaves its part of the page out
 | `progress` | `{value: 0–1, label, detail?, segments?}`: a stat card twice as wide as the others, with the percentage, `detail` as its badge, and a bar. `segments` is `[{label, details?, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1, and its `label`, with each of `details` on a line under it, shown in a tooltip while the pointer rests on it; without `segments` the bar is a plain fill. |
 | `metrics` | `[{label, value, detail?}]`: at most four stat cards beside the progress, `detail` under the figure. |
 | `pages` | `[{title, icon, layout?, subtitle?, status?, progress?, locked?, sections}]`: one navbar link each, a page's `subtitle` replacing the dashboard's under its title, a page's `progress`, in the shape above, shown at its top, with `status` (`{label, tone?}`) shown as a dot in its tone after the page's name, and its label read out to screen readers, for the page's current state, such as something that needs the reader. A `locked` page sets `sections` to `[]` until it has content: its link shows a lock in place of its icon and cannot be opened. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. `sections` render in order; with `layout` `columns`, the default, boards, tables, outlines, trees, tabs and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
-| `references` | `[{text, url}]`: every whole-word occurrence of `text` in any page's text becomes a link to `url`, apart from the navbar, page titles, stat card figures, badges, progress segment tooltips and the first cell of a table row that opens a dialog, which stay plain. |
+| `references` | `[{text, url?, details?}]`, each with exactly one of `url` and `details`: every whole-word occurrence of `text` in any page's text becomes a link to `url`, or opens `details`, one section, in a dialog, apart from the navbar, page titles, stat card figures, badges, progress segment tooltips and the first cell of a table row that opens a dialog, which stay plain. |
 
 An `icon` is one of `overview`, `progress`, `board`, `checklist`, `list`, `chart`, `activity`,
-`diagram`, `document`, `guide`, `legal`, `shield`, `people`, `data`, `package`, `release`,
+`compare`, `diagram`, `document`, `guide`, `legal`, `shield`, `people`, `data`, `package`, `release`,
 `pull-request`, `settings`, `alert`, `check` or `calendar`. The dashboard's icon and each page's icon
 all differ, so no glyph appears twice in the navbar.
 
@@ -74,8 +76,9 @@ of a process, carries no count. Section types:
 A diagram draws each node as a box inside a frame titled with the `ref` its `pr` names, and each
 edge as an arrow numbered with its `step`; the numbered `steps` are listed beside or under it.
 `change` is `added`, `changed` or `removed` and colors the box or arrow; omit it for an unchanged
-part. A node's or edge's `tone` colors its border or arrow instead, for a state the reader follows,
-such as the step under discussion; `legend` says what each tone means. A node or edge with
+part. The diagram shows its own legend, a colored line beside each change it uses, so `legend`
+never repeats them. A node's or edge's `tone` colors its border or arrow instead, for a state the
+reader follows, such as the step under discussion; `legend` says what each tone means. A node or edge with
 `details`, one section, opens it in a dialog when it is clicked. A node's `target` names another
 section on the same page, outside tabs, by its title: clicking the node scrolls smoothly to it, and its label
 stays plain text rather than a link. Every `pr`, `from` and `to` names a listed `ref` or node `id`, and every `step` a position in
@@ -216,7 +219,9 @@ data exists, or a change to the app — runs on one made-up scenario, never on r
    npm and access to the npm registry, and takes up to a minute; later renders reuse that build. A
    failed build exits non-zero with npm's output.
 3. Keep one output path per dashboard, so each render replaces the last and updates the same
-   published page or browser tab.
+   published page or browser tab. A full page also writes `<page>.update.js` beside itself; an
+   open local copy checks it every few seconds and shows a new render's data in place, on the same
+   page and scroll position, with no reload; only a render from a changed app reloads it.
 
 Change a delivered dashboard only by re-rendering its whole spec, never by editing the page's
 HTML, which skips the renderer's validation. Everything the reader can click, a table row or tree
@@ -257,8 +262,7 @@ Use the first route the session offers, and the same one for every update of one
        page and say why.
    - Record each new link where the caller keeps task state, so the next render finds it.
 2. **The user's own browser, through `use-browser`**, when no such tool exists and its **Showing A
-   Local Page** route applies. Render the full page; with one path per dashboard, that route reloads
-   the tab it already opened instead of opening another.
+   Local Page** route applies, with the full page; the page refreshes itself on every later render.
 3. **Otherwise**, send the full page with a tool that sends a file to the user, or, with none, give
    its absolute path.
 
