@@ -170,6 +170,20 @@ ends with its check:
    starts an experience. Qualify input and capture on a neutral place, as
    [direct guest control](#direct-guest-control) describes, before relying on it, and quit the
    player afterward.
+5. **Turn off the Dictation shortcut in the guest.** A Cirrus Labs image enables it, and held game
+   keys can open Dictation instead of moving: set symbolic hot key 164 to disabled in
+   `com.apple.symbolichotkeys`, then run `activateSettings -u`; holding a movement key in a game no
+   longer opens Dictation.
+
+The player ignores `SIGTERM`, and quitting it can leave a game running in its `-launchToTray`
+process, so a process listing does not show whether a game is open. Stop it with
+`pkill -KILL -x RobloxPlayer` and confirm from a guest capture that no game is on screen; the tray
+process restarts at once and is out of any experience.
+
+The guest's paravirtual GPU draws simple places correctly but can garble complex scenes: a white or
+dark world with only outlines and UI, stretched polygons, wrong textures. Graphics quality and the
+client's renderer flags leave it on Metal and do not fix it. Treat such a scene's 2D UI as evidence
+and its world visuals as untested.
 
 ### Linux container runner
 
