@@ -10,10 +10,9 @@ disable-model-invocation: true
 By default the work fixes its own change and every bug it meets, and defers cleanup past
 `pre-production`'s size budget. This skill raises that cleanup limit as a session toggle: once the
 user turns it on, it holds for every task and follow-up in the session until the user says to stop.
-Record that it is on with `session-ledger`, and carry it into every task the session starts: a new
-task's ledger copies the entry before the previous ledger is removed, a context summary or handoff
-names it, and every worker brief states it. When the user stops it, record it as stopped the same
-way, so no later task in the session picks it up again.
+Record it with `session-ledger` as a decision the user scoped to the whole session, so it reaches
+every later task, context summary, handoff and worker brief; record it as stopped the same way when
+the user stops it.
 
 ## Dependencies
 - `acceptance-gate`

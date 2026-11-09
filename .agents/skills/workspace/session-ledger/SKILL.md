@@ -94,7 +94,9 @@ identity, never a second authoritative copy of its records.
    - For a decision the user states without a recorded question — how a surface looks or reads,
      what a feature does, a scope — record a `decision` entry when it is given: the surface it
      governs and the user's words with when they were given. A later decision on that surface is
-     checked against it, and a correction that reverses it records the user's new words.
+     checked against it, and a correction that reverses it records the user's new words. A
+     decision the user scopes to the whole session, rather than one task, is copied into each later
+     task's ledger when that ledger is created, until the user withdraws it.
    - **A record rebuilt from evidence holds only what the user's own messages show.** A plan, step,
      question or decision reconstructed after a loss records the user's words and the message they
      came in, and records approval or an answer only from those words. Agent-written sources — a

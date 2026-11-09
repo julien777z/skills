@@ -150,7 +150,9 @@ with an obsolete owned contract or revision.
     inside the files the change already edits and while it stays small beside the requested part.
   - Cleanup past the budget is deferred work: returned to the caller to record, listed in the
     change's report one line each with its record, and never fixed in the change or put to the user
-    as a question. A defect, a security vulnerability included, is never past it. An explicitly requested broad
+    as a question. A defect, a security vulnerability included, is never past it. When the user has
+    widened scope for the session, that widening's own limits replace this budget for cleanup until
+    they stop it. An explicitly requested broad
     refactor sets its own scope and carries no budget.
 - **A correction to how one screen looks or reads reaches every page when the user makes it a
   rule, and that screen alone when they do not.** A correction the user asks to have codified, or

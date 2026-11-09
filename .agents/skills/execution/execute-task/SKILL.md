@@ -499,8 +499,6 @@ how those issues are handled.
 - Use the repository's relevant tests as the regression guardrail; do not preserve a defect solely
   because an existing test asserts the old behavior. When coverage is absent or insufficient, use
   the strongest available validation and account explicitly for the uncovered behavior.
-- One focused fix means the correction needs no separate research or design phase and is not
-  expected to require multiple implementation iterations.
 - Apply an owned API, protobuf, schema, payload, or stored-shape change selected by
   `pre-production` without a second approval, once its **Target Contract** admits it without a
   proposal; update every consumer the user controls, in

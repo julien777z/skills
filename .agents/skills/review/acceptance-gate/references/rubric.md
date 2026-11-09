@@ -306,8 +306,8 @@ ends the question.
    requirement owes is the user's decision whatever its size: triage returns defer on that ground
    alone, naming the fork — the shape, every instance it would convert, the size of that change and
    the recommendation — which the caller puts to the user now; it is built only at the scope the
-   user approves, never returned as do. Incidental work past `pre-production`'s size budget is
-   defer without the arguability test, and incidental work inside it is do. Nor are the size
+   user approves, never returned as do. Incidental cleanup past `pre-production`'s size budget is
+   defer without the arguability test, and incidental cleanup inside it is do. Nor are the size
    and shape of the work inputs the gate may take on trust: "large", "not mechanical", "each site
    needs its own judgement" and "it spans suites the change does not touch" are the asker's
    characterisation of the asker's own record. Check the count against the tree and open enough of
