@@ -61,6 +61,7 @@ class IconName(StrEnum):
     LIST = "list"
     CHART = "chart"
     ACTIVITY = "activity"
+    COMPARE = "compare"
     DIAGRAM = "diagram"
     DOCUMENT = "document"
     GUIDE = "guide"
@@ -115,3 +116,10 @@ class ObjectShape(TypedDict):
     fields: dict[str, Field]
     required: frozenset[str]
     relations: NotRequired[Callable[[dict[str, object], str], None]]
+
+
+class RenderedPage(TypedDict):
+    """A rendered dashboard page and the update script an open copy of it reads."""
+
+    page: str
+    update: str

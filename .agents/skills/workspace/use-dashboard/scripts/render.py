@@ -24,6 +24,7 @@ from models import (
     PageLayout,
     PullRequestState,
     QuestionStatus,
+    RenderedPage,
     SectionType,
     SourceKind,
     Tone,
@@ -39,6 +40,11 @@ CACHE_ROOT: Final[Path] = (
     Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache") / "use-dashboard"
 )
 DATA_PLACEHOLDER: Final[str] = "__DASHBOARD_DATA__"
+APP_REVISION_PLACEHOLDER: Final[str] = "__DASHBOARD_APP_REVISION__"
+UPDATE_SCRIPT_SUFFIX: Final[str] = ".update.js"
+UPDATE_SCRIPT_TEMPLATE: Final[str] = (
+    'window.dashboardUpdate = {{ app: "{app}", dashboard: {dashboard} }};\n'
+)
 PAGE_HEAD_TEMPLATE: Final[str] = "<title>{title} - {topic}</title>\n"
 TITLE_SUFFIX: Final[str] = "Dashboard"
 DOCUMENT_PREAMBLE: Final[str] = (
@@ -340,6 +346,13 @@ def check_tabs(tabs: dict[str, object], path: str) -> None:
         raise DashboardSpecError(f"{path}.tabs must hold a tab with sections")
 
 
+def check_reference_target(reference: dict[str, object], path: str) -> None:
+    """Require a reference to link to a URL or open details, never both or neither."""
+
+    if ("url" in reference) == ("details" in reference):
+        raise DashboardSpecError(f"{path} must have exactly one of url and details")
+
+
 def check_section(section: object, path: str) -> None:
     """Require one section of a known type."""
 
@@ -589,8 +602,13 @@ DIAGRAM_LEGEND_SHAPE: Final[ObjectShape] = ObjectShape(
 )
 REFERENCE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Reference",
-    fields={"text": TEXT, "url": TEXT},
-    required=frozenset({"text", "url"}),
+    fields={
+        "text": TEXT,
+        "url": TEXT,
+        "details": Field(check=check_section, typescript="Section"),
+    },
+    required=frozenset({"text"}),
+    relations=check_reference_target,
 )
 TREE_NODE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="TreeNode",
@@ -951,11 +969,10 @@ def remove_path(path: Path) -> None:
         path.unlink()
 
 
-def build_page() -> str:
+def build_page(declarations: str, app_revision: str) -> str:
     """Return the built dashboard page, building the app the first time its source changes."""
 
-    declarations = typescript_declarations()
-    page_path = CACHE_ROOT / f"page-{app_digest(declarations)}.html"
+    page_path = CACHE_ROOT / f"page-{app_revision}.html"
     workspace = (
         CACHE_ROOT
         / f"workspace-{sha256((APP_ROOT / APP_LOCKFILE).read_bytes()).hexdigest()[:16]}"
@@ -1005,19 +1022,27 @@ def build_page() -> str:
         return page
 
 
-def render_dashboard(spec: object, fragment: bool) -> str:
-    """Return the dashboard page for a spec."""
+def render_dashboard(spec: object, fragment: bool) -> RenderedPage:
+    """Return the dashboard page for a spec and the update script an open copy reads."""
 
     dashboard = check_object(spec, "dashboard", DASHBOARD_SHAPE)
 
     head = PAGE_HEAD_TEMPLATE.format(
         title=escape(str(dashboard["title"])), topic=escape(str(dashboard["topic"]))
     )
-    page = head + build_page().replace(
-        DATA_PLACEHOLDER, embed_dashboard_spec(dashboard), 1
+    declarations = typescript_declarations()
+    app_revision = app_digest(declarations)
+    app = build_page(declarations, app_revision)
+    embedded_spec = embed_dashboard_spec(dashboard)
+
+    page = head + app.replace(APP_REVISION_PLACEHOLDER, app_revision, 1).replace(
+        DATA_PLACEHOLDER, embedded_spec, 1
     )
 
-    return page if fragment else DOCUMENT_PREAMBLE + page
+    return RenderedPage(
+        page=page if fragment else DOCUMENT_PREAMBLE + page,
+        update=UPDATE_SCRIPT_TEMPLATE.format(app=app_revision, dashboard=embedded_spec),
+    )
 
 
 def main() -> int:
@@ -1059,9 +1084,10 @@ def main() -> int:
         parser.error("--input needs --output")
 
     try:
-        page = render_dashboard(
+        rendered = render_dashboard(
             loads(arguments.input.read_text(encoding="utf-8")), arguments.fragment
         )
+        page = rendered["page"]
 
         if arguments.compress:
             data = b64encode(gzip.compress(page.encode("utf-8"), mtime=0)).decode("ascii")
@@ -1102,6 +1128,13 @@ def main() -> int:
 
     arguments.output.parent.mkdir(parents=True, exist_ok=True)
     arguments.output.write_bytes(encoded_page)
+
+    if not (arguments.fragment or arguments.compress):
+        update_script = arguments.output.with_name(
+            arguments.output.name + UPDATE_SCRIPT_SUFFIX
+        )
+
+        update_script.write_text(rendered["update"], encoding="utf-8")
 
     logger.info("%s", arguments.output.resolve())
 

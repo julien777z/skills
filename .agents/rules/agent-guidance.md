@@ -197,6 +197,16 @@ trigger.
   delegation or authorization.
 - Invoke dependent skills only from the owning `SKILL.md`. References and other supporting files are passive and must not invoke skills or identify dependencies through relative paths to another `SKILL.md`.
 
+### Decisions
+
+- **A skill sends a decision to the user only when it is the user's**: a product, scope, security, disclosure or authorization choice, as the global
+  rules' product-choice bullet defines one, or a step only the user can take. Every other contested
+  call a workflow's own checks cannot settle — a disputed finding, a flag that survives its
+  repairs, a stuck review, the disposition of a change that keeps failing — goes to `council` in
+  **Ask** mode, and its ruling, by majority unless the skill sets a stricter threshold, is followed and named in the skill's result. A skill whose
+  workflow does this declares `council`. A ruling never accepts a confirmed defect, an exploitable
+  vulnerability or a failing required check.
+
 ### Output
 
 Prefer an `## Output` section holding a hard-coded format whenever two correct runs

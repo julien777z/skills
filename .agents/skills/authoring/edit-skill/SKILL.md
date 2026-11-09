@@ -52,7 +52,8 @@ new owner under **Guidance Changes Proceed Automatically**.
 
 A user request or an encountered guidance gap, once **Behavior** step 1 confirms its premise,
 authorizes the canonical `.agents` correction. Do not
-ask for a plan or for approval of a guidance-output example. An example renders the settled
+ask for a plan or for approval of a guidance-output example; an approval hold the invoking workflow
+sets is that workflow's and still applies. An example renders the settled
 instruction and is task evidence, not a new product experience because a user reads it. A guidance
 edit that intentionally changes the product still follows the global product-decision boundary. The
 required smoke test, review, and acceptance gate validate the correction. When a separate source
@@ -145,7 +146,7 @@ user's review of the source pull request overlaps it.
    at review. An edit step 7.1 puts on a source pull request this session drives is pushed there and
    passes step 7.2's source check on the head carrying it before that pull request's source stream
    proceeds, and step 7.5's smoke round on the head that pull request's review pass accepted, before the source review and delivery. It carries step 7.3's prose-duplication checks into that
-   pull request's simplification and step 7.4's incident vocabulary into its final acceptance. An edit step 7.1 selects on
+   pull request's simplification pass and step 7.4's incident vocabulary into its final acceptance. An edit step 7.1 selects on
    another session's source pull request runs steps 7.2 to 7.5 here on the head it pushed, and the
    delivery report says the push moved that pull request's head past its owner's acceptance. An
    edit on either source pull request is recorded as held for that pull request's merge once its
@@ -154,7 +155,7 @@ user's review of the source pull request overlaps it.
 2. Run step 7.2's source check.
 3. Run `review-pass` once over the batch, naming every head it carries. Give it the user's request
    and the recorded evidence as the intent statement, the incident vocabulary for its acceptance
-   gate as step 7.4 describes, and step 7.3's prose-duplication checks for its simplification gate.
+   gate as step 7.4 describes, and step 7.3's prose-duplication checks for its simplification pass.
 4. Run step 7.5's `test-skill` smoke round once over the batch, naming every head `review-pass`
    accepted, with every entry's
    reproduction scenario as an input and entries that share a failure class grouped into one
@@ -406,8 +407,8 @@ user's review of the source pull request overlaps it.
       Pull Requests** says, and merges with it; that pull request waits for the tool through the
       same gate. After the tool merges, the consumer adopts and validates its maintained target under the reference guidance
       above. No merge here authorizes a release.
-   3. **Run `code-simplify`** across the delta `review-pass` selects, reading every touched `.agents`
-      file whole, and act on what it reports: guidance duplicated
+   3. **Check prose duplication** through the `code-simplify` pass `review-pass` runs over the delta,
+      reading every touched `.agents` file whole, and act on what it reports: guidance duplicated
       between peer rules or skills, including a caller and a skill it always invokes; a section grown
       around a second subject; a heading named for a category with one member; a rubric left inline
       that the shared `agent-guidance.md` rule's skill shape sends to a
@@ -415,20 +416,17 @@ user's review of the source pull request overlaps it.
       change gets that pass over its entry point and supporting files, a one-line rule edit as much as a
       new skill: a single bullet added to
       the file that does not own it is exactly the duplication this catches, and it is the change
-      least likely to be looked at twice. Run it in process over the branch's own files, never
-      fanned out to subagents: a guidance diff is a scope one reviewer holds whole, and the reviewer
-      who has to compare a new bullet against the section it duplicates is the one already holding
-      both.
-   4. **Run `acceptance-gate`** with its diff question over the batch's complete `.agents` diff, one
-      gate per round, the request as the intent statement. It judges whether the guidance answers
-      the request at the breadth the shared `agent-guidance.md` rule asks for and whether every mechanism it adds
-      earns its place. Treat a named tool, surface, or workaround in generic guidance as a finding
-      unless the skill's contract depends on it; the incident's route must not narrow the durable
-      decision boundary. Give the gate the incident's vocabulary — the product, its record and
-      screen nouns, the labels the request quoted — so an example carrying any of it is a finding.
-      Resolve each flag through that skill's **Bounds**: repair the owning instruction, push the
-      changed increment, and put it to a fresh independent gate, or check it in process when those
-      **Bounds** call it a small repair. Repeated flags do not permit dropping owed work or merging
+      least likely to be looked at twice.
+   4. **Brief `review-pass`'s final acceptance**, which judges the batch's complete `.agents` diff
+      with the request as the intent statement; this step starts no gate of its own. The brief asks
+      whether the guidance answers the request at the breadth the shared `agent-guidance.md` rule
+      asks for and whether every mechanism it adds earns its place. A named tool, surface, or
+      workaround in generic guidance is a finding unless the skill's contract depends on it; the
+      incident's route must not narrow the durable decision boundary. The brief carries the
+      incident's vocabulary — the product, its record and screen nouns, the labels the request
+      quoted — so an example carrying any of it is a finding.
+      Resolve each flag through `acceptance-gate`'s **Bounds**: repair the owning instruction, push the
+      changed increment, and check it as those **Bounds** say. Repeated flags do not permit dropping owed work or merging
       flagged guidance, apart from the decision the global rules' review-round limit calls for after
       3 rounds; acceptance, or that recorded round-limit decision, must cover the final wording
       before delivery.

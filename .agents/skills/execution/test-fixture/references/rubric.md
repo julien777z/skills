@@ -177,8 +177,8 @@ source owners. Apply explicit repository guidance first. Otherwise prefer the la
 directly mirrors source ownership, using the majority pattern among analogous sibling service tests
 as corroborating evidence. Existing sibling tests are evidence, not authority. Preserve a different
 layout only when a real ownership or boundary difference explains it; legacy placement alone is not
-a reason. If equally valid patterns remain, present the concrete choice to the user instead of moving
-tests arbitrarily or adding another variation.
+a reason. If equally valid patterns remain, the choice goes to a council ruling, as the skill's workflow
+says, instead of moving tests arbitrarily or adding another variation.
 
 Test-owned structures may follow the testing concern rather than a production path:
 

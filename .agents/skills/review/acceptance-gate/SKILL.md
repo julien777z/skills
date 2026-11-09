@@ -1,14 +1,16 @@
 ---
 name: acceptance-gate
-description: Required checkpoint over an authorized change's complete diff before local completion, draft readiness or merge; run as a workflow dependency without a separate user invocation. Passing tests or an informal self-review never substitute for its verdict; an in-process gate still runs this skill's question and rubric. Judge an issue, finding, proposal or diff against product state, intent and the quality rubric through a read-only subagent, or in process when its invocation asks for that; a worker that cannot launch one hands it up to its delegating agent. Run over each finished plan step or worker task before later work builds on it, for triage, before recording a deferral, before and after fixing or resolving one, after base incorporation, and on a fix for a gate or review flag larger than a small repair.
+description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation; per plan step only for a finished step that later steps build on. Never run per fix, apart from a repair that settles a design, product or security choice of its own.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 
 # Acceptance Gate
 
 Put a decision the author cannot judge about its own work to a subagent that reads the product's
-state and the change's intent, applies the repository's rubric, and answers one question. An
-invocation that asks for an in-process gate is run in process, as **The Gate Subagent** says.
+state and the change's intent, applies the repository's rubric, and answers one question. It runs
+once over a pull request's complete diff, before its merge, and otherwise only for the questions
+below that a caller cannot settle alone. A plan step or worker task is gated only when later steps
+build on it; every other step, and every fix, is checked by its author against its own checks.
 `references/rubric.md` holds what it judges by; this file holds how it is run.
 
 ## Dependencies
@@ -19,6 +21,7 @@ invocation that asks for an in-process gate is run in process, as **The Gate Sub
 - `pre-production`
 - `test-fixture`
 - `run-site`
+- `council`
 
 ## The Intent Statement
 
@@ -83,12 +86,10 @@ applicable task pull requests, not only default-branch or local checkout compari
 checks analogous implementations and the evidence for retained differences; missing applicable
 pull-request context is a flag to obtain that context, not permission to assume consistency.
 
-The gate is read-only and normally distinct from the author. An invocation that asks for an
-in-process gate runs this question and rubric in process instead. If its reader cannot launch, apply
-`subagent-matrix`'s launch fallback. Invoke `subagent-matrix` for the acceptance-gate role, using
-its configured Codex role selection and the advanced capability level on other hosts. Dispatch the
-gate with that exact identifier, and retain catalogue state, identifier, assignment state and host
-receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. It
+The gate is read-only and distinct from the author. If its reader cannot launch, apply
+`subagent-matrix`'s launch fallback. Invoke `subagent-matrix` at its advanced
+capability level. Dispatch the gate with that exact identifier, and retain catalogue state, identifier, assignment
+state and host receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. It
 receives five things and nothing else:
 
 1. the intent statement, quoting the user's request in their words and carrying every decision the
@@ -187,10 +188,18 @@ flow changing across many pages, a change carried past the surface the user name
 user's words in the intent statement that settle it. Small presentation decisions on the surface in
 hand are not listed, and neither is local test tooling or the records it seeds, which the global
 rules' local-stack bullet leaves to the agent. A product choice with no such words is a flag whose
-remedy is putting the choice to the user before the code stands, whatever the step calls itself, a
-fix included. An earlier accepted step, a plan record without the user's words, or a brief calling
+remedy is putting the choice to the user before the code stands, whatever the change calls itself, a
+fix included. An earlier acceptance, a plan record without the user's words, or a brief calling
 the choice decided is not those words. A verdict with none says `no product choice added` in those
 words.
+
+**Then it lists every workaround the diff makes**: a remedy that makes the reported symptom go away
+while its cause stays, such as hiding or folding away what no longer fits instead of giving it
+room, moving a failing path behind a control, a flag, a fallback or a retry, catching and ignoring
+an error, special-casing the one reported value, or loosening a check until it passes. Each is a
+flag whose remedy is fixing the cause, whatever the change calls itself and however small; a
+workaround the user's words in the intent statement explicitly ask for is the only one that stands.
+A verdict with none says `no workaround added` in those words.
 
 For a diff question, also apply the `code-simplify` rubric’s **Trace Changed Flows** to the supplied
 implementations, consumers, and affected-repository map. A diff alone that cannot establish that
@@ -218,12 +227,14 @@ Exactly one per gate, each decided by the tests in `references/rubric.md`, with 
 Whether an item is the change's doing or predates it is never asked, since no disposition turns on
 it:
 
-- **Triage — what should happen to this?** An issue, a finding or a proposed record; the answer is
-  one of fix, close, defer or do.
+- **Triage — what should happen to this?** An issue, a finding or a proposed record, or a list of
+  them in one call; the answer is one of fix, close, defer
+  or do for each.
 - **Admission — may this work be deferred?** The triage question asked of a proposed record.
 - **Proposal — should this be written?**
-- **Diff — should this stand?** A finished step's or task's diff, or the increment fixing a flag,
-  read with the whole branch diff as its originating diff.
+- **Diff — should this stand?** A finished plan step or worker task that later steps build on, a
+  correction after base incorporation, or a repair that settles a design, product or security
+  choice of its own, read with the whole branch diff as its originating diff.
 - **Base incorporation — what did the base bring in that the change must refactor?** The procedure
   below.
 - **Final acceptance — may this merge?** The complete pull-request diff, read once after review is
@@ -259,46 +270,47 @@ The gate is never advisory; the rubric says what each disposition binds the call
 A flag blocks the flagged proposal or diff, not an ordinary repair the task already authorizes.
 Before admitting a flag, check it against the task's recorded decisions and the commit that
 introduced the behaviour it names. A flag that reopens a behaviour choice the user's recorded words
-or an earlier accepted step settled, or that asks for work outside the scope the user set, is
+or an earlier acceptance settled, or that asks for work outside the scope the user set, is
 answered as settled or out of scope with that evidence; it is never repaired and never put to the
-user as a question. Only the user's words settle a product choice: one an accepted step or an
+user as a question. Only the user's words settle a product choice: one an earlier acceptance or an
 agent-written record holds without them is still open, and goes to the user. A confirmed defect or a
 security vulnerability is never settled this way, whatever an
-earlier step accepted: it is repaired as below.
-Read every other objection and remedy against the intent and standing guidance, make the smallest
-coherent repair using the existing owner or mechanism, and send the changed increment with the
-whole originating diff to a fresh independent gate, following `subagent-matrix`'s **Dispatch**.
+earlier acceptance said: it is repaired as below.
+Read every other objection and remedy against the intent and standing guidance and make the
+smallest coherent repair using the existing owner or mechanism.
 
-**A small repair is checked in process instead.** A repair is small when it changes about 30 lines or
-fewer and carries out the remedy the flag names without settling a design, product or security
-choice of its own. The agent that made it re-reads the changed lines against the flag's objection and
-remedy, runs the checks covering that code, and records the result with the flag; no fresh gate or
-worker is started for it. It still counts as one of the flag's repair rounds, and the next gate over
-the step or the complete diff is the independent acceptance covering its resolution. A larger repair,
-one that settles such a choice, or one the in-process check cannot settle goes to a fresh gate as
-above.
+**A repair is checked in process.** The agent that made it re-reads the changed lines against the
+flag's objection and remedy, runs the checks covering that code, and records the result with the
+flag; no fresh gate or worker is started for it. It still counts as one of the flag's repair
+rounds. Only a repair that settles a design, product or security choice of its own, or one the
+in-process check cannot settle, goes to one fresh gate under the Diff question, following
+`subagent-matrix`'s **Dispatch**.
 
 **Repair rounds are counted per objection and per change.** A change gets at most 3 rounds across
 every kind of check, the first and 2 after repairs, as the global rules' review-round limit counts
 them: once 3 have failed it, whatever each raised, the decision that bullet calls for replaces
 another repair, and an acceptance with recorded findings that decision makes is the one exception to
-the rules below on flagged diffs; an in-process check of a small repair is not one of those 3
+the rules below on flagged diffs; an in-process check of a repair is not one of those 3
 rounds. While the change is under that limit, a flag gets at most two repair rounds of its own, and
 one a fresh gate raises for the first time starts at zero. A flag the gate still raises after its
-own second repair, with the change still under the limit, goes to the user as a report, never as a
-choice about whether to fix it or leave it in place: the open flag, each remedy tried and its
-evidence, the gate's proposed remedy and the recommended next step. Every other flag keeps its own
-repair and gate meanwhile, and the user's reply directs only the flag the report names.
+own second repair, with the change still under the limit, goes to `council` in **Ask** mode with
+the open flag, each remedy tried and its evidence, and the gate's proposed remedy. Its ruling
+decides the remedy, which is applied and checked as any repair is, and the caller's result names
+the flag and the ruling. A flag the council returns as the user's choice goes to
+the user, as a report of those facts with a recommended next step, never as a choice about whether to
+fix it or leave it in place. Every other flag keeps its own repair and gate meanwhile.
 
 Never rerun an unchanged item hoping for acceptance, argue it through the same gate, rename it to
 reset its history, or keep flagged code because the caller can authorize its merge. Carry unresolved
 objections and previous remedies into the next review; a remedy that reverses one given earlier
-names it and the evidence it was wrong. If evidence refutes an objection, send that
-evidence to a fresh gate for an explicit disposition; the caller cannot dismiss it unilaterally.
+names it and the evidence it was wrong. If evidence refutes an objection, put the
+objection, that evidence and the code it concerns to `council` in **Ask** mode for a ruling: a
+unanimous `drop` dismisses it, and anything else keeps it open for repair. The caller cannot dismiss
+it unilaterally.
 
 When the intent statement already schedules a flag's remedy as named work with its owner, such as
 a consumer's migration on its own pull request, the gate reports it as a hold on the merge that
-work must precede, not a flag on the step, and it counts no repair round. The hold stays until that
+work must precede, not a flag on the change, and it counts no repair round. The hold stays until that
 work is accepted.
 
 When no compliant repair is available, name the conflict and the smallest native repair examined.
@@ -309,11 +321,11 @@ mechanisms its gain cannot carry. A confirmed defect remains owed under the fix 
 safeguard or compatibility concern is judged against the target repository's product state and
 contract, not promoted to a defect merely because a reviewer flagged it.
 
-Escalate only a genuine unresolved product, scope, or authorization choice, stating the concrete
+Escalate only a genuine unresolved product, scope, security, disclosure or authorization choice, stating the concrete
 fork and why authorized remedies cannot settle it. Repair authority and merge authority are separate:
 a source pull request awaiting merge permission continues through authorized repairs and reviews.
-Keep unrelated authorized work moving while a real decision waits. No flagged diff stands or merges
-without an independent acceptance covering its resolution.
+Keep unrelated authorized work moving while a real decision waits. No diff merges with a flag
+still open.
 
 ## Reporting
 
