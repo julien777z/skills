@@ -94,7 +94,9 @@ identity, never a second authoritative copy of its records.
    - For a decision the user states without a recorded question — how a surface looks or reads,
      what a feature does, a scope — record a `decision` entry when it is given: the surface it
      governs and the user's words with when they were given. A later decision on that surface is
-     checked against it, and a correction that reverses it records the user's new words.
+     checked against it, and a correction that reverses it records the user's new words. A
+     decision the user scopes to the whole session, rather than one task, is copied into each later
+     task's ledger when that ledger is created, until the user withdraws it.
    - **A record rebuilt from evidence holds only what the user's own messages show.** A plan, step,
      question or decision reconstructed after a loss records the user's words and the message they
      came in, and records approval or an answer only from those words. Agent-written sources — a
@@ -181,6 +183,10 @@ This skill authorizes those comments and their edits under the GitHub rule's **C
   holds a turn back at most once in a row, so post or edit the comment and record its URL, or
   repair the ledger, in the turn it reopens. It runs only where `python3` is Python 3.11 or newer.
 
+## Snapshot Evidence
+
+A local review snapshot is task-private evidence. Its identity is route, repository, merge base, candidate head/tree or explicit absence, target-patch digest, intended-selection digest, layered-entry-manifest digest, and artifact digest; two snapshots are equivalent only when every field matches. Its owner resolves intended partitions and stops for user resolution when scope is ambiguous, including a selected hunk that shares an index or worktree cell with unrelated content; unrelated dirty content is excluded. It uses `agent-lock` around capture, excludes an unneeded secret-bearing cell, and holds when selected secret content requires an authorized secret-safe review input instead of silently dropping it, serializes layered HEAD/index/worktree cells with digests, atomically promotes and readbacks the artifact, materializes it only in a pristine task-owned checkout, and verifies ownership before retaining or dispatching it. Every failure or cancellation checks ownership first; a valid owned lock is released with `--resource-idle`, while a failed check performs no checkout action or release. Workflows record the artifact locator, identity, inputs, and receipts in the ledger and reference this protocol instead of copying it.
+
 ## Output
 
 Store this YAML document in the private task file and return its records to the calling workflow,
@@ -215,7 +221,3 @@ new top-level collections or an envelope per kind.
   or search result alone.
 - A missing record is not permission to broaden a query. Ask for the target when the current task
   and verified records leave multiple plausible artifacts.
-
-## Snapshot Evidence
-
-A local review snapshot is task-private evidence. Its identity is route, repository, merge base, candidate head/tree or explicit absence, target-patch digest, intended-selection digest, layered-entry-manifest digest, and artifact digest; two snapshots are equivalent only when every field matches. Its owner resolves intended partitions and stops for user resolution when scope is ambiguous, including a selected hunk that shares an index or worktree cell with unrelated content; unrelated dirty content is excluded. It uses `agent-lock` around capture, excludes an unneeded secret-bearing cell, and holds when selected secret content requires an authorized secret-safe review input instead of silently dropping it, serializes layered HEAD/index/worktree cells with digests, atomically promotes and readbacks the artifact, materializes it only in a pristine task-owned checkout, and verifies ownership before retaining or dispatching it. Every failure or cancellation checks ownership first; a valid owned lock is released with `--resource-idle`, while a failed check performs no checkout action or release. Workflows record the artifact locator, identity, inputs, and receipts in the ledger and reference this protocol instead of copying it.

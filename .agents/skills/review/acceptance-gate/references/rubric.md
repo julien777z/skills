@@ -264,10 +264,9 @@ ends the question.
    live run — a rate, a duration, a memory trail, a kill — is evidence of a defect the way a
    confirmed review finding is: the gate takes it as given and never re-derives the defect from the
    tree, because a tree read alone cannot see a rate. A defect is fixed in the change in flight, or
-   on a branch off the default when nothing is in flight, whatever shape its fix takes, when the
-   change introduced it, the task asked for it, or it fits `pre-production`'s size budget for an
-   encountered defect; one the work only ran into that is past that budget is defer, with its size
-   stated on the record. A migration is how a fix is written, never a reason to record it instead. A check that
+   on a branch off the default when nothing is in flight, whatever shape its fix takes, whether the
+   change introduced it, the task asked for it, or the work only ran into it; a defect is never
+   deferred for its size. A migration is how a fix is written, never a reason to record it instead. A check that
    would rediscover the defect does not soften this: rediscovery excuses the record, never the fix.
    Product state never softens it either: broken is broken for one admin as for a thousand users.
    A missing safeguard that definition leaves out goes on to the tests below, its exploitability
@@ -307,8 +306,8 @@ ends the question.
    requirement owes is the user's decision whatever its size: triage returns defer on that ground
    alone, naming the fork — the shape, every instance it would convert, the size of that change and
    the recommendation — which the caller puts to the user now; it is built only at the scope the
-   user approves, never returned as do. Incidental work past `pre-production`'s size budget is
-   defer without the arguability test, and incidental work inside it is do. Nor are the size
+   user approves, never returned as do. Incidental cleanup past `pre-production`'s size budget is
+   defer without the arguability test, and incidental cleanup inside it is do. Nor are the size
    and shape of the work inputs the gate may take on trust: "large", "not mechanical", "each site
    needs its own judgement" and "it spans suites the change does not touch" are the asker's
    characterisation of the asker's own record. Check the count against the tree and open enough of

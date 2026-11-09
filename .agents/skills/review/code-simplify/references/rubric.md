@@ -11,9 +11,8 @@ skills that borrow the rubric read this file.
 - **The intent wins.** Never recommend removing, narrowing or reshaping something the change's
   stated intent asks for, such as a cache, a retry or a guard the request names. Where it looks
   wrong, say so as a question beside the finding, never as the fix.
-- **Outside the change:** a bug it meets is fixed within `pre-production`'s size budget and
-  deferred past it. Non-bug cleanup outside the change is deferred, not
-  fixed, unless the user has widened the task's scope, whose own limits then apply.
+- **Outside the change:** a bug it meets is always fixed. Non-bug cleanup outside the change follows
+  `pre-production`'s size budget and is deferred past it.
 - **Contracts.** Preserve what a consumer outside the user's control observes: public routes and
   their shapes, durable identifiers, persisted and wire formats. A contract whose every consumer the
   user controls may change, with every consumer updated in the same change, in any repository, never

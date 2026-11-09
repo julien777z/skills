@@ -1,0 +1,322 @@
+study:
+    observed_at: "2026-11-08T23:21:20Z"
+    mode: play
+    requested_games: 25
+    completed_games: 13
+    reused_games: []
+    chart:
+        url: "https://www.roblox.com/charts?device=computer&country=us"
+        device: "computer"
+        country: "us"
+        selection: "Round-robin by rank across every chart category, skipping duplicates; Top Paid Access and More When You Subscribe left out because their games need a purchase or subscription."
+    method_notes:
+        - "Games 1-8 were played for up to 5 minutes, two more for up to 10 minutes, and five in depth for up to 25 minutes; real play then stopped in favour of gameplay videos."
+        - "Gameplay videos came from YouTube, searched by views, and from each game's own Roblox preview trailer."
+        - "YouTube blocked this machine partway through; five games have no gameplay video and are recorded as partial so a later run studies them again."
+        - "The runner's paravirtual GPU garbled several complex 3D worlds in real play; videos show those worlds render normally."
+    assignments:
+        - {researcher: "R01", game_ids: ["universe:7529591378", "universe:10772543706"], status: partial, blocker: "Holding the mouse button did not register in the runner, so Sweep The Moon's main action was not played."}
+        - {researcher: "R02", game_ids: ["universe:10563114921", "universe:3359505957"], status: partial, blocker: "Real play of Steal An Egg did not reach its core loop before the five-minute limit."}
+        - {researcher: "R03", game_ids: ["universe:6375110339", "universe:3183403065"], status: partial, blocker: "Runner GPU garbled Anime Adventures' lobby."}
+        - {researcher: "R04", game_ids: ["universe:10209534490", "universe:3508322461"], status: partial, blocker: "Jujutsu Shenanigans stopped at its rules panel before that panel was cleared for play."}
+        - {researcher: "R05", game_ids: ["universe:7104927007", "universe:994732206"], status: partial, blocker: "Runner GPU garbled Blox Fruits' world; play lock lost at a renewal."}
+        - {researcher: "R06", game_ids: ["universe:5995470825", "universe:9867225552"], status: completed, blocker: null}
+        - {researcher: "R07", game_ids: ["universe:10771871836", "universe:4723764956"], status: completed, blocker: null}
+        - {researcher: "R08", game_ids: ["universe:7729422550", "universe:10769279468"], status: partial, blocker: "Timed key input was too imprecise to pass the obby's first stage."}
+        - {researcher: "R09", game_ids: ["universe:1686885941", "universe:10747710159"], status: partial, blocker: "Runner GPU garbled Brookhaven's world; real play stopped."}
+        - {researcher: "R10", game_ids: ["universe:2711375305", "universe:10770575733"], status: completed, blocker: null}
+        - {researcher: "R11", game_ids: ["universe:6331902150", "universe:5174979552"], status: completed, blocker: null}
+        - {researcher: "R12", game_ids: ["universe:10771743491", "universe:6026405541"], status: completed, blocker: null}
+        - {researcher: "R13", game_ids: ["universe:4260784961"], status: completed, blocker: null}
+        - {researcher: "V01-V09, V10P", game_ids: ["all 25"], status: partial, blocker: "YouTube's bot check blocked this machine; Word Battle!, Ragdoll Physics, Forsaken, South Hell and Napoleonic Wars have no gameplay video."}
+synthesis:
+    all_researchers_finished: true
+    gameplay_patterns:
+        - pattern: "A guided first session takes a new player through one complete act, reward and spend cycle within its first few minutes: the core action, a payout, and a first purchase or upgrade that the payout affords, before the guidance ends."
+          supporting_game_ids: ["10209534490", "10563114921", "10772543706", "3359505957", "994732206"]
+          evidence_ids: ["10209534490:source_3", "10209534490:source_4", "10209534490:source_5", "10563114921:video_1", "10563114921:video_3", "10772543706:yt_onboarding_1", "10772543706:yt_skilled_1", "3359505957:play_1", "3359505957:video_1", "994732206:video_1"]
+          observed_count: 5
+          eligible_count: 8
+          confidence: medium
+          limitations:
+              - "Eligible: games with an earn-and-spend economy whose first session was seen in play or first-session footage; the three non-supporting games (3183403065, 6375110339, 7529591378) put modals, meta menus or a drill tutorial before the first spend."
+              - "Videos are edited, so no cycle duration is measured; only the order of steps is relied on."
+              - "Real play did not complete the cycle in 10563114921 (arrows never reached), 10772543706 (runner mouse-hold failed) or 994732206 (world garbled by the VM GPU); videos supply the cycle for those."
+        - pattern: "Locked and undiscovered content is shown in place with its unlock condition: silhouetted '???' collection entries, padlocked slots, greyed moves with the level that unlocks them, locked modes with a win count, priced locked items, and endings albums with unfound names."
+          supporting_game_ids: ["10209534490", "10563114921", "10769279468", "10771871836", "3183403065", "3359505957", "5995470825", "4723764956", "6375110339", "994732206", "7729422550", "9867225552", "7529591378"]
+          evidence_ids: ["10209534490:source_5", "10209534490:source_3", "10563114921:play_1", "10563114921:video_3", "10769279468:video_3", "10771871836:video_session_1", "3183403065:play_1", "3359505957:play_1", "3359505957:video_1", "5995470825:video_2", "4723764956:video_session_2", "6375110339:play_1", "994732206:play_1", "7729422550:video_1", "9867225552:video_1", "7529591378:yt_skilled_1"]
+          observed_count: 13
+          eligible_count: 16
+          confidence: high
+          limitations:
+              - "Eligible adds 10772543706, 1686885941 and 3508322461, which have progression systems in evidence but no in-place preview with a condition; 1686885941 shows paid items in full but reveals the condition only on click."
+              - "Presence across games is not evidence that previews cause continued play."
+        - pattern: "The requirement for the next area is a number shown at the gate in the world, visible from where the player stands, so the next goal is a target the player can read before reaching it."
+          supporting_game_ids: ["10563114921", "3359505957", "7729422550"]
+          evidence_ids: ["10563114921:video_3", "10563114921:video_2", "3359505957:video_1", "7729422550:video_1", "7729422550:play_1"]
+          observed_count: 3
+          eligible_count: 5
+          confidence: medium
+          limitations:
+              - "Eligible adds 994732206 and 3183403065, whose area requirements live in menus or are implicit in the quest ladder."
+              - "In 7729422550 the gate text was unreadable until close in real play, so a gate number helps only when its text is legible from the approach."
+        - pattern: "Failures explain their cause on screen and allow a fast retry: a killcam naming the killer and weapon, a side-by-side stat reveal after a lost showdown, a worded near-miss with a tries count, a visible chase with a 'RUN!!' banner, headline wording that says a shot was uninteresting."
+          supporting_game_ids: ["5995470825", "10769279468", "7529591378", "10563114921", "10771871836"]
+          evidence_ids: ["5995470825:play_1", "5995470825:video_3", "10769279468:video_2", "10769279468:video_4", "7529591378:play_1", "10563114921:video_1", "10563114921:video_2", "10771871836:play_1"]
+          observed_count: 5
+          eligible_count: 8
+          confidence: medium
+          limitations:
+              - "Counter-cases: 7729422550 (no failure message; hazard learned by falling), 994732206 (no on-screen cause for a near one-shot boss slam), 3508322461 (no death-cause screen)."
+              - "Retry times are measured only in real play for 7529591378, 10771871836 and 5995470825; video retries are edited."
+        - pattern: "Actions and rounds get a worded or graded verdict of how well they went, not only whether they succeeded: release-quality text and a live letter grade, overtake praise and a stage grade, a build grade with a radar chart, kill medals, and a coloured headline bar that separates a story beat from a non-event."
+          supporting_game_ids: ["7529591378", "9867225552", "10769279468", "5995470825", "10771871836"]
+          evidence_ids: ["7529591378:play_1", "7529591378:yt_onboarding_1", "9867225552:video_1", "10769279468:video_2", "10769279468:video_3", "5995470825:video_1", "5995470825:video_3", "10771871836:play_1"]
+          observed_count: 5
+          eligible_count: 9
+          confidence: medium
+          limitations:
+              - "Eligible adds 3508322461, 6375110339, 3183403065 and 994732206, skill-based action games whose footage shows effects or numbers but no quality verdict."
+              - "Mostly from edited videos of competent players; whether beginners read the grades was not observed."
+        - pattern: "What the player did stays visible in the world: cleaned ground behind the brush, the world growing as the avatar shrinks, nest rows climbing a wall, a crowd that copies what was broadcast, a plot sign rewritten with the owner's name, rubble left by a fight."
+          supporting_game_ids: ["10772543706", "7729422550", "10209534490", "10771871836", "1686885941", "3508322461"]
+          evidence_ids: ["10772543706:yt_onboarding_1", "10772543706:yt_skilled_1", "7729422550:video_1", "10209534490:source_4", "10209534490:source_5", "10771871836:play_1", "10771871836:video_onboarding_1", "1686885941:source_4", "3508322461:source_4", "3508322461:source_5"]
+          observed_count: 6
+          eligible_count: 20
+          confidence: medium
+          limitations:
+              - "A recurring technique rather than a majority: eligible is every game with gameplay footage or play."
+              - "1686885941 and 10771871836 are seen in real play; the rest rest on videos."
+        - pattern: "Non-essential modals stand between joining and the first action: an update log, a rules panel with a single Accept, a fan-made notice, an auto-opened login streak over the tutorial, a welcome modal and guide steps that teach daily rewards and quests before combat, and a favourite prompt."
+          supporting_game_ids: ["3183403065", "10209534490", "3508322461", "6375110339", "5995470825"]
+          evidence_ids: ["3183403065:play_1", "10209534490:source_3", "3508322461:source_3", "6375110339:play_1", "5995470825:play_1"]
+          observed_count: 5
+          eligible_count: 13
+          confidence: medium
+          limitations:
+              - "Eligible: the 13 games actually played. In 3183403065 four queued modals took about 100 s before free control; that is the clearest case."
+              - "7529591378 shows the contrasting order, chaining its daily reward and offer only after the tutorial; 3359505957's only join modal is itself the first action (hatch)."
+              - "Real-play captures establish what appeared and in which order; slow agent input lengthens the measured waits."
+        - pattern: "Paid offers share the look or the position of free progression and help: Robux floor pads shaped like cash pads, paid and free items in one grid told apart by a small badge, a paid 'Hint' button, a '+' beside a stat that opens a Robux shop, paid upgrades beside the free deposit, points-or-Robux on one confirmation, TRY and BUY as equal tiles, and offer tiles or cards held on the HUD edges during play."
+          supporting_game_ids: ["10209534490", "1686885941", "10771871836", "10563114921", "10772543706", "5995470825", "3183403065", "6375110339", "2711375305", "10769279468"]
+          evidence_ids: ["10209534490:source_3", "10209534490:source_5", "1686885941:source_4", "10771871836:play_1", "10563114921:play_1", "10772543706:play_1", "10772543706:yt_onboarding_1", "5995470825:play_1", "5995470825:video_1", "3183403065:play_1", "6375110339:video_1", "2711375305:video_1", "10769279468:video_2"]
+          observed_count: 10
+          eligible_count: 17
+          confidence: high
+          limitations:
+              - "Eligible: games with any commerce visible in play or footage. Presentation only; nothing was bought and no effect on spending or retention is claimed."
+              - "Prices and offers change; dated values stay in the records."
+        - pattern: "An ordinary first-session walk or click meant as free play or help opened a purchase prompt: walking the tutorial route over a paid pad, clicking a badged catalogue item, the top-bar Hint, and a stat '+' icon."
+          supporting_game_ids: ["10209534490", "1686885941", "10771871836", "10563114921"]
+          evidence_ids: ["10209534490:source_3", "1686885941:source_4", "10771871836:play_1", "10563114921:play_1"]
+          observed_count: 4
+          eligible_count: 13
+          confidence: medium
+          limitations:
+              - "Eligible: the 13 games actually played. All four are real play; the agent's slow, imprecise input may have made accidental steps likelier (notably the walk-on pads)."
+        - pattern: "Most first sessions showed no unsolicited purchase prompt before the first success: offers waited for a player's click or for the end of the tutorial."
+          supporting_game_ids: ["3359505957", "994732206", "7529591378", "10771871836", "1686885941", "10563114921", "6375110339", "9867225552", "10769279468", "7729422550", "3183403065", "10772543706"]
+          evidence_ids: ["3359505957:play_1", "994732206:play_1", "994732206:video_1", "7529591378:play_1", "10771871836:video_onboarding_1", "1686885941:source_4", "10563114921:play_1", "10563114921:video_1", "6375110339:play_1", "9867225552:video_1", "10769279468:video_2", "7729422550:play_1", "3183403065:play_1", "10772543706:play_1"]
+          observed_count: 12
+          eligible_count: 14
+          confidence: medium
+          limitations:
+              - "The exceptions are 10209534490 (a walk-on Robux pad on the tutorial route) and 5995470825 (a Starter Pack that opened by itself over the second death)."
+              - "10772543706 shows a persistent non-blocking offer widget from arrival but no prompt; it is counted as supporting."
+        - pattern: "In games where players can attack or take from each other, established players disrupted newcomers' first attempts (hit and trapped during a first steal, a lone player 'jumped' by groups, several riders targeting one, a boss kill taken), while some games protect the start with a labelled safe zone, a shooting-disabled stage opening, or a post-death PvP shield."
+          supporting_game_ids: ["10563114921", "3508322461", "9867225552", "994732206"]
+          evidence_ids: ["10563114921:video_1", "10563114921:play_1", "3508322461:source_5", "9867225552:video_1", "9867225552:video_2", "994732206:video_2", "994732206:video_3", "994732206:play_1"]
+          observed_count: 4
+          eligible_count: 5
+          confidence: medium
+          limitations:
+              - "Eligible adds 5995470825, a PvP shooter whose footage shows no ganging of newcomers."
+              - "From first-time creators' edited videos and their commentary; one real-play case (994732206) saw enemies attack inside the labelled safe zone."
+        - pattern: "Joining a match is spatial: walk onto a lobby pad, sit at a table with a seat counter, stand on a court spot. Where the waiting state or the choice between starting and joining was missing, players were confused or silently joined strangers; an AI fallback at the table removed the wait."
+          supporting_game_ids: ["10772543706", "10769279468", "7529591378"]
+          evidence_ids: ["10772543706:play_1", "10772543706:yt_onboarding_1", "10769279468:video_2", "10769279468:video_4", "7529591378:yt_session_1"]
+          observed_count: 3
+          eligible_count: 6
+          confidence: low
+          limitations:
+              - "Eligible adds 3183403065, 9867225552 and 6375110339, whose matchmaking is a menu or queue button. 10747710159 advertises seated tables but has no footage."
+              - "In 10772543706 the leader-owned save stopped a joined player's progress from saving when the leader left; one game only."
+        - pattern: "Friend multipliers are shown on the HUD or a board (friend boost on selling, gold multiplier with friends in the server, coin boost per friend, a Friends Boost meter)."
+          supporting_game_ids: ["10209534490", "3359505957", "5995470825", "10769279468"]
+          evidence_ids: ["10209534490:source_5", "3359505957:video_1", "5995470825:video_1", "10769279468:video_2"]
+          observed_count: 4
+          eligible_count: 17
+          confidence: low
+          limitations:
+              - "Presence only; nothing in the evidence shows effect on inviting or returning."
+        - pattern: "Return rewards are previewed as tracks: a 7-day login track with every day's reward shown, or a session playtime ladder with countdowns, often opened on join."
+          supporting_game_ids: ["10209534490", "3183403065", "6375110339", "7529591378", "5995470825"]
+          evidence_ids: ["10209534490:source_3", "3183403065:play_1", "6375110339:play_1", "7529591378:play_1", "5995470825:play_1"]
+          observed_count: 5
+          eligible_count: 13
+          confidence: medium
+          limitations:
+              - "Eligible: games actually played. A first-session sample cannot show any effect on return visits."
+    ui_patterns:
+        - pattern: "Text drawn over the 3D world stays readable when it uses a heavy rounded face with a dark stroke or sits on an opaque dark panel; thin, grey, small or translucent-backed text over bright scenes was repeatedly hard to read."
+          supporting_game_ids: ["10209534490", "10563114921", "10769279468", "10771871836", "10772543706", "3183403065", "3359505957", "5995470825", "994732206", "6026405541", "7729422550", "9867225552", "3508322461", "7529591378", "7104927007", "6375110339", "1686885941", "4723764956"]
+          evidence_ids: ["10209534490:source_3", "10563114921:play_1", "10769279468:video_2", "10771871836:play_1", "10772543706:play_1", "3183403065:play_1", "3359505957:play_1", "5995470825:play_1", "994732206:play_1", "6026405541:source_3", "7729422550:play_1", "9867225552:video_1", "3508322461:source_3", "7529591378:play_1", "7104927007:video_1", "6375110339:play_1", "1686885941:source_4", "4723764956:video_session_1"]
+          observed_count: 18
+          eligible_count: 19
+          confidence: medium
+          limitations:
+              - "Readability is visual judgement from VM captures at 1200 px width and 480p video frames; sizes are estimates except 7729422550."
+              - "Readable cases (first 12) and hard-to-read cases (3508322461, 7529591378, 7104927007, 6375110339, 1686885941, 4723764956 user text, 9867225552 praise lines on sand) both support the same principle. 2711375305 is eligible with no readability evidence."
+        - pattern: "Icons are paired with short text labels; where action icons had no name, first-time players guessed their effect or misread them (unnamed ability buttons guessed for minutes, an unlabeled '+' that opened a paid shop, unlabeled catalogue items, icon-only touch buttons)."
+          supporting_game_ids: ["10209534490", "3183403065", "10772543706", "3359505957", "6026405541", "6375110339", "10769279468", "4723764956", "994732206", "5995470825", "10563114921", "1686885941", "3508322461"]
+          evidence_ids: ["10209534490:source_3", "3183403065:play_1", "10772543706:play_1", "3359505957:play_1", "6026405541:source_3", "6375110339:play_1", "10769279468:video_2", "4723764956:video_session_1", "994732206:play_1", "5995470825:video_1", "10563114921:play_1", "1686885941:source_4", "3508322461:source_6"]
+          observed_count: 13
+          eligible_count: 19
+          confidence: high
+          limitations:
+              - "The confusion evidence (5995470825 video_1) is first-time creators performing for an audience, in edited footage."
+        - pattern: "Each action control shows the input that triggers it: keycap badges on HUD buttons, key letters on ability tiles, a context-changing keybind list, mouse-button glyphs in quest hints, and tiles that relabel for gamepad or touch."
+          supporting_game_ids: ["10772543706", "5995470825", "3183403065", "7529591378", "994732206", "9867225552", "3508322461", "6375110339", "6026405541"]
+          evidence_ids: ["10772543706:play_1", "5995470825:play_1", "3183403065:play_1", "7529591378:play_1", "7529591378:yt_onboarding_1", "994732206:play_1", "9867225552:video_1", "3508322461:source_5", "3508322461:source_6", "6375110339:play_1", "6375110339:video_1", "6026405541:source_3"]
+          observed_count: 9
+          eligible_count: 19
+          confidence: medium
+          limitations:
+              - "Device-adaptive relabelling (same tiles showing keys, gamepad buttons or touch icons) is shown only in 3508322461; touch layouts in 7529591378 and 6375110339 crowd the view on phones and tablets."
+              - "Touch and gamepad were never operated by this study; only footage shows them."
+        - pattern: "Panels close with a high-contrast red square (or circle) X at the top-right corner, consistent across a game's windows; panels without a close control, or with one hidden or not working, trapped or slowed the player."
+          supporting_game_ids: ["10209534490", "10563114921", "10769279468", "1686885941", "10772543706", "3183403065", "5995470825", "6026405541", "6375110339", "4723764956", "994732206", "9867225552", "3359505957"]
+          evidence_ids: ["10209534490:source_3", "10563114921:play_1", "10769279468:video_3", "1686885941:source_4", "10772543706:yt_skilled_1", "3183403065:play_1", "5995470825:play_1", "6026405541:source_3", "6375110339:play_1", "4723764956:video_session_1", "994732206:play_1", "9867225552:video_1", "3359505957:play_1"]
+          observed_count: 13
+          eligible_count: 17
+          confidence: high
+          limitations:
+              - "A shared Roblox convention, not a cause of anything. Defects: 3183403065 update log and notice had no X and a side prompt's X did not close it; 3508322461's rules panel has only Accept; 6375110339's Quests close sat under the player list; 7729422550's settings close only by its gear."
+        - pattern: "The current objective is one slim line at top centre with a live count (steps, kilograms, computers left, enemies left, score and timer), changing as the goal changes."
+          supporting_game_ids: ["10209534490", "10563114921", "3359505957", "10772543706", "6026405541", "6375110339", "5995470825", "9867225552"]
+          evidence_ids: ["10209534490:source_3", "10563114921:video_1", "3359505957:play_1", "10772543706:play_1", "6026405541:source_3", "6375110339:play_1", "5995470825:play_1", "9867225552:video_1"]
+          observed_count: 8
+          eligible_count: 11
+          confidence: medium
+          limitations:
+              - "Eligible adds 994732206 (tracker at the left edge), 7529591378 (left-side step list with a centred headline) and 3508322461 (event announcements only)."
+        - pattern: "Menu buttons carry a red badge or ring when they hold something the player can act on: claimable rewards, unspent stat points, a new unit, daily tasks."
+          supporting_game_ids: ["10209534490", "10563114921", "3183403065", "10769279468", "994732206", "7529591378"]
+          evidence_ids: ["10209534490:source_3", "10563114921:video_1", "3183403065:play_1", "10769279468:video_2", "994732206:video_1", "7529591378:play_1"]
+          observed_count: 6
+          eligible_count: 16
+          confidence: medium
+          limitations:
+              - "In 10563114921 a '!' badge also sat on the paid Shop, so badges were not reserved for free actionable items."
+        - pattern: "A new or rare acquisition gets a full-screen or framed reveal with its name and a rarity word in its rarity colour."
+          supporting_game_ids: ["3359505957", "3183403065", "10209534490", "10769279468", "10563114921"]
+          evidence_ids: ["3359505957:play_1", "3183403065:play_1", "3183403065:video_1", "10209534490:source_3", "10769279468:video_3", "10563114921:video_1"]
+          observed_count: 5
+          eligible_count: 7
+          confidence: medium
+          limitations:
+              - "Already covered by roblox-gameplay's distinct-milestone guidance; recorded for completeness."
+    onboarding_patterns:
+        - pattern: "Guidance gives one step at a time in a persistent banner or card that names the goal with a live count, and often its reward or its position in the sequence ('Collect 3 Eggs 0/3', 'Sweep 1 kg 0.00/1 kg', 'Defeat 5 Bandits 0/5' with money and EXP, 'Step N of 3', 'Guide - Step N of 5')."
+          supporting_game_ids: ["10209534490", "10563114921", "3359505957", "10772543706", "994732206", "6375110339", "7529591378"]
+          evidence_ids: ["10209534490:source_3", "10209534490:source_5", "10563114921:video_1", "3359505957:play_1", "10772543706:play_1", "10772543706:yt_onboarding_1", "994732206:video_1", "6375110339:play_1", "7529591378:play_1"]
+          observed_count: 7
+          eligible_count: 11
+          confidence: high
+          limitations:
+              - "Eligible: games whose onboarding status is observed. Non-supporting: 10771871836 (one caption then unguided by design), 1686885941 (HUD labels only), 3183403065 (no guide seen), 7729422550 (none)."
+        - pattern: "A world-space route cue leads from spawn to the first target: a glowing floor trail, floor arrows, a compass marker with metres, a floor line to the deposit, a chevron over the target."
+          supporting_game_ids: ["10209534490", "10563114921", "10772543706", "994732206", "7529591378"]
+          evidence_ids: ["10209534490:source_3", "10563114921:play_1", "10772543706:play_1", "10772543706:yt_onboarding_1", "994732206:play_1", "7529591378:play_1", "7529591378:yt_onboarding_1"]
+          observed_count: 5
+          eligible_count: 11
+          confidence: medium
+          limitations:
+              - "In 10563114921 the arrows changed direction and were buried by other players' giant pets; in 994732206 the marker appeared only after opening the compass."
+        - pattern: "Real play stalled where guidance stopped short of the place the loop pays: minutes of searching between the starter hatch and the earning field, 24 minutes at stage 0 of an unmarked first route, no pointer to the first match, arrows lost among other players' pets, guidance hidden behind an opt-in compass."
+          supporting_game_ids: ["3359505957", "7729422550", "3183403065", "10563114921", "994732206"]
+          evidence_ids: ["3359505957:play_1", "7729422550:play_1", "7729422550:video_1", "3183403065:play_1", "10563114921:play_1", "994732206:play_1"]
+          observed_count: 5
+          eligible_count: 11
+          confidence: medium
+          limitations:
+              - "Agent input was slow and the VM GPU garbled 994732206's and 3183403065's worlds, so stall lengths overstate what a person would meet; 7729422550's video confirms the first route is unmarked, and 3359505957's video confirms a slow, run-heavy start."
+        - pattern: "A guided chain or a completed unit ends with an explicit handoff naming the next choices: a 'What's next' card of pictured goals, a completion card offering the real mode or the hub, a publish dialog naming an unlocked tool with make, watch or back, an ending card with replay and hints, a winner screen with Rematch or Leave, a 'new quest available' line pointing to the next island."
+          supporting_game_ids: ["10772543706", "7529591378", "4723764956", "10771871836", "994732206", "10769279468", "9867225552"]
+          evidence_ids: ["10772543706:yt_onboarding_1", "7529591378:play_1", "4723764956:video_session_1", "10771871836:video_onboarding_1", "10771871836:video_session_1", "994732206:video_2", "10769279468:video_2", "9867225552:video_1"]
+          observed_count: 7
+          eligible_count: 9
+          confidence: medium
+          limitations:
+              - "Eligible adds 10209534490 (the banner just becomes a Home button) and 1686885941 (no goal after setup)."
+              - "Only 7529591378's handoff is seen in real play; the rest are videos."
+        - pattern: "First-time players in footage failed to discover controls and systems the game never named or taught (what each ability does, aim-down-sights, the ammo count, hotbar skills, restocking, passing and guarding, copy and paste, the treadmill), and learned from other players or the creator instead."
+          supporting_game_ids: ["5995470825", "9867225552", "7529591378", "4723764956", "3508322461", "10769279468", "10563114921"]
+          evidence_ids: ["5995470825:video_1", "9867225552:video_1", "7529591378:yt_session_1", "4723764956:video_session_1", "4723764956:video_session_2", "3508322461:source_4", "10769279468:video_4", "10563114921:video_1"]
+          observed_count: 7
+          eligible_count: 11
+          confidence: medium
+          limitations:
+              - "Creators' commentary in edited videos; confusion can be performed. Eligible adds 10771871836, 994732206, 10772543706 and 10209534490, whose first-time footage shows controls learned from the game."
+        - pattern: "A guaranteed reward arrives at or before the first action: a free starter egg hatched from the welcome modal, a starter unit revealed at first control, a Day 1 claim, a previewed starter gift for finishing the guide, coins for completing the tutorial."
+          supporting_game_ids: ["3359505957", "3183403065", "10209534490", "6375110339", "7529591378"]
+          evidence_ids: ["3359505957:play_1", "3183403065:play_1", "10209534490:source_3", "6375110339:play_1", "7529591378:play_1"]
+          observed_count: 5
+          eligible_count: 11
+          confidence: medium
+          limitations:
+              - "All real play. 10563114921's identical gold first hatch in two videos suggests a scripted first reward but is inference."
+        - pattern: "A feature is introduced when it becomes usable: tooltips pointing at a button the moment it matters, a tool unlocked on first publish, a full meter turning into an in-place key prompt, tutorial steps that teach one new system each and then hand off, one-time labels with arrows beside the icon menu."
+          supporting_game_ids: ["3359505957", "4723764956", "3508322461", "10209534490", "1686885941"]
+          evidence_ids: ["3359505957:video_1", "4723764956:video_session_1", "3508322461:source_4", "10209534490:source_5", "1686885941:source_4"]
+          observed_count: 5
+          eligible_count: 11
+          confidence: medium
+          limitations:
+              - "Already covered by roblox-react's guidance not to show beginners controls that are not yet relevant; recorded for completeness."
+    genre_exceptions:
+        - genre: "Obby / platformer"
+          game_ids: ["7729422550"]
+          note: "No tutorial, marker or legend; colour alone separates hazard from course; failure is unexplained; progress is pure movement mastery and is felt as the world growing. A skilled player finds stage 1 in 7 s while real play stayed at stage 0 for 24 minutes, so the banner-and-trail onboarding norm does not hold here."
+          evidence_ids: ["7729422550:play_1", "7729422550:video_1"]
+        - genre: "Social roleplay and creative sandboxes"
+          game_ids: ["1686885941", "7104927007", "2711375305", "4723764956"]
+          note: "No goal ladder, currency progression or quest banner; play is self-directed expression shown to others (an owner's name on a plot sign, character performances, outfits copied from other players, a premiere on a shared screen). Goal and locked-content patterns do not apply; onboarding is light (HUD labels) or peer-taught."
+          evidence_ids: ["1686885941:source_4", "7104927007:video_1", "7104927007:video_2", "2711375305:video_1", "4723764956:video_session_1"]
+        - genre: "Narrative point-and-click"
+          game_ids: ["10771871836"]
+          note: "Guidance is deliberately sparse (one 'POINT & CLICK' caption, rare nudges); the next beat can stall a player for many minutes; replay value comes from an endings album that becomes a free hint list after the first ending."
+          evidence_ids: ["10771871836:play_1", "10771871836:video_session_1"]
+        - genre: "PvP fighting and shooters"
+          game_ids: ["3508322461", "5995470825", "9867225552"]
+          note: "Progress is mostly mastery of a small control set rather than stat growth; onboarding was indeterminate in all three; newcomers learn controls from peers; group targeting of lone players is the main friction."
+          evidence_ids: ["3508322461:source_4", "3508322461:source_5", "5995470825:video_1", "9867225552:video_1"]
+        - genre: "Wave defense / tower defense with a gacha meta"
+          game_ids: ["3183403065", "6375110339"]
+          note: "Both put meta systems (update log, daily login, quests, gacha banners) before the first match, and real play reached the first wave late or mid-run (joined at wave 73). This is the strongest case of the join-modal pattern, not a separate genre rule."
+          evidence_ids: ["3183403065:play_1", "6375110339:play_1"]
+        - genre: "Asymmetric round survival"
+          game_ids: ["6026405541", "6331902150", "10771743491"]
+          note: "Round goals fit one line per role with a hard timer and a single objective line with a count; play needs a full server. Only 6026405541 has footage (a trailer); the other two are description and art only."
+          evidence_ids: ["6026405541:source_3", "6331902150:description_1", "10771743491:source_2"]
+        - genre: "Physics sandbox"
+          game_ids: ["10770575733"]
+          note: "Advertised with every tool free from the start and no progression; no footage, so nothing is claimed beyond the description."
+          evidence_ids: ["10770575733:api_1"]
+    evidence_limits:
+        - "Five games have no gameplay video and are partial: 10747710159 (Word Battle!), 10770575733 (Ragdoll Physics), 10771743491 (South Hell), 6331902150 (Forsaken), 4260784961 (Napoleonic Wars). They count as unknown, never as evidence against a pattern, and appear only in eligible counts where their description or art is relevant."
+        - "The VM's GPU garbled several 3D worlds in real play (notably 994732206 and 3183403065, and parts of 1686885941); videos confirm those were VM faults, not game art. World-readability and navigation claims from those sessions rest on video."
+        - "Agent input was slow and imprecise (a failed mouse-hold in 10772543706, a D-key defect in 7529591378, blind movement in 5995470825), so play-based difficulty, feel, stall-length and accidental-purchase claims are weak; UI presence and ordering from captures are reliable."
+        - "Videos are edited and usually from returning or skilled players; no tutorial duration or session length is taken from them, and creators' confusion may be performed for an audience."
+        - "The first games were played under a five-minute active-play limit; later games ran longer, so observed_seconds are not comparable across games."
+        - "Creator preview trailers (e.g. 1686885941, 2711375305, 5174979552, 6026405541) are promotional montages; they establish presentation, not first-time flow."
+        - "Font sizes are visual estimates from scaled captures except 7729422550; touch and gamepad were seen only in footage, never operated."
+        - "Chart presence is correlation: no pattern here is claimed to cause popularity, retention or spending."
+    skill_updates:
+        - "roblox-gameplay: failure and quality feedback in Make success clear and satisfying"
+        - "roblox-gameplay: new First session section (first action first, one full earn-and-spend cycle, guidance to where the loop pays, handoff at the end of guidance and of each unit)"
+        - "roblox-gameplay: locked content shown in place with its condition, and progress visible in the world, in Reward real progress"
+        - "roblox-gameplay: newcomer protection in Variety, identity, and playing together"
+        - "roblox-gameplay: new Paid offers section"
+        - "roblox-react: named actions with device inputs, text contrast over the world, one close control in one place, objective reminder contents and placement"
+        - "roblox-building: arrival view composition in map-making Composition and traversal"

@@ -1,0 +1,225 @@
+name: "Napoleonic Wars"
+game_id: "universe:4260784961"
+universe_id: "4260784961"
+place_id: "12068120918"
+url: "https://www.roblox.com/games/12068120918/Napoleonic-Wars"
+creator: "NapoIeonic Wars (group 12425385, no verified badge, 141,618 members)"
+chart_category: "Top Revisited"
+chart_rank: 2
+researcher: "R13"
+mode: passive
+play_ended_by: null
+onboarding_video_coverage: not_covered
+observed_at: "2026-11-09T00:15:00Z"
+observation_status: partial # no gameplay video studied: YouTube blocked this machine; a later run studies it again
+previous_observed_at: null
+changes_since_previous: []
+active_play_seconds: null
+play_coordination:
+    resource_key: null
+    wait_seconds: null
+    acquired_at: null
+    expires_at: null
+    released_at: null
+    release_verified: null
+    expiry_or_blocker: null
+context:
+    genre: "Historical military / large-scale line-battle community game (games API: genre 'Military', genre_l1 'Action')"
+    camera_perspective: null
+    device_and_input: null
+    observation_environment: "Passive: public games, thumbnails, media, places, badges, game-pass, group and age-recommendation APIs plus the experience page HTML, retrieved over HTTP from the orchestrator host; no client launched"
+    visible_server_population: "API at retrieval: 368 playing, maxPlayers 200 per server"
+    solo_or_group: "Advertised as mass group play (organised battles); solo experience unobserved"
+    game_version_if_known: "Universe updated 2026-11-04T19:23:54Z; created 2023-01-06"
+    evidence: [description_1, page_1, places_1]
+account_state:
+    freshness: unknown
+    evidence: ["Game not played; no in-game state observed."]
+evidence:
+    - id: description_1
+      kind: description
+      url: "https://games.roblox.com/v1/games?universeIds=4260784961"
+      captured_at: "2026-11-09T00:12:00Z"
+      media_date_or_version: "updated 2026-11-04T19:23:54Z"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Description is marketing text; it states the setting (1804-1815) and claims battles of 'well over 3,000 players', but maxPlayers per server is 200, so that figure presumably counts participants across servers or events; not verified."
+          - "Stats at retrieval: 24,601,204 visits, 79,185 favourites, 368 playing; votes 28,261 up / 5,153 down (about 85% positive); avatar type MorphToR6."
+    - id: page_1
+      kind: description
+      url: "https://www.roblox.com/games/12068120918/Napoleonic-Wars"
+      captured_at: "2026-11-09T00:13:00Z"
+      media_date_or_version: "page dateModified 11/04/2026"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Page HTML fetched, not rendered in a browser; read for structured metadata only (aggregate rating 84.6 from 33,414 ratings, listed platforms incl. PC, Mac, mobile, console)."
+          - "Age-recommendation API: Maturity 'Moderate', descriptor Violence (Repeated/Moderate)."
+    - id: thumbnail_1
+      kind: thumbnail
+      url: "https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=4260784961&size=768x432&format=Png"
+      captured_at: "2026-11-09T00:13:00Z"
+      media_date_or_version: "image 12239494369 (only approved media item; no video)"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Viewed. Illustrated promo art: three R6 soldiers in period uniforms (shako, bearskin, musket) in front of red-coated and blue-coated ranks, gold serif title 'NAPOLEONIC WARS', tagline 'THE LARGEST BATTLES ON ROBLOX', plate 'GRANDBATTLES', and a credits row of seven developer names. Promotional art; it does not show the in-game UI or HUD."
+    - id: places_1
+      kind: description
+      url: "https://develop.roblox.com/v1/universes/4260784961/places?limit=50"
+      captured_at: "2026-11-09T00:14:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Lists 42 places: historical battle maps (Waterloo, Austerlitz, Wagram, Borodino, Dresden, Egypt, Coruña, Raab, Piave, Boulogne, Strasbourg, Wavre, Spanish River, Flatlands), palace/social maps (Schönbrunn, Sanssouci, Topkapi, Catherine Palace, Windsor Castle, Palacio Real de Madrid, Caserta, Château de Malmaison), a 'Thornsbrook Military Academy', a 'Theatre', and developer/staging places. Names only; how players reach each map is not established."
+          - "Badges API: one badge, 'The Great Heist' (1,191 awarded total, 2 in the past day). Game-pass API returned no game passes."
+    - id: video_1
+      kind: gameplay_video
+      url: null
+      captured_at: null
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "The experience's media list holds no video and no gameplay footage was watched, so no in-game UI, controls, onboarding or combat feel is described."
+gameplay:
+    advertised_loop: "Join a faction army in Napoleonic-era (1804-1815) line battles with very large player counts, depicted as organised community events ('a game community')."
+    observed_loop: null
+    first_action: null
+    first_success_seconds: null
+    success_feedback: []
+    progression: []
+    choices_and_variety:
+        - "Evidence (places_1): many named historical battlefields plus palace and academy places, suggesting map variety and non-combat social or drill spaces."
+    social_and_cooperative:
+        - "Advertised: mass team battles; 'game community' framing and a 141,618-member owning group (description_1, page_1)."
+    companions_and_pets: []
+    friction:
+        - "Inference: event- and community-driven battles may leave a casual joiner outside a scheduled battle with little to do; unverified without play."
+    evidence: [description_1, places_1]
+pacing:
+    timing_start_definition: null
+    loading_seconds: null
+    time_to_control_seconds: null
+    first_meaningful_choice_seconds: null
+    first_reward_seconds: null
+    action_reward_cadence: null
+    active_play_versus_travel_or_waiting: null
+    natural_stopping_points: []
+    measurement_method: "None; passive research only."
+    evidence: []
+goals_and_progression:
+    next_goal_clarity: null
+    short_term_goals: []
+    medium_term_goals: []
+    advertised_long_term_goals: []
+    upgrade_choices: []
+    mastery_versus_stat_growth: "Unknown. No game passes and a single badge suggest progression is not monetised or badge-driven, but in-game ranks or unlocks are unobserved."
+    unlock_previews_and_optional_activities: []
+    evidence: [places_1]
+failure_and_recovery:
+    observed_failure: null
+    explanation: null
+    cost_or_lost_progress: null
+    retry_seconds: null
+    checkpoints: null
+    non_paid_recovery: null
+    evidence: []
+agency_and_social:
+    meaningful_choices: []
+    customization_and_identity:
+        - "Advertised art shows faction-specific historical uniforms; avatar type MorphToR6 means players are morphed into game-provided R6 characters (description_1, thumbnail_1). Uniform or regiment choice in game is unobserved."
+    cooperation_and_competition:
+        - "Advertised: faction-versus-faction battles (red-coat British versus French in art and media alt text)."
+    visible_social_feedback: []
+    solo_accessibility: null
+    evidence: [description_1, thumbnail_1]
+ui:
+    evidence_status: unknown
+    visual_style: "Promotional art only: painterly, dark smoky background, warm gold serif title lettering with an ornate plate; not evidence of in-game UI."
+    layout_and_hierarchy: null
+    color_scheme: []
+    typography:
+        font_appearance: null
+        font_family_if_verified: null
+        size_observation: null
+        size_basis: unknown
+        viewport_resolution: null
+        readability: null
+    controls:
+        primary_actions: null
+        close_x_appearance_and_location: null
+        modal_behavior: null
+        state_feedback: null
+        target_size_and_input: null
+    graphics:
+        graphics_versus_text: null
+        illustration_or_icon_style: null
+        framing_outlines_and_effects: null
+        placement_and_labels: null
+        clarity_or_clutter: null
+    evidence: [thumbnail_1]
+new_player_onboarding:
+    status: indeterminate
+    reason: "Passive only: not played and no gameplay footage available. A place named 'Thornsbrook Military Academy' exists, which could be a training space, but its role is unverified."
+    conventions: []
+    sequence: []
+    first_independent_action: null
+    skip_or_replay: null
+    completed: null
+    observed_seconds: null
+    completion_seconds: null
+    timing_basis: null
+    evidence: [places_1]
+accessibility_and_comfort:
+    text_and_contrast: null
+    non_color_cues_and_icon_labels: null
+    input_support_observed: []
+    motion_audio_settings: []
+    settings_tested: []
+    clutter_and_interruptions: []
+    evidence: []
+commercial_and_return_prompts:
+    first_purchase_prompt_seconds: null
+    purchase_prompt_count_during_sample: null
+    onboarding_interruption: null
+    optional_versus_required_presentation: "Game-pass API lists no game passes; developer products or other in-game offers unobserved."
+    return_rewards_and_events: []
+    urgency_or_streak_cues: []
+    evidence: [places_1]
+world_and_presentation:
+    navigation_and_objective_readability: null
+    landmarks_and_variety:
+        - "Place names reference real Napoleonic battlefields and European palaces (places_1); visual content of those maps unobserved."
+    environmental_storytelling:
+        - "Advertised: historical framing of Napoleon's 1804 coronation and campaigns (description_1)."
+    audiovisual_consistency: null
+    success_effect_intensity_and_clarity: null
+    evidence: [description_1, places_1]
+technical_quality:
+    loading_or_missing_assets: []
+    input_or_frame_issues: []
+    ui_defects: []
+    recovery_behavior: null
+    measurements: []
+    measurement_method_and_limits: "Not played; no technical observations."
+    evidence: []
+transferable_ideas:
+    - "Inference: a strong, coherent theme (one historical era, uniforms, named battlefields) plus community-run scheduled events can sustain a 'Top Revisited' audience without game passes or badge chases."
+    - "Inference: separate social or ceremonial spaces (palaces, a theatre, an academy) alongside combat maps give a community somewhere to gather between battles."
+practical_takeaway:
+    strongest_idea: "Community and event identity as the return driver: a large owning group and recurring organised battles appear to bring players back rather than monetised progression (inferred from 141k group members, Top Revisited rank, no game passes)."
+    main_tradeoff: "Inference: value depends on population and scheduled events; a lone newcomer between events may find little structure. Unverified."
+    suitable_genres_and_stages: ["team combat", "roleplay", "community or event-driven games at a stage with an established player base"]
+    testable_hypothesis: "Announcing a recurring, scheduled group event in-game (with a countdown and a gathering space) raises return visits on event days compared with non-event days."
+    estimated_effort_and_assumptions: "Estimate: small to medium (event scheduler, countdown UI, gathering area), assuming an existing multiplayer core loop and community channel."
+inferences:
+    - "Top Revisited rank, 141,618 group members and the 'game community' framing suggest return play is driven by community and events."
+    - "No game passes and one badge suggest a low-monetisation design; in-game developer products are unknown."
+uncertainties:
+    - "Core loop, controls, HUD, onboarding and pacing are all unobserved: no play and no gameplay footage."
+    - "The '3,000 players' battle claim conflicts with maxPlayers 200 per server; how battles are organised is unverified."
+    - "Role of the many sub-places (palaces, academy, developer places) and how players reach them is unknown."
+blockers: []

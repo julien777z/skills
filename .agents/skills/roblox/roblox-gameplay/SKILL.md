@@ -20,6 +20,14 @@ Fit the rhythm of success to the requested genre, audience, and mood. Establish 
 
 Make successful actions legible through appropriately scaled visual, audio, motion, and progress feedback. Attribute the result to the player's action without obscuring targets, text, or threats. Bound concurrent effects, clean them up, and respect motion, camera-shake, contrast, and audio preferences. Keep frequent feedback short enough that the next action remains available.
 
+Where an action's quality can vary, tell the player how well it went, not only whether it worked: a short worded verdict, a grade or a medal for quality, attributed to the action that earned it. When an action fails, show why at the moment it fails, such as who or what caused it, which value fell short, or how close the attempt came, and, where the game allows another attempt, keep the way back to it clear and short. A failure the player can only work out by repeating it teaches slowly.
+
+## First session
+
+Put the first action before everything a new player does not yet need. Update notes, rules, daily rewards, events and offers wait until after the first success, or until the player opens them; a join that queues several panels before control delays the loop it is meant to introduce. When the game has an earn-and-spend economy and the work shapes its onboarding, carry the guidance through one whole cycle: the core action, its payout, and a first purchase or upgrade within reach of that payout. When the game guides a new player, lead that guidance all the way to the place the loop first pays, switched on by default for a new player, rather than stopping at the first menu step or hiding it behind an opt-in control. A new player stalls in the gap between the last guided step and the first earning spot, so check that the cue stays visible there, including when other players crowd the route.
+
+Where the end of the guided chain, or of a unit such as a round, a stage, a level or a published creation, leaves the next step unclear, hand off to it: a short card or line naming the next goals or choices, such as continue, try the real mode, or return to the hub, or a cue the world or existing controls already give. A newly unlocked tool or area belongs in that handoff. The end of guidance should never read as silence.
+
 ## Judge the game as a player meets it
 
 Every result is judged in the game as a player would meet it, whether you built it or a worker did: from a capture or a playtest, not from the brief, the code or a report. Ask of each thing in view whether it makes sense in this world, not only whether it is broken: an object reads as what it is meant to be, a room's furnishings fit its purpose, a character holds what it holds, a creature belongs in its area's level band, a label sits where it can be read, a rule agrees with the game's other rules. Something that reads wrong is fixed, whoever made it and whenever, even when no brief, check or request mentioned it.
@@ -32,6 +40,10 @@ Show what was earned and why using the game's actual rewards and progress states
 
 Tie near-term actions to clear medium-term goals and recognizable milestones. New powers, useful upgrades, newly accessible areas, personalization, and increased player skill can all make progress tangible. Vary tasks, pacing, encounters, and scenery while retaining a familiar core action. Avoid extending play only through repetitive waiting or arbitrary travel; preserve intentional anticipation, exploration, and tactical pauses where they make the genre enjoyable. Pace a leveled game through level design rather than requirements: an encounter never refuses to start because of the player's level. Place each area's creatures and each fight in the level band a player naturally has when the game first sends them there, never above it, and let the curve and the amount of content set how long a world lasts; a check that fails when an area's creatures start above its arrival level keeps that true as content grows.
 
+Show locked content where the player will use it, together with what unlocks it: a silhouetted collection entry, a padlocked slot, a greyed move labelled with the level or mastery that opens it, a mode showing the wins it needs, or a gate that states its requirement as a number the player can read from the approach. The condition shown must be the one the game actually checks. Content the progression contract keeps secret can stay hidden or appear as an unnamed slot.
+
+Where the game allows it, let what the player did stay visible in the world: ground they cleared, a structure that grows as they invest in it, NPCs that react to what they chose, their name on what they own. The world then shows progress without a meter. Drive these changes from authoritative state, bound them, and keep them consistent on rejoin and streaming.
+
 ## Navigation and travel presentation
 
 Make the current objective and next useful action easy to find without covering play. Use a HUD cue, in-world guidance, or another presentation suited to the game. Keep route cues attached to traversable paths, and suppress them when they would obstruct conversations, encounters, or modal screens. Preserve destination information through streaming and restore camera/input after failed transitions.
@@ -40,7 +52,7 @@ Travel choices should describe their actual destination and action. Reveal locke
 
 ## Variety, identity, and playing together
 
-Give repeated play different decisions: tactical choices, complementary roles, discoveries, alternate approaches, or expressive customization that suits the game. Shared goals and visible contributions can reward cooperation before a large objective is complete. Support players who are learning or playing solo as well as groups. Comfortable controls and a world worth inhabiting matter alongside reward effects.
+Give repeated play different decisions: tactical choices, complementary roles, discoveries, alternate approaches, or expressive customization that suits the game. Shared goals and visible contributions can reward cooperation before a large objective is complete. Support players who are learning or playing solo as well as groups. Where players can attack, block or take from each other, protect a newcomer's first attempts: a clearly bounded spawn area that really is safe, a short opening in which combat is off, or a protected moment after death. Comfortable controls and a world worth inhabiting matter alongside reward effects.
 
 Treat design themes as hypotheses to test, not proof of what causes popularity. A tactical RPG, social roleplay game, and rapid collection game can be enjoyable for different reasons.
 
@@ -72,6 +84,10 @@ When companions fit the game, give them understandable useful behavior and a cle
 
 Fit companions to the genre, progression, and production stage. A popular feature is not automatically appropriate for every game.
 
+## Paid offers
+
+When a game sells items, a paid action never looks like free progression or help. Give paid controls their own shape and a price label, not only a colour or a small badge. Keep them off the routes and controls that guidance sends a new player through. A help, hint or "+" button either does what its label promises for free or shows its cost before it is pressed.
+
 ## Validate fun at the affected scale
 
 Play the affected loop through ordinary controls. Observe how quickly a beginner understands the next action, whether success is visible/audible, whether rewards agree with real state, and whether another attempt feels inviting. Check feedback at normal player pace and during rapid repeated successes, including overlap, audio buildup, cleanup, and performance. Keep stronger milestones distinct from routine hits.
@@ -80,4 +96,4 @@ When the work involves React-rendered UI, apply `roblox-react` for clarity and i
 
 ## Learn from evidence
 
-Keep transferable design principles here and dated observations in the invoking project's verification evidence. Distinguish passive inspection from actual play, label popularity hypotheses, and apply only ideas that fit the current game. Update canonical `.agents` sources only and leave mirrors to Agent Sync.
+Keep only transferable design principles here; dated observations stay in the records that hold them. Distinguish passive inspection from actual play, label popularity hypotheses, and apply only ideas that fit the current game. Update canonical `.agents` sources only and leave mirrors to Agent Sync.

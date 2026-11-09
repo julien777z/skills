@@ -677,8 +677,7 @@ An outcome is what its source of truth shows, never what an action or a worker s
   remain" by searching. A claim the check contradicts is the next thing done, ahead of queued
   work: sent back to the worker with what the read showed, or fixed here.
 - **What a worker reports leaving alone is classified before it reaches the user.** Read each item
-  against `pre-production`'s **Scope Follows The Defect, Not The Request** bullets: a defect within
-  its size budget, a parallel copy of the change's own mechanism or a shape a standing rule names
+  against `pre-production`'s **Scope Follows The Defect, Not The Request** bullets: a defect, a parallel copy of the change's own mechanism or a shape a standing rule names
   goes back to the worker or is fixed here; an item over the size budget is recorded with
   `defer-scope`, and only it and an item those bullets leave to the user are reported, as what it
   is and never as a question whether to fix it.
@@ -1059,8 +1058,8 @@ bug or a passing formatter does not satisfy this spacing check.
 - **Delegated edits run at this cadence.** A brief handing a worker edits states it, names the
   branch the worker pushes to — the branch of the pull request the work continues, under **Branches and Pull Requests** — and names the exact files to change, under `subagent-matrix`'s **Dispatch**. The
   worker pushes each step once its checks pass and reports the branch and head. The brief has the
-  worker fix every defect it meets within `pre-production`'s size budget, in the product or the
-  repository's tooling, and report as left alone only what is past that budget and any item
+  worker fix every defect it meets, in the product or the repository's tooling, and report as left
+  alone only cleanup past `pre-production`'s size budget and any item
   `pre-production`'s scope bullets leave to the user. The delegating agent reads that head under
   the global rules’ **Reported Outcomes** before any dependent work starts. The worker
   ends with nothing uncommitted and nothing unpushed beyond the **Pre-Push Gate**'s one exception,

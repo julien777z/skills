@@ -1,0 +1,456 @@
+---
+name: 'ST : Blockade Battlefront'
+game_id: universe:6375110339
+universe_id: '6375110339'
+place_id: '18816315817'
+url: https://www.roblox.com/games/18816315817
+creator: Blockadian Studio (group)
+chart_category: Top Revisited
+chart_rank: 1
+researcher: R03
+mode: play
+play_ended_by: null # not recorded: the session predates this field
+onboarding_video_coverage: not_covered
+observed_at: '2026-11-08T23:38:21Z'
+observation_status: completed
+previous_observed_at: null
+changes_since_previous: []
+active_play_seconds: 477
+play_coordination:
+  resource_key: roblox-player
+  wait_seconds: 676
+  acquired_at: '2026-11-08T23:37:57Z'
+  expires_at: '2026-11-08T23:47:57Z'
+  released_at: '2026-11-08T23:47:58Z'
+  release_verified: false
+  expiry_or_blocker: Player quit at 23:47:44Z and only the -launchToTray process remained (verified). The roblox-player lease expired at 23:47:57Z, one second before release, and R02 acquired it at 23:47:57Z, so the release call reported the receipt no longer owned the key. The vm-desktop:roblox-studio lock (acquired 23:38:07Z) was still held and released cleanly at 23:47:58Z, so no other researcher had desktop input while this game ran. Active play ran past the five-minute cap (477 s from first control) because one batched input command took about 85 s to return.
+context:
+  genre: 'Wave survival / tower-defense hybrid with third-person brawler combat (Roblox genre: Action > Battlegrounds & Fighting)'
+  camera_perspective: Third-person over-the-shoulder, player-controlled
+  device_and_input: Desktop keyboard and mouse (VM-injected clicks and key holds); on-screen hints show M1, E (Drop Kick), Ctrl (Sprint)
+  observation_environment: 'macOS guest VM running the published Roblox player at 1920x1200 points; client 0.746.0; in-game build label Ver. 9.4.2; Region: United States'
+  visible_server_population: About 9 players in the match player list; API maxPlayers is 1 for the lobby place, matches run in a separate teleported server
+  solo_or_group: Group (public match joined in progress, cooperative)
+  game_version_if_known: Ver. 9.4.2 (in-game label)
+  evidence:
+  - play_1
+  - description_1
+account_state:
+  freshness: fresh
+  evidence:
+  - On first match join the game showed a 'Welcome, <display name>!' new-player guide offering a starter gift, points and cash were 0, daily login streak was Day 1/7, only the tier-1 starter character was owned, and the player was LV 1 (6375110339-7.png, 6375110339-9.png, 6375110339-13.png). This indicates the game had no prior progress for the signed-in account.
+evidence:
+- id: description_1
+  kind: description
+  url: https://games.roblox.com/v1/games?universeIds=6375110339
+  captured_at: '2026-11-08T23:25:00Z'
+  media_date_or_version: updated 2026-11-07T16:01:34Z
+  timestamps: []
+  screenshots: []
+  limitations:
+  - Description read through the public games API; the web page HTML was not rendered.
+- id: thumbnail_1
+  kind: thumbnail
+  url: https://games.roblox.com/v2/games/6375110339/media
+  captured_at: '2026-11-08T23:25:00Z'
+  media_date_or_version: 3 approved images (130944370163334, 85329529896759, 18890228732)
+  timestamps: []
+  screenshots: []
+  limitations:
+  - Promotional art only; no video in the experience media list, so no gameplay footage was watched.
+- id: play_1
+  kind: actual_play
+  url: https://www.roblox.com/games/18816315817
+  captured_at: '2026-11-08T23:38:21Z'
+  media_date_or_version: Ver. 9.4.2
+  timestamps:
+  - 23:38:21Z launch
+  - 23:39:12Z first control (title)
+  - 23:40:45Z welcome guide
+  - 23:41:39Z first reward
+  - 23:44:04Z in-wave control
+  - 23:47:09Z last capture
+  screenshots:
+  - 6375110339-1.png
+  - 6375110339-3.png
+  - 6375110339-4.png
+  - 6375110339-5.png
+  - 6375110339-6.png
+  - 6375110339-7.png
+  - 6375110339-8.png
+  - 6375110339-9.png
+  - 6375110339-10.png
+  - 6375110339-11.png
+  - 6375110339-12.png
+  - 6375110339-13.png
+  - 6375110339-14.png
+  - 6375110339-15.png
+  - 6375110339-17.png
+  - 6375110339-18.png
+  - 6375110339-19.png
+  - 6375110339-20.png
+  - 6375110339-21.png
+  - 6375110339-22.png
+  limitations:
+  - Captures are periodic stills, not video; combat moments between captures were not seen.
+  - macOS notification banners (Login Item Added, macOS Tahoe tips) covered the top-right corner of every capture.
+  - VM-injected input with no continuous mouse-look; enemies were hard to locate, so no kill by this player was confirmed.
+- id: video_1
+  kind: gameplay_video
+  url: https://www.youtube.com/watch?v=faDBtNqh1zg
+  captured_at: '2026-11-09T02:05:00Z'
+  media_date_or_version: 2026-06-27 (in-game Ver. 9.0.1 to 9.0.2)
+  timestamps:
+  - 0:00 wave 29 HUD at 100x speed
+  - 0:30 character roster with skill list
+  - 1:00 unlock confirmation (1250 points or 250 Robux)
+  - 1:15 first wave as a newly bought Titan with Skip Heli 0/1 vote
+  - 2:45 Plunger quest panel
+  - 7:15 spectating with not-ready banner
+  - 7:45 quest NPC dialog
+  - 8:15 downed with Revive prompt
+  - 9:15 Default/Casual mode cards
+  - 9:45 gacha skins banner with Robux luck boosters
+  screenshots:
+  - faDBtNqh1zg-001.jpg
+  - faDBtNqh1zg-003.jpg
+  - faDBtNqh1zg-005.jpg
+  - faDBtNqh1zg-006.jpg
+  - faDBtNqh1zg-012.jpg
+  - faDBtNqh1zg-030.jpg
+  - faDBtNqh1zg-032.jpg
+  - faDBtNqh1zg-034.jpg
+  - faDBtNqh1zg-038.jpg
+  - faDBtNqh1zg-040.jpg
+  limitations:
+  - Session video "Noob to UTCM [FULL MOVIE]" by MythicSTBB (about 2.2K subscribers), about 85.6K views; first 10 of 23.7 minutes studied.
+  - Heavily edited progression montage (speed-ups, cuts, caption jokes), not a continuous session; the account already owned starter units at the start, so it is not a first join.
+  - Played on a touch tablet; on-screen buttons, not keyboard.
+  - Frames 015 and 031 show an unrelated runner game inset and were discarded; music only, no English captions.
+- id: video_2
+  kind: gameplay_video
+  url: https://www.youtube.com/watch?v=JVc-oRYud7Y
+  captured_at: '2026-11-09T02:05:00Z'
+  media_date_or_version: '2026-09-21'
+  timestamps:
+  - 0:00 intro with endgame Titan
+  - 0:35 new players should play endless
+  - 0:49 buy Plunger Man at 2000
+  - 1:10 buy Titan Cameraman at 1500
+  - 1:59 boss rush for the rescue quest
+  - 3:37 flash drive drop table
+  - 4:20 to be continued
+  screenshots:
+  - JVc-oRYud7Y-001.jpg
+  - JVc-oRYud7Y-006.jpg
+  - JVc-oRYud7Y-008.jpg
+  - JVc-oRYud7Y-011.jpg
+  - JVc-oRYud7Y-018.jpg
+  - JVc-oRYud7Y-031.jpg
+  limitations:
+  - 'Skilled-play progression guide "ST: Blockade Battlefront Starter guide | PART #1" by Paraslim (about 2.2K subscribers), about 24K views; whole 4.5 minutes studied.'
+  - Creator has completed every quest; HUD is hidden and footage is cinematic b-roll under narration, so it shows the recommended route rather than ordinary play.
+  - Frame 021 is stock food footage and frame 032 is a wiki table, not the game; both discarded as gameplay evidence.
+  - The creator calls the currency "cen"; the in-game HUD and the real play label it points.
+- id: video_3
+  kind: gameplay_video
+  url: https://www.youtube.com/watch?v=30G2-b866ss
+  captured_at: '2026-11-09T02:05:00Z'
+  media_date_or_version: 2025-09-11 (in-game Ver. 7.3.0)
+  timestamps:
+  - 0:00 experience page
+  - 0:36 spectating with change-character prompt
+  - 0:48 developer test panel
+  - 2:00 Settings panel
+  - 2:24 raid boss fight
+  - 4:12 combined Titan move with a developer
+  - 7:36 end card with wave 1 footage
+  screenshots:
+  - 30G2-b866ss-001.jpg
+  - 30G2-b866ss-004.jpg
+  - 30G2-b866ss-005.jpg
+  - 30G2-b866ss-011.jpg
+  - 30G2-b866ss-013.jpg
+  - 30G2-b866ss-022.jpg
+  - 30G2-b866ss-039.jpg
+  limitations:
+  - '"I FINALLY Tried Blockade Battlefront..." by Shary (about 47K subscribers), about 106K views; whole 8.3 minutes studied.'
+  - Despite the title, the creator plays a developer test server with every unit unlocked and infinite cash, guided by the community manager; not a new player state and not ordinary progression.
+  - Version 7.3.0, about 14 months older than the real play (9.4.2).
+  - Creator commentary with profanity; captions are auto-generated.
+gameplay:
+  advertised_loop: 'Deploy units and Titans to defend a base against escalating waves of enemies (description: ''wave tower defense and survival shooter''); move keys Q E R T Y F G H Z X C V B and double-space with keystack and aerial variants.'
+  observed_loop: Pick a mode in a lobby, teleport into a shared endless-mode match, choose an owned character in a roster panel, press Ready to spawn at the next wave, then fight the toilet-army wave in third person with M1 and an E skill; the team's kills pay shared cash into every player's counter and each cleared wave pays points. A raid boss (health bar with segment ticks) appeared at wave 75.
+  first_action: Click 'Skip Loading' on the custom loading screen, then 'Play' on the title screen.
+  first_success_seconds: null
+  success_feedback:
+  - 'Kill feed at bottom-left: ''Team killed <enemy> +N Cash'' lines in white with yellow cash amounts (6375110339-17.png).'
+  - Cash counter ticked up from team kills (561 -> 878 -> 1.0k -> 1.8k) without the player landing a kill.
+  - Points +30 per wave cleared (300 -> 330 -> 360).
+  - Daily login card flips to a green 'CLAIMED' stamp with '+300 P' floating text (6375110339-10.png).
+  - 'Video: floating damage numbers and an on-screen HITS combo counter with total DMG during combat (video_1 frames 004, 008-011).'
+  - 'Video: boss health shown as a large name-labelled bar at screen bottom for raid bosses, and per-enemy numeric HP bars over bodies (video_3 frames 013-016; video_1 frames 007-011).'
+  progression:
+  - Character roster of 21 categories (Camera, Speaker, TV, Clock, Drill, ...) with tiers 1-4 and per-character Mastery levels and 48 skins; most entries LOCKED (6375110339-13.png).
+  - Separate Titans tab in the roster.
+  - Player level bar under HP (LV 1); mastery XP drives the 'Training Day' daily quest.
+  - 'Video: currency from endless mode scales with waves survived; the guide route is buy Plunger Man (2000), Titan Cameraman (1500), Camera Woman (1000), then a special-Titan quest chain (UTCM: six flash drives at 10% drop plus a key card and four quest pages; UTSM rescue needs EPD-gun teammates) (video_2 0:35-2:10).'
+  - 'Video: many quests and character perks require a character at mastery level 80; the top Titan quest needs four characters at 80 (video_2 2:40-3:20).'
+  - 'Video: per-character quests show progress bars such as "Time Played 2722/9000 sec" and "Beat Wave Boss 5/10" with a SKIP QUEST option (video_1 frame 012).'
+  - 'Video: units can be bought with points (1250) or Robux (250) on the same confirmation (video_1 frame 005).'
+  choices_and_variety:
+  - 'Lobby modes: Classic gamemode, Private Room, CCTV Base mode (marked Experimental), Campaign (struck through ''NOT RELEASED YET''); Classic splits into Default (endless, 90 waves) and Casual (difficulty/challenge mode) (6375110339-4.png, 6375110339-5.png).'
+  - Character choice limited to the one owned starter in this sample.
+  - 'Video: playable characters carry 4-6 named skills on letter keys (Skill Q Dash, Y Declaration, G Equip Plunger, R Plunger Throw, E Drop Kick), listed beside the roster (video_1 frame 003).'
+  - 'Video: modes shown include Default (endless, 90 waves), Casual (difficulty/challenge), Boss Rush and Hell Wave (video_1 frame 038; video_2 1:59, 3:40).'
+  social_and_cooperative:
+  - Player list shows each player's character, level and state (IN WAVE / SPECTATING).
+  - Join-by-friend-name field in the lobby (not used).
+  - Shared team cash and team kill feed make other players' progress visible.
+  - 'Video: a downed player shows a Revive prompt with a 32 s timer and a progress bar for teammates (video_1 frame 034).'
+  - 'Video: some quests need teammates with specific gear (video_2 1:40); developers note there is no PvP (video_3 captions 3:20).'
+  companions_and_pets: []
+  friction:
+  - Joined an in-progress match at wave 73 as a tier-1, level-1 character, so the first combat was an advanced wave and then a raid boss rather than a teaching wave.
+  - Spawn area and arena were very dark; enemies were hard to see and locate (6375110339-18.png, 6375110339-21.png).
+  - Guide step 3 card sat on top of the 'Press here or [,] to change characters' button it pointed to (6375110339-12.png); keyboard ',' was needed.
+  - Guide step 2 highlight box rendered empty while the Quests panel was open, and the Quests panel's close button was hidden under the player list (6375110339-11.png).
+  - HP took damage from unseen sources with no damage-direction indicator observed.
+  - 'Video: progression is long and grind-heavy; the guide creator reports about three weeks for one 10%-drop item and the developer estimates 12-20 hours for one Titan quest (video_2 3:50; video_3 captions 6:40).'
+  - 'Video: the session creator jokes about 20 minutes of grinding and cannot afford 50 gacha spins (video_1 frames 013, 034).'
+  evidence:
+  - play_1
+  - description_1
+  - video_1
+  - video_2
+  - video_3
+pacing:
+  timing_start_definition: 'First control: title screen shown after clicking Skip Loading (23:39:12Z). Loading measured from the roblox:// launch (23:38:21Z).'
+  loading_seconds: 51
+  time_to_control_seconds: 51
+  first_meaningful_choice_seconds: 23
+  first_reward_seconds: 147
+  action_reward_cadence: Team cash roughly every few seconds during waves via the kill feed; +30 points per cleared wave (waves 73 and 74 each cleared in under two minutes in this sample).
+  active_play_versus_travel_or_waiting: Of 477 s from first control, about 170 s were lobby and match menus, about 30 s a teleport loading screen, about 100 s guide/daily/quest UI, and about 175 s in-wave.
+  natural_stopping_points:
+  - End of each wave (timer resets)
+  - Raid boss waves
+  - Daily login and daily quest completion
+  - 'Video: helicopter drop-in at each wave start with a "Skip Heli" vote (0/1) (video_1 frames 006, 033; video_3 frame 039)'
+  - 'Video: quest step completion via NPC dialog ("Great, Now let''s continue to the next step") (video_1 frame 032)'
+  measurement_method: 'UTC timestamps of commands and captures on the coordinator; values accurate to roughly +/-5 s. Video observations use each video''s own timestamps (frame index x sampling interval: 15 s video_1, 7 s video_2, 12 s video_3) and are edited footage, so they give no session timings.'
+  evidence:
+  - play_1
+  - video_1
+  - video_2
+  - video_3
+goals_and_progression:
+  next_goal_clarity: High for the guide (numbered 1/5 card with a progress bar and an arrow at the target control), low inside combat because enemies were hard to find.
+  short_term_goals:
+  - 'Guide steps: Daily Reward, Quests, Join the Fight, Defeat 5 enemies (0/5), step 5 not reached'
+  - Survive the current wave before the timer ends
+  medium_term_goals:
+  - 'Daily quests: Boss Breaker 0/3, Training Day 0/500 mastery XP, Toilet Sweeper 0/150 kills, then a Daily Reward chest after 3 quests'
+  - 7-day login streak with a Legendary Ticket on day 7
+  - 'Video: earn 1000-2000 points per unit purchase from endless runs (video_2)'
+  - 'Video: per-character quests (time played, beat wave bosses) (video_1 frame 012)'
+  advertised_long_term_goals:
+  - Endless mode to wave 90
+  - Campaign 'Operation Valor Vangard' (not released)
+  - Unlock higher-tier characters and Titans
+  - 'Video: special Titans via multi-page quests and rare boss drops; mastery level 80 for perks and mythical skins (video_2)'
+  upgrade_choices:
+  - Characters unlocked via Gacha and items such as Mastery Cards and Titan Cards (not opened)
+  - 'Video: route choice between two special-Titan quest chains, or Astro tokens, alternative characters, or the hardest Titan (video_2 1:15-2:30)'
+  - 'Video: in-match helicopter shop every five waves sells Titans and Titan upgrades (video_3 captions 0:50-1:30)'
+  mastery_versus_stat_growth: 'Mix: per-character mastery levels and tiers suggest stat growth; combat uses timed skills that suggest some execution skill. Not tested in depth.'
+  unlock_previews_and_optional_activities:
+  - Roster shows every locked character by name and tier
+  - Hourly Shop with countdown
+  - Group Reward button 'Join for free items'
+  - Codes and Titles buttons
+  evidence:
+  - play_1
+  - video_1
+  - video_2
+  - video_3
+failure_and_recovery:
+  observed_failure: 'HP fell from 400 to 236 during wave 74; HP was back to 400 at wave 75. Whether this was a death and respawn or a wave-start heal was not seen. Video: a player at 0 HP falls into a downed state with a Revive prompt and a 32 s timer; the next frame shows the player back in play (video_1 frame 034); a not-ready player spectates until the next wave (video_1 frame 030).'
+  explanation: null
+  cost_or_lost_progress: null
+  retry_seconds: null
+  checkpoints: Waves continue for the team; a player who is not ready spectates (Spectating bar with Prev/Next).
+  non_paid_recovery: 'Video: teammate revive during the downed timer (video_1 frame 034); no paid revive seen.'
+  evidence:
+  - play_1
+  - video_1
+agency_and_social:
+  meaningful_choices:
+  - Game mode and difficulty
+  - Character (from owned roster)
+  customization_and_identity:
+  - 48 skins per character
+  - Titles screen
+  - Player list shows each player's chosen character name in a tier color
+  cooperation_and_competition:
+  - Fully cooperative wave defense with shared cash
+  visible_social_feedback:
+  - Player list with level and state
+  - Team kill feed
+  solo_accessibility: Private Room mode exists; public match accepted a new level-1 player mid-run.
+  evidence:
+  - play_1
+ui:
+  evidence_status: observed
+  visual_style: 'Dark sci-fi HUD: near-black translucent panels with thin cyan borders and corner brackets, small terminal-style footer labels (''// SYS.QUEST_BOARD ONLINE''), and bright accent colors for rarity.'
+  layout_and_hierarchy: Left column of square icon buttons (Gacha, Items, Quests, Titles, Codes, Settings) then wide buttons (Daily Reward, Group Reward, Shop, Hourly Shop); top-left HP, level, points and cash bars; top-center wave number, timer and enemies-left counter; right column player list over a pinned-quest tracker; bottom-right control hints. The left column hides Gacha, Items and Shop once in a wave.
+  color_scheme:
+  - near-black panels
+  - cyan borders
+  - yellow guide and Claim accents
+  - green primary (LET'S GO, EQUIPPED, READY ring)
+  - red HP bar and title text
+  - tier colors on character names
+  typography:
+    font_appearance: Bold geometric sans in uppercase for headings and buttons, a condensed display face for wave/timer, a serif on the title and loading tips.
+    font_family_if_verified: null
+    size_observation: Headings about 30-40 px and body about 13-16 px at 1920x1200; player-list sublines about 9 px and hard to read.
+    size_basis: visual_estimate
+    viewport_resolution: 1920x1200 points
+    readability: Headings clear; small grey sublines and the red-on-dark 'You are not ready yet' banner were low contrast.
+  controls:
+    primary_actions: Large green full-width buttons for the main action (LET'S GO, READY), yellow for Claim.
+    close_x_appearance_and_location: 'Daily Login: red square with white X at the panel''s top-right (6375110339-10.png). Roster: wide ''CLOSE [,]'' button bottom-right with a blue X icon. Quests panel: close control not reachable, hidden under the player list.'
+    modal_behavior: Centered panels with dimmed background; guide card stays above modals.
+    state_feedback: Ready button switches from red ring 'UNREADY' to green ring 'READY'; locked roster rows show grey 'LOCKED' pills, owned shows green 'OWNED'.
+    target_size_and_input: 'Left icon buttons about 80x80 px; READY about 560x100 px. Keyboard shortcut '','' for the roster. Video (touch tablet): circular on-screen buttons for each skill letter (Y, G, R, F, E), large LMB and jump buttons bottom-right, Run and Dash pills, and a virtual stick bottom-left (video_1 frame 034).'
+  graphics:
+    graphics_versus_text: Icon plus label on every HUD button; rewards shown as card icons (green 'MC'/'x2' cards, orange 'LT') with a caption.
+    illustration_or_icon_style: Flat white glyph icons on dark squares; reward cards as flat colored cards with two-letter codes.
+    framing_outlines_and_effects: Thin cyan outlines with corner brackets; gold outline on the current day and on the Day 7 grand prize.
+    placement_and_labels: Each reward card has a text caption (e.g. '300 P', 'Mastery Card').
+    clarity_or_clutter: 'Cluttered: player list, quest tracker, guide card, kill feed and control hints all on screen during combat, and the player list overlapped two different panels. Video: on touch the skill-button cluster covers the right third of the view during combat (video_1 frames 007-011).'
+  evidence:
+  - play_1
+  - video_1
+  - video_3
+new_player_onboarding:
+  status: observed
+  reason: 'Status comes from real play (play_1). No video shows a first join: video_1 starts with owned units, video_2 is narrated b-roll, and video_3 is a developer test server with everything unlocked.'
+  conventions:
+  - Welcome modal promising a starter gift for finishing the guide (1,000 points, x2 mastery booster 30 min, Mastery Card)
+  - "'Skip guide (no gift)' text option"
+  - Numbered step card 'Guide - Step N of 5' with a progress bar and SKIP GUIDE
+  - Yellow arrow pointing at the target button
+  - Steps teach meta systems first (daily reward, quests) before combat
+  sequence:
+  - Welcome modal with starter gift preview (23:40:45Z)
+  - '1/5 Daily Reward: open and claim today''s gift (claimed 23:41:39Z)'
+  - '2/5 Quests: open the quest board'
+  - '3/5 Join the Fight: pick a character, then press READY'
+  - 4/5 Defeat Enemies (0/5) - still incomplete when play stopped
+  first_independent_action: Pressing READY and walking into the wave (23:43:19Z to 23:44:04Z).
+  skip_or_replay: Skip Guide (no gift) on the welcome modal and SKIP GUIDE on each step card; no replay control seen.
+  completed: false
+  observed_seconds: 384
+  completion_seconds: null
+  timing_basis: From the welcome modal (23:40:45Z) to the last capture (23:47:09Z).
+  evidence:
+  - play_1
+accessibility_and_comfort:
+  text_and_contrast: Mostly white on near-black; low-contrast grey sublines and dark-red banner text; arena scenes very dark.
+  non_color_cues_and_icon_labels: HUD icons all labeled; ready state uses both ring color and text.
+  input_support_observed:
+  - Mouse click
+  - Keyboard shortcuts shown on hints (M1, E, Ctrl, ',')
+  - 'Video: touch tablet with on-screen skill buttons and a virtual stick (video_1)'
+  motion_audio_settings:
+  - 'Video: Settings panel lists Auto Skip Helicopter, Fast Mode (low graphics for low-end devices), Skip Boss Entrance Cutscene, Global Cooldown, Slow-Motion Jump, DMG Indicator, a Sound section and a Cinematic Mode toggle (video_3 frame 011, Ver. 7.3.0; untested)'
+  settings_tested: []
+  clutter_and_interruptions:
+  - Guide card covered the HP bar top and the button it pointed to
+  - Player list overlapped Quests and roster panels
+  - Loading tip mentions Settings > Hide Moveset (untested)
+  evidence:
+  - play_1
+  - video_1
+  - video_3
+commercial_and_return_prompts:
+  first_purchase_prompt_seconds: null
+  purchase_prompt_count_during_sample: 0
+  onboarding_interruption: No purchase modal; the daily login panel opened in guide step 1 carries a 'GET PREMIUM' button (x2 login points, +10% points) at 131 s, and Gacha, Shop and Hourly Shop buttons are always on the lobby HUD.
+  optional_versus_required_presentation: 'Premium shown as an optional upsell inside the free daily reward panel. Video: unit unlock offers points or Robux side by side (1250 P or 250 R$) (video_1 frame 005); the gacha skins banner shows Luck Booster 99 R$ and Luck Booster v2 199 R$ beside spin buttons priced in points, with stated rates (50%/20%/20%) and a "Next Gacha in 00h 52min" countdown (video_1 frame 040).'
+  return_rewards_and_events:
+  - '7-day daily login with Legendary Ticket on day 7 and a ''Streak Save: Ready'' indicator'
+  - Daily quests with a bonus chest
+  - Hourly Shop countdown
+  - "'1.5 Point Weekend' banner for endless mode on Friday-Sunday"
+  - Group Reward for joining the group
+  urgency_or_streak_cues:
+  - "'New day in 00:18:37' countdown"
+  - Hourly Shop 'new in mm:ss'
+  - Streak counter
+  - 'Video: gacha banner rotation countdown (video_1 frame 040)'
+  - 'Video: "1.5 Point Weekend Active Only in Endless Mode" ticker at the bottom of the HUD (video_1, video_3)'
+  evidence:
+  - play_1
+  - video_1
+world_and_presentation:
+  navigation_and_objective_readability: 'Low in combat: dark arena with no enemy markers seen; objective conveyed only by the enemies-left counter. Video: the same arenas are well lit in daytime waves (video_1 frames 013-020, video_3), and the Settings panel has a Day/Night choice on the test server (video_3 frame 005), so the darkness in real play may be a night or lighting state, not the only look.'
+  landmarks_and_variety:
+  - Ruined-city and overpass arenas on lobby cards
+  - Purple and orange lighting shifts between waves
+  - 'Video: daytime city plaza, highway and boss-rush red-sky arena (video_1, video_2)'
+  environmental_storytelling:
+  - Title scene with a giant mech silhouette, rain and colored energy beams
+  audiovisual_consistency: Consistent dark sci-fi tone across lobby, HUD and arena; audio not captured.
+  success_effect_intensity_and_clarity: 'Video: heavy VFX on Titan skills (beams, fire, explosions), raid-boss entrance cutscenes and combined Titan moves; large effects can hide enemies (video_3 frames 013-024). Real play captured only UI text feedback.'
+  evidence:
+  - play_1
+  - thumbnail_1
+  - video_1
+  - video_3
+technical_quality:
+  loading_or_missing_assets:
+  - Custom loading screen with 13 animated squares and a Skip Loading button
+  - About 29 s teleport to the match server with 'Loading Player Info' and tips
+  input_or_frame_issues:
+  - One batched click command took about 85 s to return in the VM (environment, not attributed to the game)
+  ui_defects:
+  - Guide step card overlapped its own target button (6375110339-12.png)
+  - Guide highlight box empty while Quests open (6375110339-11.png)
+  - Player list overlapped Quests panel close area and the roster's level panel (6375110339-11.png, 6375110339-13.png)
+  - Player-list name and character text overlapped ('Watchmon_of docUPGRADED TITAN SPEAKER')
+  - 'Video: in-world name labels and HP numbers overlap when several Titans stand together (video_3 frame 020)'
+  recovery_behavior: Toggling the Quests button closed the panel.
+  measurements:
+  - Launch to title 51 s
+  - Mode click to match HUD 29 s
+  measurement_method_and_limits: Coordinator timestamps; VM environment, not representative of native devices.
+  evidence:
+  - play_1
+  - video_3
+transferable_ideas:
+- A five-step numbered guide card with a progress bar and a pointing arrow, tied to a previewed starter gift, makes finishing onboarding a visible goal.
+- Shared team cash with a 'Team killed X +N' feed lets a weak newcomer progress inside a strong group.
+- Showing every locked roster entry by name and tier previews long-term goals.
+- Downed state with a short teammate-revive timer keeps a failed player in the match and gives allies a rescue goal (video_1).
+- A settings panel that lets players skip repeated cutscenes and helicopter intros and switch to low-graphics mode respects returning players' time (video_3).
+practical_takeaway:
+  strongest_idea: Bundle onboarding into a numbered checklist with a previewed reward for finishing, and let teammates' successes pay the newcomer so early sessions feel rewarding.
+  main_tradeoff: Joining a match already at wave 73 put a level-1 player into advanced waves and a raid boss in a dark arena before combat was taught; the guide taught meta menus first, and its card covered its own target. Videos add that later progression relies on long grinds and 10% drops (weeks per item per a guide creator), which favours dedicated players over casual returners.
+  suitable_genres_and_stages:
+  - Cooperative wave defense
+  - Any game with an early meta layer (dailies, quests, roster) for first-session onboarding
+  testable_hypothesis: A numbered 4-5 step guide with a previewed starter reward raises the share of new players who reach their first combat action compared with no guide.
+  estimated_effort_and_assumptions: Estimate 2-3 days for a guide-card component and step triggers, assuming existing reward granting and a UI framework.
+inferences:
+- The guide's order (daily reward, quests, then combat) suggests the game prioritises return systems in the first session.
+- Placing new players into an in-progress endless run may be intended to keep matches full; its effect on new-player retention is unknown.
+uncertainties:
+- No own kill was confirmed, so the combat feel, skill keys beyond E, and guide step 5 were not experienced.
+- Whether HP recovery at wave 75 was a respawn or a heal was not seen.
+- Audio was not captured.
+- Videos are edited; none shows a first join, so onboarding duration and the guide in real play cannot be compared to an uncut new-player video.
+- Settings were seen on Ver. 7.3.0; whether all of them remain in 9.4.2 is unknown.
+blockers: []

@@ -106,7 +106,7 @@ These run only when you ask for them by name, such as `/code-slop-doctor`.
 - [`study-games`](.agents/skills/roblox/study-games/SKILL.md) — Explicit user-invoked research of Roblox charts for the requested audience and region.
 - [`tests-doctor`](.agents/skills/doctors/tests-doctor/SKILL.md) — Audit tests for contract value, redundant proof, weak assertions, runtime, provider rate limits, and determinism.
 - [`where-time-went`](.agents/skills/workspace/where-time-went/SKILL.md) — Show where session time and usage went.
-- [`widen-scope`](.agents/skills/execution/widen-scope/SKILL.md) — Let the current task also fix the problems it runs into, within a size budget.
+- [`widen-scope`](.agents/skills/execution/widen-scope/SKILL.md) — Turn on cleanup of the problems the work runs into for the rest of the session.
 
 ### Model-Invoked
 
