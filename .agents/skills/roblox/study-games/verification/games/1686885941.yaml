@@ -210,7 +210,7 @@ uncertainties:
   - "Gameplay-video study (researcher V09, 2026-11-09): no Brookhaven YouTube video was searched or studied because of YouTube's bot check. Researcher V10P then studied only the game's own 43 s preview trailer (video_preview_1): it fills in world art, landmarks and vehicles (scooter, police car, motorbike, helicopter, pickup, bike, skateboard) but is staged and HUD-free, so how a player navigates, drives or travels remains unobserved."
   - "World art and city locations are now evidenced only by the trailer (video_preview_1); navigation by a player, the bike ride and the recolour could not be seen in the world."
   - "Whether the 'Job' tab and roles give structured tasks was not tested."
-  - "play_ended_by is loop_cycle because house, vehicle and an activity with it (riding and recolouring) were done before the study's stop at 01:54:21Z; the 'activity' was thin because the world could not be seen."
+  - "The session ended after house, vehicle and an activity with it (riding and recolouring) were done, before the study's stop at 01:54:21Z; the 'activity' was thin because the world could not be seen."
   - "Account freshness unknown."
 blockers:
   - "Gameplay-video study blocked by YouTube's 'Sign in to confirm you're not a bot' response; no Brookhaven videos were searched or downloaded. A retry cycle with pauses of 1, 3 and 5 minutes also got the bot check on every request; the block appears to be on this machine's address."

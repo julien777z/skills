@@ -204,4 +204,4 @@ uncertainties:
     - "Game-pass API returned nothing; monetization is unknown from this source."
     - "Server layout of one killer versus up to eight survivors is inferred from maxPlayers 9 and the '1 vs All' genre, not observed."
 blockers:
-    - "Deep play was assigned but stopped by a study process change before this game's play turn; a separate video pass will add video evidence."
+    - "Deep play was assigned but stopped by a study process change before this game's play turn; video research was then blocked by YouTube on this machine, so no gameplay video was studied and a later run studies it again."

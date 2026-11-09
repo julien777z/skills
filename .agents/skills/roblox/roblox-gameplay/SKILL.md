@@ -80,7 +80,7 @@ Fit companions to the genre, progression, and production stage. A popular featur
 
 ## Paid offers
 
-When a game sells items, a paid action never looks like free progression or help. Give paid controls their own shape and a price label, not only a colour or a small badge. Keep them off the routes and controls that guidance sends a new player through. A help, hint or "+" button either does what its label promises for free or shows its cost before it is pressed. An offer the player closes stays closed.
+When a game sells items, a paid action never looks like free progression or help. Give paid controls their own shape and a price label, not only a colour or a small badge. Keep them off the routes and controls that guidance sends a new player through. A help, hint or "+" button either does what its label promises for free or shows its cost before it is pressed.
 
 ## Validate fun at the affected scale
 

@@ -16,7 +16,7 @@ study:
         - "The runner's paravirtual GPU garbled several complex 3D worlds in real play; videos show those worlds render normally."
     assignments:
         - {researcher: "R01", game_ids: ["universe:7529591378", "universe:10772543706"], status: partial, blocker: "Holding the mouse button did not register in the runner, so Sweep The Moon's main action was not played."}
-        - {researcher: "R02", game_ids: ["universe:10563114921", "universe:3359505957"], status: partial, blocker: null}
+        - {researcher: "R02", game_ids: ["universe:10563114921", "universe:3359505957"], status: partial, blocker: "Real play of Steal An Egg did not reach its core loop before the five-minute limit."}
         - {researcher: "R03", game_ids: ["universe:6375110339", "universe:3183403065"], status: partial, blocker: "Runner GPU garbled Anime Adventures' lobby."}
         - {researcher: "R04", game_ids: ["universe:10209534490", "universe:3508322461"], status: partial, blocker: "Jujutsu Shenanigans stopped at its rules panel before that panel was cleared for play."}
         - {researcher: "R05", game_ids: ["universe:7104927007", "universe:994732206"], status: partial, blocker: "Runner GPU garbled Blox Fruits' world; play lock lost at a renewal."}

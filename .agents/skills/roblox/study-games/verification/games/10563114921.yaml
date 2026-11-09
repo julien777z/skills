@@ -3,7 +3,7 @@ game_id: "universe:10563114921"
 universe_id: "10563114921"
 place_id: "107778070777162"
 url: "https://www.roblox.com/games/107778070777162"
-creator: "and Collect Rare Pets (group, verified badge)"
+creator: "and Collect Rare Pets (group, verified badge)" # the group's registered name, as the games API reports it
 chart_category: "Top Playing Now"
 chart_rank: 1
 researcher: "R02"
@@ -237,4 +237,5 @@ uncertainties:
   - "Video versions are 9 to 11 weeks old; the tutorial may have changed since."
   - "Whether a later tutorial step adds text guidance."
   - "Steal, hatch and treadmill mechanics were not experienced."
-blockers: []
+blockers:
+    - "Real play did not reach the core loop (egg stealing, hatching, treadmill) before the five-minute limit."

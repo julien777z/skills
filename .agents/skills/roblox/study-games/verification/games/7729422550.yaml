@@ -292,4 +292,5 @@ uncertainties:
     - "Video captions could not be downloaded (HTTP 429, then YouTube bot check), so creators' spoken commentary on confusion and strategy was not used."
     - "Contents of the Trails and camera buttons were not opened."
     - "Captions missing for all three videos (dMwzGfBSYnQ, XOWQeFxS5nc, TZRALH6Qs4A): YouTube's bot check blocked this machine; dMwzGfBSYnQ was retried after 1, 3 and 5 minutes and still failed, and the rest were not retried. A later central caption pass may add creator commentary."
-blockers: []
+blockers:
+    - "Real play stayed at stage 0: timed key input sent to the runner was too imprecise for the course."
