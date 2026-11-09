@@ -48,11 +48,17 @@ sending input is trusted for accessibility (`AXIsProcessTrusted()`). A small Swi
 `swift` reads both without extra packages. A locked screen drops synthetic input; that unlock is the
 user's step, while the settings change it unblocks stays the agent's.
 
-For a Studio setting an operation reports as missing, such as an upload directory or scope the
-Assistant MCP permissions must approve, open the setting the error names in the verified Studio
-window, make the narrowest change that admits the operation — the one directory holding the
-artifact, the scopes the endpoint lists — save it, and retry the original request. Never move or
-copy the artifact to a location that is already approved to avoid the setting.
+For a Studio setting an operation reports as missing, open the setting the error names in the
+verified Studio window, make the change, save it, and retry the original request. Assistant MCP
+permissions are stored per place and can be managed only in a place saved to Roblox, so open a
+Roblox-saved place of the same owner — a private test place rather than the live game — when the
+current editor holds a local file.
+
+Open Cloud uploads read only from approved directories, and approving one needs the desktop. Approve
+a single Roblox-branded staging directory once per machine, `~/Roblox/Uploads`, never a checkout,
+worktree or build path that changes between sessions. Upload steps write or copy each artifact into
+a per-project subfolder there, such as `~/Roblox/Uploads/<project>/`, and upload from it; the
+repository keeps the editable source and export.
 
 A locked desktop affects operations that depend on that desktop. Independent guest access follows the [testing reference](testing.md); independent file, build, and API work can continue.
 

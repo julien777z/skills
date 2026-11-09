@@ -288,7 +288,10 @@ alwaysApply: true
 - **A step only the user can take, which the work waits on, is asked through that tool too, never
   left in chat.** Chat text the user may not read is not a request: granting a permission, signing
   in, approving on another device, or running a command that needs their password each goes out
-  as a question once everything the agent can prepare is ready. Its text names the whole step,
+  as a question once everything the agent can prepare is ready. Preparation is only work that
+  changes what the user will do; other queued work, a guidance edit included, waits behind the
+  question, which goes out in the turn the need is established. Chat text never announces the step
+  ahead of that question. Its text names the whole step,
   including any command, and offers a confirmation option such as "Done" beside one for doing it
   later. Where the step happens on a surface the agent can open — a viewer, a settings page, a
   sign-in page — the agent opens it at the exact place and verifies it shows before asking, so the
