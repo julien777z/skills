@@ -13,7 +13,7 @@ play_ended_by: null # not recorded: the session predates this field
 onboarding_video_coverage: not_covered
 observed_at: '2026-11-09T00:15:47Z'
 observation_status: blocked
-previous_observed_at: 
+previous_observed_at: null
 changes_since_previous: []
 active_play_seconds: 0
 play_coordination:
@@ -149,7 +149,7 @@ gameplay:
   advertised_loop: 'Battlegrounds-style melee PvP: M1 combo, skills on keys 1-4, Q dash (escapes stun), F block, R special, W+W sprint, G awaken, with environmental destruction (source_1).'
   observed_loop: 'From video (not real play): pick a moveset from the Characters menu, find opponents in the open city map, chain M1 combos into numbered skills, dash and block to escape or defend, fill the awakening bar by fighting, press G to awaken into a stronger moveset, and finish opponents for kills; the map breaks apart under heavy hits. Timed server events (open doors for candies, capture a pumpkin) run between fights (source_4, source_5).'
   first_action: Not observed from a first join. In source_4 the coached newcomer's first action is choosing a moveset from the 'Characters' dropdown (0:45).
-  first_success_seconds: 
+  first_success_seconds: null
   success_feedback:
   - Hits knock opponents through walls and floors, leaving rubble and craters in the street (source_4 4:15-5:00, source_5 2:00-3:00).
   - Timed second-press skills produce a 'black flash' spark effect (source_4 captions).
@@ -181,9 +181,9 @@ gameplay:
 pacing:
   timing_start_definition: Launch command at 2026-11-09T00:15:31Z.
   loading_seconds: 16
-  time_to_control_seconds: 
-  first_meaningful_choice_seconds: 
-  first_reward_seconds: 
+  time_to_control_seconds: null
+  first_meaningful_choice_seconds: null
+  first_reward_seconds: null
   action_reward_cadence: 'From video: hit feedback every second during fights; a server event announcement every few minutes, each with a countdown (110 s pumpkin capture, next event in 20-30 s) (source_5 1:15, 6:00, 9:15).'
   active_play_versus_travel_or_waiting: 'From video: short runs across the city between fights; no queue or lobby before combat (source_5).'
   natural_stopping_points:
@@ -196,7 +196,7 @@ pacing:
   - source_5
   - source_6
 goals_and_progression:
-  next_goal_clarity: 
+  next_goal_clarity: null
   short_term_goals:
   - Land combos and finish opponents (source_5)
   - Fill the awakening bar (source_4)
@@ -219,9 +219,9 @@ failure_and_recovery:
   observed_failure: 'From video: dying in a fight, often to several players (source_5) or to a workshop boss on mobile (source_6 2:30).'
   explanation: Health bar under the character name drains; no death-cause screen seen.
   cost_or_lost_progress: No lasting cost visible beyond losing the awakening state (inference from source_5).
-  retry_seconds: 
-  checkpoints: 
-  non_paid_recovery: 
+  retry_seconds: null
+  checkpoints: null
+  non_paid_recovery: null
   evidence:
   - source_4
   - source_5
@@ -254,7 +254,7 @@ ui:
   - Cyan bar accents
   typography:
     font_appearance: Plain sans-serif (Source Sans-like) in black on the rules panel and in white on the HUD; the rules title is in uppercase.
-    font_family_if_verified: 
+    font_family_if_verified: null
     size_observation: Rules body text about 11 px and skill labels about 8 px tall in the 1200-px capture of a 1920-point screen.
     size_basis: visual_estimate
     viewport_resolution: 1920x1200 points
@@ -283,12 +283,12 @@ new_player_onboarding:
   - 'Peer coaching in source_4 stands in for in-game guidance: the coach explains keys, R special and G awakening verbally (inference; no in-game tutorial seen).'
   sequence:
   - Rules panel requiring Accept
-  first_independent_action: 
-  skip_or_replay: 
+  first_independent_action: null
+  skip_or_replay: null
   completed: false
   observed_seconds: 0
-  completion_seconds: 
-  timing_basis: 
+  completion_seconds: null
+  timing_basis: null
   evidence:
   - source_3
   - source_4
@@ -312,9 +312,9 @@ accessibility_and_comfort:
   - source_5
   - source_6
 commercial_and_return_prompts:
-  first_purchase_prompt_seconds: 
+  first_purchase_prompt_seconds: null
   purchase_prompt_count_during_sample: 0
-  onboarding_interruption: 
+  onboarding_interruption: null
   optional_versus_required_presentation: A top-bar shop button showing $0 is visible; no prompt was seen. No Robux prompt appears in the studied video minutes; the top-bar '$' is in-game cash spent at vending machines (source_5 4:45), and workshop tiles carry a Robux icon (source_6 3:15, purpose not shown).
   return_rewards_and_events:
   - Halloween candy counter at bottom right; pumpkin tag in the title
@@ -327,14 +327,14 @@ commercial_and_return_prompts:
   - source_5
   - source_6
 world_and_presentation:
-  navigation_and_objective_readability: 
+  navigation_and_objective_readability: null
   landmarks_and_variety:
   - Night city street with crosswalk, street lamps and buildings
   - Halloween lights and pumpkins, a subway station and tunnel, a station plaza (source_5)
   - Workshop maps such as a snowy forest boss map (source_6)
   environmental_storytelling:
   - Destruction persists as rubble and craters during a fight (source_4, source_5)
-  audiovisual_consistency: 
+  audiovisual_consistency: null
   success_effect_intensity_and_clarity: 'Very high: buildings shatter, players crash through floors, red particles and finishers (source_4, source_5).'
   evidence:
   - source_3
@@ -346,7 +346,7 @@ technical_quality:
   - Workshop map on mobile needed a character reset before it worked (source_6 captions)
   input_or_frame_issues: []
   ui_defects: []
-  recovery_behavior: 
+  recovery_behavior: null
   measurements:
   - Launch to rules panel at or under 16 s
   measurement_method_and_limits: One capture 16 s after the launch command, in a VM.

@@ -13,7 +13,7 @@ play_ended_by: null # not recorded: the session predates this field
 onboarding_video_coverage: not_covered
 observed_at: '2026-11-08T23:54:50Z'
 observation_status: partial
-previous_observed_at: 
+previous_observed_at: null
 changes_since_previous: []
 active_play_seconds: 280
 play_coordination:
@@ -190,7 +190,7 @@ gameplay:
   advertised_loop: Summon anime-inspired heroes from banners and place them as towers to defend multiple worlds against waves of threats (description and summon-machine promo art).
   observed_loop: 'Lobby only: starter unit grant, daily login gems, unit collection and summon banners. The placement/wave loop was not reached. Video: choose a world and act (story) or event map, wait in a vote-start panel, then place units from a six-slot hotbar onto a map whose enemy path is highlighted; each placement and upgrade costs in-match yen that waves pay out; a farm unit is placed and upgraded first for income; every few waves the party votes on a modifier card; bosses arrive with "A great threat approaches..."; the match ends at a set wave (50 in Summer Hunt) with Return to lobby / Replay, then rewards feed summons in the lobby (video_1, video_2, video_3).'
   first_action: Click anywhere to dismiss the starter unit reveal.
-  first_success_seconds: 
+  first_success_seconds: null
   success_feedback:
   - 'Starter unit reveal: large white unit name over a rarity label (''Rare'') with element icons on a line ornament (3183403065-2.png).'
   - Gem counter rose 150 -> 210 after claiming Day 1.
@@ -235,7 +235,7 @@ pacing:
   timing_start_definition: 'First control: starter unit reveal (23:55:34Z). Loading from the roblox:// launch (23:54:50Z).'
   loading_seconds: 44
   time_to_control_seconds: 44
-  first_meaningful_choice_seconds: 
+  first_meaningful_choice_seconds: null
   first_reward_seconds: 0
   action_reward_cadence: 'Video: within a match, a yen payout every wave and an upgrade or placement every few seconds; modifier card votes every few waves; a 50-wave Summer Hunt run took the veteran roughly ten minutes of edited footage (video_1, video_2). Not measured in real play.'
   active_play_versus_travel_or_waiting: All 280 s spent dismissing modals and opening lobby menus; about 100 s before the first free HUD state.
@@ -279,10 +279,10 @@ goals_and_progression:
 failure_and_recovery:
   observed_failure: 'Video: no loss screen captured; a veteran picks lower-risk cards to avoid losing a stage and calls 500% enemy health "too much" (video_2 captions). Real play did not reach a match.'
   explanation: 'Video: boss and enemy HP shown as numeric bars; the base HP bar is at the top centre of the match HUD (video_1 frames 017, 023).'
-  cost_or_lost_progress: 
-  retry_seconds: 
-  checkpoints: 
-  non_paid_recovery: 
+  cost_or_lost_progress: null
+  retry_seconds: null
+  checkpoints: null
+  non_paid_recovery: null
   evidence:
   - video_1
   - video_2
@@ -315,7 +315,7 @@ ui:
   - pink/purple for summon
   typography:
     font_appearance: Heavy rounded display sans with dark outlines for titles and buttons; plain sans for update-log body.
-    font_family_if_verified: 
+    font_family_if_verified: null
     size_observation: Button labels about 22-26 px, modal titles about 45 px, update-log body about 13 px at 1920x1200.
     size_basis: visual_estimate
     viewport_resolution: 1920x1200 points
@@ -350,10 +350,10 @@ new_player_onboarding:
   - Fan-made notice with 'I Understand' (58 s)
   - Daily login rewards, Day 1 claimed (103-132 s)
   first_independent_action: Opening Play from the HUD (164 s); no visible result because the world did not render.
-  skip_or_replay: 
+  skip_or_replay: null
   completed: false
   observed_seconds: 280
-  completion_seconds: 
+  completion_seconds: null
   timing_basis: From first control at the starter reveal (23:55:34Z) to quit (00:00:14Z).
   evidence:
   - play_1
@@ -416,7 +416,7 @@ technical_quality:
   input_or_frame_issues: []
   ui_defects:
   - Side prompt close X unresponsive while other modals were open
-  recovery_behavior: 
+  recovery_behavior: null
   measurements:
   - Launch to first control 44 s
   measurement_method_and_limits: Coordinator timestamps; VM environment without a dedicated GPU may explain missing world rendering; not representative of native devices.

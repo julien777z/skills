@@ -13,7 +13,7 @@ play_ended_by: null # not recorded: the session predates this field
 onboarding_video_coverage: not_covered
 observed_at: '2026-11-08T23:38:21Z'
 observation_status: completed
-previous_observed_at: 
+previous_observed_at: null
 changes_since_previous: []
 active_play_seconds: 477
 play_coordination:
@@ -182,7 +182,7 @@ gameplay:
   advertised_loop: 'Deploy units and Titans to defend a base against escalating waves of enemies (description: ''wave tower defense and survival shooter''); move keys Q E R T Y F G H Z X C V B and double-space with keystack and aerial variants.'
   observed_loop: Pick a mode in a lobby, teleport into a shared endless-mode match, choose an owned character in a roster panel, press Ready to spawn at the next wave, then fight the toilet-army wave in third person with M1 and an E skill; the team's kills pay shared cash into every player's counter and each cleared wave pays points. A raid boss (health bar with segment ticks) appeared at wave 75.
   first_action: Click 'Skip Loading' on the custom loading screen, then 'Play' on the title screen.
-  first_success_seconds: 
+  first_success_seconds: null
   success_feedback:
   - 'Kill feed at bottom-left: ''Team killed <enemy> +N Cash'' lines in white with yellow cash amounts (6375110339-17.png).'
   - Cash counter ticked up from team kills (561 -> 878 -> 1.0k -> 1.8k) without the player landing a kill.
@@ -276,9 +276,9 @@ goals_and_progression:
   - video_3
 failure_and_recovery:
   observed_failure: 'HP fell from 400 to 236 during wave 74; HP was back to 400 at wave 75. Whether this was a death and respawn or a wave-start heal was not seen. Video: a player at 0 HP falls into a downed state with a Revive prompt and a 32 s timer; the next frame shows the player back in play (video_1 frame 034); a not-ready player spectates until the next wave (video_1 frame 030).'
-  explanation: 
-  cost_or_lost_progress: 
-  retry_seconds: 
+  explanation: null
+  cost_or_lost_progress: null
+  retry_seconds: null
   checkpoints: Waves continue for the team; a player who is not ready spectates (Spectating bar with Prev/Next).
   non_paid_recovery: 'Video: teammate revive during the downed timer (video_1 frame 034); no paid revive seen.'
   evidence:
@@ -313,7 +313,7 @@ ui:
   - tier colors on character names
   typography:
     font_appearance: Bold geometric sans in uppercase for headings and buttons, a condensed display face for wave/timer, a serif on the title and loading tips.
-    font_family_if_verified: 
+    font_family_if_verified: null
     size_observation: Headings about 30-40 px and body about 13-16 px at 1920x1200; player-list sublines about 9 px and hard to read.
     size_basis: visual_estimate
     viewport_resolution: 1920x1200 points
@@ -353,7 +353,7 @@ new_player_onboarding:
   skip_or_replay: Skip Guide (no gift) on the welcome modal and SKIP GUIDE on each step card; no replay control seen.
   completed: false
   observed_seconds: 384
-  completion_seconds: 
+  completion_seconds: null
   timing_basis: From the welcome modal (23:40:45Z) to the last capture (23:47:09Z).
   evidence:
   - play_1
@@ -376,7 +376,7 @@ accessibility_and_comfort:
   - video_1
   - video_3
 commercial_and_return_prompts:
-  first_purchase_prompt_seconds: 
+  first_purchase_prompt_seconds: null
   purchase_prompt_count_during_sample: 0
   onboarding_interruption: No purchase modal; the daily login panel opened in guide step 1 carries a 'GET PREMIUM' button (x2 login points, +10% points) at 131 s, and Gacha, Shop and Hourly Shop buttons are always on the lobby HUD.
   optional_versus_required_presentation: 'Premium shown as an optional upsell inside the free daily reward panel. Video: unit unlock offers points or Robux side by side (1250 P or 250 R$) (video_1 frame 005); the gacha skins banner shows Luck Booster 99 R$ and Luck Booster v2 199 R$ beside spin buttons priced in points, with stated rates (50%/20%/20%) and a "Next Gacha in 00h 52min" countdown (video_1 frame 040).'

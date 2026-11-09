@@ -13,7 +13,7 @@ play_ended_by: null # not recorded: the session predates this field
 onboarding_video_coverage: covered
 observed_at: '2026-11-09T00:00:44Z'
 observation_status: completed
-previous_observed_at: 
+previous_observed_at: null
 changes_since_previous: []
 active_play_seconds: 324
 play_coordination:
@@ -23,7 +23,7 @@ play_coordination:
   expires_at: '2026-11-09T00:10:21Z'
   released_at: '2026-11-09T00:06:35Z'
   release_verified: true
-  expiry_or_blocker: 
+  expiry_or_blocker: null
 context:
   genre: Simulation / Tycoon (idle egg farm with merge)
   camera_perspective: third-person, default follow camera
@@ -271,7 +271,7 @@ failure_and_recovery:
   explanation: None shown; water is shallow and swimmable.
   cost_or_lost_progress: None observed beyond time.
   retry_seconds: 40
-  checkpoints: 
+  checkpoints: null
   non_paid_recovery: Swim and jump back onto the bank.
   evidence:
   - source_3
@@ -307,7 +307,7 @@ ui:
   - Blue modal panels with red header bars and green/red buttons
   typography:
     font_appearance: Heavy rounded display face with dark outline and drop shadow (Fredoka-like); in-world billboards use the same style.
-    font_family_if_verified: 
+    font_family_if_verified: null
     size_observation: Tutorial step text about 30 px tall and cash value about 40 px tall in 1200-px-wide captures of a 1920-point screen.
     size_basis: visual_estimate
     viewport_resolution: 1920x1200 points
@@ -350,10 +350,10 @@ new_player_onboarding:
   - Upgrade your processing! (source_4 captions, source_5)
   - Tutorial ends; 'Home' button replaces banner (source_5)
   first_independent_action: Buying more chickens on larger buy pads after the processing step (source_4, source_5).
-  skip_or_replay: 
+  skip_or_replay: null
   completed: true
   observed_seconds: 324
-  completion_seconds: 
+  completion_seconds: null
   timing_basis: Real play (source_3) stopped at 'Collect your Cash!' after 324 s from first control. Videos source_4 and source_5 show the tutorial completing within about 2:45 of edited video time; edits prevent a completion time, so completion_seconds stays null.
   evidence:
   - source_3
