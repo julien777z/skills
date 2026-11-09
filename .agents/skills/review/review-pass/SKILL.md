@@ -201,11 +201,12 @@ changed. Make the smallest changes that answer real findings, and push back on t
   review grew the diff past what the intent needs, cut it first. Never agree just to end the loop.
 - **Stop** when the reviewer approves the current diff with no blocker or should open and no concern
   of your own. A spent budget is not approval.
-- **A finding still disputed after two replies goes to `council`** in **Ask** mode for a ruling,
-  with the finding, the reviewer's case and yours with their evidence, and the code it concerns. Its
-  ruling settles it: fix it, or record it declined with the ruling. A spent budget with a blocker or
-  should still open follows the global rules' review-round limit. A finding the council returns as
-  the user's choice goes to the user, with both sides in two or three lines each.
+- **A finding still disputed after two replies** goes to the user when it is the user's decision,
+  as the shared `agent-guidance.md` rule's **Decisions** names them, with both sides in two or three
+  lines each. Any other goes to `council` in **Ask** mode for a ruling, with the finding, the
+  reviewer's case and yours with their evidence, and the code it concerns; its ruling settles it:
+  fix it, or record it declined with the ruling. A spent budget with a blocker or should still open
+  follows the global rules' review-round limit.
 
 ## Harness Compatibility
 

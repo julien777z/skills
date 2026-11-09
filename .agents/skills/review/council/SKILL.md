@@ -19,7 +19,7 @@ short_description: 'Ask three strong models what they think, or review with them
   the majority of the three unless the asker sets another threshold, and a question that is a product, scope, security, disclosure or authorization choice
   is the user's: the council's answers go to them as advice. A ruling between more than two
   options, such as simplify, revert or accept, takes the option most members pick first; a
-  three-way split takes the option that changes least.
+  three-way split takes the option the asker lists first.
 - **Loop:** the user asks the council to review or give feedback on work, such as "council this
   pull request". Run **Rounds**, fixing between them.
 
