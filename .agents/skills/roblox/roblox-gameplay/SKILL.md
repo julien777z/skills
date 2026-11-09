@@ -20,11 +20,11 @@ Fit the rhythm of success to the requested genre, audience, and mood. Establish 
 
 Make successful actions legible through appropriately scaled visual, audio, motion, and progress feedback. Attribute the result to the player's action without obscuring targets, text, or threats. Bound concurrent effects, clean them up, and respect motion, camera-shake, contrast, and audio preferences. Keep frequent feedback short enough that the next action remains available.
 
-Tell the player how well an action went, not only whether it worked: a short worded verdict, a grade or a medal for quality, attributed to the action that earned it. When an action fails, show why at the moment it fails, such as who or what caused it, which value fell short, or how close the attempt came, and make the retry immediate. A failure the player can only work out by repeating it teaches slowly.
+Where an action's quality can vary, tell the player how well it went, not only whether it worked: a short worded verdict, a grade or a medal for quality, attributed to the action that earned it. When an action fails, show why at the moment it fails, such as who or what caused it, which value fell short, or how close the attempt came, and make the retry immediate. A failure the player can only work out by repeating it teaches slowly.
 
 ## First session
 
-Put the first action before everything a new player does not yet need. Update notes, rules, daily rewards, events and offers wait until after the first success, or until the player opens them; a join that queues several panels before control delays the loop it is meant to introduce. When the game has an earn-and-spend economy, carry the guidance through one whole cycle: the core action, its payout, and a first purchase or upgrade priced so that payout affords it. Lead guidance all the way to the place the loop first pays, switched on by default for a new player, rather than stopping at the first menu step or hiding it behind an opt-in control. A new player stalls in the gap between the last guided step and the first earning spot, so check that the cue stays visible there, including when other players crowd the route.
+Put the first action before everything a new player does not yet need. Update notes, rules, daily rewards, events and offers wait until after the first success, or until the player opens them; a join that queues several panels before control delays the loop it is meant to introduce. When the game has an earn-and-spend economy, carry the guidance through one whole cycle: the core action, its payout, and a first purchase or upgrade priced so that payout affords it. When the game guides a new player, lead that guidance all the way to the place the loop first pays, switched on by default for a new player, rather than stopping at the first menu step or hiding it behind an opt-in control. A new player stalls in the gap between the last guided step and the first earning spot, so check that the cue stays visible there, including when other players crowd the route.
 
 End the guided chain, and each completed unit such as a round, a stage, a level or a published creation, with a short handoff: one card or line that names the next goals or choices, such as continue, try the real mode, or return to the hub. A newly unlocked tool or area belongs on that card. The end of guidance should never read as silence.
 
@@ -80,15 +80,7 @@ Fit companions to the genre, progression, and production stage. A popular featur
 
 ## Paid offers
 
-When a game sells items, a paid action never looks like free progression or help. Give paid controls their own shape and a price label, not only a colour or a small badge. Keep them off the routes and controls that guidance sends a new player through. A help, hint or "+" button either does what its label promises for free or shows its cost before it is pressed. Offers open when the player asks for them or after the first success, never in the path of the first action, and an offer the player closes stays closed.
-
-## Genre Router
-
-Tell the game's genre from the project's stated genre, or else its Roblox genre, and read the matching file below as well as this skill. When no row matches, follow this skill alone; when the game spans several genres, read each matching file.
-
-| Genre | Read |
-| --- | --- |
-| Simulator, tycoon or incremental | [Simulator and tycoon games](references/genres/simulator.md) |
+When a game sells items, a paid action never looks like free progression or help. Give paid controls their own shape and a price label, not only a colour or a small badge. Keep them off the routes and controls that guidance sends a new player through. A help, hint or "+" button either does what its label promises for free or shows its cost before it is pressed. An offer the player closes stays closed.
 
 ## Validate fun at the affected scale
 
