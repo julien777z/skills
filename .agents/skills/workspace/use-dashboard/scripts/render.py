@@ -5,7 +5,8 @@ import os
 import shutil
 import subprocess
 from argparse import ArgumentParser
-from base64 import b64encode
+from base64 import b64decode, b64encode
+from binascii import Error as Base64Error
 from collections.abc import Callable
 from datetime import datetime
 from enum import StrEnum
@@ -15,6 +16,7 @@ from html import escape
 from json import JSONDecodeError, dumps, loads
 from pathlib import Path
 from typing import Final, cast
+from xml.etree.ElementTree import ParseError, fromstring
 
 from models import (
     Change,
@@ -59,6 +61,26 @@ TYPES_HEADER: Final[str] = (
 )
 
 
+def is_svg_document(data: bytes) -> bool:
+    """Return whether the bytes parse as XML whose root element is an SVG element."""
+
+    try:
+        root = fromstring(data)
+    except (ParseError, LookupError, ValueError):
+        return False
+
+    return root.tag in ("svg", "{http://www.w3.org/2000/svg}svg")
+
+
+IMAGE_SIGNATURES: Final[dict[str, Callable[[bytes], bool]]] = {
+    "svg+xml": is_svg_document,
+    "png": lambda data: data.startswith(b"\x89PNG\r\n\x1a\n"),
+    "jpeg": lambda data: data.startswith(b"\xff\xd8\xff"),
+    "webp": lambda data: data[:4] == b"RIFF" and data[8:12] == b"WEBP",
+    "gif": lambda data: data[:6] in (b"GIF87a", b"GIF89a"),
+}
+
+
 class DashboardSpecError(ValueError):
     """Raised when a dashboard spec does not match the documented shape."""
 
@@ -72,6 +94,31 @@ def check_text(value: object, path: str) -> None:
 
     if not isinstance(value, str) or not value.strip():
         raise DashboardSpecError(f"{path} must be a non-empty string")
+
+
+def check_image(value: object, path: str) -> None:
+    """Require a base64 data URI holding an SVG, PNG, JPEG, WebP or GIF image of its declared kind."""
+
+    check_text(value, path)
+
+    image = str(value)
+    kind = next(
+        (kind for kind in IMAGE_SIGNATURES if image.startswith(f"data:image/{kind};base64,")),
+        None,
+    )
+
+    if kind is None:
+        raise DashboardSpecError(
+            f"{path} must be a base64 data URI of one of: {', '.join(IMAGE_SIGNATURES)}"
+        )
+
+    try:
+        data = b64decode(image.removeprefix(f"data:image/{kind};base64,"), validate=True)
+    except Base64Error as error:
+        raise DashboardSpecError(f"{path} must hold valid base64 image data") from error
+
+    if not IMAGE_SIGNATURES[kind](data):
+        raise DashboardSpecError(f"{path} must hold {kind} image data")
 
 
 def check_list(
@@ -623,6 +670,15 @@ TREE_NODE_SHAPE: Final[ObjectShape] = ObjectShape(
     },
     required=frozenset({"label"}),
 )
+FIGURE_SHAPE: Final[ObjectShape] = ObjectShape(
+    name="Figure",
+    fields={
+        "image": Field(check=check_image, typescript="string"),
+        "alt": TEXT,
+        "caption": TEXT,
+    },
+    required=frozenset({"image", "alt"}),
+)
 TAB_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Tab",
     fields={"label": TEXT, "sections": SECTIONS},
@@ -729,6 +785,18 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
         },
         frozenset({"tabs"}),
         check_tabs,
+    ),
+    SectionType.FIGURES: section_shape(
+        SectionType.FIGURES,
+        {
+            "items": Field(
+                check=partial(check_objects, shape=FIGURE_SHAPE),
+                typescript="Figure[]",
+                shape=FIGURE_SHAPE,
+            ),
+            "stacked": FLAG,
+        },
+        frozenset({"items"}),
     ),
     SectionType.TABLE: section_shape(
         SectionType.TABLE,

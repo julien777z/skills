@@ -105,8 +105,8 @@ incoming behavior reconciled with the change's intent in the description.
 
 Run the checks CI runs on a pull request once, with each job's own command and scope, after the
 base is in and before the review; fix what the change broke and push. A failure the user waived, an
-established baseline failure, or a hosted check stopped by runner infrastructure before validation
-began is recorded with its evidence and not repaired, rerun or waited on.
+established baseline failure, or a hosted interruption that qualifies for the GitHub rule's
+validation exclusion is recorded with its evidence and not repaired, rerun or waited on.
 
 ## Workflow
 
@@ -197,7 +197,7 @@ changed. Make the smallest changes that answer real findings, and push back on t
     it in one line;
   - outside the change: fix every bug, and record cleanup past `pre-production`'s size budget with
     `defer-scope`.
-- **Next round** only while budget remains and a blocker or should is open, or behaviour code
+- **Next round** only while budget remains and a blocker or should is open, or behavior code
   changed since the last approval. Rerun the checks and `git diff --shortstat <base>` first; if
   review grew the diff past what the intent needs, cut it first. Never agree just to end the loop.
 - **Stop** when the reviewer approves the current diff with no blocker or should open and no concern

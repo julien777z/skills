@@ -56,7 +56,7 @@ ask for a plan or for approval of a guidance-output example; an approval hold th
 sets is that workflow's and still applies. An example renders the settled
 instruction and is task evidence, not a new product experience because a user reads it. A guidance
 edit that intentionally changes the product still follows the global product-decision boundary. The
-required smoke test, review, and acceptance gate validate the correction. When a separate source
+required skill test, review, and acceptance gate validate the correction. When a separate source
 task is active, or a guidance batch is in flight, preserve its execution and follow **Recording
 During A Task** for the edit's timing.
 
@@ -113,7 +113,7 @@ Validate skill dependencies and their actual call and policy-read paths under th
   `data`, bring that pull request's description up to date at the milestone, then run `update-skills` at once for eligible edits under its **What Takes Effect**, so the installed
   copy every agent loads, subagents included, carries them; agents still running hold no refresh, since each skill is
   read through its link when it is used. Nothing else of delivery runs while the task does: no
-  review, gate, smoke round, merge or worker, except the checks a batch in flight reruns for an edit
+  review, gate, skill-test round, merge or worker, except the checks a batch in flight reruns for an edit
   that joined it, as `session-ledger`'s **Guidance Batches** says. A standing instruction about how guidance
   pull requests are reviewed or merged governs that delivery when it runs, never when. A gate result
   that arrives for a guidance pull request already open is recorded as its entry's stage result, and
@@ -145,26 +145,26 @@ user's review of the source pull request overlaps it.
    and delivery stage; a merged or closed pull request resumes at verifying the merged text, never
    at review. An edit step 7.1 puts on a source pull request this session drives is pushed there and
    passes step 7.2's source check on the head carrying it before that pull request's source stream
-   proceeds, and step 7.5's smoke round on the head that pull request's review pass accepted, before the source review and delivery. It carries step 7.3's prose-duplication checks into that
+   proceeds, and step 7.5's skill-test round on the head that pull request's review pass accepted, before the source review and delivery. It carries step 7.3's prose-duplication checks into that
    pull request's simplification pass and step 7.4's incident vocabulary into its final acceptance. An edit step 7.1 selects on
    another session's source pull request runs steps 7.2 to 7.5 here on the head it pushed, and the
    delivery report says the push moved that pull request's head past its owner's acceptance. An
    edit on either source pull request is recorded as held for that pull request's merge once its
-   source check and smoke round pass, so its batch can be done. The steps below cover the
+   source check and skill-test round pass, so its batch can be done. The steps below cover the
    agent-configuration pull request.
 2. Run step 7.2's source check.
 3. Run `review-pass` once over the batch, naming every head it carries. Give it the user's request
    and the recorded evidence as the intent statement, the incident vocabulary for its acceptance
    gate as step 7.4 describes, and step 7.3's prose-duplication checks for its simplification pass.
-4. Run step 7.5's `test-skill` smoke round once over the batch, naming every head `review-pass`
+4. Run step 7.5's `test-skill` skill-test round once over the batch, naming every head `review-pass`
    accepted, with every entry's
    reproduction scenario as an input and entries that share a failure class grouped into one
-   scenario, then steps 7.6–7.9. A guidance repair the smoke round makes, here or on a source pull
-   request under step 1, goes back through `review-pass` over its delta, and the smoke round reruns
+   scenario, then steps 7.6–7.9. A guidance repair the skill-test round makes, here or on a source pull
+   request under step 1, goes back through `review-pass` over its delta, and the skill-test round reruns
    the scenarios it invalidated on the head that review accepts.
 5. After each completed or failed stage, record its exact head, stage result, and first
    nonterminal next stage in each entry. Resume from that stage without repeating completed work.
-   After the smoke round, record the pull request, its head, the smoke results and the merge or
+   After the skill-test round, record the pull request, its head, the skill-test results and the merge or
    hold. Keep its `status` `pending` while a hold remains, with its concrete dependency and saved next
    action. This route never sets an entry's terminal status.
 - Before the surrounding task ends or hands off, every `pending` entry is processed, or carries its
@@ -303,12 +303,12 @@ user's review of the source pull request overlaps it.
      changed is the editor's call, from what the skill returns before and after. **Model the example
      on a small slice of the work in hand**, cut to a scope read in a minute, with every value the run
      would produce — numbers, hashes, findings — stated as made up. Write it as one markdown file
-     whose first line is `**EXAMPLE — modelled on a small slice of the current work; no smoke test
+     whose first line is `**EXAMPLE — modeled on a small slice of the current work; no skill test
      was run.**`. Only where the work in hand gives the output nothing to show does the example use
-     an invented scenario with invented names, first line `**EXAMPLE — fictional output; no smoke
+     an invented scenario with invented names, first line `**EXAMPLE — fictional output; no skill
      test was run.**`. The example is task evidence: the skill text it leads to still keeps its own
      examples generic. Check it as the global rules' **User-Facing Output** requires, write the
-     skill to produce that shape, then validate it through the required smoke run, review, and
+     skill to produce that shape, then validate it through the required skill-test run, review, and
      acceptance gate. A guidance-output format is routine guidance design, not a user approval gate; a change to the product
      a skill operates still follows the global product-decision boundary.
    - Trace each miss to the instruction that produced or allowed it, including instructions for
@@ -325,7 +325,7 @@ user's review of the source pull request overlaps it.
      callers and dependencies. Apply the [conflict criteria](references/conflicting-instructions.md). Resolve competing instructions
      at their owners rather than adding a reminder beside them. Record the searches, sources read
      and each resolution, or the evidence for a clean result. Repeat this check for later wording
-     changes before acceptance and smoke tests; an earlier clean result does not cover a new edit.
+     changes before acceptance and skill tests; an earlier clean result does not cover a new edit.
    - Update existing files in place and report any structural changes. Before delivery, follow the
      entry point's links again and confirm that each route loads its required guidance. References
      must not hide an essential rule or introduce an unexplained mode or dependency. Check genericity
@@ -368,7 +368,7 @@ user's review of the source pull request overlaps it.
    - If scope is ambiguous, ask a short follow-up before editing.
 
 7. **Guidance Delivery** delivers the batch in this order, with `review-pass` carrying steps 3–4. Ordinary
-   repairs and verification remain authorized throughout this delivery; resolve flagged gates under `acceptance-gate`'s **Bounds** and failing smoke runs under
+   repairs and verification remain authorized throughout this delivery; resolve flagged gates under `acceptance-gate`'s **Bounds** and failing skill-test runs under
    `test-skill`. A pull request confined to agent configuration has merge authorization under the
    GitHub rule after its stated gates, subject to the selected workflow's delivery hold; ask neither to repeat that authorization nor to continue
    an ordinary repair. That merge authority settles no genuine unresolved product, scope, or
@@ -441,7 +441,7 @@ user's review of the source pull request overlaps it.
       skill's result or a turn boundary.** Before a report names its state, read the target
       repository's agent-configuration pull-request lifecycle and take the next transition it
       requires. Read the complete pull-request file list, not only the latest edit or its informal
-      label. After the smoke, acceptance, and file-list checks pass, invoke `merge-gate`; do not leave
+      label. After the skill test, acceptance, and file-list checks pass, invoke `merge-gate`; do not leave
       it draft under an ordinary source-work default or report it as delivered before its merged
       text and generated outputs are verified. The report names either the merged state or a
       concrete documented gate with its evidence; draft alone is neither.
@@ -455,7 +455,7 @@ user's review of the source pull request overlaps it.
 
       **A skill that arrives by relocation is not a skill the change adds.** Moving one between
       repositories, or generalizing local copies into one every repository can adopt, produces a new
-      file and no new guidance, and a smoke run against a miss nobody had proves nothing. What makes
+      file and no new guidance, and a skill-test run against a miss nobody had proves nothing. What makes
       it a relocation is that the guidance survives, so establish that rather than asserting it:
       diff the new file against every original line by line, and account for each line the diff
       removes as either the same instruction in repository-neutral words or guidance relocated to a
@@ -470,7 +470,7 @@ user's review of the source pull request overlaps it.
       reader; a repository that does not is the flag, because the merge silently gave it the other
       one's answer.
    6. **Hold each changed output to its concrete example.** For every skill whose output changed,
-      compare one run of your own on the branch in flight and every required smoke run against that
+      compare one run of your own on the branch in flight and every required skill-test run against that
       example: headings, columns, order, file shape. A divergence is the skill's wording, fixed and
       rerun; review and the acceptance gate validate the replacement shape before merge.
    7. **Check the diff file list against the default branch, then merge.** The authorization covers
@@ -510,8 +510,8 @@ user's review of the source pull request overlaps it.
 
 When skill behavior needs a live agent chat, use `subagent-matrix` to choose the least-capable
 sufficient capability and resolve its exact host dispatch identifier. Select that identifier in the chat UI and
-record catalogue state, dispatch identifier, assignment state and receipt, tested branch, exact commit, session
-type, and observed result separately. A catalogue-hidden candidate remains dispatch-required until the actual
+record catalog state, dispatch identifier, assignment state and receipt, tested branch, exact commit, session
+type, and observed result separately. A catalog-hidden candidate remains dispatch-required until the actual
 chat assignment is accepted; a missing identifier or any rejection other than an explicit unsupported receipt
 holds manual verification rather than selecting a substitute. An explicit unsupported receipt records the chat
 as unavailable and keeps manual verification blocked. A resumed container proves its maintenance path, not a
@@ -572,7 +572,7 @@ Checks
 - Source check: passed on <head> | failed: <report>
 - Simplification: <clean | findings applied>
 - Acceptance gate: <accepted on <head> | repaired and accepted on <head> | blocked — <concrete unresolved decision or unavailable compliant remedy>>
-- Smoke test: <passing tables reported above | dropped — <reason> | not run: <reason>>
+- Skill test: <passing tables reported above | dropped — <reason> | not run: <reason>>
 - Example validation: <one line per skill: name — output matches concrete example after <n> round(s) | skipped, no response the user uses | skipped, response unchanged | rule-only change>
 - Merged text read back: <default branch head the touched skills and rules were re-read from | not merged>
 - Refresh: <installed source and commit | blocked: exact reason | not merged>

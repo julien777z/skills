@@ -30,7 +30,7 @@ const STACK_VARIANTS = {
     accentRing: 'size-5 shrink-0 rounded-full border border-info',
     brand: 'size-7 shrink-0 rounded-md bg-primary text-primary-foreground',
   },
-  frame: { none: '', page: '@container/page mx-auto w-full max-w-[120rem]' },
+  frame: { none: '', page: '@container/page mx-auto w-full max-w-[120rem]', readable: 'max-w-4xl' },
   height: { auto: '', bar: 'min-h-14' },
   block: { none: '', row: 'py-3', page: 'py-8' },
   push: { true: 'ml-auto shrink-0', false: '' },
@@ -68,7 +68,7 @@ const stackVariants: ReturnType<typeof cva<typeof STACK_VARIANTS>> = cva('flex m
 });
 
 interface StackProps extends VariantProps<typeof stackVariants> {
-  as?: 'div' | 'main' | 'ul' | 'ol' | 'li' | 'nav';
+  as?: 'div' | 'main' | 'ul' | 'ol' | 'li' | 'nav' | 'figure';
   label?: string;
   children: ReactNode;
 }

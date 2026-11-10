@@ -9,7 +9,7 @@
       ],
       "applies_to": "any identifier, docstring, comment, test name, or route segment",
       "use_instead": "\"admin\" — `Admins`, `is_admin`, `assert_admin`, `/admin/...`.",
-      "why": "The long form buys no clarity over the word everyone already says, and it drifts: one file spells it out while its neighbour abbreviates, so neither name is searchable."
+      "why": "The long form buys no clarity over the word everyone already says, and it drifts: one file spells it out while its neighbor abbreviates, so neither name is searchable."
     },
     {
       "term": "best effort",

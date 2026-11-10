@@ -40,7 +40,7 @@ Every other field is optional, and an absent one leaves its part of the page out
 | `notice` | `{title, body, tone?}`: a banner with an icon for its tone under every page's title, for the one thing the reader must see first wherever they are. |
 | `progress` | `{value: 0–1, label, detail?, segments?}`: a stat card twice as wide as the others, with the percentage, `detail` as its badge, and a bar. `segments` is `[{label, details?, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1, and its `label`, with each of `details` on a line under it, shown in a tooltip while the pointer rests on it; without `segments` the bar is a plain fill. |
 | `metrics` | `[{label, value, detail?}]`: at most four stat cards beside the progress, `detail` under the figure. |
-| `pages` | `[{title, icon, layout?, subtitle?, status?, progress?, locked?, sections}]`: one navbar link each, a page's `subtitle` replacing the dashboard's under its title, a page's `progress`, in the shape above, shown at its top, with `status` (`{label, tone?}`) shown as a dot in its tone after the page's name, and its label read out to screen readers, for the page's current state, such as something that needs the reader. A `locked` page sets `sections` to `[]` until it has content: its link shows a lock in place of its icon and cannot be opened. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. `sections` render in order; with `layout` `columns`, the default, boards, tables, outlines, trees, tabs and diagrams take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
+| `pages` | `[{title, icon, layout?, subtitle?, status?, progress?, locked?, sections}]`: one navbar link each, a page's `subtitle` replacing the dashboard's under its title, a page's `progress`, in the shape above, shown at its top, with `status` (`{label, tone?}`) shown as a dot in its tone after the page's name, and its label read out to screen readers, for the page's current state, such as something that needs the reader. A `locked` page sets `sections` to `[]` until it has content: its link shows a lock in place of its icon and cannot be opened. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. `sections` render in order; with `layout` `columns`, the default, boards, tables, outlines, trees, tabs, diagrams and figures take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
 | `references` | `[{text, url?, details?}]`, each with exactly one of `url` and `details`: every whole-word occurrence of `text` in any page's text becomes a link to `url`, or opens `details`, one section, in a dialog, apart from the navbar, page titles, stat card figures, badges, progress segment tooltips and the first cell of a table row that opens a dialog, which stay plain. |
 
 An `icon` is one of `overview`, `progress`, `board`, `checklist`, `list`, `chart`, `activity`,
@@ -51,7 +51,7 @@ all differ, so no glyph appears twice in the navbar.
 `tone` is `good`, `warning`, `critical`, `accent` or `done`, as **Making A Dashboard** defines
 them; omit it for neutral. `links` is `[{kind, label, url}]`: pills under the item that open its sources,
 each led by its `kind` — `doc`, `code`, `diff`, `spec`, `pull-request`, `config`, `test`, `page` or
-`data`, shown as Doc, Code, Diff, Spec, PR, Config, Test, Page or Data — and labelled briefly, such as
+`data`, shown as Doc, Code, Diff, Spec, PR, Config, Test, Page or Data — and labeled briefly, such as
 `terms-of-service.md L324` or `export.py L40–L58`. `at` is an ISO 8601
 timestamp the page shows in the viewer's own timezone on a 12-hour clock, such as `9:05 PM`, with the
 date when it is not today. Every section takes an optional `description`, one sentence shown under
@@ -71,6 +71,7 @@ of a process, carries no count. Section types:
 | `outline` | `title`, `groups: [{title, items}]`, `expanded?` (every item starts open when true), `stacked?` (groups run in one column, each across the full width, for groups read in order), `collapsible?` (false shows every item in full with no toggle, its `title` as a muted label beside its `detail`, for a short write-up of facts read top to bottom) | `title`, `detail`, `tone?`, `tag?`, `meta?`, `links?`, `points?`: a headline that opens to its detail, with `points` as a bulleted list under it, with `tag` as a badge in the item's tone (neutral without one) and `meta` as small text; without `expanded`, a group of one or two items shows them open |
 | `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `figure?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `figure` a short count in a neutral badge right after its label, `meta` beside it, and `details`, one section, opening in a dialog from the entry's label; for a whole made of parts made of parts |
 | `tabs` | `title`, `tabs: [{label, sections}]` | each tab a `label` and the `sections` it shows: a bar of tab labels, read with the arrow keys as well as the pointer, over the selected tab's sections, which render inside this card in order; a tab whose `sections` is `[]` is left off the bar, and with one tab left no bar shows, only its sections; for one subject split into kinds the reader looks at one at a time |
+| `figures` | `title`, `items`, `stacked?` (one figure per row, each followed by its caption, for pictures read in order) | `image`, `alt`, `caption?`: `image` a base64 data URI of an SVG, PNG, JPEG, WebP or GIF image, a single figure taking the card's width and several two side by side on a wide page, or one per row at a readable width with `stacked`, with `alt` read out in its place and `caption` under it; for what the reader needs to see rather than read, such as a map, a mock-up or a screenshot |
 | `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?`, `legend?` (`[{tone, label}]`, a line in each tone beside what it means) | node: `id`, `label`, `detail?`, `pr?`, `change?`, `tone?`, `details?`, `target?`; edge: `from`, `to`, `label?`, `step?`, `change?`, `tone?`, `details?`; pr: `ref`, `url`; each step a string |
 
 A diagram draws each node as a box inside a frame titled with the `ref` its `pr` names, and each
@@ -91,7 +92,7 @@ A `questions`, `links` or `changes` item's `group` names what it belongs to, suc
 request's repository as `owner/repo`; when one item sets it, every item and the section's
 `group_label`, the name of what the groups are, such as `Repository`, are set too. The section
 shows its items group by group, in the order each group first appears, with each group's name above
-its items. With two or more groups it also shows a select labelled `group_label`, offering All and
+its items. With two or more groups it also shows a select labeled `group_label`, offering All and
 each group; choosing a group shows only its items, without the group names above them, and the
 count, the questions' summary and the pages follow what is shown.
 
@@ -148,7 +149,7 @@ Dashboards look alike because they are built alike:
   `questions`. Where do I click? `links`. What does each part say, in a sentence I can open?
   `outline`. What was added or removed? `changes`. Values across the same columns? `table`. Short
   remarks? `notes`. How do the parts connect? `diagram`. What is this made of, part by part? `tree`.
-  One subject in several kinds, read one kind at a time? `tabs`.
+  One subject in several kinds, read one kind at a time? `tabs`. What does it look like? `figures`.
 - **A pill is for a state the reader scans for.** A status, a mark such as Matches or Out of date,
   or a pull request's state takes a pill; a label that only says what kind of thing an item is or
   which group it belongs to, such as its plan or its type, is plain text. When most items on a page
@@ -158,7 +159,7 @@ Dashboards look alike because they are built alike:
   batch is frozen". A numbered title keeps its number; the text about it never leans on one.
 - **A label names only what it marks.** A segment, tag, group or row label never restates the
   dashboard's `topic` or the heading above it: the reader already has both, so a progress segment
-  is labelled with its step, such as "Offer rules", never "Plot waitlist: Offer rules", and an outline
+  is labeled with its step, such as "Offer rules", never "Plot waitlist: Offer rules", and an outline
   group is headed with the area it covers, never with the task's name.
 - **Labels and headings are written in sentence case and shown as written.** The dashboard's
   `title` and the preview `topic` `Synthetic Preview` are names, in title case.
@@ -168,9 +169,12 @@ Dashboards look alike because they are built alike:
   fine, such as a merged pull request beside open ones. Leave it out for neutral; never tone an item only to decorate it.
 - **Blue text is a link.** A reader clicks blue text, so only links take it, and a tone colors a
   dot, border, line or bar, never text. A figure, number or label meant to stand out sits in a
-  neutral badge rather than taking a color or the weight its neighbouring names already use.
-- **Every section says what it holds.** Give each one a `description`: one sentence on what the
-  reader finds or does there, never a narration of its controls.
+  neutral badge rather than taking a color or the weight its neighboring names already use.
+- **A `description` earns its line.** Leave it out unless it tells the reader something the title
+  and the section's contents do not, such as which entries a count covers. A sentence that restates
+  the title, describes the section's form, such as "as a list" or "newest first", narrates its
+  controls, or adds a caveat that changes nothing the reader does, such as who will make the final
+  version of what it shows, is left out.
 - **Sources are links, never paths in text.** Anything a reader can check, such as a file and line,
   a diff, a pull request, a document's section or a page of a site, goes in `links` with a URL that
   opens it at that exact place: a permalink to the line or range at the commit that was read, or the
@@ -179,8 +183,10 @@ Dashboards look alike because they are built alike:
   `references` entry so the mention itself is a link.
 - **Times are timestamps.** A moment goes in `at` as a timestamp, never as a clock time written into
   text, so every reader sees it in their own timezone.
-- **Text is plain.** Titles say what is true in a few words; `detail` explains in a sentence or two
-  that reads without the source. A file, section or line is named by its `links` pill, never in the
+- **Text is plain.** Titles say what is true in a few words, in the words a reader scans for, such
+  as "Opening hours" rather than "When you can visit us"; `detail` explains in a sentence or two
+  that reads without the source. Every title, label, caption and description is plain statement,
+  never flourish. A file, section or line is named by its `links` pill, never in the
   title, `detail` or `meta`.
 
 ## Previews

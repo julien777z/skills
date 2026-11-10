@@ -25,7 +25,7 @@ answers to one question may now sit in one tree.
 - **Never resolve by side.** `ours`, `theirs`, a checkout of one side's file, or accepting every
   hunk from one branch resolves nothing; each is a decision made without reading what the other side
   did. Every conflicting file is read on both sides before any of it is written.
-- **A rule that favours your own side is not the judgement.** Once the comparison below has named a
+- **A rule that favors your own side is not the judgment.** Once the comparison below has named a
   winner, code that takes the losing shape is refactored onto the winner in the same change, and
   which branch it came from is never a reason to leave it there.
 
@@ -56,8 +56,8 @@ source checkout, remote branches and unrelated edits throughout.
    apply `pre-production`'s test and take whichever yields the cleaner result and leaves the fewest
    mechanisms behind. Where that still does not separate them, the two are one design under two
    names, and the answer is the spelling the rest of the repository already reads.
-5. **Preserve behaviour required by the target contract.** Migrate affected consumers and retained
-   data before removing an obsolete shape. A resolution that drops required behaviour is a defect;
+5. **Preserve behavior required by the target contract.** Migrate affected consumers and retained
+   data before removing an obsolete shape. A resolution that drops required behavior is a defect;
    preserving a legacy runtime path is not a way to avoid the migration. Where a close choice changes
    an interface others build on, put it to `council` in **Ask** mode and follow its ruling. Block only when a safe resolution needs an
    unauthorized product decision or a change to a contract a consumer outside the user's control speaks.

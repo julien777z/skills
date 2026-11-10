@@ -65,7 +65,7 @@ of skills, holding the skills that category's flows run through. A skill sits on
 category and appears on another only as a node that page's flow reaches.
 
 - **The categories are the skills repository's own when it has them**: the grouping its skills are
-  filed under, such as a folder per category in its skills directory, or the category its catalogue
+  filed under, such as a folder per category in its skills directory, or the category its catalog
   or README gives each skill. Each becomes a page titled with the category's name as words, in the
   order the repository lists them, or alphabetically when it sets none.
 - **When the repository has none, choose them by kind of work**, so each page follows one flow from
@@ -157,10 +157,10 @@ reaches. Pages follow the categories as the sources stand when they are read.
        condition counting as one that does not; a count that depends on the work counts at its stated
        least, or at one. No figure sums a worst case across the whole graph, and none reads "0+": a
        range shows as its range, such as "2–4", and a count that only varies shows what it varies
-       with, such as "1 per finding". Beneath a skill, its steps in order, labelled "<n>. <step>"
+       with, such as "1 per finding". Beneath a skill, its steps in order, labeled "<n>. <step>"
        with the same `figure` and `meta` for what sits beneath them; beneath a step, each
        skill it runs, nested the same way wherever it runs so every total counts it, and each
-       launch as an entry labelled with its role, `figure` its count, such as "3", "2–4" or "1 per
+       launch as an entry labeled with its role, `figure` its count, such as "3", "2–4" or "1 per
        finding", and `meta` its rounds and what it reads, such as
        "up to 3 rounds · diff and whole touched files", and `detail` what the subagents do, what a
        later round reruns, and the condition it runs under when it only sometimes runs. A launch
@@ -170,7 +170,7 @@ reaches. Pages follow the categories as the sources stand when they are read.
      - a `tree` `Loops`, `open_depth` 2, one root per kind of loop the skills run, each only when
        one exists: `Review loops`, rounds of reviewers; `Repair loops`, fixing and checking again;
        `Wait loops`, polling until something finishes; and `Retry loops`. A root's `meta` counts
-       its loops and the usual subagents a round starts. Beneath a root, each loop, labelled
+       its loops and the usual subagents a round starts. Beneath a root, each loop, labeled
        "<skill>: <what repeats>", most subagents first, `meta` "up to <n> rounds · ~<m> per round,
        more per <what>", or "no cap" when nothing bounds the rounds, and `detail` what ends it and
        what each later round reruns. Beneath a loop, what one round starts, as the launch entries
@@ -183,10 +183,10 @@ reaches. Pages follow the categories as the sources stand when they are read.
        each skill and what it is doing when it reads it, toned `warning` when every one of those
        launches always runs; left out when nothing overlaps.
    - Each category page, `layout` `rows`: a `diagram` `Flow` whose nodes are the skills the
-     page's starting skills reach directly, each labelled with its name and given its role in a few
-     words as its `detail`, and one node per launch labelled with the short name of the subagents it
+     page's starting skills reach directly, each labeled with its name and given its role in a few
+     words as its `detail`, and one node per launch labeled with the short name of the subagents it
      starts, such as `Draft reviewers`, with how many and how often, such as "×3 per round", in its
-     `detail`. Edges are labelled `invokes`,
+     `detail`. Edges are labeled `invokes`,
      `launches` (from the skill to its launch node) or `borrows`, and `steps` say in order how the
      work moves through them; a skill reached only further down appears in the `Skills` table
      alone. Then a `tree` `Scenarios`, `open_depth` 1: two to four stories this work commonly
@@ -194,7 +194,7 @@ reaches. Pages follow the categories as the sources stand when they are read.
      finds a bug, or findings that keep coming for three rounds. A root names the story. Beneath it,
      what happens in run order: each round or step, such as "Review round 1", holding one leaf
      per subagent it starts, named for its role, such as "Reviewer"; and each event that changes
-     the path, labelled with a short name such as "Unused import" and told in its `detail`, such
+     the path, labeled with a short name such as "Unused import" and told in its `detail`, such
      as "Reviewer reports an unused import", toned `warning`, holding
      what it sets off — a validator, a fix, a fresh gate — with an outcome that settles it toned
      `good`. A step that starts none says "In process" in its `meta`, and a round that reruns fewer
@@ -228,7 +228,7 @@ reaches. Pages follow the categories as the sources stand when they are read.
        are, such as "~4 per run, more for sign-in or payment changes: 3 inspectors and 1 checker
        each round, plus 1 safety inspector for those changes", or "None"; and "Review rounds", how
        many and what ends them, or "None, it runs once".
-     - "How it runs": one item per step in order, labelled "<n>. <step>", `detail` what happens,
+     - "How it runs": one item per step in order, labeled "<n>. <step>", `detail` what happens,
        and `points` for what that step spends: one per launch, "<count> <role> read <scope> and
        <what they look for or produce>", and, on the step that repeats, how many rounds, what ends
        them and what each repeat reruns.
@@ -282,7 +282,7 @@ question: what would change in how the skills run. It shows the change, not two 
      section `Loops`, one item per loop added, removed or changed, its `detail` the cap and what a
      round reruns on each side.
    - `Changed`, the second page, with `icon` `compare`, holds one `tabs` section `Changed flows`
-     with a tab per mapped page, labelled with the page's name and in the order the Show dashboard orders them, so the
+     with a tab per mapped page, labeled with the page's name and in the order the Show dashboard orders them, so the
      reader moves between the changed categories on one page. Each tab holds a `diagram` `Flow` of
      the proposed flow with the current flow's removed parts left in, each node and edge carrying
      `change` `added`, `removed` or `changed` and no `change` when unchanged, with `steps` saying

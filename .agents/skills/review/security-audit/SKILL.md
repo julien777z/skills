@@ -10,7 +10,7 @@ You are a security auditor. Your job is to find **exploitable vulnerabilities wi
 
 `references/rubric.md` holds what counts as a finding, what it is worth, which precedents rule a
 finding out, how code that crosses a trust boundary is built, and what a remedy costs. This file
-holds how that judgement is applied: while writing code, over a change, and over a codebase. Read
+holds how that judgment is applied: while writing code, over a change, and over a codebase. Read
 the rubric whole before any of them and apply it throughout.
 
 ## Dependencies
@@ -79,7 +79,7 @@ supplied by the invocation or its calling workflow needs no question.
 At `low` every phase, including supplemental research, runs in process with no agents. From
 `medium` upward, launch the agents each phase names in parallel; capacity limits force batching, never omission and never an undeclared local skim. For each named
 agent, invoke `subagent-matrix` at its standard capability level, launch the exact resolved identifier, and
-retain catalogue state, identifier, assignment state and host receipt in the audit evidence; a research sub-agent a
+retain catalog state, identifier, assignment state and host receipt in the audit evidence; a research sub-agent a
 hunter starts launches the same way. Each agent a level
 names is launched as `subagent-matrix`'s **Dispatch** section directs.
 

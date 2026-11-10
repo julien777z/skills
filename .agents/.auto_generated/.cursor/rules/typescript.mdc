@@ -138,7 +138,7 @@ type Status = (typeof Status)[keyof typeof Status];
   changes.
 - Do not wrap a canonical lookup in a `catch` that swallows the failure and continues with a guessed
   value or a degraded mode. Handling a legitimate *state* of the data is fine; inventing a substitute
-  when the source is unavailable or malformed hides drift and turns an outage into wrong behaviour.
+  when the source is unavailable or malformed hides drift and turns an outage into wrong behavior.
 - Catch the specific error type, never a bare catch-all, unless the handler compensates for a durable
   trace and then re-throws.
 
@@ -161,7 +161,7 @@ type Status = (typeof Status)[keyof typeof Status];
   checks that stay on keep our own errors reported.
 - The Comments section's exception admits a tooling directive as something other than prose, so a
   sweep that strips comments leaves it alone. That is about not deleting one that already exists; it
-  is not licence to add one.
+  is not license to add one.
 
 ## Comments
 
@@ -172,11 +172,11 @@ type Status = (typeof Status)[keyof typeof Status];
   type or component: a prop's name and type carry what the block would say.
 - The exception is a directive the tooling reads — a linter suppression, a type-checker instruction
   — which is not prose and stays.
-- **The other exception is behaviour somebody else owns, which no amount of renaming can make the
+- **The other exception is behavior somebody else owns, which no amount of renaming can make the
   code show.** A framework that consumes its own headers before your code runs, a browser that sends
   a request for a document when nobody navigated, a library whose call means something other than it
   reads: the reason lives outside this repository, so the code cannot state it and the next reader
-  cannot derive it. One or two lines, factual, about the external behaviour alone.
+  cannot derive it. One or two lines, factual, about the external behavior alone.
 - Judge it by where the reason lives, never by how surprising the line looks. A branch that puzzles a
   reader because the code around it is tangled is a refactor; the same branch puzzling them because a
   protocol says something unexpected is the comment this exception is for.
@@ -188,5 +188,5 @@ type Status = (typeof Status)[keyof typeof Status];
 
 - Do not delete feature logic because it looks extra. Check the active request, the nearby tests, and
   the call sites before concluding that newly added code is dead.
-- Where a cleanup instruction meets clear feature intent, preserve the behaviour and ask rather than
+- Where a cleanup instruction meets clear feature intent, preserve the behavior and ask rather than
   removing the feature.

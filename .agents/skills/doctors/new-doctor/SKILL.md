@@ -48,17 +48,17 @@ does not start a doctor audit.
    existing skill; check the entrypoint against `doctor-protocol`'s **Declare What The Doctor Owns**;
    confirm no heading restates a protocol section; run `get-doctors` and see the new doctor listed
    with the intended summary.
-7. **Smoke-test it** as the section below states, and rewrite any lens a reviewer missed.
+7. **Skill-test it** as the section below states, and rewrite any lens a reviewer missed.
 8. **Deliver** through `edit-skill`, whose step 7.7 holds a pull request adding a doctor for the
    user's review; the report hands the user its link.
 
-## Smoke Test The Doctor
+## Skill Test The Doctor
 
 A lens is only as good as what a reviewer reading it finds. Before delivery, prove each lens
 against a violation a reviewer has not been told about.
 
 - **Who reviews.** Invoke `subagent-matrix` and use its **standard** tier for read-only
-  reviewers, following its dispatch and unavailable-model policy. Record each reviewer's catalogue
+  reviewers, following its dispatch and unavailable-model policy. Record each reviewer's catalog
   state, exact dispatch identifier, assignment state and receipt; record runtime identity only when
   the host exposes it.
 - **What each reviewer gets.** The doctor's `SKILL.md`, the skills it depends on, one target tree,

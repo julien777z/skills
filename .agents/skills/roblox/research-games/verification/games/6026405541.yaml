@@ -1,0 +1,237 @@
+name: "🎃 10 Player Flee"
+game_id: "universe:6026405541"
+universe_id: "6026405541"
+place_id: "17600423422"
+url: "https://www.roblox.com/games/17600423422"
+creator: "the workshop (group, verified badge)"
+chart_category: "Fun with Friends"
+chart_rank: 2
+genre:
+  primary: "Survival"
+  sub: "1 vs All"
+competitors:
+  - name: "Murder Mystery 2"
+    universe_id: "66654135"
+    url: "https://www.roblox.com/games/142823291"
+    overlap: "Same subgenre (1 vs All) on the 2026-11-08 chart"
+  - name: "[UPD 🎃] Forsaken"
+    universe_id: "6331902150"
+    url: "https://www.roblox.com/games/18687417158"
+    overlap: "Same subgenre (1 vs All) on the 2026-11-08 chart"
+  - name: "[WEEK 3 🎃 x BUTCHER] Violence District"
+    universe_id: "6739698191"
+    url: "https://www.roblox.com/games/93978595733734"
+    overlap: "Same subgenre (1 vs All) on the 2026-11-08 chart"
+  - name: "Flee the Facility"
+    universe_id: "372226183"
+    url: "https://www.roblox.com/games/893973440"
+    overlap: "Same subgenre (1 vs All) on the 2026-11-08 chart"
+  - name: "3008 [2.75]"
+    universe_id: "1000233041"
+    url: "https://www.roblox.com/games/2768379856"
+    overlap: "Same subgenre (1 vs All) on the 2026-11-08 chart"
+researcher: "R12"
+mode: passive
+play_ended_by: null
+onboarding_video_coverage: not_covered
+observed_at: "2026-11-09T03:04:00Z"
+observation_status: completed
+previous_observed_at: null
+changes_since_previous: []
+active_play_seconds: null
+play_coordination:
+  resource_key: null
+  wait_seconds: null
+  acquired_at: null
+  expires_at: null
+  released_at: null
+  release_verified: null
+  expiry_or_blocker: null
+context:
+  play_style: "Survival / 1 vs All (API genre Horror, genre_l1 Survival, genre_l2 1 vs All): asymmetric round game, 8 survivors against 2 beasts"
+  camera_perspective: "Preview video: survivors in third person; beasts in first person with the weapon in view."
+  device_and_input: "Preview video shows keyboard hints (Interact, Crouch, a 'Q' ability bar); recording device unknown."
+  observation_environment: "Passive: games, votes, media, thumbnails, game-pass, badge and age-recommendation APIs, the experience page, and the game's own 59-second Roblox preview video, read from the host over HTTPS. Not played; no YouTube."
+  visible_server_population: "API at 2026-11-09T03:02Z: 1,432 playing, maxPlayers 10 per server; preview video HUD shows up to eight survivor name tags."
+  solo_or_group: "Group only: rounds are 8 survivors plus 2 beasts in one server; strangers fill servers."
+  game_version_if_known: "Created 2024-05-24, updated 2026-11-09T00:37Z; description's latest update note is dated 11/01/26 (Halloween update)."
+  evidence: [source_1, source_3]
+account_state:
+  freshness: unknown
+  evidence: ["Not played; no in-game state observed."]
+evidence:
+  - id: source_1
+    kind: description
+    url: "https://games.roblox.com/v1/games?universeIds=6026405541"
+    captured_at: "2026-11-09T03:02:00Z"
+    media_date_or_version: "updated 2026-11-09T00:37:06Z"
+    timestamps: []
+    screenshots: []
+    limitations: ["Marketing text. Stats at capture: 60,963,465 visits, 137,466 favorites, 41,938 up / 6,333 down votes (about 87% positive). Describes itself as 'an expanded, fan-made version' with original assets."]
+  - id: source_2
+    kind: thumbnail
+    url: "https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=6026405541&size=768x432&format=Png&countPerUniverse=10"
+    captured_at: "2026-11-09T03:02:00Z"
+    media_date_or_version: "TN3, five images (asset IDs 132260764428086, 79244978229571, 109572066421981, 82063945611885, 110106207104510)"
+    timestamps: []
+    screenshots: ["6026405541-thumbs.png"]
+    limitations: ["Promotional art: a neon 'HACK SAVE FLEE' render of survivors at computers, a freeze pod and a roped survivor fleeing a red-eyed beast; three illustrated anime-style posters; one 'HACK SAVE FLEE!' poster. Cannot establish in-game UI."]
+  - id: source_3
+    kind: gameplay_video
+    url: "https://games.roblox.com/v2/games/6026405541/media"
+    captured_at: "2026-11-09T03:03:00Z"
+    media_date_or_version: "GamePreviewVideo asset 116529400249758, 59.3 s, 640x360 VP9; upload date unknown"
+    timestamps: ["0-10 s cinematic of facility and freeze pod", "about 19 s '15 SEC HEAD START' HUD with a hacking progress bar and '+1.2 XP'", "about 20-27 s hacking split-screen on three maps with a timing bar (moving red marker over a white zone)", "about 27 s freeze pod with a 'Free' prompt, HUD 'COMPUTERS LEFT: 6'", "about 30-45 s beast first person with weapon, 'Breacher' ability bar keyed 'Q', and 'FIND AN EXIT' objective", "about 45-50 s 'UNIQUE ABILITIES' and 'VARIOUS MAPS' captions", "about 51-52 s crate Shop modal", "57-59 s logo end card"]
+    screenshots: ["6026405541-preview-sheet.png", "6026405541-preview-hud.png", "6026405541-preview-shop.png"]
+    limitations: ["Developer-edited trailer with captions and cuts, not a continuous session; no lobby, onboarding, round start or round end shown. Watched as extracted frames; audio not reviewed. Player names visible in it are not recorded."]
+  - id: source_4
+    kind: description
+    url: "https://badges.roblox.com/v1/universes/6026405541/badges?limit=100"
+    captured_at: "2026-11-09T03:03:00Z"
+    media_date_or_version: null
+    timestamps: []
+    screenshots: []
+    limitations: ["21 badges. Includes 'Getting Started' (created 2026-06-08): 'Hack a PC, save a survivor, disable a trap, flee a facility, capture a survivor and use a beast ability', awarded 66,007 times; 'Sharkbait' (be the first captured) 910,853; 'Flawless!' 533,119; lobby 'Level 1/2 Wallhop' courses; 'Rainbow' (hack a rainbow computer); 'Phew!' (escape in the last second)."]
+  - id: source_5
+    kind: description
+    url: "https://apis.roblox.com/game-passes/v1/universes/6026405541/game-passes?passView=Full&pageSize=100"
+    captured_at: "2026-11-09T03:03:00Z"
+    media_date_or_version: null
+    timestamps: []
+    screenshots: []
+    limitations: ["On sale at capture: Frying Pan [CUSTOM SOUND] 9999, Lucky 319, x2 Coins 399, VIP 399, Honeybear Starter Pack 199, x2 Shiny 349, Skip Crate 269, x2 XP 299, Poseidon Bundle 499, Warhammer Bundle 499 Robux; further starter packs and seasonal bundles listed without a price (off sale). Prices are not necessarily permanent. Age recommendation API: Maturity Mild, Fear (repeated, mild), Violence (repeated, mild)."]
+gameplay:
+  advertised_loop: "Survivors hack computers, free captured teammates from freeze pods and flee through an exit once the computers are done; two beasts hunt, capture and freeze survivors. Coins buy item crates."
+  observed_loop: "Preview video only: survivors get a 15-second head start, hack desk computers via a progress bar with a timing check while the HUD counts 'COMPUTERS LEFT', free a frozen survivor at a glowing pod, then the objective switches to 'FIND AN EXIT'; the beast plays in first person with a weapon and a cooldown ability."
+  first_action: "Inferred from video: walk to a blue-screened computer and interact to hack it (HUD shows an Interact key hint)."
+  first_success_seconds: null
+  success_feedback: ["Video: '+1.2 XP' floats under the hack progress bar as it fills.", "Video: the 'COMPUTERS LEFT' counter drops and the objective text changes to 'FIND AN EXIT'."]
+  progression: ["XP and levels (badge 'Sweatfest' references level 1000+ players; x2 XP pass).", "Coins spent on crates of cosmetic items with rarity tiers (video Shop: Common 79.75%, Rare 18.25%, Epic 1.5%, Legendary 0.5%; 300 coins per spin).", "Shiny item variants and Mythical items (badges, description).", "Quests (HUD button)."]
+  choices_and_variety: ["Two roles: survivor or beast.", "Beast abilities ('UNIQUE ABILITIES' caption; 'Breacher' ability bar).", "Several maps (video shows a facility, a school, a suburb, a farmhouse, a station; 'VARIOUS MAPS' caption).", "Rainbow computers as a rare variant (badge).", "Halloween event: cauldron crafting, pumpkins, a 'Candy Survivor' mechanic (description)."]
+  social_and_cooperative: ["Survivors cooperate by hacking the same computer together (video shows two or three at one desk) and freeing each other from pods.", "Trading (HUD button; 'Trade King' badge).", "Spectate (HUD button) while captured or waiting (inference).", "Pings ('Communicator' badge: ping 20 times)."]
+  companions_and_pets: []
+  friction: ["The timing check during hacking implies a mistake penalty, but its effect is not shown.", "Beast first-person view with heavy red lighting can make scenes hard to read in the trailer.", "Ten paid passes plus crates and seasonal bundles make the store dense (from the pass list)."]
+  evidence: [source_1, source_3, source_4, source_5]
+pacing:
+  timing_start_definition: null
+  loading_seconds: null
+  time_to_control_seconds: null
+  first_meaningful_choice_seconds: null
+  first_reward_seconds: null
+  action_reward_cadence: "Video HUD timers read 14:46 during the 15-second head start, and 14:37 down to 08:14 in later clips, suggesting a round clock of about 15 minutes (inference from trailer clips, not measured)."
+  active_play_versus_travel_or_waiting: "Inferred: captured survivors wait in pods or spectate until freed."
+  natural_stopping_points: ["End of each round (escape, all captured, or timer)."]
+  measurement_method: "HUD timer values read from trailer frames; clips are cut, so no duration is measured."
+  evidence: [source_3]
+goals_and_progression:
+  next_goal_clarity: "Video: the top-center HUD names the current objective in capitals ('15 SEC HEAD START', 'COMPUTERS LEFT: 7', 'FIND AN EXIT') beside the round timer, so the next goal is always one short line."
+  short_term_goals: ["Hack the next computer; free a frozen teammate; avoid the beasts."]
+  medium_term_goals: ["Finish all computers and escape through an exit."]
+  advertised_long_term_goals: ["Levels, crate collection, shinies, mythicals, owning every obtainable item ('Trade King'), event rewards ('Limited Final Reward challenge')."]
+  upgrade_choices: ["Cosmetic crate items; no stat upgrades evidenced."]
+  mastery_versus_stat_growth: "Round play looks mastery-based (route knowledge, timing checks, beast abilities); long-term growth is level and collection, not power (inference)."
+  unlock_previews_and_optional_activities: ["Lobby wallhop courses (badges).", "Halloween cauldron crafting (description)."]
+  evidence: [source_1, source_3, source_4]
+failure_and_recovery:
+  observed_failure: "Video: a survivor lies captured beside a beast and another sits in a freeze pod."
+  explanation: null
+  cost_or_lost_progress: null
+  retry_seconds: null
+  checkpoints: null
+  non_paid_recovery: "Teammates free a frozen survivor by interacting with the pod (video 'Free' prompt)."
+  evidence: [source_3]
+agency_and_social:
+  meaningful_choices: ["Which computer to hack, whether to risk freeing a teammate, when to escape (inference from loop)."]
+  customization_and_identity: ["MorphToR6 avatars; cosmetic weapons and sets from crates and bundles."]
+  cooperation_and_competition: ["Asymmetric: survivors cooperate, beasts compete against them."]
+  visible_social_feedback: ["Video: a red strip of survivor name tags across the top-left of the HUD.", "Badges for meeting testers, contributors, staff and developers."]
+  solo_accessibility: "Needs a filled server; there is a 'Soloist' badge for winning as a lone beast."
+  evidence: [source_3, source_4]
+ui:
+  evidence_status: partial
+  visual_style: "Video: flat dark translucent panels with white bold sans-serif capitals; red name-tag strip; colorful illustrated icons."
+  layout_and_hierarchy: "Video: top-center bar holds the round timer and objective; top-left strip lists survivors; top-right holds Invite and profile buttons; a right-edge column of four square icon buttons (MENU, QUESTS, SPECTATE, TRADING) plus a round EVENT button; bottom-right shows key hints 'Interact' and 'Crouch'; hacking progress bar at bottom center."
+  color_scheme: ["dark gray translucent panels", "white text", "red for survivor tags and beast ability bar", "green for crate 'Spinning' state and Common rarity", "rarity colors in the shop list"]
+  typography:
+    font_appearance: "Bold geometric sans-serif capitals for HUD labels and objectives."
+    font_family_if_verified: null
+    size_observation: "Objective text about 9 px tall in a 640x360 trailer frame (about 2.5% of frame height); icon labels much smaller."
+    size_basis: visual_estimate
+    viewport_resolution: "640x360 trailer"
+    readability: "Objective line reads clearly on its dark bar; icon captions under the right-edge buttons are tiny at trailer resolution."
+  controls:
+    primary_actions: "Interact (hack, free) and Crouch, shown as key hints bottom-right; beast ability on Q."
+    close_x_appearance_and_location: "Shop modal: a red square with a white X at the top-right corner, beside a gray '<' back button."
+    modal_behavior: "Shop opens as a dark centered panel over the lobby with the coin balance top-right."
+    state_feedback: "Hack progress bar fills white; a timing bar shows a red marker crossing a white target zone; crate button shows a green 'SPINNING' state; coin balance falls after a spin."
+    target_size_and_input: null
+  graphics:
+    graphics_versus_text: "Right-edge buttons pair an illustrated icon with a short caption; crate items show icon portraits with names; rarity odds are text."
+    illustration_or_icon_style: "Illustrated, slightly hand-drawn monochrome icons (menu, quest scroll, eye, handshake) and a multicolor event badge."
+    framing_outlines_and_effects: "Square dark tiles with white outlines for HUD buttons; neon glow on freeze pods and computer screens in world."
+    placement_and_labels: "Every HUD icon carries a text label underneath."
+    clarity_or_clutter: "HUD is sparse during rounds: one objective line, one name strip, one icon column, two key hints."
+  evidence: [source_3]
+new_player_onboarding:
+  status: indeterminate
+  reason: "Passive only; the preview trailer skips the lobby and any tutorial, YouTube was not used, and the game was not played."
+  conventions: ["A 'Getting Started' badge lists six first actions across both roles (hack a PC, save a survivor, disable a trap, flee a facility, capture a survivor, use a beast ability), acting as a checklist; whether the game shows it in a UI is unknown."]
+  sequence: []
+  first_independent_action: null
+  skip_or_replay: null
+  completed: null
+  observed_seconds: null
+  completion_seconds: null
+  timing_basis: null
+  evidence: [source_4]
+accessibility_and_comfort:
+  text_and_contrast: "Video: white text on dark bars is high contrast; world scenes are often dark or saturated red."
+  non_color_cues_and_icon_labels: "HUD icons all carry text labels (video)."
+  input_support_observed: ["Keyboard hints in trailer (Interact, Crouch, Q ability)."]
+  motion_audio_settings: []
+  settings_tested: []
+  clutter_and_interruptions: []
+  evidence: [source_3]
+commercial_and_return_prompts:
+  first_purchase_prompt_seconds: null
+  purchase_prompt_count_during_sample: null
+  onboarding_interruption: null
+  optional_versus_required_presentation: "Passes are multipliers, cosmetic bundles, luck and crate skips (source_5); nothing listed gates entry to rounds."
+  return_rewards_and_events: ["Halloween '26 crate, Vampire mega bundle, Black Widow and Evilmage bundles, a new Series 1 Mythical, cauldron crafting with pumpkins and rare ingredients (description, update 11/01/26).", "EVENT button on the HUD (video)."]
+  urgency_or_streak_cues: ["'Limited Final Reward challenge' (description).", "Shop shows crate odds openly (video)."]
+  evidence: [source_1, source_3, source_5]
+world_and_presentation:
+  navigation_and_objective_readability: "Video: computers have bright blue screens and pods glow cyan, standing out in dark maps; the HUD counts remaining computers but no world markers are seen."
+  landmarks_and_variety: ["Facility, school, suburb at night, farmhouse, station platform maps (video)."]
+  environmental_storytelling: []
+  audiovisual_consistency: "Trailer world scenes are consistently dark and lit by red, blue and cyan accents."
+  success_effect_intensity_and_clarity: "Modest: a filling bar and floating '+XP' text during hacking (video)."
+  evidence: [source_3]
+technical_quality:
+  loading_or_missing_assets: []
+  input_or_frame_issues: []
+  ui_defects: []
+  recovery_behavior: null
+  measurements: []
+  measurement_method_and_limits: "Not played; trailer frames are edited and say nothing about performance."
+  evidence: []
+transferable_ideas:
+  - "One HUD line that always states the current team objective with a live count ('COMPUTERS LEFT: 7', then 'FIND AN EXIT') keeps every player in a ten-player round aligned without chat (from video)."
+  - "A badge that names the core action set of both roles ('Getting Started') doubles as a first-session checklist (from badge list)."
+  - "Rescuing a frozen teammate at a glowing pod turns failure into a cooperative objective instead of elimination (from video and description)."
+  - "Crate odds are printed in the shop panel itself (from video)."
+practical_takeaway:
+  strongest_idea: "A single, always-visible objective line with a shrinking counter that flips to the final goal makes an asymmetric team round legible at a glance."
+  main_tradeoff: "Depth of the monetization layer (ten priced passes, crates, seasonal bundles, mythicals) around a cooperative round game; and the game openly derives from an earlier hit's formula, so the ideas are well proven but not novel."
+  suitable_genres_and_stages: ["asymmetric and team round games", "co-op objective rounds", "any game with a shared team goal"]
+  testable_hypothesis: "Replacing a multi-item objective list with one objective line plus a remaining-count in a team round shortens the time for new players to reach their first objective."
+  estimated_effort_and_assumptions: "Estimate: 1 day for a top-center objective bar driven by round state, assuming objectives are already tracked server-side."
+inferences:
+  - "Its fan-made-remake framing and 60.9 million visits suggest players seek out a known asymmetric formula with more players and more maps; passive material cannot establish why it is popular."
+  - "Only 66,007 holders of 'Getting Started' versus 910,853 of 'Sharkbait' suggests few players complete all six actions, especially the beast ones; the badge was added 2026-06-08, so counts cover only later players."
+uncertainties:
+  - "The preview video is an edited trailer; lobby, role assignment, onboarding, round start and end, and the timing-check penalty are not shown."
+  - "Upload date of the preview video is unknown; it may predate the Halloween update."
+  - "Audio of the trailer was not reviewed."
+  - "Round length is inferred from HUD timer readings, not measured."
+blockers: []

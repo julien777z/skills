@@ -1,0 +1,270 @@
+name: "📸 Say Cheese! [STORY]"
+game_id: "universe:10771871836"
+universe_id: "10771871836"
+place_id: "100453542816833"
+url: "https://www.roblox.com/games/100453542816833/Say-Cheese"
+creator: "Mechanical Boy LLC (group 467665142, verified badge)"
+chart_category: "Trending in Adventure"
+chart_rank: 1
+genre:
+  primary: "Adventure"
+  sub: "Story"
+competitors:
+  - name: "PINKIE PROMISE [HORROR]"
+    universe_id: "10769634720"
+    url: "https://www.roblox.com/games/75815532269840"
+    overlap: "Same subgenre (Story) on the 2026-11-08 chart"
+  - name: "Rainbow Friends"
+    universe_id: "3085257211"
+    url: "https://www.roblox.com/games/7991339063"
+    overlap: "Same subgenre (Story) on the 2026-11-08 chart"
+  - name: "🍂[NEW MAPS] Clean all the Leaves"
+    universe_id: "10539411000"
+    url: "https://www.roblox.com/games/92637789841354"
+    overlap: "Same subgenre (Story) on the 2026-11-08 chart"
+  - name: "Break In (Story)"
+    universe_id: "1318971886"
+    url: "https://www.roblox.com/games/3851622790"
+    overlap: "Same subgenre (Story) on the 2026-11-08 chart"
+  - name: "Motel Maniac [HORROR]"
+    universe_id: "10643993738"
+    url: "https://www.roblox.com/games/89544555099898"
+    overlap: "Same subgenre (Story) on the 2026-11-08 chart"
+researcher: "R07"
+mode: play
+play_ended_by: cap
+onboarding_video_coverage: covered
+observed_at: "2026-11-09T01:18:45Z"
+observation_status: completed
+previous_observed_at: null
+changes_since_previous: []
+active_play_seconds: 1500
+play_coordination:
+    resource_key: roblox-player
+    wait_seconds: 3514
+    acquired_at: "2026-11-09T01:18:18Z"
+    expires_at: "2026-11-09T01:54:00Z"
+    released_at: "2026-11-09T01:44:20Z"
+    release_verified: true
+    expiry_or_blocker: "Both locks renewed at 01:28:20Z and 01:39:00Z with no gap lost; player quit, RobloxPlayer killed, capture 10771871836-39 shows no game on screen before release (only a -launchToTray process remained); left the play queue."
+context:
+    play_style: "Point-and-click narrative/story game; a Roblox adaptation credited as based on Nicky Case's 'We Become What We Behold' (games API: genre_l1 'Adventure', genre_l2 'Story')"
+    camera_perspective: "Fixed top-down 2D park view; the player's avatar is not used; the mouse moves a camera viewfinder"
+    device_and_input: "Mouse clicks only (point and click) in the macOS VM published Roblox player at 1920x1200; no keyboard or held button needed"
+    observation_environment: "Isolated macOS VM runner, published Roblox player, user's existing account; captures 1200 px wide"
+    visible_server_population: "API at retrieval: 10,713 playing, maxPlayers 12; no other players were visible in the experience (the park and story appear single-player per client)"
+    solo_or_group: solo
+    game_version_if_known: "Universe updated 2026-11-08T19:01:01Z; created 2026-10-19"
+    evidence: [description_1, play_1]
+account_state:
+    freshness: fresh
+    evidence: ["Main menu showed '0 / 12 endings found' and 'CHAPTER 1' selected (10771871836-1)."]
+evidence:
+    - id: description_1
+      kind: description
+      url: "https://games.roblox.com/v1/games?universeIds=10771871836"
+      captured_at: "2026-11-09T00:15:00Z"
+      media_date_or_version: "updated 2026-11-08T19:01:01Z"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Marketing text: you are a journalist hired by 'Big Media' to spread chaos and panic in a park; choose to destroy a peaceful society or change fate. Credits 'We Become What We Behold' by Nicky Case and lists CC sound sources including screams and gunshots."
+          - "Stats at retrieval: 20,398,061 visits, 164,571 favorites, 10,713 playing; votes 38,913 up / 4,202 down (about 90% positive); page aggregate rating 90.3 from 43,119 ratings."
+          - "Age-recommendation API: Maturity 'Minimal' with descriptors Blood (Light/Unrealistic), Fear (Occasional/Mild), Violence (Occasional/Mild)."
+          - "Game-pass API returned no passes; badges API returned none; the experience sells developer products in game (see play_1)."
+    - id: thumbnail_1
+      kind: thumbnail
+      url: "https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=10771871836&countPerUniverse=10&size=768x432&format=Png"
+      captured_at: "2026-11-09T00:16:00Z"
+      media_date_or_version: "4 approved images (IDs 124940915737407, 114718496141288, 133541093978301, 107181053511951)"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Hand-drawn gray stick-figure art of a screaming peep beside a TV with a recursive picture, red '#BE SCARED. BE ANGRY.' banner; 'GOOD ENDING?' text; TV headlines '#OOH NICE HAT' and '#nvm hats aren't cool anymore'. Promotional; matches the in-game art seen in play."
+          - "Media list holds images only; no gameplay video was available and none was watched."
+    - id: play_1
+      kind: actual_play
+      url: "roblox://experiences/start?placeId=100453542816833"
+      captured_at: "2026-11-09T01:18:45Z"
+      media_date_or_version: null
+      timestamps: ["launch 01:18:22Z", "menu with control ~01:18:45Z", "PLAY 01:18:52Z", "first broadcast 01:19:32Z", "Hint purchase prompt 01:20:50Z", "OOH NICE HAT 01:23:07Z", "GROSS, GO GET A ROOM 01:24:51Z", "CRAZED SQUARE ATTACKS 01:29:47Z", "cap 01:43:45Z"]
+      screenshots: ["10771871836-1.png", "10771871836-2.png", "10771871836-3.png", "10771871836-4.png", "10771871836-5.png", "10771871836-9.png", "10771871836-10.png", "10771871836-14-r.png", "10771871836-15.png", "10771871836-18-r.png", "10771871836-19.png", "10771871836-23.png", "10771871836-25.png", "10771871836-26-1.png", "10771871836-26-3.png", "10771871836-33.png", "10771871836-39.png"]
+      limitations:
+          - "VM rendering looked correct for this flat 2D scene; no garbling observed."
+          - "Peeps move continuously and the capture-to-click loop took several seconds, so many shots missed their subject; a guest-side color detector was used to aim at the hat, couple and spiky character. Missed shots reflect this harness latency, not necessarily game difficulty for a human."
+          - "Chapter 1 did not reach an ending within the 1500 s cap; four story beats were reached."
+    - id: video_onboarding_1
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=o4yH-7QHNnY"
+      captured_at: "2026-11-09T02:40:00Z"
+      media_date_or_version: "uploaded 2026-11-02"
+      timestamps: ["0:15 POINT & CLICK prompt", "0:33 OOH NICE HAT", "0:53 nvm hats aren't cool anymore", "1:40 CRAZED SQUARE ATTACKS", "2:01 '(ya gotta catch 'em doing something interesting)' nudge", "2:30 CIRCLE FEARS SQUARES", "3:12 SQUARE SNOBS CIRCLES", "4:45 ALMOST EVERYONE HATES EVERYONE", "6:24 BE SCARED. BE ANGRY.", "7:10-7:30 viral ending card, 1/12 endings found", "8:15-9:52 second run toward the 'who paid the screamer' path"]
+      screenshots: ["o4yH-7QHNnY-002.jpg", "o4yH-7QHNnY-004.jpg", "o4yH-7QHNnY-008.jpg", "o4yH-7QHNnY-026.jpg", "o4yH-7QHNnY-029.jpg", "o4yH-7QHNnY-030.jpg", "o4yH-7QHNnY-031.jpg", "o4yH-7QHNnY-036.jpg"]
+      limitations:
+          - "Tyler & Snowi (6.51M subscribers), 1,766,155 views at retrieval; 21:58 long, first 10 minutes studied."
+          - "Appears to be the creators' first play (first ending reads '1 / 12 endings found'), but heavily edited: the menu and intro are cut, shots are jump-cut, and a cartoon facecam and 'MY JOB' title card are overlaid. Video times are edited times, not play time."
+          - "Two-person commentary (one plays, one advises); auto-captions used for what the player says."
+    - id: video_skilled_1
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=kyWrM9Bn1DA"
+      captured_at: "2026-11-09T02:40:00Z"
+      media_date_or_version: "uploaded 2026-10-28"
+      timestamps: ["0:00 intro 'nothing ever happens in the park.' with SKIP and pause buttons", "0:15 OOH NICE HAT, crowd in hats", "0:45 CRAZED SQUARE ATTACKS", "2:30 ALMOST EVERYONE HATES EVERYONE...", "3:45 laptop pull-back, viral ending", "4:15-4:30 cricket photographed on the static intro screen -> 'ending 2 of 12 cricket ending'", "5:15 'THE TV IS... ON TV?'", "5:45 'Why shoot the TV? Shoot THEM! Please!'"]
+      screenshots: ["kyWrM9Bn1DA-001.jpg", "kyWrM9Bn1DA-002.jpg", "kyWrM9Bn1DA-004.jpg", "kyWrM9Bn1DA-010.jpg", "kyWrM9Bn1DA-019.jpg", "kyWrM9Bn1DA-021.jpg", "kyWrM9Bn1DA-023.jpg"]
+      limitations:
+          - "Roblox Master Guides (97.7K subscribers), 2,537,662 views at retrieval; 34:36 long, first 10 minutes studied; description chapter '30:51 - Say Cheese Ending'."
+          - "Silent walkthrough (captions only '[music]'/'[screaming]'); an experienced player who already knows each trigger, so pace is a lower bound, not a new player's pace. Roblox top bar and the paid side cards are hidden or absent in this capture."
+    - id: video_session_1
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=Le_8lgT_RLs"
+      captured_at: "2026-11-09T02:40:00Z"
+      media_date_or_version: "uploaded 2026-11-02"
+      timestamps: ["15:00 main menu '5 / 12 endings found', ENDINGS marked NEW!", "15:15 alternate intro 'it was a slow day at the station.'", "15:40 POINT & CLICK", "16:50-17:20 repeated nudge '(ya gotta catch who's screaming at 'em)'", "18:10 player returns to the menu to read a hint", "20:30 ENDINGS album 6 / 12 found, hint line under the hovered card", "20:33 scared ending", "21:00-25:00 love/peace route attempt"]
+      screenshots: ["Le_8lgT_RLs-001.jpg", "Le_8lgT_RLs-002.jpg", "Le_8lgT_RLs-012.jpg", "Le_8lgT_RLs-020.jpg", "Le_8lgT_RLs-021.jpg", "Le_8lgT_RLs-023.jpg"]
+      limitations:
+          - "bunhat (749K subscribers), 970,997 views at retrieval; 55:07 livestream-style session with facecam and chat overlay; minutes 15-25 studied."
+          - "Returning within the session (five endings already found); chat suggestions steer some choices."
+gameplay:
+    advertised_loop: "Photograph events in a park as a news journalist; what you broadcast changes how the crowd behaves, leading to one of 12 endings."
+    observed_loop: "Move the viewfinder over the park and click to take a photo; the TV in the center zooms to fill the screen and broadcasts the photo with a hashtag headline, then the crowd reacts (copies hats, gathers to say cheese, grows fearful). Only photos of specific events advance the story: a man in a bowler hat ('OOH NICE HAT', after which other peeps wear hats), a couple with hearts ('GROSS, GO GET A ROOM'), and a spiky-haired angry square ('CRAZED SQUARE ATTACKS', after which worried-faced circles appear). Ordinary shots give 'just some normal peeps', 'PEEPS SAY CHEESE' or 'WOWWEE, IT'S NOTHING'. (play_1) Videos (video_onboarding_1, video_skilled_1, video_session_1) show the same loop and extend it past where real play stopped: each broadcast escalates a chain (hat -> couple -> crazed square -> CIRCLE FEARS SQUARES -> SQUARE SNOBS CIRCLES -> CIRCLE HATES SQUARES -> ALMOST EVERYONE HATES EVERYONE -> BE SCARED. BE ANGRY.), the park turns pink-faced and armed, the camera pulls back to a laptop at the news station, and an ending card names the ending. Players then replay with different subjects (the lovers, the man in the suit paying the screamer, the cricket) to reach other endings; peace-themed shots are answered by the boss's captions ('peace is boring, violence goes viral', 'Nobody watches peeps get along. Bring me screaming.')."
+    first_action: "Click PLAY on the main menu, then click anywhere in the park to take a photo"
+    first_success_seconds: 47
+    success_feedback: ["Full-screen TV zoom with the photo and a hashtag headline bar; story beats use a red bar with white bold caps versus black bars for non-events (10771871836-14-r, -18-r, -26-1 vs -4, -33).", "The crowd visibly changes after a story broadcast (hats spread, peeps cluster to say cheese, worried faces appear) (10771871836-15, -19, -26-3).", "Mini TV in the park keeps showing the last broadcast."]
+    progression: ["Story beats within Chapter 1; 12 endings tracked on the menu ('0 / 12 endings found'); chapter switcher on the menu ('click to switch chapters').", "Ending card: polaroid of the ending with a 'NEW!' tag, 'ending 1 of 12', ending name and one-line moral, 'n / 12 endings found', red PLAY AGAIN and gray MENU brush buttons, footer 'new endings are unlocked now. hints are in the album.' (video_onboarding_1 7:30)", "ENDINGS album: 12 polaroids, found ones show art, unfound ones are black with the name visible, two 'secret' slots show a key; hovering shows a free one-line hint below (video_session_1 20:30)", "Skilled route reaches the first ending about 3:45 into a silent walkthrough and a second (cricket) in under a minute more (video_skilled_1 3:45, 4:30)"]
+    choices_and_variety: ["Which events to photograph steers the story (advertised branching endings; branching itself not reached).", "Several distinct event types appeared (hat, lovers, crazed square, 'hi mom!', 'is this for TV?' bubbles).", "Videos show the branching: what is broadcast after the first beats decides between the viral, scared, peace/love, follow-the-money and cricket endings, and the cricket ending comes from photographing the cricket on the static intro screen rather than the park (video_onboarding_1 7:10, 9:22; video_skilled_1 4:15-4:30; video_session_1 20:33-22:10)."]
+    social_and_cooperative: ["Single-player; in videos two creators or a streamer's chat co-solve which shot to take next (video_onboarding_1, video_session_1)."]
+    companions_and_pets: ["A 'PET' panel with a cricket portrait sits on the left of the HUD; not opened (appears to be a sold item)."]
+    friction:
+        - "Targets wander continuously, so framing a moving subject needs quick aim; repeated misses return non-event headlines."
+        - "After the crazed-square beat, the next required shot was unclear; about 14 minutes passed without another beat."
+        - "The top-bar 'Hint' button opens a Robux purchase prompt rather than a free hint (10771871836-9)."
+        - "Each photo locks input for a few seconds while the TV zoom plays."
+        - "Videos: the step real play could not find is photographing the frightened circle at the moment a square yells at her ('CIRCLE FEARS SQUARES'); the creators found it after the nudge and a few tries (video_onboarding_1 2:01-2:30). A streamer with five endings still mis-timed shots and went to the menu to reread a hint (video_session_1 16:50-18:10)."
+        - "Timing-sensitive triggers punish a late click: the player has to follow one peep and click during a brief reaction (video_onboarding_1 2:11-2:30, video_session_1 17:36)."
+    evidence: [play_1, video_onboarding_1, video_skilled_1, video_session_1]
+pacing:
+    timing_start_definition: "First moment the main menu accepted input after launch (~01:18:45Z)"
+    loading_seconds: 20
+    time_to_control_seconds: 0
+    first_meaningful_choice_seconds: 7
+    first_reward_seconds: 47
+    action_reward_cadence: "One photo then a 4-6 s broadcast per click; story beats at about 262 s, 366 s and 662 s, then none in the remaining ~840 s Videos (edited/skilled, video times): first ending about 7:10 into an edited first play and about 3:45 into a silent walkthrough; story beats arrive every 20-60 s once the player knows the triggers (video_onboarding_1 0:33-7:10; video_skilled_1 0:15-3:45)."
+    active_play_versus_travel_or_waiting: "No travel; play is aim-and-click with a short broadcast pause after each shot; time between beats was spent waiting for the right event to appear"
+    natural_stopping_points: ["Each ending (none reached)", "Chapter end"]
+    measurement_method: "UTC timestamps of shell commands and captures; loading measured from the launch command to the first menu capture; seconds are approximate (±3 s). Video timings are measured from each video's own timestamps, which include edits and cuts, so they are not play time."
+    evidence: [play_1, video_onboarding_1, video_skilled_1]
+goals_and_progression:
+    next_goal_clarity: "Low after the first beats: the only in-game nudge seen was '(ya gotta catch 'em doing *something* interesting...)' after repeated dull shots (10771871836-23); other hints are sold. Videos show the game's own nudges continue later in the run ('(ya gotta catch who's screaming at 'em)', 'She's scared... but of what?', '...don't click') and that, after the first ending, the ENDINGS album gives one free hint line per unfound ending, which a streamer went back to the menu to read (video_session_1 17:45, 18:10, 20:30)."
+    short_term_goals: ["Photograph something newsworthy to change the headline"]
+    medium_term_goals: ["Push the park's story to an ending in the chapter"]
+    advertised_long_term_goals: ["Find all 12 endings", "Early Access chapters/endings (paid)"]
+    upgrade_choices: []
+    mastery_versus_stat_growth: "Pure observation and timing skill plus story knowledge; no stats"
+    unlock_previews_and_optional_activities: ["Menu shows 'ENDINGS' gallery and 'CHAPTER 1 / click to switch chapters'", "'EXTRA' cards: 'ADD YOUR OC' (79 Robux) and 'GOD MODE' (249 Robux) on the menu (10771871836-1)", "ENDINGS album previews all 12 ending names, with two 'secret' slots marked by keys (video_session_1 20:30)", "Alternate intro line on replay ('it was a slow day at the station.') (video_session_1 15:15)"]
+    evidence: [play_1, video_session_1]
+failure_and_recovery:
+    observed_failure: "Missed or dull shots broadcast non-events ('just some normal peeps', 'WOWWEE, IT'S NOTHING')"
+    explanation: "Headline wording tells the player the shot was uninteresting; one explicit nudge appeared after several dull shots"
+    cost_or_lost_progress: "None observed beyond a few seconds of broadcast"
+    retry_seconds: 5
+    checkpoints: "Unknown Videos show no mid-run checkpoint; replays restart from the intro (video_onboarding_1 8:28)."
+    non_paid_recovery: "Retry freely; free hint text appears occasionally; full hints are paid Videos: every ending card offers PLAY AGAIN; a run that goes wrong (for example 'I messed this ending up') is recovered only by restarting the day, and the album's free hint lines guide the retry (video_onboarding_1 7:30, 8:28; video_session_1 16:53, 18:10)."
+    evidence: [play_1, video_onboarding_1, video_session_1]
+agency_and_social:
+    meaningful_choices: ["What to photograph and broadcast, which drives crowd behavior and the ending (advertised; only the early linear beats observed)"]
+    customization_and_identity: ["'Skins' top-bar button and 'ADD YOUR OC' card (not opened)"]
+    cooperation_and_competition: []
+    visible_social_feedback: []
+    solo_accessibility: "Fully solo"
+    evidence: [play_1]
+ui:
+    evidence_status: observed
+    visual_style: "Hand-drawn monochrome sketch style: gray scribbled grass, white stick peeps with thick dark outlines; color reserved for meaning (red story banners, red couple, rainbow 'NOTHING' gag, yellow hint bulbs)"
+    layout_and_hierarchy: "Main menu: big title, three brush-stroke buttons stacked center (red PLAY, black ENDINGS, rainbow EARLY ACCESS), chapter card left, paid EXTRA cards right, endings counter below. In game: the park fills the screen with the TV at center, three square paid cards down the left edge (ALL HINTS, PET, SCARE ALL), top bar with Early Access, Hint and Skins beside Roblox's menu buttons. Videos add: the intro has a gray brush-stroke SKIP button and a round pause button top right (video_skilled_1 0:00); the ending card is a tilted polaroid left with text and two brush buttons right (video_onboarding_1 7:30); the ENDINGS album is a 5-5-4 grid of polaroids on black with '6 / 12 found' and a hint line at the bottom (video_session_1 20:30)."
+    color_scheme: ["light gray #d8d8d8-like background", "dark gray outlines", "red #cc2a2a-like story banners", "black headline bars with white text"]
+    typography:
+        font_appearance: "Handwritten marker caps for menu buttons and cards; a geometric bold sans (Montserrat-like) for broadcast headlines; a serif for the intro line 'nothing ever happens in the park.'"
+        font_family_if_verified: null
+        size_observation: "Broadcast headlines about 45-60 px cap height at 1200 px capture width; card labels small (~10 px)"
+        size_basis: visual_estimate
+        viewport_resolution: "1920x1200 guest points"
+        readability: "Headlines very readable; left card labels small but paired with large icons"
+    controls:
+        primary_actions: "Mouse moves a four-corner viewfinder bracket; click takes the photo"
+        close_x_appearance_and_location: "Roblox purchase prompt: thin white X at top right of a dark modal beside the Robux balance (10771871836-9)"
+        modal_behavior: "Purchase prompt dims the park; closing it returned to play immediately (10771871836-10)"
+        state_feedback: "TV zoom and headline after every shot; mini TV keeps last headline"
+        target_size_and_input: "Viewfinder about 300x165 px at 1200 px width; menu buttons large"
+    graphics:
+        graphics_versus_text: "Story is told almost entirely through drawings and short headlines; menu actions are words on brush strokes"
+        illustration_or_icon_style: "Doodled icons inside rounded white cards (light bulbs, cricket, scary face)"
+        framing_outlines_and_effects: "Thick sketchy outlines, rounded white cards with gray borders, brush-stroke buttons"
+        placement_and_labels: "Each paid card has a handwritten label above its icon; prices shown on red brush strokes on the menu"
+        clarity_or_clutter: "Park view is clean; the three paid cards permanently occupy the left edge"
+    evidence: [play_1, video_onboarding_1, video_skilled_1, video_session_1]
+new_player_onboarding:
+    status: observed
+    reason: null
+    conventions: ["Intro caption 'nothing ever happens in the park.' over a static-filled TV (10771871836-2)", "Large 'POINT & CLICK' instruction under the viewfinder at the start (10771871836-3)", "Headline wording as feedback", "Occasional parenthetical nudge '(ya gotta catch 'em doing *something* interesting...)'", "Videos: intro text can be skipped with a SKIP button (video_skilled_1 0:00)", "Videos: a first-time pair of creators reached the hat beat about 30 s in and the first ending about 7 minutes into an edited video, with the same nudge text guiding them past the crazed-square step real play stalled on (video_onboarding_1 0:33, 2:01-2:30, 7:10)"]
+    sequence: ["Menu -> PLAY", "Intro text over TV static (~5 s)", "Park appears with viewfinder and 'POINT & CLICK'", "First shot broadcasts 'just some normal peeps'", "Player discovers which events count"]
+    first_independent_action: "First photo about 40 s after PLAY"
+    skip_or_replay: "SKIP button on the intro (video_skilled_1 0:00); PLAY AGAIN on every ending card (video_onboarding_1 7:30)"
+    completed: true
+    observed_seconds: 1500
+    completion_seconds: 40
+    timing_basis: "From the PLAY click to the first independent photo; onboarding is the intro caption plus the POINT & CLICK instruction, after which play is unguided. Status rests on real play; video_onboarding_1 shows a first play but is edited, so its times are not used here."
+    evidence: [play_1, video_onboarding_1, video_skilled_1]
+accessibility_and_comfort:
+    text_and_contrast: "Headlines white on black or red, high contrast; menu labels dark on light"
+    non_color_cues_and_icon_labels: "Story beats are distinguished by red versus black bar and by wording; paid cards have labels"
+    input_support_observed: ["mouse"]
+    motion_audio_settings: []
+    settings_tested: []
+    clutter_and_interruptions: ["Full-screen TV zoom after every shot", "Paid cards fixed on the left edge"]
+    evidence: [play_1]
+commercial_and_return_prompts:
+    first_purchase_prompt_seconds: 125
+    purchase_prompt_count_during_sample: 1
+    onboarding_interruption: "No unsolicited prompt; the one prompt opened when the researcher clicked the top-bar 'Hint' button (49 Robux) Videos show no purchase prompt during the first run or at the ending card (video_onboarding_1 0:00-7:30)."
+    optional_versus_required_presentation: "Optional but prominent: Early Access (menu and top bar), Hint (49), ALL HINTS, PET, SCARE ALL cards in game, ADD YOUR OC (79) and GOD MODE (249) on the menu; Hint looks like a free help button but is paid Video and play differ: play found the top-bar Hint costs 49 Robux; videos show that once an ending is found the ENDINGS album gives a free one-line hint per unfound ending ('new endings are unlocked now. hints are in the album.'), so paid hints mainly matter before the first ending and for exact solutions (video_onboarding_1 7:30, video_session_1 20:30)."
+    return_rewards_and_events: []
+    urgency_or_streak_cues: []
+    evidence: [play_1, video_onboarding_1, video_session_1]
+world_and_presentation:
+    navigation_and_objective_readability: "Single-screen park; the TV at center anchors attention; objectives are implicit"
+    landmarks_and_variety: ["Central TV on a pole", "Distinct peep types: circles, squares, bowler-hat man, red couple, spiky angry square"]
+    environmental_storytelling: ["Crowd behavior shifts after each broadcast (hats spread, crowds cluster around the TV, worried faces), showing media influence without text", "Videos: escalation is shown by the crowd turning pink and angry, then armed, then a gray ink-splatter massacre, a pull-back to a laptop at the news station, and a candlelit vigil with only the lovers left (video_onboarding_1 6:13-7:24; video_skilled_1 2:30-3:45)", "The station boss speaks through the captions and to the player ('peace is boring, violence goes viral', 'Nobody MOVE... and NO flash photography.') (video_onboarding_1 5:18; video_session_1 20:15)"]
+    audiovisual_consistency: "Consistent sketch art across menu, park and thumbnails; audio not assessed"
+    success_effect_intensity_and_clarity: "Strong and clear: full-screen TV zoom and colored headline"
+    evidence: [play_1, video_onboarding_1, video_skilled_1, video_session_1]
+technical_quality:
+    loading_or_missing_assets: []
+    input_or_frame_issues: ["One capture failed once ('could not create image from display') on the VM side; not a game issue"]
+    ui_defects: []
+    recovery_behavior: "Purchase prompt closed cleanly back to play"
+    measurements: ["Launch to interactive menu about 20 s"]
+    measurement_method_and_limits: "VM published player on Apple M2 Pro virtual GPU; timings from command timestamps; not representative of native devices"
+    evidence: [play_1]
+transferable_ideas:
+    - "Turn the ending gallery into the hint system: show every ending's name and silhouette after the first ending, with a one-line free hint on hover, so replays become a checklist (video_session_1 20:30, video_onboarding_1 7:30)."
+    - "Let the game's antagonist comment on the player's choices in the feedback text ('peace is boring, violence goes viral') so the moral of the system is felt during play, not explained (video_onboarding_1 5:18)."
+    - "Make the player's action the headline: every action gets an immediate, full-screen interpretation (here a TV broadcast) that tells them whether it mattered."
+    - "Show consequences through the crowd rather than numbers: NPCs copy or react to what the player highlighted."
+    - "Use color as the only signal for 'this counted' (red story banner versus black non-event bar) in an otherwise monochrome world."
+    - "One-input onboarding: a single 'POINT & CLICK' caption then let the world teach through feedback."
+practical_takeaway:
+    strongest_idea: "Immediate, readable feedback on whether an action mattered, followed by visible NPC behavior change caused by that action."
+    main_tradeoff: "Before the first ending the only free guidance is sparse nudge text, so players can stall for minutes on a timing-sensitive shot (14 minutes in real play); the game sells hints there. After the first ending the free album hints and short replay loop carry players through the remaining endings (videos)."
+    suitable_genres_and_stages: ["story/narrative games", "puzzle and observation games", "early onboarding of any game with NPC crowds"]
+    testable_hypothesis: "Showing locked endings with a free one-line hint after a player's first completion increases the share who start a second run. Also: Showing a distinct 'this counted' banner color after a meaningful player action, plus an NPC reaction, shortens time to the second meaningful action for new players."
+    estimated_effort_and_assumptions: "Estimate: small to medium; assumes existing NPC behavior hooks and a UI layer for a full-screen result card."
+inferences:
+    - "The game appears to follow the original's linear opening beats (hat, couple, crazed square) before branching; branching was not reached."
+    - "The persistent left-edge cards and top-bar Hint/Early Access buttons suggest monetization leans on hints and content access rather than currency."
+uncertainties:
+    - "Which event advanced the story after 'CRAZED SQUARE ATTACKS' was not found; worried circles were photographed several times without effect, possibly because shots missed due to harness latency."
+    - "Whether ALL HINTS, PET and SCARE ALL cards are purchases was not verified (not clicked); Hint was verified paid."
+    - "Audio and endings unobserved in real play. Videos show endings (viral, cricket, scared) and the album; audio in videos is mixed with creator commentary and music, so not assessed."
+    - "Resolved by video: the step after 'CRAZED SQUARE ATTACKS' is photographing the frightened circle while a square yells at her (video_onboarding_1 2:30); whether real play's misses were timing or framing is still unknown."
+    - "Whether the album's free hints appear before any ending is found is not shown; both videos show them only after an ending."
+blockers: []
