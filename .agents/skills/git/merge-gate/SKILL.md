@@ -43,7 +43,7 @@ output. Missing evidence prevents reusing that result or admitting a local-cover
 never waives hosted coverage. The caller also supplies each validation exclusion: a current-user
 direction to leave a named test or check alone, a baseline exclusion established by `pre-production`'s
 **Encountered Issues** classification with its default-branch evidence, or evidence that a hosted
-runner or provider cancellation meets the GitHub rule's pre-validation and local-coverage
+runner or provider interruption meets the GitHub rule's interruption and local-coverage
 conditions. A caller with no such rule has each fix's diff judged the way it judged the accepted
 head before the gate repeats.
 
@@ -112,8 +112,9 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    on drift. That receipt may support an exclusion under step 8; it never omits the hosted inventory.
 6. **Drive the complete inventory to terminal results.** Re-query the exact head on a bounded
    interval matched to job duration — roughly every 30 to 60 seconds — until every applicable,
-   non-excluded logical job has terminal coverage. A completed successful representative means a
-   pending equivalent duplicate attempt does not hold the gate. Local coverage, a green selected
+   non-excluded logical job has terminal coverage. Apply step 8 as unsuccessful attempts become
+   terminal so an interrupted job can recover while other jobs run. A successful representative
+   means a pending equivalent duplicate does not hold the gate. Local coverage, a green selected
    job or a branch-protection summary does not permit omitting another job. Classify failures under
    step 8 and account for missing or skipped required validation before clearing the gate. A new
    head rebuilds the inventory. When the base moves, compare its changes with every execution input
@@ -133,8 +134,14 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    without reentering that skill's active run. Record an exclusion's evidence, remove it from
    required coverage, and do not repair, rerun, or wait for it. Apply the
    GitHub rule's runner-infrastructure exclusion automatically: record a qualified check as skipped
-   and do not rerun or wait for a green hosted result. Every other failure is relevant. Read its
-   annotations and complete log, fix the repository
+   and do not rerun or wait for a green hosted result. For a canceled or otherwise interrupted
+   attempt with no recorded validation failure and no exclusion, use an equivalent successful
+   hosted attempt or follow a pending replacement through step 6. If neither exists, obtain
+   equivalent local validation when it can qualify for the exclusion, or retry the hosted check
+   on the same head using `POST /repos/{owner}/{repo}/actions/jobs/{job_id}/rerun`. Verify the
+   retried job's head and required context before using its result. Missing logs or an unknown cancellation cause cannot justify local substitution;
+   recover hosted coverage in that case. A canceled attempt alone does not end the gate.
+   Every other failure is relevant. Read its annotations and complete log, fix the repository
    input responsible — code, test, configuration or workflow — and commit it. **Every relevant
    failure on the head goes into one push**: read all of them before fixing any, reproduce each
    with the job's own command where it can run locally, and push only once each reproduced failure
@@ -143,9 +150,9 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    or runner-specific behavior, never disk, memory or ports the session can free — is pushed
    without local proof. A relevant
    external-service failure is an encountered issue under `pre-production` and is fixed the same way;
-   never re-run a job, or skip, disable, or quarantine a test or confine its job to drafts, to get
-   past it. Report a blocker only when relevant missing coverage needs user input or unavailable
-   credentials, with the check, evidence and remediation attempted.
+   never rerun a failing validation to get a green result, or skip, disable, or quarantine a test
+   or confine its job to drafts to get past it. Report a blocker only when relevant missing
+   coverage needs user input or unavailable credentials, with the check, evidence and remediation attempted.
 9. Never stop, restart, reconfigure or claim a local service the calling workflow did not start:
    another agent or person may be using it. When relevant validation needs local services and one it
    did not start is running, use the matching hosted check as the fallback rather than running a
@@ -185,9 +192,12 @@ drives is repointed now and pushed, never left for its own merge to discover. On
 session owns is named in the report with its pinned reference and what the merge changed. Deleting
 the merged branch never waits on this, so a consumer left pinned stops installing.
 
-An excluded failed check does not prevent that ordinary authorized merge attempt. If the provider
-rejects it because branch protection requires the excluded check, leave the pull request open and
-report that actual rejection and its provider evidence; do not bypass protection.
+An excluded check does not prevent the ordinary authorized merge attempt. If branch protection
+rejects it because it requires an interrupted hosted check, record the required context and head
+in the inventory. For that context, step 8 cannot apply local substitution or reuse a result the
+provider already rejected. Follow its matching replacement or retry under **Check Gate**. Re-read
+the required context and attempt the merge once GitHub reports it passing. For other exclusions, or if hosted
+recovery is unavailable, report the actual rejection and its provider evidence. Never bypass protection.
 
 Once the merge is verified, as the global rules' **A merge leaves no deploy work** bullet says, do
 not inspect or follow merge-triggered release, publication, artifact or deployment workflows, or
