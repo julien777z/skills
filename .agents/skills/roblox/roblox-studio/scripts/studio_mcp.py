@@ -148,7 +148,7 @@ class Studio:
     def tool(self, name: str, timeout: float = 55, **arguments: Any) -> list[dict[str, Any]]:
         return tool(name, timeout, studio_id=self.studio_id, **arguments)
 
-    def execute(self, code: str, data_model: str = "Edit", timeout: float = 55) -> str:
+    def execute(self, code: str, data_model: str = "Client", timeout: float = 55) -> str:
         return text(self.tool("execute_luau", timeout, datamodel_type=data_model, code=code))
 
     def console(self) -> str:
