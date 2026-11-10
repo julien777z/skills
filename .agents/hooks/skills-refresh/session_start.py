@@ -10,7 +10,7 @@ from models import (
     CursorStartupResult, HookEventName, Provider, RefreshOutcome,
     StartupContext, StartupEvent, StartupResult, StartupSource,
 )
-from state import fetch_updates, overlay_changed
+from state import fetch_updates, overlay_changed, repair_commit_graph
 
 
 logger: Logger = getLogger(__name__)
@@ -34,25 +34,29 @@ def repair(source: Path, outcome: Path, fetch: bool = False) -> None:
 
     selected_source = Path(selection.stdout.strip())
 
-    fetch_failed = False
-    updated = False
+    remote_outcome = RefreshOutcome.CURRENT
 
-    if fetch:
-        try:
-            remote_outcome = fetch_updates(selected_source)
-        except (CalledProcessError, TimeoutExpired, OSError, ValueError):
-            logger.exception("Remote skills refresh failed; retaining installed guidance")
-            fetch_failed = True
-        else:
-            if remote_outcome == RefreshOutcome.RECONCILE:
-                outcome.write_text(RefreshOutcome.RECONCILE)
+    try:
+        graph_repaired = repair_commit_graph(selected_source)
 
-                return
+        if fetch:
+            try:
+                remote_outcome = fetch_updates(selected_source)
+            except (CalledProcessError, TimeoutExpired, OSError, ValueError):
+                logger.exception("Remote skills refresh failed")
+                remote_outcome = RefreshOutcome.FAILED
 
-            updated = remote_outcome == RefreshOutcome.REPAIRED
+        needs_reconciliation = remote_outcome == RefreshOutcome.RECONCILE or overlay_changed(selected_source)
+    except (CalledProcessError, TimeoutExpired, OSError, ValueError):
+        logger.exception("Skills checkout refresh failed; retaining installed guidance")
+        outcome.write_text(RefreshOutcome.FAILED)
 
-    if overlay_changed(selected_source):
-        outcome.write_text(RefreshOutcome.FAILED if fetch_failed else RefreshOutcome.RECONCILE)
+        return
+
+    if needs_reconciliation:
+        outcome.write_text(
+            RefreshOutcome.FAILED if remote_outcome == RefreshOutcome.FAILED else RefreshOutcome.RECONCILE
+        )
 
         return
 
@@ -60,8 +64,9 @@ def repair(source: Path, outcome: Path, fetch: bool = False) -> None:
     check = run([*command, "--check"], capture_output=True, text=True, timeout=20)
 
     if check.returncode == 0:
+        updated = graph_repaired or remote_outcome == RefreshOutcome.REPAIRED
         outcome.write_text(
-            RefreshOutcome.FAILED if fetch_failed
+            RefreshOutcome.FAILED if remote_outcome == RefreshOutcome.FAILED
             else RefreshOutcome.REPAIRED if updated
             else RefreshOutcome.CURRENT
         )
@@ -81,7 +86,7 @@ def repair(source: Path, outcome: Path, fetch: bool = False) -> None:
     if verified.returncode != 0:
         raise RuntimeError(f"Installed skills verification failed:\n{verified.stdout}{verified.stderr}")
 
-    outcome.write_text(RefreshOutcome.FAILED if fetch_failed else RefreshOutcome.REPAIRED)
+    outcome.write_text(RefreshOutcome.FAILED if remote_outcome == RefreshOutcome.FAILED else RefreshOutcome.REPAIRED)
 
 
 def refresh(source: Path, fetch: bool = False) -> RefreshOutcome:
@@ -91,15 +96,21 @@ def refresh(source: Path, fetch: bool = False) -> RefreshOutcome:
 
     with TemporaryDirectory(prefix="skills-startup-") as temporary:
         outcome = Path(temporary) / "outcome"
-        result = run([
-            executable, str(lock), "consume", "skills-install",
-            "--owner", f"skills-startup/{getpid()}",
-            "--activity", "Check and repair installed shared skills",
-            "--receipt", str(Path(temporary) / "lock.json"),
-            "--wait-seconds", "5", "--ttl-seconds", "150", "--",
-            executable, str(Path(__file__).resolve()), "--repair", str(source), str(outcome),
-            *(["--fetch"] if fetch else []),
-        ], capture_output=True, text=True, timeout=160)
+
+        try:
+            result = run([
+                executable, str(lock), "consume", "skills-install",
+                "--owner", f"skills-startup/{getpid()}",
+                "--activity", "Check and repair installed shared skills",
+                "--receipt", str(Path(temporary) / "lock.json"),
+                "--wait-seconds", "5", "--ttl-seconds", "150", "--",
+                executable, str(Path(__file__).resolve()), "--repair", str(source), str(outcome),
+                *(["--fetch"] if fetch else []),
+            ], capture_output=True, text=True, timeout=160)
+        except TimeoutExpired:
+            logger.exception("Shared skills startup lock supervisor timed out")
+
+            return RefreshOutcome.FAILED
 
         if result.stderr:
             print(result.stderr, file=stderr, end="")
@@ -114,7 +125,9 @@ def refresh(source: Path, fetch: bool = False) -> RefreshOutcome:
                 return RefreshOutcome.BUSY
 
         if result.returncode != 0:
-            raise RuntimeError(f"Shared skills startup did not finish:\n{result.stdout}{result.stderr}")
+            print(f"Shared skills startup did not finish:\n{result.stdout}", file=stderr)
+
+            return RefreshOutcome.FAILED
 
         return RefreshOutcome(outcome.read_text())
 

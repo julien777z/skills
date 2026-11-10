@@ -2,7 +2,7 @@ from hashlib import sha256
 from json import dumps, loads
 from os import chown, geteuid, replace
 from pathlib import Path
-from subprocess import PIPE, run
+from subprocess import PIPE, CalledProcessError, run
 from tempfile import NamedTemporaryFile
 
 from models import RefreshOutcome
@@ -26,6 +26,38 @@ def checkout_root(source: Path) -> Path:
         common = source / common
 
     return common.resolve().parent
+
+
+def repair_commit_graph(source: Path) -> bool:
+    """Rebuild the derived graph if Git cannot verify it."""
+
+    checkout = checkout_root(source)
+
+    try:
+        git(checkout, "commit-graph", "verify")
+    except CalledProcessError:
+        git(checkout, "commit-graph", "write", "--reachable", "--split=replace")
+        git(checkout, "commit-graph", "verify")
+
+        return True
+    else:
+        return False
+
+
+def is_ancestor(source: Path, ancestor: str, descendant: str) -> bool:
+    """Distinguish unrelated history from a Git failure."""
+
+    ancestry = run(
+        ["git", "-C", str(source), "merge-base", "--is-ancestor", ancestor, descendant],
+        timeout=30,
+    )
+
+    if ancestry.returncode == 1:
+        return False
+
+    ancestry.check_returncode()
+
+    return True
 
 
 def fetch_updates(source: Path) -> RefreshOutcome:
@@ -57,12 +89,7 @@ def fetch_updates(source: Path) -> RefreshOutcome:
     latest = git(checkout, "rev-parse", default)
 
     if source.resolve() != checkout:
-        included = run(
-            ["git", "-C", str(source), "merge-base", "--is-ancestor", latest, "HEAD"],
-            timeout=30,
-        ).returncode == 0
-
-        return RefreshOutcome.CURRENT if included else RefreshOutcome.RECONCILE
+        return RefreshOutcome.CURRENT if is_ancestor(source, latest, "HEAD") else RefreshOutcome.RECONCILE
 
     if head == latest:
         return RefreshOutcome.CURRENT
@@ -72,7 +99,7 @@ def fetch_updates(source: Path) -> RefreshOutcome:
     if (
         branch != default.replace("refs/remotes/origin/", "refs/heads/", 1)
         or git(checkout, "status", "--porcelain")
-        or run(["git", "-C", str(checkout), "merge-base", "--is-ancestor", "HEAD", latest], timeout=30).returncode != 0
+        or not is_ancestor(checkout, "HEAD", latest)
     ):
         return RefreshOutcome.RECONCILE
 
