@@ -43,7 +43,7 @@ output. Missing evidence prevents reusing that result or admitting a local-cover
 never waives hosted coverage. The caller also supplies each validation exclusion: a current-user
 direction to leave a named test or check alone, a baseline exclusion established by `pre-production`'s
 **Encountered Issues** classification with its default-branch evidence, or evidence that a hosted
-runner or provider cancellation meets the GitHub rule's pre-validation and local-coverage
+runner or provider interruption meets the GitHub rule's interruption and local-coverage
 conditions. A caller with no such rule has each fix's diff judged the way it judged the accepted
 head before the gate repeats.
 
@@ -133,7 +133,14 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    without reentering that skill's active run. Record an exclusion's evidence, remove it from
    required coverage, and do not repair, rerun, or wait for it. Apply the
    GitHub rule's runner-infrastructure exclusion automatically: record a qualified check as skipped
-   and do not rerun or wait for a green hosted result. Every other failure is relevant. Read its
+   and do not rerun or wait for a green hosted result. For an infrastructure interruption without
+   an exclusion, reconcile the check with equivalent attempts on the merge head. Use a successful
+   representative or follow a pending replacement through step 6. If neither exists, run the
+   missing equivalent local validation or retry the interrupted hosted check on that head. A
+   canceled attempt alone does not end the gate. If the provider rejects a merge because it requires
+   the excluded check, follow its pending hosted replacement or retry that check; local evidence
+   alone cannot resolve the rejection.
+   Every other failure is relevant. Read its
    annotations and complete log, fix the repository
    input responsible — code, test, configuration or workflow — and commit it. **Every relevant
    failure on the head goes into one push**: read all of them before fixing any, reproduce each
@@ -143,8 +150,8 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    or runner-specific behavior, never disk, memory or ports the session can free — is pushed
    without local proof. A relevant
    external-service failure is an encountered issue under `pre-production` and is fixed the same way;
-   never re-run a job, or skip, disable, or quarantine a test or confine its job to drafts, to get
-   past it. Report a blocker only when relevant missing coverage needs user input or unavailable
+   never rerun a failing validation to get a green result, or skip, disable, or quarantine a test
+   or confine its job to drafts to get past it. Report a blocker only when relevant missing coverage needs user input or unavailable
    credentials, with the check, evidence and remediation attempted.
 9. Never stop, restart, reconfigure or claim a local service the calling workflow did not start:
    another agent or person may be using it. When relevant validation needs local services and one it
