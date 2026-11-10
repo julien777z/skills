@@ -10,7 +10,7 @@ Codex discovers skills before SessionStart; newly installed skills appear in the
 
 ## failed
 
-Remote skills refresh failed. The installed guidance remains available. Inspect the hook error output and retry update-skills when GitHub is reachable; preserve pending changes.
+The shared skills startup check failed. Before ordinary work, inspect the hook diagnostics and run update-skills against the selected local checkout. Repair Git errors you can verify and resolve, preserving pending changes and unreadable originals. Use the installed guidance until the repair and refreshed links are verified. Ask the user only for a step that requires their access or a decision only they can make.
 
 ## reconcile
 
@@ -18,4 +18,4 @@ Shared skills need reconciliation with pending source changes, an unmarked workt
 
 ## repaired
 
-Installed shared skill and rule links were repaired and verified. Read changed guidance before using it.
+The shared skills startup check repaired the checkout or installation and verified the links. Read changed guidance before using it.
