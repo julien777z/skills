@@ -21,11 +21,11 @@ confuse those conclusions.
 - **Run before merge for every behavior-changing skill, rule, or agent edit**, however it was
   made. A rule is reader guidance, so its source type never
   exempts it. An edit that changes what the skill returns the user runs against the concrete example
-  recorded before the edit; a smoke run validates that format without proposing or
+  recorded before the edit; a skill-test run validates that format without proposing or
   awaiting approval for it.
 - **An edit that changes no instruction a reader follows does not run.** A spelling correction or
   dead link repair asks the reader to do the same work. Its source validation and required reviews
-  still apply; there is no changed behavior for a smoke test to exercise.
+  still apply; there is no changed behavior for a skill test to exercise.
 - Recognize one from the diff rather than from how it is described, and least of all from how small
   it looks: read each changed line against the line it replaces and confirm the instruction is
   identical. A line that gains, loses, sharpens or reorders one is an ordinary edit however few
@@ -61,7 +61,7 @@ Run after `code-simplify` completes its pass.
    environment: disposable files, fake credentials, local services or browser surfaces, and action
    recorders as appropriate. Preserve the relevant interfaces, permissions, failures and state
    transitions; a canned success or written promise does not exercise the workflow.
-   Never give smoke agents access to the user's browser, profiles, sessions, real credentials, or
+   Never give skill-test agents access to the user's browser, profiles, sessions, real credentials, or
    live mutation targets. When a workflow would revoke a credential, send a message, purchase,
    delete or change access, supply a synthetic boundary that records that action and changes only
    disposable state. Verify which implementation and resources each run actually uses before launch.
@@ -102,7 +102,7 @@ Run after `code-simplify` completes its pass.
    record the evidence for retaining or removing each independently meaningful edit. When independent
    edits deserve different outcomes, separate them through the repository's pull-request workflow
    where authorized; keep coupled instructions and their required repairs together. This assessment
-   recommends which changes should merge and decides no merge itself. A passing smoke test alone
+   recommends which changes should merge and decides no merge itself. A passing skill test alone
    never decides that a pull request should merge.
 7. **Repair and rerun until verified**, within the global rules' review-round limit of 3 rounds
    per change: after the third failing round over the same edit, that bullet's decision replaces
@@ -114,7 +114,7 @@ Run after `code-simplify` completes its pass.
    Rerun only edited runs and required controls materially affected by a guidance, environment, or
    scenario change; a scoring correction rescores all applicable retained results.
    Inconclusive, improperly tested and missing-evidence states are work to repair, never final
-   smoke verdicts or reasons to abandon an authorized change. Keep working through recovery;
+   skill-test verdicts or reasons to abandon an authorized change. Keep working through recovery;
    genuine external authorization or host boundaries follow the global rules and **Reviewer
    selection**, holding only the dependent action while repair or resolution remains active.
 8. **Report the verified result.** Send the tables and one evidence file in the **Output** shape.
@@ -166,7 +166,7 @@ improvement from an in-process comparison.
 Return this shape, one block per skill under test, and in chat nothing after the last verdict line:
 
 ```markdown
-Smoke test: <skill name>
+Skill test: <skill name>
 
 Miss: <one sentence>
 
@@ -205,7 +205,7 @@ Verdict: passes (round <n>) | not run: <nonbehavioral change under When It Runs>
 - **At most five columns**, so at most three criteria per table. More criteria continue in a
   further table under the same scenario title, with the same rows and legend line.
 
-The sent file holds the block of every skill the smoke test covered, then a `---` line and the
+The sent file holds the block of every skill the skill test covered, then a `---` line and the
 evidence behind every cell, one section per skill:
 
 ```markdown

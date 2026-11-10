@@ -8,7 +8,7 @@ short_description: 'Plan source and product changes for approval; validate canon
 
 Plan source and product changes, get them approved, then run them the same way every time.
 **Plan** decides what will be built; canonical guidance changes enter **Execution** directly and
-are validated by their evidence, smoke-test, review, and acceptance gates, except a substantial
+are validated by their evidence, skill-test, review, and acceptance gates, except a substantial
 skill change the user asks for, whose plan is a proposed flow.
 
 ## Dependencies
@@ -70,7 +70,7 @@ Every task that changes files starts here, and so does every follow-up that arri
   approval question. Ask only about a concrete unresolved choice and continue independent work.
   Completing that choice does not require approval of a separate plan. Canonical guidance changes
   under `.agents`, apart from the skill changes the next bullet plans, do not wait for a plan or an output-format approval: their request or an encountered guidance gap starts
-  the guidance-correction workflow, and their evidence, smoke-test, review, and acceptance gates
+  the guidance-correction workflow, and their evidence, skill-test, review, and acceptance gates
   verify it, on the timing `edit-skill`'s **Recording During A Task** sets for an active task,
   whether the user asked for the correction directly or the run noticed it.
 - **A skill change the user asks for gets a plan when a source change of its size would, and that
@@ -785,7 +785,7 @@ Two streams run side by side from here: the guidance stream and the source strea
   on it, in the batch in flight or the one after it, is pushed to it and passes its source check,
   as **Guidance Delivery** step 1 says, so its review pass, history and ready message cover them. An entry recorded after the batch in flight merged is delivered in the batch frozen
   once that one is done, so the source stream then waits for that delivery too, and for nothing
-  else before step 1. Each such entry's smoke round runs on the head step 1's review pass accepted, before
+  else before step 1. Each such entry's skill-test round runs on the head step 1's review pass accepted, before
   step 2, and a repair it makes returns to review as **Guidance Delivery** step 4 says. A task with none has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:

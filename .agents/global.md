@@ -122,7 +122,7 @@ alwaysApply: true
   explicit user stop or handoff, report what finished and record precisely what resumption needs.
 - **A change gets at most 3 review rounds in total: the first review and 2 re-reviews after
   repairs.** Any change — source, tests, tooling, configuration, guidance or interface — that has
-  failed 3 rounds of review, gate, smoke test or CI, whatever each round raised, is not repaired
+  failed 3 rounds of review, gate, skill test, smoke test or CI, whatever each round raised, is not repaired
   again: findings that keep coming on one change say the approach is wrong, not that the next patch
   will land. A change is one plan step, worker task or finding fix, and its rounds are counted
   together across every kind of check; a round a broken runner, fixture or provider cut short before

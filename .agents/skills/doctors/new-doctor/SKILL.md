@@ -48,11 +48,11 @@ does not start a doctor audit.
    existing skill; check the entrypoint against `doctor-protocol`'s **Declare What The Doctor Owns**;
    confirm no heading restates a protocol section; run `get-doctors` and see the new doctor listed
    with the intended summary.
-7. **Smoke-test it** as the section below states, and rewrite any lens a reviewer missed.
+7. **Skill-test it** as the section below states, and rewrite any lens a reviewer missed.
 8. **Deliver** through `edit-skill`, whose step 7.7 holds a pull request adding a doctor for the
    user's review; the report hands the user its link.
 
-## Smoke Test The Doctor
+## Skill Test The Doctor
 
 A lens is only as good as what a reviewer reading it finds. Before delivery, prove each lens
 against a violation a reviewer has not been told about.
