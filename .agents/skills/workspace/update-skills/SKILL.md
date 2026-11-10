@@ -70,18 +70,20 @@ removed after its deadline.
 
 **Damaged Git state in the skills checkout never holds a refresh and is never put to the user; it is
 backed up and repaired, whoever's branch it is.** Damage is any of: a ref whose commit is missing
-from the object store; the checkout's branch pointing behind the commit whose tree its index and
-files match with no staged or unstaged difference, that commit being on the branch's upstream or in
-its own reflog; one ref name held loose and in `packed-refs` at different commits; and a linked
-worktree, other than a `skills-overlay/` one step 6 removes, that Git can no longer open. Repair it
-under the lock, at step 2, as soon as a read or fetch reports it. First write each affected ref name
-and commit ID, the index tree, and the files of each worktree checked out on that ref or no longer
-openable to private task storage. Then remove a ref whose commit is missing, point the stale branch
-at the matching commit, keep the copy of a split ref whose commit exists, the loose one when both
-do, and prune a worktree Git cannot open, re-adding it on the branch it was registered on when that
-branch is readable. That backup preserves the original for these cases. Any other dirty or diverged
-state is left as it is. An authority conflict is a competing live claim, such as another holder of
-the lock or an untrusted input, never a damaged ref.
+from the object store, a loose copy shadowing a packed entry included; the checkout's branch
+pointing at an ancestor of a commit on its upstream whose tree its index and files match with no
+staged or unstaged difference, when the branch's newest reflog entry is not a deliberate move such
+as a reset; and a linked worktree, other than a `skills-overlay/` one step 6 removes, whose
+directory is gone or whose link Git can no longer follow. Repair it under the lock as soon as a read
+or fetch from step 2 on reports it; damage seen at step 1 is repaired once step 2 holds the lock.
+First write each affected ref name and commit ID, the index tree, and the files of each worktree
+checked out on that ref or no longer openable to private task storage. Then remove a ref whose
+commit is missing, which uncovers its packed entry when that entry's commit exists; point the stale
+branch at the matching commit; and run `git worktree repair`, pruning the entry of a worktree whose
+directory is gone. That backup preserves the original for these cases. Any other state, dirty,
+diverged or a loose ref overriding a packed one, is healthy and left as it is. An authority conflict
+is a competing live claim, such as another holder of the lock or an untrusted input, never a damaged
+ref.
 
 A local fault is recovery work, not completion. If a checkout, Git object, ref, overlay or managed
 link cannot be read, preserve the original state and reconstruct a healthy source from the latest
