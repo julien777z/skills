@@ -492,8 +492,8 @@ correctly. Also check ancestor visibility and clipping, and scroll hidden contro
 Verify selection, confirmation, and the server outcome; callbacks or remote calls are separate
 integration evidence, not a substitute for player input.
 
-Do not silently fall back to host client launches or native host HID automation if a capability is missing. Use a separately
-authorized isolated machine when the runner cannot support the operation. Record the concrete blocker
+Do not silently fall back to host client launches or native host HID automation if a capability is missing. Repair the runner as
+[Tart guest capabilities](#tart-guest-capabilities) describes when it cannot support the operation. Record the concrete blocker
 and continue independent work. Keep Studio, simulated-device, persistence, and published-client
 verification distinct; one does not establish another. Store reusable tools in the test tooling area
 and keep screenshots, logs, temporary fixtures, and runner state ignored.
