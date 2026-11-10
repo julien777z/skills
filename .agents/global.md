@@ -17,6 +17,10 @@ alwaysApply: true
   canonical source. Report it missing only when those sources do not contain it; never substitute a
   manual approximation for an installed action skill.
 
+- On session startup or resume, a shared-skills SessionStart hook reconciles installed links.
+  When that hook is unavailable or disabled and the installation is stale, run `update-skills`
+  before ordinary work. Follow a startup hook’s reconciliation request before using changed guidance.
+
 - In repositories that provide an agent CLI or otherwise interact with agents, store every agent prompt in a dedicated Markdown file rather than inline in application code so it is easy to find, review, and maintain. Application code may load a prompt file and interpolate runtime values into it.
 
 ## User-Facing Output

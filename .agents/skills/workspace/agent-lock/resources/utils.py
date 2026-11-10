@@ -11,11 +11,13 @@ from subprocess import Popen, TimeoutExpired
 from sys import stderr
 from tempfile import mkstemp
 from types import FrameType
-from typing import cast
+from typing import TypeAlias, cast
 
 from models.ownership import CommandResult, Outcome
 
-type JsonValue = str | int | float | bool | None | list[JsonValue] | dict[str, JsonValue]
+JsonValue: TypeAlias = (
+    str | int | float | bool | None | list["JsonValue"] | dict[str, "JsonValue"]
+)
 
 
 @contextmanager

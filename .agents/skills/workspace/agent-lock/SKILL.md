@@ -8,7 +8,7 @@ short_description: 'Coordinate exclusive use of a shared resource between agents
 
 All agents competing for a resource use **exactly the same nonempty string key and coordinator host**. Keys are case-sensitive. Do not add an assignment ID, agent name, branch, or checkout to a key meant to serialize those agents. Different keys may run concurrently.
 
-Use [resources/main.py](resources/main.py) with Python 3.12+ on macOS or Linux. State lives under `~/.local/state/agent-lock/`, outside repositories; keys are hashed into safe filenames. All checkouts share this location. `--state-dir` is for tests or an explicitly shared coordinator configuration. When controlling a VM or remote machine, acquire on the coordinator host rather than separate guest filesystems. This is a cooperative local lock, not a distributed lock or control over unrelated human activity.
+Use [resources/main.py](resources/main.py) with Python 3.11+ on macOS or Linux. State lives under `~/.local/state/agent-lock/`, outside repositories; keys are hashed into safe filenames. All checkouts share this location. `--state-dir` is for tests or an explicitly shared coordinator configuration. When controlling a VM or remote machine, acquire on the coordinator host rather than separate guest filesystems. This is a cooperative local lock, not a distributed lock or control over unrelated human activity.
 
 ## Consume ownership
 

@@ -8,7 +8,11 @@ short_description: 'Refresh installed skills to the latest default branch, keepi
 
 Refresh the user-level agent roots from the shared skills repository. An agent runs this skill
 when the GitHub rules' **After Agent Sync** section calls for it; cloud setup also runs the
-installer when a session starts.
+installer when a session starts. The shared SessionStart hook repairs local installation links
+without fetching remotely by default. An installation can opt into fetching at startup and resume;
+only clean default-branch checkouts fast-forward automatically. When it reports changed overlay inputs
+or pending work needing the fetched default branch, run this workflow before ordinary
+work. Keep overlay rebuilding here, rather than in the hook.
 This skill never copies provider mirrors by hand.
 
 ## Dependencies
@@ -75,9 +79,9 @@ contents or silently discard them. Repair the native installer or its owned sour
 resume the refresh through link verification. Link verification proves which source was installed,
 not the contents of unreadable inputs: report that uncertainty and continue investigating retained
 originals without holding installation. Use retained ownership records and installer preflight to
-distinguish managed links from foreign links. Reading merged guidance does not install it. Preserve
-foreign files and links, trust checks and lock ownership throughout; a genuine authority conflict
-remains a decision while independent recovery continues.
+distinguish managed links from foreign links. Reading merged guidance does not install it. Preserve foreign files and links outside user skill roots, native skill namespaces, trust checks and
+lock ownership throughout; a genuine authority conflict remains a decision while independent
+recovery continues.
 
 1. Resolve an installed user-level skill link to its Git checkout. When the link resolves into an
    overlay worktree, use the main checkout it is a linked worktree of. Confirm the checkout is the
@@ -111,19 +115,27 @@ remains a decision while independent recovery continues.
       marks the overlay complete, and the installer then installs from the newest complete overlay
       of the source checkout. Never edit inside it: guidance edits go to the source checkout and
       reach the next overlay at the next refresh.
-5. Run the installer: `bash bootstrap/install.sh` from the source checkout on a local machine, or
-   the setup clone's installer in a cloud session, which selects the attached checkout and relinks
-   every cloud home. The installer fetches a cloud setup clone's configured branch and
-   fast-forwards it, and installs from the newest complete overlay when one exists, first
-   regenerating that overlay's provider mirrors with the sync tool its workflow pins, so pending
-   rule and agent edits reach the providers that link a generated copy. A failed regeneration stops
-   the installer before any link changes; treat it as recovery work. Resolve each
-   installed skill, rule and hook link in every existing user-level agent root and confirm it
-   points into the installed source. Confirm each hook registration the installer wrote — in
-   Claude's `settings.json` and Codex's and Cursor's `hooks.json` — runs a `main.py` that resolves
-   through a hook link in that root, unless the installer warned that it registered none. Check Codex's global `AGENTS.md` link when Codex is installed. Preserve
-   real files and foreign links; the installer's conflict preflight reports them before changing
-   links. Never reset, drop, or overwrite preserved work.
+5. Use the complete overlay step 4 built as the installation source, or the source checkout when
+   step 3 selected it. Run that source's canonical driver:
+   `bash <installation-source>/.agents/hooks/skills-refresh/install.sh --local-only --source <installation-source>`.
+   In a cloud session, set `SKILLS_CLOUD_HOME` to the cloud user's home: the setup clone is
+   `<cloud-home>/.local/share/agent-skills`. This retains every cloud runtime home.
+   Step 2 owns remote updates; installation uses the selected local
+   inputs. Resolve each
+   installed skill, rule and hook link in every existing user-level agent root and confirm it points into
+   the installed source. Check Codex's global `AGENTS.md` link when Codex is installed. Preserve
+   provider-owned hidden packages and Claude account-synced skills. The installer reconciles other
+   user skill entries to the selected catalogue, replacing foreign links and real entries. Real
+   files and foreign links for other artifact types remain protected by conflict preflight.
+   Confirm the ledger hook registrations in Claude’s `settings.json` and Codex’s and Cursor’s
+   `hooks.json` point through each root’s hook links. The installer also registers the owned
+   SessionStart hooks. Record the selected overlay’s
+   local inputs only after this workflow rebuilds that overlay: after step 5’s link verification, run
+   `python3 <installation-source>/.agents/hooks/skills-refresh/record_overlay.py <installation-source>`
+   when step 4 built it in this run. A generic installer invocation never certifies overlay
+   inputs. Preserve native hook trust requirements. An explicitly opted-in installation may approve
+   only its owned startup hook through the native API; never edit persisted trust hashes directly
+   or disable hook trust.
 6. Once the links point into the installed source, remove every other `skills-overlay/` worktree of
    the checkout, complete or not; this step alone removes overlays. First compare each with the
    built head step 2 recorded for it, or for each of this run's abandoned builds the head it
