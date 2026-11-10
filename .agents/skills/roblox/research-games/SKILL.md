@@ -1,6 +1,6 @@
 ---
-name: study-games
-description: Explicit user-invoked research of Roblox charts for the requested audience and region. Study 25 games by default, in passive mode (pages and popular gameplay videos) or play mode (also a short real session for games whose onboarding no video shows), asking which when the request names neither. Reuse recent records of games studied before, delegate two games per researcher, collect YAML notes on gameplay, UI and onboarding, and wait for all researchers before keeping the records and routing supported themes into the Roblox skills that own them.
+name: research-games
+description: Explicit user-invoked research of Roblox charts for the requested audience and region. Study 25 games by default, in passive mode (pages and popular gameplay videos) or play mode (also a short real session for games whose onboarding no video shows), asking which when the request names neither; or propose an original game idea from the latest study, shown as a dashboard and, once approved, written as a game brief file for building it. Reuse recent records of games studied before, delegate two games per researcher, collect YAML notes on gameplay, UI and onboarding, and wait for all researchers before keeping the records and routing supported themes into the Roblox skills that own them.
 short_description: 'Explicit user-invoked research of Roblox charts for the requested audience and region.'
 disable-model-invocation: true
 ---
@@ -18,13 +18,15 @@ disable-model-invocation: true
 - `roblox-building`
 - `storyline`
 - `interactive-skill`
+- `review-proposal`
+- `use-dashboard`
 
 ## Mode
 
 Settle the mode through `interactive-skill` with this menu before selecting games or dispatching researchers. Only an argument naming a mode or one of its aliases, or words asking for the games to be played or only watched, picks it; a number is the game count, never a menu pick, and "play" describing the games, as in "games kids play", picks nothing.
 
 ```yaml
-prompt: Which mode should the study run in?
+prompt: What should the study do?
 kind: choice
 choices:
   - id: passive
@@ -37,6 +39,11 @@ choices:
     detail: also play games whose first-time onboarding no video shows, briefly, in the isolated runner
     aliases: [playtest]
     when: the request asks for the games to be played or playtested
+  - id: idea
+    label: Game idea
+    detail: propose an original game from the latest study's findings
+    aliases: [ideate, brainstorm, pitch]
+    when: the request asks for a game idea, a pitch or a brainstorm of what might work
 ```
 
 ## Reuse the isolated research environment
@@ -130,6 +137,16 @@ Route every supported theme to the skill that owns its subject, found by its des
 Invoke `edit-skill` once to deliver the study records and every skill change together as one guidance pull request.
 
 Report the sample, mode, reused games, findings, material evidence limits, the pull request, and exactly which guidance changed. Leave generated agent mirrors to Agent Sync.
+
+## Idea mode
+
+Use this mode when the request asks for a game idea. It works from the latest study file's synthesis and its game records rather than studying again; when no study is under 30 days old, run a passive study first and use its synthesis. A genre, audience or theme the user names is fixed.
+
+1. **Draft one original idea** as product facts in the shape of `roblox-studio`'s game brief reference: what the game is, its genre and audience, what players do, its story when it has one, its world, first session, progression, social play, monetization, accessibility, first-release scope and success signals. Ground each pillar in a synthesis pattern and name its count. Borrow mechanics and conventions, never a studied game's name, characters, story, levels, art or look.
+2. **Run `review-proposal`** on the draft, with the user's request as its intent and the study file as its evidence, and carry its repairs into the draft.
+3. **Show it with `use-dashboard`**: an Overview page with the pitch, genre, audience, tone and first-release scope, then pages for what players do (core loop, modes and first session), the story when there is one, the world and its look, progression and monetization, and the evidence each pillar rests on.
+4. **Ask for approval** through the question tool, offering Approved and a request for changes. A change request revises the draft and returns to step 2 for what it changed.
+5. **On approval, write the game brief**: one JSON file following `roblox-studio`'s game brief reference, holding the approved facts only, with every choice the approval left open in `open_questions`. Check that it parses and holds every required field, send it to the user as a file, and say that `roblox-studio` builds the game from it.
 
 ## Output: structured YAML notes
 
