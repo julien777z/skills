@@ -149,14 +149,14 @@ alwaysApply: true
 - Merging any pull request requires explicit user authorization in the current request or explicit
   applicable guidance in a rule or invoked skill for that pull request. A fix request, CI-test
   request, successful check, review, or request to implement a plan that lists a merge does not
-  itself authorize merging. A reply that could be read as accepting a merge the agent offered, such
+  itself authorize merging. A reply that could be read as accepting a merge mentioned earlier, such
   as a bare "yes" beside another request, authorizes no merge it does not name. If neither
   authorization source applies, do not merge or enable auto-merge.
 - Honor the selected workflow's delivery hold before the standing permissions below; a pull
   request held for user review cannot use those exceptions or auto-merge.
-- Before reporting a pull request no instruction authorizes merging, classify the complete actual
-  diff against the standing permissions below; one they cover merges under them, and any other is
-  reported without asking for its merge, as the global rules' merge-authorization bullet says. A
+- Before reporting a pull request whose merge no instruction authorizes, classify the complete
+  actual diff against the standing permissions below; one they cover may merge under them, and any
+  other is reported without asking for its merge, as the global rules' merge-authorization bullet says. A
   filename, extension, line count or change label is not a behavioral classification. Preserve
   genuine edits; never remove them merely to qualify for an exception.
 - A pull request limited to minor type, lint, import, formatting or text corrections may merge

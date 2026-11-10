@@ -39,7 +39,7 @@ specific set.
 
 - An explicit pull-request URL or recognized identifier in the user's own message is the sole set:
   verify and resolve it directly. A pull request the message does not name is never added: not one
-  the agent offered to merge earlier, not the dependency a held unit waits on, and not one a bare
+  mentioned earlier as awaiting merge, not the dependency a held unit waits on, and not one a bare
   "yes" beside the request might answer. Such a dependency stays a gate under **Dependent Pull
   Requests**.
 - Otherwise run `list-prs` before starting any individual review, even when the current branch
