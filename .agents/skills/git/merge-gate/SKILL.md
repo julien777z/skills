@@ -138,7 +138,8 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    attempt with no recorded validation failure and no exclusion, use an equivalent successful
    hosted attempt or follow a pending replacement through step 6. If neither exists, obtain
    equivalent local validation when it can qualify for the exclusion, or retry the hosted check
-   on the same head. Missing logs or an unknown cancellation cause cannot justify local substitution;
+   on the same head using `POST /repos/{owner}/{repo}/actions/jobs/{job_id}/rerun`. Verify the
+   retried job's head and required context before using its result. Missing logs or an unknown cancellation cause cannot justify local substitution;
    recover hosted coverage in that case. A canceled attempt alone does not end the gate.
    Every other failure is relevant. Read its annotations and complete log, fix the repository
    input responsible — code, test, configuration or workflow — and commit it. **Every relevant
@@ -192,9 +193,10 @@ session owns is named in the report with its pinned reference and what the merge
 the merged branch never waits on this, so a consumer left pinned stops installing.
 
 An excluded check does not prevent the ordinary authorized merge attempt. If branch protection
-rejects it because it requires an interrupted hosted check, put that job back in the exact-head
-inventory with hosted coverage required. Follow its replacement or retry under **Check Gate**,
-then attempt the merge when the required hosted result passes. For other exclusions, or if hosted
+rejects it because it requires an interrupted hosted check, record the required context and head
+in the inventory. For that context, step 8 cannot apply local substitution or reuse a result the
+provider already rejected. Follow its matching replacement or retry under **Check Gate**. Re-read
+the required context and attempt the merge once GitHub reports it passing. For other exclusions, or if hosted
 recovery is unavailable, report the actual rejection and its provider evidence. Never bypass protection.
 
 Once the merge is verified, as the global rules' **A merge leaves no deploy work** bullet says, do
