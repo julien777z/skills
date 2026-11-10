@@ -424,7 +424,7 @@ world_and_presentation:
   - 'Video: lobby summon hall, challenges arcade and event ship (video_3 frames 003, 032; video_1 frame 009)'
   - 'Video: dozens of maps (Alien Spaceship underwater, Shibuya District, Assassin Park, Sky Island, Fiend City) (video_1 frame 011)'
   environmental_storytelling:
-  - Loading screen 'Traveling to... Neo-Tokyo' with a seasonal gameplay tip
+  - Loading screen 'Travelling to... Neo-Tokyo' with a seasonal gameplay tip
   - 'Video: event NPCs with quest dialog on the summer ship ("Some members of my party got separated in a storm. Help find Armored...") (video_1 frame 010)'
   audiovisual_consistency: 'Video: consistent saturated neon anime style across lobby, menus and maps; audio judged only through creator commentary.'
   success_effect_intensity_and_clarity: 'Video: very intense summon reveals and unit ability effects; late-wave effects can hide enemies and paths (video_1 frames 013-014, 023-027).'

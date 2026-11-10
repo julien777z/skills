@@ -7,8 +7,7 @@ import type { TableSection as TableSectionSpec } from '@/spec';
 import { SectionCard } from './section-card';
 import { SectionDialog } from './section-dialog';
 
-// A column holding sentences keeps a readable width on a narrow page, and the table scrolls sideways instead.
-const PROSE_CELL_LENGTH = 40;
+const PROSE_CELL_LENGTH: number = 40;
 
 export function TableSection({ section }: { section: TableSectionSpec }): ReactNode {
   const [open, setOpen] = useState(false);
