@@ -39,12 +39,17 @@ settings or monetization, and no publish to any other experience.
 2. **Publish from the isolated runner**, as `roblox-studio` sets up, holding its runner lock: open
    each built place in the runner's signed-in Studio and publish it over its existing place in
    the chosen universe, maps before the start place. A place with no existing counterpart is added
-   through the delivery route in `roblox-studio`'s source, editor, and publication reference. Read
-   the place and universe IDs in that editor before and after each publish. Grant asset permissions
-   the publish dialog asks for when they cover the project's own assets; leave the audience setting
-   as it is.
-3. **Verify** each place's new version or update time from Roblox, not from the dialog's success.
-4. **Release** the runner lock and close the editors the publish opened.
+   through the delivery route in `roblox-studio`'s source, editor, and publication reference; for a
+   new experience, publish the start place first through Publish to Roblox As as a new experience,
+   then add the maps that way. Read the place and universe IDs in that editor before and after each
+   publish. Grant asset permissions the publish dialog asks for when they cover the project's own
+   assets; leave the audience setting as it is.
+3. **Record what was created.** Write the ID of every experience or place this run created into the
+   project configuration **Target** reads, commit it on the session's branch and push it, so the
+   next publish finds them rather than creating them again.
+4. **Verify** each place's new version or update time from Roblox, not from the dialog's success.
+5. **Clean up, then release.** Close the editors the publish opened and confirm the runner is idle,
+   then release its lock; a failed publish ends the same way.
 
 ## Output
 
@@ -53,7 +58,7 @@ settings or monetization, and no publish to any other experience.
 
 | Place | ID | Updated |
 | --- | --- | --- |
-| [<place>](<place URL>) | <id> | <time> |
+| [<place>](<place URL>) | <id> | <time, or `new` for a place this run created> |
 
 Play: [<start place>](<game URL>)
 Not included: <each commit after the frozen head as a link to it, or none>
