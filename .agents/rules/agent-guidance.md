@@ -39,8 +39,9 @@ paths:
   **Guidance whose correctness depends on a current repository's product, resources, topology, contracts, configuration, or relationships is project guidance.** It belongs in that repository's `.agents/project.md` or a repository-specific skill, regardless of the subject that exposed the gap. A shared skill may teach the classification procedure, but never carry a current repository's facts or boundaries.
   An agent definition that a shared skill runs on goes with that skill; every other agent, and
   every rule, is repository-owned.
-- **Hooks belong in the repository that owns their behavior.** Keep the hook implementation and
-  its source registration under that repository's `.agents/hooks/`. A hook shared across
+- **Hooks belong in the repository that owns their behavior.** Keep their implementation and
+  source registration under that repository's `.agents/`: repository-managed hooks go in
+  `.agents/hooks/`, and hooks shipped with a skill stay in its package. A hook shared across
   repositories belongs in the shared skills repository; a hook that depends on one repository's
   behavior belongs there. Installed copies and native registrations consume that source.
 - **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract, and where a skill genuinely needs one local fact — a command, an identity, a host, a package, a fixture — take it from the repository's project guidance or a setting rather than baking it in. Live file paths and copied application code go stale when files move or refactors land; use generic placeholders such as `services/<name>/...`, short pattern descriptions, or minimal invented examples instead. Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
