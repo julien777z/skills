@@ -67,8 +67,15 @@ lacks. Repeat recovery after each lost lease until verification succeeds. After 
 release nothing, and report that the lock expired and which overlays were removed after its
 deadline.
 
-A local fault is recovery work, not completion. If a checkout, Git object, ref, overlay or managed
-link cannot be read, preserve the original state and reconstruct a healthy source from the latest
+A local fault is recovery work, not completion, and it never holds a refresh. **Damaged Git state in
+the skills checkout is backed up and repaired, whoever's branch it is**: a ref whose commit is
+missing, a branch whose pointer disagrees with the tree its index and files hold, or a leftover
+duplicate ref. First write the affected ref names and commit IDs, the index tree, and the files of
+any worktree checked out on that ref to the task's private storage. Then repair it: remove a ref
+whose commit is missing, point a branch at the commit whose tree its index and files already match,
+and remove a duplicate ref. The report names each backup and repair. Such damage is never an
+authority conflict, and leaving another session's branches untouched never extends to refs that stop
+the refresh. If a checkout, Git object, ref, overlay or managed link cannot be read, preserve the original state and reconstruct a healthy source from the latest
 default branch, the last verified complete snapshot and retained trusted input records. Recover every
 readable pending change and preserve unreadable originals for later recovery; do not assert their
 contents or silently discard them. Repair the native installer or its owned source as needed, and

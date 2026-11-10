@@ -99,7 +99,8 @@ alwaysApply: true
   source pull request from another session only when the user, an applicable invoked skill, or a
   repository rule explicitly directs that continuation. A matching topic, existing branch, open
   state, or recorded touch does not supply that instruction. Verify the selected pull request's
-  owner, state and scope before updating it; leave other sessions' pull requests and branches untouched.
+  owner, state and scope before updating it; leave other sessions' pull requests and branches untouched,
+  apart from a damaged local ref `update-skills` backs up and repairs.
 - **Each session opens its own agent-configuration pull request in each repository.** Agent
   configuration is the canonical `.agents` tree — skills, each with its own scripts, assets and
   templates; rules; and agent definitions. Nonbehavioral text and guidance-reference corrections in
