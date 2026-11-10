@@ -76,7 +76,8 @@ resume the refresh through link verification. Link verification proves which sou
 not the contents of unreadable inputs: report that uncertainty and continue investigating retained
 originals without holding installation. Use retained ownership records and installer preflight to
 distinguish managed links from foreign links. Reading merged guidance does not install it. Preserve
-foreign files and links, trust checks and lock ownership throughout; a genuine authority conflict
+foreign files and links outside user skill roots, native skill namespaces, trust checks and lock
+ownership throughout; a genuine authority conflict
 remains a decision while independent recovery continues.
 
 1. Resolve an installed user-level skill link to its Git checkout. When the link resolves into an
@@ -122,8 +123,9 @@ remains a decision while independent recovery continues.
    points into the installed source. Confirm each hook registration the installer wrote — in
    Claude's `settings.json` and Codex's and Cursor's `hooks.json` — runs a `main.py` that resolves
    through a hook link in that root, unless the installer warned that it registered none. Check Codex's global `AGENTS.md` link when Codex is installed. Preserve
-   real files and foreign links; the installer's conflict preflight reports them before changing
-   links. Never reset, drop, or overwrite preserved work.
+   provider-owned hidden packages and Claude account-synced skills. The installer reconciles other
+   user skill entries to the selected catalog, replacing foreign links and real entries. Real
+   files and foreign links for other artifact types remain protected by conflict preflight.
 6. Once the links point into the installed source, remove every other `skills-overlay/` worktree of
    the checkout, complete or not; this step alone removes overlays. First compare each with the
    built head step 2 recorded for it, or for each of this run's abandoned builds the head it

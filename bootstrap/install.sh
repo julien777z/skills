@@ -3,6 +3,9 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 INSTALLER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly INSTALLER_CHECKOUT="$REPO_ROOT"
+readonly SKILL_RESOURCE="$INSTALLER_DIR/resources/skills.sh"
+readonly PATH_HELPER="$INSTALLER_DIR/resources/path_key.py"
 readonly SKILLS_REMOTE='https://github.com/julien777z/skills.git'
 readonly GENERATED_DIRNAME='.agents/.auto_generated'
 reexecuted=0
@@ -206,7 +209,8 @@ if [[ "$REPO_ROOT" == */.local/share/agent-skills ]]; then
   REPO_ROOT="$source_checkout"
 fi
 
-overlay_root="$(newest_overlay "$REPO_ROOT")"
+source_checkout="$REPO_ROOT"
+overlay_root="$(newest_overlay "$source_checkout")"
 
 if [ -n "$overlay_root" ]; then
   echo "Using the refresh overlay $overlay_root; update-skills rebuilds it from the latest default branch."
@@ -303,6 +307,10 @@ check_directory() {
   done
 }
 
+physical_path_key() {
+  python3 "$PATH_HELPER" "$@"
+}
+
 register_hooks() {
   local action="$1" provider="$2" root="$3" settings=hooks.json
 
@@ -322,17 +330,11 @@ register_hooks() {
 }
 
 preflight_provider() {
-  local provider="$1" root="$2" skill agent rule resource hook name failed=0
+  local provider="$1" root="$2" agent rule resource hook name failed=0
 
   check_directory "$root/skills" || return 1
 
   [ -d "$root" ] || return 0
-
-  while IFS= read -r skill; do
-    name="$(basename "$skill")"
-
-    check_link "$root/skills/$name" || failed=1
-  done < <(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)
 
   if [ "$provider" = agents ]; then
     return "$failed"
@@ -419,6 +421,54 @@ link_source() {
   fi
 }
 
+source "$SKILL_RESOURCE"
+
+run_skill_operation() {
+  if [ "${CLOUD_SKILL_OWNER:-0}" -eq 1 ]; then
+    run_as_cloud_user bash -eu -c 'source "$1"; shift; "$@"' \
+      skills-installer "$SKILL_RESOURCE" "$@"
+  else
+    "$@"
+  fi
+}
+
+skill_contract() {
+  local provider="$1" root="$2" skill name source
+  local sources=()
+
+  if [ "$provider" = claude ]; then
+    printf 'protected:synced\n'
+  fi
+
+  for skill in ${CANONICAL_CATALOG[@]+"${CANONICAL_CATALOG[@]}"}; do
+    name="${skill##*/}"
+
+    if protected_skill "$provider" "$name" "$root" "$PATH_HELPER"; then
+      echo "conflict: canonical skill $name occupies a protected namespace for $provider" >&2
+      return 1
+    fi
+
+    source="$(link_source "$provider" skills "$name" "$skill")"
+    sources+=("$source")
+    printf '%s\n' "$source"
+  done
+
+  run_skill_operation preflight_skill_reconciliation "$root/skills" ${sources[@]+"${sources[@]}"}
+}
+
+reconcile_skills() {
+  local provider="$1" root="$2" skill name
+  local links=()
+
+  for skill in ${CANONICAL_CATALOG[@]+"${CANONICAL_CATALOG[@]}"}; do
+    name="${skill##*/}"
+    links+=("$name" "$(link_source "$provider" skills "$name" "$skill")")
+    skills=$((skills + 1))
+  done
+
+  run_skill_operation reconcile_skill_links "$provider" "$root" "$PATH_HELPER" ${links[@]+"${links[@]}"}
+}
+
 prune_links() {
   local dir="$1" link target old_root relative
 
@@ -451,16 +501,9 @@ install_provider() {
 
   found_root=1
 
-  mkdir -p "$root/skills"
-
-  while IFS= read -r skill; do
-    name="$(basename "$skill")"
-
-    ln -sfn "$(link_source "$provider" skills "$name" "$skill")" "$root/skills/$name"
-    skills=$((skills + 1))
-  done < <(find "$CANONICAL_SKILLS" -type d -exec test -e '{}/SKILL.md' \; -print -prune | sort)
-
-  prune_links "$root/skills"
+  if [ "${SKIP_SKILLS:-0}" -eq 0 ]; then
+    reconcile_skills "$provider" "$root"
+  fi
 
   if [ "$provider" = agents ]; then
     echo "$root: $skills skills linked"
@@ -586,6 +629,105 @@ if [ -n "${CODEX_HOME:-}" ]; then
   add_install_root codex "$CODEX_HOME"
 fi
 
+# Freeze and validate every skills root before writing target skills or configuration.
+command -v python3 >/dev/null 2>&1 || { echo "python3 is required to validate installation roots." >&2; exit 1; }
+
+# Validate the source before a failed scan can be mistaken for an empty catalog.
+if [ ! -d "$CANONICAL_SKILLS" ] || [ -L "$CANONICAL_SKILLS" ]; then
+  echo "Canonical skills must be a directory: $CANONICAL_SKILLS" >&2
+  exit 1
+fi
+
+catalog_listing="$(mktemp)"
+
+if ! find "$CANONICAL_SKILLS" -type d \( -exec test -e '{}/SKILL.md' \; -o -exec test -L '{}/SKILL.md' \; \) \
+  -print0 -prune > "$catalog_listing"; then
+  rm -f -- "$catalog_listing"
+  echo "Could not enumerate canonical skills; no targets were changed." >&2
+  exit 1
+fi
+
+CANONICAL_CATALOG=()
+
+while IFS= read -r -d '' skill; do
+  name="${skill##*/}"
+
+  if [ ! -f "$skill/SKILL.md" ] || [[ ! "$name" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+    rm -f -- "$catalog_listing"
+    echo "Invalid canonical skill: $skill" >&2
+    exit 1
+  fi
+
+  for previous_skill in ${CANONICAL_CATALOG[@]+"${CANONICAL_CATALOG[@]}"}; do
+    if [ "${previous_skill##*/}" = "$name" ]; then
+      rm -f -- "$catalog_listing"
+      echo "Duplicate canonical skill name: $name" >&2
+      exit 1
+    fi
+  done
+
+  CANONICAL_CATALOG+=("$skill")
+done < "$catalog_listing"
+
+rm -f -- "$catalog_listing"
+
+SKILL_ROOTS=()
+SKILL_CONTRACTS=()
+SKIP_SKILL_ROOTS=()
+CLOUD_SKILL_OWNERS=()
+SOURCE_ROOTS=("$INSTALLER_CHECKOUT" "$(main_checkout_of "$INSTALLER_CHECKOUT")"
+  "$source_checkout" "$(main_checkout_of "$source_checkout")" "$REPO_ROOT")
+
+for index in "${!INSTALL_ROOTS[@]}"; do
+  root="${INSTALL_ROOTS[$index]}"
+  provider="${INSTALL_PROVIDERS[$index]}"
+  check_directory "$root/skills" || exit 1
+
+  skills_root="$root/skills"
+  SKIP_SKILL_ROOTS+=(0)
+  CLOUD_SKILL_OWNERS+=(0)
+
+  for source_root in "${SOURCE_ROOTS[@]}"; do
+    relationship="$(physical_path_key --relationship "$root" "$source_root")"
+
+    case "$relationship" in
+      same|contains) echo "conflict: installation root contains installation source: $root" >&2; exit 1 ;;
+      inside) echo "conflict: installation root is inside installation source: $root" >&2; exit 1 ;;
+    esac
+  done
+
+  if [ -n "${CLOUD_HOME:-}" ] && [ "$(id -u)" -eq 0 ]; then
+    relationship="$(physical_path_key --relationship "$CLOUD_HOME" "$root")"
+
+    case "$relationship" in
+      same|contains) CLOUD_SKILL_OWNERS[$index]=1 ;;
+    esac
+  fi
+
+  contract="$(CLOUD_SKILL_OWNER="${CLOUD_SKILL_OWNERS[$index]}" skill_contract "$provider" "$root")" || exit 1
+
+  for previous in "${!SKILL_ROOTS[@]}"; do
+    other="${SKILL_ROOTS[$previous]}"
+    relationship="$(physical_path_key --relationship "$skills_root" "$other")"
+
+    if [ "$relationship" = same ]; then
+      if [ "$contract" != "${SKILL_CONTRACTS[$previous]}" ]; then
+        echo "conflict: incompatible skills contracts for $skills_root" >&2
+        exit 1
+      fi
+
+      SKIP_SKILL_ROOTS[$index]=1
+    elif [ "$relationship" != disjoint ]; then
+      echo "conflict: nested skills roots: $other and $skills_root" >&2
+      exit 1
+    fi
+  done
+
+  SKILL_ROOTS+=("$skills_root")
+  SKILL_CONTRACTS+=("$contract")
+  INSTALL_ROOTS[$index]="$root"
+done
+
 preflight_ok=1
 
 for index in "${!INSTALL_ROOTS[@]}"; do
@@ -598,8 +740,16 @@ if [ "$preflight_ok" -eq 0 ]; then
 fi
 
 for index in "${!INSTALL_ROOTS[@]}"; do
-  mkdir -p "${INSTALL_ROOTS[$index]}"
-  install_provider "${INSTALL_PROVIDERS[$index]}" "${INSTALL_ROOTS[$index]}"
+  root="${INSTALL_ROOTS[$index]}"
+
+  if [ "${CLOUD_SKILL_OWNERS[$index]}" -eq 1 ]; then
+    run_as_cloud_user mkdir -p -- "$root"
+  else
+    mkdir -p -- "$root"
+  fi
+
+  CLOUD_SKILL_OWNER="${CLOUD_SKILL_OWNERS[$index]}" SKIP_SKILLS="${SKIP_SKILL_ROOTS[$index]}" \
+    install_provider "${INSTALL_PROVIDERS[$index]}" "$root"
 done
 
 if [ "$found_root" -eq 0 ]; then

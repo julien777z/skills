@@ -49,11 +49,12 @@ installer exits on update, conflict, or installation failure.
 The local installer links skills, reference collections, reusable rules, hooks, and applicable agent definitions into existing
 Claude, Codex, and Cursor user roots. Codex's global `AGENTS.md` links to the same canonical
 `global.md` rule used by the other harnesses. Repository-specific rules stay in each repository's
-`project.md`. Re-running refreshes owned links and prunes obsolete ones; real content or foreign
-links at an installed path are reported before any links change.
+`project.md`. Re-running reconciles user skill entries to the selected catalog, replacing extra
+entries and collisions while preserving hidden provider packages and Claude account-synced skills.
+Other artifact types retain their owned-link pruning and conflict checks.
 
-The hooks and their registration need Python 3.11 or newer as `python3`; without it the installer
-links the hooks, warns, and registers none. The `ledger` hook needs PyYAML. When a ledger the
+The installer needs `python3` to validate installation roots. Hook registration needs Python 3.11
+or newer; with an older version the installer links the hooks, warns, and registers none. The `ledger` hook needs PyYAML. When a ledger the
 session writes lacks a backup comment, it keeps the turn going in Claude Code and Codex and submits
 a follow-up message in Cursor. Codex runs a newly registered hook once it has been reviewed and
 trusted there.
