@@ -12,6 +12,15 @@ Reopen specifically to investigate serialization failures or verify a saved-file
 
 ## Serialization and synchronization lessons
 
+A Rojo-built place holds only what its project file declares, while a place Studio creates also holds default
+containers the engine fills at run time. When a project maps a service such as `StarterPlayer`, declare every
+default container under it that the engine or the game needs — `StarterPlayerScripts`, which receives the
+engine's `PlayerModule` (controls and camera), and `StarterCharacterScripts`. A missing container cannot be added
+from a script (`Instance.new` refuses those classes), and its absence fails silently: the engine never inserts
+the module, so anything waiting on it yields forever while the rest of the game loads. Read a new project file
+against the service's children in a fresh Studio place, and check the first Play's console for an infinite-yield
+warning on an engine module before judging any gameplay.
+
 Rojo XML can serialize script Source as `<string name="Source">`, while Studio saves may use `<ProtectedString name="Source">`. Read the named property independent of its XML tag and reject missing Source on script instances. Cover both encodings in synchronization tests. Verify actual source text after updating an editor; creating a correctly named ModuleScript is insufficient. A missing-property default of the empty string can falsely make all expected sources appear equal.
 
 A terrain archive in ServerStorage proves that runtime can restore terrain, not that the saved editor file already contains Workspace terrain. Source/archive checks alone can miss this distinction. For an immediately editable delivery, restore its correct TerrainRegion at the recorded cell corner, save locally through Studio, reopen, and sample actual occupied voxels near the authored arrival. Keep source/package equality and fixture checks afterward. Do not publish to fix a local saved-file omission. A targeted terrain splice must also copy any referenced SharedString definitions and preserve unrelated artwork.
