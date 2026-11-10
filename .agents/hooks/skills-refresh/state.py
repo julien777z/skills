@@ -47,14 +47,15 @@ def commit_graph_is_valid(checkout: Path) -> bool:
 
 
 def repair_commit_graph(source: Path) -> bool:
-    """Rebuild the derived graph if Git cannot verify it."""
+    """Check object connectivity and rebuild an invalid commit graph."""
 
     checkout = checkout_root(source)
+
+    git(checkout, "-c", "core.commitGraph=false", "fsck", "--connectivity-only", "--no-reflogs", "--no-dangling")
 
     if commit_graph_is_valid(checkout):
         return False
 
-    git(checkout, "-c", "core.commitGraph=false", "fsck", "--connectivity-only", "--no-reflogs", "--no-dangling")
     git(checkout, "commit-graph", "write", "--reachable")
 
     if not commit_graph_is_valid(checkout):
