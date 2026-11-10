@@ -36,15 +36,18 @@ agent; the calling agent launches the actual assignment with the selected model.
    the requested identifier for that launch; it does not establish catalog availability or runtime identity.
    An explicit host receipt that the candidate is unsupported establishes unavailability only when it names no
    repair. **A refusal that names its own cause or fix is a repair, never unavailability**: a client or runtime
-   version too old, a sign-in, a disabled provider, a stale process. Apply the repair, or confirm the condition no
-   longer holds, then launch the same assignment again with the same identifier. Unavailability, and every
+   version too old, a sign-in, a disabled provider, a stale process. The repair is the first step and every
+   fallback comes after it: update the client, sign in, enable the provider or restart the process, or confirm the
+   condition no longer holds, then launch the same assignment again with the same identifier. Updating or
+   repairing the agent's own client or runtime is that repair, never a settings change the next sentence forbids. Unavailability, and every
    fallback or substitution it permits, starts only when that relaunch is refused again or the named repair
    cannot be made, recorded with both receipts and the repair attempted; only that is an explicit unsupported
    receipt wherever this skill or its callers name one. The accepted worker
    performs the assignment; never launch a throwaway availability probe. Record the runtime identifier only
    when the host exposes its exact value. Generic provider or product
    branding, a worker-reported label, or no runtime identifier is neither confirmation nor a contradiction of
-   the accepted selection. Availability is not permission to change repository or global settings.
+   the accepted selection. Availability is not permission to change repository or global settings, such as a
+   model policy or a provider's configuration.
 4. When a requested capability level or model is explicitly unsupported, apply a fallback only when the
    calling skill declares its direction and limits and it respects the user's explicit model or capability
    constraint. **A permitted fallback steps down as little as it can**, in this order, launching the actual
