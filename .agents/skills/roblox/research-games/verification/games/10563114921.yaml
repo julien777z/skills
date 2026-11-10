@@ -6,6 +6,30 @@ url: "https://www.roblox.com/games/107778070777162"
 creator: "and Collect Rare Pets (group, verified badge)" # the group's registered name, as the games API reports it
 chart_category: "Top Playing Now"
 chart_rank: 1
+genre:
+  primary: "Simulation"
+  sub: "Tycoon"
+competitors:
+  - name: "Throw Food For Animals"
+    universe_id: "10766972131"
+    url: "https://www.roblox.com/games/120219252362013"
+    overlap: "Same subgenre (Tycoon) on the 2026-11-08 chart"
+  - name: "Break and Steal an Egg"
+    universe_id: "10765288803"
+    url: "https://www.roblox.com/games/114326934417838"
+    overlap: "Same subgenre (Tycoon) on the 2026-11-08 chart"
+  - name: "[💀] Steal a Brainrot"
+    universe_id: "7709344486"
+    url: "https://www.roblox.com/games/109983668079237"
+    overlap: "Same subgenre (Tycoon) on the 2026-11-08 chart"
+  - name: "[😺UPD] Raise A Catboy"
+    universe_id: "10770707307"
+    url: "https://www.roblox.com/games/129852792970565"
+    overlap: "Same subgenre (Tycoon) on the 2026-11-08 chart"
+  - name: "Restaurant Tycoon 3 [TV Update!]"
+    universe_id: "7094518649"
+    url: "https://www.roblox.com/games/119048529960596"
+    overlap: "Same subgenre (Tycoon) on the 2026-11-08 chart"
 researcher: "R02"
 mode: play
 play_ended_by: null # not recorded: the session predates this field

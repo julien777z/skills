@@ -6,6 +6,30 @@ url: "https://www.roblox.com/games/12068120918/Napoleonic-Wars"
 creator: "NapoIeonic Wars (group 12425385, no verified badge, 141,618 members)"
 chart_category: "Top Revisited"
 chart_rank: 2
+genre:
+  primary: "Action"
+  sub: null
+competitors:
+  - name: "[🎃] Jujutsu Shenanigans"
+    universe_id: "3508322461"
+    url: "https://www.roblox.com/games/9391468976"
+    overlap: "Same genre (Action) on the 2026-11-08 chart"
+  - name: "[💀DUELS] Murderers VS Sheriffs"
+    universe_id: "7219654364"
+    url: "https://www.roblox.com/games/135856908115931"
+    overlap: "Same genre (Action) on the 2026-11-08 chart"
+  - name: "[HALLOWEEN] The Strongest Battlegrounds"
+    universe_id: "3808081382"
+    url: "https://www.roblox.com/games/10449761463"
+    overlap: "Same genre (Action) on the 2026-11-08 chart"
+  - name: "[RANKED] Huss Valley"
+    universe_id: "10764627709"
+    url: "https://www.roblox.com/games/107535308163741"
+    overlap: "Same genre (Action) on the 2026-11-08 chart"
+  - name: "[🔥2X XP] BedWars"
+    universe_id: "2619619496"
+    url: "https://www.roblox.com/games/6872265039"
+    overlap: "Same genre (Action) on the 2026-11-08 chart"
 researcher: "R13; gameplay videos V13"
 mode: passive
 play_ended_by: null

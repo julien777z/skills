@@ -6,6 +6,30 @@ url: "https://www.roblox.com/games/133466274094328/obby-but-you-get-smaller-ever
 creator: "Ewwer Inc. (group 622432741, no verified badge)"
 chart_category: "Trending in Obby & Platformer"
 chart_rank: 1
+genre:
+  primary: "Obby & Platformer"
+  sub: null
+competitors:
+  - name: "DONT SPLASH"
+    universe_id: "10771421858"
+    url: "https://www.roblox.com/games/119958473240233"
+    overlap: "Same genre (Obby & Platformer) on the 2026-11-08 chart"
+  - name: "Tower of Hell"
+    universe_id: "703124385"
+    url: "https://www.roblox.com/games/1962086868"
+    overlap: "Same genre (Obby & Platformer) on the 2026-11-08 chart"
+  - name: "Push the Patient [1-2 PLAYER OBBY]"
+    universe_id: "10767231756"
+    url: "https://www.roblox.com/games/94227180343187"
+    overlap: "Same genre (Obby & Platformer) on the 2026-11-08 chart"
+  - name: "DONT SWIM 🚫🏊"
+    universe_id: "10773014494"
+    url: "https://www.roblox.com/games/79468627835394"
+    overlap: "Same genre (Obby & Platformer) on the 2026-11-08 chart"
+  - name: "TROLL Fly & Carry Tower"
+    universe_id: "10764221401"
+    url: "https://www.roblox.com/games/117043200777029"
+    overlap: "Same genre (Obby & Platformer) on the 2026-11-08 chart"
 researcher: "R08"
 mode: play
 play_ended_by: cap

@@ -7,6 +7,30 @@ url: https://www.roblox.com/games/18816315817
 creator: Blockadian Studio (group)
 chart_category: Top Revisited
 chart_rank: 1
+genre:
+  primary: "Action"
+  sub: "Battlegrounds & Fighting"
+competitors:
+  - name: "[🎃] Jujutsu Shenanigans"
+    universe_id: "3508322461"
+    url: "https://www.roblox.com/games/9391468976"
+    overlap: "Same subgenre (Battlegrounds & Fighting) on the 2026-11-08 chart"
+  - name: "[💀DUELS] Murderers VS Sheriffs"
+    universe_id: "7219654364"
+    url: "https://www.roblox.com/games/135856908115931"
+    overlap: "Same subgenre (Battlegrounds & Fighting) on the 2026-11-08 chart"
+  - name: "[HALLOWEEN] The Strongest Battlegrounds"
+    universe_id: "3808081382"
+    url: "https://www.roblox.com/games/10449761463"
+    overlap: "Same subgenre (Battlegrounds & Fighting) on the 2026-11-08 chart"
+  - name: "[RANKED] Huss Valley"
+    universe_id: "10764627709"
+    url: "https://www.roblox.com/games/107535308163741"
+    overlap: "Same subgenre (Battlegrounds & Fighting) on the 2026-11-08 chart"
+  - name: "[🔥2X XP] BedWars"
+    universe_id: "2619619496"
+    url: "https://www.roblox.com/games/6872265039"
+    overlap: "Same subgenre (Battlegrounds & Fighting) on the 2026-11-08 chart"
 researcher: R03
 mode: play
 play_ended_by: null # not recorded: the session predates this field

@@ -7,6 +7,30 @@ url: https://www.roblox.com/games/8304191830
 creator: Gomu (group, verified badge)
 chart_category: Top Earning
 chart_rank: 1
+genre:
+  primary: "Strategy"
+  sub: "Tower Defense"
+competitors:
+  - name: "[🌟FIX] Cameraman Tower Defense"
+    universe_id: "10762636904"
+    url: "https://www.roblox.com/games/132929771812494"
+    overlap: "Same subgenre (Tower Defense) on the 2026-11-08 chart"
+  - name: "Tower Defense Simulator"
+    universe_id: "1176784616"
+    url: "https://www.roblox.com/games/3260590327"
+    overlap: "Same subgenre (Tower Defense) on the 2026-11-08 chart"
+  - name: "[🎃] Anime Expeditions "
+    universe_id: "7613921865"
+    url: "https://www.roblox.com/games/84515722934860"
+    overlap: "Same subgenre (Tower Defense) on the 2026-11-08 chart"
+  - name: "[✨CHANGES] Toilet Tower Defense"
+    universe_id: "4778845442"
+    url: "https://www.roblox.com/games/13775256536"
+    overlap: "Same subgenre (Tower Defense) on the 2026-11-08 chart"
+  - name: "Anime Galaxies | UPDATE 1"
+    universe_id: "10770748262"
+    url: "https://www.roblox.com/games/83869074416117"
+    overlap: "Same subgenre (Tower Defense) on the 2026-11-08 chart"
 researcher: R03
 mode: play
 play_ended_by: null # not recorded: the session predates this field

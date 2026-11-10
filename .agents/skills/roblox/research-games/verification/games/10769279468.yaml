@@ -6,6 +6,30 @@ url: "https://www.roblox.com/games/124617195142196/Build-An-Anime-Character"
 creator: "Tomark Interactive (group 90953624, no verified badge)"
 chart_category: "Trending in Party & Casual"
 chart_rank: 1
+genre:
+  primary: "Party & Casual"
+  sub: null
+competitors:
+  - name: "[🦑] Squid Game X"
+    universe_id: "2936053166"
+    url: "https://www.roblox.com/games/7554888362"
+    overlap: "Same genre (Party & Casual) on the 2026-11-08 chart"
+  - name: "[🎃] Ink Game"
+    universe_id: "7008097940"
+    url: "https://www.roblox.com/games/99567941238278"
+    overlap: "Same genre (Party & Casual) on the 2026-11-08 chart"
+  - name: "Make The Logo!"
+    universe_id: "10768891670"
+    url: "https://www.roblox.com/games/112232726743887"
+    overlap: "Same genre (Party & Casual) on the 2026-11-08 chart"
+  - name: "Ball VS Ball [RANKED]"
+    universe_id: "10685282333"
+    url: "https://www.roblox.com/games/96510596525082"
+    overlap: "Same genre (Party & Casual) on the 2026-11-08 chart"
+  - name: "🎃 Timebomb Duels [Alpha]"
+    universe_id: "4049246711"
+    url: "https://www.roblox.com/games/11379739543"
+    overlap: "Same genre (Party & Casual) on the 2026-11-08 chart"
 researcher: "R08"
 mode: passive
 play_ended_by: null
