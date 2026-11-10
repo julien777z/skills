@@ -16,7 +16,7 @@ from html import escape
 from json import JSONDecodeError, dumps, loads
 from pathlib import Path
 from typing import Final, cast
-from xml.etree import ElementTree
+from xml.etree.ElementTree import ParseError, fromstring
 
 from models import (
     Change,
@@ -60,8 +60,8 @@ def is_svg_document(data: bytes) -> bool:
     """Return whether the bytes parse as XML whose root element is an SVG element."""
 
     try:
-        root = ElementTree.fromstring(data)
-    except ElementTree.ParseError:
+        root = fromstring(data)
+    except (ParseError, LookupError, ValueError):
         return False
 
     return root.tag in ("svg", "{http://www.w3.org/2000/svg}svg")
