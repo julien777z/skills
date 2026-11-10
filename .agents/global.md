@@ -320,7 +320,12 @@ alwaysApply: true
   controls, through a viewer or settings page it can open, or briefly through the user's own
   desktop input where the task's authorization and tool policy permit it — is the agent's to
   take, never put to the user as a request or as a choice
-  between their doing it and the agent's. The agent prefers the route that leaves the user's
+  between their doing it and the agent's. **Reach is settled by locating the target, never by one
+  failed route.** Before a machine, service or setting is called out of reach, find where it runs —
+  whether its address is one of this machine's own, whether it runs in containers or processes
+  here, and which tailnet node, management API or other host the agent controls reaches it — and
+  try each route; a refused connection to one address rules out that route alone. The agent prefers
+  the route that leaves the user's
   desktop alone and states any interruption, such as a moving cursor, when it happens. Only what
   needs the user's own identity, device, password or physical presence goes to them.
 - **A choice between substantially different versions of a page shows every option rendered.**
