@@ -33,8 +33,8 @@ alwaysApply: true
   written as a markdown link to that address each time a response, table, sent file or question
   names it, as in [garden-api#42](https://github.com/example/garden-api/pull/42) or
   [garden-api](https://github.com/example/garden-api); a bare number, name or hash leaves the reader
-  to look it up. Where the text names more than one repository, an item named outside a heading or
-  table for its own repository carries that repository inside its link text, as above, never as a
+  to look it up. Where the text names more than one repository, an item named outside a section or
+  table scoped to its own repository carries that repository inside its link text, as above, never as a
   plain name beside a linked number, and a repository named in passing, such as the other half of a
   paired change, is linked too. Every item in a list gets a link, however long the list. A surface
   that cannot render a link, such as a question tool's option label, carries the address in its
