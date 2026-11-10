@@ -48,8 +48,11 @@ sending input is trusted for accessibility (`AXIsProcessTrusted()`). A small Swi
 `swift` reads both without extra packages. A locked screen drops synthetic input. The agent unlocks the guest itself; on the user's own
 desktop the unlock is the user's step, while the settings change it unblocks stays the agent's.
 
-For a Studio setting an operation reports as missing, open the setting the error names in the
-verified Studio window, make the change, save it, and retry the original request. Assistant MCP
+For a Studio setting or permission an operation reports as missing, open the setting the error
+names in the verified Studio window, make the change, and press that page's own Save; closing it
+without saving discards the change. Confirm the change with a request that cannot create anything,
+such as an upload with an invalid asset type, which an approved directory passes to a validation
+error rather than a directory refusal, then retry the original request. Assistant MCP
 permissions are stored per place and can be managed only in a place saved to Roblox, so open a
 Roblox-saved place of the same owner — a private test place rather than the live game — when the
 current editor holds a local file.
@@ -58,10 +61,8 @@ Open Cloud uploads read only from approved directories, and approving one needs 
 a single Roblox-branded staging directory once per machine, `~/Roblox/Uploads`, never a checkout,
 worktree or build path that changes between sessions. Upload steps write or copy each artifact into
 a per-project subfolder there, such as `~/Roblox/Uploads/<project>/`, and upload from it; the
-repository keeps the editable source and export. The permissions page keeps an added directory only
-once its own Save is pressed; closing it without saving discards the addition. Confirm the approval
-with a request that cannot create anything, such as an upload with an invalid asset type, which an
-approved directory passes to a validation error rather than a directory refusal.
+repository keeps the editable source and export. Approve the directory as the setting paragraph
+above says.
 
 A locked desktop affects operations that depend on that desktop. Independent guest access follows the [testing reference](testing.md); independent file, build, and API work can continue.
 
