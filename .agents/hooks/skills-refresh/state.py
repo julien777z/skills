@@ -37,7 +37,7 @@ def repair_commit_graph(source: Path) -> bool:
         git(checkout, "commit-graph", "verify")
     except CalledProcessError:
         git(checkout, "-c", "core.commitGraph=false", "fsck", "--connectivity-only", "--no-reflogs", "--no-dangling")
-        git(checkout, "commit-graph", "write", "--reachable", "--split=replace")
+        git(checkout, "commit-graph", "write", "--reachable")
         git(checkout, "commit-graph", "verify")
 
         return True
