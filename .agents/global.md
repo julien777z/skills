@@ -68,7 +68,11 @@ alwaysApply: true
   the user can no longer follow. A capture nobody asked for that shows no change — taken while
   navigating, diagnosing, or recording a baseline before anything changed — stays where it was saved
   and is not sent, except as the before half of a pair once its after exists; a capture the user or
-  the running skill asked for is sent as it is made, change or not. An agent with no file-sending
+  the running skill asked for is sent as it is made, change or not. Where the harness shows an image
+  embedded in the message text, such as Markdown image syntax naming the file's absolute path, instead
+  of offering a file-sending tool, the agent the user talks to sends a capture by writing a short message
+  that embeds it, in the same turn, right after reading it and before its next tool call; a capture kept
+  for the turn's last message has been held. A subagent with no file-sending
   tool hands each capture to be sent up as `subagent-matrix`'s **Dispatch** describes, and the
   agent that delegated to it reads and forwards each one on arrival. A brief that asks a worker for
   captures asks for them this way.
