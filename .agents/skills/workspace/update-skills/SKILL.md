@@ -68,26 +68,17 @@ release the tool refuses means a successor took the lock after its deadline: rel
 report that the lock expired and which overlays were removed after its deadline.
 
 **Local Git damage in the skills checkout never holds a refresh and is never put to the user; it is
-backed up and repaired, whoever's branch it is.** Damage is any local Git state that makes a read,
-fetch or write fail and that no live process or deliberate move owns, such as a ref whose commit is
-missing from the object store, a loose copy shadowing a packed entry included; the checkout's branch
-pointing at an ancestor of a commit on its upstream whose tree its index and files match with no
-staged or unstaged difference, when its newest reflog entry is not a deliberate move such as a
-reset; a linked worktree, other than a `skills-overlay/` one step 6 removes, whose directory is gone
-or whose link Git can no longer follow; a lock file no running Git process holds; or an index or
-object Git cannot read. A dirty tree, a diverged branch, a deliberate reset, a lock a live process
-holds and a loose ref whose commit exists overriding a packed one are healthy and left as they are.
-Repair damage under the lock as soon as a read or fetch from step 2 on reports it; damage seen at
-step 1 is repaired once step 2 holds the lock. First write to private task storage each affected ref
-name and commit ID, the commit of any packed entry it shadows, the index tree, and the files of each
-worktree checked out on that ref or no longer openable; that backup preserves the original. Then
-repair in place: remove a ref whose commit is missing, deleting only the loose file under `refs/`
-when it shadows a packed entry whose commit exists, never through `git update-ref -d` or `git branch
--D`, which drop the packed entry too; point the stale branch at the matching commit; run `git
-worktree repair`, then `git worktree prune`, which drops the entry of an unlocked worktree whose
-directory is gone; replace an unreadable index with one read from the branch head; and delete a
-stale lock file. Another holder of the `skills-install` lock is waited on as `agent-lock` says, and
-an untrusted input is left out and reported; neither holds the refresh.
+backed up and repaired, whoever's branch it is.** Damage is local Git state that makes a read, fetch
+or write this refresh needs fail or act on a branch, index or worktree that disagrees with the files
+it holds, and that no running Git process or deliberate move recorded in the reflog owns. A dirty
+tree, a branch diverged from its upstream, a deliberate reset, a lock a live process holds and a
+loose ref whose commit exists overriding a packed one are healthy and left as they are. Repair
+damage under the lock as soon as a read or fetch from step 2 on reports it; damage seen at step 1 is
+repaired once step 2 holds the lock. Before each repair, copy to private task storage every file it
+replaces, deletes or rewrites, each ref it moves or removes with the commit it held and the commit
+of any packed entry it shadows, and the files of each worktree it affects. Then make the narrowest
+repair that lets the failing operation succeed, leaving every other ref, packed entry, worktree and
+file as it was.
 
 A local fault that has no repair in place, such as an unreadable object, overlay or managed link, is
 recovery work, not completion. Preserve the original state and reconstruct a healthy source from the
