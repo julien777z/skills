@@ -10,6 +10,52 @@ The story web includes causal, relationship, knowledge, location, prerequisite, 
 
 An opening fails when the player cannot explain the immediate stakes or when its actions have no visible consequence. Review onboarding placement, purposeful geography, first-use vocabulary, and concrete character visuals alongside the later plot. Functional quest progression alone does not establish an interesting story.
 
+## Dialogue
+
+Dialogue carries character and stakes; the interface carries instructions. A line that tells the
+player which button to press, which menu to open, or that a mechanic does not do something belongs
+in the objective, prompt or tutorial text, and the line is rewritten or cut. Each speaker sounds
+like themselves: give every major character a voice rule — a verbal habit, a sentence length, a
+recurring image — and check that swapping two speakers' names on a line would read wrong. Set
+budgets from the audience and platform before writing, and hold every proposal to them; for a young
+audience on a game platform a useful default is a line of at most two sentences and about 30 words,
+at most four lines a conversation, and the first line of each conversation carrying its stakes,
+since many players read only that one. Show rather than state: an action, a prop, or a repeated
+small habit that implies loss beats a line explaining it. Where the story has an antagonist, it appears and speaks,
+briefly and in its own register, before the climax and more than once; a villain known only from
+other characters' reports has no presence.
+
+## Progression and reward cadence
+
+Story beats and progression are one design. State the progression the arc covers in the game's own
+milestones — the level range in a leveled game, otherwise its unlocks, stages or equipment — when
+each milestone arrives, and what each grants that changes play — a new tool, ability, area or companion — so the
+player meets something new at least every few beats and before each harder challenge rather than after
+the last one. Every unlock a beat grants is usable in a later beat of the same arc. Every reward the
+design defines can be obtained; a defined but unobtainable reward is a defect. Repeatable activities
+such as optional fights also feed progression where the game supports it, and the arc's thresholds
+are reachable by a player who does only the required beats.
+
+## Critique checks
+
+Run these against a selected story before implementing it:
+
+- **Skipping reader.** Read only each conversation's first line and the objective text: can the
+  player say what to do next and why it matters at every beat?
+- **Knowledge timeline.** For each character and the player, list what they know and can name at
+  each beat; a character who uses a name, place or fact before it could be known, or a reveal stated
+  before its beat, or hinted so plainly that the player can no longer doubt it, is a defect; a clue
+  that sets up the reveal while leaving it uncertain is foreshadowing.
+- **Setups and payoffs.** Every object, place or mechanism the climax relies on is set up earlier,
+  and every setup pays off.
+- **Arithmetic.** Sum rewards per beat and check them against every threshold the design states.
+- **Repetition.** No two consecutive beats share the same verb, enemy and purpose; a repeated
+  character beat changes something each time.
+- **Choice and agency.** The decisive act is the player's, and where the climax is framed as a
+  choice the player can actually take a different action and see a response.
+- **Absent characters.** A major character absent for long stretches either has a reason the player
+  sees or reappears with something new.
+
 ## Opening, onboarding, and character appearance
 
 Write the first few minutes as actions a new player can understand: why they are here, what changed, who or what is at risk, what they can do, and the visible result. Give geography a purpose: inhabitants, threats, props, routes, and safe spaces belong to the conflict. Teach each unfamiliar term when the player first uses it, then retain that knowledge in the canon. Respect the requested difficulty contract; if a guided sequence promises success, specify deterministic legal actions, failure prevention, and interruption/resume behavior rather than staging an unwinnable fight.

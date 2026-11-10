@@ -9,6 +9,8 @@ short_description: 'Build and improve Roblox worlds, terrain, structures, props,
 ## Dependencies
 
 - `luau`
+- `subagent-matrix`
+- `council`
 
 ## Give every map a purpose
 
@@ -31,7 +33,7 @@ space before adding decorative props. Apply the functional-placement criteria in
 the map-making reference; isolated asset quality, collision checks, and successful
 interactions do not establish a coherent arrangement.
 
-Read [Map making and surface integration](references/map-making.md) for composition, traversal, terrain joins, collision, and inspection. Read [world-space text inspection](references/world-space-text.md) for authored signs or runtime messages in the world. Use shared map/model frames and named anchors as described in `luau`; update geometry and its gameplay consumers together.
+Read [Map making and surface integration](references/map-making.md) for composition, traversal, terrain joins, collision, and inspection. Before accepting a new map or a visual pass, run its **Scene audit** and then a fresh-eye review: invoke `subagent-matrix` at its standard capability level for one reviewer given only the audit's captures and the game's stated art direction, never the build notes, and ask what reads as unfinished, repetitive, empty or off-palette. Fix confirmed findings and recapture; a finding you would reject goes to `council` in **Ask** mode and its ruling is followed. Read [world-space text inspection](references/world-space-text.md) for authored signs or runtime messages in the world. Use shared map/model frames and named anchors as described in `luau`; update geometry and its gameplay consumers together.
 
 ## Blender and economical meshes
 
