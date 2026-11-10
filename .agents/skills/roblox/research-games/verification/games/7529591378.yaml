@@ -1,0 +1,432 @@
+name: "[ALPHA] Practical Basketball"
+game_id: "universe:7529591378"
+universe_id: "7529591378"
+place_id: "80681221431821"
+url: "https://www.roblox.com/games/80681221431821"
+creator: "Practical's Games (group, verified badge)"
+chart_category: "Top Trending"
+chart_rank: 1
+genre:
+  primary: "Sports & Racing"
+  sub: "Sports"
+competitors:
+  - name: "[UPD] Volleyball Legends"
+    universe_id: "6931042565"
+    url: "https://www.roblox.com/games/73956553001240"
+    overlap: "Same subgenre (Sports) on the 2026-11-08 chart"
+  - name: "[GAMEMODES!] Illegal Soccer"
+    universe_id: "10155360168"
+    url: "https://www.roblox.com/games/126987974021910"
+    overlap: "Same subgenre (Sports) on the 2026-11-08 chart"
+  - name: "[SZN2🌸] NFL Universe Football"
+    universe_id: "184199275"
+    url: "https://www.roblox.com/games/2338325648"
+    overlap: "Same subgenre (Sports) on the 2026-11-08 chart"
+  - name: "Turbo Soccer [BETA]"
+    universe_id: "10767012496"
+    url: "https://www.roblox.com/games/101880234193261"
+    overlap: "Same subgenre (Sports) on the 2026-11-08 chart"
+  - name: "[UPD1]⚽ Be a Soccer Legend"
+    universe_id: "10770566869"
+    url: "https://www.roblox.com/games/92316656787977"
+    overlap: "Same subgenre (Sports) on the 2026-11-08 chart"
+researcher: "R01"
+mode: play
+play_ended_by: null # not recorded: the session predates this field
+onboarding_video_coverage: covered
+observed_at: "2026-11-08T23:31:13Z"
+observation_status: completed
+previous_observed_at: null
+changes_since_previous: []
+active_play_seconds: 300
+play_coordination:
+    resource_key: "roblox-player"
+    wait_seconds: 275
+    acquired_at: "2026-11-08T23:31:05Z"
+    expires_at: "2026-11-08T23:41:05Z"
+    released_at: "2026-11-08T23:37:57Z"
+    release_verified: true
+    expiry_or_blocker: "None. vm-desktop:roblox-studio also held 23:31:09Z-23:37:57Z. After quit only the -launchToTray player process remained."
+context:
+    play_style: "Sports (basketball); API genre Sports & Racing / Sports"
+    camera_perspective: "Third-person over-the-shoulder; L cycles camera modes (a 'WIRE' label appeared after pressing L)"
+    device_and_input: "Keyboard and mouse on a macOS guest VM at 1920x1200 points; keyboard keys driven by script, mouse clicks for UI"
+    video_device_and_input: "Videos show mobile touch play (yt_onboarding_1), PC with keyboard and mouse then controller (yt_session_1), and controller play on PC (yt_skilled_1)."
+    observation_environment: "Isolated macOS VM runner, Roblox player 0.746, window filled the display (resize call refused, not needed)"
+    visible_server_population: "Tutorial place showed only the player and two AI characters; API reported 88,992 playing at research time"
+    solo_or_group: "Solo (tutorial against AI)"
+    game_version_if_known: "Universe updated 2026-11-07T16:18:17Z; title marked ALPHA"
+    evidence: [api_1, play_1, yt_onboarding_1, yt_skilled_1, yt_session_1]
+account_state:
+    freshness: fresh
+    evidence:
+        - "The VM account is the user's existing Roblox account, but this game treated it as new: it opened a forced Basics Tutorial on entry, labelled the player 'Newcomer', started the daily streak at Day 1 and showed a 'Welcome Offer - a one-time pack for new players' (7529591378-2, -3, -19, -21)."
+evidence:
+    - id: api_1
+      kind: description
+      url: "https://games.roblox.com/v1/games?universeIds=7529591378"
+      captured_at: "2026-11-08T23:25:00Z"
+      media_date_or_version: "updated 2026-11-07T16:18:17Z"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Description is marketing text; it says controls are listed in the community server rather than the page."
+    - id: thumb_1
+      kind: thumbnail
+      url: "https://tr.rbxcdn.com/180DAY-f824bc01968ef597a0a0995497e31d78/768/432/Image/Png/noFilter"
+      captured_at: "2026-11-08T23:25:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Promotional art (three dunking/dribbling avatars on red paint-splatter); establishes advertised style only."
+    - id: video_1
+      kind: gameplay_video
+      url: null
+      captured_at: null
+      media_date_or_version: "GamePreviewVideo videoId 92796996709228 listed by games.roblox.com/v2/games/7529591378/media"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Preview video not viewable with the researcher's tools; nothing is described from it."
+    - id: play_1
+      kind: actual_play
+      url: "https://www.roblox.com/games/80681221431821"
+      captured_at: "2026-11-08T23:31:13Z"
+      media_date_or_version: "Roblox player 0.746.0.7461264"
+      timestamps:
+          - "23:31:13 launch command"
+          - "23:31:36 'Basics Tutorial - about 1 minute' title card over court"
+          - "23:31:44 control (tutorial step 1 of 3 visible)"
+          - "23:32:01 first made jumpshot, 'Perfect Release / 0% Contested'"
+          - "23:32:15 step 2 of 3 Pass"
+          - "23:32:45 step 3 of 3 Steal"
+          - "23:35:05 failed steal, 'So close ... 2 more tries'"
+          - "23:35:35 'Tutorial complete! You earned 1,000 coins'"
+          - "23:36:29 main-menu place, Daily Reward modal"
+          - "23:36:49 Welcome Offer purchase prompt"
+      screenshots:
+          - 7529591378-1.png
+          - 7529591378-2.png
+          - 7529591378-3.png
+          - 7529591378-4.png
+          - 7529591378-5.png
+          - 7529591378-7.png
+          - 7529591378-14.png
+          - 7529591378-15.png
+          - 7529591378-17.png
+          - 7529591378-18.png
+          - 7529591378-19.png
+          - 7529591378-21.png
+          - 7529591378-22.png
+      limitations:
+          - "Holding D (keycode 2) opened a macOS Dictation dialog instead of strafing (7529591378-9, -11); about 70 s of the tutorial went to working around this runner input defect, so tutorial duration is inflated."
+          - "No real match played; observation covers the tutorial place and the main menu only."
+          - "macOS notifications covered the top-right corner of every capture, hiding the currency display."
+    - id: yt_onboarding_1
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=CHlZa3npd08"
+      captured_at: "2026-11-09T00:10:00Z"
+      media_date_or_version: "uploaded 2026-11-04"
+      timestamps:
+          - "0:30 tutorial 'Step 1 of 18 - Standing Jumpshot (1/5)' on a mobile touch HUD with an 'End Tutorial' button"
+          - "0:45 'Step 4 of 18 - Standing Jumpshot (4/5)' with Move / Idle / Shoot prompts"
+          - "1:15 'Step 13 of 18 - Moving Shot (3/5)'"
+          - "2:00 '1v1 vs AI - first to 7', score 'You 3 - 0 AI', live grade badge 'D+' top right"
+          - "2:45 box score overlay after the AI game"
+          - "3:30 player-card select screen (87 / 99 / 86 / 85 OVR cards, Play / View / Delete) with a Daily Tasks button"
+          - "3:45 open city park with distance-marked destination '5IVE STAR 130m'; player card shows 'Newcomer' rank"
+          - "4:15-4:45 driving a go-kart through the city"
+          - "4:45-5:30 private gym with 'Gym Admin' and 'Customize Gym' buttons"
+          - "5:45 squad invitation accepted, squad of 4 shown as outlines on a court"
+          - "6:30-9:45 public 3v3 squad game: scoreboard 'PB HOME/AWAY', 'Inbound: Home Team', 'Perfect Release / 0% Contested', 'Home team scored 3PTS', 'Fast Break Score', live grade C to B+"
+      screenshots:
+          - CHlZa3npd08-003.jpg
+          - CHlZa3npd08-004.jpg
+          - CHlZa3npd08-006.jpg
+          - CHlZa3npd08-009.jpg
+          - CHlZa3npd08-012.jpg
+          - CHlZa3npd08-015.jpg
+          - CHlZa3npd08-016.jpg
+          - CHlZa3npd08-018.jpg
+          - CHlZa3npd08-019.jpg
+          - CHlZa3npd08-024.jpg
+          - CHlZa3npd08-029.jpg
+          - CHlZa3npd08-031.jpg
+          - CHlZa3npd08-040.jpg
+      limitations:
+          - "Channel Wittyyb, 855,000 subscribers, 127,889 views at capture."
+          - "Mobile (touch) play by an experienced creator on what looks like a new or alt account; heavily edited with jump cuts and a sponsor/meme intro, so tutorial and session durations cannot be measured."
+          - "First 10 minutes studied of a 15:49 video; captions unavailable (YouTube returned HTTP 429), so the player's commentary was not read."
+          - "Frames 001, 002 and 008 are an ad, a thumbnail-style face and a meme cut, not the game; discarded."
+    - id: yt_skilled_1
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=mLHZ1SeXiDY"
+      captured_at: "2026-11-09T00:12:00Z"
+      media_date_or_version: "uploaded 2026-08-06"
+      timestamps:
+          - "0:15 'Tab Menu' with My Statistics (games, points, win %, streaks)"
+          - "0:30 Tab Menu cards: Attributes, Badges, Vitals, Animations"
+          - "1:30-2:00 Roblox settings (graphics mode, max frame rate) and the HUD profile strip (99 OVR, coins, tickets, Profile, Season Pass)"
+          - "3:45 in-game Tab Menu settings tabs Sound / Graphics / Gameplay / Camera / Inputs / Meter; Graphics lists Time of Day, Perfect Camera, Scenery, Shadows, Nets, Crowd, Park Streak Effects"
+          - "4:15 Gameplay settings: Shoot Delay, Thumbstick Dribble DeadZone, Dribble Delay sliders (0.15)"
+          - "6:00 Playmaking badge page (Glove, Fast Breaker, Space Maker, Quick Handles, Tireless Handles, Soul Snatcher) with tier requirements and 'available badge points'"
+          - "5:45-9:45 private-gym dribble combos with an on-screen PlayStation and Xbox controller overlay showing the pressed buttons; 'Perfect Release' green meter"
+      screenshots:
+          - mLHZ1SeXiDY-002.jpg
+          - mLHZ1SeXiDY-003.jpg
+          - mLHZ1SeXiDY-009.jpg
+          - mLHZ1SeXiDY-015.jpg
+          - mLHZ1SeXiDY-018.jpg
+          - mLHZ1SeXiDY-025.jpg
+          - mLHZ1SeXiDY-024.jpg
+          - mLHZ1SeXiDY-032.jpg
+      limitations:
+          - "Channel Saynt2x, 23,700 subscribers, 14,829 views at capture; the only qualifying guide found, below the preferred subscriber range and three months old (the game updates often)."
+          - "Returning maxed player (99 OVR, 528 games played, 956,143 coins); the controller overlay is creator-added, not game UI."
+          - "First 10 minutes studied of a 15:11 video; captions unavailable (HTTP 429)."
+          - "Frames 004 and 006 show the creator's YouTube page and a thumbnail overlay, not the game; discarded."
+    - id: yt_session_1
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=KyFT0PCwBxA"
+      captured_at: "2026-11-09T00:14:00Z"
+      media_date_or_version: "uploaded 2026-11-06"
+      timestamps:
+          - "0:00-1:30 (captions) buys five extra build slots, the Leagues game pass and 40 season-pass tiers; unlocks a go-kart"
+          - "1:30-5:30 (captions) builds a player after watching YouTube guides, then shops animations by comparing green requirement numbers; says he cannot remember what he already bought"
+          - "6:00-9:00 (captions) clothing store in the city ('Enter shop'), outfit, Green FX"
+          - "9:30 city park on foot, then go-kart (frames 001-002)"
+          - "9:45-12:00 private gym: 'all around the world' shooting drill, 'Good Release / 0% Contested' (frames 003-018)"
+          - "12:40-14:00 (captions) walks the park looking for a game: 'How do people even get in these games? ... until a round opens'"
+          - "14:00-14:30 park court spots with 'Leave Spot' prompt, players waiting at the court (frames 019-021)"
+          - "14:45-20:20 first public 3v3 park game; asks 'How do I pass?', 'G to guard', 'how do you shift lock?'; live grade D then F; wins (captions and frames 022-040)"
+          - "20:20 post-game badge boost prompt"
+      screenshots:
+          - KyFT0PCwBxA-001.jpg
+          - KyFT0PCwBxA-002.jpg
+          - KyFT0PCwBxA-004.jpg
+          - KyFT0PCwBxA-019.jpg
+          - KyFT0PCwBxA-020.jpg
+          - KyFT0PCwBxA-024.jpg
+          - KyFT0PCwBxA-025.jpg
+          - KyFT0PCwBxA-027.jpg
+      limitations:
+          - "Channel ProjectSupreme, 3,090,000 subscribers, 45,135 views at capture."
+          - "Returning player (second video on the game) with a heavy spend presented as entertainment; facecam overlay covers the top-left HUD."
+          - "Footage studied 9:30-19:30; earlier and later parts read from auto-captions only."
+gameplay:
+    advertised_loop: "Competitive basketball: build/play a player, improve rating, play other people; alpha with anti-cheat claims."
+    observed_loop: "Guided practice of three basketball verbs against AI (jumpshot with a timed release, pass to teammate, steal from a ball handler), then a hub menu of modes."
+    video_observed_loop: "Videos show the loop past the tutorial: pick or build a player card, travel an open city park on foot or by go-kart, stand on a court spot to queue for a public 1v1/2v2/3v3 run or join a squad, play a short match with a live letter grade and box score, then spend coins on animations, badges and clothes to raise the build (yt_onboarding_1 3:30-9:45; yt_session_1 captions 0:00-9:00, frames 9:30-19:30)."
+    first_action: "Hold E inside the shooting circle and release at the top of the jump."
+    first_success_seconds: 17
+    success_feedback:
+        - "Shot-meter arc beside the player plus floating green 'Perfect Release' and '0% Contested' text and an OK-hand icon (7529591378-4)."
+        - "Badge-style shield icon appears next to the player after a make."
+        - "Full-screen 'Tutorial Complete!' card with a 1,000-coin reward (7529591378-17)."
+    progression:
+        - "Overall rating card under the player (99 for the player, 74 for the AI) with archetype text ('SF | 2-way offensive threat') and a 'Newcomer' rank badge."
+        - "Coins currency; 1.5x Rep XP and 1.5x Badge XP banner; Daily Tasks; Season XP named in the daily-reward track."
+        - "Video: player cards with OVR, height/weight/wingspan and archetype (e.g. '3-Level Architect'); several build slots, extra slots sold (yt_onboarding_1 3:30; yt_session_1 captions 0:30)."
+        - "Video: badge trees per category (Finishing, Shooting, Playmaking, Defense) with tier requirements and badge points; Season Pass with 40 tiers; animation packs bought per move (yt_skilled_1 6:00; yt_session_1 captions 1:00-5:30)."
+        - "Video: profile statistics page (games, points, win %, longest streak) in the Tab Menu (yt_skilled_1 0:15)."
+    choices_and_variety:
+        - "After the tutorial: Play 1v1 or Back to Menu; menu modes Play Now (preset characters), MyPlayer (create your own player), Learn PB, Credits."
+    social_and_cooperative:
+        - "Tutorial ends by offering a 1v1 against a real player; 'Play Now' and 'MyPlayer' imply online games (not entered)."
+        - "Video: public park courts where players stand on court spots to form a run, a 'Leave Spot' prompt, squads of up to 4 joined by invitation (yt_onboarding_1 5:45; yt_session_1 14:00-14:30)."
+        - "Video: private gym owned by the player with 'Gym Admin' and 'Customize Gym' controls (yt_onboarding_1 4:45; yt_session_1 9:45)."
+    companions_and_pets: []
+    friction:
+        - "Step 3 target (the ball handler) spawned off-screen behind the camera's right edge, with only a faint 'Guard this player' label; finding it needed camera rotation (7529591378-7, -14)."
+        - "Tutorial instruction panel is small, low-contrast white text on the left over a bright court."
+        - "Pressing E again on step 2 triggered a correction ('That was a jumpshot - pass to your teammate instead'), legible only faintly behind the scene."
+        - "Video: a 3.09M-subscriber creator says he had to watch YouTube guides to make a build and could not remember which animations he had already bought (yt_session_1 captions 1:40, 4:00)."
+        - "Video: finding a game in the park was unclear: 'How do people even get in these games? Do they just wait ... until a round opens?' (yt_session_1 captions 13:30)."
+        - "Video: in his first public match the same creator asked 'How do I pass?' and 'how do you shift lock?' and only then noticed 'G to guard' (yt_session_1 captions 15:40-16:15), so the tutorial verbs did not carry over for a player who had skipped or forgotten them (inference)."
+    evidence: [play_1, yt_onboarding_1, yt_skilled_1, yt_session_1]
+pacing:
+    timing_start_definition: "Launch command sent from the coordinator (23:31:13Z)."
+    loading_seconds: 23
+    time_to_control_seconds: 31
+    first_meaningful_choice_seconds: 262
+    first_reward_seconds: 262
+    action_reward_cadence: "Each tutorial step gives immediate text feedback after one input; the coin reward arrives only at tutorial completion."
+    video_action_reward_cadence: "In matches every shot shows a release verdict ('Good Release', 'Perfect Release', '% Contested') and every score a team banner ('Home team scored 3PTS', 'Fast Break Score'); the live letter grade updates through the game (yt_onboarding_1 6:30-9:45). Coins and badge boosts arrive after the game (yt_session_1 captions 20:20)."
+    active_play_versus_travel_or_waiting: "Tutorial is stationary drills; a ~20 s teleport separates tutorial and main-menu places."
+    natural_stopping_points:
+        - "Tutorial Complete card (Play 1v1 / Back to Menu)."
+        - "Video: end of each park run (first to a set score) with a box score (yt_onboarding_1 2:45; yt_session_1 20:20)."
+    measurement_method: "Play: wall-clock times of capture commands; resolution about +/- 5 s. Times after 23:33 include ~70 s of runner input workaround. Video: positions are the videos' own timestamps (frames every 15 s); videos are edited, so no video duration is used as a play duration."
+    evidence: [play_1, yt_onboarding_1, yt_session_1]
+goals_and_progression:
+    next_goal_clarity: "High during the tutorial: step counter 'Step N of 3', verb name, one-line instruction and its key."
+    short_term_goals:
+        - "Complete three tutorial steps."
+        - "Claim Day 1 of the daily streak."
+    medium_term_goals:
+        - "Daily Tasks button (highlighted with a red ring after the offer closed)."
+        - "Video: raise a player card's OVR and unlock badge tiers; win park runs; fill the Season Pass (yt_skilled_1 6:00; yt_session_1)."
+    advertised_long_term_goals:
+        - "7-day streak with a 'Big Reward' on day 7; Season XP; rating and badges."
+    upgrade_choices: []
+    mastery_versus_stat_growth: "Shooting rewards timing skill (release quality, contest %) while player cards show numerical ratings; both present, depth not observed."
+    unlock_previews_and_optional_activities:
+        - "Daily reward track previews all 7 days' rewards, including a 2x Rep token and a ticket."
+    evidence: [play_1, yt_skilled_1, yt_session_1]
+failure_and_recovery:
+    observed_failure: "Steal pressed when not close enough."
+    explanation: "'So close - get right next to them, then press steal - 2 more tries' (7529591378-15)."
+    cost_or_lost_progress: "None visible; limited tries counter, outcome of exhausting tries not observed."
+    retry_seconds: 5
+    checkpoints: "Each tutorial step is its own checkpoint."
+    non_paid_recovery: "Yes, immediate retry."
+    evidence: [play_1]
+agency_and_social:
+    meaningful_choices:
+        - "Play 1v1 against a player or go to the menu after the tutorial."
+    customization_and_identity:
+        - "MyPlayer card: 'Create and use your own player'; archetype label on the player card."
+        - "Video: clothing store in the city, chains, hats, Green FX for made shots, customizable private gym (yt_session_1 captions 6:00-9:00; yt_onboarding_1 4:45)."
+        - "Video: per-move animation choice (jumpshot, layup, crossovers) chosen by requirement numbers (yt_session_1 captions 5:00)."
+    cooperation_and_competition:
+        - "Competitive 1v1 offered immediately; teammate passing taught in the tutorial."
+    visible_social_feedback:
+        - "Rating cards above every player name."
+    solo_accessibility: "Tutorial fully solo against AI; the real game modes were not entered."
+    evidence: [play_1, yt_onboarding_1, yt_session_1]
+ui:
+    evidence_status: observed
+    visual_style: "Clean sports-broadcast look: bold condensed all-caps headings, dark translucent panels, red accents on a bright arena."
+    layout_and_hierarchy: "Bottom-centre player card (rating box, name, archetype, rank badge); left-side tutorial step list; large centred headline for instructions; full-screen dimmed modals for completion, daily reward and offers; menu of four tall image cards."
+    color_scheme:
+        - "White/near-white text"
+        - "Dark charcoal translucent panels"
+        - "Red accent (Back button, timers, Daily Tasks ring)"
+        - "Green for success text and the primary Play 1v1 button"
+        - "Gold coins"
+    typography:
+        font_appearance: "Geometric sans; heavy italic all-caps for menu titles, regular weight for body."
+        font_family_if_verified: null
+        size_observation: "Modal headlines roughly 50-60 px tall in a 1920x1200 capture; tutorial instruction body text about 15 px and faint."
+        size_basis: visual_estimate
+        viewport_resolution: "1920x1200 points"
+        readability: "Headlines very readable; left-side tutorial body text and the in-world wrong-action banner are low contrast."
+    controls:
+        primary_actions: "Keyboard verbs (E shoot, 1 pass, R steal, P drop ball, L switch camera) listed with keycaps in the tutorial panel; modal buttons are wide pills (green primary, grey secondary)."
+        close_x_appearance_and_location: "No X; modals close with a text button: 'Back to Menu' grey pill, 'Maybe later' red text with a left chevron centred under the offer card, red 'Back' pill at the bottom of the menu."
+        modal_behavior: "Daily reward then welcome offer chain on menu arrival; offer fades in over the menu and dims it."
+        state_feedback: "Shot meter arc, floating result text, step counter, highlighted Daily Tasks ring."
+        target_size_and_input: "Modal buttons about 260x55 px at 1920 wide; menu cards very large."
+    graphics:
+        graphics_versus_text: "Mostly text-led; icons for coins, badge shields, ticket and 2x token on the reward track."
+        illustration_or_icon_style: "Flat glossy gold coins, flat ticket; in-world character renders on menu cards."
+        framing_outlines_and_effects: "Rounded dark cards with thin light outlines; selected day card brighter; 'BIG REWARD' pill on day 7."
+        placement_and_labels: "Every reward icon has a numeric or text label below it."
+        clarity_or_clutter: "Clear and sparse; the main risk is low-contrast instruction text."
+    video_observations:
+        - "Mobile HUD: left thumbstick, large right sprint and shoot buttons, a lettered row (Z X C V) for moves, numbered pass targets 1-4 top right, camera and 'Screen' buttons; tutorial text stays small top-left (yt_onboarding_1 0:30)."
+        - "Match HUD: bottom-centre 'PB HOME/AWAY' scoreboard with fouls and clock, a top-right stat strip with a live letter grade (D+ to B+), team list at left (yt_onboarding_1 6:30-9:45)."
+        - "Tab Menu: black full-screen pages with a big italic 'TAB MENU' title, image cards for Attributes / Badges / Vitals / Animations, a red 'Back' pill at the bottom, and a profile strip (OVR ring, coins, tickets, Profile, Season Pass, settings gear) top right (yt_skilled_1 0:15-2:00)."
+        - "Settings split into Sound / Graphics / Gameplay / Camera / Inputs / Meter tabs with left/right arrows and sliders (yt_skilled_1 3:45-4:15)."
+        - "Shot meter is a vertical arc beside the player with green verdict text; a red ring under the player marks control (all videos)."
+    evidence: [play_1, yt_onboarding_1, yt_skilled_1, yt_session_1]
+new_player_onboarding:
+    status: observed
+    reason: "Forced on first entry for this account."
+    conventions:
+        - "Title card stating expected length ('Basics Tutorial - about 1 minute')."
+        - "Step counter 'Step N of 3' with verb, one-line instruction and keycap."
+        - "Big centred headline for the current prompt ('Press R to steal - walk right up to them first')."
+        - "Wrong-action correction and limited-tries failure message."
+        - "Reward on completion (1,000 coins) followed by an immediate offer to play a real 1v1."
+    sequence:
+        - "Jumpshot (E, timed release)"
+        - "Pass to AI teammate (1)"
+        - "Steal from AI ball handler (R, get adjacent)"
+        - "Tutorial Complete card: Play 1v1 / Back to Menu"
+        - "Teleport to main menu, daily reward, welcome offer"
+    first_independent_action: "Choosing Back to Menu (or Play 1v1) after the completion card."
+    skip_or_replay: "No skip control seen in play_1; yt_onboarding_1 shows a persistent red 'End Tutorial' button top right during the mobile tutorial. 'Learn PB' menu card appears to offer replay (not opened)."
+    completed: true
+    observed_seconds: 231
+    completion_seconds: 231
+    timing_basis: "From control (23:31:44Z) to the completion card (23:35:35Z); includes about 70 s lost to the runner's D-key defect and camera search, so not representative of the advertised 1 minute."
+    video_observations:
+        - "yt_onboarding_1 (mobile, uploaded 2026-11-04) shows a longer tutorial than play_1: 'Step N of 18' with sub-counts per drill (Standing Jumpshot 1/5 ... Moving Shot 3/5), an always-visible red 'End Tutorial' button, then a '1v1 vs AI - first to 7' game with box score, before the player-card menu (0:30-3:30)."
+        - "play_1 saw a 3-step tutorial on PC on 2026-11-08; the two sources disagree on length, which may reflect a platform-specific tutorial or an update between 2026-11-04 and 2026-11-08 (inference). Both are kept."
+        - "After onboarding the video player is dropped into the city park with a distance-marked destination ('5IVE STAR 130m') and a 'Newcomer' rank tag (yt_onboarding_1 3:45)."
+        - "The video is edited, so tutorial duration is not measured from it."
+    evidence: [play_1, yt_onboarding_1]
+accessibility_and_comfort:
+    text_and_contrast: "Headlines strong; tutorial side panel and in-world prompts are thin white text over bright court, often hard to read."
+    non_color_cues_and_icon_labels: "Success uses words ('Perfect Release') plus icon, not colour alone; reward icons labelled."
+    input_support_observed:
+        - "Keyboard keycaps shown; 'Switch Camera - can be used for joystick dribbling' hints at other input modes."
+        - "Video: full mobile touch layout (yt_onboarding_1) and controller play (yt_skilled_1, yt_session_1)."
+        - "Video: in-game settings for Time of Day, Perfect Camera, Crowd, Shadows, Park Streak Effects, Shoot Delay, Dribble Delay and Thumbstick Dribble DeadZone; not operated by this study (yt_skilled_1 3:45-4:15)."
+    motion_audio_settings: []
+    settings_tested: []
+    clutter_and_interruptions:
+        - "Persistent alpha bug banner at top centre."
+        - "Two chained modals (daily reward, welcome offer) on first menu arrival."
+    evidence: [play_1, yt_onboarding_1, yt_skilled_1]
+commercial_and_return_prompts:
+    first_purchase_prompt_seconds: 336
+    purchase_prompt_count_during_sample: 1
+    onboarding_interruption: "No; the offer appeared after the tutorial and after the daily reward claim."
+    optional_versus_required_presentation: "Optional: 'Maybe later' dismisses it; countdown then persists under Store as 'Starter Pack 47:59:25'."
+    return_rewards_and_events:
+        - "7-day daily reward streak (coins, 2x Rep for 2 games, tickets, Season XP, 2x Badge for 3 games); 'Missed a day? Your streak waits for you'."
+        - "1.5x Rep XP and 1.5x Badge XP banner."
+        - "Daily Tasks."
+        - "Video: Season Pass with 40 purchasable tiers, extra build slots, Leagues game pass, tickets, per-move animation packs and clothing, all bought by the creator in one session (yt_session_1 captions 0:30-9:00); purchase timing for an ordinary new player is not shown."
+    urgency_or_streak_cues:
+        - "Welcome Offer 'one-time pack for new players' with a 48-hour red countdown and 'worth 1,130' anchor against a 199 Robux price."
+        - "Daily streak that pauses rather than resets on a missed day."
+    evidence: [play_1, yt_session_1]
+world_and_presentation:
+    navigation_and_objective_readability: "Downward chevron marker over the stands and 'Guard this player' label point at targets, but the steal target spawned out of view."
+    landmarks_and_variety:
+        - "Indoor arena with branded banners and a scoreboard; city 'Leagues' building seen on the teleport screen."
+        - "Video: open city park with many outdoor courts, storefronts (clothing shop, 'Hoop Journey' store), a dome arena, roads driven by go-kart, and players' private gyms in their own colours (yt_onboarding_1 3:45-5:30; yt_session_1 9:30-16:00)."
+    environmental_storytelling:
+        - "Player poster banners ('Glory', 'Got 'em', 'No OT tonight') give a pro-league tone."
+    audiovisual_consistency: "Consistent broadcast styling across tutorial, teleport and menu (audio not captured)."
+    success_effect_intensity_and_clarity: "Restrained: floating text and icon rather than particles; clear."
+    evidence: [play_1, yt_onboarding_1, yt_session_1]
+technical_quality:
+    loading_or_missing_assets:
+        - "A large striped texture block clipped through the arena roof at load (7529591378-2)."
+    input_or_frame_issues:
+        - "About 56-60 FPS counter visible bottom-right in the VM."
+    ui_defects: []
+    recovery_behavior: "Teleport between tutorial and menu places completed in about 20 s."
+    measurements:
+        - "Launch to control about 31 s on the VM."
+    measurement_method_and_limits: "Wall-clock capture times on a virtual M2 Pro guest; not representative of native devices."
+    evidence: [play_1]
+transferable_ideas:
+    - "Announce the tutorial's length up front ('about 1 minute') and show 'Step N of 3' so a new player knows the cost."
+    - "Teach each verb with one immediate, worded verdict ('Perfect Release', 'So close - get right next to them') and a small retry budget."
+    - "End the tutorial with a reward and a single choice between the real competitive mode and the hub."
+    - "Forgiving streak ('Missed a day? Your streak waits for you') with all seven rewards previewed."
+    - "A live letter grade during a match (D to B+) tells a beginner how they are playing while the score is still close (yt_onboarding_1 6:30-9:45)."
+    - "Queue for a match by standing on a court spot in a shared park, so finding a game is spatial and visible to others (yt_session_1 14:00); needs a visible 'waiting for players' state, which the creator lacked."
+    - "End the tutorial with a short first-to-7 game against AI and a box score before the open world (yt_onboarding_1 2:00-2:45)."
+practical_takeaway:
+    strongest_idea: "A step-counted verb tutorial with worded per-action verdicts that ends in a short first-to-7 game against AI, then carries the same verdicts and a live letter grade into real matches, so feedback the beginner learned keeps working."
+    main_tradeoff: "Depth sits in builds, badges and per-move animations that even a large creator needed outside guides to understand, and how to join a park game was unclear; play_1 also found faint tutorial text and a chained daily reward and 48-hour offer on reaching the hub."
+    suitable_genres_and_stages: ["sports", "competitive action", "any game with a few core verbs", "first session"]
+    testable_hypothesis: "Adding an explicit length estimate and 'Step N of M' counter to our first-session tutorial raises tutorial completion rate."
+    estimated_effort_and_assumptions: "Small (about a day) if the tutorial already has discrete steps; assumes existing UI framework."
+inferences:
+    - "The forced tutorial and 'Newcomer' badge suggest the game keys onboarding to having no saved data for the account."
+    - "The 1.5x XP banner and alpha label suggest a live-ops push during the alpha."
+uncertainties:
+    - "Actual match gameplay, matchmaking time and controls feel in real games were not observed."
+    - "Tutorial length on a working input path is unknown; the runner defect inflated it."
+    - "Currency balances were hidden by macOS notifications."
+    - "Whether the 18-step mobile tutorial (yt_onboarding_1) and the 3-step PC tutorial (play_1) are platform variants or versions is unknown."
+    - "Captions were unavailable for yt_onboarding_1 and yt_skilled_1 (HTTP 429), so what those players said was not read."
+blockers: []

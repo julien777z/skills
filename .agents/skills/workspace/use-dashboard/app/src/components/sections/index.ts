@@ -2,6 +2,7 @@ export { BoardSection } from './board-section';
 export { ChangesSection } from './changes-section';
 export { DashboardSection } from './dashboard-section';
 export { DiagramSection } from './diagram-section';
+export { FiguresSection } from './figures-section';
 export { LinksSection } from './links-section';
 export { ListSection } from './list-section';
 export { NotesSection } from './notes-section';

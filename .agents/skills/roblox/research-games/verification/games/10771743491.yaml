@@ -1,0 +1,288 @@
+name: "South Hell [HORROR]"
+game_id: "universe:10771743491"
+universe_id: "10771743491"
+place_id: "119901987045648"
+url: "https://www.roblox.com/games/119901987045648"
+creator: "S00NR (group, no verified badge)"
+chart_category: "Up-and-Coming"
+chart_rank: 2
+genre:
+  primary: "Survival"
+  sub: "Escape"
+competitors:
+  - name: "🌙 Dandy's World [ALPHA]"
+    universe_id: "5569032992"
+    url: "https://www.roblox.com/games/16116270224"
+    overlap: "Same subgenre (Escape) on the 2026-11-08 chart"
+  - name: "13 Days to Escape [ALPHA]"
+    universe_id: "10769941703"
+    url: "https://www.roblox.com/games/134117451433332"
+    overlap: "Same subgenre (Escape) on the 2026-11-08 chart"
+  - name: "[🧪NEW LAB] Fatal Baboons"
+    universe_id: "10733617110"
+    url: "https://www.roblox.com/games/93660722909304"
+    overlap: "Same subgenre (Escape) on the 2026-11-08 chart"
+  - name: "DOORS 🍬🍭"
+    universe_id: "2440500124"
+    url: "https://www.roblox.com/games/6516141723"
+    overlap: "Same subgenre (Escape) on the 2026-11-08 chart"
+  - name: "MOUSE 🐭"
+    universe_id: "10769420234"
+    url: "https://www.roblox.com/games/81688312343760"
+    overlap: "Same subgenre (Escape) on the 2026-11-08 chart"
+researcher: "R12; video pass V12"
+mode: passive
+play_ended_by: null
+onboarding_video_coverage: covered
+observed_at: "2026-11-09T03:04:00Z"
+observation_status: completed # video pass V12 2026-11-09: three gameplay videos cover the intro cards, a first run and a full escape
+previous_observed_at: null
+changes_since_previous: []
+active_play_seconds: null
+play_coordination:
+  resource_key: null
+  wait_seconds: null
+  acquired_at: null
+  expires_at: null
+  released_at: null
+  release_verified: null
+  expiry_or_blocker: null
+context:
+  play_style: "Survival / Escape (API genre_l1 Survival, genre_l2 Escape): first-person school-basement horror escape with a single pursuing monster"
+  camera_perspective: "First person with a flashlight cone and a small centre reticle; the lobby is third person (video_1, video_3)"
+  device_and_input: "Videos recorded on PC, keyboard and mouse; a permanent bottom-left key list: E Interact, SHIFT Sprint, F Flashlight, B Battery, Q Whistle, N Night Vision Goggles, V Shove, H Help, M Unlock Mouse (video_2 9:00)"
+  observation_environment: "Passive: games, votes, media, thumbnails, game-pass, badge and age-recommendation APIs plus the experience page, read from the host over HTTPS; gameplay studied from three YouTube videos (frames every 15 s plus auto-captions). Not played."
+  visible_server_population: "API at 2026-11-09T03:02Z: 15,680 playing, maxPlayers 24 per server. Runs seen are solo (video_1, video_2) or a small group of two friends plus one stranger on the bus (video_3)."
+  solo_or_group: "Solo or small co-op run; one player is host and picks the difficulty; Cartman is AI-controlled in these videos (video_1, video_3)."
+  game_version_if_known: "Created 2026-10-18 (about three weeks old), updated 2026-11-09T01:09Z; experience page in video_3 shows the title 'South Hell [BETA]'; lobby offers 'Part 1 South America Elementary' with 'Part 2 coming soon' (video_3 0:45)."
+  evidence: [source_1, source_4, video_1, video_2, video_3]
+account_state:
+  freshness: unknown
+  evidence: ["Not played; no in-game state observed. video_1's player is on his first play (captions 0:28 'I never thought I'd see the day a South Park horror game'; he reads the intro cards and asks how to climb and what money is for). video_3's players pick their free starter character on camera (0:30)."]
+evidence:
+  - id: source_1
+    kind: description
+    url: "https://games.roblox.com/v1/games?universeIds=10771743491"
+    captured_at: "2026-11-09T03:02:00Z"
+    media_date_or_version: "updated 2026-11-09T01:09:01Z"
+    timestamps: []
+    screenshots: []
+    limitations: ["Marketing text. Stats at capture: 9,654,113 visits, 138,012 favorites, 8,657 up / 1,133 down votes (about 88% positive). universeAvatarType MorphToR15."]
+  - id: source_2
+    kind: thumbnail
+    url: "https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=10771743491&size=768x432&format=Png&countPerUniverse=10"
+    captured_at: "2026-11-09T03:02:00Z"
+    media_date_or_version: "TN3, four images (asset IDs 89893776785602, 115327262821052, 89690639381661, 135544751510562)"
+    timestamps: []
+    screenshots: ["10771743491-thumbs.png"]
+    limitations: ["Promotional images: two title cards ('SOUTH HELL - ESCAPE THE SCHOOL.', 'SOUTH HELL - DON'T MAKE A SOUND.') in red serif glow over a grotesque, bloodshot-eyed version of a round cartoon schoolboy face; two very dark school corridors with Halloween bunting, pumpkins, teal lockers, a lit sign 'CAFETERIA / KITCHEN / LIBRARY / GYM' and wall labels 'MUSIC ROOM', 'NEWS / AV'. No HUD visible; cannot establish in-game UI.", "The media API lists only images; no game preview video exists (rechecked by V12 2026-11-09)."]
+  - id: source_3
+    kind: description
+    url: "https://badges.roblox.com/v1/universes/10771743491/badges?limit=100"
+    captured_at: "2026-11-09T03:03:00Z"
+    media_date_or_version: "five badges, all created 2026-10-29"
+    timestamps: []
+    screenshots: []
+    limitations: ["Badge names have no descriptions. Awarded counts at capture: 'Welcome to South Hell' 2,985,588; 'Gotcha, Hippie' 1,723,345; 'I Escaped!' 513,578; 'Untouchable' 167,390; 'Nothing But Net' 112,213. Meanings of the last three names are not stated."]
+  - id: source_4
+    kind: description
+    url: "https://apis.roblox.com/game-passes/v1/universes/10771743491/game-passes?passView=Full&pageSize=100"
+    captured_at: "2026-11-09T03:03:00Z"
+    media_date_or_version: null
+    timestamps: []
+    screenshots: []
+    limitations: ["Two game passes: NightVisionGoggles (99 Robux), Boombox (199 Robux). Prices at capture, not necessarily permanent. Age recommendation API: Maturity Moderate, descriptors Blood (light, realistic), Fear (repeated, mild), Violence (repeated, moderate)."]
+  - id: video_1
+    kind: gameplay_video
+    url: "https://www.youtube.com/watch?v=ghODh2iG-NQ"
+    captured_at: "2026-11-09T15:40:00Z"
+    media_date_or_version: "uploaded 2026-11-04"
+    timestamps: ["0:00-0:25 intro rule cards", "0:15 'Still loading' tip card", "0:28-1:25 guided basement exit (crowbar, boards)", "1:25 'Find the keys 0/4'", "2:15 trap found in a locker", "3:30-4:30 first jump scare and earthquake", "5:30 fried chicken lure", "6:30-8:30 first chases and locker hiding", "9:00 first key placed in the exit door (captions)", "16:39-18:20 last key, jammed door, crank parts, escape (captions only)", "18:40-19:10 spectate/lobby, shop with boombox and night vision (captions only)", "28:19 revive for $16 or 16 Robux (captions only)"]
+      # frames studied cover 0:00-10:00; later timestamps are from captions
+    screenshots: ["ghODh2iG-NQ-001.jpg", "ghODh2iG-NQ-002.jpg", "ghODh2iG-NQ-005.jpg", "ghODh2iG-NQ-010.jpg", "ghODh2iG-NQ-037.jpg", "ghODh2iG-NQ-038.jpg"]
+    limitations:
+      - "Kind: onboarding. 'This SOUTH PARK Horror Game is NIGHTMARE FUEL..', channel FusionZGamer (about 5,030,000 subscribers), 491,238 views at read; 34 min 44 s, frames studied for 0:00-10:00, captions read to 34:40."
+      - "First play by the creator, but the video opens on the intro cards, so the join, loading and lobby before them are cut; heavy reaction commentary and exaggerated screaming; medium difficulty."
+  - id: video_2
+    kind: gameplay_video
+    url: "https://www.youtube.com/watch?v=Tk4xF_frIWg"
+    captured_at: "2026-11-09T15:46:00Z"
+    media_date_or_version: "uploaded 2026-11-09"
+    timestamps: ["0:00 'The Dark' intro card", "0:15-1:00 basement and boards", "1:00 'The way is open. I'll leave the crowbar here.'", "2:30 key message", "3:00-8:00 locker search, money pickups, alarm clock", "9:00 jammed door 'find the crank parts 0/1' with a trap equipped", "9:30 'The exit door is open. Get out!'", "9:45 'Can't find a key? Listen - a locker with a key JINGLES now.'"]
+    screenshots: ["Tk4xF_frIWg-001.jpg", "Tk4xF_frIWg-004.jpg", "Tk4xF_frIWg-009.jpg", "Tk4xF_frIWg-014.jpg", "Tk4xF_frIWg-037.jpg", "Tk4xF_frIWg-039.jpg"]
+    limitations:
+      - "Kind: skilled play. 'ROBLOX - South Hell - [Full Walkthrough]', channel TheKacperosEN (about 313,000 subscribers), 9,582 views at read (uploaded the day of reading); 10 min 25 s, first 10 min studied."
+      - "Silent walkthrough by a player who knows the route; no captions; difficulty not shown on camera."
+  - id: video_3
+    kind: gameplay_video
+    url: "https://www.youtube.com/watch?v=M-rK4M8NINI"
+    captured_at: "2026-11-09T15:55:00Z"
+    media_date_or_version: "uploaded 2026-11-01"
+    timestamps: ["0:30 Characters picker", "0:45 bus lobby with difficulty picker", "1:00-1:30 intro cards 'Get Out' and 'The Dark'", "2:00-2:45 crowbar and keys", "5:00 '2 LIVES LEFT' death card and badge toast", "6:52-7:40 keys and highlighted exit door"]
+    screenshots: ["M-rK4M8NINI-003.jpg", "M-rK4M8NINI-004.jpg", "M-rK4M8NINI-006.jpg", "M-rK4M8NINI-007.jpg", "M-rK4M8NINI-021.jpg"]
+    limitations:
+      - "Kind: session. 'ROBLOX SOUTH HELL...', channel UnoTwo (about 224,000 subscribers), 126,181 views at read; first 10 of 15 min studied."
+      - "Two friends on voice chat with heavy profanity and arguing; cuts and a frame of the experience web page (0:15, discarded); shows the pre-run lobby the other videos skip."
+gameplay:
+  advertised_loop: "Wake in a locked school basement, evade one hunter ('HE is hunting you') while staying quiet ('Don't make a sound'), and escape the school."
+  observed_loop: "Pick a starter kid and a difficulty on the bus -> read four rule cards -> clear the basement exit (find crowbar, pry 5 boards) -> search lockers across the dark school for 4 coloured keys while Cartman hunts by sound, hiding in lockers and using found items (traps, alarm clock, fried chicken lure, batteries) -> place each key in the basement exit door -> the door jams, find the crank parts and crank 5 times -> escape. Death costs a life; losing all lives ends the run, with spectating or a paid revive. (video_1, video_2, video_3)"
+  first_action: "Read rule cards, then find a crowbar in the basement and press E on the boards ('Now go to the BOARDS and press E to pull them off.') (video_1 0:28-1:00, video_2 0:15-1:00)."
+  first_success_seconds: 81
+  success_feedback:
+    - "Short centred captions for each pickup and step: 'You found $10', 'You found a trap! Take it out (5), aim at the floor and click', 'You got a KEY! Take it to the EXIT DOOR in the basement - it GLOWS. If Cartman gets you, you DROP it.', 'The exit door is open. Get out!' (video_1 2:15, video_2 2:30, 9:30)."
+    - "Floating '+$15 from a locker' money pop-ups at the right (video_2 3:00)."
+    - "Objective checklist ticks and counters update ('Pry the boards off 0/5', 'Find the keys 0/4') (video_1 1:00)."
+    - "Badge toast on first death/escape events (video_3 5:00)."
+  progression:
+    - "Cash found in lockers buys locked characters ($750-$3000) and revives; starter kid is free (video_3 0:30, video_1 28:19)."
+    - "Two-part story with Part 2 'coming soon'; Daily Tasks button in lobby (video_3 0:45)."
+    - "Within a run: boards -> 4 keys -> crank parts -> escape (video_2)."
+  choices_and_variety:
+    - "Character picker with stat bars (Speed, Stamina, Stealth, Courage, Intelligence) per kid (video_3 0:30)."
+    - "Four difficulties: Easy (4 lives, 12 min flashlight, Cartman x0.88), Medium (3 lives, 9 min, x1.00), Hard (2 lives, 5.5 min, x1.08), Authoritah (1 life, 3.5 min, x1.16) (video_3 0:45)."
+    - "Extra tasks beside the main objective: 'Find Ike's rubber duck', 'Answer the phone when it rings', 'Search 12 lockers together', 'Ring 3 school bells' (video_1 1:00, video_2 9:00)."
+    - "Distraction items: fried chicken thrown as a lure, alarm clock, bear traps (video_1 2:15, 5:30, captions 12:30)."
+  social_and_cooperative:
+    - "Co-op run with friends; a 'Search 12 lockers together' extra task; 'He can hear your mic' makes voice chat a stealth risk (video_1 0:00, video_2 9:00, video_3 1:23)."
+    - "Dead players can spectate the hunter or return to the lobby; 'This round carries on without you' (video_1 captions 18:40)."
+  companions_and_pets: []
+  friction:
+    - "Very dark; the flashlight battery runs out and a dark meter raises insanity (video_1 captions 13:00, 17:30; video_2 9:00)."
+    - "Loud scripted jump scares; the onboarding player removes a headphone to cope (video_1 captions 3:30, 9:00)."
+    - "Unclear sub-goals: 'How do I find the crank parts? It doesn't even give me like a hint' (video_1 captions 17:40); 'Where's the silver key go?' (13:20)."
+    - "Running is loud and has a start delay; the player cannot tell why he cannot run (video_1 captions 8:02)."
+    - "Pry-the-boards animation cannot be skipped (video_1 captions 1:05)."
+  evidence: [source_1, source_2, source_3, source_4, video_1, video_2, video_3]
+pacing:
+  timing_start_definition: "video_1: the first frame, on the intro rule cards (join and loading cut). video_2: the first frame, on the last intro card."
+  loading_seconds: null
+  time_to_control_seconds: 28
+  first_meaningful_choice_seconds: null
+  first_reward_seconds: 141
+  action_reward_cadence: "Locker searches give money or an item most times; a cash or item caption roughly every 15-60 s during key search (video_1 2:00-4:00, video_2 3:00-8:00, inference from frames and captions)."
+  active_play_versus_travel_or_waiting: "Mostly active search and hiding; waiting happens inside lockers while Cartman passes (video_1 4:30-7:30)."
+  natural_stopping_points: ["Escape through the exit door (video_1 captions 18:15, video_2 9:30)", "Running out of lives", "Each key placed in the exit door"]
+  measurement_method: "Read from each video's own timestamps. video_1: control at 0:28 when the cards end; first success 1:21 'The way is open' after the boards; first reward 2:21 '$10' from a locker; first key placed about 9:00; escape about 18:15 on medium (captions). video_2 (skilled walkthrough): boards cleared by 1:00, door open at about 9:30. Edited footage; a single run each."
+  evidence: [video_1, video_2]
+goals_and_progression:
+  next_goal_clarity: "High for main steps: a top-right panel shows LIVES, OBJECTIVE with a counter ('Find the keys 0/4', 'The door is jammed - find the crank parts 0/1') and EXTRA TASKS checkboxes; the exit door glows; a hint appears when stuck ('Can't find a key? Listen - a locker with a key JINGLES now.') (video_1 1:00, video_2 9:00, 9:45). Less clear for crank parts (video_1 captions 17:40)."
+  short_term_goals: ["Open lockers for keys, cash and items", "Hide when Cartman comes", "Keep the flashlight charged"]
+  medium_term_goals: ["Place 4 keys in the exit door, find crank parts, escape", "Extra tasks (rubber duck, phone, school bells)"]
+  advertised_long_term_goals: ["Badges: escape, 'Untouchable', 'Nothing But Net' (conditions unstated)", "Part 2 'coming soon' (video_3 0:45)", "Unlock more kids with cash (video_3 0:30)", "Daily Tasks (video_3 0:45)"]
+  upgrade_choices: ["Buy characters with different stat bars using found cash (video_3 0:30)"]
+  mastery_versus_stat_growth: "Mostly mastery (route, hiding, sound); character stats add some stat choice (video_3 0:30)."
+  unlock_previews_and_optional_activities: ["Locked characters shown with prices in the picker", "Secret areas (rope climb to a hidden room) (video_1 captions 2:55)", "Lobby mailbox for bug reports and ideas (description)"]
+  evidence: [source_1, source_2, source_3, video_1, video_2, video_3]
+failure_and_recovery:
+  observed_failure: "Caught by Cartman: jump-scare kill, a '2 LIVES LEFT' card, respawn; a held key is dropped (video_3 5:00, video_2 2:30 key message)."
+  explanation: "Rule cards and messages state the causes: running is loud, he hears your mic, the dark raises insanity (video_1 0:00, video_3 1:00)."
+  cost_or_lost_progress: "One life and any carried key; at zero lives the run ends for that player (video_1 captions 18:40)."
+  retry_seconds: null
+  checkpoints: "Placed keys stay in the door; basement and the safe room are safe zones (video_1 captions 0:15)."
+  non_paid_recovery: "Revive offered for $16 in-game cash or 16 Robux (video_1 captions 28:19); traps stop Cartman for a time (video_1 captions 8:30)."
+  evidence: [video_1, video_2, video_3]
+agency_and_social:
+  meaningful_choices: ["Difficulty (lives, flashlight time, hunter speed)", "Which kid to take for free", "When to hide, run, throw a lure or place a trap"]
+  customization_and_identity: ["Player plays as a show-style kid character, not their own avatar, in the run (video_3 0:30); the lobby shows the player's avatar (video_3 0:45, video_1 captions 18:50)."]
+  cooperation_and_competition: ["Co-operative escape against an AI hunter; one host picks difficulty (video_3 0:45)."]
+  visible_social_feedback: ["Spectating after death (video_1 captions 18:40)"]
+  solo_accessibility: "Fully playable solo (video_1, video_2)."
+  evidence: [source_1, video_1, video_2, video_3]
+ui:
+  evidence_status: observed
+  visual_style: "Grim, near-black with a parchment-and-blood palette: dark framed panels with red ribbon headers, small serif and typewriter-style text, illustrated cards (video_1 0:00, video_3 0:30-1:30)."
+  layout_and_hierarchy: "Top right: LIVES, OBJECTIVE with counter, EXTRA TASKS checklist; bottom left: key-binding list; bottom right: battery icon with spare count and a brain 'Insanity' icon that turns red; bottom centre: held item slot with name ribbon; centre-bottom: message captions; lobby: left column Inventory/Servers/Character/Settings, right Daily Tasks, top right Cash and Candy (video_2 9:00, video_3 0:45)."
+  color_scheme: ["near-black", "blood red ribbons and highlights", "off-white parchment text", "green battery level", "red tint over the screen at high insanity"]
+  typography:
+    font_appearance: "Serif headings in caps on red ribbons; typewriter/monospace captions with key words in red caps ('KEY', 'EXIT DOOR', 'GLOWS', 'DROP')"
+    font_family_if_verified: null
+    size_observation: "Objective and key list are very small; card titles and captions mid-sized"
+    size_basis: visual_estimate
+    viewport_resolution: "480p video downscaled from an unknown PC resolution"
+    readability: "The player says 'I can't read' on the battery card (video_1 captions 0:10); objective text is tiny at video resolution."
+  controls:
+    primary_actions: "E interact prompts placed on objects ('E Remove Boards', 'E Search', 'E Open'); key list always visible (video_1 1:00, video_2 3:00)."
+    close_x_appearance_and_location: null
+    modal_behavior: "Intro rule cards are a paged modal with BACK/NEXT, page dots and 'Never show again'; character picker and difficulty picker are centred modals (video_1 0:00, video_3 0:30-1:30)."
+    state_feedback: "Objective counters, checkboxes for extra tasks, battery bars, insanity brain turning red, red screen vignette (video_2 9:00)."
+    target_size_and_input: "PC only in videos; card buttons small (visual estimate)."
+  graphics:
+    graphics_versus_text: "Each rule card pairs a picture (locker, keys, door, flashlight, brain, a kid's face) with a three-to-five-word caption and one sentence with highlighted words and key hints (video_3 1:00-1:30)."
+    illustration_or_icon_style: "Rendered 3D item portraits on dark cards; stat bars as red blocks; outline highlights on interactable objects (boards drawn with a white outline) (video_1 1:00)."
+    framing_outlines_and_effects: "Thin ornate frame corners, red ribbon titles, white outlines on interactables, glowing exit door."
+    placement_and_labels: "Consistent corners as above."
+    clarity_or_clutter: "Low HUD clutter; legibility suffers from small text and darkness."
+  evidence: [video_1, video_2, video_3]
+new_player_onboarding:
+  status: observed
+  reason: "video_1 shows the creator's first play from the intro rule cards; video_3 shows the pre-run lobby, character pick and difficulty pick that video_1 cut."
+  conventions:
+    - "Four paged rule cards before the run, each with three pictures and one sentence: GET OUT (search lockers, find keys, unlock exit door; E open/take), HE HUNTS YOU (hide in a locker, click circles to stay hidden, he can hear your mic; SHIFT run (loud), E hide, 3 lives), THE DARK (use your flashlight, the dark raises insanity, don't shine your light on Ike; F light, B new battery), plus a safe-room card; BACK/NEXT and 'Never show again' (video_1 0:00, video_3 1:00-1:30)."
+    - "Loading tip card for slow devices: 'Grey or blurry walls? Still loading. Turn the graphics down. P Settings > Graphics > Low' (video_1 0:15)."
+    - "A short guided first task with one prompt at a time: 'Find a way out of the basement' -> crowbar -> 'Now go to the BOARDS and press E to pull them off.' -> 'The way is open.' (video_1 0:28-1:21, video_2 0:15-1:00)."
+    - "Just-in-time captions when an item is first picked up, teaching its use ('You found a trap! Take it out (5), aim at the floor and click to...'; 'Fried chicken! Throw it where Cartman will find it - he can't resist it.') (video_1 2:15, 5:30)."
+    - "Phone calls and stuck hints: 'Can't find a key? Listen - a locker with a key JINGLES now.' (video_1 captions 3:30, video_2 9:45)."
+    - "Permanent on-screen key list (video_2 9:00)."
+  sequence: ["Bus lobby: pick a free starter kid and a difficulty (video_3 0:30-0:45)", "Four rule cards (video_1 0:00-0:25)", "Guided basement exit with crowbar and boards (video_1 0:28-1:21)", "Independent key hunt with contextual item captions (video_1 1:25 onward)"]
+  first_independent_action: "Searching lockers for the keys after the basement opens (video_1 1:25)."
+  skip_or_replay: "'Never show again' on the rule cards; BACK to revisit (video_1 0:00)."
+  completed: true
+  observed_seconds: 600
+  completion_seconds: 85
+  timing_basis: "video_1's own timestamps from its first frame (intro cards; earlier join cut): guided basement exit ends at 1:21-1:25 when 'Find the keys' starts. Frames studied for the first 600 s; captions to the escape."
+  evidence: [video_1, video_2, video_3]
+accessibility_and_comfort:
+  text_and_contrast: "Off-white on near-black has contrast but text is small and the world very dark; the onboarding player could not read a card (video_1 captions 0:10)."
+  non_color_cues_and_icon_labels: "Icons carry labels (BATTERY, INSANITY); key words in captions are red and in capitals (video_2 9:00)."
+  input_support_observed: ["Keyboard and mouse on PC (all videos)"]
+  motion_audio_settings: ["Graphics quality setting named on the loading card (video_1 0:15); audio is central (headphones recommended, footsteps, key jingle)"]
+  settings_tested: []
+  clutter_and_interruptions: ["Loud jump scares and screen shake ('earthquake') (video_1 captions 3:30-5:00)", "Red vignette at high insanity (video_2 9:00)"]
+  evidence: [video_1, video_2]
+commercial_and_return_prompts:
+  first_purchase_prompt_seconds: null
+  purchase_prompt_count_during_sample: null
+  onboarding_interruption: "None seen in the first run; the shop appears in the lobby after the run (video_1 captions 18:58)."
+  optional_versus_required_presentation: "Two passes exist (night-vision goggles, boombox: 'He stops chasing you and dances for 10 seconds'); revive priced in found cash or Robux; characters bought with found cash (source_4, video_1 captions 18:58, 28:19; video_3 0:30)."
+  return_rewards_and_events: ["Daily Tasks in the lobby (video_3 0:45)", "Candy currency counter in the lobby, Halloween decoration (video_3 0:45, source_2)", "Part 2 coming soon"]
+  urgency_or_streak_cues: []
+  evidence: [source_2, source_4, video_1, video_3]
+world_and_presentation:
+  navigation_and_objective_readability: "Dark school with room signs ('NURSE', 'LOCKER ROOM'); the exit door glows; keys jingle; the basement is a safe hub players return to for each key (video_1, video_2)."
+  landmarks_and_variety: ["Basement with keyed exit door, hallways with teal lockers, cafeteria, nurse's office, locker room, showers, library (video_1, video_2)"]
+  environmental_storytelling: ["Halloween-decorated school, chalk body outlines, a hidden attic room with pop-culture props (video_1 captions 2:55, video_2 1:15)"]
+  audiovisual_consistency: "Consistent grim look across lobby, cards and level; heavy use of sound cues (whistling hunter, jingle, footsteps)."
+  success_effect_intensity_and_clarity: "Quiet: text captions and small money pop-ups; the scares, not the rewards, carry the intensity."
+  evidence: [video_1, video_2]
+technical_quality:
+  loading_or_missing_assets: ["Loading tip card warns of grey or blurry walls while loading (video_1 0:15)", "'LOADING' screen on the bus departure (video_3 1:15)"]
+  input_or_frame_issues: ["Player reports a delay before sprinting starts (video_1 captions 8:02)", "Player reports lag (video_3 captions 9:30)"]
+  ui_defects: []
+  recovery_behavior: null
+  measurements: []
+  measurement_method_and_limits: "Not played; edited 480p videos cannot establish performance."
+  evidence: [video_1, video_3]
+transferable_ideas:
+  - "Four picture cards before the first run, each three images plus one sentence and the keys to press, with 'Never show again': all rules in about 25 s (video_1, video_3)."
+  - "Teach each item the moment it is picked up with a one-line caption that says what to do with it (video_1 2:15, 5:30)."
+  - "Difficulty as one card row with concrete numbers (lives, flashlight minutes, hunter speed), chosen by the host (video_3 0:45)."
+  - "A rescue hint after a stall ('a locker with a key JINGLES now') turns being stuck into a listening task instead of a wiki search (video_2 9:45)."
+  - "State the whole loop as a three-word goal plus a four-word rule on the title card ('Escape the school.' / 'Don't make a sound.'), so the page teaches the game before the player joins (from thumbnails)."
+  - "Lit signs naming rooms inside a dark map give a navigable landmark system without HUD markers (from promotional renders, confirmed in videos with 'NURSE' and 'LOCKER ROOM' signs)."
+practical_takeaway:
+  strongest_idea: "A 25-second picture-card briefing plus a one-minute guided first task, then just-in-time item captions: a new player reaches independent play in under 90 s and learns each tool when it first appears."
+  main_tradeoff: "Darkness, tiny text and loud scares are the product but hurt readability and comfort; a later sub-goal (crank parts) gives no hint; the game leans on a recognisable TV cartoon's characters, a brand and moderation risk."
+  suitable_genres_and_stages: ["horror and stealth escapes", "any game with several tools to learn", "first-session onboarding"]
+  testable_hypothesis: "Showing a one-line use caption the first time each item is picked up raises the share of new players who use that item in their first run, compared with listing all items on an intro card."
+  estimated_effort_and_assumptions: "Estimate: a day for first-pickup captions, assuming an item system with pickup events and a caption UI."
+inferences:
+  - "Reaching 9.6 million visits and 15k concurrent within about three weeks of release suggests strong pull from the parody-horror premise; large creators reacted to it within days (videos uploaded 2026-11-01 to 2026-11-09). Passive material cannot establish why it is popular."
+  - "The hunter is the cartoon character Cartman, named in the game's own text; the kids are named after the same show (video_1, video_3)."
+  - "Escape takes about 9-18 minutes on medium for a first-timer versus about 9.5 minutes for a route-knowing player (video_1 captions, video_2); one run each, not typical session length."
+uncertainties:
+  - "The join, loading time and lobby of the first-play video are cut; video_3 shows the lobby for returning-style players who already know where to go."
+  - "What 'Gotcha, Hippie', 'Untouchable' and 'Nothing But Net' reward is not stated."
+  - "Badge counts start on 2026-10-29, eleven days after release, so they undercount early players; the escape ratio is only indicative."
+  - "Whether the night-vision pass changes play materially is unknown; the key list shows an N binding for it."
+  - "Whether servers ever pair strangers into one run beyond the bus is unclear; video_3 shows a stranger on the bus."
+blockers: []

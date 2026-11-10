@@ -100,10 +100,10 @@ These run only when you ask for them by name, such as `/code-slop-doctor`.
 - [`merge-now`](.agents/skills/git/merge-now/SKILL.md) — Merge finished pull requests now, then review what merged unreviewed.
 - [`new-doctor`](.agents/skills/doctors/new-doctor/SKILL.md) — Create a doctor skill on the shared doctor-protocol for one class of repository hygiene.
 - [`placeholder-data`](.agents/skills/workspace/placeholder-data/SKILL.md) — Turn a pasted API payload into the same shape with obviously fake values.
+- [`research-games`](.agents/skills/roblox/research-games/SKILL.md) — Explicit user-invoked research of Roblox charts for the requested audience and region.
 - [`schema-doctor`](.agents/skills/doctors/schema-doctor/SKILL.md) — Check models and schemas for unnecessary nulls, complexity, keys, and indexes.
 - [`security-doctor`](.agents/skills/doctors/security-doctor/SKILL.md) — Find and fix the exploitable vulnerabilities in a codebase, each proven by a concrete attack.
 - [`skill-gauntlet`](.agents/skills/authoring/skill-gauntlet/SKILL.md) — Audit installed agent skills and evaluate upgrades or retirement.
-- [`study-games`](.agents/skills/roblox/study-games/SKILL.md) — Explicit user-invoked research of Roblox charts for the requested audience and region.
 - [`tests-doctor`](.agents/skills/doctors/tests-doctor/SKILL.md) — Audit tests for contract value, redundant proof, weak assertions, runtime, provider rate limits, and determinism.
 - [`where-time-went`](.agents/skills/workspace/where-time-went/SKILL.md) — Show where session time and usage went.
 - [`widen-scope`](.agents/skills/execution/widen-scope/SKILL.md) — Turn on cleanup of the problems the work runs into for the rest of the session.

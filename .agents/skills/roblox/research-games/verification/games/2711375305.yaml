@@ -1,0 +1,294 @@
+name: "Catalog Avatar Creator"
+game_id: "universe:2711375305"
+universe_id: "2711375305"
+place_id: "7041939546"
+url: "https://www.roblox.com/games/7041939546"
+creator: "Muneeb (user, verified badge)"
+chart_category: "Trending in Shopping"
+chart_rank: 1
+genre:
+  primary: "Shopping"
+  sub: "Avatar Shopping"
+competitors:
+  - name: "🛍️ My Avatar!"
+    universe_id: "7554119808"
+    url: "https://www.roblox.com/games/75387700043737"
+    overlap: "Same subgenre (Avatar Shopping) on the 2026-11-08 chart"
+  - name: "Avatar Simulator"
+    universe_id: "2652888345"
+    url: "https://www.roblox.com/games/6934310111"
+    overlap: "Same subgenre (Avatar Shopping) on the 2026-11-08 chart"
+  - name: "Catalog Avatar Builder"
+    universe_id: "10066618669"
+    url: "https://www.roblox.com/games/96707166754980"
+    overlap: "Same subgenre (Avatar Shopping) on the 2026-11-08 chart"
+  - name: "🛍️ Avatar Catalog"
+    universe_id: "10267638347"
+    url: "https://www.roblox.com/games/94292962063277"
+    overlap: "Same subgenre (Avatar Shopping) on the 2026-11-08 chart"
+  - name: "Catalog Avatar Editor"
+    universe_id: "8005378926"
+    url: "https://www.roblox.com/games/112130209541489"
+    overlap: "Same subgenre (Avatar Shopping) on the 2026-11-08 chart"
+researcher: "R10"
+mode: passive
+play_ended_by: null
+onboarding_video_coverage: not_covered
+observed_at: "2026-11-09T01:21:00Z"
+observation_status: completed
+previous_observed_at: null
+changes_since_previous: []
+active_play_seconds: null
+play_coordination:
+    resource_key: null
+    wait_seconds: null
+    acquired_at: null
+    expires_at: null
+    released_at: null
+    release_verified: null
+    expiry_or_blocker: null
+context:
+    play_style: "Avatar shopping / dress-up; API genre Shopping / Avatar Shopping"
+    camera_perspective: "Third-person avatar preview beside a full-height catalog panel, per promotional images (not observed in play)"
+    device_and_input: null
+    observation_environment: "Read-only Roblox web APIs and experience page from the host; no play"
+    visible_server_population: "API at research time: 72,503 playing; max 24 players per server"
+    solo_or_group: "Solo-capable; multiplayer server of up to 24 (API maxPlayers)"
+    game_version_if_known: "Universe created 2021-07-03, updated 2026-11-08T02:21:05Z"
+    evidence: [api_1]
+account_state:
+    freshness: unknown
+    evidence:
+        - "Passive only; the game was not launched, so nothing about the account's state in it was seen."
+evidence:
+    - id: api_1
+      kind: description
+      url: "https://games.roblox.com/v1/games?universeIds=2711375305"
+      captured_at: "2026-11-09T01:20:00Z"
+      media_date_or_version: "updated 2026-11-08T02:21:05Z"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Marketing description. States 8.28 billion visits, 6.04 million favorites, try-on of catalog items for free, a browsable collection of '50M+' community outfits, in-experience avatar saving, purchases that land in the Roblox inventory, and a 'Best Use of Fashion' Roblox Innovation Award (2023 and 2024)."
+    - id: thumb_1
+      kind: thumbnail
+      url: "https://tr.rbxcdn.com/180DAY-22c1dc925ae96a79a1b1e242c6b0d0fe/768/432/Image/Png/noFilter"
+      captured_at: "2026-11-09T01:20:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Promotional render: left avatar preview panel with a camera/face icon and a row of worn-item tiles; right dark panel of large gradient category tiles labelled FEATURED, HAIR, ANIMATION PACKS, CLOTHING, ACCESSORIES, FAVORITES, each with a 3D item render. Advertised UI only."
+    - id: thumb_2
+      kind: thumbnail
+      url: "https://tr.rbxcdn.com/180DAY-c3573ad59a9ad5ba1a0b4ae5fff8b5a2/768/432/Image/Png/noFilter"
+      captured_at: "2026-11-09T01:20:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Promotional render of the outfit browser: back arrow, 'Search..' field, a 'Favorited' sort dropdown, X close at top right, a 4-column grid of outfit portraits, an upload button bottom-left and a settings gear bottom-right. Alt text: 'Browse through a growing Collection of over 15M+ Community Created Outfits' (the description says 50M+)."
+    - id: thumb_3
+      kind: thumbnail
+      url: "https://tr.rbxcdn.com/180DAY-2ebb3ba57c18fc2f489644ea1a92f512/768/432/Image/Png/noFilter"
+      captured_at: "2026-11-09T01:20:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Same outfit browser beside a large posed avatar; advertised art only."
+    - id: thumb_4
+      kind: thumbnail
+      url: "https://tr.rbxcdn.com/180DAY-5a15ba0ed027dcc40139746a9c870880/768/432/Image/Png/noFilter"
+      captured_at: "2026-11-09T01:20:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Ad-style render: 'NEW ANIMATION PACKS' over three dark cards (Soft Jump, Jump Cutely highlighted with a green border, Bomb Jump) and a green 'TRY NOW' button with a cursor."
+    - id: thumb_5
+      kind: thumbnail
+      url: "https://tr.rbxcdn.com/180DAY-98259692b68e51565d073c5d86bbfac3/768/432/Image/Png/noFilter"
+      captured_at: "2026-11-09T01:20:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Render of the animation catalog: category tabs (Clothing, Faces, Animations, Body) with sub-tabs (All, Anim Packs, Emotes, Unreleased), a 6-column grid of grey mannequin poses each labelled with a name and a Robux price (80 to 750), an 'Enter Item Link..' field, zoom and settings buttons. Prices shown are promotional and not assumed current."
+    - id: video_1
+      kind: gameplay_video
+      url: "https://assetdelivery.roblox.com/v1/asset/?id=72816971021020"
+      captured_at: "2026-11-09T03:05:00Z"
+      media_date_or_version: "GamePreviewVideo videoId 72816971021020 listed by games.roblox.com/v2/games/2711375305/media; upload date not exposed by the API"
+      timestamps:
+          - "0:00 avatar preview panel and item grid (emote search 'sad') floating over a grassy forest world"
+          - "0:02 caption 'need new style?' over a default avatar walking"
+          - "0:04 search field typing 'headph' with tabs All, Free, Hat, Face"
+          - "0:06 headphone results with green TRY and BUY tiles, then a 'Buy item' modal (item portrait, Robux price with struck-out original, 'Saving ... with Plus' row, blue Buy button, X close)"
+          - "0:08-0:10 caption 'try on anything!' over the search grid, then three try-on variants of one avatar side by side"
+          - "0:12 'Emotes' panel over a snowy night map: grey mannequin tiles labelled with names and 'Free' or a Robux price, a green check on the equipped one, 'Search Emotes...' field"
+          - "0:14 avatar on a skateboard"
+          - "0:16 crowd of differently dressed avatars"
+          - "0:18 another player's context menu: View Outfit, Wear Outfit, Send Robux, Add Friend, Kick Player, Hide User, plus a heart"
+          - "0:22-0:25 'CATALOG AVATAR CREATOR play now' end card"
+      screenshots: ["preview-72816971021020-sheet-01.jpg", "preview-72816971021020-001.jpg", "preview-72816971021020-003.jpg", "preview-72816971021020-004.jpg", "preview-72816971021020-006.jpg", "preview-72816971021020-007.jpg", "preview-72816971021020-009.jpg", "preview-72816971021020-010.jpg"]
+      limitations:
+          - "Creator's 25 s promotional trailer at 640x360 with large captions, fast cuts and zoomed-in UI; music only, no voice or captions file. Shows real in-game panels but not a first join, not an uninterrupted session and not how a player finds the panels."
+          - "The Robux balance and another player's name visible in the footage are not recorded."
+    - id: page_1
+      kind: description
+      url: "https://www.roblox.com/games/7041939546/Catalog-Avatar-Creator"
+      captured_at: "2026-11-09T01:21:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Experience page fetched as server HTML; its dynamic sections (servers, store, recommendations) load client-side and were not read."
+gameplay:
+    advertised_loop: "Browse catalog categories or community outfits, try items on a live avatar preview for free, save created avatars in-experience, and optionally buy items into the Roblox inventory."
+    observed_loop: "Trailer only (video_1): search or browse a category -> tap TRY to wear an item on the live avatar -> optionally BUY through a Roblox purchase modal -> equip emotes from a priced/free grid -> walk around a shared map among other dressed-up avatars, and open another player's menu to view or wear their outfit. Edited, so order and frequency are the creator's, not a player's."
+    first_action: null
+    first_success_seconds: null
+    success_feedback: []
+    progression: []
+    choices_and_variety:
+        - "Advertised: accessories, hats, limiteds, hair combos, bundles, animation packs, emotes, faces, body; a searchable, sortable community outfit collection; item lookup by link (thumb_5)."
+    social_and_cooperative:
+        - "Advertised: community-created outfits browsable by others, with an upload button in the outfit browser (thumb_2), suggesting players publish outfits for others."
+        - "Trailer (video_1, 0:18): tapping another player opens View Outfit and Wear Outfit, so a stranger's look can be copied onto one's own avatar in one tap; the same menu offers Send Robux, Add Friend, Kick Player and Hide User and a heart (like). Shared map of up to 24 players shown as a crowd of styled avatars (0:16)."
+    companions_and_pets: []
+    friction:
+        - "Trailer (video_1): TRY and BUY sit side by side as equal-sized tiles on each result (0:06), and the Buy modal leads with a Robux-plus saving row, so the free try-on and the purchase are one tap apart."
+        - "Search results for one query are many near-identical items with similar names (0:06), which shows breadth but makes choosing slow; inference."
+    evidence: [api_1, thumb_1, thumb_2, thumb_5, video_1]
+pacing:
+    timing_start_definition: null
+    loading_seconds: null
+    time_to_control_seconds: null
+    first_meaningful_choice_seconds: null
+    first_reward_seconds: null
+    action_reward_cadence: null
+    active_play_versus_travel_or_waiting: null
+    natural_stopping_points: []
+    measurement_method: null
+    evidence: []
+goals_and_progression:
+    next_goal_clarity: null
+    short_term_goals: []
+    medium_term_goals: []
+    advertised_long_term_goals:
+        - "Build and save avatars; no level, currency or progression system is advertised."
+    upgrade_choices: []
+    mastery_versus_stat_growth: "Advertised as expression rather than growth: no stats or levels appear in the description or promotional images."
+    unlock_previews_and_optional_activities:
+        - "Advertised 'Unreleased' animation sub-tab (thumb_5) and a 'NEW ANIMATION PACKS' callout (thumb_4) suggest rotating new-content previews."
+    evidence: [api_1, thumb_4, thumb_5]
+failure_and_recovery:
+    observed_failure: null
+    explanation: null
+    cost_or_lost_progress: null
+    retry_seconds: null
+    checkpoints: null
+    non_paid_recovery: null
+    evidence: []
+agency_and_social:
+    meaningful_choices:
+        - "Advertised: free combination of any catalog item on one's own avatar."
+    customization_and_identity:
+        - "The whole experience is identity customization of the player's real Roblox avatar."
+    cooperation_and_competition:
+        - "Advertised sharing of community outfits; no competition is advertised."
+    visible_social_feedback:
+        - "Outfit browser sorted by 'Favorited' (thumb_2) implies visible popularity of shared outfits."
+    solo_accessibility: "Advertised as fully solo-usable."
+    evidence: [api_1, thumb_2]
+ui:
+    evidence_status: partial
+    visual_style: "Advertised: dark rounded panels over a bright sky-and-grass backdrop; large saturated gradient category tiles with 3D item renders (thumb_1). Trailer (video_1) confirms dark translucent rounded panels floating over a bright low-poly world (grass and trees at 0:00, snowy night map at 0:12)."
+    layout_and_hierarchy: "Advertised two-pane layout: avatar preview with worn-item strip on the left, catalog panel on the right with back arrow, search, sort dropdown and X close in its header row (thumb_1, thumb_2, thumb_5). Trailer (video_1, 0:00) shows the same two panes in game, centred and occupying roughly half the screen, with a tool row under the preview (cart, trash and other icons) and an 'Enter Item Link..' field plus zoom and settings icons at the bottom of the grid. Not verified in play."
+    color_scheme:
+        - "Dark grey panels"
+        - "Saturated gradient tiles (blue, magenta, green, orange, pink) per category"
+        - "Green action buttons (upload, TRY NOW)"
+    typography:
+        font_appearance: "Bold rounded sans-serif in white uppercase on category tiles (promotional)"
+        font_family_if_verified: null
+        size_observation: null
+        size_basis: unknown
+        viewport_resolution: null
+        readability: null
+    controls:
+        primary_actions: "Advertised: category tiles, item grid tiles, search, sort dropdown, item-link entry, upload."
+        close_x_appearance_and_location: "Advertised: white X at the top-right of the catalog panel header, beside the sort dropdown (thumb_2, thumb_5). Trailer: plain white X at the top right of the Emotes panel (0:12), the Buy item modal (0:06) and the player menu (0:18)."
+        modal_behavior: "Trailer: the Buy item modal is a small dark card centred over a dimmed item grid (0:06); Emotes and player menus are non-blocking panels over the world."
+        state_feedback: "Advertised: a green border marks a highlighted card (thumb_4). Trailer: a small green check badge marks the equipped emote (0:12); each result offers green TRY and BUY tiles with eye and cart icons (0:06)."
+        target_size_and_input: null
+    graphics:
+        graphics_versus_text: "Advertised: every item is a rendered portrait or a grey mannequin pose with a short label; categories pair a big word with one representative render."
+        illustration_or_icon_style: "3D item renders and mannequin silhouettes; simple white line icons for back, close, settings, zoom."
+        framing_outlines_and_effects: "Rounded dark tiles in a regular grid; gradient category cards."
+        placement_and_labels: "Item name and price under each animation tile (thumb_5); in the trailer each emote tile has a large name and a 'Free' tag or Robux price under a grey mannequin pose (0:12)."
+        clarity_or_clutter: null
+    evidence: [thumb_1, thumb_2, thumb_4, thumb_5, video_1]
+new_player_onboarding:
+    status: indeterminate
+    reason: "Passive only. The creator's 25 s trailer (video_1) shows panels already open and an edited montage; no first join, no spawn state and no guidance appear, so onboarding cannot be judged."
+    conventions: []
+    sequence: []
+    first_independent_action: null
+    skip_or_replay: null
+    completed: null
+    observed_seconds: null
+    completion_seconds: null
+    timing_basis: null
+    evidence: []
+accessibility_and_comfort:
+    text_and_contrast: null
+    non_color_cues_and_icon_labels: null
+    input_support_observed: []
+    motion_audio_settings: []
+    settings_tested: []
+    clutter_and_interruptions: []
+    evidence: []
+commercial_and_return_prompts:
+    first_purchase_prompt_seconds: null
+    purchase_prompt_count_during_sample: null
+    onboarding_interruption: null
+    optional_versus_required_presentation: "Advertised: try-on is free; purchases are optional and go to the Roblox inventory. Promotional catalog tiles show Robux prices (thumb_5). Trailer (video_1): TRY and BUY are paired on each item (0:06); buying opens the standard Roblox 'Buy item' card with a struck-out original price and a 'Saving ... with Plus' row (0:06); emotes mix 'Free' and priced tiles in one grid (0:12)."
+    return_rewards_and_events: []
+    urgency_or_streak_cues:
+        - "Promotional 'NEW ANIMATION PACKS' / 'TRY NOW' callout (thumb_4); not seen in play."
+    evidence: [api_1, thumb_4, thumb_5, video_1]
+world_and_presentation:
+    navigation_and_objective_readability: "Trailer (video_1): the world is an open low-poly grass field with trees and flowers, a backdrop for showing avatars rather than a place with objectives."
+    landmarks_and_variety:
+        - "Grass-and-forest day map (0:00) and a snowy night map with pine trees and Christmas decorations (0:12); whether the map is seasonal or selectable is unknown."
+    environmental_storytelling: []
+    audiovisual_consistency: null
+    success_effect_intensity_and_clarity: null
+    evidence: []
+technical_quality:
+    loading_or_missing_assets: []
+    input_or_frame_issues: []
+    ui_defects: []
+    recovery_behavior: null
+    measurements: []
+    measurement_method_and_limits: "Not played."
+    evidence: []
+transferable_ideas:
+    - "A free try-on preview next to the shop: the player sees an item on their own character before any purchase decision."
+    - "Wear Outfit on another player: copying a stranger's look in one tap turns other players into a live, browsable catalog (trailer video_1, 0:18)."
+    - "Category entry tiles that pair one large word with one representative render, so a beginner picks a category by picture."
+practical_takeaway:
+    strongest_idea: "Let players try cosmetic items on their own avatar for free in a live preview beside the catalog, and save the result, turning a shop into the activity."
+    main_tradeoff: "Without play evidence, the browsing depth (many categories, sub-tabs, link entry, search) may be dense for a beginner; its advertised UI shows many controls per panel."
+    suitable_genres_and_stages: ["Any game with cosmetics or a shop", "Mid-game customization stage"]
+    testable_hypothesis: "Adding a free try-on preview to a cosmetic shop raises the share of shop visitors who equip or buy at least one item."
+    estimated_effort_and_assumptions: "Estimate: small to medium for an existing shop with character models; assumes items can be applied to a preview rig client-side."
+inferences:
+    - "The upload button and 'Favorited' sort suggest a player-published outfit library ranked by favorites (inference from promotional UI)."
+    - "High favorites-to-visits and long chart presence suggest avatar try-on serves a utility need beyond gameplay; popularity cause is not established."
+uncertainties:
+    - "UI evidence is promotional: images plus the creator's trailer (video_1), which shows real panels but zoomed and edited; text size, onboarding and how often purchase prompts appear in a session are unknown."
+    - "The outfit-count claim differs between description (50M+) and image alt text (15M+)."
+blockers: []

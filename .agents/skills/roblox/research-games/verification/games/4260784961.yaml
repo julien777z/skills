@@ -1,0 +1,290 @@
+name: "Napoleonic Wars"
+game_id: "universe:4260784961"
+universe_id: "4260784961"
+place_id: "12068120918"
+url: "https://www.roblox.com/games/12068120918/Napoleonic-Wars"
+creator: "NapoIeonic Wars (group 12425385, no verified badge, 141,618 members)"
+chart_category: "Top Revisited"
+chart_rank: 2
+genre:
+  primary: "Action"
+  sub: null
+competitors:
+  - name: "[🎃] Jujutsu Shenanigans"
+    universe_id: "3508322461"
+    url: "https://www.roblox.com/games/9391468976"
+    overlap: "Same genre (Action) on the 2026-11-08 chart"
+  - name: "[💀DUELS] Murderers VS Sheriffs"
+    universe_id: "7219654364"
+    url: "https://www.roblox.com/games/135856908115931"
+    overlap: "Same genre (Action) on the 2026-11-08 chart"
+  - name: "[HALLOWEEN] The Strongest Battlegrounds"
+    universe_id: "3808081382"
+    url: "https://www.roblox.com/games/10449761463"
+    overlap: "Same genre (Action) on the 2026-11-08 chart"
+  - name: "[RANKED] Huss Valley"
+    universe_id: "10764627709"
+    url: "https://www.roblox.com/games/107535308163741"
+    overlap: "Same genre (Action) on the 2026-11-08 chart"
+  - name: "[🔥2X XP] BedWars"
+    universe_id: "2619619496"
+    url: "https://www.roblox.com/games/6872265039"
+    overlap: "Same genre (Action) on the 2026-11-08 chart"
+researcher: "R13; gameplay videos V13"
+mode: passive
+play_ended_by: null
+onboarding_video_coverage: not_covered # no video shows the in-game first join (menu, code box, first spawn); see new_player_onboarding.reason
+observed_at: "2026-11-10T00:17:00Z"
+observation_status: completed
+previous_observed_at: null
+changes_since_previous: []
+active_play_seconds: null
+play_coordination:
+    resource_key: null
+    wait_seconds: null
+    acquired_at: null
+    expires_at: null
+    released_at: null
+    release_verified: null
+    expiry_or_blocker: null
+context:
+    play_style: "Historical military / large-scale line-battle community game (games API: genre 'Military', genre_l1 'Action')"
+    camera_perspective: "Third-person over-the-shoulder follow camera on foot; commanders and editors also use high overhead views (video_1, video_3)"
+    device_and_input: "PC with mouse and keyboard in all three videos: F or R readies the musket, hold left click to aim and release to fire, Q chants, F then B fixes bayonets, Tab opens the leaderboard, Space spawns, hotkeys Y/T/H/Z/B on the bottom-right menu (video_1, video_2, video_3 captions and frames)"
+    observation_environment: "Passive page and API research plus three YouTube gameplay videos (480p excerpts, auto-captions); no client launched"
+    visible_server_population: "API at retrieval: 368 playing, maxPlayers 200 per server. Videos: a scheduled battle with about 700 players spread over three linked servers (video_3); a leaderboard showing 243 defenders and 261 attackers across two sub-battles (video_2, 6:00)."
+    solo_or_group: "Group play only in every video: organised regiments of roughly 15-40 players under an officer, coordinated by voice chat"
+    game_version_if_known: "Universe updated 2026-11-04T19:23:54Z; videos from 2023-02 (video_1), 2025-05 (video_2) and 2025-10 (video_3)"
+    evidence: [description_1, page_1, places_1, video_1, video_2, video_3]
+account_state:
+    freshness: unknown
+    evidence: ["Game not played; video_1's creator is on his first battle in this game but already enlisted in a regiment, videos 2 and 3 are experienced players."]
+evidence:
+    - id: description_1
+      kind: description
+      url: "https://games.roblox.com/v1/games?universeIds=4260784961"
+      captured_at: "2026-11-09T00:12:00Z"
+      media_date_or_version: "updated 2026-11-04T19:23:54Z"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Description is marketing text; it states the setting (1804-1815) and claims battles of 'well over 3,000 players'. maxPlayers per server is 200; video_3 shows how larger battles work: several linked servers, each a separate map sector, whose ticket scores combine into one result."
+          - "Stats at retrieval: 24,601,204 visits, 79,185 favourites, 368 playing; votes 28,261 up / 5,153 down (about 85% positive); avatar type MorphToR6."
+    - id: page_1
+      kind: description
+      url: "https://www.roblox.com/games/12068120918/Napoleonic-Wars"
+      captured_at: "2026-11-09T00:13:00Z"
+      media_date_or_version: "page dateModified 11/04/2026"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Page HTML fetched, not rendered in a browser; read for structured metadata only (aggregate rating 84.6 from 33,414 ratings, listed platforms incl. PC, Mac, mobile, console)."
+          - "Age-recommendation API: Maturity 'Moderate', descriptor Violence (Repeated/Moderate)."
+    - id: thumbnail_1
+      kind: thumbnail
+      url: "https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=4260784961&size=768x432&format=Png"
+      captured_at: "2026-11-09T00:13:00Z"
+      media_date_or_version: "image 12239494369 (only approved media item; no video)"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Viewed. Illustrated promo art: three R6 soldiers in period uniforms (shako, bearskin, musket) in front of red-coated and blue-coated ranks, gold serif title 'NAPOLEONIC WARS', tagline 'THE LARGEST BATTLES ON ROBLOX', plate 'GRANDBATTLES', and a credits row of seven developer names. Promotional art; it does not show the in-game UI or HUD."
+    - id: places_1
+      kind: description
+      url: "https://develop.roblox.com/v1/universes/4260784961/places?limit=50"
+      captured_at: "2026-11-09T00:14:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Lists 42 places: historical battle maps (Waterloo, Austerlitz, Wagram, Borodino, Dresden, Egypt, Coruña, Raab, Piave, Boulogne, Strasbourg, Wavre, Spanish River, Flatlands), palace/social maps (Schönbrunn, Sanssouci, Topkapi, Catherine Palace, Windsor Castle, Palacio Real de Madrid, Caserta, Château de Malmaison), a 'Thornsbrook Military Academy', a 'Theatre', and developer/staging places. Video_2 shows battles are reached by pasting a six-letter code from a regiment's Discord into a box in the game's menu, which teleports the player to the battle server."
+          - "Badges API: one badge, 'The Great Heist' (1,191 awarded total, 2 in the past day). Game-pass API returned no game passes."
+          - "Games media API (re-read 2026-11-10 by V13): one image only, no GamePreviewVideo."
+    - id: video_1
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=Y3bYJD038c0"
+      captured_at: "2026-11-10T00:04:00Z"
+      media_date_or_version: "uploaded 2023-02-23"
+      timestamps: ["0:30-2:15 joining a regiment's Roblox group and Discord, call with an officer (off-game)", "2:15-2:45 'crash course' over first battle footage: F or R readies the musket, hold left click to aim, release to fire; Company bar explained", "3:45-4:45 first battle, chanting role, voice-line wheel open", "5:00-8:15 battle footage with officer callouts (hold shots, reform, fire at will)", "8:15 debrief at a village", "9:15 'Battle II' title card"]
+      screenshots: ["Y3bYJD038c0-sheet-02.jpg", "Y3bYJD038c0-sheet-03.jpg", "Y3bYJD038c0-sheet-04.jpg", "Y3bYJD038c0-016.jpg", "Y3bYJD038c0-020.jpg", "Y3bYJD038c0-031.jpg", "Y3bYJD038c0-036.jpg"]
+      limitations:
+          - "Onboarding pick: 'I FINALLY Played Roblox Napoleonic Wars...', channel Liodite (about 54,000 subscribers), 203,121 views, 17:45 long; first 10 minutes studied."
+          - "Comedy commentary channel: heavy edits, captions as jokes, cuts to a group web page and a Discord call; the in-game first join, menu and first spawn are cut. The creator plays his first battles but is already enlisted, so this is a new player's first battle, not a first join."
+          - "Uploaded 2023-02, about six weeks after the place was created; HUD layout matches the 2025 videos but details may have changed."
+    - id: video_2
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=tRFgldMJD2U"
+      captured_at: "2026-11-10T00:09:00Z"
+      media_date_or_version: "uploaded 2025-05-24"
+      timestamps: ["2:30-3:22 joining a regiment through Discord and Bloxlink verification (captions)", "5:08-5:30 joining a battle with a six-letter code in the game's menu, Space to spawn, Tab leaderboard", "6:00 leaderboard with defenders/attackers, lines and points", "6:30 'Earn tickets by killing enemies, breaking lines, capturing flags'", "6:45 bottom-right menu: Settings, Company, Shako, Loadouts, Backpack, Chants", "7:00-8:00 Health, Morale and Company bars explained", "8:45 broken-line 'Recover!' prompt and kill feed", "9:11-11:25 bonuses: chant, near flag, volley, rush, line, skirmish", "11:25-13:08 unit types and infantry roles", "14:40-15:00 crouching versus standing reload timing"]
+      screenshots: ["tRFgldMJD2U-sheet-01.jpg", "tRFgldMJD2U-sheet-02.jpg", "tRFgldMJD2U-sheet-03.jpg", "tRFgldMJD2U-sheet-04.jpg", "tRFgldMJD2U-005.jpg", "tRFgldMJD2U-007.jpg", "tRFgldMJD2U-008.jpg", "tRFgldMJD2U-013.jpg", "tRFgldMJD2U-016.jpg", "tRFgldMJD2U-039.jpg"]
+      limitations:
+          - "Skilled-play pick: \"Goatrow's Ultimate Guide to Napoleonic Wars\", channel goatrow (about 3,990 subscribers), 46,935 views, 19:03 long; 5:00-15:00 studied with captions for the whole video. Chosen over larger channels because no larger channel has a current guide to this game; the channel is a community regiment recruiter and the video ends with a regiment advert."
+          - "Edited tutorial with overlay text and staged demonstrations; numbers (ticket costs, bonus durations) are the creator's statements, not verified."
+    - id: video_3
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=EoYoQbUqtdE"
+      captured_at: "2026-11-10T00:15:00Z"
+      media_date_or_version: "uploaded 2025-10-26"
+      timestamps: ["1:00 regiments formed up with colours", "1:30-2:00 explanation: 700 players over three linked servers, 150,000 tickets per team, 24 lines", "2:15-3:00 lines exchanging volleys across a road", "3:15 overhead view of opposing lines", "4:00 officer's map with regiment flag markers", "4:30 HUD with combined ticket count 142,668 versus 142,604", "6:45 death screen with killer, respawn timer and Flag button", "7:00 broken line 'Recover!' prompt", "7:30-10:00 bayonet charges, flag captures and melee"]
+      screenshots: ["EoYoQbUqtdE-sheet-01.jpg", "EoYoQbUqtdE-sheet-02.jpg", "EoYoQbUqtdE-sheet-03.jpg", "EoYoQbUqtdE-sheet-04.jpg", "EoYoQbUqtdE-013.jpg", "EoYoQbUqtdE-024.jpg", "EoYoQbUqtdE-025.jpg"]
+      limitations:
+          - "Session pick: '700+ PLAYERS FIGHT at WATERLOO | Roblox Napoleonic Wars', channel ThatWaterlooGuy (about 15,700 subscribers), 117,289 views, 14:47 long; 1:00-11:00 studied. Larger-channel videos of this game found by the search were older (2021-2023)."
+          - "A special 'Historical Rules Event' with its own ruleset, cut together from many players' recordings across three servers with narration; shows a full battle's arc but not one player's continuous session or an ordinary daily server."
+gameplay:
+    advertised_loop: "Join a faction army in Napoleonic-era (1804-1815) line battles with very large player counts, depicted as organised community events ('a game community')."
+    observed_loop: "Off-game: join a nation's Discord, verify the Roblox account, enlist in a regiment and receive a uniform and rank (video_2 captions, video_1 0:30-2:15). In-game: paste the battle's six-letter code from the regiment's Discord into the menu, teleport to the battle server, press Space to spawn with the line (video_2 5:08). Then form a line on the flag, ready and aim muskets on the officer's order, fire volleys, chant on '3 2 1' to restore morale, reform after losses, fix bayonets and charge, and protect or capture flags; deaths cost tickets and the team with more tickets at the end wins (video_2, video_3)."
+    first_action: "Ready the musket with F or R and aim with left click while standing in the line formed on the flag (video_1 2:15 captions; video_2)."
+    first_success_seconds: null
+    success_feedback:
+        - "Musket smoke clouds and fallen enemy avatars across the line after a volley (video_1 3:45-8:00; video_3 2:15-3:00)."
+        - "Kill feed in the centre-top area: 'Flag rescued by ...', '<line> were scattered', '<line> broken by the <line>' with nation flags and crossed-sword icons (video_2 8:45, tRFgldMJD2U-016.jpg; video_3 7:00)."
+        - "Team ticket bar at top centre updates continuously (video_3 4:30)."
+        - "Bonus badges appear above the bottom-left bars when earned (Chant, Volley, Near, Rush, Line, Skirmish), each an icon on a coloured circle with a label (video_2 8:00-11:25)."
+        - "Officer praise and medals after battle over voice chat ('Men, you acquitted yourselves valiantly... medals', video_3 captions)."
+    progression:
+        - "Community, not game, progression: regiment ranks (conscript upward), companies (fusiliers, voltigeurs, grenadiers) with distinct cosmetics, and nation medals earned on and off the game, some shown on the avatar (video_2 captions 3:22-5:08)."
+        - "Roles a ranker can grow into: flag guard, flag bearer, officer leading a line (video_2 12:19-13:08)."
+        - "No in-game currency, XP or shop seen in any video."
+    choices_and_variety:
+        - "Three unit types: line infantry, skirmishers (about 15 players, accurate rifles, weak melee) and cavalry (video_2 11:25-12:19)."
+        - "Infantry roles: officer, flag bearer, flag guards, rankers (video_2 12:19)."
+        - "Battlefields seen: open farmland with roads, walled farm compounds and a village square (video_1, video_2, video_3); the Waterloo event split one battlefield into three named server sectors (La Belle Alliance, La Haye Sainte, Rossomme)."
+    social_and_cooperative:
+        - "Play depends on coordination: officers give orders by voice ('make ready, present, fire', 'reform', 'fix bayonets'); the guide tells new players to join the regiment's voice muster or 'you won't be able to hear orders' (video_2 5:08 overlay; video_3 captions)."
+        - "Synchronised mechanics reward acting together: chants must be timed between teammates, volley bonus needs enough of the line firing at once, line bonus needs three adjacent rankers standing still (video_2 9:11-11:25)."
+        - "A voice-line wheel of regiment-specific battle cries opens over the view (video_1 4:45, Y3bYJD038c0-020.jpg)."
+        - "Regiment identity shown through nation flags on the leaderboard, colours carried in battle and uniforms (video_2 6:00; video_3)."
+    companions_and_pets: []
+    friction:
+        - "Entry requires steps outside Roblox: joining Discord, verifying with a third-party account-linking bot, enlisting in a regiment by a posted format and waiting for an officer, then getting a battle code from the regiment's channel; the guide says verification is required to play (video_2 captions 2:30-3:22, 5:08)."
+        - "The guide opens 'This game can be hard to navigate for someone not familiar with the genre' and exists because new players need a 19-minute explanation (video_2 0:00)."
+        - "Many hidden rules affect combat (morale from near misses, distance from flag, line bonus broken if a neighbour moves, ticket cost by formation); none are taught in the footage by the game itself (video_2 7:00-11:25; inference that the game does not teach them, since no in-game tutorial is shown)."
+        - "Thick musket smoke often hides the enemy and the view (video_1 7:30; video_3 9:15)."
+        - "Without battles scheduled, the guide describes ordinary servers as 'capturing points in Bau', a casual mode; whether a lone joiner has anything structured to do between battles was not shown."
+    evidence: [description_1, places_1, video_1, video_2, video_3]
+pacing:
+    timing_start_definition: "Video timestamps of each video; no continuous session from join is shown"
+    loading_seconds: null
+    time_to_control_seconds: null
+    first_meaningful_choice_seconds: null
+    first_reward_seconds: null
+    action_reward_cadence: "Volleys every several seconds to tens of seconds on officer command, with long holds while lines manoeuvre (video_3 2:15-6:00, video_1 5:00-8:00; estimate from edited footage)."
+    active_play_versus_travel_or_waiting: "Battles alternate marching in column, standing in line holding fire, volleys and short charges; much time is spent standing and waiting for orders (video_1 'hold your shots', video_3 'stay in the columns'; inference from captions and frames)."
+    natural_stopping_points: ["End of a scheduled battle (35 minutes in video_3, timer counting down from 30:00 in video_1)", "Debrief by the officer after the battle (video_1 8:15)"]
+    measurement_method: "Video timestamps are the video's own; footage is edited, so only the stated battle length (35 minutes, narration video_3) and on-screen timers are used, and no per-player pacing is measured."
+    evidence: [video_1, video_3]
+goals_and_progression:
+    next_goal_clarity: "High within a battle because the officer gives every order by voice; low for the game itself, which shows only ticket totals and a timer (video_1, video_3)."
+    short_term_goals: ["Keep the line formed and fire together", "Keep morale up by chanting and staying near the flag", "Avoid breaking: keep company strength above zero", "Protect your flag or capture the enemy's"]
+    medium_term_goals: ["Win the battle on tickets", "Earn a medal or be promoted in the regiment (video_2, video_3)"]
+    advertised_long_term_goals: ["Rise through companies (fusilier to voltigeur to grenadier) and ranks to officer; collect tiered medals (video_2 captions, community systems)"]
+    upgrade_choices: []
+    mastery_versus_stat_growth: "Mastery and social rank: no stat growth is shown; skill in timing volleys, holding formation and melee charging is what the guide teaches and what promotions reward (video_2)."
+    unlock_previews_and_optional_activities: ["Shako and Loadouts menus for uniform and kit choice (video_2 6:45)", "Six-letter battle codes for scheduled events; ordinary servers otherwise"]
+    evidence: [video_1, video_2, video_3]
+failure_and_recovery:
+    observed_failure: "Death by musket or bayonet; a line 'breaks' when its company points reach zero, and then cannot respawn (video_2 7:00-8:45; video_1 captions)."
+    explanation: "Death screen names the killer (rank, name, nation), the distance in studs and the player's formation (for example '1 Line Formation'), with a respawn wait bar (video_3 6:45, EoYoQbUqtdE-024.jpg). A broken line gets a 'Recover!' panel at top centre with two conditions: 'Survive' with a countdown and 'Far From Enemy Flags' with a tick or cross (video_2 8:45; video_3 7:00)."
+    cost_or_lost_progress: "Each death costs the line 2 (in line), 3 (near allies) or 4 (out of formation) tickets per the guide; no personal progress is lost (video_2 captions)."
+    retry_seconds: "Respawn wait shown as 'Wait 0.5s' on the death screen at that moment (video_3 6:45); respawn needs the line's flag to be held (video_2)."
+    checkpoints: "Respawn at the line's flag bearer; no flag, no respawns (video_2 12:19)."
+    non_paid_recovery: "All recovery is free: survive the countdown away from enemy flags to recover a broken line; no paid revive seen."
+    evidence: [video_2, video_3]
+agency_and_social:
+    meaningful_choices: ["Which nation and regiment to join (off-game)", "Role within the line: ranker, flag guard, flag bearer, officer, skirmisher or cavalry", "For officers: where to place, wheel and charge the line (video_3)"]
+    customization_and_identity: ["Regiment uniforms and colours, company cosmetics, medals shown on the avatar, Shako and Loadouts menus (video_2 3:22, 6:45)", "Avatar is morphed to R6 and dressed by the game (description_1)"]
+    cooperation_and_competition: ["Two factions, French and allies versus the Coalition; regiments cooperate within a team, and lines are scored individually on the leaderboard with points and damage per person (video_2 6:00)"]
+    visible_social_feedback: ["Kill feed naming lines broken and flags rescued", "Leaderboard per line with points and damage per person", "On-screen regiment and player name tags above heads"]
+    solo_accessibility: "Low: every mechanic in the footage rewards acting with a line under an officer, and the guide sends new players to a regiment before their first battle (video_2)."
+    evidence: [video_1, video_2, video_3]
+ui:
+    evidence_status: observed
+    visual_style: "Restrained period-themed HUD: dark navy translucent panels with thin gold borders, serif text, round dark icon buttons with cream illustrated glyphs; the rest of the screen is left to the battlefield (video_1, video_2)."
+    layout_and_hierarchy: "Top centre: team ticket bar with the two nations' circular flag emblems, a red versus navy split bar with ticket counts, battle timer above and a compass strip below (tRFgldMJD2U-016.jpg). Top left: Roblox menu icons and chat bar. Bottom left: three stacked bars labelled Health (green), Morale (red/pink) and Company (blue, with arrow chevrons and a number), with earned-bonus icons above them. Bottom centre: weapon slot icons. Bottom right: row of round menu buttons with hotkey letters (Settings Y, Company T, Shako H, Loadouts Z, Backpack B, Chants) that show a label tab on hover. Centre-top: Recover! panel and kill feed when relevant (Y3bYJD038c0-031.jpg, tRFgldMJD2U-008.jpg)."
+    color_scheme: ["Dark navy translucent panels", "Gold/cream borders and glyphs", "Red (British) versus navy (French) ticket halves", "Green health, red morale, blue company bars", "Red crosses for unmet conditions"]
+    typography:
+        font_appearance: "Serif text throughout (panel titles, labels, kill feed, numbers), in keeping with the period theme; overlay text in the guide is a separate edit font."
+        font_family_if_verified: null
+        size_observation: "Bar labels and menu tab labels roughly 12-18 px tall in 960 px wide frames; Recover! title about 20 px; ticket numbers about 14 px."
+        size_basis: visual_estimate
+        viewport_resolution: "Videos at 480p, frames scaled to 960 px wide"
+        readability: "Readable at 480p on the panels; small serif labels on the bottom-left bars and the kill feed are thin and become hard to read over bright grass or smoke."
+    controls:
+        primary_actions: "Keyboard and mouse: F or R ready, hold left click aim, release fire, Q chant, F then B bayonet, Tab leaderboard, Space spawn (video_1, video_2 captions)."
+        close_x_appearance_and_location: null
+        modal_behavior: "Leaderboard (Tab) is a large centred dark panel with collapsible per-line rows (video_2 6:00); voice-line wheel is a centred dark radial menu over the view (Y3bYJD038c0-020.jpg)."
+        state_feedback: "Bonus icons appear and disappear above the bars; morale bar empties under fire (87 to 10 between frames, Y3bYJD038c0-020 and -031); Recover! conditions show red crosses until met."
+        target_size_and_input: "Bottom-right round buttons about 45-50 px at 960 px frame width; designed around keyboard hotkeys shown on each button."
+    graphics:
+        graphics_versus_text: "Mixed: icons carry a hotkey letter and reveal a text label on hover; bars carry text labels and numbers; bonuses use icon plus label."
+        illustration_or_icon_style: "Cream silhouette glyphs (treble clef, flag, shako, kit) on round dark buttons; nation flags as circular emblems with laurels."
+        framing_outlines_and_effects: "Thin gold frames on panels, rounded bars, coloured glowing circles for bonus icons."
+        placement_and_labels: "Hover labels sit above each bottom-right button as tabs (tRFgldMJD2U-008.jpg)."
+        clarity_or_clutter: "HUD stays sparse and at the edges; clutter comes from the world (dozens of name tags, smoke, flags) rather than the UI (video_3)."
+    evidence: [video_1, video_2, video_3]
+new_player_onboarding:
+    status: indeterminate
+    reason: "No video shows an in-game first join. video_1 follows a new player but cuts from the group page and a Discord call straight to battle; video_2 describes the steps (code box in the game's menu, Space to spawn) but its studied stretch does not show the menu. Onboarding is described as mostly off-game: Discord, Bloxlink verification, regiment enlistment and an officer's crash course. Whether the game itself has a tutorial, or what the 'Thornsbrook Military Academy' place does, remains unobserved."
+    conventions: ["Community-run onboarding: an officer gives a recruit a voice 'crash course' (video_1 2:15)", "Creator guides on YouTube teach the rules (video_2)"]
+    sequence: ["Join the game's group and a nation's Discord (off-game)", "Verify the Roblox account through a linking bot", "Enlist in a regiment and receive rank and uniform from an officer", "Get the battle's six-letter code, paste it in the game's menu, spawn with Space"]
+    first_independent_action: null
+    skip_or_replay: null
+    completed: null
+    observed_seconds: null
+    completion_seconds: null
+    timing_basis: null
+    evidence: [places_1, video_1, video_2]
+accessibility_and_comfort:
+    text_and_contrast: "Small thin serif text on translucent dark panels; readable on the panels at 480p, weaker for name tags and kill feed over bright or smoky backgrounds (video_3)."
+    non_color_cues_and_icon_labels: "Bars are labelled with words and numbers, not colour alone; bottom-right buttons show hotkey letters and hover labels; Recover! uses a tick or cross as well as red (video_2)."
+    input_support_observed: ["Mouse and keyboard in all videos"]
+    motion_audio_settings: ["Settings menu has a music option and a performance slider, per the guide (video_2 captions 6:45); not operated here"]
+    settings_tested: []
+    clutter_and_interruptions: ["Dense musket smoke and many overhead name tags in large battles (video_1 7:30; video_3 9:00)", "Voice chat is effectively required to follow orders (video_2 overlay)"]
+    evidence: [video_2, video_3]
+commercial_and_return_prompts:
+    first_purchase_prompt_seconds: null
+    purchase_prompt_count_during_sample: 0
+    onboarding_interruption: "None seen: no purchase prompt or shop in any of the three videos."
+    optional_versus_required_presentation: "Game-pass API lists no game passes, and no in-game store, currency or offer appears in about 30 minutes of footage."
+    return_rewards_and_events: ["Scheduled battles posted by regiments with join codes (video_2)", "Special events such as the 'Historical Rules Event' (video_3 description)", "Medals and promotions awarded by the community (video_2, video_3)"]
+    urgency_or_streak_cues: ["Battle start times set by the community; the game shows only a battle timer"]
+    evidence: [places_1, video_2, video_3]
+world_and_presentation:
+    navigation_and_objective_readability: "Lines navigate by officers' orders and team flags; regiment colours and flags carried above lines show where each unit stands; officers use an overhead map with regiment flag markers (video_3 4:00). No quest markers or minimap appear on a ranker's HUD; a compass strip sits under the ticket bar."
+    landmarks_and_variety: ["Farm compounds with white walls and red-tiled roofs (video_2 5:15, Waterloo's La Haye Sainte)", "Village square with plastered houses and barrels (video_2 14:40)", "Open fields, dirt roads, poplar rows and hedges (video_1, video_3)"]
+    environmental_storytelling: ["Historical battlefields named for the real sectors of Waterloo, period uniforms and regiment colours (video_3)"]
+    audiovisual_consistency: "Consistent soft realistic lighting and grass on blocky R6 avatars in detailed period uniforms; musket smoke and fallen bodies left on the field (video_1, video_3). Audio not assessed beyond captions: voice orders, volleys, music in edits."
+    success_effect_intensity_and_clarity: "Low-key effects: smoke, falling avatars and kill-feed text; the ticket bar is the clearest measure of success."
+    evidence: [video_1, video_2, video_3]
+technical_quality:
+    loading_or_missing_assets: []
+    input_or_frame_issues: ["Guide mentions a performance slider for players who 'struggle to run the game' (video_2 captions); no frame issue is measurable from edited video."]
+    ui_defects: []
+    recovery_behavior: null
+    measurements: []
+    measurement_method_and_limits: "Not played; edited YouTube footage at 480p does not establish device performance."
+    evidence: [video_2]
+transferable_ideas:
+    - "Rewards for acting together in space and time: a line bonus for three adjacent players standing still, a volley bonus for firing together and a chant that only pays when synchronised turn coordination into a measurable advantage, not just a social nicety (video_2)."
+    - "A shared resource per squad (company points spent on each death, with a lower cost in formation) makes staying together the cheapest way to fight, and a visible 'broken' state with a clear two-condition recovery panel explains the consequence (video_2, video_3)."
+    - "Linked servers whose scores combine let one event exceed a server's player cap while each server stays playable (video_3)."
+    - "Community structures (regiments, ranks, medals, scheduled battles) carry long-term progression and return visits with no in-game monetisation (video_2)."
+    - "A sparse edge HUD with hotkey letters on each round button and hover labels keeps the battlefield visible."
+practical_takeaway:
+    strongest_idea: "Make formation the reward: bonuses that require players to stand together, fire together and chant together, plus a squad-wide respawn pool that drains slower in formation, turn a simple shooter into a game about coordination (video_2, video_3)."
+    main_tradeoff: "The rules are deep but untaught in the game shown: newcomers rely on Discord enlistment, a bot verification, officers' crash courses and 19-minute YouTube guides, and solo play has little structure; this suits a committed community and excludes casual joiners."
+    suitable_genres_and_stages: ["team combat", "squad-based PvP or PvE", "community or event-driven games with an established player base"]
+    testable_hypothesis: "Giving a squad a visible bonus when three or more members stand within a few studs of each other (with an icon and label on the HUD) increases the share of time players spend grouped and their win rate, compared with no bonus."
+    estimated_effort_and_assumptions: "Estimate: 2-4 days for a proximity-based squad bonus and its HUD badge, assuming existing squads, combat stats and a HUD framework."
+inferences:
+    - "Top Revisited rank, 141,618 group members, scheduled battles with join codes and community ranks and medals indicate return play is driven by community events (supported by video_2 and video_3)."
+    - "No game passes, no in-game shop in the footage and one badge indicate a low-monetisation design."
+    - "Inference: the off-game onboarding path filters newcomers heavily; players who complete it are committed, which may explain a large returning base but a modest concurrent count (368 at retrieval)."
+uncertainties:
+    - "The in-game first join, menu and any built-in tutorial are unobserved; video studied covers battles only."
+    - "What an unaffiliated player sees on an ordinary server between scheduled battles ('capturing points') is unobserved."
+    - "Numbers for ticket costs and bonus durations come from a community guide and may be out of date."
+    - "Role of the palace, theatre and academy places remains unknown."
+blockers: []

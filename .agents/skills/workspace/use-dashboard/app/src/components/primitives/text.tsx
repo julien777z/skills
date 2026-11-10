@@ -29,7 +29,7 @@ const textVariants: ReturnType<typeof cva<typeof TEXT_VARIANTS>> = cva('', {
 });
 
 interface TextProps extends VariantProps<typeof textVariants> {
-  as?: 'span' | 'p' | 'h1' | 'h3' | 'b' | 'li';
+  as?: 'span' | 'p' | 'h1' | 'h3' | 'b' | 'li' | 'figcaption';
   labelFor?: string;
   children: ReactNode;
 }

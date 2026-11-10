@@ -1,0 +1,256 @@
+name: "Brookhaven 🏡RP"
+game_id: "universe:1686885941"
+universe_id: "1686885941"
+place_id: "4924922222"
+url: "https://www.roblox.com/games/4924922222"
+creator: "Brookhaven by Voldex (group, no verified badge)"
+chart_category: "Trending in Roleplay & Avatar Sim"
+chart_rank: 1
+genre:
+  primary: "Roleplay & Avatar Sim"
+  sub: "Life"
+competitors:
+  - name: "Berry Avenue 🏠 RP"
+    universe_id: "3240075297"
+    url: "https://www.roblox.com/games/8481844229"
+    overlap: "Same subgenre (Life) on the 2026-11-08 chart"
+  - name: "LifeTogether 🏠 RP "
+    universe_id: "4839802560"
+    url: "https://www.roblox.com/games/13967668166"
+    overlap: "Same subgenre (Life) on the 2026-11-08 chart"
+  - name: "[🐬] Welcome to Bloxburg "
+    universe_id: "88070565"
+    url: "https://www.roblox.com/games/185655149"
+    overlap: "Same subgenre (Life) on the 2026-11-08 chart"
+  - name: "Dubai 🏡 RP [Newborns! 👶]"
+    universe_id: "6774320049"
+    url: "https://www.roblox.com/games/122485613019196"
+    overlap: "Same subgenre (Life) on the 2026-11-08 chart"
+  - name: "Dreamville 🏡 RP [Pets! 😺]"
+    universe_id: "6521100398"
+    url: "https://www.roblox.com/games/74395953411817"
+    overlap: "Same subgenre (Life) on the 2026-11-08 chart"
+researcher: "R09"
+mode: play
+play_ended_by: null # ended by loop_cycle under the earlier deep-play design, before this field's current values
+onboarding_video_coverage: covered # video_2 walks a join from the game page through the welcome screen, PLAY, the labelled HUD and every side menu; the player is a returning one
+observed_at: "2026-11-09T01:45:30Z"
+observation_status: completed # partial only because the VM garbled the world; video_2 and video_3 show the world, navigation, driving and the HUD on ordinary clients
+previous_observed_at: null
+changes_since_previous: []
+active_play_seconds: 505
+play_coordination:
+  resource_key: "roblox-player"
+  wait_seconds: 2723
+  acquired_at: "2026-11-09T01:44:56Z"
+  expires_at: "2026-11-09T01:59:56Z"
+  released_at: "2026-11-09T01:54:41Z"
+  release_verified: true
+  expiry_or_blocker: "Play stopped at 01:54:21Z by a study process change (real play replaced by gameplay-video study), just after the house-vehicle-activity cycle; player force-quit, capture 1686885941-25 shows no game on screen, both locks released desktop first, queue left."
+context:
+  play_style: "Roleplay & Avatar Sim / Life (API genre Town and City): open-world life roleplay sandbox"
+  camera_perspective: "third-person follow camera"
+  device_and_input: "macOS Roblox player 0.746.0 in a VM; mouse clicks on HUD, W/A/S keys, arrow-key camera"
+  observation_environment: "Isolated macOS guest VM over SSH, 1920x1200 points, captures downscaled to 1200 px; paravirtual GPU garbled most world geometry"
+  visible_server_population: "API at 00:57Z: 377,372 playing, maxPlayers 30 per server; other players' avatars and an owned neighbouring plot were visible"
+  solo_or_group: "Solo play on a shared public server"
+  game_version_if_known: "Place updated 2026-11-06T21:04Z; in-game Updates panel lists New Houses, New Props, Coach outfit"
+  evidence: [source_1, source_4, video_preview_1, video_2, video_3]
+account_state:
+  freshness: unknown
+  evidence:
+    - "No tutorial, starter reward or first-time prompt appeared; the welcome screen and arrow hints on the side menu may show to every player. The account's avatar arrived already dressed. Neither fresh nor returning status is established for this game."
+evidence:
+  - id: source_1
+    kind: description
+    url: "https://games.roblox.com/v1/games?universeIds=1686885941"
+    captured_at: "2026-11-09T00:57:00Z"
+    media_date_or_version: "updated 2026-11-06T21:04:19Z"
+    timestamps: []
+    screenshots: []
+    limitations: ["Marketing text. Stats at capture: 89,352,993,951 visits, 30,917,580 favorites, 8,734,062 up / 1,433,920 down votes (about 86% positive). Lists houses, cars, roleplay roles (student, parent, police officer), city locations (school, Jett's), and private-server benefits."]
+  - id: source_2
+    kind: thumbnail
+    url: "https://tr.rbxcdn.com/180DAY-d9038b7721f3cc13c7a1a34d3e585bd7/768/432/Image/Png/noFilter"
+    captured_at: "2026-11-09T00:57:00Z"
+    media_date_or_version: "TN3"
+    timestamps: []
+    screenshots: []
+    limitations: ["Promotional art: avatar beside a white mansion seen through open window shutters, red BROOKHAVEN banner. Cannot establish in-game UI."]
+  - id: source_3
+    kind: thumbnail
+    url: "https://games.roblox.com/v2/games/1686885941/media"
+    captured_at: "2026-11-09T00:57:00Z"
+    media_date_or_version: "9 gallery images; one GamePreviewVideo (videoId 105734167710929)"
+    timestamps: []
+    screenshots: []
+    limitations: ["Gallery shows the same window-frame template over role scenes: sewage truck worker, nuclear plant worker, coffee shop grand opening, school classroom, police motorbike, robber chased by police, red convertible, tandem bike. The preview video could not be played from this environment and was not watched."]
+  - id: source_4
+    kind: actual_play
+    url: "https://www.roblox.com/games/4924922222"
+    captured_at: "2026-11-09T01:45:30Z"
+    media_date_or_version: "Roblox player 0.746.0"
+    timestamps: ["01:45:04Z launch", "01:45:30Z welcome screen (control)", "01:45:43Z PLAY", "01:47:33Z teleport to vacant plot", "01:48:19Z plot claimed", "01:48:54Z house chosen", "~01:51:00Z Premium purchase prompt (closed)", "01:51:32Z on bicycle", "01:52:47Z vehicle recoloured", "01:53:55Z last input"]
+    screenshots: ["1686885941-1.png", "1686885941-2.png", "1686885941-3.png", "1686885941-4.png", "1686885941-51.png", "1686885941-53.png", "1686885941-8.png", "1686885941-9.png", "1686885941-10.png", "1686885941-11.png", "1686885941-12.png", "1686885941-13.png", "1686885941-16.png", "1686885941-17.png", "1686885941-18.png", "1686885941-21.png", "1686885941-22.png", "1686885941-24.png", "1686885941-25.png"]
+    limitations: ["World rendering garbled by the VM GPU (stretched polygons, dark or flat geometry); world visuals and navigation are unknown. Play stopped by a process change after ~8.5 minutes."]
+  - id: video_preview_1
+    kind: gameplay_video
+    url: "https://assetdelivery.roblox.com/v1/asset/?id=105734167710929"
+    captured_at: "2026-11-09T03:05:00Z"
+    media_date_or_version: "GamePreviewVideo videoId 105734167710929 from games.roblox.com/v2/games/1686885941/media; upload date not exposed by the API"
+    timestamps: ["0:00 scooter rider and striped-shirt robber on a street", "0:02 police helicopter over the robber, white arch landmark behind", "0:04 police car and police motorbike, airport sign", "0:06-0:08 overhead helicopter shot of a car chase through intersections", "0:10 students in uniform at the Brookhaven High School doors", "0:12 red-roofed house on a lawn", "0:14-0:20 house interiors: sofa, desk computer with on-screen mail menu, bedroom, kitchen", "0:22 avatar close-up before a Brookhaven Homes billboard", "0:26 sunset intersection with street-name signs, traffic lights, Jett's, motel", "0:28 group eating at a cafe patio", "0:30 night playground with bike and skateboard", "0:32-0:38 night plaza with fountain and dancing group", "0:40-0:43 BROOKHAVEN logo card"]
+    screenshots: ["preview-105734167710929-sheet-01.jpg", "preview-105734167710929-sheet-02.jpg", "preview-105734167710929-002.jpg", "preview-105734167710929-004.jpg", "preview-105734167710929-006.jpg", "preview-105734167710929-009.jpg", "preview-105734167710929-014.jpg", "preview-105734167710929-015.jpg", "preview-105734167710929-016.jpg", "preview-105734167710929-018.jpg"]
+    limitations: ["Creator's 43 s promotional trailer, 640x360: cinematic cuts with the HUD and Roblox menu hidden, staged groups of avatars and a scripted chase; no new player, no menus, no first join, no voice or captions (music only).", "Shows the world as it renders on an ordinary client, which the VM play could not; it does not show how a player navigates it or how long travel takes."]
+  - id: video_2
+    kind: gameplay_video
+    url: "https://www.youtube.com/watch?v=UaZ5AN4gu70"
+    captured_at: "2026-11-10T00:20:00Z"
+    media_date_or_version: "uploaded 2024-07-23"
+    timestamps: ["0:30 game page with Play button and Servers list", "1:00 'Welcome to BROOKHAVEN' screen with Updates panel and Play button", "1:15 HUD after Play: labelled side menu (Avatar, Avatar Editor, Tools, Animations, Vehicle, House) with cyan arrows, Home Cams, clock, shop cart", "1:30-2:00 settings: auto jump, baby seat, hide-HUD camera mode", "2:15 private-server controls (time, weather, flood, kick)", "2:30 overhead free-camera view of the town", "3:30-4:00 pass shop: 14 round pass badges", "4:30 job picker grid (police, doctor, chef, YouTuber and more)", "4:45-5:00 theme picker for the town's look", "5:30 Family panel with child picker", "5:45-10:00 avatar editor: catalogue IDs, 21 saved outfits, skin colours, locked faces, accessories search, clothing combos", "captions 10:00-21:00 (not downloaded): tools, animations, vehicles, boats, horse, hoverboard, jet, houses"]
+    screenshots: ["UaZ5AN4gu70-sheet-01.jpg", "UaZ5AN4gu70-sheet-02.jpg", "UaZ5AN4gu70-sheet-03.jpg", "UaZ5AN4gu70-sheet-04.jpg", "UaZ5AN4gu70-sheet-05.jpg", "UaZ5AN4gu70-005.jpg", "UaZ5AN4gu70-006.jpg", "UaZ5AN4gu70-010.jpg", "UaZ5AN4gu70-016.jpg", "UaZ5AN4gu70-019.jpg", "UaZ5AN4gu70-023.jpg"]
+    limitations: ["Onboarding and guide pick: 'How to PLAY BROOKHAVEN RP for the FIRST TIME EVER ! (beginner guide)', channel Bryan Brookhaven (about 126,000 subscribers), 102,865 views, 21:08 long; 0:00-10:00 studied as frames, the rest from captions only.", "Returning player on his own private server with several passes, so private-server controls and premium items appear that a new player would not have; edited with zooms and subscribe pop-ups. Uploaded 2024-07; the 2026 HUD (video_3) keeps the same layout."]
+  - id: video_3
+    kind: gameplay_video
+    url: "https://www.youtube.com/watch?v=3y3T0_aYf24"
+    captured_at: "2026-11-10T00:22:00Z"
+    media_date_or_version: "uploaded 2026-10-23"
+    timestamps: ["0:15 walking down the main street toward the arch landmark with a '3/60' counter overhead", "0:30-1:30 entering shops, a gym and a house in search of candy corns", "1:45 'Jack o' Lantern unlocked!' reward panel at 20/60", "2:00-3:45 school, hospital, graveyard and park", "4:00-8:00 driving a small purple car across hills, ramps, a tunnel and a solar farm with the vehicle toolbar shown", "6:15-6:30 bank interior with laser vault", "8:15 beach with yacht and palm trees", "8:30 60/60 complete"]
+    screenshots: ["3y3T0_aYf24-sheet-01.jpg", "3y3T0_aYf24-sheet-02.jpg", "3y3T0_aYf24-sheet-03.jpg", "3y3T0_aYf24-sheet-04.jpg", "3y3T0_aYf24-002.jpg", "3y3T0_aYf24-008.jpg", "3y3T0_aYf24-020.jpg"]
+    limitations: ["Session pick: '2026 ALL 60 CANDY CORN LOCATIONS IN BROOKHAVEN CANDY CORN HUNT 2026 EVENT', channel B MaX Rohaan YT (about 110,000 subscribers), 42,338 views, 8:40 long; whole video studied. Current version (October 2026).", "A walkthrough of a seasonal collect-60 event by an experienced player who knows every location; music only, no commentary. Shows navigation and driving across most of the map but not ordinary roleplay with others."]
+gameplay:
+  advertised_loop: "Own a house, drive vehicles, pick a roleplay identity (student, parent, police officer, workers) and roleplay with others across a city."
+  observed_loop: "Welcome screen with PLAY -> HUD with labelled side buttons (Avatar, Tools, Animations, Vehicle, House) -> House menu plot browser -> GO teleports to a vacant plot -> click the plot sign to claim it -> pick a house from a catalogue and confirm -> Vehicle catalogue spawns the vehicle with the player already seated -> drive and customise (colour picker, lights, music, speedometer)."
+  first_action: "Click PLAY on the welcome screen (13 s after control)."
+  first_success_seconds: 169
+  success_feedback: ["Plot sign immediately changes from 'Vacant' to the player's name (1686885941-9).", "Selected house tile gets a large green check and a 'Choose selected house?' thumbs-up/down confirm (1686885941-10).", "House-owner toolbar appears above the HUD after the house spawns (1686885941-11).", "Spawning a vehicle seats the player on it and swaps in a vehicle toolbar (1686885941-18)."]
+  progression: ["None observed: no currency, XP or levels; progression is choosing houses, vehicles and props, many behind passes."]
+  choices_and_variety: ["Job picker grid with icon-and-label tiles (police, doctor, chef, model, singer, news, YouTuber, principal, day care, detective, gamer, ice cream, lifeguard and more) that sets a role title on the avatar (video_2 4:30).", "Town themes that restyle the whole map for the player (racing, military, Japanese, neon), some behind a Theme pass (video_2 4:45-5:00).", "Vehicles beyond cars per the guide's captions: skateboards, hoverboards, bikes, horses, golf carts, motorcycles, limousines, boats that only spawn at sea, and a jet spawned from a military-base garage with Premium and the Estates pass (video_2 captions 13:00-17:00).", "Seasonal event: a 60-item candy-corn hunt across the map with unlockable items such as a Jack o' Lantern (video_3).", "House catalogue tabs: Passes, Homes, Job, Themed (1686885941-9).", "Vehicle categories: favourites/crown, bikes, cars, trucks, robots, boats; items include scooter, skateboard, wheelchair, pogo stick, helicopter, tank, horse (1686885941-12, -13).", "Plot browser with three house-area tabs (standard, premium-styled, beach) (1686885941-4)."]
+  social_and_cooperative: ["Family panel lets a player add a named child avatar that follows them; any child look needs Premium (video_2 5:30).", "Player name and bio shown above the avatar ('BlueGuy', 'Like') set from the Avatar tab (video_2 4:30).", "Car lock so others cannot drive the player's car (video_2 captions).", "Family button and Home Cams button in the HUD (not opened).", "Neighbouring plots show other players' names; chat badge counted rising unread messages (not opened).", "Trailer (video_preview_1): staged group scenes of shared roles and places: police helicopter and car chasing a robber (0:02-0:08), students at the school doors (0:10), friends eating at a cafe (0:28), a group dancing at the night plaza (0:32-0:38). Promotional staging, not observed play."]
+  companions_and_pets: ["Pet cat or dog from the Tools tab that the player can carry, with a hold-pose button (video_2 captions, not in the studied frames)."]
+  friction: ["Video_2 notes many copies of the game exist and tells beginners to find the real one by its creator and player count (0:30 captions).", "Several premium items and faces sit beside free ones with only a lock or star; the guide repeatedly says 'you need premium' or a pass for colours, speed, music and faces (video_2 3:30-10:00 and captions).", "Many houses and vehicles carry small star/crown/region badges that only reveal they are paid when clicked; clicking a star item opens a 'You need the Premium Gamepass to use this!' banner and an 'Unlock Premium?' 320-Robux prompt (1686885941-16).", "The first free car click produced no visible result and no message (1686885941-14).", "Claiming a plot requires noticing a hand cursor on the plot sign after teleport; the GO teleport placed the camera inside a wall (1686885941-6).", "VIP upsell 'No wait time for VIP, Houses cooldown = 10 minutes' sits at the top of the house picker (1686885941-9)."]
+  evidence: [source_1, source_3, source_4, video_preview_1, video_2, video_3]
+pacing:
+  timing_start_definition: "First capture with control of the welcome screen, 2026-11-09T01:45:30Z"
+  loading_seconds: 26
+  time_to_control_seconds: 0
+  first_meaningful_choice_seconds: 123
+  first_reward_seconds: 169
+  action_reward_cadence: "Every menu choice gave immediate visible change (claim, house, vehicle) about every 30-70 s while setting up."
+  active_play_versus_travel_or_waiting: "Setup was menu-driven with teleport; no travel was needed to get a house or vehicle. Free roaming could not be judged in the VM because of rendering. Video_3 (2026) shows the town walkable between neighbouring shops in seconds, while outlying areas (hills, tunnel, solar farm, beach) are reached by car on long roads; its creator switched to a car from 4:00 to 8:00 for the far half of the map."
+  natural_stopping_points: ["Completing an event collection (60/60 in video_3, about 8.5 minutes for a player who knows every location)", "House claimed and built", "Vehicle spawned", "Trailer (video_preview_1) also shows a day-to-night cycle (sunset at 0:26, night from 0:30), a possible natural session marker; its length is not measurable from an edited trailer."]
+  measurement_method: "Video timings (video_2, video_3) are measured from each video's own timestamps and are edited, so they bound nothing about a new player. Real play: wall-clock timestamps of input batches and captures; loading measured from the launch command to the first capture (an upper bound, capture taken 25 s after launch). The trailer (video_preview_1) is edited, so no pacing is measured from it; its timestamps are the video's own."
+  evidence: [source_4, video_3]
+goals_and_progression:
+  next_goal_clarity: "High for setup: the side menu showed cyan arrows pointing at each labelled button (1686885941-2), and the plot sign showed a hand cursor. No goal is given after a house and vehicle."
+  short_term_goals: ["Claim a plot and pick a house", "Spawn a vehicle", "Pick a job title and an outfit (video_2 4:30-10:00)"]
+  medium_term_goals: ["Seasonal collection events with a counter and unlockable items, such as 60 candy corns in October 2026 (video_3)"]
+  advertised_long_term_goals: ["Roleplay jobs and stories; premium houses and private-server tools (description)."]
+  upgrade_choices: ["Houses and vehicles behind Premium and other passes (badges)."]
+  mastery_versus_stat_growth: "Neither; expression and ownership rather than growth."
+  unlock_previews_and_optional_activities: ["Locked items are shown in full in the same grid as free ones, marked only by a small badge.", "Hidden places to discover inside buildings, such as a bank vault behind laser beams (video_3 6:15-6:30).", "Event item unlocks at milestones of a collection ('Jack o' Lantern unlocked!' at 20/60, video_3 1:45)."]
+  evidence: [source_4, video_2, video_3]
+failure_and_recovery:
+  observed_failure: "No failure states; the only 'failure' was clicking a paid vehicle."
+  explanation: "Banner 'You need the Premium Gamepass to use this!' plus purchase prompt."
+  cost_or_lost_progress: null
+  retry_seconds: null
+  checkpoints: null
+  non_paid_recovery: "Close the prompt with its red X and pick an unbadged item."
+  evidence: [source_4]
+agency_and_social:
+  meaningful_choices: ["Which plot, which house, which vehicle and its colour."]
+  customization_and_identity: ["In-game avatar editor that takes Roblox catalogue IDs, saves 21 outfits, changes skin colour, face (some locked), accessories, clothing combos, body type and per-action animations (video_2 5:45-10:00).", "Name and bio shown above the head (video_2 4:30).", "Avatar editor button, vehicle colour picker with brightness slider and reset (1686885941-21), house props and house settings buttons."]
+  cooperation_and_competition: ["No competition; social roleplay with strangers or a Family group (not tested)."]
+  visible_social_feedback: ["Owner names on plot signs."]
+  solo_accessibility: "Setup is fully solo; roleplay depth depends on other players (not observed)."
+  evidence: [source_4, video_2]
+ui:
+  evidence_status: observed
+  visual_style: "Flat translucent light-grey panels with large rendered 3D icons (house, car, backpack, avatar) and bold coloured action tiles (red X, green thumbs-up)."
+  layout_and_hierarchy: "Right edge: vertical stack of large icon buttons (Avatar, Tools/backpack, Animations, Vehicle, House) with a collapse chevron; top centre: context toolbar that swaps per state (house-owner tools, then vehicle tools); top right: Home Cams, Family, clock; left: shop cart with star; bottom left: settings gear. Catalogues open as grids beside the right stack. Video_2 (2024) and video_3 (2026) show the same layout on an ordinary client: the right stack drops its text labels after the first screen; in 2026 the left column holds a 'BROOKHAVEN HALLOWEEN' event button, a 'FREE' Premium badge and the shop cart; an event counter (candy-corn icon with a number) sits under the clock; the bottom left holds settings, time/weather and a crate icon; a numbered hotbar sits bottom centre (3y3T0_aYf24-008.jpg). While driving, two rows of round vehicle buttons with key hints (H, V, G, F, LShift for horn, lights, hazard, and others) replace the top centre (3y3T0_aYf24-020.jpg)."
+  color_scheme: ["Light grey translucent panels", "Red close and cancel tiles", "Green confirm and check marks", "Cyan arrow hints", "Bright gold and blue badges for passes"]
+  typography:
+    font_appearance: "Rounded sans-serif, black on light panels; large white-outlined display font for the BROOKHAVEN logo."
+    font_family_if_verified: null
+    size_observation: "Menu labels and prompts roughly 20-35 px tall in the 1200 px capture; the Premium banner text about 30 px."
+    size_basis: visual_estimate
+    viewport_resolution: "1920x1200 points, captured at 1200 px wide"
+    readability: "Good on the panels; translucent panels over bright world reduce contrast in places."
+  controls:
+    primary_actions: "Icon buttons on the right stack; GO and arrow buttons in the plot browser; thumbs-up/down confirm for a house. Labelled tile grids for jobs, themes and passes (video_2 3:30-5:00)."
+    close_x_appearance_and_location: "Large red square with a white X at the top-right of each panel (house, vehicle, colour picker); a smaller red X at the top-right of the purchase prompt; vehicle exit is a red X tile with an E key hint below the avatar."
+    modal_behavior: "Catalogues are non-blocking side panels; the purchase prompt overlays centre-screen on top of the open catalogue."
+    state_feedback: "Green check on the selected tab or item; 'Owned' versus 'Vacant' in the plot browser."
+    target_size_and_input: "Large targets (about 70-120 px in the 1200 px capture), suited to touch."
+  graphics:
+    graphics_versus_text: "Mostly graphics: catalogues are image grids with no item names; text is limited to labels, plot status and prompts."
+    illustration_or_icon_style: "Rendered 3D item portraits on sky-blue backgrounds; small round badges (star, crown, regional seals) mark gated items."
+    framing_outlines_and_effects: "Rounded grey tiles; selected state as green check overlay."
+    placement_and_labels: "First-session labels with cyan arrows sit beside the right-side icons; catalogue items are unlabelled."
+    clarity_or_clutter: "Clear right stack; catalogues are dense and the paid/free difference is only a small badge."
+  evidence: [source_4, video_2, video_3]
+new_player_onboarding:
+  status: observed
+  reason: "Only light-touch guidance seen: a welcome screen and labelled arrows on the side menu. Video_2 (returning player) shows the same sequence, welcome screen with Updates panel and Play (1:00), then labels with cyan arrows on the side menu (1:15), so the real-play observation matches an ordinary client."
+  conventions: ["Welcome screen with large PLAY button and an Updates panel (1686885941-1)", "Text labels with cyan arrows pointing at each side-menu icon (1686885941-2)", "Hand cursor on a vacant plot sign (1686885941-8)"]
+  sequence: ["Welcome screen -> PLAY", "HUD with labelled side menu", "Player discovers House and Vehicle menus independently"]
+  first_independent_action: "Opening the House menu at about 25 s"
+  skip_or_replay: null
+  completed: null
+  observed_seconds: 505
+  completion_seconds: null
+  timing_basis: "From the welcome-screen capture at 01:45:30Z"
+  evidence: [source_4, video_2]
+accessibility_and_comfort:
+  text_and_contrast: "Black text on light translucent panels is readable; translucency over bright scenes lowers contrast."
+  non_color_cues_and_icon_labels: "Side icons labelled once at start; catalogue items carry no labels; pass status shown only by small badge icons."
+  input_support_observed: ["Mouse clicks", "Keyboard movement", "E key to exit vehicle"]
+  motion_audio_settings: ["Settings gear offers auto jump, a camera mode that hides the HUD, and a baby seat option; private servers add time, weather and music controls (video_2 1:30-2:15); not operated here."]
+  settings_tested: []
+  clutter_and_interruptions: ["macOS notifications from the VM overlapped the top-right HUD (environment, not the game)."]
+  evidence: [source_4, video_2]
+commercial_and_return_prompts:
+  first_purchase_prompt_seconds: 325
+  purchase_prompt_count_during_sample: 1
+  onboarding_interruption: "The prompt opened only on clicking a badged vehicle, not unprompted."
+  optional_versus_required_presentation: "Optional: free houses and vehicles sit beside paid ones; paid ones are shown in full and only badged. The shop cart opens 14 round pass badges (Vehicle Upgrade, Penthouse, Premium, On-Demand Fire, Horse, Theme Pack, Faces, Speed, Music, Land, Disaster Pack, Vehicle Pack, Boat Pack, Estates); the guide stresses free houses and cars exist (video_2 3:30-4:00)."
+  return_rewards_and_events: ["October 2026 candy-corn hunt with a 60-item counter, milestone item unlocks and a Halloween event button on the HUD (video_3)", "Ad board showing a countdown ('4 Days 17 Hours 13 Minutes') in the world (1686885941-3)", "Coach collaboration outfit in the Updates panel"]
+  urgency_or_streak_cues: ["Event countdown on an in-world ad", "House cooldown of 10 minutes with 'No wait time for VIP'"]
+  evidence: [source_4, video_2, video_3]
+world_and_presentation:
+  navigation_and_objective_readability: "From the trailer only (video_preview_1): a real-world street grid with painted lanes, crosswalks, working traffic lights and green street-name signs ('Brookhaven Ave', 'Brookhaven St') at 0:26, plus a blue airport sign with a plane icon (0:04, 0:26). Familiar town conventions do the wayfinding instead of quest markers; whether a player finds places quickly was not observed. Video_3 confirms it in play: the arch is visible down the main street and works as a bearing; dual-lane roads with yellow centre lines connect the centre to hills, a tunnel and the beach; most shops have open glass fronts and enterable interiors. During the event a red or magenta line pointed from the player toward the next candy corn (3y3T0_aYf24-002.jpg); whether that line is the game's or a tool the creator owns is not established."
+  landmarks_and_variety: ["Large white arch over the town, visible from streets (0:02, 0:26)", "Brookhaven High School with red-and-white entrance and BHS lettering (0:10)", "Jett's cafe with umbrella patio and a vertical MOTEL sign (0:26, 0:28)", "Residential lawns and red-roofed houses (0:12)", "Playground with tube slide (0:30)", "Fountain plaza lit at night (0:32-0:38)", "Airport (sign only, 0:04)", "Video_3: Big Frank's, police station, gym, hospital, graveyard, Brooks Diner, hair and nails salon, Furniture R Us, bank with laser vault, office, solar farm, hillside roads with a tunnel, beach with a yacht"]
+  environmental_storytelling: ["Every building is a roleplay stage: school, police, cafe, homes with furnished interiors (sofa, bed, kitchen, desk computer with an on-screen Friends/Work/Bills/Spam mail menu at 0:16) that suggest everyday scenes to act out."]
+  audiovisual_consistency: "Consistent bright low-poly town: saturated greens, white and grey buildings, red accents and blocky stylised trees; a lit night variant keeps the same palette (0:30-0:38). Trailer audio is music only."
+  success_effect_intensity_and_clarity: "UI feedback (checks, name on sign, toolbar swap) was clear in play; the trailer shows no reward effects, consistent with a sandbox without rewards."
+  evidence: [source_4, video_preview_1, video_2, video_3]
+technical_quality:
+  loading_or_missing_assets: ["World geometry garbled in the VM (stretched polygons, dark planes) throughout; VM GPU limit, not attributed to the game."]
+  input_or_frame_issues: ["First click on a free car produced no visible result."]
+  ui_defects: []
+  recovery_behavior: "Player force-quit cleanly; no crash observed during play."
+  measurements: ["Launch to welcome screen <= 26 s", "PLAY to claimed plot 156 s", "PLAY to on vehicle 349 s"]
+  measurement_method_and_limits: "Wall-clock timestamps from a macOS VM with a paravirtual GPU; not representative of native devices. The creator's trailer (video_preview_1) shows clean town geometry, interiors and lighting, consistent with the VM's garbled world being an environment fault rather than the game's; a trailer is not evidence of performance on any device. Video_2 and video_3, recorded on Windows PCs, also show clean geometry, confirming the garbling was the VM's; edited video does not establish frame rate."
+  evidence: [source_4, video_preview_1, video_2, video_3]
+transferable_ideas:
+  - "Context toolbar that swaps with state (house-owner tools when home, vehicle tools when seated) keeps the HUD small while exposing the right actions."
+  - "Spawning a vehicle seats the player in it immediately, cutting a walk-and-interact step."
+  - "One-time labels with arrows beside the icon-only side menu teach the HUD without a tutorial."
+  - "Claiming a plot rewrites its sign with the owner's name, giving instant visible ownership to everyone nearby."
+  - "A seasonal collect-N hunt spread across every building, with a running counter and item unlocks at milestones, turns a goal-less sandbox into a tour of the whole map (video_3)."
+  - "Build the world from real-town conventions (named streets, traffic lights, a school, a cafe, an airport sign) so players navigate and invent roleplay from familiar places without quest markers (trailer, video_preview_1)."
+practical_takeaway:
+  strongest_idea: "Menu-driven setup that turns 'own a home and a ride' into a few clicks (browse plot, GO, claim, pick, confirm; pick vehicle and be seated), giving a new player identity and a base within about 3-6 minutes with no currency."
+  main_tradeoff: "Paid and free items share one unlabelled grid marked only by small badges, so a curious click opens a purchase prompt; after setup no goal is given, so solo players rely on self-directed play."
+  suitable_genres_and_stages: ["roleplay and social hubs", "town or base-building games at first session", "lobby customisation"]
+  testable_hypothesis: "Seating the player in a vehicle on spawn and swapping the top toolbar to vehicle controls lowers time-to-first-ride and raises the share of new players who drive in their first session."
+  estimated_effort_and_assumptions: "Estimate: 1-2 days for seat-on-spawn and a state-swapped toolbar, assuming an existing vehicle system and HUD framework."
+inferences:
+  - "The absence of currency or grinding suggests Brookhaven's draw is free self-expression and social roleplay; this short solo sample cannot confirm that."
+uncertainties:
+  - "Vehicles other than the small car driven in video_3 (boats, horse, hoverboard, jet, car upgrades) are evidenced only by video_2's captions, since frames past 10:00 were not downloaded."
+  - "Ordinary roleplay with other players (police chases, families, jobs in use) is shown only in the staged trailer; neither YouTube video shows it."
+  - "Whether the 'Job' tab and roles give structured tasks was not tested."
+  - "The session ended after house, vehicle and an activity with it (riding and recolouring) were done, before the study's stop at 01:54:21Z; the 'activity' was thin because the world could not be seen."
+  - "Account freshness unknown."
+blockers: []

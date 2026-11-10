@@ -1,0 +1,261 @@
+name: "[💬] Word Battle!"
+game_id: "universe:10747710159"
+universe_id: "10747710159"
+place_id: "74300432420573"
+url: "https://www.roblox.com/games/74300432420573"
+creator: "Table IDK Games (group, no verified badge)"
+chart_category: "Trending in Puzzle"
+chart_rank: 1
+genre:
+  primary: "Puzzle"
+  sub: "Word"
+competitors:
+  - name: "Finish The Word! [ SUMMER ]"
+    universe_id: "10189903609"
+    url: "https://www.roblox.com/games/91704854174760"
+    overlap: "Same subgenre (Word) on the 2026-11-08 chart"
+  - name: "[🎃] Last Letter 💬"
+    universe_id: "7983308985"
+    url: "https://www.roblox.com/games/129866685202296"
+    overlap: "Same subgenre (Word) on the 2026-11-08 chart"
+  - name: "🎃 Игра в Слова [🇷🇺]"
+    universe_id: "10766954651"
+    url: "https://www.roblox.com/games/71106427459865"
+    overlap: "Same subgenre (Word) on the 2026-11-08 chart"
+  - name: "[🎃] Wordie🧩"
+    universe_id: "5905501282"
+    url: "https://www.roblox.com/games/17262338236"
+    overlap: "Same subgenre (Word) on the 2026-11-08 chart"
+  - name: "🤔Hot or Cold: Guess the Word!"
+    universe_id: "9702840627"
+    url: "https://www.roblox.com/games/100079017940927"
+    overlap: "Same subgenre (Word) on the 2026-11-08 chart"
+researcher: "R09; gameplay videos V11"
+mode: passive
+play_ended_by: null
+onboarding_video_coverage: covered
+observed_at: "2026-11-09T00:57:00Z"
+observation_status: completed
+previous_observed_at: null
+changes_since_previous: []
+active_play_seconds: null
+play_coordination:
+  resource_key: null
+  wait_seconds: null
+  acquired_at: null
+  expires_at: null
+  released_at: null
+  release_verified: null
+  expiry_or_blocker: null
+context:
+  play_style: "Puzzle / Word (API genre_l1 Puzzle, genre_l2 Word): turn-based word-chain game at shared tables in an open hub"
+  camera_perspective: "Third-person in the hub; on your turn the camera faces the seated active player with the word drawn as letter tiles above them (video_1 0:30, video_2 10:20)"
+  device_and_input: "video_1 desktop with keyboard typing; video_2 touch device with an in-game on-screen QWERTY keyboard, virtual joystick and jump button"
+  observation_environment: "Passive: games, media, votes and thumbnail APIs plus the experience page, read from the host over HTTPS; two YouTube gameplay videos studied from frames every 10 s and auto-captions"
+  visible_server_population: "API at 2026-11-09T00:57Z: 6,044 playing, maxPlayers 25 per server; videos show many round tables for 2 or 4 players ('0/2', '0/4' seat counters) with a few occupied at once"
+  solo_or_group: "Both: 1v1 or 4-seat tables with strangers, plus a 'Play Solo!' button at a table (video_2 11:40)"
+  game_version_if_known: "Created 2026-08-21, updated 2026-11-08T19:27Z; description says the game is in beta; videos from 2026-11-07 and 2026-11-08 show Christmas hats on NPC-like players and a 'WIP' Astral Chair sign"
+  evidence: [source_1, video_1, video_2]
+account_state:
+  freshness: unknown
+  evidence: ["Not played by this study. video_1's player is an alternate account starting at $100 and 0 trophies, which looks new; video_2's player is returning ($570, 2 trophies at 10:00)."]
+evidence:
+  - id: source_1
+    kind: description
+    url: "https://games.roblox.com/v1/games?universeIds=10747710159"
+    captured_at: "2026-11-09T00:57:00Z"
+    media_date_or_version: "updated 2026-11-08T19:27:22Z"
+    timestamps: []
+    screenshots: []
+    limitations: ["Marketing text. Stats at capture: 2,287,466 visits, 5,538 favorites, 4,029 up / 275 down votes (about 94% positive)."]
+  - id: source_2
+    kind: thumbnail
+    url: "https://tr.rbxcdn.com/180DAY-97be2637873dded1edd5026719fb9ff5/768/432/Image/Png/noFilter"
+    captured_at: "2026-11-09T00:57:00Z"
+    media_date_or_version: "TN3"
+    timestamps: []
+    screenshots: []
+    limitations: ["Promotional art: two avatars at a round wooden table, speech bubbles 'LARP' -> 'P...' with the last letter green and underlined. Cannot establish in-game UI."]
+  - id: source_3
+    kind: thumbnail
+    url: "https://games.roblox.com/v2/games/10747710159/media"
+    captured_at: "2026-11-09T00:57:00Z"
+    media_date_or_version: "gallery image asset IDs 94844397336536, 73187037721342, 122521106334461"
+    timestamps: []
+    screenshots: []
+    limitations: ["Three more promotional images of the same composition (CAT->TEA->ART, BOY->YAP, EPIC->CUTE->E...); no gameplay video is listed in the media API (rechecked by V11 at 2026-11-09T23:20Z: four images, no GamePreviewVideo)."]
+  - id: video_1
+    kind: gameplay_video
+    url: "https://www.youtube.com/watch?v=RchQcJb_I1s"
+    captured_at: "2026-11-09T23:30:00Z"
+    media_date_or_version: "2026-11-08"
+    timestamps:
+      - "0:00 spawn in the hub at $100 and 0 trophies; arrow and '!' point at STARTER PACK; 2X CASH button; WIP Astral Chair sign"
+      - "0:10 walk to a round wooden table with a seat counter"
+      - "0:20 seated, 'Starting in 3' countdown"
+      - "0:30 first prompt 'a word starting with: T' over the active player"
+      - "0:40 first word TRAIN typed as letter tiles"
+      - "2:40 'Aaben_ALT, select a letter!' with four letter tiles"
+      - "3:40 cash at $310"
+      - "5:00 reconnect loading screen shows the game's own promo art (LARP -> P), confirming the place"
+      - "5:30 'Steal Cash' prompt next to a seated player"
+      - "7:50-8:00 chair skin stand: 'Next skins in 00:09:14', Legendary Fire chair $10,000, Plastic Chair $350; cash drops to $74 by 8:10 after a purchase"
+      - "7:40 Wins, Cash and Streak leaderboards 'REFRESHING IN 59s' and a FEEDBACK sign"
+      - "8:40-9:59 second match at a table, opponent's turns shown the same way"
+    screenshots: ["RchQcJb_I1s-001.jpg", "RchQcJb_I1s-002.jpg", "RchQcJb_I1s-003.jpg", "RchQcJb_I1s-004.jpg", "RchQcJb_I1s-005.jpg", "RchQcJb_I1s-017.jpg", "RchQcJb_I1s-023.jpg", "RchQcJb_I1s-031.jpg", "RchQcJb_I1s-034.jpg", "RchQcJb_I1s-044.jpg", "RchQcJb_I1s-045.jpg", "RchQcJb_I1s-047.jpg", "RchQcJb_I1s-048.jpg", "RchQcJb_I1s-049.jpg", "RchQcJb_I1s-050.jpg", "RchQcJb_I1s-053.jpg"]
+    limitations:
+      - "Onboarding pick: 'Word Battle' by Aaben_Bloom, 8 subscribers, 30 views, 14:24; first 10:00 studied. No established-channel video of this game exists yet; the game is under three months old."
+      - "Place confirmed from frames: reconnect loading screen at 5:00 shows the gallery art, and the round wooden tables match the promotional images."
+      - "Creator commentary; one network disconnect and rejoin at about 4:50; the alternate account looks new but a previous visit cannot be ruled out; desktop."
+  - id: video_2
+    kind: gameplay_video
+    url: "https://www.youtube.com/watch?v=whL9TFfra0c"
+    captured_at: "2026-11-09T23:55:00Z"
+    media_date_or_version: "2026-11-07"
+    timestamps:
+      - "10:00 touch HUD: $570, 2 trophies; left Shop, Free (with '!' badge) and Skins buttons; right STARTER PACK, 2X CASH, 2X WINS, 2X STREAK"
+      - "10:20 own turn: on-screen QWERTY keyboard, '+7s (3)' time boost, five strike marks, two hearts, a 14 s countdown"
+      - "10:40 opponent 'select a letter!' with four letter tiles"
+      - "11:00 $620 and 3 trophies after a won round"
+      - "11:40 '1/2' seat count with 'Play Solo!' and 'Invite' buttons"
+      - "12:00-19:59 one long 1v1 match against an opponent shown with $2.93k, turns every 10-15 s; hearts drop from two to one at about 15:00"
+    screenshots: ["whL9TFfra0c-001.jpg", "whL9TFfra0c-003.jpg", "whL9TFfra0c-005.jpg", "whL9TFfra0c-006.jpg", "whL9TFfra0c-007.jpg", "whL9TFfra0c-011.jpg", "whL9TFfra0c-013.jpg", "whL9TFfra0c-031.jpg", "whL9TFfra0c-060.jpg"]
+    limitations:
+      - "Session pick: 'Playing word battle on roblox' by ScoutBlox, 413 subscribers, 2 views, 35:02; 10:00-20:00 studied. Place confirmed from the same HUD, tables, Starter Pack and leaderboards as video_1."
+      - "Returning player; child commentary with a second person; captions are noisy."
+gameplay:
+  advertised_loop: "Sit at a table; on your turn type a word starting with the given letter (gallery art shows the previous word's last letter, highlighted green), with no repeated words; boosts add thinking time; the loser is launched out of the chair; global leaderboards."
+  observed_loop: "From video: walk to a free round table, sit, wait for a 3 s countdown, then take turns typing a word that starts with the shown letter(s) within a per-turn timer of about 14 s; the camera turns to the active player and the word builds as large letter tiles above their head; 'Checking word...' validates it. At the start of a chain the player picks one of four offered starting letters. Missing a turn costs a heart (two hearts); the last player standing wins cash and a trophy. Between matches, players walk the hub, buy chair skins, read leaderboards and can take cash from others' tables (video_1, video_2)."
+  first_action: "Video: walk to the nearest round table and sit (video_1 0:00-0:20); no tutorial appears."
+  first_success_seconds: "About 40 s from the video's start: first accepted word TRAIN at video_1 0:40 (10 s frames)."
+  success_feedback: ["Video: the typed word appears as big white letter tiles over the active player, then the next player's prompt carries the required letters (video_1 0:40-1:30).", "Video: winning a round raises cash and trophies in the top bar (video_2 10:00 $570/2 trophies to 11:00 $620/3).", "Video: cash amounts float above seated players' heads (video_1 5:10)."]
+  progression: ["Video: cash and trophy (wins) counters in the top bar.", "Video: chair skins bought with cash on a rotating stand with rarities, e.g. Plastic Chair $350, Legendary Fire chair $10,000, 'Next skins in 00:09:14' (video_1 7:50-8:00).", "Video: Wins, Cash and Streak global boards refreshing every minute (video_1 7:40).", "Video: a limited 'Astral Chair 34/100 Left' on a WIP sign (video_1 0:00, video_2 13:00)."]
+  choices_and_variety: ["Word choice is open-ended (description claims 5 million+ words); seven supported languages.", "Video: picking one of four starting letters for a chain (video_1 2:40, video_2 10:40); players in video_2 set themselves a theme (countries) for extra challenge."]
+  social_and_cooperative: ["Video: 2-seat and 4-seat tables with strangers or friends; 'Invite' and 'Play Solo!' buttons on an empty seat (video_2 11:40).", "Video: a 'Steal Cash' prompt lets a player take cash from others in the hub (video_1 5:30, captions 'I just stole this cash')."]
+  companions_and_pets: []
+  friction: ["Video: touch players type on an in-game keyboard that covers the lower third of the screen during their turn (video_2 10:20).", "Video: a misspelling or an unknown word costs the turn; the creators often hesitate near the timer ('I don't even know this one', video_1 captions).", "Video: the STARTER PACK button carries a permanent animated arrow and '!' badge from the first second (video_1 0:00).", "Description admits beta status; word suggestions listed as 'coming soon'."]
+  evidence: [source_1, source_2, source_3, video_1, video_2]
+pacing:
+  timing_start_definition: "video_1 own timestamp 0:00, the player already spawned in the hub"
+  loading_seconds: null
+  time_to_control_seconds: "0 s in video_1 (the video starts with control)"
+  first_meaningful_choice_seconds: "About 10 s: which table to sit at (video_1 0:10)."
+  first_reward_seconds: "About 40 s to the first accepted word (video_1 0:40); first cash gain is by 3:40 ($100 to $310), exact moment not seen."
+  action_reward_cadence: "One word per player per turn; turns of about 10-15 s each, so a 1v1 chain gives the player an action roughly every 20-30 s (video_2 12:00-19:59)."
+  active_play_versus_travel_or_waiting: "Waiting during opponents' turns is about half of match time in 1v1, more at 4-seat tables; hub walking between matches is short (tables are close)."
+  natural_stopping_points: ["End of each match (one player out of hearts)", "Leaderboard refresh and chair skin rotation"]
+  measurement_method: "Timings from the videos' own timestamps, sampled from frames every 10 s; on-screen turn timer read as 14.1 s and 11.4 s in video_2; estimates to the nearest 10 s."
+  evidence: [source_1, video_1, video_2]
+goals_and_progression:
+  next_goal_clarity: "Very clear: a large headline 'a word starting with:' with the required letters as tiles and a stopwatch (video_1 0:30, video_2 10:20)."
+  short_term_goals: ["Survive your turn with a valid, unused word."]
+  medium_term_goals: ["Outlast the other players at the table to win cash and a trophy (video_2 11:00).", "Save cash for chair skins (video_1 7:50)."]
+  advertised_long_term_goals: ["Global leaderboards."]
+  upgrade_choices: ["'+7s' time boosts, three held in video_2 (10:20); how they are earned or sold not seen.", "Chair skins are cosmetic."]
+  mastery_versus_stat_growth: "Mastery (vocabulary, spelling, speed); cash buys cosmetics, not power, apart from time boosts."
+  unlock_previews_and_optional_activities: ["Chair skin stand with rarities and a rotation timer", "AFK ZONE in the hub (video_1 captions 'AFK zone', sign in frames)", "Limited Astral Chair stock counter"]
+  evidence: [source_1, video_1, video_2]
+failure_and_recovery:
+  observed_failure: "Video: a missed or rejected word costs one of two hearts (video_2 about 15:00); the creator in video_1 loses two matches in the first 5 minutes."
+  explanation: "Rejected words are shown as tiles and 'Checking word...' (video_1 9:30); why a word was rejected was not visible at 480p."
+  cost_or_lost_progress: "Losing a match forfeits the round's cash and trophy; the player is free to sit at another table at once."
+  retry_seconds: "Estimate about 20-30 s: walk to another table and wait for the 3 s countdown (video_1 0:10-0:30)."
+  checkpoints: null
+  non_paid_recovery: "Yes: a new match at any free table or Play Solo."
+  evidence: [video_1, video_2]
+agency_and_social:
+  meaningful_choices: ["Which word to play, including choosing words that leave the opponent a hard letter.", "Which of four starting letters to offer (video_1 2:40).", "Which table and opponent to join; solo or invite."]
+  customization_and_identity: ["universeAvatarType PlayerChoice: players keep their own avatar style.", "Video: chair skins (video_1 7:50)."]
+  cooperation_and_competition: ["Competitive tables with strangers or invited friends; a 'Steal Cash' mechanic between players in the hub (video_1 5:30)."]
+  visible_social_feedback: ["Video: each seated player's cash floats above their head; trophy streak icons with a flame and number over players (video_2 10:00).", "Video: Wins, Cash and Streak leaderboards (video_1 7:40)."]
+  solo_accessibility: "'Play Solo!' on an empty table (video_2 11:40)."
+  evidence: [source_1, video_1, video_2]
+ui:
+  evidence_status: observed
+  visual_style: "Bright cartoon hub with blocky trees and round wooden tables; chunky white letter tiles with dark outlines; bold rounded sans-serif headlines with heavy dark outline over the world."
+  layout_and_hierarchy: "Top bar: green cash with a green '+' and gold trophy count with a yellow '+'; top right settings and music icons. Turn view: headline 'a word starting with:' at top, letter tiles centre, stopwatch right, strike marks bottom centre, hearts bottom right, '+7s' boost left. Hub: left Shop / Free / Skins buttons (touch), right STARTER PACK and 2X CASH / 2X WINS / 2X STREAK buttons (video_1, video_2)."
+  color_scheme: ["saturated green grass and blue sky", "white letter tiles", "green cash and '+' buttons", "gold trophy and '+'", "red hearts and red strike marks", "purple star Starter Pack"]
+  typography:
+    font_appearance: "Bold rounded sans-serif with thick dark outline for headlines and tiles; uppercase tiles"
+    font_family_if_verified: null
+    size_observation: "Headline and letter tiles are very large (tiles about a tenth of the screen height in video_2); seat counters and leaderboard text are small"
+    size_basis: approximate
+    viewport_resolution: "Desktop and phone recordings downscaled to 480p"
+    readability: "Turn prompt is readable even in thumbnails; small hub signs are not."
+  controls:
+    primary_actions: "Walk and sit; type the word (physical keyboard on desktop, in-game QWERTY with 'back' and 'enter' on touch); tap a letter tile to select a starting letter"
+    close_x_appearance_and_location: null
+    modal_behavior: "No modal seen during matches; the turn view replaces the hub camera."
+    state_feedback: "Strike marks turn red with an X; hearts disappear; tiles appear as typed; 'Checking word...' while validating"
+    target_size_and_input: "Touch keys are large and full-width (video_2 10:20); Play Solo and Invite are large buttons"
+  graphics:
+    graphics_versus_text: "Prompt is text plus letter tiles; hub buttons pair a 3D icon with a short label (Shop, Free, Skins, STARTER PACK, 2X CASH)"
+    illustration_or_icon_style: "Glossy 3D icons with outlines; stopwatch icon with seconds"
+    framing_outlines_and_effects: "Thick dark outlines on text; animated pointing arrow at Starter Pack"
+    placement_and_labels: "Every hub button has a label under its icon"
+    clarity_or_clutter: "Turn view is clear; the hub top and sides are crowded with offer buttons and floating cash numbers"
+  evidence: [video_1, video_2]
+new_player_onboarding:
+  status: observed
+  reason: "video_1 starts from an alternate account at $100 and 0 trophies, apparently new; the creator says 'I'm just going to try this game out'. A previous visit by that account cannot be ruled out."
+  conventions: ["No tutorial, text or NPC guidance; the world itself is the instruction: tables with seat counters", "A 3 s 'Starting in' countdown on sitting", "The turn headline 'a word starting with:' teaches the rule on the first turn", "Animated arrow toward STARTER PACK from spawn"]
+  sequence: ["0:00 spawn in hub with control", "0:10 walk to a table", "0:20 sit, countdown", "0:30 first prompt", "0:40 first word accepted"]
+  first_independent_action: "Sitting at a table at about 0:20 (video_1)"
+  skip_or_replay: "Not applicable; no tutorial seen"
+  completed: true
+  observed_seconds: 40
+  completion_seconds: null
+  timing_basis: "video_1 own timestamps from 0:00, 10 s frames; the clip may have been trimmed before spawn"
+  evidence: [video_1]
+accessibility_and_comfort:
+  text_and_contrast: "White outlined headline and tiles have strong contrast on sky and grass."
+  non_color_cues_and_icon_labels: "Strike marks use an X shape as well as red; hearts are counted shapes; hub icons carry labels; promotional art pairs green with an underline."
+  input_support_observed: ["desktop keyboard (video_1)", "touch with in-game keyboard and virtual joystick (video_2)"]
+  motion_audio_settings: ["Settings and music icons top right (not opened)"]
+  settings_tested: []
+  clutter_and_interruptions: ["Touch keyboard covers the lower third during a turn", "Floating cash numbers and offer buttons crowd the hub", "A Roblox platform invite toast appeared over play (video_1 7:20), not the game's own"]
+  evidence: [source_2, source_3, video_1, video_2]
+commercial_and_return_prompts:
+  first_purchase_prompt_seconds: null
+  purchase_prompt_count_during_sample: 0
+  onboarding_interruption: "No purchase dialog opened in either sample; the STARTER PACK button is pointed at by an animated arrow and '!' from spawn (video_1 0:00)."
+  optional_versus_required_presentation: "Offers sit on screen edges: STARTER PACK, 2X CASH, 2X WINS, 2X STREAK, and '+' buttons next to cash and trophies; play itself needs none of them."
+  return_rewards_and_events: ["'Free' button with a '!' badge (video_2 10:00), contents not opened", "Chair skins rotate every few minutes ('Next skins in 00:09:14')", "Leaderboards refresh every 60 s"]
+  urgency_or_streak_cues: ["Limited 'Astral Chair 34/100 Left'", "Skin rotation timer", "Streak board and 2X STREAK pass"]
+  evidence: [video_1, video_2]
+world_and_presentation:
+  navigation_and_objective_readability: "Tables are scattered close together in an open grassy hub with seat counters ('0/2', '0/4', '1/2') floating above them, so finding a game is immediate."
+  landmarks_and_variety: ["Round wooden tables with chairs", "Leaderboard signs and FEEDBACK sign", "Chair skin stand", "AFK ZONE", "Wooden bridge and small island edges (video_1 7:20)"]
+  environmental_storytelling: []
+  audiovisual_consistency: "Consistent bright blocky style; Christmas hats on several players suggest a seasonal item."
+  success_effect_intensity_and_clarity: "Low-key: the reward is the word appearing and the turn passing; the advertised launch-from-chair loss was not visible in the 10 s frames (captions record screaming at losses)."
+  evidence: [video_1, video_2]
+technical_quality:
+  loading_or_missing_assets: ["video_1 creator lost network and rejoined at about 4:50; the loading screen shows the game's own art (not a game defect)."]
+  input_or_frame_issues: []
+  ui_defects: []
+  recovery_behavior: "Rejoin returned the player with cash intact ($310 before and after, video_1 3:40 and 5:10)."
+  measurements: ["Per-turn timer read on screen: 14.1 s and 11.4 s remaining in two frames (video_2 10:40, 10:50)"]
+  measurement_method_and_limits: "Not played; values read from 480p video frames."
+  evidence: [video_1, video_2]
+transferable_ideas:
+  - "A tiny, instantly readable rule shown as one highlighted letter carried from the last answer to the next prompt, so a new player understands the turn without a tutorial (from art and video)."
+  - "A physical, comic loss state (launched out of the chair) turns elimination into spectacle rather than a fail screen (from description)."
+  - "Solo fallback when no opponent is present keeps a multiplayer turn game playable on empty servers (video: 'Play Solo!' on an empty table)."
+  - "Tables with floating seat counters ('0/2', '1/2') in an open hub make matchmaking a walk: no menu, no queue (video)."
+  - "A game-provided on-screen keyboard keeps typed input consistent on touch devices instead of relying on the device keyboard (video_2)."
+practical_takeaway:
+  strongest_idea: "Make the turn's whole rule one huge headline plus tiles over the active player, and make joining a match a matter of sitting at a table with a visible seat counter; together they take a new player from spawn to a first correct answer in about 40 s with no tutorial."
+  main_tradeoff: "Typed words exclude young or non-fluent spellers, and the in-game keyboard covers a third of a phone screen; the hub is crowded with offers (Starter Pack arrow, 2X passes) and cash-stealing, which work against the clean turn view."
+  suitable_genres_and_stages: ["party and social mini-games", "lobby or waiting-room activities", "quiz or educational modes"]
+  testable_hypothesis: "Placing seat-count markers over joinable stations in a hub, with play starting on a 3 s countdown when seated, lets a new player start a first round in under 30 s without menus."
+  estimated_effort_and_assumptions: "Estimate: 1-2 days for seated stations with seat counters and a countdown, assuming existing seating and round UI; a word dictionary would add validation and moderation work."
+inferences:
+  - "The sub-100-day-old game reaching #1 in Trending in Puzzle with ~6k concurrent suggests the simple word-chain loop is appealing, but popularity causes cannot be established from passive material or videos."
+  - "Inference from video_2: players add their own constraints (only countries) once the basic chain is easy, so the loop leaves room for self-made challenge."
+uncertainties:
+  - "No established-channel video of this game exists; both videos are from small channels (8 and 413 subscribers) with very few views."
+  - "Excluded videos: 'Roblox word chain battle full of veterans...' (GGAM BRING, 3.02M subscribers, 385,878 views) was uploaded 2026-07-11, before this game was created on 2026-08-21, so it shows another game. 'La BATALLA de PALABRAS mas intensa de ROBLOX' (Luly, 2026-08-26, 2,184 views) shows a Spanish UI with the same hearts and strike marks but 'Nivel' levels and Sillas/Mascotas buttons and no title or link; it may be an early or localized version of this game but was not confirmed, so it is not cited. The 'Word Battle! Script' exploit video was excluded."
+  - "The advertised launch-out-of-the-chair loss was not seen in 10 s frames; how '+7s' boosts are obtained, what 'Free' gives and the Starter Pack contents are unknown."
+  - "What the four-letter 'select a letter' choice depends on (start of a chain, or after a failed turn) is inferred, not confirmed."
+blockers: []
