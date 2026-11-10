@@ -17,9 +17,20 @@ protected_skill() {
 }
 
 preflight_skill_reconciliation() {
-  local skills_root="$1" source
+  local skills_root="$1" destination_parent source
 
   shift
+
+  destination_parent="$skills_root"
+
+  while [ ! -d "$destination_parent" ]; do
+    destination_parent="$(dirname -- "$destination_parent")"
+  done
+
+  if [ ! -x "$destination_parent" ] || [ ! -w "$destination_parent" ]; then
+    printf 'Cannot write skills directory: %s\n' "$skills_root" >&2
+    return 1
+  fi
 
   if [ -d "$skills_root" ] && { [ ! -x "$skills_root" ] || ! ls -A -- "$skills_root" >/dev/null; }; then
     printf 'Cannot list skills directory: %s\n' "$skills_root" >&2
