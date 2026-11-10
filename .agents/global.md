@@ -563,7 +563,7 @@ return records;
   text, a test fixture, and wording a brief proposes to a worker.
 - **Text an end user reads speaks in what the reader cares about, never in the system's exact
   values.** Where a precise number, state or count changes nothing the reader does, say it in plain
-  words: a balance of 1 is "no money left", a wait of 59 seconds is "about a minute". Keep the
+  words: a fuel tank holding a few drops is "empty", a wait of 59 seconds is "a minute". Keep the
   exact value only where the reader acts on it, such as a price, a quantity they choose or a figure
   they compare, and never add a qualifier such as "almost" or "about" only to make plain words
   technically exact.
