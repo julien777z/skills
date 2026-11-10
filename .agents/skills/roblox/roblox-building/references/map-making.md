@@ -22,6 +22,27 @@ Apply this guidance to the requested genre and map. Preserve its art direction, 
 - Use textured, economical meshes where silhouette and surface detail improve the scene. Measure mesh budgets, reuse assets, and verify performance and loading in play. Enable streaming when appropriate for scale, then test destination loading, disappearance/reappearance, and interior transitions; triangle counts alone do not prove performance.
 - Exclude content spatially when it does not belong in an introductory or restricted area instead of scattering unusable interactions through that area.
 
+## Scene audit
+
+The qualitative criteria above pass easily in prose and fail in the scene, so measure them before
+accepting a map or a visual pass:
+
+- **Repetition.** Count instances per mesh or model asset across the map and per region. When one
+  asset makes up a large share of a category, such as a single tree model forming most of the
+  vegetation, add variants of that asset — at least three shapes for anything repeated hundreds of
+  times — and vary scale, rotation and tint within a deliberate range. Report the top assets and
+  their shares.
+- **Primitive stand-ins.** List focal and arrival-area structures built from plain primitive parts
+  in one smooth material, such as a box house with flat colored panels for windows. Replace them
+  with modular kit pieces or meshes before polishing secondary areas.
+- **Ground.** Large open areas carry more than one terrain material and some height variation,
+  with paths, edges and clusters breaking them up; one flat material from the camera to the
+  horizon is an empty field.
+- **Light and palette.** Capture the arrival area and each region from the gameplay camera under
+  the lighting and time of day players see at runtime, with runtime-loaded terrain present, and
+  compare the result with the game's stated art direction. Lighting that buries the palette in
+  dark or desaturated tones fails a bright or colorful direction even when every asset is right.
+
 ## Functional placement
 
 Place each object for a legible gameplay, environmental, or compositional purpose.

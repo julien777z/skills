@@ -37,6 +37,7 @@ selection:
     chosen: ""
     rationale: ""
     rejected_elements: []
+    critique: [] # {round, beat_or_line, finding, rewrite, disposition: applied | rejected, reason}
 implementation: [] # {content_id, content_owner, change, dependencies, acceptance, status: proposed | implemented | playtested | unknown, evidence}; one entry per changed element, referring to its stable ID above
 risks: []
 # Verification checks use pass | fail | unknown. A pass needs evidence and cannot claim playtested

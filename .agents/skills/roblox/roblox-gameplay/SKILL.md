@@ -14,7 +14,7 @@ short_description: 'Apply every time actively modifying a Roblox game, including
 
 ## Make success clear and satisfying
 
-Apply this skill whenever actively modifying a game. Preserve the authorized scope, genre, established identity, and current gameplay contract. Use it to improve the affected player experience; it does not require adding a new feature, economy, or pet system to every code change.
+Apply this skill whenever actively modifying a game. Preserve the authorized scope, genre, established identity, and core loop; redesign what does not make sense as **Judge the game as a player meets it** says. Use it to improve the affected player experience; it does not require adding a new feature, economy, or pet system to every code change.
 
 Fit the rhythm of success to the requested genre, audience, and mood. Establish an understandable first action and a visible result early, then connect smaller achievements to meaningful longer goals. Fast rewards suit some games; quieter discovery, mastery, or social play can be equally intentional. Do not infer a fixed reward cadence or neurological effect from chart popularity.
 
@@ -28,11 +28,17 @@ Put the first action before everything a new player does not yet need. Update no
 
 Where the end of the guided chain, or of a unit such as a round, a stage, a level or a published creation, leaves the next step unclear, hand off to it: a short card or line naming the next goals or choices, such as continue, try the real mode, or return to the hub, or a cue the world or existing controls already give. A newly unlocked tool or area belongs in that handoff. The end of guidance should never read as silence.
 
+## Judge the game as a player meets it
+
+Every result is judged in the game as a player would meet it, whether you built it or a worker did: from a capture or a playtest, not from the brief, the code or a report. Ask of each thing in view whether it makes sense in this world, not only whether it is broken: an object reads as what it is meant to be, a room's furnishings fit its purpose, a character holds what it holds, a creature belongs in its area's level band, a label sits where it can be read, a rule agrees with the game's other rules. Something that reads wrong is fixed, whoever made it and whenever, even when no brief, check or request mentioned it.
+
+Making the game read right is the agent's call: redesign an asset, a room, a placement, a balance value or a mechanic that does not make sense, including content built before the current task, and report each change with its captures, naming new behaviour as new. This is the global product-choice boundary's game-design exception. Only a change to the game's core loop or genre, to anything players pay for, to security, disclosure or authorization, or to something the user decided goes to the user first.
+
 ## Reward real progress and preserve player understanding
 
 Show what was earned and why using the game's actual rewards and progress states. Synchronize reward UI and effects with authoritative outcomes and prevent duplicates on retries, repeated clicks, or reconnects. A predicted hit animation must not claim an unconfirmed reward. Do not invent currency, misleading pickups, or progress that the game does not grant.
 
-Tie near-term actions to clear medium-term goals and recognizable milestones. New powers, useful upgrades, newly accessible areas, personalization, and increased player skill can all make progress tangible. Vary tasks, pacing, encounters, and scenery while retaining a familiar core action. Avoid extending play only through repetitive waiting or arbitrary travel; preserve intentional anticipation, exploration, and tactical pauses where they make the genre enjoyable.
+Tie near-term actions to clear medium-term goals and recognizable milestones. New powers, useful upgrades, newly accessible areas, personalization, and increased player skill can all make progress tangible. Vary tasks, pacing, encounters, and scenery while retaining a familiar core action. Avoid extending play only through repetitive waiting or arbitrary travel; preserve intentional anticipation, exploration, and tactical pauses where they make the genre enjoyable. Pace a leveled game through level design rather than level requirements on encounters: an encounter never refuses to start because of the player's level. Place each area's creatures and each fight in the level band a player naturally has when the game first sends them there, never above it, and let the curve and the amount of content set how long a world lasts; a check that fails when an area's creatures start above its arrival level keeps that true as content grows.
 
 Show locked content where the player will use it, together with what unlocks it: a silhouetted collection entry, a padlocked slot, a greyed move labelled with the level or mastery that opens it, a mode showing the wins it needs, or a gate that states its requirement as a number the player can read from the approach. The condition shown must be the one the game actually checks. Content the progression contract keeps secret can stay hidden or appear as an unnamed slot.
 
@@ -64,7 +70,7 @@ A walking NPC or creature needs visible locomotion that matches its movement, st
 
 Ground each walking or standing NPC against the actual authored surface using its rig and foot geometry, rather than a guessed root-height offset. Verify both feet from a low side view after appearance changes and through idle animation; neither floating nor feet sunk into paths is acceptable. Hovering must be an intentional creature design with appropriate motion.
 
-Give stationary NPCs visible, restrained idle animation: breathing, a small weight shift, or an occasional glance suited to their character. Standing still must not look frozen. Reuse the rig's animation owner, vary poses where appropriate, keep feet planted, and clean up on streaming or despawn.
+Give stationary NPCs visible, restrained idle animation: breathing, a small weight shift, or an occasional glance suited to their character. Standing still must not look frozen. Reuse the rig's animation owner, vary poses where appropriate, keep feet planted, and clean up on streaming or despawn. A prop a character carries, such as an umbrella, a book or a lantern, reads as held: pose the arm so the forearm comes forward and place the prop just in front of the palm, resting on it or hanging over the forearm, so it moves with the hand through idle and gestures. A prop passing through the middle of a blocky hand or floating beside a straight arm fails; verify it from the front and side in Play.
 
 For face-to-face conversations, guide the player to a clear spot in front of the NPC using actual walking and walking animation before framing the dialogue. Use the NPC's facing or a named conversation anchor, validate the approach and final proximity on the server, and avoid walking through obstacles or other characters. Bound the approach, cancel it on death, departure, or interruption, and restore controls if it fails. Do not snap the player across the scene or frame a conversation from behind either speaker.
 
