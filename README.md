@@ -100,6 +100,7 @@ These run only when you ask for them by name, such as `/code-slop-doctor`.
 - [`merge-now`](.agents/skills/git/merge-now/SKILL.md) — Merge finished pull requests now, then review what merged unreviewed.
 - [`new-doctor`](.agents/skills/doctors/new-doctor/SKILL.md) — Create a doctor skill on the shared doctor-protocol for one class of repository hygiene.
 - [`placeholder-data`](.agents/skills/workspace/placeholder-data/SKILL.md) — Turn a pasted API payload into the same shape with obviously fake values.
+- [`publish-to-roblox`](.agents/skills/roblox/publish-to-roblox/SKILL.md) — Explicit user-invoked publish of the session’s game build to its Roblox experience.
 - [`research-games`](.agents/skills/roblox/research-games/SKILL.md) — Explicit user-invoked research of Roblox charts for the requested audience and region.
 - [`schema-doctor`](.agents/skills/doctors/schema-doctor/SKILL.md) — Check models and schemas for unnecessary nulls, complexity, keys, and indexes.
 - [`security-doctor`](.agents/skills/doctors/security-doctor/SKILL.md) — Find and fix the exploitable vulnerabilities in a codebase, each proven by a concrete attack.
