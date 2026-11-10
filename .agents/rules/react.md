@@ -197,7 +197,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 - **Write labels, descriptions and hints for someone who already trusts the product.** Copy that
   warns the reader about their own ordinary action reads as suspicion. A person submitting a record on
-  behalf of someone in their own workspace, who has already ticked the box that says they may, does
+  behalf of someone in their own workspace, who has already checked the box that says they may, does
   not need to be told that the action is logged or attributed to them.
 - **Name a surface for what it holds, never for the reader's role in it.** A reader knows which role
   they hold, so "Organizer events", "Attendee tickets" or "Your speaker profile" labels them rather
@@ -654,7 +654,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   restores the saved values and a save action. It floats over the page and never takes room in it,
   so nothing beneath it, a page footer included, moves when it rises. It stays in view as the reader
   scrolls while changes are unsaved, and slides away once they are saved or canceled. A reader who
-  unticks one topic on a newsletter preferences page sees it rise, and ticking the topic again sends
+  unchecks one topic on a newsletter preferences page sees it rise, and checking the topic again sends
   it away. A save or reset button per section, a row of them at the end of the page or form, and a
   footer that sticks to the bottom of the page whether or not anything changed are the defect. A
   form that creates a record or submits a flow step is not editing saved values and keeps its own

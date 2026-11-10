@@ -101,8 +101,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **`table` "Plans"**: one row per plan that is not withdrawn, with the columns Plan, Steps done
   ("<done> of <n>"), Running, Waiting on you and Time left, the summary of what the board shows step
   by step, and `details` holding each row's plan write-up, so a row opens the plan.
-- **`tree` "Plan tree"**, described as "Each plan, its steps and their parts, by where they stand",
-  with `open_depth` 2: one entry per plan that is not withdrawn, in approval order, `label` the
+- **`tree` "Plan tree"**, with `open_depth` 2: one entry per plan that is not withdrawn, in approval order, `label` the
   plan's title, `figure` "<done> of <n> steps" and `meta` "~<n> min left", or "Proposed" for a plan
   not yet approved; under it one entry per step, in plan order, `label` "<n>. <step title>", `tone`
   as its progress segment is toned, `meta` its status, then "~<n> min" while it is not done or its
@@ -124,7 +123,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   waiting on you" when a question is open, and `body` the first open question in a sentence and
   the step it blocks; otherwise, while a step is blocked, `tone` `critical`, `title` "<step title> is
   blocked" and `body` what it waits for.
-- **`board` "Work"**, described as "Each step of the task's plans, by where it stands", four
+- **`board` "Work"**, four
   columns, with Up next and Done setting `page_size` 5 so each shows five cards at a time:
 
 | Column | `tone` | Cards |
@@ -180,15 +179,14 @@ and deliver the same dashboard again on every request so the user keeps one page
   user, labeled as an assumption.
 - **`table`**, only when the ledger holds tabular facts worth a grid, such as checks per pull
   request head.
-- **`tree` "What each pull request changes"**, described as "Each pull request, the areas it
-  touches and what changes in each", with `open_depth` 2: one entry per pull request the page
+- **`tree` "What each pull request changes"**, with `open_depth` 2: one entry per pull request the page
   covers, `label` its name and `figure` "<n> changes"; under it one entry per area its "What changed
   in" outline groups by, in that order, `label` the group's title and `figure` the count of its
   items, followed by "Config" and "Migrations" entries when its config or migration changes hold
   anything; and under each area one entry per change, `label` the item's title, or for config and
   migrations the `name` with `meta` its `change` (Added, Changed or Removed). The tree is the map;
   the details are in "Change details".
-- **`tabs` "Change details"**, described as "What each change does, one kind of change at a time":
+- **`tabs` "Change details"**:
   the tabs "Code", holding an `outline` "What changed in <pull request name>" per pull request the
   page covers, in the tree's order; "Config", holding the `changes` "Config changes"; and
   "Migrations", holding the `changes` "Migration changes". A tab with nothing in it keeps its entry

@@ -17,7 +17,7 @@ export function TableSection({ section }: { section: TableSectionSpec }): ReactN
   const rows = withKeys(section.rows, (cells) => cells.join('\u0000'));
   const openedDetails = details?.[rows.findIndex(({ key }) => key === openedRow)];
   const proseColumns = section.columns.map((_, column) =>
-    section.rows.some((cells) => (cells[column] ?? '').length > PROSE_CELL_LENGTH),
+    section.rows.some((cells) => cells[column].length > PROSE_CELL_LENGTH),
   );
 
   if (openedRow && !openedDetails) {
