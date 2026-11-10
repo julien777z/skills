@@ -28,7 +28,8 @@ study:
         - {researcher: "R11", game_ids: ["universe:6331902150", "universe:5174979552"], status: completed, blocker: null}
         - {researcher: "R12", game_ids: ["universe:10771743491", "universe:6026405541"], status: completed, blocker: null}
         - {researcher: "R13", game_ids: ["universe:4260784961"], status: completed, blocker: null}
-        - {researcher: "V01-V09, V10P", game_ids: ["all 25"], status: partial, blocker: "YouTube's bot check blocked this machine; Word Battle!, Ragdoll Physics, Forsaken, South Hell and Napoleonic Wars have no gameplay video."}
+        - {researcher: "V01-V09, V10P", game_ids: ["all 25"], status: partial, blocker: "YouTube's bot check blocked this machine before Word Battle!, Ragdoll Physics, Forsaken, South Hell and Napoleonic Wars were watched."}
+        - {researcher: "V11", game_ids: ["universe:10747710159", "universe:10770575733", "universe:10771743491", "universe:6331902150", "universe:4260784961", "universe:1686885941"], status: completed, blocker: null}
 synthesis:
     all_researchers_finished: true
     gameplay_patterns:
@@ -139,7 +140,7 @@ synthesis:
           eligible_count: 6
           confidence: low
           limitations:
-              - "Eligible adds 3183403065, 9867225552 and 6375110339, whose matchmaking is a menu or queue button. 10747710159 advertises seated tables but has no footage."
+              - "Eligible adds 3183403065, 9867225552 and 6375110339, whose matchmaking is a menu or queue button. 10747710159 advertises seated tables; its footage arrived after this synthesis."
               - "In 10772543706 the leader-owned save stopped a joined player's progress from saving when the leader left; one game only."
         - pattern: "Friend multipliers are shown on the HUD or a board (friend boost on selling, gold multiplier with friends in the server, coin boost per friend, a Friends Boost meter)."
           supporting_game_ids: ["10209534490", "3359505957", "5995470825", "10769279468"]
@@ -297,14 +298,14 @@ synthesis:
           evidence_ids: ["3183403065:play_1", "6375110339:play_1"]
         - genre: "Asymmetric round survival"
           game_ids: ["6026405541", "6331902150", "10771743491"]
-          note: "Round goals fit one line per role with a hard timer and a single objective line with a count; play needs a full server. Only 6026405541 has footage (a trailer); the other two are description and art only."
+          note: "Round goals fit one line per role with a hard timer and a single objective line with a count; play needs a full server. When this synthesis was written only 6026405541 had footage (a trailer); the other two rested on description and art."
           evidence_ids: ["6026405541:source_3", "6331902150:description_1", "10771743491:source_2"]
         - genre: "Physics sandbox"
           game_ids: ["10770575733"]
-          note: "Advertised with every tool free from the start and no progression; no footage, so nothing is claimed beyond the description."
+          note: "Advertised with every tool free from the start and no progression; it had no footage when this synthesis was written, so nothing is claimed beyond the description."
           evidence_ids: ["10770575733:api_1"]
     evidence_limits:
-        - "Five games have no gameplay video and are partial: 10747710159 (Word Battle!), 10770575733 (Ragdoll Physics), 10771743491 (South Hell), 6331902150 (Forsaken), 4260784961 (Napoleonic Wars). They count as unknown, never as evidence against a pattern, and appear only in eligible counts where their description or art is relevant."
+        - "The synthesis counts were made before the 2026-11-09 video pass, when five games had no gameplay video: 10747710159 (Word Battle!), 10770575733 (Ragdoll Physics), 10771743491 (South Hell), 6331902150 (Forsaken), 4260784961 (Napoleonic Wars). In these counts they are unknown, never evidence against a pattern, and appear only in eligible counts where their description or art is relevant. Their records are now completed from that pass's footage, which a later synthesis can count."
         - "The VM's GPU garbled several 3D worlds in real play (notably 994732206 and 3183403065, and parts of 1686885941); videos confirm those were VM faults, not game art. World-readability and navigation claims from those sessions rest on video."
         - "Agent input was slow and imprecise (a failed mouse-hold in 10772543706, a D-key defect in 7529591378, blind movement in 5995470825), so play-based difficulty, feel, stall-length and accidental-purchase claims are weak; UI presence and ordering from captures are reliable."
         - "Videos are edited and usually from returning or skilled players; no tutorial duration or session length is taken from them, and creators' confusion may be performed for an audience."
