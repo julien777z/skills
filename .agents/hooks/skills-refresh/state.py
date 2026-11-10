@@ -2,7 +2,8 @@ from hashlib import sha256
 from json import dumps, loads
 from os import chown, geteuid, replace
 from pathlib import Path
-from subprocess import PIPE, CalledProcessError, run
+from subprocess import PIPE, run
+from sys import stderr
 from tempfile import NamedTemporaryFile
 
 from models import RefreshOutcome
@@ -28,21 +29,35 @@ def checkout_root(source: Path) -> Path:
     return common.resolve().parent
 
 
+def commit_graph_is_valid(checkout: Path) -> bool:
+    """Check both the exit status and diagnostics from Git's graph verifier."""
+
+    verification = run(
+        ["git", "-c", f"safe.directory={checkout}", "-C", str(checkout), "commit-graph", "verify", "--no-progress"],
+        stderr=PIPE, text=True, timeout=30,
+    )
+
+    if verification.stderr:
+        print(verification.stderr, file=stderr, end="")
+
+    return verification.returncode == 0 and not verification.stderr
+
+
 def repair_commit_graph(source: Path) -> bool:
     """Rebuild the derived graph if Git cannot verify it."""
 
     checkout = checkout_root(source)
 
-    try:
-        git(checkout, "commit-graph", "verify")
-    except CalledProcessError:
-        git(checkout, "-c", "core.commitGraph=false", "fsck", "--connectivity-only", "--no-reflogs", "--no-dangling")
-        git(checkout, "commit-graph", "write", "--reachable")
-        git(checkout, "commit-graph", "verify")
-
-        return True
-    else:
+    if commit_graph_is_valid(checkout):
         return False
+
+    git(checkout, "-c", "core.commitGraph=false", "fsck", "--connectivity-only", "--no-reflogs", "--no-dangling")
+    git(checkout, "commit-graph", "write", "--reachable")
+
+    if not commit_graph_is_valid(checkout):
+        raise ValueError("The shared skills commit graph failed verification after rebuilding")
+
+    return True
 
 
 def is_ancestor(source: Path, ancestor: str, descendant: str) -> bool:
