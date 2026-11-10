@@ -164,7 +164,7 @@ goals_and_progression:
     medium_term_goals: ["Finish 5 placement games to get a rank", "Free Spins at 23 and 33 minutes", "Playtime reward chests", "Video: three quests with progress bars beside SPAWN (headshots, midair kills, melee kills) and a quest-XP bar toward a premium weapon chest (video_1 0:00)", "Video: 'Keep playing for FREE GIFTS!' bar with gifts at 10, 20 and 30 minutes (video_1 0:00)", "Video: next account level, which grants gems, coins and new abilities (video_1 1:30, 7:30)", "Video: per-weapon quest toasts such as 'Get 30 sniper kills (7/30)' (video_3 1:00)"]
     advertised_long_term_goals: ["Leaderboard ranks", "Unlocking weapons, skins and abilities with coins and gems", "Mythic weapons (title)"]
     upgrade_choices: ["Video: weapon choice per slot with a stat card (damage per second, damage, head damage, fire rate, ammo, fire mode and a spread chart) (video_2 0:15-0:30)", "Video: three abilities chosen from a pool (video_2 0:45)", "Video: several saved loadouts ('Editing Loadout 4', Page 1/2) with primary, secondary, melee, abilities, kill effect and kill icon (video_2 4:45, video_3 8:15)"]
-    mastery_versus_stat_growth: "Play inference: core combat reads as aim and movement mastery with abilities; paid weapons labelled 'OP' suggest some stat advantage is sold. Video: stat cards show weapons differ in damage per second (529-571 on the rifles and blasters shown), and the skilled-play tips are about weapon choice, high ground and movement rather than levels (video_2)."
+    mastery_versus_stat_growth: "Play inference: core combat reads as aim and movement mastery with abilities; paid weapons labeled 'OP' suggest some stat advantage is sold. Video: stat cards show weapons differ in damage per second (529-571 on the rifles and blasters shown), and the skilled-play tips are about weapon choice, high ground and movement rather than levels (video_2)."
     unlock_previews_and_optional_activities: ["Shop carousel of Premium Weapons and chests", "Loadout page (not opened in play; video_2 shows it)", "Inspect (V) and Emote (B)", "Video: locked weapons shown in the list with a padlock and their coin price (video_2 0:30)", "Video: Gun Game event collectible 'Pick up 9 more Baby Tralalas to unlock! (10% drop on kill)' (video_1 8:00-9:45)", "Video: Free Spin, Rewards, Raffle and Christmas event icons across the top of the spawn menu (video_1 0:00)"]
     evidence: [play_1, api_1, video_1, video_2, video_3]
 failure_and_recovery:
@@ -185,7 +185,7 @@ agency_and_social:
 ui:
     evidence_status: observed
     visual_style: "Bright cartoon UI with chunky rounded sans-serif in white and gold with heavy dark outlines, saturated gradient buttons and glowing item art over a blocky blue/yellow arena."
-    layout_and_hierarchy: "Combat HUD: team scores and timer top centre with per-player avatar strip below; mode name top right; key-hint list on the right edge (Emote B, Settings K, Slide C, Inspect V); weapon slots 1-3 right; ability buttons Q/E/X bottom centre; health bar bottom left; ammo beside abilities; Scoreboard/Quick Melee hints bottom right. Spawn menu: Loadout/Shop/Settings column on the left, promo carousel centre, big green SPAWN button."
+    layout_and_hierarchy: "Combat HUD: team scores and timer top center with per-player avatar strip below; mode name top right; key-hint list on the right edge (Emote B, Settings K, Slide C, Inspect V); weapon slots 1-3 right; ability buttons Q/E/X bottom center; health bar bottom left; ammo beside abilities; Scoreboard/Quick Melee hints bottom right. Spawn menu: Loadout/Shop/Settings column on the left, promo carousel center, big green SPAWN button."
     color_scheme: ["Blue vs red team colors", "Green for primary action (SPAWN, RESPAWN NOW, CLAIM)", "Gold for coins and rewards", "Red square X close buttons", "Black translucent panels for results and rewards"]
     typography:
         font_appearance: "Rounded heavy display sans with dark outline for headings and buttons; plain sans for small labels"
@@ -198,7 +198,7 @@ ui:
         primary_actions: "SPAWN / RESPAWN NOW (green, with 'Press Space or F'), CLAIM buttons, ability buttons with key letters."
         close_x_appearance_and_location: "Red square button with white X and diagonal stripes, overlapping the top-right corner of each panel (results, Playtime Rewards, Starter Pack)."
         modal_behavior: "Panels stack after events: results -> spawn menu; death -> Playtime Rewards -> spawn menu with deals; second death -> Starter Pack over the death page. Each closes with its X."
-        state_feedback: "Claimed reward turns to a check and grey CLAIMED; ability button shows cooldown seconds; damage vignette and health bar color (green -> yellow/orange)."
+        state_feedback: "Claimed reward turns to a check and gray CLAIMED; ability button shows cooldown seconds; damage vignette and health bar color (green -> yellow/orange)."
         target_size_and_input: "Large buttons; keyboard alternative shown for spawn and abilities."
     graphics:
         graphics_versus_text: "Icons carry most meaning (coin piles, chests, gems, wings-heart) with short labels beneath."
@@ -220,7 +220,7 @@ new_player_onboarding:
     timing_basis: "Play: from first input at 00:17:12Z. Video timings are not used for onboarding because no video starts from a new player's state."
     evidence: [play_1, video_1]
 accessibility_and_comfort:
-    text_and_contrast: "High-contrast outlined text over busy scenes; small grey hints are lower contrast."
+    text_and_contrast: "High-contrast outlined text over busy scenes; small gray hints are lower contrast."
     non_color_cues_and_icon_labels: "Abilities and actions carry key letters; reward icons carry text labels; teams are separated mainly by color. Video: ability buttons are icons with key letters but no names, and first-time players could not tell their effects (video_1 captions); the small white ammo count beside the X ability was missed for four minutes (video_1 4:02 captions)."
     input_support_observed: ["Keyboard and mouse", "Description claims phone, tablet and console", "Video: keyboard and mouse in all three videos"]
     motion_audio_settings: []
@@ -237,7 +237,7 @@ commercial_and_return_prompts:
     evidence: [play_1, video_1, video_2, video_3]
 world_and_presentation:
     navigation_and_objective_readability: "Objective readable from HUD; arena routes hard to read from inside the enclosed spawn room, whose walls look like windows."
-    landmarks_and_variety: ["Blocky blue city-tower arena with yellow ramps and a stylised white tree (TDM map)", "Different map for CTF (purple/yellow)", "Video: industrial yard with crates, pipes, cranes and climbable roofs (video_1 TDM)", "Video: black-and-yellow block arena (video_2 FFA)", "Video: island town by the sea with a biplane prop and a long bridge (video_3)", "Video: rail yard with trains for Gun Game (video_1)"]
+    landmarks_and_variety: ["Blocky blue city-tower arena with yellow ramps and a stylized white tree (TDM map)", "Different map for CTF (purple/yellow)", "Video: industrial yard with crates, pipes, cranes and climbable roofs (video_1 TDM)", "Video: black-and-yellow block arena (video_2 FFA)", "Video: island town by the sea with a biplane prop and a long bridge (video_3)", "Video: rail yard with trains for Gun Game (video_1)"]
     environmental_storytelling: []
     audiovisual_consistency: "Consistent bright blocky palette; audio not assessed."
     success_effect_intensity_and_clarity: "Play: end-of-match reward cards are bold; in-match hit feedback not observed (no hits). Video: each kill layers a skull icon at the crosshair, a medal, the kill feed line with '+180' coins and a burst of floating coin numbers; high (video_1, video_3)."

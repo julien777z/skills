@@ -60,7 +60,7 @@ context:
 account_state:
     freshness: fresh
     evidence:
-        - "The VM account is the user's existing Roblox account, but this game treated it as new: it opened a forced Basics Tutorial on entry, labelled the player 'Newcomer', started the daily streak at Day 1 and showed a 'Welcome Offer - a one-time pack for new players' (7529591378-2, -3, -19, -21)."
+        - "The VM account is the user's existing Roblox account, but this game treated it as new: it opened a forced Basics Tutorial on entry, labeled the player 'Newcomer', started the daily streak at Day 1 and showed a 'Welcome Offer - a one-time pack for new players' (7529591378-2, -3, -19, -21)."
 evidence:
     - id: api_1
       kind: description
@@ -298,7 +298,7 @@ agency_and_social:
 ui:
     evidence_status: observed
     visual_style: "Clean sports-broadcast look: bold condensed all-caps headings, dark translucent panels, red accents on a bright arena."
-    layout_and_hierarchy: "Bottom-centre player card (rating box, name, archetype, rank badge); left-side tutorial step list; large centred headline for instructions; full-screen dimmed modals for completion, daily reward and offers; menu of four tall image cards."
+    layout_and_hierarchy: "Bottom-center player card (rating box, name, archetype, rank badge); left-side tutorial step list; large centered headline for instructions; full-screen dimmed modals for completion, daily reward and offers; menu of four tall image cards."
     color_scheme:
         - "White/near-white text"
         - "Dark charcoal translucent panels"
@@ -313,8 +313,8 @@ ui:
         viewport_resolution: "1920x1200 points"
         readability: "Headlines very readable; left-side tutorial body text and the in-world wrong-action banner are low contrast."
     controls:
-        primary_actions: "Keyboard verbs (E shoot, 1 pass, R steal, P drop ball, L switch camera) listed with keycaps in the tutorial panel; modal buttons are wide pills (green primary, grey secondary)."
-        close_x_appearance_and_location: "No X; modals close with a text button: 'Back to Menu' grey pill, 'Maybe later' red text with a left chevron centred under the offer card, red 'Back' pill at the bottom of the menu."
+        primary_actions: "Keyboard verbs (E shoot, 1 pass, R steal, P drop ball, L switch camera) listed with keycaps in the tutorial panel; modal buttons are wide pills (green primary, gray secondary)."
+        close_x_appearance_and_location: "No X; modals close with a text button: 'Back to Menu' gray pill, 'Maybe later' red text with a left chevron centered under the offer card, red 'Back' pill at the bottom of the menu."
         modal_behavior: "Daily reward then welcome offer chain on menu arrival; offer fades in over the menu and dims it."
         state_feedback: "Shot meter arc, floating result text, step counter, highlighted Daily Tasks ring."
         target_size_and_input: "Modal buttons about 260x55 px at 1920 wide; menu cards very large."
@@ -326,7 +326,7 @@ ui:
         clarity_or_clutter: "Clear and sparse; the main risk is low-contrast instruction text."
     video_observations:
         - "Mobile HUD: left thumbstick, large right sprint and shoot buttons, a lettered row (Z X C V) for moves, numbered pass targets 1-4 top right, camera and 'Screen' buttons; tutorial text stays small top-left (yt_onboarding_1 0:30)."
-        - "Match HUD: bottom-centre 'PB HOME/AWAY' scoreboard with fouls and clock, a top-right stat strip with a live letter grade (D+ to B+), team list at left (yt_onboarding_1 6:30-9:45)."
+        - "Match HUD: bottom-center 'PB HOME/AWAY' scoreboard with fouls and clock, a top-right stat strip with a live letter grade (D+ to B+), team list at left (yt_onboarding_1 6:30-9:45)."
         - "Tab Menu: black full-screen pages with a big italic 'TAB MENU' title, image cards for Attributes / Badges / Vitals / Animations, a red 'Back' pill at the bottom, and a profile strip (OVR ring, coins, tickets, Profile, Season Pass, settings gear) top right (yt_skilled_1 0:15-2:00)."
         - "Settings split into Sound / Graphics / Gameplay / Camera / Inputs / Meter tabs with left/right arrows and sliders (yt_skilled_1 3:45-4:15)."
         - "Shot meter is a vertical arc beside the player with green verdict text; a red ring under the player marks control (all videos)."
@@ -337,7 +337,7 @@ new_player_onboarding:
     conventions:
         - "Title card stating expected length ('Basics Tutorial - about 1 minute')."
         - "Step counter 'Step N of 3' with verb, one-line instruction and keycap."
-        - "Big centred headline for the current prompt ('Press R to steal - walk right up to them first')."
+        - "Big centered headline for the current prompt ('Press R to steal - walk right up to them first')."
         - "Wrong-action correction and limited-tries failure message."
         - "Reward on completion (1,000 coins) followed by an immediate offer to play a real 1v1."
     sequence:
@@ -360,7 +360,7 @@ new_player_onboarding:
     evidence: [play_1, yt_onboarding_1]
 accessibility_and_comfort:
     text_and_contrast: "Headlines strong; tutorial side panel and in-world prompts are thin white text over bright court, often hard to read."
-    non_color_cues_and_icon_labels: "Success uses words ('Perfect Release') plus icon, not colour alone; reward icons labelled."
+    non_color_cues_and_icon_labels: "Success uses words ('Perfect Release') plus icon, not color alone; reward icons labeled."
     input_support_observed:
         - "Keyboard keycaps shown; 'Switch Camera - can be used for joystick dribbling' hints at other input modes."
         - "Video: full mobile touch layout (yt_onboarding_1) and controller play (yt_skilled_1, yt_session_1)."
@@ -368,7 +368,7 @@ accessibility_and_comfort:
     motion_audio_settings: []
     settings_tested: []
     clutter_and_interruptions:
-        - "Persistent alpha bug banner at top centre."
+        - "Persistent alpha bug banner at top center."
         - "Two chained modals (daily reward, welcome offer) on first menu arrival."
     evidence: [play_1, yt_onboarding_1, yt_skilled_1]
 commercial_and_return_prompts:
@@ -389,7 +389,7 @@ world_and_presentation:
     navigation_and_objective_readability: "Downward chevron marker over the stands and 'Guard this player' label point at targets, but the steal target spawned out of view."
     landmarks_and_variety:
         - "Indoor arena with branded banners and a scoreboard; city 'Leagues' building seen on the teleport screen."
-        - "Video: open city park with many outdoor courts, storefronts (clothing shop, 'Hoop Journey' store), a dome arena, roads driven by go-kart, and players' private gyms in their own colours (yt_onboarding_1 3:45-5:30; yt_session_1 9:30-16:00)."
+        - "Video: open city park with many outdoor courts, storefronts (clothing shop, 'Hoop Journey' store), a dome arena, roads driven by go-kart, and players' private gyms in their own colors (yt_onboarding_1 3:45-5:30; yt_session_1 9:30-16:00)."
     environmental_storytelling:
         - "Player poster banners ('Glory', 'Got 'em', 'No OT tonight') give a pro-league tone."
     audiovisual_consistency: "Consistent broadcast styling across tutorial, teleport and menu (audio not captured)."

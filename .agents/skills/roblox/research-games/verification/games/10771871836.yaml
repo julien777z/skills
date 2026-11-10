@@ -69,7 +69,7 @@ evidence:
       screenshots: []
       limitations:
           - "Marketing text: you are a journalist hired by 'Big Media' to spread chaos and panic in a park; choose to destroy a peaceful society or change fate. Credits 'We Become What We Behold' by Nicky Case and lists CC sound sources including screams and gunshots."
-          - "Stats at retrieval: 20,398,061 visits, 164,571 favourites, 10,713 playing; votes 38,913 up / 4,202 down (about 90% positive); page aggregate rating 90.3 from 43,119 ratings."
+          - "Stats at retrieval: 20,398,061 visits, 164,571 favorites, 10,713 playing; votes 38,913 up / 4,202 down (about 90% positive); page aggregate rating 90.3 from 43,119 ratings."
           - "Age-recommendation API: Maturity 'Minimal' with descriptors Blood (Light/Unrealistic), Fear (Occasional/Mild), Violence (Occasional/Mild)."
           - "Game-pass API returned no passes; badges API returned none; the experience sells developer products in game (see play_1)."
     - id: thumbnail_1
@@ -80,7 +80,7 @@ evidence:
       timestamps: []
       screenshots: []
       limitations:
-          - "Hand-drawn grey stick-figure art of a screaming peep beside a TV with a recursive picture, red '#BE SCARED. BE ANGRY.' banner; 'GOOD ENDING?' text; TV headlines '#OOH NICE HAT' and '#nvm hats aren't cool anymore'. Promotional; matches the in-game art seen in play."
+          - "Hand-drawn gray stick-figure art of a screaming peep beside a TV with a recursive picture, red '#BE SCARED. BE ANGRY.' banner; 'GOOD ENDING?' text; TV headlines '#OOH NICE HAT' and '#nvm hats aren't cool anymore'. Promotional; matches the in-game art seen in play."
           - "Media list holds images only; no gameplay video was available and none was watched."
     - id: play_1
       kind: actual_play
@@ -91,7 +91,7 @@ evidence:
       screenshots: ["10771871836-1.png", "10771871836-2.png", "10771871836-3.png", "10771871836-4.png", "10771871836-5.png", "10771871836-9.png", "10771871836-10.png", "10771871836-14-r.png", "10771871836-15.png", "10771871836-18-r.png", "10771871836-19.png", "10771871836-23.png", "10771871836-25.png", "10771871836-26-1.png", "10771871836-26-3.png", "10771871836-33.png", "10771871836-39.png"]
       limitations:
           - "VM rendering looked correct for this flat 2D scene; no garbling observed."
-          - "Peeps move continuously and the capture-to-click loop took several seconds, so many shots missed their subject; a guest-side colour detector was used to aim at the hat, couple and spiky character. Missed shots reflect this harness latency, not necessarily game difficulty for a human."
+          - "Peeps move continuously and the capture-to-click loop took several seconds, so many shots missed their subject; a guest-side color detector was used to aim at the hat, couple and spiky character. Missed shots reflect this harness latency, not necessarily game difficulty for a human."
           - "Chapter 1 did not reach an ending within the 1500 s cap; four story beats were reached."
     - id: video_onboarding_1
       kind: gameplay_video
@@ -126,11 +126,11 @@ evidence:
           - "Returning within the session (five endings already found); chat suggestions steer some choices."
 gameplay:
     advertised_loop: "Photograph events in a park as a news journalist; what you broadcast changes how the crowd behaves, leading to one of 12 endings."
-    observed_loop: "Move the viewfinder over the park and click to take a photo; the TV in the centre zooms to fill the screen and broadcasts the photo with a hashtag headline, then the crowd reacts (copies hats, gathers to say cheese, grows fearful). Only photos of specific events advance the story: a man in a bowler hat ('OOH NICE HAT', after which other peeps wear hats), a couple with hearts ('GROSS, GO GET A ROOM'), and a spiky-haired angry square ('CRAZED SQUARE ATTACKS', after which worried-faced circles appear). Ordinary shots give 'just some normal peeps', 'PEEPS SAY CHEESE' or 'WOWWEE, IT'S NOTHING'. (play_1) Videos (video_onboarding_1, video_skilled_1, video_session_1) show the same loop and extend it past where real play stopped: each broadcast escalates a chain (hat -> couple -> crazed square -> CIRCLE FEARS SQUARES -> SQUARE SNOBS CIRCLES -> CIRCLE HATES SQUARES -> ALMOST EVERYONE HATES EVERYONE -> BE SCARED. BE ANGRY.), the park turns pink-faced and armed, the camera pulls back to a laptop at the news station, and an ending card names the ending. Players then replay with different subjects (the lovers, the man in the suit paying the screamer, the cricket) to reach other endings; peace-themed shots are answered by the boss's captions ('peace is boring, violence goes viral', 'Nobody watches peeps get along. Bring me screaming.')."
+    observed_loop: "Move the viewfinder over the park and click to take a photo; the TV in the center zooms to fill the screen and broadcasts the photo with a hashtag headline, then the crowd reacts (copies hats, gathers to say cheese, grows fearful). Only photos of specific events advance the story: a man in a bowler hat ('OOH NICE HAT', after which other peeps wear hats), a couple with hearts ('GROSS, GO GET A ROOM'), and a spiky-haired angry square ('CRAZED SQUARE ATTACKS', after which worried-faced circles appear). Ordinary shots give 'just some normal peeps', 'PEEPS SAY CHEESE' or 'WOWWEE, IT'S NOTHING'. (play_1) Videos (video_onboarding_1, video_skilled_1, video_session_1) show the same loop and extend it past where real play stopped: each broadcast escalates a chain (hat -> couple -> crazed square -> CIRCLE FEARS SQUARES -> SQUARE SNOBS CIRCLES -> CIRCLE HATES SQUARES -> ALMOST EVERYONE HATES EVERYONE -> BE SCARED. BE ANGRY.), the park turns pink-faced and armed, the camera pulls back to a laptop at the news station, and an ending card names the ending. Players then replay with different subjects (the lovers, the man in the suit paying the screamer, the cricket) to reach other endings; peace-themed shots are answered by the boss's captions ('peace is boring, violence goes viral', 'Nobody watches peeps get along. Bring me screaming.')."
     first_action: "Click PLAY on the main menu, then click anywhere in the park to take a photo"
     first_success_seconds: 47
     success_feedback: ["Full-screen TV zoom with the photo and a hashtag headline bar; story beats use a red bar with white bold caps versus black bars for non-events (10771871836-14-r, -18-r, -26-1 vs -4, -33).", "The crowd visibly changes after a story broadcast (hats spread, peeps cluster to say cheese, worried faces appear) (10771871836-15, -19, -26-3).", "Mini TV in the park keeps showing the last broadcast."]
-    progression: ["Story beats within Chapter 1; 12 endings tracked on the menu ('0 / 12 endings found'); chapter switcher on the menu ('click to switch chapters').", "Ending card: polaroid of the ending with a 'NEW!' tag, 'ending 1 of 12', ending name and one-line moral, 'n / 12 endings found', red PLAY AGAIN and grey MENU brush buttons, footer 'new endings are unlocked now. hints are in the album.' (video_onboarding_1 7:30)", "ENDINGS album: 12 polaroids, found ones show art, unfound ones are black with the name visible, two 'secret' slots show a key; hovering shows a free one-line hint below (video_session_1 20:30)", "Skilled route reaches the first ending about 3:45 into a silent walkthrough and a second (cricket) in under a minute more (video_skilled_1 3:45, 4:30)"]
+    progression: ["Story beats within Chapter 1; 12 endings tracked on the menu ('0 / 12 endings found'); chapter switcher on the menu ('click to switch chapters').", "Ending card: polaroid of the ending with a 'NEW!' tag, 'ending 1 of 12', ending name and one-line moral, 'n / 12 endings found', red PLAY AGAIN and gray MENU brush buttons, footer 'new endings are unlocked now. hints are in the album.' (video_onboarding_1 7:30)", "ENDINGS album: 12 polaroids, found ones show art, unfound ones are black with the name visible, two 'secret' slots show a key; hovering shows a free one-line hint below (video_session_1 20:30)", "Skilled route reaches the first ending about 3:45 into a silent walkthrough and a second (cricket) in under a minute more (video_skilled_1 3:45, 4:30)"]
     choices_and_variety: ["Which events to photograph steers the story (advertised branching endings; branching itself not reached).", "Several distinct event types appeared (hat, lovers, crazed square, 'hi mom!', 'is this for TV?' bubbles).", "Videos show the branching: what is broadcast after the first beats decides between the viral, scared, peace/love, follow-the-money and cricket endings, and the cricket ending comes from photographing the cricket on the static intro screen rather than the park (video_onboarding_1 7:10, 9:22; video_skilled_1 4:15-4:30; video_session_1 20:33-22:10)."]
     social_and_cooperative: ["Single-player; in videos two creators or a streamer's chat co-solve which shot to take next (video_onboarding_1, video_session_1)."]
     companions_and_pets: ["A 'PET' panel with a cricket portrait sits on the left of the HUD; not opened (appears to be a sold item)."]
@@ -171,7 +171,7 @@ failure_and_recovery:
     non_paid_recovery: "Retry freely; free hint text appears occasionally; full hints are paid Videos: every ending card offers PLAY AGAIN; a run that goes wrong (for example 'I messed this ending up') is recovered only by restarting the day, and the album's free hint lines guide the retry (video_onboarding_1 7:30, 8:28; video_session_1 16:53, 18:10)."
     evidence: [play_1, video_onboarding_1, video_session_1]
 agency_and_social:
-    meaningful_choices: ["What to photograph and broadcast, which drives crowd behaviour and the ending (advertised; only the early linear beats observed)"]
+    meaningful_choices: ["What to photograph and broadcast, which drives crowd behavior and the ending (advertised; only the early linear beats observed)"]
     customization_and_identity: ["'Skins' top-bar button and 'ADD YOUR OC' card (not opened)"]
     cooperation_and_competition: []
     visible_social_feedback: []
@@ -179,9 +179,9 @@ agency_and_social:
     evidence: [play_1]
 ui:
     evidence_status: observed
-    visual_style: "Hand-drawn monochrome sketch style: grey scribbled grass, white stick peeps with thick dark outlines; colour reserved for meaning (red story banners, red couple, rainbow 'NOTHING' gag, yellow hint bulbs)"
-    layout_and_hierarchy: "Main menu: big title, three brush-stroke buttons stacked centre (red PLAY, black ENDINGS, rainbow EARLY ACCESS), chapter card left, paid EXTRA cards right, endings counter below. In game: the park fills the screen with the TV at centre, three square paid cards down the left edge (ALL HINTS, PET, SCARE ALL), top bar with Early Access, Hint and Skins beside Roblox's menu buttons. Videos add: the intro has a grey brush-stroke SKIP button and a round pause button top right (video_skilled_1 0:00); the ending card is a tilted polaroid left with text and two brush buttons right (video_onboarding_1 7:30); the ENDINGS album is a 5-5-4 grid of polaroids on black with '6 / 12 found' and a hint line at the bottom (video_session_1 20:30)."
-    color_scheme: ["light grey #d8d8d8-like background", "dark grey outlines", "red #cc2a2a-like story banners", "black headline bars with white text"]
+    visual_style: "Hand-drawn monochrome sketch style: gray scribbled grass, white stick peeps with thick dark outlines; color reserved for meaning (red story banners, red couple, rainbow 'NOTHING' gag, yellow hint bulbs)"
+    layout_and_hierarchy: "Main menu: big title, three brush-stroke buttons stacked center (red PLAY, black ENDINGS, rainbow EARLY ACCESS), chapter card left, paid EXTRA cards right, endings counter below. In game: the park fills the screen with the TV at center, three square paid cards down the left edge (ALL HINTS, PET, SCARE ALL), top bar with Early Access, Hint and Skins beside Roblox's menu buttons. Videos add: the intro has a gray brush-stroke SKIP button and a round pause button top right (video_skilled_1 0:00); the ending card is a tilted polaroid left with text and two brush buttons right (video_onboarding_1 7:30); the ENDINGS album is a 5-5-4 grid of polaroids on black with '6 / 12 found' and a hint line at the bottom (video_session_1 20:30)."
+    color_scheme: ["light gray #d8d8d8-like background", "dark gray outlines", "red #cc2a2a-like story banners", "black headline bars with white text"]
     typography:
         font_appearance: "Handwritten marker caps for menu buttons and cards; a geometric bold sans (Montserrat-like) for broadcast headlines; a serif for the intro line 'nothing ever happens in the park.'"
         font_family_if_verified: null
@@ -198,7 +198,7 @@ ui:
     graphics:
         graphics_versus_text: "Story is told almost entirely through drawings and short headlines; menu actions are words on brush strokes"
         illustration_or_icon_style: "Doodled icons inside rounded white cards (light bulbs, cricket, scary face)"
-        framing_outlines_and_effects: "Thick sketchy outlines, rounded white cards with grey borders, brush-stroke buttons"
+        framing_outlines_and_effects: "Thick sketchy outlines, rounded white cards with gray borders, brush-stroke buttons"
         placement_and_labels: "Each paid card has a handwritten label above its icon; prices shown on red brush strokes on the menu"
         clarity_or_clutter: "Park view is clean; the three paid cards permanently occupy the left edge"
     evidence: [play_1, video_onboarding_1, video_skilled_1, video_session_1]
@@ -231,11 +231,11 @@ commercial_and_return_prompts:
     urgency_or_streak_cues: []
     evidence: [play_1, video_onboarding_1, video_session_1]
 world_and_presentation:
-    navigation_and_objective_readability: "Single-screen park; the TV at centre anchors attention; objectives are implicit"
+    navigation_and_objective_readability: "Single-screen park; the TV at center anchors attention; objectives are implicit"
     landmarks_and_variety: ["Central TV on a pole", "Distinct peep types: circles, squares, bowler-hat man, red couple, spiky angry square"]
-    environmental_storytelling: ["Crowd behaviour shifts after each broadcast (hats spread, crowds cluster around the TV, worried faces), showing media influence without text", "Videos: escalation is shown by the crowd turning pink and angry, then armed, then a grey ink-splatter massacre, a pull-back to a laptop at the news station, and a candlelit vigil with only the lovers left (video_onboarding_1 6:13-7:24; video_skilled_1 2:30-3:45)", "The station boss speaks through the captions and to the player ('peace is boring, violence goes viral', 'Nobody MOVE... and NO flash photography.') (video_onboarding_1 5:18; video_session_1 20:15)"]
+    environmental_storytelling: ["Crowd behavior shifts after each broadcast (hats spread, crowds cluster around the TV, worried faces), showing media influence without text", "Videos: escalation is shown by the crowd turning pink and angry, then armed, then a gray ink-splatter massacre, a pull-back to a laptop at the news station, and a candlelit vigil with only the lovers left (video_onboarding_1 6:13-7:24; video_skilled_1 2:30-3:45)", "The station boss speaks through the captions and to the player ('peace is boring, violence goes viral', 'Nobody MOVE... and NO flash photography.') (video_onboarding_1 5:18; video_session_1 20:15)"]
     audiovisual_consistency: "Consistent sketch art across menu, park and thumbnails; audio not assessed"
-    success_effect_intensity_and_clarity: "Strong and clear: full-screen TV zoom and coloured headline"
+    success_effect_intensity_and_clarity: "Strong and clear: full-screen TV zoom and colored headline"
     evidence: [play_1, video_onboarding_1, video_skilled_1, video_session_1]
 technical_quality:
     loading_or_missing_assets: []
@@ -250,17 +250,17 @@ transferable_ideas:
     - "Let the game's antagonist comment on the player's choices in the feedback text ('peace is boring, violence goes viral') so the moral of the system is felt during play, not explained (video_onboarding_1 5:18)."
     - "Make the player's action the headline: every action gets an immediate, full-screen interpretation (here a TV broadcast) that tells them whether it mattered."
     - "Show consequences through the crowd rather than numbers: NPCs copy or react to what the player highlighted."
-    - "Use colour as the only signal for 'this counted' (red story banner versus black non-event bar) in an otherwise monochrome world."
+    - "Use color as the only signal for 'this counted' (red story banner versus black non-event bar) in an otherwise monochrome world."
     - "One-input onboarding: a single 'POINT & CLICK' caption then let the world teach through feedback."
 practical_takeaway:
-    strongest_idea: "Immediate, readable feedback on whether an action mattered, followed by visible NPC behaviour change caused by that action."
+    strongest_idea: "Immediate, readable feedback on whether an action mattered, followed by visible NPC behavior change caused by that action."
     main_tradeoff: "Before the first ending the only free guidance is sparse nudge text, so players can stall for minutes on a timing-sensitive shot (14 minutes in real play); the game sells hints there. After the first ending the free album hints and short replay loop carry players through the remaining endings (videos)."
     suitable_genres_and_stages: ["story/narrative games", "puzzle and observation games", "early onboarding of any game with NPC crowds"]
-    testable_hypothesis: "Showing locked endings with a free one-line hint after a player's first completion increases the share who start a second run. Also: Showing a distinct 'this counted' banner colour after a meaningful player action, plus an NPC reaction, shortens time to the second meaningful action for new players."
-    estimated_effort_and_assumptions: "Estimate: small to medium; assumes existing NPC behaviour hooks and a UI layer for a full-screen result card."
+    testable_hypothesis: "Showing locked endings with a free one-line hint after a player's first completion increases the share who start a second run. Also: Showing a distinct 'this counted' banner color after a meaningful player action, plus an NPC reaction, shortens time to the second meaningful action for new players."
+    estimated_effort_and_assumptions: "Estimate: small to medium; assumes existing NPC behavior hooks and a UI layer for a full-screen result card."
 inferences:
     - "The game appears to follow the original's linear opening beats (hat, couple, crazed square) before branching; branching was not reached."
-    - "The persistent left-edge cards and top-bar Hint/Early Access buttons suggest monetisation leans on hints and content access rather than currency."
+    - "The persistent left-edge cards and top-bar Hint/Early Access buttons suggest monetization leans on hints and content access rather than currency."
 uncertainties:
     - "Which event advanced the story after 'CRAZED SQUARE ATTACKS' was not found; worried circles were photographed several times without effect, possibly because shots missed due to harness latency."
     - "Whether ALL HINTS, PET and SCARE ALL cards are purchases was not verified (not clicked); Hint was verified paid."

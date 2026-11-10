@@ -124,12 +124,12 @@ Every task that changes files starts here, and so does every follow-up that arri
     that job.
 - Schedule steps by `subagent-matrix`'s **Dispatch**: coupled work stays sequential, and
   independent scopes with separate owners, files and resources overlap once their inputs are
-  settled. Estimate the elapsed time with that overlap, totalled as `session-ledger` totals a plan.
+  settled. Estimate the elapsed time with that overlap, totaled as `session-ledger` totals a plan.
 - **Settle ownership before the plan is final.** For a plan that introduces or changes a shared operation, contract, subsystem, runtime
   boundary, or independent consumer, apply `code-simplify`'s ownership analysis to the proposed
   shape and the analogous implementations already in the repository, with one read-only subagent
   inventorying them when the comparison spans subsystems. Invoke `subagent-matrix` at its standard
-  capability level for that reader, launch the exact resolved identifier, and retain catalogue state,
+  capability level for that reader, launch the exact resolved identifier, and retain catalog state,
   identifier, assignment state and host receipt with the plan evidence. The plan states where common
   behavior will live and which policy or wiring stays consumer-specific; it never starts from a parallel
   structure and leaves ownership for implementation.

@@ -26,7 +26,7 @@ confuse those conclusions.
 - **An edit that changes no instruction a reader follows does not run.** A spelling correction or
   dead link repair asks the reader to do the same work. Its source validation and required reviews
   still apply; there is no changed behavior for a smoke test to exercise.
-- Recognise one from the diff rather than from how it is described, and least of all from how small
+- Recognize one from the diff rather than from how it is described, and least of all from how small
   it looks: read each changed line against the line it replaces and confirm the instruction is
   identical. A line that gains, loses, sharpens or reorders one is an ordinary edit however few
   words moved. Test the semantic instruction or behavior delta and any dependencies it concretely
@@ -147,10 +147,10 @@ fallback for the missing assignment.
 
 Run one edited reader across the frozen scenarios and one original control only when the recorded
 comparison requires it, with the same resolved model and reasoning effort where both run. Record
-the catalogue state, requested capability and family, exact dispatch identifier, resolved reasoning
+the catalog state, requested capability and family, exact dispatch identifier, resolved reasoning
 effort, selector resolution, and accepted actual-assignment dispatch receipt with those explicit
-parameters in each run's evidence entry. Record catalogue state separately
-from assignment state: a catalogue-hidden family is `dispatch required` until its exact identifier is resolved
+parameters in each run's evidence entry. Record catalog state separately
+from assignment state: a catalog-hidden family is `dispatch required` until its exact identifier is resolved
 and the assigned worker accepts it, then it is `accepted`; a missing identifier triggers the launch
 fallback and is not an unsupported-model receipt. Selector resolution retains an explicit unsupported request,
 the exact fallback capability and dispatch identifier when one is permitted, why that fallback was selected,
@@ -197,10 +197,10 @@ Verdict: passes (round <n>) | not run: <nonbehavioral change under When It Runs>
   scenario, before Diagnoses and Verdict; a merge recommendation remains subject to the caller's
   gates. Both rows may pass. Use the actual results rather than copying the illustrative control
   miss above.
-- **One row per run**, labelled with the model and a letter: A reads the edited text; B reads the
+- **One row per run**, labeled with the model and a letter: A reads the edited text; B reads the
   original only when required, or no skill text for a new skill. Each row shows its latest run.
 - **`Result` follows `Run`** and reads `pass` only when every criterion in that row passed; each
-  further column is one criterion, headed with a short name for the behaviour it checks, never
+  further column is one criterion, headed with a short name for the behavior it checks, never
   `Run`, `Result`, a run label, or a phrase built on them. Every cell carries `pass` or `miss`.
 - **At most five columns**, so at most three criteria per table. More criteria continue in a
   further table under the same scenario title, with the same rows and legend line.
@@ -217,7 +217,7 @@ evidence behind every cell, one section per skill:
 
 #### <run label> (<edited | original> text[, round <n>])
 
-- **Catalogue state:** <capability> / <family> — <catalogue-confirmed | catalogue-hidden>
+- **Catalog state:** <capability> / <family> — <catalog-confirmed | catalog-hidden>
 - **Requested selection:** <capability> / <family>
 - **Dispatch identifier:** <exact identifier | identifier required>
 - **Assignment state:** <not requested | dispatch required | identifier required | accepted | unavailable: reason>
@@ -234,7 +234,7 @@ evidence behind every cell, one section per skill:
 
 #### Dispatch attempt <n> (incomplete required reader set)
 
-- **Catalogue state:** <capability> / <family> — <catalogue-confirmed | catalogue-hidden>
+- **Catalog state:** <capability> / <family> — <catalog-confirmed | catalog-hidden>
 - **Requested selection:** <capability> / <family>
 - **Dispatch identifier:** <exact identifier | identifier required>
 - **Assignment state:** <not requested | dispatch required | identifier required | accepted | unavailable: reason>

@@ -11,7 +11,7 @@ alwaysApply: true
   lives in the shared `agent-guidance.md` rule.
 - Read the other shared rules relevant to the current repository and task. If a harness does not
   load them automatically, open the applicable files from its user-level rules directory.
-- A skill catalogue is one discovery surface, not proof that a directly requested skill is absent.
+- A skill catalog is one discovery surface, not proof that a directly requested skill is absent.
   Before reporting a named skill unavailable, inspect the active harness's installed user-level
   skill roots and the current repository's local skills, then read the resolved `SKILL.md` from its
   canonical source. Report it missing only when those sources do not contain it; never substitute a
@@ -74,9 +74,9 @@ alwaysApply: true
   whose page it is; a phone-width view or a close-up of the same page goes beside that one,
   never alone, since either can belong to several pages. The caption names the page as the
   reader reaches it, such as "the album's Sharing page".
-- **A new behaviour is named as new wherever it is reported.** A progress report, a summary, a pull
+- **A new behavior is named as new wherever it is reported.** A progress report, a summary, a pull
   request description or a capture's caption that shows the product now behaving differently under
-  some condition states that behaviour and where it applies, such as "photo galleries now become
+  some condition states that behavior and where it applies, such as "photo galleries now become
   carousels past six photos on every page", never folds it into the fix it arrived with, so the
   reader can tell a new layout, control or flow from a repair.
 - A delegated worker's report of an outcome — tests pass, pushed, merged, deployed, fixed — is a
@@ -164,7 +164,7 @@ alwaysApply: true
   layout, controls or flow a reader meets on many pages or across several products, or that a
   returning user would notice, such as every photo gallery turning into a carousel once it holds
   more than a few photos, or a form splitting into steps everywhere past some number of fields — is
-  a product choice, and so is new visible behaviour a remedy carries past the surface the user named
+  a product choice, and so is new visible behavior a remedy carries past the surface the user named
   to others like it; the defect no longer showing there is not.
   Each is proposed before it is built, whether it arrives as a fix, a later fix round adjusts it, or
   a gate accepted it: the proposal lists every page it would change and carries before-and-after
@@ -192,7 +192,7 @@ alwaysApply: true
   the layout; until the user answers, the content keeps the room its values need. **Text
   already in the product keeps its words unless it is wrong or the user named it.** Text that is
   plainly wrong or inconsistent, such as a label stating something untrue, one thing called by two
-  names, or a message that no longer matches what happens, is corrected or left by judgement, and
+  names, or a message that no longer matches what happens, is corrected or left by judgment, and
   the report says which. Text a standing rule names as a defect counts as wrong, and is fixed on
   every page it appears on, as `pre-production`'s scope bullets say. A request to reword one text
   rewords that text alone; any other existing title, label, description or message that is correct
@@ -254,7 +254,7 @@ alwaysApply: true
   user decision, stated with its evidence. A genuine unresolved product, security, disclosure or
   authorization choice follows the decision boundary above while independent work continues.
   **A rule about how the product looks or reads is a default that records earlier design
-  judgement, never the argument for a design.** Rank design options by what serves the reader and
+  judgment, never the argument for a design.** Rank design options by what serves the reader and
   the flow. Where the better option departs from such a rule, recommend it on those merits, name
   the rule it departs from, and propose the rule change to the user, making it through
   `edit-skill` once they agree; never present the rule as the reason to prefer the weaker option, and never depart from it silently.
@@ -542,7 +542,7 @@ return records;
   control on the same page names that control where the reader sees it, as in "Turn on Sync
   above", and never links to the page it sits on. It names the thing the control acts on, never
   quotes a label that is already an instruction into a sentence that gives its own: a switch
-  labelled "Enable offline mode" is "Turn on offline mode", never "Turn on Enable offline mode".
+  labeled "Enable offline mode" is "Turn on offline mode", never "Turn on Enable offline mode".
 - **A refusal an end user reads is a short, friendly request for their next step**, such as "This
   library card cannot be used. Please use a different card." It says what to do rather than passing
   a verdict on what was done or on the reader, as "You can't use this library card." does, and it
@@ -573,11 +573,17 @@ return records;
   alike, and it holds most strongly in a library, where every reader is a different consumer.
 - **Name things with the everyday word a reader expects.** The reader is this codebase's: a name
   says what its product, its users and its existing code call the thing, never a word that is right
-  only in another field, such as a botanical Latin name for a plant in a garden shop's catalogue.
+  only in another field, such as a botanical Latin name for a plant in a garden shop's catalog.
   Where the domain or a provider has a term this codebase's readers use, use it. A parcel the
   carrier reports as delivered is `delivered`, never `parcel_arrived`, because an unusual synonym
   makes every reader translate it back. This covers identifiers, fields, messages, documentation and
   test names in every language.
+- **Everything an agent writes uses American English spelling**: code and its identifiers, comments,
+  documentation, guidance, records, commit messages, pull-request text, generated content and every
+  reply the user reads, such as `color`, `behavior`, `center`, `catalog`, `canceled`, `judgment` and
+  `organize`. Two kinds of text keep their own spelling: a quotation reproduced verbatim from its
+  source, such as an on-screen message, and a name a language, framework, protocol or provider
+  defines, such as an HTML attribute.
 - **A name says what it is about, so a reader never opens the body to learn what it acts on or
   holds.** That holds for every name: a function, Boolean, field, event, constant, class, module,
   file or package. A name built on a verb names the verb's object: `job.writes_files`,
@@ -629,7 +635,7 @@ return records;
   and naming conventions, such as how it spells an event type or a scope, are the library's own,
   never a consumer's domain vocabulary: a helper encoding such a convention belongs in the library
   even when one consumer prompted it, and the library's owned API gains it. This holds at the
-  wrapper's layer; an application modelling the provider's data keeps its own field names, as
+  wrapper's layer; an application modeling the provider's data keeps its own field names, as
   `pre-production`'s **Adapting is not imitating** says.
 - Identify environments by their full domain name throughout code, configuration, documentation,
   and user-facing labels, including enum and constant names. Code identifiers may encode the whole
@@ -652,8 +658,8 @@ return records;
 - Git history is the record of what changed; documentation describes what exists now.
 - The same applies to code comments and docstrings: no "formerly", "replaces", or "kept for
   backwards compatibility" notes.
-- **Behaviour another party owns is explained once**, beside the value or line where the code
-  first handles it. Every other place that reuses that value or works around the same behaviour
+- **Behavior another party owns is explained once**, beside the value or line where the code
+  first handles it. Every other place that reuses that value or works around the same behavior
   restates nothing: a second comment, a docstring, or a comment in another file. A comment above a
   timeout saying a library sets none, and another at the override that applies it, are one comment
   too many.

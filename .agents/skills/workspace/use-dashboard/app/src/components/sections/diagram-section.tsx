@@ -170,11 +170,11 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
       return;
     }
 
-    let cancelled = false;
+    let canceled = false;
 
     drawDiagram(section, target)
       .then((drawing) => {
-        if (cancelled) {
+        if (canceled) {
           return;
         }
 
@@ -202,7 +202,7 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
       });
 
     return () => {
-      cancelled = true;
+      canceled = true;
     };
   }, [section, references]);
 

@@ -49,7 +49,7 @@ play_coordination:
     expiry_or_blocker: "Assigned deep play; real play was stopped by a study process change before this game's turn, so no locks were taken and the game was not launched."
 context:
     play_style: "Asymmetric survival horror, one killer against a team of survivors (games API genre_l1 'Survival', genre_l2 '1 vs All')"
-    camera_perspective: "Third-person over-the-shoulder with a free mouse-look camera and a centred cursor reticle (video_1, video_3)"
+    camera_perspective: "Third-person over-the-shoulder with a free mouse-look camera and a centered cursor reticle (video_1, video_3)"
     device_and_input: "Videos recorded on PC, keyboard and mouse: survivor abilities bound to Q/E, killer abilities to LMB/Q/E/R/T, shown as key letters on circular ability buttons (video_1 4:00, video_3 7:30)"
     observation_environment: "Passive: games, votes, media, thumbnails, badges and game-pass APIs retrieved over HTTP from the orchestrator host; gameplay studied from three YouTube videos (frames every 15 s plus auto-captions); no client launched"
     visible_server_population: "API at retrieval: 108,170 playing; maxPlayers 9 per server. Videos show one killer and six to eight survivors in the round player list (video_1 4:00, video_3 7:30)"
@@ -77,7 +77,7 @@ evidence:
       timestamps: []
       screenshots: []
       limitations:
-          - "5,923,431,746 visits, 3,296,994 favourites, 108,170 playing; votes 2,425,676 up / 447,423 down (about 84% positive); avatar type MorphToR6 (all players forced to the classic blocky R6 body)."
+          - "5,923,431,746 visits, 3,296,994 favorites, 108,170 playing; votes 2,425,676 up / 447,423 down (about 84% positive); avatar type MorphToR6 (all players forced to the classic blocky R6 body)."
           - "Badges API: a single badge, 'Eternally Forsaken' (play the game for the first time), awarded 101,852,366 times."
           - "Game-pass API returned an empty list; whether the game sells passes is unknown from this source."
     - id: thumbnail_1
@@ -108,7 +108,7 @@ evidence:
       url: "https://www.youtube.com/watch?v=8QSIv9Z6j4g"
       captured_at: "2026-11-09T15:29:00Z"
       media_date_or_version: "uploaded 2026-02-22; on-screen Version 10609"
-      timestamps: ["0:00-10:00 numbered tips 1-28 over clips", "0:30 'Setup Generators' objective panel", "settings customisation tips around 8:00-9:00 (captions)"]
+      timestamps: ["0:00-10:00 numbered tips 1-28 over clips", "0:30 'Setup Generators' objective panel", "settings customization tips around 8:00-9:00 (captions)"]
       screenshots: ["8QSIv9Z6j4g-003.jpg", "8QSIv9Z6j4g-005.jpg", "8QSIv9Z6j4g-007.jpg"]
       limitations:
           - "Kind: skilled play. '28 Tips to Get Better at Forsaken', channel sslawixs (about 129,000 subscribers), 790,771 views at read; first 10 of 14 min studied."
@@ -129,7 +129,7 @@ gameplay:
     first_action: "From the lobby, wait out the 'Round begins in' timer; in round, survivors run from the killer or walk to a generator (video_1 0:30-0:45)."
     first_success_seconds: null
     success_feedback:
-        - "Every scoring action prints a line at top centre with its money and EXP value, e.g. '+ $10 & 117 EXP: Killed a Survivor', '+ $4 & 31.2 EXP: Hit Survivor with Hunter's Feast', '+ $5 & 16.5 EXP & 0.75 Malice: Punched Killer as Guest 1337' (video_1 4:00, video_3 1:45, 7:30)."
+        - "Every scoring action prints a line at top center with its money and EXP value, e.g. '+ $10 & 117 EXP: Killed a Survivor', '+ $4 & 31.2 EXP: Hit Survivor with Hunter's Feast', '+ $5 & 16.5 EXP & 0.75 Malice: Punched Killer as Guest 1337' (video_1 4:00, video_3 1:45, 7:30)."
         - "Level-up toast with the character portrait: 'Azure Leveled Up! Level 90 -> Level 91' (video_1 7:45)."
         - "End-of-round card with time played and a large 'Survivor Wins' tally (video_1 0:15)."
         - "Each character and killer has a loud chase theme; players cite the music as a highlight (video_3 captions 7:10)."
@@ -161,7 +161,7 @@ pacing:
     measurement_method: "Round and lobby timers read from the on-screen countdowns in video frames; cadence from the video's own timestamps. Edited footage: no continuous session measured."
     evidence: [description_1, video_1, video_3]
 goals_and_progression:
-    next_goal_clarity: "High in round: a persistent top-right objective panel ('Setup Generators. Complete the puzzles on each generator to get them up & running. (2/5) Survive until the timer runs out.') plus a top-centre 'Round ends in' timer (video_2 0:30, video_3 7:30)."
+    next_goal_clarity: "High in round: a persistent top-right objective panel ('Setup Generators. Complete the puzzles on each generator to get them up & running. (2/5) Survive until the timer runs out.') plus a top-center 'Round ends in' timer (video_2 0:30, video_3 7:30)."
     short_term_goals: ["Repair generators (count shown, e.g. 2/5)", "Survive the chase; stun or block the killer", "As killer: hit and kill survivors before the timer"]
     medium_term_goals: ["Accumulate Malice to be chosen as killer (video_1 3:00, video_3 captions 4:55)", "Level a character (video_1 7:45)"]
     advertised_long_term_goals: ["Character milestone skins, achievements (lobby 'Achievements' button) (video_1 0:30, video_3 captions 4:40)"]
@@ -187,7 +187,7 @@ agency_and_social:
 ui:
     evidence_status: observed
     visual_style: "Dark, minimal, hand-drawn horror: near-black translucent panels, white serif and blackletter-style text, sketchy circular ability icons and a torn-paper banner for the killer reveal (video_1, video_3)."
-    layout_and_hierarchy: "Top centre: 'Round begins in' / 'Round ends in' timer box with the reward feed below; top right: objective panel in round, players leaderboard in lobby; bottom left: own portrait with health (heart) and stamina (runner) bars plus a two-column team list; bottom centre-right: ability circles with key letters and cooldown numbers; left edge in lobby: Summer Games, Shop, Inventory, Achievements, Spectate, Stats; bottom-left lobby row: Settings, Rules, Update Log, Boombox, Server List (video_1 0:30, 4:00; video_3 7:30)."
+    layout_and_hierarchy: "Top center: 'Round begins in' / 'Round ends in' timer box with the reward feed below; top right: objective panel in round, players leaderboard in lobby; bottom left: own portrait with health (heart) and stamina (runner) bars plus a two-column team list; bottom center-right: ability circles with key letters and cooldown numbers; left edge in lobby: Summer Games, Shop, Inventory, Achievements, Spectate, Stats; bottom-left lobby row: Settings, Rules, Update Log, Boombox, Server List (video_1 0:30, 4:00; video_3 7:30)."
     color_scheme: ["near-black panels", "white text", "red health bar", "white stamina bar", "red DEAD tag and red cooldown highlights", "map lighting in saturated red, purple or blue"]
     typography:
         font_appearance: "Serif and italic-serif titles ('Setup Generators', 'Round ends in'), small serif body text; blackletter-like brand styling in reveal cards"
@@ -197,9 +197,9 @@ ui:
         viewport_resolution: "480p video downscaled from an unknown PC resolution"
         readability: "Titles readable; objective body and team usernames barely legible at video resolution (visual estimate)."
     controls:
-        primary_actions: "Ability circles labelled with key (LMB, Q, E, R, T) and name (Stab, Void Rush, Nova, Observant); number inside shows remaining cooldown (video_3 7:30)."
+        primary_actions: "Ability circles labeled with key (LMB, Q, E, R, T) and name (Stab, Void Rush, Nova, Observant); number inside shows remaining cooldown (video_3 7:30)."
         close_x_appearance_and_location: "Shop modal has a white X at its top-right corner (video_1 8:15)."
-        modal_behavior: "Shop opens as a centred dark modal with tabs Featured / Skins / Emotes / Robux, over the live lobby (video_1 8:15)."
+        modal_behavior: "Shop opens as a centered dark modal with tabs Featured / Skins / Emotes / Robux, over the live lobby (video_1 8:15)."
         state_feedback: "Cooldown digits on abilities; contextual hints ('Charge Void Rush by holding down', 'Release the Void Rush button to cancel'); status-effect timers on the right (video_2 0:30, video_3 7:30)."
         target_size_and_input: "Ability circles roughly 5-6% of screen height; lobby side buttons similar (visual estimate, PC)."
     graphics:
@@ -223,9 +223,9 @@ new_player_onboarding:
     evidence: [video_1, video_2, video_3]
 accessibility_and_comfort:
     text_and_contrast: "White text on dark translucent panels has good contrast; small body text is hard to read at low resolution (video frames)."
-    non_color_cues_and_icon_labels: "Abilities labelled with key and name; dead teammates marked by a 'DEAD' text tag as well as red (video_1 4:00)."
+    non_color_cues_and_icon_labels: "Abilities labeled with key and name; dead teammates marked by a 'DEAD' text tag as well as red (video_1 4:00)."
     input_support_observed: ["Keyboard and mouse on PC (video_1, video_3)"]
-    motion_audio_settings: ["Settings > Customization offers name-tag display type (show health above survivors), a centre stamina counter, and separate music and SFX volume (video_2 captions 8:00-9:00; not operated by the researcher)"]
+    motion_audio_settings: ["Settings > Customization offers name-tag display type (show health above survivors), a center stamina counter, and separate music and SFX volume (video_2 captions 8:00-9:00; not operated by the researcher)"]
     settings_tested: []
     clutter_and_interruptions: ["Flashing ability effects and saturated map lighting; description warns of flashing lights and loud audio (description_1, video_3)", "Look-alike skins make characters hard to identify (video_3 7:50)"]
     evidence: [description_1, video_1, video_2, video_3]
@@ -238,7 +238,7 @@ commercial_and_return_prompts:
     urgency_or_streak_cues: ["Win streak mentioned verbally ('you're on a streak now'), no on-screen streak seen (video_1 4:11)"]
     evidence: [description_1, thumbnail_1, video_1]
 world_and_presentation:
-    navigation_and_objective_readability: "Generators are visible machines with a puzzle panel; objective count in the HUD. Maps are dark, with coloured key lighting that marks areas (video_2, video_3)."
+    navigation_and_objective_readability: "Generators are visible machines with a puzzle panel; objective count in the HUD. Maps are dark, with colored key lighting that marks areas (video_2, video_3)."
     landmarks_and_variety: ["Many themed maps (pizza place, Roblox HQ, natural-disaster island, winter town, purple void map) rotating per round (video_1, video_3)"]
     environmental_storytelling: ["Maps reference classic Roblox places and the characters' lore ('eternal prison' framing)", "Killer reveal card shows the killer's name in red with a styled banner (video_3 1:15)"]
     audiovisual_consistency: "Consistent dark hand-drawn UI across lobby and rounds; each killer has its own chase theme (video_3 captions)."
@@ -271,7 +271,7 @@ inferences:
     - "Malice-based killer selection plus a Robux 'Killer Chance' suggests the killer role is the scarce, desired role (inference from video_1 and video_3 captions)."
 uncertainties:
     - "First-join onboarding is unobserved; whether a tutorial or Rules page guides new players is unknown."
-    - "Game-pass API returned nothing; monetisation seen in videos is through the in-game Shop's Robux tab, not passes."
+    - "Game-pass API returned nothing; monetization seen in videos is through the in-game Shop's Robux tab, not passes."
     - "Server population per round is read from player lists of a few rounds only."
     - "video_2 is eight months older than the current version; abilities and balance change often."
 blockers: []

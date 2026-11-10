@@ -67,8 +67,8 @@ detail inline. The file starts with the table or summary its detail supports.
 
 | Loops and subagents (parent) | Rounds | Agent count | Elapsed | Agent-minutes | State / outcome | Available tokens / tools | Repeat cause |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Workflow summary | Recorded IDs, labelled inference, or unavailable | Distinct descendants | Union | Summed subagent lifetimes | State and result | Fresh, cached and calls, or unavailable | Cause and outcome, or unknown |
-| Agent role (parent role or main agent) | Recorded IDs, labelled inference, or unavailable | 1 | Observed lifetime | Same lifetime | State and result | Own usage, or unavailable | Cause and outcome, or unknown |
+| Workflow summary | Recorded IDs, labeled inference, or unavailable | Distinct descendants | Union | Summed subagent lifetimes | State and result | Fresh, cached and calls, or unavailable | Cause and outcome, or unknown |
+| Agent role (parent role or main agent) | Recorded IDs, labeled inference, or unavailable | 1 | Observed lifetime | Same lifetime | State and result | Own usage, or unavailable | Cause and outcome, or unknown |
 
 Summary and constituent rows describe the same work; never add their totals together.
 

@@ -129,7 +129,7 @@ evidence:
   - 6:45 wave 50 boss and Max Upgrade
   - 7:30 global chat pull announcements
   - 8:15 Return to lobby / Replay
-  - 8:30 travelling to Sky Island
+  - 8:30 traveling to Sky Island
   screenshots:
   - yP3_n7O51dc-003.jpg
   - yP3_n7O51dc-006.jpg
@@ -302,7 +302,7 @@ goals_and_progression:
   - video_3
 failure_and_recovery:
   observed_failure: 'Video: no loss screen captured; a veteran picks lower-risk cards to avoid losing a stage and calls 500% enemy health "too much" (video_2 captions). Real play did not reach a match.'
-  explanation: 'Video: boss and enemy HP shown as numeric bars; the base HP bar is at the top centre of the match HUD (video_1 frames 017, 023).'
+  explanation: 'Video: boss and enemy HP shown as numeric bars; the base HP bar is at the top center of the match HUD (video_1 frames 017, 023).'
   cost_or_lost_progress: null
   retry_seconds: null
   checkpoints: null
@@ -331,7 +331,7 @@ agency_and_social:
 ui:
   evidence_status: observed
   visual_style: 'Saturated cartoon UI: chunky square buttons with thick colored borders and illustrated icons, glowing rainbow borders on modals, heavy outlined display text.'
-  layout_and_hierarchy: 'Two 2x4 / 1x5 grids of large illustrated buttons on the left and right edges; currency row and team slots bottom-center over a full-width level bar; modals centered. Video (match HUD): base HP bar and wave number top-centre, map name and mode above it, six-slot unit hotbar with yen costs bottom-centre over the level bar, minimap bottom-right, level-info and modifier list on the right edge, selected unit panel on the left, Unit Overview grid as a right-side panel (video_1 frame 017; video_3 frames 025-027).'
+  layout_and_hierarchy: 'Two 2x4 / 1x5 grids of large illustrated buttons on the left and right edges; currency row and team slots bottom-center over a full-width level bar; modals centered. Video (match HUD): base HP bar and wave number top-center, map name and mode above it, six-slot unit hotbar with yen costs bottom-center over the level bar, minimap bottom-right, level-info and modifier list on the right edge, selected unit panel on the left, Unit Overview grid as a right-side panel (video_1 frame 017; video_3 frames 025-027).'
   color_scheme:
   - one distinct border color per HUD button (yellow, red, green, cyan, purple, blue, orange)
   - green primary buttons (OK, Claim, I Understand, Teams)
@@ -354,7 +354,7 @@ ui:
     graphics_versus_text: Every HUD button pairs an illustrated icon with a bold label; rewards drawn as gem illustrations with amounts above.
     illustration_or_icon_style: Glossy illustrated icons (star, controller, swap arrows, capsule, dungeon gate).
     framing_outlines_and_effects: Thick colored outlines, rainbow glow around modals, tilted parallelogram panel frames on Collection.
-    placement_and_labels: Currency icons labelled only by number; banner cards labelled with name and one-line description.
+    placement_and_labels: Currency icons labeled only by number; banner cards labeled with name and one-line description.
     clarity_or_clutter: 'Dense: 13 HUD buttons plus side prompt and Roblox player list; robux packs shown beside the free summon banner. Video: matches with many units and effects become very busy; the right-side modifier list is small dense text (video_1 frames 023-027).'
   evidence:
   - play_1
@@ -383,7 +383,7 @@ new_player_onboarding:
   - play_1
 accessibility_and_comfort:
   text_and_contrast: High-contrast outlined labels; small body text on dark modals.
-  non_color_cues_and_icon_labels: All HUD icons labelled.
+  non_color_cues_and_icon_labels: All HUD icons labeled.
   input_support_observed:
   - Mouse click
   - Keyboard hints K and F (untested)
@@ -419,12 +419,12 @@ commercial_and_return_prompts:
   - video_1
   - video_3
 world_and_presentation:
-  navigation_and_objective_readability: 'Video: the lobby is a neon city plaza with a large lit SUMMON hall, staircases, seasonal decorations (candy canes, gifts) and labelled areas; match maps show the enemy path as a lit route with chevrons and a minimap, so the objective (stop enemies on the path) reads clearly (video_3 frames 003-004, 015; video_1 frames 020, 033). Real play saw only a white void because the VM did not render the world.'
+  navigation_and_objective_readability: 'Video: the lobby is a neon city plaza with a large lit SUMMON hall, staircases, seasonal decorations (candy canes, gifts) and labeled areas; match maps show the enemy path as a lit route with chevrons and a minimap, so the objective (stop enemies on the path) reads clearly (video_3 frames 003-004, 015; video_1 frames 020, 033). Real play saw only a white void because the VM did not render the world.'
   landmarks_and_variety:
   - 'Video: lobby summon hall, challenges arcade and event ship (video_3 frames 003, 032; video_1 frame 009)'
   - 'Video: dozens of maps (Alien Spaceship underwater, Shibuya District, Assassin Park, Sky Island, Fiend City) (video_1 frame 011)'
   environmental_storytelling:
-  - Loading screen 'Travelling to... Neo-Tokyo' with a seasonal gameplay tip
+  - Loading screen 'Traveling to... Neo-Tokyo' with a seasonal gameplay tip
   - 'Video: event NPCs with quest dialog on the summer ship ("Some members of my party got separated in a storm. Help find Armored...") (video_1 frame 010)'
   audiovisual_consistency: 'Video: consistent saturated neon anime style across lobby, menus and maps; audio judged only through creator commentary.'
   success_effect_intensity_and_clarity: 'Video: very intense summon reveals and unit ability effects; late-wave effects can hide enemies and paths (video_1 frames 013-014, 023-027).'
@@ -453,7 +453,7 @@ transferable_ideas:
 - A 7-day login track that escalates and caps with a draw and a luck boost ties return visits to the core gacha.
 - A party vote on modifier cards that trade difficulty for more rewards gives every wave a small, readable risk choice (video_1, video_2, video_3).
 - Weather that changes which damage type is strong gives players a reason to build several teams without new units (video_1).
-- A bingo board of "clear each map once" goals turns a large back catalogue of maps into a visible checklist (video_1).
+- A bingo board of "clear each map once" goals turns a large back catalog of maps into a visible checklist (video_1).
 practical_takeaway:
   strongest_idea: Give the first owned item a short, celebratory reveal the moment control starts, then badge the menu where it lives. In matches, a per-wave risk-for-reward card vote keeps repeated maps fresh and lets the group set its own difficulty.
   main_tradeoff: Four queued modals and a persistent side prompt delay the first match, and the summon screen places paid packs beside the free banner. Videos add that event chase units sit at very low odds, and veterans describe hours of grinding with no result.

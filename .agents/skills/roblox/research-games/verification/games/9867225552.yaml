@@ -115,7 +115,7 @@ gameplay:
     observed_loop: "Video: in the lobby, pick a Stand (rolled with Arrows) and draw a rider card, press Play and queue; a cinematic opens a multi-stage race across a desert for about 26 riders. Each stage is a 2-3 minute sprint through canyons, bridges and checkpoints, managing a stamina gauge and a boost, while shooting or blowing up rivals with a sidearm and dynamite and dodging a closing fog. Between stages riders wait in a train car with a points table and a Run Shop for ammo and weapons, then ride the next stage (video_1, video_2)."
     first_action: "Video: press Play in the lobby; a card draw picks the rider before Enter Queue (video_1 1:25-1:50)."
     first_success_seconds: null
-    success_feedback: ["Video: live placing ('21st', '4th') with a lasso flourish under the rider, and distance in metres (video_1, video_2)", "Video: centre-screen praise lines: 'Clean Overtake!', 'You got this, keep going!', 'Atleast better than the OWNER', 'Don't worry about it' (video_1 3:15-9:00)", "Video: end-of-stage 'GREAT RACE!' card with placing, time, top speed, kills, sabotages and cash rewards (video_1 4:00, video_2 4:30)", "Video: letter grade for each stage (F after 21st, A after 13th) (video_1 4:09, 7:32 captions)"]
+    success_feedback: ["Video: live placing ('21st', '4th') with a lasso flourish under the rider, and distance in meters (video_1, video_2)", "Video: center-screen praise lines: 'Clean Overtake!', 'You got this, keep going!', 'Atleast better than the OWNER', 'Don't worry about it' (video_1 3:15-9:00)", "Video: end-of-stage 'GREAT RACE!' card with placing, time, top speed, kills, sabotages and cash rewards (video_1 4:00, video_2 4:30)", "Video: letter grade for each stage (F after 21st, A after 13th) (video_1 4:09, 7:32 captions)"]
     progression: ["Video: cash earned per stage (+$234 and +40 for 21st in Stage 1) (video_1 4:00)", "Video: horse stats (Stamina, Acceleration, Handling, Top Speed, Boost Length) with a $500 Reroll, plus Traits and Mounts tabs (video_1 7:45)", "Video: three Stand slots, the third locked; Arrows crafted from 5 Arrow Fragments roll a Stand (video_1 1:10-1:20)", "Video: race points per stage (100 for 1st down to 30 for 10th) on a run leaderboard (video_2 4:45)"]
     choices_and_variety: ["Two advertised modes: race and battlegrounds (description)", "Choice of Stand (description)", "Secondary items chosen by holding C (description)", "Video: shortcuts and route splits that the creator calls 'only pros can do this' (video_1 3:38 captions)", "Video: Run Shop between stages sells shotgun ($500), lasso ($75), ammo ($12), shotgun ammo ($20) and dynamite (video_1 9:30)", "Video: bounty selection before a stage, picking a rival to hunt (video_1 4:27 captions)", "Video: random-feeling hazards: tornado, storm and fog (video_1 5:22-6:56)"]
     social_and_cooperative: ["Competitive race and PvP battlegrounds against other players (description)", "Like-goal codes: '150,000 LIKES FOR A CODE!' (description)", "Video: players sabotage each other with gunfire and dynamite, and a creator spends a whole stage only sabotaging (video_1 3:08, 8:06 captions)", "Video: a vote to skip the race cinematic ('Skip? (9/14)') (video_1 2:15)", "Video: spectating other racers between stages (video_1 9:15)"]
@@ -164,7 +164,7 @@ agency_and_social:
 ui:
     evidence_status: observed
     visual_style: "Video: JoJo-styled presentation: hot-pink and purple panels with diamond-check patterns, brushed black ribbon headers, gold serif placings and hand-drawn manga art on result cards, over a cel-shaded western desert (video_1, video_2)."
-    layout_and_hierarchy: "Video: race HUD keeps the centre clear: placing and distance below the rider, a vertical stamina gauge beside the rider, item slots at bottom centre, a keybind list in the lower right, a minimap in the lower left and timers or banners top centre. Lobby: Play button above three icon buttons (Shop, Stands, Customize) at bottom centre (video_1, video_2)."
+    layout_and_hierarchy: "Video: race HUD keeps the center clear: placing and distance below the rider, a vertical stamina gauge beside the rider, item slots at bottom center, a keybind list in the lower right, a minimap in the lower left and timers or banners top center. Lobby: Play button above three icon buttons (Shop, Stands, Customize) at bottom center (video_1, video_2)."
     color_scheme: ["Video: purple keybind tiles with yellow key letters", "Video: hot-pink result cards with a gold star for the placing", "Video: green primary buttons (Play, Enter Queue, Craft, Reroll) and red for Exit Queue and close", "Video: warm orange desert by day, purple at night or in fog"]
     typography:
         font_appearance: "Video: italic serif display type for placings, 'GREAT RACE!' and area titles such as 'Devils Palm'; condensed bold sans for panel labels"
@@ -172,24 +172,24 @@ ui:
         size_observation: "Video: placing numbers large, about 4% of frame height; keybind labels small"
         size_basis: visual_estimate
         viewport_resolution: "Video frames scaled from 854x480 downloads"
-        readability: "Video: placings and banners read well; keybind labels and ammo counts are small and thin, and the white centre-screen praise lines can wash out against bright sand (video_1 3:15)."
+        readability: "Video: placings and banners read well; keybind labels and ammo counts are small and thin, and the white center-screen praise lines can wash out against bright sand (video_1 3:15)."
     controls:
         primary_actions: "Video: Play, Enter Queue / Exit Queue, card picks, Craft, Reroll $500, CONFIRM in the Run Shop (video_1, video_2)."
-        close_x_appearance_and_location: "Video: green 'Exit' button centred under Stands and Horse Customization panels; a red square X at the top right of the Run Shop and a red 'Close' at the bottom of the train-car table (video_1 1:10, 7:45, 9:30)."
+        close_x_appearance_and_location: "Video: green 'Exit' button centered under Stands and Horse Customization panels; a red square X at the top right of the Run Shop and a red 'Close' at the bottom of the train-car table (video_1 1:10, 7:45, 9:30)."
         modal_behavior: "Video: lobby panels open over the world with the character visible; the Run Shop opens over the train-car leaderboard while a departure countdown keeps running (video_1 9:30)."
-        state_feedback: "Video: 'Equipped' and 'Unequip' tags on items, padlock on a locked Stand slot, 'Boost ready (F)' under the stamina gauge, 'Craft' greyed out at 0/5 fragments (video_1)."
+        state_feedback: "Video: 'Equipped' and 'Unequip' tags on items, padlock on a locked Stand slot, 'Boost ready (F)' under the stamina gauge, 'Craft' grayed out at 0/5 fragments (video_1)."
         target_size_and_input: "Video: keybind tiles list every key; large Play and card targets."
     graphics:
         graphics_versus_text: "Video: cards and item tiles use illustrated art with short labels; the race HUD is mostly text and numbers."
         illustration_or_icon_style: "Video: manga-style illustrated character and horse art on result screens and stage title cards; ornate card backs with an arrowhead emblem (video_1 1:25, 4:00-4:15)."
         framing_outlines_and_effects: "Video: ornate gold card frames, brush-stroke black ribbons, diamond-check backgrounds."
-        placement_and_labels: "Video: every keybind is labelled; shop items show quantity, price and a one-line description (video_1 9:30)."
+        placement_and_labels: "Video: every keybind is labeled; shop items show quantity, price and a one-line description (video_1 9:30)."
         clarity_or_clutter: "Video: race HUD is clean and the world stays readable; the lobby is crowded with dozens of players and effects (video_1 1:00, video_2 2:15)."
     evidence: [video_1, video_2]
 new_player_onboarding:
     status: indeterminate
     reason: "Passive only; no play. Video_1 is the creator's first time in the game but is edited: it opens on the game's intro cinematic and cuts to the lobby with 50 Arrows already in inventory, and no tutorial appears in the footage, so no video shows a first join."
-    conventions: ["Control list in the experience description", "Video: in-game intro cinematic tracing the race route across a map of America (video_1 0:00)", "Video: keybind list always on screen, changing with context (riding, aiming, on foot) (video_1, video_2)", "Video: Stand chosen by rolling an Arrow and a rider by picking one of three face-down cards before the first queue (video_1 1:25-1:50)", "Video: encouraging centre-screen lines after setbacks ('You got this, keep going!', 'Don't worry about it') (video_1 6:45, 9:00)", "Video: 'SHOOTING PLAYERS DISABLED' at the start of a stage gives a safe opening (video_2 3:45)"]
+    conventions: ["Control list in the experience description", "Video: in-game intro cinematic tracing the race route across a map of America (video_1 0:00)", "Video: keybind list always on screen, changing with context (riding, aiming, on foot) (video_1, video_2)", "Video: Stand chosen by rolling an Arrow and a rider by picking one of three face-down cards before the first queue (video_1 1:25-1:50)", "Video: encouraging center-screen lines after setbacks ('You got this, keep going!', 'Don't worry about it') (video_1 6:45, 9:00)", "Video: 'SHOOTING PLAYERS DISABLED' at the start of a stage gives a safe opening (video_2 3:45)"]
     sequence: ["Video: intro cinematic", "Video: lobby; open Stands, roll an Arrow (video_1 1:10-1:25)", "Video: pick a rider card, Enter Queue (video_1 1:25-1:50)", "Video: race cinematic with skip vote (video_1 2:15)", "Video: Stage 1 race (video_1 2:30-4:00)", "Video: result card and grade, then bounty selection and Stage 2 (video_1 4:00-4:30)"]
     first_independent_action: null
     skip_or_replay: "Video: a server vote to skip the race cinematic ('Skip? (9/14)') (video_1 2:15)"
@@ -238,7 +238,7 @@ transferable_ideas:
     - "A safe opening where shooting players is disabled lets the field spread out before combat (video_2)."
 practical_takeaway:
     strongest_idea: "Short race stages, each ending in a graded, illustrated result card that pays cash even for last place, then a timed shop break before the next stage."
-    main_tradeoff: "Combat and sabotage make placings feel unfair to whoever is targeted, and the Stand, the fan-favourite hook, barely matters in a first race; it is also built on a licensed manga's names and concepts (fan game)."
+    main_tradeoff: "Combat and sabotage make placings feel unfair to whoever is targeted, and the Stand, the fan-favorite hook, barely matters in a first race; it is also built on a licensed manga's names and concepts (fan game)."
     suitable_genres_and_stages: ["Racing", "Battlegrounds fighters", "Large-lobby events", "Any round-based game with a between-round shop"]
     testable_hypothesis: "Breaking one long race into three short stages with a result card after each raises the share of players who finish a full run, compared with a single race of the same total length."
     estimated_effort_and_assumptions: "Estimate: 2-3 days for stage splits, a results card and a timed intermission in a game that already has a race track and currency; assumes the track can be cut into segments."

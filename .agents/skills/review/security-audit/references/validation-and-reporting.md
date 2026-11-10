@@ -14,7 +14,7 @@ Each validation agent prompt should:
 1. State the specific finding being validated (title, claimed attack, claimed impact)
 2. Ask the agent to read the exact code paths and verify each step of the trace
 3. Ask it to apply the five tests in the rubric's **What A Surviving Finding Has Been Put Through** —
-   exploitation, impact, baseline, mitigation, and parser or runtime behaviour, and the rubric's
+   exploitation, impact, baseline, mitigation, and parser or runtime behavior, and the rubric's
    **Precedents**
 
 Tell each validation agent:

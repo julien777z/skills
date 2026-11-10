@@ -58,7 +58,7 @@ A lens is only as good as what a reviewer reading it finds. Before delivery, pro
 against a violation a reviewer has not been told about.
 
 - **Who reviews.** Invoke `subagent-matrix` and use its **standard** tier for read-only
-  reviewers, following its dispatch and unavailable-model policy. Record each reviewer's catalogue
+  reviewers, following its dispatch and unavailable-model policy. Record each reviewer's catalog
   state, exact dispatch identifier, assignment state and receipt; record runtime identity only when
   the host exposes it.
 - **What each reviewer gets.** The doctor's `SKILL.md`, the skills it depends on, one target tree,

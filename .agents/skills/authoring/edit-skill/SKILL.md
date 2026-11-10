@@ -303,7 +303,7 @@ user's review of the source pull request overlaps it.
      changed is the editor's call, from what the skill returns before and after. **Model the example
      on a small slice of the work in hand**, cut to a scope read in a minute, with every value the run
      would produce — numbers, hashes, findings — stated as made up. Write it as one markdown file
-     whose first line is `**EXAMPLE — modelled on a small slice of the current work; no smoke test
+     whose first line is `**EXAMPLE — modeled on a small slice of the current work; no smoke test
      was run.**`. Only where the work in hand gives the output nothing to show does the example use
      an invented scenario with invented names, first line `**EXAMPLE — fictional output; no smoke
      test was run.**`. The example is task evidence: the skill text it leads to still keeps its own
@@ -510,8 +510,8 @@ user's review of the source pull request overlaps it.
 
 When skill behavior needs a live agent chat, use `subagent-matrix` to choose the least-capable
 sufficient capability and resolve its exact host dispatch identifier. Select that identifier in the chat UI and
-record catalogue state, dispatch identifier, assignment state and receipt, tested branch, exact commit, session
-type, and observed result separately. A catalogue-hidden candidate remains dispatch-required until the actual
+record catalog state, dispatch identifier, assignment state and receipt, tested branch, exact commit, session
+type, and observed result separately. A catalog-hidden candidate remains dispatch-required until the actual
 chat assignment is accepted; a missing identifier or any rejection other than an explicit unsupported receipt
 holds manual verification rather than selecting a substitute. An explicit unsupported receipt records the chat
 as unavailable and keeps manual verification blocked. A resumed container proves its maintenance path, not a

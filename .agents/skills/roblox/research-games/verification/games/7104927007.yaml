@@ -192,7 +192,7 @@ agency_and_social:
         - "Which character morph to wear, from four listed sets (video_1, video_2)"
         - "Normal or horror form, expression and when to 'yap' (video_1)"
     customization_and_identity:
-        - "Players appear as recognisable characters from an outside music-character fandom rather than their own avatars (API universeAvatarType MorphToR15; thumbnail; both videos)"
+        - "Players appear as recognizable characters from an outside music-character fandom rather than their own avatars (API universeAvatarType MorphToR15; thumbnail; both videos)"
     cooperation_and_competition:
         - "None formal; play is gathering and roleplay among strangers (video_2)"
     visible_social_feedback:
@@ -202,21 +202,21 @@ agency_and_social:
     evidence: [source_1, source_2, video_1, video_2]
 ui:
     evidence_status: partial
-    visual_style: "Plain white rectangular panels with thin grey borders and grey text, over a bright stylised world; the only accent is red for the selected tab"
+    visual_style: "Plain white rectangular panels with thin gray borders and gray text, over a bright stylized world; the only accent is red for the selected tab"
     layout_and_hierarchy: "One Menu panel at the left-middle edge with three tabs (Yap, Expression, Others). The Others tab holds a Yap button, an 'In-sync on/off' toggle, a 'Switch to Horror/Normal' button and a scrolling list of character sets, with a small reminder line at the bottom. A square icon of the current morph's face sits to the left of the panel. The default top-left Roblox buttons and a small top-right box are the only other UI."
-    color_scheme: ["white panels", "grey text", "red selected tab label", "panel tint follows the morph (orange for a brown morph)"]
+    color_scheme: ["white panels", "gray text", "red selected tab label", "panel tint follows the morph (orange for a brown morph)"]
     typography:
-        font_appearance: "Light thin sans with outlined grey text inside white buttons"
+        font_appearance: "Light thin sans with outlined gray text inside white buttons"
         font_family_if_verified: null
         size_observation: "Button labels about 12-15 px tall in 960 px wide frames of desktop captures; the reminder line is about 5 px and unreadable"
         size_basis: visual_estimate
         viewport_resolution: "Unknown source resolution; frames scaled to 960 px wide"
-        readability: "Low contrast: grey text on white; several labels are hard to read even full-size (video_1 3:30)"
+        readability: "Low contrast: gray text on white; several labels are hard to read even full-size (video_1 3:30)"
     controls:
         primary_actions: "Click Yap, toggle In-sync, click Switch to Horror, click a character set (video_1)"
         close_x_appearance_and_location: null
         modal_behavior: "The Menu panel stays open while the player walks; it does not pause or dim the world (video_2)"
-        state_feedback: "Yap button label changes to 'Yapping' while active and the In-sync toggle reads on or off; selected tab label turns red; hovered list row turns grey (video_1 3:00-3:30)"
+        state_feedback: "Yap button label changes to 'Yapping' while active and the In-sync toggle reads on or off; selected tab label turns red; hovered list row turns gray (video_1 3:00-3:30)"
         target_size_and_input: "Buttons are wide but short, about 130x20 px in 960 px frames; list rows are tightly stacked"
     graphics:
         graphics_versus_text: "Almost all text; the one graphic is the current morph's face icon"
@@ -238,8 +238,8 @@ new_player_onboarding:
     timing_basis: null
     evidence: [video_1, video_2, search_1]
 accessibility_and_comfort:
-    text_and_contrast: "Menu text is thin grey on white with low contrast; the reminder line is too small to read (video_1)"
-    non_color_cues_and_icon_labels: "Selected tab is shown by red colour only (video_1)"
+    text_and_contrast: "Menu text is thin gray on white with low contrast; the reminder line is too small to read (video_1)"
+    non_color_cues_and_icon_labels: "Selected tab is shown by red color only (video_1)"
     input_support_observed: ["keyboard and mouse (videos)"]
     motion_audio_settings: []
     settings_tested: []
@@ -261,7 +261,7 @@ world_and_presentation:
         - "Thumbnail scenery is a flat grass field with trees and a simple desk prop; the characters, not the world, carry the visual interest"
         - "Landmarks in the videos: a large fast-food restaurant with an enterable interior and booths, a very large tree players gather under, a playground frame (video_2)"
     environmental_storytelling: []
-    audiovisual_consistency: "Characters are glossy, rounded, single-colour figures; the world is a realistic-textured grass field with real-world brand buildings, so the two styles clash (video_1, video_2)"
+    audiovisual_consistency: "Characters are glossy, rounded, single-color figures; the world is a realistic-textured grass field with real-world brand buildings, so the two styles clash (video_1, video_2)"
     success_effect_intensity_and_clarity: "Morph animations are the only effects: big expressive faces, no particles (video_1)"
     evidence: [source_2, video_1, video_2]
 technical_quality:
@@ -274,7 +274,7 @@ technical_quality:
     measurement_method_and_limits: "Not played; video frames only, at 480p, so no performance claims"
     evidence: [video_1]
 transferable_ideas:
-    - "A roster of instantly recognisable, color-coded character morphs can carry a social space with almost no systems: identity and group display are the content."
+    - "A roster of instantly recognizable, color-coded character morphs can carry a social space with almost no systems: identity and group display are the content."
     - "Give each character a few one-click performative actions (talk animation, expression change, a dramatic alternate form) that others can see, so wearing a character becomes something to do, not just a look."
 practical_takeaway:
     strongest_idea: "Bold, single-color character silhouettes with one-click visible performances (talk, expression, alternate form) make a gathering itself the spectacle."
@@ -284,10 +284,10 @@ practical_takeaway:
     estimated_effort_and_assumptions: "Estimate: small to medium, assuming original characters, a morph-select UI, existing avatar rigs and a few authored animations per character."
 inferences:
     - "The music category placement and the morph set point to the game riding a music-character fandom (inferred from the title, genre, thumbnail and the character-set names in the videos; not stated on the page)."
-    - "Character choice is likely the first meaningful action (inferred: both videos start with a morph already chosen and the menu centres on character sets)."
+    - "Character choice is likely the first meaningful action (inferred: both videos start with a morph already chosen and the menu centers on character sets)."
     - "Players stay by watching and showing off each other's morphs; this is inferred from video_2's gatherings and is not a measured retention claim."
 uncertainties:
-    - "Onboarding, how morphs are obtained (free, badges or purchase) and monetisation are unobserved."
+    - "Onboarding, how morphs are obtained (free, badges or purchase) and monetization are unobserved."
     - "Both videos are 15-21 months old; current menus and roster may differ."
     - "Whether the game still receives updates: the description says it is not continued, yet the API shows an update on 2026-11-01."
 blockers:

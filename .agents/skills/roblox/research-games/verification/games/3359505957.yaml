@@ -173,7 +173,7 @@ ui:
   evidence_status: observed
   visual_style: "Soft pastel UI: white and mint rounded panels with thin dark outlines, rounded bubbly display type with dark stroke, light low-poly world."
   layout_and_hierarchy: "Quest bar top-center with reward slot; trophy left of it and settings and tag icons right; pet count and collection counter mid-left; gold with rate mid-right with a '+' and a potion button below; single 'Pets' button bottom-center with the zone label beside it."
-  color_scheme: ["Mint green buttons and progress fills", "White and light grey panels", "Gold coin yellow", "Pink callout for quest completion", "Red circular close button"]
+  color_scheme: ["Mint green buttons and progress fills", "White and light gray panels", "Gold coin yellow", "Pink callout for quest completion", "Red circular close button"]
   typography:
     font_appearance: "Rounded bubbly sans, white with dark outline on buttons and headings"
     font_family_if_verified: null
@@ -224,7 +224,7 @@ commercial_and_return_prompts:
   evidence: [api_1, play_1, video_1, video_3]
 world_and_presentation:
   navigation_and_objective_readability: "Low between the first hatch and the crystal field: decorative logs near spawn look interactive, and the earning area is off to the side."
-  landmarks_and_variety: ["Huge paw-number gate signs (video_1)", "Later areas: forest with blue crystals, desert, jungle and grotto (video_1 9:00, video_2)", "Low-poly meadow with trees, rocks and logs", "Yellow crystal field", "Grey cliff walls", "World signs for TIP and hourly egg"]
+  landmarks_and_variety: ["Huge paw-number gate signs (video_1)", "Later areas: forest with blue crystals, desert, jungle and grotto (video_1 9:00, video_2)", "Low-poly meadow with trees, rocks and logs", "Yellow crystal field", "Gray cliff walls", "World signs for TIP and hourly egg"]
   environmental_storytelling: []
   audiovisual_consistency: "Consistent pastel low-poly world and UI; audio not assessed."
   success_effect_intensity_and_clarity: "Pet reveal is full-screen and unambiguous; gold gain is shown by counter and rate."
@@ -238,7 +238,7 @@ technical_quality:
   measurement_method_and_limits: "VM over SSH; not representative of native device performance."
   evidence: [play_1]
 transferable_ideas:
-  - "Upgrades as world pads: walk onto a labelled stone pad to buy it, with the effect stated in one caption; progression becomes a place the player visits rather than a menu (video_1, video_2)."
+  - "Upgrades as world pads: walk onto a labeled stone pad to buy it, with the effect stated in one caption; progression becomes a place the player visits rather than a menu (video_1, video_2)."
   - "Collection-count gates shown as a giant number in the world, so the next area's requirement is visible from where the player stands (video_1)."
   - "Contextual tooltip bubbles that point at a button the moment it becomes useful (video_1)."
   - "Passive co-op: friends multiply income and others' pets drop collectible gold, so strangers help rather than compete (video_1, video_2)."

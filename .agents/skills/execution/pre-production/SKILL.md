@@ -55,7 +55,7 @@ Build the clean target contract instead of preserving transitional behavior.
 
 Fix and validate every defect that remains in the task, even when it predates the task or sits
 outside the initial file set; cleanup that fixes no defect follows the size budget below.
-Follow the evidence through affected callers and owners. That obligation is not a licence to audit
+Follow the evidence through affected callers and owners. That obligation is not a license to audit
 areas the evidence never reaches, and the section below governs how far it reaches.
 The repair must satisfy **Target Contract**; an encountered failure never authorizes compatibility
 with an obsolete owned contract or revision.
@@ -203,7 +203,7 @@ with an obsolete owned contract or revision.
   cannot show contention, a dataset too small to produce a rate — say so plainly and build for the
   target anyway. A design that cannot yet be proven here is still the right design; one that cannot
   scale is not, and a measurement taken on a small deployment is evidence about that deployment only.
-- This is not a licence for speculative distribution. The bar is unchanged: the cleanest result for
+- This is not a license for speculative distribution. The bar is unchanged: the cleanest result for
   the contract the released product needs. It removes exactly one argument from the discussion — that
   the current deployment is small — and settles nothing else about how much scale the work warrants.
 
@@ -219,7 +219,7 @@ with an obsolete owned contract or revision.
   constraint can be removed only by expanding scope or authority, explain the constraint and ask
   about that expansion under the global rules.
 - **Keep independent work moving while a product choice waits.** If a remedy changes the intended
-  behaviour and the global rules reserve that decision for the user, state the choice plainly and
+  behavior and the global rules reserve that decision for the user, state the choice plainly and
   carry on with work that does not depend on the answer.
   A shape change to an owned contract that **Target Contract** admits without a proposal is not one
   of those: it is made, with every consumer, and stated in the pull request.
@@ -237,7 +237,7 @@ with an obsolete owned contract or revision.
   instead, as the global rules' standing-guidance bullet says of design rules.
   The user may take the trade-off or refuse it; they cannot weigh what they were not told.
 - Reserve a blocking question for a decision that is genuinely theirs — a security posture, a product
-  behaviour, a disclosure boundary — under the global rules' **Task execution and authorization**.
+  behavior, a disclosure boundary — under the global rules' **Task execution and authorization**.
   A change to the product experience is not exempt because its consequence seems small or its
   remedy obvious, but a routine presentation or interaction detail is not such a change: it is
   decided and reported as that section says. Routine internal changes within the settled
@@ -317,7 +317,7 @@ with an obsolete owned contract or revision.
   required, a warn-and-skip, an `or` between two sources for the same value, and a refusal keyed on
   the absence are all dead code and go, and the wire message and the model follow the column and
   require the field. When the column is not required, the fix is the schema change that requires it,
-  and the wire and the model follow that column, never the other way round. The shape to recognise:
+  and the wire and the model follow that column, never the other way round. The shape to recognize:
   a validation error at a read site answered by widening the reader instead of asking what the store
   allows.
 - For a requiredness change, establish the affected data's retention scope under **Product State**
@@ -332,5 +332,5 @@ with an obsolete owned contract or revision.
   fallback written into data. So is a branch on a creation date or a stored version that does the
   same. Where the new field records a fact, such as who did something or when, backfill that fact
   from its authoritative source. The tell is a description or comment saying that rows from before
-  the change keep the old behaviour; keeping it needs the user's approval, as any legacy support
+  the change keep the old behavior; keeping it needs the user's approval, as any legacy support
   does.

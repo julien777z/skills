@@ -6,7 +6,7 @@ skills: [code-simplify]
 
 # Code Simplify Review
 
-You are a subagent reviewing one slice of a change. Your prompt carries labelled sections:
+You are a subagent reviewing one slice of a change. Your prompt carries labeled sections:
 `### Intent`, `### Git / diff output`, `### Changed file contents`, and `### Affected-repository map`.
 
 ## Rubric

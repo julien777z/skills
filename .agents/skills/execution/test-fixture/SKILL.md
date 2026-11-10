@@ -1,6 +1,6 @@
 ---
 name: test-fixture
-description: Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Rejects hard-coded domain test data when a canonical fixture or factory owns it, and enforces existing-coverage reuse before new tests, one class per file with small cases folded into existing owning classes, concise parametrized cases, honest doubles, and regression validation through existing tools. Its rubric owns what makes a test worth keeping, changing or removing, and its Sweep applies that to a finished change's tests and their neighbours.
+description: Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Rejects hard-coded domain test data when a canonical fixture or factory owns it, and enforces existing-coverage reuse before new tests, one class per file with small cases folded into existing owning classes, concise parametrized cases, honest doubles, and regression validation through existing tools. Its rubric owns what makes a test worth keeping, changing or removing, and its Sweep applies that to a finished change's tests and their neighbors.
 short_description: 'Check test data and fixtures before changing tests or running tests after a fixture change.'
 ---
 
@@ -133,14 +133,14 @@ Run once a change is otherwise finished, over a scope fixed before it starts:
 - every test the change added or edited;
 - the whole of every test file that gained a test, the tests already in it included;
 - the adjacent test files: the other test modules in each such file's test package that mirror the
-  same source package. One hop only: a file the sweep edits brings no further neighbours in.
+  same source package. One hop only: a file the sweep edits brings no further neighbors in.
 
 Apply the complete rubric to every test in that scope — **Test Value And Retention** with its
 dispositions, the **Naming Checks**, **Factory Contents**, **Auditing Existing Doubles**, and the
 **Literal Sweep** — and fix what it finds: repair or rewrite a weak test, fold a duplicate into its
 keeper, and delete one that proves nothing once the rubric's deletion evidence is recorded. A
 repaired or strengthened guarantee follows the existing-check validation procedure above. A fix that repairs a defect —
-a test that cannot fail, guards the wrong behaviour or breaks in a fresh checkout — is always made,
+a test that cannot fail, guards the wrong behavior or breaks in a fresh checkout — is always made,
 whatever its size; other cleanup the sweep finds counts toward `pre-production`'s size budget like
 any other incidental change, and past it, what is left returns to the caller as deferred work. Apply the cost-reporting procedure above to the run that verified the
 change. A disproportionate test, parametrized family or module in scope is made cheap or removed

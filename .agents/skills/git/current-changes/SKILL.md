@@ -22,7 +22,7 @@ makes it.
    files the branch adds. Read the diff itself, not its file list; a file list says where the change
    is, never what it does.
 2. **Group the hunks into material changes.** A material change is a unit of intent a reviewer would
-   name — a shared owner introduced to remove duplication, a contract broken on purpose, a behaviour
+   name — a shared owner introduced to remove duplication, a contract broken on purpose, a behavior
    added or removed, a mechanism replaced by another — never a file, a hunk, or a rename on its own.
    Several hunks across several files usually make one change; one file rarely makes two.
 3. **Fold the tests.** Test changes become one sentence at the end of the list, however many files

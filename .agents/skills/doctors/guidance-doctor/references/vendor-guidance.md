@@ -52,13 +52,13 @@ resume, clear, compact, and fork.
 - Match the degrees of freedom to the task: a heuristic where several approaches are valid, an
   exact script where the operation is fragile. Over-specified brittle logic and vague generalities
   are the two failure modes; the target is specific enough to guide and flexible enough to leave
-  judgement.
-- Emphasis is scarce: capitalised imperatives on many lines mean none stands out. Explain the why.
+  judgment.
+- Emphasis is scarce: capitalized imperatives on many lines mean none stands out. Explain the why.
 - Offer one default and an escape hatch, never a menu. Avoid time-sensitive text. Keep terminology
   consistent. Never assume a package is installed.
 - Contradictory rules are picked arbitrarily; review nested rules for conflicts.
 - OpenAI: the rules file carries the mandatory skill-usage triggers; if routing is unreliable, fix
   the metadata before adding code; keep each skill to one job; prefer instructions over scripts
-  unless behaviour must be deterministic.
+  unless behavior must be deterministic.
 - Evaluate before documenting: at least three scenarios and a no-skill baseline, tested on the
   weaker models as well as the strongest.

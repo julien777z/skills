@@ -243,7 +243,7 @@ is a defect in the change.
 
 Anything the run shows that the product should not do — an error the run did not ask for (a
 failed request, an empty section, an error boundary, an unwritten redirect, a console error) or
-wrong behaviour on screen (a value shown altered or lost, data in the wrong place, a broken
+wrong behavior on screen (a value shown altered or lost, data in the wrong place, a broken
 layout) — is a defect the walkthrough found, and `pre-production`'s **Encountered Issues** decides
 what happens to it. Diagnose it to its cause through the service log, the network response, and the
 rendering code, fix it, and re-run the step. The one exception is the failure you induced on the

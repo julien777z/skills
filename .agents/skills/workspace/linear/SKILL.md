@@ -101,7 +101,7 @@ completed-category state only when the invoking workflow says its completion con
 
 ## Cancel Or Delete
 
-**Cancellation and deletion answer different questions.** Cancelling says the work was real and the
+**Cancellation and deletion answer different questions.** Canceling says the work was real and the
 team is not doing it; deleting says the record should never have existed. Reaching for cancellation
 in both cases fills the ledger with entries a reader has to re-litigate before dismissing, which is
 the cost the wrong disposition imposes on everyone who reads it later.

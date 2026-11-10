@@ -1,6 +1,6 @@
 ---
 name: text-highlight
-description: "Show changes as diff-shaped code blocks a reader can locate at a glance: an edited line marked + in the form it now takes, a line dropped with nothing in its place marked -, a few unchanged lines around each change, and ... where the file goes on. Every file fences with diff so the marks colour, a document as readily as a module; text mode drops to a plain fence only when asked for. Invoke as /text-highlight [code|text] [paths], or from a skill that declares it."
+description: "Show changes as diff-shaped code blocks a reader can locate at a glance: an edited line marked + in the form it now takes, a line dropped with nothing in its place marked -, a few unchanged lines around each change, and ... where the file goes on. Every file fences with diff so the marks color, a document as readily as a module; text mode drops to a plain fence only when asked for. Invoke as /text-highlight [code|text] [paths], or from a skill that declares it."
 short_description: 'Show code changes in small diff-shaped excerpts that are easy to locate.'
 ---
 
@@ -11,11 +11,11 @@ diff themselves: the changed lines marked, enough unchanged lines to place them,
 
 ## Modes
 
-- **code** — the block is fenced ```` ```diff ````, so a renderer colours a changed line green and
+- **code** — the block is fenced ```` ```diff ````, so a renderer colors a changed line green and
   a dropped line red while unchanged lines read as ordinary text. **Every file renders this way**,
-  a document as readily as a module: colour is what lets a reader find the change without reading
+  a document as readily as a module: color is what lets a reader find the change without reading
   for it, and prose needs that more than code does, not less.
-- **text** — the same shape in a bare ```` ``` ```` fence, with no colouring. It exists for a
+- **text** — the same shape in a bare ```` ``` ```` fence, with no coloring. It exists for a
   destination that renders no diff fence, and is reached only by asking for it.
 
 Mode is code unless the invocation or a caller asks for text, and that choice covers every file in
@@ -34,7 +34,7 @@ the call.
    exactly as `git diff` writes it: one space for an unchanged line, `-` for a removed one, `+` for
    an added one, each immediately followed by the line itself with no second space.
    - **The leading space on an unchanged line is load-bearing, not decoration.** A `diff` fence
-     colours every line that opens with `-`, so a document's own `- ` bullet renders as a deletion
+     colors every line that opens with `-`, so a document's own `- ` bullet renders as a deletion
      the moment that space is dropped, and a Markdown file is mostly bullets. The space is what
      makes an unchanged line read as unchanged and a removal read as a removal.
    - **An edited line shows only what it now says.** Where a run of removed lines is immediately
@@ -88,7 +88,7 @@ it stands for the file rather than quoting it. With nothing to show, return the 
 
 **The four-backtick fence above belongs to this page, not to the answer.** It is here so the
 template's own fences are readable; a response that repeats it nests one fence inside another and
-the reader sees the backticks as text instead of a coloured diff. Emit what is inside it and
+the reader sees the backticks as text instead of a colored diff. Emit what is inside it and
 nothing around it, and never wrap a block in a second fence to show its markers.
 
 ## Guardrails
