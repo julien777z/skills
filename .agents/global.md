@@ -72,7 +72,10 @@ alwaysApply: true
   embedded in the message text, such as Markdown image syntax naming the file's absolute path, instead
   of offering a file-sending tool, the agent the user talks to sends a capture by writing a short message
   that embeds it, in the same turn, right after reading it and before its next tool call; a capture kept
-  for the turn's last message has been held. A subagent with no file-sending
+  for the turn's last message has been held. The embedded file sits where that viewer serves files, such
+  as one of the session's listed working directories like its attachments folder, copied there first
+  when the capture was saved elsewhere: an image in a scratch or temporary directory shows the reader
+  nothing. A subagent with no file-sending
   tool hands each capture to be sent up as `subagent-matrix`'s **Dispatch** describes, and the
   agent that delegated to it reads and forwards each one on arrival. A brief that asks a worker for
   captures asks for them this way.
