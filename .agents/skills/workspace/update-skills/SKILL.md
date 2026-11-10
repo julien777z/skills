@@ -69,10 +69,10 @@ report that the lock expired and which overlays were removed after its deadline.
 
 **Local Git damage in the skills checkout never holds a refresh and is never put to the user; it is
 backed up and repaired, whoever's branch it is.** Damage is local Git state that makes a read, fetch
-or write this refresh needs fail or act on a branch, index or worktree that disagrees with the files
-it holds, and that no running Git process or deliberate move recorded in the reflog owns. A dirty
-tree, a branch diverged from its upstream, a deliberate reset, a lock a live process holds and a
-loose ref whose commit exists overriding a packed one are healthy and left as they are. Repair
+or write this refresh needs fail, or act on a branch pointing behind the commit its index and files
+already match, and that no running Git process or deliberate move recorded in the reflog owns. A
+dirty tree, a branch diverged from its upstream, a deliberate reset, a lock a live process holds and
+a loose ref whose commit exists overriding a packed one are healthy and left as they are. Repair
 damage under the lock as soon as a read or fetch from step 2 on reports it; damage seen at step 1 is
 repaired once step 2 holds the lock. Before each repair, copy to private task storage every file it
 replaces, deletes or rewrites, each ref it moves or removes with the commit it held and the commit
