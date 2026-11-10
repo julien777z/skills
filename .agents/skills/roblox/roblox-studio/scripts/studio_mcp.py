@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import IO, Any, Final, cast
 
 RUNNER_SSH: Final[Path] = Path(__file__).resolve().with_name("runner_ssh.sh")
+AGENT_LOCK: Final[Path] = Path.home() / ".agents/skills/agent-lock/resources/main.py"
 STUDIO_APP: Final[str] = "/Applications/RobloxStudio.app"
 STUDIO_MCP: Final[str] = f"{STUDIO_APP}/Contents/MacOS/StudioMCP"
 GUEST_PLACES: Final[str] = "studio-places"
@@ -224,7 +225,18 @@ def guest_place(project: str, place: Path) -> str:
     return f"{GUEST_PLACES}/{project}/{place.name}"
 
 
-def close_place(project: str, place: Path) -> str:
+def own_runner_lock(lock_receipt: Path) -> None:
+    result = subprocess.run(["python3", str(AGENT_LOCK), "check", "--receipt", str(lock_receipt)],
+                            capture_output=True, text=True, timeout=30)
+    status = json.loads(result.stdout or "{}").get("status")
+
+    if status != "owned":
+        raise RuntimeError(f"Runner lock not owned by receipt {lock_receipt}: {status}")
+
+
+def close_place(project: str, place: Path, lock_receipt: Path) -> str:
+    own_runner_lock(lock_receipt)
+
     pattern = shlex.quote(f"localPlaceFile .*{guest_place(project, place)}")
     # An editor with a place open answers SIGTERM with its unsaved-changes prompt, so it is then killed; the place file
     # is the task's own copy.
@@ -240,7 +252,9 @@ echo still-open'''
     return runner(script, timeout=60).decode().strip()
 
 
-def open_place(project: str, place: Path, out_dir: Path, wait_seconds: float = 180) -> Studio:
+def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path, wait_seconds: float = 180) -> Studio:
+    own_runner_lock(lock_receipt)
+
     guest_path = guest_place(project, place)
     known = {studio["id"] for studio in studios()}
 
@@ -262,7 +276,7 @@ def open_place(project: str, place: Path, out_dir: Path, wait_seconds: float = 1
     (out_dir / f"launch-failure-{place.stem}.png").write_bytes(
         runner("screencapture -x /tmp/studio-launch-failure.png && cat /tmp/studio-launch-failure.png"))
 
-    close_place(project, place)
+    close_place(project, place, lock_receipt)
 
     raise RuntimeError(f"{place.name} never registered with Studio MCP; screen saved to {out_dir}, editor closed")
 

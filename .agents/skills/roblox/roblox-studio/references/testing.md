@@ -119,10 +119,10 @@ spoken over stdio: give an MCP client that command.
 
 Drive the runner's Studio from scripts through [studio_mcp.py](../scripts/studio_mcp.py), which every game uses
 from its installed copy (`~/.agents/skills/roblox-studio/scripts`, put on `sys.path`); no game keeps its own MCP
-client. It holds one session through `runner_ssh.sh`. `open_place(project, place, out_dir)` copies a built place
+client. It holds one session through `runner_ssh.sh`. `open_place(project, place, out_dir, lock_receipt)` first confirms through `agent-lock` that `lock_receipt` owns the runner's lock, then copies a built place
 into the guest under `studio-places/<project>/`, launches an editor for it and returns a `Studio` once that editor
-registers, or saves the guest's screen, closes the editor and raises. `close_place(project, place)` ends that
-editor. `Studio` executes Luau, captures, reads the console, sends keys, and clicks a button by its instance path
+registers, or saves the guest's screen, closes the editor and raises. `close_place(project, place, lock_receipt)` ends
+that editor under the same check. `Studio` executes Luau, captures, reads the console, sends keys, and clicks a button by its instance path
 through VirtualInput. Run `python3 studio_mcp.py METHOD [PARAMS | @file]` for a single request from a shell.
 
 **No Studio operation reaches the host by falling back.** A client, helper or MCP server that picks its target
