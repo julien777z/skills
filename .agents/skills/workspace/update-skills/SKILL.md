@@ -63,42 +63,43 @@ finds another holder is a lost lease. On a failed check or a lost lease, stop wr
 reacquire the lock, restore any stash this run pushed and verify its paths, then restart at step 2.
 Keep step 2's first record whole and the head each abandoned build reached; the restarted step 2
 adds only overlays that record lacks. Repeat recovery after each lost lease until verification
-succeeds. After safe cleanup, release the lock with `--resource-idle` once step 6 finishes or an
-authority conflict holds further writes. A release the tool refuses means a successor took the lock
-after its deadline: release nothing, and report that the lock expired and which overlays were
-removed after its deadline.
+succeeds. After safe cleanup, release the lock with `--resource-idle` once step 6 finishes. A
+release the tool refuses means a successor took the lock after its deadline: release nothing, and
+report that the lock expired and which overlays were removed after its deadline.
 
-**Damaged Git state in the skills checkout never holds a refresh and is never put to the user; it is
-backed up and repaired, whoever's branch it is.** Damage is any of: a ref whose commit is missing
-from the object store, a loose copy shadowing a packed entry included; the checkout's branch
+**Local Git damage in the skills checkout never holds a refresh and is never put to the user; it is
+backed up and repaired, whoever's branch it is.** Damage is any local Git state that makes a read,
+fetch or write fail and that no live process or deliberate move owns, such as a ref whose commit is
+missing from the object store, a loose copy shadowing a packed entry included; the checkout's branch
 pointing at an ancestor of a commit on its upstream whose tree its index and files match with no
-staged or unstaged difference, when the branch's newest reflog entry is not a deliberate move such
-as a reset; and a linked worktree, other than a `skills-overlay/` one step 6 removes, whose
-directory is gone or whose link Git can no longer follow. Repair it under the lock as soon as a read
-or fetch from step 2 on reports it; damage seen at step 1 is repaired once step 2 holds the lock.
-First write each affected ref name and commit ID, the commit of any packed entry it shadows, the
-index tree, and the files of each worktree checked out on that ref or no longer openable to private
-task storage. Then remove a ref whose commit is missing; for a loose copy shadowing a packed entry
-whose commit exists, delete only the loose file under `refs/`, never through `git update-ref -d` or
-`git branch -D`, which drop the packed entry too; point the stale branch at the matching commit; and
-run `git worktree repair`, then `git worktree prune`, which drops the entry of an unlocked worktree
-whose directory is gone. That backup preserves the original for these cases. Any other state, dirty,
-diverged or a loose ref overriding a packed one, is healthy and left as it is. An authority conflict
-is a competing live claim, such as another holder of the lock or an untrusted input, never a damaged
-ref.
+staged or unstaged difference, when its newest reflog entry is not a deliberate move such as a
+reset; a linked worktree, other than a `skills-overlay/` one step 6 removes, whose directory is gone
+or whose link Git can no longer follow; a lock file no running Git process holds; or an index or
+object Git cannot read. A dirty tree, a diverged branch, a deliberate reset, a lock a live process
+holds and a loose ref whose commit exists overriding a packed one are healthy and left as they are.
+Repair damage under the lock as soon as a read or fetch from step 2 on reports it; damage seen at
+step 1 is repaired once step 2 holds the lock. First write to private task storage each affected ref
+name and commit ID, the commit of any packed entry it shadows, the index tree, and the files of each
+worktree checked out on that ref or no longer openable; that backup preserves the original. Then
+repair in place: remove a ref whose commit is missing, deleting only the loose file under `refs/`
+when it shadows a packed entry whose commit exists, never through `git update-ref -d` or `git branch
+-D`, which drop the packed entry too; point the stale branch at the matching commit; run `git
+worktree repair`, then `git worktree prune`, which drops the entry of an unlocked worktree whose
+directory is gone; replace an unreadable index with one read from the branch head; and delete a
+stale lock file. Another holder of the `skills-install` lock is waited on as `agent-lock` says, and
+an untrusted input is left out and reported; neither holds the refresh.
 
-A local fault is recovery work, not completion. If a checkout, Git object, ref, overlay or managed
-link cannot be read, preserve the original state and reconstruct a healthy source from the latest
-default branch, the last verified complete snapshot and retained trusted input records. Recover
-every readable pending change and preserve unreadable originals for later recovery; do not assert
-their contents or silently discard them. Repair the native installer or its owned source as needed,
-and resume the refresh through link verification. Link verification proves which source was
+A local fault that has no repair in place, such as an unreadable object, overlay or managed link, is
+recovery work, not completion. Preserve the original state and reconstruct a healthy source from the
+latest default branch, the last verified complete snapshot and retained trusted input records.
+Recover every readable pending change and preserve unreadable originals for later recovery; do not
+assert their contents or silently discard them. Repair the native installer or its owned source as
+needed, and resume the refresh through link verification. Link verification proves which source was
 installed, not the contents of unreadable inputs: report that uncertainty and continue investigating
 retained originals without holding installation. Use retained ownership records and installer
 preflight to distinguish managed links from foreign links. Reading merged guidance does not install
 it. Preserve foreign files and links outside user skill roots, native skill namespaces, trust checks
-and lock ownership throughout; a genuine authority conflict remains a decision while independent
-recovery continues.
+and lock ownership throughout.
 
 1. Resolve an installed user-level skill link to its Git checkout. When the link resolves into an
    overlay worktree, use the main checkout it is a linked worktree of. Confirm the checkout is the
@@ -167,4 +168,4 @@ input or path left out and why, every conflict resolved in the overlay and the p
 belongs to, anything preserved from a removed overlay, each backup of damaged Git state with its
 location and each repair made, the roots refreshed, link verification, and the skills and rules
 reread. Name any preserved unreadable originals and the evidence used to reconstruct the installed
-source; retain any unresolved authority conflict and its next action.
+source.
