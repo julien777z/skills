@@ -1,12 +1,15 @@
 from hashlib import sha256
 from json import dumps, loads
+from logging import getLogger
 from os import chown, geteuid, replace
 from pathlib import Path
 from subprocess import PIPE, run
-from sys import stderr
 from tempfile import NamedTemporaryFile
 
 from models import RefreshOutcome
+
+
+logger = getLogger(__name__)
 
 
 def git(source: Path, *arguments: str) -> str:
@@ -38,7 +41,7 @@ def commit_graph_is_valid(checkout: Path) -> bool:
     )
 
     if verification.stderr:
-        print(verification.stderr, file=stderr, end="")
+        logger.warning("%s", verification.stderr.rstrip("\n"))
 
     return verification.returncode == 0 and not verification.stderr
 

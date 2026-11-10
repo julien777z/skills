@@ -125,7 +125,7 @@ def refresh(source: Path, fetch: bool = False) -> RefreshOutcome:
                 return RefreshOutcome.BUSY
 
         if result.returncode != 0:
-            print(f"Shared skills startup did not finish:\n{result.stdout}", file=stderr)
+            logger.error("Shared skills startup did not finish:\n%s", result.stdout)
 
             return RefreshOutcome.FAILED
 
