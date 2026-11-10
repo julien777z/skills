@@ -16,6 +16,7 @@ from html import escape
 from json import JSONDecodeError, dumps, loads
 from pathlib import Path
 from typing import Final, cast
+from xml.etree import ElementTree
 
 from models import (
     Change,
@@ -55,8 +56,19 @@ DOCUMENT_PREAMBLE: Final[str] = (
 INSTALL_MARKER: Final[str] = "node_modules/.use-dashboard-installed"
 MAX_METRICS: Final[int] = 4
 OVERVIEW_TITLE: Final[str] = "Overview"
+def is_svg_document(data: bytes) -> bool:
+    """Return whether the bytes parse as XML whose root element is an SVG element."""
+
+    try:
+        root = ElementTree.fromstring(data)
+    except ElementTree.ParseError:
+        return False
+
+    return root.tag in ("svg", "{http://www.w3.org/2000/svg}svg")
+
+
 IMAGE_SIGNATURES: Final[dict[str, Callable[[bytes], bool]]] = {
-    "svg+xml": lambda data: b"<svg" in data[:1024].lower(),
+    "svg+xml": is_svg_document,
     "png": lambda data: data.startswith(b"\x89PNG\r\n\x1a\n"),
     "jpeg": lambda data: data.startswith(b"\xff\xd8\xff"),
     "webp": lambda data: data[:4] == b"RIFF" and data[8:12] == b"WEBP",
