@@ -1,0 +1,294 @@
+name: "Sprunki Roleplay"
+game_id: "universe:7104927007"
+universe_id: "7104927007"
+place_id: "90945967466286"
+url: "https://www.roblox.com/games/90945967466286"
+creator: "Purrzslop (user)"
+chart_category: "Trending Music Experiences"
+chart_rank: 1
+genre:
+  primary: "Roleplay & Avatar Sim"
+  sub: "Morph Roleplay"
+competitors:
+  - name: "Gacha Online 🎃 RP"
+    universe_id: "1852226622"
+    url: "https://www.roblox.com/games/5289509545"
+    overlap: "Same subgenre (Morph Roleplay) on the 2026-11-08 chart"
+  - name: "[🎃] Kpop Demon Hunters RP "
+    universe_id: "8058628992"
+    url: "https://www.roblox.com/games/114537828794341"
+    overlap: "Same subgenre (Morph Roleplay) on the 2026-11-08 chart"
+  - name: "[🎃 SPOOKY] HAZBIN HOTEL: Hell's Fortune"
+    universe_id: "9686425244"
+    url: "https://www.roblox.com/games/105950169251296"
+    overlap: "Same subgenre (Morph Roleplay) on the 2026-11-08 chart"
+  - name: "Sprunki RP 3D Roleplay [MUSTARD!]"
+    universe_id: "7212862432"
+    url: "https://www.roblox.com/games/84835728302583"
+    overlap: "Same subgenre (Morph Roleplay) on the 2026-11-08 chart"
+  - name: "Sprunki RP 3D [VERITY]"
+    universe_id: "6919822640"
+    url: "https://www.roblox.com/games/139708186687323"
+    overlap: "Same subgenre (Morph Roleplay) on the 2026-11-08 chart"
+researcher: "R05"
+mode: passive
+play_ended_by: null
+onboarding_video_coverage: not_covered
+observed_at: "2026-11-09T00:20:00Z"
+observation_status: completed
+previous_observed_at: null
+changes_since_previous: []
+active_play_seconds: null
+play_coordination:
+    resource_key: null
+    wait_seconds: null
+    acquired_at: null
+    expires_at: null
+    released_at: null
+    release_verified: null
+    expiry_or_blocker: "Passive-only assignment; the player lock was never acquired (bounded acquire attempts returned busy before the assignment changed)."
+context:
+    play_style: "Roleplay & Avatar Sim > Morph Roleplay (API genre_l1/genre_l2); charted under Trending Music Experiences"
+    camera_perspective: "Third person; video_1 shows the camera orbiting close to the morph to show its face, video_2 shows a free third-person camera following the player across the map"
+    device_and_input: "Videos are desktop captures (mouse cursor visible on the menu in video_1; desktop Roblox top bar in both)"
+    observation_environment: "Read-only Roblox games and thumbnails APIs and the public experience page, fetched from the host; two creator gameplay videos studied from extracted frames"
+    visible_server_population: "API at 2026-11-09T00:00Z: 202 playing, max 50 per server; video_2's player list shows about a dozen names at once"
+    solo_or_group: "Group social space; video_1 is a solo morph showcase, video_2 a public-server session among other morphed players"
+    game_version_if_known: "API updated 2026-11-01T14:40:19Z; created 2025-01-18; videos date from 2025-02-07 and 2025-08-06"
+    evidence: [source_1, source_2, video_1, video_2]
+account_state:
+    freshness: unknown
+    evidence: ["Not played; passive-only assignment", "Neither video shows a first join; both start with a morph already applied"]
+evidence:
+    - id: source_1
+      kind: description
+      url: "https://games.roblox.com/v1/games?universeIds=7104927007"
+      captured_at: "2026-11-09T00:00:00Z"
+      media_date_or_version: "updated 2026-11-01T14:40:19Z"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Description is one line saying the creator does not know what to write and that the game is not a continued project; it states no loop, goals or controls."
+          - "Stats at fetch: 13,475,668 visits, 17,616 favorites, 202 playing."
+    - id: source_2
+      kind: thumbnail
+      url: "https://tr.rbxcdn.com/180DAY-b6c04ce840e88a163d7d0699dff1e02e/768/432/Image/Png/noFilter"
+      captured_at: "2026-11-09T00:00:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "The only thumbnail the API returns; it is an in-game screenshot delivered at 768x305 rather than 768x432."
+          - "Shows avatars and chat bubbles, not HUD or menus, so it cannot establish UI, controls or onboarding."
+    - id: source_3
+      kind: description
+      url: "https://www.roblox.com/games/90945967466286"
+      captured_at: "2026-11-09T00:00:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Server-rendered page text repeats the description; no gameplay video is linked on the page."
+    - id: video_1
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=zLbyjsZP1Yc"
+      captured_at: "2026-11-09T02:10:00Z"
+      media_date_or_version: "uploaded 2025-02-07"
+      timestamps: ["0:00-0:30 yap button and caption bubble on a first morph", "1:45-2:00 horror swap via a button on the morph", "2:45-3:30 Menu panel with Yap / Expression / Others tabs and character list", "9:45 orange-tinted menu for a brown morph"]
+      screenshots:
+          - "zLbyjsZP1Yc-001.jpg"
+          - "zLbyjsZP1Yc-003.jpg"
+          - "zLbyjsZP1Yc-009.jpg"
+          - "zLbyjsZP1Yc-012.jpg"
+          - "zLbyjsZP1Yc-015.jpg"
+          - "zLbyjsZP1Yc-017.jpg"
+          - "zLbyjsZP1Yc-021.jpg"
+          - "zLbyjsZP1Yc-040.jpg"
+      limitations:
+          - "Kind: skilled play (a morph and animation showcase). Channel ORION, about 236,000 subscribers; about 50,800 views at study time; 20-minute video, first 10 minutes studied."
+          - "Description links this exact place (90945967466286), confirming the game."
+          - "Uploaded 2025-02-07, about 21 months before the study; the game has updated since, so menus and the morph roster may differ."
+          - "Edited showcase that jumps from morph to morph; it does not show how morphs are obtained, a first join, or other players. A cat image with 'help me' text at about 1:45-2:00 is a creator overlay, not game UI."
+          - "No captions were available (YouTube rate-limited the subtitle download); the video has no commentary visible in frames."
+    - id: video_2
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=7IJoAHRer9U"
+      captured_at: "2026-11-09T02:10:00Z"
+      media_date_or_version: "uploaded 2025-08-06"
+      timestamps: ["0:00-0:20 joined public server with morph applied and Menu open", "0:40-1:50 walking with other morphed players, overhead speech bubbles", "2:00-2:40 players gathered at a large tree", "3:30 Roblox People menu", "4:00-5:30 roaming the fast-food building and open field", "5:40 Roblox settings menu"]
+      screenshots:
+          - "7IJoAHRer9U-001.jpg"
+          - "7IJoAHRer9U-005.jpg"
+          - "7IJoAHRer9U-009.jpg"
+          - "7IJoAHRer9U-015.jpg"
+          - "7IJoAHRer9U-017.jpg"
+          - "7IJoAHRer9U-020.jpg"
+          - "7IJoAHRer9U-026.jpg"
+          - "7IJoAHRer9U-031.jpg"
+      limitations:
+          - "Kind: session (ordinary public-server roaming). Channel Kennygamer2011, about 7,500 subscribers; about 1,700 views; 6-minute video studied whole. Below the brief's preferred channel size; chosen because it is the most recent video found whose description links this exact place."
+          - "Uploaded 2025-08-06, about 15 months before the study; the title marks the footage itself as old."
+          - "Returning player with a morph already chosen; includes a creator intro, an outro card and one inserted speech-bubble graphic. Captions are child commentary, mostly unrelated chatter; the player says the game has no free camera."
+    - id: search_1
+      kind: description
+      url: "https://www.youtube.com/results?search_query=sprunki+roleplay+roblox"
+      captured_at: "2026-11-09T02:00:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Searches by views, 'first time playing' and 'how to play' returned almost only other Sprunki-themed games (such as '3D Sprunki RP And Animations') and animations; videos were accepted only when their description linked place 90945967466286. No first-join or guide video for this place was found, and none from the last six months."
+gameplay:
+    advertised_loop: null
+    observed_loop: "Pick a Sprunki character morph from a list, then show it off: trigger its 'yap' talking animation and caption, change its facial expression, toggle a horror variant, and walk around a shared field with other morphed players, gathering and chatting (video_1, video_2). No objective, score or reward was shown."
+    first_action: null
+    first_success_seconds: null
+    success_feedback:
+        - "Pressing Yap starts a mouth-moving talking animation on the morph, with an 'In-sync' toggle beside it (video_1 0:00-0:30, 3:00)"
+        - "Switch to Horror swaps the morph to a horror variant in place, with no transition effect seen (video_1 1:45-2:00, 3:30)"
+    progression: []
+    choices_and_variety:
+        - "Menu Others tab lists character sets: Sprunki, Sprunki: Retake, Sprunki: Pyramixed and Old/Unused (video_1 2:45, video_2 0:40)"
+        - "Each morph has a normal and a horror form and several facial expressions; video_1 cycles through about twenty distinct morphs in ten minutes"
+    social_and_cooperative:
+        - "Players cluster around landmarks (a big tree, the fast-food building) and talk with chat bubbles; one bubble reads 'yes' over a player's head (video_2 0:40-2:40)"
+    companions_and_pets: []
+    friction:
+        - "The description explains nothing about what to do and says the game is not continued."
+        - "No goal or prompt appears in either video; players invent their own play (video_2)."
+        - "The Menu panel stays open over the left of the screen during roaming in video_2, covering part of the view."
+    evidence: [source_1, source_2, source_3, video_1, video_2]
+pacing:
+    timing_start_definition: "Video timestamps from each video's own player"
+    loading_seconds: null
+    time_to_control_seconds: null
+    first_meaningful_choice_seconds: null
+    first_reward_seconds: null
+    action_reward_cadence: "No reward loop seen; the morph's animation responds instantly to each button press (video_1)"
+    active_play_versus_travel_or_waiting: "Video_2 is almost all walking between player groups and standing together; there is no waiting UI"
+    natural_stopping_points: []
+    measurement_method: "Frames sampled every 10-15 s from the videos' own timestamps; edited showcase and a returning-player session, so no session or onboarding durations are claimed"
+    evidence: [video_1, video_2]
+goals_and_progression:
+    next_goal_clarity: "No goal is shown in either video"
+    short_term_goals: []
+    medium_term_goals: []
+    advertised_long_term_goals: []
+    upgrade_choices: []
+    mastery_versus_stat_growth: null
+    unlock_previews_and_optional_activities:
+        - "Neither video shows locked morphs, badges or unlock conditions; whether morphs are gated is unknown"
+    evidence: [video_1, video_2]
+failure_and_recovery:
+    observed_failure: null
+    explanation: null
+    cost_or_lost_progress: null
+    retry_seconds: null
+    checkpoints: null
+    non_paid_recovery: null
+    evidence: []
+agency_and_social:
+    meaningful_choices:
+        - "Which character morph to wear, from four listed sets (video_1, video_2)"
+        - "Normal or horror form, expression and when to 'yap' (video_1)"
+    customization_and_identity:
+        - "Players appear as recognizable characters from an outside music-character fandom rather than their own avatars (API universeAvatarType MorphToR15; thumbnail; both videos)"
+    cooperation_and_competition:
+        - "None formal; play is gathering and roleplay among strangers (video_2)"
+    visible_social_feedback:
+        - "Overhead name tags and chat bubbles are the visible social layer; with many players together the name tags overlap into an unreadable band (thumbnail)"
+        - "Talking animations and horror swaps are visible to nearby players, so the morph itself is the social signal (inferred from video_2)"
+    solo_accessibility: "Video_1 shows a single player enjoying the morph controls alone; the social layer needs other players"
+    evidence: [source_1, source_2, video_1, video_2]
+ui:
+    evidence_status: partial
+    visual_style: "Plain white rectangular panels with thin gray borders and gray text, over a bright stylized world; the only accent is red for the selected tab"
+    layout_and_hierarchy: "One Menu panel at the left-middle edge with three tabs (Yap, Expression, Others). The Others tab holds a Yap button, an 'In-sync on/off' toggle, a 'Switch to Horror/Normal' button and a scrolling list of character sets, with a small reminder line at the bottom. A square icon of the current morph's face sits to the left of the panel. The default top-left Roblox buttons and a small top-right box are the only other UI."
+    color_scheme: ["white panels", "gray text", "red selected tab label", "panel tint follows the morph (orange for a brown morph)"]
+    typography:
+        font_appearance: "Light thin sans with outlined gray text inside white buttons"
+        font_family_if_verified: null
+        size_observation: "Button labels about 12-15 px tall in 960 px wide frames of desktop captures; the reminder line is about 5 px and unreadable"
+        size_basis: visual_estimate
+        viewport_resolution: "Unknown source resolution; frames scaled to 960 px wide"
+        readability: "Low contrast: gray text on white; several labels are hard to read even full-size (video_1 3:30)"
+    controls:
+        primary_actions: "Click Yap, toggle In-sync, click Switch to Horror, click a character set (video_1)"
+        close_x_appearance_and_location: null
+        modal_behavior: "The Menu panel stays open while the player walks; it does not pause or dim the world (video_2)"
+        state_feedback: "Yap button label changes to 'Yapping' while active and the In-sync toggle reads on or off; selected tab label turns red; hovered list row turns gray (video_1 3:00-3:30)"
+        target_size_and_input: "Buttons are wide but short, about 130x20 px in 960 px frames; list rows are tightly stacked"
+    graphics:
+        graphics_versus_text: "Almost all text; the one graphic is the current morph's face icon"
+        illustration_or_icon_style: "Flat face icon of the current character"
+        framing_outlines_and_effects: "Thin outlines, no gradients or shadows"
+        placement_and_labels: "Character sets are named, not pictured; players choose by name"
+        clarity_or_clutter: "Small and sparse, but the always-open panel covers part of the left view"
+    evidence: [video_1, video_2]
+new_player_onboarding:
+    status: indeterminate
+    reason: "Passive-only assignment, and neither available video shows a first join: both start with a morph already applied and the Menu already open. No first-time or guide video for this place was found."
+    conventions: []
+    sequence: []
+    first_independent_action: null
+    skip_or_replay: null
+    completed: null
+    observed_seconds: null
+    completion_seconds: null
+    timing_basis: null
+    evidence: [video_1, video_2, search_1]
+accessibility_and_comfort:
+    text_and_contrast: "Menu text is thin gray on white with low contrast; the reminder line is too small to read (video_1)"
+    non_color_cues_and_icon_labels: "Selected tab is shown by red color only (video_1)"
+    input_support_observed: ["keyboard and mouse (videos)"]
+    motion_audio_settings: []
+    settings_tested: []
+    clutter_and_interruptions:
+        - "In the thumbnail, overhead name tags of adjacent players overlap and become unreadable"
+        - "Chat and the player list fill both top corners in a busy server (video_2)"
+    evidence: [source_2, video_1, video_2]
+commercial_and_return_prompts:
+    first_purchase_prompt_seconds: null
+    purchase_prompt_count_during_sample: 0
+    onboarding_interruption: null
+    optional_versus_required_presentation: "No shop or purchase prompt appeared in about 16 minutes of footage across both videos"
+    return_rewards_and_events: []
+    urgency_or_streak_cues: []
+    evidence: [video_1, video_2]
+world_and_presentation:
+    navigation_and_objective_readability: "One open grassy field with a dirt path, rounded trees, hills and a few landmark buildings; easy to cross, with no objectives to read (video_1, video_2)"
+    landmarks_and_variety:
+        - "Thumbnail scenery is a flat grass field with trees and a simple desk prop; the characters, not the world, carry the visual interest"
+        - "Landmarks in the videos: a large fast-food restaurant with an enterable interior and booths, a very large tree players gather under, a playground frame (video_2)"
+    environmental_storytelling: []
+    audiovisual_consistency: "Characters are glossy, rounded, single-color figures; the world is a realistic-textured grass field with real-world brand buildings, so the two styles clash (video_1, video_2)"
+    success_effect_intensity_and_clarity: "Morph animations are the only effects: big expressive faces, no particles (video_1)"
+    evidence: [source_2, video_1, video_2]
+technical_quality:
+    loading_or_missing_assets: []
+    input_or_frame_issues: []
+    ui_defects:
+        - "Reminder text at the bottom of the Menu is too small to read (video_1)"
+    recovery_behavior: null
+    measurements: []
+    measurement_method_and_limits: "Not played; video frames only, at 480p, so no performance claims"
+    evidence: [video_1]
+transferable_ideas:
+    - "A roster of instantly recognizable, color-coded character morphs can carry a social space with almost no systems: identity and group display are the content."
+    - "Give each character a few one-click performative actions (talk animation, expression change, a dramatic alternate form) that others can see, so wearing a character becomes something to do, not just a look."
+practical_takeaway:
+    strongest_idea: "Bold, single-color character silhouettes with one-click visible performances (talk, expression, alternate form) make a gathering itself the spectacle."
+    main_tradeoff: "No goals, progression or onboarding appear in any source, and it relies on an outside fandom's characters; the creator calls it not continued, so its chart position likely rides that fandom's attention rather than designed retention. Its text-only, low-contrast menu is a weak model to copy."
+    suitable_genres_and_stages: ["social hangout", "roleplay", "early prototypes testing character appeal"]
+    testable_hypothesis: "Adding two or three one-click character performances visible to nearby players increases how long players stay grouped together in a social hub."
+    estimated_effort_and_assumptions: "Estimate: small to medium, assuming original characters, a morph-select UI, existing avatar rigs and a few authored animations per character."
+inferences:
+    - "The music category placement and the morph set point to the game riding a music-character fandom (inferred from the title, genre, thumbnail and the character-set names in the videos; not stated on the page)."
+    - "Character choice is likely the first meaningful action (inferred: both videos start with a morph already chosen and the menu centers on character sets)."
+    - "Players stay by watching and showing off each other's morphs; this is inferred from video_2's gatherings and is not a measured retention claim."
+uncertainties:
+    - "Onboarding, how morphs are obtained (free, badges or purchase) and monetization are unobserved."
+    - "Both videos are 15-21 months old; current menus and roster may differ."
+    - "Whether the game still receives updates: the description says it is not continued, yet the API shows an update on 2026-11-01."
+blockers:
+    - "No first-join, guide or recent (last six months) video for this exact place was found; YouTube rate-limited caption download for video_1."

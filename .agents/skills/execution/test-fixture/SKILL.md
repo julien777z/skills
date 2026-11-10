@@ -1,6 +1,6 @@
 ---
 name: test-fixture
-description: Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Rejects hard-coded domain test data when a canonical fixture or factory owns it, and enforces existing-coverage reuse before new tests, one class per file with small cases folded into existing owning classes, concise parametrized cases, honest doubles, and regression validation through existing tools. Its rubric owns what makes a test worth keeping, changing or removing, and its Sweep applies that to a finished change's tests and their neighbours.
+description: Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Rejects hard-coded domain test data when a canonical fixture or factory owns it, and enforces existing-coverage reuse before new tests, one class per file with small cases folded into existing owning classes, concise parametrized cases, honest doubles, and regression validation through existing tools. Its rubric owns what makes a test worth keeping, changing or removing, and its Sweep applies that to a finished change's tests and their neighbors.
 short_description: 'Check test data and fixtures before changing tests or running tests after a fixture change.'
 ---
 
@@ -10,15 +10,13 @@ Build tests from the repository's canonical test surfaces, keep them beside the 
 exercise, and prove that each test protects behavior or an independent contract.
 
 ## Dependencies
-
-- `session-ledger` — owns private task-plan and evidence persistence. The task owner writes the
-  boundary matrix; a worker returns its proposed rows to that owner.
-
-Read the repository's product-constraints skill when the skill listing declares one, found by its
-description rather than assumed by name. It says how broad the fix for an issue encountered while
-tracing a test surface is; without one, fix what the focused pass can finish.
+- `session-ledger`
+- `pre-production`
+- `council`
 
 ## Workflow
+
+Apply `pre-production` to the scope of issues encountered while tracing a test surface.
 
 1. Read the repository’s test eligibility policy and applicable testing, framework, and organization
    guidance before selecting a test surface. Classify the proposed verification by what it does,
@@ -45,7 +43,7 @@ tracing a test surface is; without one, fix what the focused pass can finish.
    After a test-only change, run the relevant test target; do not repeat source, manual, or external
    validation unless the test exposes a source defect that changes the implementation. Existing tests
    may still be run to diagnose development failures.
-4. Identify the source owner and its existing test module beneath the corresponding suite and classification. Extend that module before creating another; apply the rubric's class/file boundary test before splitting or relocating a suite.
+4. Identify the source owner and its existing test module beneath the corresponding suite and classification. Extend that module before creating another; apply the rubric's class/file boundary test before splitting or relocating a suite. When the rubric leaves equally valid layouts, put the choice to `council` in **Ask** mode and follow its ruling.
    Extend an existing module only when its organization and framework comply with the applicable
    guidance. When it conflicts, write the coverage in the required framework and organization;
    an existing test or missing runner does not make the conflicting pattern canonical. Trace reused
@@ -130,23 +128,23 @@ Report each mutation, the intended regression failure it demonstrated, and the r
 
 ## Sweep
 
-Run once a change is otherwise finished — `review-pass` calls it over a pass's delta — over a scope
-fixed before it starts:
+Run once a change is otherwise finished, over a scope fixed before it starts:
 
 - every test the change added or edited;
 - the whole of every test file that gained a test, the tests already in it included;
 - the adjacent test files: the other test modules in each such file's test package that mirror the
-  same source package. One hop only: a file the sweep edits brings no further neighbours in.
+  same source package. One hop only: a file the sweep edits brings no further neighbors in.
 
 Apply the complete rubric to every test in that scope — **Test Value And Retention** with its
 dispositions, the **Naming Checks**, **Factory Contents**, **Auditing Existing Doubles**, and the
 **Literal Sweep** — and fix what it finds: repair or rewrite a weak test, fold a duplicate into its
 keeper, and delete one that proves nothing once the rubric's deletion evidence is recorded. A
-repaired or strengthened guarantee follows the existing-check validation procedure above. The fixes count toward the
-product-constraints skill's size budget like any other incidental change; past it, list what is left
-in the change's report. Apply the cost-reporting procedure above to the run that verified the
+repaired or strengthened guarantee follows the existing-check validation procedure above. A fix that repairs a defect —
+a test that cannot fail, guards the wrong behavior or breaks in a fresh checkout — is always made,
+whatever its size; other cleanup the sweep finds counts toward `pre-production`'s size budget like
+any other incidental change, and past it, what is left returns to the caller as deferred work. Apply the cost-reporting procedure above to the run that verified the
 change. A disproportionate test, parametrized family or module in scope is made cheap or removed
-as the product-constraints skill decides.
+as `pre-production` decides.
 
 Report each test in scope with its disposition, and for each deletion the evidence the rubric asks
 for.
@@ -154,7 +152,7 @@ for.
 ## Completion
 
 Fix concrete violations encountered in the relevant tests, sibling tests, fixtures, factories, and
-shared utilities at the breadth the product-constraints skill sets. Do not turn a focused change
+shared utilities at the breadth `pre-production` sets. Do not turn a focused change
 into an unrelated repository-wide audit.
 
 Run the locally available targets reached by the final diff. Run the full suite only when every test

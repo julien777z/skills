@@ -1,14 +1,14 @@
 ---
 name: merge-gate
-description: Merge a pull request its caller is authorized to merge — verify its delivery dependencies before taking it out of draft, gate its exact head, resolve merge conflicts, squash-merge and verify the merge. Use when a workflow reaches an authorized merge — `execute-task`'s Completion, a guidance batch's delivery, a user-invoked `finish-pr` or `merge-now`, or a doctor's merged batch. A pull request leaves draft only here; newly introduced PR or testing dependencies block that transition and merge. Unchanged references already on the default branch are exempt from that dependency gate.
+description: Merge a pull request its caller is authorized to merge — verify its delivery dependencies before taking it out of draft, gate its exact head, resolve merge conflicts, squash-merge and verify the merge. Use when an authorized merge is reached. A pull request leaves draft only here; newly introduced PR or testing dependencies block that transition and merge. Unchanged references already on the default branch are exempt from that dependency gate.
 short_description: 'Ready a pull request for its authorized merge, gate its exact head, and merge it.'
 ---
 
 # Merge Gate
 
 Merge one pull request at the head its caller accepted, and only after every check that head needs
-has reached a terminal result. A verified merge completes this skill, except for required Agent Sync
-handling after an agent-configuration change.
+has reached a terminal result. After verifying the merge, complete required consumer handling and,
+for an agent-configuration change, Agent Sync handling before this skill finishes.
 
 ## Authorization
 
@@ -26,13 +26,13 @@ handling after an agent-configuration change.
   authorization.
 
 ## Dependencies
-
-- `merge-conflict` — resolve every base incorporation this skill performs.
-- `pre-production` — the encountered-issue policy a failed check falls under.
-- `update-skills` — refresh the installed shared guidance after successful Agent Sync when the
-  GitHub rules select that route.
+- `merge-conflict`
+- `pre-production`
+- `update-skills`
 
 ## Inputs
+
+After successful Agent Sync, invoke `update-skills` when the GitHub rules select that route.
 
 The caller supplies the repository, the pull request, the head SHA its final acceptance passed, the
 affected behaviors its local tests already cover, and the rule that decides what a fix made here
@@ -41,9 +41,9 @@ caller or native validation evidence identifying its command and covered behavio
 resolved dependencies, configuration, toolchain and runner inputs, successful result, and durable
 output. Missing evidence prevents reusing that result or admitting a local-coverage exclusion; it
 never waives hosted coverage. The caller also supplies each validation exclusion: a current-user
-direction to leave a named test or check alone, a baseline exclusion established by `execute-task`'s
+direction to leave a named test or check alone, a baseline exclusion established by `pre-production`'s
 **Encountered Issues** classification with its default-branch evidence, or evidence that a hosted
-runner or provider cancellation meets the GitHub rule's pre-validation and local-coverage
+runner or provider interruption meets the GitHub rule's interruption and local-coverage
 conditions. A caller with no such rule has each fix's diff judged the way it judged the accepted
 head before the gate repeats.
 
@@ -112,8 +112,9 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    on drift. That receipt may support an exclusion under step 8; it never omits the hosted inventory.
 6. **Drive the complete inventory to terminal results.** Re-query the exact head on a bounded
    interval matched to job duration — roughly every 30 to 60 seconds — until every applicable,
-   non-excluded logical job has terminal coverage. A completed successful representative means a
-   pending equivalent duplicate attempt does not hold the gate. Local coverage, a green selected
+   non-excluded logical job has terminal coverage. Apply step 8 as unsuccessful attempts become
+   terminal so an interrupted job can recover while other jobs run. A successful representative
+   means a pending equivalent duplicate does not hold the gate. Local coverage, a green selected
    job or a branch-protection summary does not permit omitting another job. Classify failures under
    step 8 and account for missing or skipped required validation before clearing the gate. A new
    head rebuilds the inventory. When the base moves, compare its changes with every execution input
@@ -129,12 +130,18 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    hang, push a speculative fix, cancel, re-run, or report the run stuck from a pending status alone.
 8. **Classify every unsuccessful check before repair.** A caller-supplied exclusion, a current-user
    waiver for its named test or check is excluded. Preserve established baseline classifications;
-   classify a newly encountered possible baseline under `execute-task`'s **Encountered Issues**,
+   classify a newly encountered possible baseline under `pre-production`'s **Encountered Issues**,
    without reentering that skill's active run. Record an exclusion's evidence, remove it from
    required coverage, and do not repair, rerun, or wait for it. Apply the
    GitHub rule's runner-infrastructure exclusion automatically: record a qualified check as skipped
-   and do not rerun or wait for a green hosted result. Every other failure is relevant. Read its
-   annotations and complete log, fix the repository
+   and do not rerun or wait for a green hosted result. For a canceled or otherwise interrupted
+   attempt with no recorded validation failure and no exclusion, use an equivalent successful
+   hosted attempt or follow a pending replacement through step 6. If neither exists, obtain
+   equivalent local validation when it can qualify for the exclusion, or retry the hosted check
+   on the same head using `POST /repos/{owner}/{repo}/actions/jobs/{job_id}/rerun`. Verify the
+   retried job's head and required context before using its result. Missing logs or an unknown cancellation cause cannot justify local substitution;
+   recover hosted coverage in that case. A canceled attempt alone does not end the gate.
+   Every other failure is relevant. Read its annotations and complete log, fix the repository
    input responsible — code, test, configuration or workflow — and commit it. **Every relevant
    failure on the head goes into one push**: read all of them before fixing any, reproduce each
    with the job's own command where it can run locally, and push only once each reproduced failure
@@ -143,9 +150,9 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    or runner-specific behavior, never disk, memory or ports the session can free — is pushed
    without local proof. A relevant
    external-service failure is an encountered issue under `pre-production` and is fixed the same way;
-   never re-run a job, or skip, disable, or quarantine a test or confine its job to drafts, to get
-   past it. Report a blocker only when relevant missing coverage needs user input or unavailable
-   credentials, with the check, evidence and remediation attempted.
+   never rerun a failing validation to get a green result, or skip, disable, or quarantine a test
+   or confine its job to drafts to get past it. Report a blocker only when relevant missing
+   coverage needs user input or unavailable credentials, with the check, evidence and remediation attempted.
 9. Never stop, restart, reconfigure or claim a local service the calling workflow did not start:
    another agent or person may be using it. When relevant validation needs local services and one it
    did not start is running, use the matching hosted check as the fallback rather than running a
@@ -174,9 +181,23 @@ with the accepted head SHA in the request —
 refuses a concurrent head change. After the merge, re-read the pull request and require it to report
 merged.
 
-An excluded failed check does not prevent that ordinary authorized merge attempt. If the provider
-rejects it because branch protection requires the excluded check, leave the pull request open and
-report that actual rejection and its provider evidence; do not bypass protection.
+**A merge moves its consumers off the merged branch in the same run.** Every open pull request,
+in any repository, that pins the merged branch or a revision on it — a private checkout, a manifest
+or lockfile entry, a workflow or action reference, a generated artifact's source — is repointed to
+the maintained target containing the merge, as [Delivery dependencies](references/delivery-dependencies.md)
+says, and adapted to every contract the merge changed, such as a renamed export, until its own
+checks pass on that head. Find them by searching the provider's open pull requests and their
+consumers for the branch name and its head revision, never from memory. A consumer this session
+drives is repointed now and pushed, never left for its own merge to discover. One that another
+session owns is named in the report with its pinned reference and what the merge changed. Deleting
+the merged branch never waits on this, so a consumer left pinned stops installing.
+
+An excluded check does not prevent the ordinary authorized merge attempt. If branch protection
+rejects it because it requires an interrupted hosted check, record the required context and head
+in the inventory. For that context, step 8 cannot apply local substitution or reuse a result the
+provider already rejected. Follow its matching replacement or retry under **Check Gate**. Re-read
+the required context and attempt the merge once GitHub reports it passing. For other exclusions, or if hosted
+recovery is unavailable, report the actual rejection and its provider evidence. Never bypass protection.
 
 Once the merge is verified, as the global rules' **A merge leaves no deploy work** bullet says, do
 not inspect or follow merge-triggered release, publication, artifact or deployment workflows, or
@@ -185,12 +206,13 @@ check by any other route whether the change is live.
 When the merged diff changes agent configuration, poll the default-branch Agent Sync run the merge
 started as **Check Gate** steps 6–7 poll a check. A run ending in anything but success is diagnosed
 from its log and reported. After a successful run, complete the refresh selected by the GitHub
-rules' **After Agent Sync** section and verify its installed links before reporting completion.
+rules' **After Agent Sync** section and verify its installed links; the skill does not return, and
+the turn does not end, until that refresh is verified or a failed run or blocker is reported.
 
 ## Report
 
 ```markdown
-Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only | names of hosted checks and results> — sync: <run result | not agent configuration>; refresh: <installed source and commit | blocked: exact reason | not agent configuration>
+Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only | names of hosted checks and results> — consumers: <none pinned | repointed: <consumer PR> at <short sha> | owned elsewhere: <consumer PR> pins <reference>> — sync: <run result | not agent configuration>; refresh: <installed source and commit | blocked: exact reason | not agent configuration>
 ```
 
 Or, when a gate holds: `Not merged: <link> — <gate>: <evidence>`. The evidence includes each

@@ -169,7 +169,7 @@ async def verify_resource(payload: VerifyPayload) -> ApiEnvelope[VerifyResponse]
   app's document describes the API its consumers are meant to call, and a surface gated on an elevated
   role is not that: listing it beside the public routes hands every reader the route, its payload shape
   and its parameters, which is a map of what to try rather than something they can use.
-- This is one part of a defence rather than the whole of it. The guard on the route is what refuses
+- This is one part of a defense rather than the whole of it. The guard on the route is what refuses
   the caller; leaving the route out of the document only declines to advertise it. Never let the
   omission stand in for the check.
 - Judge it by who reaches the app, not by the path or the role. A privileged router mounted beside

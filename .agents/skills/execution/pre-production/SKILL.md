@@ -30,11 +30,33 @@ Build the clean target contract instead of preserving transitional behavior.
 
 ## Encountered Issues
 
-Apply `execute-task`'s **Encountered Issues** validation classification before choosing work from a
-failed check. Fix and validate every issue that remains in the task, even when it predates the task
-or sits outside the initial file set. Follow the evidence through affected callers and owners.
-That obligation is not a licence to audit areas the evidence never reaches; it is also not a reason
-to stop at the first file, and the section below governs how far it does reach.
+- **Classify validation failures first, before the failure is diagnosed, handed to a worker, or
+  mentioned to the user as anything but a baseline.** Read the default branch's latest run of the
+  same check, hosted or local, and reproduce there only when no such run exists. When that evidence
+  establishes the same failure under comparable inputs, and the change neither introduces nor
+  worsens it, report the check and that evidence as a baseline failure. Continue the requested work
+  and its relevant validation; do not repair, rerun, investigate further, ask a product question, or
+  record a deferral for that failure merely because validation encountered it. Keep the failed
+  result visible and never report the whole check as passing. This exclusion does not cover a defect
+  the user assigned, a suite past its runtime budget, as the testing rule's **Every suite finishes
+  within five minutes of wall time** bullet says, a failure of the behavior the task must establish,
+  or a confirmed finding independently established by a review or source inspection apart from
+  diagnosis of the excluded check. Do not reopen an exclusion by relabeling that same failure as a
+  review or source finding. Assigned defects and independent findings remain fix responsibilities
+  even when older code caused them.
+  Missing comparison evidence is not a baseline exclusion; inspect the failure at its native owner
+  before choosing its disposition. Pass established exclusions and their evidence to every later
+  validation or merge gate.
+  A brief that hands a validation failure to a worker carries the classification's result, and
+  never asks the worker to fix a baseline failure. A baseline failure's cause, even one only the
+  user could remove such as a provider setting or credential, is never put to the user as a gate or
+  a request, apart from the branch-protection rejection the GitHub rules' **Merge Authorization**
+  says to report.
+
+Fix and validate every defect that remains in the task, even when it predates the task or sits
+outside the initial file set; cleanup that fixes no defect follows the size budget below.
+Follow the evidence through affected callers and owners. That obligation is not a license to audit
+areas the evidence never reaches, and the section below governs how far it reaches.
 The repair must satisfy **Target Contract**; an encountered failure never authorizes compatibility
 with an obsolete owned contract or revision.
 
@@ -47,9 +69,9 @@ with an obsolete owned contract or revision.
   survives the next one.
 
 - **A test that costs far more than it covers is removed.** When one test, parametrized family or
-  module is disproportionate under `test-fixture`'s cost question and cannot be made cheap as that
-  question allows, delete it with the deletion record `test-fixture`'s rubric asks for, and keep
-  or extend a cheaper test of the same classification where the contract needs one. Never keep it
+  module is disproportionate under the testing rule's **Test Cost** criteria and cannot be made cheap as those
+  criteria allow, apply that rule's **Test Deletion Evidence** requirements before deleting it.
+  Keep or extend a cheaper test of the same classification where the contract needs one. Never keep it
   in any of the ways the testing rules list for absorbing a slow test.
 
 ## Scope Follows The Defect, Not The Request
@@ -79,23 +101,36 @@ with an obsolete owned contract or revision.
   coherent repair, not the fewest lines at the expense of a complete contract.
 - Distinguish required repairs from optional structural improvements before widening the work.
   Fix confirmed broken behavior and defects introduced by the change; assess independent cleanup
-  against the bounded local-refactoring test above. Do not turn a sequence of individually useful
+  against the size budget below. Do not turn a sequence of individually useful
   cleanups into an unrequested redesign, or invent an umbrella concern to make them one defect.
   An explicitly requested broad refactor still receives its stated scope. File counts are evidence
   of spread, not a cap on the repair itself: a necessary migration may be wide, while a small
   unrelated rewrite may already be disproportionate.
 - **Incidental work goes one hop, never further.** What the work notices while making the requested
-  change — in a file it opened, a check it ran, a capture it read — is fixed. A file opened or edited
-  only to make such an incidental fix is never itself a source of more incidental cleanup: what else
-  it holds is listed, not chased.
-- **A defect the work notices is always fixed, wherever it lives.** A defect is what
-  `acceptance-gate`'s rubric calls one: an image that never loads, a wrong value, a state shown in
-  the wrong place, a control that does nothing, a test suite that fails in a fresh checkout, a
-  fixture that builds data the code would never hold, a setup step or documented command that
-  errors. It is fixed in the change in flight, outside both the hop limit and the size budget below.
-  Sitting in a shared component, an owned library or another owned repository the pull request does
-  not otherwise touch is no reason to leave it: the fix goes to that repository's pull request for
-  this work. It is never listed as noticed, offered or deferred.
+  change — in a file it opened, a check it ran, a capture it read — is a defect, fixed as below, or
+  cleanup, handled under the size budget below. A file opened or edited only to make such an
+  incidental fix is never itself a source of more incidental cleanup: what else it holds is deferred,
+  not chased.
+- **A defect is anything the system does or shows that a reader would call broken**, and the system
+  includes the repository's tooling: its tests, fixtures, build, setup and CI. An image that never
+  loads, a wrong value, a state shown in the wrong place, a control that does nothing, a lost write
+  or notification, a crash, an exhausted budget, a test suite that fails in a fresh checkout, a
+  fixture that builds data the code would never hold, and a setup step or documented command that
+  errors are its familiar shapes, not its boundary.
+- **Slow, unbounded or fragile work is a defect too.** Work the system cannot finish in useful time,
+  a resource that grows with the data with nothing to bound it, a stored value nothing limits, work
+  a restart throws away where a sibling phase keeps its place, and a job that only advances because
+  a container happens to stay alive are defects of the same standing. "The result is still correct",
+  "it only costs time" and "how much to keep is a policy question" describe a defect and never
+  exempt one; a system that is right and too slow to use is broken. A missing safeguard is not a
+  defect, since the system does what it was built to do, unless its absence is an exploitable
+  security finding, because what the system does includes what an attacker can make it do.
+- **A defect the work notices is always fixed, wherever it lives.** It is fixed in the change in
+  flight, outside both the hop limit and the size budget below, however many files its fix takes.
+  Sitting in a shared
+  component, an owned library or another owned repository the pull request does not otherwise touch
+  is no reason to leave it: the fix goes to that repository's pull request for this work. It is
+  never deferred or offered to the user as a question.
 - **A security vulnerability the work finds is such a defect, whoever finds it and whenever it
   arrived.** One a gate, reviewer or audit reports in code the change never touched, one that
   predates the change, and one another layer is said to stop before that layer is traced on every
@@ -108,14 +143,20 @@ with an obsolete owned contract or revision.
   rotating a credential they hold, is reported as a gate with its owner and saved next action, as
   the global rules' **Tools and environments** says. It is never put to the user as something to
   consider or an option, recorded as deferred, left as a hardening note, or answered with a
-  recommendation to run an audit or a doctor later.
-- **Incidental cleanup has a size budget.** The incidental part of a change — everything the request
-  did not ask for that is not a defect — stays about the size of the requested part, or within 150
-  changed lines across 10 files when the requested part is smaller. Inside the budget, everything
-  noticed is fixed. Once the next incidental fix would pass it, the rest is listed under **Noticed,
-  not changed** in the change's report, one line each, and is neither fixed, deferred, nor put to the
-  user as a question. An explicitly requested broad refactor and a doctor run set their own scope and
-  carry no budget.
+  recommendation to run an audit of any kind later.
+- **Incidental cleanup has a size budget.** Incidental cleanup is everything the request did not
+  ask for that fixes no defect, outside the change's own design and the defect's shape above.
+  - **The default budget:** cleanup that fixes no defect — duplication, dead code, a misplaced
+    helper, an abstraction with one implementation, layout — fits only inside the files the change
+    already edits and while it stays small beside the requested part.
+  - **The widened budget**, which holds instead while a decision the user scoped to the whole
+    session widens it, until they withdraw it: such cleanup fits when its fix touches about five
+    files or fewer, needs no design decision from the user, does not change what the product does
+    and needs no plan of its own. Each such fix gets its own commit, named for what it repairs.
+  - Cleanup past the budget in force is deferred work: returned to the caller to record, listed in
+    the change's report one line each with its record, and never fixed in the change or put to the
+    user as a question. A defect, a security vulnerability included, is never past it. An explicitly
+    requested broad refactor sets its own scope and carries no budget.
 - **A correction to how one screen looks or reads reaches every page when the user makes it a
   rule, and that screen alone when they do not.** A correction the user asks to have codified, or
   gives a reason for that holds wherever the shape appears, such as "labels sit above their fields
@@ -124,9 +165,9 @@ with an obsolete owned contract or revision.
   and the rule written from it governs existing pages as much as new ones. A layout, a wording, a
   tone or a style changed on one page with no such reason is the user's choice about that page. It
   is applied there, and other pages with the same shape are listed for the user to decide on,
-  never changed in the same pass. A shape a standing rule already named as a defect, and a broken
-  mechanism, a wrong value, a missing guard or a parallel implementation, stay under the bullets
-  above on every page. A page that builds its own copy of a shared component moves onto the shared
+  never changed in the same pass. A shape a standing rule already named as a defect is fixed on
+  every page in the same pass too, as the change's scope; a broken mechanism, a wrong value, a
+  missing guard or a parallel implementation stays under the bullets above. A page that builds its own copy of a shared component moves onto the shared
   one in the same pass even though its look changes with it: it takes the look the rest of the
   product already has, which is no new choice about that page, unless the task's record or the
   conversation shows the user decided that page's look, in which case the move goes to the user.
@@ -162,16 +203,24 @@ with an obsolete owned contract or revision.
   cannot show contention, a dataset too small to produce a rate — say so plainly and build for the
   target anyway. A design that cannot yet be proven here is still the right design; one that cannot
   scale is not, and a measurement taken on a small deployment is evidence about that deployment only.
-- This is not a licence for speculative distribution. The bar is unchanged: the cleanest result for
+- This is not a license for speculative distribution. The bar is unchanged: the cleanest result for
   the contract the released product needs. It removes exactly one argument from the discussion — that
   the current deployment is small — and settles nothing else about how much scale the work warrants.
 
 ## Trade-Offs Are Surfaced, Never Enforced
 
-- **A behaviour change is not a blocker.** Where the cleanest result shifts behaviour — a value
-  reaching a store it never reached before, a permission finally applying where it always should have,
-  a value newly shown to or withheld from someone — that is the user's decision, and the way to put
-  it to them is to state it plainly and carry on with the work that does not depend on the answer.
+- **A bug fix restores the intended behavior where it fails.** Identify that behavior from the
+  request, owning contract, or working cases. Keep the rest of the experience and contract while
+  diagnosing, planning, and testing the repair. A failed implementation, a working alternate
+  path, or a cheaper substitute establishes nothing about whether the intended behavior can be
+  restored. Investigate viable repairs within the authorized scope and take the next one when an
+  approach fails. Offer a different outcome only when a verified constraint rules out restoring
+  the intended behavior within that scope, or the user explicitly requests alternatives. If a
+  constraint can be removed only by expanding scope or authority, explain the constraint and ask
+  about that expansion under the global rules.
+- **Keep independent work moving while a product choice waits.** If a remedy changes the intended
+  behavior and the global rules reserve that decision for the user, state the choice plainly and
+  carry on with work that does not depend on the answer.
   A shape change to an owned contract that **Target Contract** admits without a proposal is not one
   of those: it is made, with every consumer, and stated in the pull request.
 - **Never quietly narrow the work to avoid the conversation.** Choosing the option that changes nothing
@@ -188,7 +237,7 @@ with an obsolete owned contract or revision.
   instead, as the global rules' standing-guidance bullet says of design rules.
   The user may take the trade-off or refuse it; they cannot weigh what they were not told.
 - Reserve a blocking question for a decision that is genuinely theirs — a security posture, a product
-  behaviour, a disclosure boundary — under the global rules' **Task execution and authorization**.
+  behavior, a disclosure boundary — under the global rules' **Task execution and authorization**.
   A change to the product experience is not exempt because its consequence seems small or its
   remedy obvious, but a routine presentation or interaction detail is not such a change: it is
   decided and reported as that section says. Routine internal changes within the settled
@@ -196,7 +245,7 @@ with an obsolete owned contract or revision.
 - Say what changed for whom. "This is a change, not a refactor" belongs at the top of the description,
   not buried among the mechanics.
 - **A measured failure is never a trade-off.** A rate, a duration, a kill or a resource trail observed
-  on a live run is a defect; only the shape of its fix is put to the user. Whether it is fixed, or
+  on a live run is a defect. Fix it under the same rule as any other bug. Whether it is fixed, or
   whether it may be recorded and left, is not a fork to present.
 
 ## Target Contract
@@ -268,12 +317,12 @@ with an obsolete owned contract or revision.
   required, a warn-and-skip, an `or` between two sources for the same value, and a refusal keyed on
   the absence are all dead code and go, and the wire message and the model follow the column and
   require the field. When the column is not required, the fix is the schema change that requires it,
-  and the wire and the model follow that column, never the other way round. The shape to recognise:
+  and the wire and the model follow that column, never the other way round. The shape to recognize:
   a validation error at a read site answered by widening the reader instead of asking what the store
   allows.
 - For a requiredness change, establish the affected data's retention scope under **Product State**
-  before selecting a migration or reset. The database-migration owner below applies that scope;
-  required columns do not themselves create an obligation to preserve disposable or nonexistent rows.
+  before selecting a migration or reset; required columns do not themselves create an obligation to
+  preserve disposable or nonexistent rows.
 - For retained values, use the authoritative source where one exists and a type-valid placeholder
   only where none exists. Never overwrite a known retained value, fabricate a placeholder in runtime
   code, or keep a permanent schema default solely to make a migration convenient.
@@ -283,10 +332,5 @@ with an obsolete owned contract or revision.
   fallback written into data. So is a branch on a creation date or a stored version that does the
   same. Where the new field records a fact, such as who did something or when, backfill that fact
   from its authoritative source. The tell is a description or comment saying that rows from before
-  the change keep the old behaviour; keeping it needs the user's approval, as any legacy support
+  the change keep the old behavior; keeping it needs the user's approval, as any legacy support
   does.
-- Before selecting an implementation for a schema or stored-representation change, invoke the
-  database-migration skill for that role, including when the repository has no migration runner or
-  uses startup reconciliation. Resolve its local commands and layout through project guidance;
-  missing infrastructure is work to establish, not permission to bypass that owner. It governs the
-  mechanics, what the change owes existing rows, and validation.

@@ -10,7 +10,7 @@ Terrain is not ordinary geometry. Preserve it with `Terrain:CopyRegion()` and re
 
 After restoring terrain, wait for a simulation step before building patrol/navigation samples with raycasts. Verify terrain readiness with representative samples before deriving navigation; part hits alone do not establish terrain readiness.
 
-Studio's `SerializationService:SerializeInstancesAsync()` and `EncodingService:Base64Encode()` can export authored instances when available in the current editor security context. Keep exported binaries separate from generated script content. Do not repeatedly try an API that reports the operation is unavailable in that context.
+Studio's `SerializationService:SerializeInstancesAsync()` and `EncodingService:Base64Encode()` can export authored instances when available in the current editor security context. Keep exported binaries separate from generated script content. Do not repeatedly try an API that reports the operation is unavailable in that context. When no local receiver can take the encoded bytes, read them back through the execute tool's output as [bounded binary exports](#bounded-binary-exports-through-mcp) describes.
 
 ## Multiple maps and persistence
 
@@ -41,6 +41,28 @@ Use AppleScript/System Events or another native fallback only within the user's 
 Opening a local place can launch a separate Studio process. An existing app-control handle may remain attached to the old DataModel. Verify the new file and process before editing. Close each task-owned finished editor normally after saving needed changes and confirming any publication, before opening the next place. Do not retain unused editors merely because the control tool can distinguish them; they consume memory and complicate targeting. Preserve unrelated user-owned instances.
 
 Multiple browser processes can have different tabs/accounts. An AppleScript browser query may reach a separate automation instance rather than the signed-in visible browser. Verify the actual page/account through the chosen surface. Do not browse unrelated user tabs to compensate.
+
+Before sending native input, check the desktop that receives it — the runner's guest, or the user's own desktop when they chose host Studio: whether the screen is locked
+(`CGSessionCopyCurrentDictionary()` reports `CGSSessionScreenIsLocked`) and whether the process
+sending input is trusted for accessibility (`AXIsProcessTrusted()`). A small Swift script run with
+`swift` reads both without extra packages. A locked screen drops synthetic input. The agent unlocks the guest itself; on the user's own
+desktop the unlock is the user's step, while the settings change it unblocks stays the agent's.
+
+For a Studio setting or permission an operation reports as missing, open the setting the error
+names in the verified Studio window, make the change, and press that page's own Save; closing it
+without saving discards the change. Confirm the change with a request that cannot create anything,
+such as an upload with an invalid asset type, which an approved directory passes to a validation
+error rather than a directory refusal, then retry the original request. Assistant MCP
+permissions are stored per place and can be managed only in a place saved to Roblox, so open a
+Roblox-saved place of the same owner — a private test place rather than the live game — when the
+current editor holds a local file.
+
+Open Cloud uploads read only from approved directories, and approving one needs the desktop. Approve
+a single Roblox-branded staging directory once per machine, `~/Roblox/Uploads`, never a checkout,
+worktree or build path that changes between sessions. Upload steps write or copy each artifact into
+a per-project subfolder there, such as `~/Roblox/Uploads/<project>/`, and upload from it; the
+repository keeps the editable source and export. Approve the directory as the setting paragraph
+above says.
 
 A locked desktop affects operations that depend on that desktop. Independent guest access follows the [testing reference](testing.md); independent file, build, and API work can continue.
 

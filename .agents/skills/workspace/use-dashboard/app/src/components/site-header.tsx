@@ -7,6 +7,7 @@ import {
   Database,
   FileText,
   Gauge,
+  GitCompareArrows,
   GitPullRequest,
   LayoutDashboard,
   List,
@@ -43,6 +44,7 @@ const ICONS: Record<IconName, LucideIcon> = {
   [IconName.LIST]: List,
   [IconName.CHART]: ChartColumn,
   [IconName.ACTIVITY]: Activity,
+  [IconName.COMPARE]: GitCompareArrows,
   [IconName.DIAGRAM]: Workflow,
   [IconName.DOCUMENT]: FileText,
   [IconName.GUIDE]: BookOpen,
@@ -158,13 +160,11 @@ export function SiteHeader({
             </Sheet>
           </Stack>
         )}
-        <Stack direction="row" align="center" gap="sm">
+        <Stack direction="row" align="center" gap="sm" shrink="belowLg">
           <Stack align="center" justify="center" badge="brand">
             <BrandIcon className="size-4" />
           </Stack>
-          <Text weight="semibold" truncate>
-            {title}
-          </Text>
+          <Text weight="semibold">{title}</Text>
         </Stack>
         {hasPages && (
           <Stack as="nav" label="Dashboard pages" show="fromLg" scroll>

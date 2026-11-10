@@ -65,7 +65,7 @@ export function TabsSection({ section }: { section: TabsSectionSpec }): ReactNod
           role="tablist"
           aria-label={section.title}
           onKeyDown={handleKeyDown}
-          className="flex flex-wrap gap-1 border-b"
+          className="flex gap-1 overflow-x-auto border-b"
         >
           {tabs.map((tab, position) => {
             const active = position === selected;
@@ -85,7 +85,7 @@ export function TabsSection({ section }: { section: TabsSectionSpec }): ReactNod
                 tabIndex={active ? 0 : -1}
                 onClick={() => setCurrent(position)}
                 className={cn(
-                  '-mb-px rounded-b-none border-b-2 border-transparent text-muted-foreground hover:bg-transparent hover:text-foreground dark:hover:bg-transparent',
+                  '-mb-px shrink-0 whitespace-nowrap rounded-b-none border-b-2 border-transparent text-muted-foreground hover:bg-transparent hover:text-foreground dark:hover:bg-transparent',
                   active && 'border-foreground font-semibold text-foreground',
                 )}
               >

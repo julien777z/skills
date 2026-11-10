@@ -8,24 +8,41 @@ short_description: 'Apply every time actively modifying a Roblox game, including
 
 ## Dependencies
 
-- `roblox-react` — apply for React-rendered UI.
-- `roblox-building` — apply for maps and world content.
-- `luau` — apply when reading or changing Luau.
-- `roblox-studio` — apply for Studio playtests.
-
-Apply this skill whenever actively modifying a game. Preserve the authorized scope, genre, established identity, and current gameplay contract. Use it to improve the affected player experience; it does not require adding a new feature, economy, pet system, or chart research to every code change.
+- `roblox-react`
+- `roblox-building`
+- `luau`
 
 ## Make success clear and satisfying
+
+Apply this skill whenever actively modifying a game. Preserve the authorized scope, genre, established identity, and core loop; redesign what does not make sense as **Judge the game as a player meets it** says. Use it to improve the affected player experience; it does not require adding a new feature, economy, or pet system to every code change.
 
 Fit the rhythm of success to the requested genre, audience, and mood. Establish an understandable first action and a visible result early, then connect smaller achievements to meaningful longer goals. Fast rewards suit some games; quieter discovery, mastery, or social play can be equally intentional. Do not infer a fixed reward cadence or neurological effect from chart popularity.
 
 Make successful actions legible through appropriately scaled visual, audio, motion, and progress feedback. Attribute the result to the player's action without obscuring targets, text, or threats. Bound concurrent effects, clean them up, and respect motion, camera-shake, contrast, and audio preferences. Keep frequent feedback short enough that the next action remains available.
 
+Where an action's quality can vary, tell the player how well it went, not only whether it worked: a short worded verdict, a grade or a medal for quality, attributed to the action that earned it. When an action fails, show why at the moment it fails, such as who or what caused it, which value fell short, or how close the attempt came, and, where the game allows another attempt, keep the way back to it clear and short. A failure the player can only work out by repeating it teaches slowly.
+
+## First session
+
+Put the first action before everything a new player does not yet need. Update notes, rules, daily rewards, events and offers wait until after the first success, or until the player opens them; a join that queues several panels before control delays the loop it is meant to introduce. When the game has an earn-and-spend economy and the work shapes its onboarding, carry the guidance through one whole cycle: the core action, its payout, and a first purchase or upgrade within reach of that payout. When the game guides a new player, lead that guidance all the way to the place the loop first pays, switched on by default for a new player, rather than stopping at the first menu step or hiding it behind an opt-in control. A new player stalls in the gap between the last guided step and the first earning spot, so check that the cue stays visible there, including when other players crowd the route.
+
+Where the end of the guided chain, or of a unit such as a round, a stage, a level or a published creation, leaves the next step unclear, hand off to it: a short card or line naming the next goals or choices, such as continue, try the real mode, or return to the hub, or a cue the world or existing controls already give. A newly unlocked tool or area belongs in that handoff. The end of guidance should never read as silence.
+
+## Judge the game as a player meets it
+
+Every result is judged in the game as a player would meet it, whether you built it or a worker did: from a capture or a playtest, not from the brief, the code or a report. Ask of each thing in view whether it makes sense in this world, not only whether it is broken: an object reads as what it is meant to be, a room's furnishings fit its purpose, a character holds what it holds, a creature belongs in its area's level band, a label sits where it can be read, a rule agrees with the game's other rules. Something that reads wrong is fixed, whoever made it and whenever, even when no brief, check or request mentioned it.
+
+Making the game read right is the agent's call: redesign an asset, a room, a placement, a balance value or a mechanic that does not make sense, including content built before the current task, and report each change with its captures, naming new behavior as new. This is the global product-choice boundary's game-design exception. Only a change to the game's core loop or genre, to anything players pay for, to security, disclosure or authorization, or to something the user decided goes to the user first.
+
 ## Reward real progress and preserve player understanding
 
 Show what was earned and why using the game's actual rewards and progress states. Synchronize reward UI and effects with authoritative outcomes and prevent duplicates on retries, repeated clicks, or reconnects. A predicted hit animation must not claim an unconfirmed reward. Do not invent currency, misleading pickups, or progress that the game does not grant.
 
-Tie near-term actions to clear medium-term goals and recognizable milestones. New powers, useful upgrades, newly accessible areas, personalization, and increased player skill can all make progress tangible. Vary tasks, pacing, encounters, and scenery while retaining a familiar core action. Avoid extending play only through repetitive waiting or arbitrary travel; preserve intentional anticipation, exploration, and tactical pauses where they make the genre enjoyable.
+Tie near-term actions to clear medium-term goals and recognizable milestones. New powers, useful upgrades, newly accessible areas, personalization, and increased player skill can all make progress tangible. Vary tasks, pacing, encounters, and scenery while retaining a familiar core action. Avoid extending play only through repetitive waiting or arbitrary travel; preserve intentional anticipation, exploration, and tactical pauses where they make the genre enjoyable. Pace a leveled game through level design rather than level requirements on encounters: an encounter never refuses to start because of the player's level. Place each area's creatures and each fight in the level band a player naturally has when the game first sends them there, never above it, and let the curve and the amount of content set how long a world lasts; a check that fails when an area's creatures start above its arrival level keeps that true as content grows.
+
+Show locked content where the player will use it, together with what unlocks it: a silhouetted collection entry, a padlocked slot, a grayed move labeled with the level or mastery that opens it, a mode showing the wins it needs, or a gate that states its requirement as a number the player can read from the approach. The condition shown must be the one the game actually checks. Content the progression contract keeps secret can stay hidden or appear as an unnamed slot.
+
+Where the game allows it, let what the player did stay visible in the world: ground they cleared, a structure that grows as they invest in it, NPCs that react to what they chose, their name on what they own. The world then shows progress without a meter. Drive these changes from authoritative state, bound them, and keep them consistent on rejoin and streaming.
 
 ## Navigation and travel presentation
 
@@ -35,7 +52,7 @@ Travel choices should describe their actual destination and action. Reveal locke
 
 ## Variety, identity, and playing together
 
-Give repeated play different decisions: tactical choices, complementary roles, discoveries, alternate approaches, or expressive customization that suits the game. Shared goals and visible contributions can reward cooperation before a large objective is complete. Support players who are learning or playing solo as well as groups. Comfortable controls and a world worth inhabiting matter alongside reward effects.
+Give repeated play different decisions: tactical choices, complementary roles, discoveries, alternate approaches, or expressive customization that suits the game. Shared goals and visible contributions can reward cooperation before a large objective is complete. Support players who are learning or playing solo as well as groups. Where players can attack, block or take from each other, protect a newcomer's first attempts: a clearly bounded spawn area that really is safe, a short opening in which combat is off, or a protected moment after death. Comfortable controls and a world worth inhabiting matter alongside reward effects.
 
 Treat design themes as hypotheses to test, not proof of what causes popularity. A tactical RPG, social roleplay game, and rapid collection game can be enjoyable for different reasons.
 
@@ -53,7 +70,7 @@ A walking NPC or creature needs visible locomotion that matches its movement, st
 
 Ground each walking or standing NPC against the actual authored surface using its rig and foot geometry, rather than a guessed root-height offset. Verify both feet from a low side view after appearance changes and through idle animation; neither floating nor feet sunk into paths is acceptable. Hovering must be an intentional creature design with appropriate motion.
 
-Give stationary NPCs visible, restrained idle animation: breathing, a small weight shift, or an occasional glance suited to their character. Standing still must not look frozen. Reuse the rig's animation owner, vary poses where appropriate, keep feet planted, and clean up on streaming or despawn.
+Give stationary NPCs visible, restrained idle animation: breathing, a small weight shift, or an occasional glance suited to their character. Standing still must not look frozen. Reuse the rig's animation owner, vary poses where appropriate, keep feet planted, and clean up on streaming or despawn. A prop a character carries, such as an umbrella, a book or a lantern, reads as held: pose the arm so the forearm comes forward and place the prop just in front of the palm, resting on it or hanging over the forearm, so it moves with the hand through idle and gestures. A prop passing through the middle of a blocky hand or floating beside a straight arm fails; verify it from the front and side in Play.
 
 For face-to-face conversations, guide the player to a clear spot in front of the NPC using actual walking and walking animation before framing the dialogue. Use the NPC's facing or a named conversation anchor, validate the approach and final proximity on the server, and avoid walking through obstacles or other characters. Bound the approach, cancel it on death, departure, or interruption, and restore controls if it fails. Do not snap the player across the scene or frame a conversation from behind either speaker.
 
@@ -67,12 +84,16 @@ When companions fit the game, give them understandable useful behavior and a cle
 
 Fit companions to the genre, progression, and production stage. A popular feature is not automatically appropriate for every game.
 
+## Paid offers
+
+When a game sells items, a paid action never looks like free progression or help. Give paid controls their own shape and a price label, not only a color or a small badge. Keep them off the routes and controls that guidance sends a new player through. A help, hint or "+" button either does what its label promises for free or shows its cost before it is pressed.
+
 ## Validate fun at the affected scale
 
 Play the affected loop through ordinary controls. Observe how quickly a beginner understands the next action, whether success is visible/audible, whether rewards agree with real state, and whether another attempt feels inviting. Check feedback at normal player pace and during rapid repeated successes, including overlap, audio buildup, cleanup, and performance. Keep stronger milestones distinct from routine hits.
 
-When the work involves React-rendered UI, apply `roblox-react` for clarity and its scheduled repeated-click checks. Apply `roblox-building` for coherent, interesting worlds, `luau` for authority and cleanup, and `roblox-studio` for non-interfering Play tests. Static checks cannot establish enjoyment; short playtests cannot prove long-term retention.
+When the work involves React-rendered UI, apply `roblox-react` for clarity and its scheduled repeated-click checks. Apply `roblox-building` for maps and world content and `luau` when reading or changing Luau, including authority and cleanup. Return non-interfering Play tests to the caller. Static checks cannot establish enjoyment; short playtests cannot prove long-term retention.
 
 ## Learn from evidence
 
-Do not invoke `study-games` during ordinary gameplay work; it runs only when the user directly requests that research. Keep transferable design principles here and dated observations in the invoking project's verification evidence. Distinguish passive inspection from actual play, label popularity hypotheses, and apply only ideas that fit the current game. Update canonical `.agents` sources only and leave mirrors to Agent Sync.
+Keep only transferable design principles here; dated observations stay in the records that hold them. Distinguish passive inspection from actual play, label popularity hypotheses, and apply only ideas that fit the current game. Update canonical `.agents` sources only and leave mirrors to Agent Sync.

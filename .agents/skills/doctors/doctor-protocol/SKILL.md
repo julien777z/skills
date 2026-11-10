@@ -10,27 +10,20 @@ A doctor audits one class of repository hygiene and corrects what it finds. This
 run; each doctor owns only its domain.
 
 ## Dependencies
-
-- `subagent-matrix` — route every reviewer, final reviewer and implementation worker through a
-  subagent of the running session.
-- `execute-task` — present the validated remediation plan through its **Plan** and require explicit
-  approval before editing, then implement it under its **Execution**.
-- `code-simplify` — simplify each wave and the complete result.
-- `acceptance-gate` — judge findings and the complete diff before it lands; execute-task owns
-  remediation-plan approval preparation through its shared proposal-review dependency.
-- `defer-scope` — record work consciously left undone; it runs the gate's admission question itself.
-- `pre-production` — apply the encountered-issue and target-contract policy while implementing.
-- `merge-gate` — for a doctor that delivers in merged batches, the check gate, conflict resolution and
-  verified squash merge of each batch pull request its run opens.
-
-Read the applicable dependencies before beginning. Apply their approval, compatibility, migration,
-and encountered-issue policies within the invoking doctor's declared change boundary; they do not
-expand that boundary.
+- `subagent-matrix`
+- `review-proposal`
+- `code-simplify`
+- `acceptance-gate`
+- `defer-scope`
+- `pre-production`
 
 ## Declare What The Doctor Owns
 
-A doctor declares this skill as a dependency and supplies five things, and may name its delivery
-cadence under **Deliver**:
+Read the applicable dependencies before beginning. Apply their approval, target-contract, compatibility, migration,
+and encountered-issue policies within the invoking doctor's declared change boundary; they do not
+expand that boundary.
+
+A doctor declares this skill as a dependency and supplies five things:
 
 1. an **inventory** — what it enumerates and where each item is discovered at runtime;
 2. **lenses** — each a defect shape, the evidence that establishes it, and the remedy;
@@ -39,13 +32,16 @@ cadence under **Deliver**:
 4. **domain dependencies** — the skills whose policy it applies and never restates;
 5. **report additions** — the rows it appends to the skeleton below.
 
-Anything else a doctor states is either this protocol restated, which is skill-to-skill
-duplication, or a rule the repository already owns.
+A doctor runs one fixed workflow: it defines no effort levels, mode menus, or hidden switches,
+and does not infer alternate execution from an effort word, flag, or implicit setting. Scope,
+phase, lens, and path selectors only bound the inventory. Declare fixed dependency settings at the actual call in the doctor entrypoint body; they are not caller-selectable doctor options. Anything else a doctor states is
+either this protocol restated, which is skill-to-skill duplication, or a rule the repository already owns.
 
 ## Resolve The Scope
 
 Use an explicit domain, service, path, or other concrete selection supplied by the caller.
-Otherwise audit the whole repository. Read the declined records for that scope through
+Otherwise audit the whole repository. A doctor run sets its own scope, so `pre-production`'s
+incidental size budget does not apply. Read the declined records for that scope through
 `defer-scope` before fan-out, so a finding the user already declined arrives as a decision.
 
 An explicit selection controls which inventory items are audited, not how little context may be
@@ -74,21 +70,27 @@ measurement that cannot be taken is recorded as unmeasured with the reason.
 ## Delegate The Audit
 
 Use multiple read-only subagents for every run. Invoke `subagent-matrix` at its standard capability level
-for each reviewer, launch the exact resolved identifier, and retain catalogue state, identifier, assignment state
+for each reviewer, launch the exact resolved identifier, and retain catalog state, identifier, assignment state
 and host receipt in the unified ledger. The parent owns that ledger.
 
-1. Launch at least two independent reviewers. Partition a multi-domain scope by coherent ownership
+1. Launch at least two independent reviewers. Qualifying independent hunters launched by a domain
+   dependency count toward this minimum; run that dependency once for the audit, never once per
+   doctor reviewer. Partition a multi-domain scope by coherent ownership
    boundaries discovered from the repository. For a narrow single-domain scope, give two reviewers
    independent passes over that domain rather than inventing arbitrary file slices.
-2. Launch a cross-cutting reviewer to compare the partitions, trace items that cross boundaries,
+2. After those reviewers finish and any dependency audit completes all its rounds and returns its
+   final results, launch a fresh cross-cutting reviewer to compare the partitions, trace items that cross boundaries,
    find what a single-slice reviewer cannot see, and challenge every proposed disposition whose
    evidence does not establish the full picture. The doctor names what its cross-cutting reviewer
    compares.
-3. Give every reviewer the complete lens catalogue. Require findings anchored to concrete
+3. Give every reviewer the complete lens catalog; dependency hunters apply the audit's assigned
+   attack classes and scopes. Require findings anchored to concrete
    declarations, files, and lines. A lens that lists its checks is run check by check, and each
    check's result is reported, an empty result included: a check whose result is not reported was
    not run. Reviewers edit nothing.
-4. The parent verifies the evidence in the current tree, reconciles duplicates and disagreements,
+4. A cross-cutting candidate subject to a domain dependency’s validation and verification passes
+   those phases before ledger acceptance. The parent verifies the evidence in the current tree,
+   reconciles duplicates and disagreements,
    rejects unsupported churn, and records every item's disposition.
 
 ## Keep The Ledger
@@ -107,7 +109,7 @@ Keep the ledger outside the repository unless the caller explicitly requests a d
 
 ## State The Intent
 
-Build the intent statement from the lens catalogue and the user's approved remediation plan,
+Build the intent statement from the lens catalog and the user's approved remediation plan,
 following `acceptance-gate`'s intent contract. Preserve approved dispositions through implementation
 and check their completion against the change history and final diff.
 
@@ -115,10 +117,9 @@ and check their completion against the change history and final diff.
 
 If no justified correction remains, report the completed coverage and stop.
 
-Otherwise write a decision-complete remediation plan for `execute-task`'s **Plan**. Its
-review-proposal preparation supplies the attacker rounds and independent Proposal verdict before
-presentation; do not run another standalone Proposal gate here. Preserve objections and their
-required dispositions through that shared workflow.
+Otherwise write a decision-complete remediation plan. Invoke `review-proposal` for its attacker
+rounds and independent Proposal verdict before presentation. Preserve objections and their required
+dispositions through that workflow.
 
 Check each entry against the doctor's change boundary before presenting it. Exclude entries whose
 required exception evidence is absent; approval of a generated plan cannot supply that evidence.
@@ -134,12 +135,10 @@ matters; never say where they go. Name the files each group changes and the wave
 
 That holds for a group large enough to deserve its own review, too. Size is an argument for
 sequencing it late and describing it clearly in the pull request, not for a second branch. Beyond
-that split, only the user asking to hold work apart puts an entry anywhere else. A doctor that
-delivers in merged batches names each checkpoint in its plan — the groups it closes and why the
-batch is substantial enough to merge on its own — so the user approves the checkpoints with the
-plan.
+that split, only the user asking to hold work apart puts an entry anywhere else. The plan may name
+checkpoints that group related entries on the same draft pull request.
 
-Then present it through `execute-task`'s **Plan**. The audit and its ledger are read-only; neither authorizes an edit. A
+Then present the reviewed plan for explicit user approval. The audit and its ledger are read-only; neither authorizes an edit. A
 user decision a disposition produces — a test to cut, a flag whose removal changes behavior — is
 presented as options with each consequence and a recommendation.
 
@@ -155,21 +154,19 @@ never the absence of a retired implementation.
 
 After explicit plan approval, workers implement the complete approved plan side by side. Invoke
 `subagent-matrix` at its standard capability level for each implementation role, launch each exact resolved
-identifier, and retain catalogue state, identifier, assignment state and host receipt in the ledger under
-`subagent-matrix`'s **Dispatch**. The parent keeps the ledger, the plan's order, every judgement over the
+identifier, and retain catalog state, identifier, assignment state and host receipt in the ledger under
+`subagent-matrix`'s **Dispatch**. The parent keeps the ledger, the plan's order, every judgment over the
 combined result, and the full suite and every check that needs a shared resource; the edits fan out.
 
 - **A wave is the groups that can run at once:** groups whose files do not overlap and none of which
   needs what another group in flight produces. A group that reaches into other groups' files — a
   rename across the scope, a shared module, a lockfile, generated output, a migration, a guard the
-  others rely on — runs alone, before every group that needs what it produces. Under merged batches
-  a wave never spans a checkpoint.
+  others rely on — runs alone, before every group that needs what it produces.
 - **At most four workers run at once**, unless the repository's project guidance sets another limit;
   as one finishes, the next group in the wave starts.
 - **Each worker gets one group.** Its brief carries the group's entries and files, the remedies the
-  lenses state, the intent statement and the branch it pushes to: the run's branch, or under merged
-  batches the batch's branch. It works in its own git worktree detached at that branch's remote
-  head, changes only its group's files, runs the pre-push checks `execute-task`'s **Pre-Push Gate**
+  lenses state, the intent statement and the run's branch it pushes to. It works in its own git
+  worktree detached at that branch's remote head, changes only its group's files, runs the pre-push checks the GitHub rule’s **Pre-Push Gate**
   defines, and pushes each step with `git push origin HEAD:<branch>` after fetching and rebasing,
   as the GitHub rule's **Branches and Pull Requests** says.
 - **A shared resource is never used by two workers at once** — a database, a port, a running stack.
@@ -177,18 +174,19 @@ combined result, and the full suite and every check that needs a shared resource
   goes back out as fix steps.
 - **A worker that finds work outside its group reports it instead of editing it.** The parent
   records it in the ledger and schedules it into a later wave.
-- **Each wave's combined diff is the finished task** `execute-task`'s delegated-edits bullet gates:
-  the parent reads each worker's reported head under its **Reported Outcomes**, runs one
-  `code-simplify` pass and one `acceptance-gate` diff question over the wave's pushed heads, and
-  returns what they flag as fix steps in the next wave. Neither pass, nor a merge the parent makes
-  of the wave, holds a worker's push. `code-simplify` runs again across the final result.
+- **Each wave's combined diff is gated before dependent work:**
+  the parent reads each worker's reported head under the global rules' **Reported Outcomes**, runs one
+  in-process `code-simplify` pass over the wave's pushed heads, and returns what it flags as fix
+  steps in the next wave. A wave a later wave builds on also gets `acceptance-gate`'s Diff question
+  before that wave starts. Neither that pass, nor a merge the parent makes of the wave, holds a
+  worker's push.
 
-Return to `execute-task`'s **Plan** for a newly discovered decision that changes the approved outcome;
+Present a newly discovered decision that changes the approved outcome to the user;
 do not silently narrow the correction.
 
 The plan is implemented to its last entry in one continuous run, into the branch in flight.
 A finished wave is not a finished plan, and neither is a pushed commit or a green suite; start the
-next wave in the same turn. `execute-task` owns what may and may not stop that run.
+next wave in the same turn. A genuine gate holds only its dependent work.
 
 Do not add source comments that narrate the change, its previous shape, or why something was added,
 removed, merged, or tightened. Make the result express the current state; tests validate that
@@ -196,7 +194,7 @@ behavior.
 
 ## Run Repository-Native Checks
 
-Run the pre-push checks `execute-task`'s **Pre-Push Gate** defines, then any further
+Run the pre-push checks the GitHub rule’s **Pre-Push Gate** defines, then any further
 repository-native check applicable to the changed files and their consumers: formatting, static
 analysis, tests, builds, code generation, and contract checks. Report a check category that is not
 configured rather than inventing one.
@@ -204,7 +202,7 @@ configured rather than inventing one.
 ## Review The Result
 
 Launch at least two independent read-only final reviewers. Invoke `subagent-matrix` at its standard
-capability level for each, launch the exact resolved identifier, and retain catalogue state, identifier,
+capability level for each, launch the exact resolved identifier, and retain catalog state, identifier,
 assignment state and host receipt in the unified ledger:
 
 - one verifies that every approved disposition was carried out completely;
@@ -222,7 +220,7 @@ prevents completion.
 
 Once review is clean, put the complete diff to `acceptance-gate`'s final-acceptance question
 against the intent statement. Fix every flag under `acceptance-gate`'s **Bounds** and push each fix
-as its own increment, whose `execute-task` **Pre-Push Gate** verdict is the fresh gate.
+as its own increment, checked as the GitHub rule's **Pre-Push Gate** says.
 
 ## Defer Leftovers
 
@@ -233,46 +231,26 @@ moment the decision is made, is a decision the user declined — recorded so the
 rather than presenting the finding again — and anything found outside the run's lenses that no
 check rediscovers, subject to the doctor's reporting disposition and change boundary. Any other
 refused admission means in-boundary work is done in this run, unless the refusal names close,
-which is recorded cancelled with its reason and reconsideration criterion. A finding
+which is recorded canceled with its reason and reconsideration criterion. A finding
 stated only in chat, the plan, or the report is not recorded.
 
 ## Deliver
 
-The result goes out on the repository's delivery path in the cadence the doctor names; a doctor
-that names none uses the first. A run that changes both agent configuration and source carries each
-on its own pull request in that cadence, except guidance the GitHub rule puts on the source pull
-request it depends on.
-
-- **One pull request, left open.** Merging is the user's decision, agent configuration included,
-  because a doctor's edit may need more testing than one run.
-- **Merged batches.** The run merges its pull request at each checkpoint and carries the rest of the
-  plan on a fresh one, until the plan's last entry lands. Declaring this cadence authorizes those
-  merges under the GitHub rules.
-  - A batch ends at a checkpoint the approved plan names, never partway through an entry and never
-    with a fix separated from the guard that holds it.
-  - Before merging, the batch passes **Run Repository-Native Checks**, **Review The Result**, and
-    **Accept The Complete Diff** on its own diff, gated against the run's full intent statement kept
-    current with the batches already merged; the batch's entries say only what this diff must
-    complete. It then merges through `merge-gate`, which polls its checks to a terminal state. Between
-    polls the next batch's first wave runs, its workers pushing each step through `execute-task`'s
-    **Pre-Push Gate** to the next batch's branch, stacked on the batch's branch as the GitHub rule's
-    **Branches and Pull Requests** allows; nothing more is pushed to the batch's branch.
-  - Required approvals and branch protection are never bypassed. When they are all a batch waits
-    on, the batch extends through the next checkpoint the plan names, re-passes these gates on the
-    grown head, and re-requests the required review.
-  - After the merge, once the in-flight wave's workers have finished and their heads are read back,
-    fetch the default branch, retarget the next batch's branch onto it (reusing the run's branch
-    name where the environment fixes one), open its pull request as a draft, and continue. A merged
-    batch is never the finished run.
-  - The last batch's review also confirms that every approved disposition, across all batches,
-    landed.
+Keep each repository's run on its draft pull request for the user's review. Standing merge
+exceptions and approval of the audit plan do not authorize merge or auto-merge; a later explicit
+user instruction naming the target may authorize merge. A run that changes both agent configuration and source carries each on its own pull
+request, except guidance the GitHub rule puts on the source pull request it depends on. Complete
+every approved entry continuously; checkpoints sequence work on those drafts and never wait for a
+merge. Run **Run Repository-Native Checks**, **Review The Result**, and **Accept The Complete Diff**
+over the completed work before reporting it for the user's review. Confirm that every approved
+disposition landed.
 
 ## Report
 
 The final report names:
 
 - the resolved scope and the inventory counts;
-- each pull request the run opened, what it carried, and whether it merged;
+- each draft pull request the run opened and what it carries;
 - per-lens counts by disposition, including items that were already correct and needed no change;
 - each applied correction and the evidence for it;
 - each retained item and the distinction or reason that retains it;

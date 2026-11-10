@@ -6,11 +6,6 @@ short_description: 'Apply Roblox Luau conventions when reading or changing game 
 
 # Roblox Luau
 
-## Dependencies
-
-- `roblox-react` — apply for React-rendered Roblox interfaces.
-- `roblox-studio` — apply for Studio operations, playtests, and place synchronization.
-
 Use this skill even for reading existing Roblox Luau so proposed changes follow its ownership and contracts. Inspect the repository's current conventions and canonical implementation before editing. Reading source alone does not require changing it or running the whole validation suite. User instructions and the actual change determine scope.
 
 Use the required Core/Features architecture and typed server platform ports. Use Rokit, Wally, Rojo, Blink, and `just` as the required toolchain. Use React Luau with ReactRoblox for Roblox UI. Read [architecture and platform contracts](references/architecture.md) when changing ownership, composition, network contracts, environment detection, persistence, or security, and [lint and test tooling](references/tooling.md) for commands and checks.
@@ -31,7 +26,7 @@ Keep authoritative state and rewards on the server. Client requests express inte
 
 Preserve session ownership, serialized saves, failed-load protection, shutdown saves, and once-only rewards. Never overwrite a failed load with defaults. Keep saves and gameplay contracts unchanged unless the task authorizes a change. Use isolated Studio profiles and validation keys when testing persistence. Development commands require server-side authorization.
 
-Separate animation/camera completion from authoritative resolution. Missing assets, slow rendering, or cancelled effects must not stall gameplay. Keep content definitions, gameplay services, and client presentation distinct without imposing a large architecture on a small feature.
+Separate animation/camera completion from authoritative resolution. Missing assets, slow rendering, or canceled effects must not stall gameplay. Keep content definitions, gameplay services, and client presentation distinct without imposing a large architecture on a small feature.
 
 ## Structured player persistence
 
@@ -51,8 +46,6 @@ Use named attachments or tagged instances for movable interaction anchors. Valid
 
 Give connections, render callbacks, tweens, spawned/delayed work, and camera ownership an explicit owner and cleanup path. Invalidate stale work on unmount, character replacement, streaming removal, encounter exit, and shutdown. Check generation/session identity after every relevant asynchronous wait. Restore prior state rather than guessed defaults; release held inputs even on failure.
 
-For React-rendered Roblox UI work, also apply `roblox-react`. For Studio, assets, playtests, or source/place synchronization, apply `roblox-studio`.
-
 ## Keep guidance current
 
-Record verified reusable Luau/tooling issues and solutions here or in its references. Put React-specific lessons in `roblox-react`, Studio operations in `roblox-studio`, and game-specific rules in the project skill. Replace superseded guidance, label unresolved limits, and leave evidence/logs in the workspace. Edit canonical `.agents` content only; generated provider mirrors belong to Agent Sync.
+Record verified reusable Luau/tooling issues and solutions here or in its references. A lesson whose subject another skill owns goes there, and game-specific rules go in the project skill. Replace superseded guidance, label unresolved limits, and leave evidence/logs in the workspace. Edit canonical `.agents` content only; generated provider mirrors belong to Agent Sync.

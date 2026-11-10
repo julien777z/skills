@@ -1,6 +1,6 @@
 ---
 name: review-proposal
-description: "Prepare a proposed change for an existing user-approval boundary or a directly requested proposal review. Challenge the whole proposal with three fresh standard reviewers per round, count nit-only rounds as clean, and obtain independent Proposal acceptance after two substantive clean rounds or four-round dispute adjudication. Technical readiness never grants user approval."
+description: "Prepare a proposed change for an existing user-approval boundary or a directly requested proposal review. Challenge the whole proposal with three fresh standard reviewers per round, count nit-only rounds as clean, and obtain independent Proposal acceptance after two substantive clean rounds or a council ruling once two rounds pass without them. Technical readiness never grants user approval."
 short_description: 'Challenge a proposal and obtain independent acceptance before presenting it for approval.'
 ---
 
@@ -10,14 +10,15 @@ The calling agent runs this workflow directly. It prepares the decision; the cal
 and obtains the user's approval under the global question procedure.
 
 ## Dependencies
-
-- `pre-production` — apply the full target-contract guidance to the proposal and every alternative.
-- `subagent-matrix` — select and dispatch fresh reviewers and the separate acceptance role; retain
-  their original results and recover incomplete producers under its Dispatch procedure.
-- `acceptance-gate` — the independent Proposal verdict and its binding repair procedure.
-- `session-ledger` — retain the proposal, inputs, review evidence, dispositions and pending decision.
+- `pre-production`
+- `subagent-matrix`
+- `acceptance-gate`
+- `session-ledger`
+- `council`
 
 ## Scope
+
+Apply `pre-production` to the proposal and each alternative. Invoke `acceptance-gate` for the independent Proposal verdict and its repair procedure. Use `session-ledger` to retain the proposal, inputs, evidence, dispositions and pending decision.
 
 Use where approval of a proposed change is already required: implementation plans and explicit
 product, security, disclosure or scope alternatives. This creates no new approval requirement.
@@ -57,9 +58,10 @@ Follow the dependency's fallback procedure without inventing a compliant launch 
    byte-changing clarification without those effects, retain both identities and the comparison
    supporting carry-forward; never claim the old report reviewed new bytes.
 4. **Obtain independent acceptance.** After two clean rounds, send the current proposal to
-   acceptance-gate. After four attack rounds without the streak, send it for the same independent
-   Proposal adjudication instead of dispatching another cohort. This alternate route never claims
-   two clean rounds occurred. Supply its five native inputs and exactly `Proposal — should this be
+   acceptance-gate. After two attack rounds without the streak, put the same packet to `council` in
+   **Ask** mode instead of dispatching another cohort: each member returns accept or flag, the
+   proposal is accepted only when all three accept, and every flag goes to step 5 as a gate flag.
+   This alternate route never claims two clean rounds occurred. Supply its five native inputs and exactly `Proposal — should this be
    written?`. The proposal item includes the actual round history, every substantive finding or
    material alternative verbatim with evidence, benefit, tradeoff and disposition, coverage receipts,
    and locators/content identities for the directly available originals. An index is navigation,
@@ -70,9 +72,9 @@ Follow the dependency's fallback procedure without inventing a compliant launch 
    Do not add a snapshot platform or truncate evidence. Verify the separate fresh gate's compliant
    dispatch, exact packet and complete original verdict before counting it.
 5. **Repair and return.** Apply acceptance-gate Bounds to flags, preserving original objections and
-   remedies. A flag never becomes readiness because a counter elapsed. Send repairs to a fresh gate;
+   remedies. A flag never becomes readiness because a counter elapsed. A plan repair settles a design choice, so under those Bounds it goes to one fresh gate;
    restart attacker review only if a repair changes approach, scope, ownership or verification. A new
-   material design cycle retains its preceding history and the same four-round adjudication
+   material design cycle retains its preceding history and the same two-round adjudication
    checkpoint; renaming or caller re-entry cannot erase objections or reset a cycle. Missing or lost
    gate output follows subagent-matrix recovery without redoing valid attacker evidence. Return the
    result to the caller. Do not request approval here or recursively review the gate itself.

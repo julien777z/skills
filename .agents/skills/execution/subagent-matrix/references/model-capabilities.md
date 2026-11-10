@@ -13,7 +13,7 @@ strongest available model family in this policy.
 | `frontier` | Astra | Fable  | The most demanding tasks; strongest available model |
 
 The labels describe selection policy, not identical capabilities across providers or guaranteed
-host availability. A catalogue omission is not availability evidence; the workflow resolves an
+host availability. A catalog omission is not availability evidence; the workflow resolves an
 exact host dispatch identifier and classifies its actual assignment. Reasoning effort is a separate dispatch
 setting; no capability level implies a particular effort or permission to change repository or
 global configuration.
@@ -22,31 +22,25 @@ A capture worker, mechanically capturing the pages and states a brief lists, tak
 family on every host. It captures without judging; the delegating agent reads every image whole
 before relying on it or sending it.
 
-## Codex role selections
+## Review panel
 
-Resolve the assignment's role before applying the general family table. These exact Codex
-selections take precedence over a caller's capability label and over the coordinator's model;
-a direct user override for that assignment still takes precedence.
+A review panel's three seats take these families, each at its latest host version. A caller that
+asks for the panel names these families as its selection. A seat is a model family, not a provider,
+so two seats may share a provider.
 
-| Role | Codex dispatch identifier |
+| Seat | Family |
 | --- | --- |
-| Review or simplification, including their coordinators, lenses, validators and refuters | `gpt-5.6-terra` |
-| Acceptance gate | `gpt-6.1-sol` |
-| Capture worker: mechanical browser capture of pages and states a brief lists | `gpt-6-luna` |
-
-Classify what the assignment does, not its worker name. Ordinary implementation workers checking
-their own changes are not independent review assignments. An acceptance gate remains its own role
-when a review workflow invokes it. Other Codex assignments and Claude assignments retain the
-capability-family selection above. An unavailable role selection is a concrete hold, never
-permission to inherit the coordinator's model or substitute another family.
+| 1 | Sol |
+| 2 | Opus |
+| 3 | Fable |
 
 ## Dispatch candidates
 
-Prefer the host's latest identifier matching the selected family. When a Codex catalogue omits the
+Prefer the host's latest identifier matching the selected family. When a Codex catalog omits the
 family, use the documented candidate below to launch the actual assignment. These are candidates
-to test, not supported-model claims or replacements for a newer matching catalogue entry.
+to test, not supported-model claims or replacements for a newer matching catalog entry.
 
-| Codex family | Catalogue-hidden candidate |
+| Codex family | Catalog-hidden candidate |
 | ------------ | -------------------------- |
 | Luna | `gpt-6-luna` |
 | Terra | `gpt-5.6-terra` |

@@ -9,10 +9,9 @@ short_description: 'Record unfinished work in the repository it affects, or read
 Keep a problem alive after the conversation ends without scheduling its implementation.
 
 ## Dependencies
-
-- `linear` — find, create, and update the primary durable issue.
-- `acceptance-gate` — admit a record before anything is written, and triage one before it leaves
-  the active set.
+- `linear`
+- `acceptance-gate`
+- `pre-production`
 
 ## Modes
 
@@ -21,21 +20,19 @@ Keep a problem alive after the conversation ends without scheduling its implemen
 before any write.
 
 **Read** when no scope is given. Report the combined active set from Linear and the legacy
-repository ledger, and write nothing.
-
-Use `execute-defer-scope` when the user wants a recorded item assessed and resolved. Use
-`defer-execution` only for an unrecorded scope already committed to separate execution.
+repository ledger, and write nothing. A recorded item is resolved by the user running
+`/execute-defer-scope` on it.
 
 ## When Recording Runs
 
-Fix work instead whenever one focused pass can finish it. A stale reference, rename, wrong path,
+A defect is never recorded: `pre-production` has it fixed in the change in flight, whatever its size. Fix other work instead whenever one focused pass can finish it within `pre-production`'s size budget. A stale reference, rename, wrong path,
 missing assertion, lint or type finding, or small extraction costs less to fix than to record.
 Attempt the fix before concluding that work is deferrable; `acceptance-gate`'s admission question
 lists the only justifications for a record, and a flagged attempt is one of them.
 
 Nothing is written before `acceptance-gate` admits the record, and a refusal is carried out as its
 disposition says: fix and do send the work into the change in flight, and close is recorded as a
-cancelled issue with its reason and reconsideration criterion so the next run does not present the
+canceled issue with its reason and reconsideration criterion so the next run does not present the
 finding again. Report the refusal either way. An explicit user invocation with a scope
 settles justification, not the confirmed-defect refusal; the gate still confirms the problem is real
 and the criteria describe an end state.
@@ -50,23 +47,20 @@ What counts as an external blocker is `acceptance-gate`'s defer test, owned libr
 Record work that is genuinely larger than the change in flight and whose need is arguable — a
 redesign, a broad sweep somebody could reasonably decline — or that is blocked externally, or that
 awaits a decision already put to its owner and still open, or one the user declined in the current
-request; a question nobody has asked yet is asked, not recorded. **A confirmed defect is never
-recorded** — and a defect is anything the system does that a reader would call broken, work it
-cannot finish in useful time, a resource nothing bounds and work a restart throws away included, as
-`acceptance-gate`'s admission question states. Whatever its size, however its fix has to be written,
-and even when a check would rediscover it, it is fixed in the change in flight, or on a branch off
-the default when nothing is in flight to carry it. Neither is the choice offered to the user: asking whether to record a
-confirmed defect is how the refusal gets laundered into somebody else's decision, and their answer
-settles nothing the gate would admit. When part is small, fix that part and record
-only the remainder. Record at the moment work is consciously left undone; chat and pull-request
+request; a question nobody has asked yet is asked, not recorded. **A defect is never recorded**, a defect as `pre-production`'s **Scope
+Follows The Defect, Not The Request** defines one, whether the change introduced it, the task asked
+to fix it or the work only ran into it: it is fixed in the change in flight. Only cleanup that fixes
+no defect follows `pre-production`'s size budget, and only what that budget defers is recorded here.
+Never offer the user the choice between fixing and recording. When part of a cleanup is small, fix
+that part and record only the remainder. Record at the moment work is consciously left undone; chat and pull-request
 prose are not durable records.
 
 ## Changing A Record
 
 A record whose problem still exists leaves the active set only on `acceptance-gate`'s triage
-verdict, put with its evidence and who owns the work, so it is declined only on a close. A record a
-change resolves, or shows was never real, is retired only with the tree evidence
-`execute-defer-scope`'s **Already resolved** and **Void** require. No record is declined, voided or
+verdict, put with its evidence and who owns the work, so it is declined only on a close. A resolved record is retired only after tree evidence proves the default branch no longer has the
+problem. A record that never described work is void only with evidence of the mistake, duplication,
+or finding proved wrong. No record is declined, voided or
 retired inline on the author's own reading; report the verdict or the evidence with the change.
 
 ## Ownership And Identity
@@ -124,7 +118,7 @@ write:
    work join.
 
 Never mix Linear and repository records for one deferral. Existing repository records remain in
-place until separately migrated or resolved through `execute-defer-scope`.
+place until separately migrated or resolved.
 
 ## Reading
 

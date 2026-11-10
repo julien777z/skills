@@ -4,9 +4,9 @@ import { ExternalLink, RichText } from '@/components';
 import { Grid, Stack, Text } from '@/components/primitives';
 import { drawDiagram } from '@/lib/diagram';
 import { linkAttributes, type References, ReferencesContext } from '@/lib/references';
-import { CHANGES, ChangeName, TONES } from '@/lib/tone';
+import { CHANGES, TONES } from '@/lib/tone';
 import { cn, scrollToSection, withKeys } from '@/lib/utils';
-import type { DiagramEdge, DiagramSection as DiagramSectionSpec, Section } from '@/spec';
+import { Change, type DiagramEdge, type DiagramSection as DiagramSectionSpec, type Section } from '@/spec';
 import { SectionCard } from './section-card';
 import { SectionDialog } from './section-dialog';
 import { TextList } from './text-list';
@@ -17,9 +17,18 @@ type DrawStatus = (typeof DrawStatus)[keyof typeof DrawStatus];
 
 const SPLIT_RATIO: number = 0.6;
 
+interface OpenedDetails {
+  details: Section;
+  references: References;
+}
+
 const HTML_NAMESPACE: string = 'http://www.w3.org/1999/xhtml';
 
-function linkFigureText(root: HTMLElement, references: References): void {
+function linkFigureText(
+  root: HTMLElement,
+  references: References,
+  open: (details: Section, opener: HTMLElement, reference: string) => void,
+): void {
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   const textNodes: Text[] = [];
 
@@ -48,7 +57,23 @@ function linkFigureText(root: HTMLElement, references: References): void {
           return document.createTextNode(part);
         }
 
-        const attributes = linkAttributes(part.href);
+        const details = part.details;
+
+        if (details) {
+          const button = document.createElement('button');
+
+          button.type = 'button';
+          button.dataset.reference = '';
+          button.textContent = part.text;
+          button.addEventListener('click', (event) => {
+            event.stopPropagation();
+            open(details, button, part.text);
+          });
+
+          return button;
+        }
+
+        const attributes = part.href ? linkAttributes(part.href) : null;
 
         if (!attributes) {
           return document.createTextNode(part.text);
@@ -132,11 +157,11 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
   const references = useContext(ReferencesContext);
   const [status, setStatus] = useState<DrawStatus>(DrawStatus.DRAWING);
   const [split, setSplit] = useState(false);
-  const [opened, setOpened] = useState<Section | null>(null);
-  const opener = useRef<SVGElement | null>(null);
+  const [opened, setOpened] = useState<OpenedDetails | null>(null);
+  const opener = useRef<HTMLOrSVGElement | null>(null);
   const labels = new Map(section.nodes.map((node) => [node.id, node.label]));
   const used = new Set([...section.nodes, ...section.edges].map((part) => part.change).filter(Boolean));
-  const legend = Object.values(ChangeName).filter((change) => change === ChangeName.UNCHANGED || used.has(change));
+  const legend = Object.values(Change).filter((change) => used.has(change));
 
   useEffect(() => {
     const target = figure.current;
@@ -145,11 +170,11 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
       return;
     }
 
-    let cancelled = false;
+    let canceled = false;
 
     drawDiagram(section, target)
       .then((drawing) => {
-        if (cancelled) {
+        if (canceled) {
           return;
         }
 
@@ -159,11 +184,13 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
         target.replaceChildren(drawing.svg);
         target.scrollLeft = (target.scrollWidth - target.clientWidth) / 2;
 
-        openEdgesOnClick(target, section, (details, element) => {
+        function openDetails(details: Section, element: HTMLOrSVGElement, reference?: string) {
           opener.current = element;
-          setOpened(details);
-        });
-        linkFigureText(target, references);
+          setOpened({ details, references: reference ? references.without(reference) : references });
+        }
+
+        openEdgesOnClick(target, section, openDetails);
+        linkFigureText(target, references, openDetails);
 
         setSplit(Boolean(section.steps) && drawing.width < target.clientWidth * SPLIT_RATIO);
         setStatus(DrawStatus.DRAWN);
@@ -175,7 +202,7 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
       });
 
     return () => {
-      cancelled = true;
+      canceled = true;
     };
   }, [section, references]);
 
@@ -211,17 +238,11 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
               ))}
             </Stack>
           )}
-          {used.size > 0 && (
+          {legend.length > 0 && (
             <Stack direction="row" gap="lg" wrap>
               {legend.map((change) => (
                 <Stack key={change} direction="row" align="center" gap="xs">
-                  <span
-                    className={cn(
-                      'size-3 rounded-[3px] border-[1.5px]',
-                      TONES[CHANGES[change].tone].border,
-                      CHANGES[change].dashed && 'border-dashed',
-                    )}
-                  />
+                  <span className={cn('h-0.5 w-4 rounded-full', TONES[CHANGES[change].tone].dot)} />
                   <Text size="xs" tone="muted">
                     {CHANGES[change].label}
                   </Text>
@@ -257,7 +278,14 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
         )}
       </Grid>
       {opened && (
-        <SectionDialog section={opened} open onOpenChange={(open) => !open && setOpened(null)} opener={opener} />
+        <ReferencesContext.Provider value={opened.references}>
+          <SectionDialog
+            section={opened.details}
+            open
+            onOpenChange={(open) => !open && setOpened(null)}
+            opener={opener}
+          />
+        </ReferencesContext.Provider>
       )}
     </SectionCard>
   );

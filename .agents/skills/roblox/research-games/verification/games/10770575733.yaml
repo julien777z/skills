@@ -1,0 +1,324 @@
+name: "Ragdoll Physics 🩸"
+game_id: "universe:10770575733"
+universe_id: "10770575733"
+place_id: "121868512253414"
+url: "https://www.roblox.com/games/121868512253414"
+creator: "This iss Gud (group, no verified badge)"
+chart_category: "Trending in Simulation"
+chart_rank: 1
+genre:
+  primary: "Simulation"
+  sub: "Physics Sim"
+competitors:
+  - name: "[🎩] Ragdoll Research"
+    universe_id: "10773425091"
+    url: "https://www.roblox.com/games/135264274035761"
+    overlap: "Same subgenre (Physics Sim) on the 2026-11-08 chart"
+  - name: "Fling Things and People"
+    universe_id: "2668101271"
+    url: "https://www.roblox.com/games/6961824067"
+    overlap: "Same subgenre (Physics Sim) on the 2026-11-08 chart"
+  - name: "[👥UPD] Ragdoll Playground"
+    universe_id: "10768383600"
+    url: "https://www.roblox.com/games/106521346673466"
+    overlap: "Same subgenre (Physics Sim) on the 2026-11-08 chart"
+  - name: "[🌊⛵] Ragdoll Physics 2 🩸"
+    universe_id: "10771269188"
+    url: "https://www.roblox.com/games/88247261469570"
+    overlap: "Same subgenre (Physics Sim) on the 2026-11-08 chart"
+  - name: "Realistic Ragdoll Physics"
+    universe_id: "10773264829"
+    url: "https://www.roblox.com/games/97656017884757"
+    overlap: "Same subgenre (Physics Sim) on the 2026-11-08 chart"
+researcher: "R10; gameplay videos V11"
+mode: passive
+play_ended_by: null
+onboarding_video_coverage: not_covered
+observed_at: "2026-11-09T01:20:00Z"
+observation_status: completed
+previous_observed_at: null
+changes_since_previous: []
+active_play_seconds: null
+play_coordination:
+    resource_key: null
+    wait_seconds: null
+    acquired_at: null
+    expires_at: null
+    released_at: null
+    release_verified: null
+    expiry_or_blocker: "Assigned deep play was withdrawn by the coordinator before this researcher's turn (study switched from real play to gameplay videos); no lock was taken and the player was never launched."
+context:
+    play_style: "Physics sandbox with short scenario missions; API genre Simulation / Physics Sim"
+    camera_perspective: "First-person by default with held weapon and crosshair; third-person available (video_1 0:30-0:40 shows it; video_3 plays mostly third-person)"
+    device_and_input: "PC keyboard and mouse in all three videos: key-hint bar Q Weapons, M Shop, K Sandbox, T Slow motion, R Reset everyone, Ctrl Free mouse; 'Hold to aim'; car keys W/S drive, A/D steer, Space handbrake, V view, E get out (video_2, video_3)"
+    observation_environment: "Read-only Roblox web APIs and experience page from the host; three YouTube gameplay videos studied from frames every 10 s and auto-captions"
+    visible_server_population: "API at research time: 40,339 playing; maxPlayers 1 (single-player servers). video_3 (uploaded 2026-11-09) shows a MULTIPLAYER button on the title menu, and an in-game 'Join Event' card in video_1 (2026-11-06) announces multiplayer in an upcoming update"
+    solo_or_group: "Solo in every video; multiplayer appears only as a newly added menu button (video_3 0:10)"
+    game_version_if_known: "Universe created 2026-10-12, updated 2026-11-08T13:02:01Z; videos from 2026-11-06 and 2026-11-09 show a Halloween Zombies event and 46 weapons"
+    evidence: [api_1, video_1, video_2, video_3]
+account_state:
+    freshness: returning
+    evidence:
+        - "Not played by this study. video_1's creator owns 30/46 weapons (1:30), so that account is returning; video_2 is the creator's first try but is edited and opens in the City map already armed."
+evidence:
+    - id: api_1
+      kind: description
+      url: "https://games.roblox.com/v1/games?universeIds=10770575733"
+      captured_at: "2026-11-09T01:20:00Z"
+      media_date_or_version: "updated 2026-11-08T13:02:01Z"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Short marketing description: test the physics of a ragdoll by shooting it or using spears or darts; lists free items dart, spear, grenade, two guns, a brick and a gold stick. 20.6 million visits and 93,605 favorites within about four weeks of creation."
+    - id: thumb_1
+      kind: thumbnail
+      url: "https://tr.rbxcdn.com/180DAY-e0c2ea2d77874f955a0600f35d436472/768/432/Image/Png/noFilter"
+      captured_at: "2026-11-09T01:20:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Promotional render titled 'PIERCING PHYSICS': first-person arm holding a spear, a crosshair, a flat light-gray tiled plain under blue sky, two standing NPC figures in the distance and a fallen figure with a dart in its torso in the foreground. Advertised style only."
+    - id: thumb_2
+      kind: thumbnail
+      url: "https://tr.rbxcdn.com/180DAY-b4ea22a09a6c3978c6d0a4b120f887a8/768/432/Image/Png/noFilter"
+      captured_at: "2026-11-09T01:20:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Promotional render titled 'FUN EXPLOSION PHYSICS': an explosion with debris beside a tiled pool while a character flies through the air, on the same tiled plain. Advertised style only."
+    - id: page_1
+      kind: description
+      url: "https://www.roblox.com/games/121868512253414/Ragdoll-Physics"
+      captured_at: "2026-11-09T01:21:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Experience page fetched as server HTML; its dynamic sections load client-side and were not read."
+    - id: media_1
+      kind: description
+      url: "https://games.roblox.com/v2/games/10770575733/media"
+      captured_at: "2026-11-09T01:20:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Media list holds two images and no preview video (rechecked by V11 at 2026-11-09T23:20Z: still no GamePreviewVideo)."
+    - id: video_1
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=aj7q72bkKr0"
+      captured_at: "2026-11-09T23:40:00Z"
+      media_date_or_version: "2026-11-06"
+      timestamps:
+          - "0:00 title menu RAGDOLL PHYSICS: PLAY / MAPS / SCENARIOS and a Halloween Zombies event card"
+          - "0:10 Scenarios picker (Home Invasion, Gas Station Ambush, Hostage Rescue, SWAT Raid, Halloween Zombies, Trench Warfare, Bank Heist)"
+          - "0:30-0:40 Classic map spawn with 9 mm pistol; 'Join Event' update card over play; first hit feed 'RIGHT KNEE - knee joint destroyed'"
+          - "1:30 Weapons panel '30/46 OWNED' with Guns, Melee, Throwables, Special, Effects, Ragdolls, Halloween and Robux tabs"
+          - "2:20 Special tab: Taser, mutant/virus/zombie/poison syringes"
+          - "2:30-3:00 virus syringe on an NPC, speech bubbles of symptoms; PLAYTIME and KILLS boards"
+          - "3:20 Sandbox panel: Run speed and Calm people GAMEPASS 49 Robux; Doctor mode, Slow motion, Blood, Gravity FREE; Silencer 200 pumpkins"
+          - "3:30 driving a car"
+          - "4:00-4:10 Home Invasion scenario, YOU DIED card with Retry / Menu"
+      screenshots: ["aj7q72bkKr0-001.jpg", "aj7q72bkKr0-002.jpg", "aj7q72bkKr0-005.jpg", "aj7q72bkKr0-010.jpg", "aj7q72bkKr0-015.jpg", "aj7q72bkKr0-016.jpg", "aj7q72bkKr0-021.jpg", "aj7q72bkKr0-022.jpg", "aj7q72bkKr0-025.jpg", "aj7q72bkKr0-026.jpg"]
+      limitations:
+          - "Skilled-play/guide pick: 'RAGDOLL PHYSICS FULL GUIDE! (All Weapons, Maps, Scenarios)' by Blueburry, 3.5k subscribers, 3,043 views, 4:45; whole video studied. Place confirmed by the title menu 'RAGDOLL PHYSICS' at 0:00."
+          - "Returning player (30/46 weapons owned); edited tour with creator commentary; small channel."
+    - id: video_2
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=ZCE52774er4"
+      captured_at: "2026-11-09T23:40:00Z"
+      media_date_or_version: "2026-11-09"
+      timestamps:
+          - "0:00 cold open 'Later in the video' over viewer comments"
+          - "0:30 hit feed top-left 'HEAD - frontal lobe' beside a ragdolled NPC on a city crossing"
+          - "1:20 'Police are here!' banner, police car arrives"
+          - "2:10-2:40 Ragdoll Playground: Acid Rain booth, big RESET / RELEASE buttons per station"
+          - "3:10 tiger pen release"
+          - "5:00-5:20 human cannon on the Classic map with distance readouts ('144 studs')"
+          - "5:50 Maps picker: Classic, City, Forest, Ramps, Playground, Shooting Range"
+          - "7:30 Scenarios picker; 7:40 Home Invasion; 7:50-8:10 Apocalypse 'GET READY - KILLS 7 - BEST 1', 'WAVE 2 IN 1'"
+          - "8:50 HOSTAGE RESCUED results card: time, downs, kills, headshots, hostage state, alarm; Retry / Menu"
+          - "9:30-9:59 SWAT Raid with objective line 'HOSTILES: 4 LEFT - TEAM 3/3'"
+      screenshots: ["ZCE52774er4-004.jpg", "ZCE52774er4-007.jpg", "ZCE52774er4-009.jpg", "ZCE52774er4-016.jpg", "ZCE52774er4-020.jpg", "ZCE52774er4-036.jpg", "ZCE52774er4-046.jpg", "ZCE52774er4-049.jpg", "ZCE52774er4-054.jpg"]
+      limitations:
+          - "Onboarding-candidate pick: creator's first try ('Today I tried out this Roblox Game called Ragdoll Physics'), Judge Holden, 1.6k subscribers, 156 views, 22:13; first 10:00 studied. Place confirmed by the description's link to place 121868512253414."
+          - "Edited: cold open and cuts; the menu and spawn are skipped (opens in City already holding an AK-47), so it does not show a new player's first join. Webcam overlay covers the top-left corner. Account freshness unknown."
+    - id: video_3
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=fpIPxiFIbLU"
+      captured_at: "2026-11-09T23:45:00Z"
+      media_date_or_version: "2026-11-09"
+      timestamps:
+          - "0:00 experience page shown, then title menu with a new MULTIPLAYER button (0:10)"
+          - "0:30 Settings panel; 0:40 Cars panel"
+          - "1:00-1:40 driving a car on the Classic map"
+          - "1:50 Weapons panel; 4:10-4:30 Ragdolls tab and further weapon tabs"
+          - "5:50-6:10 Workshop attachment panel (flashlight, laser, ACOG)"
+          - "6:30-9:59 night lighting with flashlight and laser sights, scoped shots"
+      screenshots: ["fpIPxiFIbLU-002.jpg", "fpIPxiFIbLU-004.jpg", "fpIPxiFIbLU-005.jpg", "fpIPxiFIbLU-012.jpg", "fpIPxiFIbLU-026.jpg", "fpIPxiFIbLU-036.jpg", "fpIPxiFIbLU-040.jpg"]
+      limitations:
+          - "Session pick: 'Roblox Experience Ragdoll Physics By This iss Gud Basic Overview [0 Robux]' by MBT, 37.7k subscribers, 71 views, 10:13; first 10:00 studied. Place confirmed by the creator name in the title, the game's own description quoted, and the title menu at 0:10."
+          - "No captions exist for this video (YouTube lists no subtitles or automatic captions), so the player's intent is inferred from frames only. Long quiet stretches of driving; returning player state unknown."
+gameplay:
+    advertised_loop: "Pick a free tool (dart, spear, grenade, guns, brick, gold stick) and use it on ragdoll NPCs to watch physics reactions: piercing, knock-back and explosions."
+    observed_loop: "From video: choose a map or scenario from the title menu, pick a weapon or tool from a categorized panel, hit wandering NPCs, read the top-left anatomical hit feed ('RIGHT KNEE - knee joint destroyed'), watch the ragdoll react (limping, crawling, speech bubbles of symptoms), then press R to reset everyone and try something else. Scenarios add short objective missions (Home Invasion, Hostage Rescue, SWAT Raid, wave-based Apocalypse) ending in a results card with Retry / Menu (video_1, video_2)."
+    first_action: "Video: press PLAY on the title menu (or pick Maps / Scenarios), spawn holding a 9 mm pistol on the Classic tiled plain, and shoot the nearest NPC (video_1 0:00-0:40)."
+    first_success_seconds: null
+    success_feedback:
+        - "Video: a top-left hit feed names the body part and the injury in one line plus a short medical description, e.g. 'HEAD - frontal lobe', 'RIGHT KNEE - knee joint destroyed' (video_1 0:40, video_2 0:30)."
+        - "Video: NPCs react persistently: limp, crawl, drop weapons, show speech bubbles ('I cannot walk', 'my head is pounding'), concussion; blood decals (video_1 2:30-3:00, video_2 captions)."
+        - "Video: world reactions escalate: police arrive with a 'Police are here!' banner after a shooting in City (video_2 1:20)."
+        - "Video: human cannon prints a distance in studs (video_2 5:00-5:20); scenario results card lists time, downs, kills, headshots and hostage state (video_2 8:50)."
+    progression:
+        - "Video: weapon collection shown as 'N/46 OWNED' across tabs (video_1 1:30)."
+        - "Video: event currency (pumpkins) from the Halloween Zombies event buys weapons, e.g. AR-15 at 1,500 and Barrett .50 at 2,000 pumpkins with progress bars 0/1500 and 0/2000; Pumpkin RPG unlocked by reaching wave 15 (video_1 1:30)."
+        - "Video: per-scenario best records ('BEST 1') and global PLAYTIME and KILLS boards in the Classic map (video_1 2:30, video_2 7:50)."
+        - "Video: Workshop weapon attachments (flashlight, laser, ACOG) (video_1 captions, video_3 5:50)."
+    choices_and_variety:
+        - "Video: 46 weapons and tools in Guns, Melee, Throwables, Special (taser, virus/zombie/poison syringes), Effects, Ragdolls, Halloween and Robux tabs (video_1 1:30-2:20)."
+        - "Video: six maps (Classic, City, Forest, Ramps, Playground, Shooting Range) and seven or more scenarios (video_1 0:10, video_2 5:50, 7:30)."
+        - "Video: Playground stations (acid rain, tiger pen, taser walls, human cannon, train) each with big RESET / RELEASE buttons (video_2 2:10-5:20)."
+        - "Video: drivable cars (video_1 3:30, video_3 1:00-1:40)."
+    social_and_cooperative:
+        - "Video: arm NPCs and watch them fight each other or the police (video_2 captions 'give guns', video_1 'I can give him the weapon')."
+        - "Video: a MULTIPLAYER menu button appears on 2026-11-09 (video_3 0:10); not used in any video."
+    companions_and_pets: []
+    friction:
+        - "Video: the creator calls the top-left hit feed 'so many prompts... kind of annoying' (video_2 captions about 4:30); it stacks several multi-line entries."
+        - "Video: some Playground stations underwhelm a first-time player ('Acid rain... It only tickles', 'this is so lame', video_2 2:10-2:40)."
+        - "Video: a 'Join Event' update card opens over play on spawn (video_1 0:40)."
+        - "Description says the listed tools are free, but videos show event-currency and Robux weapons and two 49-Robux sandbox gamepasses; the free core still works without them."
+    evidence: [api_1, thumb_1, thumb_2, video_1, video_2, video_3]
+pacing:
+    timing_start_definition: "video_1 own timestamp 0:00, which is the title menu already loaded"
+    loading_seconds: null
+    time_to_control_seconds: "Estimate about 30 s from title menu to armed control on the Classic map in video_1, including the creator browsing Scenarios first; from 10 s frames."
+    first_meaningful_choice_seconds: "0-10 s in video_1: the title menu offers Play, Maps or Scenarios at once."
+    first_reward_seconds: "Estimate 30-40 s in video_1: first hit-feed entry visible at the 0:40 frame."
+    action_reward_cadence: "Every shot or hit produces an immediate ragdoll reaction and a hit-feed line; in video_2 a new feed entry is visible in most 10 s frames during free play."
+    active_play_versus_travel_or_waiting: "Mostly active; NPCs wander within a few meters of spawn on Classic. City and Forest add walking; cars cover distance (video_3 spends about 40 s driving)."
+    natural_stopping_points: ["Each scenario's results card with Retry / Menu (video_1 4:10, video_2 8:50)", "Switching maps through the Maps panel"]
+    measurement_method: "Timings from the videos' own timestamps, sampled from frames every 10 s; edited footage, so values are estimates to the nearest 10 s."
+    evidence: [video_1, video_2, video_3]
+goals_and_progression:
+    next_goal_clarity: "Free play has no stated goal; scenarios give a one-line objective under the scenario name, e.g. 'GET READY - KILLS 7 - BEST 1', 'Rescue the hostage. Stay out of sight.', 'HOSTILES: 4 LEFT - TEAM 3/3' (video_2 7:50-9:59)."
+    short_term_goals: ["Try each weapon and watch the reaction", "Clear a scenario wave or rescue the hostage"]
+    medium_term_goals: ["Earn pumpkins in the Halloween Zombies event to unlock event weapons (video_1 1:30)", "Beat a scenario's best record"]
+    advertised_long_term_goals:
+        - "None advertised; the description presents an open sandbox with all listed tools free."
+        - "In game: a 'Join Event' card announces an update with player-made scenarios, a hitman mode and multiplayer (video_1 0:40)."
+    upgrade_choices: ["Workshop attachments: flashlight, laser, ACOG (video_3 5:50)"]
+    mastery_versus_stat_growth: "Mastery and curiosity: aiming, headshots and scenario times; weapons widen options but nothing levels up."
+    unlock_previews_and_optional_activities: ["Locked weapons shown with their price and progress bar (video_1 1:30)", "Playground stations, cars, shooting range"]
+    evidence: [api_1, video_1, video_2, video_3]
+failure_and_recovery:
+    observed_failure: "Video: dying in Home Invasion shows a YOU DIED card with time, downs, kills and headshots (video_1 4:10)."
+    explanation: "Results card lists the run's stats; the cause of death is shown in the hit feed."
+    cost_or_lost_progress: "None seen: retry restarts the scenario."
+    retry_seconds: "One click on Retry; the restart time itself was not measured."
+    checkpoints: null
+    non_paid_recovery: "Retry and Menu are free (video_1 4:10, video_2 8:50)."
+    evidence: [video_1, video_2]
+agency_and_social:
+    meaningful_choices:
+        - "Video: map, scenario, weapon, target and sandbox settings (gravity, blood, slow motion, doctor mode)."
+        - "Video: give a weapon or syringe to an NPC and watch what it does (video_1 2:00-3:00)."
+    customization_and_identity: ["Weapon attachments in the Workshop (video_3 5:50)"]
+    cooperation_and_competition:
+        - "Single-player servers (API maxPlayers 1); global PLAYTIME and KILLS boards in the world (video_1 2:30) are the only cross-player comparison seen."
+    visible_social_feedback: ["PLAYTIME and KILLS leaderboards on in-world signboards (video_1 2:30, video_3 1:50)"]
+    solo_accessibility: "Designed solo: one player per server; a MULTIPLAYER button appeared on 2026-11-09 (video_3)."
+    evidence: [api_1, video_1, video_3]
+ui:
+    evidence_status: observed
+    visual_style: "Flat dark-gray panels with one saturated color header per panel (red Weapons and Scenarios, green Sandbox, blue Maps and Cars, orange Workshop), bold condensed white sans-serif titles; the world uses plain light tiled ground and bright sky."
+    layout_and_hierarchy: "Left vertical icon rail (Shop, Weapons, Sandbox, Cars, Workshop, Settings, Menu); top-left hit feed; bottom-center key-hint bar; bottom-right weapon hotbar list with the held weapon name large ('AK-47 HOLD: FIRE'); scenario name and objective top-center with a red LEAVE button; health bar bottom-center in scenarios (video_2 7:50, video_1 1:30)."
+    color_scheme: ["dark gray panel bodies", "red, green, blue and orange panel headers by function", "bright green EQUIP buttons", "purple Robux price buttons", "orange pumpkin prices", "yellow wave timer bar"]
+    typography:
+        font_appearance: "Bold condensed uppercase sans-serif for titles and results ('HOSTAGE RESCUED', 'YOU DIED'); small regular sans-serif for the hit feed and key hints"
+        font_family_if_verified: null
+        size_observation: "Titles large and clear; hit-feed body text and key hints are small enough to be hard to read at 480p"
+        size_basis: approximate
+        viewport_resolution: "Desktop video downscaled to 480p"
+        readability: "Panel titles and the held-weapon label are readable; the multi-line hit feed is dense and small."
+    controls:
+        primary_actions: "Click to fire, hold to aim; keyboard shortcuts printed in the bottom bar (Q, M, K, T, R, Ctrl)"
+        close_x_appearance_and_location: "White X in a small dark square at the right end of each panel's colored header (video_1 1:30, video_2 5:50)"
+        modal_behavior: "Panels open centered over the live world, which keeps running behind them; the Join Event card has its X top-left (video_1 0:40)"
+        state_feedback: "Owned weapons show a green EQUIP; locked ones show a price and a progress bar; sandbox toggles show ON (green) / OFF (gray) with FREE, GAMEPASS or PUMPKINS tags"
+        target_size_and_input: "Desktop sizes; touch support not seen"
+    graphics:
+        graphics_versus_text: "Weapon and map cards pair a rendered thumbnail with a caption; sandbox options are text rows with colored tags"
+        illustration_or_icon_style: "Simple white glyph icons with labels on the left rail; 3D-rendered weapon portraits"
+        framing_outlines_and_effects: "Flat cards, minimal outlines; 'YOU ARE HERE' green badge on the current map"
+        placement_and_labels: "Every rail icon has a text label under it"
+        clarity_or_clutter: "Clean panels, but the stacked hit feed and webcam-sized key bar add clutter during play"
+    evidence: [video_1, video_2, video_3]
+new_player_onboarding:
+    status: indeterminate
+    reason: "No video shows a new account's first join: video_1 is a returning player (30/46 weapons), video_2 is a first try but edited to open mid-play, and video_3 starts at the title menu of an account of unknown state. No tutorial was seen in any of them; the title menu itself offers Play / Maps / Scenarios at once."
+    conventions: ["Title menu with one big red PLAY button above Maps and Scenarios (video_1 0:00)", "Bottom key-hint bar lists every shortcut", "'Hold to aim' hint at the top of the left rail"]
+    sequence: []
+    first_independent_action: "Spawn and shoot an NPC on the Classic map (video_1 0:30-0:40), from a returning account"
+    skip_or_replay: null
+    completed: null
+    observed_seconds: null
+    completion_seconds: null
+    timing_basis: null
+    evidence: [video_1, video_2, video_3]
+accessibility_and_comfort:
+    text_and_contrast: "White text on dark panels has good contrast; the hit feed is small multi-line text over the world."
+    non_color_cues_and_icon_labels: "Rail icons carry text labels; ON/OFF toggles carry words as well as color; price tags say FREE, GAMEPASS or PUMPKINS."
+    input_support_observed: ["keyboard and mouse only"]
+    motion_audio_settings: ["Sandbox toggles for Blood (on by default), Slow motion and Gravity (video_1 3:20); a Settings panel with switches including third person (video_3 0:30), not read in detail"]
+    settings_tested: []
+    clutter_and_interruptions: ["Join Event card over play at spawn (video_1 0:40)", "Stacked hit-feed entries the first-time creator found annoying (video_2)"]
+    evidence: [video_1, video_2, video_3]
+commercial_and_return_prompts:
+    first_purchase_prompt_seconds: null
+    purchase_prompt_count_during_sample: 0
+    onboarding_interruption: "No purchase dialog seen in any video; the only interruption is the Join Event update card (video_1 0:40)."
+    optional_versus_required_presentation: "Prices live inside panels: Robux tab and Robux-priced weapons (Anzio 20 mm 75 Robux), sandbox gamepasses Run speed and Calm people at 49 Robux each, event-currency items in pumpkins. Core weapons and most sandbox toggles are FREE (video_1 1:30, 3:20)."
+    return_rewards_and_events: ["Halloween Zombies event card on the title menu with its own pumpkin currency (video_1 0:00)", "'Join Event' card with a scheduled date and a Notify Me button announcing an update (video_1 0:40)"]
+    urgency_or_streak_cues: ["Event weapons tied to the Halloween event"]
+    evidence: [video_1]
+world_and_presentation:
+    navigation_and_objective_readability: "Classic is an open tiled plain where NPCs are always in view; scenarios put the objective in one top-center line with a LEAVE button."
+    landmarks_and_variety:
+        - "Video: Classic tiled plain with pool, ramps and leaderboard signs; City with crossings, pharmacy and traffic lights; Forest with tall grass; Ragdoll Playground of glass booths; Shooting Range; night scenario maps (gas station, apartment, street) (video_1, video_2, video_3)."
+    environmental_storytelling: ["Scenario set-ups such as 'someone is at the door' in Home Invasion (video_1 4:00)"]
+    audiovisual_consistency: "Plain blocky world with realistic-sounding injuries; the creator remarks on wheezing and screaming sound effects (video_2 captions)."
+    success_effect_intensity_and_clarity: "Reactions are physical and specific rather than flashy: the text names the exact body part hit, and the ragdoll keeps the injury."
+    evidence: [thumb_1, thumb_2, video_1, video_2, video_3]
+technical_quality:
+    loading_or_missing_assets: []
+    input_or_frame_issues: ["Creator reports that spraying fire misses and tapping hits (video_2 captions about 5:20); that is weapon design, not a measured defect"]
+    ui_defects: []
+    recovery_behavior: "R resets every NPC instantly (video_1 captions)."
+    measurements: []
+    measurement_method_and_limits: "Not played; videos are edited 480p downloads, so no performance claims."
+    evidence: [video_1, video_2]
+transferable_ideas:
+    - "A no-goal physics sandbox where every core tool is free from the start: the reward is the physical reaction itself."
+    - "Promotional images name one physical effect each ('PIERCING PHYSICS', 'FUN EXPLOSION PHYSICS'), selling a single readable reaction rather than a system."
+    - "A specific text read-out of each hit ('RIGHT KNEE - knee joint destroyed') turns every action into a small discovery and teaches what the system models (video)."
+    - "Short scenario missions with a one-line objective and a stats card with Retry sit on top of the sandbox, giving a goal to players who want one without gating the toy (video)."
+    - "Playground stations with one big RESET and one big RELEASE button make each set piece repeatable with a single press (video)."
+practical_takeaway:
+    strongest_idea: "Name the result of every physical action in one short line (which part, what happened), and keep the consequence on the target, so a toy with no goals still gives readable, varied feedback each time."
+    main_tradeoff: "The feed that explains each hit also clutters the screen, and some set pieces underwhelm; content is violent, which limits where the idea fits. Retention beyond novelty rests on scenarios and event unlocks the description does not mention."
+    suitable_genres_and_stages: ["Physics sandboxes", "Lobby or hub toys", "First minutes of any game with a physical action", "Training or practice areas"]
+    testable_hypothesis: "Adding a one-line, specific outcome label to each physical interaction (e.g. which part was knocked and how far) in a practice area raises the number of distinct interactions a new player tries in their first five minutes."
+    estimated_effort_and_assumptions: "Estimate: 1-2 days for a hit-region label feed on existing physics interactions; assumes named body parts or hit zones already exist and a capped, fading feed to avoid clutter."
+inferences:
+    - "Fast growth (20.6M visits in about four weeks) with one-player servers suggests a short, self-contained novelty loop; cause of popularity is not established."
+    - "Inference from video_1 and video_3: the game is moving from a pure sandbox to sandbox plus events, scenarios and multiplayer within its first month."
+uncertainties:
+    - "No new account's first join was seen, so onboarding and time-to-first-fun for a new player remain unmeasured."
+    - "The MULTIPLAYER button (video_3, 2026-11-09) contradicts the API's maxPlayers 1 read at 01:20Z the same day; the button may be new or may lead to a separate place. Not verified."
+    - "The page description lists only free items; videos show Robux and event-currency items, so the description is out of date."
+    - "Gore is present (blood decals, injury descriptions, blood toggle on by default); the age suitability settings were not read."
+    - "Additional candidate videos not used: McGlasseston 'Another Disturbing Roblox Ragdoll game' (28,641 views, 2:33, edited montage) and JustSoAverage (743 views)."
+blockers: []

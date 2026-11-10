@@ -1,0 +1,396 @@
+name: "Sweep The Moon 🌕"
+game_id: "universe:10772543706"
+universe_id: "10772543706"
+place_id: "109576450376407"
+url: "https://www.roblox.com/games/109576450376407"
+creator: "DomBlox Games (group, verified badge)"
+chart_category: "Up-and-Coming"
+chart_rank: 1
+genre:
+  primary: "Simulation"
+  sub: "Incremental Simulator"
+competitors:
+  - name: "🎭 [MINIGAMES] Pet Simulator 99! 🎃"
+    universe_id: "3317771874"
+    url: "https://www.roblox.com/games/8737899170"
+    overlap: "Same subgenre (Incremental Simulator) on the 2026-11-08 chart"
+  - name: "[🌙UPD] Fish It! 🐟"
+    universe_id: "6701277882"
+    url: "https://www.roblox.com/games/121864768012064"
+    overlap: "Same subgenre (Incremental Simulator) on the 2026-11-08 chart"
+  - name: "[🌎2] Tap Simulator REBORN"
+    universe_id: "10629695169"
+    url: "https://www.roblox.com/games/72858262610964"
+    overlap: "Same subgenre (Incremental Simulator) on the 2026-11-08 chart"
+  - name: "[🍂] Anime Dice"
+    universe_id: "10708913337"
+    url: "https://www.roblox.com/games/113290951185459"
+    overlap: "Same subgenre (Incremental Simulator) on the 2026-11-08 chart"
+  - name: "Sol's RNG [ Halloween Event 🎃]"
+    universe_id: "5361032378"
+    url: "https://www.roblox.com/games/15532962292"
+    overlap: "Same subgenre (Incremental Simulator) on the 2026-11-08 chart"
+researcher: "R01"
+mode: play
+play_ended_by: null # not recorded: the session predates this field
+onboarding_video_coverage: covered
+observed_at: "2026-11-09T00:06:52Z"
+observation_status: partial
+previous_observed_at: null
+changes_since_previous: []
+active_play_seconds: 455
+play_coordination:
+    resource_key: "roblox-player"
+    wait_seconds: 1712
+    acquired_at: "2026-11-09T00:06:35Z"
+    expires_at: "2026-11-09T00:16:35Z"
+    released_at: "2026-11-09T00:15:11Z"
+    release_verified: true
+    expiry_or_blocker: "Locks were taken with a 600 s TTL before the coordinator raised play to 600 s with 900 s locks, so play stopped at 455 s to quit and release before expiry. vm-desktop:roblox-studio held 00:06:42Z-00:15:11Z. The core sweep action could not be performed: the runner's synthetic held left-mouse input (locked and unlocked cursor, still and dragged) never registered as tool use. After quit only the -launchToTray player process remained."
+context:
+    play_style: "Incremental simulator (cleaning/sweeping); API genre Simulation / Incremental Simulator"
+    camera_perspective: "Third-person in the lobby; first-person with a held tool once on the moon"
+    device_and_input: "Keyboard and mouse on a macOS guest VM at 1920x1200 points; scripted key holds and HID mouse events"
+    observation_environment: "Isolated macOS VM runner, Roblox player 0.746"
+    visible_server_population: "Lobby leaderboard listed about 15 players; API reported 31,057 playing at research time"
+    solo_or_group: "Group: joined a public 2-player party on a lobby pad led by another player"
+    game_version_if_known: "Universe created 2026-10-23, updated 2026-11-08T14:19:56Z"
+    evidence: [api_1, play_1, yt_onboarding_1, yt_skilled_1]
+account_state:
+    freshness: returning
+    evidence:
+        - "The brief's default for the user's existing account. In-game evidence is ambiguous: the first quest ('Sweep 1 kg of dust') and $0 cash appeared, but the moon's save belongs to the party leader, so they show a new moon, not necessarily a new account. The gem balance was 0."
+evidence:
+    - id: api_1
+      kind: description
+      url: "https://games.roblox.com/v1/games?universeIds=10772543706"
+      captured_at: "2026-11-08T23:25:00Z"
+      media_date_or_version: "updated 2026-11-08T14:19:56Z"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Marketing description; says it is inspired by a Steam game."
+    - id: thumb_1
+      kind: thumbnail
+      url: "https://tr.rbxcdn.com/180DAY-a2019b5fdf200ad7416b26748b28be5c/768/432/Image/Png/noFilter"
+      captured_at: "2026-11-08T23:25:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Promotional render: a dog character scrubs a recessed clean square into a white moon surface with a toothbrush, with a 'NEW!' tag and a mouse-icon 'SWEEP' callout; advertised style only."
+    - id: video_1
+      kind: gameplay_video
+      url: null
+      captured_at: null
+      media_date_or_version: "GamePreviewVideo videoId 127437780747931 listed by games.roblox.com/v2/games/10772543706/media"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Preview video not viewable with the researcher's tools; nothing is described from it."
+    - id: play_1
+      kind: actual_play
+      url: "https://www.roblox.com/games/109576450376407"
+      captured_at: "2026-11-09T00:06:52Z"
+      media_date_or_version: "Roblox player 0.746.0.7461264"
+      timestamps:
+          - "00:06:52 launch command"
+          - "00:07:09 lobby, control"
+          - "00:07:54 stepped on a Play pad, joined another player's party 2/4"
+          - "00:08:48 party 2/2 'Starting in 1'"
+          - "00:09:28 on the moon base with first quest 'Sweep 1 kg of dust'"
+          - "00:11:43 reached the dusty moon surface by following the compass marker"
+          - "00:13:27 'Leader left - game not saving' banner"
+          - "00:14:44 pressed Skip on the quest; banner removed, no next step shown"
+          - "00:14:48 quit"
+      screenshots:
+          - 10772543706-1.png
+          - 10772543706-2.png
+          - 10772543706-3.png
+          - 10772543706-5.png
+          - 10772543706-6.png
+          - 10772543706-7.png
+          - 10772543706-10.png
+          - 10772543706-11.png
+          - 10772543706-13.png
+          - 10772543706-15.png
+      limitations:
+          - "Core verb (hold left mouse to scrub) never registered through the runner's synthetic mouse input, so no dust, cash, deposit, upgrade or vehicle was observed."
+          - "Several other players' avatars rendered as stretched, spiky meshes in the lobby (10772543706-1); cause (game, avatar items or VM GPU) unknown."
+          - "macOS notifications covered the top-right of every capture, hiding part of the leaderboard and a 'cleared' meter."
+    - id: yt_onboarding_1
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=njKUUS1E0wA"
+      captured_at: "2026-11-09T00:25:00Z"
+      media_date_or_version: "uploaded 2026-11-05"
+      timestamps:
+          - "0:00 Roblox experience page, Play pressed (on-screen clock 08:36:30)"
+          - "0:15 settings modal: Music and Sound Effects sliders, Defaults"
+          - "0:30 lobby pads; stepped on a pad and joined a party 'Your party: 2/3 - JOIN!' whose slot reads '0.8% clean, last played 17 hours ago, crew', with a red 'Leave pad' button"
+          - "1:00 'Off to the moon...' loading card"
+          - "1:15 at the base: quest 'Sweep 1 kg of dust 0.00 / 1 kg - Hold left mouse to scrub', Toothbrush with 'Hold to sweep'"
+          - "1:30 sweeping outside, canister 0.82 / 1 kg, moon 1% cleaned"
+          - "1:45 Tool shop modal: Toothbrush 'In hand', Scrubber $1 highlighted green, Dustpan Brush and Broom locked"
+          - "2:00 quest 'Buy canister upgrade 1 - Free at the Upgrades machine'"
+          - "2:30 quest 'Clean a whole tile: +$4 bonus - it snaps clean at 95%' with live tile %"
+          - "2:45 'Canister full' tag and quest 'Empty your canister at the deposit', yellow floor line and DEPOSIT sign with distance"
+          - "3:00-4:45 tile 37% to 91% cleaned, cash $3 to $6"
+          - "5:15 'WHAT'S NEXT' modal: Build (lay belts to carry dust), Automate (robot docks), Vehicles (buy a vehicle at a bay), Close (clock 08:41:45)"
+          - "6:15 build mode (Free / Grid, Exit Build, Build / Delete)"
+          - "5:30-9:45 repeated tile clears and deposits; cash $10 to $25; second tile 100% cleaned at about 7:15"
+      screenshots:
+          - njKUUS1E0wA-003.jpg
+          - njKUUS1E0wA-005.jpg
+          - njKUUS1E0wA-006.jpg
+          - njKUUS1E0wA-007.jpg
+          - njKUUS1E0wA-008.jpg
+          - njKUUS1E0wA-009.jpg
+          - njKUUS1E0wA-011.jpg
+          - njKUUS1E0wA-012.jpg
+          - njKUUS1E0wA-021.jpg
+          - njKUUS1E0wA-022.jpg
+          - njKUUS1E0wA-026.jpg
+          - njKUUS1E0wA-030.jpg
+      limitations:
+          - "Channel MBT, 37,500 subscribers, 929 views at capture; a low-view overview, chosen because it is the only video found that starts from the Roblox page and shows the first quests; the high-view results for this name are mostly the Steam game Moon Sweepers."
+          - "Unedited: an on-screen clock runs continuously (08:36:30 at 0:00, 08:41:45 at 5:15), so its timings are usable. Account freshness unknown; the moon belonged to the party slot, as in play_1."
+          - "First 10 minutes studied of 11:22; captions not fetched (YouTube HTTP 429)."
+    - id: yt_skilled_1
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=3GgeAzouAJE"
+      captured_at: "2026-11-09T00:20:00Z"
+      media_date_or_version: "uploaded 2026-11-06"
+      timestamps:
+          - "0:13 'Lobby Shop' modal: permanent bonuses paid in Shards (Payout, Walk speed, Head width, Head power, Canister, Tile bonus, Driving speed, Classes) with 'Open' button"
+          - "0:39 'Sweep the Moon' loading screen with a progress bar and a TIP line"
+          - "0:52-1:18 quest chain: Sweep 1 kg, Empty canister at deposit, 'Buy a new brush - the Scrubber, $3 at the tool shop' marked Done"
+          - "1:31 'Upgrade computer' radial tree (Canister, Payout, Head width, Head power, Tile bonus, Walk speed) with level counters and prices"
+          - "1:44-5:00 'Clean a whole tile: +$4 bonus' quest with live % and moon-cleared %; 'Deposit: 2.5 kg +$2' toast"
+          - "5:12 green 'You know the loop - tile clean +$4 bonus' completion banner and a badge toast"
+          - "5:25 'Join Event' modal for a scheduled update event; lobby sign 'Like the game, join the group, +2 kg canister'"
+          - "5:38-6:30 Build menu: Logistics (Belt $0.89/m, Splitter $5, Merger $5), Robots (Robot dock $75, Large robot dock $200, Mite hive $120), Production (Manual deposit, Vehicle deposit $250, Crusher $1,500, Block press $3,000), Power"
+          - "8:00 'Moon map' modal: 0.0% cleaned, 4,078 tiles, Map and Fleet tabs"
+      screenshots:
+          - 3GgeAzouAJE-002.jpg
+          - 3GgeAzouAJE-004.jpg
+          - 3GgeAzouAJE-005.jpg
+          - 3GgeAzouAJE-007.jpg
+          - 3GgeAzouAJE-008.jpg
+          - 3GgeAzouAJE-009.jpg
+          - 3GgeAzouAJE-025.jpg
+          - 3GgeAzouAJE-026.jpg
+          - 3GgeAzouAJE-027.jpg
+          - 3GgeAzouAJE-029.jpg
+          - 3GgeAzouAJE-038.jpg
+      limitations:
+          - "Channel TonyCool, 146,000 subscribers, 1,787 views at capture."
+          - "Guide by a returning player (new moon, existing lobby progress); edited with large burned-in captions and a meme intro (frame 001 discarded)."
+          - "Whole 8:27 video studied; YouTube auto-captions not fetched (HTTP 429), so commentary was read only from burned-in caption fragments."
+gameplay:
+    advertised_loop: "Sweep moon dust tile by tile into a canister, empty it at the base for cash, upgrade brush, canister and speed, then drive sweepers and rovers and build robots, belts and machines; up to 4 friends; goal is a 100% clean Moon."
+    observed_loop: "Lobby pad matchmaking into a party moon, a first-person toothbrush tool and a first quest to sweep 1 kg of dust; the sweep itself was not achieved."
+    video_observed_loop: "Videos show the loop the runner could not perform: hold left mouse to scrub white dust into a gray path, fill a small canister (1 kg, then 2.5 kg), walk back along a floor line to the Deposit for a few dollars, buy a wider brush at the tool shop and canister/payout levels at the Upgrade computer, and earn a +$4 bonus for each tile cleaned to 95%; later money goes to belts, robot docks and vehicles (yt_onboarding_1 1:15-9:45; yt_skilled_1 0:52-6:30)."
+    first_action: "Step onto a lobby Play pad to start or join a moon."
+    first_success_seconds: null
+    video_first_success: "First dust collected within about 15 s of arriving on the moon and first deposit (and $1 Scrubber purchase) about 30 s after arrival, measured on yt_onboarding_1's continuous clock (1:15 arrival, 1:30 sweeping, 1:45 tool shop)."
+    success_feedback:
+        - "Video: the scrubbed path turns from white dust to gray ground under the brush; canister meter fills; 'Deposit: 2.5 kg +$2' toast; live tile % in the quest banner and a moon-cleared % at top right (yt_skilled_1 1:44-5:00)."
+        - "Video: green completion banner with a check mark ('You know the loop', 'Buy a new brush - Done') (yt_skilled_1 1:18, 5:12)."
+    progression:
+        - "HUD canister meter (0.00 / 1 kg) and cash ($0) show the collect-and-deposit economy."
+        - "Base board titled 'Never fill again' listing 'Sell as you sweep' and 'Infinite canister' upgrades with a Deposit station."
+        - "Hotbar slot 2 holds a second tool (flashlight-like, not used)."
+        - "Video: tool shop brush ladder Toothbrush > Scrubber ($1-$3) > Dustpan Brush > Broom, each wider (yt_onboarding_1 1:45)."
+        - "Video: Upgrade computer radial tree with leveled Canister, Payout, Head width, Head power, Tile bonus and Walk speed (yt_skilled_1 1:31)."
+        - "Video: lobby Shard shop of permanent bonuses carried into every moon, and Classes (yt_skilled_1 0:13)."
+        - "Video: Build menu of belts, splitters, robot docks, mite hives, crushers and block presses (yt_skilled_1 5:38-6:30)."
+    choices_and_variety:
+        - "Lobby: start a new moon or join another player's pad; leader chooses party size."
+    social_and_cooperative:
+        - "Parties of up to 4 on lobby pads; first player on a pad becomes leader and holds the save file."
+        - "Lobby leaderboard ranks players by two columns of values."
+    companions_and_pets: []
+    friction:
+        - "Walking onto a pad silently joined a stranger's party; a 'Leave pad' button is the only control."
+        - "When the leader left, a red 'Leader left - game not saving' banner appeared and progress in that moon would not save for the remaining player."
+        - "First quest gives no on-screen pointer from the base to the dust beyond a compass marker with distance."
+        - "Video: stepping onto a lobby pad put the video player straight into another crew's 0.8%-clean moon, as in play_1 (yt_onboarding_1 0:30)."
+        - "Video: early canister holds only 1-2.5 kg, so the first minutes alternate about 30-45 s of scrubbing with a walk back to the deposit (yt_onboarding_1 1:30-5:00); the 99 Robux 'Infinite Canister' widget sits beside this from arrival (inference that it targets this friction)."
+    evidence: [play_1, yt_onboarding_1, yt_skilled_1]
+pacing:
+    timing_start_definition: "Launch command sent from the coordinator (00:06:52Z)."
+    loading_seconds: 17
+    time_to_control_seconds: 17
+    first_meaningful_choice_seconds: 62
+    first_reward_seconds: null
+    action_reward_cadence: null
+    video_action_reward_cadence: "yt_onboarding_1 (continuous clock): a deposit roughly every 45-75 s in the first minutes, a new quest about every 30-60 s from 1:15 to 2:45, then one tile bonus (+$4) about every 2-3 min; cash went $0 to $25 in about 8.5 min after arrival."
+    video_timings_from_page_click:
+        lobby_control_seconds: 30
+        moon_arrival_seconds: 75
+        first_dust_seconds: 90
+        first_purchase_seconds: 105
+        whats_next_modal_seconds: 315
+    active_play_versus_travel_or_waiting: "About 40 s lobby to moon (pad countdown plus teleport); about 2 min walking from base to dust including runner troubleshooting."
+    natural_stopping_points:
+        - "Video: each tile reaching 100% and the 'What's next' modal after the quest chain (yt_onboarding_1 5:15)."
+    measurement_method: "Play: wall-clock capture times; resolution about +/- 5 s. Video: yt_onboarding_1's own timestamps from Play on the Roblox page, cross-checked against its continuous on-screen clock, frames every 15 s, so +/- 15 s; yt_skilled_1 is edited and gives order only."
+    evidence: [play_1, yt_onboarding_1]
+goals_and_progression:
+    next_goal_clarity: "High in words: quest banner 'Sweep 1 kg of dust 0.00 / 1 kg - hold left mouse to scrub' with an amount counter; compass marker with meters to the target."
+    short_term_goals:
+        - "Sweep 1 kg of dust."
+        - "Video quest chain: Sweep 1 kg > Buy a new brush > Buy canister upgrade 1 (free) > Empty your canister at the deposit > Clean a whole tile (+$4) > 'You know the loop' (yt_onboarding_1 1:15-5:15; yt_skilled_1 0:52-5:12)."
+    medium_term_goals:
+        - "Deposit at base for cash; 'Never fill again' upgrades shown on the base board."
+        - "Video: 'What's next' card names three next goals with pictures: Build belts, Automate with robot docks, buy Vehicles (yt_onboarding_1 5:15)."
+    advertised_long_term_goals:
+        - "Clean the Moon to 100%; vehicles, robots, belts and machines (description only)."
+    upgrade_choices:
+        - "Video: brush width (tool shop) versus canister, payout, head power, tile bonus or walk speed (Upgrade computer); permanent Shard bonuses in the lobby (yt_skilled_1 0:13, 1:31)."
+    mastery_versus_stat_growth: "Videos show mostly stat growth (wider brush, bigger canister, payout) plus a light routing skill: clearing whole tiles to 95% and choosing paths back to the deposit (yt_onboarding_1, yt_skilled_1)."
+    unlock_previews_and_optional_activities:
+        - "A sweeper vehicle visible through the lobby window; HUD item slot 2."
+    evidence: [api_1, play_1, yt_onboarding_1, yt_skilled_1]
+failure_and_recovery:
+    observed_failure: "Party leader left the moon."
+    explanation: "Red banner 'Leader left - game not saving' under the quest bar (10772543706-13)."
+    cost_or_lost_progress: "Progress on that moon stops saving for remaining players."
+    retry_seconds: null
+    checkpoints: null
+    non_paid_recovery: null
+    evidence: [play_1]
+agency_and_social:
+    meaningful_choices:
+        - "Which pad to join; leave pad."
+    customization_and_identity: []
+    cooperation_and_competition:
+        - "Cooperative parties of up to 4 cleaning one moon."
+    visible_social_feedback:
+        - "Lobby leaderboard; 'Leader' label above the party leader's head; pad screens naming the leader."
+    solo_accessibility: "Solo play implied by an empty pad but not verified; the pad joined another player's party."
+    evidence: [play_1]
+ui:
+    evidence_status: observed
+    visual_style: "Chunky rounded cartoon UI: dark navy panels with light outlines, bright yellow and green buttons, bold rounded sans."
+    layout_and_hierarchy: "Top-center compass strip with objective markers and a wide quest banner; left column of Shop, map and settings tiles with keycap badges; bottom-left cash and canister meters; bottom-center hotbar with a tool-name and 'Hold to sweep' hint; right-side floating Robux offer."
+    color_scheme:
+        - "Dark navy panels"
+        - "Gold/yellow for Shop and highlights"
+        - "Green cash pill"
+        - "Magenta '+' on the gem counter"
+        - "Cyan for interactive pads and highlights"
+        - "Red banner for warnings and the Leave pad button"
+    typography:
+        font_appearance: "Heavy rounded sans (Fredoka-like) for headings and buttons; all caps on world signs."
+        font_family_if_verified: null
+        size_observation: "Quest title about 30 px tall at 1920 wide; hint text about 22 px; keycap letters about 20 px."
+        size_basis: visual_estimate
+        viewport_resolution: "1920x1200 points"
+        readability: "High contrast throughout; HUD text readable over bright moon surfaces thanks to dark panels."
+    controls:
+        primary_actions: "Every HUD button carries a keycap badge (P Shop, T map, M settings, V lock/unlock mouse, R offer, E world prompts); hotbar slots numbered."
+        close_x_appearance_and_location: "No modal appeared; the quest banner has a white 'Skip' pill on its right; pad party bar has a red 'Leave pad' button."
+        modal_behavior: "None observed in the sample."
+        state_feedback: "V button label toggles 'Unlock mouse' / 'Lock mouse'; pad screens update 'JOIN! 1/4' to 'Starting in 1'; selected hotbar slot outlined in yellow."
+        target_size_and_input: "HUD tiles about 85 px square at 1920 wide; Leave pad about 220x70 px."
+    graphics:
+        graphics_versus_text: "Icon plus label on most controls; the canister and cash meters pair an image with a number."
+        illustration_or_icon_style: "Glossy illustrated icons (map, gear, cash stack, glowing canister with an infinity mark)."
+        framing_outlines_and_effects: "Light outlines on dark tiles; sunburst behind the Robux offer."
+        placement_and_labels: "Mouse-button glyph inside the quest hint and hotbar hint shows which button to use."
+        clarity_or_clutter: "Clean HUD; the persistent animated Robux offer at right draws attention during the first quest."
+    video_observations:
+        - "Modals (Lobby Shop, Upgrade computer, Tool shop, Moon map, Build, What's Next) share one frame: yellow title bar with icon, dark navy body, red square X at top right (yt_skilled_1 0:13, 1:31, 5:38, 8:00; yt_onboarding_1 1:45)."
+        - "Quest banner turns into a green check banner on completion; a world-space yellow floor line and arrow lead to the Deposit with meters (yt_onboarding_1 2:45; yt_skilled_1 1:05)."
+        - "'What's next' uses three picture cards with a one-line caption each and one Close button (yt_onboarding_1 5:15)."
+    evidence: [play_1, yt_onboarding_1, yt_skilled_1]
+new_player_onboarding:
+    status: observed
+    reason: "A first quest appeared on arriving at the moon; its relation to account history is unclear."
+    conventions:
+        - "World signage in the lobby explaining pads and the leader/save rule."
+        - "Quest banner with goal, live amount counter, input glyph and a Skip button."
+        - "Compass strip with a distance-marked objective marker."
+        - "Hotbar hint 'Hold to sweep' beside the equipped tool name."
+    sequence:
+        - "Step on a Play pad"
+        - "Party countdown and teleport"
+        - "Quest: Sweep 1 kg of dust"
+    first_independent_action: null
+    skip_or_replay: "Skip on the quest banner removed it; no replay seen."
+    completed: false
+    observed_seconds: 316
+    completion_seconds: null
+    timing_basis: "From arrival on the moon (00:09:28Z) to Skip (00:14:44Z); not completed because the sweep input failed in the runner."
+    video_observations:
+        - "yt_onboarding_1 shows the whole first-session chain that play_1 could not finish: pad > 'Off to the moon' > Sweep 1 kg > Buy a new brush > free canister upgrade > Empty canister at the deposit > Clean a whole tile > 'What's next' card (Build / Automate / Vehicles)."
+        - "Measured on its continuous clock: arrival on the moon at 1:15, first dust by 1:30, first purchase 1:45, 'What's next' at 5:15, so about 240 s from arrival to the end of guided steps; account freshness unknown."
+        - "Each step is one quest banner with a counter, an input glyph and a Skip button; no blocking tutorial modal before 'What's next' (yt_onboarding_1, yt_skilled_1)."
+        - "Video and play disagree only because the runner's synthetic mouse hold failed in play_1; the videos show the hold-to-scrub input working on real devices."
+    evidence: [play_1, yt_onboarding_1, yt_skilled_1]
+accessibility_and_comfort:
+    text_and_contrast: "Strong; dark panels behind all HUD text."
+    non_color_cues_and_icon_labels: "Keycap badges and mouse-button glyphs label inputs; warnings use words, not color alone."
+    input_support_observed:
+        - "Keyboard and mouse with a mouse lock toggle (V)."
+    motion_audio_settings:
+        - "Video: settings modal with Music and Sound Effects sliders and Defaults, 'saved automatically'; not operated by this study (yt_onboarding_1 0:15)."
+    settings_tested: []
+    clutter_and_interruptions:
+        - "Persistent animated Robux offer on the right of the HUD."
+        - "Broken stretched avatar meshes in the lobby."
+    evidence: [play_1, yt_onboarding_1]
+commercial_and_return_prompts:
+    first_purchase_prompt_seconds: 156
+    purchase_prompt_count_during_sample: 1
+    onboarding_interruption: "The offer does not block input; it floats beside the first quest from arrival on the moon."
+    optional_versus_required_presentation: "Optional; shown as a HUD widget 'Infinite Canister - Never fills' with a 99 Robux price and key R, never opened."
+    return_rewards_and_events:
+        - "Lobby sign and an E prompt: 'Like the game + join the group - claim reward' (+2 kg canister); not claimed."
+        - "Video: 'Join Event' modal for a scheduled update event with a notify button (yt_skilled_1 5:25); 'Never fill again' board at the deposit sells 'Sell as you sweep' (249) and 'Infinite canister' (99) beside the free deposit (yt_onboarding_1 1:15)."
+    urgency_or_streak_cues: []
+    evidence: [play_1, yt_onboarding_1, yt_skilled_1]
+world_and_presentation:
+    navigation_and_objective_readability: "Compass marker with meters leads out of the base; the dust surface (white) and swept ground (gray) contrast clearly."
+    landmarks_and_variety:
+        - "Sci-fi lobby with pad screens and a view of the moon and a sweeper vehicle; circular base hub with a Deposit counter."
+    environmental_storytelling:
+        - "Swept gray patches beside white dust show other work done on the moon."
+    audiovisual_consistency: "Consistent bright, clean sci-fi look (audio not captured)."
+    success_effect_intensity_and_clarity: "Video: the clearest reward is the world itself, a gray path left behind the brush on white dust that makes progress visible at a glance, backed by small toasts and a green quest banner rather than big particle bursts (yt_onboarding_1, yt_skilled_1)."
+    evidence: [play_1, yt_onboarding_1, yt_skilled_1]
+technical_quality:
+    loading_or_missing_assets:
+        - "Stretched, spiky avatar meshes for several players in the lobby (10772543706-1)."
+    input_or_frame_issues:
+        - "Runner's synthetic held left mouse did not trigger the tool; real-device behavior unknown."
+    ui_defects: []
+    recovery_behavior: null
+    measurements:
+        - "Launch to lobby control about 17 s on the VM."
+    measurement_method_and_limits: "Wall-clock capture times on a virtual M2 Pro guest; not representative of native devices."
+    evidence: [play_1]
+transferable_ideas:
+    - "Absurdly weak starter tool (a toothbrush) as a visible promise of upgrades."
+    - "Quest banner that combines the goal, a live amount counter, the exact input glyph and a Skip button."
+    - "Keycap badge on every HUD button so keyboard shortcuts teach themselves."
+    - "Lobby pads that turn party formation into walking onto a physical pad, with screens showing the count and leader."
+    - "Let the play surface record progress: what the player cleaned stays visibly different, so the world is the progress bar (yt_onboarding_1, yt_skilled_1)."
+    - "Close the guided chain with a 'What's next' card of three pictured goals and one Close button instead of further forced steps (yt_onboarding_1 5:15)."
+    - "Give a cheap first purchase within the first minute (a $1 wider brush) so the earn-spend-upgrade cycle completes before the player can get bored (yt_onboarding_1 1:45)."
+practical_takeaway:
+    strongest_idea: "A one-banner quest chain that walks a new player through one full earn, deposit, buy and upgrade cycle in about four minutes, with the cleaned ground itself showing progress, and ends on a pictured 'What's next' choice."
+    main_tradeoff: "Leader-owned save files mean a stranger leaving stops a joined player's progress from saving, and joining a pad can put a new player into someone else's moon without a choice."
+    suitable_genres_and_stages: ["incremental simulator", "collection loops", "co-op", "first session"]
+    testable_hypothesis: "A first purchase priced to be affordable after the first deposit, plus a 'What's next' card at the end of guided steps, raises the share of new players who reach their second upgrade."
+    estimated_effort_and_assumptions: "Small (under a day) for the banner if quests already track amounts; assumes an existing HUD component."
+inferences:
+    - "Up-and-Coming rank and 4.1 M visits within about 16 days of creation suggest the toothbrush-to-rover upgrade fantasy and the 'Inspired by Moon Sweepers' framing travel well."
+uncertainties:
+    - "Sweep feel on a real device was seen only in video; play_1 could not perform the sweep."
+    - "Captions were unavailable for both videos (HTTP 429); the onboarding video is low-view (929) and from a 37.5k channel, because high-view results for this name mostly show the Steam game Moon Sweepers (one such pick, r7WcKpm9EY4, was discarded on inspection)."
+    - "Whether a solo moon starts when a pad is empty was not verified."
+    - "Whether the account was fresh to this game is unknown."
+blockers:
+    - "Runner input: the published client did not register synthetic held left-mouse input as tool use, so the core sweep loop could not be played."

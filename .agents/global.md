@@ -11,7 +11,7 @@ alwaysApply: true
   lives in the shared `agent-guidance.md` rule.
 - Read the other shared rules relevant to the current repository and task. If a harness does not
   load them automatically, open the applicable files from its user-level rules directory.
-- A skill catalogue is one discovery surface, not proof that a directly requested skill is absent.
+- A skill catalog is one discovery surface, not proof that a directly requested skill is absent.
   Before reporting a named skill unavailable, inspect the active harness's installed user-level
   skill roots and the current repository's local skills, then read the resolved `SKILL.md` from its
   canonical source. Report it missing only when those sources do not contain it; never substitute a
@@ -21,12 +21,24 @@ alwaysApply: true
 
 ## User-Facing Output
 
+- A report or a question follows **Repository guidance**'s rule on example values the user gave.
 - Invoke `i-have-adhd` before the first response a user reads in the session, whether or not the
   user invoked it or the running skill names it. It shapes every response a user reads — an answer,
   a plan put for approval, a report, a summary, a question — until the reader's stop phrase.
 - **A proposal never reads as done.** Text putting a change to the user names it in words that
   cannot be taken for finished work — "would combine", "proposed" — never a past participle such as
   "merged" or "removed" that a reader takes for something already built.
+- **Anything the reader might open is a link to it, wherever it is named.** A pull request,
+  issue, repository, commit, branch, workflow run, release or any other item with an address is
+  written as a markdown link to that address each time a response, table, sent file or question
+  names it, as in [garden-api#42](https://github.com/example/garden-api/pull/42) or
+  [garden-api](https://github.com/example/garden-api); a bare number, name or hash leaves the reader
+  to look it up. Where the text names more than one repository, an item named outside a section or
+  table scoped to its own repository carries that repository inside its link text, as above, never as a
+  plain name beside a linked number, and a repository named in passing, such as the other half of a
+  paired change, is linked too. Every item in a list gets a link, however long the list. A surface
+  that cannot render a link, such as a question tool's option label, carries the address in its
+  supporting text.
 - **A web product's views are pages.** Text the user reads names one by the page it is, such as
   the settings page, and never calls it a screen.
 - **A file the user should see reaches them where they read.** Per-item detail past five items —
@@ -48,7 +60,7 @@ alwaysApply: true
   and ask of each whether the product should show that, there. A defect anywhere in it, in a region
   the message never mentions as much as the one it does — a state or error shown in a section it
   does not concern, a message repeated, a wrong value or tone — is named with the capture and fixed
-  rather than offered, as `execute-task`'s **Encountered Issues** says.
+  rather than offered, as `pre-production`'s **Encountered Issues** says.
 - **A capture of a change reaches the user while the work is still running.** A screenshot, a
   recording, or a generated image that shows something the run changed — the screen after an edit, a
   before-and-after pair, a design it generated — is sent as a file as soon as the agent that made it
@@ -73,14 +85,14 @@ alwaysApply: true
   whose page it is; a phone-width view or a close-up of the same page goes beside that one,
   never alone, since either can belong to several pages. The caption names the page as the
   reader reaches it, such as "the album's Sharing page".
-- **A new behaviour is named as new wherever it is reported.** A progress report, a summary, a pull
+- **A new behavior is named as new wherever it is reported.** A progress report, a summary, a pull
   request description or a capture's caption that shows the product now behaving differently under
-  some condition states that behaviour and where it applies, such as "photo galleries now become
+  some condition states that behavior and where it applies, such as "photo galleries now become
   carousels past six photos on every page", never folds it into the fix it arrived with, so the
   reader can tell a new layout, control or flow from a repair.
 - A delegated worker's report of an outcome — tests pass, pushed, merged, deployed, fixed — is a
   claim. Check it at its source of truth before relaying it or building on it, and tell the user
-  what was read, not what was reported; `execute-task`'s **Reported Outcomes** holds the procedure.
+  what was read, not what was reported; **Reported Outcomes** holds the procedure.
 
 ## Task execution and authorization
 
@@ -121,19 +133,22 @@ alwaysApply: true
   explicit user stop or handoff, report what finished and record precisely what resumption needs.
 - **A change gets at most 3 review rounds in total: the first review and 2 re-reviews after
   repairs.** Any change — source, tests, tooling, configuration, guidance or interface — that has
-  failed 3 rounds of review, gate, smoke test or CI, whatever each round raised, is not repaired
-  again: findings that keep coming on one change say the approach is wrong, not that the next patch
+  failed 3 rounds of review, gate, skill test, smoke test or CI, whatever each round raised, is not
+  repaired again: findings that keep coming on one change say the approach is wrong, not that the next patch
   will land. A change is one plan step, worker task or finding fix, and its rounds are counted
   together across every kind of check; a round a broken runner, fixture or provider cut short before
-  judging the change is not counted. The agent then decides the way forward itself wherever the
-  choice is its own: fall back to a simpler approach, revert the change, or accept it with the
-  remaining findings recorded. A confirmed defect, an exploitable vulnerability or a failing
-  required check is never accepted this way; only a simpler approach or a revert remains for it. The
-  agent reports that decision in plain words, with current captures where the change is visible. It
-  asks only when the way forward is a genuine product, scope, security or disclosure choice, and
-  that question joins the questions already open rather than going out as a separate message. The
-  stop exists to end wasted rounds, never to add questions. It is the user's standing instruction,
-  not a budget the agent declares spent; the task stays active. The per-flag bounds of the skill
+  judging the change is not counted. Put the disposition to `council` in **Ask** mode, with the
+  change, each round's findings and remedies, and the three choices: use a simpler approach, revert
+  the change, or accept it with the remaining findings recorded; record its majority ruling and
+  follow it. A confirmed defect, an
+  exploitable vulnerability or a failing required check is never accepted this way. If the authorized
+  outcome still needs work, update the active plan and start the first permitted step of the
+  replacement. A different implementation idea is not a new approval boundary. Ask only when
+  the replacement needs an unresolved product, scope, security, disclosure, or authorization decision, and join that
+  question to the questions already open rather than sending it separately. The agent reports the
+  decision in plain words, with current captures where the change is visible. The stop exists to end
+  wasted rounds, never to add questions. It is the user's standing instruction, not a budget the
+  agent declares spent; the task stays active. The per-flag bounds of the skill
   running the loop still apply within those 3 rounds, and `review-proposal`'s attack rounds on a
   proposal keep their own count.
 
@@ -148,7 +163,11 @@ alwaysApply: true
   scope, a workaround for a
   constraint the user set, and anything touching security, disclosure or authorization. Closing a
   security vulnerability, so the product enforces the access it already intends, is a fix and never
-  waits on this question. Before making one, identify the user's instruction or standing guidance
+  waits on this question. **A game's design is the exception**: where `roblox-gameplay` governs the
+  work, what does not make sense in the game — an asset, a room, a placement, a balance value or a
+  mechanic — is the agent's to redesign as that skill says, without asking; the game's core loop or
+  genre, anything players pay for, security, disclosure, authorization and what the user has decided
+  stay with the user. Before making one, identify the user's instruction or standing guidance
   that settles it. If neither does, explain the concrete issue, show the concrete alternatives with
   a recommendation, and ask before building one; a required outcome does not approve an unnamed
   layout, control, scope or timing chosen to achieve it. **A fix's remedy meets the same test,
@@ -156,7 +175,7 @@ alwaysApply: true
   layout, controls or flow a reader meets on many pages or across several products, or that a
   returning user would notice, such as every photo gallery turning into a carousel once it holds
   more than a few photos, or a form splitting into steps everywhere past some number of fields — is
-  a product choice, and so is new visible behaviour a remedy carries past the surface the user named
+  a product choice, and so is new visible behavior a remedy carries past the surface the user named
   to others like it; the defect no longer showing there is not.
   Each is proposed before it is built, whether it arrives as a fix, a later fix round adjusts it, or
   a gate accepted it: the proposal lists every page it would change and carries before-and-after
@@ -184,7 +203,7 @@ alwaysApply: true
   the layout; until the user answers, the content keeps the room its values need. **Text
   already in the product keeps its words unless it is wrong or the user named it.** Text that is
   plainly wrong or inconsistent, such as a label stating something untrue, one thing called by two
-  names, or a message that no longer matches what happens, is corrected or left by judgement, and
+  names, or a message that no longer matches what happens, is corrected or left by judgment, and
   the report says which. Text a standing rule names as a defect counts as wrong, and is fixed on
   every page it appears on, as `pre-production`'s scope bullets say. A request to reword one text
   rewords that text alone; any other existing title, label, description or message that is correct
@@ -198,7 +217,9 @@ alwaysApply: true
   action and target, or an applicable rule or invoked skill that expressly authorizes them. A fix
   request, approved plan, or instruction to implement a plan does not itself authorize these
   outcomes, even when the plan lists them. A task-wide "all approved" covers ordinary sub-tasks
-  within its stated outcome without overriding this separate boundary.
+  within its stated outcome without overriding this separate boundary. A user's authorization
+  covers that one action on the change it names; a later change needs its own authorization before
+  it is merged, deployed, published or released, however recently the last one was given.
 - **A merge leaves no deploy work.** Once a pull request's merge is verified, never check by any
   route whether the change is live, such as a provider's deployment status, a release run or the
   site itself; never walk or test the site the merge deployed; never schedule a re-check, wait for
@@ -246,7 +267,7 @@ alwaysApply: true
   user decision, stated with its evidence. A genuine unresolved product, security, disclosure or
   authorization choice follows the decision boundary above while independent work continues.
   **A rule about how the product looks or reads is a default that records earlier design
-  judgement, never the argument for a design.** Rank design options by what serves the reader and
+  judgment, never the argument for a design.** Rank design options by what serves the reader and
   the flow. Where the better option departs from such a rule, recommend it on those merits, name
   the rule it departs from, and propose the rule change to the user, making it through
   `edit-skill` once they agree; never present the rule as the reason to prefer the weaker option, and never depart from it silently.
@@ -254,8 +275,17 @@ alwaysApply: true
   guidance governing its subject or the scope the user last set: an item outside that scope is
   answered as out of scope, never relayed as a fix, unless the change itself introduced a defect.
   That defect remains a required fix. Its sender checks before sending and its receiver before
-  acting; `execute-task`'s **Encountered Issues** holds what each does with an item
+  acting; `pre-production`'s **Encountered Issues** holds what each does with an item
   a rule forbids.
+- **A rule is met by doing what it requires, never by changing what a check or a reader can see.**
+  When the compliant change is hard, the forbidden thing is not renamed, described in other words,
+  wrapped, aliased, split, moved to a file the check does not read, or let through by a narrowed,
+  disabled or special-cased check, and a test is not loosened to accept it: each keeps the
+  violation and hides it, which is worse than leaving it visible. The test is what the result still
+  does or says, never whether a search for the old form still finds it. Make the change the rule
+  asks for, restructuring what depends on the forbidden thing when that is what it takes; where
+  that change cannot be made in the work in hand, leave the violation visible and say so in the
+  report, never pass a disguised form as compliance.
 - Before presenting a proposed change at an existing user-approval boundary, use `review-proposal`.
   First check for its valid ready receipt for the exact proposal and reviewed inputs; when present,
   present the supporting content and ask without re-entering it. Otherwise prepare that receipt
@@ -274,6 +304,25 @@ alwaysApply: true
   invoking the tool; supporting chat text identifies the material and leaves the actionable question
   in the tool. During unfinished authorized work, retain the question as a pending decision while
   independent work continues; it is not a final task report.
+- **A step only the user can take, which the work waits on, is asked through that tool too, never
+  left in chat.** Chat text the user may not read is not a request: granting a permission, signing
+  in, approving on another device, or running a command that needs their password each goes out
+  as a question once everything the agent can prepare is ready. Preparation is only work that
+  changes what the user will do; other queued work, a guidance edit included, waits behind the
+  question, which goes out in the turn the need is established. Chat text never announces the step
+  ahead of that question. Its text names the whole step,
+  including any command, and offers a confirmation option such as "Done" beside one for doing it
+  later. Where the step happens on a surface the agent can open — a viewer, a settings page, a
+  sign-in page — the agent opens it at the exact place and verifies it shows before asking, so the
+  user's part is the action alone. A confirmation is the user's word, not the outcome: check the
+  result at its source before building on it. **Whether a step is only the user's is settled
+  before asking.** A step the agent's tools can reach by any route — inside a machine or VM it
+  controls, through a viewer or settings page it can open, or briefly through the user's own
+  desktop input where the task's authorization and tool policy permit it — is the agent's to
+  take, never put to the user as a request or as a choice
+  between their doing it and the agent's. The agent prefers the route that leaves the user's
+  desktop alone and states any interruption, such as a moving cursor, when it happens. Only what
+  needs the user's own identity, device, password or physical presence goes to them.
 - **A choice between substantially different versions of a page shows every option rendered.**
   When the options differ in layout, structure or the controls the reader uses — a list or a grid,
   one column or two, a section moved or removed — the question carries, directly beneath it, a
@@ -365,7 +414,9 @@ alwaysApply: true
   recovery, a queued review or an unanswered request is pending until it has a terminal result;
   current unavailability, a quiet interval or a bounded wait yielding without a result is not
   failure. Continue independent authorized work, and when none remains, use the available host
-  wait or event route until the result arrives, then resume its saved next action. A genuine
+  wait or event route until the result arrives, then resume its saved next action. A message sent
+  while authorized work or a wait remains goes out together with the next wait or action, never as
+  the turn's last output, and is never the task's report. A genuine
   unresolved choice holds its dependent work, not the whole run. A terminal failure, exhausted
   recovery or missing host wait route is a concrete gate to surface for repair or resolution,
   with its evidence and saved next action; it is not completion or permission to end unfinished
@@ -504,7 +555,7 @@ return records;
   control on the same page names that control where the reader sees it, as in "Turn on Sync
   above", and never links to the page it sits on. It names the thing the control acts on, never
   quotes a label that is already an instruction into a sentence that gives its own: a switch
-  labelled "Enable offline mode" is "Turn on offline mode", never "Turn on Enable offline mode".
+  labeled "Enable offline mode" is "Turn on offline mode", never "Turn on Enable offline mode".
 - **A refusal an end user reads is a short, friendly request for their next step**, such as "This
   library card cannot be used. Please use a different card." It says what to do rather than passing
   a verdict on what was done or on the reader, as "You can't use this library card." does, and it
@@ -512,6 +563,12 @@ return records;
   item — which they already know. It holds wherever that message is written: the error message of
   an API or tool whose text reaches an end user, a server-side enum or constant that holds the
   text, a test fixture, and wording a brief proposes to a worker.
+- **Text an end user reads speaks in what the reader cares about, never in the system's exact
+  values.** Where a precise number, state or count changes nothing the reader does, say it in plain
+  words: a fuel tank holding a few drops is "empty", a wait of 59 seconds is "a minute". Keep the
+  exact value only where the reader acts on it, such as a price, a quantity they choose or a figure
+  they compare, and never add a qualifier such as "almost" or "about" only to make plain words
+  technically exact.
 - **Text only the product's own team reads states the observed condition and its values, and
   nothing more.** On an internal panel, an operator or support tool, or an internal API, a refusal
   or a report names what was found and lists the values it concerns, such as "Unrecognized shelf
@@ -535,20 +592,57 @@ return records;
   alike, and it holds most strongly in a library, where every reader is a different consumer.
 - **Name things with the everyday word a reader expects.** The reader is this codebase's: a name
   says what its product, its users and its existing code call the thing, never a word that is right
-  only in another field, such as a botanical Latin name for a plant in a garden shop's catalogue.
+  only in another field, such as a botanical Latin name for a plant in a garden shop's catalog.
   Where the domain or a provider has a term this codebase's readers use, use it. A parcel the
   carrier reports as delivered is `delivered`, never `parcel_arrived`, because an unusual synonym
   makes every reader translate it back. This covers identifiers, fields, messages, documentation and
   test names in every language.
-- **A Boolean's name says what it is true of.** The receiver or argument is what the statement is
-  about, and a verb that acts on something names that thing in the name: `invoice.is_overdue`,
-  `is_deliverable(message)`, `job.writes_files`, never `writes(job)`, whose reader asks "writes
-  what?". A name a framework or protocol defines keeps its own spelling.
+- **Everything an agent writes is in American English, in spelling and vocabulary alike**: code and
+  its identifiers, comments, documentation, guidance, records, commit messages, pull-request text,
+  product copy, generated content and every reply the user reads. It writes `color`, `behavior`,
+  `center`, `catalog`, `canceled` and `organize`, and a "cell phone" rather than a "mobile". A
+  reader meeting the other form reads it as a mistake, and a product using both reads as two
+  products. Two kinds of text keep their own form: a quotation reproduced verbatim from its source,
+  such as an on-screen message, and a name a language, framework, protocol or provider defines, such
+  as an HTML attribute.
+- **A name says what it is about, so a reader never opens the body to learn what it acts on or
+  holds.** That holds for every name: a function, Boolean, field, event, constant, class, module,
+  file or package. A name built on a verb names the verb's object: `job.writes_files`,
+  `assert_may_book_rooms`, never `writes(job)` or `assert_may_book`, whose reader asks "writes
+  what?", "book what?". A receiver or argument supplies the subject only when it is the very thing
+  the name is about: `loan.is_overdue` and `is_deliverable(message)` need nothing more, but a check
+  on whether a member may change a club's bookings takes the club and is about its bookings, so it is
+  `may_change_bookings(member, club)`, never `may_change(member, club)`. A generic noun says what it
+  holds unless its receiver already does: `shipment.status` is the shipment's own state, but the
+  state of its customs check is `customs_status`; a parsed recipe in a local variable is `recipe`,
+  never `result` or `data`; a constant is `MAX_GUESTS_PER_TABLE`, never `LIMIT`; and a module of
+  date helpers is `dates.py`, never `helpers.py` or `misc.py`. The one generic container name is
+  the category package a language rule assigns, such as `utils/`, whose topic-named modules carry
+  what it holds. A name a framework or protocol defines keeps its own spelling.
 - Name things for the shape being exercised, not for whichever caller happened to prompt the work.
   A test needing a table with a secret column names it for that — a record with a secret — rather
   than borrowing the one real table the change was made for.
-- Sample values follow the same rule: prefer plainly synthetic literals over ones shaped like a
-  real identifier from another system's domain.
+- **An example the user gives is never reproduced.** A value the user quotes or shows to
+  illustrate a case — a name, an address, an amount, an identifier, a message, a record read from
+  their data, a capture or a log — appears in nothing the agent writes, such as source, tests,
+  fixtures, comments, documentation, guidance, records, commit messages, branch names, pull-request
+  and issue text, posts, worker briefs and the reports the user reads. Each place uses a newly
+  invented, plainly synthetic value that keeps only the trait the case turns on, such as a hyphen, a
+  long value or an accented letter: a reported plant code `FERN-EXAMPLE-0042` becomes
+  `PLANT-SAMPLE-0001`, and a reported total of `$9,876.54` becomes `$1,000.50`.
+  - A quote of the user's words that holds such a value — an intent statement, a recorded answer, a
+    handoff, a dashboard — keeps the rest of their words exactly and names the value by its kind in
+    brackets, such as `[the reported plant code]`.
+  - A value naming the record or account the work operates on, or one the code must match, appears
+    only where the work acts on it — a query, a command, a brief that sends a worker to it, the code
+    or configuration that matches it — and tests, comments, descriptions and other committed,
+    posted or published text use an invented one.
+  - Two kinds of value are not examples and keep their exact text: fixed text the product shows
+    every reader that the user asks to add or reword, such as a label or a message, never a value
+    the product shows from a record; and a literal a protocol or provider defines for every caller,
+    such as a status value a provider sends.
+  - Every other sample value is plainly synthetic too, never shaped like a real identifier from
+    another system's domain.
 - **Nothing committed to a repository or posted to its host holds a path that only one machine
   has.** Source, configuration, guidance, documentation, fixtures, captured tool output, commit
   messages, pull-request text and comments never name a home directory, a temporary or scratch
@@ -562,7 +656,7 @@ return records;
   and naming conventions, such as how it spells an event type or a scope, are the library's own,
   never a consumer's domain vocabulary: a helper encoding such a convention belongs in the library
   even when one consumer prompted it, and the library's owned API gains it. This holds at the
-  wrapper's layer; an application modelling the provider's data keeps its own field names, as
+  wrapper's layer; an application modeling the provider's data keeps its own field names, as
   `pre-production`'s **Adapting is not imitating** says.
 - Identify environments by their full domain name throughout code, configuration, documentation,
   and user-facing labels, including enum and constant names. Code identifiers may encode the whole
@@ -585,10 +679,50 @@ return records;
 - Git history is the record of what changed; documentation describes what exists now.
 - The same applies to code comments and docstrings: no "formerly", "replaces", or "kept for
   backwards compatibility" notes.
-- **Behaviour another party owns is explained once**, beside the value or line where the code
-  first handles it. Every other place that reuses that value or works around the same behaviour
+- **Behavior another party owns is explained once**, beside the value or line where the code
+  first handles it. Every other place that reuses that value or works around the same behavior
   restates nothing: a second comment, a docstring, or a comment in another file. A comment above a
   timeout saying a library sets none, and another at the override that applies it, are one comment
   too many.
 
 - When a request replaces a route, API contract, or behavior, remove the prior alias or fallback. Retain legacy compatibility only when the user explicitly authorizes it in the current request; if retention is unclear, ask before adding it.
+
+## Reported Outcomes
+
+An outcome is what its source of truth shows, never what an action or a worker said about it.
+
+- **After any action that changes shared state, read the resulting state before reporting it or
+  starting the next item.** A push, merge, deployment, migration, or refresh reports that it ran,
+  not the state it left, so read that state where it lives. After a push, that is the pull request
+  on the pushed head, or, before one exists, the remote branch head: its mergeable state and the
+  checks that run for its state starting — a draft starts no test jobs — since the base can move
+  while the push runs.
+- **Whatever that read shows wrong is the next thing done**, ahead of every queued item, and is
+  never carried to "the next push" or bundled behind other work. A conflict is brought in
+  through `merge-conflict`, delivered under the GitHub rule’s **Pre-Push Gate**, and read back. A base that only
+  moved, with no conflict, is brought in once, by `review-pass` at the selected workflow’s completion, before the final
+  acceptance.
+- **A delegated worker's report of an outcome is a claim, never evidence.** Before relaying it or
+  building on it, check it at its source: "tests pass" against the run or the CI result on that
+  commit, "pushed" or "exists" against the branch, "merged" or "refreshed" against the default
+  branch or the installed copy, "deployed" or "healthy" against the host, "fixed" by reproducing it
+  or reading the evidence, "the screenshot shows it" by looking at the image, "no references
+  remain" by searching. A claim the check contradicts is the next thing done, ahead of queued
+  work: sent back to the worker with what the read showed, or fixed here.
+- **What a worker reports leaving alone is classified before it reaches the user.** Read each item
+  against `pre-production`'s **Scope Follows The Defect, Not The Request** bullets: a defect, a parallel copy of the change's own mechanism or a shape a standing rule names
+  goes back to the worker or is fixed here; an item over the size budget is recorded with
+  `defer-scope`, and only it and an item those bullets leave to the user are reported, as what it
+  is and never as a question whether to fix it.
+- **A deferral inside a report — "I'll do X next" — is named work of this run** under **Task
+  execution and authorization**, tracked until done; the report does not close it.
+- Before a milestone report, gate classification or final response, read the authorized outcome's
+  current state and owning diagnostics, then reconcile every required step with the task record.
+  A successful substep does not establish the parent outcome: resume its saved next action when
+  that outcome remains unmet. Report intermediate results in commentary while an authorized
+  remedy remains; a gate must meet **Tools and environments** or **Task execution and authorization**, not merely
+  repeat the last failed attempt.
+- **A status sent to the user states what was just read and where**, never what was reported or
+  expected: conflicted, failing, running, or passing, on the head or target named. "Done" or
+  "ready" is written only when that read says so, and a file sent with it is checked first as the
+  global rules' **User-Facing Output** requires.

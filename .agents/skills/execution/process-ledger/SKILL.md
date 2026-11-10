@@ -11,16 +11,17 @@ through `session-ledger`; it stays private task state, while permanent guidance 
 at their owners.
 
 ## Dependencies
-
-- `session-ledger` — resolve, validate, update, and preserve the private task ledger.
-- `edit-skill` — deliver admitted `guidance_correction` records into canonical guidance.
+- `acceptance-gate`
+- `session-ledger`
+- `edit-skill`
+- `test-skill`
 
 ## Batches
 
-**One guidance batch is in flight at a time.** It is frozen when its delivery starts, and an entry
-admitted while it is in flight joins it until its pull request merges. A batch is in flight from its
-freeze until it is done: every entry in it has a verified delivery or a recorded hold. A held entry
-does not keep its batch in flight.
+Honor each entry's recorded workflow sequence and delivery hold before freezing or delivering a
+batch; preserve provenance and holds across handoffs.
+
+Apply `session-ledger`'s **Guidance Batches** boundary.
 
 - **Freezing.** Mark with one batch id every `pending` `guidance_correction` entry that `edit-skill`'s
   **Recording During A Task** admits and that either carries no batch id or is held by a hold that
@@ -30,12 +31,12 @@ does not keep its batch in flight.
   user asking to change a file the batch is changing included, takes the batch's id and its edit is
   pushed to the batch's pull request. The batch reruns only the checks that edit invalidates and
   keeps every verdict on what it left unchanged: the source check runs on the new head, the review
-  and acceptance gate judge the new increment alone, and the smoke round covers the new entry's
+  and acceptance gate judge the new increment alone, and the skill-test round covers the new entry's
   scenario and any entry whose wording the edit changed. A completed stage is not repeated for the
   entries it already covers.
 - **Once the batch's pull request has merged**, an entry admitted then starts the next batch, frozen
   when this one is done and delivered with its normal checks; the merged batch is never reopened.
-- A repair the batch's own review, gate or smoke round requires is the batch's work under
+- A repair the batch's own review, gate or skill-test round requires is the batch's work under
   `acceptance-gate`'s **Bounds** and `test-skill`, never a new entry.
 - **A run that finds a batch in flight** freezes nothing. It leaves the batch to its owner while the
   owner's record shows it delivering and the owner is live; otherwise it takes ownership under
@@ -45,9 +46,7 @@ does not keep its batch in flight.
 
 ## Workflow
 
-1. Resolve and read the active task's ledger through `session-ledger`. Honor `execute-task`'s
-   **Priority** before starting permanent guidance delivery; retain its saved next action while
-   recovery holds that work. Before freezing or prioritizing a batch, reconcile every recorded hold
+1. Resolve and read the active task's ledger through `session-ledger`. Honor active recovery priority before permanent guidance delivery; retain its saved next action. Before freezing or prioritizing a batch, reconcile every recorded hold
    with its current owner and authoritative dependency evidence. Discharge a completed dependency,
    retain a genuine authorization or dependency hold with its saved next action, and resume any
    nonterminal delivery stage without repeating a verified receipt. Verify each entry's evidence
@@ -58,12 +57,11 @@ does not keep its batch in flight.
      **Batches**. Send it to `edit-skill`'s **Guidance Delivery** route so canonical guidance
      completes its delivery gates.
    - `artifact`, `plan`, `question`, and `decision`: reconcile the state with the artifact owner,
-     plan workflow, or user answer. They never create guidance merely because they were processed.
-     A complete `plan` stays while its task is active, since `progress` counts the finished work of
-     every plan the task has had; remove it once the task's outcome is verified complete.
-   - `review`: `review-pass`'s reviewed head for a pull request. Keep it while that pull request is
-     open, since the next pass sizes itself from it; remove it once the pull request is merged or
-     closed.
+     the plan's recorded steps, or user answer. They never create guidance merely because they were
+     processed. A complete `plan` stays while its task is active; remove it once the task's outcome
+     is verified complete.
+   - `review`: a pull request's reviewed head. Keep it while that pull request is open; remove it
+     once the pull request is merged or closed.
    - An unrecognized kind: preserve it only when evidence identifies a concrete owning workflow or
      next action; otherwise remove it as invalid.
 3. A failed, blocked, unavailable, or unverified requested action — which a direct guidance request

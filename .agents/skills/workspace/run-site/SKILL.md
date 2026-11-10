@@ -10,14 +10,15 @@ Start and verify the stack within the requested scope. When browser verification
 **Principles**, its deliverable includes screenshots and a recording showing signed-in functionality.
 
 ## Dependencies
-
-- `use-browser` — the browser this skill drives, through the `agent-browser` CLI.
-- `execute-task` — what happens to a defect a walkthrough finds, under its **Encountered Issues**.
-- `proton-pass` — a sign-in password the repository provides no source for.
-- `test-fixture` — the tests a scenario added or updated carries.
-- `subagent-matrix` — the capture worker a long list of captures can be handed to.
+- `pre-production`
+- `use-browser`
+- `proton-pass`
+- `test-fixture`
+- `subagent-matrix`
 
 ## Principles
+
+Use `use-browser` for browser control through its supported route. Apply `test-fixture` to any tests the scenario adds or updates.
 
 - Select browser verification applicability before starting its stack, browser or sign-in
   prerequisites. Guidance-required walkthroughs and rendered UI inspections apply only when the
@@ -101,7 +102,7 @@ walkthrough only when it applies. Passing tests, type checks, and a clean build 
 applicable walkthrough. A change that can alter what the app does — new or reordered UI, layout or
 spacing, a component's props or state, a hook, a route, a redirect, middleware, an auth round trip, or the shape
 of a request — is walked end to end before it is reported done, however few lines it took; the
-walkthrough follows the push rather than holding it, as `execute-task`'s **Pre-Push Gate** says. An
+walkthrough follows the push rather than holding it, as the GitHub rule’s **Pre-Push Gate** says. An
 edit that provably cannot reach behavior — rewording text already rendered in its existing slot, a
 comment, prose in Markdown — is verified by reading it and by finding the new text in the build
 output and the old text nowhere in the tree. Judge by what the edit touches, not how small it looks:
@@ -242,8 +243,8 @@ is a defect in the change.
 
 Anything the run shows that the product should not do — an error the run did not ask for (a
 failed request, an empty section, an error boundary, an unwritten redirect, a console error) or
-wrong behaviour on screen (a value shown altered or lost, data in the wrong place, a broken
-layout) — is a defect the walkthrough found, and `execute-task`'s **Encountered Issues** decides
+wrong behavior on screen (a value shown altered or lost, data in the wrong place, a broken
+layout) — is a defect the walkthrough found, and `pre-production`'s **Encountered Issues** decides
 what happens to it. Diagnose it to its cause through the service log, the network response, and the
 rendering code, fix it, and re-run the step. The one exception is the failure you induced on the
 run above; say which kind each capture shows, since the two look identical.

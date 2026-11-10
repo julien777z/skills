@@ -12,16 +12,17 @@ base merge is done is the worst judge of whether the result reintroduces what it
 or costs more than it buys. The fix reads as correct because the rule it breaks is the one the change
 is still establishing, a deferral reads as prudent because nobody has yet asked whether the work was
 small, and a finding reads as urgent because nobody has asked whom it protects. Every question below
-is one the author would answer in its own favour, so a different subagent answers it.
+is one the author would answer in its own favor, so a different subagent answers it.
 
 ## What The Intent Statement Names
 
 Ground intent in the user's accepted requirements, the change's history, and the current diff.
 The statement names:
 
-- the user's request in their own words, quoted, with every later word of theirs that widened or
-  narrowed it. Those words bound the change's scope: a restatement in the agent's words, a plan step
-  it wrote or a brief never widens it, and a remedy whose product effect — what a feature does or
+- the user's request in their own words, quoted, with each example value it holds named by its kind
+  in brackets as the global rules' **Repository guidance** says, and with every later word of theirs
+  that widened or narrowed it. Those words bound the change's scope: a restatement in the agent's
+  words, a plan step it wrote or a brief never widens it, and a remedy whose product effect — what a feature does or
   shows, or a visible change on surfaces the user did not name — reaches past them is flagged as a
   product choice not yet put to the user. Work the change's scope requires without such an effect,
   such as moving consumers onto one owner or repairing the same defect beside it, is not;
@@ -38,7 +39,16 @@ The statement names:
   the user explicitly makes it a dependency. The
   comparison states why migrating consumers is insufficient before it accepts broadening an owner;
 - the shapes removed and their replacements, read from current deletions and the originating commits;
-- the pull request's title and body, checked against those requirements and the implementation;
+- the pull request's title and body and the change's commit messages, checked against those
+  requirements and the implementation;
+- the caller's example search: each example value the user supplied during the task — a name, an
+  identifier, an amount, a message, a record or capture from their data — searched for
+  case-insensitively, whole and by its parts and reformattings, such as a code's prefix alone, an amount
+  without separators or a slug, in the item under judgment, the diff's added lines, the branch
+  name, the pull request's title and body and the commit messages. The receipt names each value by
+  its kind, such as "the reported plant code", never by the value itself, and lists the forms and
+  places searched and its hits; or it states that the user supplied none. Each bracketed kind in
+  the quoted request appears in it;
 - the target repository's purpose and scope, as its README and project guidance state them;
 - for each kind of code the diff adds, renames or reshapes, such as a router, a handler, a client,
   a fixture or an error, how the repository's own existing instances of that kind are written, read
@@ -49,7 +59,7 @@ The statement names:
   branches whether or not the task touches them.
 
 Read deletions before additions, but do not treat an empty deletion set as an empty intent. A file
-added and removed within the branch disappears from its final diff without cancelling the ownership
+added and removed within the branch disappears from its final diff without canceling the ownership
 decision that removed it. Preserve that decision until the user changes it. When inputs disagree,
 resolve them against the accepted requirements and history instead of silently narrowing the scope.
 
@@ -82,14 +92,14 @@ whether an exploit counts, which **Exploitable Findings** settles.
 Two things never count as product state. The deployment's dimensions — row counts, instance size,
 traffic — are facts about today's environment, and repository guidance must bar them from every
 design argument; a mechanism that cannot grow is a defect whatever the current table holds. And a defect is
-never weighed at all, because a broken behaviour has no gain side to price.
+never weighed at all, because a broken behavior has no gain side to price.
 
 ## What A Verdict Names
 
 It returns the verdict its question defines: **accept** or **flag** for every question but triage,
 and one of triage's four dispositions there. Every verdict is specific. Acceptance names, for every
 addition whose kind matches a removed shape, the addition, the shape it takes, and why that is
-neither the removed shape nor a finding under the rubric; additions of other kinds are summarised.
+neither the removed shape nor a finding under the rubric; additions of other kinds are summarized.
 "Looks reasonable" is not acceptance. A flag names the lines, the shape they take, the intent item or
 rubric item they violate, or the independent judgment concern, and the remedy the change itself
 would take — narrow the model rather than subtract from it, derive the set from the declaration
@@ -156,8 +166,7 @@ the consequence or uncertainty, and the smallest repair or investigation that wo
 the available evidence before flagging; unresolved suspicion is stated as uncertainty, never as a
 proven failure. Acceptance explains why any material surprise is justified.
 
-Judge the whole result, not a succession of locally reasonable edits. Apply `pre-production`'s
-scope decision: necessary consumer updates or migrations can justify a wide diff; a chain of
+Judge the whole result, not a succession of locally reasonable edits. The scope decision establishes whether necessary consumer updates or migrations can justify a wide diff; a chain of
 incidental cleanups cannot justify itself by the files it has already touched. Existing user
 approval to retain a broad change settles retention, not whether its remaining design is sound.
 Do not reject work solely for file count, personal taste, or a large required repair, and do not
@@ -224,45 +233,50 @@ having no users of its own does not mean it has no attackers.
 **A clean read here is not an audit, and never reports as one.** The gate reads a diff with three
 read-only tools and answers one question; it cannot fan out, follow a data flow across a codebase, or
 try to disprove its own finding. A verdict that raises nothing says the diff's added lines carried no
-exploitable finding the gate could see. Only a `security-audit` run at a level that fans out, or a
-`security-doctor` run, says anything about the codebase.
+exploitable finding the gate could see. Only a `security-audit` run at a level that fans out says
+anything about the codebase.
 
 So a shape the gate can see but cannot chase to an attacker is not dropped: it is a flag whose
 remedy is the author tracing it to an attacker or ruling it out, and fixing it in the change when it
 is real. That is the gate declining to guess, not the gate finding nothing, and a recommendation to
-run an audit or a doctor later never stands in for it.
+run an audit of any kind later never stands in for it.
 
 ## The Tests Behind Each Question
+
+**An example the user gave is never reproduced.** On every question, each hit in the intent
+statement's example search outside the uses the global rules' **Repository guidance** permits
+is a flag, and so is any literal in the searched places that looks lifted from real data rather than
+invented. The remedy is an invented value keeping only the trait the case turns on. A missing
+example search, or a bracketed kind in the quoted request the search does not list, holds a clean
+verdict, as a missing input.
+
+**A workaround is flagged on every question as the violation it keeps**, at that violation's
+severity, and a disguised one besides; the global rules' **A rule is met by doing what it
+requires** bullet says what counts as one. The remedy is the change the rule asks for; a shape that
+only hides the violation is never accepted.
 
 **Triage — what should happen to this?** The item is an issue, a finding, or a proposed record, and
 the answer is one of four dispositions, decided by the tests below in order. The first that holds
 ends the question.
 
-1. **fix** — the item is a confirmed defect. A defect is anything the system does that a reader would
-   call broken, and the system includes the repository's tooling: its tests, fixtures, build, setup
-   and CI. Wrong output, a lost write, a lost notification, a crash and an exhausted budget are
-   its familiar shapes, not its boundary. Work the system cannot finish in useful time, a resource
-   that grows with the data with nothing to bound it, a stored value nothing limits, work a restart
-   throws away where a sibling phase keeps its place, and a job that only advances because a
-   container happens to stay alive are defects of exactly the same standing. "The result is still
-   correct", "it only costs time" and "how much to keep is a policy question" describe a defect; they
-   never exempt one — a system that is right and too slow to use is broken. Measured evidence from a
+1. **fix** — the item is a confirmed defect, as `pre-production`'s **Scope Follows The Defect, Not
+   The Request** defines one. Measured evidence from a
    live run — a rate, a duration, a memory trail, a kill — is evidence of a defect the way a
    confirmed review finding is: the gate takes it as given and never re-derives the defect from the
    tree, because a tree read alone cannot see a rate. A defect is fixed in the change in flight, or
-   on a branch off the default when nothing is in flight, whatever its size and whatever shape its
-   fix takes. A migration is how a fix is written, never a reason to record it instead. A check that
+   on a branch off the default when nothing is in flight, whatever shape its fix takes, whether the
+   change introduced it, the task asked for it, or the work only ran into it; a defect is never
+   deferred for its size. A migration is how a fix is written, never a reason to record it instead. A check that
    would rediscover the defect does not soften this: rediscovery excuses the record, never the fix.
    Product state never softens it either: broken is broken for one admin as for a thousand users.
-   A missing safeguard is not a defect — the system does what it was built to do, and the question is
-   whether it should do more — so it goes on to the tests below. The exception is a safeguard whose
-   absence is an exploitable finding under **Exploitable Findings**: what the system does includes
-   what an attacker can make it do, so that is a defect here and is fixed in the change in flight.
+   A missing safeguard that definition leaves out goes on to the tests below, its exploitability
+   judged under **Exploitable Findings**.
 2. **close** — the item is real but not worth doing. Either the product state leaves it protecting or
    serving nobody — an access control between the one admin and the data only that admin can see, a
    hardening against users the product does not have, neither of which retires a finding an attacker
    the product does have can still reach — or something in the repository rediscovers
-   it on demand, a doctor's lens, a lint or type rule, a structural test, so that running the check is
+   it on demand, a lint or type rule, a structural test, or an audit's lens found through the skill
+   listing by its description, so that running the check is
    the pickup and a record would be a second copy that goes stale. A close names the fact it rests on
    and the reconsideration criterion: the product-state change that would make the work real, or the
    check that owns it.
@@ -292,11 +306,11 @@ ends the question.
    requirement owes is the user's decision whatever its size: triage returns defer on that ground
    alone, naming the fork — the shape, every instance it would convert, the size of that change and
    the recommendation — which the caller puts to the user now; it is built only at the scope the
-   user approves, never returned as do. Incidental work past `pre-production`'s size budget never
-   reaches this test: it is listed in the change's report, not deferred or done. Nor are the size
+   user approves, never returned as do. Incidental cleanup past `pre-production`'s size budget is
+   defer without the arguability test, and incidental cleanup inside it is do. Nor are the size
    and shape of the work inputs the gate may take on trust: "large", "not mechanical", "each site
-   needs its own judgement" and "it spans suites the change does not touch" are the asker's
-   characterisation of the asker's own record. Check the count against the tree and open enough of
+   needs its own judgment" and "it spans suites the change does not touch" are the asker's
+   characterization of the asker's own record. Check the count against the tree and open enough of
    the actual call sites to see whether the edit repeats. This is the inverse of the fix test's
    treatment of a measured rate, which is taken as given precisely because reading the tree cannot
    produce one — size is exactly what reading the tree can.
@@ -306,7 +320,7 @@ ends the question.
 **Admission — may this work be deferred?** The triage question asked of a proposed record. The
 answer is accept when triage's disposition is defer, and otherwise a refusal naming the disposition
 that applies: fix and do send the work into the change in flight, and close records the decision as a
-cancelled record with its reason and reconsideration criterion. An explicit user instruction to
+canceled record with its reason and reconsideration criterion. An explicit user instruction to
 defer settles the defer test's justification; the gate still answers the fix test, confirms the problem
 is real from the current tree or measured evidence, and checks that the criteria describe an end
 state. Repeated flags are evidence about the attempted fixes, never admission by themselves. The
@@ -341,12 +355,11 @@ anything else.
 **A test is priced by what it costs to run.** Flag a test the diff adds or changes, or the module
 holding it, that `test-fixture`'s cost question calls disproportionate, and any change that absorbs
 a slow test in a way the testing rules list; the remedy is making it cheap or removing it, as that
-rubric and `pre-production` decide. Apply `test-fixture`'s existing-reporting procedure: missing
+rubric and `pre-production` decide. For existing-reporting evidence, missing
 available evidence holds a clean verdict; attribution the native route cannot provide is recorded
 unmeasured and does not hold an otherwise validated repair.
 
-**A new state ships with its scenario.** Flag a diff that adds or alters a state `run-site`'s
-**Scenarios** says grows the scenario command without adding or updating that scenario; the remedy
+**A new state ships with its scenario.** Flag a diff that adds or alters a state that requires extending the scenario command without adding or updating that scenario; the remedy
 is that scenario, in the same change.
 
 **An added guard is priced like a missing one.** For every guard, refusal, validation, or branch a
@@ -368,7 +381,7 @@ sibling paths lack. An added check is never accepted as a security gain on its f
    which removes duplication the other invites, which failure modes each has already produced in this
    tree. **Flag a resolution that states no comparison, and one whose only stated reason is that the
    incoming shape is one the change removes** — that reason is available in every collision and always
-   points the same way, so it records no judgement. Arrival order is not evidence in either direction.
+   points the same way, so it records no judgment. Arrival order is not evidence in either direction.
 
 **Final acceptance — may this merge?** The item is the complete pull-request diff against the intent
 statement and the rubric, read once after review is clean and before any check gate.
@@ -377,5 +390,5 @@ statement and the rubric, read once after review is clean and before any check g
 
 The gate is never advisory. A proposal it flags is not written; a diff it flags does not stand.
 Repeated flags follow **Bounds**, with no exception for agent configuration; a disposition is
-carried out by the caller — a fix or do goes into the change, a defer is recorded, a close is recorded cancelled. What a disposition names as the
+carried out by the caller — a fix or do goes into the change, a defer is recorded, a close is recorded canceled. What a disposition names as the
 user's — an open fork the gate found unasked — is put to the user, and nothing else about it is.

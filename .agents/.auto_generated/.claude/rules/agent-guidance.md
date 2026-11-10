@@ -41,11 +41,23 @@ paths:
   **Guidance whose correctness depends on a current repository's product, resources, topology, contracts, configuration, or relationships is project guidance.** It belongs in that repository's `.agents/project.md` or a repository-specific skill, regardless of the subject that exposed the gap. A shared skill may teach the classification procedure, but never carry a current repository's facts or boundaries.
   An agent definition that a shared skill runs on goes with that skill; every other agent, and
   every rule, is repository-owned.
+- **Hooks belong in the repository that owns their behavior.** Keep their implementation and
+  source registration under that repository's `.agents/`: repository-managed hooks go in
+  `.agents/hooks/`, and hooks shipped with a skill stay in its package. A hook shared across
+  repositories belongs in the shared skills repository; a hook that depends on one repository's
+  behavior belongs there. Installed copies and native registrations consume that source.
 - **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract, and where a skill genuinely needs one local fact — a command, an identity, a host, a package, a fixture — take it from the repository's project guidance or a setting rather than baking it in. Live file paths and copied application code go stale when files move or refactors land; use generic placeholders such as `services/<name>/...`, short pattern descriptions, or minimal invented examples instead. Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
+- **What a skill builds on in the repository it runs in is looked up there, never written into the
+  skill.** A structure the skill reads — how skills or files are grouped, which folders exist, which
+  skill a workflow starts from, what a page or section is called — comes from the repository when it
+  has one, and the skill says what the agent does when it has none: choose the best fit itself,
+  guided by a few examples in the skill of what such a choice looks like. A list of one repository's
+  categories, page names or skill names written into a shared skill makes it that repository's copy;
+  shared skills still name the shared skills they depend on.
 - **A file's name and description bound what it owns.** Before choosing a skill or rule, state
   the condition its name and description set — a release stage, a technology, a mode, a kind of
   task — and ask whether the guidance would still be true where that condition does not hold. If
-  it would, that file is too narrow, however close its neighbouring section: the guidance goes to
+  it would, that file is too narrow, however close its neighboring section: the guidance goes to
   the file whose subject matches its own. Scope is judged by subject, never reach: guidance that
   holds in every repository still goes to the rule owning its subject, as the first bullet places
   guidance about `.agents` content, and `.agents/global.md` takes only what no rule's subject
@@ -73,7 +85,7 @@ paths:
   capability a single harness alone has, such as a tool no other harness offers, stays that
   harness's, confined to a scoped compatibility section or a file only that harness loads. Verify
   each path, such as running a hook against each harness's payload. A harness left unserved is a
-  defect, fixed in the change that finds it: never new behaviour, a follow-up, or a question for
+  defect, fixed in the change that finds it: never new behavior, a follow-up, or a question for
   the user.
 - Keep reusable skill names, instructions, scripts, and interfaces model-agnostic. Name a client or
   model only in a scoped compatibility section where its behavior genuinely differs. A skill states
@@ -89,7 +101,7 @@ paths:
 - For a scoped rule, declare its file patterns once as `paths` in canonical frontmatter.
   Do not duplicate them as `globs`; Agent Sync writes each provider's required scope key.
   Use `alwaysApply: true` only when the rule belongs in every session.
-- Before adding a requirement to a shared rule, test it against a repository without the feature that prompted it. If it prescribes the current repository's documentation sections, inventory, or generation workflow, put it in `.agents/project.md`; keep the shared rule limited to guidance that still makes sense elsewhere.
+- Before adding a requirement to a shared rule, test it against a repository, skill or file without the feature that prompted it; a requirement true only for the skill that prompted it goes in that skill. If it prescribes the current repository's documentation sections, inventory, or generation workflow, put it in `.agents/project.md`; keep the shared rule limited to guidance that still makes sense elsewhere.
 
 ## Skills
 
@@ -97,7 +109,7 @@ paths:
 
 - **Skill shape.** `SKILL.md` holds how the skill runs: its trigger, its dependencies, its
   workflow, its output, its guardrails. What a reader *applies* rather than *follows* lives in
-  `references/<topic>.md` beside it, named for what it holds — a rubric, a checklist, a catalogue,
+  `references/<topic>.md` beside it, named for what it holds — a rubric, a checklist, a catalog,
   a protocol — and `SKILL.md` names the file at the point the workflow reads it. A skill with two
   routes through it (two modes, two kinds of target, two hosts) keeps the shared workflow in
   `SKILL.md` and gives each route its own reference, so the file a reader loads first stays short
@@ -123,7 +135,7 @@ The front-matter `description` is read on every turn, for every skill, to decide
 whether this one fires. It has two jobs. The first is to state **when** — the situations that
 should reach it, in the words a task actually arrives in. The second is to carry any rule that must
 bind before the body is read, since a reader often acts on the description first. What the skill
-does belongs there only so far as a reader needs it to recognise those situations; the body says
+does belongs there only so far as a reader needs it to recognize those situations; the body says
 the rest.
 
 So the slash command normally earns no space. It is the skill's own name, the listing normally shows
@@ -148,7 +160,40 @@ trigger.
 ### Dependencies
 
 - **Refer to a skill, and to anything inside it, by the skill's name, never by path.** `the `code-simplify` skill's rubric reference` is right; a relative path into another skill's directory is wrong, because the directories move between repositories and user-level roots and the name is the only stable handle.
-- Declare every invoked skill by canonical skill name in a near-top `## Dependencies` section of the owning `SKILL.md`. That section lists skills only, never tools, plugins, scripts, references, assets, executables, or filesystem paths.
+- Declare every invoked skill by canonical skill name in a near-top `## Dependencies` section of
+  the owning `SKILL.md`. Each entry is only `- ` followed by the backtick-quoted skill name: no
+  description, role, arguments, or surrounding workflow prose. That section lists skills only,
+  never tools, plugins, scripts, references, assets, executables, or filesystem paths.
+- A dependency's frontmatter owns its purpose and discovery conditions. If a caller needs to
+  explain when that dependency applies, correct the dependency's description instead of keeping
+  another description in the caller. Put invocation-specific effort, scope, inputs, order, and
+  conditions at the actual call in the caller's workflow body.
+- Keep dependency direction acyclic. A coordinator invokes lower-level operations; an operation
+  returns results, required follow-up work, and unresolved decisions to its caller instead of
+  invoking the coordinator or importing its workflow sections as policy. Put shared policy at an
+  existing lower-level owner. Select independently applicable companion skills from their own
+  frontmatter at the task boundary rather than making peers invoke each other.
+- **A skill refers only to the skills it depends on, and declares every one it refers to.**
+  Referring to a skill anywhere in its package — frontmatter, body, references, an example or an
+  explanation — is an edge from it to that skill, so it is declared and points the way the flow
+  runs. A description that identifies a skill is the same reference as its name: "a review pass
+  calls it", "the task's ledger processing" or "the Studio skill" is that skill named in other
+  words. A skill never refers to a skill that runs it: not its caller, not a coordinator it returns
+  to, not a workflow it serves. A collaborator it invokes, reads or hands work to and finds at run time
+  by its role, through the skill listing or a declared dependency that reads it, as the bullet on a
+  repository-specific collaborator says, is named by that role, never as a particular skill. A role its caller fills is still
+  a caller reference. It may state what its invocation supplies in terms any caller could meet, such
+  as "an invocation that names a delta reviews that delta". It states its own behavior and what it
+  returns, and the caller's text says how the caller uses it. Peers that never invoke each other
+  name neither; each is found from its own description. Resolve a reverse or cyclic edge at its
+  owner by moving the policy to the caller or to a lower-level skill both depend on, never with
+  flags, copied policy, a call hidden in a reference, or a name dropped while the policy read stays.
+  A `/name` command the skill tells the user they can run is not a reference: the user runs it, the
+  skill does not, so it is no dependency and no cycle. The command form is for that alone.
+  `edit-skill`'s source check refuses a dependency cycle and an undeclared skill it finds named in a
+  package's Markdown, skipping the packages `external_resources.json` refreshes from upstream. It
+  matches name forms only, so a description, a `/name` command and a declared edge back toward a
+  caller pass it, and passing it never meets this bullet.
 - **A skill restricted to user invocation is never an automatic dependency.** A directly
   user-invoked workflow may delegate such an action only when its contract explicitly authorizes
   that action and bounds its targets, and the restricted action's own entry point recognizes
@@ -158,6 +203,16 @@ trigger.
   bypassing the restriction. Naming a user-only skill or suggesting the user invoke it is not
   delegation or authorization.
 - Invoke dependent skills only from the owning `SKILL.md`. References and other supporting files are passive and must not invoke skills or identify dependencies through relative paths to another `SKILL.md`.
+
+### Decisions
+
+- **A skill sends a decision to the user only when it is the user's**: a product, scope, security, disclosure or authorization choice, as the global
+  rules' product-choice bullet defines one, or a step only the user can take. Every other contested
+  call a workflow's own checks cannot settle — a disputed finding, a flag that survives its
+  repairs, a stuck review, the disposition of a change that keeps failing — goes to `council` in
+  **Ask** mode, and its ruling, by majority unless the skill sets a stricter threshold, is followed and named in the skill's result. A skill whose
+  workflow does this declares `council`. A ruling never accepts a confirmed defect, an exploitable
+  vulnerability or a failing required check.
 
 ### Output
 
@@ -178,6 +233,24 @@ edits, a merge, a deployment, or a running system carries the report line its de
 not a forced template for the execution result. Decide from what the skill returns, and leave out
 a template where correct results genuinely vary in shape.
 
+### Routers
+
+- **A skill whose guidance differs by one attribute of the task routes to a reference per value.**
+  The attribute is something the task in hand has one value of, such as a platform, a provider or a
+  framework. Guidance true for only some values goes to a folder named for the attribute in the
+  plural, `references/<attributes>/<value>.md` such as `references/platforms/ios.md`, so a reader
+  loads only the variant that applies and a rule meant for one value is never applied to all.
+  Guidance true for every value stays in `SKILL.md`, and guidance repeated across variant files
+  moves up to it, narrowed to name the values it covers when it does not hold for all.
+- Add the router with the first variant file: a `## <Attribute> Router` section in `SKILL.md` that
+  says how to tell the task's value, a table of each value and its linked file, and what a reader
+  does when no file matches (follow `SKILL.md` alone) or the task spans several values (read each).
+  A new variant file adds its row in the same change; a file no row links is unreachable.
+- A variant specializes `SKILL.md` and never contradicts it. Where a variant needs the opposite,
+  narrow the shared statement to name that exception.
+- Use no router when the variants differ in workflow rather than content, which is two routes as the
+  skill-shape bullet says, or when a few lines in `SKILL.md` cover every value.
+
 ## Writing
 
 - A skill may restate an ambient rule when it helps the reader act at the point of use; this does
@@ -192,8 +265,14 @@ a template where correct results genuinely vary in shape.
   into a heading of its own. A restriction on one subject goes under that subject's heading;
   `## Guardrails`, always the last section when present, holds only constraints that span the
   file's subjects.
+- **A section, subsection or bullet, added, moved or reordered, goes where its reader needs it,
+  never beside the text it most resembles.** Read the file's existing order first. Guidance every
+  reader of the file needs comes before guidance only some cases need, and each part follows the
+  parts whose terms it uses. In a style guide, a section on footnotes, which only some documents
+  use, follows the sections on headings and paragraphs that every document uses, even though
+  footnotes extend paragraphs.
 - Express each independent requirement once, as one concise statement or bullet, without padding. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
-- Normalize the touched file's nearby structure when needed: combine narrow sections, remove redundant wording, and order foundational guidance before specialized concerns.
+- Normalize the touched file's nearby structure when needed: combine narrow sections and remove redundant wording.
 - **Prefer the broad statement, and let the request's shape be its example.** A request
   arrives as one symptom, and the rule it needs names the class that symptom belongs to; the
   symptom's shape stays as one illustration of it. In shared guidance that illustration never
@@ -204,18 +283,18 @@ a template where correct results genuinely vary in shape.
   section the edit touches. Asked for `Final` on string constants, write `Final` for
   every module-level constant; asked for a walkthrough rule because a page reloaded in a
   loop once a back-end change was absent, write that the run is judged against intended
-  behaviour because an API error surfaces as any unintended behaviour, and name the loop
+  behavior because an API error surfaces as any unintended behavior, and name the loop
   only as one instance. A rule written for the symptom is silent on the next one, and the
   next one is what it will be read for. A named field, file, section, document kind, tool,
   or step, including the place a request says to put the fix, is an example of its class and
   a candidate home under `edit-skill`'s owner search, never the limit of the rule, unless the
   contract requires its exact identity. Broaden to the class the user plainly meant, never to a
-  neighbouring subject. Wording handed over — rule text in the request or in a delegating agent's
+  neighboring subject. Wording handed over — rule text in the request or in a delegating agent's
   brief — remains input, not the spec: draft against the invariant and alternate routes
   `edit-skill`'s failure-class diagnosis classified, then apply that decision to every instruction
   in the file that does the same work.
-  One section rewritten while a neighbour still does the narrow thing is the draft only half
-  done, and it is rewritten until the neighbour changes too. An agent delegating an edit
+  One section rewritten while a neighbor still does the narrow thing is the draft only half
+  done, and it is rewritten until the neighbor changes too. An agent delegating an edit
   passes the class and the evidence, not finished rule text for one case.
 - Describe reusable roles, boundaries, and decision criteria generically even in
   repository-focused guidance when the pattern is not repository-specific.
@@ -260,3 +339,7 @@ a template where correct results genuinely vary in shape.
 - The exemption applies to the complete pull request, not individual files. If a pull request also
   changes application code, package source, dependencies, tests, runtime configuration, or CI
   behavior, run its normal validation.
+- For a dependency change, inspect the declared graph and the actual invocation and policy-read
+  paths together. Check names-only entries, target discovery descriptions, body call arguments,
+  undeclared invocations, and cycles. A names-only manifest or an acyclic declared graph alone
+  does not establish that the workflow is acyclic or that its required work remains reachable.

@@ -11,16 +11,14 @@ Every finding names an attacker, what they send and what they get, and every fix
 one that makes that attack fail and a test that proves it does.
 
 ## Dependencies
-
-- `doctor-protocol` — own the run.
-- `security-audit` — its rubric is the bar for every finding, its precedents and its smallest-fix
-  order; its reconnaissance, hunting, validation and independent verification are how a finding is
-  found and proven; its attack-class catalogue holds each lens's checks.
-- `pre-production` — a fix that changes behavior is stated, and no fix keeps a vulnerable path
-  alive for compatibility.
-- `test-fixture` — the regression test each fix carries.
+- `doctor-protocol`
+- `security-audit`
+- `pre-production`
+- `test-fixture`
 
 ## Inventory
+
+Run `doctor-protocol`.
 
 `security-audit`'s Phase 1 reconnaissance, taken once before fan-out: what the application is and
 its comparable baseline; per deployable, its trust boundaries, authentication and authorization
@@ -28,16 +26,17 @@ mechanism, and every input surface — routes, handlers, jobs, webhooks, message
 entry points, file and archive readers, outbound requests, and configuration that reaches
 behavior. Reviewers partition by that map: by subsystem and attack class, the riskiest first.
 
-Findings a supplied `security-audit` report names enter as candidates by their ids. Reviewers hunt
-as a `security-audit` codebase audit does, at `high`, or at `medium` when the invocation states
-`medium` or `low`, and every candidate passes that skill's validation and independent verification
-against the current tree before it enters the ledger. A candidate a precedent rejects is kept
+Findings a supplied `security-audit` report names enter as candidates by their ids. Run one
+`security-audit` codebase audit at `high` effort, composed through
+`doctor-protocol`'s **Delegate The Audit**. Every candidate, including one from the cross-cutting reviewer,
+passes the audit's validation and independent verification against the current tree before it
+enters the ledger. A candidate a precedent rejects is kept
 outside the findings with its location and the precedent that rejected it, and counted in the
 report.
 
 ## Lenses
 
-Each lens runs the checks its section of `security-audit`'s attack-class catalogue lists;
+Each lens runs the checks its section of `security-audit`'s attack-class catalog lists;
 **Missing Construction** runs the rubric's **Building It Safely** checks *Use the guard that already
 exists*, *Assert what a provider already tells you* and *Add no surface the request does not need*,
 as its section bounds them. Evidence is the rubric's **What A Surviving Finding Has Been Put
@@ -90,7 +89,7 @@ fallback, optional bypass, unused mode — the product does not need.
 
 ### Exposed Defaults
 
-The literal checks in the catalogue's **Obvious things**: committed secret files and working seed
+The literal checks in the catalog's **Obvious things**: committed secret files and working seed
 credentials, debug or dev mode reachable in production, unprotected administrative and
 diagnostic endpoints, permissive cross-origin settings with credentials, session cookies without
 protective attributes, unvalidated redirects, and errors returning internals.
@@ -117,8 +116,8 @@ protective attributes, unvalidated redirects, and errors returning internals.
 
 ## Report Additions
 
-Ahead of the protocol's skeleton, a summary line: the scope and effort, findings fixed, product
-changes offered beside a shipped fix, hardening notes, and the pull request. Then:
+Ahead of the protocol's skeleton, a summary line: the scope and dependency audit coverage, findings
+fixed, product changes offered beside a shipped fix, hardening notes, and the pull request. Then:
 
 - a findings table — id, severity, the attack in one line, the fix shipped, and the simpler option
   offered or `none`; a product change offered beside the fix shows its options and the recommended

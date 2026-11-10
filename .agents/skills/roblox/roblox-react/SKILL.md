@@ -1,6 +1,6 @@
 ---
 name: roblox-react
-description: Apply whenever a React-rendered Roblox UI is opened, inspected, designed, created, modified, or playtested, including HUDs, menus, tutorials, selection screens, viewport previews, and React-owned world-space messages. Require readable, visually inspected desktop/touch interfaces, explicit cleanup, and repeated real-input Play tests.
+description: Apply whenever a React-rendered Roblox UI is opened, read, reviewed, inspected, designed, created, modified, or playtested, including HUDs, menus, tutorials, selection screens, viewport previews, and React-owned world-space messages. Require readable, visually inspected desktop/touch interfaces, explicit cleanup, and repeated real-input Play tests.
 short_description: 'Design and change React-rendered Roblox interfaces, including HUDs and menus.'
 ---
 
@@ -8,34 +8,35 @@ short_description: 'Design and change React-rendered Roblox interfaces, includin
 
 ## Dependencies
 
-- `luau` — apply when reading or editing Luau code.
-- `roblox-studio` — apply for Studio setup and playtest orchestration.
-- `roblox-building` — apply for authored or runtime world-space text.
-
-Follow `luau`'s required UI framework. Make React-rendered interfaces clean, easy to use, beginner friendly, and visually pleasing. Treat these as acceptance criteria, not optional polish after code compiles. Preserve the game's established artwork and visual identity unless a redesign is requested.
-
-Apply `luau` whenever reading or editing its Luau code. Apply `roblox-studio` for engine setup and playtest orchestration. Read [Framework and component practices](references/components.md) before changing architecture, dependencies, lifecycle, or layout.
+- `luau`
+- `roblox-building`
 
 ## Clarity and visual quality
 
+Follow `luau`'s required UI framework. Make React-rendered interfaces clean, easy to use, beginner friendly, and visually pleasing. Treat these as acceptance criteria, not optional polish after code compiles. Preserve the game's established artwork and visual identity unless a redesign is requested.
+
+Apply `luau` whenever reading or editing its Luau code. Return required engine setup and playtest work to the caller. Read [Framework and component practices](references/components.md) before changing architecture, dependencies, lifecycle, or layout.
+
 Give each screen one clear purpose and a recognizable primary action. Use plain player-facing labels, readable type, consistent spacing, alignment, color, and shared controls. Keep related actions together; avoid crowded panels and redundant instructions. Make the next step understandable to someone seeing the game for the first time. Explain unfamiliar actions when needed without exposing internal IDs or implementation details.
+
+Give every action control its name, or a one-line effect, beside its icon; an icon or a key letter alone leaves players guessing what an ability does. Show the input that triggers each action for the device in use (the key on keyboard, the button on gamepad, the on-screen control on touch), and update it when the player switches device.
 
 Review the whole screen before individual controls. Identify the focal point and primary action; inspect the composition’s position, proportions, whitespace, and balance against the usable viewport. A centered title does not center an off-center group. For selection screens, bound and align the title, full previews, confirmation, and status as one composition; preserve intentional asymmetry when the design calls for it. Check safe areas and the surrounding world, HUD, notices, and overlays together on wide, narrow, and short screens. Record the visual defect and repair even when every control is clickable and inside its bounds.
 
-Make selected, hovered, focused, disabled, pending, successful, and failed states distinct. Explain why an action is unavailable where useful. Do not rely on color alone. Keep text legible over the world, accommodate wrapping and long content, and avoid tiny targets or decorative motion that delays actions. Respect reduced motion and preserve keyboard/gamepad focus where supported.
+Make selected, hovered, focused, disabled, pending, successful, and failed states distinct. Explain why an action is unavailable where useful. Do not rely on color alone. Keep text legible over the world: give it its own contrast with a heavy weight and dark stroke or an opaque panel behind it, and check it against the brightest and busiest backgrounds it can appear over, since thin, gray or small text on a translucent panel loses contrast over bright scenes. Accommodate wrapping and long content, and avoid tiny targets or decorative motion that delays actions. Respect reduced motion and preserve keyboard/gamepad focus where supported.
 
 Give artwork, names, costs, and status labels dedicated layout space. Do not place status text over artwork or squeeze long labels into tiny badges. Check the longest real label at the smallest supported component size and in every relevant state; inspect rendered text, not only its container bounds.
 
 For React-owned world-space messages, apply `roblox-building`'s world-space text inspection
 alongside the component lifecycle and interaction checks below.
 
-Share the theme, controls, modal shell, and preview adapters where the game uses them. Related windows use consistent close behavior, backdrop, focus/input handling, and dimensions appropriate to their content. A second window replaces the first; repeated triggers follow the game's documented toggle behavior. Exclusive start screens and modals must block underlying pointer, keyboard, hover, and movement input, then restore it on exit.
+Share the theme, controls, modal shell, and preview adapters where the game uses them. Related windows use consistent close behavior, backdrop, focus/input handling, and dimensions appropriate to their content. Every dismissible panel shows its close control in the same place across the game, by convention a high-contrast X at the top-right corner, never covered by other HUD elements, and it closes its panel even while other panels are open. A panel's title row holds only its title and close control at every screen size; its actions sit in their own row under the body, compacted on short screens rather than moved beside the title. Reserve a panel whose only exit is a confirm button for a real decision. A second window replaces the first; repeated triggers follow the game's documented toggle behavior. Exclusive start screens and modals must block underlying pointer, keyboard, hover, and movement input, then restore it on exit.
 
 Use contextual prompts for nearby interactions and actionable touch equivalents. A tutorial teaches the actual current controls one step at a time, with feedback and pointers attached to measured controls. If using animated pointers, give them a clear shape and a still reduced-motion state. Reserve a gutter beside the measured target; the entire animation envelope must stay outside instruction text, labels, and other controls. Positioning an arrow above a button does not establish that the space above it is empty. Dismiss blocking lessons before requiring the underlying action. Do not overwhelm beginners with controls or explanations that are not yet relevant.
 
 ## Responsive components
 
-When a game has a persistent objective HUD, prioritize the next useful action over long headings and paragraphs. Keep a slim reminder visible, briefly reveal details on objective changes, and provide a clear click/tap disclosure control. Deliberately opened details should remain readable until dismissed; cancel automatic preview timers on objective replacement or unmount. Inspect both expanded and settled states, including long objectives on narrow screens.
+When a game has a persistent objective HUD, prioritize the next useful action over long headings and paragraphs. Keep a slim reminder visible: the goal with a live count toward its target, such as "Repair lanterns 2/3", plus its reward when it has one, and in a fixed guided sequence the step's position, such as "Step 2 of 4". Top center, clear of Roblox's top bar and the touch movement controls, is the conventional place for it. Briefly reveal details on objective changes, and provide a clear click/tap disclosure control. Deliberately opened details should remain readable until dismissed; cancel automatic preview timers on objective replacement or unmount. Inspect both expanded and settled states, including long objectives on narrow screens.
 
 Fit panels to their content. Short dialogue or a small set of actions should not leave a large empty box. Use automatic sizing or measured layout content, readable maximum widths, and viewport height limits; introduce scrolling only when content exceeds those limits. Check both short and long copy, and reset scroll position when replacing the content with a new page.
 
@@ -49,7 +50,7 @@ Keep domain state authoritative and component props typed. Use stable keys and p
 
 ## Play test: click repeatedly and inspect the result
 
-Use Studio's supported input and viewport capture in a qualified runner, as described in `roblox-studio`'s testing reference. Test actual player-facing controls; direct state mutation is not proof a button works. Do not take over the user's host keyboard/mouse or open obstructive host test windows.
+Require Studio's supported input and viewport capture in a qualified runner; return runner setup and playtest orchestration to the caller. Test actual player-facing controls; direct state mutation is not proof a button works. Do not take over the user's host keyboard/mouse or open obstructive host test windows.
 
 Run the repeated-click pass at the **start of a UI testing session**, when **creating or materially changing a UI**, and during **final verification / before an authorized publication**. A Play restart or routine retest within the same session is not a new session requiring the entire pass. Reuse recorded coverage; repeat an affected check only when a change, failure, or unresolved issue justifies it.
 
@@ -84,4 +85,4 @@ Inspect transient notices together with the persistent HUD. A transient notice c
 
 ## Keep guidance current
 
-Record verified reusable UI/React issues and solutions in this skill. Put Studio connection/input orchestration in `roblox-studio`, general Luau lint/type guidance in `luau`, and game-specific UI contracts in the project skill. Keep one canonical owner for each rule and leave generated agent mirrors to Agent Sync.
+Record verified reusable UI/React issues and solutions in this skill. Put general Luau lint/type guidance in `luau`, a lesson whose subject another skill owns there, and game-specific UI contracts in the project skill. Keep one canonical owner for each rule and leave generated agent mirrors to Agent Sync.

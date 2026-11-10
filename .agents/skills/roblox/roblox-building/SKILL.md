@@ -1,6 +1,6 @@
 ---
 name: roblox-building
-description: Apply when planning, inspecting, creating, modifying, importing, optimizing, or playtesting Roblox maps, worlds, terrain, buildings, props, environmental meshes, or Blender assets. Require coherent environments, deliberate place architecture, economical measured geometry, readable traversal, preserved artwork, and player-height visual/performance checks.
+description: Apply when planning, inspecting, creating, modifying, importing, optimizing, or playtesting Roblox maps, worlds, terrain, buildings, props, environmental meshes, or Blender assets. Also apply when handling authored signs or runtime world-space text, regardless of renderer. Require coherent environments, deliberate place architecture, economical measured geometry, readable traversal, preserved artwork, and player-height visual/performance checks.
 short_description: 'Build and improve Roblox worlds, terrain, structures, props, and assets.'
 ---
 
@@ -8,17 +8,17 @@ short_description: 'Build and improve Roblox worlds, terrain, structures, props,
 
 ## Dependencies
 
-- `roblox-studio` — apply for Studio imports, testing, and authorized delivery.
-- `luau` — apply when reading or changing builders and scripts.
-- `roblox-react` — apply when the work includes React-rendered UI.
-
-Build worlds that make sense, look intentional, and reward exploration. Preserve the requested genre, existing artwork, gameplay, and visual identity. Use this skill for environment work; it does not authorize a visual redesign during an unrelated code task.
+- `luau`
+- `subagent-matrix`
+- `council`
 
 ## Give every map a purpose
 
+Build worlds that make sense, look intentional, and reward exploration. Preserve the requested genre, existing artwork, gameplay, and visual identity. Use this skill for environment work; it does not authorize a visual redesign during an unrelated code task.
+
 Before extending a world, identify its role in the overall game, arrival/exit routes, neighboring maps, landmarks, terrain, inhabitants, activities, and intended traversal. Give each region a recognizable identity within one coherent palette and architectural language. Its geography and connections should be understandable: roads lead somewhere useful, bridges cross meaningful obstacles, water and terrain connect plausibly, and settlements have believable entrances and functions.
 
-Choose one place or multiple places according to the game's established architecture and intended transitions. A region within a continuous map can remain in one place; independent destinations may warrant separate places within an experience. Do not hide distant production maps as staging areas visible to players. When using multiple places, keep each place's scenery, terrain, spawn/exit definitions, and build inputs separate, and use a validated registry and deliberate transitions. Follow `roblox-studio`'s multi-place workflow for session handoff and teleport verification. Do not create experiences or publish places without task authorization.
+Choose one place or multiple places according to the game's established architecture and intended transitions. A region within a continuous map can remain in one place; independent destinations may warrant separate places within an experience. Do not hide distant production maps as staging areas visible to players. When using multiple places, keep each place's scenery, terrain, spawn/exit definitions, and build inputs separate, and use a validated registry and deliberate transitions. Require session handoff and teleport verification for multiple places; return editor operations and testing to the caller. Do not create experiences or publish places without task authorization.
 
 ## Avoid bland or arbitrary environments
 
@@ -33,7 +33,7 @@ space before adding decorative props. Apply the functional-placement criteria in
 the map-making reference; isolated asset quality, collision checks, and successful
 interactions do not establish a coherent arrangement.
 
-Read [Map making and surface integration](references/map-making.md) for composition, traversal, terrain joins, collision, and inspection. Read [world-space text inspection](references/world-space-text.md) for authored signs or runtime messages in the world. Use shared map/model frames and named anchors as described in `luau`; update geometry and its gameplay consumers together.
+Read [Map making and surface integration](references/map-making.md) for composition, traversal, terrain joins, collision, and inspection. Before accepting a new map or a visual pass, run its **Scene audit** and then a fresh-eye review: invoke `subagent-matrix` at its standard capability level for one reviewer given only the audit's captures and the game's stated art direction, never the build notes, and ask what reads as unfinished, repetitive, empty or off-palette. Fix confirmed findings and recapture; a finding you would reject goes to `council` in **Ask** mode and its ruling is followed. Read [world-space text inspection](references/world-space-text.md) for authored signs or runtime messages in the world. Use shared map/model frames and named anchors as described in `luau`; update geometry and its gameplay consumers together.
 
 ## Blender and economical meshes
 
@@ -49,12 +49,12 @@ Low triangle counts alone do not guarantee smooth play. Also inspect draw calls,
 
 ## Build and Play test
 
-Use `roblox-studio` for imports, preserved terrain, source synchronization, background MCP tests, and authorized delivery. Apply `luau` when opening or modifying builders/scripts. React-rendered UI belongs to `roblox-react`.
+Return imports, terrain preservation, source synchronization, background MCP tests, and authorized delivery to the caller. Apply `luau` when opening or modifying builders/scripts.
 
 Trace every affected entrance and activity access route all the way to the established traversal network; a reachable destination or walkable grass does not prove its authored path connects. Apply the route-continuity criteria in the map-making reference. Walk the arrival route, every changed connection, bridges/ramps, doors, and activity boundaries in both directions. Inspect at player height and supported camera zoom/pitch from multiple approaches. Check clipping, floating props, flicker, inaccessible steps, collision snags, misleading paths, bland sightlines, and accidental views of other maps. Fix defects in the canonical builder and saved artwork so rebuilding preserves the repair.
 
 For major maps or streaming changes, test stream-out/re-entry, destination preloading, interiors, missing assets, and appropriate mobile coverage. Verify complete activity footprints avoid protected routes. Check the saved or rebuilt artifact for terrain, assets, lighting, source/package closure, and absence of test fixtures; reopen it when serialization needs verification. Report code checks, Studio traversal, simulation, performance measurements, and published-client results separately.
 
-Keep reusable building lessons here, Studio operations in `roblox-studio`, and game-specific world design in the project skill. Update canonical `.agents` sources only; leave provider mirrors to Agent Sync.
+Keep reusable building lessons here, a lesson whose subject another skill owns there, and game-specific world design in the project skill. Update canonical `.agents` sources only; leave provider mirrors to Agent Sync.
 
 Sources for place architecture: [Roblox places](https://create.roblox.com/docs/production/publishing/publish-games-and-places), [teleporting](https://create.roblox.com/docs/projects/teleport).

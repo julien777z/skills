@@ -19,17 +19,17 @@ resolves there; when it is not, such as a cloud session, this route does not app
 1. **Find the tab already showing it.** The task's record of this page, kept wherever the caller
    keeps task state, holds the tab it was opened in and the file it shows. A tab still showing that
    file is the one to use.
-2. **Reload, never reopen.** When that tab exists and the harness has a tool that controls the
-   user's browser, navigate it to the file's address again, which reloads it; a `file://` page does
-   not refresh itself when the file changes. Bring it to the front only when the user asked to see
-   the change.
+2. **Reload, never reopen.** A page that refreshes itself when its file changes needs nothing
+   once it is open. For any other page, when that tab exists and the harness has a tool that
+   controls the user's browser, navigate it to the file's address again, which reloads it. Bring it
+   to the front only when the user asked to see the change.
 3. **Otherwise open it once.** Open `file://<absolute path>` in a new tab with the tool that controls
    the user's browser, selecting the browser as the global rules' **Tools and environments** say,
    and record the tab and the file. When there is no such tool, or it cannot open a `file://`
    address, open the file with the system opener — `open <path>` on macOS, `xdg-open <path>` on
-   Linux, `start "" <path>` on Windows — and record that it is open. That tab cannot be reloaded
-   from here, so after a later change say in one line that the page changed and needs a reload,
-   rather than opening it again.
+   Linux, `start "" <path>` on Windows — and record that it is open. Never open it again after a
+   later change unless the user asks; a page that does not refresh itself and that this route
+   cannot reload gets one line saying it changed and needs a reload.
 
 ## Operating A Browser
 

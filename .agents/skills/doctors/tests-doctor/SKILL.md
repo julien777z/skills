@@ -16,17 +16,18 @@ Building a maintained audit system is outside this run. Apply `test-fixture`'s v
 to diagnostic experiments and any separately requested infrastructure work.
 
 ## Dependencies
+- `pre-production`
+- `doctor-protocol`
+- `test-fixture`
+- `council`
 
-- `doctor-protocol` — own the run.
-- `test-fixture` — every per-test check this doctor runs — value and dispositions, naming, factory
-  contents, doubles — and the standard every added or rewritten test meets for data, placement,
-  doubles, and regression validation through existing tools.
+## Inventory
+
+Run `doctor-protocol`.
 
 Also read the repository's test-runner skill when the skill listing declares one, found by its
 description rather than assumed by name. Its locking, service, and pacing rules hold for every run
 this doctor makes and are never restated here.
-
-## Inventory
 
 Discover at runtime: source roots and test roots; the classifications the runner distinguishes; each suite,
 the ownership boundary it belongs to, and the source it mirrors; where each suite keeps fixtures,
@@ -55,8 +56,8 @@ until it is under, by the dispositions below — the run is not finished while o
 breach, recording it, or carrying it into the plan as an observation is the failure this paragraph
 exists to prevent: the measurement was taken on day one and the number was already known, so a run
 that delivers with the same number has spent the measurement on nothing. Where the work genuinely
-cannot land in this run, that is the user's call to make in the current request, with the number and
-the cause in front of them; it is never the run's to assume.
+cannot land in this run, that is the user's call to make in the current request, with the number
+and the cause in front of them; it is never the run's to assume.
 
 **Read setup against assertion before reading any single case.** Where existing reporting supplies
 per-test call durations, compare their sum with suite wall time. A large difference identifies cost
@@ -100,7 +101,7 @@ mechanical check that finds every instance rather than the first one noticed:
   requests across several modules, or tests a concern rather than a file has still claimed a
   source module that does not exist. `routes/test_pagination_bounds.py` with no
   `routes/pagination_bounds.py` is that finding.
-  It moves under the source module it covers, as a behaviour module in a directory named for that
+  It moves under the source module it covers, as a behavior module in a directory named for that
   module, or is named for the package it sweeps beside that package (`test_routes.py` next to
   `routes/`, for the sweep above);
 - a source suite fragmented into tiny classes/files, or a file with multiple test classes: apply test-fixture's class/file boundary test, map cases to the substantial owning class, and merge small related classes before deciding whether independently maintained responsibilities justify separate files; keep one class per resulting file and preserve distinct proof;
@@ -134,7 +135,7 @@ mechanical check that finds every instance rather than the first one noticed:
   application change. Two shapes stay where they are, and the report names every symbol it leaves
   for one of them with that reason, so a reviewer does not go hunting: an import-time registration
   such as a SQLAlchemy `@compiles` hook, whose consumer is the import itself and whose call-site
-  count says nothing; and a helper CI tooling or bootstrap runs to produce a repository artefact or
+  count says nothing; and a helper CI tooling or bootstrap runs to produce a repository artifact or
   bring an environment up, which is a machine consumer;
 - a test directory no runner target reaches, an empty mirror package, an orphaned module, or a
   numbered duplicate file;
@@ -402,8 +403,8 @@ before delivery and verify that none enters the delivered diff.
   across a shared database or lock and never in a way the testing rules list as absorbing a slow
   test. Re-time after implementation against the
   same workload. A suite still over budget is unfinished work, not a line in the report: carry on
-  with the next disposition, or put the remaining cause and its cost to the user in the current
-  request.
+  with the next disposition; when the remaining choice is between dispositions, put it to `council`
+  in **Ask** mode and follow its ruling.
 - A third-party limit finding clears the refusal by the order in **Stay Inside Third-Party
   Limits**, and is verified by the per-run count, per account and per destination, fitting the
   provider's documented limit with room for the runs that overlap it, and by running the affected
@@ -418,8 +419,7 @@ before delivery and verify that none enters the delivered diff.
   condition the name lost moves into the docstring, and a rename that would leave fewer than two
   words takes a hand-chosen label rather than the mechanical residue.
 - A layout finding moves to the pattern `test-fixture`'s ownership rules select; an even split
-  between equally valid patterns goes to the one leaving the fewest mechanisms, stated in the pull
-  request, under `pre-production`'s **Trade-Offs Are Surfaced, Never Enforced**.
+  between equally valid patterns is settled as `test-fixture` settles a layout tie.
 - A coverage gap is closed by the test that proves it, and a misplaced test moves between suites.
   Every added or rewritten test follows `test-fixture`'s validation through existing tools.
 - A construction finding moves the construction to the suite's shared home and reads identities
@@ -451,15 +451,8 @@ a later reader can act on. Ranked in one place, the next run has its baseline an
 what to cut can see what the time is being spent on.
 
 Post it once per pull request, updating the same comment when a later push changes the numbers
-rather than adding a second; each batch's pull request carries the ranking measured at its merge
-head, so the last one holds the final numbers against the baseline. Give it measured durations and
-unmeasured dispositions, without narration of the repairs the body and diff already carry.
-
-## Delivery
-
-Tests-doctor delivers in merged batches under `doctor-protocol`'s **Deliver**. A test remediation
-touches files across every suite, and one pull request held open for the whole plan conflicts with
-every change landing beside it.
+rather than adding a second; the draft pull request carries the final ranking against the baseline.
+Give it measured durations and unmeasured dispositions, without narration of the repairs the body and diff already carry.
 
 ## Report Additions
 

@@ -12,17 +12,15 @@ something it does, and every line should read as a careful author wrote it; this
 does nothing or makes a reader wince, and takes it out.
 
 ## Dependencies
+- `doctor-protocol`
+- `pre-production`
+- `code-simplify`
+- `test-fixture`
+- `defer-scope`
+- `acceptance-gate`
+- `get-doctors`
 
-- `doctor-protocol` — own the run.
-- `pre-production` — the target contract is the authority for every removal; nothing is kept for an
-  obsolete owned contract, and a removal that changes behavior is a surfaced trade-off. A doctor run
-  sets its own scope, so `pre-production`'s incidental size budget does not apply to it.
-- `code-simplify` — the ownership analysis that decides where shared code lives, and its **Reuse,
-  Ownership And Deletions** rubric when two implementations collapse into one.
-- `test-fixture` — the per-test checks the test phase runs.
-- `defer-scope` — report a migration-test deferral record whose path no longer exists.
-- `acceptance-gate` — its diff review's slop question is the **Reads As Slop** test; reviewers are
-  given that question.
+## Phases
 
 Also read, when the skill listing declares them and found by their descriptions, the repository's
 database-migration skill, its test-runner skill, its checklist for adding a configuration value and
@@ -30,8 +28,6 @@ its deployment skill, and follow its packaging rules for each language it builds
 every correction in their areas and are cited here, never restated; the deployment skill's
 read-only guidance is how a deployment's environment is read, and reading activates nothing else it
 offers.
-
-## Phases
 
 The run works in five phases, in this order, and each phase is one batch:
 
@@ -51,6 +47,8 @@ A phase the repository has nothing for is skipped and reported. A scope argument
 lenses, or paths; a run scoped to one lens or phase applies only that lens or phase.
 
 ## Inventory
+
+Run `doctor-protocol`.
 
 Exclude generated code by the repository's own markers. Enumerate, per phase in scope, every item a
 lens's checks name, and build these tables before judging anything:
@@ -168,7 +166,7 @@ One question answered twice.
 The remedy is one owner, placed by `code-simplify`'s ownership analysis — the shared package every
 consumer reads where more than one deployable needs it — with the copies and the bridge deleted and
 generated types used directly or derived from. Left alone: a generated mirror; a demonstrated
-dependency, domain or contract boundary; two contract models, which are `schema-doctor`'s.
+dependency, domain or contract boundary; two contract models, which another doctor owns.
 
 ### Fragmented Use Case
 
@@ -223,7 +221,7 @@ Things of one kind built in different shapes.
 
 The remedy is one structure per kind: the shared shape lives in the shared package and each sibling
 supplies only what differs, its name, port, servicers or routes. The slot's best existing
-implementation becomes the shared one under `code-simplify`'s **Reuse, Ownership And Deletions**.
+implementation becomes the shared one under `code-simplify`'s rubric **Standards**.
 Left alone: a slot whose difference a contract requires, with the contract named.
 
 ### Scattered Structure
@@ -522,7 +520,7 @@ Tests that cost reading time and prove nothing, found after the code has settled
 
 The remedy is `test-fixture`'s dispositions: repair, fold into the keeper, or delete with its
 evidence, with coverage of a removed layer's behavior kept at the real boundary. Timing, suite
-budgets, cross-suite layout and coverage maps are `tests-doctor`'s and are named, not run.
+budgets, cross-suite layout and coverage maps belong to another doctor and are named, not run.
 
 ## Dispositions
 
@@ -552,8 +550,8 @@ budgets, cross-suite layout and coverage maps are `tests-doctor`'s and are named
   ledger, or it is deleted with the branch its value selects.
 - An even split between two sibling structures equally fit for the kind goes to the one leaving the
   fewest mechanisms and moving the fewest importers, stated in the pull request.
-- A finding another doctor owns — documentation, a contract model, a deep test audit — is not fixed
-  here; the report names it with that doctor.
+- A finding another doctor owns — documentation, a contract model, a deep test audit — is not
+  fixed here; the report names it with that doctor, found through `get-doctors`.
 
 The cross-cutting reviewer compares each kind's slot table across its deployables, one shape across
 packages, apps and languages, and every value defaulted in one package against its producer in

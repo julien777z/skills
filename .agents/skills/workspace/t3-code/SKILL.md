@@ -41,12 +41,13 @@ select existing SSH files when needed. Omit `--ssh` to manage the local T3 envir
 selects a non-default T3 data directory, and `--t3` selects its installed CLI executable.
 
 ## Dependencies
-
-- `tailscale-config` — reconcile hostname and route consumers when provisioning or replacing nodes.
-- `security-audit` — apply its secret, input, authentication, and authorization guidance to configuration changes.
-- `proton-pass` — retrieve a needed existing credential only when it was not supplied and is not already available through authorized authentication.
+- `tailscale-config`
+- `security-audit`
+- `proton-pass`
 
 ## Configuration workflow
+
+Apply `security-audit` to configuration changes. Use `proton-pass` for an existing credential only when it was not supplied and is not already available through authorized authentication.
 
 1. Identify the requested environment, provider instances, and project scope. Read installed T3
    version and native CLI help; use source matching that release when the UI or CLI does not expose

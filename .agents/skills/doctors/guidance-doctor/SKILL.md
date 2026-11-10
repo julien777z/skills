@@ -12,21 +12,23 @@ sentences that no longer earn that cost, the ones that fight each other, the one
 things that are gone, and the ones the repository lacks.
 
 ## Dependencies
+- `doctor-protocol`
+- `banned-terminology`
+- `edit-skill`
+- `subagent-matrix`
+- `get-doctors`
 
-- `doctor-protocol` — own the run.
-- `banned-terminology` — the wording findings.
-- `edit-skill` — deliver the remediation; its pull request is left open for the user.
-- `subagent-matrix` — the cheap capability level for the cut trial's task run.
+## Inventory
+
+Run `doctor-protocol`. Apply `banned-terminology` to wording findings and deliver remediation through `edit-skill`, leaving its pull request open for the user.
 
 Also read the host's skill-authoring skill and skill diagnostics when the host has them, found by
-their descriptions: a description optimiser, a trigger evaluation, a report of listing cost and
+their descriptions: a description optimizer, a trigger evaluation, a report of listing cost and
 unused skills. They are measurements this doctor reads, never re-implements.
 
 `references/vendor-guidance.md` holds the vendor and host tables and the dated summary of what the
 vendors' authoring guidance said when last fetched. Read it before the inventory; the measurement
 below refreshes it.
-
-## Inventory
 
 Every rule file: bytes, lines, bullets, whether it loads unconditionally or by path scope, and the
 globs. Every skill: body lines and approximate tokens, description length and grammatical person,
@@ -121,7 +123,7 @@ thresholded. Remedy: rewrite at the altitude the guidance describes, explaining 
 
 Nothing leads in: a skill no file names whose description carries no trigger, a hook on disk not
 registered, a skill the usage measurement shows never invoked. A flagged skill is reachable by its
-invocation name and, for a doctor, through the doctor listing; the flag alone is never the finding.
+invocation name and, for a doctor, through `get-doctors`; the flag alone is never the finding.
 Evidence: the reference counts and usage. Remedy: fix the trigger, or a whole-file cut under
 Dispositions.
 
@@ -131,7 +133,7 @@ Every description is read on every turn, for every skill, so a clause that neith
 whether this skill fires nor carries a rule that must bind before the body is read is paid for
 constantly and returns nothing. The shapes: a slash command or invocation name that already identifies
 the task, because the listing carries it and the reader deciding already has it; a paraphrase of the skill's own title;
-`Use this skill to`; and what the skill does elaborated past the point a reader needs to recognise
+`Use this skill to`; and what the skill does elaborated past the point a reader needs to recognize
 the situation.
 
 Score each by the substitution test the `agent-guidance` rule's **Descriptions** states; where the remainder names
