@@ -226,10 +226,15 @@ def guest_place(project: str, place: Path) -> str:
 
 def close_place(project: str, place: Path) -> str:
     pattern = shlex.quote(f"localPlaceFile .*{guest_place(project, place)}")
+    # An editor with a place open answers SIGTERM with its unsaved-changes prompt, so it is then killed; the place file
+    # is the task's own copy.
     script = f'''pids=$(pgrep -f {pattern} || true)
 [ -z "$pids" ] && {{ echo closed; exit 0; }}
+listed=$(echo $pids | tr ' ' ',')
 kill -TERM $pids
-for _ in 1 2 3 4 5 6 7 8 9 10; do ps -p "$(echo $pids | tr ' ' ',')" >/dev/null || {{ echo closed; exit 0; }}; sleep 1; done
+for _ in 1 2 3 4 5; do ps -p "$listed" >/dev/null || {{ echo closed; exit 0; }}; sleep 1; done
+kill -KILL $pids 2>/dev/null
+for _ in 1 2 3 4 5; do ps -p "$listed" >/dev/null || {{ echo closed; exit 0; }}; sleep 1; done
 echo still-open'''
 
     return runner(script, timeout=60).decode().strip()
