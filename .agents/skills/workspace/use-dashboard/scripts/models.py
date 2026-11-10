@@ -42,6 +42,7 @@ class SectionType(StrEnum):
     CHANGES = "changes"
     TREE = "tree"
     TABS = "tabs"
+    FIGURES = "figures"
 
 
 class PageLayout(StrEnum):
