@@ -147,8 +147,10 @@ Use this mode when the request asks for a game idea. It works from the latest st
 3. **Rank the three** and give the reasons for each place: how much of the study's evidence the idea rests on, how well it fits its audience, how crowded its competition is, the size and risk of its first release, and its design bets.
 4. **Run `review-proposal`** on the ranked set, with the user's request as its intent and the study file as its evidence, and carry its repairs into the drafts.
 5. **Show the set with `use-dashboard`**: an Overview page with the ranking and why, then one page per idea holding its pitch, genre, audience and tone, what players do, its story when there is one, its world, progression and monetization, its first-release scope, its competing games and the evidence it rests on.
-6. **Ask which idea to approve** through the question tool, offering Approved for each ranked idea and a request for changes. A change request revises the set and returns to step 4 for what it changed.
-7. **On approval, write the game brief** for the approved idea: one JSON file following `roblox-studio`'s game brief reference, holding that idea's facts and its competing games. Check that it parses and holds every required field, send it to the user as a file, and say that `roblox-studio` builds the game from it.
+
+The run ends once the dashboard is delivered: it asks no approval question and writes no brief.
+
+**When the user approves an idea**, in their own words in a later message, write its game brief: one JSON file following `roblox-studio`'s game brief reference, holding that idea's facts and its competing games. Check that it parses and holds every required field, and send it to the user as a file. A request for changes revises the set and returns to step 4 for what it changed. Building the game is separate work the user starts with that file.
 
 ## Output: structured YAML notes
 
