@@ -4,6 +4,16 @@ Apply these standards to the game's genre and the requested change. They do not 
 
 Environmental asset design and the Blender import pipeline belong to the building dependency declared in the entry point; this reference covers Studio character integration.
 
+## Uploaded assets
+
+Every asset uploaded for a game carries a plain, descriptive name and description that read innocently out of
+context: what the asset is and where the game uses it, such as `boss-roar-1` or `anchor-impact`. Before an upload,
+read each name and description aloud and replace any word or pairing that could read as suggestive, crude or
+bodily, even when the intended meaning is harmless; a name is judged by how a stranger reads it in an asset list or a
+moderation queue, not by the game's context. The same check covers the file names that become asset names, the
+folders and the identifiers that carry them. Record each uploaded asset's ID, name and role where the game's
+content module reads it, and verify each loads in Studio before relying on it.
+
 ## Avatars and animation
 
 Only override the player's avatar when the product calls for it. Otherwise preserve the existing character behavior and appearance.
