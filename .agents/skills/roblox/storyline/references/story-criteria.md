@@ -27,8 +27,9 @@ other characters' reports has no presence.
 
 ## Progression and reward cadence
 
-Story beats and progression are one design. State the level range the arc covers, when each level
-arrives, and what each grants that changes play — a new spell, ability, area or companion — so the
+Story beats and progression are one design. State the progression the arc covers in the game's own
+milestones — the level range in a leveled game, otherwise its unlocks, stages or equipment — when
+each milestone arrives, and what each grants that changes play — a new spell, ability, area or companion — so the
 player meets something new at least every few beats and before each harder fight rather than after
 the last one. Every unlock a beat grants is usable in a later beat of the same arc. Every reward the
 design defines can be obtained; a defined but unobtainable reward is a defect. Repeatable activities
@@ -43,7 +44,8 @@ Run these against a selected story before implementing it:
   player say what to do next and why it matters at every beat?
 - **Knowledge timeline.** For each character and the player, list what they know and can name at
   each beat; a character who uses a name, place or fact before it could be known, or a reveal stated
-  or strongly hinted before its beat, is a defect.
+  before its beat, or hinted so plainly that the player can no longer doubt it, is a defect; a clue
+  that sets up the reveal while leaving it uncertain is foreshadowing.
 - **Setups and payoffs.** Every object, place or mechanism the climax relies on is set up earlier,
   and every setup pays off.
 - **Arithmetic.** Sum rewards per beat and check them against every threshold the design states.

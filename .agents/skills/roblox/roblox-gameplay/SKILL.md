@@ -14,7 +14,7 @@ short_description: 'Apply every time actively modifying a Roblox game, including
 
 ## Make success clear and satisfying
 
-Apply this skill whenever actively modifying a game. Preserve the authorized scope, genre, established identity, and current gameplay contract. Use it to improve the affected player experience; it does not require adding a new feature, economy, or pet system to every code change.
+Apply this skill whenever actively modifying a game. Preserve the authorized scope, genre, established identity, and core loop; redesign what does not make sense as **Judge the game as a player meets it** says. Use it to improve the affected player experience; it does not require adding a new feature, economy, or pet system to every code change.
 
 Fit the rhythm of success to the requested genre, audience, and mood. Establish an understandable first action and a visible result early, then connect smaller achievements to meaningful longer goals. Fast rewards suit some games; quieter discovery, mastery, or social play can be equally intentional. Do not infer a fixed reward cadence or neurological effect from chart popularity.
 
@@ -32,7 +32,7 @@ Where the end of the guided chain, or of a unit such as a round, a stage, a leve
 
 Every result is judged in the game as a player would meet it, whether you built it or a worker did: from a capture or a playtest, not from the brief, the code or a report. Ask of each thing in view whether it makes sense in this world, not only whether it is broken: an object reads as what it is meant to be, a room's furnishings fit its purpose, a character holds what it holds, a creature belongs in its area's level band, a label sits where it can be read, a rule agrees with the game's other rules. Something that reads wrong is fixed, whoever made it and whenever, even when no brief, check or request mentioned it.
 
-Making the game read right is the agent's call: redesign an asset, a room, a placement, a balance value or a mechanic that does not make sense, including content built before the current task, and report each change with its captures, naming new behaviour as new. Only a change to the game's core loop or genre, to anything players pay for, or to something the user decided goes to the user first.
+Making the game read right is the agent's call: redesign an asset, a room, a placement, a balance value or a mechanic that does not make sense, including content built before the current task, and report each change with its captures, naming new behaviour as new. This is the global product-choice boundary's game-design exception. Only a change to the game's core loop or genre, to anything players pay for, to security, disclosure or authorization, or to something the user decided goes to the user first.
 
 ## Reward real progress and preserve player understanding
 

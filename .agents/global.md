@@ -152,7 +152,11 @@ alwaysApply: true
   scope, a workaround for a
   constraint the user set, and anything touching security, disclosure or authorization. Closing a
   security vulnerability, so the product enforces the access it already intends, is a fix and never
-  waits on this question. Before making one, identify the user's instruction or standing guidance
+  waits on this question. **A game's design is the exception**: where `roblox-gameplay` governs the
+  work, what does not make sense in the game — an asset, a room, a placement, a balance value or a
+  mechanic — is the agent's to redesign as that skill says, without asking; the game's core loop or
+  genre, anything players pay for, security, disclosure, authorization and what the user has decided
+  stay with the user. Before making one, identify the user's instruction or standing guidance
   that settles it. If neither does, explain the concrete issue, show the concrete alternatives with
   a recommendation, and ask before building one; a required outcome does not approve an unnamed
   layout, control, scope or timing chosen to achieve it. **A fix's remedy meets the same test,
