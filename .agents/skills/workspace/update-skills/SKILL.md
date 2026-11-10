@@ -76,11 +76,13 @@ staged or unstaged difference, when the branch's newest reflog entry is not a de
 as a reset; and a linked worktree, other than a `skills-overlay/` one step 6 removes, whose
 directory is gone or whose link Git can no longer follow. Repair it under the lock as soon as a read
 or fetch from step 2 on reports it; damage seen at step 1 is repaired once step 2 holds the lock.
-First write each affected ref name and commit ID, the index tree, and the files of each worktree
-checked out on that ref or no longer openable to private task storage. Then remove a ref whose
-commit is missing, which uncovers its packed entry when that entry's commit exists; point the stale
-branch at the matching commit; and run `git worktree repair`, pruning the entry of a worktree whose
-directory is gone. That backup preserves the original for these cases. Any other state, dirty,
+First write each affected ref name and commit ID, the commit of any packed entry it shadows, the
+index tree, and the files of each worktree checked out on that ref or no longer openable to private
+task storage. Then remove a ref whose commit is missing; for a loose copy shadowing a packed entry
+whose commit exists, delete only the loose file under `refs/`, never through `git update-ref -d` or
+`git branch -D`, which drop the packed entry too; point the stale branch at the matching commit; and
+run `git worktree repair`, then `git worktree prune`, which drops the entry of an unlocked worktree
+whose directory is gone. That backup preserves the original for these cases. Any other state, dirty,
 diverged or a loose ref overriding a packed one, is healthy and left as it is. An authority conflict
 is a competing live claim, such as another holder of the lock or an untrusted input, never a damaged
 ref.
