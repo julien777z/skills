@@ -888,18 +888,18 @@ An outcome is what its source of truth shows, never what an action or a worker s
   Name the check and its exclusion evidence in chat, then attempt the authorized merge without
   asking the user. Preserve that classification rather than excluding a required repair merely
   because the same failure also appears on the default branch.
-- Apply established validation exclusions before repairing failures. A hosted check stopped by
-  runner or provider infrastructure before its test, lint, or other validation command begins is
-  skipped automatically when the applicable locally runnable validation has passed. Record the run,
-  the log signal proving validation did not begin (or the provider infrastructure error), and the
-  local commands that cover it; do not rerun or wait merely to get a green hosted result. This
+- Apply established validation exclusions before repairing failures. An interrupted hosted check
+  supplies no validation result for the work it did not complete. When the logs establish a
+  runner or provider interruption without a validation failure, exclude the interrupted attempt
+  if equivalent local validation passed for the proposed merge head. Record the run, the
+  interruption evidence, and the matching local commands and results; do not rerun or wait merely
+  to get a green hosted result. A recorded validation failure remains a failure even if the run
+  was later canceled. Missing equivalent coverage must be obtained before merging. This
   exception applies only to hosted checks: a locally run validation failure caused by setup,
   dependency, checkout, proxy or certificate trust, or container build configuration is an
   encountered repository issue. Repair its canonical bootstrap or container build configuration and
-  rerun it. A cancellation after validation begins, a log naming a product or test failure, or
-  behavior without passing local coverage remains a blocker. Only an actual provider rejection
-  because branch protection requires an excluded or skipped check holds the pull request; report
-  that rejection and its evidence and never bypass it.
+  rerun it. If branch protection rejects the merge because it requires an excluded hosted
+  interruption to pass, obtain the required hosted result. Never bypass branch protection.
 - Never enable auto-merge for any other pull request unless the user explicitly authorizes it in the current request or an explicitly invoked skill requires it.
 - If an agent mistakenly merges a pull request, it may auto-merge the focused revert pull request that corrects that erroneous merge without separate authorization.
 
