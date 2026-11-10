@@ -28,6 +28,14 @@ alwaysApply: true
 - **A proposal never reads as done.** Text putting a change to the user names it in words that
   cannot be taken for finished work — "would combine", "proposed" — never a past participle such as
   "merged" or "removed" that a reader takes for something already built.
+- **Anything the reader might open is a link to it, wherever it is named.** A pull request,
+  issue, repository, commit, branch, workflow run, release or any other item with an address is
+  written as a markdown link to that address each time a response, table, sent file or question
+  names it, as in [garden-api#42](https://github.com/example/garden-api/pull/42) or
+  [garden-api](https://github.com/example/garden-api); a bare number, name or hash leaves the reader
+  to look it up. The link text names the item's repository whenever the text names more than one,
+  and every item in a list gets a link, however long the list. A surface that cannot render a link,
+  such as a question tool's option label, carries the address in its supporting text.
 - **A web product's views are pages.** Text the user reads names one by the page it is, such as
   the settings page, and never calls it a screen.
 - **A file the user should see reaches them where they read.** Per-item detail past five items —
