@@ -31,11 +31,11 @@ settings or monetization, and no publish to any other experience.
 ## Workflow
 
 1. **Freeze the build.** Take the latest pushed head of the session's branch, and record it.
-   Bring the project's saved delivery places up to that head through the project's own
-   synchronization and integrity checks, so the published places hold exactly that head's code,
-   artwork, world and terrain; commit and push that update when it changes the repository's files.
+   Build the publishable places from that head with the project's own build command and its
+   integrity check, so they hold exactly that head's code, artwork, world and terrain archives;
+   saved place copies are never committed for publishing.
 2. **Publish from the isolated runner**, as `roblox-studio` sets up, holding its runner lock: open
-   each delivery place in the runner's signed-in Studio and publish it over its existing place in
+   each built place in the runner's signed-in Studio and publish it over its existing place in
    the chosen universe, maps before the start place. Read the place and universe IDs in that
    editor before and after each publish. Grant asset permissions the publish dialog asks for when
    they cover the project's own assets; leave the audience setting as it is.
