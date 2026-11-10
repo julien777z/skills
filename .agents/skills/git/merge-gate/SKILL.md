@@ -112,8 +112,9 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    on drift. That receipt may support an exclusion under step 8; it never omits the hosted inventory.
 6. **Drive the complete inventory to terminal results.** Re-query the exact head on a bounded
    interval matched to job duration — roughly every 30 to 60 seconds — until every applicable,
-   non-excluded logical job has terminal coverage. A completed successful representative means a
-   pending equivalent duplicate attempt does not hold the gate. Local coverage, a green selected
+   non-excluded logical job has terminal coverage. Apply step 8 as unsuccessful attempts become
+   terminal so an interrupted job can recover while other jobs run. A successful representative
+   means a pending equivalent duplicate does not hold the gate. Local coverage, a green selected
    job or a branch-protection summary does not permit omitting another job. Classify failures under
    step 8 and account for missing or skipped required validation before clearing the gate. A new
    head rebuilds the inventory. When the base moves, compare its changes with every execution input
@@ -133,15 +134,13 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    without reentering that skill's active run. Record an exclusion's evidence, remove it from
    required coverage, and do not repair, rerun, or wait for it. Apply the
    GitHub rule's runner-infrastructure exclusion automatically: record a qualified check as skipped
-   and do not rerun or wait for a green hosted result. For an infrastructure interruption without
-   an exclusion, reconcile the check with equivalent attempts on the merge head. Use a successful
-   representative or follow a pending replacement through step 6. If neither exists, run the
-   missing equivalent local validation or retry the interrupted hosted check on that head. A
-   canceled attempt alone does not end the gate. If the provider rejects a merge because it requires
-   the excluded check, follow its pending hosted replacement or retry that check; local evidence
-   alone cannot resolve the rejection.
-   Every other failure is relevant. Read its
-   annotations and complete log, fix the repository
+   and do not rerun or wait for a green hosted result. For a canceled or otherwise interrupted
+   attempt with no recorded validation failure and no exclusion, use an equivalent successful
+   hosted attempt or follow a pending replacement through step 6. If neither exists, obtain
+   equivalent local validation when it can qualify for the exclusion, or retry the hosted check
+   on the same head. Missing logs or an unknown cancellation cause cannot justify local substitution;
+   recover hosted coverage in that case. A canceled attempt alone does not end the gate.
+   Every other failure is relevant. Read its annotations and complete log, fix the repository
    input responsible — code, test, configuration or workflow — and commit it. **Every relevant
    failure on the head goes into one push**: read all of them before fixing any, reproduce each
    with the job's own command where it can run locally, and push only once each reproduced failure
@@ -151,8 +150,8 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    without local proof. A relevant
    external-service failure is an encountered issue under `pre-production` and is fixed the same way;
    never rerun a failing validation to get a green result, or skip, disable, or quarantine a test
-   or confine its job to drafts to get past it. Report a blocker only when relevant missing coverage needs user input or unavailable
-   credentials, with the check, evidence and remediation attempted.
+   or confine its job to drafts to get past it. Report a blocker only when relevant missing
+   coverage needs user input or unavailable credentials, with the check, evidence and remediation attempted.
 9. Never stop, restart, reconfigure or claim a local service the calling workflow did not start:
    another agent or person may be using it. When relevant validation needs local services and one it
    did not start is running, use the matching hosted check as the fallback rather than running a
@@ -192,9 +191,11 @@ drives is repointed now and pushed, never left for its own merge to discover. On
 session owns is named in the report with its pinned reference and what the merge changed. Deleting
 the merged branch never waits on this, so a consumer left pinned stops installing.
 
-An excluded failed check does not prevent that ordinary authorized merge attempt. If the provider
-rejects it because branch protection requires the excluded check, leave the pull request open and
-report that actual rejection and its provider evidence; do not bypass protection.
+An excluded check does not prevent the ordinary authorized merge attempt. If branch protection
+rejects it because it requires an interrupted hosted check, put that job back in the exact-head
+inventory with hosted coverage required. Follow its replacement or retry under **Check Gate**,
+then attempt the merge when the required hosted result passes. For other exclusions, or if hosted
+recovery is unavailable, report the actual rejection and its provider evidence. Never bypass protection.
 
 Once the merge is verified, as the global rules' **A merge leaves no deploy work** bullet says, do
 not inspect or follow merge-triggered release, publication, artifact or deployment workflows, or

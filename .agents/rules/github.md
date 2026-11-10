@@ -198,9 +198,8 @@ alwaysApply: true
   exception applies only to hosted checks: a locally run validation failure caused by setup,
   dependency, checkout, proxy or certificate trust, or container build configuration is an
   encountered repository issue. Repair its canonical bootstrap or container build configuration and
-  rerun it. Only an actual provider rejection
-  because branch protection requires an excluded or skipped check holds the pull request; report
-  that rejection and its evidence and never bypass it.
+  rerun it. If branch protection rejects the merge because it requires an excluded hosted
+  interruption to pass, obtain the required hosted result. Never bypass branch protection.
 - Never enable auto-merge for any other pull request unless the user explicitly authorizes it in the current request or an explicitly invoked skill requires it.
 - If an agent mistakenly merges a pull request, it may auto-merge the focused revert pull request that corrects that erroneous merge without separate authorization.
 
