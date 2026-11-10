@@ -9,8 +9,8 @@ disable-model-invocation: true
 
 Publish the build the session has produced to the project's own Roblox experience, verify what went
 live, and report how to play it. The invocation authorizes this one publish to the experience and
-places it resolves below; it authorizes no later publish, no change to the experience's audience,
-settings or monetization, and no publish to any other experience.
+places it resolves below; it authorizes no change to the experience's audience, settings or
+monetization, and no publish to any other experience.
 
 ## Dependencies
 
@@ -28,7 +28,8 @@ settings or monetization, and no publish to any other experience.
   none, ask whether to create a new experience for the game; only the user's answer authorizes
   creating one.
 - Confirm, through Roblox's public APIs, that every place ID belongs to the chosen universe before
-  publishing. A place that belongs elsewhere stops the publish of that place.
+  building anything. A place that belongs elsewhere stops the whole publish, so no mixed build goes
+  live, and the report names that place.
 
 ## Workflow
 

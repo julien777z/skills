@@ -217,7 +217,9 @@ alwaysApply: true
   action and target, or an applicable rule or invoked skill that expressly authorizes them. A fix
   request, approved plan, or instruction to implement a plan does not itself authorize these
   outcomes, even when the plan lists them. A task-wide "all approved" covers ordinary sub-tasks
-  within its stated outcome without overriding this separate boundary.
+  within its stated outcome without overriding this separate boundary. A user's authorization
+  covers that one action on the change it names; a later change needs its own authorization before
+  it is merged, deployed, published or released, however recently the last one was given.
 - **A merge leaves no deploy work.** Once a pull request's merge is verified, never check by any
   route whether the change is live, such as a provider's deployment status, a release run or the
   site itself; never walk or test the site the merge deployed; never schedule a re-check, wait for

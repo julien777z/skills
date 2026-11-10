@@ -72,7 +72,7 @@ For visual work, inspect actual screenshots and movement, including camera angle
 
 ## Deliver the verified result
 
-Save the authorized source, artwork, and place artifacts and verify their destination and content. Publish only when the user asks for that publish in the current request, to the verified experience, owner, place, and visibility; one request covers one publish, and later changes in the session are never republished without a new request. Confirm terminal publication success and version when publishing. Do not infer live-client behavior from Studio evidence; run published-client tests only when requested or needed to investigate a live-only defect. Report any unverified live-only behavior accurately.
+Save the authorized source, artwork, and place artifacts and verify their destination and content. Publish only on the user's request for that publish, to the verified experience, owner, place, and visibility; the user can run `/publish-to-roblox` to publish the session's build. Confirm terminal publication success and version when publishing. Do not infer live-client behavior from Studio evidence; run published-client tests only when requested or needed to investigate a live-only defect. Report any unverified live-only behavior accurately.
 
 ## Output
 
