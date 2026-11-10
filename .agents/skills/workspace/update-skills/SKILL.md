@@ -69,23 +69,24 @@ deadline.
 
 A local fault is recovery work, not completion, and it never holds a refresh. **Damaged Git state in
 the skills checkout is backed up and repaired, whoever's branch it is**: a ref whose commit is
-missing, a branch whose pointer disagrees with the tree its index and files hold, or a leftover
-duplicate ref. First write the affected ref names and commit IDs, the index tree, and the files of
-any worktree checked out on that ref to the task's private storage. Then repair it: remove a ref
-whose commit is missing, point a branch at the commit whose tree its index and files already match,
-and remove a duplicate ref. The report names each backup and repair. Such damage is never an
-authority conflict, and leaving another session's branches untouched never extends to refs that stop
-the refresh. If a checkout, Git object, ref, overlay or managed link cannot be read, preserve the original state and reconstruct a healthy source from the latest
-default branch, the last verified complete snapshot and retained trusted input records. Recover every
-readable pending change and preserve unreadable originals for later recovery; do not assert their
-contents or silently discard them. Repair the native installer or its owned source as needed, and
-resume the refresh through link verification. Link verification proves which source was installed,
-not the contents of unreadable inputs: report that uncertainty and continue investigating retained
-originals without holding installation. Use retained ownership records and installer preflight to
-distinguish managed links from foreign links. Reading merged guidance does not install it. Preserve
-foreign files and links outside user skill roots, native skill namespaces, trust checks and lock
-ownership throughout; a genuine authority conflict
-remains a decision while independent recovery continues.
+missing, a branch whose pointer disagrees with the tree its index and files hold, a leftover
+duplicate ref, or a linked worktree Git can no longer open. First write the affected ref names and
+commit IDs, the index tree, and the files of any worktree checked out on that ref or no longer
+openable to the task's private storage. Then repair it: remove a ref whose commit is missing, point
+a branch at the commit whose tree its index and files already match, remove a duplicate ref, and
+prune or re-add a worktree Git cannot open. The report names each backup and repair. Such damage is
+never an authority conflict, and leaving another session's branches untouched never extends to refs
+that stop the refresh. If a checkout, Git object, ref, overlay or managed link cannot be read,
+preserve the original state and reconstruct a healthy source from the latest default branch, the
+last verified complete snapshot and retained trusted input records. Recover every readable pending
+change and preserve unreadable originals for later recovery; do not assert their contents or
+silently discard them. Repair the native installer or its owned source as needed, and resume the
+refresh through link verification. Link verification proves which source was installed, not the
+contents of unreadable inputs: report that uncertainty and continue investigating retained originals
+without holding installation. Use retained ownership records and installer preflight to distinguish
+managed links from foreign links. Reading merged guidance does not install it. Preserve foreign
+files and links outside user skill roots, native skill namespaces, trust checks and lock ownership
+throughout; a genuine authority conflict remains a decision while independent recovery continues.
 
 1. Resolve an installed user-level skill link to its Git checkout. When the link resolves into an
    overlay worktree, use the main checkout it is a linked worktree of. Confirm the checkout is the
