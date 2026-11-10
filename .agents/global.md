@@ -217,7 +217,11 @@ alwaysApply: true
   action and target, or an applicable rule or invoked skill that expressly authorizes them. A fix
   request, approved plan, or instruction to implement a plan does not itself authorize these
   outcomes, even when the plan lists them. A task-wide "all approved" covers ordinary sub-tasks
-  within its stated outcome without overriding this separate boundary.
+  within its stated outcome without overriding this separate boundary. **Nothing the agent writes
+  asks for that authorization or offers the outcome**: no question, pending-decision item, closing
+  next action or prompt to reply with a word, such as "say merge when you want them merged". A
+  report names each pull request as its link and leaves the outcome to the user's own instruction,
+  a skill they invoke for it, such as `finish-pr`, or guidance that grants it.
 - **A merge leaves no deploy work.** Once a pull request's merge is verified, never check by any
   route whether the change is live, such as a provider's deployment status, a release run or the
   site itself; never walk or test the site the merge deployed; never schedule a re-check, wait for
