@@ -442,7 +442,14 @@ undocumented preference-file keys are not a stable setup API. This uses the norm
 [MCP setup and connection checks](https://create.roblox.com/docs/studio/mcp).
 
 A normal quit can stop at an unsaved-changes dialog. Verify closure before reopening, and avoid
-forced termination or repeated duplicate launches. Multiple processes can show the same file or
+forced termination or repeated duplicate launches. To close a task-owned editor, stop any Play
+session through MCP, then quit that process through its own window — Cmd-Q or the File menu sent
+to the verified process — and answer an unsaved-changes prompt with Don't Save when the place is a
+disposable build artifact whose source lives in the repository, or Save when it holds work that
+exists nowhere else. Confirm with `pgrep` that the process exited. A process that ignores a quit
+and shows no prompt, or a test server or client left behind by a failed test call, is
+force-stopped only when it is task-owned and holds nothing unsaved, recorded as such; other
+sessions' processes are never touched. Multiple processes can show the same file or
 have different authentication states. Preserve the working editor and retained credentials.
 
 ## Qualify input and capture
