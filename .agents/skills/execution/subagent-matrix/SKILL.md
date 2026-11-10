@@ -39,7 +39,12 @@ agent; the calling agent launches the actual assignment with the selected model.
    version too old, a sign-in, a disabled provider, a stale process. The repair is the first step and every
    fallback comes after it: update the client, sign in, enable the provider or restart the process, or confirm the
    condition no longer holds, then launch the same assignment again with the same identifier. Updating or
-   repairing the agent's own client or runtime is that repair, never a settings change the next sentence forbids. Unavailability, and every
+   repairing the agent's own client or runtime is that repair, never a settings change the next sentence forbids.
+   Repair the component that actually holds the refused value, read from the running request path rather than
+   from the refusal's own advice: a proxy or gateway between the agent and the provider can report its own
+   client version, so the one to update is whichever reports the version the refusal names. When that component is
+   out of the session's reach, its repair goes to the user as a step only they can take, with the exact command,
+   while the fallback below proceeds for the assignment in hand. Unavailability, and every
    fallback or substitution it permits, starts only when that relaunch is refused again or the named repair
    cannot be made, recorded with both receipts and the repair attempted; only that is an explicit unsupported
    receipt wherever this skill or its callers name one. The accepted worker
