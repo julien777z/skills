@@ -109,8 +109,27 @@ source "$HOME/.config/roblox-studio/runner.env"
 mkdir -p "$HOME/.local/state/roblox-studio"
 nohup "$ROBLOX_STUDIO_TART" run "$ROBLOX_STUDIO_VM" --no-graphics --no-clipboard --no-audio \
   > "$HOME/.local/state/roblox-studio/vm.log" 2>&1 < /dev/null & disown
-export ROBLOX_STUDIO_SSH="$ROBLOX_STUDIO_SSH_USER@$("$ROBLOX_STUDIO_TART" ip "$ROBLOX_STUDIO_VM" --wait 180)"
+"$ROBLOX_STUDIO_TART" ip "$ROBLOX_STUDIO_VM" --wait 180   # wait until the guest has an address
 ```
+
+Reach the guest only through [runner_ssh.sh](../scripts/runner_ssh.sh), which reads `runner.env` and finds
+the guest's address through Tart on every call, so no shell variable has to carry the target from one command to
+the next. The runner's Studio MCP is `runner_ssh.sh /Applications/RobloxStudio.app/Contents/MacOS/StudioMCP`,
+spoken over stdio: give an MCP client that command.
+
+Drive the runner's Studio from scripts through [studio_mcp.py](../scripts/studio_mcp.py), which every game uses
+from its installed copy (`~/.agents/skills/roblox-studio/scripts`, put on `sys.path`); no game keeps its own MCP
+client. It holds one session through `runner_ssh.sh`. `open_place(project, place, out_dir)` copies a built place
+into the guest under `studio-places/<project>/`, launches an editor for it and returns a `Studio` once that editor
+registers, or saves the guest's screen, closes the editor and raises. `close_place(project, place)` ends that
+editor. `Studio` executes Luau, captures, reads the console, sends keys, and clicks a button by its instance path
+through VirtualInput. Run `python3 studio_mcp.py METHOD [PARAMS | @file]` for a single request from a shell.
+
+**No Studio operation reaches the host by falling back.** A client, helper or MCP server that picks its target
+from a variable or setting and drives the host's Studio when that target is missing is not a runner route, even
+for a read: a game repository's helper run with its runner variable unset, or the harness's own Studio MCP tools
+connected to this machine. Before a connection's first call, confirm its target: `list_roblox_studios` names the
+editors `runner_ssh.sh 'pgrep -fl RobloxStudio'` shows in the guest, never the host's.
 
 A harness that stops background commands after a time limit stops a `tart run` it owns, and the
 VM with it, so the VM runs detached and `tart stop` ends it.
@@ -212,7 +231,7 @@ CLI's help. Keep actual versions, image identity, resource allocation, and quali
 local configuration and verification evidence. Reuse the retained runner before provisioning one.
 
 With the Tart options above, the VM does not create a host window, share the clipboard, or play test audio through the user's speakers. Transfer only the project/test files over
-SSH, and invoke the guest's Studio MCP executable through SSH. Keep the guest proxy connection alive
+SSH, and invoke the guest's Studio MCP executable through `runner_ssh.sh`. Keep the guest proxy connection alive
 long enough for Studio discovery, as described in the MCP reference. Retrieve viewport captures and
 structured results through that channel. Do not mount the whole home directory or transfer a Roblox
 session cookie. Use normal Roblox authentication.
