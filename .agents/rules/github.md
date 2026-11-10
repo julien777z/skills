@@ -156,9 +156,9 @@ alwaysApply: true
   request held for user review cannot use those exceptions or auto-merge.
 - Before reporting a pull request whose merge no instruction authorizes, classify the complete
   actual diff against the standing permissions below; one they cover may merge under them, and any
-  other is reported without asking for its merge, as the global rules' merge-authorization bullet says. A
-  filename, extension, line count or change label is not a behavioral classification. Preserve
-  genuine edits; never remove them merely to qualify for an exception.
+  other is reported without asking for its merge, as the global rules' merge-authorization bullet
+  says. A filename, extension, line count or change label is not a behavioral classification.
+  Preserve genuine edits; never remove them merely to qualify for an exception.
 - A pull request limited to minor type, lint, import, formatting or text corrections may merge
   without a separate request when it preserves intended product, security and contract behavior.
   Aligning types with an existing canonical contract qualifies. Mixed substantive changes require
