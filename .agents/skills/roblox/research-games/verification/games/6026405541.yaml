@@ -124,7 +124,7 @@ pacing:
   measurement_method: "HUD timer values read from trailer frames; clips are cut, so no duration is measured."
   evidence: [source_3]
 goals_and_progression:
-  next_goal_clarity: "Video: the top-centre HUD names the current objective in capitals ('15 SEC HEAD START', 'COMPUTERS LEFT: 7', 'FIND AN EXIT') beside the round timer, so the next goal is always one short line."
+  next_goal_clarity: "Video: the top-center HUD names the current objective in capitals ('15 SEC HEAD START', 'COMPUTERS LEFT: 7', 'FIND AN EXIT') beside the round timer, so the next goal is always one short line."
   short_term_goals: ["Hack the next computer; free a frozen teammate; avoid the beasts."]
   medium_term_goals: ["Finish all computers and escape through an exit."]
   advertised_long_term_goals: ["Levels, crate collection, shinies, mythicals, owning every obtainable item ('Trade King'), event rewards ('Limited Final Reward challenge')."]
@@ -149,9 +149,9 @@ agency_and_social:
   evidence: [source_3, source_4]
 ui:
   evidence_status: partial
-  visual_style: "Video: flat dark translucent panels with white bold sans-serif capitals; red name-tag strip; colourful illustrated icons."
-  layout_and_hierarchy: "Video: top-centre bar holds the round timer and objective; top-left strip lists survivors; top-right holds Invite and profile buttons; a right-edge column of four square icon buttons (MENU, QUESTS, SPECTATE, TRADING) plus a round EVENT button; bottom-right shows key hints 'Interact' and 'Crouch'; hacking progress bar at bottom centre."
-  color_scheme: ["dark grey translucent panels", "white text", "red for survivor tags and beast ability bar", "green for crate 'Spinning' state and Common rarity", "rarity colours in the shop list"]
+  visual_style: "Video: flat dark translucent panels with white bold sans-serif capitals; red name-tag strip; colorful illustrated icons."
+  layout_and_hierarchy: "Video: top-center bar holds the round timer and objective; top-left strip lists survivors; top-right holds Invite and profile buttons; a right-edge column of four square icon buttons (MENU, QUESTS, SPECTATE, TRADING) plus a round EVENT button; bottom-right shows key hints 'Interact' and 'Crouch'; hacking progress bar at bottom center."
+  color_scheme: ["dark gray translucent panels", "white text", "red for survivor tags and beast ability bar", "green for crate 'Spinning' state and Common rarity", "rarity colors in the shop list"]
   typography:
     font_appearance: "Bold geometric sans-serif capitals for HUD labels and objectives."
     font_family_if_verified: null
@@ -161,13 +161,13 @@ ui:
     readability: "Objective line reads clearly on its dark bar; icon captions under the right-edge buttons are tiny at trailer resolution."
   controls:
     primary_actions: "Interact (hack, free) and Crouch, shown as key hints bottom-right; beast ability on Q."
-    close_x_appearance_and_location: "Shop modal: a red square with a white X at the top-right corner, beside a grey '<' back button."
-    modal_behavior: "Shop opens as a dark centred panel over the lobby with the coin balance top-right."
+    close_x_appearance_and_location: "Shop modal: a red square with a white X at the top-right corner, beside a gray '<' back button."
+    modal_behavior: "Shop opens as a dark centered panel over the lobby with the coin balance top-right."
     state_feedback: "Hack progress bar fills white; a timing bar shows a red marker crossing a white target zone; crate button shows a green 'SPINNING' state; coin balance falls after a spin."
     target_size_and_input: null
   graphics:
     graphics_versus_text: "Right-edge buttons pair an illustrated icon with a short caption; crate items show icon portraits with names; rarity odds are text."
-    illustration_or_icon_style: "Illustrated, slightly hand-drawn monochrome icons (menu, quest scroll, eye, handshake) and a multicolour event badge."
+    illustration_or_icon_style: "Illustrated, slightly hand-drawn monochrome icons (menu, quest scroll, eye, handshake) and a multicolor event badge."
     framing_outlines_and_effects: "Square dark tiles with white outlines for HUD buttons; neon glow on freeze pods and computer screens in world."
     placement_and_labels: "Every HUD icon carries a text label underneath."
     clarity_or_clutter: "HUD is sparse during rounds: one objective line, one name strip, one icon column, two key hints."
@@ -222,10 +222,10 @@ transferable_ideas:
   - "Crate odds are printed in the shop panel itself (from video)."
 practical_takeaway:
   strongest_idea: "A single, always-visible objective line with a shrinking counter that flips to the final goal makes an asymmetric team round legible at a glance."
-  main_tradeoff: "Depth of the monetisation layer (ten priced passes, crates, seasonal bundles, mythicals) around a cooperative round game; and the game openly derives from an earlier hit's formula, so the ideas are well proven but not novel."
+  main_tradeoff: "Depth of the monetization layer (ten priced passes, crates, seasonal bundles, mythicals) around a cooperative round game; and the game openly derives from an earlier hit's formula, so the ideas are well proven but not novel."
   suitable_genres_and_stages: ["asymmetric and team round games", "co-op objective rounds", "any game with a shared team goal"]
   testable_hypothesis: "Replacing a multi-item objective list with one objective line plus a remaining-count in a team round shortens the time for new players to reach their first objective."
-  estimated_effort_and_assumptions: "Estimate: 1 day for a top-centre objective bar driven by round state, assuming objectives are already tracked server-side."
+  estimated_effort_and_assumptions: "Estimate: 1 day for a top-center objective bar driven by round state, assuming objectives are already tracked server-side."
 inferences:
   - "Its fan-made-remake framing and 60.9 million visits suggest players seek out a known asymmetric formula with more players and more maps; passive material cannot establish why it is popular."
   - "Only 66,007 holders of 'Getting Started' versus 910,853 of 'Sharkbait' suggests few players complete all six actions, especially the beast ones; the badge was added 2026-06-08, so counts cover only later players."

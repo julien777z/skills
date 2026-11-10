@@ -208,7 +208,7 @@ gameplay:
   - Total Chickens counter (0 to 11 in the sample).
   - 'Rebirth button and counter; ''Upgrade Buy Tier Basic > Duck [REQ: Rebirth 1]'' sign.'
   - Index book for discovered chickens; Merge pad.
-  - Tier ladder of chicken types (Basic T1, Duck T2, Dirt T3, Bee T4, Mushroom T5, Dummy T6, Goose T7, Villager T8 and beyond, creator says about tier 25) shown as labelled nests along the base (source_4, source_5).
+  - Tier ladder of chicken types (Basic T1, Duck T2, Dirt T3, Bee T4, Mushroom T5, Dummy T6, Goose T7, Villager T8 and beyond, creator says about tier 25) shown as labeled nests along the base (source_4, source_5).
   - Processing upgrade pad raises eggs sold per second (2 to 28+ per second) beside the 'Selling Eggs' board (source_5 2:15, source_6 2:30).
   - Rebirth resets cash, eggs, chickens and processing level for +2 buy tiers and x3 cash; the first requirement is $1M (source_5 1:30).
   - Global leaderboard of chicken counts (top entry in the hundreds of thousands to a trillion) (source_4 2:30).
@@ -221,7 +221,7 @@ gameplay:
   companions_and_pets:
   - Chickens are the collectibles/producers; rarer types unlocked by merging (advertised).
   friction:
-  - Buy pads are triggered by walking on them, so stepping onto a neighbouring pad bought extra chickens unintentionally (Total Chickens jumped to 10, then 11).
+  - Buy pads are triggered by walking on them, so stepping onto a neighboring pad bought extra chickens unintentionally (Total Chickens jumped to 10, then 11).
   - Robux pads ('Finish Now' 19 R$, 'Auto Collect' 29 R$, 'x2 Eggs' 499 R$) use the same walk-on floor-pad shape as cash pads and sit on the tutorial route; walking along the Collect Cash trail opened a Robux purchase prompt.
   - Base edge has no barrier on one side; overshooting the first pad dropped the avatar into the moat.
   - In source_5 a Rebirth modal with a Robux 'SKIP (No Reset)' button appeared during the 'Get 3 Chickens' step (1:30); whether it opened automatically or by a click is not visible.
@@ -252,7 +252,7 @@ pacing:
   - source_5
   - source_6
 goals_and_progression:
-  next_goal_clarity: 'High: a top-centre ''Tutorial'' banner states one step at a time (Buy your first chicken / Collect 3 Eggs 0/3 / Deposit your Eggs / Collect your Cash!) and a glowing chevron trail on the floor leads to the target.'
+  next_goal_clarity: 'High: a top-center ''Tutorial'' banner states one step at a time (Buy your first chicken / Collect 3 Eggs 0/3 / Deposit your Eggs / Collect your Cash!) and a glowing chevron trail on the floor leads to the target.'
   short_term_goals:
   - Buy first chicken
   - Collect 3 eggs
@@ -324,7 +324,7 @@ agency_and_social:
 ui:
   evidence_status: observed
   visual_style: Bright voxel/Lego-stud world; chunky cartoon UI with thick dark outlines and drop shadows.
-  layout_and_hierarchy: Top-centre tutorial banner (cyan 'Tutorial' title over white step text); left column of large green offer buttons ('PERMANENT! 2x Cash' with rainbow border, +250$/+10,000$/+200K$ scaling cash packs, Robux balance); bottom-left cash with '+' and 'x1 Cash' multiplier; bottom-centre Eggs basket counter; bottom-right 'Total Chickens' and event countdown; right side square icon buttons (Quests, Index, Rebirth). After the tutorial the top-centre banner becomes a cyan 'Home' button (source_5 2:45). Lucky-block panels open at the right edge with tier odds and green Unlock / red Discard buttons (source_4 7:30).
+  layout_and_hierarchy: Top-center tutorial banner (cyan 'Tutorial' title over white step text); left column of large green offer buttons ('PERMANENT! 2x Cash' with rainbow border, +250$/+10,000$/+200K$ scaling cash packs, Robux balance); bottom-left cash with '+' and 'x1 Cash' multiplier; bottom-center Eggs basket counter; bottom-right 'Total Chickens' and event countdown; right side square icon buttons (Quests, Index, Rebirth). After the tutorial the top-center banner becomes a cyan 'Home' button (source_5 2:45). Lucky-block panels open at the right edge with tier odds and green Unlock / red Discard buttons (source_4 7:30).
   color_scheme:
   - Saturated greens and reds
   - Gold/yellow for Robux pads
@@ -338,7 +338,7 @@ ui:
     readability: High for HUD; in-world billboard text readable at near range.
   controls:
     primary_actions: Walk-on floor pads for buy, deposit, collect and merge; HUD buttons for Quests, Index, Rebirth.
-    close_x_appearance_and_location: Red square button with white X at the top-right of the Quests modal header (10209534490-1); Roblox purchase dialog uses its own small grey X at top-right (10209534490-21).
+    close_x_appearance_and_location: Red square button with white X at the top-right of the Quests modal header (10209534490-1); Roblox purchase dialog uses its own small gray X at top-right (10209534490-21).
     modal_behavior: Quests (Login Streak tab) opens automatically on join over the tutorial; dismissed by its X.
     state_feedback: Claim button turns to 'CLAIMED', next day shows 'TOMORROW'; floating 'Day 1 reward claimed!' text.
     target_size_and_input: HUD icon buttons about 65 px square in capture (about 100 points); floor pads are large walk-on areas.
@@ -357,7 +357,7 @@ new_player_onboarding:
   status: observed
   reason: Real play (source_3) started from a fresh game state with the Tutorial banner. Videos source_4 and source_5 also start fresh and show the rest of the tutorial.
   conventions:
-  - One-step banner at top centre
+  - One-step banner at top center
   - Glowing chevron floor trail to the target
   - Progress counter on steps (0/3)
   - Discovery card for first chicken
@@ -385,7 +385,7 @@ new_player_onboarding:
   - source_5
 accessibility_and_comfort:
   text_and_contrast: Outlined white text on bright scenes stays readable.
-  non_color_cues_and_icon_labels: Icons carry text labels; pad types distinguished partly by colour (gold for Robux), which is weak as a non-colour cue.
+  non_color_cues_and_icon_labels: Icons carry text labels; pad types distinguished partly by color (gold for Robux), which is weak as a non-color cue.
   input_support_observed:
   - Keyboard movement
   - Mouse clicks on HUD
@@ -428,7 +428,7 @@ world_and_presentation:
   environmental_storytelling:
   - Seasonal Halloween dressing
   audiovisual_consistency: Consistent voxel art across world and UI.
-  success_effect_intensity_and_clarity: 'Moderate: floating text and counters; no large particle burst observed. Videos show stronger moments later: lucky blocks bursting into piles of coloured eggs and fast-rising nest rows (source_4, source_5).'
+  success_effect_intensity_and_clarity: 'Moderate: floating text and counters; no large particle burst observed. Videos show stronger moments later: lucky blocks bursting into piles of colored eggs and fast-rising nest rows (source_4, source_5).'
   evidence:
   - source_3
   - source_4
@@ -452,7 +452,7 @@ transferable_ideas:
 - A server-wide sell multiplier on a short visible cycle (board plus 'Updating in 28s') turns a passive sell action into a timing decision (source_6).
 - Tutorial steps that teach each system once (merge, processing upgrade) and then hand off with a persistent 'Home' button (source_5).
 practical_takeaway:
-  strongest_idea: One instruction at a time at top centre, paired with a world-space trail to the exact spot, got a fresh player through buy, collect and sell without reading any other UI.
+  strongest_idea: One instruction at a time at top center, paired with a world-space trail to the exact spot, got a fresh player through buy, collect and sell without reading any other UI.
   main_tradeoff: Walk-on pads make actions effortless but also trigger accidental purchases, including Robux prompts placed on the tutorial path. Videos add an escalating Robux multiplier ladder and Robux 'Skip'/'Finish Now'/'Unlock' choices placed beside every free progression action (source_4, source_5).
   suitable_genres_and_stages:
   - Tycoon and simulator onboarding

@@ -15,7 +15,7 @@ short_description: 'List shared and repository skills with who can invoke each a
   current repository is the skills repository, or has no skills, the section holds `- None`.
 
 Read each skill's frontmatter from its canonical `SKILL.md`; never from a provider mirror, a skill
-catalogue, or memory. Plugin and built-in harness skills are outside both sources.
+catalog, or memory. Plugin and built-in harness skills are outside both sources.
 
 ## Each Entry
 

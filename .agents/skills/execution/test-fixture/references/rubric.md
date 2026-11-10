@@ -34,7 +34,7 @@ Check new and existing tests against these low-value patterns:
 - mocks that implement the asserted behavior, one identical mock standing in for different APIs,
   or fixtures supplying the receipt, admission, or callback order the owner should produce;
 - persistence asserted against a store the exercised path never writes, and capability tests that
-  restate flags instead of exercising the delivery or acknowledgement they promise;
+  restate flags instead of exercising the delivery or acknowledgment they promise;
 - negative controls that pass for an unrelated reason, and names or fixtures that promise more
   than the input and assertions exercise.
 

@@ -51,7 +51,7 @@ paths:
   with a guess. Override only for a reason specific to the integration — the SDK ships no timeout,
   so the call is unbounded, or this integration's calls differ from what the default assumes, such
   as a provider whose requests legitimately run long or a user-facing path that must fail sooner —
-  and never leave the override a bare number: the SDK's or the provider's behaviour goes in a comment
+  and never leave the override a bare number: the SDK's or the provider's behavior goes in a comment
   beside the value, and a reason this code owns, such as a user-facing deadline, goes in the value's
   name. This holds over general advice to put a timeout on every network call.
 - A client the code builds itself, with no SDK behind it, sets its own timeout, since no default a

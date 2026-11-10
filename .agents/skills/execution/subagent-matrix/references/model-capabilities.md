@@ -13,7 +13,7 @@ strongest available model family in this policy.
 | `frontier` | Astra | Fable  | The most demanding tasks; strongest available model |
 
 The labels describe selection policy, not identical capabilities across providers or guaranteed
-host availability. A catalogue omission is not availability evidence; the workflow resolves an
+host availability. A catalog omission is not availability evidence; the workflow resolves an
 exact host dispatch identifier and classifies its actual assignment. Reasoning effort is a separate dispatch
 setting; no capability level implies a particular effort or permission to change repository or
 global configuration.
@@ -36,11 +36,11 @@ so two seats may share a provider.
 
 ## Dispatch candidates
 
-Prefer the host's latest identifier matching the selected family. When a Codex catalogue omits the
+Prefer the host's latest identifier matching the selected family. When a Codex catalog omits the
 family, use the documented candidate below to launch the actual assignment. These are candidates
-to test, not supported-model claims or replacements for a newer matching catalogue entry.
+to test, not supported-model claims or replacements for a newer matching catalog entry.
 
-| Codex family | Catalogue-hidden candidate |
+| Codex family | Catalog-hidden candidate |
 | ------------ | -------------------------- |
 | Luna | `gpt-6-luna` |
 | Terra | `gpt-5.6-terra` |

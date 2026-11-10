@@ -78,7 +78,7 @@ evidence:
       timestamps: []
       screenshots: []
       limitations:
-          - "Promotional render: left avatar preview panel with a camera/face icon and a row of worn-item tiles; right dark panel of large gradient category tiles labelled FEATURED, HAIR, ANIMATION PACKS, CLOTHING, ACCESSORIES, FAVORITES, each with a 3D item render. Advertised UI only."
+          - "Promotional render: left avatar preview panel with a camera/face icon and a row of worn-item tiles; right dark panel of large gradient category tiles labeled FEATURED, HAIR, ANIMATION PACKS, CLOTHING, ACCESSORIES, FAVORITES, each with a 3D item render. Advertised UI only."
     - id: thumb_2
       kind: thumbnail
       url: "https://tr.rbxcdn.com/180DAY-c3573ad59a9ad5ba1a0b4ae5fff8b5a2/768/432/Image/Png/noFilter"
@@ -114,7 +114,7 @@ evidence:
       timestamps: []
       screenshots: []
       limitations:
-          - "Render of the animation catalog: category tabs (Clothing, Faces, Animations, Body) with sub-tabs (All, Anim Packs, Emotes, Unreleased), a 6-column grid of grey mannequin poses each labelled with a name and a Robux price (80 to 750), an 'Enter Item Link..' field, zoom and settings buttons. Prices shown are promotional and not assumed current."
+          - "Render of the animation catalog: category tabs (Clothing, Faces, Animations, Body) with sub-tabs (All, Anim Packs, Emotes, Unreleased), a 6-column grid of gray mannequin poses each labeled with a name and a Robux price (80 to 750), an 'Enter Item Link..' field, zoom and settings buttons. Prices shown are promotional and not assumed current."
     - id: video_1
       kind: gameplay_video
       url: "https://assetdelivery.roblox.com/v1/asset/?id=72816971021020"
@@ -126,7 +126,7 @@ evidence:
           - "0:04 search field typing 'headph' with tabs All, Free, Hat, Face"
           - "0:06 headphone results with green TRY and BUY tiles, then a 'Buy item' modal (item portrait, Robux price with struck-out original, 'Saving ... with Plus' row, blue Buy button, X close)"
           - "0:08-0:10 caption 'try on anything!' over the search grid, then three try-on variants of one avatar side by side"
-          - "0:12 'Emotes' panel over a snowy night map: grey mannequin tiles labelled with names and 'Free' or a Robux price, a green check on the equipped one, 'Search Emotes...' field"
+          - "0:12 'Emotes' panel over a snowy night map: gray mannequin tiles labeled with names and 'Free' or a Robux price, a green check on the equipped one, 'Search Emotes...' field"
           - "0:14 avatar on a skateboard"
           - "0:16 crowd of differently dressed avatars"
           - "0:18 another player's context menu: View Outfit, Wear Outfit, Send Robux, Add Friend, Kick Player, Hide User, plus a heart"
@@ -205,9 +205,9 @@ agency_and_social:
 ui:
     evidence_status: partial
     visual_style: "Advertised: dark rounded panels over a bright sky-and-grass backdrop; large saturated gradient category tiles with 3D item renders (thumb_1). Trailer (video_1) confirms dark translucent rounded panels floating over a bright low-poly world (grass and trees at 0:00, snowy night map at 0:12)."
-    layout_and_hierarchy: "Advertised two-pane layout: avatar preview with worn-item strip on the left, catalog panel on the right with back arrow, search, sort dropdown and X close in its header row (thumb_1, thumb_2, thumb_5). Trailer (video_1, 0:00) shows the same two panes in game, centred and occupying roughly half the screen, with a tool row under the preview (cart, trash and other icons) and an 'Enter Item Link..' field plus zoom and settings icons at the bottom of the grid. Not verified in play."
+    layout_and_hierarchy: "Advertised two-pane layout: avatar preview with worn-item strip on the left, catalog panel on the right with back arrow, search, sort dropdown and X close in its header row (thumb_1, thumb_2, thumb_5). Trailer (video_1, 0:00) shows the same two panes in game, centered and occupying roughly half the screen, with a tool row under the preview (cart, trash and other icons) and an 'Enter Item Link..' field plus zoom and settings icons at the bottom of the grid. Not verified in play."
     color_scheme:
-        - "Dark grey panels"
+        - "Dark gray panels"
         - "Saturated gradient tiles (blue, magenta, green, orange, pink) per category"
         - "Green action buttons (upload, TRY NOW)"
     typography:
@@ -220,14 +220,14 @@ ui:
     controls:
         primary_actions: "Advertised: category tiles, item grid tiles, search, sort dropdown, item-link entry, upload."
         close_x_appearance_and_location: "Advertised: white X at the top-right of the catalog panel header, beside the sort dropdown (thumb_2, thumb_5). Trailer: plain white X at the top right of the Emotes panel (0:12), the Buy item modal (0:06) and the player menu (0:18)."
-        modal_behavior: "Trailer: the Buy item modal is a small dark card centred over a dimmed item grid (0:06); Emotes and player menus are non-blocking panels over the world."
+        modal_behavior: "Trailer: the Buy item modal is a small dark card centered over a dimmed item grid (0:06); Emotes and player menus are non-blocking panels over the world."
         state_feedback: "Advertised: a green border marks a highlighted card (thumb_4). Trailer: a small green check badge marks the equipped emote (0:12); each result offers green TRY and BUY tiles with eye and cart icons (0:06)."
         target_size_and_input: null
     graphics:
-        graphics_versus_text: "Advertised: every item is a rendered portrait or a grey mannequin pose with a short label; categories pair a big word with one representative render."
+        graphics_versus_text: "Advertised: every item is a rendered portrait or a gray mannequin pose with a short label; categories pair a big word with one representative render."
         illustration_or_icon_style: "3D item renders and mannequin silhouettes; simple white line icons for back, close, settings, zoom."
         framing_outlines_and_effects: "Rounded dark tiles in a regular grid; gradient category cards."
-        placement_and_labels: "Item name and price under each animation tile (thumb_5); in the trailer each emote tile has a large name and a 'Free' tag or Robux price under a grey mannequin pose (0:12)."
+        placement_and_labels: "Item name and price under each animation tile (thumb_5); in the trailer each emote tile has a large name and a 'Free' tag or Robux price under a gray mannequin pose (0:12)."
         clarity_or_clutter: null
     evidence: [thumb_1, thumb_2, thumb_4, thumb_5, video_1]
 new_player_onboarding:

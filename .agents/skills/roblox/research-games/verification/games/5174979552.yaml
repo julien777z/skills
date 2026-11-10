@@ -49,7 +49,7 @@ play_coordination:
     expiry_or_blocker: null
 context:
     play_style: "Space exploration and mining simulator (games API genre_l1 'Simulation', genre_l2 empty)"
-    camera_perspective: "Trailer (video_preview_1): first-person cockpit view with a dashboard of coloured bars and buttons (0:00, 0:28), third-person chase camera on ships (0:04-0:14) and third-person on a spacesuited avatar on foot or jetpack (0:16-0:22, 0:32-0:42)"
+    camera_perspective: "Trailer (video_preview_1): first-person cockpit view with a dashboard of colored bars and buttons (0:00, 0:28), third-person chase camera on ships (0:04-0:14) and third-person on a spacesuited avatar on foot or jetpack (0:16-0:22, 0:32-0:42)"
     device_and_input: "Description advertises phone, tablet, PC and console; not observed"
     observation_environment: "Passive: games, votes, media, thumbnails, badges and game-pass APIs retrieved over HTTP from the orchestrator host; no client launched"
     visible_server_population: "API at retrieval: 423 playing; maxPlayers 20 per server"
@@ -77,7 +77,7 @@ evidence:
       timestamps: []
       screenshots: []
       limitations:
-          - "95,826,957 visits, 5,655,943 favourites (high favourite-to-visit ratio, about 5.9%); votes 339,198 up / 12,831 down (about 96% positive); 423 playing at retrieval; avatar type MorphToR15."
+          - "95,826,957 visits, 5,655,943 favorites (high favorite-to-visit ratio, about 5.9%); votes 339,198 up / 12,831 down (about 96% positive); 423 playing at retrieval; avatar type MorphToR15."
           - "Badges API: more than 25 badges (paginated). First page includes 'Welcome, Space Explorer!' (28,069,314 awarded), 'Space Pioneer' first flight (37,621,648), 'Reached The Moon!' (28,678,714), 'Visited the International Space Station!' (6,225,868), 'Vivid Astronomer' used the Hubble telescope (8,166,493), and rarer destination badges such as the hottest planet (2,713,826), the most volcanic world (532,234), the coldest moon (230,790), Halley's Comet (161,605), Icarus (122,766), an alien lifeform (74,455) and photographing every celestial body (5,160)."
           - "Game-pass API returned an empty list; whether the game sells passes is unknown from this source."
     - id: thumbnail_1
@@ -89,7 +89,7 @@ evidence:
       screenshots: []
       limitations:
           - "Image 97961981010539 (also the preview video's poster): two R15 avatars in white spacesuits floating in space with a tether line beside a large blue gas giant, Milky Way backdrop; the Roblox menu icons are visible top-left, so this is an in-client capture with the game HUD hidden."
-          - "Image 126716721576787: astronaut beside a rusted crashed ship on a grey cratered surface, a blue planet and a ring arc in the sky; rendered promotional scene."
+          - "Image 126716721576787: astronaut beside a rusted crashed ship on a gray cratered surface, a blue planet and a ring arc in the sky; rendered promotional scene."
           - "Image 124850231085711: astronaut piloting a dark red ship with magenta engine glows in front of the Sun, a translucent shield bubble around the ship; promotional render."
     - id: video_1
       kind: gameplay_video
@@ -106,12 +106,12 @@ evidence:
       captured_at: "2026-11-09T03:05:00Z"
       media_date_or_version: "GamePreviewVideo videoId 107133352557460; upload date not exposed by the API"
       timestamps:
-          - "0:00 cockpit view: ringed planet through the canopy, dashboard with green/red bars and coloured buttons"
+          - "0:00 cockpit view: ringed planet through the canopy, dashboard with green/red bars and colored buttons"
           - "0:04-0:08 red ship with translucent shield bubble and engine flames flying close to the Sun"
-          - "0:10-0:12 grey cylindrical ship passing a moon and asteroids"
+          - "0:10-0:12 gray cylindrical ship passing a moon and asteroids"
           - "0:14 dark fighter over a blue gas giant"
           - "0:16-0:18 astronaut floating in a zero-gravity station module with a beach ball, handholds and a fire extinguisher"
-          - "0:20 ship trailing a lava-coloured stream past a bright plume"
+          - "0:20 ship trailing a lava-colored stream past a bright plume"
           - "0:22 astronaut on a cracked ice surface"
           - "0:24-0:26 ships near Earth and a satellite against the Sun"
           - "0:28-0:30 cockpit flying through a ring structure"
@@ -120,7 +120,7 @@ evidence:
           - "0:38 glowing ring device"
           - "0:40 astronaut on pink terrain under a cyan contour overlay (scan or map effect)"
           - "0:42 astronaut facing red lava plumes on a volcanic moon"
-          - "0:44-0:46 view from a station window: asteroid field and planets with a centre crosshair"
+          - "0:44-0:46 view from a station window: asteroid field and planets with a center crosshair"
           - "0:48 avatar falling through cyan clouds"
           - "0:50 underground tunnel with a glowing red ring and a crate with a circular hold-to-interact prompt"
           - "0:52-0:54 ships orbiting a blue planet"
@@ -185,7 +185,7 @@ agency_and_social:
     evidence: [description_1, video_preview_1]
 ui:
     evidence_status: unknown
-    visual_style: "Not visible: the trailer hides the HUD. Only in-world UI shows: a round dashboard with green/red bars and coloured buttons in the cockpit (0:00), a white circular hold-to-interact prompt with a key glyph on objects (0:36, 0:50) and a centre crosshair (0:44)."
+    visual_style: "Not visible: the trailer hides the HUD. Only in-world UI shows: a round dashboard with green/red bars and colored buttons in the cockpit (0:00), a white circular hold-to-interact prompt with a key glyph on objects (0:36, 0:50) and a center crosshair (0:44)."
     layout_and_hierarchy: null
     color_scheme: []
     typography:
@@ -239,7 +239,7 @@ commercial_and_return_prompts:
     urgency_or_streak_cues: []
     evidence: [description_1]
 world_and_presentation:
-    navigation_and_objective_readability: "Trailer (video_preview_1): destinations are huge and instantly recognisable bodies (Saturn's rings, the Sun, Earth, a blue gas giant) that read from far away as targets; how a player picks or finds a destination was not shown."
+    navigation_and_objective_readability: "Trailer (video_preview_1): destinations are huge and instantly recognizable bodies (Saturn's rings, the Sun, Earth, a blue gas giant) that read from far away as targets; how a player picks or finds a destination was not shown."
     landmarks_and_variety:
         - "Trailer (video_preview_1) shows: Saturn-like ringed planet, the Sun at close range, Earth, a blue gas giant, a zero-g space station interior, an asteroid field, icy, pink and volcanic surfaces, cyan cloud layer, an icy moon with geysers, a ring structure, an underground tunnel, at least five ship designs"
         - "Advertised real Solar System landmarks (Moon, Mars, Saturn, Pluto, ISS, Hubble, Halley's Comet) plus fictional Planet X and the Titan update's methane lakes and underground facilities"
@@ -268,7 +268,7 @@ practical_takeaway:
     testable_hypothesis: "If each new area reached grants a named badge and a visible next destination, more new players will reach the second area in their first session than with upgrades alone."
     estimated_effort_and_assumptions: "Estimate: small, assuming areas and travel already exist; badges and a destination list UI only."
 inferences:
-    - "Very high approval (about 96%) and favourite ratio relative to a small concurrent population suggest a loyal but small live audience; this is correlation, not a cause."
+    - "Very high approval (about 96%) and favorite ratio relative to a small concurrent population suggest a loyal but small live audience; this is correlation, not a cause."
     - "Steep drop in badge awards from the Moon (28.7M) to far destinations (0.1-0.5M) suggests most players stop early in the destination ladder."
 uncertainties:
     - "Game-pass API returned nothing; monetization beyond crates is unknown."

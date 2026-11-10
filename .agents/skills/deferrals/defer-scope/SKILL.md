@@ -32,7 +32,7 @@ lists the only justifications for a record, and a flagged attempt is one of them
 
 Nothing is written before `acceptance-gate` admits the record, and a refusal is carried out as its
 disposition says: fix and do send the work into the change in flight, and close is recorded as a
-cancelled issue with its reason and reconsideration criterion so the next run does not present the
+canceled issue with its reason and reconsideration criterion so the next run does not present the
 finding again. Report the refusal either way. An explicit user invocation with a scope
 settles justification, not the confirmed-defect refusal; the gate still confirms the problem is real
 and the criteria describe an end state.

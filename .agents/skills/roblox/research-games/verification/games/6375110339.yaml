@@ -213,7 +213,7 @@ gameplay:
   - Points +30 per wave cleared (300 -> 330 -> 360).
   - Daily login card flips to a green 'CLAIMED' stamp with '+300 P' floating text (6375110339-10.png).
   - 'Video: floating damage numbers and an on-screen HITS combo counter with total DMG during combat (video_1 frames 004, 008-011).'
-  - 'Video: boss health shown as a large name-labelled bar at screen bottom for raid bosses, and per-enemy numeric HP bars over bodies (video_3 frames 013-016; video_1 frames 007-011).'
+  - 'Video: boss health shown as a large name-labeled bar at screen bottom for raid bosses, and per-enemy numeric HP bars over bodies (video_3 frames 013-016; video_1 frames 007-011).'
   progression:
   - Character roster of 21 categories (Camera, Speaker, TV, Clock, Drill, ...) with tiers 1-4 and per-character Mastery levels and 48 skins; most entries LOCKED (6375110339-13.png).
   - Separate Titans tab in the roster.
@@ -341,12 +341,12 @@ ui:
     size_observation: Headings about 30-40 px and body about 13-16 px at 1920x1200; player-list sublines about 9 px and hard to read.
     size_basis: visual_estimate
     viewport_resolution: 1920x1200 points
-    readability: Headings clear; small grey sublines and the red-on-dark 'You are not ready yet' banner were low contrast.
+    readability: Headings clear; small gray sublines and the red-on-dark 'You are not ready yet' banner were low contrast.
   controls:
     primary_actions: Large green full-width buttons for the main action (LET'S GO, READY), yellow for Claim.
     close_x_appearance_and_location: 'Daily Login: red square with white X at the panel''s top-right (6375110339-10.png). Roster: wide ''CLOSE [,]'' button bottom-right with a blue X icon. Quests panel: close control not reachable, hidden under the player list.'
     modal_behavior: Centered panels with dimmed background; guide card stays above modals.
-    state_feedback: Ready button switches from red ring 'UNREADY' to green ring 'READY'; locked roster rows show grey 'LOCKED' pills, owned shows green 'OWNED'.
+    state_feedback: Ready button switches from red ring 'UNREADY' to green ring 'READY'; locked roster rows show gray 'LOCKED' pills, owned shows green 'OWNED'.
     target_size_and_input: 'Left icon buttons about 80x80 px; READY about 560x100 px. Keyboard shortcut '','' for the roster. Video (touch tablet): circular on-screen buttons for each skill letter (Y, G, R, F, E), large LMB and jump buttons bottom-right, Run and Dash pills, and a virtual stick bottom-left (video_1 frame 034).'
   graphics:
     graphics_versus_text: Icon plus label on every HUD button; rewards shown as card icons (green 'MC'/'x2' cards, orange 'LT') with a caption.
@@ -382,7 +382,7 @@ new_player_onboarding:
   evidence:
   - play_1
 accessibility_and_comfort:
-  text_and_contrast: Mostly white on near-black; low-contrast grey sublines and dark-red banner text; arena scenes very dark.
+  text_and_contrast: Mostly white on near-black; low-contrast gray sublines and dark-red banner text; arena scenes very dark.
   non_color_cues_and_icon_labels: HUD icons all labeled; ready state uses both ring color and text.
   input_support_observed:
   - Mouse click
@@ -462,14 +462,14 @@ transferable_ideas:
 - A settings panel that lets players skip repeated cutscenes and helicopter intros and switch to low-graphics mode respects returning players' time (video_3).
 practical_takeaway:
   strongest_idea: Bundle onboarding into a numbered checklist with a previewed reward for finishing, and let teammates' successes pay the newcomer so early sessions feel rewarding.
-  main_tradeoff: Joining a match already at wave 73 put a level-1 player into advanced waves and a raid boss in a dark arena before combat was taught; the guide taught meta menus first, and its card covered its own target. Videos add that later progression relies on long grinds and 10% drops (weeks per item per a guide creator), which favours dedicated players over casual returners.
+  main_tradeoff: Joining a match already at wave 73 put a level-1 player into advanced waves and a raid boss in a dark arena before combat was taught; the guide taught meta menus first, and its card covered its own target. Videos add that later progression relies on long grinds and 10% drops (weeks per item per a guide creator), which favors dedicated players over casual returners.
   suitable_genres_and_stages:
   - Cooperative wave defense
   - Any game with an early meta layer (dailies, quests, roster) for first-session onboarding
   testable_hypothesis: A numbered 4-5 step guide with a previewed starter reward raises the share of new players who reach their first combat action compared with no guide.
   estimated_effort_and_assumptions: Estimate 2-3 days for a guide-card component and step triggers, assuming existing reward granting and a UI framework.
 inferences:
-- The guide's order (daily reward, quests, then combat) suggests the game prioritises return systems in the first session.
+- The guide's order (daily reward, quests, then combat) suggests the game prioritizes return systems in the first session.
 - Placing new players into an in-progress endless run may be intended to keep matches full; its effect on new-player retention is unknown.
 uncertainties:
 - No own kill was confirmed, so the combat feel, skill keys beyond E, and guide step 5 were not experienced.

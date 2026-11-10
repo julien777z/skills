@@ -78,7 +78,7 @@ evidence:
       timestamps: []
       screenshots: []
       limitations:
-          - "Promotional render titled 'PIERCING PHYSICS': first-person arm holding a spear, a crosshair, a flat light-grey tiled plain under blue sky, two standing NPC figures in the distance and a fallen figure with a dart in its torso in the foreground. Advertised style only."
+          - "Promotional render titled 'PIERCING PHYSICS': first-person arm holding a spear, a crosshair, a flat light-gray tiled plain under blue sky, two standing NPC figures in the distance and a fallen figure with a dart in its torso in the foreground. Advertised style only."
     - id: thumb_2
       kind: thumbnail
       url: "https://tr.rbxcdn.com/180DAY-b4ea22a09a6c3978c6d0a4b120f887a8/768/432/Image/Png/noFilter"
@@ -163,7 +163,7 @@ evidence:
           - "No captions exist for this video (YouTube lists no subtitles or automatic captions), so the player's intent is inferred from frames only. Long quiet stretches of driving; returning player state unknown."
 gameplay:
     advertised_loop: "Pick a free tool (dart, spear, grenade, guns, brick, gold stick) and use it on ragdoll NPCs to watch physics reactions: piercing, knock-back and explosions."
-    observed_loop: "From video: choose a map or scenario from the title menu, pick a weapon or tool from a categorised panel, hit wandering NPCs, read the top-left anatomical hit feed ('RIGHT KNEE - knee joint destroyed'), watch the ragdoll react (limping, crawling, speech bubbles of symptoms), then press R to reset everyone and try something else. Scenarios add short objective missions (Home Invasion, Hostage Rescue, SWAT Raid, wave-based Apocalypse) ending in a results card with Retry / Menu (video_1, video_2)."
+    observed_loop: "From video: choose a map or scenario from the title menu, pick a weapon or tool from a categorized panel, hit wandering NPCs, read the top-left anatomical hit feed ('RIGHT KNEE - knee joint destroyed'), watch the ragdoll react (limping, crawling, speech bubbles of symptoms), then press R to reset everyone and try something else. Scenarios add short objective missions (Home Invasion, Hostage Rescue, SWAT Raid, wave-based Apocalypse) ending in a results card with Retry / Menu (video_1, video_2)."
     first_action: "Video: press PLAY on the title menu (or pick Maps / Scenarios), spawn holding a 9 mm pistol on the Classic tiled plain, and shoot the nearest NPC (video_1 0:00-0:40)."
     first_success_seconds: null
     success_feedback:
@@ -198,7 +198,7 @@ pacing:
     first_meaningful_choice_seconds: "0-10 s in video_1: the title menu offers Play, Maps or Scenarios at once."
     first_reward_seconds: "Estimate 30-40 s in video_1: first hit-feed entry visible at the 0:40 frame."
     action_reward_cadence: "Every shot or hit produces an immediate ragdoll reaction and a hit-feed line; in video_2 a new feed entry is visible in most 10 s frames during free play."
-    active_play_versus_travel_or_waiting: "Mostly active; NPCs wander within a few metres of spawn on Classic. City and Forest add walking; cars cover distance (video_3 spends about 40 s driving)."
+    active_play_versus_travel_or_waiting: "Mostly active; NPCs wander within a few meters of spawn on Classic. City and Forest add walking; cars cover distance (video_3 spends about 40 s driving)."
     natural_stopping_points: ["Each scenario's results card with Retry / Menu (video_1 4:10, video_2 8:50)", "Switching maps through the Maps panel"]
     measurement_method: "Timings from the videos' own timestamps, sampled from frames every 10 s; edited footage, so values are estimates to the nearest 10 s."
     evidence: [video_1, video_2, video_3]
@@ -233,9 +233,9 @@ agency_and_social:
     evidence: [api_1, video_1, video_3]
 ui:
     evidence_status: observed
-    visual_style: "Flat dark-grey panels with one saturated colour header per panel (red Weapons and Scenarios, green Sandbox, blue Maps and Cars, orange Workshop), bold condensed white sans-serif titles; the world uses plain light tiled ground and bright sky."
-    layout_and_hierarchy: "Left vertical icon rail (Shop, Weapons, Sandbox, Cars, Workshop, Settings, Menu); top-left hit feed; bottom-centre key-hint bar; bottom-right weapon hotbar list with the held weapon name large ('AK-47 HOLD: FIRE'); scenario name and objective top-centre with a red LEAVE button; health bar bottom-centre in scenarios (video_2 7:50, video_1 1:30)."
-    color_scheme: ["dark grey panel bodies", "red, green, blue and orange panel headers by function", "bright green EQUIP buttons", "purple Robux price buttons", "orange pumpkin prices", "yellow wave timer bar"]
+    visual_style: "Flat dark-gray panels with one saturated color header per panel (red Weapons and Scenarios, green Sandbox, blue Maps and Cars, orange Workshop), bold condensed white sans-serif titles; the world uses plain light tiled ground and bright sky."
+    layout_and_hierarchy: "Left vertical icon rail (Shop, Weapons, Sandbox, Cars, Workshop, Settings, Menu); top-left hit feed; bottom-center key-hint bar; bottom-right weapon hotbar list with the held weapon name large ('AK-47 HOLD: FIRE'); scenario name and objective top-center with a red LEAVE button; health bar bottom-center in scenarios (video_2 7:50, video_1 1:30)."
+    color_scheme: ["dark gray panel bodies", "red, green, blue and orange panel headers by function", "bright green EQUIP buttons", "purple Robux price buttons", "orange pumpkin prices", "yellow wave timer bar"]
     typography:
         font_appearance: "Bold condensed uppercase sans-serif for titles and results ('HOSTAGE RESCUED', 'YOU DIED'); small regular sans-serif for the hit feed and key hints"
         font_family_if_verified: null
@@ -245,12 +245,12 @@ ui:
         readability: "Panel titles and the held-weapon label are readable; the multi-line hit feed is dense and small."
     controls:
         primary_actions: "Click to fire, hold to aim; keyboard shortcuts printed in the bottom bar (Q, M, K, T, R, Ctrl)"
-        close_x_appearance_and_location: "White X in a small dark square at the right end of each panel's coloured header (video_1 1:30, video_2 5:50)"
-        modal_behavior: "Panels open centred over the live world, which keeps running behind them; the Join Event card has its X top-left (video_1 0:40)"
-        state_feedback: "Owned weapons show a green EQUIP; locked ones show a price and a progress bar; sandbox toggles show ON (green) / OFF (grey) with FREE, GAMEPASS or PUMPKINS tags"
+        close_x_appearance_and_location: "White X in a small dark square at the right end of each panel's colored header (video_1 1:30, video_2 5:50)"
+        modal_behavior: "Panels open centered over the live world, which keeps running behind them; the Join Event card has its X top-left (video_1 0:40)"
+        state_feedback: "Owned weapons show a green EQUIP; locked ones show a price and a progress bar; sandbox toggles show ON (green) / OFF (gray) with FREE, GAMEPASS or PUMPKINS tags"
         target_size_and_input: "Desktop sizes; touch support not seen"
     graphics:
-        graphics_versus_text: "Weapon and map cards pair a rendered thumbnail with a caption; sandbox options are text rows with coloured tags"
+        graphics_versus_text: "Weapon and map cards pair a rendered thumbnail with a caption; sandbox options are text rows with colored tags"
         illustration_or_icon_style: "Simple white glyph icons with labels on the left rail; 3D-rendered weapon portraits"
         framing_outlines_and_effects: "Flat cards, minimal outlines; 'YOU ARE HERE' green badge on the current map"
         placement_and_labels: "Every rail icon has a text label under it"
@@ -270,7 +270,7 @@ new_player_onboarding:
     evidence: [video_1, video_2, video_3]
 accessibility_and_comfort:
     text_and_contrast: "White text on dark panels has good contrast; the hit feed is small multi-line text over the world."
-    non_color_cues_and_icon_labels: "Rail icons carry text labels; ON/OFF toggles carry words as well as colour; price tags say FREE, GAMEPASS or PUMPKINS."
+    non_color_cues_and_icon_labels: "Rail icons carry text labels; ON/OFF toggles carry words as well as color; price tags say FREE, GAMEPASS or PUMPKINS."
     input_support_observed: ["keyboard and mouse only"]
     motion_audio_settings: ["Sandbox toggles for Blood (on by default), Slow motion and Gravity (video_1 3:20); a Settings panel with switches including third person (video_3 0:30), not read in detail"]
     settings_tested: []
@@ -285,7 +285,7 @@ commercial_and_return_prompts:
     urgency_or_streak_cues: ["Event weapons tied to the Halloween event"]
     evidence: [video_1]
 world_and_presentation:
-    navigation_and_objective_readability: "Classic is an open tiled plain where NPCs are always in view; scenarios put the objective in one top-centre line with a LEAVE button."
+    navigation_and_objective_readability: "Classic is an open tiled plain where NPCs are always in view; scenarios put the objective in one top-center line with a LEAVE button."
     landmarks_and_variety:
         - "Video: Classic tiled plain with pool, ramps and leaderboard signs; City with crossings, pharmacy and traffic lights; Forest with tall grass; Ragdoll Playground of glass booths; Shooting Range; night scenario maps (gas station, apartment, street) (video_1, video_2, video_3)."
     environmental_storytelling: ["Scenario set-ups such as 'someone is at the door' in Home Invasion (video_1 4:00)"]

@@ -51,7 +51,7 @@ all differ, so no glyph appears twice in the navbar.
 `tone` is `good`, `warning`, `critical`, `accent` or `done`, as **Making A Dashboard** defines
 them; omit it for neutral. `links` is `[{kind, label, url}]`: pills under the item that open its sources,
 each led by its `kind` — `doc`, `code`, `diff`, `spec`, `pull-request`, `config`, `test`, `page` or
-`data`, shown as Doc, Code, Diff, Spec, PR, Config, Test, Page or Data — and labelled briefly, such as
+`data`, shown as Doc, Code, Diff, Spec, PR, Config, Test, Page or Data — and labeled briefly, such as
 `terms-of-service.md L324` or `export.py L40–L58`. `at` is an ISO 8601
 timestamp the page shows in the viewer's own timezone on a 12-hour clock, such as `9:05 PM`, with the
 date when it is not today. Every section takes an optional `description`, one sentence shown under
@@ -92,7 +92,7 @@ A `questions`, `links` or `changes` item's `group` names what it belongs to, suc
 request's repository as `owner/repo`; when one item sets it, every item and the section's
 `group_label`, the name of what the groups are, such as `Repository`, are set too. The section
 shows its items group by group, in the order each group first appears, with each group's name above
-its items. With two or more groups it also shows a select labelled `group_label`, offering All and
+its items. With two or more groups it also shows a select labeled `group_label`, offering All and
 each group; choosing a group shows only its items, without the group names above them, and the
 count, the questions' summary and the pages follow what is shown.
 
@@ -159,7 +159,7 @@ Dashboards look alike because they are built alike:
   batch is frozen". A numbered title keeps its number; the text about it never leans on one.
 - **A label names only what it marks.** A segment, tag, group or row label never restates the
   dashboard's `topic` or the heading above it: the reader already has both, so a progress segment
-  is labelled with its step, such as "Offer rules", never "Plot waitlist: Offer rules", and an outline
+  is labeled with its step, such as "Offer rules", never "Plot waitlist: Offer rules", and an outline
   group is headed with the area it covers, never with the task's name.
 - **Labels and headings are written in sentence case and shown as written.** The dashboard's
   `title` and the preview `topic` `Synthetic Preview` are names, in title case.
@@ -169,9 +169,12 @@ Dashboards look alike because they are built alike:
   fine, such as a merged pull request beside open ones. Leave it out for neutral; never tone an item only to decorate it.
 - **Blue text is a link.** A reader clicks blue text, so only links take it, and a tone colors a
   dot, border, line or bar, never text. A figure, number or label meant to stand out sits in a
-  neutral badge rather than taking a color or the weight its neighbouring names already use.
-- **Every section says what it holds.** Give each one a `description`: one sentence on what the
-  reader finds or does there, never a narration of its controls.
+  neutral badge rather than taking a color or the weight its neighboring names already use.
+- **A `description` earns its line.** Leave it out unless it tells the reader something the title
+  and the section's contents do not, such as which entries a count covers. A sentence that restates
+  the title, describes the section's form, such as "as a list" or "newest first", narrates its
+  controls, or adds a caveat that changes nothing the reader does, such as who will make the final
+  version of what it shows, is left out.
 - **Sources are links, never paths in text.** Anything a reader can check, such as a file and line,
   a diff, a pull request, a document's section or a page of a site, goes in `links` with a URL that
   opens it at that exact place: a permalink to the line or range at the commit that was read, or the
@@ -180,8 +183,10 @@ Dashboards look alike because they are built alike:
   `references` entry so the mention itself is a link.
 - **Times are timestamps.** A moment goes in `at` as a timestamp, never as a clock time written into
   text, so every reader sees it in their own timezone.
-- **Text is plain.** Titles say what is true in a few words; `detail` explains in a sentence or two
-  that reads without the source. A file, section or line is named by its `links` pill, never in the
+- **Text is plain.** Titles say what is true in a few words, in the words a reader scans for, such
+  as "Opening hours" rather than "When you can visit us"; `detail` explains in a sentence or two
+  that reads without the source. Every title, label, caption and description is plain statement,
+  never flourish. A file, section or line is named by its `links` pill, never in the
   title, `detail` or `meta`.
 
 ## Previews

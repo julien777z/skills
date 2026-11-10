@@ -12,7 +12,7 @@ base merge is done is the worst judge of whether the result reintroduces what it
 or costs more than it buys. The fix reads as correct because the rule it breaks is the one the change
 is still establishing, a deferral reads as prudent because nobody has yet asked whether the work was
 small, and a finding reads as urgent because nobody has asked whom it protects. Every question below
-is one the author would answer in its own favour, so a different subagent answers it.
+is one the author would answer in its own favor, so a different subagent answers it.
 
 ## What The Intent Statement Names
 
@@ -44,7 +44,7 @@ The statement names:
 - the caller's example search: each example value the user supplied during the task — a name, an
   identifier, an amount, a message, a record or capture from their data — searched for
   case-insensitively, whole and by its parts and reformattings, such as a code's prefix alone, an amount
-  without separators or a slug, in the item under judgement, the diff's added lines, the branch
+  without separators or a slug, in the item under judgment, the diff's added lines, the branch
   name, the pull request's title and body and the commit messages. The receipt names each value by
   its kind, such as "the reported plant code", never by the value itself, and lists the forms and
   places searched and its hits; or it states that the user supplied none. Each bracketed kind in
@@ -59,7 +59,7 @@ The statement names:
   branches whether or not the task touches them.
 
 Read deletions before additions, but do not treat an empty deletion set as an empty intent. A file
-added and removed within the branch disappears from its final diff without cancelling the ownership
+added and removed within the branch disappears from its final diff without canceling the ownership
 decision that removed it. Preserve that decision until the user changes it. When inputs disagree,
 resolve them against the accepted requirements and history instead of silently narrowing the scope.
 
@@ -92,14 +92,14 @@ whether an exploit counts, which **Exploitable Findings** settles.
 Two things never count as product state. The deployment's dimensions — row counts, instance size,
 traffic — are facts about today's environment, and repository guidance must bar them from every
 design argument; a mechanism that cannot grow is a defect whatever the current table holds. And a defect is
-never weighed at all, because a broken behaviour has no gain side to price.
+never weighed at all, because a broken behavior has no gain side to price.
 
 ## What A Verdict Names
 
 It returns the verdict its question defines: **accept** or **flag** for every question but triage,
 and one of triage's four dispositions there. Every verdict is specific. Acceptance names, for every
 addition whose kind matches a removed shape, the addition, the shape it takes, and why that is
-neither the removed shape nor a finding under the rubric; additions of other kinds are summarised.
+neither the removed shape nor a finding under the rubric; additions of other kinds are summarized.
 "Looks reasonable" is not acceptance. A flag names the lines, the shape they take, the intent item or
 rubric item they violate, or the independent judgment concern, and the remedy the change itself
 would take — narrow the model rather than subtract from it, derive the set from the declaration
@@ -309,8 +309,8 @@ ends the question.
    user approves, never returned as do. Incidental cleanup past `pre-production`'s size budget is
    defer without the arguability test, and incidental cleanup inside it is do. Nor are the size
    and shape of the work inputs the gate may take on trust: "large", "not mechanical", "each site
-   needs its own judgement" and "it spans suites the change does not touch" are the asker's
-   characterisation of the asker's own record. Check the count against the tree and open enough of
+   needs its own judgment" and "it spans suites the change does not touch" are the asker's
+   characterization of the asker's own record. Check the count against the tree and open enough of
    the actual call sites to see whether the edit repeats. This is the inverse of the fix test's
    treatment of a measured rate, which is taken as given precisely because reading the tree cannot
    produce one — size is exactly what reading the tree can.
@@ -320,7 +320,7 @@ ends the question.
 **Admission — may this work be deferred?** The triage question asked of a proposed record. The
 answer is accept when triage's disposition is defer, and otherwise a refusal naming the disposition
 that applies: fix and do send the work into the change in flight, and close records the decision as a
-cancelled record with its reason and reconsideration criterion. An explicit user instruction to
+canceled record with its reason and reconsideration criterion. An explicit user instruction to
 defer settles the defer test's justification; the gate still answers the fix test, confirms the problem
 is real from the current tree or measured evidence, and checks that the criteria describe an end
 state. Repeated flags are evidence about the attempted fixes, never admission by themselves. The
@@ -381,7 +381,7 @@ sibling paths lack. An added check is never accepted as a security gain on its f
    which removes duplication the other invites, which failure modes each has already produced in this
    tree. **Flag a resolution that states no comparison, and one whose only stated reason is that the
    incoming shape is one the change removes** — that reason is available in every collision and always
-   points the same way, so it records no judgement. Arrival order is not evidence in either direction.
+   points the same way, so it records no judgment. Arrival order is not evidence in either direction.
 
 **Final acceptance — may this merge?** The item is the complete pull-request diff against the intent
 statement and the rubric, read once after review is clean and before any check gate.
@@ -390,5 +390,5 @@ statement and the rubric, read once after review is clean and before any check g
 
 The gate is never advisory. A proposal it flags is not written; a diff it flags does not stand.
 Repeated flags follow **Bounds**, with no exception for agent configuration; a disposition is
-carried out by the caller — a fix or do goes into the change, a defer is recorded, a close is recorded cancelled. What a disposition names as the
+carried out by the caller — a fix or do goes into the change, a defer is recorded, a close is recorded canceled. What a disposition names as the
 user's — an open fork the gate found unasked — is put to the user, and nothing else about it is.

@@ -48,7 +48,7 @@ Before round 1, triage outstanding pull-request comments and fix what they raise
 the user did not ask for, fix known issues and run the relevant checks, so the council reviews the current work. When the user wants to drop the implementation and
 explore new ideas, skip fixes to code that is being replaced.
 
-1. Send each member the brief and collect the replies. Summarise the useful findings, where members
+1. Send each member the brief and collect the replies. Summarize the useful findings, where members
    disagree, and the next steps.
 2. Make the changes you agree with, and answer each finding: fixed, or declined with evidence. A
    defect outside the request is always fixed; cleanup outside it is fixed when it fits

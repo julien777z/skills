@@ -49,7 +49,7 @@ play_coordination:
   expiry_or_blocker: null
 context:
   play_style: "Survival / Escape (API genre_l1 Survival, genre_l2 Escape): first-person school-basement horror escape with a single pursuing monster"
-  camera_perspective: "First person with a flashlight cone and a small centre reticle; the lobby is third person (video_1, video_3)"
+  camera_perspective: "First person with a flashlight cone and a small center reticle; the lobby is third person (video_1, video_3)"
   device_and_input: "Videos recorded on PC, keyboard and mouse; a permanent bottom-left key list: E Interact, SHIFT Sprint, F Flashlight, B Battery, Q Whistle, N Night Vision Goggles, V Shove, H Help, M Unlock Mouse (video_2 9:00)"
   observation_environment: "Passive: games, votes, media, thumbnails, game-pass, badge and age-recommendation APIs plus the experience page, read from the host over HTTPS; gameplay studied from three YouTube videos (frames every 15 s plus auto-captions). Not played."
   visible_server_population: "API at 2026-11-09T03:02Z: 15,680 playing, maxPlayers 24 per server. Runs seen are solo (video_1, video_2) or a small group of two friends plus one stranger on the bus (video_3)."
@@ -125,11 +125,11 @@ evidence:
       - "Two friends on voice chat with heavy profanity and arguing; cuts and a frame of the experience web page (0:15, discarded); shows the pre-run lobby the other videos skip."
 gameplay:
   advertised_loop: "Wake in a locked school basement, evade one hunter ('HE is hunting you') while staying quiet ('Don't make a sound'), and escape the school."
-  observed_loop: "Pick a starter kid and a difficulty on the bus -> read four rule cards -> clear the basement exit (find crowbar, pry 5 boards) -> search lockers across the dark school for 4 coloured keys while Cartman hunts by sound, hiding in lockers and using found items (traps, alarm clock, fried chicken lure, batteries) -> place each key in the basement exit door -> the door jams, find the crank parts and crank 5 times -> escape. Death costs a life; losing all lives ends the run, with spectating or a paid revive. (video_1, video_2, video_3)"
+  observed_loop: "Pick a starter kid and a difficulty on the bus -> read four rule cards -> clear the basement exit (find crowbar, pry 5 boards) -> search lockers across the dark school for 4 colored keys while Cartman hunts by sound, hiding in lockers and using found items (traps, alarm clock, fried chicken lure, batteries) -> place each key in the basement exit door -> the door jams, find the crank parts and crank 5 times -> escape. Death costs a life; losing all lives ends the run, with spectating or a paid revive. (video_1, video_2, video_3)"
   first_action: "Read rule cards, then find a crowbar in the basement and press E on the boards ('Now go to the BOARDS and press E to pull them off.') (video_1 0:28-1:00, video_2 0:15-1:00)."
   first_success_seconds: 81
   success_feedback:
-    - "Short centred captions for each pickup and step: 'You found $10', 'You found a trap! Take it out (5), aim at the floor and click', 'You got a KEY! Take it to the EXIT DOOR in the basement - it GLOWS. If Cartman gets you, you DROP it.', 'The exit door is open. Get out!' (video_1 2:15, video_2 2:30, 9:30)."
+    - "Short centered captions for each pickup and step: 'You found $10', 'You found a trap! Take it out (5), aim at the floor and click', 'You got a KEY! Take it to the EXIT DOOR in the basement - it GLOWS. If Cartman gets you, you DROP it.', 'The exit door is open. Get out!' (video_1 2:15, video_2 2:30, 9:30)."
     - "Floating '+$15 from a locker' money pop-ups at the right (video_2 3:00)."
     - "Objective checklist ticks and counters update ('Pry the boards off 0/5', 'Find the keys 0/4') (video_1 1:00)."
     - "Badge toast on first death/escape events (video_3 5:00)."
@@ -191,7 +191,7 @@ agency_and_social:
 ui:
   evidence_status: observed
   visual_style: "Grim, near-black with a parchment-and-blood palette: dark framed panels with red ribbon headers, small serif and typewriter-style text, illustrated cards (video_1 0:00, video_3 0:30-1:30)."
-  layout_and_hierarchy: "Top right: LIVES, OBJECTIVE with counter, EXTRA TASKS checklist; bottom left: key-binding list; bottom right: battery icon with spare count and a brain 'Insanity' icon that turns red; bottom centre: held item slot with name ribbon; centre-bottom: message captions; lobby: left column Inventory/Servers/Character/Settings, right Daily Tasks, top right Cash and Candy (video_2 9:00, video_3 0:45)."
+  layout_and_hierarchy: "Top right: LIVES, OBJECTIVE with counter, EXTRA TASKS checklist; bottom left: key-binding list; bottom right: battery icon with spare count and a brain 'Insanity' icon that turns red; bottom center: held item slot with name ribbon; center-bottom: message captions; lobby: left column Inventory/Servers/Character/Settings, right Daily Tasks, top right Cash and Candy (video_2 9:00, video_3 0:45)."
   color_scheme: ["near-black", "blood red ribbons and highlights", "off-white parchment text", "green battery level", "red tint over the screen at high insanity"]
   typography:
     font_appearance: "Serif headings in caps on red ribbons; typewriter/monospace captions with key words in red caps ('KEY', 'EXIT DOOR', 'GLOWS', 'DROP')"
@@ -203,7 +203,7 @@ ui:
   controls:
     primary_actions: "E interact prompts placed on objects ('E Remove Boards', 'E Search', 'E Open'); key list always visible (video_1 1:00, video_2 3:00)."
     close_x_appearance_and_location: null
-    modal_behavior: "Intro rule cards are a paged modal with BACK/NEXT, page dots and 'Never show again'; character picker and difficulty picker are centred modals (video_1 0:00, video_3 0:30-1:30)."
+    modal_behavior: "Intro rule cards are a paged modal with BACK/NEXT, page dots and 'Never show again'; character picker and difficulty picker are centered modals (video_1 0:00, video_3 0:30-1:30)."
     state_feedback: "Objective counters, checkboxes for extra tasks, battery bars, insanity brain turning red, red screen vignette (video_2 9:00)."
     target_size_and_input: "PC only in videos; card buttons small (visual estimate)."
   graphics:
@@ -255,7 +255,7 @@ world_and_presentation:
   success_effect_intensity_and_clarity: "Quiet: text captions and small money pop-ups; the scares, not the rewards, carry the intensity."
   evidence: [video_1, video_2]
 technical_quality:
-  loading_or_missing_assets: ["Loading tip card warns of grey or blurry walls while loading (video_1 0:15)", "'LOADING' screen on the bus departure (video_3 1:15)"]
+  loading_or_missing_assets: ["Loading tip card warns of gray or blurry walls while loading (video_1 0:15)", "'LOADING' screen on the bus departure (video_3 1:15)"]
   input_or_frame_issues: ["Player reports a delay before sprinting starts (video_1 captions 8:02)", "Player reports lag (video_3 captions 9:30)"]
   ui_defects: []
   recovery_behavior: null
@@ -271,7 +271,7 @@ transferable_ideas:
   - "Lit signs naming rooms inside a dark map give a navigable landmark system without HUD markers (from promotional renders, confirmed in videos with 'NURSE' and 'LOCKER ROOM' signs)."
 practical_takeaway:
   strongest_idea: "A 25-second picture-card briefing plus a one-minute guided first task, then just-in-time item captions: a new player reaches independent play in under 90 s and learns each tool when it first appears."
-  main_tradeoff: "Darkness, tiny text and loud scares are the product but hurt readability and comfort; a later sub-goal (crank parts) gives no hint; the game leans on a recognisable TV cartoon's characters, a brand and moderation risk."
+  main_tradeoff: "Darkness, tiny text and loud scares are the product but hurt readability and comfort; a later sub-goal (crank parts) gives no hint; the game leans on a recognizable TV cartoon's characters, a brand and moderation risk."
   suitable_genres_and_stages: ["horror and stealth escapes", "any game with several tools to learn", "first-session onboarding"]
   testable_hypothesis: "Showing a one-line use caption the first time each item is picked up raises the share of new players who use that item in their first run, compared with listing all items on an intro card."
   estimated_effort_and_assumptions: "Estimate: a day for first-pickup captions, assuming an item system with pickup events and a caption UI."

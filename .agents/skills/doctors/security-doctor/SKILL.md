@@ -36,7 +36,7 @@ report.
 
 ## Lenses
 
-Each lens runs the checks its section of `security-audit`'s attack-class catalogue lists;
+Each lens runs the checks its section of `security-audit`'s attack-class catalog lists;
 **Missing Construction** runs the rubric's **Building It Safely** checks *Use the guard that already
 exists*, *Assert what a provider already tells you* and *Add no surface the request does not need*,
 as its section bounds them. Evidence is the rubric's **What A Surviving Finding Has Been Put
@@ -89,7 +89,7 @@ fallback, optional bypass, unused mode — the product does not need.
 
 ### Exposed Defaults
 
-The literal checks in the catalogue's **Obvious things**: committed secret files and working seed
+The literal checks in the catalog's **Obvious things**: committed secret files and working seed
 credentials, debug or dev mode reachable in production, unprotected administrative and
 diagnostic endpoints, permissive cross-origin settings with credentials, session cookies without
 protective attributes, unvalidated redirects, and errors returning internals.

@@ -69,7 +69,7 @@ evidence:
       screenshots: []
       limitations:
           - "Marketing text: 'Create your own movies, and watch a never-ending stream of videos by people just like you! It's just like YouTube!'; also explains how to report a video (Videos > My Videos > flag icon)."
-          - "Stats at retrieval: 626,802,876 visits, 973,427 favourites, 15,479 playing; votes 535,337 up / 36,358 down (about 94% positive)."
+          - "Stats at retrieval: 626,802,876 visits, 973,427 favorites, 15,479 playing; votes 535,337 up / 36,358 down (about 94% positive)."
     - id: page_1
       kind: description
       url: "https://www.roblox.com/games/13600218266/My-Movie"
@@ -90,7 +90,7 @@ evidence:
       limitations:
           - "Promotional art; cannot establish actual UI, controls or onboarding."
           - "Image 1 (alt text 'Use text, characters, pictures, and sound to create movies quick!') mocks up an editor: a scene with a pasted picture and a Roblox avatar with a speech bubble, a round four-segment radial menu (Avatars, Picture, Text, Sound) with illustrated icons, a filmstrip thumbnail with a blue '+' add tile, and the caption 'EASY TO USE VIDEO EDITOR!'."
-          - "Image 3 shows a video player frame with view (eye, '20,000+') and like (heart, '1,000+') counters and 'Create videos!'; images 2 and 4 are glossy mascot/clapperboard and theatre-screen 'YOU MAKE THE MOVIE!' key art."
+          - "Image 3 shows a video player frame with view (eye, '20,000+') and like (heart, '1,000+') counters and 'Create videos!'; images 2 and 4 are glossy mascot/clapperboard and theater-screen 'YOU MAKE THE MOVIE!' key art."
     - id: gamepass_1
       kind: description
       url: "https://apis.roblox.com/game-passes/v1/universes/4723764956/game-passes?passView=Full&pageSize=50"
@@ -139,7 +139,7 @@ gameplay:
     first_success_seconds: null
     success_feedback: ["Advertised: view and like counters on a published video (thumbnail_1).", "Video: 'Good work on your movie!' dialog on publish, naming a newly unlocked tool ('You just unlocked Timings!'), 'Your movie will play on the big screen soon.', and three next steps: Make more!, Watch movies!, Back to theater (video_session_1 6:50, frame DYGgfJPZkDM-028).", "Video: the published movie plays on the cinema screen in front of everyone in the server with the creator's name and a 'GRAND PREMIERE!' tag (video_session_1 7:20-9:00).", "Video: ticket balance rose from 460 to 610 across the publish (video_session_1 0:00 vs 6:50); the cause of the increase is inferred, not shown."]
     progression: ["Inferred from passes: creation limits (images, characters, movie length, speech length) appear to be the expandable resource.", "Video: editor features unlock by use; the first publish unlocked 'Timings' (video_session_1 6:50).", "Video: pose categories (General 2, Creepy, Dances, Exercise, Fighting, Glitch and more) show lock icons and 'Buy 1,100' ticket prices, so tickets earned in game buy pose packs (video_session_2 9:00)."]
-    choices_and_variety: ["Advertised: four content types (avatars, pictures, text, sound) combined freely.", "Video: the picture search returns a very wide library, including memes and stock photos, plus a background library grouped by room (bedroom, living room, lunchroom, the game's own lobby) and animated stickers (video_session_1 0:30; video_session_2 8:30).", "Video: avatars take poses and emotions from a categorised library and can be animated across the stage (video_session_1 1:18-2:05; video_session_2 9:00)."]
+    choices_and_variety: ["Advertised: four content types (avatars, pictures, text, sound) combined freely.", "Video: the picture search returns a very wide library, including memes and stock photos, plus a background library grouped by room (bedroom, living room, lunchroom, the game's own lobby) and animated stickers (video_session_1 0:30; video_session_2 8:30).", "Video: avatars take poses and emotions from a categorized library and can be animated across the stage (video_session_1 1:18-2:05; video_session_2 9:00)."]
     social_and_cooperative: ["Advertised asynchronous audience: players watch each other's videos; a report flow exists for rule-breaking videos.", "Video: synchronous co-creation; several players in one server place their avatars and edit the same movie together, and the cinema screen gives a shared watch party with Comment and Like (video_session_1 1:09-1:30, 7:20; video_session_2 1:14-3:10)."]
     companions_and_pets: []
     friction: ["Description must explain how to report videos, which suggests moderation of user content is a live concern.", "Video: a newcomer said 'How does this game work? I am confused' and was taught by another player rather than by the game (video_session_1 0:31).", "Video: copy and paste was not discoverable ('how do you copy and paste it?') (video_session_2 2:19).", "Video: in a shared movie one player's added pictures cluttered the scene and the others cleared everything (video_session_2 3:03-3:13).", "Video: text entry is a full-screen dimmed modal with OK/Cancel that hides the scene being captioned (video_session_2 2:00, 2:30)."]
@@ -181,8 +181,8 @@ agency_and_social:
     evidence: [description_1, thumbnail_1, video_session_1, video_session_2]
 ui:
     evidence_status: observed
-    visual_style: "From videos: a dark neon cinema lobby (red star carpet, glowing screens, projector) and a glossy, early-2010s-style editor: chrome-framed stage, dark carbon-fibre panels, blue gradient tiles with illustrated icons (video_session_1, video_session_2)."
-    layout_and_hierarchy: "Lobby: centred bottom bar of five icon buttons with labels (Store, Tickets, Create, Movies, Invite), Watch (eyes icon) bottom right, ticket balance top right. Editor: stage takes about three-quarters of the width; at right a 2x2 tile panel (Pictures, Text, Sound, Avatars) with an Invite bar, then Play and Publish below; slide strip across the bottom with a blue + tile at its right end; undo arrow top left, red X close top right (video_session_1 0:00, 1:30). The promotional radial menu (thumbnail_1) is in game a 2x2 grid."
+    visual_style: "From videos: a dark neon cinema lobby (red star carpet, glowing screens, projector) and a glossy, early-2010s-style editor: chrome-framed stage, dark carbon-fiber panels, blue gradient tiles with illustrated icons (video_session_1, video_session_2)."
+    layout_and_hierarchy: "Lobby: centered bottom bar of five icon buttons with labels (Store, Tickets, Create, Movies, Invite), Watch (eyes icon) bottom right, ticket balance top right. Editor: stage takes about three-quarters of the width; at right a 2x2 tile panel (Pictures, Text, Sound, Avatars) with an Invite bar, then Play and Publish below; slide strip across the bottom with a blue + tile at its right end; undo arrow top left, red X close top right (video_session_1 0:00, 1:30). The promotional radial menu (thumbnail_1) is in game a 2x2 grid."
     color_scheme: ["dark charcoal panels", "glossy mid-blue tiles and buttons", "red close X", "neon green and purple lobby lights", "magenta and orange panel headers in the picture browser"]
     typography:
         font_appearance: "Small white sans labels under icons; bold white sans headline in dialogs ('Good work on your movie!'); user text in a thin sans on the stage (videos)"
@@ -194,13 +194,13 @@ ui:
     controls:
         primary_actions: "Click a tile to open a library, click an item to place it, drag and stretch it on the stage, + to add a slide, Play to preview, Publish to release (video_session_1 0:45-1:57, 6:48)"
         close_x_appearance_and_location: "Square red X with white cross at the top right of the editor and of each library overlay (video_session_1 0:30, 1:30)"
-        modal_behavior: "Text entry and 'Add a new slide...' are centred prompts over a dimmed editor with small blue OK/Cancel or New slide/Copy slide/Back buttons; the publish result is a centred dialog over the dimmed lobby (video_session_2 2:00, 9:30; video_session_1 6:50)"
+        modal_behavior: "Text entry and 'Add a new slide...' are centered prompts over a dimmed editor with small blue OK/Cancel or New slide/Copy slide/Back buttons; the publish result is a centered dialog over the dimmed lobby (video_session_2 2:00, 9:30; video_session_1 6:50)"
         state_feedback: "Selected objects show a thin bounding box with corner handles; the current slide is highlighted in the strip (video_session_1 1:45, 3:00)"
         target_size_and_input: "Editor tiles about 60x55 px and the + tile about 32 px at 960 px width; library thumbnails about 85 px squares (video_session_1)"
     graphics:
         graphics_versus_text: "Tools are illustrated icons with one-word labels; libraries are thumbnail grids with a search bar; pose names are text under small stick-figure pose previews (video_session_1 1:30; video_session_2 9:00)."
         illustration_or_icon_style: "Glossy skeuomorphic icons (paint palette, 'Abc', speaker, avatar bust, clapperboard, globe) (video_session_1 1:30)"
-        framing_outlines_and_effects: "Chrome bevelled stage frame with a red-to-blue edge glow, gradient tiles, star favourite marks on library items (video_session_1 0:30, 1:30)"
+        framing_outlines_and_effects: "Chrome beveled stage frame with a red-to-blue edge glow, gradient tiles, star favorite marks on library items (video_session_1 0:30, 1:30)"
         placement_and_labels: "Picture browser pairs the grid with side cards: 'Need ideas?' suggestion chips, 'Use backgrounds', 'Use stickers' (video_session_1 0:30)"
         clarity_or_clutter: "Editor is uncluttered; the lobby HUD is light. Libraries are dense grids with very mixed content."
     evidence: [thumbnail_1, video_session_1, video_session_2]
@@ -262,6 +262,6 @@ practical_takeaway:
 inferences:
     - "Capacity-limit passes suggest the free tier caps movie size and length (inferred from pass names, not observed)."
 uncertainties:
-    - "Editor and premiere observed only in creator videos; first-join onboarding and the Watch feed's behaviour remain unobserved."
+    - "Editor and premiere observed only in creator videos; first-join onboarding and the Watch feed's behavior remain unobserved."
     - "What tickets are earned for and what 'Timings' does are not shown."
 blockers: []

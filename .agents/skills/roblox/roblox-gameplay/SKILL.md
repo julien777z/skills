@@ -32,7 +32,7 @@ Where the end of the guided chain, or of a unit such as a round, a stage, a leve
 
 Every result is judged in the game as a player would meet it, whether you built it or a worker did: from a capture or a playtest, not from the brief, the code or a report. Ask of each thing in view whether it makes sense in this world, not only whether it is broken: an object reads as what it is meant to be, a room's furnishings fit its purpose, a character holds what it holds, a creature belongs in its area's level band, a label sits where it can be read, a rule agrees with the game's other rules. Something that reads wrong is fixed, whoever made it and whenever, even when no brief, check or request mentioned it.
 
-Making the game read right is the agent's call: redesign an asset, a room, a placement, a balance value or a mechanic that does not make sense, including content built before the current task, and report each change with its captures, naming new behaviour as new. This is the global product-choice boundary's game-design exception. Only a change to the game's core loop or genre, to anything players pay for, to security, disclosure or authorization, or to something the user decided goes to the user first.
+Making the game read right is the agent's call: redesign an asset, a room, a placement, a balance value or a mechanic that does not make sense, including content built before the current task, and report each change with its captures, naming new behavior as new. This is the global product-choice boundary's game-design exception. Only a change to the game's core loop or genre, to anything players pay for, to security, disclosure or authorization, or to something the user decided goes to the user first.
 
 ## Reward real progress and preserve player understanding
 
@@ -40,7 +40,7 @@ Show what was earned and why using the game's actual rewards and progress states
 
 Tie near-term actions to clear medium-term goals and recognizable milestones. New powers, useful upgrades, newly accessible areas, personalization, and increased player skill can all make progress tangible. Vary tasks, pacing, encounters, and scenery while retaining a familiar core action. Avoid extending play only through repetitive waiting or arbitrary travel; preserve intentional anticipation, exploration, and tactical pauses where they make the genre enjoyable. Pace a leveled game through level design rather than level requirements on encounters: an encounter never refuses to start because of the player's level. Place each area's creatures and each fight in the level band a player naturally has when the game first sends them there, never above it, and let the curve and the amount of content set how long a world lasts; a check that fails when an area's creatures start above its arrival level keeps that true as content grows.
 
-Show locked content where the player will use it, together with what unlocks it: a silhouetted collection entry, a padlocked slot, a greyed move labelled with the level or mastery that opens it, a mode showing the wins it needs, or a gate that states its requirement as a number the player can read from the approach. The condition shown must be the one the game actually checks. Content the progression contract keeps secret can stay hidden or appear as an unnamed slot.
+Show locked content where the player will use it, together with what unlocks it: a silhouetted collection entry, a padlocked slot, a grayed move labeled with the level or mastery that opens it, a mode showing the wins it needs, or a gate that states its requirement as a number the player can read from the approach. The condition shown must be the one the game actually checks. Content the progression contract keeps secret can stay hidden or appear as an unnamed slot.
 
 Where the game allows it, let what the player did stay visible in the world: ground they cleared, a structure that grows as they invest in it, NPCs that react to what they chose, their name on what they own. The world then shows progress without a meter. Drive these changes from authoritative state, bound them, and keep them consistent on rejoin and streaming.
 
@@ -86,7 +86,7 @@ Fit companions to the genre, progression, and production stage. A popular featur
 
 ## Paid offers
 
-When a game sells items, a paid action never looks like free progression or help. Give paid controls their own shape and a price label, not only a colour or a small badge. Keep them off the routes and controls that guidance sends a new player through. A help, hint or "+" button either does what its label promises for free or shows its cost before it is pressed.
+When a game sells items, a paid action never looks like free progression or help. Give paid controls their own shape and a price label, not only a color or a small badge. Keep them off the routes and controls that guidance sends a new player through. A help, hint or "+" button either does what its label promises for free or shows its cost before it is pressed.
 
 ## Validate fun at the affected scale
 

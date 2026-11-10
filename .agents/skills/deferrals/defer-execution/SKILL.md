@@ -65,7 +65,7 @@ The worktree leaves the current branch's working tree untouched.
 
 2. **Delegate the work to a subagent** scoped to that worktree, once no other building worker in the
    session is changing the same files or resources. Invoke `subagent-matrix` at its standard capability
-   level, launch its exact resolved identifier, and retain catalogue state, identifier, assignment state
+   level, launch its exact resolved identifier, and retain catalog state, identifier, assignment state
    and host receipt with the scope's evidence in the task ledger through `session-ledger`, as
    `subagent-matrix`'s **Dispatch** requires. This keeps the
    parent session's own state and working directory where they were. Give the worker the scope, the worktree

@@ -26,7 +26,7 @@ Keep authoritative state and rewards on the server. Client requests express inte
 
 Preserve session ownership, serialized saves, failed-load protection, shutdown saves, and once-only rewards. Never overwrite a failed load with defaults. Keep saves and gameplay contracts unchanged unless the task authorizes a change. Use isolated Studio profiles and validation keys when testing persistence. Development commands require server-side authorization.
 
-Separate animation/camera completion from authoritative resolution. Missing assets, slow rendering, or cancelled effects must not stall gameplay. Keep content definitions, gameplay services, and client presentation distinct without imposing a large architecture on a small feature.
+Separate animation/camera completion from authoritative resolution. Missing assets, slow rendering, or canceled effects must not stall gameplay. Keep content definitions, gameplay services, and client presentation distinct without imposing a large architecture on a small feature.
 
 ## Structured player persistence
 

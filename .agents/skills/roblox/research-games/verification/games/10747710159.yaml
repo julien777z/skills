@@ -173,7 +173,7 @@ agency_and_social:
 ui:
   evidence_status: observed
   visual_style: "Bright cartoon hub with blocky trees and round wooden tables; chunky white letter tiles with dark outlines; bold rounded sans-serif headlines with heavy dark outline over the world."
-  layout_and_hierarchy: "Top bar: green cash with a green '+' and gold trophy count with a yellow '+'; top right settings and music icons. Turn view: headline 'a word starting with:' at top, letter tiles centre, stopwatch right, strike marks bottom centre, hearts bottom right, '+7s' boost left. Hub: left Shop / Free / Skins buttons (touch), right STARTER PACK and 2X CASH / 2X WINS / 2X STREAK buttons (video_1, video_2)."
+  layout_and_hierarchy: "Top bar: green cash with a green '+' and gold trophy count with a yellow '+'; top right settings and music icons. Turn view: headline 'a word starting with:' at top, letter tiles center, stopwatch right, strike marks bottom center, hearts bottom right, '+7s' boost left. Hub: left Shop / Free / Skins buttons (touch), right STARTER PACK and 2X CASH / 2X WINS / 2X STREAK buttons (video_1, video_2)."
   color_scheme: ["saturated green grass and blue sky", "white letter tiles", "green cash and '+' buttons", "gold trophy and '+'", "red hearts and red strike marks", "purple star Starter Pack"]
   typography:
     font_appearance: "Bold rounded sans-serif with thick dark outline for headlines and tiles; uppercase tiles"

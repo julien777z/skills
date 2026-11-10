@@ -70,7 +70,7 @@ measurement that cannot be taken is recorded as unmeasured with the reason.
 ## Delegate The Audit
 
 Use multiple read-only subagents for every run. Invoke `subagent-matrix` at its standard capability level
-for each reviewer, launch the exact resolved identifier, and retain catalogue state, identifier, assignment state
+for each reviewer, launch the exact resolved identifier, and retain catalog state, identifier, assignment state
 and host receipt in the unified ledger. The parent owns that ledger.
 
 1. Launch at least two independent reviewers. Qualifying independent hunters launched by a domain
@@ -83,7 +83,7 @@ and host receipt in the unified ledger. The parent owns that ledger.
    find what a single-slice reviewer cannot see, and challenge every proposed disposition whose
    evidence does not establish the full picture. The doctor names what its cross-cutting reviewer
    compares.
-3. Give every reviewer the complete lens catalogue; dependency hunters apply the audit's assigned
+3. Give every reviewer the complete lens catalog; dependency hunters apply the audit's assigned
    attack classes and scopes. Require findings anchored to concrete
    declarations, files, and lines. A lens that lists its checks is run check by check, and each
    check's result is reported, an empty result included: a check whose result is not reported was
@@ -109,7 +109,7 @@ Keep the ledger outside the repository unless the caller explicitly requests a d
 
 ## State The Intent
 
-Build the intent statement from the lens catalogue and the user's approved remediation plan,
+Build the intent statement from the lens catalog and the user's approved remediation plan,
 following `acceptance-gate`'s intent contract. Preserve approved dispositions through implementation
 and check their completion against the change history and final diff.
 
@@ -154,8 +154,8 @@ never the absence of a retired implementation.
 
 After explicit plan approval, workers implement the complete approved plan side by side. Invoke
 `subagent-matrix` at its standard capability level for each implementation role, launch each exact resolved
-identifier, and retain catalogue state, identifier, assignment state and host receipt in the ledger under
-`subagent-matrix`'s **Dispatch**. The parent keeps the ledger, the plan's order, every judgement over the
+identifier, and retain catalog state, identifier, assignment state and host receipt in the ledger under
+`subagent-matrix`'s **Dispatch**. The parent keeps the ledger, the plan's order, every judgment over the
 combined result, and the full suite and every check that needs a shared resource; the edits fan out.
 
 - **A wave is the groups that can run at once:** groups whose files do not overlap and none of which
@@ -202,7 +202,7 @@ configured rather than inventing one.
 ## Review The Result
 
 Launch at least two independent read-only final reviewers. Invoke `subagent-matrix` at its standard
-capability level for each, launch the exact resolved identifier, and retain catalogue state, identifier,
+capability level for each, launch the exact resolved identifier, and retain catalog state, identifier,
 assignment state and host receipt in the unified ledger:
 
 - one verifies that every approved disposition was carried out completely;
@@ -231,7 +231,7 @@ moment the decision is made, is a decision the user declined — recorded so the
 rather than presenting the finding again — and anything found outside the run's lenses that no
 check rediscovers, subject to the doctor's reporting disposition and change boundary. Any other
 refused admission means in-boundary work is done in this run, unless the refusal names close,
-which is recorded cancelled with its reason and reconsideration criterion. A finding
+which is recorded canceled with its reason and reconsideration criterion. A finding
 stated only in chat, the plan, or the report is not recorded.
 
 ## Deliver

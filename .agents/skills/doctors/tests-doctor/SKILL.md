@@ -101,7 +101,7 @@ mechanical check that finds every instance rather than the first one noticed:
   requests across several modules, or tests a concern rather than a file has still claimed a
   source module that does not exist. `routes/test_pagination_bounds.py` with no
   `routes/pagination_bounds.py` is that finding.
-  It moves under the source module it covers, as a behaviour module in a directory named for that
+  It moves under the source module it covers, as a behavior module in a directory named for that
   module, or is named for the package it sweeps beside that package (`test_routes.py` next to
   `routes/`, for the sweep above);
 - a source suite fragmented into tiny classes/files, or a file with multiple test classes: apply test-fixture's class/file boundary test, map cases to the substantial owning class, and merge small related classes before deciding whether independently maintained responsibilities justify separate files; keep one class per resulting file and preserve distinct proof;
@@ -135,7 +135,7 @@ mechanical check that finds every instance rather than the first one noticed:
   application change. Two shapes stay where they are, and the report names every symbol it leaves
   for one of them with that reason, so a reviewer does not go hunting: an import-time registration
   such as a SQLAlchemy `@compiles` hook, whose consumer is the import itself and whose call-site
-  count says nothing; and a helper CI tooling or bootstrap runs to produce a repository artefact or
+  count says nothing; and a helper CI tooling or bootstrap runs to produce a repository artifact or
   bring an environment up, which is a machine consumer;
 - a test directory no runner target reaches, an empty mirror package, an orphaned module, or a
   numbered duplicate file;

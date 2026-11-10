@@ -88,18 +88,18 @@ pull-request context is a flag to obtain that context, not permission to assume 
 
 The gate is read-only and distinct from the author. If its reader cannot launch, apply
 `subagent-matrix`'s launch fallback. Invoke `subagent-matrix` at its advanced
-capability level. Dispatch the gate with that exact identifier, and retain catalogue state, identifier, assignment
+capability level. Dispatch the gate with that exact identifier, and retain catalog state, identifier, assignment
 state and host receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. It
 receives five things and nothing else:
 
 1. the intent statement, quoting the user's request in their words and carrying every decision the
    task has recorded that the item's subject touches, with the user's words, so earlier settled
-   behaviour is not judged as new and scope is judged against what the user asked;
+   behavior is not judged as new and scope is judged against what the user asked;
 2. the originating diff, with its deletions first; for a Proposal before implementation when no
    change is in flight, explicitly declare that no implementation diff exists and name the current
    source snapshot instead; every Diff, Final acceptance and Base incorporation still requires its
    actual immutable diff;
-3. the item under judgement — an issue or finding, a proposal, a diff, an incoming base diff, or a
+3. the item under judgment — an issue or finding, a proposal, a diff, an incoming base diff, or a
    record; a diff that adds or changes tests carries the cost evidence from its verification run
    under `test-fixture`'s existing-reporting procedure, including any unmeasured attribution;
 4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**. For each
@@ -152,7 +152,7 @@ incomplete.
 **Make the simpler candidate concrete.** For each suspect shape, apply the rubric's removal test
 before accepting it. Return the concrete consolidation or deletion, or the actual current contract
 that the simpler complete candidate would break. Missing validation evidence is a separate flag,
-never a reason to leave this judgement unfinished.
+never a reason to leave this judgment unfinished.
 
 **Trace changed state-like values during the design comparison.** Apply the rubric's **State
 Meaning** criteria to their writers, transformations and consumers, including values whose names did
@@ -284,7 +284,7 @@ The gate is never advisory; the rubric says what each disposition binds the call
 
 A flag blocks the flagged proposal or diff, not an ordinary repair the task already authorizes.
 Before admitting a flag, check it against the task's recorded decisions and the commit that
-introduced the behaviour it names. A flag that reopens a behaviour choice the user's recorded words
+introduced the behavior it names. A flag that reopens a behavior choice the user's recorded words
 or an earlier acceptance settled, or that asks for work outside the scope the user set, is
 answered as settled or out of scope with that evidence; it is never repaired and never put to the
 user as a question. Only the user's words settle a product choice: one an earlier acceptance or an
@@ -346,7 +346,7 @@ still open.
 
 Report every verdict with what it named, whether or not the item went on to land. A deferral's
 admission verdict is written on its record, and a close's reason and reconsideration criterion on
-the cancelled record.
+the canceled record.
 
 ## Output
 

@@ -183,11 +183,11 @@ gameplay:
     first_success_seconds: null
     success_feedback:
         - "Hits show a large white-red impact burst with a big damage number on the target (994732206-34.png)"
-        - "Quest completion stacks centred text lines: 'Earned $X', 'Earned N Exp. (2x) (+Melee 2x)', '<QUEST COMPLETED!>', 'LEVEL UP! (11)', 'Combat MASTERY LEVEL UP!', with a white-blue burst around the player (video_1 2:00, video_2 0:30)"
+        - "Quest completion stacks centered text lines: 'Earned $X', 'Earned N Exp. (2x) (+Melee 2x)', '<QUEST COMPLETED!>', 'LEVEL UP! (11)', 'Combat MASTERY LEVEL UP!', with a white-blue burst around the player (video_1 2:00, video_2 0:30)"
         - "Level-up flash and a new quest offered at once keep the next action obvious (video_2 0:30)"
     progression:
         - "Observed UI: Lv. and an XP bar (0/86) above Health and Energy bars; Stats panel with Melee, Defense, Sword, Gun and Blox Fruit, the last three locked; Stat Points counter, Custom Amount field and Refund button (994732206-8.png)"
-        - "Per-weapon mastery: Combat panel shows Mastery 1 (0/70), Quick Tackle [Z] at Mas. 1 and Ground Smash [X] greyed until Mas. 20 (994732206-34.png)"
+        - "Per-weapon mastery: Combat panel shows Mastery 1 (0/70), Quick Tackle [Z] at Mas. 1 and Ground Smash [X] grayed until Mas. 20 (994732206-34.png)"
         - "Island ladder in the first sea, each with 2-3 enemy quests ending in a boss: Pirate Starter bandits, Jungle monkeys, gorillas and Gorilla King (Lv. 25 boss), Pirate Village pirates, brutes and Chef (Lv. 55 boss), Desert bandits and officers, Frozen Village snow bandits, snowmen and Yeti (Lv. 110 boss), then Marine Fortress and Skylands (video_1, video_2 captions)"
         - "First Blox Fruit without Robux comes from the fruit gacha at about level 50; the creator calls reaching it his halfway goal (video_2 captions 1:00-2:00)"
         - "Quest rewards scale fast: $350/300 EXP at the first quest, $2,000/9,500 EXP for the Gorilla King, $10,000/220,000 EXP for the Yeti (video_1)"
@@ -206,7 +206,7 @@ gameplay:
         - "Boss slam attacks can nearly one-shot a low-level player; the player is reduced to Health 28/100 by the Gorilla King (video_2 1:00)"
         - "Fruit gacha results can be poor for grinding, prompting rerolls (video_2 captions 2:00-4:00)"
         - "The start gives no direct prompt: the recommended quest and its world marker appear only after clicking the compass (994732206-13.png)"
-        - "Bandits attacked while the player was still in the labelled safe zone (Health 95/100, 994732206-34.png)"
+        - "Bandits attacked while the player was still in the labeled safe zone (Health 95/100, 994732206-34.png)"
     evidence: [source_1, play_1, video_1, video_2, video_3]
 pacing:
     timing_start_definition: "Real play: launch command at 00:37:07Z; control = team-pick screen interactive. Videos: each video's own timestamps"
@@ -222,7 +222,7 @@ pacing:
     measurement_method: "Real play: wall-clock timestamps from the shell around input batches; about 5 s resolution. Videos: frames every 15 s plus 3 s for video_1's first minute, measured from the videos' own timestamps; all three are edited, so no real durations are claimed from them"
     evidence: [play_1, video_1, video_2]
 goals_and_progression:
-    next_goal_clarity: "Clear once the compass is clicked: a top banner 'Recommended Quest: Find the NPC at Pirate Starter.', a world '!' marker with a live distance in metres, and an off-screen arrow at the screen edge (994732206-13.png, 994732206-15.png, 994732206-33.png)"
+    next_goal_clarity: "Clear once the compass is clicked: a top banner 'Recommended Quest: Find the NPC at Pirate Starter.', a world '!' marker with a live distance in meters, and an off-screen arrow at the screen edge (994732206-13.png, 994732206-15.png, 994732206-33.png)"
     short_term_goals:
         - "Reach the starter quest NPC (recommended quest)"
         - "XP bar to level 2 (0/86)"
@@ -235,7 +235,7 @@ goals_and_progression:
         - "Stat point allocation across five stats with a Custom Amount field and a Refund option (not exercised: 0 points)"
     mastery_versus_stat_growth: "Both: character level gives stat points, and each weapon has its own mastery that unlocks moves"
     unlock_previews_and_optional_activities:
-        - "Locked moves are shown greyed with the mastery that unlocks them (Ground Smash, Mas. 20)"
+        - "Locked moves are shown grayed with the mastery that unlocks them (Ground Smash, Mas. 20)"
         - "Locked stat rows show a padlock"
         - "Fruit dealer list shows every fruit with an 'Out of Stock' stamp and a 'New fruits in hh:mm:ss' countdown (video_1 1:15, 6:30)"
         - "Sword and ability dealers on later islands preview purchasable upgrades with prices (video_2 captions 5:00-6:30)"
@@ -264,7 +264,7 @@ agency_and_social:
 ui:
     evidence_status: observed
     visual_style: "Bold flat panels: saturated yellow buttons with dark text, solid green and blue stat bars, dark translucent panels for menus and the move list"
-    layout_and_hierarchy: "Bottom-left stack: Menu button, money (green $), level, XP bar, Health, Energy. Bottom-centre: two-slot hotbar (Q dash, 1 Combat) with a safe-zone label above it. Bottom-right: equipped tool's Mastery bar and move list with key hints. Left edge: small icon row (settings, crew, ?, home, profile) and a compass button. Top-right: player leaderboard. Video: a quest tracker sits at the left edge above the menu with title, enemy, a count bar (0/5) and the reward as money and EXP icons; the XP bar shows the 2x boost countdown inside it (video_1 0:12, 2:00)."
+    layout_and_hierarchy: "Bottom-left stack: Menu button, money (green $), level, XP bar, Health, Energy. Bottom-center: two-slot hotbar (Q dash, 1 Combat) with a safe-zone label above it. Bottom-right: equipped tool's Mastery bar and move list with key hints. Left edge: small icon row (settings, crew, ?, home, profile) and a compass button. Top-right: player leaderboard. Video: a quest tracker sits at the left edge above the menu with title, enemy, a count bar (0/5) and the reward as money and EXP icons; the XP bar shows the 2x boost countdown inside it (video_1 0:12, 2:00)."
     color_scheme: ["yellow buttons", "green money and health", "blue energy", "red close button", "dark translucent panels", "white text with dark outline"]
     typography:
         font_appearance: "Heavy rounded sans for buttons and stats; outlined white text on the world"
@@ -276,15 +276,15 @@ ui:
     controls:
         primary_actions: "Click to attack with the equipped tool; number keys equip; Z/X/C moves listed with key letters beside them"
         close_x_appearance_and_location: "Red square with a white X at the top-right of the Stats panel title bar, beside a blue ? help button (994732206-8.png)"
-        modal_behavior: "Menu expands in place into a 2x2 grid of yellow buttons (Stats, Items, Close, Shop) replacing the single Menu button; Stats opens a centred panel without dimming the world (994732206-7.png, 994732206-8.png)"
-        state_feedback: "Equipped hotbar slot gets a cyan outline; compass button changes from green to brown when guidance is on; locked moves are greyed with their unlock level. Video: red count badges sit on Menu and Stats while stat points are unspent (video_1 2:00, video_2 0:30)"
+        modal_behavior: "Menu expands in place into a 2x2 grid of yellow buttons (Stats, Items, Close, Shop) replacing the single Menu button; Stats opens a centered panel without dimming the world (994732206-7.png, 994732206-8.png)"
+        state_feedback: "Equipped hotbar slot gets a cyan outline; compass button changes from green to brown when guidance is on; locked moves are grayed with their unlock level. Video: red count badges sit on Menu and Stats while stat points are unspent (video_1 2:00, video_2 0:30)"
         target_size_and_input: "Menu buttons about 115x40 px in the 1200 px capture; hotbar slots about 30 px square"
     graphics:
         graphics_versus_text: "Mostly text labels; icons are small and paired with words in the Stats panel"
         illustration_or_icon_style: "Small illustrated icons per stat (fist, shield, sword, gun, fruit). Video: event panels (Spooky Halloween Gacha) switch to illustrated prize tiles, a large character portrait, a red time-left pill and a yellow cost button, richer than the flat core panels (video_3 1:00)"
         framing_outlines_and_effects: "Rounded rectangles with thin dark borders; title bar in a yellow gradient"
-        placement_and_labels: "Every stat row pairs an icon, a coloured name, a level and a +1 button. Video: quest givers carry a large glowing yellow '!' in a blue hexagon before the quest and a yellow '?' with QUEST text and a ground ring nearby; shop NPCs show a green '$' with SHOP, a green ring and an Interact prompt; red diamonds float over quest targets (video_1 0:24-2:00, video_2 1:45, video_3 0:30). In real play these world markers did not render (play_1)."
-        clarity_or_clutter: "HUD is dense in the bottom corners but leaves the centre clear"
+        placement_and_labels: "Every stat row pairs an icon, a colored name, a level and a +1 button. Video: quest givers carry a large glowing yellow '!' in a blue hexagon before the quest and a yellow '?' with QUEST text and a ground ring nearby; shop NPCs show a green '$' with SHOP, a green ring and an Interact prompt; red diamonds float over quest targets (video_1 0:24-2:00, video_2 1:45, video_3 0:30). In real play these world markers did not render (play_1)."
+        clarity_or_clutter: "HUD is dense in the bottom corners but leaves the center clear"
     evidence: [play_1, video_1, video_2, video_3]
 new_player_onboarding:
     status: observed
@@ -292,7 +292,7 @@ new_player_onboarding:
     conventions:
         - "Full-screen team choice with short benefit lines"
         - "Opt-in quest guidance through the compass: banner text, world marker with distance, edge arrow"
-        - "Starter island labelled as a safe zone with PvP disabled"
+        - "Starter island labeled as a safe zone with PvP disabled"
         - "Video: the starter quest giver is marked by a large glowing '!' visible from spawn, and the first quest is a short kill count (5 bandits) right beside it (video_1 0:07-0:39)"
         - "Video: the first quest completion grants several levels at once and 12 stat points, immediately flagged by a red badge on Stats (video_1 0:39-0:48)"
         - "Video: after an island's quests the game itself tells the player to open the compass to find the next island (video_2 0:15)"
@@ -315,13 +315,13 @@ new_player_onboarding:
     evidence: [play_1, video_1, video_2]
 accessibility_and_comfort:
     text_and_contrast: "HUD text is large with strong outlines; the leaderboard is small"
-    non_color_cues_and_icon_labels: "Stat icons have text labels; locked items use a padlock, not only colour"
+    non_color_cues_and_icon_labels: "Stat icons have text labels; locked items use a padlock, not only color"
     input_support_observed: ["keyboard and mouse"]
     motion_audio_settings: []
     settings_tested: []
     clutter_and_interruptions:
         - "Enemies attacked inside the safe zone during onboarding"
-        - "Quest-complete text stacks up to eight lines in the screen centre over the action (video_2 0:30)"
+        - "Quest-complete text stacks up to eight lines in the screen center over the action (video_2 0:30)"
         - "At max level the screen fills with item-obtained lines, event bars and a busy hotbar (video_3)"
     evidence: [play_1, video_2, video_3]
 commercial_and_return_prompts:
@@ -345,7 +345,7 @@ world_and_presentation:
         - "Each island has its own theme: windmill village (Pirate Starter), jungle with rope bridges, a stone-and-timber pirate town, a desert with pyramids, a snow village with ice spikes (video_1 0:00-9:45)"
         - "Event dressing over the hub in October-November: pumpkins, spider webs, a cauldron room and a lava arena for the Great Pumpkin (video_3)"
     environmental_storytelling: []
-    audiovisual_consistency: "Low-poly blocky islands with bright saturated colours; event and fruit effects are much more detailed and glowing than the world (video_1, video_3)"
+    audiovisual_consistency: "Low-poly blocky islands with bright saturated colors; event and fruit effects are much more detailed and glowing than the world (video_1, video_3)"
     success_effect_intensity_and_clarity: "Hit burst is large and bright against the target, with a big damage number (994732206-34.png). Videos: quest completion and level-ups add a large swirling burst around the player; fruit moves fill much of the screen with light effects (video_2 0:30, video_3 3:45)"
     evidence: [play_1, video_1, video_2, video_3]
 technical_quality:
@@ -360,7 +360,7 @@ technical_quality:
     evidence: [play_1, video_1, video_2, video_3]
 transferable_ideas:
     - "Opt-in guidance: one compass button turns on a banner naming the next quest, a world marker with live distance, and an edge arrow when it is off-screen."
-    - "Show locked moves and stats in place, greyed with the exact mastery or padlock that unlocks them, so the next goal is visible from the first minute."
+    - "Show locked moves and stats in place, grayed with the exact mastery or padlock that unlocks them, so the next goal is visible from the first minute."
     - "A two-sided team choice at join, each side sold in three short benefit lines, gives a first meaningful choice before any tutorial."
     - "A first quest that is a tiny kill count beside spawn and pays several levels and a batch of stat points at once teaches the whole loop (quest, fight, reward, spend) in under a minute of play."
     - "An island ladder where each island ends in a boss and the game then points to the next island gives a clear medium-term goal and a natural stopping point."

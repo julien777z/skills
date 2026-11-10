@@ -118,7 +118,7 @@ alwaysApply: true
 - **Guidance that is true only once a still-open source pull request merges goes on that pull
   request when the current session created it, as its ledger receipt proves, or the user explicitly
   directs its continuation**: it describes
-  behaviour that pull request introduces, drops guidance about something it removes, or needs a
+  behavior that pull request introduces, drops guidance about something it removes, or needs a
   workflow or tool change it carries. It merges with the change that makes it true. Fold a separate
   agent-configuration pull request this session opened for such guidance into the source pull request
   and close it, saying where the work went. Otherwise the guidance joins the agent-configuration pull
@@ -176,7 +176,7 @@ alwaysApply: true
   waits instead for the user's review together with everything in its batch. A workflow, installer,
   or repository tooling outside a skill's folder is source work when its execution changes, even
   when it sits under `.agents`.
-  When the user asked for the change to be tested, first run the smoke test against the exact
+  When the user asked for the change to be tested, first run the skill test against the exact
   pull-request head. Check that the complete pull request remains confined to this agent
   configuration before using this exception.
 - **An agent-configuration pull request whose guidance depends on a still-open source pull request is held until that merge**, whatever its other gates say, unless the guidance rides that source pull request under **Branches and Pull Requests**. Guidance true on the default branch as it stands waits for nothing.
@@ -320,7 +320,7 @@ checks before delivery; retain evidence that the change has not invalidated.
   named in the report. Room on this machine never leaves a job to its hosted run: a shortage of
   disk, memory or ports is recovered as the global rules' local-stack bullet says, and the job runs
   here. Only a hosted service or credentials the session lacks, each established as the testing
-  rules' cannot-run bullet says, or runner-specific behaviour does.
+  rules' cannot-run bullet says, or runner-specific behavior does.
 - **A local variant of a CI check is not that check**, and each of these passes locally and fails
   in CI: lint or type checks scoped to the changed files, where CI's whole-tree run finds an import
   another change left unused in a file the branch never touched; a formatter or linter in write

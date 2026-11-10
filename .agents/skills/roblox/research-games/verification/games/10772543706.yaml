@@ -189,19 +189,19 @@ evidence:
 gameplay:
     advertised_loop: "Sweep moon dust tile by tile into a canister, empty it at the base for cash, upgrade brush, canister and speed, then drive sweepers and rovers and build robots, belts and machines; up to 4 friends; goal is a 100% clean Moon."
     observed_loop: "Lobby pad matchmaking into a party moon, a first-person toothbrush tool and a first quest to sweep 1 kg of dust; the sweep itself was not achieved."
-    video_observed_loop: "Videos show the loop the runner could not perform: hold left mouse to scrub white dust into a grey path, fill a small canister (1 kg, then 2.5 kg), walk back along a floor line to the Deposit for a few dollars, buy a wider brush at the tool shop and canister/payout levels at the Upgrade computer, and earn a +$4 bonus for each tile cleaned to 95%; later money goes to belts, robot docks and vehicles (yt_onboarding_1 1:15-9:45; yt_skilled_1 0:52-6:30)."
+    video_observed_loop: "Videos show the loop the runner could not perform: hold left mouse to scrub white dust into a gray path, fill a small canister (1 kg, then 2.5 kg), walk back along a floor line to the Deposit for a few dollars, buy a wider brush at the tool shop and canister/payout levels at the Upgrade computer, and earn a +$4 bonus for each tile cleaned to 95%; later money goes to belts, robot docks and vehicles (yt_onboarding_1 1:15-9:45; yt_skilled_1 0:52-6:30)."
     first_action: "Step onto a lobby Play pad to start or join a moon."
     first_success_seconds: null
     video_first_success: "First dust collected within about 15 s of arriving on the moon and first deposit (and $1 Scrubber purchase) about 30 s after arrival, measured on yt_onboarding_1's continuous clock (1:15 arrival, 1:30 sweeping, 1:45 tool shop)."
     success_feedback:
-        - "Video: the scrubbed path turns from white dust to grey ground under the brush; canister meter fills; 'Deposit: 2.5 kg +$2' toast; live tile % in the quest banner and a moon-cleared % at top right (yt_skilled_1 1:44-5:00)."
+        - "Video: the scrubbed path turns from white dust to gray ground under the brush; canister meter fills; 'Deposit: 2.5 kg +$2' toast; live tile % in the quest banner and a moon-cleared % at top right (yt_skilled_1 1:44-5:00)."
         - "Video: green completion banner with a check mark ('You know the loop', 'Buy a new brush - Done') (yt_skilled_1 1:18, 5:12)."
     progression:
         - "HUD canister meter (0.00 / 1 kg) and cash ($0) show the collect-and-deposit economy."
         - "Base board titled 'Never fill again' listing 'Sell as you sweep' and 'Infinite canister' upgrades with a Deposit station."
         - "Hotbar slot 2 holds a second tool (flashlight-like, not used)."
         - "Video: tool shop brush ladder Toothbrush > Scrubber ($1-$3) > Dustpan Brush > Broom, each wider (yt_onboarding_1 1:45)."
-        - "Video: Upgrade computer radial tree with levelled Canister, Payout, Head width, Head power, Tile bonus and Walk speed (yt_skilled_1 1:31)."
+        - "Video: Upgrade computer radial tree with leveled Canister, Payout, Head width, Head power, Tile bonus and Walk speed (yt_skilled_1 1:31)."
         - "Video: lobby Shard shop of permanent bonuses carried into every moon, and Classes (yt_skilled_1 0:13)."
         - "Video: Build menu of belts, splitters, robot docks, mite hives, crushers and block presses (yt_skilled_1 5:38-6:30)."
     choices_and_variety:
@@ -237,7 +237,7 @@ pacing:
     measurement_method: "Play: wall-clock capture times; resolution about +/- 5 s. Video: yt_onboarding_1's own timestamps from Play on the Roblox page, cross-checked against its continuous on-screen clock, frames every 15 s, so +/- 15 s; yt_skilled_1 is edited and gives order only."
     evidence: [play_1, yt_onboarding_1]
 goals_and_progression:
-    next_goal_clarity: "High in words: quest banner 'Sweep 1 kg of dust 0.00 / 1 kg - hold left mouse to scrub' with an amount counter; compass marker with metres to the target."
+    next_goal_clarity: "High in words: quest banner 'Sweep 1 kg of dust 0.00 / 1 kg - hold left mouse to scrub' with an amount counter; compass marker with meters to the target."
     short_term_goals:
         - "Sweep 1 kg of dust."
         - "Video quest chain: Sweep 1 kg > Buy a new brush > Buy canister upgrade 1 (free) > Empty your canister at the deposit > Clean a whole tile (+$4) > 'You know the loop' (yt_onboarding_1 1:15-5:15; yt_skilled_1 0:52-5:12)."
@@ -273,7 +273,7 @@ agency_and_social:
 ui:
     evidence_status: observed
     visual_style: "Chunky rounded cartoon UI: dark navy panels with light outlines, bright yellow and green buttons, bold rounded sans."
-    layout_and_hierarchy: "Top-centre compass strip with objective markers and a wide quest banner; left column of Shop, map and settings tiles with keycap badges; bottom-left cash and canister meters; bottom-centre hotbar with a tool-name and 'Hold to sweep' hint; right-side floating Robux offer."
+    layout_and_hierarchy: "Top-center compass strip with objective markers and a wide quest banner; left column of Shop, map and settings tiles with keycap badges; bottom-left cash and canister meters; bottom-center hotbar with a tool-name and 'Hold to sweep' hint; right-side floating Robux offer."
     color_scheme:
         - "Dark navy panels"
         - "Gold/yellow for Shop and highlights"
@@ -302,7 +302,7 @@ ui:
         clarity_or_clutter: "Clean HUD; the persistent animated Robux offer at right draws attention during the first quest."
     video_observations:
         - "Modals (Lobby Shop, Upgrade computer, Tool shop, Moon map, Build, What's Next) share one frame: yellow title bar with icon, dark navy body, red square X at top right (yt_skilled_1 0:13, 1:31, 5:38, 8:00; yt_onboarding_1 1:45)."
-        - "Quest banner turns into a green check banner on completion; a world-space yellow floor line and arrow lead to the Deposit with metres (yt_onboarding_1 2:45; yt_skilled_1 1:05)."
+        - "Quest banner turns into a green check banner on completion; a world-space yellow floor line and arrow lead to the Deposit with meters (yt_onboarding_1 2:45; yt_skilled_1 1:05)."
         - "'What's next' uses three picture cards with a one-line caption each and one Close button (yt_onboarding_1 5:15)."
     evidence: [play_1, yt_onboarding_1, yt_skilled_1]
 new_player_onboarding:
@@ -331,7 +331,7 @@ new_player_onboarding:
     evidence: [play_1, yt_onboarding_1, yt_skilled_1]
 accessibility_and_comfort:
     text_and_contrast: "Strong; dark panels behind all HUD text."
-    non_color_cues_and_icon_labels: "Keycap badges and mouse-button glyphs label inputs; warnings use words, not colour alone."
+    non_color_cues_and_icon_labels: "Keycap badges and mouse-button glyphs label inputs; warnings use words, not color alone."
     input_support_observed:
         - "Keyboard and mouse with a mouse lock toggle (V)."
     motion_audio_settings:
@@ -352,19 +352,19 @@ commercial_and_return_prompts:
     urgency_or_streak_cues: []
     evidence: [play_1, yt_onboarding_1, yt_skilled_1]
 world_and_presentation:
-    navigation_and_objective_readability: "Compass marker with metres leads out of the base; the dust surface (white) and swept ground (grey) contrast clearly."
+    navigation_and_objective_readability: "Compass marker with meters leads out of the base; the dust surface (white) and swept ground (gray) contrast clearly."
     landmarks_and_variety:
         - "Sci-fi lobby with pad screens and a view of the moon and a sweeper vehicle; circular base hub with a Deposit counter."
     environmental_storytelling:
-        - "Swept grey patches beside white dust show other work done on the moon."
+        - "Swept gray patches beside white dust show other work done on the moon."
     audiovisual_consistency: "Consistent bright, clean sci-fi look (audio not captured)."
-    success_effect_intensity_and_clarity: "Video: the clearest reward is the world itself, a grey path left behind the brush on white dust that makes progress visible at a glance, backed by small toasts and a green quest banner rather than big particle bursts (yt_onboarding_1, yt_skilled_1)."
+    success_effect_intensity_and_clarity: "Video: the clearest reward is the world itself, a gray path left behind the brush on white dust that makes progress visible at a glance, backed by small toasts and a green quest banner rather than big particle bursts (yt_onboarding_1, yt_skilled_1)."
     evidence: [play_1, yt_onboarding_1, yt_skilled_1]
 technical_quality:
     loading_or_missing_assets:
         - "Stretched, spiky avatar meshes for several players in the lobby (10772543706-1)."
     input_or_frame_issues:
-        - "Runner's synthetic held left mouse did not trigger the tool; real-device behaviour unknown."
+        - "Runner's synthetic held left mouse did not trigger the tool; real-device behavior unknown."
     ui_defects: []
     recovery_behavior: null
     measurements:

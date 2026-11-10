@@ -67,7 +67,7 @@ from the tree read before the gate. The dispositions:
 A record is evidence, not an implementation instruction. Consolidate duplicate records under the
 one resolution that addresses their shared cause.
 
-**Its resolution criteria describe the end state, never a licence to reach it.** They were written
+**Its resolution criteria describe the end state, never a license to reach it.** They were written
 when the problem was found, by someone who had not yet written the fix, so they bind what the
 codebase must end up like and nothing about what may be written to get there. Every rule the
 repository states holds inside a resolution exactly as it holds anywhere else, and so does the
@@ -122,7 +122,7 @@ Apply dispositions as follows:
   the issue to a canceled-category state. The work is real and someone may pick it up, so the
   record stays.
 - **Void** — the record describes nothing to do: opened by mistake, a duplicate, a finding that
-  proved wrong, or work a landed change already made irrelevant. Delete it rather than cancelling
+  proved wrong, or work a landed change already made irrelevant. Delete it rather than canceling
   it, following the cancel-or-delete rule in `linear`, which also covers what to do when the
   integration exposes no delete operation.
 - **Blocked** — record the blocker and required decision or external change; keep the issue active.

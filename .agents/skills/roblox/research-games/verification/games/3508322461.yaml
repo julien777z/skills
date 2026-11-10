@@ -51,7 +51,7 @@ play_coordination:
 context:
   play_style: Action / Battlegrounds & Fighting (API genre_l1 Action, genre_l2 Battlegrounds & Fighting)
   camera_perspective: third-person (spawn view, not operated)
-  device_and_input: macOS Roblox player in a VM; no input sent Videos show PC keyboard and mouse (source_4), a gamepad with relabelled tiles (source_5) and mobile/iPad touch (source_6).
+  device_and_input: macOS Roblox player in a VM; no input sent Videos show PC keyboard and mouse (source_4), a gamepad with relabeled tiles (source_5) and mobile/iPad touch (source_6).
   observation_environment: Isolated macOS guest VM over SSH, 1920x1200 points, captures downscaled to 1200 px
   visible_server_population: About 12 players listed in the kill leaderboard at join; API maxPlayers 25, 106,003 playing at retrieval
   solo_or_group: Public free-for-all server (inferred from leaderboard and other avatars in view)
@@ -84,7 +84,7 @@ evidence:
   timestamps: []
   screenshots: []
   limitations:
-  - 'Only the first thumbnail was retrieved: a greyscale manga-style sketch of a hooded figure with a scribbled speech bubble reading ''The Jujutsu-est''. It shows no gameplay or UI.'
+  - 'Only the first thumbnail was retrieved: a grayscale manga-style sketch of a hooded figure with a scribbled speech bubble reading ''The Jujutsu-est''. It shows no gameplay or UI.'
 - id: source_3
   kind: actual_play
   url: https://www.roblox.com/games/9391468976
@@ -184,7 +184,7 @@ gameplay:
   - Candy counter rises from event participation (26 to 93 during source_5).
   - In-game cash shown in the top bar ($312 to $967) and spent at vending machines (source_5 4:45).
   choices_and_variety:
-  - Join HUD shows a selected character labelled 'Six Eyes' with four named skill slots (Lapse Blue, Reversal Red, Rapid Punches, Twofold Kick) and a top-bar 'Characters' button, which suggests a choice of character movesets (3508322461-1).
+  - Join HUD shows a selected character labeled 'Six Eyes' with four named skill slots (Lapse Blue, Reversal Red, Rapid Punches, Twofold Kick) and a top-bar 'Characters' button, which suggests a choice of character movesets (3508322461-1).
   - Characters list named by epithet (Honored One, Vessel, Restless Gambler, Ten Shadows, Perfection, King of Curses), each with four base skills, an R special and an awakening (source_4 0:45, captions).
   - Workshop of player-made movesets and maps (1/11947 pages, sortable by month, with star, report, Robux and download buttons) (source_6 3:15).
   - Secret awakenings triggered by specific matchups (source_5 captions).
@@ -270,11 +270,11 @@ agency_and_social:
   - source_6
 ui:
   evidence_status: observed
-  visual_style: Muted, realistic night city street; flat grey translucent UI panels, in contrast to the bright cartoon style common on the charts.
-  layout_and_hierarchy: 'Top bar: Characters, a shop showing $0, settings and other icons. Top right: kill leaderboard. Bottom centre: character name, health bar, blue energy bar and four numbered skill tiles. Bottom right: candy currency counter (0) for the Halloween event. In video the same layout holds during combat: character name, health bar and awakening bar stacked over four skill tiles at bottom centre; event announcements as orange text at top centre (source_5).'
+  visual_style: Muted, realistic night city street; flat gray translucent UI panels, in contrast to the bright cartoon style common on the charts.
+  layout_and_hierarchy: 'Top bar: Characters, a shop showing $0, settings and other icons. Top right: kill leaderboard. Bottom center: character name, health bar, blue energy bar and four numbered skill tiles. Bottom right: candy currency counter (0) for the Halloween event. In video the same layout holds during combat: character name, health bar and awakening bar stacked over four skill tiles at bottom center; event announcements as orange text at top center (source_5).'
   color_scheme:
   - Dark navy night scene
-  - Translucent grey panels with black text
+  - Translucent gray panels with black text
   - Cyan bar accents
   typography:
     font_appearance: Plain sans-serif (Source Sans-like) in black on the rules panel and in white on the HUD; the rules title is in uppercase.
@@ -282,12 +282,12 @@ ui:
     size_observation: Rules body text about 11 px and skill labels about 8 px tall in the 1200-px capture of a 1920-point screen.
     size_basis: visual_estimate
     viewport_resolution: 1920x1200 points
-    readability: Rules text is small and grey-on-grey; skill tile labels are small.
+    readability: Rules text is small and gray-on-gray; skill tile labels are small.
   controls:
-    primary_actions: 'Number keys 1-4 for skills, shown as numbered tiles; first tile tagged ''TARGET''. Gamepad: a glyph legend at bottom left (Melee, Dash, Block, Special, Shift Lock, Lock On) and tiles relabelled L1/L2/R2/R1 (source_5 1:15). Touch: round buttons at right (shield block, star special, runner dash, fist M1, jump) and a lock icon for shift lock at top left (source_6 1:15).'
-    close_x_appearance_and_location: The rules panel has no X; its only control is a rectangular 'Accept' button at the bottom centre of the panel.
-    modal_behavior: A rules panel at the centre of the screen covers the avatar on join.
-    state_feedback: Skill tiles carry hints such as 'USE TWICE'; tiles light cyan when available and grey while on cooldown (source_4 3:15, source_5).
+    primary_actions: 'Number keys 1-4 for skills, shown as numbered tiles; first tile tagged ''TARGET''. Gamepad: a glyph legend at bottom left (Melee, Dash, Block, Special, Shift Lock, Lock On) and tiles relabeled L1/L2/R2/R1 (source_5 1:15). Touch: round buttons at right (shield block, star special, runner dash, fist M1, jump) and a lock icon for shift lock at top left (source_6 1:15).'
+    close_x_appearance_and_location: The rules panel has no X; its only control is a rectangular 'Accept' button at the bottom center of the panel.
+    modal_behavior: A rules panel at the center of the screen covers the avatar on join.
+    state_feedback: Skill tiles carry hints such as 'USE TWICE'; tiles light cyan when available and gray while on cooldown (source_4 3:15, source_5).
     target_size_and_input: Skill tiles about 40 px square in the capture (about 64 points).
   graphics:
     graphics_versus_text: Mostly text labels; skill tiles show names rather than icons in the captured state. Touch buttons are icon-only (source_6).
@@ -319,7 +319,7 @@ new_player_onboarding:
   - source_5
   - source_6
 accessibility_and_comfort:
-  text_and_contrast: Rules text is small, with low contrast on the translucent grey panel.
+  text_and_contrast: Rules text is small, with low contrast on the translucent gray panel.
   non_color_cues_and_icon_labels: Skill tiles have numbers and names.
   input_support_observed:
   - Keyboard and mouse (source_4)

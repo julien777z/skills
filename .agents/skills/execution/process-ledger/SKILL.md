@@ -31,12 +31,12 @@ Apply `session-ledger`'s **Guidance Batches** boundary.
   user asking to change a file the batch is changing included, takes the batch's id and its edit is
   pushed to the batch's pull request. The batch reruns only the checks that edit invalidates and
   keeps every verdict on what it left unchanged: the source check runs on the new head, the review
-  and acceptance gate judge the new increment alone, and the smoke round covers the new entry's
+  and acceptance gate judge the new increment alone, and the skill-test round covers the new entry's
   scenario and any entry whose wording the edit changed. A completed stage is not repeated for the
   entries it already covers.
 - **Once the batch's pull request has merged**, an entry admitted then starts the next batch, frozen
   when this one is done and delivered with its normal checks; the merged batch is never reopened.
-- A repair the batch's own review, gate or smoke round requires is the batch's work under
+- A repair the batch's own review, gate or skill-test round requires is the batch's work under
   `acceptance-gate`'s **Bounds** and `test-skill`, never a new entry.
 - **A run that finds a batch in flight** freezes nothing. It leaves the batch to its owner while the
   owner's record shows it delivering and the owner is live; otherwise it takes ownership under

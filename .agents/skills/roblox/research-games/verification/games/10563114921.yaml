@@ -174,7 +174,7 @@ agency_and_social:
 ui:
   evidence_status: observed
   visual_style: "Bright, saturated cartoon UI: chunky rounded rectangles with thick dark outlines, glossy color fills, heavy white display type with black stroke."
-  layout_and_hierarchy: "Left column of two large labelled buttons (Shop green, Index cyan); right column of three square icon buttons (egg red, paw orange, purple orb); stats bottom-left (speed, money); hotbar bottom-center; day/night timer bottom-right; game title banner top-center; leaderboard top-right."
+  layout_and_hierarchy: "Left column of two large labeled buttons (Shop green, Index cyan); right column of three square icon buttons (egg red, paw orange, purple orb); stats bottom-left (speed, money); hotbar bottom-center; day/night timer bottom-right; game title banner top-center; leaderboard top-right."
   color_scheme: ["Lime green and cyan buttons", "Red and orange icon tiles", "Money in bright green with black outline", "Dark charcoal panel interiors"]
   typography:
     font_appearance: "Heavy rounded sans display face, white or green with thick black stroke"
@@ -227,7 +227,7 @@ commercial_and_return_prompts:
 world_and_presentation:
   navigation_and_objective_readability: "Play: poor; floor arrows were the only route cue and other players' giant pets occluded them and the camera. Videos: the map is one long straight corridor running from the bases through biome bands, each named on entry, so once the first egg is taken direction is simple (video_2 0:15, video_3 4:30)."
   landmarks_and_variety: ["Eleven biome bands with distinct ground, walls and eggs: Forest to Titan Temple (video_2 2:45-5:10)", "SAFE ZONE spawn", "'TRAILS' stall", "Lucky-block stacks on a treadmill '+200/step'", "Wooden fences around bases", "House marker icon over a base"]
-  environmental_storytelling: ["Each biome has a sleeping guardian animal ('Zz' over it) beside its nests, signalling 'sneak and take' (video_1 0:30, video_3 5:45)"]
+  environmental_storytelling: ["Each biome has a sleeping guardian animal ('Zz' over it) beside its nests, signaling 'sneak and take' (video_1 0:30, video_3 5:45)"]
   audiovisual_consistency: "Consistent bright toy-like palette. Videos: the sleeping chicken's snoring is audible and the creator commented on it (video_1 captions)."
   success_effect_intensity_and_clarity: "Moderate and frequent: toasts, floating income numbers and confetti on upgrades (video_1, video_3)."
   evidence: [play_1, video_1, video_2, video_3]
@@ -245,7 +245,7 @@ transferable_ideas:
   - "Index completion rewards as the main early stat source, which rewards variety over grinding (video_3)."
   - "Day/night countdown that resets all pickups gives a natural rhythm and stopping point (video_1, video_3)."
   - "Pet Index as a per-world collection checklist with silhouetted '???' entries on rarity-colored tiles and a visible completion reward (cash + stat) with a CLAIM button."
-  - "Two large text-labelled primary buttons on the left edge, icon buttons on the right, stats bottom-left: a clear, consistent HUD frame."
+  - "Two large text-labeled primary buttons on the left edge, icon buttons on the right, stats bottom-left: a clear, consistent HUD frame."
 practical_takeaway:
   strongest_idea: "Per-world collection index with silhouettes and a claimable completion reward turns pet variety into a visible short-term goal; the videos show it is also the fastest early speed source, which in turn opens the next speed-gated biome, so collecting and exploring reinforce each other (video_3)."
   main_tradeoff: "Uncapped pet scaling for other players makes the shared world unreadable for a newcomer and buries the onboarding arrows; open PvP lets strangers hit and trap a new player during the very first steal (video_1)."
