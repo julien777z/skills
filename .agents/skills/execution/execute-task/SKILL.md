@@ -585,7 +585,7 @@ Apply the global rules’ **Reported Outcomes** before reporting or building on 
 The GitHub rule's **Branches and Pull Requests** owns pull-request selection. Apply that ownership
 decision before preserving a checked-out branch or updating an existing pull request. A guidance change rides the source branch in flight only where that rule puts it there.
 Verify selected pull requests remotely, and leave another session's branch and pull request
-untouched unless the selected route explicitly directs continuing it.
+untouched as that rule says unless the selected route explicitly directs continuing it.
 
 **A pull request exists from the first push.** The push that first carries a change opens its
 draft pull request, whatever is still being decided or built for it: an open question, a later

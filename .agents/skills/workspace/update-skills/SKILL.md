@@ -56,37 +56,45 @@ an untrusted one is left out and reported.
 Hold `agent-lock` on the key `skills-install`, acquired with `--ttl-seconds 900`, from step 2 until
 step 6 finishes, so two sessions never build or remove overlays at once. Run its `check` before
 every write to shared state: step 3's stash, fast-forward and marker deletion, step 4.4's marker,
-step 5, and each removal in step 6. A check that passes with under 300 seconds left ends that lease
-at this boundary: release it with `--resource-idle` and acquire a fresh one before the write, so a
-refresh longer than one lease goes on; a fresh acquisition that finds another holder is a lost
-lease. On a failed check or a lost lease, stop writes immediately, reacquire the lock, restore any
-stash this run pushed and verify its paths, then restart at step 2. Keep step 2's first record whole
-and the head each abandoned build reached; the restarted step 2 adds only overlays that record
-lacks. Repeat recovery after each lost lease until verification succeeds. After safe cleanup, release the lock with
-`--resource-idle` once step 6 finishes or an authority conflict holds further writes. A release the tool refuses means a successor took the lock after its deadline:
-release nothing, and report that the lock expired and which overlays were removed after its
-deadline.
+step 5, each removal in step 6, and each repair of damaged Git state. A check that passes with under
+300 seconds left ends that lease at this boundary: release it with `--resource-idle` and acquire a
+fresh one before the write, so a refresh longer than one lease goes on; a fresh acquisition that
+finds another holder is a lost lease. On a failed check or a lost lease, stop writes immediately,
+reacquire the lock, restore any stash this run pushed and verify its paths, then restart at step 2.
+Keep step 2's first record whole and the head each abandoned build reached; the restarted step 2
+adds only overlays that record lacks. Repeat recovery after each lost lease until verification
+succeeds. After safe cleanup, release the lock with `--resource-idle` once step 6 finishes or an
+authority conflict holds further writes. A release the tool refuses means a successor took the lock
+after its deadline: release nothing, and report that the lock expired and which overlays were
+removed after its deadline.
 
-A local fault is recovery work, not completion, and it never holds a refresh. **Damaged Git state in
-the skills checkout is backed up and repaired, whoever's branch it is**: a ref whose commit is
-missing, a branch whose pointer disagrees with the tree its index and files hold, a leftover
-duplicate ref, or a linked worktree Git can no longer open. First write the affected ref names and
-commit IDs, the index tree, and the files of any worktree checked out on that ref or no longer
-openable to the task's private storage. Then repair it: remove a ref whose commit is missing, point
-a branch at the commit whose tree its index and files already match, remove a duplicate ref, and
-prune or re-add a worktree Git cannot open. The report names each backup and repair. Such damage is
-never an authority conflict, and leaving another session's branches untouched never extends to refs
-that stop the refresh. If a checkout, Git object, ref, overlay or managed link cannot be read,
-preserve the original state and reconstruct a healthy source from the latest default branch, the
-last verified complete snapshot and retained trusted input records. Recover every readable pending
-change and preserve unreadable originals for later recovery; do not assert their contents or
-silently discard them. Repair the native installer or its owned source as needed, and resume the
-refresh through link verification. Link verification proves which source was installed, not the
-contents of unreadable inputs: report that uncertainty and continue investigating retained originals
-without holding installation. Use retained ownership records and installer preflight to distinguish
-managed links from foreign links. Reading merged guidance does not install it. Preserve foreign
-files and links outside user skill roots, native skill namespaces, trust checks and lock ownership
-throughout; a genuine authority conflict remains a decision while independent recovery continues.
+**Damaged Git state in the skills checkout never holds a refresh and is never put to the user; it is
+backed up and repaired, whoever's branch it is.** Damage is any of: a ref whose commit is missing
+from the object store; the checkout's branch pointing behind the commit whose tree its index and
+files match with no staged or unstaged difference, that commit being on the branch's upstream or in
+its own reflog; one ref name held loose and in `packed-refs` at different commits; and a linked
+worktree, other than a `skills-overlay/` one step 6 removes, that Git can no longer open. Repair it
+under the lock, at step 2, as soon as a read or fetch reports it. First write each affected ref name
+and commit ID, the index tree, and the files of each worktree checked out on that ref or no longer
+openable to private task storage. Then remove a ref whose commit is missing, point the stale branch
+at the matching commit, keep the copy of a split ref whose commit exists, the loose one when both
+do, and prune a worktree Git cannot open, re-adding it on the branch it was registered on when that
+branch is readable. That backup preserves the original for these cases. Any other dirty or diverged
+state is left as it is. An authority conflict is a competing live claim, such as another holder of
+the lock or an untrusted input, never a damaged ref.
+
+A local fault is recovery work, not completion. If a checkout, Git object, ref, overlay or managed
+link cannot be read, preserve the original state and reconstruct a healthy source from the latest
+default branch, the last verified complete snapshot and retained trusted input records. Recover
+every readable pending change and preserve unreadable originals for later recovery; do not assert
+their contents or silently discard them. Repair the native installer or its owned source as needed,
+and resume the refresh through link verification. Link verification proves which source was
+installed, not the contents of unreadable inputs: report that uncertainty and continue investigating
+retained originals without holding installation. Use retained ownership records and installer
+preflight to distinguish managed links from foreign links. Reading merged guidance does not install
+it. Preserve foreign files and links outside user skill roots, native skill namespaces, trust checks
+and lock ownership throughout; a genuine authority conflict remains a decision while independent
+recovery continues.
 
 1. Resolve an installed user-level skill link to its Git checkout. When the link resolves into an
    overlay worktree, use the main checkout it is a linked worktree of. Confirm the checkout is the
@@ -99,9 +107,10 @@ throughout; a genuine authority conflict remains a decision while independent re
    restore the stash and verify the original paths are present. Its uncommitted edits stay live
    through the links into it. Then delete every overlay's `skills-overlay` marker, so the installer
    returns to the checkout, and continue at step 5.
-4. **Otherwise build a new overlay**, and leave the source checkout's branch and working tree exactly
-   as they were, since the session goes on editing and pushing there. The installed links keep
-   pointing at the previous source until the new overlay is complete:
+4. **Otherwise build a new overlay**, and leave the source checkout's branch and working tree
+   exactly as they were apart from a repair of damaged Git state, since the session goes on editing
+   and pushing there. The installed links keep pointing at the previous source until the new overlay
+   is complete:
    1. Create a new linked worktree beside the checkout, on a fresh local branch named
       `skills-overlay/<UTC timestamp>` that is never pushed, at the fetched default branch.
    2. Bring in each pull request in effect, then the checked-out branch: apply the input's
@@ -151,5 +160,7 @@ Report the source checkout and the branch it was left on, the installed source a
 links resolve to, what took effect — the default branch's old and new commits, each pull request in
 effect with the tips brought in, the checked-out branch, and the uncommitted paths applied — every
 input or path left out and why, every conflict resolved in the overlay and the pull request it
-belongs to, anything preserved from a removed overlay, the roots refreshed, link verification, and
-the skills and rules reread. Name any preserved unreadable originals and the evidence used to reconstruct the installed source; retain any unresolved authority conflict and its next action.
+belongs to, anything preserved from a removed overlay, each backup of damaged Git state with its
+location and each repair made, the roots refreshed, link verification, and the skills and rules
+reread. Name any preserved unreadable originals and the evidence used to reconstruct the installed
+source; retain any unresolved authority conflict and its next action.
