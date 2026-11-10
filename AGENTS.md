@@ -218,7 +218,9 @@ Canonical guidance lives in `.agents/`.
   action and target, or an applicable rule or invoked skill that expressly authorizes them. A fix
   request, approved plan, or instruction to implement a plan does not itself authorize these
   outcomes, even when the plan lists them. A task-wide "all approved" covers ordinary sub-tasks
-  within its stated outcome without overriding this separate boundary.
+  within its stated outcome without overriding this separate boundary. A user's authorization
+  covers that one action on the change it names; a later change needs its own authorization before
+  it is merged, deployed, published or released, however recently the last one was given.
 - **A merge leaves no deploy work.** Once a pull request's merge is verified, never check by any
   route whether the change is live, such as a provider's deployment status, a release run or the
   site itself; never walk or test the site the merge deployed; never schedule a re-check, wait for
@@ -562,6 +564,12 @@ return records;
   item — which they already know. It holds wherever that message is written: the error message of
   an API or tool whose text reaches an end user, a server-side enum or constant that holds the
   text, a test fixture, and wording a brief proposes to a worker.
+- **Text an end user reads speaks in what the reader cares about, never in the system's exact
+  values.** Where a precise number, state or count changes nothing the reader does, say it in plain
+  words: a fuel tank holding a few drops is "empty", a wait of 59 seconds is "a minute". Keep the
+  exact value only where the reader acts on it, such as a price, a quantity they choose or a figure
+  they compare, and never add a qualifier such as "almost" or "about" only to make plain words
+  technically exact.
 - **Text only the product's own team reads states the observed condition and its values, and
   nothing more.** On an internal panel, an operator or support tool, or an internal API, a refusal
   or a report names what was found and lists the values it concerns, such as "Unrecognized shelf
