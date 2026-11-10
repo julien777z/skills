@@ -379,7 +379,7 @@ when a guest UI step needs one, whether the agent takes it or a sign-in needs th
 
 Prefer the [built-in Studio MCP server](https://create.roblox.com/docs/studio/mcp) when the installed Studio and tool surface support it. Inspect tool schemas and connect to the verified editor. MCP input can avoid host keyboard/mouse injection; qualify any windows it launches separately. Run unattended or multiplayer clients in a runner whose window behavior is safe for the user's desktop.
 
-If an installed isolated runner fails a capability, inspect and recover that capability before choosing another authorized environment. A local single-editor MCP fallback does not establish that multiplayer windows or guest rendering work. Keep evidence separate for input, capture, rendering, isolation, Studio Play, and a published client.
+If an installed isolated runner fails a capability, inspect and recover that capability in the runner. A single editor answering MCP does not establish that multiplayer windows or guest rendering work. Keep evidence separate for input, capture, rendering, isolation, Studio Play, and a published client.
 
 ## Connect to the intended editor
 

@@ -10,7 +10,7 @@ Terrain is not ordinary geometry. Preserve it with `Terrain:CopyRegion()` and re
 
 After restoring terrain, wait for a simulation step before building patrol/navigation samples with raycasts. Verify terrain readiness with representative samples before deriving navigation; part hits alone do not establish terrain readiness.
 
-Studio's `SerializationService:SerializeInstancesAsync()` and `EncodingService:Base64Encode()` can export authored instances when available in the current editor security context. Keep exported binaries separate from generated script content. Do not repeatedly try an API that reports the operation is unavailable in that context. When no local receiver can take the encoded bytes, read them back through the execute tool's output in bounded pieces, reassemble them, and compare a digest computed in Studio before writing the archive.
+Studio's `SerializationService:SerializeInstancesAsync()` and `EncodingService:Base64Encode()` can export authored instances when available in the current editor security context. Keep exported binaries separate from generated script content. Do not repeatedly try an API that reports the operation is unavailable in that context. When no local receiver can take the encoded bytes, read them back through the execute tool's output as [bounded binary exports](#bounded-binary-exports-through-mcp) describes.
 
 ## Multiple maps and persistence
 
