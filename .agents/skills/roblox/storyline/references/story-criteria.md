@@ -23,7 +23,7 @@ at most four lines a conversation, and the first line of each conversation carry
 since many players read only that one. Show rather than state: an action, a prop, or a repeated
 small habit that implies loss beats a line explaining it. Where the story has an antagonist, it appears and speaks,
 briefly and in its own register, before the climax and more than once; a villain known only from
-other characters' reports has no presence.
+other characters' reports has no presence. Its first appearance is a scene: the crisis visibly starts, a character reacts to the player, then the antagonist acts on screen and speaks in its own voice, and no line or objective names it before that.
 
 ## Progression and reward cadence
 
