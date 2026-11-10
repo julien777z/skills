@@ -58,7 +58,10 @@ Open Cloud uploads read only from approved directories, and approving one needs 
 a single Roblox-branded staging directory once per machine, `~/Roblox/Uploads`, never a checkout,
 worktree or build path that changes between sessions. Upload steps write or copy each artifact into
 a per-project subfolder there, such as `~/Roblox/Uploads/<project>/`, and upload from it; the
-repository keeps the editable source and export.
+repository keeps the editable source and export. The permissions page keeps an added directory only
+once its own Save is pressed; closing it without saving discards the addition. Confirm the approval
+with a request that cannot create anything, such as an upload with an invalid asset type, which an
+approved directory passes to a validation error rather than a directory refusal.
 
 A locked desktop affects operations that depend on that desktop. Independent guest access follows the [testing reference](testing.md); independent file, build, and API work can continue.
 
