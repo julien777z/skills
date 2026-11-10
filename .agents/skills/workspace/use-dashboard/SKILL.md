@@ -170,14 +170,11 @@ Dashboards look alike because they are built alike:
 - **Blue text is a link.** A reader clicks blue text, so only links take it, and a tone colors a
   dot, border, line or bar, never text. A figure, number or label meant to stand out sits in a
   neutral badge rather than taking a color or the weight its neighboring names already use.
-- **A section title is the words a reader scans for, and a `description` earns its line.** Name the
-  section for what the reader wants from it, such as "Opening hours" rather than "When you can
-  visit us". Leave `description` out unless it tells the reader something the title and the
-  section's contents do not, such as which entries a count covers. A sentence that restates the
-  title, describes the section's form, such as "as a list" or "newest first", narrates its controls,
-  or adds a caveat that changes nothing the reader does, such as who will make the final version
-  of what it shows, is left out. Every title, label, caption and description is plain statement,
-  never flourish.
+- **A `description` earns its line.** Leave it out unless it tells the reader something the title
+  and the section's contents do not, such as which entries a count covers. A sentence that restates
+  the title, describes the section's form, such as "as a list" or "newest first", narrates its
+  controls, or adds a caveat that changes nothing the reader does, such as who will make the final
+  version of what it shows, is left out.
 - **Sources are links, never paths in text.** Anything a reader can check, such as a file and line,
   a diff, a pull request, a document's section or a page of a site, goes in `links` with a URL that
   opens it at that exact place: a permalink to the line or range at the commit that was read, or the
@@ -186,8 +183,10 @@ Dashboards look alike because they are built alike:
   `references` entry so the mention itself is a link.
 - **Times are timestamps.** A moment goes in `at` as a timestamp, never as a clock time written into
   text, so every reader sees it in their own timezone.
-- **Text is plain.** Titles say what is true in a few words; `detail` explains in a sentence or two
-  that reads without the source. A file, section or line is named by its `links` pill, never in the
+- **Text is plain.** Titles say what is true in a few words, in the words a reader scans for, such
+  as "Opening hours" rather than "When you can visit us"; `detail` explains in a sentence or two
+  that reads without the source. Every title, label, caption and description is plain statement,
+  never flourish. A file, section or line is named by its `links` pill, never in the
   title, `detail` or `meta`.
 
 ## Previews

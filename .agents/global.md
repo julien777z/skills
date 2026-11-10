@@ -578,12 +578,14 @@ return records;
   carrier reports as delivered is `delivered`, never `parcel_arrived`, because an unusual synonym
   makes every reader translate it back. This covers identifiers, fields, messages, documentation and
   test names in every language.
-- **Everything an agent writes uses American English spelling**: code and its identifiers, comments,
-  documentation, guidance, records, commit messages, pull-request text, generated content and every
-  reply the user reads, such as `color`, `behavior`, `center`, `catalog`, `canceled`, `judgment` and
-  `organize`. Two kinds of text keep their own spelling: a quotation reproduced verbatim from its
-  source, such as an on-screen message, and a name a language, framework, protocol or provider
-  defines, such as an HTML attribute.
+- **Everything an agent writes is in American English, in spelling and vocabulary alike**: code and
+  its identifiers, comments, documentation, guidance, records, commit messages, pull-request text,
+  product copy, generated content and every reply the user reads. It writes `color`, `behavior`,
+  `center`, `catalog`, `canceled` and `organize`, and a "cell phone" rather than a "mobile". A
+  reader meeting the other form reads it as a mistake, and a product using both reads as two
+  products. Two kinds of text keep their own form: a quotation reproduced verbatim from its source,
+  such as an on-screen message, and a name a language, framework, protocol or provider defines, such
+  as an HTML attribute.
 - **A name says what it is about, so a reader never opens the body to learn what it acts on or
   holds.** That holds for every name: a function, Boolean, field, event, constant, class, module,
   file or package. A name built on a verb names the verb's object: `job.writes_files`,

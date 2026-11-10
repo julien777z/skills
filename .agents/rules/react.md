@@ -189,9 +189,6 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 ## Interface Copy
 
-- **Write interface copy in American English**, in spelling and in vocabulary alike: a color is a
-  "color", a center is a "center", and a person "enrolls" rather than "enrols". A reader meeting the other spelling reads it as a mistake, and a product that uses both
-  reads as two products.
 - **Headings, labels, buttons, tabs and menu items share one capitalization across the product**,
   sentence case unless the product has settled on another: "Save draft", "Shared folders", "Reading
   list". A mix is the defect; a proper noun keeps its own capitals. Capitalization is the source
