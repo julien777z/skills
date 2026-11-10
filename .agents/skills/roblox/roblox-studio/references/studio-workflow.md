@@ -42,11 +42,11 @@ Opening a local place can launch a separate Studio process. An existing app-cont
 
 Multiple browser processes can have different tabs/accounts. An AppleScript browser query may reach a separate automation instance rather than the signed-in visible browser. Verify the actual page/account through the chosen surface. Do not browse unrelated user tabs to compensate.
 
-Before choosing this route, check the desktop session: whether the screen is locked
+Before sending native input, check the desktop that receives it — the runner's guest, or the user's own desktop when they chose host Studio: whether the screen is locked
 (`CGSessionCopyCurrentDictionary()` reports `CGSSessionScreenIsLocked`) and whether the process
 sending input is trusted for accessibility (`AXIsProcessTrusted()`). A small Swift script run with
-`swift` reads both without extra packages. A locked screen drops synthetic input; that unlock is the
-user's step, while the settings change it unblocks stays the agent's.
+`swift` reads both without extra packages. A locked screen drops synthetic input. The agent unlocks the guest itself; on the user's own
+desktop the unlock is the user's step, while the settings change it unblocks stays the agent's.
 
 For a Studio setting an operation reports as missing, open the setting the error names in the
 verified Studio window, make the change, save it, and retry the original request. Assistant MCP

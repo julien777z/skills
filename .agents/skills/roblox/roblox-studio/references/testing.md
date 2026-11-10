@@ -46,7 +46,7 @@ Use ordinary Studio profiles that cannot overwrite live player progress. When pe
 
 Use `UserInputService:CreateVirtualInput()` for Studio automation when available. It drives actual experience input; it is not a way to control CoreGui, Roblox's account UI, or the operating system. Check that it exists, and honor its restrictions.
 
-Prefer MCP `user_mouse_input` targeting the actual instance and `user_keyboard_input`. Verify actual events/results rather than transport success. A client-context script run through the MCP execute tool can reset a scripted camera to the default camera type, so run none while a game-owned camera is framing the scene being judged, or a capture shows a framing defect the game does not have. In Studio's device simulator, instance-targeted clicks can land offset by the device's safe-area inset, so a click on a small control near an edge misses while a wide control still appears to work; check that the control responded, and when it did not, click by coordinates converted with the full inset rectangle below. The following conversion applies to direct VirtualInput helpers; input stays in the authorized runner.
+Prefer MCP `user_mouse_input` targeting the actual instance and `user_keyboard_input`. Verify actual events/results rather than transport success. The following conversion applies to direct VirtualInput helpers; input stays in the authorized runner.
 
 GuiObject absolute coordinates are relative to the core UI area. For virtual pointer input, convert a button center into full-screen coordinates:
 
@@ -96,9 +96,9 @@ successful published-client teleport.
 
 Studio work runs in an isolated runner: a Tart VM on a macOS host, the container runner below on Linux. The user's own desktop Studio is not the runner, even for an operation that sends no input, unless the user chooses it as described below, since opening a place, building or capturing still launches windows and takes focus there; a supported Studio MCP operation that avoids moving the host pointer does not change that. Qualify editor identity, input, capture, rendering, and window/focus isolation separately before claiming unattended testing is safe.
 
-When a reusable isolated runner is configured, reuse its installed Studio, authentication, and tooling. Keep each game's source and test data separate, verify the intended place before acting, and coordinate exclusive control of its desktop. Start a stopped runner when needed, discover its current address, and close task-owned windows and processes after testing. An unavailable isolated capability leaves only its dependent checks incomplete; continue independent source and build work. Never switch to the host's desktop Studio on your own. Inside the runner, install or update Studio and the tools the work needs, sign in with the retained session, create the upload staging directory, and grant Studio's settings and Assistant permissions there, without asking.
+When a reusable isolated runner is configured, reuse its installed Studio, authentication, and tooling. Keep each game's source and test data separate, verify the intended place before acting, and coordinate exclusive control of its desktop. Start a stopped runner when needed, discover its current address, and close task-owned windows and processes after testing. An unavailable isolated capability leaves only its dependent checks incomplete; continue independent source and build work. Never switch to the host's desktop Studio on your own. Inside the runner, install or update Studio and the tools the work needs, sign in with the retained session, and create the upload staging directory, without asking.
 
-### Optional retained Tart/macOS runner
+### Retained Tart/macOS runner
 
 This example applies only when the host already configures `ROBLOX_STUDIO_TART`, `ROBLOX_STUDIO_VM`, `ROBLOX_STUDIO_SSH_USER`, `ROBLOX_STUDIO_SSH_KEY`, and `ROBLOX_STUDIO_KNOWN_HOSTS` in `~/.config/roblox-studio/runner.env`. Shared tools and keys live outside game checkouts. Discover the configured machine; do not assume its name or address from another session. Use a single shared desktop lock key across games using that VM.
 
@@ -205,7 +205,7 @@ describes. When Studio offers only **Login via Browser**, Roblox has not given t
 Quick Sign-in, and rerunning setup does not change that; report it to the user as a sign-in
 blocker, naming the screen and the log line.
 
-## Optional Tart guest capabilities
+## Tart guest capabilities
 
 For a configured Tart runner, use the official [quick start](https://tart.run/quick-start/) and the installed
 CLI's help. Keep actual versions, image identity, resource allocation, and qualification results in
@@ -377,7 +377,7 @@ when a guest UI step needs one, whether the agent takes it or a sign-in needs th
 
 ## Studio MCP connection and input
 
-Prefer the [built-in Studio MCP server](https://create.roblox.com/docs/studio/mcp) when the installed Studio and tool surface support it. Inspect tool schemas and connect to the verified editor. MCP input can avoid host keyboard/mouse injection; qualify any windows it launches separately. Run unattended or multiplayer clients in a runner whose window behavior is safe for the user's desktop.
+Prefer the [built-in Studio MCP server](https://create.roblox.com/docs/studio/mcp) when the installed Studio and tool surface support it. Inspect tool schemas and connect to the verified editor. MCP input can avoid host keyboard/mouse injection; qualify any windows it launches separately.
 
 If an installed isolated runner fails a capability, inspect and recover that capability in the runner. A single editor answering MCP does not establish that multiplayer windows or guest rendering work. Keep evidence separate for input, capture, rendering, isolation, Studio Play, and a published client.
 
@@ -467,6 +467,9 @@ Read live UI, camera, and character state from the appropriate running context. 
 may not share a gameplay module's initialized state; an empty module result alone does not prove
 that the service stopped. Prefer replicated instance/UI observation or a bounded ordinary server
 fixture for runtime state. Remove fixtures afterward and never advance progression for inspection.
+A `Client` script can reset a scripted camera to the default camera type, so run none while a
+game-owned camera frames the scene being judged, or a capture shows a framing defect the game does
+not have.
 
 ### Device-simulated button coordinates
 
@@ -482,7 +485,8 @@ This fits the preview without changing the chosen device resolution; record that
 separately from the scaled viewer image.
 
 Read the resulting control state after a click; transport success does not prove
-the intended control responded. Where direct VirtualInput is supported, the full-inset transform in
+the intended control responded. MCP clicks aimed at an instance can land offset by the device's
+safe-area inset; when one misses, click by coordinates instead. Where direct VirtualInput is supported, the full-inset transform in
 the [input coordinates](#input-coordinates-the-phone-notch-matters) maps the button center
 correctly. Also check ancestor visibility and clipping, and scroll hidden controls into view first.
 Verify selection, confirmation, and the server outcome; callbacks or remote calls are separate

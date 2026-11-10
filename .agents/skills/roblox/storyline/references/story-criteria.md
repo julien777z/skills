@@ -21,7 +21,7 @@ budgets from the audience and platform before writing, and hold every proposal t
 audience on a game platform a useful default is a line of at most two sentences and about 30 words,
 at most four lines a conversation, and the first line of each conversation carrying its stakes,
 since many players read only that one. Show rather than state: an action, a prop, or a repeated
-small habit that implies loss beats a line explaining it. The antagonist appears and speaks,
+small habit that implies loss beats a line explaining it. Where the story has an antagonist, it appears and speaks,
 briefly and in its own register, before the climax and more than once; a villain known only from
 other characters' reports has no presence.
 
@@ -29,8 +29,8 @@ other characters' reports has no presence.
 
 Story beats and progression are one design. State the progression the arc covers in the game's own
 milestones — the level range in a leveled game, otherwise its unlocks, stages or equipment — when
-each milestone arrives, and what each grants that changes play — a new spell, ability, area or companion — so the
-player meets something new at least every few beats and before each harder fight rather than after
+each milestone arrives, and what each grants that changes play — a new tool, ability, area or companion — so the
+player meets something new at least every few beats and before each harder challenge rather than after
 the last one. Every unlock a beat grants is usable in a later beat of the same arc. Every reward the
 design defines can be obtained; a defined but unobtainable reward is a defect. Repeatable activities
 such as optional fights also feed progression where the game supports it, and the arc's thresholds
