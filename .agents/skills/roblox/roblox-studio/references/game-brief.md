@@ -12,7 +12,6 @@ write; lists hold at least one entry.
 
 | Field | Holds |
 | --- | --- |
-| `brief_version` | `1` |
 | `title` | The working title. |
 | `logline` | One sentence on what the game is. |
 | `genre` | `{primary, secondary?}`: the Roblox genre closest to the game, and any second genre whose rhythm it borrows. |
@@ -43,5 +42,4 @@ Read the whole brief before planning. Its product facts are the approved scope: 
 skill's dependencies hold to each part. `scope.later` and `scope.excluded` are not built.
 Every implementation choice is the builder's. An `open_questions` entry goes to the user. A
 product fact the first release needs that the brief leaves unstated is decided as
-`roblox-gameplay`'s **Judge the game as a player meets it** section says: the builder settles a
-design detail itself and puts the rest to the user.
+`roblox-gameplay`'s **Judge the game as a player meets it** section says.

@@ -83,7 +83,7 @@ def check_image(value: object, path: str) -> None:
 
     check_text(value, path)
 
-    image = cast(str, value)
+    image = str(value)
     prefix = next((prefix for prefix in IMAGE_DATA_PREFIXES if image.startswith(prefix)), None)
 
     if prefix is None:

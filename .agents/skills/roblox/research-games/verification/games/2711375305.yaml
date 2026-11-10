@@ -48,7 +48,7 @@ play_coordination:
     release_verified: null
     expiry_or_blocker: null
 context:
-    genre: "Avatar shopping / dress-up; API genre Shopping / Avatar Shopping"
+    play_style: "Avatar shopping / dress-up; API genre Shopping / Avatar Shopping"
     camera_perspective: "Third-person avatar preview beside a full-height catalog panel, per promotional images (not observed in play)"
     device_and_input: null
     observation_environment: "Read-only Roblox web APIs and experience page from the host; no play"

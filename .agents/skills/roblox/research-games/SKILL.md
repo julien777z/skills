@@ -5,7 +5,7 @@ short_description: 'Explicit user-invoked research of Roblox charts for the requ
 disable-model-invocation: true
 ---
 
-# Study Roblox games
+# Research Roblox games
 
 ## Dependencies
 
@@ -23,10 +23,10 @@ disable-model-invocation: true
 
 ## Mode
 
-Settle the mode through `interactive-skill` with this menu before selecting games or dispatching researchers. Only an argument naming a mode or one of its aliases, or words asking for the games to be played or only watched, picks it; a number is the game count, never a menu pick, and "play" describing the games, as in "games kids play", picks nothing.
+Settle the mode through `interactive-skill` with this menu before any other work. Only an argument naming a mode or one of its aliases, words asking for the games to be played or only watched, or words asking for a game idea picks it; a number is the game count, never a menu pick, and "play" describing the games, as in "games kids play", picks nothing.
 
 ```yaml
-prompt: What should the study do?
+prompt: What should this run do?
 kind: choice
 choices:
   - id: passive
@@ -54,7 +54,7 @@ Accept a game count `N`, defaulting to **25 games** when none is given; an expli
 
 Read `roblox-studio`'s testing reference. Use a qualified isolated runner for published-client play or browsing that would obstruct the user's desktop. Reuse a configured runner when available. Studio MCP alone is not evidence that the published client can be controlled; qualify browser/media and published-client input and capture separately, without host window, focus or input interference, and record each result separately. Read-only API retrieval can assist, but it does not replace the requested observation or play and never opens host research or game windows.
 
-If the needed runner capability is unavailable, return the concrete blocker and supported evidence rather than pretending the mode completed. At the end, close task-owned apps and stop task-owned runner processes; preserve retained runner software, accounts, files, and access for the next session. Coordinate shutdown with the main agent so it does not interrupt another active assignment or game test.
+If the needed runner capability is still unavailable after the testing reference's provision and repair route, return the concrete blocker and supported evidence rather than pretending the mode completed. At the end, close task-owned apps and stop task-owned runner processes; preserve retained runner software, accounts, files, and access for the next session. Coordinate shutdown with the main agent so it does not interrupt another active assignment or game test.
 
 ## Study records
 
@@ -83,7 +83,7 @@ Guest-native browser/media controls also share one desktop. Coordinate them usin
 
 ## Passive mode
 
-Open each game's experience page. Read its description, inspect its thumbnails, and determine the advertised core loop. Record its genre and subgenre from the games API, and its competitors: up to five games from the charts the study read, in the same subgenre and then the same genre, most-played first, each with what it shares with the game. Distinguish marketing claims, observed gameplay, and interpretation. Thumbnails and promotional art establish advertised style only, **never actual in-game UI, control behavior, tutorial flow, or font sizes**; those come from gameplay footage or play, and stay unknown without it.
+Open each game's experience page. Read its description, inspect its thumbnails, and determine the advertised core loop. Record its `genre` and subgenre from the games API, and its competitors: up to five games from the charts the study read, in the same subgenre and then the same genre, most-played first, each with what it shares with the game. Distinguish marketing claims, observed gameplay, and interpretation. Thumbnails and promotional art establish advertised style only, **never actual in-game UI, control behavior, tutorial flow, or font sizes**; those come from gameplay footage or play, and stay unknown without it.
 
 **Study popular gameplay videos for every game.** They show skilled play through the main loop, rendered properly, without the runner. Start with the game's own preview video: the games API's media list names each `GamePreviewVideo` by `videoId`, and `https://assetdelivery.roblox.com/v1/asset/?id=<videoId>` serves it as WebM without YouTube; it is the creator's edited trailer and is recorded as such. Find them with `yt-dlp`, searching YouTube sorted by views (`https://www.youtube.com/results?search_query=<game>+roblox&sp=CAM%253D`), once for the game and again with words such as `first time playing` and `beginner guide`. Read each candidate's upload date, channel, subscriber count and views, and pick up to three that show this game's ordinary play, never an animation, a skit, an exploit showcase or another game: one from a new player's first join, one of an experienced player's guide or tips, and one longer ordinary session. Among those, prefer high views, established channels and uploads from the last six months. Download only the stretches studied, at 480p and at most ten minutes each, with the auto-captions; extract frames every ten seconds and at scene changes with `ffmpeg`; confirm each frame shows this game before relying on it; and delete the video once its frames and captions are kept. Install `yt-dlp` and `ffmpeg` through the host's package manager when they are missing. YouTube rate-limits several clients downloading at once, so run at most two video researchers at a time and pace their `yt-dlp` requests; a rate-limited request retries after pauses of one, three and five minutes. When the restriction outlasts those, the researcher stops, names the missing picks in its records and returns them `partial`, which a later run studies again. The orchestrator then holds the remaining video work and probes one request every ten minutes for up to ninety; when no probe succeeds, the games still without video are recorded `partial` and synthesis proceeds without them. Infer player behaviour from the frame sequence and captions: what they do first, where they go, what they skip, and how often rewards and prompts appear, marking inference as inference. Record each video's URL, upload date, channel, subscribers, views and the timestamps relied on. Footage is edited, may show an older version and usually a returning player; record those limits, and do not call watching a video playtesting.
 
@@ -109,7 +109,7 @@ Record new-player onboarding, whether or not it is named a tutorial: spawn instr
 
 Record these when evidence permits; they make the study more useful than a list of surface mechanics:
 
-- **Context:** genre, camera perspective, input/device used, visible server population, and whether observations concern solo or group play. Separate visible suitability/complexity from guesses about players' demographics.
+- **Context:** the kind of play as observed, camera perspective, input/device used, visible server population, and whether observations concern solo or group play. Separate visible suitability/complexity from guesses about players' demographics.
 - **Time and pacing:** loading time, time to usable control, first meaningful choice, first reward, action/reward cadence, travel/waiting versus active play, and natural stopping points. Define the timing start and distinguish measured values from estimates. Do not equate one observed session with a typical session length.
 - **Goals and progression:** clarity of the next goal, short/medium/long-term goals actually shown, upgrade choices, mastery versus numerical growth, unlock previews, discovery, and optional activities. Record advertised long-term systems separately from systems experienced.
 - **Failure and recovery:** what failure costs, clarity of why it happened, retry speed, checkpoints, ability to recover without payment, and whether mistakes teach something. Do not spend currency or deliberately damage account progress to investigate this.
@@ -124,7 +124,7 @@ Record these when evidence permits; they make the study more useful than a list 
 
 Use this only when the user explicitly chooses play mode. Video evidence comes first, and real play only fills the one gap footage leaves: a new player's first minutes. After the video pass, list the games whose `onboarding_video_coverage` is `not_covered` and put that list to the user through the question tool before playing any of them, then assign each approved game as a play turn. Play each approved game from join until its onboarding ends, **for at most five minutes of active play**, and record the actual elapsed time and what ended play. Start from the available account state and disclose whether it is a fresh or returning profile. Use ordinary controls and the game's intended onboarding; do not alter rewards, use exploits, or reset account progress. The invocation does not authorize purchases, chat messages, invitations, or account changes.
 
-Use an authorized, qualified isolated runner for launches/play that would open windows or obstruct the user's desktop. Non-interfering input alone is insufficient if launching clients steals focus or covers the user's work. If the published Roblox client has no verified isolated control path, return passive evidence with play mode blocked; do not seize host input or assume Studio MCP controls a published game. Automatically open the runner's normal Roblox sign-in/viewer when authentication is needed, let the user authenticate, and close/minimize the viewer afterward before unattended testing.
+Use the isolated runner for launches and play; when none exists or it cannot control the published client, provision or repair it as `roblox-studio`'s testing reference says. Non-interfering input alone is insufficient if launching clients steals focus or covers the user's work. Only when that route leaves a concrete blocker, return passive evidence with play mode blocked; do not seize host input or assume Studio MCP controls a published game. Automatically open the runner's normal Roblox sign-in/viewer when authentication is needed, let the user authenticate, and close/minimize the viewer afterward before unattended testing.
 
 Record the first success, time to understand the next action, meaningful decisions, felt input/feedback quality, and a few concrete moments of delight or frustration. Stop when onboarding ends or at the cap even if the loop encourages continued play. Avoid claiming long-term depth or retention from this short sample.
 
@@ -140,13 +140,13 @@ Report the sample, mode, reused games, findings, material evidence limits, the p
 
 ## Idea mode
 
-Use this mode when the request asks for a game idea. It works from the latest study file's synthesis and its game records rather than studying again; when no study is under 30 days old, run a passive study first and use its synthesis. A genre, audience or theme the user names is fixed; every other product choice, such as the audience, tone, scope and first release, is decided here and stated, never put to the user as a question.
+Use this mode when the request asks for a game idea. It works from the latest study file's synthesis and its game records rather than studying again; when no study is recent enough for **Reuse**, run a passive study first and use its synthesis. A genre, audience or theme the user names is fixed; every other product choice, such as the audience, tone, scope and first release, is decided here and stated, never put to the user as a question.
 
-1. **Draft three distinct, original ideas** as product facts in the shape of `roblox-studio`'s game brief reference: what each game is, its genre and audience, what players do, its story when it has one, its world, first session, progression, social play, monetization, accessibility, saving, first-release scope and success signals. Every idea carries a monetization plan for its first release. Ground each pillar in a synthesis pattern and name its count with the study's qualifiers, and name the design bets the study does not cover. Borrow mechanics and conventions, never a studied game's name, characters, story, levels, art or look.
+1. **Draft three distinct, original ideas** as product facts holding every required field of `roblox-studio`'s game brief reference. Ground each pillar in a synthesis pattern and name its count with the study's qualifiers, and name the design bets the study does not cover. Borrow mechanics and conventions, never a studied game's name, characters, story, levels, art or look.
 2. **List each idea's competing games** from the study's records: the `competitors` of the studied games in the idea's genre and subgenre, and those studied games themselves, keeping the ones a player of the idea would otherwise play, with each one's link, what it shares with the idea and how the idea differs. Look further on the charts only when the records hold no game of the idea's genre.
 3. **Rank the three** and give the reasons for each place: how much of the study's evidence the idea rests on, how well it fits its audience, how crowded its competition is, the size and risk of its first release, and its design bets.
 4. **Run `review-proposal`** on the ranked set, with the user's request as its intent and the study file as its evidence, and carry its repairs into the drafts.
-5. **Show the set with `use-dashboard`**: an Overview page with the ranking and why, then one Proposals page with a tab per idea, in ranked order, each opening with a picture walkthrough: stacked `figures` of five or six original illustrations that follow a player through the game, such as its world map, the first minute, the core loop, a round or mode, progression or collection and a story beat, each with a one- or two-sentence description. Draw every idea's illustrations in one Roblox-like style, with low-poly blocky avatars and buildings, an angled map with name tags, and the on-screen interface as dark rounded panels, each idea keeping its own palette and mood. Below the walkthrough the tab holds the full write-up: its pitch, genre, audience and tone, what players do, its story when there is one, its world, progression and monetization, its first-release scope, its competing games and the evidence it rests on.
+5. **Show the set with `use-dashboard`**: an Overview page with the ranking and why, then one Proposals page with a tab per idea, in ranked order, each opening with a picture walkthrough: stacked `figures` of five or six original illustrations that follow a player through the game, such as its world map, the first minute, the core loop, a round or mode, progression or collection and a story beat, each with a one- or two-sentence description. Draw every idea's illustrations in one Roblox-like style, with low-poly blocky avatars and buildings, an angled map with name tags, and the on-screen interface as dark rounded panels, each idea keeping its own palette and mood. Below the walkthrough the tab holds the full write-up: every brief field, then its competing games and the evidence it rests on.
 
 The run ends once the dashboard is delivered: it asks no approval question and writes no brief.
 
@@ -203,7 +203,7 @@ games:
           sub: null # its genre_l2
       competitors: [] # {name, universe_id, url, overlap}: up to five chart games in the same subgenre, then the same genre, most-played first
       context:
-          genre: null
+          play_style: null # the kind of play as observed, in a phrase
           camera_perspective: null
           device_and_input: null
           observation_environment: null

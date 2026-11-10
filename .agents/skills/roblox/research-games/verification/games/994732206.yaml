@@ -52,7 +52,7 @@ play_coordination:
       still running in the player when the locks were released; it was not quit because the resource
       was no longer this researcher's to touch.
 context:
-    genre: "RPG > Action RPG (API); Adventure gear genre"
+    play_style: "RPG > Action RPG (API); Adventure gear genre"
     camera_perspective: "Third person, zoomable toward first person (O/I keys)"
     device_and_input: "macOS VM guest, keyboard and mouse via injected events"
     observation_environment: "Published Roblox player 0.746 in a macOS VM with a paravirtual GPU; world geometry was badly garbled (see technical_quality)"

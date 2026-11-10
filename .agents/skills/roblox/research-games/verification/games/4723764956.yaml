@@ -48,7 +48,7 @@ play_coordination:
     release_verified: null
     expiry_or_blocker: null
 context:
-    genre: "User-generated movie maker and video feed (games API: genre_l1 'Entertainment', genre_l2 'Video')"
+    play_style: "User-generated movie maker and video feed (games API: genre_l1 'Entertainment', genre_l2 'Video')"
     camera_perspective: "Lobby: third-person 3D cinema hall; editor: flat 2D full-screen editor with a 16:9 stage, tool panel at right and a slide strip along the bottom (video_session_1, video_session_2)"
     device_and_input: "Videos appear to be PC mouse and keyboard (Windows taskbar visible in some frames of video_session_1); touch not shown"
     observation_environment: "Passive: games, votes, media, thumbnails, game-pass, badges and age-recommendation APIs plus the experience page HTML, retrieved over HTTP from the orchestrator host; no client launched"

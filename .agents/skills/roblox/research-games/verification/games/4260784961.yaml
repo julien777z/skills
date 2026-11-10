@@ -48,7 +48,7 @@ play_coordination:
     release_verified: null
     expiry_or_blocker: null
 context:
-    genre: "Historical military / large-scale line-battle community game (games API: genre 'Military', genre_l1 'Action')"
+    play_style: "Historical military / large-scale line-battle community game (games API: genre 'Military', genre_l1 'Action')"
     camera_perspective: "Third-person over-the-shoulder follow camera on foot; commanders and editors also use high overhead views (video_1, video_3)"
     device_and_input: "PC with mouse and keyboard in all three videos: F or R readies the musket, hold left click to aim and release to fire, Q chants, F then B fixes bayonets, Tab opens the leaderboard, Space spawns, hotkeys Y/T/H/Z/B on the bottom-right menu (video_1, video_2, video_3 captions and frames)"
     observation_environment: "Passive page and API research plus three YouTube gameplay videos (480p excerpts, auto-captions); no client launched"

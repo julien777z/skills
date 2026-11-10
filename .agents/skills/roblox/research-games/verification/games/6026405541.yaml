@@ -48,7 +48,7 @@ play_coordination:
   release_verified: null
   expiry_or_blocker: null
 context:
-  genre: "Survival / 1 vs All (API genre Horror, genre_l1 Survival, genre_l2 1 vs All): asymmetric round game, 8 survivors against 2 beasts"
+  play_style: "Survival / 1 vs All (API genre Horror, genre_l1 Survival, genre_l2 1 vs All): asymmetric round game, 8 survivors against 2 beasts"
   camera_perspective: "Preview video: survivors in third person; beasts in first person with the weapon in view."
   device_and_input: "Preview video shows keyboard hints (Interact, Crouch, a 'Q' ability bar); recording device unknown."
   observation_environment: "Passive: games, votes, media, thumbnails, game-pass, badge and age-recommendation APIs, the experience page, and the game's own 59-second Roblox preview video, read from the host over HTTPS. Not played; no YouTube."

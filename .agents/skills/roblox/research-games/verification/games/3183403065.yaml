@@ -49,7 +49,7 @@ play_coordination:
   release_verified: true
   expiry_or_blocker: None. vm-desktop:roblox-studio acquired 23:54:50Z and released 00:00:21Z. Both receipts were checked before each input batch and passed. Player quit at 00:00:14Z and only the -launchToTray process remained.
 context:
-  genre: 'Anime-themed gacha tower defense (Roblox genre: Strategy > Tower Defense)'
+  play_style: 'Anime-themed gacha tower defense (Roblox genre: Strategy > Tower Defense)'
   camera_perspective: Third-person lobby; match camera not reached
   device_and_input: Desktop keyboard and mouse (VM-injected clicks); HUD shows keyboard hints K (Units) and F (Store)
   observation_environment: macOS guest VM running the published Roblox player at 1920x1200 points, client 0.746.0, public server

@@ -48,7 +48,7 @@ play_coordination:
     release_verified: null
     expiry_or_blocker: "Passive-only assignment; the player was not used for this game."
 context:
-    genre: "Anime fan-game horse race and battlegrounds fighter (games API: Action > Battlegrounds & Fighting)"
+    play_style: "Anime fan-game horse race and battlegrounds fighter (games API: Action > Battlegrounds & Fighting)"
     camera_perspective: "Third person behind the rider, over-the-shoulder aiming when shooting (video_1, video_2)"
     device_and_input: "Description lists keyboard controls (Shift, T, F, C, B, X, Space); other devices not stated. Video: keyboard and mouse; the race HUD lists Sprint L.Shift, Summon Stand B, Get Off N, Hang Q, Sidearm Hold C, Emote X, Shoot LMB, Stop Aiming C, Reload R, and the lobby adds Attack LMB, Call Horse T, Shift Lock L.Ctrl, Lock On MMB (video_1, video_2)."
     observation_environment: "Read-only Roblox APIs and the promotional thumbnail, retrieved from the host; two gameplay videos"

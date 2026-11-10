@@ -49,7 +49,7 @@ play_coordination:
   release_verified: true
   expiry_or_blocker: null
 context:
-  genre: Simulation / Tycoon (idle egg farm with merge)
+  play_style: Simulation / Tycoon (idle egg farm with merge)
   camera_perspective: third-person, default follow camera
   device_and_input: macOS Roblox player in a VM, keyboard (W/A/S plus arrow-key camera) and mouse clicks
   observation_environment: Isolated macOS guest VM over SSH, 1920x1200 points, captures downscaled to 1200 px

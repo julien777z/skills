@@ -49,7 +49,7 @@ play_coordination:
   release_verified: true
   expiry_or_blocker: On join the game showed a modal 'GAME RULES' panel whose only control is 'Accept'. It lists actions that can lead to bans, including permanent ones. Under the brief's terms-prompt rule, play stopped before any input. The player was left in the experience on that panel, and both locks were released.
 context:
-  genre: Action / Battlegrounds & Fighting (API genre_l1 Action, genre_l2 Battlegrounds & Fighting)
+  play_style: Action / Battlegrounds & Fighting (API genre_l1 Action, genre_l2 Battlegrounds & Fighting)
   camera_perspective: third-person (spawn view, not operated)
   device_and_input: macOS Roblox player in a VM; no input sent Videos show PC keyboard and mouse (source_4), a gamepad with relabelled tiles (source_5) and mobile/iPad touch (source_6).
   observation_environment: Isolated macOS guest VM over SSH, 1920x1200 points, captures downscaled to 1200 px

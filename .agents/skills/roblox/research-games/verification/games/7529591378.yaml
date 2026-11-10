@@ -48,7 +48,7 @@ play_coordination:
     release_verified: true
     expiry_or_blocker: "None. vm-desktop:roblox-studio also held 23:31:09Z-23:37:57Z. After quit only the -launchToTray player process remained."
 context:
-    genre: "Sports (basketball); API genre Sports & Racing / Sports"
+    play_style: "Sports (basketball); API genre Sports & Racing / Sports"
     camera_perspective: "Third-person over-the-shoulder; L cycles camera modes (a 'WIRE' label appeared after pressing L)"
     device_and_input: "Keyboard and mouse on a macOS guest VM at 1920x1200 points; keyboard keys driven by script, mouse clicks for UI"
     video_device_and_input: "Videos show mobile touch play (yt_onboarding_1), PC with keyboard and mouse then controller (yt_session_1), and controller play on PC (yt_skilled_1)."

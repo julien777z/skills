@@ -48,7 +48,7 @@ play_coordination:
     release_verified: true
     expiry_or_blocker: "Both locks renewed at 01:28:20Z and 01:39:00Z with no gap lost; player quit, RobloxPlayer killed, capture 10771871836-39 shows no game on screen before release (only a -launchToTray process remained); left the play queue."
 context:
-    genre: "Point-and-click narrative/story game; a Roblox adaptation credited as based on Nicky Case's 'We Become What We Behold' (games API: genre_l1 'Adventure', genre_l2 'Story')"
+    play_style: "Point-and-click narrative/story game; a Roblox adaptation credited as based on Nicky Case's 'We Become What We Behold' (games API: genre_l1 'Adventure', genre_l2 'Story')"
     camera_perspective: "Fixed top-down 2D park view; the player's avatar is not used; the mouse moves a camera viewfinder"
     device_and_input: "Mouse clicks only (point and click) in the macOS VM published Roblox player at 1920x1200; no keyboard or held button needed"
     observation_environment: "Isolated macOS VM runner, published Roblox player, user's existing account; captures 1200 px wide"

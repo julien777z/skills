@@ -49,7 +49,7 @@ play_coordination:
   release_verified: false
   expiry_or_blocker: Player quit at 23:47:44Z and only the -launchToTray process remained (verified). The roblox-player lease expired at 23:47:57Z, one second before release, and R02 acquired it at 23:47:57Z, so the release call reported the receipt no longer owned the key. The vm-desktop:roblox-studio lock (acquired 23:38:07Z) was still held and released cleanly at 23:47:58Z, so no other researcher had desktop input while this game ran. Active play ran past the five-minute cap (477 s from first control) because one batched input command took about 85 s to return.
 context:
-  genre: 'Wave survival / tower-defense hybrid with third-person brawler combat (Roblox genre: Action > Battlegrounds & Fighting)'
+  play_style: 'Wave survival / tower-defense hybrid with third-person brawler combat (Roblox genre: Action > Battlegrounds & Fighting)'
   camera_perspective: Third-person over-the-shoulder, player-controlled
   device_and_input: Desktop keyboard and mouse (VM-injected clicks and key holds); on-screen hints show M1, E (Drop Kick), Ctrl (Sprint)
   observation_environment: 'macOS guest VM running the published Roblox player at 1920x1200 points; client 0.746.0; in-game build label Ver. 9.4.2; Region: United States'

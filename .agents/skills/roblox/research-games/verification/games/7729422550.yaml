@@ -48,7 +48,7 @@ play_coordination:
     release_verified: true
     expiry_or_blocker: "Locks renewed once (released and re-acquired at 01:05:02Z). At acquisition the previous researcher's game was still running; it was killed and a capture confirmed an idle desktop before launch (7729422550-0.png, 7729422550-0b.png). After play the player was quit and killed and an idle desktop confirmed (7729422550-53.png) before release, desktop lock first."
 context:
-    genre: "Difficulty-chart obby (games API genre_l1 'Obby & Platformer')"
+    play_style: "Difficulty-chart obby (games API genre_l1 'Obby & Platformer')"
     camera_perspective: "Third person, default Roblox follow camera with zoom (I/O) to first person"
     device_and_input: "Mac keyboard (W/A/S/D, Space, arrow-key camera turns, I/O zoom, R reset) and mouse clicks, sent as timed key holds over SSH"
     observation_environment: "macOS VM guest running the published Roblox player, full-screen, controlled over SSH; captures 1920x1200 scaled to 1200 wide"

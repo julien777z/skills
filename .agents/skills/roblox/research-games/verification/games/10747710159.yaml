@@ -48,7 +48,7 @@ play_coordination:
   release_verified: null
   expiry_or_blocker: null
 context:
-  genre: "Puzzle / Word (API genre_l1 Puzzle, genre_l2 Word): turn-based word-chain game at shared tables in an open hub"
+  play_style: "Puzzle / Word (API genre_l1 Puzzle, genre_l2 Word): turn-based word-chain game at shared tables in an open hub"
   camera_perspective: "Third-person in the hub; on your turn the camera faces the seated active player with the word drawn as letter tiles above them (video_1 0:30, video_2 10:20)"
   device_and_input: "video_1 desktop with keyboard typing; video_2 touch device with an in-game on-screen QWERTY keyboard, virtual joystick and jump button"
   observation_environment: "Passive: games, media, votes and thumbnail APIs plus the experience page, read from the host over HTTPS; two YouTube gameplay videos studied from frames every 10 s and auto-captions"

@@ -48,7 +48,7 @@ play_coordination:
     release_verified: null
     expiry_or_blocker: "Passive-only assignment; the player lock was never acquired (bounded acquire attempts returned busy before the assignment changed)."
 context:
-    genre: "Roleplay & Avatar Sim > Morph Roleplay (API genre_l1/genre_l2); charted under Trending Music Experiences"
+    play_style: "Roleplay & Avatar Sim > Morph Roleplay (API genre_l1/genre_l2); charted under Trending Music Experiences"
     camera_perspective: "Third person; video_1 shows the camera orbiting close to the morph to show its face, video_2 shows a free third-person camera following the player across the map"
     device_and_input: "Videos are desktop captures (mouse cursor visible on the menu in video_1; desktop Roblox top bar in both)"
     observation_environment: "Read-only Roblox games and thumbnails APIs and the public experience page, fetched from the host; two creator gameplay videos studied from extracted frames"

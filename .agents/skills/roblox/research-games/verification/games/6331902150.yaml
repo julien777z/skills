@@ -48,7 +48,7 @@ play_coordination:
     release_verified: null
     expiry_or_blocker: "Assigned deep play; real play was stopped by a study process change before this game's turn, so no locks were taken and the game was not launched."
 context:
-    genre: "Asymmetric survival horror, one killer against a team of survivors (games API genre_l1 'Survival', genre_l2 '1 vs All')"
+    play_style: "Asymmetric survival horror, one killer against a team of survivors (games API genre_l1 'Survival', genre_l2 '1 vs All')"
     camera_perspective: "Third-person over-the-shoulder with a free mouse-look camera and a centred cursor reticle (video_1, video_3)"
     device_and_input: "Videos recorded on PC, keyboard and mouse: survivor abilities bound to Q/E, killer abilities to LMB/Q/E/R/T, shown as key letters on circular ability buttons (video_1 4:00, video_3 7:30)"
     observation_environment: "Passive: games, votes, media, thumbnails, badges and game-pass APIs retrieved over HTTP from the orchestrator host; gameplay studied from three YouTube videos (frames every 15 s plus auto-captions); no client launched"

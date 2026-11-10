@@ -48,7 +48,7 @@ play_coordination:
   release_verified: null
   expiry_or_blocker: null
 context:
-  genre: "Survival / Escape (API genre_l1 Survival, genre_l2 Escape): first-person school-basement horror escape with a single pursuing monster"
+  play_style: "Survival / Escape (API genre_l1 Survival, genre_l2 Escape): first-person school-basement horror escape with a single pursuing monster"
   camera_perspective: "First person with a flashlight cone and a small centre reticle; the lobby is third person (video_1, video_3)"
   device_and_input: "Videos recorded on PC, keyboard and mouse; a permanent bottom-left key list: E Interact, SHIFT Sprint, F Flashlight, B Battery, Q Whistle, N Night Vision Goggles, V Shove, H Help, M Unlock Mouse (video_2 9:00)"
   observation_environment: "Passive: games, votes, media, thumbnails, game-pass, badge and age-recommendation APIs plus the experience page, read from the host over HTTPS; gameplay studied from three YouTube videos (frames every 15 s plus auto-captions). Not played."

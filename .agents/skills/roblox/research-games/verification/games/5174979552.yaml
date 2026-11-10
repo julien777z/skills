@@ -48,7 +48,7 @@ play_coordination:
     release_verified: null
     expiry_or_blocker: null
 context:
-    genre: "Space exploration and mining simulator (games API genre_l1 'Simulation', genre_l2 empty)"
+    play_style: "Space exploration and mining simulator (games API genre_l1 'Simulation', genre_l2 empty)"
     camera_perspective: "Trailer (video_preview_1): first-person cockpit view with a dashboard of coloured bars and buttons (0:00, 0:28), third-person chase camera on ships (0:04-0:14) and third-person on a spacesuited avatar on foot or jetpack (0:16-0:22, 0:32-0:42)"
     device_and_input: "Description advertises phone, tablet, PC and console; not observed"
     observation_environment: "Passive: games, votes, media, thumbnails, badges and game-pass APIs retrieved over HTTP from the orchestrator host; no client launched"

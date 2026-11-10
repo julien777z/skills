@@ -48,7 +48,7 @@ play_coordination:
     release_verified: null
     expiry_or_blocker: null
 context:
-    genre: "Character-building gacha with 1v1 stat battles (games API genre_l1 'Party & Casual')"
+    play_style: "Character-building gacha with 1v1 stat battles (games API genre_l1 'Party & Casual')"
     camera_perspective: "Video: third person in the hub; matches are full-screen 2D panels over a blurred hub"
     device_and_input: "Video: PC with mouse in all three videos"
     observation_environment: "Passive: games, votes, media, thumbnails, badges, game-pass and age-recommendation APIs retrieved over HTTP from the orchestrator host; no client launched"

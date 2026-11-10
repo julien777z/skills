@@ -48,7 +48,7 @@ play_coordination:
   release_verified: true
   expiry_or_blocker: "Play stopped at 01:54:21Z by a study process change (real play replaced by gameplay-video study), just after the house-vehicle-activity cycle; player force-quit, capture 1686885941-25 shows no game on screen, both locks released desktop first, queue left."
 context:
-  genre: "Roleplay & Avatar Sim / Life (API genre Town and City): open-world life roleplay sandbox"
+  play_style: "Roleplay & Avatar Sim / Life (API genre Town and City): open-world life roleplay sandbox"
   camera_perspective: "third-person follow camera"
   device_and_input: "macOS Roblox player 0.746.0 in a VM; mouse clicks on HUD, W/A/S keys, arrow-key camera"
   observation_environment: "Isolated macOS guest VM over SSH, 1920x1200 points, captures downscaled to 1200 px; paravirtual GPU garbled most world geometry"

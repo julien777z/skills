@@ -48,7 +48,7 @@ play_coordination:
     release_verified: null
     expiry_or_blocker: "Assigned deep play was withdrawn by the coordinator before this researcher's turn (study switched from real play to gameplay videos); no lock was taken and the player was never launched."
 context:
-    genre: "Physics sandbox with short scenario missions; API genre Simulation / Physics Sim"
+    play_style: "Physics sandbox with short scenario missions; API genre Simulation / Physics Sim"
     camera_perspective: "First-person by default with held weapon and crosshair; third-person available (video_1 0:30-0:40 shows it; video_3 plays mostly third-person)"
     device_and_input: "PC keyboard and mouse in all three videos: key-hint bar Q Weapons, M Shop, K Sandbox, T Slow motion, R Reset everyone, Ctrl Free mouse; 'Hold to aim'; car keys W/S drive, A/D steer, Space handbrake, V view, E get out (video_2, video_3)"
     observation_environment: "Read-only Roblox web APIs and experience page from the host; three YouTube gameplay videos studied from frames every 10 s and auto-captions"
