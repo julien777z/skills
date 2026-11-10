@@ -26,10 +26,12 @@ write; lists hold at least one entry.
 | `first_session` | `[step]`: what a new player sees and does from spawn until play becomes their own. |
 | `progression` | `{short_term, medium_term, long_term, collection?}`: goals at each horizon, and any collection or index. |
 | `social` | `{party_size, interaction, solo}`: how players play together, what they can and cannot do to each other, and how solo play works. |
-| `monetization` | `{model, offers, rules}`: what is sold, and the rules paid content follows. |
+| `monetization` | `{model, offers, rules}`: what the first release sells, and the rules paid content follows. |
 | `accessibility` | `[requirement]`. |
+| `saving` | `[rule]`: what a player keeps between sessions and what happens when a save or load fails. |
 | `scope` | `{first_release, later, excluded}`: what the first playable release contains, what comes after it, and what the game never includes. |
 | `success_signals` | `[signal]`: observable outcomes that show the game works for its audience. |
+| `competitors` | `[{name, url, overlap, difference}]`: games a player of this one would otherwise play, what each shares with it and how this game differs. |
 | `open_questions` | `[question]`: product choices the approval left open, or `[]`. |
 | `evidence` | Optional. `[{claim, source}]`: what supports the design, such as a study's patterns. |
 

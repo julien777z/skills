@@ -1,6 +1,6 @@
 ---
 name: research-games
-description: Explicit user-invoked research of Roblox charts for the requested audience and region. Study 25 games by default, in passive mode (pages and popular gameplay videos) or play mode (also a short real session for games whose onboarding no video shows), asking which when the request names neither; or propose an original game idea from the latest study, shown as a dashboard and, once approved, written as a game brief file for building it. Reuse recent records of games studied before, delegate two games per researcher, collect YAML notes on gameplay, UI and onboarding, and wait for all researchers before keeping the records and routing supported themes into the Roblox skills that own them.
+description: Explicit user-invoked research of Roblox charts for the requested audience and region. Study 25 games by default, in passive mode (pages and popular gameplay videos) or play mode (also a short real session for games whose onboarding no video shows), asking which when the request names neither; or propose three ranked original game ideas from the latest study, shown as a dashboard and, once one is approved, written as a game brief file for building it. Reuse recent records of games studied before, delegate two games per researcher, collect YAML notes on gameplay, UI and onboarding, and wait for all researchers before keeping the records and routing supported themes into the Roblox skills that own them.
 short_description: 'Explicit user-invoked research of Roblox charts for the requested audience and region.'
 disable-model-invocation: true
 ---
@@ -41,7 +41,7 @@ choices:
     when: the request asks for the games to be played or playtested
   - id: idea
     label: Game idea
-    detail: propose an original game from the latest study's findings
+    detail: propose three ranked original games from the latest study's findings
     aliases: [ideate, brainstorm, pitch]
     when: the request asks for a game idea, a pitch or a brainstorm of what might work
 ```
@@ -140,13 +140,15 @@ Report the sample, mode, reused games, findings, material evidence limits, the p
 
 ## Idea mode
 
-Use this mode when the request asks for a game idea. It works from the latest study file's synthesis and its game records rather than studying again; when no study is under 30 days old, run a passive study first and use its synthesis. A genre, audience or theme the user names is fixed.
+Use this mode when the request asks for a game idea. It works from the latest study file's synthesis and its game records rather than studying again; when no study is under 30 days old, run a passive study first and use its synthesis. A genre, audience or theme the user names is fixed; every other product choice, such as the audience, tone, scope and first release, is decided here and stated, never put to the user as a question.
 
-1. **Draft one original idea** as product facts in the shape of `roblox-studio`'s game brief reference: what the game is, its genre and audience, what players do, its story when it has one, its world, first session, progression, social play, monetization, accessibility, first-release scope and success signals. Ground each pillar in a synthesis pattern and name its count. Borrow mechanics and conventions, never a studied game's name, characters, story, levels, art or look.
-2. **Run `review-proposal`** on the draft, with the user's request as its intent and the study file as its evidence, and carry its repairs into the draft.
-3. **Show it with `use-dashboard`**: an Overview page with the pitch, genre, audience, tone and first-release scope, then pages for what players do (core loop, modes and first session), the story when there is one, the world and its look, progression and monetization, and the evidence each pillar rests on.
-4. **Ask for approval** through the question tool, offering Approved and a request for changes. A change request revises the draft and returns to step 2 for what it changed.
-5. **On approval, write the game brief**: one JSON file following `roblox-studio`'s game brief reference, holding the approved facts only, with every choice the approval left open in `open_questions`. Check that it parses and holds every required field, send it to the user as a file, and say that `roblox-studio` builds the game from it.
+1. **Draft three distinct, original ideas** as product facts in the shape of `roblox-studio`'s game brief reference: what each game is, its genre and audience, what players do, its story when it has one, its world, first session, progression, social play, monetization, accessibility, saving, first-release scope and success signals. Every idea carries a monetization plan for its first release. Ground each pillar in a synthesis pattern and name its count with the study's qualifiers, and name the design bets the study does not cover. Borrow mechanics and conventions, never a studied game's name, characters, story, levels, art or look.
+2. **List each idea's competing games**: the chart games, studied or not, that a player of that idea would otherwise play, with each one's link, what it shares with the idea and how the idea differs.
+3. **Rank the three** and give the reasons for each place: how much of the study's evidence the idea rests on, how well it fits its audience, how crowded its competition is, the size and risk of its first release, and its design bets.
+4. **Run `review-proposal`** on the ranked set, with the user's request as its intent and the study file as its evidence, and carry its repairs into the drafts.
+5. **Show the set with `use-dashboard`**: an Overview page with the ranking and why, then one page per idea holding its pitch, genre, audience and tone, what players do, its story when there is one, its world, progression and monetization, its first-release scope, its competing games and the evidence it rests on.
+6. **Ask which idea to approve** through the question tool, offering Approved for each ranked idea and a request for changes. A change request revises the set and returns to step 4 for what it changed.
+7. **On approval, write the game brief** for the approved idea: one JSON file following `roblox-studio`'s game brief reference, holding that idea's facts and its competing games. Check that it parses and holds every required field, send it to the user as a file, and say that `roblox-studio` builds the game from it.
 
 ## Output: structured YAML notes
 
