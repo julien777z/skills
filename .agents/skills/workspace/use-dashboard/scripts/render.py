@@ -769,7 +769,8 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
                 check=partial(check_objects, shape=FIGURE_SHAPE),
                 typescript="Figure[]",
                 shape=FIGURE_SHAPE,
-            )
+            ),
+            "stacked": FLAG,
         },
         frozenset({"items"}),
     ),
