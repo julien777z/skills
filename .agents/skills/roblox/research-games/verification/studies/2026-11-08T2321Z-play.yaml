@@ -2,7 +2,7 @@ study:
     observed_at: "2026-11-08T23:21:20Z"
     mode: play
     requested_games: 25
-    completed_games: 13
+    completed_games: 19
     reused_games: []
     chart:
         url: "https://www.roblox.com/charts?device=computer&country=us"
@@ -12,7 +12,7 @@ study:
     method_notes:
         - "Games 1-8 were played for up to 5 minutes, two more for up to 10 minutes, and five in depth for up to 25 minutes; real play then stopped in favour of gameplay videos."
         - "Gameplay videos came from YouTube, searched by views, and from each game's own Roblox preview trailer."
-        - "YouTube blocked this machine partway through; five games have no gameplay video and are recorded as partial so a later run studies them again."
+        - "YouTube blocked this machine partway through; a later video pass on 2026-11-09 studied the five games left without gameplay video, and Brookhaven RP's world, from YouTube footage."
         - "The runner's paravirtual GPU garbled several complex 3D worlds in real play; videos show those worlds render normally."
     assignments:
         - {researcher: "R01", game_ids: ["universe:7529591378", "universe:10772543706"], status: partial, blocker: "Holding the mouse button did not register in the runner, so Sweep The Moon's main action was not played."}
