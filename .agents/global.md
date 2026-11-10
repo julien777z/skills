@@ -550,6 +550,12 @@ return records;
   item — which they already know. It holds wherever that message is written: the error message of
   an API or tool whose text reaches an end user, a server-side enum or constant that holds the
   text, a test fixture, and wording a brief proposes to a worker.
+- **Text an end user reads speaks in what the reader cares about, never in the system's exact
+  values.** Where a precise number, state or count changes nothing the reader does, say it in plain
+  words: a balance of 1 is "no money left", a wait of 59 seconds is "about a minute". Keep the
+  exact value only where the reader acts on it, such as a price, a quantity they choose or a figure
+  they compare, and never add a qualifier such as "almost" or "about" only to make plain words
+  technically exact.
 - **Text only the product's own team reads states the observed condition and its values, and
   nothing more.** On an internal panel, an operator or support tool, or an internal API, a refusal
   or a report names what was found and lists the values it concerns, such as "Unrecognized shelf
