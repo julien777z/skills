@@ -32,21 +32,20 @@ settings or monetization, and no publish to any other experience.
 
 ## Workflow
 
-1. **Freeze the build.** Take the latest pushed head of the session's branch, and record it.
+1. **Set up missing destinations first.** When **Target** leads to creating an experience, or a
+   place the build produces has no published counterpart, create it through the delivery route in
+   `roblox-studio`'s source, editor, and publication reference, a new experience starting from its
+   start place. Write each new ID into the project configuration **Target** reads, then commit and
+   push it, so the build carries every destination and the next publish finds them.
+2. **Freeze the build.** Take the latest pushed head of the session's branch, and record it.
    Build the publishable places from that head with the project's own build command and its
    integrity check, so they hold exactly that head's code, artwork, world and terrain archives,
    never a previously saved place copy.
-2. **Publish from the isolated runner**, as `roblox-studio` sets up, holding its runner lock: open
-   each built place in the runner's signed-in Studio and publish it over its existing place in
-   the chosen universe, maps before the start place. A place with no existing counterpart is added
-   through the delivery route in `roblox-studio`'s source, editor, and publication reference; for a
-   new experience, publish the start place first through Publish to Roblox As as a new experience,
-   then add the maps that way. Read the place and universe IDs in that editor before and after each
-   publish. Grant asset permissions the publish dialog asks for when they cover the project's own
-   assets; leave the audience setting as it is.
-3. **Record what was created.** Write the ID of every experience or place this run created into the
-   project configuration **Target** reads, commit it on the session's branch and push it, so the
-   next publish finds them rather than creating them again.
+3. **Publish from the isolated runner**, as `roblox-studio` sets up, holding its runner lock: open
+   each built place in the runner's signed-in Studio and publish it over its place in the chosen
+   universe, maps before the start place. Read the place and universe IDs in that editor before
+   and after each publish. Grant asset permissions the publish dialog asks for when they cover the
+   project's own assets; leave the audience setting as it is.
 4. **Verify** each place's new version or update time from Roblox, not from the dialog's success.
 5. **Clean up, then release.** Close the editors the publish opened and confirm the runner is idle,
    then release its lock; a failed publish ends the same way.
@@ -58,8 +57,9 @@ settings or monetization, and no publish to any other experience.
 
 | Place | ID | Updated |
 | --- | --- | --- |
-| [<place>](<place URL>) | <id> | <time, or `new` for a place this run created> |
+| [<place>](<place URL>) | <id> | <time> |
 
+Created: <each experience or place this run created, as a link, or none>
 Play: [<start place>](<game URL>)
 Not included: <each commit after the frozen head as a link to it, or none>
 ```
