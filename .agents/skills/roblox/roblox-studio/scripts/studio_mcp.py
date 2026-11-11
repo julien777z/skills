@@ -20,7 +20,19 @@ GUEST_PLACES: Final[str] = "studio-places"
 PROTOCOL_VERSION: Final[str] = "2024-11-05"
 
 
-def runner(command: str, timeout: float = 60, data: bytes | None = None) -> bytes:
+def own_runner_lock(lock_receipt: Path) -> None:
+    result = subprocess.run(["python3", str(AGENT_LOCK), "check", "--receipt", str(lock_receipt)],
+                            capture_output=True, text=True, timeout=30)
+    status = json.loads(result.stdout or "{}").get("status")
+
+    if status != "owned":
+        raise RuntimeError(f"Runner lock not owned by receipt {lock_receipt}: {status}")
+
+
+def runner(command: str, timeout: float = 60, data: bytes | None = None, lock_receipt: Path | None = None) -> bytes:
+    if lock_receipt is not None:
+        own_runner_lock(lock_receipt)
+
     result = subprocess.run([str(RUNNER_SSH), command], input=data, capture_output=True, timeout=timeout)
 
     if result.returncode != 0:
@@ -223,15 +235,6 @@ return game.HttpService:JSONEncode(buttons)''', "Client"))
 
 def guest_place(project: str, place: Path) -> str:
     return f"{GUEST_PLACES}/{project}/{place.name}"
-
-
-def own_runner_lock(lock_receipt: Path) -> None:
-    result = subprocess.run(["python3", str(AGENT_LOCK), "check", "--receipt", str(lock_receipt)],
-                            capture_output=True, text=True, timeout=30)
-    status = json.loads(result.stdout or "{}").get("status")
-
-    if status != "owned":
-        raise RuntimeError(f"Runner lock not owned by receipt {lock_receipt}: {status}")
 
 
 def close_place(project: str, place: Path, lock_receipt: Path) -> str:

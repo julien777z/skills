@@ -122,7 +122,7 @@ from its installed copy (`~/.agents/skills/roblox-studio/scripts`, put on `sys.p
 client. It holds one session through `runner_ssh.sh`. `open_place(project, place, out_dir, lock_receipt)` first confirms through `agent-lock` that `lock_receipt` owns the runner's lock, then copies a built place
 into the guest under `studio-places/<project>/`, launches an editor for it and returns a `Studio` once that editor
 registers, or saves the guest's screen, closes the editor and raises. `close_place(project, place, lock_receipt)` ends
-that editor under the same check. `Studio` executes Luau, captures, reads the console, sends keys, and clicks a button by its instance path
+that editor under the same check. `runner(command, lock_receipt=...)` runs a shell command in the guest; a command that changes the guest, such as stopping a process or deleting a file, passes the receipt so it runs only under the lock. `Studio` executes Luau, captures, reads the console, sends keys, and clicks a button by its instance path
 through VirtualInput. Run `python3 studio_mcp.py METHOD [PARAMS | @file]` for a single request from a shell.
 
 **No Studio operation reaches the host by falling back.** A client, helper or MCP server that picks its target
