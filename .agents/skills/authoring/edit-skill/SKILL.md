@@ -172,6 +172,10 @@ user's review of the source pull request overlaps it.
   and environments** pending-result boundary. Never lose a correction, treat a recorded one as
   delivered, or hold the source pull request for it beyond the checks its ridden edits need and the
   delivery of the batch carrying them.
+- **Delivery is the agent's own work, never the user's errand.** It starts when the surrounding task
+  completes, or at once when no other task is running, without the user asking; a user's request to process
+  it only starts it sooner. No report, pending-decision list, summary or continuation note describes a
+  pending batch as waiting for the user to ask, and one that does is corrected, never carried forward.
 - At a checkpoint and before reporting its state, record the complete pull-request head and file
   list, the target repository's lifecycle, its current state, and its next transition. A draft
   confined to canonical agent configuration records `agent-configuration exception`
