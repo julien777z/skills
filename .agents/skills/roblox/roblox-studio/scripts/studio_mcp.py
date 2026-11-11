@@ -249,7 +249,8 @@ for _ in 1 2 3 4 5; do ps -p "$listed" >/dev/null || {{ echo closed; exit 0; }};
 kill -KILL $pids 2>/dev/null
 for _ in 1 2 3 4 5; do ps -p "$listed" >/dev/null || {{ echo closed; exit 0; }}; sleep 1; done
 echo still-open'''
-    removal = f"rm -f {shlex.quote(guest_path)}; rmdir {shlex.quote(str(Path(guest_path).parent))} 2>/dev/null; true"
+    # Studio leaves a lock file beside a place it opened.
+    removal = f"rm -f {shlex.quote(guest_path)} {shlex.quote(guest_path + '.lock')}; rmdir {shlex.quote(str(Path(guest_path).parent))} 2>/dev/null; true"
 
     state = runner(script, timeout=60).decode().strip()
 
