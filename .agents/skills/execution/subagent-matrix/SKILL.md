@@ -34,7 +34,11 @@ agent; the calling agent launches the actual assignment with the selected model.
    unavailable-model fallback, or takes the launch fallback, launch the actual assigned work once with its exact
    candidate identifier and explicit reasoning effort when the native tool is available. A successful dispatch establishes that the host accepted
    the requested identifier for that launch; it does not establish catalog availability or runtime identity.
-   An explicit host receipt that the candidate is unsupported establishes unavailability. The accepted worker
+   An explicit host receipt that the candidate is unsupported establishes unavailability. **A rate limit or
+   quota refusal is temporary capacity, never unavailability**, even when it names a long reset time: it permits
+   no fallback, no other provider and no absorbing the work into the coordinator's own process. Resume or
+   relaunch the same worker on the same model once the limit no longer holds, read from the request path itself:
+   the coordinator answering on that model, or the relaunch being accepted, shows it has cleared. The accepted worker
    performs the assignment; never launch a throwaway availability probe. Record the runtime identifier only
    when the host exposes its exact value. Generic provider or product
    branding, a worker-reported label, or no runtime identifier is neither confirmation nor a contradiction of
