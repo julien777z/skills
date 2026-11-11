@@ -62,6 +62,8 @@ Good:
 
 If anything is left open, name ONE thing the reader can do in under two minutes. Even "open the file" counts. This picks a next action; it never removes other unanswered questions from the decision list.
 
+**This closing line is the reader's action, never the agent's.** Work the agent is authorized to do and has not finished is not a closing line: it is done in this turn, as `execute-task`'s **Work You Have Already Named** says. While it remains, a message to the reader is a progress note sent together with the next action, and the turn ends only when the outcome is verified complete, or a question, a wait on a result or a gate holds every remaining step. "Next: nothing needed from you. I'm moving on to the release notes." ends a turn on work never started: start the release notes instead.
+
 Bad: "Hope that helps. Let me know if you want to dig deeper."
 Good: "Next: run `npm test` and paste the first failing line."
 
@@ -196,5 +198,7 @@ Before sending, delete:
 Then reconcile pending decisions with the current ledger and user message: every unresolved item, including optional choices and unconfirmed assumptions, must appear in the required numbered status list as an active tool request or evidence-pending work, according to readiness; chat questions appear only when no equivalent tool exists. Resolved or superseded questions must not reappear.
 
 Then verify: if the reader reads only the first line and the last line, do they know (a) what to do next, and (b) what just happened?
+
+Then check what the message leaves undone: if it names work the agent will do next, or reports a step with authorized work still behind it, the turn does not end with this message. Send it as a progress note and take that next action.
 
 If yes, send.
