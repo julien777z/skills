@@ -237,7 +237,8 @@ def own_runner_lock(lock_receipt: Path) -> None:
 def close_place(project: str, place: Path, lock_receipt: Path) -> str:
     own_runner_lock(lock_receipt)
 
-    pattern = shlex.quote(f"localPlaceFile .*{guest_place(project, place)}")
+    guest_path = guest_place(project, place)
+    pattern = shlex.quote(f"localPlaceFile .*{guest_path}")
     # An editor with a place open answers SIGTERM with its unsaved-changes prompt, so it is then killed; the place file
     # is the task's own copy.
     script = f'''pids=$(pgrep -f {pattern} || true)
@@ -248,8 +249,14 @@ for _ in 1 2 3 4 5; do ps -p "$listed" >/dev/null || {{ echo closed; exit 0; }};
 kill -KILL $pids 2>/dev/null
 for _ in 1 2 3 4 5; do ps -p "$listed" >/dev/null || {{ echo closed; exit 0; }}; sleep 1; done
 echo still-open'''
+    removal = f"rm -f {shlex.quote(guest_path)}; rmdir {shlex.quote(str(Path(guest_path).parent))} 2>/dev/null; true"
 
-    return runner(script, timeout=60).decode().strip()
+    state = runner(script, timeout=60).decode().strip()
+
+    if state == "closed":
+        runner(removal, timeout=30)
+
+    return state
 
 
 def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path, wait_seconds: float = 180) -> Studio:

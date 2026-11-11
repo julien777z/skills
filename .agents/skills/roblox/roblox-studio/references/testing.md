@@ -364,6 +364,31 @@ immediately before each asking, including a re-ask after a timeout: codes expire
 minutes and Studio logs each replacement. The user enters the code on a device already signed in to
 Roblox. Confirm sign-in from the Studio start page before relying on the runner.
 
+## Leave the shared runner as you found it
+
+Several sessions share one runner, so whatever one leaves behind lands on the next. Before the task's
+last release of the runner lock, its own processes are gone, its own files are gone, and every setting
+it changed reads back at the value it found.
+
+- **Settings.** A Studio or engine setting changed from a script or a dialog, such as
+  `settings().Rendering`'s quality levels or `UserGameSettings`, persists across editors and applies to
+  every session in the runner. Prefer a route scoped to the test, such as the device simulator's own
+  profile. When a shared setting must change, record its value first, restore it from an Edit-mode
+  editor once the test is done, and read it back from a newly opened editor; a restore issued from a
+  Play client, or one never read back, has not happened. Granting a permission an operation needs is
+  setup, not a setting to restore.
+- **Files.** Everything the task copies or writes in the guest, such as places, captures, scratch
+  output, worktrees and lock files, sits under a folder named for the task or its project and is
+  removed when the task's runner work ends. `studio_mcp.close_place` deletes the place copy
+  `open_place` made. The runner's persistent setup is not task output and stays, as the next section
+  says.
+- **Resources.** Before a heavy run, such as Play, a multiplayer test or a device simulation, read the
+  guest's free disk and swap (`df -h /`, `sysctl vm.swapusage`). Low disk or swap already in use is
+  investigated before the run: remove what the task itself left and restore what it changed, and
+  report what another session left without deleting it. A run that could run away gets a watchdog
+  that stops the task's own editor past a memory ceiling, so one run cannot push the shared guest into
+  swap.
+
 ## End of session for a retained VM
 
 These steps apply only to a task-owned or configured retained VM. Finish or record the task blocker before shutdown; a progress update does not end the test session.
@@ -383,8 +408,9 @@ VM is stopped. Do not leave the VM running or substitute a suspended/running sta
 shutdown. If an unfinished test must continue, report that explicitly rather than claiming shutdown.
 
 **Do not tear down the sandbox's persistent state.** Do not uninstall Studio or Roblox, log out,
-delete/recreate the VM, reset its disk, remove project files, clear caches/keychains, or erase its
-settings/authentication as end-of-task cleanup. Closing Studio and powering off the guest are the
+delete/recreate the VM, reset its disk, remove its project setup, clear caches/keychains, or erase its
+settings/authentication as end-of-task cleanup. A task's own copies and output are not that state;
+[the section above](#leave-the-shared-runner-as-you-found-it) removes them. Closing Studio and powering off the guest are the
 normal shutdown actions. Keep the VM, installed apps, signed-in accounts, files, configuration, and
 SSH access available for another session. Do not publish or commit the authenticated image or keys.
 
