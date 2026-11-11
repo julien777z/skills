@@ -68,14 +68,8 @@ alwaysApply: true
   the user can no longer follow. A capture nobody asked for that shows no change — taken while
   navigating, diagnosing, or recording a baseline before anything changed — stays where it was saved
   and is not sent, except as the before half of a pair once its after exists; a capture the user or
-  the running skill asked for is sent as it is made, change or not. Where the harness shows an image
-  embedded in the message text, such as Markdown image syntax naming the file's absolute path, instead
-  of offering a file-sending tool, the agent the user talks to sends a capture by writing a short message
-  that embeds it, in the same turn, right after reading it and before its next tool call; a capture kept
-  for the turn's last message has been held. The embedded file sits where that viewer serves files, such
-  as one of the session's listed working directories like its attachments folder, copied there first
-  when the capture was saved elsewhere: an image in a scratch or temporary directory shows the reader
-  nothing. A subagent with no file-sending
+  the running skill asked for is sent as it is made, change or not. How a capture is sent, through the harness's file-sending tool, is
+  `share-captures`'s. A subagent with no file-sending
   tool hands each capture to be sent up as `subagent-matrix`'s **Dispatch** describes, and the
   agent that delegated to it reads and forwards each one on arrival. A brief that asks a worker for
   captures asks for them this way.
@@ -339,7 +333,8 @@ alwaysApply: true
   When the options differ in layout, structure or the controls the reader uses — a list or a grid,
   one column or two, a section moved or removed — the question carries, directly beneath it, a
   capture of each option as the product would draw it, built as an uncommitted preview where it
-  does not exist yet, at the widths where the options differ. Describing an option, or showing only
+  does not exist yet, at the widths where the options differ, sent before the question as
+  `share-captures`' **Previews for a choice** says. Describing an option, or showing only
   the current state, leaves the reader guessing at the one they cannot see, so the question waits
   until every capture is ready. A drawing made of text, such as a sketch in a question tool's
   preview, is a description, not a capture. A choice between wordings or between small adjustments

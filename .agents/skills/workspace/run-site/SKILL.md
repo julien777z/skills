@@ -11,6 +11,7 @@ Start and verify the stack within the requested scope. When browser verification
 
 ## Dependencies
 - `pre-production`
+- `share-captures`
 - `use-browser`
 - `proton-pass`
 - `test-fixture`
@@ -265,6 +266,6 @@ ffmpeg -y -i <path>.webm -c:v libx264 -pix_fmt yuv420p -movflags +faststart -an 
 
 Send the recording and a still of the view the change touched, unasked, plus a still per width
 walked, the page with its requests failing, and each defect with the fix that resolved it — as the run produces
-them, as the User-Facing Output rule requires. Captures left on disk are a walkthrough the reader
+them, as the User-Facing Output rule requires, through `share-captures`. Captures left on disk are a walkthrough the reader
 never saw. The report names the widths checked, whether the run without the API changes was done,
 and what the screens were read against.
