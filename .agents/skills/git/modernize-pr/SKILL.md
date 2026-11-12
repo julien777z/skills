@@ -15,6 +15,8 @@ belongs in the product, and Git reporting no conflicts does not make it current.
 - `session-ledger`
 - `merge-conflict`
 - `pre-production`
+- `subagent-matrix`
+- `use-dashboard`
 
 ## Scope
 
@@ -29,6 +31,16 @@ the user, as the global rules and the GitHub rules say.
 
 Record each pull request with `session-ledger` before reading it, as a `reference`, and as
 `touched` once this run pushes to it.
+
+## Splitting The Work
+
+Judge the pull requests in parallel subagents, each given at most three pull requests and never a
+share of a split set, assigned and briefed as `subagent-matrix` says. A run naming three or fewer still
+uses one. Each worker runs **Establish The Intent**, **Check What Changed Around It** and **Choose A
+Disposition** for its share, read-only, and returns each set's **Output** fields with the evidence
+behind every answer: the command, test or file and line it read. The parent checks each answer at
+its source before it reaches the user, as the global rules' **Reported Outcomes** says, and runs
+**Bring It Up To Date** only after that check.
 
 ## Establish The Intent
 
@@ -57,6 +69,13 @@ Look past overlapping lines:
   `pre-production` decides what a current change may keep of an obsolete owned contract.
 - Is what it delivers still worth what it costs to maintain?
 
+**Every question gets an answer, never a likelihood.** Whether the problem the change fixes still
+happens on the current base is settled by evidence: reproduce it on the base with a test, a request
+against the local stack or the code path read through to its outcome, or find the base change that
+fixed it. "May still exist", "likely fixed" and "probably obsolete" are not findings; each names
+work not yet done, and the run does it. Only an answer that needs a hosted service or a credential
+the session lacks stays open, listed under **Not verified** with that blocker.
+
 Age alone is not evidence, and the effort already spent is not a reason to keep it.
 
 ## Choose A Disposition
@@ -74,8 +93,11 @@ Choose one before pushing anything:
   code that no longer exists. Push nothing.
 
 A pull request is closed only on the user's word. A `REWORK` or `CLOSE` that waits on the user goes
-to them as a question, as the global rules' question-tool bullet says, with the evidence and the
-disposition as its recommendation.
+to them as a question, as the global rules' question-tool bullet says, after the dashboard **Output**
+describes, with the evidence and the disposition as its recommendation. **A question choosing
+among several pull requests asks which to act on**: each option is one pull request, picking it
+takes the action the question names, such as closing it, and one left unpicked stays as it is.
+Options are never the ones to keep, which makes the reader's picks undo what they read as choosing.
 
 ## Bring It Up To Date
 
@@ -95,43 +117,30 @@ For a `MODERNIZE` disposition:
 
 ## Output
 
-Return this report, one block per pull request set, keeping every heading and writing `None`
-under one with nothing to list:
+Every run delivers its result as a dashboard through `use-dashboard`, as session work, one page per
+run updated in place as the run's answers arrive:
 
-```markdown
-**<MODERNIZE | REWORK | CLOSE>**: <one sentence on why>
+- **Overview**: a metric per disposition with its count, then a table with one row per pull request
+  set, its columns `Pull requests`, `What it does`, `Disposition` and `Why`, each row opening its
+  full write-up.
+- **A row's write-up**: an outline holding the fields below, in this order, with `None` for an empty
+  one, and each pull request and base change in `links`.
 
-Pull requests
+| Field | Holds |
+| --- | --- |
+| Disposition | `MODERNIZE`, `REWORK` or `CLOSE`, and one sentence on why |
+| Pull requests | each with its state, its head before and, once pushed, after |
+| What the base changed | each base change that bears on this one |
+| Does the problem still happen | the answer and the evidence that settled it |
+| Conceptual conflicts | each, or `None found` |
+| Update | the range-diff result and push, or `Not pushed` and the disposition |
+| Checks | each check run and its result on the head named |
+| Rewrite plan | for `REWORK`: what it keeps, drops and builds on |
+| Not verified | each open answer and the blocker that keeps it open |
 
-- <[repository#number](url)>: <state, head before, head after when pushed>
-
-What the base changed
-
-- <each change on the base that bears on this one, linked>
-
-Conceptual conflicts
-
-- <each, or `None found`>
-
-Update
-
-- <range-diff result and push, or `Not pushed: <disposition>`>
-
-Checks
-
-- <each check run and its result on the head named>
-
-Rewrite plan
-
-- <for `REWORK`: what it keeps, drops and builds on; otherwise `None`>
-
-Not verified
-
-- <what could not be checked, or `None`>
-```
-
-Keep observed facts and judgment apart: a fact names where it was read, and a judgment says it is
-one.
+The chat reply gives the dashboard's link, the count per disposition and one line per set, then
+the question **Choose A Disposition** describes. Keep observed facts and judgment apart: a fact
+names where it was read, and a judgment says it is one.
 
 ## Guardrails
 
