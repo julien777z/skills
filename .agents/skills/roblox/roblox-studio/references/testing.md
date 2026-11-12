@@ -212,7 +212,7 @@ it and checks again for the game's file before creating anything. Each step ends
    [Provision a runner when none exists](#provision-a-runner-when-none-exists) for everything after
    the clone. `tart set` the budgeted CPU, memory and disk, then start it detached as above;
    `tart ip --wait` returns its address.
-2. **Pin its host key.** Record the clone's host key at its own address in
+2. **Pin its host key.** Record the clone's host key under `<game>-vm` in
    `~/.config/roblox-studio/games/<game>_known_hosts` and verify its fingerprint through `tart exec`, as
    step 3 of provisioning says. The shared SSH key a clone of a qualified VM carries needs no new
    `authorized_keys` entry.
@@ -245,7 +245,9 @@ ends with its check:
    depends on: `defaults read /Library/Preferences/com.apple.loginwindow autoLoginUser` in the guest
    names that user on a Cirrus Labs image.
 3. **Pin SSH before trusting it.** Generate a dedicated key in `~/.config/roblox-studio/`. Record
-   the guest's host key with `ssh-keyscan -t ed25519`, then compare its `ssh-keygen -lf` fingerprint with the
+   the guest's host key under the VM's name, not its address, since `runner_ssh.sh` looks it up by
+   that name and Tart can give the guest a new address (`ssh-keyscan -t ed25519 <address>` with its
+   first field replaced by the VM name), then compare its `ssh-keygen -lf` fingerprint with the
    one `tart exec <vm> ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub` reports through the guest
    agent; a mismatch stops setup. Append the public key to the guest's `authorized_keys` through
    `tart exec -i`, so no guest password passes through a command line, and confirm a `BatchMode=yes`
