@@ -96,11 +96,11 @@ successful published-client teleport.
 
 Studio work runs in an isolated runner: a Tart VM on a macOS host, the container runner below on Linux. The user's own desktop Studio is not the runner, even for an operation that sends no input, unless the user chooses it as described below, since opening a place, building or capturing still launches windows and takes focus there; a supported Studio MCP operation that avoids moving the host pointer does not change that. Qualify editor identity, input, capture, rendering, and window/focus isolation separately before claiming unattended testing is safe.
 
-When a reusable isolated runner is configured, reuse its installed Studio, authentication, and tooling. Keep each game's source and test data separate, verify the intended place before acting, and coordinate exclusive control of its desktop. Start a stopped runner when needed, discover its current address, and close task-owned windows and processes after testing. An unavailable isolated capability, or a runner lock another session holds, leaves only the operations that need the runner waiting; every other part of the work — source, builds, world art, audio, tests and later plan steps — continues meanwhile. Never switch to the host's desktop Studio on your own. Inside the runner, install or update Studio and the tools the work needs, sign in with the retained session, and create the upload staging directory, without asking.
+When a reusable isolated runner is configured, reuse its installed Studio, authentication, and tooling. Keep each game's source and test data separate, verify the intended place before acting, and coordinate exclusive control of its desktop. Start a stopped runner when needed, discover its current address, and leave it as [Leave the shared runner as you found it](#leave-the-shared-runner-as-you-found-it) says. An unavailable isolated capability, or a runner lock another session holds, leaves only the operations that need the runner waiting; every other part of the work — source, builds, world art, audio, tests and later plan steps — continues meanwhile. Never switch to the host's desktop Studio on your own. Inside the runner, install or update Studio and the tools the work needs, sign in with the retained session, and create the upload staging directory, without asking.
 
 ### Retained Tart/macOS runner
 
-This example applies only when the host already configures `ROBLOX_STUDIO_TART`, `ROBLOX_STUDIO_VM`, `ROBLOX_STUDIO_SSH_USER`, `ROBLOX_STUDIO_SSH_KEY`, and `ROBLOX_STUDIO_KNOWN_HOSTS` in `~/.config/roblox-studio/runner.env`. Shared tools and keys live outside game checkouts. Discover the configured machine; do not assume its name or address from another session. Use a single shared desktop lock key across games using that VM.
+This example applies only when the host already configures `ROBLOX_STUDIO_TART`, `ROBLOX_STUDIO_VM`, `ROBLOX_STUDIO_SSH_USER`, `ROBLOX_STUDIO_SSH_KEY`, and `ROBLOX_STUDIO_KNOWN_HOSTS` in `~/.config/roblox-studio/runner.env`. Shared tools and keys live outside game checkouts. Discover the configured machine; do not assume its name or address from another session. Hold the runner lock on the key `roblox-studio-runner`, shared by every game using that VM.
 
 ```sh
 source "$HOME/.config/roblox-studio/runner.env"
@@ -118,12 +118,12 @@ the next. The runner's Studio MCP is `runner_ssh.sh /Applications/RobloxStudio.a
 spoken over stdio: give an MCP client that command.
 
 Drive the runner's Studio from scripts through [studio_mcp.py](../scripts/studio_mcp.py), which every game uses
-from its installed copy (`~/.agents/skills/roblox-studio/scripts`, put on `sys.path`); no game keeps its own MCP
-client. It holds one session through `runner_ssh.sh`. `open_place(project, place, out_dir, lock_receipt)` first confirms through `agent-lock` that `lock_receipt` owns the runner's lock, then copies a built place
+from the installed `roblox-studio` skill's `scripts` folder, put on `sys.path`; no game keeps its own MCP
+client. It holds one session through `runner_ssh.sh`. `open_place(project, place, out_dir, lock_receipt)` first confirms through `agent-lock` that `lock_receipt` owns the `roblox-studio-runner` lock, then copies a built place
 into the guest under `studio-places/<project>/`, launches an editor for it and returns a `Studio` once that editor
 registers, or saves the guest's screen, closes the editor and raises. `close_place(project, place, lock_receipt)` ends
 that editor under the same check. `runner(command, lock_receipt=...)` runs a shell command in the guest; a command that changes the guest, such as stopping a process or deleting a file, passes the receipt so it runs only under the lock. `Studio` executes Luau, captures, reads the console, sends keys, and clicks a button by its instance path
-through VirtualInput. Run `python3 studio_mcp.py METHOD [PARAMS | @file]` for a single request from a shell.
+through the bundled VirtualInput helper. Run `python3 studio_mcp.py METHOD [PARAMS | @file]` for a single request from a shell.
 
 **No Studio operation reaches the host by falling back.** A client, helper or MCP server that picks its target
 from a variable or setting and drives the host's Studio when that target is missing is not a runner route, even
@@ -249,7 +249,6 @@ desktop when necessary, but never drive the host's game input. If Roblox rejects
 rendering/input is unreliable, attempt the applicable documented recovery and record the concrete
 remaining limitation. Repair the runner itself, reinstalling Studio or recreating the VM where
 that is what it takes; the Studio work waits for it rather than moving to the host's desktop.
-Continue independent lint, type, test, and build work meanwhile.
 
 When viewport capture fails but the guest desktop is usable, the optional
 [guest desktop viewer](#optional-guest-desktop-viewer) provides background images and guest-native UI
@@ -366,9 +365,9 @@ Roblox. Confirm sign-in from the Studio start page before relying on the runner.
 
 ## Leave the shared runner as you found it
 
-Several sessions share one runner, so whatever one leaves behind lands on the next. Before the task's
-last release of the runner lock, its own processes are gone, its own files are gone, and every setting
-it changed reads back at the value it found.
+Several sessions share one runner, so whatever one leaves behind lands on the next. No task process
+outlives any release of the runner lock, and before the task's last release its own files are gone and
+every setting it changed reads back at the value it found.
 
 - **Settings.** A Studio or engine setting changed from a script or a dialog, such as
   `settings().Rendering`'s quality levels or `UserGameSettings`, persists across editors and applies to
@@ -383,11 +382,12 @@ it changed reads back at the value it found.
   `open_place` made. The runner's persistent setup is not task output and stays, as the next section
   says.
 - **Resources.** Before a heavy run, such as Play, a multiplayer test or a device simulation, read the
-  guest's free disk and swap (`df -h /`, `sysctl vm.swapusage`). Low disk or swap already in use is
-  investigated before the run: remove what the task itself left and restore what it changed, and
-  report what another session left without deleting it. A run that could run away gets a watchdog
-  that stops the task's own editor past a memory ceiling, so one run cannot push the shared guest into
-  swap.
+  guest's free disk and swap (`df -h /` with `sysctl vm.swapusage` in a Tart guest, `free -h` in the
+  Linux runner). Low disk or swap already in use is investigated before the run: remove what the task
+  itself left and restore what it changed, and report what another session left without deleting it. A
+  run that could run away gets a watchdog: a loop in the guest that reads the task's editor's resident
+  memory (`ps -o rss= -p <pid>`) every few seconds and kills that editor past a ceiling well under the
+  guest's memory, so one run cannot push the shared guest into swap.
 
 ## End of session for a retained VM
 
@@ -487,8 +487,11 @@ undocumented preference-file keys are not a stable setup API. This uses the norm
 [MCP setup and connection checks](https://create.roblox.com/docs/studio/mcp).
 
 A normal quit can stop at an unsaved-changes dialog. Verify closure before reopening, and avoid
-forced termination or repeated duplicate launches. To close a task-owned editor, stop any Play
-session through MCP, then quit that process through its own window — Cmd-Q or the File menu sent
+repeated duplicate launches. Stop any Play session or multiplayer test through MCP first. An editor
+`studio_mcp.open_place` made is then closed with `close_place`: its place is a disposable copy, so
+ending the process is the same as Don't Save. The test server and client windows a multiplayer test
+starts are separate processes `close_place` does not match, so confirm with `pgrep` that they exited
+too. To close any other task-owned editor, quit that process through its own window — Cmd-Q or the File menu sent
 to the verified process — and answer an unsaved-changes prompt with Don't Save when the place is a
 disposable build artifact whose source lives in the repository, or Save when it holds work that
 exists nowhere else. Confirm with `pgrep` that the process exited. A process that ignores a quit
@@ -545,8 +548,7 @@ Verify selection, confirmation, and the server outcome; callbacks or remote call
 integration evidence, not a substitute for player input.
 
 Do not silently fall back to host client launches or native host HID automation if a capability is missing. Repair the runner as
-[Tart guest capabilities](#tart-guest-capabilities) describes when it cannot support the operation. Record the concrete blocker
-and continue independent work. Keep Studio, simulated-device, persistence, and published-client
+[Tart guest capabilities](#tart-guest-capabilities) describes when it cannot support the operation. Record the concrete blocker. Keep Studio, simulated-device, persistence, and published-client
 verification distinct; one does not establish another. Store reusable tools in the test tooling area
 and keep screenshots, logs, temporary fixtures, and runner state ignored.
 

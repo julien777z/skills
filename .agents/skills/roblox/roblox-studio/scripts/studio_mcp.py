@@ -8,12 +8,16 @@ import os
 import select
 import shlex
 import subprocess
+import sys
 import time
 from pathlib import Path
 from typing import IO, Any, Final, cast
 
 RUNNER_SSH: Final[Path] = Path(__file__).resolve().with_name("runner_ssh.sh")
-AGENT_LOCK: Final[Path] = Path.home() / ".agents/skills/agent-lock/resources/main.py"
+VIRTUAL_INPUT: Final[Path] = Path(__file__).resolve().with_name("virtual_input.luau")
+# Installed skills sit side by side; the unresolved path keeps the install root rather than the source tree.
+AGENT_LOCK: Final[Path] = Path(__file__).absolute().parents[2] / "agent-lock" / "resources" / "main.py"
+RUNNER_LOCK_KEY: Final[str] = "roblox-studio-runner"
 STUDIO_APP: Final[str] = "/Applications/RobloxStudio.app"
 STUDIO_MCP: Final[str] = f"{STUDIO_APP}/Contents/MacOS/StudioMCP"
 GUEST_PLACES: Final[str] = "studio-places"
@@ -21,12 +25,19 @@ PROTOCOL_VERSION: Final[str] = "2024-11-05"
 
 
 def own_runner_lock(lock_receipt: Path) -> None:
-    result = subprocess.run(["python3", str(AGENT_LOCK), "check", "--receipt", str(lock_receipt)],
+    result = subprocess.run([sys.executable, str(AGENT_LOCK), "check", "--receipt", str(lock_receipt)],
                             capture_output=True, text=True, timeout=30)
-    status = json.loads(result.stdout or "{}").get("status")
 
-    if status != "owned":
-        raise RuntimeError(f"Runner lock not owned by receipt {lock_receipt}: {status}")
+    try:
+        report = json.loads(result.stdout)
+    except ValueError:
+        report = {}
+
+    owned = report.get("status") == "owned" and report.get("ownership", {}).get("key") == RUNNER_LOCK_KEY
+
+    if result.returncode != 0 or not owned:
+        raise RuntimeError(f"Receipt {lock_receipt} does not own the {RUNNER_LOCK_KEY} lock:\n"
+                           f"{result.stdout}{result.stderr}")
 
 
 def runner(command: str, timeout: float = 60, data: bytes | None = None, lock_receipt: Path | None = None) -> bytes:
@@ -189,37 +200,17 @@ class Studio:
         if not 1 <= count <= 10:
             raise ValueError("Use one to ten button clicks")
 
-        # VirtualInput takes the full device coordinate space, safe insets included, where instance-path clicks
-        # miss under device emulation.
-        return self.execute(f'''local names = string.split({json.dumps(path, ensure_ascii=False)}, ".")
+        lookup = f'''local names = string.split({json.dumps(path, ensure_ascii=False)}, ".")
 local button = game
 if names[1] == "LocalPlayer" then button = game.Players.LocalPlayer; table.remove(names, 1)
 elseif names[1] == "game" then table.remove(names, 1) end
 for _, name in names do button = assert(button:FindFirstChild(name), "Missing button path") end
-assert(button:IsA("GuiButton"), "Expected a button")
-local center = button.AbsolutePosition + button.AbsoluteSize / 2
-local ancestor = button
-while ancestor do
-	if ancestor:IsA("GuiObject") then
-		assert(ancestor.Visible, "Button is inside hidden UI")
-		if ancestor.ClipsDescendants then
-			local low, high = ancestor.AbsolutePosition, ancestor.AbsolutePosition + ancestor.AbsoluteSize
-			assert(center.X >= low.X and center.Y >= low.Y and center.X <= high.X and center.Y <= high.Y,
-				"Scroll the button into view before clicking")
-		end
-	elseif ancestor:IsA("ScreenGui") then assert(ancestor.Enabled, "Button screen is disabled") end
-	ancestor = ancestor.Parent
-end
-local point = center - game.GuiService:GetInsetArea(Enum.ScreenInsets.None).Min
-local input = game.UserInputService:CreateVirtualInput()
-for _ = 1, {count} do
-	input:SendMousePosition(point)
-	task.wait(0.08)
-	input:SendMouseButton(point, Enum.UserInputType.MouseButton1, true, 0)
-	task.wait(0.08)
-	input:SendMouseButton(point, Enum.UserInputType.MouseButton1, false, 0)
-end
-return "Button input delivered"''', "Client")
+local input = Input.new()
+for _ = 1, {count} do input:click(button) end
+input:release()
+return "Button input delivered"'''
+
+        return self.execute(f"local Input = (function()\n{VIRTUAL_INPUT.read_text()}\nend)()\n{lookup}", "Client")
 
     def buttons(self, screen: str) -> list[dict[str, Any]]:
         return json.loads(self.execute(f'''local buttons = {{}}
@@ -253,7 +244,9 @@ kill -KILL $pids 2>/dev/null
 for _ in 1 2 3 4 5; do ps -p "$listed" >/dev/null || {{ echo closed; exit 0; }}; sleep 1; done
 echo still-open'''
     # Studio leaves a lock file beside a place it opened.
-    removal = f"rm -f {shlex.quote(guest_path)} {shlex.quote(guest_path + '.lock')}; rmdir {shlex.quote(str(Path(guest_path).parent))} 2>/dev/null; true"
+    files = f"{shlex.quote(guest_path)} {shlex.quote(guest_path + '.lock')}"
+    folder = shlex.quote(str(Path(guest_path).parent))
+    removal = f"rm -f {files}; rmdir {folder} 2>/dev/null; true"
 
     state = runner(script, timeout=60).decode().strip()
 
@@ -285,7 +278,8 @@ def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path, wai
 
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / f"launch-failure-{place.stem}.png").write_bytes(
-        runner("screencapture -x /tmp/studio-launch-failure.png && cat /tmp/studio-launch-failure.png"))
+        runner('f=$(mktemp -t studio-launch) && screencapture -x -t png "$f" && cat "$f"; status=$?; rm -f "$f"; '
+               'exit $status'))
 
     close_place(project, place, lock_receipt)
 

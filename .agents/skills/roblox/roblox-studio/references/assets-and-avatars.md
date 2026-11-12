@@ -2,12 +2,12 @@
 
 Apply these standards to the game's genre and the requested change. They do not prescribe a genre, quest structure, or custom avatar.
 
-Environmental asset design and the Blender import pipeline belong to the building dependency declared in the entry point; this reference covers Studio character integration.
+Environmental asset design and the Blender import pipeline belong to the building dependency declared in the entry point; this reference covers uploaded game assets and Studio character integration.
 
 ## Uploaded assets
 
 Every asset uploaded for a game carries a plain, descriptive name and description that read innocently out of
-context: what the asset is and where the game uses it, such as `boss-roar-1` or `anchor-impact`. Before an upload,
+context: what the asset is and where the game uses it, such as `door-creak-1` or `coin-pickup`. Before an upload,
 read each name and description aloud and replace any word or pairing that could read as suggestive, crude or
 bodily, even when the intended meaning is harmless; a name is judged by how a stranger reads it in an asset list or a
 moderation queue, not by the game's context. The same check covers the file names that become asset names, the
