@@ -65,6 +65,12 @@ What every helper must get right:
   [VirtualInput helper](../scripts/virtual_input.luau); a script run during Play that sets the
   camera or a character's position directly, or calls the game's handlers in place of the input
   that reaches them, is refused, since it fakes what the check judges.
+- **Check an arrangement in world terms**: a formation, placement, facing or spacing is asserted
+  from world positions and facing relative to what the characters or objects face, such as two
+  guards meant to flank a gate standing side by side across its width rather than one behind the
+  other along the path to it, and then shown in a capture from where the player sees it. An
+  assertion on how the arrangement projects into one camera view passes an arrangement that is
+  wrong in the world, since a side-on camera draws a column as a row.
 - **Stop a walk to a prompt inside the prompt's activation distance**, measured from the prompt's
   own part, so the press that follows can land.
 - **Rerun a multi-client test only when a client did not join**, read from the connected-player
