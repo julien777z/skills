@@ -55,7 +55,9 @@ as page versions do. This is how those previews are sent.
   that asks it depends on the agent running in T3: under Claude Code, a background shell command of
   a few seconds started just before the turn ends re-invokes the agent when it completes; under an
   agent whose background commands do not re-invoke it, the user's next message starts that turn,
-  so the images' message closes by saying a question about them follows. Either way the pending
+  so the images' message closes with one line asking the reader to reply once they have looked,
+  such as "Reply when you've looked and I'll put the choice to you." That reply opens the question
+  tool before anything else and approves nothing on its own. Either way the pending
   question sits in the session ledger and is asked before anything else. `t3_thread_send_attachments`
   posts a new message into the thread as the user, so it never carries the agent's own captures.
   Any other file the user should see, such as a plan or a detail file, is a Markdown link to its
