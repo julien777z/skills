@@ -409,9 +409,40 @@ immediately before each asking, including a re-ask after a timeout: codes expire
 minutes and Studio logs each replacement. The user enters the code on a device already signed in to
 Roblox. Confirm sign-in from the Studio start page before relying on the runner.
 
+## Keep the game's editor warm
+
+The default check loop reuses one Studio editor kept open in the game's VM on the game's built
+place, with source synced into it live, so a check costs a sync and a Play session rather than a
+build, a copy and an editor launch.
+
+- **Open it once.** Build the place, open it with `studio_mcp.open_place` under the project name
+  `warm`, and leave it open: it belongs to the game's VM, not to the task that opened it. A session
+  that finds the game's warm editor registered in `list_roblox_studios` uses it, after confirming
+  its place name.
+- **Sync source live.** Install the Rojo plugin matching the game's pinned Rojo version into the
+  guest's Studio plugins folder (`~/Documents/Roblox/Plugins` in a macOS guest). Run `rojo serve`
+  from the session's own checkout on the host, bound to the host's address on the VM's network,
+  the guest's default gateway, never to every interface, on a port no other game's server uses.
+  Connect the plugin to it through input posted inside the guest. The session holding the VM's
+  lock serves from its own checkout; one that takes over the warm editor reconnects the plugin to
+  its own server, so the editor holds that checkout's tree.
+- **Confirm each sync before a check.** Read a changed instance or script source from the Edit
+  data model through `execute_luau`; a plugin showing connected does not show that a change
+  landed. Then start Play from that editor, and stop it when the check ends.
+- **Rebuild only for what the plugin cannot write.** Content the place's build step makes rather
+  than a file maps, such as terrain or generated models; properties scripts cannot set, such as a
+  mesh part's mesh; a project-file change to which containers are mapped; and a sync the plugin
+  reports as failed or partial. Then rebuild the place, close the warm editor with
+  `close_place`, and open the new build the same way. A check that left fixtures or state it
+  cannot remove is a reason to reopen it too.
+- **Delivery evidence still comes from the built place.** A warm editor proves behavior of the
+  synced source; [delivery build acceptance](source-delivery.md#test-the-delivery-build-directly)
+  still tests the artifact being delivered.
+
 ## Leave the shared runner as you found it
 
-Every session working on one game shares that game's VM, so whatever one leaves behind lands on the next. No task process
+Every session working on one game shares that game's VM, so whatever one leaves behind lands on the next. The
+game's warm editor stays, as the section above says; no other task process
 outlives any release of the runner lock, and before the task's last release its own files are gone and
 every setting it changed reads back at the value it found.
 
