@@ -32,9 +32,13 @@ accepting a map or a visual pass:
   vegetation, add variants of that asset — at least three shapes for anything repeated hundreds of
   times — and vary scale, rotation and tint within a deliberate range. Report the top assets and
   their shares.
-- **Primitive stand-ins.** List focal and arrival-area structures built from plain primitive parts
-  in one smooth material, such as a box house with flat colored panels for windows. Replace them
-  with modular kit pieces or meshes before polishing secondary areas.
+- **Primitive stand-ins.** In every space a player enters, an interior included, list the
+  structures, furnishings and props built from plain primitive parts in one smooth material, such as
+  a box house with flat colored panels for windows or a counter made of three blocks, and count them
+  against the modeled meshes in the same view. Replace them with modular kit pieces or meshes,
+  focal and arrival areas first, and compare the result with the art direction the game states or
+  the reference the user gave; a space that still reads as built from blocks fails the pass however
+  well it is arranged.
 - **Ground.** Large open areas carry more than one terrain material and some height variation,
   with paths, edges and clusters breaking them up; one flat material from the camera to the
   horizon is an empty field.
