@@ -13,25 +13,11 @@ import tempfile
 import time
 from collections.abc import Mapping, Sequence
 from datetime import timedelta
-from enum import Enum
 from pathlib import Path
-from typing import IO, Final, NotRequired, TypedDict, cast
+from typing import IO, Final, cast
 
-type JsonValue = str | int | float | bool | None | Sequence[JsonValue] | Mapping[str, JsonValue]
-type ToolArguments = Mapping[str, JsonValue]
-
-
-class StudioCall(Enum):
-    """A runner or Studio MCP call whose timeout counts against the lease."""
-
-    INITIALIZE = "initialize"
-    TOOL = "tool"
-    COPY = "copy"
-    LAUNCH = "launch"
-    CAPTURE = "capture"
-    CLOSE = "close"
-    REMOVAL = "removal"
-
+from models import (AgentLockCheckReport, JsonRpcMessage, JsonValue, McpContent, StudioButton, StudioCall, StudioEntry,
+                    ToolArguments)
 
 RUNNER_SSH: Final[Path] = Path(__file__).resolve().with_name("runner_ssh.sh")
 VIRTUAL_INPUT: Final[Path] = Path(__file__).resolve().with_name("virtual_input.luau")
@@ -60,73 +46,6 @@ EXTENDED_REGEX_SPECIAL: Final[re.Pattern[str]] = re.compile(r"([.^$*+?()\[\]{}|\
 LUAU_STRING_ESCAPE: Final[re.Pattern[str]] = re.compile(r'[\\"\x00-\x1f\x7f]')
 
 
-class LockOwnership(TypedDict):
-    """The ownership record an agent-lock check reports."""
-
-    key: str
-
-
-class AgentLockCheckReport(TypedDict):
-    """The report agent-lock prints for a receipt that still owns its lock."""
-
-    status: str
-    ownership: LockOwnership
-    remaining_seconds: float
-
-
-class McpContentPart(TypedDict):
-    """One part of an MCP tool result's content."""
-
-    type: str
-    text: NotRequired[str]
-    data: NotRequired[str]
-    mimeType: NotRequired[str]
-
-
-class ToolCallResult(TypedDict):
-    """The result of an MCP tools/call request."""
-
-    content: list[McpContentPart]
-    isError: NotRequired[bool]
-
-
-class JsonRpcError(TypedDict):
-    """The error member of a JSON-RPC response."""
-
-    code: int
-    message: str
-
-
-class JsonRpcMessage(TypedDict):
-    """A JSON-RPC request, notification or response."""
-
-    jsonrpc: str
-    id: NotRequired[int]
-    method: NotRequired[str]
-    params: NotRequired[Mapping[str, JsonValue]]
-    result: NotRequired[ToolCallResult]
-    error: NotRequired[JsonRpcError]
-
-
-class StudioEntry(TypedDict):
-    """One editor list_roblox_studios reports."""
-
-    id: str
-    name: NotRequired[str]
-
-
-class StudioButton(TypedDict):
-    """A TextButton on a player's screen, as Studio.buttons reports it."""
-
-    path: str
-    text: str
-    active: bool
-    x: float
-    y: float
-    width: float
-    height: float
-
-
 def assert_runner_lease_covers(lock_receipt: Path, needed: timedelta) -> None:
     """Assert that the receipt owns the runner lock for at least the needed time."""
 
@@ -149,7 +68,7 @@ def assert_runner_lease_covers(lock_receipt: Path, needed: timedelta) -> None:
 
 
 def run_in_runner(command: str, lock_receipt: Path, timeout: timedelta, data: bytes | None = None) -> bytes:
-    """Run a shell command in the runner guest and return its output."""
+    """Run a shell command in the runner guest."""
 
     assert_runner_lease_covers(lock_receipt, timeout)
 
@@ -164,10 +83,10 @@ def run_in_runner(command: str, lock_receipt: Path, timeout: timedelta, data: by
 
 
 class StudioMcpSession:
-    """One MCP transport into the runner's Studio, used for sequential calls."""
+    """An MCP transport into the runner's Studio."""
 
     def __init__(self) -> None:
-        """Start the runner's Studio MCP server and initialize the session."""
+        """Open an initialized session."""
 
         self.server_errors = tempfile.TemporaryFile()
         self.process = subprocess.Popen([str(RUNNER_SSH), STUDIO_MCP], stdin=subprocess.PIPE,
@@ -205,7 +124,7 @@ class StudioMcpSession:
         return self.server_errors.read().decode(errors="replace")
 
     def request(self, method: str, params: Mapping[str, JsonValue], timeout: timedelta) -> JsonRpcMessage:
-        """Send a request and return its response."""
+        """Send a request to the server."""
 
         self.identity += 1
         self.write(JsonRpcMessage(jsonrpc="2.0", id=self.identity, method=method, params=params))
@@ -234,7 +153,7 @@ class StudioMcpSession:
         raise TimeoutError(f"Studio MCP timed out: {method}")
 
     def close(self) -> None:
-        """Stop the server and close its streams."""
+        """Stop the server."""
 
         if self.process.poll() is None:
             self.process.terminate()
@@ -250,17 +169,17 @@ class StudioMcpSession:
 
 
 class StudioMcpConnection:
-    """A Studio MCP session opened on first use and reopened after a failed call."""
+    """A Studio MCP connection to the runner."""
 
     def __init__(self) -> None:
-        """Hold no session until the first call."""
+        """Create the connection."""
 
         self.session: StudioMcpSession | None = None
 
         atexit.register(self.close)
 
     def request(self, method: str, params: Mapping[str, JsonValue], timeout: timedelta) -> JsonRpcMessage:
-        """Send a request over the session, closing the session when the call fails."""
+        """Send a request over the session."""
 
         if self.session is None:
             self.session = StudioMcpSession()
@@ -277,7 +196,7 @@ class StudioMcpConnection:
         return response
 
     def close(self) -> None:
-        """Close the session if one is open."""
+        """Close the open session."""
 
         if self.session is not None:
             self.session.close()
@@ -285,8 +204,8 @@ class StudioMcpConnection:
 
 
 def call_studio_tool(connection: StudioMcpConnection, name: str, arguments: ToolArguments, lock_receipt: Path,
-                     timeout: timedelta = CALL_TIMEOUTS[StudioCall.TOOL]) -> list[McpContentPart]:
-    """Call a Studio MCP tool and return its content."""
+                     timeout: timedelta = CALL_TIMEOUTS[StudioCall.TOOL]) -> list[McpContent]:
+    """Call a Studio MCP tool."""
 
     opening = CALL_TIMEOUTS[StudioCall.INITIALIZE] if connection.session is None else timedelta()
 
@@ -300,10 +219,10 @@ def call_studio_tool(connection: StudioMcpConnection, name: str, arguments: Tool
     return response["result"]["content"]
 
 
-def mcp_content_text(content: list[McpContentPart]) -> str:
+def mcp_content_text(content: list[McpContent]) -> str:
     """Join the text parts of an MCP tool result."""
 
-    return "\n".join(part["text"] for part in content if part["type"] == "text" and "text" in part)
+    return "\n".join(part["text"] for part in content if part["type"] == "text")
 
 
 def studios(connection: StudioMcpConnection, lock_receipt: Path) -> list[StudioEntry]:
@@ -323,17 +242,17 @@ def luau_string_literal(value: str) -> str:
 
 
 class Studio:
-    """One verified editor in the runner, addressed by its MCP studio ID."""
+    """An editor in the runner."""
 
     def __init__(self, studio_id: str, lock_receipt: Path) -> None:
-        """Address the editor through its own Studio MCP connection."""
+        """Address an editor by its MCP studio ID."""
 
         self.studio_id = studio_id
         self.lock_receipt = lock_receipt
         self.connection = StudioMcpConnection()
 
     def tool(self, name: str, arguments: ToolArguments,
-             timeout: timedelta = CALL_TIMEOUTS[StudioCall.TOOL]) -> list[McpContentPart]:
+             timeout: timedelta = CALL_TIMEOUTS[StudioCall.TOOL]) -> list[McpContent]:
         """Call a Studio MCP tool on this editor."""
 
         return call_studio_tool(self.connection, name, {**arguments, "studio_id": self.studio_id},
@@ -341,7 +260,7 @@ class Studio:
 
     def execute(self, code: str, data_model: str = "Client",
                 timeout: timedelta = CALL_TIMEOUTS[StudioCall.TOOL]) -> str:
-        """Run Luau in one of the editor's data models and return its output."""
+        """Run Luau in one of the editor's data models."""
 
         return mcp_content_text(self.tool("execute_luau", {"datamodel_type": data_model, "code": code}, timeout))
 
@@ -358,8 +277,9 @@ class Studio:
         paths: list[Path] = []
 
         for index, part in enumerate(self.tool("screen_capture", {"capture_id": name})):
-            if part["type"] == "image" and "data" in part:
+            if part["type"] == "image":
                 path = out_dir / f"{name}-{index}.png"
+
                 path.write_bytes(base64.b64decode(part["data"]))
                 paths.append(path)
 
@@ -368,13 +288,13 @@ class Studio:
 
         return paths
 
-    def keys(self, actions: Sequence[Mapping[str, JsonValue]]) -> list[McpContentPart]:
+    def keys(self, actions: Sequence[Mapping[str, JsonValue]]) -> list[McpContent]:
         """Send keyboard actions to the editor's client."""
 
         return self.tool("user_keyboard_input", {"datamodel_type": "Client", "actions": actions})
 
     def click(self, path: str, count: int = 1) -> str:
-        """Click a button by its instance path through the VirtualInput helper."""
+        """Click a button by its instance path."""
 
         if not 1 <= count <= 10:
             raise ValueError("Use one to ten button clicks")
@@ -422,7 +342,7 @@ def extended_regex_literal(value: str) -> str:
 
 
 def close_place(project: str, place: Path, lock_receipt: Path) -> None:
-    """End the editor that has a project's place copy open and delete the copy."""
+    """Close a project's place copy in the runner."""
 
     assert_runner_lease_covers(lock_receipt, CALL_TIMEOUTS[StudioCall.CLOSE] + CALL_TIMEOUTS[StudioCall.REMOVAL])
 
@@ -458,9 +378,10 @@ echo still-open'''
 
 def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path,
                registration_wait: timedelta = DEFAULT_REGISTRATION_WAIT) -> Studio:
-    """Copy a built place into the runner, open it in an editor, and return that editor."""
+    """Open a built place in a runner editor."""
 
     guest_path = guest_place(project, place)
+
     bound = (CALL_TIMEOUTS[StudioCall.INITIALIZE] + CALL_TIMEOUTS[StudioCall.TOOL] + CALL_TIMEOUTS[StudioCall.COPY]
              + CALL_TIMEOUTS[StudioCall.LAUNCH] + registration_wait + CALL_TIMEOUTS[StudioCall.TOOL]
              + REGISTRATION_POLL + CALL_TIMEOUTS[StudioCall.CAPTURE] + CALL_TIMEOUTS[StudioCall.CLOSE]
@@ -469,6 +390,7 @@ def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path,
     assert_runner_lease_covers(lock_receipt, bound)
 
     connection = StudioMcpConnection()
+
     known = {studio["id"] for studio in studios(connection, lock_receipt)}
     opened = False
 
@@ -497,6 +419,7 @@ def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path,
                                'status=$?; rm -f "$f"; exit $status', lock_receipt, CALL_TIMEOUTS[StudioCall.CAPTURE])
 
         out_dir.mkdir(parents=True, exist_ok=True)
+
         (out_dir / f"launch-failure-{place.stem}.png").write_bytes(screen)
 
         raise RuntimeError(f"{place.name} never registered with Studio MCP; screen saved to {out_dir}")

@@ -20,13 +20,17 @@ they get there, the same way for a web walkthrough, a game playtest or a generat
 - **A harness with no file-sending tool:** embed the image in the message with Markdown image
   syntax naming a file the viewer serves, such as one in the session's listed working directories,
   copied there first. Say once that the harness cannot send files.
-- **Captions and order** follow the global rules: a capture shows which page it is, and sits
-  directly under the text it belongs to.
+- **Captions and order:** a capture of a page is captioned as the global rules say; any other
+  capture, such as a game's place or screen or a generated image, is captioned with what it shows,
+  its device or width, and its state. Each capture sits directly under the text it belongs to, as
+  the global rules say.
 
 ## Previews for a choice
 
 Which choices carry rendered options, and how each is rendered, is the global rules' bullet on
-choices between substantially different versions of a page. This is how those previews are sent.
+choices between substantially different versions of a page. Options that differ in how a game or a
+generated image looks carry every option rendered too, at the devices or widths where they differ,
+as page versions do. This is how those previews are sent.
 
 1. **Read each rendered option whole** before it is tiled or sent.
 2. **Make one image per option**, its views side by side (desktop beside phone, before beside

@@ -125,8 +125,8 @@ caller's receipt owns the `roblox-studio-runner` lock with enough of its lease l
 counted at its full timeout, so no call outlives the lease; a long operation, such as `open_place` with its
 registration wait, needs a lease acquired or renewed for it. `open_place(project, place, out_dir, lock_receipt)`
 copies a built place into the guest under `studio-places/<project>/`, launches an editor for it and returns a
-`Studio(studio_id, lock_receipt)` once that editor registers; when the launch fails at any point after the copy, it
-closes the editor, saving the guest's screen when the editor never registered, and raises. The project and place
+`Studio(studio_id, lock_receipt)` once that editor registers; when the launch fails at any point once the copy starts,
+it closes the editor, saving the guest's screen when the editor never registered, and raises. The project and place
 file names use only letters, digits, `.`, `_` and `-`, starting with a letter or digit. `close_place(project, place,
 lock_receipt)` ends the editor that has exactly that copy open and deletes the copy, and raises, keeping the copy,
 when the editor stays open. `run_in_runner(command, lock_receipt, timeout)` runs a shell command in the guest.
