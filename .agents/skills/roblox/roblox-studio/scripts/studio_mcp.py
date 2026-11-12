@@ -444,7 +444,7 @@ def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path,
             time.sleep(REGISTRATION_POLL.total_seconds())
 
         screen = run_in_runner('f=$(mktemp -t studio-launch) && screencapture -x -t png "$f" && cat "$f"; '
-                               'status=$?; rm -f "$f"; exit $status', lock_receipt, CALL_TIMEOUTS[StudioCall.CAPTURE])
+                               'capture_status=$?; rm -f "$f"; exit $capture_status', lock_receipt, CALL_TIMEOUTS[StudioCall.CAPTURE])
 
         out_dir.mkdir(parents=True, exist_ok=True)
 
