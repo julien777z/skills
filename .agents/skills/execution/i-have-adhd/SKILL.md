@@ -15,6 +15,7 @@ The reader has ADHD. Output is not just brief. It is shaped so an ADHD brain can
 ## Dependencies
 - `pre-production`
 - `session-ledger`
+- `share-captures`
 
 ## Persistence
 
@@ -98,8 +99,9 @@ message before sending; an asynchronous question control or task checklist does 
 visible status list. At meaningful progress updates and handoffs, refresh the same list. Use a
 numbered list: each item starts with a **bold subject**. An evidence-pending item states its pending
 work; a ready item identifies its active question-tool request and the work depending on it.
-Keep the question, choices and supporting captures in that request under the global question-tool
-procedure rather than soliciting another answer in chat. Where no equivalent tool exists, the
+Keep the question and its choices in that request under the global question-tool procedure, with
+any captures it needs shown before it as `share-captures` says, rather than soliciting an answer in
+chat. Where no equivalent tool exists, the
 chat question includes the choices, recommendation or material trade-off and dependent work.
 Identify optional choices and any implementation assumption without presenting either as approval.
 If none remain, omit the list. The list accompanies a skill’s
@@ -129,7 +131,7 @@ Keep named work active and wait for pending results under the global rules.
 The reader cannot hold "we are on step 3 of 5" between messages. Restate it.
 
 Bad: "Done. Ready for the next part?"
-Good: "Step 3 of 5 done: schema updated. Next: backfill the new column. Run the script?"
+Good: "Step 3 of 5 done: schema updated. Step 4, backfilling the new column, is running now."
 
 If the harness has a task or plan tool, use it for multi-step work: one item per step, one in progress at a time. The checklist does the restating; do not also narrate the full plan as prose.
 

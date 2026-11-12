@@ -73,14 +73,16 @@ alwaysApply: true
   subagent, whose reply the user does not see, hands each capture up as `subagent-matrix`'s
   **Dispatch** describes, and the agent that delegated to it reads and forwards each one on arrival.
   A brief that asks a worker for captures asks for them this way.
-- **A capture sits directly under the text it belongs to.** A message holding several questions,
-  findings or changes that each have their own captures goes out as text and captures in turn: one
+- **A capture sits directly under the text it belongs to.** A message holding several findings or
+  changes that each have their own captures goes out as text and captures in turn: one
   item's text, then its captures right after it, then the next item's text and its captures, with a
   short closing line after the last. An item never points to its captures by position or by an
   earlier message — "the first three captures", "capture 6", "the screenshots above" — because a
   pile of captures shown together leaves the reader matching each one to its item. An item put to
-  the user in a later message, a question asked again included, has its captures shown again
-  directly beneath it, even those already shown as they were made.
+  the user in a later message has its captures shown again directly beneath it, even those already
+  shown as they were made; a question, asked again or for the first time, has its captures shown
+  just before it, and the question itself goes through the question tool, as `share-captures`'
+  **Previews for a choice** says.
 - **A capture sent to the user shows which page it is.** The reader cannot ask, so a view leads
   with a capture at a width where the product's navigation shows the page's place, for the role
   whose page it is; a phone-width view or a close-up of the same page goes beside that one,
@@ -300,20 +302,20 @@ alwaysApply: true
   routine authorized work or a platform's separate action-time confirmation. Acceptance-gate's
   technical verdict is not a user-approval request and never recursively enters this procedure.
 - Surface every question through `AskUserQuestionTool` or the harness's equivalent user-question
-  tool, including plan approvals and standalone questions. Ask directly in chat only when no
-  equivalent tool exists, or when the harness's question tool hides the text before it, as
-  `share-captures` says for T3 Code: there the question, its choices and every capture, plan or diff
-  it must be read with go in the turn's final message, and the reader's reply answers it. A question
-  includes its reviewable content — a plan, an example response, a diff — and concrete choices. The
-  option that approves a plan or proposal reads "Approved", never "Go" or another word, and is asked
-  only once every decision the plan or proposal depends on is answered: those decisions go to the
-  user first, on their own, and the plan or proposal shown for approval is written for their
-  answers, with nothing in it conditional on one. A question tool may show only its question and
-  option labels; deliver required review content as a file, as the bullet on files the user should
-  see says, rather than relying on a collapsed preamble, preview or description. Present supporting
-  material before invoking the tool; supporting chat text identifies the material and leaves the
-  actionable question in the tool. During unfinished authorized work, retain the question as a
-  pending decision while independent work continues; it is not a final task report.
+  tool, including plan approvals and standalone questions. **A question asked anywhere else goes
+  unseen**: the reader answers the question tool, and chat text around it, or in some harnesses all
+  text before a tool call, may never reach them. Ask directly in chat only when the harness has no
+  question tool. The question's own text and option descriptions therefore carry what the decision
+  needs: what happens today, what each option changes, and the recommendation with its reason; a
+  short plan put for approval goes into the question whole. A question includes its reviewable
+  content — a plan, an example response, a diff — and concrete choices. The option that approves a
+  plan or proposal reads "Approved", never "Go" or another word, and is asked only once every
+  decision the plan or proposal depends on is answered: those decisions go to the user first, on
+  their own, and the plan or proposal shown for approval is written for their answers, with nothing
+  in it conditional on one. Material too large for the question, such as captures or a long diff,
+  reaches the user as `share-captures` says, in a message they see before the question, and the
+  question names it. During unfinished authorized work, retain the question as a pending decision
+  while independent work continues; it is not a final task report.
 - **A step only the user can take, which the work waits on, is asked through that tool too, never
   left in chat.** Chat text the user may not read is not a request: granting a permission, signing
   in, approving on another device, or running a command that needs their password each goes out
