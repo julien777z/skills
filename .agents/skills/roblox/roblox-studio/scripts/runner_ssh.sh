@@ -36,7 +36,8 @@ case "$ROBLOX_STUDIO_GAME" in
     ;;
 esac
 
-game_env="$config_dir/games/$ROBLOX_STUDIO_GAME.env"
+game="$ROBLOX_STUDIO_GAME"
+game_env="$config_dir/games/$game.env"
 
 if [ ! -f "$game_env" ]; then
   echo "No runner VM is configured for $ROBLOX_STUDIO_GAME: $game_env" >&2
@@ -50,6 +51,9 @@ expected_vm="${ROBLOX_STUDIO_EXPECTED_VM:-}"
 # The game's file names its own VM and host keys; the shared file's values for them never apply.
 unset ROBLOX_STUDIO_VM ROBLOX_STUDIO_KNOWN_HOSTS
 . "$game_env"
+
+# Neither settings file may change which game was resolved.
+ROBLOX_STUDIO_GAME="$game"
 
 : "${ROBLOX_STUDIO_TART:?$runner_env sets no ROBLOX_STUDIO_TART}"
 : "${ROBLOX_STUDIO_SSH_USER:?$runner_env sets no ROBLOX_STUDIO_SSH_USER}"

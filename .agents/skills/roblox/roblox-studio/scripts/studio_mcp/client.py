@@ -219,6 +219,8 @@ class StudioMcpConnection:
         if self.session is None:
             self.session = StudioMcpSession(config)
         elif self.session.vm != config["ROBLOX_STUDIO_VM"]:
+            self.close()
+
             raise RuntimeError(f"The open session reaches {self.session.vm}, but the game's VM is now "
                                f"{config['ROBLOX_STUDIO_VM']}")
 
@@ -442,7 +444,7 @@ def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path,
 
     guest_path = guest_place(project, place)
 
-    bound = (CLOSE_TIMEOUT + INITIALIZE_TIMEOUT + TOOL_CALL_TIMEOUT + COPY_TIMEOUT
+    bound = (CLOSE_TIMEOUT + INITIALIZE_TIMEOUT + EDITOR_LIST_WAIT + 2 * TOOL_CALL_TIMEOUT + COPY_TIMEOUT
              + LAUNCH_TIMEOUT + registration_wait + TOOL_CALL_TIMEOUT
              + REGISTRATION_POLL + CAPTURE_TIMEOUT + CLOSE_TIMEOUT
              + REMOVAL_TIMEOUT)
@@ -457,7 +459,7 @@ def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path,
 
     connection = StudioMcpConnection()
 
-    known = {studio["id"] for studio in studios(connection, lock_receipt)}
+    known = {studio["id"] for studio in wait_for_studios(connection, lock_receipt)}
     opened = False
 
     try:
