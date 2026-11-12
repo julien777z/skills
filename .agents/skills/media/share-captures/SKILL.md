@@ -26,24 +26,20 @@ they get there, the same way for a web walkthrough, a game playtest or a generat
 - **A harness with no file-sending tool:** embed the image in the message with Markdown image
   syntax naming a file the viewer serves, such as one in the session's listed working directories,
   copied there first. Say once that the harness cannot send files.
-- **Caption every capture** with the page, place or screen it shows, the device or width, and the
-  state, such as "the album's Sharing page at 1280" or "the level-select screen on a phone
-  simulator, mid-transition", then with what the reading found wrong in each region: every defect,
-  in the part the change touched or anywhere else in the frame, with whether it was fixed, or "read
-  every region, nothing wrong" when the reading found none. A caption that only says what the capture
+- **Captions and order** follow the global rules: a capture shows which page it is, and sits
+  directly under the text it belongs to.
+- **The caption also names what the reading found wrong**, region by region: every defect, in the
+  part the change touched or anywhere else in the frame, with whether it was fixed, or "read every
+  region, nothing wrong" when the reading found none. A caption that only says what the capture
   shows, such as "the new toolbar renders", reports nothing about the rest of the frame and is
   incomplete.
-- **Several items, each with captures,** go out item by item: one item's text and its captures,
-  then the next. A caption never points at another message's images.
 
 ## Previews for a choice
 
-A question between options that look different carries every option rendered, so the reader
-judges what they will get, not a description of it.
+Which choices carry rendered options, and how each is rendered, is the global rules' bullet on
+choices between substantially different versions of a page. This is how those previews are sent.
 
-1. **Render each option as the product would draw it**, at the widths or devices where the options
-   differ, as an uncommitted preview where it does not exist yet: a branch build, a runtime toggle
-   in the running product, or an edited copy of a capture. Read each preview whole.
+1. **Read each rendered option whole** before it is tiled or sent.
 2. **Make one image per option**, its views side by side (desktop beside phone, before beside
    after), so the reader compares options, not files. Tile them with any image tool on the
    machine, such as `ffmpeg -i a.png -i b.png -filter_complex "[0]scale=800:-2[a];[1]scale=800:-2,pad=800:<h>:0:(oh-ih)/2[b];[a][b]hstack=inputs=2" option-A.png`.
