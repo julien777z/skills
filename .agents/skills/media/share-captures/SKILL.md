@@ -39,8 +39,9 @@ as page versions do. This is how those previews are sent.
    under its caption with a line on what that option does, in a message the reader sees. Where only
    the message that ends a turn is shown, as in T3 Code, record the pending question in the
    session ledger, end the turn on that message, and ask the question through the question tool as
-   the first action of the next turn; **Harness compatibility** says what starts that turn. The question names each
-   option by its image's caption, never by position, and states in its own text what each does.
+   the first action of the next turn; **Harness compatibility** says what starts that turn. The
+   question names each option by its image's caption, never by position, and states in its own text
+   what each does.
 4. **When the user says they cannot see the previews**, the route failed: fix it and show them again
    before re-asking, never re-ask over the same broken route.
 
@@ -57,8 +58,7 @@ as page versions do. This is how those previews are sent.
   agent whose background commands do not re-invoke it, the user's next message starts that turn,
   so the images' message closes with one line asking the reader to reply once they have looked,
   such as "Reply when you've looked and I'll put the choice to you." That reply opens the question
-  tool before anything else and approves nothing on its own. Either way the pending
-  question sits in the session ledger and is asked before anything else. `t3_thread_send_attachments`
+  tool before anything else and approves nothing on its own. `t3_thread_send_attachments`
   posts a new message into the thread as the user, so it never carries the agent's own captures.
   Any other file the user should see, such as a plan or a detail file, is a Markdown link to its
   absolute path, `[name](/absolute/path/to/plan.md)`, kept in the working directory **Keep the
