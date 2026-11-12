@@ -366,10 +366,12 @@ work while waiting. After the user confirms, verify the result in a guest captur
 the task's viewer so unattended guest windows stay out of the user's way.
 
 Where the user can reach no viewer, relay Quick Sign-in by code through the question tool, with a
-confirmation option. Read the newest `awaitQuickSignIn via polling: code=` line from Studio's log
-immediately before each asking, including a re-ask after a timeout: codes expire after about two
-minutes and Studio logs each replacement. The user enters the code on a device already signed in to
-Roblox. Confirm sign-in from the Studio start page before relying on the runner.
+confirmation option. Read the current code immediately before each asking, including a re-ask after a
+timeout, since codes expire after about two minutes: from the newest `awaitQuickSignIn via polling: code=`
+line in Studio's log, or, when the log holds none, from a guest capture of Studio's Quick Sign In Code
+dialog. The user enters the code on a device already signed in to Roblox, at
+<https://www.roblox.com/crossdevicelogin/ConfirmCode> or in the Roblox app under More, then Quick Sign In;
+the question links that page. Confirm sign-in from the Studio start page before relying on the runner.
 
 ## Leave the shared runner as you found it
 
