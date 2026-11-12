@@ -95,7 +95,9 @@ Choose one before pushing anything:
 **A problem the change fixes that still happens on the base is never a `CLOSE`.** A pull request
 is `CLOSE` only when every part of its diff is accounted for on the base, read part by part against
 the code, never from its title or description alone: a pull request often carries more than its
-title says. One with any part still unsolved is `REWORK`, scoped to that part.
+title says. Another open pull request holding the same change is not the base, and one stacked on
+this pull request's branch holds it only by building on it, as the GitHub rules' delivery bullet
+says. One with any part still unsolved is `REWORK`, scoped to that part.
 
 A pull request is closed only on the user's word, and each choice goes to the user through the
 question tool, as the global rules' question-tool bullet says, after the dashboard **Output**

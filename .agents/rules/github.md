@@ -143,6 +143,13 @@ alwaysApply: true
   request under the ownership rules above before retaining a checkout's branch. If the checkout
   is on the default branch, detached, of the other kind, or owned by another session without a
   continuation instruction, move to the selected branch or create a descriptive non-default branch.
+- **Work is delivered only once the default branch holds it.** Before a pull request is called
+  superseded, stale or done because another pull request carries its change, or is recommended for
+  closing or closed, read the base of every open pull request in the repository: one whose base is
+  its head branch is stacked on it. A pull request with a stack on it is never closed or judged
+  superseded by that stack, since the stacked one carries its change only by building on it, and
+  closing it strands the whole stack off the default branch. Its disposition comes from the
+  default branch alone.
 
 ### Merge Authorization
 
