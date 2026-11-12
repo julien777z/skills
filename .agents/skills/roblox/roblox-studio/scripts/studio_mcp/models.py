@@ -5,6 +5,17 @@ type JsonValue = str | int | float | bool | None | Sequence[JsonValue] | Mapping
 type ToolArguments = Mapping[str, JsonValue]
 
 
+class RunnerConfig(TypedDict):
+    """The game's runner configuration, as `runner_ssh.sh --describe` prints it."""
+
+    ROBLOX_STUDIO_GAME: str
+    ROBLOX_STUDIO_TART: str
+    ROBLOX_STUDIO_VM: str
+    ROBLOX_STUDIO_SSH_USER: str
+    ROBLOX_STUDIO_SSH_KEY: str
+    ROBLOX_STUDIO_KNOWN_HOSTS: str
+
+
 class LockOwnership(TypedDict):
     """The ownership record an agent-lock check reports."""
 

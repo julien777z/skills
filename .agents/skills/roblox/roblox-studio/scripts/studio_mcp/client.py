@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import atexit
 import base64
-import functools
 import json
 import os
 import re
@@ -17,8 +16,8 @@ from datetime import timedelta
 from pathlib import Path
 from typing import IO, Final, cast
 
-from studio_mcp.models import (AgentLockCheckReport, JsonRpcMessage, JsonValue, McpContent, StudioButton, StudioEntry,
-                               ToolArguments)
+from studio_mcp.models import (AgentLockCheckReport, JsonRpcMessage, JsonValue, McpContent, RunnerConfig, StudioButton,
+                               StudioEntry, ToolArguments)
 
 # Paths stay on the unresolved install link: installed skills sit side by side there, and a refresh that replaces
 # the linked source mid-run leaves them valid.
@@ -38,43 +37,47 @@ CAPTURE_TIMEOUT: Final[timedelta] = timedelta(seconds=60)
 CLOSE_TIMEOUT: Final[timedelta] = timedelta(seconds=60)
 REMOVAL_TIMEOUT: Final[timedelta] = timedelta(seconds=30)
 LOCK_CHECK_TIMEOUT: Final[timedelta] = timedelta(seconds=30)
+DESCRIBE_TIMEOUT: Final[timedelta] = timedelta(seconds=30)
 SESSION_EXIT_TIMEOUT: Final[timedelta] = timedelta(seconds=5)
 REGISTRATION_POLL: Final[timedelta] = timedelta(seconds=2)
 DEFAULT_REGISTRATION_WAIT: Final[timedelta] = timedelta(seconds=180)
+EDITOR_LIST_WAIT: Final[timedelta] = timedelta(seconds=20)
 GUEST_NAME: Final[re.Pattern[str]] = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
 EXTENDED_REGEX_SPECIAL: Final[re.Pattern[str]] = re.compile(r"([.^$*+?()\[\]{}|\\])")
 LUAU_STRING_ESCAPE: Final[re.Pattern[str]] = re.compile(r'[\\"\x00-\x1f\x7f]')
 
 
-@functools.cache
-def runner_config() -> dict[str, str]:
-    """Return the game's runner configuration, resolved once so every later call reaches the same VM."""
+def runner_config() -> RunnerConfig:
+    """Return the game's runner configuration as its settings files name it now."""
 
     result = subprocess.run([str(RUNNER_SSH), "--describe"], capture_output=True, text=True,
-                            timeout=LOCK_CHECK_TIMEOUT.total_seconds())
+                            timeout=DESCRIBE_TIMEOUT.total_seconds())
 
     if result.returncode != 0:
         raise RuntimeError(f"No runner VM resolved for this game:\n{result.stderr}")
 
-    return dict(assignment.split("=", 1) for assignment in shlex.split(result.stdout))
+    values = dict(assignment.split("=", 1) for assignment in shlex.split(result.stdout))
+
+    return RunnerConfig(ROBLOX_STUDIO_GAME=values["ROBLOX_STUDIO_GAME"],
+                        ROBLOX_STUDIO_TART=values["ROBLOX_STUDIO_TART"],
+                        ROBLOX_STUDIO_VM=values["ROBLOX_STUDIO_VM"],
+                        ROBLOX_STUDIO_SSH_USER=values["ROBLOX_STUDIO_SSH_USER"],
+                        ROBLOX_STUDIO_SSH_KEY=values["ROBLOX_STUDIO_SSH_KEY"],
+                        ROBLOX_STUDIO_KNOWN_HOSTS=values["ROBLOX_STUDIO_KNOWN_HOSTS"])
 
 
-def runner_environment() -> dict[str, str]:
-    """Return the environment that pins runner_ssh.sh to the resolved game."""
+def runner_environment(config: RunnerConfig) -> dict[str, str]:
+    """Return the environment that holds runner_ssh.sh to the game and VM a lease check resolved."""
 
-    return {**os.environ, "ROBLOX_STUDIO_GAME": runner_config()["ROBLOX_STUDIO_GAME"]}
-
-
-def runner_lock_key() -> str:
-    """Return the runner lock key, which is the game's VM name."""
-
-    return runner_config()["ROBLOX_STUDIO_VM"]
+    return {**os.environ, "ROBLOX_STUDIO_GAME": config["ROBLOX_STUDIO_GAME"],
+            "ROBLOX_STUDIO_EXPECTED_VM": config["ROBLOX_STUDIO_VM"]}
 
 
-def assert_runner_lease_covers(lock_receipt: Path, needed: timedelta) -> None:
-    """Assert that the receipt owns the game's runner lock for at least the needed time."""
+def assert_runner_lease_covers(lock_receipt: Path, needed: timedelta) -> RunnerConfig:
+    """Assert that the receipt owns the game's runner lock for at least the needed time, and return that runner."""
 
-    lock_key = runner_lock_key()
+    config = runner_config()
+    lock_key = config["ROBLOX_STUDIO_VM"]
 
     result = subprocess.run([sys.executable, str(AGENT_LOCK), "check", "--receipt", str(lock_receipt)],
                             capture_output=True, text=True, timeout=LOCK_CHECK_TIMEOUT.total_seconds())
@@ -93,15 +96,17 @@ def assert_runner_lease_covers(lock_receipt: Path, needed: timedelta) -> None:
         raise RuntimeError(f"The {lock_key} lease has {remaining.total_seconds():.0f} s left; this call can "
                            f"take up to {needed.total_seconds():.0f} s")
 
+    return config
+
 
 def run_in_runner(command: str, lock_receipt: Path, timeout: timedelta, data: bytes | None = None) -> bytes:
     """Run a shell command in the runner guest."""
 
-    assert_runner_lease_covers(lock_receipt, timeout)
+    config = assert_runner_lease_covers(lock_receipt, timeout)
 
     # The guest's login shell may be zsh, which splits words differently, so commands always run under sh.
     result = subprocess.run([str(RUNNER_SSH), f"/bin/sh -c {shlex.quote(command)}"], input=data,
-                            capture_output=True, timeout=timeout.total_seconds(), env=runner_environment())
+                            capture_output=True, timeout=timeout.total_seconds(), env=runner_environment(config))
 
     if result.returncode != 0:
         raise RuntimeError(f"Runner command failed ({result.returncode}): {command}\n{result.stderr.decode()}")
@@ -112,13 +117,14 @@ def run_in_runner(command: str, lock_receipt: Path, timeout: timedelta, data: by
 class StudioMcpSession:
     """An MCP transport into the runner's Studio."""
 
-    def __init__(self) -> None:
-        """Open an initialized session."""
+    def __init__(self, config: RunnerConfig) -> None:
+        """Open an initialized session to the configured runner."""
 
+        self.vm = config["ROBLOX_STUDIO_VM"]
         self.server_errors = tempfile.TemporaryFile()
         self.process = subprocess.Popen([str(RUNNER_SSH), STUDIO_MCP], stdin=subprocess.PIPE,
                                         stdout=subprocess.PIPE, stderr=self.server_errors, bufsize=0,
-                                        env=runner_environment())
+                                        env=runner_environment(config))
 
         self.stdin = cast(IO[bytes], self.process.stdin)
         self.stdout = cast(IO[bytes], self.process.stdout)
@@ -206,11 +212,15 @@ class StudioMcpConnection:
 
         atexit.register(self.close)
 
-    def request(self, method: str, params: Mapping[str, JsonValue], timeout: timedelta) -> JsonRpcMessage:
-        """Send a request over the session."""
+    def request(self, method: str, params: Mapping[str, JsonValue], timeout: timedelta,
+                config: RunnerConfig) -> JsonRpcMessage:
+        """Send a request over the session to the configured runner."""
 
         if self.session is None:
-            self.session = StudioMcpSession()
+            self.session = StudioMcpSession(config)
+        elif self.session.vm != config["ROBLOX_STUDIO_VM"]:
+            raise RuntimeError(f"The open session reaches {self.session.vm}, but the game's VM is now "
+                               f"{config['ROBLOX_STUDIO_VM']}")
 
         answered = False
 
@@ -237,9 +247,9 @@ def call_studio_tool(connection: StudioMcpConnection, name: str, arguments: Tool
 
     opening = INITIALIZE_TIMEOUT if connection.session is None else timedelta()
 
-    assert_runner_lease_covers(lock_receipt, timeout + opening)
+    config = assert_runner_lease_covers(lock_receipt, timeout + opening)
 
-    response = connection.request("tools/call", {"name": name, "arguments": arguments}, timeout)
+    response = connection.request("tools/call", {"name": name, "arguments": arguments}, timeout, config)
 
     if "error" in response or "result" not in response or response["result"].get("isError"):
         raise RuntimeError(json.dumps(response))
@@ -259,6 +269,21 @@ def studios(connection: StudioMcpConnection, lock_receipt: Path) -> list[StudioE
     listing = mcp_content_text(call_studio_tool(connection, "list_roblox_studios", {}, lock_receipt))
 
     return json.loads(listing).get("studios", [])
+
+
+def wait_for_studios(connection: StudioMcpConnection, lock_receipt: Path,
+                     wait: timedelta = EDITOR_LIST_WAIT) -> list[StudioEntry]:
+    """List the runner's editors, waiting out the empty list a new MCP connection reports at first."""
+
+    deadline = time.monotonic() + wait.total_seconds()
+    listed = studios(connection, lock_receipt)
+
+    while not listed and time.monotonic() < deadline:
+        time.sleep(REGISTRATION_POLL.total_seconds())
+
+        listed = studios(connection, lock_receipt)
+
+    return listed
 
 
 def luau_string_literal(value: str) -> str:
@@ -369,20 +394,27 @@ def extended_regex_literal(value: str) -> str:
     return EXTENDED_REGEX_SPECIAL.sub(r"\\\1", value)
 
 
+def editor_pids_script(guest_path: str) -> str:
+    """Return guest shell that sets pids to the editors holding a place copy open."""
+
+    pattern = shlex.quote(f"localPlaceFile ([^ ]*/)?{extended_regex_literal(guest_path)}( |$)")
+
+    return f'''target="$HOME"/{shlex.quote(guest_path)}
+pids=
+for pid in $(pgrep -f {pattern}); do
+  process_command=$(ps -o command= -p "$pid") || continue
+  case "$process_command " in *" --localPlaceFile $target "*) pids="$pids $pid";; esac
+done'''
+
+
 def close_place(project: str, place: Path, lock_receipt: Path) -> None:
     """Close a project's place copy in the runner."""
 
     assert_runner_lease_covers(lock_receipt, CLOSE_TIMEOUT + REMOVAL_TIMEOUT)
 
     guest_path = guest_place(project, place)
-    pattern = shlex.quote(f"localPlaceFile ([^ ]*/)?{extended_regex_literal(guest_path)}( |$)")
     # An editor with a place open answers SIGTERM with its unsaved-changes prompt, so it is then killed.
-    script = f'''target="$HOME"/{shlex.quote(guest_path)}
-pids=
-for pid in $(pgrep -f {pattern}); do
-  process_command=$(ps -o command= -p "$pid") || continue
-  case "$process_command " in *" --localPlaceFile $target "*) pids="$pids $pid";; esac
-done
+    script = f'''{editor_pids_script(guest_path)}
 [ -z "$pids" ] && {{ echo closed; exit 0; }}
 listed=$(echo $pids | tr ' ' ',')
 kill -TERM $pids
@@ -410,12 +442,18 @@ def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path,
 
     guest_path = guest_place(project, place)
 
-    bound = (INITIALIZE_TIMEOUT + TOOL_CALL_TIMEOUT + COPY_TIMEOUT
+    bound = (CLOSE_TIMEOUT + INITIALIZE_TIMEOUT + TOOL_CALL_TIMEOUT + COPY_TIMEOUT
              + LAUNCH_TIMEOUT + registration_wait + TOOL_CALL_TIMEOUT
              + REGISTRATION_POLL + CAPTURE_TIMEOUT + CLOSE_TIMEOUT
              + REMOVAL_TIMEOUT)
 
     assert_runner_lease_covers(lock_receipt, bound)
+
+    holders = run_in_runner(f'{editor_pids_script(guest_path)}\necho $pids', lock_receipt,
+                            CLOSE_TIMEOUT).decode().strip()
+
+    if holders:
+        raise RuntimeError(f"An editor already has {guest_path} open; use it or close it with close_place first")
 
     connection = StudioMcpConnection()
 
@@ -444,7 +482,8 @@ def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path,
             time.sleep(REGISTRATION_POLL.total_seconds())
 
         screen = run_in_runner('f=$(mktemp -t studio-launch) && screencapture -x -t png "$f" && cat "$f"; '
-                               'capture_status=$?; rm -f "$f"; exit $capture_status', lock_receipt, CAPTURE_TIMEOUT)
+                               'capture_status=$?; rm -f "$f"; exit $capture_status', lock_receipt,
+                               CAPTURE_TIMEOUT)
 
         out_dir.mkdir(parents=True, exist_ok=True)
 

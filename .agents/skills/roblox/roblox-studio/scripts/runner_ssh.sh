@@ -1,7 +1,8 @@
 #!/bin/sh
 # Runs a command in the game's Tart runner over its pinned SSH key, finding the guest's address on every call.
 # The game is ROBLOX_STUDIO_GAME, or else the repository the command runs in, named by its main checkout's folder.
-# games/<game>.env names the game's VM, conventionally <game>-vm, which is also its lock key.
+# games/<game>.env names the game's VM, conventionally <game>-vm; its configured name is the lock key.
+# ROBLOX_STUDIO_EXPECTED_VM, when set, refuses the call unless the game's file still names that VM.
 # The runner's Studio MCP over stdio: runner_ssh.sh /Applications/RobloxStudio.app/Contents/MacOS/StudioMCP
 # `runner_ssh.sh --describe` prints the game's resolved runner configuration as shell assignments instead.
 set -eu
@@ -17,6 +18,11 @@ fi
 if [ -z "${ROBLOX_STUDIO_GAME:-}" ]; then
   if ! common_dir="$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null)"; then
     echo "Run inside the game's repository or set ROBLOX_STUDIO_GAME" >&2
+    exit 1
+  fi
+
+  if [ "$(basename "$common_dir")" != ".git" ]; then
+    echo "Cannot name the game from $common_dir; set ROBLOX_STUDIO_GAME" >&2
     exit 1
   fi
 
@@ -37,6 +43,8 @@ if [ ! -f "$game_env" ]; then
   exit 1
 fi
 
+expected_vm="${ROBLOX_STUDIO_EXPECTED_VM:-}"
+
 . "$runner_env"
 
 # The game's file names its own VM and host keys; the shared file's values for them never apply.
@@ -48,6 +56,11 @@ unset ROBLOX_STUDIO_VM ROBLOX_STUDIO_KNOWN_HOSTS
 : "${ROBLOX_STUDIO_SSH_KEY:?$runner_env sets no ROBLOX_STUDIO_SSH_KEY}"
 : "${ROBLOX_STUDIO_VM:?$game_env sets no ROBLOX_STUDIO_VM}"
 : "${ROBLOX_STUDIO_KNOWN_HOSTS:?$game_env sets no ROBLOX_STUDIO_KNOWN_HOSTS}"
+
+if [ -n "$expected_vm" ] && [ "$expected_vm" != "$ROBLOX_STUDIO_VM" ]; then
+  echo "$game_env now names $ROBLOX_STUDIO_VM, not the locked $expected_vm" >&2
+  exit 1
+fi
 
 if [ "${1:-}" = "--describe" ]; then
   for name in ROBLOX_STUDIO_GAME ROBLOX_STUDIO_TART ROBLOX_STUDIO_VM ROBLOX_STUDIO_SSH_USER ROBLOX_STUDIO_SSH_KEY \
