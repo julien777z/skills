@@ -44,7 +44,9 @@ def own_runner_lock(lock_receipt: Path) -> None:
 def runner(command: str, lock_receipt: Path, timeout: float = 60, data: bytes | None = None) -> bytes:
     own_runner_lock(lock_receipt)
 
-    result = subprocess.run([str(RUNNER_SSH), command], input=data, capture_output=True, timeout=timeout)
+    # The guest's login shell may be zsh, which splits words differently, so commands always run under sh.
+    result = subprocess.run([str(RUNNER_SSH), f"/bin/sh -c {shlex.quote(command)}"], input=data,
+                            capture_output=True, timeout=timeout)
 
     if result.returncode != 0:
         raise RuntimeError(f"Runner command failed ({result.returncode}): {command}\n{result.stderr.decode()}")
@@ -132,7 +134,7 @@ def close_session() -> None:
 atexit.register(close_session)
 
 
-def call(method: str, params: dict[str, Any], timeout: float = 55) -> dict[str, Any]:
+def _call(method: str, params: dict[str, Any], timeout: float = 55) -> dict[str, Any]:
     global _session
 
     if _session is None:
@@ -146,8 +148,11 @@ def call(method: str, params: dict[str, Any], timeout: float = 55) -> dict[str, 
         raise
 
 
-def tool(name: str, timeout: float = 55, **arguments: Any) -> list[dict[str, Any]]:
-    response = call("tools/call", {"name": name, "arguments": arguments}, timeout)
+def tool(name: str, lock_receipt: Path, timeout: float = 55, **arguments: Any) -> list[dict[str, Any]]:
+    # A lease can expire between calls, so ownership is checked on every one.
+    own_runner_lock(lock_receipt)
+
+    response = _call("tools/call", {"name": name, "arguments": arguments}, timeout)
 
     if "error" in response or response.get("result", {}).get("isError"):
         raise RuntimeError(json.dumps(response))
@@ -159,8 +164,8 @@ def text(content: list[dict[str, Any]]) -> str:
     return "\n".join(part["text"] for part in content if part.get("type") == "text")
 
 
-def studios() -> list[dict[str, Any]]:
-    return json.loads(text(tool("list_roblox_studios"))).get("studios", [])
+def studios(lock_receipt: Path) -> list[dict[str, Any]]:
+    return json.loads(text(tool("list_roblox_studios", lock_receipt))).get("studios", [])
 
 
 class Studio:
@@ -171,10 +176,7 @@ class Studio:
         self.lock_receipt = lock_receipt
 
     def tool(self, name: str, timeout: float = 55, **arguments: Any) -> list[dict[str, Any]]:
-        # A lease can expire between calls, so ownership is checked on every one.
-        own_runner_lock(self.lock_receipt)
-
-        return tool(name, timeout, studio_id=self.studio_id, **arguments)
+        return tool(name, self.lock_receipt, timeout, studio_id=self.studio_id, **arguments)
 
     def execute(self, code: str, data_model: str = "Client", timeout: float = 55) -> str:
         return text(self.tool("execute_luau", timeout, datamodel_type=data_model, code=code))
@@ -262,7 +264,7 @@ echo still-open'''
     # Studio leaves a lock file beside a place it opened.
     files = f"{shlex.quote(guest_path)} {shlex.quote(f'{guest_path}.lock')}"
     folder = shlex.quote(str(Path(guest_path).parent))
-    removal = f"rm -f {files}; rmdir {folder} 2>/dev/null; true"
+    removal = f'cd "$HOME" && rm -f {files}; rmdir {folder} 2>/dev/null; true'
 
     state = runner(script, lock_receipt).decode().strip()
 
@@ -277,10 +279,10 @@ def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path, wai
 
     own_runner_lock(lock_receipt)
 
-    known = {studio["id"] for studio in studios()}
+    known = {studio["id"] for studio in studios(lock_receipt)}
 
     try:
-        runner(f"mkdir -p {shlex.quote(str(Path(guest_path).parent))} && cat > {shlex.quote(guest_path)}",
+        runner(f'cd "$HOME" && mkdir -p {shlex.quote(str(Path(guest_path).parent))} && cat > {shlex.quote(guest_path)}',
                lock_receipt, timeout=120, data=place.read_bytes())
 
         runner(f'cd "$HOME" && open -n -a {shlex.quote(STUDIO_APP)} --args --task EditFile --localPlaceFile '
@@ -289,7 +291,7 @@ def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path, wai
         deadline = time.monotonic() + wait_seconds
 
         while time.monotonic() < deadline:
-            for studio in studios():
+            for studio in studios(lock_receipt):
                 if studio["id"] not in known and studio.get("name") == place.name:
                     return Studio(studio["id"], lock_receipt)
 
