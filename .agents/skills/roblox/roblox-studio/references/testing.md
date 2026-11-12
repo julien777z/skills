@@ -138,7 +138,7 @@ Studio work runs in an isolated runner: a Tart VM on a macOS host, the container
 
 ### Retained Tart/macOS runner
 
-This example applies only when the host configures the shared values in `~/.config/roblox-studio/runner.env` (`ROBLOX_STUDIO_TART`, `ROBLOX_STUDIO_SSH_USER` and `ROBLOX_STUDIO_SSH_KEY`) and each game's own in `~/.config/roblox-studio/games/<game>.env` (`ROBLOX_STUDIO_VM`, its VM's name, and `ROBLOX_STUDIO_KNOWN_HOSTS`, that VM's pinned host key). **The game's name**, `<game>` below, is `ROBLOX_STUDIO_GAME` when set, or else the name of the folder holding the main checkout of the repository the command runs in, so every worktree of one game reaches the same VM; a bare or submodule checkout sets `ROBLOX_STUDIO_GAME`. Shared tools and keys live outside game checkouts. Discover the configured machine; do not assume its name or address from another session. **A game's VM is named `<game>-vm`**, such as `example-game-vm`. **The runner lock's key is the VM's configured name**, the `ROBLOX_STUDIO_VM` its game's file sets, shared by every session working on that game; a VM named otherwise keeps working through that file. A rename holds the locks on both the old and the new name, in the order `agent-lock` sets for several keys, through `tart rename` and the settings-file update; never rename another session's VM while it is in use.
+This example applies only when the host configures the shared values in `~/.config/roblox-studio/runner.env` (`ROBLOX_STUDIO_TART`, `ROBLOX_STUDIO_SSH_USER` and `ROBLOX_STUDIO_SSH_KEY`) and each game's own in `~/.config/roblox-studio/games/<game>.env` (`ROBLOX_STUDIO_VM`, its VM's name, and `ROBLOX_STUDIO_KNOWN_HOSTS`, that VM's pinned host key). **The game's name**, `<game>` below, is `ROBLOX_STUDIO_GAME` when set, or else the name of the folder holding the main checkout of the repository the command runs in, so every worktree of one game reaches the same VM; a bare or submodule checkout sets `ROBLOX_STUDIO_GAME`. Shared tools and keys live outside game checkouts. Discover the configured machine; do not assume its name or address from another session. **A game's VM is named `<game>-vm`**, such as `example-game-vm`. **The runner lock's key is the VM's configured name**, the `ROBLOX_STUDIO_VM` its game's file sets, shared by every session working on that game; a VM named otherwise keeps working through that file. A rename holds the locks on both the old and the new name, in the order `agent-lock` sets for several keys, through `tart rename`, the settings-file update and moving the host-key pin to the new name, confirmed by a `runner_ssh.sh hostname` that answers; never rename another session's VM while it is in use.
 
 ```sh
 runner_ssh="<installed roblox-studio skill>/scripts/runner_ssh.sh"
@@ -189,32 +189,25 @@ Verify SSH host keys, the intended guest editor, and the source/place before run
 A running VM holds its whole memory allocation on the host, and its disk image grows as the guest
 writes. Budget each game's VM at 6 CPU cores, 12 GB of memory and a 50 GB disk: a guest with less
 memory swaps with one editor and a Play session open. Before starting or creating a VM, read the
-host's free memory and disk under the host lock `roblox-studio-host`, held from that read through
-the `tart run`, `tart clone` or `tart stop` it decides, so two sessions never spend the same room.
-Start one only while every running VM's memory plus 8 GB for the host fits in the host's memory,
-and create one only while the host's free disk exceeds the new VM's disk size plus 20 GB. macOS
-runs at most two macOS guests at once, whatever the host's size. When the budget leaves no room,
-stop the VM of a game no session is using: try once to acquire that VM's lock without waiting, stop
-the VM, and release the lock; a lock another session holds means the VM is in use and stays running.
-Otherwise the Studio work for this game waits for room as a held lock does, and the rest of the work
-continues. **Locks held together are acquired in the order `agent-lock` sets for several keys**,
-whatever order a procedure names them in; a key another session holds is waited for only when it is
-the one the work needs, never for a VM picked as a candidate to stop or clone.
+host's free memory and disk. Start one only while every running VM's memory plus 8 GB for the host
+fits in the host's memory, and create one only while the host's free disk exceeds the new VM's disk
+size plus 20 GB. macOS runs at most two macOS guests at once, whatever the host's size. When the
+budget leaves no room, or `tart run` or `tart clone` fails for lack of it, this game's Studio work
+waits, as a pending result does, until room appears or the user frees it, and the rest of the work
+continues; it never stops a VM whose lock it does not hold.
 
 #### Add a VM for a game
 
 When `runner.env` exists but the game has no `games/<game>.env`, create the game's VM and continue
-the work there, without asking: a game's VM is part of the runner setup the work already has. First
-acquire the lock on `<game>-vm` and hold it through step 5; a session that finds it held waits for
-it and checks again for the game's file before creating anything. A VM this procedure created whose
-game's file does not yet record `ROBLOX_STUDIO_QUALIFIED` is unfinished: the session that next holds its lock resumes at
-the first step whose check fails, and no check runs in it before then. Each step ends with its
-check:
+the work there, without asking: a game's VM is part of the runner setup the work already has. The
+same procedure finishes a game whose file does not yet record `ROBLOX_STUDIO_QUALIFIED`, resuming
+at the first step whose check fails; no other Studio work runs in that VM until it does. Each step
+runs under the lock on `<game>-vm`, taken for that step within one lease, and before acting checks
+again that the step is still needed. Each step ends with its check:
 
-1. **Clone** a stopped qualified VM of another game, or the retained Cirrus Labs base image when no
-   qualified VM can be stopped, with `tart clone <source> <game>-vm`, within the budget
-   above, holding the source VM's lock while it is stopped and cloned; a source whose lock another
-   session holds is in use, so choose another or the base image. A clone of a qualified VM keeps
+1. **Clone** the retained Cirrus Labs base image, or a stopped qualified VM whose lock this session
+   holds for the clone together with `<game>-vm`, both taken in the order `agent-lock` sets for
+   several keys, with `tart clone <source> <game>-vm`, within the budget above. A clone of a qualified VM keeps
    its installed Studio, Roblox player, guest settings and signed-in session; a clone of the base
    image starts at step 2 of
    [Provision a runner when none exists](#provision-a-runner-when-none-exists) for everything after
@@ -231,10 +224,12 @@ check:
    clone carried, and close any editor its last session restored; the runner's persistent setup
    stays.
 5. **Sign in and qualify** as [authentication](#authentication-and-user-handoff) and
-   [Qualify input and capture](#qualify-input-and-capture) describe, installing the
+   [Qualify input and capture](#qualify-input-and-capture) describe, releasing the lock before asking
+   the user for a sign-in code and taking it again, with its receipt checked and the guest's state
+   read back, before continuing; installing the
    [geometry buffer cap](#cap-studios-geometry-buffers-in-a-tart-guest) and confirming it in the
    editor first; a session cloned signed in is confirmed from Studio's start page, not assumed.
-   Then add `ROBLOX_STUDIO_QUALIFIED` with the date to `games/<game>.env` and release the lock.
+   Then add `ROBLOX_STUDIO_QUALIFIED` with the date to `games/<game>.env`.
 
 #### Provision a runner when none exists
 
@@ -269,6 +264,7 @@ ends with its check:
    [Qualify input and capture](#qualify-input-and-capture) describe, with the
    [geometry buffer cap](#cap-studios-geometry-buffers-in-a-tart-guest) installed and confirmed in
    the editor; qualification includes a capture of a large place drawing its meshes correctly.
+   Then add `ROBLOX_STUDIO_QUALIFIED` with the date to `games/<game>.env`.
 
 #### Add the published Roblox player
 
@@ -287,8 +283,8 @@ ends with its check:
    it shows its sign-in page. It registers itself as a login item.
 3. **Sign it in by QR code.** Choose Sign In, then QR code, capture the code it shows, and relay
    the capture and code through the question tool with a confirmation option and one for a new
-   code, since a code expires in about two minutes. A prompt Roblox shows the account after
-   sign-in, such as updated terms, is the user's to accept: ask before clicking it.
+   code, since a code expires in about two minutes. A prompt asking the account to accept
+   something goes to the user, as [authentication](#authentication-and-user-handoff) says.
 4. **Launch and qualify it.** `open "roblox://experiences/start?placeId=<place id>"` in the guest
    starts an experience. Qualify input and capture on a neutral place, as
    [direct guest control](#direct-guest-control) describes, before relying on it, and quit the
@@ -478,8 +474,7 @@ Reuse a retained Roblox session first. When Studio shows its sign-in screen, or 
    Sign In, on a device already signed in to Roblox, with a Done option and one for a new code. A
    new-code answer, or a timeout, goes back to step 2.
 4. **Finish every later screen of the sign-in yourself**, such as choosing the account and its
-   **Continue**; a prompt asking the account to accept something, such as updated terms, is the
-   user's, as [the published player](#add-the-published-roblox-player) says. Then
+   **Continue**, leaving an acceptance prompt to the user as the lead above says. Then
    confirm `Authenticated : YES` in the log and the account on Studio's start page before relying on
    the runner.
 
@@ -504,12 +499,10 @@ build, a copy and an editor launch.
   macOS guest), and run `rojo serve` in the guest on its loopback address, against a copy of the
   session's checkout in the guest that each sync updates. Serving from the host instead needs a
   listener on the VM network, which can raise a firewall prompt on the user's desktop. The session
-  holding the VM's lock mirrors its own checkout's tracked files (`git ls-files`) into that copy,
-  deleting what the checkout does not have (`rsync --delete`), so the editor holds that checkout's
-  tree; the copy is its own folder, with the session's record and markers outside it.
-- **Mark the game's sessions.** A session working on the game keeps a marker named for its task in
-  the guest beside the warm session's record from its first use of the VM until its last lock
-  release, lock held or not, and removes it then.
+  holding the VM's lock mirrors its own working tree into that copy with `rsync --delete`,
+  excluding only `.git` and the build's own output, so the editor holds that checkout's tree; the
+  copy is its own folder, with the session's record outside it. Never mirror by tracked files or by
+  `.gitignore`: installed packages and generated code are ignored by git but are Rojo inputs.
 - **Connect the right plugin.** An older Rojo plugin can share the toolbar label, so open the panel
   whose title shows the pinned version. A local place file has place ID 0, which the plugin's
   automatic reconnect skips, so press **Connect** through input posted inside the guest each time
@@ -579,10 +572,8 @@ whose restoration needs the host's screen or the user: a host viewer the user is
 the host, a guest state only a host viewer could recreate, or a Roblox session that would need the
 user to enter a new code. Powering the guest off is fine, because its automatic login brings the desktop back.
 
-When the game work is done, hold the VM's lock and read the session markers the warm session keeps:
-with another session's marker present, leave the VM and its warm session running and say so.
-Otherwise save the authorized project artifacts, close Roblox Studio
-normally, the game's warm session included,
+When the game work is done, hold the VM's lock, save the authorized project artifacts, close Roblox
+Studio normally, the game's warm session included,
 and **shut down the guest VM** so it is no longer running locally. Verify that Studio closed and the
 VM is stopped. Do not leave the VM running or substitute a suspended/running state for the requested
 shutdown. If an unfinished test must continue, report that explicitly rather than claiming shutdown.

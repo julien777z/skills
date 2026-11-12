@@ -219,9 +219,11 @@ class StudioMcpConnection:
         if self.session is None:
             self.session = StudioMcpSession(config)
         elif self.session.vm != config["ROBLOX_STUDIO_VM"]:
+            open_vm = self.session.vm
+
             self.close()
 
-            raise RuntimeError(f"The open session reaches {self.session.vm}, but the game's VM is now "
+            raise RuntimeError(f"The open session reaches {open_vm}, but the game's VM is now "
                                f"{config['ROBLOX_STUDIO_VM']}")
 
         answered = False

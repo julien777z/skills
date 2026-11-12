@@ -79,7 +79,6 @@ fi
 address="$("$ROBLOX_STUDIO_TART" ip "$ROBLOX_STUDIO_VM")"
 
 # The host key is pinned under the VM's name, so a new address from Tart's DHCP still matches it.
-
 exec ssh -T -i "$ROBLOX_STUDIO_SSH_KEY" -o IdentitiesOnly=yes \
   -o UserKnownHostsFile="$ROBLOX_STUDIO_KNOWN_HOSTS" -o HostKeyAlias="$ROBLOX_STUDIO_VM" \
   -o StrictHostKeyChecking=yes -o BatchMode=yes \
