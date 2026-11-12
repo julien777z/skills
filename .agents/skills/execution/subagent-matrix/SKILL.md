@@ -11,6 +11,10 @@ verification chat. Skills that use it should declare `subagent-matrix` in their 
 but a missing declaration does not bypass selection. Return the selection table to the calling
 agent; the calling agent launches the actual assignment with the selected model.
 
+## Dependencies
+
+- `share-captures`
+
 ## Workflow
 
 1. Identify the calling skill or direct task, its assigned roles or verification chat, and any
@@ -149,8 +153,9 @@ context and returns its verdict into the step waiting on it; nothing else does b
   an original from retained host output when available; otherwise repeat only the unproven step,
   not the surrounding cohort.
 - **A worker hands each capture the user should see up the same way, as it is made.** Through any
-  mid-run channel the host gives it to the delegating agent, it sends the file path and a line on
-  what the capture shows; a worker whose only channel is its final message returns with the
+  mid-run channel the host gives it to the delegating agent, it sends the file path and the
+  caption `share-captures` requires, naming each defect its own reading of the frame found and
+  whether it fixed it; a worker whose only channel is its final message returns with the
   captures made since and is resumed. Work that will make such captures goes to a worker the
   delegating agent can resume or hear from mid-run; where the host offers neither, the delegating
   agent splits the work so each delegation ends at one such capture, and forwards each as it

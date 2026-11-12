@@ -12,7 +12,13 @@ they get there, the same way for a web walkthrough, a game playtest or a generat
 ## Send each capture as a file
 
 - **Read it whole first**, region by region, as the global rules say; a capture you have not read is
-  never sent.
+  never sent. Read it for what is wrong anywhere in the frame, not for whether the thing you changed
+  appears: the change showing is the smaller half, and a capture read only for it is a capture you
+  have not read.
+- **Fix what the reading finds before sending, then send the fixed capture.** A defect the work in
+  hand can fix is fixed and captured again; the capture that showed it goes out only as the before
+  half of that pair, or with the defect named as left and why, as the global rules'
+  **User-Facing Output** says.
 - **Send it through the harness's file-sending tool** right after reading it, never held for the
   turn's last message, as **Harness compatibility** below says for the harnesses that need it. Where
   such a tool exists, text that only names or embeds a path is not a send: the reader may never see
@@ -22,7 +28,11 @@ they get there, the same way for a web walkthrough, a game playtest or a generat
   copied there first. Say once that the harness cannot send files.
 - **Caption every capture** with the page, place or screen it shows, the device or width, and the
   state, such as "the album's Sharing page at 1280" or "the level-select screen on a phone
-  simulator, mid-transition".
+  simulator, mid-transition", then with what the reading found wrong in each region: every defect,
+  in the part the change touched or anywhere else in the frame, with whether it was fixed, or "read
+  every region, nothing wrong" when the reading found none. A caption that only says what the capture
+  shows, such as "the new toolbar renders", reports nothing about the rest of the frame and is
+  incomplete.
 - **Several items, each with captures,** go out item by item: one item's text and its captures,
   then the next. A caption never points at another message's images.
 
