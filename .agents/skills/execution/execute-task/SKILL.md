@@ -750,15 +750,6 @@ can verify the change or restore service while its pull request is in flight. A 
 setup operation remains work under **Encountered Issues**. The independent gate receives the
 affected-repository map and comparison evidence along with the diff.
 
-For a root-cause request, track the causal investigation separately from mitigation, restoration,
-and regression coverage. Before a terminal report, follow the failing operation from its entry
-point to the component that produced the failure. Verify that the proposed cause explains the
-observed failure with direct evidence or a controlled reproduction. A timeout, a successful retry,
-or a symptom fix leaves the causal step open. If the failure stops reproducing, inspect retained
-diagnostics and compare the failed and recovered runtimes, then continue any safe isolation or
-reproduction available. A hold identifies the missing evidence, why it is unavailable, and the
-specific observation or external action that would allow the investigation to resume.
-
 Before the final delivery steps below, select the applicable verification route under the shared
 testing rule's **Environments** section, then verify the requested behavior on the change's branch
 within the authorized scope, including reachable dependency branches. When a requested flow failed,
