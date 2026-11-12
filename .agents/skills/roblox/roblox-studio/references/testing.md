@@ -55,6 +55,22 @@ area and built on the [studio_mcp](../scripts/studio_mcp/client.py) package for 
 - running a multi-client test and counting the clients that actually joined;
 - capturing the viewport and recording motion.
 
+What every helper must get right, since each of these has produced a false alarm:
+
+- **Load the skill's client** with the installed `scripts` folder on `sys.path`, never a copy.
+- **Set up on the server, act as the player.** State a check starts from, such as a profile or a
+  spawned encounter, is made server-side; everything the check judges is driven by the player's
+  input on the client.
+- **Confirm every input registered** from the state it should change, never from the call
+  returning. A script run during Play that moves the camera, moves a character or sends input is
+  refused, since it fakes or spoils what the check judges.
+- **Stop a walk to a prompt inside the prompt's activation distance**, measured from the prompt's
+  own part, so the press that follows can land.
+- **Rerun a multi-client test only when a client did not join**, read from the connected-player
+  count; a joined client's failure is the result, not a reason to retry.
+- **Wait out the empty editor list** a new MCP connection reports at first, with a bounded wait for
+  a nonempty one, before concluding no editor is open.
+
 Workers use these helpers and extend them for each new repeatable step; a repeatable step is never
 a throwaway script in a temporary folder or Luau pasted into one run. Each helper returns a
 structured result and fails with what it observed, never a bare timeout. A false alarm traced to a
