@@ -60,7 +60,7 @@ Good:
 
 ### 3. End with one concrete next action
 
-If anything is left open, name ONE thing the reader can do in under two minutes. Even "open the file" counts. This picks a next action; it never removes other unanswered questions from the decision list. The action is work the reader does, such as reviewing a pull request at its link, never a request that they authorize a merge, deployment, publication or release, which the global rules reserve to their own words.
+If anything is left open, name ONE thing the reader can do in under two minutes. Even "open the file" counts. This picks a next action; it never removes other unanswered questions from the decision list. The action is work the reader does, such as reviewing a pull request at its link, never a request that they authorize a merge, deployment, publication or release, which the global rules reserve to their own words, and never an answer to a decision, which rule 4 puts to the question tool.
 
 Bad: "Hope that helps. Let me know if you want to dig deeper."
 Good: "Next: run `npm test` and paste the first failing line."
@@ -97,7 +97,12 @@ visible status list. At meaningful progress updates and handoffs, refresh the sa
 numbered list: each item starts with a **bold subject**. An evidence-pending item states its pending
 work; a ready item identifies its active question-tool request and the work depending on it.
 Keep the question, choices and supporting captures in that request under the global question-tool
-procedure rather than soliciting another answer in chat. Where no equivalent tool exists, the
+procedure rather than soliciting another answer in chat. **Listing a decision is never asking it.**
+A ready decision with no active request is put to the question tool in the same turn, after the
+chat text that carries its supporting material, as the global rules' question-tool bullet says. No
+sentence the reader sees poses the choice for a chat reply: not a list item phrased as a question,
+a report's closing line, a recommendation ending "should I?", or a section of a skill's required
+output. Where no equivalent tool exists, the
 chat question includes the choices, recommendation or material trade-off and dependent work.
 Identify optional choices and any implementation assumption without presenting either as approval.
 If none remain, omit the list. The list accompanies a skill’s
@@ -201,7 +206,7 @@ Before sending, delete:
 5. Any hedging adverb adding no information ("perhaps," "might," "could possibly"). Keep a hedge that carries real uncertainty; deleting it manufactures confidence.
 6. Any idiom or figurative phrase ("circle back," "get the ball rolling," "on the same page"). Replace with the literal action.
 
-Then reconcile pending decisions with the current ledger and user message: every unresolved item, including optional choices and unconfirmed assumptions, must appear in the required numbered status list as an active tool request or evidence-pending work, according to readiness; chat questions appear only when no equivalent tool exists. Resolved or superseded questions must not reappear.
+Then reconcile pending decisions with the current ledger and user message: every unresolved item, including optional choices and unconfirmed assumptions, must appear in the required numbered status list as an active tool request or evidence-pending work, according to readiness; a ready item with no active request is invoked through the question tool before the turn ends, and chat questions appear only when no equivalent tool exists. Resolved or superseded questions must not reappear.
 
 Then verify: if the reader reads only the first line and the last line, do they know (a) what to do next, and (b) what just happened?
 
