@@ -322,7 +322,10 @@ a template where correct results genuinely vary in shape.
 - When the user asks to add guidance from another repository, treat that repository as source material: encode transferable requirements in the owning skills and refer to those skills by name. Before delivery, audit the edited package for the source repository's name, links, paths, commands, versions, and configuration; never hard-code or cite that repository in a skill.
 - Separate temporary task, session, and pull-request directions from lasting guidance before
   writing. Apply the former to the current work only; never encode them as canonical rules or
-  skills.
+  skills. A direction about what the product holds now, such as which items a store stocks, their
+  prices or which ones carry a bonus, is one of them even when the user gives a reason: it changes
+  the product's data, and guidance keeps describing how the product works, since its contents will
+  change as it grows.
 
 ## Scripts
 
