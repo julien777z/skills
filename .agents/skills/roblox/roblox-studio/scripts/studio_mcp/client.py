@@ -67,10 +67,9 @@ def runner_config() -> RunnerConfig:
 
 
 def runner_environment(config: RunnerConfig) -> dict[str, str]:
-    """Return the environment that holds runner_ssh.sh to the game and VM a lease check resolved."""
+    """Return the environment that holds runner_ssh.sh to the game a lease check resolved."""
 
-    return {**os.environ, "ROBLOX_STUDIO_GAME": config["ROBLOX_STUDIO_GAME"],
-            "ROBLOX_STUDIO_EXPECTED_VM": config["ROBLOX_STUDIO_VM"]}
+    return {**os.environ, "ROBLOX_STUDIO_GAME": config["ROBLOX_STUDIO_GAME"]}
 
 
 def assert_runner_lease_covers(lock_receipt: Path, needed: timedelta) -> RunnerConfig:

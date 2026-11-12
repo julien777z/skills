@@ -200,36 +200,40 @@ continues; it never stops a VM whose lock it does not hold.
 
 When `runner.env` exists but the game has no `games/<game>.env`, create the game's VM and continue
 the work there, without asking: a game's VM is part of the runner setup the work already has. The
-same procedure finishes a game whose file does not yet record `ROBLOX_STUDIO_QUALIFIED`, resuming
-at the first step whose check fails; no other Studio work runs in that VM until it does. Each step
-runs under the lock on `<game>-vm`, taken for that step within one lease, and before acting checks
-again that the step is still needed. Each step ends with its check:
+same procedure finishes a VM whose game's file records `ROBLOX_STUDIO_QUALIFIED=0`, resuming at
+the first step whose check fails; no other Studio work runs in that VM until it does. A file without the
+variable is a VM set up before this procedure and keeps working as it is. The game's VM name below
+is `<game>-vm` for a VM this procedure creates, or the `ROBLOX_STUDIO_VM` its file sets when
+resuming. Each step runs under the lock on the game's VM name, taken for that step within one lease,
+and before acting checks again that the step is still needed. Each step ends with its check:
 
 1. **Clone** the retained Cirrus Labs base image, or a stopped qualified VM whose lock this session
-   holds for the clone together with `<game>-vm`, both taken in the order `agent-lock` sets for
-   several keys, with `tart clone <source> <game>-vm`, within the budget above. A clone of a qualified VM keeps
-   its installed Studio, Roblox player, guest settings and signed-in session; a clone of the base
-   image starts at step 2 of
-   [Provision a runner when none exists](#provision-a-runner-when-none-exists) for everything after
-   the clone. `tart set` the budgeted CPU, memory and disk, then start it detached as above;
-   `tart ip --wait` returns its address.
-2. **Pin its host key.** Record the clone's host key under `<game>-vm` in
-   `~/.config/roblox-studio/games/<game>_known_hosts` and verify its fingerprint through `tart exec`, as
-   step 3 of provisioning says. The shared SSH key a clone of a qualified VM carries needs no new
-   `authorized_keys` entry.
-3. **Write `games/<game>.env`** with `ROBLOX_STUDIO_VM` and `ROBLOX_STUDIO_KNOWN_HOSTS`;
-   `"$runner_ssh" --describe` from the game's repository prints them, and `"$runner_ssh" hostname`
-   answers from the new guest.
-4. **Clear the source's task state.** Remove another game's places, captures and task folders the
-   clone carried, and close any editor its last session restored; the runner's persistent setup
-   stays.
+   holds for the clone together with the game's, both taken in the order `agent-lock` sets for
+   several keys, with `tart clone <source> <game>-vm`, within the budget above. `tart set` the
+   budgeted CPU, memory and disk, then start it detached as above; `tart ip --wait` returns its
+   address. A clone of a qualified VM keeps its installed Studio, Roblox player, guest settings,
+   signed-in session and the shared SSH key's `authorized_keys` entry. A clone of the base image
+   gets its automatic desktop login confirmed as step 2 of
+   [Provision a runner when none exists](#provision-a-runner-when-none-exists) says, and the
+   existing shared public key appended to the guest's `authorized_keys` through `tart exec -i`;
+   the shared key and `runner.env` stay as they are, since every other game's VM uses them.
+2. **Pin its host key.** Record the clone's host key under the game's VM name in
+   `~/.config/roblox-studio/games/<game>_known_hosts` and verify its fingerprint through
+   `tart exec`, as step 3 of provisioning says, then confirm a `BatchMode=yes` login.
+3. **Write `games/<game>.env`** with `ROBLOX_STUDIO_VM`, `ROBLOX_STUDIO_KNOWN_HOSTS` and
+   `ROBLOX_STUDIO_QUALIFIED=0`; `"$runner_ssh" --describe` from the game's repository prints them,
+   and `"$runner_ssh" hostname` answers from the new guest. These are the only files written on the
+   host.
+4. **Prepare the guest.** For a clone of a qualified VM, remove another game's places, captures and
+   task folders it carried, and close any editor its last session restored; the runner's persistent
+   setup stays. For a clone of the base image, install Studio as step 4 of provisioning says.
 5. **Sign in and qualify** as [authentication](#authentication-and-user-handoff) and
-   [Qualify input and capture](#qualify-input-and-capture) describe, releasing the lock before asking
-   the user for a sign-in code and taking it again, with its receipt checked and the guest's state
-   read back, before continuing; installing the
+   [Qualify input and capture](#qualify-input-and-capture) describe, installing the
    [geometry buffer cap](#cap-studios-geometry-buffers-in-a-tart-guest) and confirming it in the
    editor first; a session cloned signed in is confirmed from Studio's start page, not assumed.
-   Then add `ROBLOX_STUDIO_QUALIFIED` with the date to `games/<game>.env`.
+   Release the lock before asking the user for a sign-in code, and take it again, with its receipt
+   checked and the guest's state read back, before continuing. Then set
+   `ROBLOX_STUDIO_QUALIFIED=1` in `games/<game>.env`.
 
 #### Provision a runner when none exists
 
@@ -254,7 +258,8 @@ ends with its check:
    one `tart exec <vm> ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub` reports through the guest
    agent; a mismatch stops setup. Append the public key to the guest's `authorized_keys` through
    `tart exec -i`, so no guest password passes through a command line, and confirm a `BatchMode=yes`
-   login. Write the three shared values to `runner.env` and the game's two to `games/<game>.env`.
+   login. Write the three shared values to `runner.env` and the game's to `games/<game>.env`, with
+   `ROBLOX_STUDIO_QUALIFIED=0`.
 4. **Install Studio in the guest** from Roblox's official macOS installer image. Mount it there,
    confirm the installer's code-signing team matches the host Studio's, and `open` it in the
    signed-in guest session; the check is `/Applications/RobloxStudio.app` in the guest and Studio's
@@ -264,7 +269,7 @@ ends with its check:
    [Qualify input and capture](#qualify-input-and-capture) describe, with the
    [geometry buffer cap](#cap-studios-geometry-buffers-in-a-tart-guest) installed and confirmed in
    the editor; qualification includes a capture of a large place drawing its meshes correctly.
-   Then add `ROBLOX_STUDIO_QUALIFIED` with the date to `games/<game>.env`.
+   Then set `ROBLOX_STUDIO_QUALIFIED=1` in `games/<game>.env`.
 
 #### Add the published Roblox player
 
@@ -678,7 +683,7 @@ Confirm the resulting game state and that the user can continue using their desk
 execution or single-client input alone does not establish complete isolation. Use `screen_capture` for the game viewport, never a host
 screenshot or screen recording that could include unrelated private content. Its image can be returned as an MCP
 image block; save/decode that block directly instead of printing its base64 data.
-World-space text, such as floating damage numbers, status words and nameplates, is verified only in a
+World-space text, such as floating score labels, status words and nameplates, is verified only in a
 capture shown to draw it: confirm a known label appears in the frame before judging its spacing or
 style from it. Take that capture as a grab of the Studio window inside the guest
 (`screencapture -x -o -l <window-id>`, as [direct guest control](#direct-guest-control) describes),
