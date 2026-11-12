@@ -74,9 +74,13 @@ choices:
   its Yes labeled Approved when it approves a plan or proposal.
   A reply typed into the tool's free-text answer is matched as below.
 - **A menu longer than the tool holds goes through the tool in pages**: up to three choices and a
-  "More choices" option on each page, the last page holding the remainder. A `text` prompt goes
-  through the tool too, as one option such as "Type it below" beside the tool's free-text answer,
-  which carries the reply.
+  "More choices" option on each page, the last page holding the remainder. Picking "More choices"
+  shows the next page and is never a choice itself. For `multi`, picks from every page add up, and
+  the menu ends on the first page answered without "More choices"; a typed reply such as `all`,
+  `none` or `1,3` on any page answers the whole menu, in the numbering every page shares.
+- **A `text` prompt goes through the tool too**, with two options: its `default` when it declares
+  one, otherwise Cancel, and an option named for answering, such as "Type it below". The tool's
+  free-text field carries the typed answer.
 - **Only a harness with no question tool writes the menu in chat**, exactly in this shape. Then end
   the turn; nothing that depends on the answer runs before it arrives.
 
@@ -109,6 +113,7 @@ Trim the reply and ignore case and surrounding punctuation. Then take the first 
 | For `confirm`: `y`, `yes`, `yeah`, `yep`, `yup`, `sure`, `ok`, `okay`, `go ahead`, `do it` | Yes. |
 | For `confirm`: `n`, `no`, `nope`, `nah`, `don't` | No. |
 | For `multi`: items separated by commas, spaces or `and`, each matched as above; `all` or `everything`; `none` or `nothing` | Those choices; every choice; no choice. |
+| For `text`: the answering option's label with nothing typed | The prompt again; that label is never the answer. |
 | For `text`: anything else, or nothing when there is a `default` | The answer as typed, or the default. |
 
 - **A reply that is a new request is not an answer.** A full sentence, question or instruction that

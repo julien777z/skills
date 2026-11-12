@@ -14,6 +14,18 @@ evaluation roles independent, and prefer honest retirement over a manufactured i
 - `interactive-skill`
 - `use-dashboard`
 
+## Selection
+
+The skills to put through the gauntlet, asked in step 3 after the inventory message:
+
+```yaml
+prompt: Which skills should the gauntlet run on?
+kind: multi
+choices:
+  # Built from the inventory records, numbered in the inventory message's order: each record's id
+  # as `id`, the skill name as `label`, and its scope and one-line purpose as `detail`.
+```
+
 ## Resources
 
 - Read [references/protocol.md](references/protocol.md) completely before starting a run.
@@ -29,8 +41,8 @@ evaluation roles independent, and prefer honest retirement over a manufactured i
    directory before analysis, verify its digest, and mark whether its installed source is editable.
 3. Record each skill's purpose, origin, dependencies, overlaps, precedence, and editability in the
    public state. Compose and publish the dashboard as described below, give the user its URL and
-   the inventory in a message they see, then ask for the selection through the question tool as an
-   `interactive-skill` `multi` menu, and wait for the answer. Never put selection controls in the
+   the inventory in a message they see, then ask **Selection** through the question tool as
+   `interactive-skill` says, and wait for the answer. Never put selection controls in the
    dashboard or treat dashboard activity as approval.
 4. After selection, run the complete protocol independently for each selected skill. Do not ask
    the user to choose experiments, interpret results, approve revisions, or direct iterations.
