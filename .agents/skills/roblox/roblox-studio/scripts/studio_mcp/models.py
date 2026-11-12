@@ -1,21 +1,19 @@
 from collections.abc import Mapping, Sequence
-from enum import Enum
 from typing import Literal, NotRequired, TypedDict
 
 type JsonValue = str | int | float | bool | None | Sequence[JsonValue] | Mapping[str, JsonValue]
 type ToolArguments = Mapping[str, JsonValue]
 
 
-class StudioCall(Enum):
-    """A kind of runner or Studio MCP call."""
+class RunnerConfig(TypedDict):
+    """The game's runner configuration, as `runner_ssh.sh --describe` prints it."""
 
-    INITIALIZE = "initialize"
-    TOOL = "tool"
-    COPY = "copy"
-    LAUNCH = "launch"
-    CAPTURE = "capture"
-    CLOSE = "close"
-    REMOVAL = "removal"
+    ROBLOX_STUDIO_GAME: str
+    ROBLOX_STUDIO_TART: str
+    ROBLOX_STUDIO_VM: str
+    ROBLOX_STUDIO_SSH_USER: str
+    ROBLOX_STUDIO_SSH_KEY: str
+    ROBLOX_STUDIO_KNOWN_HOSTS: str
 
 
 class LockOwnership(TypedDict):

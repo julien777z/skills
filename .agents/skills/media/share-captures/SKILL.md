@@ -12,7 +12,13 @@ they get there, the same way for a web walkthrough, a game playtest or a generat
 ## Send each capture where the reader sees it
 
 - **Read it whole first**, region by region, as the global rules say; a capture you have not read is
-  never sent.
+  never sent. Read it for what is wrong anywhere in the frame, not for whether the thing you changed
+  appears: the change showing is the smaller half, and a capture read only for it is a capture you
+  have not read.
+- **Fix what the reading finds before sending, then send the fixed capture.** A defect the work in
+  hand can fix is fixed and captured again; the capture that showed it goes out only as the before
+  half of that pair, or with the defect named as left and why, as the global rules'
+  **User-Facing Output** says.
 - **Show it in your own reply**, in the part of the reply the harness shows the reader, as
   **Harness compatibility** below says. A tool that posts a message to the thread on the user's
   behalf is never the route, and neither is text the harness folds away from the reader.
@@ -21,8 +27,11 @@ they get there, the same way for a web walkthrough, a game playtest or a generat
   such as an attachments folder, so the chat history keeps the image and the checkout stays clean.
 - **Captions and order:** a capture of a page is captioned as the global rules say; any other
   capture, such as a game's place or screen or a generated image, is captioned with what it shows,
-  its device or width, and its state. Each capture sits directly under the text it belongs to, as
-  the global rules say.
+  its device or width, and its state, which is the name a question uses for it. Every caption then
+  names what the reading found wrong, region by region: each defect, in the part the change touched or anywhere else in the
+  frame, with whether it was fixed, or "read every region, nothing wrong" when the reading found
+  none; a caption that only says what the capture shows, such as "the new toolbar renders", is
+  incomplete. Each capture sits directly under the text it belongs to, as the global rules say.
 
 ## Previews for a choice
 
