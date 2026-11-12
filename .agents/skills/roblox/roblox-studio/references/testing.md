@@ -119,11 +119,16 @@ spoken over stdio: give an MCP client that command.
 
 Drive the runner's Studio from scripts through [studio_mcp.py](../scripts/studio_mcp.py), which every game uses
 from the installed `roblox-studio` skill's `scripts` folder, put on `sys.path`; no game keeps its own MCP
-client. It holds one session through `runner_ssh.sh`. `open_place(project, place, out_dir, lock_receipt)` first confirms through `agent-lock` that `lock_receipt` owns the `roblox-studio-runner` lock, then copies a built place
-into the guest under `studio-places/<project>/`, launches an editor for it and returns a `Studio` once that editor
-registers, or saves the guest's screen, closes the editor and raises. `close_place(project, place, lock_receipt)` ends
-that editor under the same check. `runner(command, lock_receipt=...)` runs a shell command in the guest; a command that changes the guest, such as stopping a process or deleting a file, passes the receipt so it runs only under the lock. `Studio` executes Luau, captures, reads the console, sends keys, and clicks a button by its instance path
-through the bundled VirtualInput helper. Run `python3 studio_mcp.py METHOD [PARAMS | @file]` for a single request from a shell.
+client. It holds one session through `runner_ssh.sh`, and has no shell command line. Each `Studio` method, `runner`,
+`open_place` and `close_place` first confirms through `agent-lock` that the caller's receipt owns the `roblox-studio-runner` lock, checked
+again on each call because a lease can expire between them. `open_place(project, place, out_dir, lock_receipt)`
+copies a built place into the guest under `studio-places/<project>/`, launches an editor for it and returns a
+`Studio(studio_id, lock_receipt)` once that editor registers; when the launch fails at any point after the copy, it
+closes the editor, saving the guest's screen when the editor never registered, and raises. The project and place
+file names use only letters, digits, `.`, `_` and `-`, starting with a letter or digit. `close_place(project, place,
+lock_receipt)` ends the editor that has exactly that copy open and deletes the copy. `runner(command, lock_receipt)`
+runs a shell command in the guest. `Studio` executes Luau, captures, reads the console, sends keys, and clicks a
+button by its instance path through the bundled VirtualInput helper.
 
 **No Studio operation reaches the host by falling back.** A client, helper or MCP server that picks its target
 from a variable or setting and drives the host's Studio when that target is missing is not a runner route, even
