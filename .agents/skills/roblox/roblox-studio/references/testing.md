@@ -475,7 +475,8 @@ place, with source synced into it live, so a check costs a sync and a Play sessi
 build, a copy and an editor launch.
 
 - **Open it once.** Build the place, open it with `studio_mcp.open_place` under the project name
-  `warm`, and leave it open: it belongs to the game's VM, not to the task that opened it. A session
+  `warm`, and leave it open until the VM shuts down as [End of session for a retained VM](#end-of-session-for-a-retained-vm)
+  says: it belongs to the game's VM, not to the task that opened it. A session
   that finds the game's warm editor registered in `list_roblox_studios` uses it, after confirming
   its place name.
 - **Sync source live, served inside the guest.** Install the Rojo plugin matching the game's
@@ -550,7 +551,8 @@ whose restoration needs the host's screen or the user: a host viewer the user is
 the host, a guest state only a host viewer could recreate, or a Roblox session that would need the
 user to enter a new code. Powering the guest off is fine, because its automatic login brings the desktop back.
 
-When the game work is done, save the authorized project artifacts, close Roblox Studio normally,
+When the game work is done, save the authorized project artifacts, close Roblox Studio normally, the
+game's warm editor included,
 and **shut down the guest VM** so it is no longer running locally. Verify that Studio closed and the
 VM is stopped. Do not leave the VM running or substitute a suspended/running state for the requested
 shutdown. If an unfinished test must continue, report that explicitly rather than claiming shutdown.
