@@ -24,7 +24,7 @@ Choose one place or multiple places according to the game's established architec
 
 Vary terrain shape, sightlines, silhouettes, landmarks, architecture, vegetation, lighting, and the rhythm of enclosed/open spaces. Compose focal areas with quieter spaces between them. Make routes readable and reward looking around with meaningful environmental detail, optional discoveries, or views appropriate to the scope. Do not substitute a larger empty field, random prop scattering, or endless copies of one tree for a designed map.
 
-Give every district a useful role and connect it visually to its neighbors. Inspect approached building faces, roof orientation, doorways, signs, supports, interior scale, shoreline transitions, and terrain joins. Detail must support navigation, story, or atmosphere while leaving room for player movement and the gameplay camera. An interior carries its own name, never a sign naming the place outside its door. Preserve established safe-zone and encounter rules.
+Give every district a useful role and connect it visually to its neighbors. Inspect approached building faces, roof orientation, doorways, signs, supports, interior scale, shoreline transitions, and terrain joins. Detail must support navigation, story, or atmosphere while leaving room for player movement and the gameplay camera. Every sign states what is true where it hangs: an interior's own name sign names that room, never the place outside its door, while an exit or direction sign names the destination it points to. Preserve established safe-zone and encounter rules.
 
 Evaluate every object's placement in the complete scene: why it belongs there, what
 it faces or connects to, how it is approached and used, and whether its neighbors
