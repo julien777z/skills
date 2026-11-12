@@ -300,7 +300,8 @@ alwaysApply: true
   technical verdict is not a user-approval request and never recursively enters this procedure.
 - Surface every question through `AskUserQuestionTool` or the harness's equivalent user-question
   tool, including plan approvals and standalone questions. Ask directly in chat only when no
-  equivalent tool exists. A question includes its reviewable content — a plan, an example response,
+  equivalent tool exists, or when the choice is between images the tool cannot show, as
+  `share-captures`' **Previews for a choice** says. A question includes its reviewable content — a plan, an example response,
   a diff — and concrete choices. The option that approves a plan or proposal reads "Approved", never
   "Go" or another word, and is asked only once every decision the plan or proposal depends on is
   answered: those decisions go to the user first, on their own, and the plan or proposal shown for
