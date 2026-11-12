@@ -139,8 +139,11 @@ Every task that changes files starts here, and so does every follow-up that arri
 
 ```markdown
 **Decision needed:**
-1. **<subject>** — <question>? <only the context it needs>. I recommend <option>, because <reason>.
+1. **<subject>** — <what happens today, as fact, and where>. <what each option would change>. I recommend <option>, because <reason>.
 ```
+
+The question tool then asks each decision in one short line, its options named by their outcome,
+as the global rules' question-tool bullet says.
 
 ```markdown
 **Proposed plan**

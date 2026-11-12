@@ -5,6 +5,7 @@ import {
   ChartColumn,
   CircleCheck,
   Database,
+  FilePenLine,
   FileText,
   Gauge,
   GitCompareArrows,
@@ -38,6 +39,7 @@ import { ToneDot } from './tone-dot';
 
 const ICONS: Record<IconName, LucideIcon> = {
   [IconName.OVERVIEW]: LayoutDashboard,
+  [IconName.PROPOSALS]: FilePenLine,
   [IconName.PROGRESS]: Gauge,
   [IconName.BOARD]: SquareKanban,
   [IconName.CHECKLIST]: ListChecks,

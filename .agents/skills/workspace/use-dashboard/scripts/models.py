@@ -14,7 +14,7 @@ class Tone(StrEnum):
 
 
 class PullRequestState(StrEnum):
-    """States of the pull request a `links` item stands for."""
+    """States of the pull request a `links` item or a pull-request source link stands for."""
 
     OPEN = "open"
     DRAFT = "draft"
@@ -56,6 +56,7 @@ class IconName(StrEnum):
     """Icons the navbar shows for a dashboard and for each of its pages."""
 
     OVERVIEW = "overview"
+    PROPOSALS = "proposals"
     PROGRESS = "progress"
     BOARD = "board"
     CHECKLIST = "checklist"

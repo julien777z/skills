@@ -37,8 +37,9 @@ alwaysApply: true
   table scoped to its own repository carries that repository inside its link text, as above, never as a
   plain name beside a linked number, and a repository named in passing, such as the other half of a
   paired change, is linked too. Every item in a list gets a link, however long the list. A surface
-  that cannot render a link, such as a question tool's option label, carries the address in its
-  supporting text.
+  that cannot render a link, such as a question tool's option, names the item the way people do,
+  such as a pull request by its title, carries no address, and leaves the links to the chat text or
+  page sent before it.
 - **A web product's views are pages.** Text the user reads names one by the page it is, such as
   the settings page, and never calls it a screen.
 - **A file the user should see reaches them where they read.** Per-item detail past five items —
@@ -308,7 +309,12 @@ alwaysApply: true
   show only its question and option labels; send required review content as a file rather than
   relying on a collapsed preamble, preview or description. Present supporting material before
   invoking the tool; supporting chat text identifies the material and leaves the actionable question
-  in the tool. During unfinished authorized work, retain the question as a pending decision while
+  in the tool. **A decision arrives with what the reader needs to make it.** Its supporting material
+  states what happens today as fact, and where, then what each option would change and the
+  recommendation with its reason; a choice put as a hypothetical, such as "if the API sends only
+  IDs", or naming internals without saying what they do leaves the reader asking for the facts.
+  The question and its options stay short: the question names the decision, each option names its
+  outcome, and the detail sits in the chat text or on the dashboard page that holds the choice. During unfinished authorized work, retain the question as a pending decision while
   independent work continues; it is not a final task report.
 - **A step only the user can take, which the work waits on, is asked through that tool too, never
   left in chat.** Chat text the user may not read is not a request: granting a permission, signing
