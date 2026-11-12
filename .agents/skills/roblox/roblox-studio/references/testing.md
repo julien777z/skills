@@ -117,7 +117,7 @@ the guest's address through Tart on every call, so no shell variable has to carr
 the next. The runner's Studio MCP is `runner_ssh.sh /Applications/RobloxStudio.app/Contents/MacOS/StudioMCP`,
 spoken over stdio: give an MCP client that command.
 
-Drive the runner's Studio from scripts through [studio_mcp.py](../scripts/studio_mcp.py), which every game uses
+Drive the runner's Studio from scripts through the [studio_mcp](../scripts/studio_mcp/client.py) package, which every game uses
 from the installed `roblox-studio` skill's `scripts` folder, put on `sys.path`; no game keeps its own MCP
 client. Each `Studio` holds its own MCP session through `runner_ssh.sh`, and the module has no shell command line.
 Each `Studio` method, `run_in_runner`, `open_place` and `close_place` first confirms through `agent-lock` that the

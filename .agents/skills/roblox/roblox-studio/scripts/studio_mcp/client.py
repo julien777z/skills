@@ -16,14 +16,15 @@ from datetime import timedelta
 from pathlib import Path
 from typing import IO, Final, cast
 
-from models import (AgentLockCheckReport, JsonRpcMessage, JsonValue, McpContent, StudioButton, StudioCall, StudioEntry,
-                    ToolArguments)
+from studio_mcp.models import (AgentLockCheckReport, JsonRpcMessage, JsonValue, McpContent, StudioButton, StudioCall,
+                               StudioEntry, ToolArguments)
 
 # Paths stay on the unresolved install link: installed skills sit side by side there, and a refresh that replaces
 # the linked source mid-run leaves them valid.
-RUNNER_SSH: Final[Path] = Path(__file__).absolute().with_name("runner_ssh.sh")
-VIRTUAL_INPUT: Final[Path] = Path(__file__).absolute().with_name("virtual_input.luau")
-AGENT_LOCK: Final[Path] = Path(__file__).absolute().parents[2] / "agent-lock" / "resources" / "main.py"
+SCRIPTS: Final[Path] = Path(__file__).absolute().parents[1]
+RUNNER_SSH: Final[Path] = SCRIPTS / "runner_ssh.sh"
+VIRTUAL_INPUT: Final[Path] = SCRIPTS / "virtual_input.luau"
+AGENT_LOCK: Final[Path] = SCRIPTS.parents[1] / "agent-lock" / "resources" / "main.py"
 RUNNER_LOCK_KEY: Final[str] = "roblox-studio-runner"
 STUDIO_APP: Final[str] = "/Applications/RobloxStudio.app"
 STUDIO_MCP: Final[str] = f"{STUDIO_APP}/Contents/MacOS/StudioMCP"
