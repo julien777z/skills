@@ -36,7 +36,8 @@ agent; the calling agent launches the actual assignment with the selected model.
    the requested identifier for that launch; it does not establish catalog availability or runtime identity.
    An explicit host receipt that the candidate is unsupported establishes unavailability only as this step defines
    below. **A refusal that names its own cause or fix is a repair, never unavailability**: a client or runtime
-   version too old, a sign-in, a disabled provider, a stale process. The repair is the first step and every
+   version too old, a sign-in, a disabled provider, a stale process. A rate limit or quota refusal is not this
+   kind; it follows the capacity rule below. The repair is the first step and every
    fallback comes after it: update the client, sign in, enable the provider or restart the process, or confirm the
    condition no longer holds, then launch the same assignment again with the same identifier. Updating or
    repairing the agent's own client or runtime is that repair, never a repository or global settings change,
