@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import atexit
 import base64
+import functools
 import json
 import os
 import re
@@ -17,7 +18,6 @@ RUNNER_SSH: Final[Path] = Path(__file__).resolve().with_name("runner_ssh.sh")
 VIRTUAL_INPUT: Final[Path] = Path(__file__).resolve().with_name("virtual_input.luau")
 # Installed skills sit side by side; the unresolved path keeps the install root rather than the source tree.
 AGENT_LOCK: Final[Path] = Path(__file__).absolute().parents[2] / "agent-lock" / "resources" / "main.py"
-RUNNER_LOCK_KEY: Final[str] = "roblox-studio-runner"
 STUDIO_APP: Final[str] = "/Applications/RobloxStudio.app"
 STUDIO_MCP: Final[str] = f"{STUDIO_APP}/Contents/MacOS/StudioMCP"
 GUEST_PLACES: Final[str] = "studio-places"
@@ -25,7 +25,29 @@ PROTOCOL_VERSION: Final[str] = "2024-11-05"
 GUEST_NAME: Final[re.Pattern[str]] = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
 
 
+@functools.cache
+def runner_config() -> dict[str, str]:
+    """The game's runner configuration, resolved once so every later call reaches the same VM."""
+    result = subprocess.run([str(RUNNER_SSH), "--describe"], capture_output=True, text=True, timeout=30)
+
+    if result.returncode != 0:
+        raise RuntimeError(f"No runner VM resolved for this game:\n{result.stderr}")
+
+    return dict(assignment.split("=", 1) for assignment in shlex.split(result.stdout))
+
+
+def runner_environment() -> dict[str, str]:
+    return {**os.environ, "ROBLOX_STUDIO_GAME": runner_config()["ROBLOX_STUDIO_GAME"]}
+
+
+def runner_lock_key() -> str:
+    # Each game's VM is locked under the VM's own name.
+    return runner_config()["ROBLOX_STUDIO_VM"]
+
+
 def own_runner_lock(lock_receipt: Path) -> None:
+    lock_key = runner_lock_key()
+
     result = subprocess.run([sys.executable, str(AGENT_LOCK), "check", "--receipt", str(lock_receipt)],
                             capture_output=True, text=True, timeout=30)
 
@@ -34,17 +56,18 @@ def own_runner_lock(lock_receipt: Path) -> None:
     except ValueError:
         report = {}
 
-    owned = report.get("status") == "owned" and report.get("ownership", {}).get("key") == RUNNER_LOCK_KEY
+    owned = report.get("status") == "owned" and report.get("ownership", {}).get("key") == lock_key
 
     if result.returncode != 0 or not owned:
-        raise RuntimeError(f"Receipt {lock_receipt} does not own the {RUNNER_LOCK_KEY} lock:\n"
+        raise RuntimeError(f"Receipt {lock_receipt} does not own the {lock_key} lock:\n"
                            f"{result.stdout}{result.stderr}")
 
 
 def runner(command: str, lock_receipt: Path, timeout: float = 60, data: bytes | None = None) -> bytes:
     own_runner_lock(lock_receipt)
 
-    result = subprocess.run([str(RUNNER_SSH), command], input=data, capture_output=True, timeout=timeout)
+    result = subprocess.run([str(RUNNER_SSH), command], input=data, capture_output=True, timeout=timeout,
+                            env=runner_environment())
 
     if result.returncode != 0:
         raise RuntimeError(f"Runner command failed ({result.returncode}): {command}\n{result.stderr.decode()}")
@@ -57,7 +80,8 @@ class Session:
 
     def __init__(self) -> None:
         self.process = subprocess.Popen([str(RUNNER_SSH), STUDIO_MCP], stdin=subprocess.PIPE,
-                                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=0)
+                                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=0,
+                                        env=runner_environment())
         # Popen with PIPE always opens all three streams.
         self.stdin = cast(IO[bytes], self.process.stdin)
         self.stdout = cast(IO[bytes], self.process.stdout)
