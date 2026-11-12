@@ -218,7 +218,9 @@ ends with its check:
    clone carried, and close any editor its last session restored; the runner's persistent setup
    stays.
 5. **Sign in and qualify** as [authentication](#authentication-and-user-handoff) and
-   [Qualify input and capture](#qualify-input-and-capture) describe; a session cloned signed in is
+   [Qualify input and capture](#qualify-input-and-capture) describe, installing the
+   [geometry buffer cap](#cap-studios-geometry-buffers-in-a-tart-guest) and confirming it in the
+   editor first; a session cloned signed in is
    confirmed from Studio's start page, not assumed.
 
 #### Provision a runner when none exists
@@ -249,7 +251,9 @@ ends with its check:
    window in a guest capture.
 5. **Sign in, enable MCP, and qualify** as [authentication](#authentication-and-user-handoff),
    [direct guest control](#direct-guest-control) and
-   [Qualify input and capture](#qualify-input-and-capture) describe.
+   [Qualify input and capture](#qualify-input-and-capture) describe, with the
+   [geometry buffer cap](#cap-studios-geometry-buffers-in-a-tart-guest) installed and confirmed in
+   the editor; qualification includes a capture of a large place drawing its meshes correctly.
 
 #### Add the published Roblox player
 
@@ -284,12 +288,24 @@ process, so a process listing does not show whether a game is open. Stop it with
 `pkill -KILL -x RobloxPlayer` and confirm from a guest capture that no game is on screen; the tray
 process restarts at once and is out of any experience.
 
-On a Tart macOS guest, whose player log names Apple's paravirtual Metal device, simple places have
-drawn correctly while some complex scenes showed a white or dark world with only outlines and UI,
-stretched polygons or wrong textures, though gameplay footage of the same scenes renders normally.
-Lowering graphics quality did not change it, and the client's OpenGL preference flag was ignored on
-macOS. Until a guest configuration is shown to draw such a scene, treat its 2D UI as evidence and
-its world visuals as untested.
+#### Cap Studio's geometry buffers in a Tart guest
+
+On a Tart macOS guest, Apple's paravirtual Metal driver keeps only the low 16 bits of an indexed
+draw's base vertex. Once a Studio session has loaded more than 65,536 vertices into one of its
+shared geometry buffers, later meshes are drawn with other meshes' vertices and show as stretched
+wedges and black slabs, while small places look fine. The guest has no OpenGL fallback
+(`Failed to init graphics mode 4-OpenGL`). Cap Studio's geometry buffers in the guest's
+`~/Library/Roblox/ClientSettings/ClientAppSettings.json`: `FIntGeometryBufferMaxBytesMesh`,
+`FIntGeometryBufferMaxBytesModel`, `FIntGeometryBufferMaxBytesParts`,
+`FIntGeometryBufferMaxBytesFCSkinned` and `FIntGeometryBufferMaxBytesFCStandard` at `524288`, and
+`FIntSuperClusterFastClusterMeshVertexSize` at `60000`. That folder survives Studio updates. The
+host keeps the source copy at `~/.config/roblox-studio/studio-client-settings.json`, and
+`runner_ssh.sh 'cat > "$HOME/Library/Roblox/ClientSettings/ClientAppSettings.json"' < ~/.config/roblox-studio/studio-client-settings.json`
+restores it under the runner lock. Before a rendering check, confirm the file is present and that
+`settings():GetFVariable("GeometryBufferMaxBytesMesh")` returns `524288` in the editor. With the cap
+in place, a capture of Studio draws the scene correctly, so stretched wedges or black slabs in one
+are a defect to diagnose, never a guest artifact to set aside. The published player in the guest
+has the same driver limit and no such setting, so treat its 3D visuals as untested.
 
 ### Linux container runner
 
