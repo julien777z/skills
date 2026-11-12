@@ -60,7 +60,7 @@ Good:
 
 ### 3. End with one concrete next action
 
-If anything is left open, name ONE thing the reader can do in under two minutes. Even "open the file" counts. This picks a next action; it never removes other unanswered questions from the decision list.
+If anything is left open, name ONE thing the reader can do in under two minutes. Even "open the file" counts. This picks a next action; it never removes other unanswered questions from the decision list. The action is work the reader does, such as reviewing a pull request at its link, never a request that they authorize a merge, deployment, publication or release, which the global rules reserve to their own words.
 
 **This closing line is the reader's action, never the agent's.** Work the agent is authorized to do and has not finished is not a closing line: it is done in this turn. While it remains, a message to the reader is a progress note sent together with the next action, and the turn ends only when the outcome is verified complete, or a question, a wait on a result or a gate holds every remaining step. "Next: nothing needed from you. I'm moving on to the release notes." ends a turn on work never started: start the release notes instead.
 

@@ -221,6 +221,12 @@ Canonical guidance lives in `.agents/`.
   within its stated outcome without overriding this separate boundary. A user's authorization
   covers that one action on the change it names; a later change needs its own authorization before
   it is merged, deployed, published or released, however recently the last one was given.
+  **Nothing the agent writes asks for an authorization not yet given or offers the outcome**: no
+  question, pending-decision item, closing next action phrased as a request, or prompt to reply
+  with a word, such as "reply ship to land these". The outcome is left to the user's own
+  instruction, a skill they invoke for it, such as `finish-pr`, or guidance that grants it; naming
+  what remains for the user and that skill, in a report or a plan's closing line, is how it is left
+  to them, not an offer.
 - **A merge leaves no deploy work.** Once a pull request's merge is verified, never check by any
   route whether the change is live, such as a provider's deployment status, a release run or the
   site itself; never walk or test the site the merge deployed; never schedule a re-check, wait for
@@ -826,7 +832,8 @@ An outcome is what its source of truth shows, never what an action or a worker s
   source pull request from another session only when the user, an applicable invoked skill, or a
   repository rule explicitly directs that continuation. A matching topic, existing branch, open
   state, or recorded touch does not supply that instruction. Verify the selected pull request's
-  owner, state and scope before updating it; leave other sessions' pull requests and branches untouched.
+  owner, state and scope before updating it; leave other sessions' pull requests and branches
+  untouched, apart from damaged local Git state `update-skills` backs up and repairs.
 - **Each session opens its own agent-configuration pull request in each repository.** Agent
   configuration is the canonical `.agents` tree — skills, each with its own scripts, assets and
   templates; rules; and agent definitions. Nonbehavioral text and guidance-reference corrections in
@@ -876,14 +883,16 @@ An outcome is what its source of truth shows, never what an action or a worker s
 - Merging any pull request requires explicit user authorization in the current request or explicit
   applicable guidance in a rule or invoked skill for that pull request. A fix request, CI-test
   request, successful check, review, or request to implement a plan that lists a merge does not
-  itself authorize merging. A reply that could be read as accepting a merge the agent offered, such
+  itself authorize merging. A reply that could be read as accepting a merge mentioned earlier, such
   as a bare "yes" beside another request, authorizes no merge it does not name. If neither
   authorization source applies, do not merge or enable auto-merge.
 - Honor the selected workflow's delivery hold before the standing permissions below; a pull
   request held for user review cannot use those exceptions or auto-merge.
-- Before asking for merge permission, classify the complete actual diff against the standing
-  permissions below. A filename, extension, line count or change label is not a behavioral
-  classification. Preserve genuine edits; never remove them merely to qualify for an exception.
+- Before reporting a pull request whose merge no instruction authorizes, classify the complete
+  actual diff against the standing permissions below; one they cover may merge under them, and any
+  other is reported without asking for its merge, as the global rules' merge-authorization bullet
+  says. A filename, extension, line count or change label is not a behavioral classification.
+  Preserve genuine edits; never remove them merely to qualify for an exception.
 - A pull request limited to minor type, lint, import, formatting or text corrections may merge
   without a separate request when it preserves intended product, security and contract behavior.
   Aligning types with an existing canonical contract qualifies. Mixed substantive changes require
@@ -907,7 +916,7 @@ An outcome is what its source of truth shows, never what an action or a worker s
   pull-request head. Check that the complete pull request remains confined to this agent
   configuration before using this exception.
 - **An agent-configuration pull request whose guidance depends on a still-open source pull request is held until that merge**, whatever its other gates say, unless the guidance rides that source pull request under **Branches and Pull Requests**. Guidance true on the default branch as it stands waits for nothing.
-- A hold does not authorize merging the source pull request or asking for its merge solely to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. After the source pull request merges, continue the held one under the selection rule above: incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
+- A hold does not authorize merging the source pull request to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. After the source pull request merges, continue the held one under the selection rule above: incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
 - When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request; one held for a source pull request becomes eligible once that pull request has merged. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, when selected under the ownership rules above. Do not close or leave it open merely because it is draft or conflicts with the base; close only one this session opened, and only when its change is superseded or no longer wanted.
 - An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each fix pull request a directly user-invoked skill's own authorization names, once that skill's merge gates pass; that authorization ends with the run.
 - An authorized merge is not held for a failing check the current user explicitly waives or an

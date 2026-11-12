@@ -585,7 +585,7 @@ Apply the global rules’ **Reported Outcomes** before reporting or building on 
 The GitHub rule's **Branches and Pull Requests** owns pull-request selection. Apply that ownership
 decision before preserving a checked-out branch or updating an existing pull request. A guidance change rides the source branch in flight only where that rule puts it there.
 Verify selected pull requests remotely, and leave another session's branch and pull request
-untouched unless the selected route explicitly directs continuing it.
+untouched as that rule says unless the selected route explicitly directs continuing it.
 
 **A pull request exists from the first push.** The push that first carries a change opens its
 draft pull request, whatever is still being decided or built for it: an open question, a later
@@ -745,12 +745,15 @@ operation, a read-only interruption, or the absence of a source diff or pull req
 pending guidance delivery terminal; a genuine authorization or dependency hold still holds only its
 dependent action.
 
-Run this checkpoint before reporting a change complete, including a local-only result with no
-pull request. In that case, source-stream step 1 and step 3's verification review the complete
-task diff and its validation prerequisites, and the history, the message and `merge-gate` apply only
-when a pull request exists. A failed local setup
-operation remains encountered work under **Encountered Issues**, not an unverified-completion caveat. The independent gate
-receives its affected-repository map and comparison evidence along with the diff.
+Run this checkpoint before reporting a change complete. When the task changes repository-owned
+source or configuration, verify its pull request carries the change before reporting delivery,
+unless the user explicitly asked to keep the change local. Local installation, configuration, or
+recovery can verify the change or restore service while its pull request is in flight. When no
+pull request is needed, source-stream step 1 and step 3's verification review the complete task
+diff and its validation prerequisites; the history, ready-for-review message, and `merge-gate`
+apply only to pull requests. A failed local setup operation remains work under **Encountered
+Issues**. The independent gate receives the affected-repository map and comparison evidence along
+with the diff.
 
 Before the final delivery steps below, select the applicable verification route under the shared
 testing rule's **Environments** section, then verify the requested behavior on the change's branch
