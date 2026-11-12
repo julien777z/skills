@@ -55,21 +55,22 @@ area and built on the [studio_mcp](../scripts/studio_mcp/client.py) package for 
 - running a multi-client test and counting the clients that actually joined;
 - capturing the viewport and recording motion.
 
-What every helper must get right, since each of these has produced a false alarm:
+What every helper must get right:
 
-- **Load the skill's client** with the installed `scripts` folder on `sys.path`, never a copy.
 - **Set up on the server, act as the player.** State a check starts from, such as a profile or a
   spawned encounter, is made server-side; everything the check judges is driven by the player's
   input on the client.
 - **Confirm every input registered** from the state it should change, never from the call
-  returning. A script run during Play that moves the camera, moves a character or sends input is
-  refused, since it fakes or spoils what the check judges.
+  returning. Input goes through the real input path, such as `Studio.click` or the
+  [VirtualInput helper](../scripts/virtual_input.luau); a script run during Play that sets the
+  camera or a character's position directly, or calls the game's handlers in place of the input
+  that reaches them, is refused, since it fakes what the check judges.
 - **Stop a walk to a prompt inside the prompt's activation distance**, measured from the prompt's
   own part, so the press that follows can land.
 - **Rerun a multi-client test only when a client did not join**, read from the connected-player
   count; a joined client's failure is the result, not a reason to retry.
-- **Wait out the empty editor list** a new MCP connection reports at first, with a bounded wait for
-  a nonempty one, before concluding no editor is open.
+- **List editors with `studio_mcp.wait_for_studios`**, which waits out the empty list a new MCP
+  connection reports at first, before concluding no editor is open.
 
 Workers use these helpers and extend them for each new repeatable step; a repeatable step is never
 a throwaway script in a temporary folder or Luau pasted into one run. Each helper returns a
@@ -133,14 +134,15 @@ successful published-client teleport.
 
 Studio work runs in an isolated runner: a Tart VM on a macOS host, the container runner below on Linux. The user's own desktop Studio is not the runner, even for an operation that sends no input, unless the user chooses it as described below, since opening a place, building or capturing still launches windows and takes focus there; a supported Studio MCP operation that avoids moving the host pointer does not change that. Qualify editor identity, input, capture, rendering, and window/focus isolation separately before claiming unattended testing is safe.
 
-**Each game has its own runner VM**, named for the game, so one game's editors, settings, files and memory never land on another game's tests. When the game in hand has a configured VM, reuse its installed Studio, authentication, and tooling; when it has none, create it as [Add a VM for a game](#add-a-vm-for-a-game) says, without asking. Verify the intended place before acting, and coordinate exclusive control of the game's VM between the sessions working on that game. Start a stopped runner when needed, discover its current address, and leave it as [Leave the shared runner as you found it](#leave-the-shared-runner-as-you-found-it) says. An unavailable isolated capability, or a runner lock another session holds, leaves only the operations that need the runner waiting; every other part of the work — source, builds, world art, audio, tests and later plan steps — continues meanwhile. Never switch to the host's desktop Studio on your own. Inside the runner, install or update Studio and the tools the work needs, sign in with the retained session, and create the upload staging directory, without asking.
+**On the Tart runner, each game has its own VM**, named for the game, so one game's editors, settings, files and memory never land on another game's tests. When the game in hand has a configured VM, reuse its installed Studio, authentication, and tooling; when it has none, create it as [Add a VM for a game](#add-a-vm-for-a-game) says, without asking. Verify the intended place before acting, and coordinate exclusive control of the game's VM between the sessions working on that game. Start a stopped runner when needed, discover its current address, and leave it as [Leave the shared runner as you found it](#leave-the-shared-runner-as-you-found-it) says. An unavailable isolated capability, or a runner lock another session holds, leaves only the operations that need the runner waiting; every other part of the work — source, builds, world art, audio, tests and later plan steps — continues meanwhile. The [Linux container runner](#linux-container-runner) serves the one session its container runs, so it has no VM to name, create or lock. Never switch to the host's desktop Studio on your own. Inside the runner, install or update Studio and the tools the work needs, sign in with the retained session, and create the upload staging directory, without asking.
 
 ### Retained Tart/macOS runner
 
-This example applies only when the host configures the shared values in `~/.config/roblox-studio/runner.env` (`ROBLOX_STUDIO_TART`, `ROBLOX_STUDIO_SSH_USER` and `ROBLOX_STUDIO_SSH_KEY`) and each game's own in `~/.config/roblox-studio/games/<game>.env` (`ROBLOX_STUDIO_VM`, its VM's name, and `ROBLOX_STUDIO_KNOWN_HOSTS`, that VM's pinned host key). The game is `ROBLOX_STUDIO_GAME` when set, or else the name of the folder holding the main checkout of the repository the command runs in, so every worktree of one game reaches the same VM. Shared tools and keys live outside game checkouts. Discover the configured machine; do not assume its name or address from another session. Hold the runner lock on the key that is the game's VM name, shared by every session working on that game. **A game's VM is named `<game>-vm`**, from the game's slug, such as `example-game-vm`, and that name is its lock key. A VM named otherwise keeps working through its game's settings file; never rename another session's VM. A rename is made only while no one holds its lock, with the game's settings file updated in the same step.
+This example applies only when the host configures the shared values in `~/.config/roblox-studio/runner.env` (`ROBLOX_STUDIO_TART`, `ROBLOX_STUDIO_SSH_USER` and `ROBLOX_STUDIO_SSH_KEY`) and each game's own in `~/.config/roblox-studio/games/<game>.env` (`ROBLOX_STUDIO_VM`, its VM's name, and `ROBLOX_STUDIO_KNOWN_HOSTS`, that VM's pinned host key). **The game's name**, `<game>` below, is `ROBLOX_STUDIO_GAME` when set, or else the name of the folder holding the main checkout of the repository the command runs in, so every worktree of one game reaches the same VM; a bare or submodule checkout sets `ROBLOX_STUDIO_GAME`. Shared tools and keys live outside game checkouts. Discover the configured machine; do not assume its name or address from another session. **A game's VM is named `<game>-vm`**, such as `example-game-vm`. **The runner lock's key is the VM's configured name**, the `ROBLOX_STUDIO_VM` its game's file sets, shared by every session working on that game; a VM named otherwise keeps working through that file. A rename holds the locks on both the old and the new name, in the order `agent-lock` sets for several keys, through `tart rename` and the settings-file update; never rename another session's VM while it is in use.
 
 ```sh
-eval "$(runner_ssh.sh --describe)"   # the game's resolved values, from inside its repository
+runner_ssh="<installed roblox-studio skill>/scripts/runner_ssh.sh"
+eval "$("$runner_ssh" --describe)"   # the game's resolved values, from inside its repository
 "$ROBLOX_STUDIO_TART" get "$ROBLOX_STUDIO_VM"
 # Start only when stopped, detached so the VM outlives the agent's own task limits:
 mkdir -p "$HOME/.local/state/roblox-studio"
@@ -187,28 +189,31 @@ Verify SSH host keys, the intended guest editor, and the source/place before run
 A running VM holds its whole memory allocation on the host, and its disk image grows as the guest
 writes. Budget each game's VM at 6 CPU cores, 12 GB of memory and a 50 GB disk: a guest with less
 memory swaps with one editor and a Play session open. Before starting or creating a VM, read the
-host's free memory and disk. Start one only while every running VM's memory plus 8 GB for the host
+host's free memory and disk under the host lock `roblox-studio-host`, held from that read through
+the `tart run`, `tart clone` or `tart stop` it decides, so two sessions never spend the same room.
+Start one only while every running VM's memory plus 8 GB for the host
 fits in the host's memory, and create one only while the host's free disk exceeds the new VM's disk
 size plus 20 GB. macOS runs at most two macOS guests at once, whatever the host's size. When the
-budget leaves no room, stop the VM of a game no session is using (no one holds its lock), never one
-another session holds; otherwise the Studio work for this game waits for room as a held lock does,
+budget leaves no room, stop the VM of a game no session is using: acquire that VM's lock, stop it,
+and release the lock; a lock another session holds leaves that VM running. Otherwise the Studio work for this game waits for room as a held lock does,
 and the rest of the work continues.
 
 #### Add a VM for a game
 
 When `runner.env` exists but the game has no `games/<game>.env`, create the game's VM and continue
-the work there, without asking: a game's VM is part of the runner setup the work already has. Each step
-ends with its check:
+the work there, without asking: a game's VM is part of the runner setup the work already has. First
+acquire the lock on `<game>-vm` and hold it through step 3; a session that finds it held waits for
+it and checks again for the game's file before creating anything. Each step ends with its check:
 
 1. **Clone** a stopped qualified VM of another game, or the retained Cirrus Labs base image when no
    qualified VM can be stopped, with `tart clone <source> <game>-vm`, within the budget
-   above. A clone of a qualified VM keeps its installed Studio, Roblox player, guest settings and
+   above, holding the source VM's lock while it is stopped and cloned. A clone of a qualified VM keeps its installed Studio, Roblox player, guest settings and
    signed-in session; a clone of the base image starts at step 2 of
    [Provision a runner when none exists](#provision-a-runner-when-none-exists) for everything after
    the clone. `tart set` the budgeted CPU, memory and disk, then start it detached as above;
    `tart ip --wait` returns its address.
 2. **Pin its host key.** Record the clone's host key at its own address in
-   `~/.config/roblox-studio/<game>_known_hosts` and verify its fingerprint through `tart exec`, as
+   `~/.config/roblox-studio/games/<game>_known_hosts` and verify its fingerprint through `tart exec`, as
    step 3 of provisioning says. The shared SSH key a clone of a qualified VM carries needs no new
    `authorized_keys` entry.
 3. **Write `games/<game>.env`** with `ROBLOX_STUDIO_VM` and `ROBLOX_STUDIO_KNOWN_HOSTS`;
@@ -300,7 +305,7 @@ wedges and black slabs, while small places look fine. The guest has no OpenGL fa
 `FIntGeometryBufferMaxBytesFCSkinned` and `FIntGeometryBufferMaxBytesFCStandard` at `524288`, and
 `FIntSuperClusterFastClusterMeshVertexSize` at `60000`. That folder survives Studio updates. The
 host keeps the source copy at `~/.config/roblox-studio/studio-client-settings.json`, and
-`runner_ssh.sh 'cat > "$HOME/Library/Roblox/ClientSettings/ClientAppSettings.json"' < ~/.config/roblox-studio/studio-client-settings.json`
+`runner_ssh.sh 'mkdir -p "$HOME/Library/Roblox/ClientSettings" && cat > "$HOME/Library/Roblox/ClientSettings/ClientAppSettings.json"' < ~/.config/roblox-studio/studio-client-settings.json`
 restores it under the runner lock. Before a rendering check, confirm the file is present and that
 `settings():GetFVariable("GeometryBufferMaxBytesMesh")` returns `524288` in the editor. With the cap
 in place, a capture of Studio draws the scene correctly, so stretched wedges or black slabs in one
@@ -458,8 +463,11 @@ Reuse a retained Roblox session first. When Studio shows its sign-in screen, or 
    Studio's log when it is there, or from a guest capture of the code Studio shows.
 3. **Ask through the question tool** for that one step: enter the code at
    <https://www.roblox.com/crossdevicelogin/ConfirmCode>, or in the Roblox app under More, then Quick
-   Sign In, on a device already signed in to Roblox, with a Done option and one for a new code. A new-code answer, or a timeout, goes back to step 2.
-4. **Finish every later screen yourself**, such as choosing the account and its **Continue**, then
+   Sign In, on a device already signed in to Roblox, with a Done option and one for a new code. A
+   new-code answer, or a timeout, goes back to step 2.
+4. **Finish every later screen of the sign-in yourself**, such as choosing the account and its
+   **Continue**; a prompt asking the account to accept something, such as updated terms, is the
+   user's, as [the published player](#add-the-published-roblox-player) says. Then
    confirm `Authenticated : YES` in the log and the account on Studio's start page before relying on
    the runner.
 
@@ -484,8 +492,8 @@ build, a copy and an editor launch.
   macOS guest), and run `rojo serve` in the guest on its loopback address, against a copy of the
   session's checkout in the guest that each sync updates. Serving from the host instead needs a
   listener on the VM network, which can raise a firewall prompt on the user's desktop. The session
-  holding the VM's lock syncs its own checkout into that copy, so the editor holds that checkout's
-  tree.
+  holding the VM's lock mirrors its own checkout into that copy, deleting files the checkout does
+  not have (`rsync --delete`), so the editor holds that checkout's tree.
 - **Connect the right plugin.** An older Rojo plugin can share the toolbar label, so open the panel
   whose title shows the pinned version. A local place file has place ID 0, which the plugin's
   automatic reconnect skips, so press **Connect** through input posted inside the guest each time
@@ -497,7 +505,8 @@ build, a copy and an editor launch.
   start command for its warm session brings back whichever is missing, never only one.
 - **Record what the session holds inside it**: the source revision, a manifest of the synced files
   and a digest of the built world, kept in the guest beside the session, so a later session reads
-  whether the warm editor matches its checkout instead of guessing.
+  whether the warm editor matches its checkout instead of guessing, and compares that manifest with
+  its checkout before each check.
 - **Confirm each sync before a check.** Read each changed script's source back from the Edit data
   model through `execute_luau`; a plugin showing connected does not show that a change landed.
   Then start Play from that editor, and stop it when the check ends.
@@ -514,7 +523,7 @@ build, a copy and an editor launch.
 ## Leave the shared runner as you found it
 
 Every session working on one game shares that game's VM, so whatever one leaves behind lands on the next. The
-game's warm editor stays, as the section above says; no other task process
+game's warm session stays, as the section above says; no other task process
 outlives any release of the runner lock, and before the task's last release its own files are gone and
 every setting it changed reads back at the value it found.
 
@@ -554,8 +563,9 @@ whose restoration needs the host's screen or the user: a host viewer the user is
 the host, a guest state only a host viewer could recreate, or a Roblox session that would need the
 user to enter a new code. Powering the guest off is fine, because its automatic login brings the desktop back.
 
-When the game work is done, save the authorized project artifacts, close Roblox Studio normally, the
-game's warm editor included,
+When the game work is done and no other session of the game has work in flight, which acquiring
+the VM's lock for the shutdown confirms, save the authorized project artifacts, close Roblox Studio
+normally, the game's warm session included,
 and **shut down the guest VM** so it is no longer running locally. Verify that Studio closed and the
 VM is stopped. Do not leave the VM running or substitute a suspended/running state for the requested
 shutdown. If an unfinished test must continue, report that explicitly rather than claiming shutdown.
@@ -588,8 +598,7 @@ This is part of the authorized setup and never a step for the user: the agent re
 itself, through input posted inside the guest or, for an editor on an unlocked host where the task
 authorizes host input, through the host's own input. A setting enabled in another machine
 or guest does not enable the local editor. Follow the [authentication procedure](#authentication-and-user-handoff):
-complete viewer/guest login and the Roblox sign-in screens yourself; the user's only step is
-entering the sign-in code. Never transfer cookies or ask for credentials in chat.
+complete viewer/guest login yourself and sign in to Roblox as that section says.
 
 Use `list_roblox_studios`, verify the target file/place, and pass its explicit `studio_id` to every
 operation. Keep unrelated projects untouched. Use the installed Studio version's documented launch
@@ -640,7 +649,8 @@ undocumented preference-file keys are not a stable setup API. This uses the norm
 
 A normal quit can stop at an unsaved-changes dialog. Verify closure before reopening, and avoid
 repeated duplicate launches. Stop any Play session or multiplayer test through MCP first. An editor
-`studio_mcp.open_place` made is then closed with `close_place`: its place is a disposable copy, so
+`studio_mcp.open_place` made, other than [the game's warm editor](#keep-the-games-editor-warm), is
+then closed with `close_place`: its place is a disposable copy, so
 ending the process is the same as Don't Save. The test server and client windows a multiplayer test
 starts are separate processes `close_place` does not match, so confirm with `pgrep` that they exited
 too. To close any other task-owned editor, quit that process through its own window — Cmd-Q or the File menu sent
@@ -792,7 +802,7 @@ are installed at the shared tool path, port 6080 is unused, and the guest's auth
 service is reachable. Start the proxy as a tracked task-owned process:
 
 ```sh
-eval "$(runner_ssh.sh --describe)"   # the game's resolved values, from inside its repository
+eval "$("<installed roblox-studio skill>/scripts/runner_ssh.sh" --describe)"   # from inside the game's repository
 studio_tools_dir="$HOME/.local/share/roblox-studio/tools"
 studio_guest_ip="$("$ROBLOX_STUDIO_TART" ip "$ROBLOX_STUDIO_VM")"
 test -f "$studio_tools_dir/noVNC/vnc.html"
