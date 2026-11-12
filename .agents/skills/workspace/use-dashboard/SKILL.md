@@ -36,23 +36,26 @@ Every other field is optional, and an absent one leaves its part of the page out
 | Field | Shape |
 | --- | --- |
 | `subtitle` | One line under every page's title. |
-| `status` | `{label, tone?}`: the badge at the right of the navbar. |
+| `status` | `{label, tone?}`: the badge at the right of the navbar. While any question is `open`, the renderer shows `Waiting for you` in the `warning` tone there instead, and a spec that sets `status` then is refused. |
 | `notice` | `{title, body, tone?}`: a banner with an icon for its tone under every page's title, for the one thing the reader must see first wherever they are. |
 | `progress` | `{value: 0–1, label, detail?, segments?}`: a stat card twice as wide as the others, with the percentage, `detail` as its badge, and a bar. `segments` is `[{label, details?, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1, and its `label`, with each of `details` on a line under it, shown in a tooltip while the pointer rests on it; without `segments` the bar is a plain fill. |
 | `metrics` | `[{label, value, detail?}]`: at most four stat cards beside the progress, `detail` under the figure. |
-| `pages` | `[{title, icon, layout?, subtitle?, status?, progress?, locked?, sections}]`: one navbar link each, a page's `subtitle` replacing the dashboard's under its title, a page's `progress`, in the shape above, shown at its top, with `status` (`{label, tone?}`) shown as a dot in its tone after the page's name, and its label read out to screen readers, for the page's current state, such as something that needs the reader. A `locked` page sets `sections` to `[]` until it has content: its link shows a lock in place of its icon and cannot be opened. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. `sections` render in order; with `layout` `columns`, the default, boards, tables, outlines, trees, tabs, diagrams and figures take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
+| `pages` | `[{title, icon, layout?, subtitle?, status?, progress?, locked?, sections}]`: one navbar link each, a page's `subtitle` replacing the dashboard's under its title, a page's `progress`, in the shape above, shown at its top, with `status` (`{label, tone?}`) shown as a dot in its tone after the page's name, and its label read out to screen readers, for the page's current state, such as something that needs the reader. A `locked` page sets `sections` to `[]` until it has content: its link shows a lock in place of its icon and cannot be opened. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. A page titled `Proposals` always has `icon` `proposals` and comes directly after `Overview`, and it is the only page that holds `questions` sections, in tabs and dialogs as well. `sections` render in order; with `layout` `columns`, the default, boards, tables, outlines, trees, tabs, diagrams and figures take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
 | `references` | `[{text, url?, details?}]`, each with exactly one of `url` and `details`: every whole-word occurrence of `text` in any page's text becomes a link to `url`, or opens `details`, one section, in a dialog, apart from the navbar, page titles, stat card figures, badges, progress segment tooltips and the first cell of a table row that opens a dialog, which stay plain. |
 
-An `icon` is one of `overview`, `progress`, `board`, `checklist`, `list`, `chart`, `activity`,
+An `icon` is one of `overview`, `proposals`, `progress`, `board`, `checklist`, `list`, `chart`, `activity`,
 `compare`, `diagram`, `document`, `guide`, `legal`, `shield`, `people`, `data`, `package`, `release`,
 `pull-request`, `settings`, `alert`, `check` or `calendar`. The dashboard's icon and each page's icon
 all differ, so no glyph appears twice in the navbar.
 
 `tone` is `good`, `warning`, `critical`, `accent` or `done`, as **Making A Dashboard** defines
-them; omit it for neutral. `links` is `[{kind, label, url}]`: pills under the item that open its sources,
-each led by its `kind` — `doc`, `code`, `diff`, `spec`, `pull-request`, `config`, `test`, `page` or
-`data`, shown as Doc, Code, Diff, Spec, PR, Config, Test, Page or Data — and labeled briefly, such as
-`terms-of-service.md L324` or `export.py L40–L58`. `at` is an ISO 8601
+them; omit it for neutral. `links` is `[{kind, label, url, state?}]`: pills under the item that open its sources,
+each led by its `kind` — `doc`, `code`, `diff`, `spec`, `config`, `test`, `page` or `data`, shown as
+Doc, Code, Diff, Spec, Config, Test, Page or Data — and labeled briefly, such as
+`terms-of-service.md L324` or `export.py L40–L58`. A `pull-request` link is the pull-request pill
+instead: GitHub's icon and color for its `state`, `open` (green), `draft` (gray), `merged` (purple)
+or `closed` (red), and its label alone, such as `garden-api#42`, with no kind shown; `state` is
+required on it and refused on every other kind. `at` is an ISO 8601
 timestamp the page shows in the viewer's own timezone on a 12-hour clock, such as `9:05 PM`, with the
 date when it is not today. Every section takes an optional `description`, one sentence shown under
 its title, and `counted`, which shows how many items a `table`, `notes`, `links` or `changes`
@@ -64,7 +67,7 @@ of a process, carries no count. Section types:
 | --- | --- | --- |
 | `board` | `title`, `columns: [{title, tone?, page_size?, items}]` | `title`, `detail?`, `meta?`, `tag?`, `url?`, `at?`, `links?`: `tag`, `meta` and `at` share one line of small text, in that order |
 | `questions` | `title`, `items`, `page_size?`, `group_label?` | `question`, `status` (`open`, `answered`), `context?`, `options?`, `recommendation?`, `answer?`, `meta?`, `at?`, `group?` |
-| `links` | `title`, `items`, `page_size?`, `group_label?` | `label`, `url`, `detail?`, `status?`, `tone?`, `state?`, `group?`: `state` is a pull request's `open`, `draft`, `merged` or `closed`, drawn with GitHub's icon for it in place of the arrow |
+| `links` | `title`, `items`, `page_size?`, `group_label?` | `label`, `url`, `detail?`, `status?`, `tone?`, `state?`, `group?`: `state` is a pull request's `open`, `draft`, `merged` or `closed`, drawn with the pull-request pill's icon and color for it in place of the arrow |
 | `table` | `title`, `columns`, `rows`, `details?` | each row a list of strings, one per column; `details`, one section per row, makes each row open a dialog holding that section, with its title and description as the dialog's |
 | `notes` | `title`, `items` | each item a string |
 | `changes` | `title`, `items`, `page_size?`, `group_label?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`, `links?`, `group?`: a named part with its change as a colored badge |
@@ -120,6 +123,41 @@ with sections, and its tab labels are unique. A URL renders as a link only when 
       "title": "Overview",
       "icon": "overview",
       "sections": [{"type": "notes", "title": "Notes", "items": ["Index format settled."]}]
+    },
+    {
+      "title": "Proposals",
+      "icon": "proposals",
+      "sections": [
+        {
+          "type": "questions",
+          "title": "Decisions",
+          "items": [{"question": "Rank exact title matches first?", "status": "open"}]
+        }
+      ]
+    },
+    {
+      "title": "Changes",
+      "icon": "pull-request",
+      "sections": [
+        {
+          "type": "changes",
+          "title": "Changes",
+          "items": [
+            {
+              "name": "Query parser",
+              "change": "added",
+              "links": [
+                {
+                  "kind": "pull-request",
+                  "label": "garden-api#42",
+                  "url": "https://example.com/garden-api/pull/42",
+                  "state": "open"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
@@ -139,7 +177,11 @@ Dashboards look alike because they are built alike:
   a page about one thing, such as the order parcels leave the warehouse in, find the stage that
   thing belongs to, such as dispatching the week's orders, and build the page for that stage, with
   the requested thing as one section among what the reader needs there. Name the page for the stage.
-- **Pages run in the order the reader's work does.** After Overview, pages that help the reader
+- **Choices for the reader sit on Proposals.** Every question a dashboard puts to the user goes in
+  a `questions` section on the `Proposals` page, directly after Overview, so the reader finds what
+  waits on them in one place. While one is open the navbar shows `Waiting for you`, so the spec
+  leaves `status` out.
+- **Pages run in the order the reader's work does.** After Overview and Proposals, pages that help the reader
   understand the work come together, followed by pages for acting on it, such as dispatching the
   week's orders, which come last; a page never sits between two pages of another kind.
 - **Icons say what each thing is.** Give the dashboard the icon that best names its subject, such as
@@ -175,6 +217,8 @@ Dashboards look alike because they are built alike:
   the title, describes the section's form, such as "as a list" or "newest first", narrates its
   controls, or adds a caveat that changes nothing the reader does, such as who will make the final
   version of what it shows, is left out.
+- **A pull request is named with its repository.** Every label, table cell, title and reference
+  names a pull request as `repository#number`, such as `garden-api#42`, never `#number` alone.
 - **Sources are links, never paths in text.** Anything a reader can check, such as a file and line,
   a diff, a pull request, a document's section or a page of a site, goes in `links` with a URL that
   opens it at that exact place: a permalink to the line or range at the commit that was read, or the
