@@ -34,7 +34,11 @@ agent; the calling agent launches the actual assignment with the selected model.
    unavailable-model fallback, or takes the launch fallback, launch the actual assigned work once with its exact
    candidate identifier and explicit reasoning effort when the native tool is available. A successful dispatch establishes that the host accepted
    the requested identifier for that launch; it does not establish catalog availability or runtime identity.
-   An explicit host receipt that the candidate is unsupported establishes unavailability. The accepted worker
+   An explicit host receipt that the candidate is unsupported establishes unavailability. **A rate limit or
+   quota refusal is temporary capacity, never unavailability**, even when it names a long reset time: it permits
+   no fallback, no other provider and no absorbing the work into the coordinator's own process. Resume or
+   relaunch the same worker on the same model once the limit no longer holds, read from the request path itself:
+   the coordinator answering on that model, or the relaunch being accepted, shows it has cleared. The accepted worker
    performs the assignment; never launch a throwaway availability probe. Record the runtime identifier only
    when the host exposes its exact value. Generic provider or product
    branding, a worker-reported label, or no runtime identifier is neither confirmation nor a contradiction of
@@ -88,7 +92,7 @@ context and returns its verdict into the step waiting on it; nothing else does b
   that waits on it.
 - **Launch fallback: a worker that cannot launch a subagent its step needs hands the step up; never
   absorb it.** Attempt the native dispatch when available. This covers a host that gives the worker
-  no agent tool and a native dispatch that fails, for reviewers, lenses, validators, gates and
+  no agent tool and a native dispatch that fails other than by a capacity refusal, which step 3 waits out and relaunches, for reviewers, lenses, validators, gates and
   further implementation workers alike. The worker writes the complete assignment — the inputs, the
   question, the reading list, the output shape — to a file, asks the agent that delegated to it to
   run that file as a subagent at the chosen capability level, and waits for the verdict before going
@@ -149,7 +153,7 @@ context and returns its verdict into the step waiting on it; nothing else does b
 ## Launch Failure Reporting
 
 When a required direct subagent dispatch cannot start, preserve its exact attempted dispatch,
-record it, and apply the launch fallback in **Dispatch**. Do not turn a tool inventory from a nested bridge or an unrelated agent tool
+record it, and apply the launch fallback in **Dispatch**; a capacity refusal is recorded and relaunched as Workflow step 3 says, never sent to that fallback. Do not turn a tool inventory from a nested bridge or an unrelated agent tool
 into evidence about the native launcher's availability.
 
 - Attempt the selected native dispatch once whenever its direct tool is exposed. Never claim an

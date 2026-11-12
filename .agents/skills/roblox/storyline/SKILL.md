@@ -12,6 +12,7 @@ Create a story players want to act in, not a synopsis pasted over chores. Work a
 
 - `subagent-matrix`
 - `council`
+- `roblox-gameplay`
 
 ## Workflow
 
