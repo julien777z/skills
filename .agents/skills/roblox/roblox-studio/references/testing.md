@@ -510,9 +510,14 @@ have different authentication states. Preserve the working editor and retained c
 Verify client/server play, an actual game button, movement, and a viewport screenshot **in the runner**.
 Also launch the maximum requested multiplayer clients there and confirm none appears on the host.
 Confirm the resulting game state and that the user can continue using their desktop. Successful code
-execution or single-client input alone does not establish complete isolation. Use `screen_capture` for the game viewport, not a host
-screen recording that could include unrelated private content. Its image can be returned as an MCP
+execution or single-client input alone does not establish complete isolation. Use `screen_capture` for the game viewport, never a host
+screenshot or screen recording that could include unrelated private content. Its image can be returned as an MCP
 image block; save/decode that block directly instead of printing its base64 data.
+World-space text, such as floating damage numbers, status words and nameplates, is verified only in a
+capture shown to draw it: confirm a known label appears in the frame before judging its spacing or
+style from it. `screen_capture` has been observed leaving out BillboardGui content in a Tart guest,
+where a recording of the guest's own desktop (`screencapture -v` inside the guest) drew it; on the
+Linux runner, use an X screenshot or recording of the Xvfb display.
 
 If those captures are black while the guest desktop remains visible, use the qualified
 [guest desktop viewer](#optional-guest-desktop-viewer) when appropriate. Keep capture failure

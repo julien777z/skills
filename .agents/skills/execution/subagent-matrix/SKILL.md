@@ -39,14 +39,19 @@ agent; the calling agent launches the actual assignment with the selected model.
    version too old, a sign-in, a disabled provider, a stale process. The repair is the first step and every
    fallback comes after it: update the client, sign in, enable the provider or restart the process, or confirm the
    condition no longer holds, then launch the same assignment again with the same identifier. Updating or
-   repairing the agent's own client or runtime is that repair, never a repository or global settings change, which this step forbids below.
-   Repair the component that actually holds the refused value, read from the running request path rather than
-   from the refusal's own advice, such as a proxy between the agent and the provider. Only when that component is
-   out of reach, as the global rules' bullet on a step only the user can take settles it, does its repair go to
-   the user as such a step, with the exact command, while the fallback below proceeds for the assignment in hand. Unavailability, and every
-   fallback or substitution it permits, starts only when that relaunch is refused again or the named repair
-   cannot be made, recorded with both receipts and the repair attempted; only that is an explicit unsupported
-   receipt wherever this skill or its callers name one. The accepted worker
+   repairing the agent's own client or runtime is that repair, never a repository or global settings change,
+   which this step forbids below. Repair the component that actually holds the refused value, read from the
+   running request path rather than from the refusal's own advice, such as a proxy between the agent and the
+   provider. Only when that component is out of reach, as the global rules' bullet on a step only the user can
+   take settles it, does its repair go to the user as such a step, with the exact command, while the fallback
+   below proceeds for the assignment in hand. Unavailability, and every fallback or substitution it permits,
+   starts only when that relaunch is refused again or the named repair cannot be made, recorded with both
+   receipts and the repair attempted; only that is an explicit unsupported receipt wherever this skill or its
+   callers name one. **A rate limit or quota refusal is temporary capacity, never unavailability**, even when it
+   names a long reset time: it permits no fallback, no other provider and no absorbing the work into the
+   coordinator's own process. Resume or relaunch the same worker on the same model once the limit no longer
+   holds, read from the request path itself: the coordinator answering on that model, or the relaunch being
+   accepted, shows it has cleared. The accepted worker
    performs the assignment; never launch a throwaway availability probe. Record the runtime identifier only
    when the host exposes its exact value. Generic provider or product
    branding, a worker-reported label, or no runtime identifier is neither confirmation nor a contradiction of
@@ -109,7 +114,7 @@ context and returns its verdict into the step waiting on it; nothing else does b
   that waits on it.
 - **Launch fallback: a worker that cannot launch a subagent its step needs hands the step up; never
   absorb it.** Attempt the native dispatch when available. This covers a host that gives the worker
-  no agent tool and a native dispatch that fails, for reviewers, lenses, validators, gates and
+  no agent tool and a native dispatch that fails other than by a capacity refusal, which step 3 waits out and relaunches, for reviewers, lenses, validators, gates and
   further implementation workers alike. The worker writes the complete assignment — the inputs, the
   question, the reading list, the output shape — to a file, asks the agent that delegated to it to
   run that file as a subagent at the chosen capability level, and waits for the verdict before going
@@ -170,7 +175,7 @@ context and returns its verdict into the step waiting on it; nothing else does b
 ## Launch Failure Reporting
 
 When a required direct subagent dispatch cannot start, preserve its exact attempted dispatch,
-record it, and apply the launch fallback in **Dispatch**. Do not turn a tool inventory from a nested bridge or an unrelated agent tool
+record it, and apply the launch fallback in **Dispatch**; a capacity refusal is recorded and relaunched as Workflow step 3 says, never sent to that fallback. Do not turn a tool inventory from a nested bridge or an unrelated agent tool
 into evidence about the native launcher's availability.
 
 - Attempt the selected native dispatch once whenever its direct tool is exposed. Never claim an

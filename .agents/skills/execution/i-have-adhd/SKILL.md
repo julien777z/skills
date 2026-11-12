@@ -133,6 +133,13 @@ Good: "Step 3 of 5 done: schema updated. Next: backfill the new column. Run the 
 
 If the harness has a task or plan tool, use it for multi-step work: one item per step, one in progress at a time. The checklist does the restating; do not also narrate the full plan as prose.
 
+**State is the work's progress, never a reassurance.** A limit or correction the reader set — what
+the agent will not do, such as publish, merge or touch something; how it now works; that it
+understood — is confirmed once, in the reply to the message that set it. After that the work shows
+it, and no later message restates it, in a closing line, a status list, a caption or a report.
+Name it again only when the current message is about that very thing, such as an action that would
+cross it or the reader asking whether it holds.
+
 ### 6. Give specific time estimates
 
 Vague estimates fail. Ballpark in concrete units, in the time of whoever executes the steps.
@@ -191,9 +198,10 @@ Before sending, delete:
 
 1. The first sentence if it announces what you are about to do.
 2. The last sentence if it asks "anything else?" or recaps what just happened.
-3. Any "by the way" sidebar.
-4. Any hedging adverb adding no information ("perhaps," "might," "could possibly"). Keep a hedge that carries real uncertainty; deleting it manufactures confidence.
-5. Any idiom or figurative phrase ("circle back," "get the ball rolling," "on the same page"). Replace with the literal action.
+3. Any line restating a limit or correction an earlier message already confirmed, as rule 5 says.
+4. Any "by the way" sidebar.
+5. Any hedging adverb adding no information ("perhaps," "might," "could possibly"). Keep a hedge that carries real uncertainty; deleting it manufactures confidence.
+6. Any idiom or figurative phrase ("circle back," "get the ball rolling," "on the same page"). Replace with the literal action.
 
 Then reconcile pending decisions with the current ledger and user message: every unresolved item, including optional choices and unconfirmed assumptions, must appear in the required numbered status list as an active tool request or evidence-pending work, according to readiness; chat questions appear only when no equivalent tool exists. Resolved or superseded questions must not reappear.
 
