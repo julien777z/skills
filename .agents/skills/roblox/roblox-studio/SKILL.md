@@ -16,6 +16,7 @@ Carry a Roblox game request through implementation, visual polish, real playtest
 - `roblox-building`
 - `roblox-gameplay`
 - `agent-lock`
+- `test-fixture`
 
 ## Work autonomously within the requested scope
 
@@ -65,7 +66,7 @@ The optional [VirtualInput helper](scripts/virtual_input.luau) converts UI coord
 
 Verify the intended editor and place before every operation. If a tool is unavailable, inspect its actual setting and connection state before changing it. Keep unrelated editors and user windows untouched. Complete normal authentication with available authorized methods; ask for a specific user-only step only when required. Never request secrets in chat or transfer cookies.
 
-Use relevant automated checks and one focused Studio playtest for the affected behavior. Exercise normal player controls and inspect the visible result; direct server calls provide different evidence. Add device, multiplayer, or persistence coverage when the change affects those behaviors. Reuse passing evidence when the tested source, packages, and assets match the delivery build. Repeat checks only after an invalidating change or observed failure. Follow [delivery build acceptance](references/source-delivery.md#test-the-delivery-build-directly) for artifact identity.
+**A repeatable check step runs through the game repository's committed, tested helpers**, and a worker extends them rather than writing a throwaway script, as [the game's test helpers](references/testing.md#keep-the-games-test-helpers-in-its-repository) describes. Use relevant automated checks and one focused Studio playtest for the affected behavior. Exercise normal player controls and inspect the visible result; direct server calls provide different evidence. Add device, multiplayer, or persistence coverage when the change affects those behaviors. Reuse passing evidence when the tested source, packages, and assets match the delivery build. Repeat checks only after an invalidating change or observed failure. Follow [delivery build acceptance](references/source-delivery.md#test-the-delivery-build-directly) for artifact identity.
 
 **Show the game as each capture arrives.** Every capture of the game the work produces and reads is sent: the state a change reached, each screen a playtest, device-simulator or multiplayer check passes through, a defect a check finds and then the capture showing it fixed, an asset render. Captures a script saves are read and sent the same way; one left on disk is a check the user never saw. Only a capture of the runner itself, such as its desktop taken to diagnose a launch, stays on disk. Prefer the gameplay camera with runtime lighting and terrain, and a short recording from the runner for motion such as animation, effects, camera moves or a walkthrough. A stretch of visible work that reaches the user without media is the failure. Send each through `share-captures`, and render a choice between looks as its **Previews for a choice** says. A brief for visual work asks the worker for its captures.
 

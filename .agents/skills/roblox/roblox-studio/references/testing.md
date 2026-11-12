@@ -42,6 +42,27 @@ When multiplayer behavior changes, test at least two independent clients and the
 
 Use ordinary Studio profiles that cannot overwrite live player progress. When persistence changes warrant real DataStore verification, use clearly isolated validation keys under the intended experience, save partial progress, end/rejoin across distinct sessions, and prove rewards remain single-grant. Verify competing session ownership, failed loads, and shutdown behavior where applicable. Never infer persistence from a table surviving in one process.
 
+## Keep the game's test helpers in its repository
+
+Every step a check repeats has one tested helper, committed in the game repository's test tooling
+area and built on [studio_mcp.py](../scripts/studio_mcp.py) for the transport:
+
+- putting a disposable profile into a given state;
+- walking the character to an NPC, prompt or place through real movement around the collision
+  geometry, as a player does;
+- pressing a prompt or a control through real input, and reading back that it responded;
+- starting an encounter, a match or another game mode from its real entry point;
+- running a multi-client test and counting the clients that actually joined;
+- capturing the viewport and recording motion.
+
+Workers use these helpers and extend them for each new repeatable step; a repeatable step is never
+a throwaway script in a temporary folder or Luau pasted into one run. Each helper returns a
+structured result and fails with what it observed, never a bare timeout. A false alarm traced to a
+helper, such as a walk that stops short or a press that lands on another control, is fixed in the
+helper, never worked around in the run that met it. Helpers are test support under `test-fixture`
+and go through the game's source pull request with its checks. A brief for Studio work names the
+helpers the worker uses.
+
 ## Input coordinates: the phone notch matters
 
 Use `UserInputService:CreateVirtualInput()` for Studio automation when available. It drives actual experience input; it is not a way to control CoreGui, Roblox's account UI, or the operating system. Check that it exists, and honor its restrictions.
@@ -626,8 +647,9 @@ integration evidence, not a substitute for player input.
 
 Do not silently fall back to host client launches or native host HID automation if a capability is missing. Repair the runner as
 [Tart guest capabilities](#tart-guest-capabilities) describes when it cannot support the operation. Record the concrete blocker. Keep Studio, simulated-device, persistence, and published-client
-verification distinct; one does not establish another. Store reusable tools in the test tooling area
-and keep screenshots, logs, temporary fixtures, and runner state ignored.
+verification distinct; one does not establish another. Keep reusable tools in the test tooling area as
+[the game's test helpers](#keep-the-games-test-helpers-in-its-repository) says, and keep screenshots, logs,
+temporary fixtures, and runner state ignored.
 
 ## Pending and partial test startup
 
