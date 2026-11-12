@@ -641,9 +641,12 @@ screenshot or screen recording that could include unrelated private content. Its
 image block; save/decode that block directly instead of printing its base64 data.
 World-space text, such as floating damage numbers, status words and nameplates, is verified only in a
 capture shown to draw it: confirm a known label appears in the frame before judging its spacing or
-style from it. `screen_capture` has been observed leaving out BillboardGui content in a Tart guest,
-where a recording of the guest's own desktop (`screencapture -v` inside the guest) drew it; on the
-Linux runner, use an X screenshot or recording of the Xvfb display.
+style from it. Take that capture as a grab of the Studio window inside the guest
+(`screencapture -x -o -l <window-id>`, as [direct guest control](#direct-guest-control) describes),
+which draws that text, or, for text that appears and fades, a recording of the guest's desktop
+(`screencapture -v` inside the guest) turned into frames and one contact sheet of them; on the Linux
+runner, an X screenshot or recording of the Xvfb display. The game's capture helper uses the window
+grab for every check that judges world-space text.
 
 If those captures are black while the guest desktop remains visible, use the qualified
 [guest desktop viewer](#optional-guest-desktop-viewer) when appropriate. Keep capture failure
