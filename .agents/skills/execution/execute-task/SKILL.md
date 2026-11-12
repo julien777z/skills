@@ -711,12 +711,14 @@ outcome still needs work, update the active plan and start the replacement's fir
 step under the existing authorization, without another plan approval.
 
 **A wait blocks only the work that depends on what is awaited.** While one item waits on something
-outside the run's hands — a background agent, CI, a review, a build, the user's answer to one
-question or confirmation — start the authorized, already-named work that **Priority** permits and that neither needs the
+outside the run's hands — a background agent, CI, a review, a build, a shared machine, device or lock another
+session holds, the user's answer to one question or confirmation — start the authorized, already-named work that **Priority** permits and that neither needs the
 awaited result nor touches the files or resources the awaited work is changing. Each item held for the wait
 names what it uses that only the awaited result will supply; absent that dependency or a hold under
 **Priority**, it starts now: coming later in the plan, belonging to the same feature, or consuming a shape already agreed
 with the awaited work, such as a planned contract, is not such a thing, so build against that shape.
+**Every wait applies this test to the whole plan record** before the turn's report: to each step and part
+not yet started, in every later step as well as the current one, starting or delegating each that passes it.
 When the awaited work is a building worker, another edit starts only in an independently owned
 scope with separate files and resources, under `subagent-matrix`'s **Dispatch**; otherwise do
 read-only verification, review or question preparation while it runs.

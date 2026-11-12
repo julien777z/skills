@@ -96,11 +96,11 @@ successful published-client teleport.
 
 Studio work runs in an isolated runner: a Tart VM on a macOS host, the container runner below on Linux. The user's own desktop Studio is not the runner, even for an operation that sends no input, unless the user chooses it as described below, since opening a place, building or capturing still launches windows and takes focus there; a supported Studio MCP operation that avoids moving the host pointer does not change that. Qualify editor identity, input, capture, rendering, and window/focus isolation separately before claiming unattended testing is safe.
 
-When a reusable isolated runner is configured, reuse its installed Studio, authentication, and tooling. Keep each game's source and test data separate, verify the intended place before acting, and coordinate exclusive control of its desktop. Start a stopped runner when needed, discover its current address, and close task-owned windows and processes after testing. An unavailable isolated capability leaves only its dependent checks incomplete; continue independent source and build work. Never switch to the host's desktop Studio on your own. Inside the runner, install or update Studio and the tools the work needs, sign in with the retained session, and create the upload staging directory, without asking.
+When a reusable isolated runner is configured, reuse its installed Studio, authentication, and tooling. Keep each game's source and test data separate, verify the intended place before acting, and coordinate exclusive control of its desktop. Start a stopped runner when needed, discover its current address, and leave it as [Leave the shared runner as you found it](#leave-the-shared-runner-as-you-found-it) says. An unavailable isolated capability, or a runner lock another session holds, leaves only the operations that need the runner waiting; every other part of the work — source, builds, world art, audio, tests and later plan steps — continues meanwhile. Never switch to the host's desktop Studio on your own. Inside the runner, install or update Studio and the tools the work needs, sign in with the retained session, and create the upload staging directory, without asking.
 
 ### Retained Tart/macOS runner
 
-This example applies only when the host already configures `ROBLOX_STUDIO_TART`, `ROBLOX_STUDIO_VM`, `ROBLOX_STUDIO_SSH_USER`, `ROBLOX_STUDIO_SSH_KEY`, and `ROBLOX_STUDIO_KNOWN_HOSTS` in `~/.config/roblox-studio/runner.env`. Shared tools and keys live outside game checkouts. Discover the configured machine; do not assume its name or address from another session. Use a single shared desktop lock key across games using that VM.
+This example applies only when the host already configures `ROBLOX_STUDIO_TART`, `ROBLOX_STUDIO_VM`, `ROBLOX_STUDIO_SSH_USER`, `ROBLOX_STUDIO_SSH_KEY`, and `ROBLOX_STUDIO_KNOWN_HOSTS` in `~/.config/roblox-studio/runner.env`. Shared tools and keys live outside game checkouts. Discover the configured machine; do not assume its name or address from another session. Hold the runner lock on the key `roblox-studio-runner`, shared by every game using that VM.
 
 ```sh
 source "$HOME/.config/roblox-studio/runner.env"
@@ -109,8 +109,35 @@ source "$HOME/.config/roblox-studio/runner.env"
 mkdir -p "$HOME/.local/state/roblox-studio"
 nohup "$ROBLOX_STUDIO_TART" run "$ROBLOX_STUDIO_VM" --no-graphics --no-clipboard --no-audio \
   > "$HOME/.local/state/roblox-studio/vm.log" 2>&1 < /dev/null & disown
-export ROBLOX_STUDIO_SSH="$ROBLOX_STUDIO_SSH_USER@$("$ROBLOX_STUDIO_TART" ip "$ROBLOX_STUDIO_VM" --wait 180)"
+"$ROBLOX_STUDIO_TART" ip "$ROBLOX_STUDIO_VM" --wait 180   # wait until the guest has an address
 ```
+
+Reach the guest only through [runner_ssh.sh](../scripts/runner_ssh.sh), which reads `runner.env` and finds
+the guest's address through Tart on every call, so no shell variable has to carry the target from one command to
+the next. The runner's Studio MCP is `runner_ssh.sh /Applications/RobloxStudio.app/Contents/MacOS/StudioMCP`,
+spoken over stdio: give an MCP client that command.
+
+Drive the runner's Studio from scripts through the [studio_mcp](../scripts/studio_mcp/client.py) package, which every game uses
+from the installed `roblox-studio` skill's `scripts` folder, put on `sys.path`; no game keeps its own MCP
+client. Each `Studio` holds its own MCP session through `runner_ssh.sh`, and the module has no shell command line.
+Each `Studio` method, `run_in_runner`, `open_place` and `close_place` first confirms through `agent-lock` that the
+caller's receipt owns the `roblox-studio-runner` lock with enough of its lease left for every call it can make, each
+counted at its full timeout, so no call outlives the lease; a long operation, such as `open_place` with its
+registration wait, needs a lease acquired or renewed for it. `open_place(project, place, out_dir, lock_receipt)`
+copies a built place into the guest under `studio-places/<project>/`, launches an editor for it and returns a
+`Studio(studio_id, lock_receipt)` once that editor registers; when the launch fails at any point once the copy starts,
+it closes the editor, saving the guest's screen when the editor never registered, and raises. The project and place
+file names use only letters, digits, `.`, `_` and `-`, starting with a letter or digit. `close_place(project, place,
+lock_receipt)` ends the editor that has exactly that copy open and deletes the copy, and raises, keeping the copy,
+when the editor stays open. `run_in_runner(command, lock_receipt, timeout)` runs a shell command in the guest.
+`Studio` executes Luau, captures, reads the console, sends keys, and clicks a button by its instance path through
+the bundled VirtualInput helper; `Studio.tool(name, arguments)` calls any other Studio MCP tool on that editor.
+
+**No Studio operation reaches the host by falling back.** A client, helper or MCP server that picks its target
+from a variable or setting and drives the host's Studio when that target is missing is not a runner route, even
+for a read: a game repository's helper run with its runner variable unset, or the harness's own Studio MCP tools
+connected to this machine. Before a connection's first call, confirm its target: `list_roblox_studios` names the
+editors `runner_ssh.sh 'pgrep -fl RobloxStudio'` shows in the guest, never the host's.
 
 A harness that stops background commands after a time limit stops a `tart run` it owns, and the
 VM with it, so the VM runs detached and `tart stop` ends it.
@@ -212,7 +239,7 @@ CLI's help. Keep actual versions, image identity, resource allocation, and quali
 local configuration and verification evidence. Reuse the retained runner before provisioning one.
 
 With the Tart options above, the VM does not create a host window, share the clipboard, or play test audio through the user's speakers. Transfer only the project/test files over
-SSH, and invoke the guest's Studio MCP executable through SSH. Keep the guest proxy connection alive
+SSH, and invoke the guest's Studio MCP executable through `runner_ssh.sh`. Keep the guest proxy connection alive
 long enough for Studio discovery, as described in the MCP reference. Retrieve viewport captures and
 structured results through that channel. Do not mount the whole home directory or transfer a Roblox
 session cookie. Use normal Roblox authentication.
@@ -230,7 +257,6 @@ desktop when necessary, but never drive the host's game input. If Roblox rejects
 rendering/input is unreliable, attempt the applicable documented recovery and record the concrete
 remaining limitation. Repair the runner itself, reinstalling Studio or recreating the VM where
 that is what it takes; the Studio work waits for it rather than moving to the host's desktop.
-Continue independent lint, type, test, and build work meanwhile.
 
 When viewport capture fails but the guest desktop is usable, the optional
 [guest desktop viewer](#optional-guest-desktop-viewer) provides background images and guest-native UI
@@ -340,10 +366,38 @@ work while waiting. After the user confirms, verify the result in a guest captur
 the task's viewer so unattended guest windows stay out of the user's way.
 
 Where the user can reach no viewer, relay Quick Sign-in by code through the question tool, with a
-confirmation option. Read the newest `awaitQuickSignIn via polling: code=` line from Studio's log
-immediately before each asking, including a re-ask after a timeout: codes expire after about two
-minutes and Studio logs each replacement. The user enters the code on a device already signed in to
-Roblox. Confirm sign-in from the Studio start page before relying on the runner.
+confirmation option. Read the current code immediately before each asking, including a re-ask after a
+timeout, since codes expire after about two minutes: from the newest `awaitQuickSignIn via polling: code=`
+line in Studio's log, or, when the log holds none, from a guest capture of Studio's Quick Sign In Code
+dialog. The user enters the code on a device already signed in to Roblox, at
+<https://www.roblox.com/crossdevicelogin/ConfirmCode> or in the Roblox app under More, then Quick Sign In;
+the question links that page. Confirm sign-in from the Studio start page before relying on the runner.
+
+## Leave the shared runner as you found it
+
+Several sessions share one runner, so whatever one leaves behind lands on the next. No task process
+outlives any release of the runner lock, and before the task's last release its own files are gone and
+every setting it changed reads back at the value it found.
+
+- **Settings.** A Studio or engine setting changed from a script or a dialog, such as
+  `settings().Rendering`'s quality levels or `UserGameSettings`, persists across editors and applies to
+  every session in the runner. Prefer a route scoped to the test, such as the device simulator's own
+  profile. When a shared setting must change, record its value first, restore it from an Edit-mode
+  editor once the test is done, and read it back from a newly opened editor; a restore issued from a
+  Play client, or one never read back, has not happened. Granting a permission an operation needs is
+  setup, not a setting to restore.
+- **Files.** Everything the task copies or writes in the guest, such as places, captures, scratch
+  output, worktrees and lock files, sits under a folder named for the task or its project and is
+  removed when the task's runner work ends. `studio_mcp.close_place` deletes the place copy
+  `open_place` made. The runner's persistent setup is not task output and stays, as the next section
+  says.
+- **Resources.** Before a heavy run, such as Play, a multiplayer test or a device simulation, read the
+  guest's free disk and swap (`df -h /` with `sysctl vm.swapusage` in a Tart guest, `free -h` in the
+  Linux runner). Low disk or swap already in use is investigated before the run: remove what the task
+  itself left and restore what it changed, and report what another session left without deleting it. A
+  run that could run away gets a watchdog: a loop in the guest that reads the task's editor's resident
+  memory (`ps -o rss= -p <pid>`) every few seconds and kills that editor past a ceiling well under the
+  guest's memory, so one run cannot push the shared guest into swap.
 
 ## End of session for a retained VM
 
@@ -364,8 +418,9 @@ VM is stopped. Do not leave the VM running or substitute a suspended/running sta
 shutdown. If an unfinished test must continue, report that explicitly rather than claiming shutdown.
 
 **Do not tear down the sandbox's persistent state.** Do not uninstall Studio or Roblox, log out,
-delete/recreate the VM, reset its disk, remove project files, clear caches/keychains, or erase its
-settings/authentication as end-of-task cleanup. Closing Studio and powering off the guest are the
+delete/recreate the VM, reset its disk, remove its project setup, clear caches/keychains, or erase its
+settings/authentication as end-of-task cleanup. A task's own copies and output are not that state;
+[the section above](#leave-the-shared-runner-as-you-found-it) removes them. Closing Studio and powering off the guest are the
 normal shutdown actions. Keep the VM, installed apps, signed-in accounts, files, configuration, and
 SSH access available for another session. Do not publish or commit the authenticated image or keys.
 
@@ -442,7 +497,17 @@ undocumented preference-file keys are not a stable setup API. This uses the norm
 [MCP setup and connection checks](https://create.roblox.com/docs/studio/mcp).
 
 A normal quit can stop at an unsaved-changes dialog. Verify closure before reopening, and avoid
-forced termination or repeated duplicate launches. Multiple processes can show the same file or
+repeated duplicate launches. Stop any Play session or multiplayer test through MCP first. An editor
+`studio_mcp.open_place` made is then closed with `close_place`: its place is a disposable copy, so
+ending the process is the same as Don't Save. The test server and client windows a multiplayer test
+starts are separate processes `close_place` does not match, so confirm with `pgrep` that they exited
+too. To close any other task-owned editor, quit that process through its own window — Cmd-Q or the File menu sent
+to the verified process — and answer an unsaved-changes prompt with Don't Save when the place is a
+disposable build artifact whose source lives in the repository, or Save when it holds work that
+exists nowhere else. Confirm with `pgrep` that the process exited. A process that ignores a quit
+and shows no prompt, or a test server or client left behind by a failed test call, is
+force-stopped only when it is task-owned and holds nothing unsaved, recorded as such; other
+sessions' processes are never touched. Multiple processes can show the same file or
 have different authentication states. Preserve the working editor and retained credentials.
 
 ## Qualify input and capture
@@ -498,8 +563,7 @@ Verify selection, confirmation, and the server outcome; callbacks or remote call
 integration evidence, not a substitute for player input.
 
 Do not silently fall back to host client launches or native host HID automation if a capability is missing. Repair the runner as
-[Tart guest capabilities](#tart-guest-capabilities) describes when it cannot support the operation. Record the concrete blocker
-and continue independent work. Keep Studio, simulated-device, persistence, and published-client
+[Tart guest capabilities](#tart-guest-capabilities) describes when it cannot support the operation. Record the concrete blocker. Keep Studio, simulated-device, persistence, and published-client
 verification distinct; one does not establish another. Store reusable tools in the test tooling area
 and keep screenshots, logs, temporary fixtures, and runner state ignored.
 

@@ -7,6 +7,10 @@ disable-model-invocation: true
 
 # Where Time Went
 
+## Dependencies
+
+- `share-captures`
+
 Explain the elapsed time and outcome of this session using its own evidence. By default cover the
 whole current session through invocation, including nested agents; honor a requested task or time
 range. Read only this session and its descendants, never unrelated chats. A compacted summary does
@@ -54,8 +58,8 @@ order. Use minutes to one decimal and tokens as K or M. Show unavailable values 
 explicitly; use “None” for an empty Running now table. Keep whole-range totals in the report even when
 detail is sent as a file. Include loop summaries and individual agent rows with their role, parent,
 duration, state and result; count distinct agents separately from their rounds. When per-item detail exceeds five items, send that detail in a self-contained
-file using the harness's file-sending tool; if none is available, say so and provide the requested
-detail inline. The file starts with the table or summary its detail supports.
+file that reaches the user as `share-captures`' **Harness compatibility** says; where the harness
+gives a file no route to the reader, say so and provide the requested detail inline. The file starts with the table or summary its detail supports.
 
 | Running now | Duration | Last activity | State |
 | --- | --- | --- | --- |

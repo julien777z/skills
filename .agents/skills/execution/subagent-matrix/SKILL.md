@@ -34,18 +34,42 @@ agent; the calling agent launches the actual assignment with the selected model.
    unavailable-model fallback, or takes the launch fallback, launch the actual assigned work once with its exact
    candidate identifier and explicit reasoning effort when the native tool is available. A successful dispatch establishes that the host accepted
    the requested identifier for that launch; it does not establish catalog availability or runtime identity.
-   An explicit host receipt that the candidate is unsupported establishes unavailability. **A rate limit or
-   quota refusal is temporary capacity, never unavailability**, even when it names a long reset time: it permits
-   no fallback, no other provider and no absorbing the work into the coordinator's own process. Resume or
-   relaunch the same worker on the same model once the limit no longer holds, read from the request path itself:
-   the coordinator answering on that model, or the relaunch being accepted, shows it has cleared. The accepted worker
+   An explicit host receipt that the candidate is unsupported establishes unavailability only as this step defines
+   below. **A refusal that names its own cause or fix is a repair, never unavailability**: a client or runtime
+   version too old, a sign-in, a disabled provider, a stale process. A rate limit or quota refusal is not this
+   kind; it follows the capacity rule below. The repair is the first step and every
+   fallback comes after it: update the client, sign in, enable the provider or restart the process, or confirm the
+   condition no longer holds, then launch the same assignment again with the same identifier. Updating or
+   repairing the agent's own client or runtime is that repair, never a repository or global settings change,
+   which this step forbids below. Repair the component that actually holds the refused value, read from the
+   running request path rather than from the refusal's own advice, such as a proxy between the agent and the
+   provider. Only when that component is out of reach, as the global rules' bullet on a step only the user can
+   take settles it, does its repair go to the user as such a step, with the exact command, while the fallback
+   below proceeds for the assignment in hand. Unavailability, and every fallback or substitution it permits,
+   starts only when that relaunch is refused again or the named repair cannot be made, recorded with both
+   receipts and the repair attempted; only that is an explicit unsupported receipt wherever this skill or its
+   callers name one. **A rate limit or quota refusal is temporary capacity, never unavailability**, even when it
+   names a long reset time: it permits no fallback, no other provider and no absorbing the work into the
+   coordinator's own process. Resume or relaunch the same worker on the same model once the limit no longer
+   holds, read from the request path itself: the coordinator answering on that model, or the relaunch being
+   accepted, shows it has cleared. The accepted worker
    performs the assignment; never launch a throwaway availability probe. Record the runtime identifier only
    when the host exposes its exact value. Generic provider or product
    branding, a worker-reported label, or no runtime identifier is neither confirmation nor a contradiction of
-   the accepted selection. Availability is not permission to change repository or global settings.
+   the accepted selection. Availability is not permission to change repository or global settings, such as a
+   model policy or a provider's configuration.
 4. When a requested capability level or model is explicitly unsupported, apply a fallback only when the
    calling skill declares its direction and limits and it respects the user's explicit model or capability
-   constraint. Report the original request as unavailable and name the actual fallback capability and model;
+   constraint. **A permitted fallback steps down as little as it can**, in this order, launching the actual
+   assignment at each step and moving on only on an explicit unsupported receipt:
+   1. earlier versions of the same family, newest first, found in the host's model-selection surface
+      including entries it omits from its short list;
+   2. the other provider's family at the requested level;
+   3. the family one capability level below, on the same provider first, then the other provider's family at
+      that level;
+   4. each lower level in turn, never skipping one. A family another seat or worker already uses is still the
+      next step: a fallback chooses by capability, never to keep the families distinct.
+   Report the original request as unavailable and name the actual fallback capability and model;
    never relabel it as the requested level. Without that policy, report the unsupported request and host
    receipt; do not substitute another model. If the required worker cannot launch, apply the launch
    fallback below. Preserve one
@@ -191,7 +215,7 @@ explicitly rejects it as unsupported; after acceptance, record `accepted` while 
 Use `identifier required` only for an identifier-resolution failure established by Workflow step 2; report that
 step's resolved candidate and state rather than independently selecting candidate sources here. Apply the
 launch fallback; do not describe the missing identifier as an unsupported-model receipt. Use `unavailable` only
-when a host receipt explicitly rejects the exact candidate as unsupported. The calling agent then records the
+when a host receipt explicitly rejects the exact candidate as unsupported after step 3's repair and relaunch. The calling agent then records the
 selected capability level per role or chat, or the explicit user override.
 
 ```markdown

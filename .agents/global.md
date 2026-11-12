@@ -42,14 +42,15 @@ alwaysApply: true
 - **A web product's views are pages.** Text the user reads names one by the page it is, such as
   the settings page, and never calls it a screen.
 - **A file the user should see reaches them where they read.** Per-item detail past five items —
-  findings, rows — and the user's copy of any plan a skill gates go in a file sent with the
-  harness's file-sending tool before the text that reports the result, so that text stays the turn's
-  final message. An item with captures stays in chat as its text followed by its captures, as a
-  bullet below says, and the file holds only the items without them. A sent text file reads on its
-  own: it opens with the table or summary its detail belongs to, never the detail alone. Text
-  reports sent together go as one markdown file, each report's table or summary before any detail. A
-  path alone names nothing a user in a cloud or remote session can reach. The parent sends what a
-  subagent produced. Where the harness cannot send files, say so and put what fits inline.
+  findings, rows — and the user's copy of any plan a skill gates go in a file that reaches the user
+  from the agent's own reply, as `share-captures`' **Harness compatibility** says for the harness,
+  and the text that reports the result stays the turn's final message. An item with captures stays
+  in chat as its text followed by its captures, as a bullet below says, and the file holds only the
+  items without them. A text file sent this way reads on its own: it opens with the table or summary
+  its detail belongs to, never the detail alone. Text reports sent together go as one markdown file,
+  each report's table or summary before any detail. A path alone names nothing a user in a cloud or
+  remote session can reach. The parent sends what a subagent produced. Where the harness gives a
+  file no route to the reader, say so and put what fits inline.
 - **What the user reads is written for them.** A plan, proposal or report prepared for the agent's
   own reviewers, gates or workers — the request restated, verified facts, evidence, per-file
   detail — stays with them; the user receives a short version of the same content, as
@@ -63,23 +64,23 @@ alwaysApply: true
   rather than offered, as `pre-production`'s **Encountered Issues** says.
 - **A capture of a change reaches the user while the work is still running.** A screenshot, a
   recording, or a generated image that shows something the run changed — the screen after an edit, a
-  before-and-after pair, a design it generated — is sent as a file as soon as the agent that made it
-  has read it as the bullet above says, never held for the final report, where it arrives in a pile
-  the user can no longer follow. A capture nobody asked for that shows no change — taken while
-  navigating, diagnosing, or recording a baseline before anything changed — stays where it was saved
-  and is not sent, except as the before half of a pair once its after exists; a capture the user or
-  the running skill asked for is sent as it is made, change or not. An agent with no file-sending
-  tool hands each capture to be sent up as `subagent-matrix`'s **Dispatch** describes, and the
-  agent that delegated to it reads and forwards each one on arrival. A brief that asks a worker for
-  captures asks for them this way.
+  before-and-after pair, a design it generated — is shown to the user as `share-captures` says,
+  once the agent that made it has read it as the bullet above says, never held for the final
+  report, where it arrives in a pile the user can no longer follow. A capture nobody asked for that shows no
+  change — taken while navigating, diagnosing, or recording a baseline before anything changed —
+  stays where it was saved and is not shown, except as the before half of a pair once its after
+  exists; a capture the user or the running skill asked for is shown as it is made, change or not. A
+  subagent, whose reply the user does not see, hands each capture up as `subagent-matrix`'s
+  **Dispatch** describes, and the agent that delegated to it reads and forwards each one on arrival.
+  A brief that asks a worker for captures asks for them this way.
 - **A capture sits directly under the text it belongs to.** A message holding several questions,
-  findings or changes that each have their own captures goes out as text and files in turn: one
-  item's text, then its captures sent right after it, then the next item's text and its captures,
-  with a short closing line after the last. An item never points to its captures by position or by
-  an earlier message — "the first three captures", "capture 6", "the screenshots above" — because a
-  pile of files sent together leaves the reader matching each one to its item. An item put to
-  the user in a later message, a question asked again included, has its captures sent again
-  directly beneath it, even those already sent as they were made.
+  findings or changes that each have their own captures goes out as text and captures in turn: one
+  item's text, then its captures right after it, then the next item's text and its captures, with a
+  short closing line after the last. An item never points to its captures by position or by an
+  earlier message — "the first three captures", "capture 6", "the screenshots above" — because a
+  pile of captures shown together leaves the reader matching each one to its item. An item put to
+  the user in a later message, a question asked again included, has its captures shown again
+  directly beneath it, even those already shown as they were made.
 - **A capture sent to the user shows which page it is.** The reader cannot ask, so a view leads
   with a capture at a width where the product's navigation shows the page's place, for the role
   whose page it is; a phone-width view or a close-up of the same page goes beside that one,
@@ -300,16 +301,19 @@ alwaysApply: true
   technical verdict is not a user-approval request and never recursively enters this procedure.
 - Surface every question through `AskUserQuestionTool` or the harness's equivalent user-question
   tool, including plan approvals and standalone questions. Ask directly in chat only when no
-  equivalent tool exists. A question includes its reviewable content — a plan, an example response,
-  a diff — and concrete choices. The option that approves a plan or proposal reads "Approved", never
-  "Go" or another word, and is asked only once every decision the plan or proposal depends on is
-  answered: those decisions go to the user first, on their own, and the plan or proposal shown for
-  approval is written for their answers, with nothing in it conditional on one. A question tool may
-  show only its question and option labels; send required review content as a file rather than
-  relying on a collapsed preamble, preview or description. Present supporting material before
-  invoking the tool; supporting chat text identifies the material and leaves the actionable question
-  in the tool. During unfinished authorized work, retain the question as a pending decision while
-  independent work continues; it is not a final task report.
+  equivalent tool exists, or when the harness's question tool hides the text before it, as
+  `share-captures` says for T3 Code: there the question, its choices and every capture, plan or diff
+  it must be read with go in the turn's final message, and the reader's reply answers it. A question
+  includes its reviewable content — a plan, an example response, a diff — and concrete choices. The
+  option that approves a plan or proposal reads "Approved", never "Go" or another word, and is asked
+  only once every decision the plan or proposal depends on is answered: those decisions go to the
+  user first, on their own, and the plan or proposal shown for approval is written for their
+  answers, with nothing in it conditional on one. A question tool may show only its question and
+  option labels; deliver required review content as a file, as the bullet on files the user should
+  see says, rather than relying on a collapsed preamble, preview or description. Present supporting
+  material before invoking the tool; supporting chat text identifies the material and leaves the
+  actionable question in the tool. During unfinished authorized work, retain the question as a
+  pending decision while independent work continues; it is not a final task report.
 - **A step only the user can take, which the work waits on, is asked through that tool too, never
   left in chat.** Chat text the user may not read is not a request: granting a permission, signing
   in, approving on another device, or running a command that needs their password each goes out
@@ -318,7 +322,8 @@ alwaysApply: true
   question, which goes out in the turn the need is established. Chat text never announces the step
   ahead of that question. Its text names the whole step,
   including any command, and offers a confirmation option such as "Done" beside one for doing it
-  later. Where the step happens on a surface the agent can open — a viewer, a settings page, a
+  later. An address it gives is one the governing guidance or the product itself states, or one the
+  agent opened and saw serve that step; never one assembled from the product's name. Where the step happens on a surface the agent can open — a viewer, a settings page, a
   sign-in page — the agent opens it at the exact place and verifies it shows before asking, so the
   user's part is the action alone. A confirmation is the user's word, not the outcome: check the
   result at its source before building on it. **Whether a step is only the user's is settled
@@ -326,14 +331,20 @@ alwaysApply: true
   controls, through a viewer or settings page it can open, or briefly through the user's own
   desktop input where the task's authorization and tool policy permit it — is the agent's to
   take, never put to the user as a request or as a choice
-  between their doing it and the agent's. The agent prefers the route that leaves the user's
+  between their doing it and the agent's. **Reach is settled by locating the target, never by one
+  failed route.** Before a machine, service or setting is called out of reach, find where it runs —
+  whether its address is one of this machine's own, whether it runs in containers or processes
+  here, and which tailnet node, management API or other host the agent controls reaches it — and
+  try each route; a refused connection to one address rules out that route alone. The agent prefers
+  the route that leaves the user's
   desktop alone and states any interruption, such as a moving cursor, when it happens. Only what
   needs the user's own identity, device, password or physical presence goes to them.
 - **A choice between substantially different versions of a page shows every option rendered.**
   When the options differ in layout, structure or the controls the reader uses — a list or a grid,
-  one column or two, a section moved or removed — the question carries, directly beneath it, a
-  capture of each option as the product would draw it, built as an uncommitted preview where it
-  does not exist yet, at the widths where the options differ. Describing an option, or showing only
+  one column or two, a section moved or removed — the question comes right after a capture of
+  each option as the product would draw it, built as an uncommitted preview where it does not
+  exist yet, at the widths where the options differ, shown as `share-captures`' **Previews for a
+  choice** says. Describing an option, or showing only
   the current state, leaves the reader guessing at the one they cannot see, so the question waits
   until every capture is ready. A drawing made of text, such as a sketch in a question tool's
   preview, is a description, not a capture. A choice between wordings or between small adjustments
