@@ -19,9 +19,10 @@ from typing import IO, Final, cast
 from models import (AgentLockCheckReport, JsonRpcMessage, JsonValue, McpContent, StudioButton, StudioCall, StudioEntry,
                     ToolArguments)
 
-RUNNER_SSH: Final[Path] = Path(__file__).resolve().with_name("runner_ssh.sh")
-VIRTUAL_INPUT: Final[Path] = Path(__file__).resolve().with_name("virtual_input.luau")
-# Installed skills sit side by side; the unresolved path keeps the install root rather than the source tree.
+# Paths stay on the unresolved install link: installed skills sit side by side there, and a refresh that replaces
+# the linked source mid-run leaves them valid.
+RUNNER_SSH: Final[Path] = Path(__file__).absolute().with_name("runner_ssh.sh")
+VIRTUAL_INPUT: Final[Path] = Path(__file__).absolute().with_name("virtual_input.luau")
 AGENT_LOCK: Final[Path] = Path(__file__).absolute().parents[2] / "agent-lock" / "resources" / "main.py"
 RUNNER_LOCK_KEY: Final[str] = "roblox-studio-runner"
 STUDIO_APP: Final[str] = "/Applications/RobloxStudio.app"
