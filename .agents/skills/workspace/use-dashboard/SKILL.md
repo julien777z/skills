@@ -36,7 +36,7 @@ Every other field is optional, and an absent one leaves its part of the page out
 | Field | Shape |
 | --- | --- |
 | `subtitle` | One line under every page's title. |
-| `status` | `{label, tone?}`: the badge at the right of the navbar. While any question is `open`, the renderer shows `Waiting for you` in the `warning` tone there instead, and a spec that sets `status` then is refused. |
+| `status` | `{label, tone?}`: the badge at the right of the navbar. While any question is `open`, the renderer shows `Waiting for you` in the `warning` tone there and as the `Proposals` page's `status`, and a spec that sets either then is refused. |
 | `notice` | `{title, body, tone?}`: a banner with an icon for its tone under every page's title, for the one thing the reader must see first wherever they are. |
 | `progress` | `{value: 0–1, label, detail?, segments?}`: a stat card twice as wide as the others, with the percentage, `detail` as its badge, and a bar. `segments` is `[{label, details?, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1, and its `label`, with each of `details` on a line under it, shown in a tooltip while the pointer rests on it; without `segments` the bar is a plain fill. |
 | `metrics` | `[{label, value, detail?}]`: at most four stat cards beside the progress, `detail` under the figure. |
@@ -179,8 +179,11 @@ Dashboards look alike because they are built alike:
   the requested thing as one section among what the reader needs there. Name the page for the stage.
 - **Choices for the reader sit on Proposals.** Every question a dashboard puts to the user goes in
   a `questions` section on the `Proposals` page, directly after Overview, so the reader finds what
-  waits on them in one place. While one is open the navbar shows `Waiting for you`, so the spec
-  leaves `status` out.
+  waits on them in one place. While one is open the navbar and the Proposals link show `Waiting for
+  you`, so the spec leaves both `status` fields out.
+- **A page that needs the reader says so in the navbar.** Any other page holding something the
+  reader must act on, such as a review waiting on them, sets its `status` in the `warning` tone, so
+  its link carries the yellow dot; a page with nothing for the reader carries none.
 - **Pages run in the order the reader's work does.** After Overview and Proposals, pages that help the reader
   understand the work come together, followed by pages for acting on it, such as dispatching the
   week's orders, which come last; a page never sits between two pages of another kind.

@@ -92,12 +92,23 @@ Choose one before pushing anything:
   cost. Cite the concrete evidence: the merged pull request or base commit that replaced it, the
   code that no longer exists. Push nothing.
 
-A pull request is closed only on the user's word. A `REWORK` or `CLOSE` that waits on the user goes
-to them as a question, as the global rules' question-tool bullet says, after the dashboard **Output**
-describes, with the evidence and the disposition as its recommendation. **A question choosing
-among several pull requests asks which to act on**: each option is one pull request, picking it
-takes the action the question names, such as closing it, and one left unpicked stays as it is.
-Options are never the ones to keep, which makes the reader's picks undo what they read as choosing.
+**A problem the change fixes that still happens on the base is never a `CLOSE`.** A pull request
+is `CLOSE` only when every part of its diff is accounted for on the base, read part by part against
+the code, never from its title or description alone: a pull request often carries more than its
+title says. One with any part still unsolved is `REWORK`, scoped to that part.
+
+A pull request is closed only on the user's word, and each choice goes to the user through the
+question tool, as the global rules' question-tool bullet says, after the dashboard **Output**
+describes:
+
+- **The `CLOSE` pull requests form one stale batch**, approved once: a single question whose
+  approving option closes every pull request in it, each listed on the dashboard with the base
+  change that replaced each of its parts. The user never picks them one by one.
+- **The `REWORK` pull requests are offered for rework, never for closing**: a question choosing
+  which to rework now, each option one pull request named by its title, where picking it starts
+  its rewrite on a new branch and the old pull request closes once the new one carries its
+  remaining part. One left unpicked stays open as it is. Options are never the ones to keep, which
+  makes the reader's picks undo what they read as choosing.
 
 ## Bring It Up To Date
 

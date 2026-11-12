@@ -400,10 +400,19 @@ def check_questions(dashboard: dict[str, object], path: str) -> None:
                 f"{section_path} is a questions section, which belongs only on the {PROPOSALS_TITLE} page"
             )
 
-    if "status" in dashboard and has_open_question(dashboard):
+    if not has_open_question(dashboard):
+        return
+
+    if "status" in dashboard:
         raise DashboardSpecError(
             f"{path}.status must be left out while a question is open, since the navbar then shows '{WAITING_STATUS['label']}'"
         )
+
+    for index, page in enumerate(pages):
+        if page["title"] == PROPOSALS_TITLE and "status" in page:
+            raise DashboardSpecError(
+                f"{path}.pages[{index}].status must be left out while a question is open, since the page then shows '{WAITING_STATUS['label']}'"
+            )
 
 
 def check_dashboard(dashboard: dict[str, object], path: str) -> None:
@@ -1173,7 +1182,12 @@ def render_dashboard(spec: object, fragment: bool) -> RenderedPage:
     dashboard = check_object(spec, "dashboard", DASHBOARD_SHAPE)
 
     if has_open_question(dashboard):
-        dashboard = dashboard | {"status": WAITING_STATUS}
+        pages = [
+            page | {"status": WAITING_STATUS} if page["title"] == PROPOSALS_TITLE else page
+            for page in cast(list[dict[str, object]], dashboard["pages"])
+        ]
+
+        dashboard = dashboard | {"status": WAITING_STATUS, "pages": pages}
 
     head = PAGE_HEAD_TEMPLATE.format(
         title=escape(str(dashboard["title"])), topic=escape(str(dashboard["topic"]))
