@@ -45,7 +45,7 @@ Use ordinary Studio profiles that cannot overwrite live player progress. When pe
 ## Keep the game's test helpers in its repository
 
 Every step a check repeats has one tested helper, committed in the game repository's test tooling
-area and built on [studio_mcp.py](../scripts/studio_mcp.py) for the transport:
+area and built on the [studio_mcp](../scripts/studio_mcp/client.py) package for the transport:
 
 - putting a disposable profile into a given state;
 - walking the character to an NPC, prompt or place through real movement around the collision
@@ -446,16 +446,28 @@ build, a copy and an editor launch.
   `warm`, and leave it open: it belongs to the game's VM, not to the task that opened it. A session
   that finds the game's warm editor registered in `list_roblox_studios` uses it, after confirming
   its place name.
-- **Sync source live.** Install the Rojo plugin matching the game's pinned Rojo version into the
-  guest's Studio plugins folder (`~/Documents/Roblox/Plugins` in a macOS guest). Run `rojo serve`
-  from the session's own checkout on the host, bound to the host's address on the VM's network,
-  the guest's default gateway, never to every interface, on a port no other game's server uses.
-  Connect the plugin to it through input posted inside the guest. The session holding the VM's
-  lock serves from its own checkout; one that takes over the warm editor reconnects the plugin to
-  its own server, so the editor holds that checkout's tree.
-- **Confirm each sync before a check.** Read a changed instance or script source from the Edit
-  data model through `execute_luau`; a plugin showing connected does not show that a change
-  landed. Then start Play from that editor, and stop it when the check ends.
+- **Sync source live, served inside the guest.** Install the Rojo plugin matching the game's
+  pinned Rojo version into the guest's Studio plugins folder (`~/Documents/Roblox/Plugins` in a
+  macOS guest), and run `rojo serve` in the guest on its loopback address, against a copy of the
+  session's checkout in the guest that each sync updates. Serving from the host instead needs a
+  listener on the VM network, which can raise a firewall prompt on the user's desktop. The session
+  holding the VM's lock syncs its own checkout into that copy, so the editor holds that checkout's
+  tree.
+- **Connect the right plugin.** An older Rojo plugin can share the toolbar label, so open the panel
+  whose title shows the pinned version. A local place file has place ID 0, which the plugin's
+  automatic reconnect skips, so press **Connect** through input posted inside the guest each time
+  the editor opens.
+- **Check the session's parts, and restore them with one command.** The editor can be gone, the
+  server stopped, or the plugin disconnected; read each from the guest: the editor in
+  `list_roblox_studios`, the server's process, and the plugin's open TCP connection to the
+  server's port (`lsof` shows Studio's process name cut short, such as `RobloxStu`). The game's
+  start command for its warm session brings back whichever is missing, never only one.
+- **Record what the session holds inside it**: the source revision, a manifest of the synced files
+  and a digest of the built world, kept in the guest beside the session, so a later session reads
+  whether the warm editor matches its checkout instead of guessing.
+- **Confirm each sync before a check.** Read each changed script's source back from the Edit data
+  model through `execute_luau`; a plugin showing connected does not show that a change landed.
+  Then start Play from that editor, and stop it when the check ends.
 - **Rebuild only for what the plugin cannot write.** Content the place's build step makes rather
   than a file maps, such as terrain or generated models; properties scripts cannot set, such as a
   mesh part's mesh; a project-file change to which containers are mapped; and a sync the plugin
