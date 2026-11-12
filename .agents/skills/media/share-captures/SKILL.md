@@ -1,7 +1,7 @@
 ---
 name: share-captures
-description: "Send screenshots, recordings and rendered previews to the user as files, as they are read and with the questions that need them. Use whenever work produces captures of a product, a site, a game or a generated image, and before asking the user to choose between options that differ in how something looks."
-short_description: 'Send captures and option previews to the user as files.'
+description: "Show screenshots, recordings and rendered previews to the user in the agent's own reply, as they are read and with the questions that need them. Use whenever work produces captures of a product, a site, a game or a generated image, and before asking the user to choose between options that differ in how something looks."
+short_description: 'Show captures and option previews where the user reads.'
 ---
 
 # Share Captures
@@ -17,7 +17,8 @@ they get there, the same way for a web walkthrough, a game playtest or a generat
   **Harness compatibility** below says. A tool that posts a message to the thread on the user's
   behalf is never the route, and neither is text the harness folds away from the reader.
 - **Keep the file where the reader's view can still load it**: copy it out of scratch and temporary
-  folders into one the session lists as a working directory, so the chat history keeps the image.
+  folders into a folder the session lists as a working directory outside the repository checkout,
+  such as an attachments folder, so the chat history keeps the image and the checkout stays clean.
 - **Captions and order:** a capture of a page is captioned as the global rules say; any other
   capture, such as a game's place or screen or a generated image, is captioned with what it shows,
   its device or width, and its state. Each capture sits directly under the text it belongs to, as
@@ -50,3 +51,6 @@ as page versions do. This is how those previews are sent.
   open question tool hides it too. So captures go in the turn's final message, and a capture made
   mid-work goes out when the turn ends on a wait for background work. `t3_thread_send_attachments`
   posts a new message into the thread as the user, so it never carries the agent's own captures.
+  Any other file the user should see, such as a plan or a detail file, is a Markdown link to its
+  absolute path, `[name](/absolute/path/to/plan.md)`, kept in the working directory **Keep the
+  file** above names, in the turn's final message; T3 opens it in its files viewer.
