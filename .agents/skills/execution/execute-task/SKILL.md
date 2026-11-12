@@ -103,8 +103,8 @@ Every task that changes files starts here, and so does every follow-up that arri
   it lacks: at most five numbered steps, each one plain line naming one bounded action with its
   wall-clock estimate, as `i-have-adhd` numbers steps, then the total and what the user does
   afterwards. Keep it under 200 words while `i-have-adhd` is active.
-- **A plan's last step is the merge**, the reviewable pull request when no merge is authorized, or
-  the verified local result when there is no pull request. Its verification runs before that; no
+- **A plan's last step for repository changes is the merge**, or the reviewable pull request when
+  no merge is authorized. Its verification runs before that; no
   step, verification or user action after it walks the deployed site, checks a rollout or waits for
   a deploy, apart from the tasks the global rules' **A merge leaves no deploy work** bullet excepts.
 - **An estimate is the executing agent's own wall-clock, never the effort the same work would
@@ -587,9 +587,10 @@ decision before preserving a checked-out branch or updating an existing pull req
 Verify selected pull requests remotely, and leave another session's branch and pull request
 untouched as that rule says unless the selected route explicitly directs continuing it.
 
-**A pull request exists from the first push.** The push that first carries a change opens its
-draft pull request, whatever is still being decided or built for it: an open question, a later
-step, or a batch still collecting changes holds none of it back.
+**Every task that changes repository files opens or updates its draft pull request.** At the first
+validated commit, push and open the draft in the same step, then read back its URL and head. An
+open question, a later step, or a batch still collecting changes holds none of it back. If a
+required check or the host prevents delivery, keep the push and pull request as pending work.
 
 **A pull request's title and description are brought up to date at every milestone, not at every
 push.** A milestone is a finished plan step or worker task whose checks pass, and a guidance correction pushed onto the pull request carrying it. After it, add
@@ -743,15 +744,11 @@ operation, a read-only interruption, or the absence of a source diff or pull req
 pending guidance delivery terminal; a genuine authorization or dependency hold still holds only its
 dependent action.
 
-Run this checkpoint before reporting a change complete. When the task changes repository-owned
-source or configuration, verify its pull request carries the change before reporting delivery,
-unless the user explicitly asked to keep the change local. Local installation, configuration, or
-recovery can verify the change or restore service while its pull request is in flight. When no
-pull request is needed, source-stream step 1 and step 3's verification review the complete task
-diff and its validation prerequisites; the history, ready-for-review message, and `merge-gate`
-apply only to pull requests. A failed local setup operation remains work under **Encountered
-Issues**. The independent gate receives the affected-repository map and comparison evidence along
-with the diff.
+Run this checkpoint before reporting a change complete. Verify that each changed repository has a
+pull request carrying the task's final commit. A local installation, configuration, or recovery
+can verify the change or restore service while its pull request is in flight. A failed local
+setup operation remains work under **Encountered Issues**. The independent gate receives the
+affected-repository map and comparison evidence along with the diff.
 
 Before the final delivery steps below, select the applicable verification route under the shared
 testing rule's **Environments** section, then verify the requested behavior on the change's branch
@@ -795,7 +792,7 @@ Two streams run side by side from here: the guidance stream and the source strea
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:
 
-1. Invoke `review-pass` on the pull request, or on the local task diff when none exists, with the
+1. Invoke `review-pass` on the pull request with the
    intent statement. It runs its review loop and one final `acceptance-gate` over the changes no
    earlier pass reviewed, brings in a moved base, and returns the head its final acceptance passed.
 2. Shape the history with `rewrite-git-history`. The first time a pull request is sent for review,
