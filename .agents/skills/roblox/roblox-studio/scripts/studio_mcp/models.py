@@ -1,21 +1,8 @@
 from collections.abc import Mapping, Sequence
-from enum import Enum
 from typing import Literal, NotRequired, TypedDict
 
 type JsonValue = str | int | float | bool | None | Sequence[JsonValue] | Mapping[str, JsonValue]
 type ToolArguments = Mapping[str, JsonValue]
-
-
-class StudioCall(Enum):
-    """A kind of runner or Studio MCP call."""
-
-    INITIALIZE = "initialize"
-    TOOL = "tool"
-    COPY = "copy"
-    LAUNCH = "launch"
-    CAPTURE = "capture"
-    CLOSE = "close"
-    REMOVAL = "removal"
 
 
 class LockOwnership(TypedDict):

@@ -457,8 +457,8 @@ Reuse a retained Roblox session first. When Studio shows its sign-in screen, or 
    expires in about two minutes: from the newest `awaitQuickSignIn via polling: code=` line in
    Studio's log when it is there, or from a guest capture of the code Studio shows.
 3. **Ask through the question tool** for that one step: enter the code at
-   <https://www.roblox.com/crossdevicelogin/ConfirmCode> on a device already signed in to Roblox,
-   with a Done option and one for a new code. A new-code answer, or a timeout, goes back to step 2.
+   <https://www.roblox.com/crossdevicelogin/ConfirmCode>, or in the Roblox app under More, then Quick
+   Sign In, on a device already signed in to Roblox, with a Done option and one for a new code. A new-code answer, or a timeout, goes back to step 2.
 4. **Finish every later screen yourself**, such as choosing the account and its **Continue**, then
    confirm `Authenticated : YES` in the log and the account on Studio's start page before relying on
    the runner.
@@ -529,14 +529,17 @@ every setting it changed reads back at the value it found.
   output, worktrees and lock files, sits under a folder named for the task or its project and is
   removed when the task's runner work ends. `studio_mcp.close_place` deletes the place copy
   `open_place` made. The runner's persistent setup is not task output and stays, as the next section
-  says.
+  says, and so is the game's warm session: its editor, its `rojo serve`, its place copy, the guest
+  copy of the checkout and the record of what it holds belong to the game's VM.
 - **Resources.** Before a heavy run, such as Play, a multiplayer test or a device simulation, read the
   guest's free disk and swap (`df -h /` with `sysctl vm.swapusage` in a Tart guest, `free -h` in the
   Linux runner). Low disk or swap already in use is investigated before the run: remove what the task
   itself left and restore what it changed, and report what another session left without deleting it. A
-  run that could run away gets a watchdog: a loop in the guest that reads the task's editor's resident
-  memory (`ps -o rss= -p <pid>`) every few seconds and kills that editor past a ceiling well under the
-  guest's memory, so one run cannot push the shared guest into swap.
+  run that could run away gets a watchdog: a loop in the guest that reads the resident memory
+  (`ps -o rss= -p <pid>`) of each process running the task's Play session every few seconds and,
+  past a ceiling well under the guest's memory, stops that Play session, killing the process only
+  when the stop does not take, so one run cannot push the shared guest into swap. A warm editor
+  killed this way is brought back with the game's start command for its warm session.
 
 ## End of session for a retained VM
 

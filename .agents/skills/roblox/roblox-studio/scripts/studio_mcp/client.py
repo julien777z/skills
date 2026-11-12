@@ -17,8 +17,8 @@ from datetime import timedelta
 from pathlib import Path
 from typing import IO, Final, cast
 
-from studio_mcp.models import (AgentLockCheckReport, JsonRpcMessage, JsonValue, McpContent, StudioButton, StudioCall,
-                               StudioEntry, ToolArguments)
+from studio_mcp.models import (AgentLockCheckReport, JsonRpcMessage, JsonValue, McpContent, StudioButton, StudioEntry,
+                               ToolArguments)
 
 # Paths stay on the unresolved install link: installed skills sit side by side there, and a refresh that replaces
 # the linked source mid-run leaves them valid.
@@ -30,15 +30,13 @@ STUDIO_APP: Final[str] = "/Applications/RobloxStudio.app"
 STUDIO_MCP: Final[str] = f"{STUDIO_APP}/Contents/MacOS/StudioMCP"
 GUEST_PLACES: Final[str] = "studio-places"
 PROTOCOL_VERSION: Final[str] = "2024-11-05"
-CALL_TIMEOUTS: Final[dict[StudioCall, timedelta]] = {
-    StudioCall.INITIALIZE: timedelta(seconds=55),
-    StudioCall.TOOL: timedelta(seconds=55),
-    StudioCall.COPY: timedelta(seconds=120),
-    StudioCall.LAUNCH: timedelta(seconds=60),
-    StudioCall.CAPTURE: timedelta(seconds=60),
-    StudioCall.CLOSE: timedelta(seconds=60),
-    StudioCall.REMOVAL: timedelta(seconds=30),
-}
+INITIALIZE_TIMEOUT: Final[timedelta] = timedelta(seconds=55)
+TOOL_CALL_TIMEOUT: Final[timedelta] = timedelta(seconds=55)
+COPY_TIMEOUT: Final[timedelta] = timedelta(seconds=120)
+LAUNCH_TIMEOUT: Final[timedelta] = timedelta(seconds=60)
+CAPTURE_TIMEOUT: Final[timedelta] = timedelta(seconds=60)
+CLOSE_TIMEOUT: Final[timedelta] = timedelta(seconds=60)
+REMOVAL_TIMEOUT: Final[timedelta] = timedelta(seconds=30)
 LOCK_CHECK_TIMEOUT: Final[timedelta] = timedelta(seconds=30)
 SESSION_EXIT_TIMEOUT: Final[timedelta] = timedelta(seconds=5)
 REGISTRATION_POLL: Final[timedelta] = timedelta(seconds=2)
@@ -131,7 +129,7 @@ class StudioMcpSession:
         try:
             self.request("initialize", {"protocolVersion": PROTOCOL_VERSION, "capabilities": {},
                                         "clientInfo": {"name": "roblox-studio-skill", "version": "1.0"}},
-                         CALL_TIMEOUTS[StudioCall.INITIALIZE])
+                         INITIALIZE_TIMEOUT)
 
             self.write(JsonRpcMessage(jsonrpc="2.0", method="notifications/initialized"))
 
@@ -234,10 +232,10 @@ class StudioMcpConnection:
 
 
 def call_studio_tool(connection: StudioMcpConnection, name: str, arguments: ToolArguments, lock_receipt: Path,
-                     timeout: timedelta = CALL_TIMEOUTS[StudioCall.TOOL]) -> list[McpContent]:
+                     timeout: timedelta = TOOL_CALL_TIMEOUT) -> list[McpContent]:
     """Call a Studio MCP tool."""
 
-    opening = CALL_TIMEOUTS[StudioCall.INITIALIZE] if connection.session is None else timedelta()
+    opening = INITIALIZE_TIMEOUT if connection.session is None else timedelta()
 
     assert_runner_lease_covers(lock_receipt, timeout + opening)
 
@@ -282,14 +280,14 @@ class Studio:
         self.connection = StudioMcpConnection()
 
     def tool(self, name: str, arguments: ToolArguments,
-             timeout: timedelta = CALL_TIMEOUTS[StudioCall.TOOL]) -> list[McpContent]:
+             timeout: timedelta = TOOL_CALL_TIMEOUT) -> list[McpContent]:
         """Call a Studio MCP tool on this editor."""
 
         return call_studio_tool(self.connection, name, {**arguments, "studio_id": self.studio_id},
                                 self.lock_receipt, timeout)
 
     def execute(self, code: str, data_model: str = "Client",
-                timeout: timedelta = CALL_TIMEOUTS[StudioCall.TOOL]) -> str:
+                timeout: timedelta = TOOL_CALL_TIMEOUT) -> str:
         """Run Luau in one of the editor's data models."""
 
         return mcp_content_text(self.tool("execute_luau", {"datamodel_type": data_model, "code": code}, timeout))
@@ -374,7 +372,7 @@ def extended_regex_literal(value: str) -> str:
 def close_place(project: str, place: Path, lock_receipt: Path) -> None:
     """Close a project's place copy in the runner."""
 
-    assert_runner_lease_covers(lock_receipt, CALL_TIMEOUTS[StudioCall.CLOSE] + CALL_TIMEOUTS[StudioCall.REMOVAL])
+    assert_runner_lease_covers(lock_receipt, CLOSE_TIMEOUT + REMOVAL_TIMEOUT)
 
     guest_path = guest_place(project, place)
     pattern = shlex.quote(f"localPlaceFile ([^ ]*/)?{extended_regex_literal(guest_path)}( |$)")
@@ -398,12 +396,12 @@ echo still-open'''
     folder = shlex.quote(str(Path(guest_path).parent))
     removal = f'cd "$HOME" && rm -f {files}; rmdir {folder} 2>/dev/null; true'
 
-    state = run_in_runner(script, lock_receipt, CALL_TIMEOUTS[StudioCall.CLOSE]).decode().strip()
+    state = run_in_runner(script, lock_receipt, CLOSE_TIMEOUT).decode().strip()
 
     if state != "closed":
         raise RuntimeError(f"The editor for {guest_path} is still open, so its copy stays in the guest")
 
-    run_in_runner(removal, lock_receipt, CALL_TIMEOUTS[StudioCall.REMOVAL])
+    run_in_runner(removal, lock_receipt, REMOVAL_TIMEOUT)
 
 
 def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path,
@@ -412,10 +410,10 @@ def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path,
 
     guest_path = guest_place(project, place)
 
-    bound = (CALL_TIMEOUTS[StudioCall.INITIALIZE] + CALL_TIMEOUTS[StudioCall.TOOL] + CALL_TIMEOUTS[StudioCall.COPY]
-             + CALL_TIMEOUTS[StudioCall.LAUNCH] + registration_wait + CALL_TIMEOUTS[StudioCall.TOOL]
-             + REGISTRATION_POLL + CALL_TIMEOUTS[StudioCall.CAPTURE] + CALL_TIMEOUTS[StudioCall.CLOSE]
-             + CALL_TIMEOUTS[StudioCall.REMOVAL])
+    bound = (INITIALIZE_TIMEOUT + TOOL_CALL_TIMEOUT + COPY_TIMEOUT
+             + LAUNCH_TIMEOUT + registration_wait + TOOL_CALL_TIMEOUT
+             + REGISTRATION_POLL + CAPTURE_TIMEOUT + CLOSE_TIMEOUT
+             + REMOVAL_TIMEOUT)
 
     assert_runner_lease_covers(lock_receipt, bound)
 
@@ -426,11 +424,11 @@ def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path,
 
     try:
         run_in_runner(f'cd "$HOME" && mkdir -p {shlex.quote(str(Path(guest_path).parent))} && '
-                      f'cat > {shlex.quote(guest_path)}', lock_receipt, CALL_TIMEOUTS[StudioCall.COPY],
+                      f'cat > {shlex.quote(guest_path)}', lock_receipt, COPY_TIMEOUT,
                       data=place.read_bytes())
 
         run_in_runner(f'cd "$HOME" && open -n -a {shlex.quote(STUDIO_APP)} --args --task EditFile --localPlaceFile '
-                      f'"$HOME"/{shlex.quote(guest_path)}', lock_receipt, CALL_TIMEOUTS[StudioCall.LAUNCH])
+                      f'"$HOME"/{shlex.quote(guest_path)}', lock_receipt, LAUNCH_TIMEOUT)
 
         deadline = time.monotonic() + registration_wait.total_seconds()
 
@@ -446,7 +444,7 @@ def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path,
             time.sleep(REGISTRATION_POLL.total_seconds())
 
         screen = run_in_runner('f=$(mktemp -t studio-launch) && screencapture -x -t png "$f" && cat "$f"; '
-                               'capture_status=$?; rm -f "$f"; exit $capture_status', lock_receipt, CALL_TIMEOUTS[StudioCall.CAPTURE])
+                               'capture_status=$?; rm -f "$f"; exit $capture_status', lock_receipt, CAPTURE_TIMEOUT)
 
         out_dir.mkdir(parents=True, exist_ok=True)
 
