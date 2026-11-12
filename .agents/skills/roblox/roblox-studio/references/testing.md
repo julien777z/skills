@@ -286,10 +286,12 @@ ends with its check:
    `codesign --verify --deep --strict` passes, that its team matches the guest Studio's, and that
    `spctl -a -vv` reports a notarized Developer ID. Copy it to `/Applications/Roblox.app`; opening
    it shows its sign-in page. It registers itself as a login item.
-3. **Sign it in by QR code.** Choose Sign In, then QR code, capture the code it shows, and relay
-   the capture and code through the question tool with a confirmation option and one for a new
-   code, since a code expires in about two minutes. A prompt asking the account to accept
-   something goes to the user, as [authentication](#authentication-and-user-handoff) says.
+3. **Sign it in by QR code.** Choose Sign In, then QR code. A code expires in about two minutes,
+   so capture it just before the message that shows it, show that capture as `share-captures`
+   says, then ask through the question tool for the user to scan it, with a Done option, one for
+   a new code and one for later. A new-code answer or a timeout captures a fresh code and shows it
+   again before asking again. A prompt asking the account to accept something goes to the user,
+   as [authentication](#authentication-and-user-handoff) says.
 4. **Launch and qualify it.** `open "roblox://experiences/start?placeId=<place id>"` in the guest
    starts an experience. Qualify input and capture on a neutral place, as
    [direct guest control](#direct-guest-control) describes, before relying on it, and quit the
@@ -475,9 +477,9 @@ Reuse a retained Roblox session first. When Studio shows its sign-in screen, or 
    expires in about two minutes: from the newest `awaitQuickSignIn via polling: code=` line in
    Studio's log when it is there, or from a guest capture of the code Studio shows.
 3. **Ask through the question tool** for that one step: enter the code at
-   <https://www.roblox.com/crossdevicelogin/ConfirmCode>, or in the Roblox app under More, then Quick
-   Sign In, on a device already signed in to Roblox, with a Done option and one for a new code. A
-   new-code answer, or a timeout, goes back to step 2.
+   <https://www.roblox.com/crossdevicelogin/ConfirmCode>, or in the Roblox app under More, then
+   Quick Sign In, on a device already signed in to Roblox, with a Done option, one for a new code
+   and one for later. A new-code answer, or a timeout, goes back to step 2.
 4. **Finish every later screen of the sign-in yourself**, such as choosing the account and its
    **Continue**, leaving an acceptance prompt to the user as the lead above says. Then
    confirm `Authenticated : YES` in the log and the account on Studio's start page before relying on

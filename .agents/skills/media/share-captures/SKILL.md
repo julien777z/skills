@@ -27,11 +27,11 @@ they get there, the same way for a web walkthrough, a game playtest or a generat
   such as an attachments folder, so the chat history keeps the image and the checkout stays clean.
 - **Captions and order:** a capture of a page is captioned as the global rules say; any other
   capture, such as a game's place or screen or a generated image, is captioned with what it shows,
-  its device or width, and its state. Every caption also names what the reading found wrong,
-  region by region: each defect, in the part the change touched or anywhere else in the frame, with
-  whether it was fixed, or "read every region, nothing wrong" when the reading found none; a caption
-  that only says what the capture shows, such as "the new toolbar renders", is incomplete. Each
-  capture sits directly under the text it belongs to, as the global rules say.
+  its device or width, and its state, which is the name a question uses for it. Every caption then
+  names what the reading found wrong, region by region: each defect, in the part the change touched or anywhere else in the
+  frame, with whether it was fixed, or "read every region, nothing wrong" when the reading found
+  none; a caption that only says what the capture shows, such as "the new toolbar renders", is
+  incomplete. Each capture sits directly under the text it belongs to, as the global rules say.
 
 ## Previews for a choice
 
