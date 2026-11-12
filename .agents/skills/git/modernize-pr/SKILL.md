@@ -117,12 +117,20 @@ For a `MODERNIZE` disposition:
 
 ## Output
 
-Every run delivers its result as a dashboard through `use-dashboard`, as session work, one page per
-run updated in place as the run's answers arrive:
+Every run delivers its result as a dashboard through `use-dashboard`, titled `Modernize Dashboard`,
+as session work, one page per run updated in place as the run's answers arrive. Each pull request is
+named `repository#number` wherever the page names it:
 
 - **Overview**: a metric per disposition with its count, then a table with one row per pull request
   set, its columns `Pull requests`, `What it does`, `Disposition` and `Why`, each row opening its
   full write-up.
+- **Proposals**, whenever the run puts a choice to the user, in the shape `use-dashboard` gives that
+  page: each choice with what happens today, its options and the recommendation. A `REWORK` the
+  user approves adds its open design choices here, each with a tree of what the rewrite touches:
+  every area, the fields or behaviors in it, what each does today and where it lives.
+- **Pull requests**: a table with one row per set, its columns `Pull requests`, `Problem still
+  happens`, `What should happen`, `What moves, and where` and `Close it`, giving the run's
+  recommendation in plain words, each row opening the same write-up.
 - **A row's write-up**: an outline holding the fields below, in this order, with `None` for an empty
   one, and each pull request and base change in `links`.
 
@@ -138,8 +146,9 @@ run updated in place as the run's answers arrive:
 | Rewrite plan | for `REWORK`: what it keeps, drops and builds on |
 | Not verified | each open answer and the blocker that keeps it open |
 
-The chat reply gives the dashboard's link, the count per disposition and one line per set, then
-the question **Choose A Disposition** describes. Keep observed facts and judgment apart: a fact
+The chat reply gives the dashboard's link, the count per disposition and one line per set with
+its recommendation, then the question **Choose A Disposition** describes, each option naming a pull
+request by its title. Keep observed facts and judgment apart: a fact
 names where it was read, and a judgment says it is one.
 
 ## Guardrails
