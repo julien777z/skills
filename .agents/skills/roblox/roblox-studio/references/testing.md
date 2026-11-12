@@ -120,8 +120,9 @@ spoken over stdio: give an MCP client that command.
 Drive the runner's Studio from scripts through [studio_mcp.py](../scripts/studio_mcp.py), which every game uses
 from the installed `roblox-studio` skill's `scripts` folder, put on `sys.path`; no game keeps its own MCP
 client. It holds one session through `runner_ssh.sh`, and has no shell command line. Each `Studio` method, `runner`,
-`open_place` and `close_place` first confirms through `agent-lock` that the caller's receipt owns the `roblox-studio-runner` lock, checked
-again on each call because a lease can expire between them. `open_place(project, place, out_dir, lock_receipt)`
+`open_place` and `close_place` first confirms through `agent-lock` that the caller's receipt owns the
+`roblox-studio-runner` lock with enough of its lease left for that call's timeout, so no call outlives the lease; a
+long operation, such as `open_place` with its wait, needs a lease acquired or renewed for it. `open_place(project, place, out_dir, lock_receipt)`
 copies a built place into the guest under `studio-places/<project>/`, launches an editor for it and returns a
 `Studio(studio_id, lock_receipt)` once that editor registers; when the launch fails at any point after the copy, it
 closes the editor, saving the guest's screen when the editor never registered, and raises. The project and place

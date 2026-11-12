@@ -22,10 +22,13 @@ STUDIO_APP: Final[str] = "/Applications/RobloxStudio.app"
 STUDIO_MCP: Final[str] = f"{STUDIO_APP}/Contents/MacOS/StudioMCP"
 GUEST_PLACES: Final[str] = "studio-places"
 PROTOCOL_VERSION: Final[str] = "2024-11-05"
+INITIALIZE_SECONDS: Final[float] = 55
+# Copying the place (120 s), launching (60 s), a failure capture (60 s) and closing (60 s plus 30 s of removal).
+OPEN_OVERHEAD_SECONDS: Final[float] = 330
 GUEST_NAME: Final[re.Pattern[str]] = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
 
 
-def own_runner_lock(lock_receipt: Path) -> None:
+def own_runner_lock(lock_receipt: Path, needed_seconds: float) -> None:
     result = subprocess.run([sys.executable, str(AGENT_LOCK), "check", "--receipt", str(lock_receipt)],
                             capture_output=True, text=True, timeout=30)
 
@@ -40,9 +43,16 @@ def own_runner_lock(lock_receipt: Path) -> None:
         raise RuntimeError(f"Receipt {lock_receipt} does not own the {RUNNER_LOCK_KEY} lock:\n"
                            f"{result.stdout}{result.stderr}")
 
+    remaining = float(report.get("remaining_seconds", 0))
+
+    # Expiry cannot stop work already sent to the guest, so a call starts only when it can finish inside the lease.
+    if remaining < needed_seconds:
+        raise RuntimeError(f"The {RUNNER_LOCK_KEY} lease has {remaining:.0f} s left; this call can take up to "
+                           f"{needed_seconds:.0f} s")
+
 
 def runner(command: str, lock_receipt: Path, timeout: float = 60, data: bytes | None = None) -> bytes:
-    own_runner_lock(lock_receipt)
+    own_runner_lock(lock_receipt, timeout)
 
     # The guest's login shell may be zsh, which splits words differently, so commands always run under sh.
     result = subprocess.run([str(RUNNER_SSH), f"/bin/sh -c {shlex.quote(command)}"], input=data,
@@ -54,7 +64,7 @@ def runner(command: str, lock_receipt: Path, timeout: float = 60, data: bytes | 
     return result.stdout
 
 
-class Session:
+class _Session:
     """One MCP transport into the runner's Studio, used for sequential calls."""
 
     def __init__(self) -> None:
@@ -69,7 +79,8 @@ class Session:
 
         try:
             self.request("initialize", {"protocolVersion": PROTOCOL_VERSION, "capabilities": {},
-                                        "clientInfo": {"name": "roblox-studio-skill", "version": "1.0"}})
+                                        "clientInfo": {"name": "roblox-studio-skill", "version": "1.0"}},
+                         INITIALIZE_SECONDS)
             self.write({"jsonrpc": "2.0", "method": "notifications/initialized"})
         except Exception:
             self.close()
@@ -120,7 +131,7 @@ class Session:
             stream.close()
 
 
-_session: Session | None = None
+_session: _Session | None = None
 
 
 def close_session() -> None:
@@ -138,7 +149,7 @@ def _call(method: str, params: dict[str, Any], timeout: float = 55) -> dict[str,
     global _session
 
     if _session is None:
-        _session = Session()
+        _session = _Session()
 
     try:
         return _session.request(method, params, timeout)
@@ -149,8 +160,7 @@ def _call(method: str, params: dict[str, Any], timeout: float = 55) -> dict[str,
 
 
 def tool(name: str, lock_receipt: Path, timeout: float = 55, **arguments: Any) -> list[dict[str, Any]]:
-    # A lease can expire between calls, so ownership is checked on every one.
-    own_runner_lock(lock_receipt)
+    own_runner_lock(lock_receipt, timeout + (INITIALIZE_SECONDS if _session is None else 0))
 
     response = _call("tools/call", {"name": name, "arguments": arguments}, timeout)
 
@@ -277,7 +287,7 @@ echo still-open'''
 def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path, wait_seconds: float = 180) -> Studio:
     guest_path = guest_place(project, place)
 
-    own_runner_lock(lock_receipt)
+    own_runner_lock(lock_receipt, OPEN_OVERHEAD_SECONDS + wait_seconds)
 
     known = {studio["id"] for studio in studios(lock_receipt)}
 
