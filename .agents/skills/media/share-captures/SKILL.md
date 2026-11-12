@@ -37,8 +37,10 @@ as page versions do. This is how those previews are sent.
    machine, such as `ffmpeg -i a.png -i b.png -filter_complex "[0]scale=800:-2[a];[1]scale=800:-2,pad=800:<h>:0:(oh-ih)/2[b];[a][b]hstack=inputs=2" option-A.png`.
 3. **Show the option images, then ask through the question tool**, never in chat. Each image goes
    under its caption with a line on what that option does, in a message the reader sees. Where only
-   the message that ends a turn is shown, as in T3 Code, that message ends the turn, and the
-   question goes through the question tool at the start of the next one. The question names each
+   the message that ends a turn is shown, as in T3 Code, record the pending question in the
+   session ledger, start a background command of a few seconds whose completion the harness reports
+   back, and end the turn on that message; the report starts the next turn, which asks the question
+   through the question tool before anything else. The question names each
    option by its image's caption, never by position, and states in its own text what each does.
 4. **When the user says they cannot see the previews**, the route failed: fix it and show them again
    before re-asking, never re-ask over the same broken route.

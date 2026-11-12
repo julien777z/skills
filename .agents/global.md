@@ -73,14 +73,16 @@ alwaysApply: true
   subagent, whose reply the user does not see, hands each capture up as `subagent-matrix`'s
   **Dispatch** describes, and the agent that delegated to it reads and forwards each one on arrival.
   A brief that asks a worker for captures asks for them this way.
-- **A capture sits directly under the text it belongs to.** A message holding several questions,
-  findings or changes that each have their own captures goes out as text and captures in turn: one
+- **A capture sits directly under the text it belongs to.** A message holding several findings or
+  changes that each have their own captures goes out as text and captures in turn: one
   item's text, then its captures right after it, then the next item's text and its captures, with a
   short closing line after the last. An item never points to its captures by position or by an
   earlier message — "the first three captures", "capture 6", "the screenshots above" — because a
   pile of captures shown together leaves the reader matching each one to its item. An item put to
-  the user in a later message, a question asked again included, has its captures shown again
-  directly beneath it, even those already shown as they were made.
+  the user in a later message has its captures shown again directly beneath it, even those already
+  shown as they were made; a question, asked again or for the first time, has its captures shown
+  just before it, and the question itself goes through the question tool, as `share-captures`'
+  **Previews for a choice** says.
 - **A capture sent to the user shows which page it is.** The reader cannot ask, so a view leads
   with a capture at a width where the product's navigation shows the page's place, for the role
   whose page it is; a phone-width view or a close-up of the same page goes beside that one,
