@@ -65,12 +65,6 @@ What every helper must get right:
   [VirtualInput helper](../scripts/virtual_input.luau); a script run during Play that sets the
   camera or a character's position directly, or calls the game's handlers in place of the input
   that reaches them, is refused, since it fakes what the check judges.
-- **Check an arrangement in world terms**: a formation, placement, facing or spacing is asserted
-  from world positions and facing relative to what the characters or objects face, such as two
-  guards meant to flank a gate standing side by side across its width rather than one behind the
-  other along the path to it, and then shown in a capture from where the player sees it. An
-  assertion on how the arrangement projects into one camera view passes an arrangement that is
-  wrong in the world, since a side-on camera draws a column as a row.
 - **Stop a walk to a prompt inside the prompt's activation distance**, measured from the prompt's
   own part, so the press that follows can land.
 - **Rerun a multi-client test only when a client did not join**, read from the connected-player
@@ -114,7 +108,7 @@ For affected systems, exercise their normal actions and relevant failure boundar
 
 Map coverage includes surface and traversal criteria when world content is affected. Inspect the real scene and UI at spawn, along principal routes, during encounters, after restoration/state changes, and at the finale. Verify animation movement and replication, asset loading errors, camera framing, target readability, and cleanup after repeated encounters. Check navigation around actual collision geometry rather than validating only waypoint coordinates.
 
-Actively use the camera during the walkthrough. Periodically orbit left and right, change pitch, and zoom in and out through the supported range, then resume walking from the new view. At visual checkpoints, inspect the avatar and held objects from front, side, and rear during idle, locomotion, and relevant actions; circle signs and doorways to inspect supports, lettering, and approach visibility. Enter and leave a conversation or encounter from a changed camera heading and verify control/framing restore correctly. Respect intentionally locked cameras. Capture representative alternate angles and record that the camera was operated; static editor views and a fixed-heading input driver do not substitute for this coverage.
+Actively use the camera during the walkthrough. Periodically orbit left and right, change pitch, and zoom in and out through the supported range, then resume walking from the new view. At visual checkpoints, inspect the avatar and held objects from front, side, and rear during idle, locomotion, and relevant actions; circle signs and doorways to inspect supports, lettering, and approach visibility. Enter and leave a conversation or encounter from a changed camera heading and verify control/framing restore correctly. Respect intentionally locked cameras. Capture representative alternate angles and record that the camera was operated; static editor views and a fixed-heading input driver do not substitute for this coverage. **An arrangement is checked in world terms**, whoever runs the check: a formation, placement, facing or spacing is asserted from world positions and facing relative to what the characters or objects face, such as two guards meant to flank a gate standing side by side across its width rather than one behind the other along the path to it, and then shown in a capture from where the player sees it. How it projects into one camera view proves nothing, since a single view hides depth along its own line of sight.
 
 When the game supports normal camera-orbit input, press the right mouse button, allow a frame for the camera to lock the cursor, then use `VirtualInput:SendMouseDelta()` while locked. `SendMousePosition()` positions the pointer; use relative motion for locked-cursor camera controls. Assert that the camera actually changed and the character stayed still. Release the mouse button in failure cleanup as well as on success. See [VirtualInput](https://create.roblox.com/docs/reference/engine/classes/VirtualInput).
 
