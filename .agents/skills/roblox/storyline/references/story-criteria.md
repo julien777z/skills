@@ -23,7 +23,7 @@ at most four lines a conversation, and the first line of each conversation carry
 since many players read only that one. Show rather than state: an action, a prop, or a repeated
 small habit that implies loss beats a line explaining it. Where the story has an antagonist, it appears and speaks,
 briefly and in its own register, before the climax and more than once; a villain known only from
-other characters' reports has no presence. Its first appearance is staged as a scene the player can follow, such as a crisis visibly starting, a character turning to the player, then the antagonist acting on screen and speaking in its own voice. Before that, a line or objective uses its name only when the same line says who or what it is; a bare name the player cannot place is a defect, while foreshadowing that explains itself and a character's established knowledge of it stand.
+other characters' reports has no presence. Its first appearance is staged as a scene the player can follow, such as a crisis visibly starting, a character turning to the player, then the antagonist acting on screen and speaking in its own voice. Before that, a line or objective uses its name only where the player can place it, from what the story has already shown or told them or from the line itself; a bare name the player cannot place is a defect, while foreshadowing that explains itself and a character's established knowledge of it stand.
 
 ## Progression and reward cadence
 
