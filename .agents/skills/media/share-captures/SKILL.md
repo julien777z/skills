@@ -35,11 +35,11 @@ as page versions do. This is how those previews are sent.
 2. **Make one image per option**, its views side by side (desktop beside phone, before beside
    after), so the reader compares options, not files. Tile them with any image tool on the
    machine, such as `ffmpeg -i a.png -i b.png -filter_complex "[0]scale=800:-2[a];[1]scale=800:-2,pad=800:<h>:0:(oh-ih)/2[b];[a][b]hstack=inputs=2" option-A.png`.
-3. **Show the option images and ask in the same message**, the one the reader sees: each image
-   under its caption with a line on what that option does, then the question naming each option by
-   that caption, never by position, with the options listed. Where the question tool shows only its
-   own text and hides the reply before it, as in T3 Code, this message is the question, and the
-   reader's reply answers it.
+3. **Show the option images, then ask through the question tool**, never in chat. Each image goes
+   under its caption with a line on what that option does, in a message the reader sees. Where only
+   the message that ends a turn is shown, as in T3 Code, that message ends the turn, and the
+   question goes through the question tool at the start of the next one. The question names each
+   option by its image's caption, never by position, and states in its own text what each does.
 4. **When the user says they cannot see the previews**, the route failed: fix it and show them again
    before re-asking, never re-ask over the same broken route.
 
@@ -49,7 +49,8 @@ as page versions do. This is how those previews are sent.
   `![caption](/absolute/path/to/capture.png)`; T3 renders local files inline. Only the message that
   ends the turn is shown: text written before a tool call is folded into the turn's work log, and an
   open question tool hides it too. So captures go in the turn's final message, and a capture made
-  mid-work goes out when the turn ends on a wait for background work. `t3_thread_send_attachments`
+  mid-work goes out when the turn ends on a wait for background work. A question never goes into
+  that message: it goes through the question tool, as the global rules say. `t3_thread_send_attachments`
   posts a new message into the thread as the user, so it never carries the agent's own captures.
   Any other file the user should see, such as a plan or a detail file, is a Markdown link to its
   absolute path, `[name](/absolute/path/to/plan.md)`, kept in the working directory **Keep the
