@@ -92,7 +92,7 @@ context and returns its verdict into the step waiting on it; nothing else does b
   that waits on it.
 - **Launch fallback: a worker that cannot launch a subagent its step needs hands the step up; never
   absorb it.** Attempt the native dispatch when available. This covers a host that gives the worker
-  no agent tool and a native dispatch that fails, for reviewers, lenses, validators, gates and
+  no agent tool and a native dispatch that fails other than by a capacity refusal, which step 3 waits out and relaunches, for reviewers, lenses, validators, gates and
   further implementation workers alike. The worker writes the complete assignment — the inputs, the
   question, the reading list, the output shape — to a file, asks the agent that delegated to it to
   run that file as a subagent at the chosen capability level, and waits for the verdict before going
@@ -153,7 +153,7 @@ context and returns its verdict into the step waiting on it; nothing else does b
 ## Launch Failure Reporting
 
 When a required direct subagent dispatch cannot start, preserve its exact attempted dispatch,
-record it, and apply the launch fallback in **Dispatch**. Do not turn a tool inventory from a nested bridge or an unrelated agent tool
+record it, and apply the launch fallback in **Dispatch**; a capacity refusal is recorded and relaunched as Workflow step 3 says, never sent to that fallback. Do not turn a tool inventory from a nested bridge or an unrelated agent tool
 into evidence about the native launcher's availability.
 
 - Attempt the selected native dispatch once whenever its direct tool is exposed. Never claim an
