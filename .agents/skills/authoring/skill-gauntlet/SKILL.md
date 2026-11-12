@@ -11,6 +11,7 @@ Build evidence that a skill adds durable value to the current model. Preserve or
 evaluation roles independent, and prefer honest retirement over a manufactured improvement.
 
 ## Dependencies
+- `interactive-skill`
 - `use-dashboard`
 
 ## Resources
@@ -27,9 +28,10 @@ evaluation roles independent, and prefer honest retirement over a manufactured i
 2. Initialize a run under `~/.agents/skill-gauntlet/runs/<run-id>/`. Snapshot every complete skill
    directory before analysis, verify its digest, and mark whether its installed source is editable.
 3. Record each skill's purpose, origin, dependencies, overlaps, precedence, and editability in the
-   public state. Compose and publish the dashboard as described below, give the user its URL in
-   chat, present the inventory in chat, and wait for the user's selection. Never
-   put selection controls in the dashboard or treat dashboard activity as approval.
+   public state. Compose and publish the dashboard as described below, give the user its URL and
+   the inventory in a message they see, then ask for the selection through the question tool as an
+   `interactive-skill` `multi` menu, and wait for the answer. Never put selection controls in the
+   dashboard or treat dashboard activity as approval.
 4. After selection, run the complete protocol independently for each selected skill. Do not ask
    the user to choose experiments, interpret results, approve revisions, or direct iterations.
 5. Pause only for a genuine external blocker, an action that can affect live systems or data,
