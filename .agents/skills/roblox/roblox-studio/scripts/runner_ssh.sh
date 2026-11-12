@@ -1,6 +1,7 @@
 #!/bin/sh
 # Runs a command in the game's Tart runner over its pinned SSH key, finding the guest's address on every call.
 # The game is ROBLOX_STUDIO_GAME, or else the repository the command runs in, named by its main checkout's folder.
+# games/<game>.env names the game's VM, conventionally <game>-vm, which is also its lock key.
 # The runner's Studio MCP over stdio: runner_ssh.sh /Applications/RobloxStudio.app/Contents/MacOS/StudioMCP
 # `runner_ssh.sh --describe` prints the game's resolved runner configuration as shell assignments instead.
 set -eu

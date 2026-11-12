@@ -121,7 +121,7 @@ Studio work runs in an isolated runner: a Tart VM on a macOS host, the container
 
 ### Retained Tart/macOS runner
 
-This example applies only when the host configures the shared values in `~/.config/roblox-studio/runner.env` (`ROBLOX_STUDIO_TART`, `ROBLOX_STUDIO_SSH_USER` and `ROBLOX_STUDIO_SSH_KEY`) and each game's own in `~/.config/roblox-studio/games/<game>.env` (`ROBLOX_STUDIO_VM`, its VM's name, and `ROBLOX_STUDIO_KNOWN_HOSTS`, that VM's pinned host key). The game is `ROBLOX_STUDIO_GAME` when set, or else the name of the folder holding the main checkout of the repository the command runs in, so every worktree of one game reaches the same VM. Shared tools and keys live outside game checkouts. Discover the configured machine; do not assume its name or address from another session. Hold the runner lock on the key that is the game's VM name, shared by every session working on that game. A new VM is named `<game>-studio-runner`; an existing VM is never renamed, since its name is its lock key.
+This example applies only when the host configures the shared values in `~/.config/roblox-studio/runner.env` (`ROBLOX_STUDIO_TART`, `ROBLOX_STUDIO_SSH_USER` and `ROBLOX_STUDIO_SSH_KEY`) and each game's own in `~/.config/roblox-studio/games/<game>.env` (`ROBLOX_STUDIO_VM`, its VM's name, and `ROBLOX_STUDIO_KNOWN_HOSTS`, that VM's pinned host key). The game is `ROBLOX_STUDIO_GAME` when set, or else the name of the folder holding the main checkout of the repository the command runs in, so every worktree of one game reaches the same VM. Shared tools and keys live outside game checkouts. Discover the configured machine; do not assume its name or address from another session. Hold the runner lock on the key that is the game's VM name, shared by every session working on that game. **A game's VM is named `<game>-vm`**, from the game's slug, such as `example-game-vm`, and that name is its lock key. A VM named otherwise keeps working through its game's settings file; never rename another session's VM. A rename is made only while no one holds its lock, with the game's settings file updated in the same step.
 
 ```sh
 eval "$(runner_ssh.sh --describe)"   # the game's resolved values, from inside its repository
@@ -185,7 +185,7 @@ the work there, without asking: a game's VM is part of the runner setup the work
 ends with its check:
 
 1. **Clone** a stopped qualified VM of another game, or the retained Cirrus Labs base image when no
-   qualified VM can be stopped, with `tart clone <source> <game>-studio-runner`, within the budget
+   qualified VM can be stopped, with `tart clone <source> <game>-vm`, within the budget
    above. A clone of a qualified VM keeps its installed Studio, Roblox player, guest settings and
    signed-in session; a clone of the base image starts at step 2 of
    [Provision a runner when none exists](#provision-a-runner-when-none-exists) for everything after
@@ -215,7 +215,7 @@ ends with its check:
    against the release's checksum file, unpack it outside checkouts, confirm the app's code
    signature, and run its `--version`.
 2. **Create the VM** with `tart clone` from a Cirrus Labs macOS base image, named
-   `<game>-studio-runner`, then `tart set` its CPU, memory, and display before the first boot, within
+   `<game>-vm`, then `tart set` its CPU, memory, and display before the first boot, within
    [the host's budget](#size-the-host-for-its-vms). Start it with the options above and
    `tart ip --wait <seconds>` for its address; `tart list` shows the stopped VM afterward. The
    guest must log its desktop user in on boot, which everything run while the host is locked
