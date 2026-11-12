@@ -412,28 +412,29 @@ the normal UI; do not disable authentication or change credentials to avoid a pr
 out of repository files, commands, URLs, and reports. If credentials are unavailable, identify that
 specific missing access rather than assuming the user must handle every login.
 
-Before asking the user to interact with the VM, verify that its desktop and the intended application
-page are visible. A viewer connection dialog is not a connected desktop. Complete the normal
-connection options and verify the rendered application before handoff. Authenticate each chosen
-viewer normally; one viewer's connection does not authenticate another.
+Authenticate each viewer the agent opens normally; one viewer's connection does not authenticate
+another, and a viewer connection dialog is not a connected desktop.
 
-Reuse retained Roblox sessions and available authorized sign-in methods. If Roblox itself requires
-a step the agent cannot complete, bring the guest screen to the user yourself; never ask them to
-connect to the VM. Use the already-connected viewer, or open the guest's built-in Screen Sharing on
-the host with `open "vnc://<ssh-user>@<current guest address>"`, and verify from a capture of its
-window that it shows the normal sign-in or Quick Sign-in page. Then ask through the question tool,
-as the global rules' user-action bullet says, for the exact remaining step with a confirmation
-option. Do not request passwords in chat or transfer session cookies. Continue independent
-work while waiting. After the user confirms, verify the result in a guest capture, then close only
-the task's viewer so unattended guest windows stay out of the user's way.
+**Roblox sign-in in a runner is the agent's to drive; the user's only part is entering a code.**
+Reuse a retained Roblox session first. When Studio shows its sign-in screen, or its log reports
+`Authenticated : NO`:
 
-Where the user can reach no viewer, relay Quick Sign-in by code through the question tool, with a
-confirmation option. Read the current code immediately before each asking, including a re-ask after a
-timeout, since codes expire after about two minutes: from the newest `awaitQuickSignIn via polling: code=`
-line in Studio's log, or, when the log holds none, from a guest capture of Studio's Quick Sign In Code
-dialog. The user enters the code on a device already signed in to Roblox, at
-<https://www.roblox.com/crossdevicelogin/ConfirmCode> or in the Roblox app under More, then Quick Sign In;
-the question links that page. Confirm sign-in from the Studio start page before relying on the runner.
+1. **Choose Quick Sign-in yourself**, through input posted inside the guest as
+   [direct guest control](#direct-guest-control) describes, or the Linux runner's display input.
+2. **Read the code immediately before each asking**, a re-ask after a timeout included, since it
+   expires in about two minutes: from the newest `awaitQuickSignIn via polling: code=` line in
+   Studio's log when it is there, or from a guest capture of the code Studio shows.
+3. **Ask through the question tool** for that one step: enter the code at
+   <https://www.roblox.com/crossdevicelogin/ConfirmCode> on a device already signed in to Roblox,
+   with a Done option and one for a new code. A new-code answer, or a timeout, goes back to step 2.
+4. **Finish every later screen yourself**, such as choosing the account and its **Continue**, then
+   confirm `Authenticated : YES` in the log and the account on Studio's start page before relying on
+   the runner.
+
+Never ask the user to sign in through a viewer, Screen Sharing or any other route to the guest's
+screen, and never ask for a password or a second factor: a screen inside the runner is one the
+agent's input reaches, so only the code entered on the user's own device is theirs. Do not transfer
+session cookies. Continue independent work while the question waits.
 
 ## Keep the game's editor warm
 
@@ -502,8 +503,8 @@ retained runner needs to come back runs without the host's screen: `tart run --n
 the guest's automatic desktop login, Studio relaunched in the guest, input posted inside the guest,
 and guest MCP. Check that the route still holds before ending a session. Leave running, rather than closing, anything
 whose restoration needs the host's screen or the user: a host viewer the user is using, Studio on
-the host, a guest state only a host viewer could recreate, or a Roblox sign-in only the user can
-approve. Powering the guest off is fine, because its automatic login brings the desktop back.
+the host, a guest state only a host viewer could recreate, or a Roblox session that would need the
+user to enter a new code. Powering the guest off is fine, because its automatic login brings the desktop back.
 
 When the game work is done, save the authorized project artifacts, close Roblox Studio normally,
 and **shut down the guest VM** so it is no longer running locally. Verify that Studio closed and the
@@ -521,7 +522,7 @@ At the next session, locate and start the existing VM with the same no-window/no
 options. Discover its current IP rather than assuming the prior address, reconnect via SSH, and
 verify the intended Studio/project. Create a replacement only when necessary and authorized; a new
 session is not a reason to rebuild or ask the user to sign in again. Open a viewer automatically
-when a guest UI step needs one, whether the agent takes it or a sign-in needs the user.
+when a guest UI step needs one that posted guest input cannot give.
 
 ## Studio MCP connection and input
 
@@ -538,9 +539,8 @@ This is part of the authorized setup and never a step for the user: the agent re
 itself, through input posted inside the guest or, for an editor on an unlocked host where the task
 authorizes host input, through the host's own input. A setting enabled in another machine
 or guest does not enable the local editor. Follow the [authentication procedure](#authentication-and-user-handoff):
-complete viewer/guest login yourself and verify the desktop before any user handoff. Reuse Roblox
-authentication and request help only for the specific remaining step you cannot complete. Never
-transfer cookies or ask for credentials in chat.
+complete viewer/guest login and the Roblox sign-in screens yourself; the user's only step is
+entering the sign-in code. Never transfer cookies or ask for credentials in chat.
 
 Use `list_roblox_studios`, verify the target file/place, and pass its explicit `studio_id` to every
 operation. Keep unrelated projects untouched. Use the installed Studio version's documented launch
@@ -732,7 +732,7 @@ installation outside game checkouts and record actual versions in verification e
   banner or unchanged frame does not establish live capture. MCP remains preferred for supported
   orchestration; viewer input stays inside the guest and uses current screenshots/state.
 - Reconnection checks the existing viewer's connection state before restarting Studio or the VM.
-  The tab stays hidden unless the user needs to sign in or wants to watch.
+  The tab stays hidden unless the user asks to watch.
 
 For the optional retained Tart/macOS setup above, load the runner identity and
 derive the current guest address from Tart rather than a saved IP. Verify that noVNC and websockify
