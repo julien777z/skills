@@ -23,6 +23,7 @@ import {
   SquareKanban,
   TriangleAlert,
   Users,
+  Vote,
   Workflow,
 } from 'lucide-react';
 import { type ReactNode, useEffect, useState } from 'react';
@@ -38,6 +39,7 @@ import { ToneDot } from './tone-dot';
 
 const ICONS: Record<IconName, LucideIcon> = {
   [IconName.OVERVIEW]: LayoutDashboard,
+  [IconName.PROPOSALS]: Vote,
   [IconName.PROGRESS]: Gauge,
   [IconName.BOARD]: SquareKanban,
   [IconName.CHECKLIST]: ListChecks,

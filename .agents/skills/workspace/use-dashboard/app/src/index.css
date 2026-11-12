@@ -29,6 +29,15 @@
   --critical: var(--destructive);
   --info: oklch(0.7 0.14 250);
   --done: oklch(0.7 0.16 300);
+  /* GitHub's pull-request state colors: each state's foreground, and the emphasis its state label fills with. */
+  --pr-open: #3fb950;
+  --pr-open-emphasis: #238636;
+  --pr-draft: #9198a1;
+  --pr-draft-emphasis: #656c76;
+  --pr-merged: #ab7df8;
+  --pr-merged-emphasis: #8957e5;
+  --pr-closed: #f85149;
+  --pr-closed-emphasis: #da3633;
 }
 
 :root[data-theme="light"] {
@@ -56,6 +65,14 @@
   --critical: var(--destructive);
   --info: oklch(0.55 0.16 255);
   --done: oklch(0.52 0.2 300);
+  --pr-open: #1a7f37;
+  --pr-open-emphasis: #1f883d;
+  --pr-draft: #59636e;
+  --pr-draft-emphasis: #59636e;
+  --pr-merged: #8250df;
+  --pr-merged-emphasis: #8250df;
+  --pr-closed: #d1242f;
+  --pr-closed-emphasis: #cf222e;
 }
 
 @theme inline {
@@ -88,6 +105,14 @@
   --color-critical: var(--critical);
   --color-info: var(--info);
   --color-done: var(--done);
+  --color-pr-open: var(--pr-open);
+  --color-pr-open-emphasis: var(--pr-open-emphasis);
+  --color-pr-draft: var(--pr-draft);
+  --color-pr-draft-emphasis: var(--pr-draft-emphasis);
+  --color-pr-merged: var(--pr-merged);
+  --color-pr-merged-emphasis: var(--pr-merged-emphasis);
+  --color-pr-closed: var(--pr-closed);
+  --color-pr-closed-emphasis: var(--pr-closed-emphasis);
 }
 
 html,
