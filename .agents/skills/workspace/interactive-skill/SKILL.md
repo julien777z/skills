@@ -122,8 +122,9 @@ Trim the reply and ignore case and surrounding punctuation. Then take the first 
 - **Any other reply that matches no choice, or more than one, gets the menu again**, never a pick
   made for the user, as often as it takes. Put one line above it, or in the question text when the
   question tool asks: "That did not match a choice. Please reply with a number from 1 to <n> or a
-  choice's name." for `choice`, the same ending "…, all or none." for `multi`, and "That did not
-  match. Please answer yes or no." for `confirm`.
+  choice's name." for `choice`, the same ending "…, all or none." for `multi`, "That did not
+  match. Please answer yes or no." for `confirm`, and "Please type your answer in the free-text
+  field." for `text`.
 
 ## Returning To The Caller
 
