@@ -23,7 +23,7 @@ at most four lines a conversation, and the first line of each conversation carry
 since many players read only that one. Show rather than state: an action, a prop, or a repeated
 small habit that implies loss beats a line explaining it. Where the story has an antagonist, it appears and speaks,
 briefly and in its own register, before the climax and more than once; a villain known only from
-other characters' reports has no presence.
+other characters' reports has no presence. Its first appearance is staged as a scene the player can follow, such as a crisis visibly starting, a character turning to the player, then the antagonist acting on screen and speaking in its own voice.
 
 ## Progression and reward cadence
 
@@ -44,8 +44,10 @@ Run these against a selected story before implementing it:
   player say what to do next and why it matters at every beat?
 - **Knowledge timeline.** For each character and the player, list what they know and can name at
   each beat; a character who uses a name, place or fact before it could be known, or a reveal stated
-  before its beat, or hinted so plainly that the player can no longer doubt it, is a defect; a clue
-  that sets up the reveal while leaving it uncertain is foreshadowing.
+  before its beat, or hinted so plainly that the player can no longer doubt it, is a defect; so is a
+  line or objective that names a character, place or threat the player cannot yet place under
+  `roblox-gameplay`'s naming rule, even when the speaker knows it; a clue that sets up the reveal
+  while leaving it uncertain, or a line that explains the name itself, is foreshadowing.
 - **Setups and payoffs.** Every object, place or mechanism the climax relies on is set up earlier,
   and every setup pays off.
 - **Arithmetic.** Sum rewards per beat and check them against every threshold the design states.
