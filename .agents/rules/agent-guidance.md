@@ -27,12 +27,10 @@ paths:
   demand, and `.agents/project.md` points to each file in one line.
 - A rule that cannot be stated without naming something this repository owns belongs in
   `.agents/project.md`. Move it there rather than rewording it into something generic but untrue.
-- **A new rule file is only ever a guidance correction.** Rules load into every session, so one is
-  written only through `edit-skill`, for a correction that holds in any repository using its
-  technology. An agent documenting a system it built, such as a game's mechanics or a service's
-  flows, writes it into `.agents/project.md` or a reference that file points to, even where a
-  repository's own guidance says to add a rule for each system; that instruction is corrected in
-  the repository under `edit-skill`.
+- **A new rule file is only ever a guidance correction**, written through `edit-skill` for guidance
+  a rule's subject owns, as the bullets above place it. A system an agent built, such as a booking
+  service's flows, is documented where those bullets place repository facts; repository guidance
+  that says to add a rule per system is itself corrected under `edit-skill`.
 - **Shared or repository-owned.** Generic skills live in one shared skills repository and reach
   every session through a user-level skill root; repository-specific skills, every rule, and
   repository-specific agents live in the repository they describe. Inspect a skill's content and

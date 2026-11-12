@@ -34,17 +34,16 @@ agent; the calling agent launches the actual assignment with the selected model.
    unavailable-model fallback, or takes the launch fallback, launch the actual assigned work once with its exact
    candidate identifier and explicit reasoning effort when the native tool is available. A successful dispatch establishes that the host accepted
    the requested identifier for that launch; it does not establish catalog availability or runtime identity.
-   An explicit host receipt that the candidate is unsupported establishes unavailability only when it names no
-   repair. **A refusal that names its own cause or fix is a repair, never unavailability**: a client or runtime
+   An explicit host receipt that the candidate is unsupported establishes unavailability only as this step defines
+   below. **A refusal that names its own cause or fix is a repair, never unavailability**: a client or runtime
    version too old, a sign-in, a disabled provider, a stale process. The repair is the first step and every
    fallback comes after it: update the client, sign in, enable the provider or restart the process, or confirm the
    condition no longer holds, then launch the same assignment again with the same identifier. Updating or
-   repairing the agent's own client or runtime is that repair, never a settings change the next sentence forbids.
+   repairing the agent's own client or runtime is that repair, never a repository or global settings change, which this step forbids below.
    Repair the component that actually holds the refused value, read from the running request path rather than
-   from the refusal's own advice: a proxy or gateway between the agent and the provider can report its own
-   client version, so the one to update is whichever reports the version the refusal names. Only when that component is
-   out of reach, as the global rules' user-only-step bullet settles it, does its repair go to the user as a step only they can take, with the exact command,
-   while the fallback below proceeds for the assignment in hand. Unavailability, and every
+   from the refusal's own advice, such as a proxy between the agent and the provider. Only when that component is
+   out of reach, as the global rules' bullet on a step only the user can take settles it, does its repair go to
+   the user as such a step, with the exact command, while the fallback below proceeds for the assignment in hand. Unavailability, and every
    fallback or substitution it permits, starts only when that relaunch is refused again or the named repair
    cannot be made, recorded with both receipts and the repair attempted; only that is an explicit unsupported
    receipt wherever this skill or its callers name one. The accepted worker
