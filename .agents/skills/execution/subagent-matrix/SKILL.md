@@ -64,9 +64,10 @@ agent; the calling agent launches the actual assignment with the selected model.
    assignment at each step and moving on only on an explicit unsupported receipt:
    1. earlier versions of the same family, newest first, found in the host's model-selection surface
       including entries it omits from its short list;
-   2. the family one capability level below, on the same provider first, then the other provider's family at
+   2. the other provider's family at the requested level;
+   3. the family one capability level below, on the same provider first, then the other provider's family at
       that level;
-   3. each lower level in turn, never skipping one. A family another seat or worker already uses is still the
+   4. each lower level in turn, never skipping one. A family another seat or worker already uses is still the
       next step: a fallback chooses by capability, never to keep the families distinct.
    Report the original request as unavailable and name the actual fallback capability and model;
    never relabel it as the requested level. Without that policy, report the unsupported request and host
