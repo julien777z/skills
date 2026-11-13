@@ -258,6 +258,11 @@ alwaysApply: true
   as “as requested” or “per your instructions”; apply the instruction to the result itself.
   Record an exchange only when the user explicitly asks to document that exchange, in a document
   whose purpose is that record.
+- Name what a branch, commit or pull request changes by its category of change, in generic nouns
+  such as page, request or button, without sensitive identifiers or another repository's context. A
+  branch takes the repository's required prefix and a slug of that description. A title stays
+  short; a body may run long with bullets and validation notes when every detail stays generic.
+- Leave branch names and pull-request metadata that automation owns unchanged.
 
 ### README
 

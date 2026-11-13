@@ -1,6 +1,6 @@
 ---
 name: review-pass
-description: Review a change and fix what the review finds, through an independent reviewer on another provider's model in a short loop. Use when the user asks for a code review, a review loop or "sol loop", or as a step of a workflow that finishes a pull request before its merge. Never merges.
+description: Review a change and fix what the review finds, through an independent reviewer on another provider's model in a short loop. Use when the user asks for a code review, a review loop or "sol loop", or to watch, monitor or babysit a pull request for review feedback, or as a step of a workflow that finishes a pull request before its merge. Never merges.
 short_description: 'Review and fix what a pull request has not had reviewed yet, then record the reviewed head.'
 ---
 
@@ -41,6 +41,14 @@ skill never readies, merges or deploys.
   and report its findings without fixing, posting or recording anything.
 - **Loop** (the user asks for a review loop or "sol loop"): run **Review Loop** over the target
   with fixes, and push only when the user asked to push or update the pull request.
+- **Watch** (the user asks to watch, monitor or babysit a pull request for review feedback): run
+  **Review Threads** over the pull request, then keep running it on every new or updated thread,
+  comment and check result, pushing each fix through the GitHub rule's **Pre-Push Gate**. This mode
+  polls: every 30–60 seconds while checks are pending or failing or a thread is open, and for a
+  15-minute quiet window after each push or new finding, since automated reviewers post late. It
+  stops once every check that runs is terminal and green and every thread is resolved or outdated,
+  with no wait past that point. A draft runs no test jobs, so its watch ends on its own checks and
+  reports `draft: watch ended, tests not run`; this mode never readies or merges it.
 
 ## Targets
 
