@@ -14,6 +14,7 @@ START_MARKER: Final[str] = "<!-- skills:start -->"
 END_MARKER: Final[str] = "<!-- skills:end -->"
 FRONT_MATTER_KEY_PATTERN: Final[re.Pattern[str]] = re.compile(r"^([A-Za-z][\w-]*):\s*(.*)$")
 SENTENCE_PATTERN: Final[re.Pattern[str]] = re.compile(r"(?<=[.!?])\s+")
+USER_ONLY_PATTERN: Final[re.Pattern[str]] = re.compile(r"\bonly when the user\b", re.IGNORECASE)
 
 
 def parse_front_matter(path: Path) -> dict[str, str]:
@@ -103,8 +104,8 @@ def render_links(skills: list[tuple[Path, dict[str, str]]]) -> str:
 def render_section(skills: list[tuple[Path, dict[str, str]]]) -> str:
     """Render both skill groups, split by how each one is invoked."""
 
-    user_invoked = [skill for skill in skills if skill[1].get("disable-model-invocation") == "true"]
-    model_invoked = [skill for skill in skills if skill[1].get("disable-model-invocation") != "true"]
+    user_invoked = [skill for skill in skills if USER_ONLY_PATTERN.search(skill[1]["description"])]
+    model_invoked = [skill for skill in skills if not USER_ONLY_PATTERN.search(skill[1]["description"])]
 
     return "\n".join(
         [
@@ -112,7 +113,7 @@ def render_section(skills: list[tuple[Path, dict[str, str]]]) -> str:
             "",
             "### User-Invoked",
             "",
-            "These run only when you ask for them by name, such as `/code-slop-doctor`.",
+            "These run only when you ask for them, by name such as `/code-slop-doctor` or in your own words.",
             "",
             render_links(user_invoked),
             "",
