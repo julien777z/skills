@@ -469,6 +469,9 @@ def section_shape(
 LABEL_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Label", fields={"label": TEXT, "tone": TONE}, required=frozenset({"label"})
 )
+LABEL: Final[Field] = Field(
+    check=partial(check_object, shape=LABEL_SHAPE), typescript="Label", shape=LABEL_SHAPE
+)
 SEGMENT_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Segment",
     fields={"label": TEXT, "details": TEXTS, "tone": TONE, "weight": WHOLE_NUMBER},
@@ -518,6 +521,7 @@ BOARD_CARD_SHAPE: Final[ObjectShape] = ObjectShape(
         "detail": TEXT,
         "meta": TEXT,
         "tag": TEXT,
+        "status": LABEL,
         "url": TEXT,
         "at": TIMESTAMP,
         "links": SOURCE_LINKS,
@@ -663,11 +667,7 @@ TREE_NODE_SHAPE: Final[ObjectShape] = ObjectShape(
         "label": TEXT,
         "detail": TEXT,
         "figure": TEXT,
-        "status": Field(
-            check=partial(check_object, shape=LABEL_SHAPE),
-            typescript="Label",
-            shape=LABEL_SHAPE,
-        ),
+        "status": LABEL,
         "tag": TEXT,
         "meta": TEXT,
         "tone": TONE,
@@ -864,11 +864,7 @@ PAGE_SHAPE: Final[ObjectShape] = ObjectShape(
             shape=PROGRESS_SHAPE,
         ),
         "locked": FLAG,
-        "status": Field(
-            check=partial(check_object, shape=LABEL_SHAPE),
-            typescript="Label",
-            shape=LABEL_SHAPE,
-        ),
+        "status": LABEL,
     },
     required=frozenset({"title", "icon", "sections"}),
     relations=check_page_sections,
@@ -881,11 +877,7 @@ DASHBOARD_SHAPE: Final[ObjectShape] = ObjectShape(
         "icon": ICON,
         "subtitle": TEXT,
         "updated_at": TIMESTAMP,
-        "status": Field(
-            check=partial(check_object, shape=LABEL_SHAPE),
-            typescript="Label",
-            shape=LABEL_SHAPE,
-        ),
+        "status": LABEL,
         "notice": Field(
             check=partial(check_object, shape=NOTICE_SHAPE),
             typescript="Notice",

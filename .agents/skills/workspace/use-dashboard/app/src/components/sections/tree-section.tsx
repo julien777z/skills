@@ -1,7 +1,7 @@
-import { ChevronRight, Maximize2 } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { type ReactNode, useRef, useState } from 'react';
 
-import { RichText, StatusBadge, ToneDot } from '@/components';
+import { DialogOpener, RichText, StatusBadge, ToneDot } from '@/components';
 import { Stack, Text } from '@/components/primitives';
 import { cn, withKeys } from '@/lib/utils';
 import type { TreeNode, TreeSection as TreeSectionSpec } from '@/spec';
@@ -45,16 +45,13 @@ function TreeItem({ node, depth, openDepth }: { node: TreeNode; depth: number; o
         <Stack gap="none" grow>
           <Text size="sm" breakAnywhere>
             {node.details ? (
-              <button
-                ref={opener}
-                type="button"
-                data-dialog-opener
-                onClick={() => setShowDetails(true)}
+              <DialogOpener
+                opener={opener}
+                onOpen={() => setShowDetails(true)}
                 className="text-left focus-visible:underline focus-visible:outline-none"
               >
                 {node.label}
-                <Maximize2 aria-hidden="true" className="ml-1 inline size-3 align-baseline" />
-              </button>
+              </DialogOpener>
             ) : (
               <Text as="span" size="sm" weight="medium">
                 <RichText text={node.label} />

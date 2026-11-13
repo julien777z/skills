@@ -592,9 +592,9 @@ return records;
   migration or maintenance, a rate limit, a lock, a queue, a service or component name, an internal
   state or an error code. A booking that cannot be saved while a service restarts reads "We couldn't
   save your booking right now. Please try again in a few minutes.", never "The booking service is
-  restarting" or "Error 503 from the calendar API". That holds in a message, a status label, a
-  toast or an empty state, in every place the text is written, and in wording a brief proposes to a
-  worker; the full cause goes to the log and to text only the product's team reads.
+  restarting" or "Error 503 from the calendar API". It holds wherever end-user text is written, as
+  the refusal bullet above lists, and in a status label, a toast or an empty state; the full cause
+  goes to the log and to text only the product's team reads.
 - **Text only the product's own team reads states the observed condition and its values, and
   nothing more.** On an internal panel, an operator or support tool, or an internal API, a refusal
   or a report names what was found and lists the values it concerns, such as "Unrecognized shelf

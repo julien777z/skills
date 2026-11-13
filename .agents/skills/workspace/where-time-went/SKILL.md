@@ -31,8 +31,7 @@ pending, by the agent that asked or by any other, still counts.
   is busy from its call to its result.
 - **Every figure is clock time.** A single agent's or assignment's figure is the length of its busy
   intervals. A group's figure, whether a workflow, a round, a phase or the whole session, is the
-  length of the union of its members' busy intervals, so work that ran in parallel counts once and
-  no figure is longer than the clock time it spans.
+  length of the union of its members' busy intervals.
 - **A worker that receives several assignments** over the session is one entry per assignment, each
   from the message that gave it to the end of the work it did; a continuation of the same work after
   a restart or a context summary joins the assignment it continues.
@@ -66,7 +65,8 @@ pages, in order:
 - **Overview** (`overview`). Metrics: the session's working time, the number of agents with the
   split between workers and reviewers as its detail, and the longest workflow's time with its name
   as the detail. A `table` of where the time went: one row per top-level workflow, with its time and
-  assessment, each row opening that workflow's `tree` from the Loops page in a dialog.
+  assessment, each row opening a short write-up of that workflow in a dialog: what it did, its
+  outcome and its longest activity.
 - **Loops** (`list`). One `tree`: each workflow, then its rounds or groups, then the agents or
   assignments inside them, then each one's longest activities as its children. Every entry's
   `figure` is its time; its outcome is its `status` pill in the matching tone, such as Done, Running,

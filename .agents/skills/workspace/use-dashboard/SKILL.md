@@ -16,7 +16,9 @@ diagram is drawn by Mermaid, loaded from jsDelivr, with its connections listed a
 cannot load. The page is dark unless the host's viewer is explicitly set to light
 (`data-theme="light"` on the root element), and renders every value as text, so data never runs
 as markup or script. A dialog opens just below the entry, row or node that opened it, at most 640 px
-tall, or less when the frame or window it opens in is shorter, with its contents scrolling. The
+tall, or less when the frame or window it opens in is shorter, with its contents scrolling; apart
+from that cap, nothing on the page is sized by the viewport's height, so it shows whole in a frame
+that a harness sizes to its content. The
 navbar keeps the title whole and the page links beside it: the page spans up to 1920 px so a wide
 screen shows more links, the links scroll sideways with a visible scrollbar when they still do not
 fit, and they fold into a menu only below 1024 px.
@@ -64,14 +66,14 @@ of a process, carries no count. Section types:
 
 | `type` | Fields | Item fields |
 | --- | --- | --- |
-| `board` | `title`, `columns: [{title, tone?, page_size?, items}]` | `title`, `detail?`, `meta?`, `tag?`, `url?`, `at?`, `links?`: `tag`, `meta` and `at` share one line of small text, in that order |
+| `board` | `title`, `columns: [{title, tone?, page_size?, items}]` | `title`, `detail?`, `status?`, `meta?`, `tag?`, `url?`, `at?`, `links?`: `status` (`{label, tone?}`) the card's state as a pill in its tone; `tag`, `meta` and `at` share one line of small text, in that order |
 | `questions` | `title`, `items`, `page_size?`, `group_label?` | `question`, `status` (`open`, `answered`), `context?`, `options?`, `recommendation?`, `answer?`, `meta?`, `at?`, `group?` |
 | `links` | `title`, `items`, `page_size?`, `group_label?` | `label`, `url`, `detail?`, `status?`, `tone?`, `state?`, `group?`: `state` is a pull request's `open`, `draft`, `merged` or `closed`, drawn with GitHub's icon for it in place of the arrow |
 | `table` | `title`, `columns`, `rows`, `details?` | each row a list of strings, one per column; `details`, one section per row, makes each row open a dialog holding that section, with its title and description as the dialog's |
 | `notes` | `title`, `items` | each item a string |
 | `changes` | `title`, `items`, `page_size?`, `group_label?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`, `links?`, `group?`: a named part with its change as a colored badge |
 | `outline` | `title`, `groups: [{title, items}]`, `expanded?` (every item starts open when true), `stacked?` (groups run in one column, each across the full width, for groups read in order), `collapsible?` (false shows every item in full with no toggle, its `title` as a muted label beside its `detail`, for a short write-up of facts read top to bottom) | `title`, `detail`, `tone?`, `tag?`, `meta?`, `links?`, `points?`: a headline that opens to its detail, with `points` as a bulleted list under it, with `tag` as a badge in the item's tone (neutral without one) and `meta` as small text; without `expanded`, a group of one or two items shows them open |
-| `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `tag?`, `figure?`, `status?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `tag` a short label that tells otherwise alike entries apart, such as the warehouse each parcel left from, in a neutral pill beside its label, `figure` a short count in a neutral badge after that, `status` (`{label, tone?}`) the entry's state as a pill in its tone after the figure, its tone also coloring the entry's dot when the entry sets no `tone`, `meta` beside them, and `details`, one section, opening in a dialog from the entry's label, which then shows as a link with an open icon; for a whole made of parts made of parts |
+| `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `tag?`, `figure?`, `status?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `tag` a short label that tells otherwise alike entries apart, such as the warehouse each parcel left from, in a neutral pill beside its label, `figure` a short quantity, such as a count or a duration, in a neutral badge after that, `status` (`{label, tone?}`) the entry's state as a pill in its tone after the figure, its tone also coloring the entry's dot when the entry sets no `tone`, `meta` beside them, and `details`, one section, opening in a dialog from the entry's label, which then shows as a link with an open icon; for a whole made of parts made of parts |
 | `tabs` | `title`, `tabs: [{label, sections}]` | each tab a `label` and the `sections` it shows: a bar of tab labels, read with the arrow keys as well as the pointer, over the selected tab's sections, which render inside this card in order; a tab whose `sections` is `[]` is left off the bar, and with one tab left no bar shows, only its sections; for one subject split into kinds the reader looks at one at a time |
 | `figures` | `title`, `items`, `stacked?` (one figure per row, each followed by its caption, for pictures read in order) | `image`, `alt`, `caption?`: `image` a base64 data URI of an SVG, PNG, JPEG, WebP or GIF image, a single figure taking the card's width and several two side by side on a wide page, or one per row at a readable width with `stacked`, with `alt` read out in its place and `caption` under it; for what the reader needs to see rather than read, such as a map, a mock-up or a screenshot |
 | `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?`, `legend?` (`[{tone, label}]`, a line in each tone beside what it means) | node: `id`, `label`, `detail?`, `pr?`, `change?`, `tone?`, `details?`, `target?`; edge: `from`, `to`, `label?`, `step?`, `change?`, `tone?`, `details?`; pr: `ref`, `url`; each step a string |
@@ -150,19 +152,17 @@ Dashboards look alike because they are built alike:
 - **Pick the section by the reader's question.** Where is each item? `board`. What needs my answer?
   `questions`. Where do I click? `links`. What does each part say, in a sentence I can open?
   `outline`. What was added or removed? `changes`. Values across the same columns? `table`. Short
-  remarks? `notes`. How do the parts connect? `diagram`. What is this made of, part by part? `tree`.
+  remarks? `notes`. How do the parts connect? `diagram`. What is this made of, part by part — an order and its parcels, a folder and its files? `tree`,
+  never a flat table whose rows name their parent.
   One subject in several kinds, read one kind at a time? `tabs`. What does it look like? `figures`.
-- **Nested data is a tree.** Anything made of parts that have parts of their own — an order and
-  its parcels, a region and its stores, a folder and its files — is a `tree`, never a flat
-  table whose rows name their parent: a reader cannot see nesting in a list of rows.
 - **Detail opens in place.** A tree entry's parts are its `children`, opened from its chevron,
   never a dialog; a dialog through `details` holds what is not a part of the entry, such as a
   write-up about it, a table or a diagram.
 - **A pill is for a state the reader scans for.** A status, a mark such as Matches or Out of date,
   or a pull request's state takes a pill — in a tree, the entry's `status` — never words trailing
-  the entry in `meta`. A short label that tells otherwise alike entries apart, such as the
-  warehouse each parcel left from, takes a tree entry's `tag`, a neutral pill; a longer label saying what kind of
-  thing an item is or which group it belongs to, such as its plan or its type, is plain text. A pill
+  the entry in `meta`; a short label that tells otherwise alike entries apart takes a tree entry's
+  `tag`. A longer label saying what kind of thing an item is or which group it belongs to, such as
+  its plan or its type, is plain text. A pill
   earns its place by telling items apart: statuses that differ from item to item are worth a pill on
   every one, while a pill reading the same on most items has stopped meaning anything.
 - **A figure is a real quantity in a unit the reader knows.** A duration is clock time. A total over
@@ -266,8 +266,6 @@ Use the first route the session offers, and the same one for every update of one
 **Every render is also shown in the conversation** when the harness can show an HTML page inline:
 the first render and every update, a preview included, besides whichever route below carries its
 link, as the [inline display reference](references/inline.md) says for each harness that has one.
-The page's layout sizes nothing by the viewport's height, since an inline frame's height is set by
-the harness rather than by the reader's window; a dialog's height cap is the one exception.
 
 1. **A publishing tool**, whenever the harness offers one. In Codex with Pages tools, apply
    `pages:write-page` and follow the [Spaces publishing reference](references/spaces.md). In Claude,
