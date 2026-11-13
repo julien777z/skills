@@ -110,7 +110,8 @@ body {
   }
 
   a:not([data-slot]),
-  button[data-reference] {
+  button[data-reference],
+  button[data-dialog-opener] {
     @apply font-medium text-info underline-offset-4 hover:underline;
   }
 

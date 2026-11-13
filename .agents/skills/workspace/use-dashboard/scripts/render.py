@@ -663,6 +663,12 @@ TREE_NODE_SHAPE: Final[ObjectShape] = ObjectShape(
         "label": TEXT,
         "detail": TEXT,
         "figure": TEXT,
+        "status": Field(
+            check=partial(check_object, shape=LABEL_SHAPE),
+            typescript="Label",
+            shape=LABEL_SHAPE,
+        ),
+        "tag": TEXT,
         "meta": TEXT,
         "tone": TONE,
         "children": Field(check=check_tree_nodes, typescript="TreeNode[]"),
