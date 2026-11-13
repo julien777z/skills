@@ -183,7 +183,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   in" outline groups by, in that order, `label` the group's title and `figure` the count of its
   items, followed by "Config" and "Migrations" entries when its config or migration changes hold
   anything; and under each area one entry per change, `label` the item's title, or for config and
-  migrations the `name` with `meta` its `change` (Added, Changed or Removed). The tree is the map;
+  migrations the `name` with `status` its `change` (Added, Changed or Removed), toned as the `changes` badge for that change is. The tree is the map;
   the details are in "Change details".
 - **`tabs` "Change details"**:
   the tabs "Code", holding an `outline` "What changed in <pull request name>" per pull request the

@@ -45,7 +45,7 @@ pending, by the agent that asked or by any other, still counts.
 
 Read the session transcript, task and agent records, tool events and descendant records. Use
 timestamps and actual parentage, task briefs, handoffs, skill runs, rounds, actions and terminal
-states. Record assigned scope separately from work actually observed.
+states.
 
 Group loops and rounds from their recorded workflow, launch and handoff provenance: a review loop's
 rounds, a gate's repeated passes, a council, a worker's assignments. A repeat can be a later round
@@ -53,9 +53,7 @@ of the same workflow; name its cause and outcome where recorded. When grouping i
 from the evidence; never make a loop from an inactivity gap. Launch order alone does not number
 rounds. Show every group in scope, not only the latest.
 
-Classify overlapping work by its purpose, such as independent review, handoff, repeated research or
-duplicate implementation; shared files, concurrent lifetimes or repeated reads alone do not establish
-duplication. Assess each top-level workflow as necessary, rework, detour or avoidable only where
+Assess each top-level workflow as necessary, rework, detour or avoidable only where
 evidence supports it, otherwise unknown.
 
 ## Dashboard
@@ -68,8 +66,8 @@ pages, in order:
 - **Overview** (`overview`). Metrics: the session's working time, the number of agents with the
   split between workers and reviewers as its detail, and the longest workflow's time with its name
   as the detail. A `table` of where the time went: one row per top-level workflow, with its time and
-  assessment.
-- **Loops** (`diagram`). One `tree`: each workflow, then its rounds or groups, then the agents or
+  assessment, each row opening that workflow's `tree` from the Loops page in a dialog.
+- **Loops** (`list`). One `tree`: each workflow, then its rounds or groups, then the agents or
   assignments inside them, then each one's longest activities as its children. Every entry's
   `figure` is its time; its outcome is its `status` pill in the matching tone, such as Done, Running,
   Approved, Changes or Flag; the model a reviewer ran on is its `tag`.

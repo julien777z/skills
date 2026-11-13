@@ -3,7 +3,6 @@ import { type ReactNode, useRef, useState } from 'react';
 
 import { RichText, StatusBadge, ToneDot } from '@/components';
 import { Stack, Text } from '@/components/primitives';
-import { Badge } from '@/components/ui/badge';
 import { cn, withKeys } from '@/lib/utils';
 import type { TreeNode, TreeSection as TreeSectionSpec } from '@/spec';
 import { SectionCard } from './section-card';
@@ -64,7 +63,7 @@ function TreeItem({ node, depth, openDepth }: { node: TreeNode; depth: number; o
             {node.tag && (
               <>
                 {' '}
-                <Badge variant="secondary">{node.tag}</Badge>
+                <StatusBadge label={node.tag} dot={false} />
               </>
             )}
             {node.figure && (

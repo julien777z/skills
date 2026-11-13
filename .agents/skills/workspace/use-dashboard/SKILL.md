@@ -70,7 +70,7 @@ of a process, carries no count. Section types:
 | `notes` | `title`, `items` | each item a string |
 | `changes` | `title`, `items`, `page_size?`, `group_label?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`, `links?`, `group?`: a named part with its change as a colored badge |
 | `outline` | `title`, `groups: [{title, items}]`, `expanded?` (every item starts open when true), `stacked?` (groups run in one column, each across the full width, for groups read in order), `collapsible?` (false shows every item in full with no toggle, its `title` as a muted label beside its `detail`, for a short write-up of facts read top to bottom) | `title`, `detail`, `tone?`, `tag?`, `meta?`, `links?`, `points?`: a headline that opens to its detail, with `points` as a bulleted list under it, with `tag` as a badge in the item's tone (neutral without one) and `meta` as small text; without `expanded`, a group of one or two items shows them open |
-| `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `tag?`, `figure?`, `status?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `tag` a short name for what kind of thing the entry is, such as the model that ran it, in a neutral pill beside its label, `figure` a short count in a neutral badge after that, `status` (`{label, tone?}`) the entry's state as a pill in its tone after the figure, its tone also coloring the entry's dot when the entry sets no `tone`, `meta` beside them, and `details`, one section, opening in a dialog from the entry's label, which then shows as a link with an open icon; for a whole made of parts made of parts |
+| `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `tag?`, `figure?`, `status?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `tag` a short label that tells otherwise alike entries apart, such as the warehouse each parcel left from, in a neutral pill beside its label, `figure` a short count in a neutral badge after that, `status` (`{label, tone?}`) the entry's state as a pill in its tone after the figure, its tone also coloring the entry's dot when the entry sets no `tone`, `meta` beside them, and `details`, one section, opening in a dialog from the entry's label, which then shows as a link with an open icon; for a whole made of parts made of parts |
 | `tabs` | `title`, `tabs: [{label, sections}]` | each tab a `label` and the `sections` it shows: a bar of tab labels, read with the arrow keys as well as the pointer, over the selected tab's sections, which render inside this card in order; a tab whose `sections` is `[]` is left off the bar, and with one tab left no bar shows, only its sections; for one subject split into kinds the reader looks at one at a time |
 | `figures` | `title`, `items`, `stacked?` (one figure per row, each followed by its caption, for pictures read in order) | `image`, `alt`, `caption?`: `image` a base64 data URI of an SVG, PNG, JPEG, WebP or GIF image, a single figure taking the card's width and several two side by side on a wide page, or one per row at a readable width with `stacked`, with `alt` read out in its place and `caption` under it; for what the reader needs to see rather than read, such as a map, a mock-up or a screenshot |
 | `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?`, `legend?` (`[{tone, label}]`, a line in each tone beside what it means) | node: `id`, `label`, `detail?`, `pr?`, `change?`, `tone?`, `details?`, `target?`; edge: `from`, `to`, `label?`, `step?`, `change?`, `tone?`, `details?`; pr: `ref`, `url`; each step a string |
@@ -151,21 +151,23 @@ Dashboards look alike because they are built alike:
   `outline`. What was added or removed? `changes`. Values across the same columns? `table`. Short
   remarks? `notes`. How do the parts connect? `diagram`. What is this made of, part by part? `tree`.
   One subject in several kinds, read one kind at a time? `tabs`. What does it look like? `figures`.
-- **Nested data is a tree.** Anything made of parts that have parts of their own — agents and the
-  agents they started, a workflow and its rounds, a folder and its files — is a `tree`, never a flat
+- **Nested data is a tree.** Anything made of parts that have parts of their own — an order and
+  its parcels, a region and its stores, a folder and its files — is a `tree`, never a flat
   table whose rows name their parent: a reader cannot see nesting in a list of rows.
-- **Detail opens in place.** A tree entry's parts are its `children`, opened from its chevron; a
-  dialog through `details` holds only what cannot be children, such as a table or a diagram.
+- **Detail opens in place.** A tree entry's parts are its `children`, opened from its chevron,
+  never a dialog; a dialog through `details` holds what is not a part of the entry, such as a
+  write-up about it, a table or a diagram.
 - **A pill is for a state the reader scans for.** A status, a mark such as Matches or Out of date,
   or a pull request's state takes a pill — in a tree, the entry's `status` — never words trailing
-  the entry in `meta`. A short label that tells otherwise alike entries apart, such as the model
-  each one ran on, takes a tree entry's `tag`, a neutral pill; a longer label saying what kind of
+  the entry in `meta`. A short label that tells otherwise alike entries apart, such as the
+  warehouse each parcel left from, takes a tree entry's `tag`, a neutral pill; a longer label saying what kind of
   thing an item is or which group it belongs to, such as its plan or its type, is plain text. A pill
   earns its place by telling items apart: statuses that differ from item to item are worth a pill on
   every one, while a pill reading the same on most items has stopped meaning anything.
 - **A figure is a real quantity in a unit the reader knows.** A duration is clock time. A total over
   work that ran in parallel counts overlapping time once, so no total is longer than the clock time
-  it spans. Never coin a unit, such as "agent time", or label a figure with how it was computed.
+  it spans. Never coin a unit, such as "staff-hours" for work that ran side by side, or label a
+  figure with how it was computed.
 - **Text says what it means where it stands.** A line never sends the reader elsewhere to make
   sense of it, such as "at step 2" or "see above": it says what happens then, such as "after the
   batch is frozen". A numbered title keeps its number; the text about it never leans on one.
@@ -261,11 +263,10 @@ Every render the user is shown goes out through this section, including a previe
 test of a change to the page: a screenshot of a render is a capture of the page, never its delivery.
 Use the first route the session offers, and the same one for every update of one dashboard.
 
-**Every render is also shown in the conversation** when the harness can show an HTML page inline,
-such as T3 Code's `html_preview` and `html_render`: the first render and every update, a preview
-included, besides whichever route below carries its link. Preview the full page to read its content
-height, then show it at that height, up to the tool's limit. The page sizes nothing by the viewport's
-height, since an inline frame grows to fit the page.
+**Every render is also shown in the conversation** when the harness can show an HTML page inline:
+the first render and every update, a preview included, besides whichever route below carries its
+link, as the [inline display reference](references/inline.md) says for each harness that has one.
+The page sizes nothing by the viewport's height, since an inline frame grows to fit the page.
 
 1. **A publishing tool**, whenever the harness offers one. In Codex with Pages tools, apply
    `pages:write-page` and follow the [Spaces publishing reference](references/spaces.md). In Claude,
