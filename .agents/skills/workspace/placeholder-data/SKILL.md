@@ -6,7 +6,6 @@ description: >-
   read it the same way. Use when the user pastes an API response or payload and
   asks to sanitize, placeholder, or anonymize it for copy-paste.
 short_description: 'Turn a pasted API payload into the same shape with obviously fake values.'
-disable-model-invocation: true
 ---
 
 # Placeholder Data

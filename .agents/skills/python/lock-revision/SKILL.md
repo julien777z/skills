@@ -1,8 +1,7 @@
 ---
 name: lock-revision
-description: Lock the database revisions a branch has added or changed so far, including default-branch revisions it re-parented or edited, because they may be deployed to a test environment, so every later schema or stored-data change goes into a new revision. Each invocation locks the revisions added or changed since the last one.
+description: Lock the database revisions a branch has added or changed so far, including default-branch revisions it re-parented or edited, because they may be deployed to a test environment, so every later schema or stored-data change goes into a new revision. Each invocation locks the revisions added or changed since the last one. Use only when the user asks to lock the branch's revisions.
 short_description: 'Lock the current migration revisions before a test deploy; later changes go in a new revision, pushed once the user lets revisions resume.'
-disable-model-invocation: true
 ---
 
 # Lock Revision

@@ -19,8 +19,8 @@ catalogue, or memory. Plugin and built-in harness skills are outside both source
 
 ## Each Entry
 
-- **Invocation**: `user` when the frontmatter sets `disable-model-invocation: true`, otherwise
-  `model`.
+- **Invocation**: `user` when the description runs the skill only at the user's request, such as
+  "Run only when the user asks for it", otherwise `model`.
 - **Summary**: the `short_description`, or, without one, the `description` cut to one or two lines
   that say what the skill does. Never invent a summary the frontmatter does not support.
 

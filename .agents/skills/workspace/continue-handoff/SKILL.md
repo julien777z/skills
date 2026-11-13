@@ -2,7 +2,6 @@
 name: continue-handoff
 description: Pick up work another session handed off. Use when the user pastes a hand-off message or names pull requests whose work should continue. Revalidate inherited factual claims against their current sources before using them to choose an action, report an outcome or repeat a question; preserve the user's recorded decisions and continue authorized work.
 short_description: 'Pick up work another session handed off.'
-disable-model-invocation: true
 ---
 
 # Continue Hand-Off

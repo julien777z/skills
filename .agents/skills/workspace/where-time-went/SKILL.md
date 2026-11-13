@@ -2,7 +2,6 @@
 name: where-time-went
 description: "Report where time and usage went in the current session, including the main agent, waits, subagents, repeated work and scope overlap. Use only when the user invokes it."
 short_description: 'Show where session time and usage went.'
-disable-model-invocation: true
 ---
 
 # Where Time Went
