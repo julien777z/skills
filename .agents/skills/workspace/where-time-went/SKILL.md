@@ -53,8 +53,8 @@ of the same workflow; name its cause and outcome where recorded. When grouping i
 from the evidence; never make a loop from an inactivity gap. Launch order alone does not number
 rounds. Show every group in scope, not only the latest.
 
-Assess each top-level workflow as necessary, rework, detour or avoidable only where
-evidence supports it, otherwise unknown.
+Assess each top-level workflow as necessary, rework, detour or avoidable only where evidence supports
+it, otherwise unknown.
 
 ## Dashboard
 
