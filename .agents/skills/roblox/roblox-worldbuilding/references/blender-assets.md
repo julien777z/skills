@@ -9,5 +9,3 @@ Use Blender for original reusable meshes when it improves the result: characters
 - Do not ship scripts embedded in catalog/model imports merely because the geometry is useful. Inspect imported executable content and retain only intended, understood game code.
 
 Follow the parent [worldbuilding skill](../SKILL.md) for measured triangle budgets, reuse, scene composition, and performance verification. Keep the editable source and confirm the final Studio import matches the intended materials, scale, and silhouette.
-
-For walking creatures, preserve authored geometry while assigning limbs to a small weighted skeleton. Keep bone names and the creature animation profile in agreement. Import with the custom rig intact, restore any dropped material colors by named mesh, and verify actual limb deformation in Play. A successful Bone.Transform assignment is not visual proof. Roblox stores the skin weights in the imported mesh asset; see [rigging and skinning](https://create.roblox.com/docs/art/modeling/rigging) and [Bone.Transform](https://create.roblox.com/docs/reference/engine/classes/Bone/Transform).

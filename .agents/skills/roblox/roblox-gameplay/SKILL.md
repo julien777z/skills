@@ -10,6 +10,7 @@ short_description: 'Apply every time actively modifying a Roblox game, including
 
 - `roblox-ui`
 - `roblox-worldbuilding`
+- `roblox-characters`
 - `luau`
 
 ## Make success clear and satisfying
@@ -48,9 +49,11 @@ Show locked content where the player will use it, together with what unlocks it:
 
 Where the game allows it, let what the player did stay visible in the world: ground they cleared, a structure that grows as they invest in it, NPCs that react to what they chose, their name on what they own. The world then shows progress without a meter. Drive these changes from authoritative state, bound them, and keep them consistent on rejoin and streaming.
 
-## Navigation and travel presentation
+## Navigation, movement and travel presentation
 
 Make the current objective and next useful action easy to find without covering play. Use a HUD cue, in-world guidance, or another presentation suited to the game. Keep route cues attached to traversable paths, and suppress them when they would obstruct conversations, encounters, or modal screens. Preserve destination information through streaming and restore camera/input after failed transitions.
+
+Anything that moves in view, such as a walker, an indicator following a target or a guide line, reads smooth on every client every frame: a position the server steps on a timer or replicates at network rate is drawn as jumps, so the client draws each mover along its path every frame from what the server decides, through one movement mechanism every mover of that kind shares.
 
 Travel choices should describe their actual destination and action. Reveal locked or unexplored destinations according to the game's progression contract, and preserve access the player has earned. Keep transition effects readable, bounded, and compatible with reduced motion.
 
@@ -68,20 +71,6 @@ Walking through a door into an interior of the same place is entering a room, no
 
 In the focused loading check, observe arrival through the handoff to gameplay, including a slow or failed load where relevant. Confirm the intended avatar state during loading, that no hidden gameplay or falling occurs, and that camera/input ownership returns correctly. Reuse that evidence during delivery instead of adding another walkthrough.
 
-## NPCs and readable, animated characters
-
-A walking NPC or creature needs visible locomotion that matches its movement, starts and stops with travel, and turns smoothly. Moving a rigid model along a path is not sufficient. Give flying or floating creatures deliberate locomotion appropriate to their anatomy, such as flapping, tentacle movement, or hovering. Preserve authored silhouettes and use rigged or intentionally articulated assets; verify actual visible motion in Play rather than assuming a running animation track proves it works. Anything that moves in view, such as a walker, an indicator following a target or a guide line, reads smooth on every client every frame: a position the server steps on a timer or replicates at network rate is drawn as jumps, so the client draws each mover along its path every frame from what the server decides, through one movement mechanism every mover of that kind shares.
-
-Stand each NPC where its role puts it, on or beside the path a player arrives by or at its own place such as a doorway, stall, bench or garden, never alone in open ground, and face it toward the route the player approaches from, so the player meets its front and its prompt on that side. Ground each walking or standing NPC against the actual authored surface using its rig and foot geometry, rather than a guessed root-height offset. Verify both feet from a low side view after appearance changes and through idle animation; neither floating nor feet sunk into paths is acceptable. Hovering must be an intentional creature design with appropriate motion.
-
-Give stationary NPCs visible, restrained idle animation: breathing, a small weight shift, or an occasional glance suited to their character. Standing still must not look frozen. Reuse the rig's animation owner, vary poses where appropriate, keep feet planted, and clean up on streaming or despawn. A prop a character carries, such as an umbrella, a book or a lantern, reads as held: pose the arm so the forearm comes forward and place the prop just in front of the palm, resting on it or hanging over the forearm, so it moves with the hand through idle and gestures. A prop passing through the middle of a blocky hand or floating beside a straight arm fails; verify it from the front and side in Play.
-
-For face-to-face conversations, guide the player to a clear spot in front of the NPC using actual walking and walking animation before framing the dialogue. Use the NPC's facing or a named conversation anchor, validate the approach and final proximity on the server, and avoid walking through obstacles or other characters. Bound the approach, cancel it on death, departure, or interruption, and restore controls if it fails. Do not snap the player across the scene or frame a conversation from behind either speaker. A conversation opens with a line from the character the player spoke to, and the camera holds one framing while the same speaker talks, moving only when the speaker changes. A character who appears only for a scene, such as an antagonist's entrance, arrives for it and leaves visibly when it ends, carries no prompt the player can walk up to, and returns only when a later scene stages it.
-
-When the game uses overhead names or indicators, keep them readable during the interactions they serve. Add level, health, or interaction information only when it helps the player. Hide overhead names while a conversation shows its speaker's name. Bound viewing distance, avoid labels through walls and dense overlaps, and clean up labels and animation ownership on despawn, streaming, and encounter transitions.
-
-When a game has repeated creature types, share their definitions and lifecycle. Keep appearance, locomotion, statistics, and abilities in one owned contract rather than duplicating behavior per map. Creature-only abilities use the game's authoritative validation and must not become player actions through an unchecked client request.
-
 ## Companions when the game calls for them
 
 When companions fit the game, give them understandable useful behavior and a clear role rather than adding them as a checklist feature. Show their contribution with readable actions and feedback, give them character, and keep them from blocking controls, navigation, performance, or the player's own sense of agency.
@@ -96,7 +85,7 @@ When a game sells items, a paid action never looks like free progression or help
 
 Play the affected loop through ordinary controls. Observe how quickly a beginner understands the next action, whether success is visible/audible, whether rewards agree with real state, and whether another attempt feels inviting. Check feedback at normal player pace and during rapid repeated successes, including overlap, audio buildup, cleanup, and performance. Keep stronger milestones distinct from routine hits.
 
-When the work involves React-rendered UI, apply `roblox-ui` for clarity and its scheduled repeated-click checks. Apply `roblox-worldbuilding` for maps and world content and `luau` when reading or changing Luau, including authority and cleanup. Return non-interfering Play tests to the caller. Static checks cannot establish enjoyment; short playtests cannot prove long-term retention.
+When the work involves React-rendered UI, apply `roblox-ui` for clarity and its scheduled repeated-click checks. Apply `roblox-worldbuilding` for maps and world content, `roblox-characters` for NPCs, creatures and avatars, and `luau` when reading or changing Luau, including authority and cleanup. Return non-interfering Play tests to the caller. Static checks cannot establish enjoyment; short playtests cannot prove long-term retention.
 
 ## Learn from evidence
 

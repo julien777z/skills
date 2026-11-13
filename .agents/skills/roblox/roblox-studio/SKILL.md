@@ -14,6 +14,7 @@ Carry a Roblox game request through implementation, visual polish, real playtest
 - `share-captures`
 - `roblox-ui`
 - `roblox-worldbuilding`
+- `roblox-characters`
 - `roblox-gameplay`
 - `agent-lock`
 - `test-fixture`
@@ -42,9 +43,9 @@ Apply `roblox-worldbuilding` and its world-space text reference whenever changin
 
 Keep generated scripts separate from imported assets and Studio-authored scenery. Maintain editable source, Blender originals, exported assets, and build instructions. A routine script rebuild must preserve manual art. Test that the saved/rebuilt place contains the actual assets and terrain, rather than relying on the current Studio session or cached meshes.
 
-## Avatars and assets
+## Assets and characters
 
-Read [Asset and avatar standards](references/assets-and-avatars.md) for imported and uploaded assets and character presentation. Preserve the player's avatar unless an override is requested or required by the game. Verify proportions, faces, attachments, locomotion, and action animations in play.
+Read [uploaded asset standards](references/uploaded-assets.md) before uploading an asset for the game. Apply `roblox-characters` for avatars, NPCs, creatures, their rigs and their animation.
 
 ## Record operational lessons as they occur
 
