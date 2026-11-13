@@ -589,11 +589,18 @@ return records;
   an API or tool whose text reaches an end user, a server-side enum or constant that holds the
   text, a test fixture, and wording a brief proposes to a worker.
 - **Text an end user reads speaks in what the reader cares about, never in the system's exact
-  values.** Where a precise number, state or count changes nothing the reader does, say it in plain
-  words: a fuel tank holding a few drops is "empty", a wait of 59 seconds is "a minute". Keep the
-  exact value only where the reader acts on it, such as a price, a quantity they choose or a figure
-  they compare, and never add a qualifier such as "almost" or "about" only to make plain words
-  technically exact.
+  values or its inner workings.** Where a precise number, state or count changes nothing the reader
+  does, say it in plain words: a fuel tank holding a few drops is "empty", a wait of 59 seconds is
+  "a minute". Keep the exact value only where the reader acts on it, such as a price, a quantity
+  they choose or a figure they compare, and never add a qualifier such as "almost" or "about" only
+  to make plain words technically exact. The cause behind a failure or a wait stays out of it too
+  when the cause is the system's own: a version, an update or release, a deployment or rollback, a
+  migration or maintenance, a rate limit, a lock, a queue, a service or component name, an internal
+  state or an error code. A booking that cannot be saved while a service restarts reads "We couldn't
+  save your booking right now. Please try again in a few minutes.", never "The booking service is
+  restarting" or "Error 503 from the calendar API". It holds wherever end-user text is written, as
+  the refusal bullet above lists, and in a status label, a toast or an empty state; the full cause
+  goes to the log and to text only the product's team reads.
 - **Text only the product's own team reads states the observed condition and its values, and
   nothing more.** On an internal panel, an operator or support tool, or an internal API, a refusal
   or a report names what was found and lists the values it concerns, such as "Unrecognized shelf
