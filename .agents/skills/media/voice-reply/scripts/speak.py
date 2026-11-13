@@ -12,7 +12,7 @@ import urllib.request
 from pathlib import Path
 
 DEFAULT_SPEECH_URL = "http://localhost:8880/v1/audio/speech"
-DEFAULT_VOICE = "af_sky"
+DEFAULT_VOICE = "af_bella"
 SPEECH_TIMEOUT_SECONDS = 300
 
 

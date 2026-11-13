@@ -17,7 +17,7 @@ written beneath it, so the exchange is heard and recorded at once.
 
 - **The voice is a local text-to-speech service with an OpenAI-compatible speech endpoint**, read
   from `VOICE_REPLY_SPEECH_URL` (default `http://localhost:8880/v1/audio/speech`) with the voice
-  from `VOICE_REPLY_VOICE` (default `af_sky`). The VoiceMode installer (`uvx voice-mode-install`)
+  from `VOICE_REPLY_VOICE` (default `af_bella`). The VoiceMode installer (`uvx voice-mode-install`)
   sets up Kokoro on that port; `voicemode service start kokoro` starts it.
 - Before the first reply, check the service answers at its `/health` route beside the endpoint, and
   start it when it does not. Its first clip after a start takes far longer while the model warms up.
