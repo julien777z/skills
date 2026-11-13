@@ -107,7 +107,7 @@ These run only when you ask for them by name, such as `/code-slop-doctor`.
 - [`security-doctor`](.agents/skills/doctors/security-doctor/SKILL.md) — Find and fix the exploitable vulnerabilities in a codebase, each proven by a concrete attack.
 - [`skill-gauntlet`](.agents/skills/authoring/skill-gauntlet/SKILL.md) — Audit installed agent skills and evaluate upgrades or retirement.
 - [`tests-doctor`](.agents/skills/doctors/tests-doctor/SKILL.md) — Audit tests for contract value, redundant proof, weak assertions, runtime, provider rate limits, and determinism.
-- [`where-time-went`](.agents/skills/workspace/where-time-went/SKILL.md) — Show where session time and usage went.
+- [`where-time-went`](.agents/skills/workspace/where-time-went/SKILL.md) — Show where session working time went, as a dashboard.
 - [`widen-scope`](.agents/skills/execution/widen-scope/SKILL.md) — Turn on cleanup of the problems the work runs into for the rest of the session.
 
 ### Model-Invoked
