@@ -34,7 +34,7 @@ accepting a map or a visual pass:
   their shares.
 - **Primitive stand-ins.** In every space a player enters, an interior included, list the
   structures, furnishings and props built from plain primitive parts in one smooth material, such as
-  a box house with flat colored panels for windows or a counter made of three blocks, and count them
+  a box house with flat colored panels for windows or a bed made of three blocks, and count them
   against the modeled meshes in the same view. Replace them with modular kit pieces or meshes,
   focal and arrival areas first, and compare the result with the art direction the game states or
   the reference the user gave; a space that still reads as built from blocks fails the pass however
@@ -42,14 +42,14 @@ accepting a map or a visual pass:
 - **Ground.** Large open areas carry more than one terrain material and some height variation,
   with paths, edges and clusters breaking them up; one flat material from the camera to the
   horizon is an empty field.
-- **Sibling places.** When a pass builds several places of one kind, such as shops on a street,
-  houses in a village or rooms in a dungeon, lay their captures side by side and compare them as a
+- **Sibling places.** When a pass builds several places of one kind, such as houses in a village,
+  cabins at a campsite or rooms in a dungeon, lay their captures side by side and compare them as a
   set. Each place's purpose shows in its own floor plan, structure, materials, lighting and one
-  centerpiece; places that share one shell and differ only in tint, signage or the props on the
-  shelves read as one room repeated, however well each is furnished. A shared builder is fine when
+  centerpiece; places that share one shell and differ only in tint, signage or the loose props
+  read as one room repeated, however well each is furnished. A shared builder is fine when
   its parameters change the plan and structure, not only the colors.
-- **Fronts.** List every object with a front, such as a lectern, display case, sign, seat, cabinet,
-  shelf or mannequin, and confirm from the captures that each front faces the space players stand
+- **Fronts.** List every object with a front, such as a sign, bench, fireplace, notice board,
+  statue or stage, and confirm from the captures that each front faces the space players stand
   in or approach from. A front turned to a wall, or an object whose shape does not read as what it
   is, is moved, rotated or replaced before the pass is accepted.
 - **Light and palette.** Capture the arrival area and each region from the gameplay camera under
