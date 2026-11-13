@@ -1,8 +1,10 @@
 from collections.abc import Mapping, Sequence
+from datetime import timedelta
 from typing import Literal, NotRequired, TypedDict
 
 type JsonValue = str | int | float | bool | None | Sequence[JsonValue] | Mapping[str, JsonValue]
 type ToolArguments = Mapping[str, JsonValue]
+type Position = tuple[float, float, float]
 
 
 class RunnerConfig(TypedDict):
@@ -28,6 +30,22 @@ class AgentLockCheckReport(TypedDict):
     status: str
     ownership: LockOwnership
     remaining_seconds: float
+
+
+class AgentLockAcquireReport(TypedDict):
+    """An agent-lock acquire report."""
+
+    status: str
+    ownership: LockOwnership
+    remaining_seconds: NotRequired[float]
+    expired_owner: NotRequired[str | None]
+
+
+class RunnerLease(TypedDict):
+    """The game's runner and how long a receipt's lease on its lock has left."""
+
+    config: RunnerConfig
+    remaining: timedelta
 
 
 class McpTextContent(TypedDict):
@@ -90,3 +108,10 @@ class StudioButton(TypedDict):
     y: float
     width: float
     height: float
+
+
+class PlaceIds(TypedDict):
+    """The place and universe IDs an editor's Edit data model reports."""
+
+    placeId: int
+    universeId: int
