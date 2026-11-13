@@ -73,7 +73,7 @@ alwaysApply: true
 - **Open every pull request as a draft and keep it draft until it merges.** The user reviews it as
   a draft; it leaves draft once, as the first step of an authorized merge through `merge-gate`, so its
   test jobs run once, on the head about to merge. Never mark one ready to start its tests, to show
-  it finished, or to hand it to the user; a follow-up keeps pushing to the draft.
+  it finished, or to hand it to the user.
 - Keep pull requests focused and give them descriptive titles and descriptions; request appropriate reviewers when the repository workflow requires them.
 - **A description is written from what is already known, never by re-reading the history.** The
   agent that did or coordinated the work writes it from its own record of the change, the existing
@@ -94,10 +94,13 @@ alwaysApply: true
   requirement in terms of this repository's own contract; disclose provider PR links and merge
   ordering to the user in chat.
   `merge-gate` still owns the complete dependency inventory and readiness gate.
-- **Each session opens its own source pull request in each repository.** Later source work in the
-  same session joins that pull request rather than creating one per concern or worker. Continue a
-  source pull request from another session only when the user, an applicable invoked skill, or a
-  repository rule explicitly directs that continuation. A matching topic, existing branch, open
+- **Put follow-up source work on the session's in-progress source pull request for that repository.**
+  Before proposing a branch, assigning a worker, or starting edits, resolve the task's source pull
+  request from its recorded receipt and verify that it is open. Keep distinct concerns and worker
+  contributions on that pull request, in separate commits where appropriate. Open a new source pull
+  request only when none is in progress or the user directs a split. Apply the agent-configuration
+  routing below to guidance. Continue a source pull request from another session only when the user,
+  an applicable invoked skill, or a repository rule explicitly directs that continuation. A matching topic, existing branch, open
   state, or recorded touch does not supply that instruction. Verify the selected pull request's
   owner, state and scope before updating it; leave other sessions' pull requests and branches
   untouched, apart from damaged local Git state `update-skills` backs up and repairs.
