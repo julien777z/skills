@@ -8,7 +8,8 @@ amend its merge, or substitute the current branch for this range.
 Initially there is no working pull request. Inspect and validate findings against the complete
 delivered range and its repository context. Read existing source-check and deployment evidence;
 do not create an empty branch or pull request just to rerun validation on unchanged delivered code.
-Simplification, thread triage, and review may each discover the first confirmed finding.
+Thread triage, the security review and the review loop may each discover the first confirmed
+finding.
 
 Once a finding requires a correction, fetch the default branch and create the fix branch there.
 Implement the correction, run its required source checks, push, and create the new draft fix pull
@@ -17,6 +18,7 @@ pull request while retaining the immutable range as the original review target. 
 same repository's confirmed findings into the appropriate working fix pull request.
 
 Pass both the complete original range and complete fix diff to reviewers and validators, with each
-remedy increment identified. Description refresh, tests for the changed behavior, final acceptance,
-and the caller's exact-head merge gating operate on the fix pull request. The original merge remains unchanged.
-A clean range with no correction has no working pull request and no merge step.
+remedy increment identified. Description refresh, tests for the changed behavior and final
+acceptance operate on the fix pull request, and the accepted head this pass returns is the fix pull
+request's. The original merge remains unchanged. A clean range with no correction has no working
+pull request and no merge step.

@@ -5,6 +5,7 @@ Apply this guidance to the requested genre and map. Preserve its art direction, 
 ## Composition and traversal
 
 - Establish a small visual language: palette, materials, architecture, vegetation, silhouettes, and focal landmarks. Detail the player's arrival and main routes first, then connect the rest of the world coherently.
+- Compose the arrival view so the first activity is in sight and its route reads as the way in. A preview of a later goal, such as a gate stating its requirement, a distant landmark or a locked doorway, can share the view without competing with it. When features meant for later stages share the arrival view, mark the current route so they are not mistaken for it, and keep those features inert and harmless from the start area.
 - Compose views at normal camera height. Use varied tree/building clusters, terrain contours, paths, landmarks, foreground detail, and quieter resting spaces. Keep routes readable and preserve space for movement and gameplay cameras.
 - Detail the faces players actually approach. A building can appear finished from one side while presenting blank walls on the main path. Check roof orientation, gables, windows, doors, trim, and ground transitions in both directions.
 - Treat entrances, branches, crossings, and the main traversal network as connected routes. Every intended access path must meet both its destination threshold and an actual connected route edge. Do not stop a connector at an arbitrary length, clamped coordinate, or nearby point and assume the remaining gap is acceptable. Intentional broken routes, dead ends, or unpaved transitions need a clear visual purpose and navigable continuation where gameplay requires it.
@@ -20,6 +21,42 @@ Apply this guidance to the requested genre and map. Preserve its art direction, 
 - Give a larger map distinct, connected areas with believable transitions in terrain, materials, buildings, and vegetation. Detail should support each area's role and guide exploration; scattered repeated props do not substitute for composition.
 - Use textured, economical meshes where silhouette and surface detail improve the scene. Measure mesh budgets, reuse assets, and verify performance and loading in play. Enable streaming when appropriate for scale, then test destination loading, disappearance/reappearance, and interior transitions; triangle counts alone do not prove performance.
 - Exclude content spatially when it does not belong in an introductory or restricted area instead of scattering unusable interactions through that area.
+
+## Scene audit
+
+The qualitative criteria above pass easily in prose and fail in the scene, so measure them before
+accepting a map or a visual pass:
+
+- **Repetition.** Count instances per mesh or model asset across the map and per region. When one
+  asset makes up a large share of a category, such as a single tree model forming most of the
+  vegetation, add variants of that asset — at least three shapes for anything repeated hundreds of
+  times — and vary scale, rotation and tint within a deliberate range. Report the top assets and
+  their shares.
+- **Primitive stand-ins.** In every space a player enters, an interior included, list the
+  structures, furnishings and props built from plain primitive parts in one smooth material, such as
+  a box house with flat colored panels for windows or a bed made of three blocks, and count them
+  against the modeled meshes in the same view, then compare the space with the art direction the
+  game states or the reference the user gave. Where that direction calls for modeled detail, replace
+  them with modular kit pieces or meshes, focal and arrival areas first; a space that still reads as
+  built from blocks against it fails the pass however well it is arranged.
+- **Ground.** Large open areas carry more than one terrain material and some height variation,
+  with paths, edges and clusters breaking them up; one flat material from the camera to the
+  horizon is an empty field.
+- **Sibling places.** When a pass builds several places of one kind, such as houses in a village,
+  cabins at a campsite or rooms in a dungeon, lay their captures side by side and compare them as a
+  set. Each place's purpose shows in its own floor plan, structure, materials, lighting and one
+  centerpiece; places that share one shell and differ only in tint, signage or the loose props
+  read as one room repeated, however well each is furnished. A shared builder is fine when
+  its parameters change the plan and structure, not only the colors.
+- **Fronts.** List every object with a front, such as a sign, bench, fireplace, notice board,
+  statue or stage, and confirm from the captures that each front faces the space players stand
+  in or approach from. A front turned to a wall is moved, rotated or replaced before the pass is
+  accepted.
+- **Light and palette.** Capture the arrival area and each region from the gameplay camera under
+  the lighting and time of day players see at runtime, with runtime-loaded terrain present, and
+  compare the result with the game's stated art direction or the reference the user gave. Lighting
+  that buries the palette in dark or desaturated tones fails a bright or colorful direction even
+  when every asset is right.
 
 ## Functional placement
 
@@ -70,7 +107,7 @@ If a game defines protected traversal areas, share their actual geometry between
 
 For a local geometry repair, focused desktop coverage is normally sufficient; broaden coverage for new maps, substantial changes, or device-specific concerns according to the selected test scope. Walk across repaired surfaces and joins in both directions, then move the camera around them at low, normal, and elevated supported angles. Inspect the perimeter as well as the main approach for grass penetration, flicker, gaps, floating edges, and collision snags. Fix defects found in that pass and recheck their immediate neighbors. Record representative views of the actual saved/rebuilt scene, not only the currently edited viewport.
 
-Use normal-input coverage for affected routes, and follow the selected Studio workflow for terrain archives, spatial-query performance, lighting, and delivery. Use [Blender and imported assets](blender-assets.md) for Blender/import details; keep those procedures canonical there.
+Use normal-input coverage for affected routes. Use [Blender and imported assets](blender-assets.md) for Blender/import details; keep those procedures canonical there.
 
 ## Frame-relative terrain and scenery
 

@@ -26,7 +26,7 @@ Keep authoritative state and rewards on the server. Client requests express inte
 
 Preserve session ownership, serialized saves, failed-load protection, shutdown saves, and once-only rewards. Never overwrite a failed load with defaults. Keep saves and gameplay contracts unchanged unless the task authorizes a change. Use isolated Studio profiles and validation keys when testing persistence. Development commands require server-side authorization.
 
-Separate animation/camera completion from authoritative resolution. Missing assets, slow rendering, or cancelled effects must not stall gameplay. Keep content definitions, gameplay services, and client presentation distinct without imposing a large architecture on a small feature.
+Separate animation/camera completion from authoritative resolution. Missing assets, slow rendering, or canceled effects must not stall gameplay. Keep content definitions, gameplay services, and client presentation distinct without imposing a large architecture on a small feature.
 
 ## Structured player persistence
 
@@ -48,4 +48,4 @@ Give connections, render callbacks, tweens, spawned/delayed work, and camera own
 
 ## Keep guidance current
 
-Record verified reusable Luau/tooling issues and solutions here or in its references. Put React-specific lessons in `roblox-react`, Studio operations in `roblox-studio`, and game-specific rules in the project skill. Replace superseded guidance, label unresolved limits, and leave evidence/logs in the workspace. Edit canonical `.agents` content only; generated provider mirrors belong to Agent Sync.
+Record verified reusable Luau/tooling issues and solutions here or in its references. A lesson whose subject another skill owns goes there, and game-specific rules go in the project skill. Replace superseded guidance, label unresolved limits, and leave evidence/logs in the workspace. Edit canonical `.agents` content only; generated provider mirrors belong to Agent Sync.

@@ -19,8 +19,7 @@ of that proof; agreement in one never establishes agreement in another.
 1. Establish the authorized outcome, environments and mutation boundaries. Apply the global
    Tailscale policy for naming, groups and tag ownership. Discover each repository's deployment
    procedure and configuration owner from its project guidance. This procedure reconciles a
-   Tailscale change; a general configuration audit remains owned by `code-slop-doctor`'s
-   **Configuration Drift** lens, which runs only when that doctor is directly invoked. Reading a
+   Tailscale change and is no general configuration audit. Reading a
    deployment procedure supplies its read-only inspection route and never authorizes a rollout.
 2. Discover Git repositories within the user's authorized collection, accessible sibling roots and
    worktrees, and previously established task targets. Normalize remotes and deduplicate worktrees
@@ -54,8 +53,14 @@ of that proof; agreement in one never establishes agreement in another.
    when sharing would grant a consumer authority belonging to another environment; retain sharing
    when the authorized consumers need the same authority. Do not prescribe either topology from
    the incident. Reconcile policy, service and route ownership with the chosen identities without
-   broadening permissions merely to make a failed operation pass. Surface any unsettled security
-   choice before applying it while continuing independent authorized work.
+   broadening permissions merely to make a failed operation pass. When Tailscale defines access to
+   a service, keep that decision in tailnet policy. Check every route to the backend, including
+   paths around a gateway. If a shared identity can bypass the intended access boundary, give the
+   intended consumer a narrowly owned identity and remove the broader grant. Do not compensate
+   with a second access policy, a service secret, or a forwarded proof header. Keep authentication
+   for distinct application operations and protections against requests from other browser origins.
+   Surface any unsettled security choice before applying it while continuing independent authorized
+   work.
 6. Prepare the replacement authority and a cutover sequence that keeps required consumers working.
    Update every affected consumer within the authorized scope through its existing configuration
    and credential owner: canonical source, live runtime bindings and automated runner references
@@ -69,8 +74,10 @@ of that proof; agreement in one never establishes agreement in another.
    that boundary. Verify automated jobs with their actual runner identity and secret scope; a
    local credential test cannot establish their cutover. Use authorized read-only checks or the
    repository's designated mutation target as appropriate. A green workflow, an active deployment,
-   a policy check or a health endpoint bypassing the boundary is insufficient alone. Record each
-   result with its client ID, target, operation and observed execution revision or run.
+   a policy check or a health endpoint bypassing the boundary is insufficient alone. When
+   narrowing a grant, verify that permitted access still works and that the excluded identities,
+   routes, or operations are denied as intended. Record each result with its client ID, target,
+   operation and observed execution revision or run.
 8. Re-read the complete manifest and live references after cutover. Reconcile stale references,
    missing consumers and changed runtime identities; repeat the affected verification when new
    evidence invalidates it. Revoke an old client or remove old authority only after every affected
@@ -86,8 +93,7 @@ effective authority and missing validation in the task's private verification ev
 evidenced guidance gap at its canonical owner; let `edit-skill` determine the disposition when no
 gap is established rather than inferring noncompliance from existing text. Generalize the failure class,
 never the current environment or resource names. Follow `edit-skill`'s **Recording During A Task**:
-the current work is corrected immediately, and only a verified successful correction is recorded
-for `process-ledger` to deliver at task completion.
+the current work is corrected immediately, and only a verified successful correction is recorded.
 
 ## Output
 

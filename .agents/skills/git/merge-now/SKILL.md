@@ -1,6 +1,6 @@
 ---
 name: merge-now
-description: Merge the task's finished source pull requests quickly at the user's command — each once acceptance and its canonical check gate pass — then review the merged changes no earlier review pass covered and merge the fix pull requests that review produces. Use only when the user directly invokes it.
+description: Merge the task's finished source pull requests now, each once acceptance and its check gate pass, then review what merged unreviewed and merge the fixes. Use only when the user directly invokes it.
 short_description: 'Merge finished pull requests now, then review what merged unreviewed.'
 ---
 
@@ -26,15 +26,16 @@ any fix `merge-gate` makes, and review afterwards whatever merged without an ear
 - `merge-gate`
 - `review-pass`
 - `session-ledger`
+- `execute-task`
 
 ## Targets
 
 1. The pull requests the user names, or else every open pull request `list-prs` returns for the
    task. Freeze that set at invocation and verify each head and state on the host.
-2. Leave out a pull request confined to agent configuration; guidance delivery merges those.
-3. A pull request whose task has not supplied its reviewed result is finished first: return the
-   unfinished implementation and verification to the task coordinator and use the reviewed head it
-   returns, unless the user named the pull request, in which case it is taken as it stands. Every pull request is a draft until `merge-gate` merges it, so being a
+2. Leave out a pull request confined to agent configuration.
+3. A pull request whose task has not supplied its reviewed result is finished first: carry its
+   unfinished implementation and verification through `execute-task`, in the task's active run when
+   there is one, and use the head that run's review accepts, unless the user named the pull request, in which case it is taken as it stands. Every pull request is a draft until `merge-gate` merges it, so being a
    draft says nothing about whether it is finished.
 
 ## Merge

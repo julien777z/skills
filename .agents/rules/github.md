@@ -73,7 +73,7 @@ alwaysApply: true
 - **Open every pull request as a draft and keep it draft until it merges.** The user reviews it as
   a draft; it leaves draft once, as the first step of an authorized merge through `merge-gate`, so its
   test jobs run once, on the head about to merge. Never mark one ready to start its tests, to show
-  it finished, or to hand it to the user; a follow-up keeps pushing to the draft.
+  it finished, or to hand it to the user.
 - Keep pull requests focused and give them descriptive titles and descriptions; request appropriate reviewers when the repository workflow requires them.
 - **A description is written from what is already known, never by re-reading the history.** The
   agent that did or coordinated the work writes it from its own record of the change, the existing
@@ -94,12 +94,18 @@ alwaysApply: true
   requirement in terms of this repository's own contract; disclose provider PR links and merge
   ordering to the user in chat.
   `merge-gate` still owns the complete dependency inventory and readiness gate.
-- **Each session opens its own source pull request in each repository.** Later source work in the
-  same session joins that pull request rather than creating one per concern or worker. Continue a
-  source pull request from another session only when the user, an applicable invoked skill, or a
-  repository rule explicitly directs that continuation. A matching topic, existing branch, open
-  state, or recorded touch does not supply that instruction. Verify the selected pull request's
-  owner, state and scope before updating it; leave other sessions' pull requests and branches untouched.
+- **Put follow-up source work on the session's in-progress source pull request for that repository.**
+  Before proposing a branch, assigning a worker, or starting edits, resolve the session's source
+  pull request from its creation or authorized continuation receipt and verify that it is open.
+  Carry that receipt forward when a follow-up starts a new task in the same session. Keep distinct
+  concerns and worker contributions on that pull request, in separate commits where appropriate.
+  Open a new source pull request only when none is in progress or the user directs a split. Apply
+  the agent-configuration routing below to guidance. Continue a source pull request from another
+  session only when the user, an applicable invoked skill, or a repository rule explicitly directs
+  that continuation. A matching topic, existing branch, open state, or recorded touch does not supply
+  that instruction. Verify the selected pull request's owner, state and scope before updating it;
+  leave other sessions' pull requests and branches untouched, apart from damaged local Git state
+  `update-skills` backs up and repairs.
 - **Each session opens its own agent-configuration pull request in each repository.** Agent
   configuration is the canonical `.agents` tree — skills, each with its own scripts, assets and
   templates; rules; and agent definitions. Nonbehavioral text and guidance-reference corrections in
@@ -118,7 +124,7 @@ alwaysApply: true
 - **Guidance that is true only once a still-open source pull request merges goes on that pull
   request when the current session created it, as its ledger receipt proves, or the user explicitly
   directs its continuation**: it describes
-  behaviour that pull request introduces, drops guidance about something it removes, or needs a
+  behavior that pull request introduces, drops guidance about something it removes, or needs a
   workflow or tool change it carries. It merges with the change that makes it true. Fold a separate
   agent-configuration pull request this session opened for such guidance into the source pull request
   and close it, saying where the work went. Otherwise the guidance joins the agent-configuration pull
@@ -149,14 +155,16 @@ alwaysApply: true
 - Merging any pull request requires explicit user authorization in the current request or explicit
   applicable guidance in a rule or invoked skill for that pull request. A fix request, CI-test
   request, successful check, review, or request to implement a plan that lists a merge does not
-  itself authorize merging. A reply that could be read as accepting a merge the agent offered, such
+  itself authorize merging. A reply that could be read as accepting a merge mentioned earlier, such
   as a bare "yes" beside another request, authorizes no merge it does not name. If neither
   authorization source applies, do not merge or enable auto-merge.
 - Honor the selected workflow's delivery hold before the standing permissions below; a pull
   request held for user review cannot use those exceptions or auto-merge.
-- Before asking for merge permission, classify the complete actual diff against the standing
-  permissions below. A filename, extension, line count or change label is not a behavioral
-  classification. Preserve genuine edits; never remove them merely to qualify for an exception.
+- Before reporting a pull request whose merge no instruction authorizes, classify the complete
+  actual diff against the standing permissions below; one they cover may merge under them, and any
+  other is reported without asking for its merge, as the global rules' merge-authorization bullet
+  says. A filename, extension, line count or change label is not a behavioral classification.
+  Preserve genuine edits; never remove them merely to qualify for an exception.
 - A pull request limited to minor type, lint, import, formatting or text corrections may merge
   without a separate request when it preserves intended product, security and contract behavior.
   Aligning types with an existing canonical contract qualifies. Mixed substantive changes require
@@ -176,11 +184,11 @@ alwaysApply: true
   waits instead for the user's review together with everything in its batch. A workflow, installer,
   or repository tooling outside a skill's folder is source work when its execution changes, even
   when it sits under `.agents`.
-  When the user asked for the change to be tested, first run the smoke test against the exact
+  When the user asked for the change to be tested, first run the skill test against the exact
   pull-request head. Check that the complete pull request remains confined to this agent
   configuration before using this exception.
 - **An agent-configuration pull request whose guidance depends on a still-open source pull request is held until that merge**, whatever its other gates say, unless the guidance rides that source pull request under **Branches and Pull Requests**. Guidance true on the default branch as it stands waits for nothing.
-- A hold does not authorize merging the source pull request or asking for its merge solely to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. After the source pull request merges, continue the held one under the selection rule above: incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
+- A hold does not authorize merging the source pull request to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. After the source pull request merges, continue the held one under the selection rule above: incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
 - When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request; one held for a source pull request becomes eligible once that pull request has merged. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, when selected under the ownership rules above. Do not close or leave it open merely because it is draft or conflicts with the base; close only one this session opened, and only when its change is superseded or no longer wanted.
 - An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each fix pull request a directly user-invoked skill's own authorization names, once that skill's merge gates pass; that authorization ends with the run.
 - An authorized merge is not held for a failing check the current user explicitly waives or an
@@ -188,18 +196,18 @@ alwaysApply: true
   Name the check and its exclusion evidence in chat, then attempt the authorized merge without
   asking the user. Preserve that classification rather than excluding a required repair merely
   because the same failure also appears on the default branch.
-- Apply established validation exclusions before repairing failures. A hosted check stopped by
-  runner or provider infrastructure before its test, lint, or other validation command begins is
-  skipped automatically when the applicable locally runnable validation has passed. Record the run,
-  the log signal proving validation did not begin (or the provider infrastructure error), and the
-  local commands that cover it; do not rerun or wait merely to get a green hosted result. This
+- Apply established validation exclusions before repairing failures. An interrupted hosted check
+  supplies no validation result for the work it did not complete. When the logs establish a
+  runner or provider interruption without a validation failure, exclude the interrupted attempt
+  if equivalent local validation passed for the proposed merge head. Record the run, the
+  interruption evidence, and the matching local commands and results; do not rerun or wait merely
+  to get a green hosted result. A recorded validation failure remains a failure even if the run
+  was later canceled. Missing equivalent coverage must be obtained before merging. This
   exception applies only to hosted checks: a locally run validation failure caused by setup,
   dependency, checkout, proxy or certificate trust, or container build configuration is an
   encountered repository issue. Repair its canonical bootstrap or container build configuration and
-  rerun it. A cancellation after validation begins, a log naming a product or test failure, or
-  behavior without passing local coverage remains a blocker. Only an actual provider rejection
-  because branch protection requires an excluded or skipped check holds the pull request; report
-  that rejection and its evidence and never bypass it.
+  rerun it. If branch protection rejects the merge because it requires an excluded hosted
+  interruption to pass, obtain the required hosted result. Never bypass branch protection.
 - Never enable auto-merge for any other pull request unless the user explicitly authorizes it in the current request or an explicitly invoked skill requires it.
 - If an agent mistakenly merges a pull request, it may auto-merge the focused revert pull request that corrects that erroneous merge without separate authorization.
 
@@ -296,11 +304,11 @@ review alike. Follow an explicitly selected workflow’s own declared check sequ
 constraints where it specifies them; nothing holds committed work on one machine — not a gate, review or simplification
 pass pending on it, an integration merge, or a plan that orders one first. The one exception is
 commits that `lock-revision`'s **After Locking** hold keeps local until the user lets revisions
-resume. `code-simplify` and `acceptance-gate`'s diff question do not run per push; the selected workflow sets when they run. A fix pushed for a flag a gate or review raised gets one fresh
-`acceptance-gate` run over that fix's increment, read with the whole branch diff as its originating
-diff, unless it is a small repair, as `acceptance-gate`'s **Bounds** define one, which the agent that
-made it checks in process; that fresh verdict, or that recorded check, is what other skills mean by an
-increment's **Pre-Push Gate** verdict.
+resume. `code-simplify` and `acceptance-gate` do not run per push; `execute-task` and `review-pass`
+set when they run. A fix pushed for a flag a review or gate raised is checked
+by the agent that made it: it re-reads the changed lines against the flag and reruns the checks
+covering that code, unless `acceptance-gate`'s **Bounds** send it to a fresh gate; that recorded
+check, or that gate's verdict, is what other skills mean by an increment's **Pre-Push Gate** verdict.
 
 Read the shared testing rule before planning test runs or briefing an implementation worker.
 Its **Verification Cadence** governs tests, builds, browser walkthroughs and reviews, including
@@ -320,7 +328,7 @@ checks before delivery; retain evidence that the change has not invalidated.
   named in the report. Room on this machine never leaves a job to its hosted run: a shortage of
   disk, memory or ports is recovered as the global rules' local-stack bullet says, and the job runs
   here. Only a hosted service or credentials the session lacks, each established as the testing
-  rules' cannot-run bullet says, or runner-specific behaviour does.
+  rules' cannot-run bullet says, or runner-specific behavior does.
 - **A local variant of a CI check is not that check**, and each of these passes locally and fails
   in CI: lint or type checks scoped to the changed files, where CI's whole-tree run finds an import
   another change left unused in a file the branch never touched; a formatter or linter in write
@@ -330,6 +338,7 @@ checks before delivery; retain evidence that the change has not invalidated.
 
 Before each push, list the exact adjacent line pairs where setup, a guard, transformation, side effect,
 or return meets the next phase without the blank line required by the global code-layout rule.
+For changed Python files, `review-pass`'s `paragraph_candidates.py` script lists the candidate pairs.
 Fix every listed boundary in the lines the change writes or edits, and elsewhere in the changed files
 within `pre-production`'s incidental size budget, as the global code-layout rule says; an unrelated
 bug or a passing formatter does not satisfy this spacing check.
@@ -364,13 +373,10 @@ bug or a passing formatter does not satisfy this spacing check.
 - **Delegated edits run at this cadence.** A brief handing a worker edits states it, names the
   branch the worker pushes to — the branch of the pull request the work continues, under **Branches and Pull Requests** — and names the exact files to change, under `subagent-matrix`'s **Dispatch**. The
   worker pushes each step once its checks pass and reports the branch and head. The brief has the
-  worker fix every defect it meets, in the product or the repository's tooling, as `pre-production`
-  defines one, and report as left alone only cleanup past the size budget and any item
-  `pre-production`'s scope bullets leave to the user; a brief that only asks what was left alone
-  invites a defect into that list. The delegating
-  agent, which holds the intent statement, reads that head under the global rules’ **Reported Outcomes** and, once
-  the worker's task is finished, runs the selected workflow’s step gates over that
-  task's diff, returning what they flag as fix steps before any dependent work starts. The worker
+  worker fix every defect it meets, in the product or the repository's tooling, and report as left
+  alone only cleanup past `pre-production`'s size budget and any item
+  `pre-production`'s scope bullets leave to the user. The delegating agent reads that head under
+  the global rules’ **Reported Outcomes** before any dependent work starts. The worker
   ends with nothing uncommitted and nothing unpushed beyond the **Pre-Push Gate**'s one exception,
   never amends or rebases a pushed commit, and
   its report names the branch and head.

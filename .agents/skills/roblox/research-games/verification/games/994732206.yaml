@@ -1,0 +1,385 @@
+name: "[🎃] Blox Fruits"
+game_id: "universe:994732206"
+universe_id: "994732206"
+place_id: "2753915549"
+url: "https://www.roblox.com/games/2753915549"
+creator: "Gamer Robot Inc (group, verified badge)"
+chart_category: "Trending in RPG"
+chart_rank: 1
+genre:
+  primary: "RPG"
+  sub: "Action RPG"
+competitors:
+  - name: "Attack on Titan Revolution"
+    universe_id: "4658598196"
+    url: "https://www.roblox.com/games/13379208636"
+    overlap: "Same subgenre (Action RPG) on the 2026-11-08 chart"
+  - name: "[🐉UPD 11 PART 1🎃] King Legacy"
+    universe_id: "1451439645"
+    url: "https://www.roblox.com/games/4520749081"
+    overlap: "Same subgenre (Action RPG) on the 2026-11-08 chart"
+  - name: "The Forge [🪽x👹]"
+    universe_id: "7671049560"
+    url: "https://www.roblox.com/games/76558904092080"
+    overlap: "Same subgenre (Action RPG) on the 2026-11-08 chart"
+  - name: "[🎃HALLOWEEN PT 3] Grand Piece Online"
+    universe_id: "648454481"
+    url: "https://www.roblox.com/games/1730877806"
+    overlap: "Same subgenre (Action RPG) on the 2026-11-08 chart"
+  - name: "[RELEASE!] Beyond Nen"
+    universe_id: "2174306620"
+    url: "https://www.roblox.com/games/6016716328"
+    overlap: "Same subgenre (Action RPG) on the 2026-11-08 chart"
+researcher: "R05"
+mode: play
+play_ended_by: null # ended by lock_lost under the earlier deep-play design, before this field's current values
+onboarding_video_coverage: covered
+observed_at: "2026-11-09T00:37:07Z"
+observation_status: partial
+previous_observed_at: null
+changes_since_previous: []
+active_play_seconds: 833
+play_coordination:
+    resource_key: "roblox-player (with vm-desktop:roblox-studio)"
+    wait_seconds: 1099
+    acquired_at: "2026-11-09T00:37:01Z"
+    expires_at: "2026-11-09T00:56:47Z"
+    released_at: "2026-11-09T00:51:44Z"
+    release_verified: false
+    expiry_or_blocker: >-
+      Both locks were renewed once at 00:41:47Z. At the second renewal (00:51:44Z) another researcher
+      acquired both locks in the release gap, so play ended as lock_lost. The Blox Fruits session was
+      still running in the player when the locks were released; it was not quit because the resource
+      was no longer this researcher's to touch.
+context:
+    play_style: "RPG > Action RPG (API); Adventure gear genre"
+    camera_perspective: "Third person, zoomable toward first person (O/I keys)"
+    device_and_input: "macOS VM guest, keyboard and mouse via injected events"
+    observation_environment: "Published Roblox player 0.746 in a macOS VM with a paravirtual GPU; world geometry was badly garbled (see technical_quality)"
+    visible_server_population: "Server player list showed about a dozen entries; max 12 per server (API); 224,813 playing (API)"
+    solo_or_group: "Solo play on a public server"
+    game_version_if_known: "On-screen build label v30.1.2-Sea1; API updated 2026-11-02T12:18:46Z"
+    evidence: [source_1, play_1, video_1, video_2, video_3]
+account_state:
+    freshness: fresh
+    evidence:
+        - "Team selection screen on join with Bounty $0 and Honor $0 (994732206-1.png)"
+        - "After joining: $100, Lv. 1, XP 0/86, Stat Points 0, Melee and Defense at Lv. 1 (994732206-2.png, 994732206-8.png)"
+        - "Guidance pointed to the very first quest: 'Find the NPC at Pirate Starter' (994732206-13.png)"
+evidence:
+    - id: source_1
+      kind: description
+      url: "https://games.roblox.com/v1/games?universeIds=994732206"
+      captured_at: "2026-11-09T00:00:00Z"
+      media_date_or_version: "updated 2026-11-02T12:18:46Z"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Stats at fetch: 65,375,210,887 visits, 20,204,895 favorites, created 2019-01-16."
+    - id: source_2
+      kind: thumbnail
+      url: "https://tr.rbxcdn.com/180DAY-77b3430ced16006f6da18d6a77b95ea0/768/432/Image/Png/noFilter"
+      captured_at: "2026-11-09T00:00:00Z"
+      media_date_or_version: "Halloween event art"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Promotional illustration (anime-style hero facing a flaming skeleton boss with pumpkin fireballs, Blox Fruits logo); establishes advertised style only."
+    - id: source_3
+      kind: description
+      url: "https://www.roblox.com/games/2753915549"
+      captured_at: "2026-11-09T00:00:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Page text repeats the description; no gameplay video is linked and none was watched."
+    - id: play_1
+      kind: actual_play
+      url: "https://www.roblox.com/games/2753915549"
+      captured_at: "2026-11-09T00:37:07Z"
+      media_date_or_version: "build v30.1.2-Sea1"
+      timestamps: ["launch 00:37:07Z", "control 00:37:37Z", "last input about 00:51:30Z"]
+      screenshots:
+          - "994732206-1.png"
+          - "994732206-2.png"
+          - "994732206-7.png"
+          - "994732206-8.png"
+          - "994732206-13.png"
+          - "994732206-15.png"
+          - "994732206-18.png"
+          - "994732206-33.png"
+          - "994732206-34.png"
+          - "994732206-35.png"
+      limitations:
+          - "World geometry was garbled by the VM GPU for the whole session, so the quest NPC was never drawn and clicks at its marker never opened a dialogue."
+          - "The session ended at a lock renewal before any quest, level-up or stat spend happened."
+    - id: video_1
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=Ut7RPXezaRA"
+      captured_at: "2026-11-09T02:10:00Z"
+      media_date_or_version: "uploaded 2026-10-06; on-screen build label v30.0.4-Sea1"
+      timestamps: ["0:07 spawned at Lv. 1 with $100, Stats/Items/Close/Shop menu open", "0:12 'Defeat 5 Bandits' quest tracker (0/5, $350, 300 EXP)", "0:36 first bandit hit, damage number", "0:39 QUEST COMPLETED, multiple LEVEL UP lines, Lv. 5", "0:42-0:48 Stats panel spending 12 stat points into Melee", "1:15 fruit dealer stock list with a restock timer", "1:45 Robux purchase confirmation", "2:00 second quest done at Lv. 11 under a 2x XP timer", "2:15-2:30 sailing to the next island", "2:45 'Defeat 6 Monkeys' at Lv. 12", "4:00-4:45 Gorilla King boss", "6:00-6:15 Chef boss at Lv. 57", "6:45 Summer Magnet Gacha panel", "9:15 Yeti boss at Lv. 105", "9:45 Google search page (not this game)"]
+      screenshots:
+          - "Ut7RPXezaRA-001.jpg"
+          - "Ut7RPXezaRA-002.jpg"
+          - "Ut7RPXezaRA-005.jpg"
+          - "Ut7RPXezaRA-006.jpg"
+          - "Ut7RPXezaRA-007.jpg"
+          - "Ut7RPXezaRA-008.jpg"
+          - "Ut7RPXezaRA-009.jpg"
+          - "Ut7RPXezaRA-012.jpg"
+          - "Ut7RPXezaRA-016.jpg"
+          - "Ut7RPXezaRA-028.jpg"
+          - "Ut7RPXezaRA-037.jpg"
+      limitations:
+          - "Kind: onboarding (titled as the creator's first time playing; starts at Lv. 1 with $100). Channel VISIONVL, about 8,500 subscribers; about 787,000 views; 101-minute video, first 10 minutes studied."
+          - "Recent (2026-10-06) and on the current Update 30 build, but heavily edited: about 105 levels fit into 10 minutes of video, the team-pick screen is cut, and frames of other material (a One Piece title card, a stats website, a Google search at 9:45) are discarded."
+          - "A 2x XP timer is active from the first quest, likely from codes, so level pace is faster than a plain new account."
+          - "The player buys with Robux during the clip (purchase confirmation at 1:45; a Permanent Fruit Shop 'Owned' fruit at 9:00)."
+          - "Captions could not be downloaded (YouTube rate limit), so the player's commentary was not read beyond burned-in subtitles."
+    - id: video_2
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=NzMwwocgOdU"
+      captured_at: "2026-11-09T02:10:00Z"
+      media_date_or_version: "uploaded 2026-06-17"
+      timestamps: ["0:00 Lv. 1 default avatar on Pirate Starter", "0:15 quest completed, 'NEW QUEST AVAILABLE! Open your compass menu to find the next island.'", "0:30 Lv. 15 after several quest completions", "0:45-1:00 Gorilla King boss quest", "1:45 quest giver with yellow '?' QUEST marker and ring", "2:00-2:15 first fruit from the gacha at Lv. 56", "2:30 Stats panel with refund (3 stored)", "2:45-3:00 Chef boss quest"]
+      screenshots:
+          - "NzMwwocgOdU-001.jpg"
+          - "NzMwwocgOdU-002.jpg"
+          - "NzMwwocgOdU-003.jpg"
+          - "NzMwwocgOdU-004.jpg"
+          - "NzMwwocgOdU-007.jpg"
+          - "NzMwwocgOdU-009.jpg"
+          - "NzMwwocgOdU-010.jpg"
+      limitations:
+          - "Kind: skilled play (a 'noob to max with no Robux' run by an experienced player). Channel Jac, about 105,000 subscribers; about 1.1 million views; 33-minute video, first 10 minutes studied."
+          - "Uploaded 2026-06-17, about five months before the study (Update 30 era). Returning player on a new character; the player enters 2x XP codes before the first quest (captions 0:00)."
+          - "Edited with jump cuts; level times are compressed. Captions were read for goals and strategy."
+    - id: video_3
+      kind: gameplay_video
+      url: "https://www.youtube.com/watch?v=RPrT1Qjy1kE"
+      captured_at: "2026-11-09T02:10:00Z"
+      media_date_or_version: "uploaded 2026-11-01 (Halloween event)"
+      timestamps: ["0:15 REALLY SPOOKY Fruit Spinner with Candy Corn reward", "0:45 Spooky Spinner roll", "1:00 Spooky Halloween Gacha panel (500 Candy Corn, 13d 14h left)", "1:15 Hellfire (Gas) mutation reveal", "2:45 Pick A Side! screen after a server hop", "3:00-3:45 factory raid with 'Core' health bar", "4:30 rewards text after the factory", "6:15-7:30 Great Pumpkin raid boss and Candy Corn drops", "8:15 Profile Backgrounds picker", "8:30 Titles panel (Pumpkin King)"]
+      screenshots:
+          - "RPrT1Qjy1kE-002.jpg"
+          - "RPrT1Qjy1kE-005.jpg"
+          - "RPrT1Qjy1kE-012.jpg"
+          - "RPrT1Qjy1kE-013.jpg"
+          - "RPrT1Qjy1kE-019.jpg"
+          - "RPrT1Qjy1kE-030.jpg"
+          - "RPrT1Qjy1kE-033.jpg"
+          - "RPrT1Qjy1kE-035.jpg"
+          - "RPrT1Qjy1kE-036.jpg"
+      limitations:
+          - "Kind: session (a max-level player's event session). Channel JuJuBo TV, about 3.55 million subscribers; about 1.58 million views; 19-minute video, first 10 minutes studied."
+          - "Current (2026-11-01) Halloween event footage, but from a Lv. 1850 maxed account with about $190 million, so it shows endgame and event pacing, not a new player's."
+          - "Edited ('a few moments later' cut card); webcam overlay covers the bottom-right of every frame. Captions could not be downloaded (rate limit)."
+gameplay:
+    advertised_loop: "Train as a swordsman or Blox Fruit user, fight enemies and bosses, sail between islands to find secrets; level cap 3000; fruits spawn hourly and a dealer restocks every 4 hours (description)"
+    observed_loop: "Real play (play_1): pick a team, follow the compass's recommended-quest marker to the starter NPC, equip Combat and punch a Bandit [Lv. 5]; the quest, XP, level and stat-point steps were not reached. Videos (video_1, video_2) show the full loop: talk to a quest giver, a tracker appears ('Defeat 5 Bandits 0/5, $350, 300 EXP'), kill the count, get QUEST COMPLETED with money, XP and several level-ups at once, spend stat points, take the next quest from the same giver; after the island's last quest (a boss) the game announces 'NEW QUEST AVAILABLE! Open your compass menu to find the next island' and the player swims or sails to the next island. Fruit rolls (Lv. 50+ without Robux) and weapons bought from dealers change the attack kit along the way."
+    first_action: "Choose Pirates or Marines on a full-screen Pick A Side! panel (play_1; also shown at video_3 2:45)"
+    first_success_seconds: null
+    success_feedback:
+        - "Hits show a large white-red impact burst with a big damage number on the target (994732206-34.png)"
+        - "Quest completion stacks centered text lines: 'Earned $X', 'Earned N Exp. (2x) (+Melee 2x)', '<QUEST COMPLETED!>', 'LEVEL UP! (11)', 'Combat MASTERY LEVEL UP!', with a white-blue burst around the player (video_1 2:00, video_2 0:30)"
+        - "Level-up flash and a new quest offered at once keep the next action obvious (video_2 0:30)"
+    progression:
+        - "Observed UI: Lv. and an XP bar (0/86) above Health and Energy bars; Stats panel with Melee, Defense, Sword, Gun and Blox Fruit, the last three locked; Stat Points counter, Custom Amount field and Refund button (994732206-8.png)"
+        - "Per-weapon mastery: Combat panel shows Mastery 1 (0/70), Quick Tackle [Z] at Mas. 1 and Ground Smash [X] grayed until Mas. 20 (994732206-34.png)"
+        - "Island ladder in the first sea, each with 2-3 enemy quests ending in a boss: Pirate Starter bandits, Jungle monkeys, gorillas and Gorilla King (Lv. 25 boss), Pirate Village pirates, brutes and Chef (Lv. 55 boss), Desert bandits and officers, Frozen Village snow bandits, snowmen and Yeti (Lv. 110 boss), then Marine Fortress and Skylands (video_1, video_2 captions)"
+        - "First Blox Fruit without Robux comes from the fruit gacha at about level 50; the creator calls reaching it his halfway goal (video_2 captions 1:00-2:00)"
+        - "Quest rewards scale fast: $350/300 EXP at the first quest, $2,000/9,500 EXP for the Gorilla King, $10,000/220,000 EXP for the Yeti (video_1)"
+        - "Ability teacher on the snow island sells Air Jump, Flash Step and Aura for in-game money (video_2 captions 5:00)"
+    choices_and_variety:
+        - "Team choice at join: Pirates (bounty, crews) or Marines (faster, cheaper ships, claim bounties), each with three short benefit lines (994732206-1.png)"
+        - "Fruit choice drives build: the skilled player rolls Dark, finds it poor for grinding, rerolls into Bomb and then a better fruit, and refunds stat points into Blox Fruit before a boss (video_2 captions 2:00-6:00)"
+        - "Self-set challenges (collect every sword, a bazooka and shades in the first sea) show optional collection goals players adopt (video_2 captions 3:00)"
+    social_and_cooperative:
+        - "Server leaderboard lists players by bounty/honor, with team rows such as Pirates (994732206-1.png)"
+        - "Other players compete for the same bosses: 'this guy's trying to steal my boss... it gave me the levels, but I didn't get the mastery' (video_2 captions 2:00-3:00)"
+        - "Event raids (factory Core, Great Pumpkin) are fought alongside other players in the server (video_3 3:00-7:30)"
+    companions_and_pets: []
+    friction:
+        - "Without Robux the first fruit waits until about level 50; the skilled player calls early enemies 'so annoying' without one (video_2 captions 0:30)"
+        - "Boss slam attacks can nearly one-shot a low-level player; the player is reduced to Health 28/100 by the Gorilla King (video_2 1:00)"
+        - "Fruit gacha results can be poor for grinding, prompting rerolls (video_2 captions 2:00-4:00)"
+        - "The start gives no direct prompt: the recommended quest and its world marker appear only after clicking the compass (994732206-13.png)"
+        - "Bandits attacked while the player was still in the labeled safe zone (Health 95/100, 994732206-34.png)"
+    evidence: [source_1, play_1, video_1, video_2, video_3]
+pacing:
+    timing_start_definition: "Real play: launch command at 00:37:07Z; control = team-pick screen interactive. Videos: each video's own timestamps"
+    loading_seconds: 30
+    time_to_control_seconds: 30
+    first_meaningful_choice_seconds: 30
+    first_reward_seconds: null
+    action_reward_cadence: "Video (edited, so compressed): every enemy kill pays money, XP and weapon mastery in a text line; a quest of 5-8 kills pays a larger lump and usually several level-ups; a boss closes each island. In video_1 the first quest goes from accepted (0:12) to completed (0:39) in 27 s of edited video. Real play reached no reward."
+    active_play_versus_travel_or_waiting: "Real play: almost all of the 833 s was navigation, mostly lengthened by the garbled rendering; not representative. Videos: travel between islands by swimming or a bought boat is the main non-combat time; boss respawn waits can be an hour ('he is going to take another hour to spawn', video_2 captions 4:00)"
+    natural_stopping_points:
+        - "Island boss defeated and 'NEW QUEST AVAILABLE ... find the next island' shown (video_2 0:15)"
+        - "Fruit gacha roll at level milestones (video_2 2:00)"
+    measurement_method: "Real play: wall-clock timestamps from the shell around input batches; about 5 s resolution. Videos: frames every 15 s plus 3 s for video_1's first minute, measured from the videos' own timestamps; all three are edited, so no real durations are claimed from them"
+    evidence: [play_1, video_1, video_2]
+goals_and_progression:
+    next_goal_clarity: "Clear once the compass is clicked: a top banner 'Recommended Quest: Find the NPC at Pirate Starter.', a world '!' marker with a live distance in meters, and an off-screen arrow at the screen edge (994732206-13.png, 994732206-15.png, 994732206-33.png)"
+    short_term_goals:
+        - "Reach the starter quest NPC (recommended quest)"
+        - "XP bar to level 2 (0/86)"
+        - "Combat mastery to 70 for the next mastery level; Ground Smash at mastery 20"
+    medium_term_goals:
+        - "Unlock Sword, Gun and Blox Fruit stat lines (shown locked)"
+    advertised_long_term_goals:
+        - "Level cap 3000; collect fruits from a list of over 40 (description)"
+    upgrade_choices:
+        - "Stat point allocation across five stats with a Custom Amount field and a Refund option (not exercised: 0 points)"
+    mastery_versus_stat_growth: "Both: character level gives stat points, and each weapon has its own mastery that unlocks moves"
+    unlock_previews_and_optional_activities:
+        - "Locked moves are shown grayed with the mastery that unlocks them (Ground Smash, Mas. 20)"
+        - "Locked stat rows show a padlock"
+        - "Fruit dealer list shows every fruit with an 'Out of Stock' stamp and a 'New fruits in hh:mm:ss' countdown (video_1 1:15, 6:30)"
+        - "Sword and ability dealers on later islands preview purchasable upgrades with prices (video_2 captions 5:00-6:30)"
+    evidence: [play_1, video_1, video_2]
+failure_and_recovery:
+    observed_failure: "Video: boss attacks drop a low-level player's health sharply (28/100 against the Gorilla King, video_2 1:00); 'Died Recently - PvP disabled' appears under the hotbar after a death (video_3 0:00, video_1 8:15). Real play saw no failure."
+    explanation: "The skilled player names the boss's slam as the move to avoid; the game gives no on-screen explanation in the frames seen (video_2 captions 1:00)"
+    cost_or_lost_progress: "No progress loss was seen; after death the player respawns with a temporary PvP-disabled shield label (video_3, video_1)"
+    retry_seconds: null
+    checkpoints: "Respawn on the island's spawn point, inferred from the 'Died Recently' label near spawn buildings (video_3 0:00)"
+    non_paid_recovery: "Yes in the footage: the player rerolls fruits and refunds stats with in-game resources to beat a boss (video_2 captions 2:00-4:00)"
+    evidence: [video_1, video_2, video_3]
+agency_and_social:
+    meaningful_choices:
+        - "Pirates or Marines at join, framed by three benefit lines each"
+        - "Where to spend stat points (seen, not exercised)"
+    customization_and_identity:
+        - "Team identity with bounty or honor as a public score"
+    cooperation_and_competition:
+        - "Pirates promise crews and player bounties; Marines promise teaming up on pirates and claiming bounties (team screen text)"
+        - "Safe Zone - PvP disabled label near spawn implies PvP elsewhere"
+    visible_social_feedback:
+        - "Leaderboard ranks players by bounty value"
+    solo_accessibility: "Starter content was reachable solo; no other players were needed (play_1). Videos show the quest ladder to level 100+ done solo on public servers (video_1, video_2)"
+    evidence: [play_1, video_1, video_2, video_3]
+ui:
+    evidence_status: observed
+    visual_style: "Bold flat panels: saturated yellow buttons with dark text, solid green and blue stat bars, dark translucent panels for menus and the move list"
+    layout_and_hierarchy: "Bottom-left stack: Menu button, money (green $), level, XP bar, Health, Energy. Bottom-center: two-slot hotbar (Q dash, 1 Combat) with a safe-zone label above it. Bottom-right: equipped tool's Mastery bar and move list with key hints. Left edge: small icon row (settings, crew, ?, home, profile) and a compass button. Top-right: player leaderboard. Video: a quest tracker sits at the left edge above the menu with title, enemy, a count bar (0/5) and the reward as money and EXP icons; the XP bar shows the 2x boost countdown inside it (video_1 0:12, 2:00)."
+    color_scheme: ["yellow buttons", "green money and health", "blue energy", "red close button", "dark translucent panels", "white text with dark outline"]
+    typography:
+        font_appearance: "Heavy rounded sans for buttons and stats; outlined white text on the world"
+        font_family_if_verified: null
+        size_observation: "Health and Energy labels about 25 px tall in a 1200 px wide capture of a 1920 px wide screen (about 40 px on screen); leaderboard text about 8 px in the same capture"
+        size_basis: visual_estimate
+        viewport_resolution: "1920x1200 points"
+        readability: "Core stats and buttons very readable; leaderboard and overhead names small"
+    controls:
+        primary_actions: "Click to attack with the equipped tool; number keys equip; Z/X/C moves listed with key letters beside them"
+        close_x_appearance_and_location: "Red square with a white X at the top-right of the Stats panel title bar, beside a blue ? help button (994732206-8.png)"
+        modal_behavior: "Menu expands in place into a 2x2 grid of yellow buttons (Stats, Items, Close, Shop) replacing the single Menu button; Stats opens a centered panel without dimming the world (994732206-7.png, 994732206-8.png)"
+        state_feedback: "Equipped hotbar slot gets a cyan outline; compass button changes from green to brown when guidance is on; locked moves are grayed with their unlock level. Video: red count badges sit on Menu and Stats while stat points are unspent (video_1 2:00, video_2 0:30)"
+        target_size_and_input: "Menu buttons about 115x40 px in the 1200 px capture; hotbar slots about 30 px square"
+    graphics:
+        graphics_versus_text: "Mostly text labels; icons are small and paired with words in the Stats panel"
+        illustration_or_icon_style: "Small illustrated icons per stat (fist, shield, sword, gun, fruit). Video: event panels (Spooky Halloween Gacha) switch to illustrated prize tiles, a large character portrait, a red time-left pill and a yellow cost button, richer than the flat core panels (video_3 1:00)"
+        framing_outlines_and_effects: "Rounded rectangles with thin dark borders; title bar in a yellow gradient"
+        placement_and_labels: "Every stat row pairs an icon, a colored name, a level and a +1 button. Video: quest givers carry a large glowing yellow '!' in a blue hexagon before the quest and a yellow '?' with QUEST text and a ground ring nearby; shop NPCs show a green '$' with SHOP, a green ring and an Interact prompt; red diamonds float over quest targets (video_1 0:24-2:00, video_2 1:45, video_3 0:30). In real play these world markers did not render (play_1)."
+        clarity_or_clutter: "HUD is dense in the bottom corners but leaves the center clear"
+    evidence: [play_1, video_1, video_2, video_3]
+new_player_onboarding:
+    status: observed
+    reason: "Real play: fresh profile; the team-pick and recommended-quest guidance were seen (play_1). Video_1 shows a creator's first time at Lv. 1 taking and completing the first quest, but it is edited and skips the team pick, so it does not establish durations."
+    conventions:
+        - "Full-screen team choice with short benefit lines"
+        - "Opt-in quest guidance through the compass: banner text, world marker with distance, edge arrow"
+        - "Starter island labeled as a safe zone with PvP disabled"
+        - "Video: the starter quest giver is marked by a large glowing '!' visible from spawn, and the first quest is a short kill count (5 bandits) right beside it (video_1 0:07-0:39)"
+        - "Video: the first quest completion grants several levels at once and 12 stat points, immediately flagged by a red badge on Stats (video_1 0:39-0:48)"
+        - "Video: after an island's quests the game itself tells the player to open the compass to find the next island (video_2 0:15)"
+    sequence:
+        - "Pick A Side! screen (Pirates or Marines) (play_1)"
+        - "Spawn on Pirate Starter with 'Joining... Joined <Pirates> team. <Pirate Starter>' text and a distance marker (play_1)"
+        - "Clicking the compass shows 'Recommended Quest: Find the NPC at Pirate Starter.' and a '!' marker (play_1)"
+        - "Spawn on Pirate Starter at Lv. 1, $100 (video_1 0:07)"
+        - "Talk to the '!' quest giver; tracker 'Defeat 5 Bandits' appears (video_1 0:12)"
+        - "Punch bandits marked by red diamonds; each kill pays money and XP (video_1 0:24-0:36)"
+        - "QUEST COMPLETED with several LEVEL UP lines to Lv. 5 (video_1 0:39)"
+        - "Open Stats and put points into Melee (video_1 0:42-0:48)"
+        - "Repeat the quest, then move to the next quest giver and island (video_1 1:00-2:45)"
+    first_independent_action: "Walking toward the marker; attacking a nearby bandit"
+    skip_or_replay: null
+    completed: false
+    observed_seconds: 833
+    completion_seconds: null
+    timing_basis: "From control at 00:37:37Z; the quest NPC could not be engaged because it was not rendered. Video_1's edited timeline (quest accepted 0:12, completed 0:39, stats spent 0:42-0:48) is not a real duration."
+    evidence: [play_1, video_1, video_2]
+accessibility_and_comfort:
+    text_and_contrast: "HUD text is large with strong outlines; the leaderboard is small"
+    non_color_cues_and_icon_labels: "Stat icons have text labels; locked items use a padlock, not only color"
+    input_support_observed: ["keyboard and mouse"]
+    motion_audio_settings: []
+    settings_tested: []
+    clutter_and_interruptions:
+        - "Enemies attacked inside the safe zone during onboarding"
+        - "Quest-complete text stacks up to eight lines in the screen center over the action (video_2 0:30)"
+        - "At max level the screen fills with item-obtained lines, event bars and a busy hotbar (video_3)"
+    evidence: [play_1, video_2, video_3]
+commercial_and_return_prompts:
+    first_purchase_prompt_seconds: null
+    purchase_prompt_count_during_sample: 0
+    onboarding_interruption: "None seen in real play; in video_1 the only purchase confirmation (1:45) appears after the player opened the Shop, not as an unprompted pop-up"
+    optional_versus_required_presentation: "A Shop button sits in the Menu grid; not opened in real play. Videos: Robux shop and Permanent Fruit Shop are player-opened; the skilled player progresses with no Robux using in-game money, codes and gacha rolls (video_2), though he says the first fruit takes until about level 50 without Robux"
+    return_rewards_and_events:
+        - "Halloween event named in the title and description"
+        - "Halloween event: Candy Corn currency earned from raids and the Great Pumpkin raid boss, spent in a 'REALLY SPOOKY Fruit Spinner' and a Spooky Halloween Gacha whose grand prize is a 'Hellfire' mutation of the Gas fruit; also limited accessories, profile backgrounds, event potions and a 'Pumpkin King' title (video_3)"
+        - "Earlier Summer Magnet Gacha with the same layout and a 500 Magnet Token cost (video_1 6:45)"
+        - "Codes grant 2x XP for hours, shown as a countdown in the XP bar (video_1, video_2)"
+    urgency_or_streak_cues:
+        - "Description: fruits spawn hourly and despawn after 20 minutes; the dealer restocks every 4 hours"
+        - "Event gacha shows '13d, 14h' time left in a red pill (video_3 1:00)"
+        - "Fruit dealer shows a live 'New fruits in hh:mm:ss' countdown and 'Out of Stock' stamps (video_1 1:15)"
+    evidence: [source_1, play_1, video_1, video_2, video_3]
+world_and_presentation:
+    navigation_and_objective_readability: "Video only (real play garbled the world): islands are small and distinct, the quest giver's glowing marker reads from spawn, and target enemies carry red diamond markers; long sea crossings by swimming or boat separate islands (video_1, video_2)"
+    landmarks_and_variety:
+        - "Each island has its own theme: windmill village (Pirate Starter), jungle with rope bridges, a stone-and-timber pirate town, a desert with pyramids, a snow village with ice spikes (video_1 0:00-9:45)"
+        - "Event dressing over the hub in October-November: pumpkins, spider webs, a cauldron room and a lava arena for the Great Pumpkin (video_3)"
+    environmental_storytelling: []
+    audiovisual_consistency: "Low-poly blocky islands with bright saturated colors; event and fruit effects are much more detailed and glowing than the world (video_1, video_3)"
+    success_effect_intensity_and_clarity: "Hit burst is large and bright against the target, with a big damage number (994732206-34.png). Videos: quest completion and level-ups add a large swirling burst around the player; fruit moves fill much of the screen with light effects (video_2 0:30, video_3 3:45)"
+    evidence: [play_1, video_1, video_2, video_3]
+technical_quality:
+    loading_or_missing_assets:
+        - "VM rendering limit: world geometry drew as stretched polygons and flat white, black or dark-red planes throughout; NPCs other than a bandit and the player were not visibly drawn"
+    input_or_frame_issues:
+        - "Clicks at the quest NPC's marker from several positions did not open a dialogue; the cause (rendering, range or occlusion) is unknown"
+    ui_defects: []
+    recovery_behavior: null
+    measurements: []
+    measurement_method_and_limits: "macOS VM with paravirtual GPU; 2D UI rendered correctly, 3D world did not. Not indicative of native performance or art. The three videos show the world, NPCs and quest markers rendering normally on the creators' machines, so the garbling is the VM's, not the game's."
+    evidence: [play_1, video_1, video_2, video_3]
+transferable_ideas:
+    - "Opt-in guidance: one compass button turns on a banner naming the next quest, a world marker with live distance, and an edge arrow when it is off-screen."
+    - "Show locked moves and stats in place, grayed with the exact mastery or padlock that unlocks them, so the next goal is visible from the first minute."
+    - "A two-sided team choice at join, each side sold in three short benefit lines, gives a first meaningful choice before any tutorial."
+    - "A first quest that is a tiny kill count beside spawn and pays several levels and a batch of stat points at once teaches the whole loop (quest, fight, reward, spend) in under a minute of play."
+    - "An island ladder where each island ends in a boss and the game then points to the next island gives a clear medium-term goal and a natural stopping point."
+practical_takeaway:
+    strongest_idea: "Front-load the core loop: a short first quest beside spawn whose completion fires stacked reward text, several level-ups and spendable points, then hands the player straight to the next quest; layer opt-in compass guidance on top for wayfinding."
+    main_tradeoff: "The guidance is opt-in: a new player who never clicks the compass gets only a brief distance marker, and enemies near spawn can attack before the first quest is taken. Without Robux the first fruit, the game's signature power, waits until about level 50, and bosses can nearly one-shot a low-level player."
+    suitable_genres_and_stages: ["action RPG", "adventure", "open-world questing", "onboarding of any game with a hub of NPCs"]
+    testable_hypothesis: "Turning the next-quest marker on by default for level-1 players shortens the time to the first quest accept compared with an opt-in compass."
+    estimated_effort_and_assumptions: "Estimate: small, assuming a quest system that already knows the next NPC and a billboard marker."
+inferences:
+    - "The full loop (quest, kill count, reward, level, stat point spend) was not reached in real play; video_1 and video_2 show it on the current build."
+    - "The burst of several level-ups on the first quest likely makes early progress feel fast (inferred from video_1 and video_2; both used 2x XP codes)."
+    - "The 21m marker shown at spawn is likely the same quest guidance, shown briefly before the compass is used."
+uncertainties:
+    - "World art, navigation readability and environment are unknown because the VM garbled the scene; nothing about them is claimed."
+    - "Whether the starter NPC is normally clickable from where it was attempted is unknown."
+    - "Time to first reward and the loop cadence were not reached in real play; the videos are edited, so their timings are not real durations."
+    - "How long the unedited first quest takes for a new player without 2x XP codes is unknown."
+blockers:
+    - "VM GPU rendering limit made the quest NPC invisible and unclickable in practice."
+    - "Lock lost at renewal (00:51:44Z) to another researcher; the game was still running in the player at release."
+    - "Video evidence: YouTube rate-limited caption downloads for video_1 and video_3, so only video_2's commentary was read."

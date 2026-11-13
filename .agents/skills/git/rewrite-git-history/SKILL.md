@@ -47,7 +47,7 @@ Stop and say so when any of these fails; none is worked around.
    where the branch contains a merge from the base branch, the merge base already sits after
    it, so the list holds only the branch's work.
 3. **Group the paths by material change.** One group per change a reviewer would name: a contract
-   broken on purpose, a mechanism replaced, a behaviour added, a shared owner introduced. Tests go
+   broken on purpose, a mechanism replaced, a behavior added, a shared owner introduced. Tests go
    with the change they cover. Check that every path from step 2 lands in exactly one group before
    committing anything.
    - **A file that serves two changes is split by hunk, not assigned whole.** Read that file's diff

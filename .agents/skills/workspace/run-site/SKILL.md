@@ -11,6 +11,7 @@ Start and verify the stack within the requested scope. When browser verification
 
 ## Dependencies
 - `pre-production`
+- `share-captures`
 - `use-browser`
 - `proton-pass`
 - `test-fixture`
@@ -243,7 +244,7 @@ is a defect in the change.
 
 Anything the run shows that the product should not do — an error the run did not ask for (a
 failed request, an empty section, an error boundary, an unwritten redirect, a console error) or
-wrong behaviour on screen (a value shown altered or lost, data in the wrong place, a broken
+wrong behavior on screen (a value shown altered or lost, data in the wrong place, a broken
 layout) — is a defect the walkthrough found, and `pre-production`'s **Encountered Issues** decides
 what happens to it. Diagnose it to its cause through the service log, the network response, and the
 rendering code, fix it, and re-run the step. The one exception is the failure you induced on the
@@ -264,7 +265,7 @@ ffmpeg -y -i <path>.webm -c:v libx264 -pix_fmt yuv420p -movflags +faststart -an 
 ```
 
 Send the recording and a still of the view the change touched, unasked, plus a still per width
-walked, the page with its requests failing, and each defect with the fix that resolved it — as the run produces
-them, as the User-Facing Output rule requires. Captures left on disk are a walkthrough the reader
-never saw. The report names the widths checked, whether the run without the API changes was done,
+walked, the page with its requests failing, and each defect with the fix that resolved it — as the
+run produces them, as the User-Facing Output rule requires, through `share-captures`. Captures left
+on disk are a walkthrough the reader never saw. The report names the widths checked, whether the run without the API changes was done,
 and what the screens were read against.

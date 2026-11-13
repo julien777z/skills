@@ -88,7 +88,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 ## Reference Data
 
 - **Reference data comes from a maintained package, never from a list typed into the repository.**
-  Countries and their subdivisions, currencies, languages, time zones, dialling codes, bank and card
+  Countries and their subdivisions, currencies, languages, time zones, dialing codes, bank and card
   networks, MIME types: each is a published standard somebody else already tracks, revises when it
   changes, and ships with types. Reach for the popular, well-maintained package first, and treat
   adding the dependency as the cheaper option, because it is.
@@ -189,9 +189,6 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 ## Interface Copy
 
-- **Write interface copy in American English**, in spelling and in vocabulary alike: a colour is a
-  "color", a centre is a "center", and a person "enrolls" rather than "enrols". A reader meeting the other spelling reads it as a mistake, and a product that uses both
-  reads as two products.
 - **Headings, labels, buttons, tabs and menu items share one capitalization across the product**,
   sentence case unless the product has settled on another: "Save draft", "Shared folders", "Reading
   list". A mix is the defect; a proper noun keeps its own capitals. Capitalization is the source
@@ -200,7 +197,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 - **Write labels, descriptions and hints for someone who already trusts the product.** Copy that
   warns the reader about their own ordinary action reads as suspicion. A person submitting a record on
-  behalf of someone in their own workspace, who has already ticked the box that says they may, does
+  behalf of someone in their own workspace, who has already checked the box that says they may, does
   not need to be told that the action is logged or attributed to them.
 - **Name a surface for what it holds, never for the reader's role in it.** A reader knows which role
   they hold, so "Organizer events", "Attendee tickets" or "Your speaker profile" labels them rather
@@ -210,7 +207,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   content, such as an empty state, an error or a refusal: "Overview", "Contact details", "No
   playlists yet", "Sync off". A sentence, such as "This folder is shared with you as read-only", or
   a phrase addressed to the reader, such as "What you can do here" or "Let's get you set up", goes
-  in the line under the heading, which carries the explanation.
+  in the line under the heading, which carries the explanation. A title too long for its place is
+  given fewer words, never cut short with an ellipsis, whether by the text written into it or by
+  styling that truncates it: a title the reader cannot finish names nothing.
 - **Features offered side by side carry names no reader could mistake for each other.** Each name
   says what the feature holds or does in the reader's words, so a reader who has used neither picks
   the right one: "Collections" beside "Groups", or "Profiles" beside "Accounts", reads as two words
@@ -334,10 +333,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   space; reach for absolute positioning only where the overlap is the intent.
 - **A page takes the content frame of its kind, and every page of that kind takes the same one.**
   The product's page layout has few frames, each set once in a layout component — commonly a
-  centred column for a page the reader passes through to finish one task and then leaves, such as a
+  centered column for a page the reader passes through to finish one task and then leaves, such as a
   step of a multi-step flow, a standalone form outside the navigation or a confirmation, and the
   full-width frame for a page reached from the navigation, whatever it holds. A page never sets its
-  own width, centring or outer padding. Two pages of one kind whose content starts at different
+  own width, centering or outer padding. Two pages of one kind whose content starts at different
   distances from the navigation read as two products.
 - **A surface is as tall as its content, never taller.** A card, panel, section or widget showing a
   large empty area — below its content, or between the content and the control that acts on it —
@@ -390,6 +389,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   wherever it sits, in a page, a layout or a gate: the check becomes the redirect and the screen is
   deleted, never restyled, moved into a shared message component, or kept because a task lists it
   among the states to restyle.
+- **A menu button that collapses the navigation, such as a hamburger, is for phone and tablet
+  widths only.** On a desktop the navigation stays in its bar: when its destinations outgrow the
+  row, the bar first uses the full width of the page frame, then the row scrolls sideways. Folding
+  them into a menu on a desktop is the defect.
 - **Settings is the last group in the primary navigation, and the reader's own account is the last
   item within it.** The work the product exists for comes first; settings about the shared
   workspace come before settings about the reader themselves.
@@ -438,7 +441,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   control that is the row's content, such as a role picker or an on/off switch, stays in the row,
   and so does a remove control on an entry being edited in a form, such as one line of a list the
   reader is still writing.
-- **An action graver than its neighbours is set apart from any action it could be mistaken for.**
+- **An action graver than its neighbors is set apart from any action it could be mistaken for.**
   In a menu it goes last, below a divider; in a group of buttons it stands apart from the rest. Two
   destructive actions listed together, such as removing a member beside deleting the workspace, are
   one slip of the pointer apart, and the slip costs far more in one direction; sharing a red tone
@@ -481,7 +484,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   reader to one next step, such as a prompt to complete a requirement before an action, shows that
   action alone: its "×" already closes it, and a cancel beside the step the product wants taken
   invites the reader away from it. A dialog that collects input, takes a purchase or confirms an
-  action keeps its cancel. Actions are centred only under content that is itself centred, such as
+  action keeps its cancel. Actions are centered only under content that is itself centered, such as
   an empty state. A multi-step flow's footer is the one
   exception, as the next bullet says; a control beside a heading, in a toolbar, at the end of a
   table row or in a floating save panel follows that surface's own layout.
@@ -509,9 +512,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   and says what they now have and what happens next — never a neutral status panel, nor a
   placeholder for something the reader does not have yet such as "appears here". It ends on one
   action, which returns the reader to the page they left to start the flow, or to their home when
-  that is unknown. A label and a button centred in an otherwise empty page is the defect, and so is
+  that is unknown. A label and a button centered in an otherwise empty page is the defect, and so is
   a small card left under chrome that no longer applies, such as tabs or a form header. The page for
-  an address that does not exist is the exception: a full-page message centred in the screen,
+  an address that does not exist is the exception: a full-page message centered in the screen,
   outside the navigation, with one action home. A notice that the page is for somebody else, and a
   status page standing in a finished flow's place, are deleted as the bullets above say.
 - **A boxed banner appears only when the reader has something to do, something is wrong, or
@@ -631,7 +634,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   required fields are normal editing state, not an error banner. Show errors for failures after a
   valid action or for failed data requests.
 - **An action the reader cannot take is left out while another action beside it is available.**
-  Cancelling a subscription that does not exist, "Mark all read" while nothing is unread, moving an
+  Canceling a subscription that does not exist, "Mark all read" while nothing is unread, moving an
   item that has nowhere to go: shown disabled among working controls, each offers a press with no
   effect. An action with nothing to act on shows disabled only when no other action in its menu,
   toolbar or group is available, or when it is a paid control the plan bullet in **Layout And
@@ -650,8 +653,8 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   up from below the viewport's bottom edge to rest a little above it, holding a cancel action that
   restores the saved values and a save action. It floats over the page and never takes room in it,
   so nothing beneath it, a page footer included, moves when it rises. It stays in view as the reader
-  scrolls while changes are unsaved, and slides away once they are saved or cancelled. A reader who
-  unticks one topic on a newsletter preferences page sees it rise, and ticking the topic again sends
+  scrolls while changes are unsaved, and slides away once they are saved or canceled. A reader who
+  unchecks one topic on a newsletter preferences page sees it rise, and checking the topic again sends
   it away. A save or reset button per section, a row of them at the end of the page or form, and a
   footer that sticks to the bottom of the page whether or not anything changed are the defect. A
   form that creates a record or submits a flow step is not editing saved values and keeps its own
@@ -665,7 +668,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   name, address, email or saved organization into a record that is not the reader. One boundary
   around the form sets it for every control inside, including those a shared field component
   renders, never a token per field that the next added field forgets. "Off" means what the browser
-  and the common password managers actually honour, which a bare `autocomplete="off"` is not for
+  and the common password managers actually honor, which a bare `autocomplete="off"` is not for
   name, email and address fields. A search or picker box offers nothing the browser saved — neither
   saved details nor values typed into other fields — wherever it appears, since it never holds
   anyone's details: Chrome stops typed history only for exactly `off`, and fills nothing in a field
@@ -741,7 +744,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   control.** A drag, double-click or triple-click that selects text leaves the checkbox or option as
   it was; only a plain click toggles it. Disabling selection to avoid the accidental toggle is the
   defect. The shared label component owns this, so every card and row built on it behaves the same.
-- **A labelled button in a form, beside a field, or in a form's row of actions reads as a button at
+- **A labeled button in a form, beside a field, or in a form's row of actions reads as a button at
   rest**: a filled surface, or a boundary with at least 3:1 contrast against what it sits on, plus
   a hover state. One that reads as text or a faint outline beside an input is the defect. A control
   may read as text only inside running text — a sentence, a hint, a field's description — where it

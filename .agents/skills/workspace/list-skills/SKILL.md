@@ -15,7 +15,7 @@ short_description: 'List shared and repository skills with who can invoke each a
   current repository is the skills repository, or has no skills, the section holds `- None`.
 
 Read each skill's frontmatter from its canonical `SKILL.md`; never from a provider mirror, a skill
-catalogue, or memory. Plugin and built-in harness skills are outside both sources.
+catalog, or memory. Plugin and built-in harness skills are outside both sources.
 
 ## Each Entry
 
@@ -27,7 +27,10 @@ catalogue, or memory. Plugin and built-in harness skills are outside both source
 ## Categories
 
 - Both sections use the skills repository's categories: its folders under `.agents/skills/`, each a
-  sub-section titled by the folder name in title case, in name order.
+  sub-section titled by the folder name in title case, in name order. When the skills repository
+  files its skills in no category folders, choose one set of categories for both sections by the
+  kind of work the summaries describe, such as review, delivery or writing guidance, each titled
+  and ordered the same way.
 - A skill with no folder, or with a folder the skills repository lacks, goes under the category
   whose skills do the same kind of work, judged from its summary; one that fits none goes under
   `Other`, listed last.

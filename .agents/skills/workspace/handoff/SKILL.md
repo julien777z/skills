@@ -28,10 +28,11 @@ skill ends with.
 - Complete every hand-off step, working through environment obstacles. When private-ledger recovery or verified transfer is genuinely unavailable, preserve
   the source and report the concrete blocker. Use the completion template only after all steps,
   including ledger transfer and ownership verification, succeed.
-- Nothing in the hand-off or its report is addressed to the user as a task. An action that needs the
-  user — a decision, an approval, a merge they have not authorized — is written in the hand-off
-  comment as an instruction to the next agent to put that question to the user and wait, exactly as
-  this session would have.
+- Nothing in the hand-off or its report is addressed to the user as a task. A decision or approval
+  that needs the user is written in the hand-off comment as an instruction to the next agent to put
+  that question to the user and wait, exactly as this session would have. A merge, deployment,
+  publication or release the user has not authorized is written as an instruction to report it as
+  remaining for the user, never to ask for it, as the global rules' merge-authorization bullet says.
 
 ## Workflow
 

@@ -8,6 +8,7 @@ const STACK_VARIANTS = {
   justify: { start: 'justify-start', center: 'justify-center', between: 'justify-between', end: 'justify-end' },
   wrap: { true: 'flex-wrap', false: 'flex-nowrap' },
   grow: { true: 'flex-1', false: '' },
+  shrink: { always: '', belowLg: 'lg:shrink-0' },
   divided: { true: 'divide-y border-t', false: '' },
   inset: {
     none: '',
@@ -29,12 +30,12 @@ const STACK_VARIANTS = {
     accentRing: 'size-5 shrink-0 rounded-full border border-info',
     brand: 'size-7 shrink-0 rounded-md bg-primary text-primary-foreground',
   },
-  frame: { none: '', page: '@container/page mx-auto w-full max-w-screen-2xl' },
-  height: { auto: '', bar: 'h-14' },
+  frame: { none: '', page: '@container/page mx-auto w-full max-w-[120rem]', readable: 'max-w-4xl' },
+  height: { auto: '', bar: 'min-h-14' },
   block: { none: '', row: 'py-3', page: 'py-8' },
   push: { true: 'ml-auto shrink-0', false: '' },
   show: { always: '', fromSm: 'hidden sm:flex', fromLg: 'hidden lg:flex', belowLg: 'lg:hidden' },
-  scroll: { true: 'overflow-x-auto', false: '' },
+  scroll: { true: 'scrollbar-visible overflow-x-auto pb-1', false: '' },
   marker: {
     none: 'list-none',
     bullet: 'list-disc pl-5 marker:text-muted-foreground',
@@ -51,6 +52,7 @@ const stackVariants: ReturnType<typeof cva<typeof STACK_VARIANTS>> = cva('flex m
     justify: 'start',
     wrap: false,
     grow: false,
+    shrink: 'always',
     divided: false,
     inset: 'none',
     surface: 'none',
@@ -66,7 +68,7 @@ const stackVariants: ReturnType<typeof cva<typeof STACK_VARIANTS>> = cva('flex m
 });
 
 interface StackProps extends VariantProps<typeof stackVariants> {
-  as?: 'div' | 'main' | 'ul' | 'ol' | 'li' | 'nav';
+  as?: 'div' | 'main' | 'ul' | 'ol' | 'li' | 'nav' | 'figure';
   label?: string;
   children: ReactNode;
 }

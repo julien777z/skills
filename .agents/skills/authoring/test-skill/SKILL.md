@@ -18,24 +18,24 @@ confuse those conclusions.
 
 ## When It Runs
 
-- **Run before merge for every behavior-changing skill, rule, or agent edit**, whether it came
-  through `edit-skill` or was made directly. A rule is reader guidance, so its source type never
+- **Run before merge for every behavior-changing skill, rule, or agent edit**, however it was
+  made. A rule is reader guidance, so its source type never
   exempts it. An edit that changes what the skill returns the user runs against the concrete example
-  `edit-skill` records before the edit; a smoke run validates that format without proposing or
+  recorded before the edit; a skill-test run validates that format without proposing or
   awaiting approval for it.
 - **An edit that changes no instruction a reader follows does not run.** A spelling correction or
   dead link repair asks the reader to do the same work. Its source validation and required reviews
-  still apply; there is no changed behavior for a smoke test to exercise.
-- Recognise one from the diff rather than from how it is described, and least of all from how small
+  still apply; there is no changed behavior for a skill test to exercise.
+- Recognize one from the diff rather than from how it is described, and least of all from how small
   it looks: read each changed line against the line it replaces and confirm the instruction is
   identical. A line that gains, loses, sharpens or reorders one is an ordinary edit however few
   words moved. Test the semantic instruction or behavior delta and any dependencies it concretely
   affects, not unchanged behavior merely because it shares a skill, file, batch, or head. Verify
   moved unchanged text against its source, links, and reachability; replay behavior only where
   meaning or reachability changed.
-- **A canonical guidance batch is tested in one coordinated round.** Freeze the exact head and
-  guidance package for every related guidance pull request, use one edited reader across the
-  batch's isolated scenarios, and retain results per head. Run an isolated original control when an
+- **An invocation that names several heads is tested in one coordinated round.** Freeze the exact
+  head and guidance package for every named pull request, use one edited reader across their
+  isolated scenarios, and retain results per head. Run an isolated original control when an
   improvement claim or conflicting instruction needs comparison; a straightforward clarification
   may omit it only with that justification recorded. The original control stays blind to the edited
   diff, criteria, and reports. The round runs when, and on the head the caller supplies.
@@ -61,7 +61,7 @@ Run after `code-simplify` completes its pass.
    environment: disposable files, fake credentials, local services or browser surfaces, and action
    recorders as appropriate. Preserve the relevant interfaces, permissions, failures and state
    transitions; a canned success or written promise does not exercise the workflow.
-   Never give smoke agents access to the user's browser, profiles, sessions, real credentials, or
+   Never give skill-test agents access to the user's browser, profiles, sessions, real credentials, or
    live mutation targets. When a workflow would revoke a credential, send a message, purchase,
    delete or change access, supply a synthetic boundary that records that action and changes only
    disposable state. Verify which implementation and resources each run actually uses before launch.
@@ -102,8 +102,8 @@ Run after `code-simplify` completes its pass.
    record the evidence for retaining or removing each independently meaningful edit. When independent
    edits deserve different outcomes, separate them through the repository's pull-request workflow
    where authorized; keep coupled instructions and their required repairs together. This assessment
-   recommends which changes should merge; the caller still completes acceptance and the authorized
-   merge gate. A passing smoke test alone never decides that a pull request should merge.
+   recommends which changes should merge and decides no merge itself. A passing skill test alone
+   never decides that a pull request should merge.
 7. **Repair and rerun until verified**, within the global rules' review-round limit of 3 rounds
    per change: after the third failing round over the same edit, that bullet's decision replaces
    another repair. Diagnose each reported issue at its owner. Fix guidance
@@ -114,7 +114,7 @@ Run after `code-simplify` completes its pass.
    Rerun only edited runs and required controls materially affected by a guidance, environment, or
    scenario change; a scoring correction rescores all applicable retained results.
    Inconclusive, improperly tested and missing-evidence states are work to repair, never final
-   smoke verdicts or reasons to abandon an authorized change. Keep working through recovery;
+   skill-test verdicts or reasons to abandon an authorized change. Keep working through recovery;
    genuine external authorization or host boundaries follow the global rules and **Reviewer
    selection**, holding only the dependent action while repair or resolution remains active.
 8. **Report the verified result.** Send the tables and one evidence file in the **Output** shape.
@@ -147,10 +147,10 @@ fallback for the missing assignment.
 
 Run one edited reader across the frozen scenarios and one original control only when the recorded
 comparison requires it, with the same resolved model and reasoning effort where both run. Record
-the catalogue state, requested capability and family, exact dispatch identifier, resolved reasoning
+the catalog state, requested capability and family, exact dispatch identifier, resolved reasoning
 effort, selector resolution, and accepted actual-assignment dispatch receipt with those explicit
-parameters in each run's evidence entry. Record catalogue state separately
-from assignment state: a catalogue-hidden family is `dispatch required` until its exact identifier is resolved
+parameters in each run's evidence entry. Record catalog state separately
+from assignment state: a catalog-hidden family is `dispatch required` until its exact identifier is resolved
 and the assigned worker accepts it, then it is `accepted`; a missing identifier triggers the launch
 fallback and is not an unsupported-model receipt. Selector resolution retains an explicit unsupported request,
 the exact fallback capability and dispatch identifier when one is permitted, why that fallback was selected,
@@ -166,7 +166,7 @@ improvement from an in-process comparison.
 Return this shape, one block per skill under test, and in chat nothing after the last verdict line:
 
 ```markdown
-Smoke test: <skill name>
+Skill test: <skill name>
 
 Miss: <one sentence>
 
@@ -197,15 +197,15 @@ Verdict: passes (round <n>) | not run: <nonbehavioral change under When It Runs>
   scenario, before Diagnoses and Verdict; a merge recommendation remains subject to the caller's
   gates. Both rows may pass. Use the actual results rather than copying the illustrative control
   miss above.
-- **One row per run**, labelled with the model and a letter: A reads the edited text; B reads the
+- **One row per run**, labeled with the model and a letter: A reads the edited text; B reads the
   original only when required, or no skill text for a new skill. Each row shows its latest run.
 - **`Result` follows `Run`** and reads `pass` only when every criterion in that row passed; each
-  further column is one criterion, headed with a short name for the behaviour it checks, never
+  further column is one criterion, headed with a short name for the behavior it checks, never
   `Run`, `Result`, a run label, or a phrase built on them. Every cell carries `pass` or `miss`.
 - **At most five columns**, so at most three criteria per table. More criteria continue in a
   further table under the same scenario title, with the same rows and legend line.
 
-The sent file holds the block of every skill the smoke test covered, then a `---` line and the
+The sent file holds the block of every skill the skill test covered, then a `---` line and the
 evidence behind every cell, one section per skill:
 
 ```markdown
@@ -217,7 +217,7 @@ evidence behind every cell, one section per skill:
 
 #### <run label> (<edited | original> text[, round <n>])
 
-- **Catalogue state:** <capability> / <family> — <catalogue-confirmed | catalogue-hidden>
+- **Catalog state:** <capability> / <family> — <catalog-confirmed | catalog-hidden>
 - **Requested selection:** <capability> / <family>
 - **Dispatch identifier:** <exact identifier | identifier required>
 - **Assignment state:** <not requested | dispatch required | identifier required | accepted | unavailable: reason>
@@ -234,7 +234,7 @@ evidence behind every cell, one section per skill:
 
 #### Dispatch attempt <n> (incomplete required reader set)
 
-- **Catalogue state:** <capability> / <family> — <catalogue-confirmed | catalogue-hidden>
+- **Catalog state:** <capability> / <family> — <catalog-confirmed | catalog-hidden>
 - **Requested selection:** <capability> / <family>
 - **Dispatch identifier:** <exact identifier | identifier required>
 - **Assignment state:** <not requested | dispatch required | identifier required | accepted | unavailable: reason>

@@ -10,20 +10,21 @@ You are a security auditor. Your job is to find **exploitable vulnerabilities wi
 
 `references/rubric.md` holds what counts as a finding, what it is worth, which precedents rule a
 finding out, how code that crosses a trust boundary is built, and what a remedy costs. This file
-holds how that judgement is applied: while writing code, over a change, and over a codebase. Read
+holds how that judgment is applied: while writing code, over a change, and over a codebase. Read
 the rubric whole before any of them and apply it throughout.
 
 ## Dependencies
 - `subagent-matrix`
 - `interactive-skill`
+- `pre-production`
 
 ## While Writing Code
 
 Before writing or changing code that crosses a trust boundary — input handling, authentication,
 authorization, sessions, secrets, cryptography, deserialization, file paths, subprocesses,
 outbound requests, templates — read the rubric and apply **Building It Safely** to every line the
-change writes. A finding in those lines is the change's own defect: it is fixed in the change, as
-`code-simplify` fixes its findings, never reported for a later decision.
+change writes. A finding in those lines is the change's own defect: it is fixed in the change,
+never reported for a later decision.
 
 ## Diff Review
 
@@ -78,7 +79,7 @@ supplied by the invocation or its calling workflow needs no question.
 At `low` every phase, including supplemental research, runs in process with no agents. From
 `medium` upward, launch the agents each phase names in parallel; capacity limits force batching, never omission and never an undeclared local skim. For each named
 agent, invoke `subagent-matrix` at its standard capability level, launch the exact resolved identifier, and
-retain catalogue state, identifier, assignment state and host receipt in the audit evidence; a research sub-agent a
+retain catalog state, identifier, assignment state and host receipt in the audit evidence; a research sub-agent a
 hunter starts launches the same way. Each agent a level
 names is launched as `subagent-matrix`'s **Dispatch** section directs.
 
@@ -88,11 +89,11 @@ cohort is a reason to find less, never a reason to report worse.
 
 **What a level may claim is what it covered.** `low` reads what it was given, so its report says so
 and never reports as a codebase audit; only a level that fans out over the target says anything
-about the target as a whole. `acceptance-gate` runs this skill at `low` against a diff, which is why
-`low` names no agents: a read-only gate cannot spawn one.
+about the target as a whole. `low` launches no agents, so it
+runs where none can be launched.
 
-**A skill that borrows this one takes the findings into its own verdict.** It writes no findings
-file and owns what happens to each finding.
+**An invocation that takes the findings into its own verdict gets them returned, never filed.**
+No findings file is written, and the invocation owns what happens to each finding.
 
 ## Platform terminology
 
@@ -109,8 +110,6 @@ Use the platform's equivalent capabilities while preserving the specified roles,
 
 The output is a report: one findings file in the session's scratch directory, sent to the user with
 the chat summary. Nothing is written inside the target repository, and the audit changes no code.
-What happens to a finding is its caller's: a task fixes a finding in its own change, and
-`security-doctor` fixes a codebase's findings through the remediation plan the user approves.
 
 A report is what this run found; it never asserts a codebase is clean. Each run explores different
 code paths depending on which agents find what and where they dig, and the best single run finds

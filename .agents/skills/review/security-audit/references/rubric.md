@@ -1,9 +1,9 @@
 # Security Audit Rubric
 
 What counts as a finding, what it is worth, which precedents rule one out, how code that crosses a
-trust boundary is built, and what a remedy costs. This file is the judgement; the workflow that
-applies it lives in `SKILL.md` and the other references. Another skill may borrow this file on its
-own — `acceptance-gate` reads it to judge a diff — so it states criteria and never procedure.
+trust boundary is built, and what a remedy costs. This file is the judgment; the workflow that
+applies it lives in `SKILL.md` and the other references. It is also read on its
+own, without that workflow, so it states criteria and never procedure.
 
 ## Only Report What You Can Exploit
 
@@ -95,7 +95,7 @@ kill it rather than to keep it:
    there, why.
 4. **Mitigation** — whether another layer prevents it: middleware, a database constraint, a
    framework default.
-5. **Parser and runtime behaviour** — where the exploit depends on how a parser or runtime handles
+5. **Parser and runtime behavior** — where the exploit depends on how a parser or runtime handles
    an input, verified against the spec or a real run, never reasoned from intuition. The most
    convincing false positives are built on "the parser will interpret this as".
 
@@ -171,7 +171,7 @@ These are what make a security audit useless:
 2. **Rating defense-in-depth gaps as HIGH or CRITICAL.**
 3. **Ignoring the deployment model.** Rate limiting at the edge is a valid architecture; not every
    application needs it in the application layer.
-4. **Treating designed behaviour as a bug.** Understand the trust model first. Where the design says
+4. **Treating designed behavior as a bug.** Understand the trust model first. Where the design says
    admins are fully trusted, an admin doing admin things is not a finding.
 5. **Padding with LOW findings to look thorough.** Ten LOWs do not make a useful report; three
    MEDIUMs do.

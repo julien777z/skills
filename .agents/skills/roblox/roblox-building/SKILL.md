@@ -9,6 +9,8 @@ short_description: 'Build and improve Roblox worlds, terrain, structures, props,
 ## Dependencies
 
 - `luau`
+- `subagent-matrix`
+- `council`
 
 ## Give every map a purpose
 
@@ -22,7 +24,7 @@ Choose one place or multiple places according to the game's established architec
 
 Vary terrain shape, sightlines, silhouettes, landmarks, architecture, vegetation, lighting, and the rhythm of enclosed/open spaces. Compose focal areas with quieter spaces between them. Make routes readable and reward looking around with meaningful environmental detail, optional discoveries, or views appropriate to the scope. Do not substitute a larger empty field, random prop scattering, or endless copies of one tree for a designed map.
 
-Give every district a useful role and connect it visually to its neighbors. Inspect approached building faces, roof orientation, doorways, signs, supports, interior scale, shoreline transitions, and terrain joins. Detail must support navigation, story, or atmosphere while leaving room for player movement and the gameplay camera. Preserve established safe-zone and encounter rules.
+Give every district a useful role and connect it visually to its neighbors. Inspect approached building faces, roof orientation, doorways, signs, supports, interior scale, shoreline transitions, and terrain joins. Detail must support navigation, story, or atmosphere while leaving room for player movement and the gameplay camera. Every sign states what is true where it hangs: an interior's own name sign names that room, never the place outside its door, while an exit or direction sign names the destination it points to. Preserve established safe-zone and encounter rules.
 
 Evaluate every object's placement in the complete scene: why it belongs there, what
 it faces or connects to, how it is approached and used, and whether its neighbors
@@ -31,7 +33,7 @@ space before adding decorative props. Apply the functional-placement criteria in
 the map-making reference; isolated asset quality, collision checks, and successful
 interactions do not establish a coherent arrangement.
 
-Read [Map making and surface integration](references/map-making.md) for composition, traversal, terrain joins, collision, and inspection. Read [world-space text inspection](references/world-space-text.md) for authored signs or runtime messages in the world. Use shared map/model frames and named anchors as described in `luau`; update geometry and its gameplay consumers together.
+Read [Map making and surface integration](references/map-making.md) for composition, traversal, terrain joins, collision, and inspection. Before accepting a new map or a visual pass, a new or rebuilt interior included, run its **Scene audit** and then a fresh-eye review: invoke `subagent-matrix` at its standard capability level for one reviewer given only the audit's captures, with places of one kind side by side, and the game's stated art direction or the reference the user gave, never the build notes, and ask what reads as unfinished, repetitive, empty, off-palette or wrongly turned. Fix confirmed findings and recapture; a finding you would reject goes to `council` in **Ask** mode and its ruling is followed. Read [world-space text inspection](references/world-space-text.md) for authored signs or runtime messages in the world. Use shared map/model frames and named anchors as described in `luau`; update geometry and its gameplay consumers together.
 
 ## Blender and economical meshes
 
@@ -53,6 +55,6 @@ Trace every affected entrance and activity access route all the way to the estab
 
 For major maps or streaming changes, test stream-out/re-entry, destination preloading, interiors, missing assets, and appropriate mobile coverage. Verify complete activity footprints avoid protected routes. Check the saved or rebuilt artifact for terrain, assets, lighting, source/package closure, and absence of test fixtures; reopen it when serialization needs verification. Report code checks, Studio traversal, simulation, performance measurements, and published-client results separately.
 
-Keep reusable building lessons here, Studio operations in `roblox-studio`, and game-specific world design in the project skill. Update canonical `.agents` sources only; leave provider mirrors to Agent Sync.
+Keep reusable building lessons here, a lesson whose subject another skill owns there, and game-specific world design in the project skill. Update canonical `.agents` sources only; leave provider mirrors to Agent Sync.
 
 Sources for place architecture: [Roblox places](https://create.roblox.com/docs/production/publishing/publish-games-and-places), [teleporting](https://create.roblox.com/docs/projects/teleport).

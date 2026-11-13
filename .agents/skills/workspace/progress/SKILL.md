@@ -16,18 +16,18 @@ and deliver the same dashboard again on every request so the user keeps one page
 
 ## Workflow
 
-1. **Read the ledger.** Resolve and read the task's ledger through `session-ledger`. A plan or
-   question the task has put to the user that the ledger lacks is reconstructed and recorded first,
-   from verified task evidence, as that skill's recovery rules say, approved only where the user's
-   own message approved it; the dashboard never shows a step
-   the ledger does not hold. The figures cover the whole task since its first approved plan, so
-   that check spans every plan it has had, finished ones included: a plan another entry names, such
-   as one a later plan continues or supersedes, and finished work the task's record shows that no
-   recorded step holds, such as completed items on the harness task list, are each a plan the ledger
-   lacks. A plan that continues or supersedes another replaces only the steps it names; the earlier
-   plan's finished steps stay in the count. An active or blocked step that the task's progress record
-   records with parts, held in the ledger without them, gets them recorded the same way, with the
-   parts already finished marked done.
+1. **Read the ledger.** Resolve and read the task's ledger through `session-ledger`. A question the
+   task has put to the user that the ledger lacks is reconstructed and recorded first, from verified
+   task evidence, as that skill's recovery rules say, approved only where the user's own message
+   approved it; so is a plan the task put to them in the question carrying the "Approved" option.
+   The dashboard never shows a step the ledger does not hold. The figures cover the whole task since
+   its first approved plan, so that check spans every plan it has had, finished ones included: a
+   plan another entry names, such as one a later plan continues or supersedes, and finished work the
+   task's record shows that no recorded step holds, such as completed items on the harness task
+   list, are each a plan the ledger lacks. A plan that continues or supersedes another replaces only
+   the steps it names; the earlier plan's finished steps stay in the count. An active or blocked
+   step that verified task evidence shows with parts, held in the ledger without them, gets them
+   recorded the same way, with the parts already finished marked done.
 2. **Find the task's pull requests** with `list-prs`, requesting every state, then read each one's
    current state from its host: open, draft, merged or closed, the checks on its head, and review
    state.
@@ -61,18 +61,18 @@ and deliver the same dashboard again on every request so the user keeps one page
   that is not withdrawn, where finished work is each done step's work and each done part of a step
   neither done nor skipped. `detail`: "<done> of <total> steps done", counting steps with work,
   adding "across <n> plans" when there are several.
-  `segments`: one per step with work, in plan order, labelled with the step's title, `details` its
+  `segments`: one per step with work, in plan order, labeled with the step's title, `details` its
   status, "~<n> min estimated", then "took <n> min" once done or "<done> of <n> parts done" for a
   step with parts, such as ["Done", "~18 min estimated", "took 21 min"],
   `weight` that work in minutes, toned `good` when done, `accent` when active, `critical` when
   blocked, and neutral otherwise. A step neither done nor skipped with done parts takes them as a
   first segment, toned `good`, then its remaining work as a second, toned by the step's status as
   above, when any remains, so the bar fills as the percentage does.
-- **Metrics,** in this order: **Time remaining**, the work not yet finished, totalled as
-  the task coordinator totals a plan, prefixed `~` because it is an estimate, counting only the agent's work, with no
-  `detail` for anything the user owes; **Waiting on you**, the count of open questions; **Pull
-  requests**, the count of open and draft pull requests, with "<n> open · <n> draft" in `detail`;
-  **Elapsed**, measured from the first plan's recorded approval time.
+- **Metrics,** in this order: **Time remaining**, the work not yet finished, totaled as
+  `session-ledger` totals a plan, prefixed `~` because it is an estimate, counting only the agent's
+  work, with no `detail` for anything the user owes; **Waiting on you**, the count of open
+  questions; **Pull requests**, the count of open and draft pull requests, with "<n> open · <n>
+  draft" in `detail`; **Elapsed**, measured from the first plan's recorded approval time.
 - **Counts.** `counted` is set on the `links` "Pull requests", the `table`s "Plans" and "Ready to
   merge", the `changes` "Config changes" and "Migration changes", and the `notes` "Decisions and
   notes", whose length changes as the task does; no other section is counted.
@@ -101,15 +101,14 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **`table` "Plans"**: one row per plan that is not withdrawn, with the columns Plan, Steps done
   ("<done> of <n>"), Running, Waiting on you and Time left, the summary of what the board shows step
   by step, and `details` holding each row's plan write-up, so a row opens the plan.
-- **`tree` "Plan tree"**, described as "Each plan, its steps and their parts, by where they stand",
-  with `open_depth` 2: one entry per plan that is not withdrawn, in approval order, `label` the
-  plan's title, `figure` "<done> of <n> steps" and `meta` "~<n> min left", or "Proposed" for a plan
-  not yet approved; under it one entry per step, in plan order, `label` "<n>. <step title>", `tone`
-  as its progress segment is toned, `meta` its status, then "~<n> min" while it is not done or its
-  measured duration once it is, and `figure` "<done> of <n> parts" for a step with parts, counting
-  parts not skipped; and under such a step one entry per part, `label` its title, `tone` `good`
-  when done, `accent` when active, `critical` when blocked and neutral otherwise, and `meta` its
-  status.
+- **`tree` "Plan tree"**, with `open_depth` 2: one entry per plan that is not withdrawn, in
+  approval order, `label` the plan's title, `figure` "<done> of <n> steps" and `meta` "~<n> min left", or
+  `status` "Proposed" for a plan not yet approved; under it one entry per step, in plan order, `label`
+  "<n>. <step title>", `status` its status (Done, Running, Blocked, Next or Skipped) toned as its
+  progress segment is, `meta` "~<n> min" while it is not done or its measured duration once it is,
+  and `figure` "<done> of <n> parts" for a step with parts, counting parts not skipped; and under
+  such a step one entry per part, `label` its title and `status` its status, toned `good` when done,
+  `accent` when active, `critical` when blocked and neutral otherwise.
 - **Plan write-up**: the plan as a reader who missed the conversation needs it, from the ledger's
   `plan` entry: an `outline` with `expanded` and `stacked` set, `title` the plan's title and `description` its
   goal, then "Approved · ~<total> min", or "Proposed · ~<total> min" for a plan not yet approved. Its groups, each only when it has something in it:
@@ -124,13 +123,12 @@ and deliver the same dashboard again on every request so the user keeps one page
   waiting on you" when a question is open, and `body` the first open question in a sentence and
   the step it blocks; otherwise, while a step is blocked, `tone` `critical`, `title` "<step title> is
   blocked" and `body` what it waits for.
-- **`board` "Work"**, described as "Each step of the task's plans, by where it stands", four
-  columns, with Up next and Done setting `page_size` 5 so each shows five cards at a time:
+- **`board` "Work"**, four columns, with Up next and Done setting `page_size` 5 so each shows five cards at a time:
 
 | Column | `tone` | Cards |
 | --- | --- | --- |
 | Waiting on you | `warning` | Each open question: `title` the question, `detail` "Recommended: <recommendation>", `tag` "Question". |
-| In progress | `accent` | Active and blocked steps: `detail` what the step changes, from its ledger entry, `tag` the plan's title when the task has several plans, followed by " · blocked" when blocked, or "Blocked" alone when it has one, `meta` its estimate, adding "· <done> of <n> parts" for a step with parts, counting parts not skipped. Each question whose evidence is still owed: `title` the question, `detail` the evidence being gathered, `tag` "Question". |
+| In progress | `accent` | Active and blocked steps: `detail` what the step changes, from its ledger entry, `tag` the plan's title when the task has several plans, `status` "Blocked" toned `critical` when blocked, `meta` its estimate, adding "· <done> of <n> parts" for a step with parts, counting parts not skipped. Each question whose evidence is still owed: `title` the question, `detail` the evidence being gathered, `tag` "Question". |
 | Up next | — | Steps not started, in plan order, with `meta` as above and `tag` the plan's title when the task has several plans. |
 | Done | `good` | Finished steps, `meta` their measured duration. |
 
@@ -151,7 +149,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   on is left; otherwise it names the first thing missing.
 - **`diagram` "Merge and deploy order"**: each open or draft pull request as a node, `label` its
   name, which `references` makes a link, and `detail` its repository, with no `prs` frames; a merged
-  pull request another still depends on joins with `change` `removed`, labelled as merged; and each
+  pull request another still depends on joins with `change` `removed`, labeled as merged; and each
   environment a merge deploys to, such as a staging or production deployment, as a node with
   `detail` "deploys on merge" or "deployed by hand". `edges` run from a pull request to the one that
   merges after it, `label` what the later one needs from it, such as "its migration" or "its
@@ -177,18 +175,17 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **`questions` "Answered"**: each answered question with the user's `answer` in their words and
   `at` the time it was given, with `page_size` 5.
 - **`notes` "Decisions and notes"**: each recorded decision and each assumption made without the
-  user, labelled as an assumption.
+  user, labeled as an assumption.
 - **`table`**, only when the ledger holds tabular facts worth a grid, such as checks per pull
   request head.
-- **`tree` "What each pull request changes"**, described as "Each pull request, the areas it
-  touches and what changes in each", with `open_depth` 2: one entry per pull request the page
-  covers, `label` its name and `figure` "<n> changes"; under it one entry per area its "What changed
+- **`tree` "What each pull request changes"**, with `open_depth` 2: one entry per pull request
+  the page covers, `label` its name and `figure` "<n> changes"; under it one entry per area its "What changed
   in" outline groups by, in that order, `label` the group's title and `figure` the count of its
   items, followed by "Config" and "Migrations" entries when its config or migration changes hold
   anything; and under each area one entry per change, `label` the item's title, or for config and
-  migrations the `name` with `meta` its `change` (Added, Changed or Removed). The tree is the map;
-  the details are in "Change details".
-- **`tabs` "Change details"**, described as "What each change does, one kind of change at a time":
+  migrations the `name` with `status` its `change`: Added toned `good`, Changed `accent`, Removed
+  `critical`. The tree is the map; the details are in "Change details".
+- **`tabs` "Change details"**:
   the tabs "Code", holding an `outline` "What changed in <pull request name>" per pull request the
   page covers, in the tree's order; "Config", holding the `changes` "Config changes"; and
   "Migrations", holding the `changes` "Migration changes". A tab with nothing in it keeps its entry
@@ -196,7 +193,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   sections show without a tab bar.
 - **`outline` "What changed in <pull request name>"**: the pull request's changes grouped by the area
   they touch, such as `Report export` or `Search page`, never the task itself, with moves and renames last under
-  `No behaviour change`. Each item's `title` says in a few words what now happens, and its `detail`
+  `No behavior change`. Each item's `title` says in a few words what now happens, and its `detail`
   how and why it matters in one or two sentences a reader follows without the diff. Its `links`,
   of kind `diff`, open the diff of each file that makes the change, in the pull request's Files
   changed view.
@@ -213,7 +210,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   needed>", with a `diff` link to the migration file in the pull request's diff.
 - **Both `changes` sections** set `group_label` "Pull request".
 - **`outline` "Keep in mind"**: what a reviewer or the user needs to know about the changes
-  themselves before relying on them — a risk, a limit, a behaviour that surprises — grouped by area as above.
+  themselves before relying on them — a risk, a limit, a behavior that surprises — grouped by area as above.
   What merging and deploying needs or sets off belongs to the Wrap up page, and nothing here
   restates how the work is delivered, such as that a pull request waits for the user's approval,
   stays a draft or runs its checks. `tone` is `critical` for what breaks something if missed and

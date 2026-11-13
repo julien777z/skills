@@ -34,7 +34,7 @@ Check new and existing tests against these low-value patterns:
 - mocks that implement the asserted behavior, one identical mock standing in for different APIs,
   or fixtures supplying the receipt, admission, or callback order the owner should produce;
 - persistence asserted against a store the exercised path never writes, and capability tests that
-  restate flags instead of exercising the delivery or acknowledgement they promise;
+  restate flags instead of exercising the delivery or acknowledgment they promise;
 - negative controls that pass for an unrelated reason, and names or fixtures that promise more
   than the input and assertions exercise.
 
@@ -177,8 +177,8 @@ source owners. Apply explicit repository guidance first. Otherwise prefer the la
 directly mirrors source ownership, using the majority pattern among analogous sibling service tests
 as corroborating evidence. Existing sibling tests are evidence, not authority. Preserve a different
 layout only when a real ownership or boundary difference explains it; legacy placement alone is not
-a reason. If equally valid patterns remain, present the concrete choice to the user instead of moving
-tests arbitrarily or adding another variation.
+a reason. If equally valid patterns remain, the choice goes to a council ruling, as the skill's workflow
+says, instead of moving tests arbitrarily or adding another variation.
 
 Test-owned structures may follow the testing concern rather than a production path:
 

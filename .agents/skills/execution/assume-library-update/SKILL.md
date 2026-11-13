@@ -55,7 +55,7 @@ Where the library is a third party's, none of this applies. Pin or work around i
 - This suspends the completion bar for **this** change only, and only for failures the missing update
   causes. A failure the consuming change itself introduces is still yours, and still gets fixed.
 - **What is suspended is running the suite, never writing the change or its tests.** Those are two
-  different things, and treating the first as licence for the second is how a mode meant to unblock
+  different things, and treating the first as license for the second is how a mode meant to unblock
   work becomes a reason to leave it undone.
 - **"I cannot verify it" is therefore never grounds to skip, narrow, or defer any part of the
   consuming change**, however delicate the part is. The reason will read exactly as well to the pass

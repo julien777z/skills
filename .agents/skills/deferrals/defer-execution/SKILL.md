@@ -1,6 +1,6 @@
 ---
 name: defer-execution
-description: Schedule an unrecorded scope of work on its own branch off the default branch rather than folding it into the change in flight, either after the originating pull request merges or immediately in a worktree. Use to hand over new work to do separately; use execute-defer-scope for an existing deferral record. Run only when the user asks for it.
+description: Schedule an unrecorded scope of work on its own branch off the default branch rather than folding it into the change in flight, either after the originating pull request merges or immediately in a worktree. Use to hand over new work to do separately, not for work that already has a deferral record. Run only when the user asks for it.
 short_description: 'Schedule separate work on its own branch, either now or after the current pull request merges.'
 ---
 
@@ -9,12 +9,11 @@ short_description: 'Schedule separate work on its own branch, either now or afte
 Take a scope of work and get it **done** on a branch of its own, off the default branch, instead
 of folding it into the change already in flight.
 
-**This skill accepts unrecorded scopes and creates no deferral record.** `defer-scope` records the
-durable Linear or repository-fallback entry, and `execute-defer-scope` resolves it. When work already
-has a Linear issue, legacy directory, or a record riding an open pull request, tell the user to invoke
-`execute-defer-scope` so its record and implementation receive one disposition. A scope handed here is already spoken for;
-recording it would leave the next reader to distinguish work awaiting a decision from work awaiting
-a merge.
+**This skill accepts unrecorded scopes and creates no deferral record.** Work `defer-scope` already
+records is a recorded deferral and not this skill's: decline it, name its record, and tell the user
+to run `/execute-defer-scope` on it, so its record and implementation receive one disposition. A
+scope handed here is already spoken for; recording it would leave the next reader to distinguish
+work awaiting a decision from work awaiting a merge.
 
 When a scope should be both — done after the merge *and* durable if this session ends first — that
 is two invocations, and the user asks for both.
@@ -22,6 +21,7 @@ is two invocations, and the user asks for both.
 ## Dependencies
 - `subagent-matrix`
 - `session-ledger`
+- `defer-scope`
 
 ## The decision
 
@@ -29,8 +29,7 @@ Every invocation resolves to one of two routes. Make the call explicitly and say
 taken and why.
 
 **Execute now, in a worktree.** Take this route whenever the scope cannot conflict with the change
-in flight, whatever its size. A scope that needs a plan gets one through the task coordinator and still
-runs now, beside the change.
+in flight, whatever its size, including a scope large enough to need a plan.
 
 **Execute after the merge.** Take this route only when the merge supplies something the scope
 uses: it touches files the current branch also touches, or its correct shape depends on what the
@@ -65,7 +64,7 @@ The worktree leaves the current branch's working tree untouched.
 
 2. **Delegate the work to a subagent** scoped to that worktree, once no other building worker in the
    session is changing the same files or resources. Invoke `subagent-matrix` at its standard capability
-   level, launch its exact resolved identifier, and retain catalogue state, identifier, assignment state
+   level, launch its exact resolved identifier, and retain catalog state, identifier, assignment state
    and host receipt with the scope's evidence in the task ledger through `session-ledger`, as
    `subagent-matrix`'s **Dispatch** requires. This keeps the
    parent session's own state and working directory where they were. Give the worker the scope, the worktree
@@ -120,9 +119,8 @@ The work is owed once the originating pull request lands.
 ### The authorization outlives the merge
 
 A queued scope is an outstanding obligation, not a completed execution. Its own invocation authorizes
-it until the branch exists, and no other skill's completion or authorization boundary closes it: a
-workflow that ends by merging the very pull request this scope waits on has not consumed the
-invocation that queued it, and the scope needs no re-invocation to proceed.
+it until the branch exists. The merge of the pull request it waits on, by whatever route, does not
+consume the invocation that queued it, and the scope needs no re-invocation to proceed.
 
 After a context compaction, a session resume, or any summary, re-establish the scope from its step
 in the task ledger, check whether its pull request merged, and start it if it has. Resuming this route is not
@@ -130,8 +128,7 @@ re-executing this skill — the skill has not finished until the branch exists, 
 later turn not to re-run skills that already ran does not reach it.
 
 The ledger step is the session's durable record of the scope, and a task-list item only mirrors it;
-neither is a deferral record. A scope that must outlive the session whatever happens is one to
-record with `defer-scope` as well, which the user asks for.
+neither is a deferral record.
 
 ## Continuing deferred execution
 
@@ -151,8 +148,8 @@ branch is worse than no body.
 - Never fold the deferred scope into the branch it came from. That is the whole point: it must be
   reviewable and mergeable on its own.
 - Never hand a would-be fix from the change under review here to get it out of that change. That is
-  a deferral, and the deferral mechanism's admission decides whether it may leave the change.
-- Never create a Linear deferral or repository-fallback record for a scope handed only to this skill.
+  a deferral, and `defer-scope`'s admission decides whether it may leave the change.
+- Never record a scope handed only to this skill through `defer-scope`.
   Deferral records describe problems nobody has committed to; this skill's scopes are committed to
   by definition.
 - Never branch a deferred scope from the working branch, on either route.

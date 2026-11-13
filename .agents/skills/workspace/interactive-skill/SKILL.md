@@ -71,11 +71,19 @@ choices:
 - **Use the harness's question tool when the menu fits it.** Claude's question tool holds two to
   four options. Each available choice becomes an option, its `label` as the label and its `detail`
   as the description. A `multi` menu allows several selections, and a `confirm` offers Yes and No,
-  its Yes labelled Approved when it approves a plan or proposal.
+  its Yes labeled Approved when it approves a plan or proposal.
   A reply typed into the tool's free-text answer is matched as below.
-- **Otherwise write the menu in chat**, exactly in this shape. That covers a harness with no
-  question tool, a menu longer than the tool can hold, and a `text` prompt. Then end the turn;
-  nothing that depends on the answer runs before it arrives.
+- **A menu longer than the tool holds goes through the tool in pages**: up to three choices and a
+  "More choices" option on each page until four or fewer remain, which the last page holds.
+  Picking "More choices" shows the next page and is never a choice itself. For `multi`, picks from
+  every page add up, and the menu ends on the first page answered without "More choices"; a typed
+  reply such as `all`, `none` or `1,3` on any page answers the whole menu, in the numbering every
+  page shares.
+- **A `text` prompt goes through the tool too**, with two options: its `default` when it declares
+  one, otherwise Cancel, and an option named for answering, such as "Type it below". The tool's
+  free-text field carries the typed answer.
+- **Only a harness with no question tool writes the menu in chat**, exactly in this shape. Then end
+  the turn; nothing that depends on the answer runs before it arrives.
 
 ```markdown
 **What do you want to do?**
@@ -99,13 +107,14 @@ Trim the reply and ignore case and surrounding punctuation. Then take the first 
 
 | Reply | Means |
 | --- | --- |
-| `cancel`, `stop`, `never mind`, `quit`; for `text`, only when it is the whole reply | Cancelled: run nothing, and say that nothing ran. For `confirm` this differs from `no`, which runs the caller's "no" branch. |
+| `cancel`, `stop`, `never mind`, `quit`; for `text`, only when it is the whole reply | Canceled: run nothing, and say that nothing ran. For `confirm` this differs from `no`, which runs the caller's "no" branch. |
 | A number in the numbering, written as digits (`2`, `#2`, `2.`, `option 2`, `2nd`), as a word (`two`, `second`) or as `last`, with an optional leading `the` and trailing `one`, `option` or `choice` | That choice. |
 | A choice's `id`, `label` or alias | That choice. |
 | The start of an `id`, `label` or alias, at least three letters, when every one it starts belongs to the same choice | That choice. |
 | For `confirm`: `y`, `yes`, `yeah`, `yep`, `yup`, `sure`, `ok`, `okay`, `go ahead`, `do it` | Yes. |
 | For `confirm`: `n`, `no`, `nope`, `nah`, `don't` | No. |
 | For `multi`: items separated by commas, spaces or `and`, each matched as above; `all` or `everything`; `none` or `nothing` | Those choices; every choice; no choice. |
+| For `text`: the answering option's label with nothing typed | The prompt again; that label is never the answer. |
 | For `text`: anything else, or nothing when there is a `default` | The answer as typed, or the default. |
 
 - **A reply that is a new request is not an answer.** A full sentence, question or instruction that
@@ -114,11 +123,12 @@ Trim the reply and ignore case and surrounding punctuation. Then take the first 
 - **Any other reply that matches no choice, or more than one, gets the menu again**, never a pick
   made for the user, as often as it takes. Put one line above it, or in the question text when the
   question tool asks: "That did not match a choice. Please reply with a number from 1 to <n> or a
-  choice's name." for `choice`, the same ending "…, all or none." for `multi`, and "That did not
-  match. Please answer yes or no." for `confirm`.
+  choice's name." for `choice`, the same ending "…, all or none." for `multi`, "That did not
+  match. Please answer yes or no." for `confirm`, and "Please type your answer in the free-text
+  field." for `text`.
 
 ## Returning To The Caller
 
-Hand back the chosen `id` or `id`s, `yes` or `no`, the typed text, or `cancelled`, and where it
+Hand back the chosen `id` or `id`s, `yes` or `no`, the typed text, or `canceled`, and where it
 came from: the request, the reply, or the only available choice. The calling skill runs that branch
-with no further question about it, and stops without running any branch on `cancelled`.
+with no further question about it, and stops without running any branch on `canceled`.

@@ -1,0 +1,277 @@
+name: "🚀[Titan] The Space Simulator"
+game_id: "universe:5174979552"
+universe_id: "5174979552"
+place_id: "15027718878"
+url: "https://www.roblox.com/games/15027718878/The-Space-Simulator"
+creator: "mooonc0w (user 3042966072, verified badge)"
+chart_category: "Learn & Explore"
+chart_rank: 1
+genre:
+  primary: "Simulation"
+  sub: null
+competitors:
+  - name: "Steal An Egg"
+    universe_id: "10563114921"
+    url: "https://www.roblox.com/games/107778070777162"
+    overlap: "Same genre (Simulation) on the 2026-11-08 chart"
+  - name: "Throw Food For Animals"
+    universe_id: "10766972131"
+    url: "https://www.roblox.com/games/120219252362013"
+    overlap: "Same genre (Simulation) on the 2026-11-08 chart"
+  - name: "Break and Steal an Egg"
+    universe_id: "10765288803"
+    url: "https://www.roblox.com/games/114326934417838"
+    overlap: "Same genre (Simulation) on the 2026-11-08 chart"
+  - name: "[💀] Steal a Brainrot"
+    universe_id: "7709344486"
+    url: "https://www.roblox.com/games/109983668079237"
+    overlap: "Same genre (Simulation) on the 2026-11-08 chart"
+  - name: "Fisch 🦈 [HAMMI]"
+    universe_id: "5750914919"
+    url: "https://www.roblox.com/games/16732694052"
+    overlap: "Same genre (Simulation) on the 2026-11-08 chart"
+researcher: "R11"
+mode: passive
+play_ended_by: null
+onboarding_video_coverage: not_covered
+observed_at: "2026-11-09T01:50:00Z"
+observation_status: completed
+previous_observed_at: null
+changes_since_previous: []
+active_play_seconds: null
+play_coordination:
+    resource_key: null
+    wait_seconds: null
+    acquired_at: null
+    expires_at: null
+    released_at: null
+    release_verified: null
+    expiry_or_blocker: null
+context:
+    play_style: "Space exploration and mining simulator (games API genre_l1 'Simulation', genre_l2 empty)"
+    camera_perspective: "Trailer (video_preview_1): first-person cockpit view with a dashboard of colored bars and buttons (0:00, 0:28), third-person chase camera on ships (0:04-0:14) and third-person on a spacesuited avatar on foot or jetpack (0:16-0:22, 0:32-0:42)"
+    device_and_input: "Description advertises phone, tablet, PC and console; not observed"
+    observation_environment: "Passive: games, votes, media, thumbnails, badges and game-pass APIs retrieved over HTTP from the orchestrator host; no client launched"
+    visible_server_population: "API at retrieval: 423 playing; maxPlayers 20 per server"
+    solo_or_group: "Advertised as exploring with friends and rescuing stranded players in a shared server"
+    game_version_if_known: "Universe created 2023-10-10; updated 2026-11-08T00:16:20Z; title tag '[Titan]' names the current update"
+    evidence: [description_1, stats_1, video_preview_1]
+account_state:
+    freshness: unknown
+    evidence: ["Game not played; no in-game state observed."]
+evidence:
+    - id: description_1
+      kind: description
+      url: "https://games.roblox.com/v1/games?universeIds=5174979552"
+      captured_at: "2026-11-09T01:47:33Z"
+      media_date_or_version: "updated 2026-11-08T00:16:20Z"
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Marketing text: fly your own spaceship across the Solar System, explore 30+ planets and moons with friends, mine rare resources and upgrade ships; Titan update adds methane lakes, underground facilities and a lost probe; unlock and upgrade ships; drill for buried artifacts; find hidden Orbs to become VIP; zero-gravity jetpack; answer SOS signals and rescue stranded players; visit the ISS and Hubble, chase a comet, search for alien life; a new season every Saturday with Rare to Mythic crates; Classic mode for an easy start and Normal mode for the full adventure; Roblox Plus members fly 15% faster."
+    - id: stats_1
+      kind: description
+      url: "https://games.roblox.com/v1/games/votes?universeIds=5174979552"
+      captured_at: "2026-11-09T01:48:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "95,826,957 visits, 5,655,943 favorites (high favorite-to-visit ratio, about 5.9%); votes 339,198 up / 12,831 down (about 96% positive); 423 playing at retrieval; avatar type MorphToR15."
+          - "Badges API: more than 25 badges (paginated). First page includes 'Welcome, Space Explorer!' (28,069,314 awarded), 'Space Pioneer' first flight (37,621,648), 'Reached The Moon!' (28,678,714), 'Visited the International Space Station!' (6,225,868), 'Vivid Astronomer' used the Hubble telescope (8,166,493), and rarer destination badges such as the hottest planet (2,713,826), the most volcanic world (532,234), the coldest moon (230,790), Halley's Comet (161,605), Icarus (122,766), an alien lifeform (74,455) and photographing every celestial body (5,160)."
+          - "Game-pass API returned an empty list; whether the game sells passes is unknown from this source."
+    - id: thumbnail_1
+      kind: thumbnail
+      url: "https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=5174979552&size=768x432&format=Png"
+      captured_at: "2026-11-09T01:48:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "Image 97961981010539 (also the preview video's poster): two R15 avatars in white spacesuits floating in space with a tether line beside a large blue gas giant, Milky Way backdrop; the Roblox menu icons are visible top-left, so this is an in-client capture with the game HUD hidden."
+          - "Image 126716721576787: astronaut beside a rusted crashed ship on a gray cratered surface, a blue planet and a ring arc in the sky; rendered promotional scene."
+          - "Image 124850231085711: astronaut piloting a dark red ship with magenta engine glows in front of the Sun, a translucent shield bubble around the ship; promotional render."
+    - id: video_1
+      kind: gameplay_video
+      url: "https://games.roblox.com/v2/games/5174979552/media"
+      captured_at: "2026-11-09T01:48:00Z"
+      media_date_or_version: null
+      timestamps: []
+      screenshots: []
+      limitations:
+          - "The media API lists a GamePreviewVideo (poster image 97961981010539); the video itself could not be played from this environment by researcher R11. It was later downloaded and studied as video_preview_1."
+    - id: video_preview_1
+      kind: gameplay_video
+      url: "https://assetdelivery.roblox.com/v1/asset/?id=107133352557460"
+      captured_at: "2026-11-09T03:05:00Z"
+      media_date_or_version: "GamePreviewVideo videoId 107133352557460; upload date not exposed by the API"
+      timestamps:
+          - "0:00 cockpit view: ringed planet through the canopy, dashboard with green/red bars and colored buttons"
+          - "0:04-0:08 red ship with translucent shield bubble and engine flames flying close to the Sun"
+          - "0:10-0:12 gray cylindrical ship passing a moon and asteroids"
+          - "0:14 dark fighter over a blue gas giant"
+          - "0:16-0:18 astronaut floating in a zero-gravity station module with a beach ball, handholds and a fire extinguisher"
+          - "0:20 ship trailing a lava-colored stream past a bright plume"
+          - "0:22 astronaut on a cracked ice surface"
+          - "0:24-0:26 ships near Earth and a satellite against the Sun"
+          - "0:28-0:30 cockpit flying through a ring structure"
+          - "0:32-0:34 jetpacking astronaut on a tether beside an asteroid wall"
+          - "0:36 round orange craft towing a probe with a yellow beam; an interaction prompt on the probe"
+          - "0:38 glowing ring device"
+          - "0:40 astronaut on pink terrain under a cyan contour overlay (scan or map effect)"
+          - "0:42 astronaut facing red lava plumes on a volcanic moon"
+          - "0:44-0:46 view from a station window: asteroid field and planets with a center crosshair"
+          - "0:48 avatar falling through cyan clouds"
+          - "0:50 underground tunnel with a glowing red ring and a crate with a circular hold-to-interact prompt"
+          - "0:52-0:54 ships orbiting a blue planet"
+          - "0:56-0:59 'THE SPACE SIMULATOR' title over a ringed planet seen from an icy moon with geysers"
+      screenshots: ["preview-107133352557460-sheet-01.jpg", "preview-107133352557460-sheet-02.jpg", "preview-107133352557460-001.jpg", "preview-107133352557460-003.jpg", "preview-107133352557460-009.jpg", "preview-107133352557460-017.jpg", "preview-107133352557460-019.jpg", "preview-107133352557460-021.jpg", "preview-107133352557460-022.jpg", "preview-107133352557460-026.jpg"]
+      limitations:
+          - "Creator's 59 s promotional trailer at 640x360: cinematic montage with the game HUD hidden (only the Roblox top-left menu icons and in-world prompts remain); music only, no voice or captions. Shows no menus, upgrades, mining yields, resources, first join or travel times."
+gameplay:
+    advertised_loop: "Fly a spaceship to planets and moons, mine resources and drill for artifacts, spend them to unlock and upgrade ships that reach farther destinations; side goals of hidden Orbs, landmarks (ISS, Hubble, comet) and SOS rescues."
+    observed_loop: "Trailer only (video_preview_1): fly a ship between planets, moons, the Sun, Earth orbit and asteroid fields; leave the ship to walk, jetpack and float in a suited avatar on surfaces (ice, volcanic, pink terrain, an icy moon with geysers), inside a zero-g station and an underground tunnel; interact with objects (towing a probe with a beam, a crate with a hold prompt). Order and frequency are the editor's, not a player's."
+    first_action: null
+    first_success_seconds: null
+    success_feedback: []
+    progression:
+        - "Advertised: unlock new ships and upgrade them; destinations from the Moon and Mars out to Pluto and 'Planet X'."
+        - "Badge awards suggest a destination checklist: about 28M players reached the Moon and 6.2M the ISS, against 0.1-0.5M for far or hidden destinations (evidence: stats_1)."
+    choices_and_variety:
+        - "Advertised 30+ planets and moons, a Classic and a Normal mode, mining, drilling, Orb hunting, landmark visits and rescues."
+    social_and_cooperative:
+        - "Advertised: explore with friends; answer SOS signals and rescue stranded players."
+    companions_and_pets: []
+    friction: []
+    evidence: [description_1, stats_1, thumbnail_1, video_preview_1]
+pacing:
+    timing_start_definition: null
+    loading_seconds: null
+    time_to_control_seconds: null
+    first_meaningful_choice_seconds: null
+    first_reward_seconds: null
+    action_reward_cadence: null
+    active_play_versus_travel_or_waiting: null
+    natural_stopping_points: []
+    measurement_method: "Not measured: the only footage is an edited trailer (video_preview_1); its timestamps are the video's own and say nothing about travel time between destinations."
+    evidence: [video_preview_1]
+goals_and_progression:
+    next_goal_clarity: null
+    short_term_goals: []
+    medium_term_goals: []
+    advertised_long_term_goals:
+        - "Reach every planet and moon including Planet X"
+        - "Find every hidden Orb to become VIP"
+        - "Weekly seasons with Rare to Mythic crates"
+    upgrade_choices: ["Advertised ship unlocks and upgrades"]
+    mastery_versus_stat_growth: null
+    unlock_previews_and_optional_activities:
+        - "Landmark and discovery badges (Hubble photography of every body, alien lifeform, comet) act as optional collection goals"
+    evidence: [description_1, stats_1]
+failure_and_recovery:
+    observed_failure: null
+    explanation: null
+    cost_or_lost_progress: null
+    retry_seconds: null
+    checkpoints: null
+    non_paid_recovery: null
+    evidence: []
+agency_and_social:
+    meaningful_choices: []
+    customization_and_identity: []
+    cooperation_and_competition: ["Advertised cooperative exploration and rescue of stranded players"]
+    visible_social_feedback: []
+    solo_accessibility: "Trailer shows a lone astronaut in most shots and several ships together near Earth and a blue planet (0:24, 0:52); co-op is not shown."
+    evidence: [description_1, video_preview_1]
+ui:
+    evidence_status: unknown
+    visual_style: "Not visible: the trailer hides the HUD. Only in-world UI shows: a round dashboard with green/red bars and colored buttons in the cockpit (0:00), a white circular hold-to-interact prompt with a key glyph on objects (0:36, 0:50) and a center crosshair (0:44)."
+    layout_and_hierarchy: null
+    color_scheme: []
+    typography:
+        font_appearance: null
+        font_family_if_verified: null
+        size_observation: null
+        size_basis: unknown
+        viewport_resolution: null
+        readability: null
+    controls:
+        primary_actions: null
+        close_x_appearance_and_location: null
+        modal_behavior: null
+        state_feedback: null
+        target_size_and_input: null
+    graphics:
+        graphics_versus_text: null
+        illustration_or_icon_style: null
+        framing_outlines_and_effects: null
+        placement_and_labels: null
+        clarity_or_clutter: null
+    evidence: []
+new_player_onboarding:
+    status: indeterminate
+    reason: "Not played. The 59 s trailer (video_preview_1) is a HUD-free montage starting in mid-flight, with no spawn, mode choice or guidance; the description names a 'Classic mode for an easy start', which is advertised, not observed."
+    conventions: []
+    sequence: []
+    first_independent_action: null
+    skip_or_replay: null
+    completed: null
+    observed_seconds: null
+    completion_seconds: null
+    timing_basis: null
+    evidence: [description_1, video_preview_1]
+accessibility_and_comfort:
+    text_and_contrast: null
+    non_color_cues_and_icon_labels: null
+    input_support_observed: []
+    motion_audio_settings: []
+    settings_tested: []
+    clutter_and_interruptions: []
+    evidence: []
+commercial_and_return_prompts:
+    first_purchase_prompt_seconds: null
+    purchase_prompt_count_during_sample: null
+    onboarding_interruption: null
+    optional_versus_required_presentation: null
+    return_rewards_and_events:
+        - "Advertised: a new season every Saturday with Rare to Mythic crates"
+        - "Advertised: Roblox Plus members fly 15% faster"
+    urgency_or_streak_cues: []
+    evidence: [description_1]
+world_and_presentation:
+    navigation_and_objective_readability: "Trailer (video_preview_1): destinations are huge and instantly recognizable bodies (Saturn's rings, the Sun, Earth, a blue gas giant) that read from far away as targets; how a player picks or finds a destination was not shown."
+    landmarks_and_variety:
+        - "Trailer (video_preview_1) shows: Saturn-like ringed planet, the Sun at close range, Earth, a blue gas giant, a zero-g space station interior, an asteroid field, icy, pink and volcanic surfaces, cyan cloud layer, an icy moon with geysers, a ring structure, an underground tunnel, at least five ship designs"
+        - "Advertised real Solar System landmarks (Moon, Mars, Saturn, Pluto, ISS, Hubble, Halley's Comet) plus fictional Planet X and the Titan update's methane lakes and underground facilities"
+    environmental_storytelling: ["Advertised lost probe and secret facilities on Titan; a crashed rusted ship appears in promotional art", "Trailer: an underground tunnel with a glowing red ring and a crate to interact with (0:50) and a probe towed by a beam (0:36), consistent with the advertised lost probe and facilities"]
+    audiovisual_consistency: "Trailer: semi-realistic planet textures and starfield skybox with blocky Roblox ships and R15 suited avatars; each surface has its own palette (white ice, pink terrain, red lava plumes, cyan clouds) so places are distinct at a glance."
+    success_effect_intensity_and_clarity: "No reward effects shown; spectacle comes from scale and lighting (Sun glare, engine flames, shield bubble, lava plumes)."
+    evidence: [description_1, thumbnail_1, video_preview_1]
+technical_quality:
+    loading_or_missing_assets: []
+    input_or_frame_issues: []
+    ui_defects: []
+    recovery_behavior: null
+    measurements: []
+    measurement_method_and_limits: "Not played; no technical observation."
+    evidence: []
+transferable_ideas:
+    - "A real-world place list (planets, stations, comets) doubles as a destination checklist, with one badge per place; badge counts fall steeply with distance, so each badge marks a progression milestone (inference from stats_1)."
+    - "Two entry modes, an easy 'Classic' start and a full 'Normal' mode, offered from the description (advertised only)."
+    - "Give every destination its own unmistakable palette and silhouette (ice, lava, pink terrain, cyan clouds, a ringed giant) so the place itself reads as the reward and as a target from far away (trailer video_preview_1)."
+    - "Mix vehicle travel with on-foot moments at each destination (walk, jetpack on a tether, float in zero-g, interact with a probe or crate) so arrival changes the verb, not just the scenery (trailer)."
+    - "Rescue requests from other players as a light cooperative goal in an otherwise solo exploration loop (advertised only)."
+practical_takeaway:
+    strongest_idea: "Destinations as the progression ladder: each new place reached is the reward and earns a named badge, and ship upgrades are what unlock the next place."
+    main_tradeoff: "Travel-heavy exploration can leave long stretches between rewards; pacing between destinations is unknown without play."
+    suitable_genres_and_stages: ["exploration", "simulator", "educational/learn games", "mid-game progression"]
+    testable_hypothesis: "If each new area reached grants a named badge and a visible next destination, more new players will reach the second area in their first session than with upgrades alone."
+    estimated_effort_and_assumptions: "Estimate: small, assuming areas and travel already exist; badges and a destination list UI only."
+inferences:
+    - "Very high approval (about 96%) and favorite ratio relative to a small concurrent population suggest a loyal but small live audience; this is correlation, not a cause."
+    - "Steep drop in badge awards from the Moon (28.7M) to far destinations (0.1-0.5M) suggests most players stop early in the destination ladder."
+uncertainties:
+    - "Game-pass API returned nothing; monetization beyond crates is unknown."
+    - "Only the creator's HUD-free trailer (video_preview_1) was watched; actual HUD, menus, onboarding, controls, mining and upgrade flow remain unknown."
+    - "Only the first 25 badges were read."
+blockers: []
