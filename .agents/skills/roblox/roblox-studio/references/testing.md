@@ -320,7 +320,9 @@ wedges and black slabs, while small places look fine. The guest has no OpenGL fa
 host keeps the source copy at `~/.config/roblox-studio/studio-client-settings.json`, and
 `"$runner_ssh" 'mkdir -p "$HOME/Library/Roblox/ClientSettings" && cat > "$HOME/Library/Roblox/ClientSettings/ClientAppSettings.json"' < ~/.config/roblox-studio/studio-client-settings.json`
 restores it under the runner lock. Before a rendering check, confirm the file is present and that
-`settings():GetFVariable("GeometryBufferMaxBytesMesh")` returns `524288` in the editor. With the cap
+`settings():GetFVariable("GeometryBufferMaxBytesMesh")` returns `524288` in the editor. Studio reads
+the file only when it launches, so an editor that reports another value, the game's warm editor
+included, is closed and opened again before the check. With the cap
 in place, a capture of Studio draws the scene correctly, so stretched wedges or black slabs in one
 are a defect to diagnose, never a guest artifact to set aside. The published player in the guest
 has the same driver limit and no such setting, so treat its 3D visuals as untested.

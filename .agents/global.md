@@ -565,6 +565,11 @@ return records;
 
 ## Product Copy
 
+- **Every line of product text changes what the reader does or understands; anything else is
+  cut.** A label that restates what a control, price or heading already shows, or reassures the
+  reader about a cost they are not paying, such as "Sharing is free" beside a paid plan's share
+  button, adds reading without information and can make the reader doubt what they paid for. Before
+  adding a line, name what it helps the reader do or understand; when there is nothing, leave it out.
 - **Text a person reads sends them to another place with a link, never a route to follow.** "Open
   Library, then Shared albums" makes the reader follow a map; the place's name, linked, takes them
   there in one action. Where the text renders markup, the name is the link. Where it is plain text
