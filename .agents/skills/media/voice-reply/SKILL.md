@@ -24,6 +24,10 @@ written beneath it, so the exchange is heard and recorded at once.
 
 ## Speaking A Reply
 
+**Speak only the replies that clarify**: one that restates what the agent understood, or asks the
+user something about what they want. A report, a progress update or a reply that is mostly links,
+code or paths stays text only, unless the user asks to hear it.
+
 1. **Write the reply first**, as text the user reads. Shape the spoken part for listening: short
    sentences, no code, paths, links or tables read aloud, and those left to the written text.
 2. **While the user is still describing what they want, the spoken part converses.** It restates
