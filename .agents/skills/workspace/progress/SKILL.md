@@ -102,13 +102,13 @@ and deliver the same dashboard again on every request so the user keeps one page
   ("<done> of <n>"), Running, Waiting on you and Time left, the summary of what the board shows step
   by step, and `details` holding each row's plan write-up, so a row opens the plan.
 - **`tree` "Plan tree"**, with `open_depth` 2: one entry per plan that is not withdrawn, in
-  approval order, `label` the plan's title, `figure` "<done> of <n> steps" and `meta` "~<n> min left", or "Proposed" for a plan
-  not yet approved; under it one entry per step, in plan order, `label` "<n>. <step title>", `tone`
-  as its progress segment is toned, `meta` its status, then "~<n> min" while it is not done or its
-  measured duration once it is, and `figure` "<done> of <n> parts" for a step with parts, counting
-  parts not skipped; and under such a step one entry per part, `label` its title, `tone` `good`
-  when done, `accent` when active, `critical` when blocked and neutral otherwise, and `meta` its
-  status.
+  approval order, `label` the plan's title, `figure` "<done> of <n> steps" and `meta` "~<n> min left", or
+  `status` "Proposed" for a plan not yet approved; under it one entry per step, in plan order, `label`
+  "<n>. <step title>", `status` its status (Done, Running, Blocked, Next or Skipped) toned as its
+  progress segment is, `meta` "~<n> min" while it is not done or its measured duration once it is,
+  and `figure` "<done> of <n> parts" for a step with parts, counting parts not skipped; and under
+  such a step one entry per part, `label` its title and `status` its status, toned `good` when done,
+  `accent` when active, `critical` when blocked and neutral otherwise.
 - **Plan write-up**: the plan as a reader who missed the conversation needs it, from the ledger's
   `plan` entry: an `outline` with `expanded` and `stacked` set, `title` the plan's title and `description` its
   goal, then "Approved · ~<total> min", or "Proposed · ~<total> min" for a plan not yet approved. Its groups, each only when it has something in it:

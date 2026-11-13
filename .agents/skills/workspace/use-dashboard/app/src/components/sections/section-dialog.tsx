@@ -7,6 +7,8 @@ import { InDialogContext, InTabPanelContext } from './section-card';
 
 const DIALOG_MARGIN_PX: number = 16;
 
+const DIALOG_MAX_HEIGHT_PX: number = 640;
+
 interface SectionDialogProps {
   section: Section;
   open: boolean;
@@ -21,6 +23,10 @@ interface SectionDialogProps {
  * centered in the viewport can open far from the entry that was clicked and out of the reader's sight.
  */
 function placeBelowOpener(dialog: HTMLElement, opener: Element): void {
+  const availableHeight = window.innerHeight - 2 * DIALOG_MARGIN_PX;
+
+  dialog.style.maxHeight = `${Math.min(DIALOG_MAX_HEIGHT_PX, availableHeight)}px`;
+
   const below = opener.getBoundingClientRect().bottom + DIALOG_MARGIN_PX;
   const lowestTop = window.innerHeight - dialog.offsetHeight - DIALOG_MARGIN_PX;
 
@@ -41,8 +47,12 @@ export function SectionDialog({ section, open, onOpenChange, opener }: SectionDi
 
       place();
       resizes.observe(dialog);
+      window.addEventListener('resize', place);
 
-      return () => resizes.disconnect();
+      return () => {
+        resizes.disconnect();
+        window.removeEventListener('resize', place);
+      };
     },
     [opener],
   );
@@ -51,7 +61,7 @@ export function SectionDialog({ section, open, onOpenChange, opener }: SectionDi
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         ref={keepBelowOpener}
-        className="max-h-[640px] translate-y-0 overflow-y-auto sm:max-w-3xl"
+        className="translate-y-0 overflow-y-auto sm:max-w-3xl"
         onCloseAutoFocus={(event) => {
           event.preventDefault();
           opener.current?.focus();

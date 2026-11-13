@@ -160,11 +160,9 @@ Dashboards look alike because they are built alike:
   or a pull request's state takes a pill — in a tree, the entry's `status` — never words trailing
   the entry in `meta`. A short label that tells otherwise alike entries apart, such as the model
   each one ran on, takes a tree entry's `tag`, a neutral pill; a longer label saying what kind of
-  thing an item is or which group it belongs to, such as its plan or its type, is plain text. When
-  most items on a page would carry a pill, the pill has stopped meaning anything.
-- **A dashboard shows the current state.** Its text says what is true now, never what the dashboard
-  leaves out, how a figure was trimmed or filtered, or an instruction it follows: data that is not
-  there shows its absence by itself, and a sentence about it reads as the dashboard's own caveat.
+  thing an item is or which group it belongs to, such as its plan or its type, is plain text. A pill
+  earns its place by telling items apart: statuses that differ from item to item are worth a pill on
+  every one, while a pill reading the same on most items has stopped meaning anything.
 - **A figure is a real quantity in a unit the reader knows.** A duration is clock time. A total over
   work that ran in parallel counts overlapping time once, so no total is longer than the clock time
   it spans. Never coin a unit, such as "agent time", or label a figure with how it was computed.
@@ -184,11 +182,13 @@ Dashboards look alike because they are built alike:
 - **Blue text is a link.** A reader clicks blue text, so only links take it, and a tone colors a
   dot, border, line or bar, never text. A figure, number or label meant to stand out sits in a
   neutral badge rather than taking a color or the weight its neighboring names already use.
-- **A `description` earns its line.** Leave it out unless it tells the reader something the title
-  and the section's contents do not, such as which entries a count covers. A sentence that restates
-  the title, describes the section's form, such as "as a list" or "newest first", narrates its
-  controls, or adds a caveat that changes nothing the reader does, such as who will make the final
-  version of what it shows, is left out.
+- **Text shows the current state and earns its line.** A `description`, subtitle or note says what
+  is true now and only what the title and the contents do not, such as which entries a count covers
+  or that a figure lacks records for part of its range. A sentence that restates the title,
+  describes the section's form, such as "as a list" or "newest first", narrates its controls,
+  narrates how the dashboard was built, such as what it leaves out or an instruction it follows, or
+  adds a caveat that changes nothing the reader does, such as who will make the final version of
+  what it shows, is left out: data that is not there shows its absence by itself.
 - **Sources are links, never paths in text.** Anything a reader can check, such as a file and line,
   a diff, a pull request, a document's section or a page of a site, goes in `links` with a URL that
   opens it at that exact place: a permalink to the line or range at the commit that was read, or the

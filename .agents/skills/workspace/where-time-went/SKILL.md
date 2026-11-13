@@ -20,14 +20,15 @@ where available and mark gaps where they are not.
 ## Working time
 
 Working time is clock time during which an agent was working: thinking and writing, running a tool,
-or waiting on its own command, test run or child agent. Time spent waiting on the user is never
-counted: a question-tool request, a turn left open for the user's reply, and a worker idle until its
-next assignment arrives are all outside it.
+or waiting on its own command, test run or child agent. Time an agent spends idle waiting on the
+user is never counted: a blocking question-tool request, a turn left open for the user's reply, and a
+worker idle until its next assignment arrives are all outside it. Work done while a question is
+pending, by the agent that asked or by any other, still counts.
 
 - **Busy intervals.** Read each transcript in time order. The span between two records is busy,
   except a span that runs from a turn's last message to the next message from the user or the
-  coordinator, and a span inside a request the user must answer. A tool call is busy from its call
-  to its result.
+  coordinator, and a span in which the agent's only activity is a pending user request. A tool call
+  is busy from its call to its result.
 - **Every figure is clock time.** A single agent's or assignment's figure is the length of its busy
   intervals. A group's figure, whether a workflow, a round, a phase or the whole session, is the
   length of the union of its members' busy intervals, so work that ran in parallel counts once and
