@@ -124,14 +124,15 @@ head lag and a retryable rate limit are nonterminal.
   the GitHub rule's **After Agent Sync**. That route owns both checkout selection and installed
   guidance refresh. Carry its result into this unit's report.
 - Otherwise locate the repository's primary local checkout from Git's worktree inventory and
-  verify its remote identifies the merged repository. Refresh it only when its checked-out branch
-  tracks the pull request's target branch on that remote. If the primary checkout is unavailable
+  verify its remote identifies the merged repository. Refresh it only when the pull request's target
+  branch is checked out and tracks that same branch on the verified remote. If the primary checkout is unavailable
   or is on another branch, report why the refresh was skipped. Keep the current branch in place
   and leave linked worktrees alone.
 - If the checkout already contains the verified merge commit, record that result. Otherwise fetch
   the target branch and confirm the fetched tip contains the merge commit. With no Git operation
-  in progress, fast-forward to that tip with `git merge --ff-only --no-autostash`. Let Git reject
-  divergence or local edits it would overwrite. If it refuses, report the reason and preserve
+  in progress, fast-forward to that tip with
+  `git merge --ff-only --no-autostash --no-overwrite-ignore`. Let Git reject divergence or local
+  files it would overwrite, including ignored files. If it refuses, report the reason and preserve
   local commits and staged, unstaged, and untracked work. Do not reset, stash, or resolve conflicts
   for this refresh.
 - Verify the checkout contains the merge commit after a successful fast-forward and record its
