@@ -2,7 +2,6 @@
 name: widen-scope
 description: Turn on, for the rest of the session, fixing the slop and maintainability problems the work runs into, not only bugs. Use only when the user asks for it in their own words, such as "widen scope" or "clean up what you find"; never on the agent's own initiative.
 short_description: 'Turn on cleanup of the problems the work runs into for the rest of the session.'
-disable-model-invocation: true
 ---
 
 # Widen Scope

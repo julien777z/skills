@@ -2,7 +2,6 @@
 name: publish-to-roblox
 description: Explicit user-invoked publish of the game the session has been building to its Roblox experience, so the user can play the current build. Run only when the user asks to publish to Roblox.
 short_description: 'Explicit user-invoked publish of the session’s game build to its Roblox experience.'
-disable-model-invocation: true
 ---
 
 # Publish to Roblox

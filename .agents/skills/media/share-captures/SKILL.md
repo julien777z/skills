@@ -1,6 +1,6 @@
 ---
 name: share-captures
-description: "Show screenshots, recordings and rendered previews to the user in the agent's own reply, as they are read and with the questions that need them. Use whenever work produces captures of a product, a site, a game or a generated image, and before asking the user to choose between options that differ in how something looks."
+description: "Show the user what they need to see in the part of the agent's reply the harness shows them: screenshots, recordings and rendered previews as they are read, and any table, plan, list or file a report or question relies on. Use whenever work produces captures of a product, a site, a game or a generated image, whenever a reply points the user to material to look at, and before any question whose supporting material is not inside the question itself."
 short_description: 'Show captures and option previews where the user reads.'
 ---
 
@@ -59,8 +59,10 @@ as page versions do. This is how those previews are sent.
 - **T3 Code:** write each capture into the reply as a Markdown image with its absolute path,
   `![caption](/absolute/path/to/capture.png)`; T3 renders local files inline. Only the message that
   ends the turn is shown: text written before a tool call is folded into the turn's work log, and an
-  open question tool hides it too. So captures go in the turn's final message, and a capture made
-  mid-work goes out when the turn ends on a wait for background work. A question never goes into
+  open question tool hides it too. So everything the reader must see goes in the turn's final
+  message: captures, and also a table, a plan, a list of options, a file link and the facts a
+  question relies on. A capture made mid-work goes out when the turn ends on a wait for background
+  work. A question never goes into
   that message: it goes through the question tool, as the global rules say. What starts the turn
   that asks it depends on the agent running in T3: under Claude Code, a background shell command of
   a few seconds started just before the turn ends re-invokes the agent when it completes; under an
