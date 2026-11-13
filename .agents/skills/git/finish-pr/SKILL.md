@@ -109,7 +109,8 @@ Follow the active task's recorded priorities when choosing the next eligible uni
      someone else pushed: `review-pass` runs again over that fix's delta, and the fix is pushed through
      the GitHub rule’s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
      passed.
-3. Record the merge, or the gate that holds, with `session-ledger`, and continue to the next unit.
+3. After a verified merge, run **Local Checkout**. Record the merge and checkout outcome, or the
+   gate that holds the merge, with `session-ledger`, and continue to the next unit.
 
 Before concluding, require discovery to be complete and reconcile the recorded target inventory
 with its verified dispositions. Resume any unit without a disposition even if a different
@@ -117,9 +118,29 @@ repository's pull request already merged. Every entry must be verified merged wi
 returned, ended at its accepted head with merge withheld, or held by a gate that is reported. GitHub
 head lag and a retryable rate limit are nonterminal.
 
+## Local Checkout
+
+- For a merge that changes agent configuration, use the refresh result from `merge-gate` under
+  the GitHub rule's **After Agent Sync**. That route owns both checkout selection and installed
+  guidance refresh. Carry its result into this unit's report.
+- Otherwise locate the repository's primary local checkout from Git's worktree inventory and
+  verify its remote identifies the merged repository. Refresh it only when its checked-out branch
+  tracks the pull request's target branch on that remote. If the primary checkout is unavailable
+  or is on another branch, report why the refresh was skipped. Keep the current branch in place
+  and leave linked worktrees alone.
+- If the checkout already contains the verified merge commit, record that result. Otherwise fetch
+  the target branch and confirm the fetched tip contains the merge commit. With no Git operation
+  in progress, fast-forward to that tip with `git merge --ff-only --no-autostash`. Let Git reject
+  divergence or local edits it would overwrite. If it refuses, report the reason and preserve
+  local commits and staged, unstaged, and untracked work. Do not reset, stash, or resolve conflicts
+  for this refresh.
+- Verify the checkout contains the merge commit after a successful fast-forward and record its
+  resulting head. A skipped refresh does not reopen a verified merge or hold other units.
+
 ## Report
 
 Every terminal report includes a clickable Markdown link for every pull request created, updated,
 reviewed, or merged during the run; never replace links with repository names, numbers, counts, or
 bare URLs. For each unit, report `review-pass`'s **Output** in full and the merge commit or the
-gate that holds it.
+gate that holds it. For a merged unit, include the local checkout outcome and resulting commit,
+or the reason it could not be refreshed.
