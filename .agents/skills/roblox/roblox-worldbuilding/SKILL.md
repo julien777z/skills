@@ -1,10 +1,10 @@
 ---
-name: roblox-building
-description: Apply when planning, inspecting, creating, modifying, importing, optimizing, or playtesting Roblox maps, worlds, terrain, buildings, props, environmental meshes, or Blender assets. Also apply when handling authored signs or runtime world-space text, regardless of renderer. Require coherent environments, deliberate place architecture, economical measured geometry, readable traversal, preserved artwork, and player-height visual/performance checks.
+name: roblox-worldbuilding
+description: Apply when planning, inspecting, creating, modifying, importing, optimizing, or playtesting anything placed in a Roblox world — maps, terrain, water, roads, buildings, rooms, props, environmental meshes, or Blender assets. Also apply when handling authored signs or runtime world-space text, regardless of renderer. Require coherent environments, deliberate place architecture, economical measured geometry, readable traversal, preserved artwork, and player-height visual/performance checks.
 short_description: 'Build and improve Roblox worlds, terrain, structures, props, and assets.'
 ---
 
-# Roblox building and world design
+# Roblox worldbuilding
 
 ## Dependencies
 

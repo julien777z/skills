@@ -13,7 +13,7 @@ Carry a Roblox game request through implementation, visual polish, real playtest
 - `luau`
 - `share-captures`
 - `roblox-react`
-- `roblox-building`
+- `roblox-worldbuilding`
 - `roblox-gameplay`
 - `agent-lock`
 - `test-fixture`
@@ -38,7 +38,7 @@ Inspect installed tools and project conventions before building. Use Rojo for so
 
 Read the [source, editor, and publication reference](references/studio-workflow.md) when synchronizing source, importing/exporting, running Studio automation, or publishing. Read [source and place delivery](references/source-delivery.md) when synchronizing module/package trees or validating built places.
 
-Apply `roblox-building` and its world-space text reference whenever changing or testing an authored sign or runtime world-space message, regardless of renderer.
+Apply `roblox-worldbuilding` and its world-space text reference whenever changing or testing an authored sign or runtime world-space message, regardless of renderer.
 
 Keep generated scripts separate from imported assets and Studio-authored scenery. Maintain editable source, Blender originals, exported assets, and build instructions. A routine script rebuild must preserve manual art. Test that the saved/rebuilt place contains the actual assets and terrain, rather than relying on the current Studio session or cached meshes.
 
