@@ -12,7 +12,7 @@ Carry a Roblox game request through implementation, visual polish, real playtest
 
 - `luau`
 - `share-captures`
-- `roblox-react`
+- `roblox-ui`
 - `roblox-worldbuilding`
 - `roblox-gameplay`
 - `agent-lock`
