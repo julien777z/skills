@@ -43,7 +43,17 @@ Keep meshes low in triangles for their visible purpose and expected repetition. 
 
 Remove hidden/internal faces where they cannot become visible, unnecessary edge loops, and excessive subdivisions. Preserve normals, UVs, outline, and important deformation when simplifying. Inspect the exported triangulated result, not only Blender's quad count. Texture/material detail can replace geometry where it remains convincing at player distance; keep texture memory and material splits economical too.
 
-Reuse identical mesh/texture assets and IDs instead of repeatedly uploading duplicates. Prefer appropriate automatic/performance render fidelity, simple collision shapes, and selective shadows. Avoid unnecessary precise collision or a single enormous combined mesh that defeats useful streaming boundaries. These choices follow [Roblox performance guidance](https://create.roblox.com/docs/performance-optimization/improve); measure their effect in the actual scene.
+**Apply the cheap performance defaults to every mesh, prop and light as it is built, never waiting for a measured slowdown.** Each one costs nothing a player sees, and its saving only shows once many pieces carry or lack it, by which point the whole world needs reworking. They follow [Roblox performance guidance](https://create.roblox.com/docs/performance-optimization/improve):
+
+- One upload per distinct geometry, copied in the editor. Each use takes its own color or tint (`Color`, `SurfaceAppearance.Color`), never a recolored re-upload, and one texture or SurfaceAppearance is shared per kind of prop.
+- Decoration, meaning anything players do not stand on or need to be stopped by, takes `CollisionFidelity` Box, with `CanCollide`, `CanTouch` and `CanQuery` false. Where a piece must block movement or the camera, a simple invisible collider does it.
+- `CastShadow` false on small decoration and on anything indoors or under a roof, and `Shadows` false on interior lights the scene does not need.
+- `RenderFidelity` Automatic, never Precise.
+- No decorative part with partial transparency. Glass and glow use an opaque or Neon material or one shared transparent surface.
+- Textures at 512 px or less, 256 px for minor props.
+- Distant models in a streamed place use `LevelOfDetail` where the place streams.
+
+A default is left off only where it visibly breaks the result, such as a shadow the scene's lighting depends on, and the reason goes beside that piece. Enforce the defaults where the project builds or imports pieces, so a new piece cannot skip them. Measurement checks a scene against its budget; it never decides whether a default applies. Avoid a single enormous combined mesh that defeats useful streaming boundaries.
 
 Low triangle counts alone do not guarantee smooth play. Also inspect draw calls, materials, transparency/overdraw, texture memory, particles, lights, physics, scripts, and streaming load. Measure representative busy views and startup using Studio performance tools. Record device/simulator, graphics level, frame time, and memory where available. Do not describe a desktop or simulator result as physical mobile performance.
 
