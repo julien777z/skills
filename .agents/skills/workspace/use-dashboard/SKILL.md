@@ -151,10 +151,23 @@ Dashboards look alike because they are built alike:
   `outline`. What was added or removed? `changes`. Values across the same columns? `table`. Short
   remarks? `notes`. How do the parts connect? `diagram`. What is this made of, part by part? `tree`.
   One subject in several kinds, read one kind at a time? `tabs`. What does it look like? `figures`.
+- **Nested data is a tree.** Anything made of parts that have parts of their own — agents and the
+  agents they started, a workflow and its rounds, a folder and its files — is a `tree`, never a flat
+  table whose rows name their parent: a reader cannot see nesting in a list of rows.
+- **Detail opens in place.** A tree entry's parts are its `children`, opened from its chevron; a
+  dialog through `details` holds only what cannot be children, such as a table or a diagram.
 - **A pill is for a state the reader scans for.** A status, a mark such as Matches or Out of date,
-  or a pull request's state takes a pill; a label that only says what kind of thing an item is or
-  which group it belongs to, such as its plan or its type, is plain text. When most items on a page
-  would carry a pill, the pill has stopped meaning anything.
+  or a pull request's state takes a pill — in a tree, the entry's `status` — never words trailing
+  the entry in `meta`. A short label that tells otherwise alike entries apart, such as the model
+  each one ran on, takes a tree entry's `tag`, a neutral pill; a longer label saying what kind of
+  thing an item is or which group it belongs to, such as its plan or its type, is plain text. When
+  most items on a page would carry a pill, the pill has stopped meaning anything.
+- **A dashboard shows the current state.** Its text says what is true now, never what the dashboard
+  leaves out, how a figure was trimmed or filtered, or an instruction it follows: data that is not
+  there shows its absence by itself, and a sentence about it reads as the dashboard's own caveat.
+- **A figure is a real quantity in a unit the reader knows.** A duration is clock time. A total over
+  work that ran in parallel counts overlapping time once, so no total is longer than the clock time
+  it spans. Never coin a unit, such as "agent time", or label a figure with how it was computed.
 - **Text says what it means where it stands.** A line never sends the reader elsewhere to make
   sense of it, such as "at step 2" or "see above": it says what happens then, such as "after the
   batch is frozen". A numbered title keeps its number; the text about it never leans on one.
@@ -247,6 +260,12 @@ changed record or an earlier one-time request to update it never re-renders one 
 Every render the user is shown goes out through this section, including a preview, a sample, or a
 test of a change to the page: a screenshot of a render is a capture of the page, never its delivery.
 Use the first route the session offers, and the same one for every update of one dashboard.
+
+**Every render is also shown in the conversation** when the harness can show an HTML page inline,
+such as T3 Code's `html_preview` and `html_render`: the first render and every update, a preview
+included, besides whichever route below carries its link. Preview the full page to read its content
+height, then show it at that height, up to the tool's limit. The page sizes nothing by the viewport's
+height, since an inline frame grows to fit the page.
 
 1. **A publishing tool**, whenever the harness offers one. In Codex with Pages tools, apply
    `pages:write-page` and follow the [Spaces publishing reference](references/spaces.md). In Claude,

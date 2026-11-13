@@ -1,7 +1,7 @@
 ---
 name: where-time-went
-description: "Show where agent working time and usage went in the current session as a dashboard: the main agent, subagents, loops and their rounds, repeated work and scope overlap, as expandable trees. Use only when the user invokes it."
-short_description: 'Show where agent working time went, as a dashboard.'
+description: "Show where the current session's working time went as a dashboard: the main agent, subagents, loops and their rounds, and the longest activities inside them, as expandable trees. Use only when the user invokes it."
+short_description: 'Show where session working time went, as a dashboard.'
 disable-model-invocation: true
 ---
 
@@ -19,28 +19,26 @@ where available and mark gaps where they are not.
 
 ## Working time
 
-Only time an agent spends doing work counts: thinking and writing, running a tool, or waiting on its
-own command, test run or child agent. Time spent waiting on the user is never counted, measured or
-shown, whether it is a question-tool request, a turn left open for the user's reply, or a worker
-idle until its next assignment arrives; it is excluded from every figure, phase and row, and no
-page names it.
+Working time is clock time during which an agent was working: thinking and writing, running a tool,
+or waiting on its own command, test run or child agent. Time spent waiting on the user is never
+counted: a question-tool request, a turn left open for the user's reply, and a worker idle until its
+next assignment arrives are all outside it.
 
 - **Busy intervals.** Read each transcript in time order. The span between two records is busy,
   except a span that runs from a turn's last message to the next message from the user or the
   coordinator, and a span inside a request the user must answer. A tool call is busy from its call
   to its result.
-- **Agent working time** is the union of every agent's busy intervals, so a parent waiting on a
-  child and the child's own work count once.
-- **An agent's working time** is the sum of its own busy intervals. A worker that receives several
-  assignments over the session is split into one entry per assignment, each from the message that
-  gave it to the end of the work it did, so a long-lived worker shows what each round of its work
-  cost.
-- **Main agent's own work** is its working time outside the spans it spent waiting on a foreground
+- **Every figure is clock time.** A single agent's or assignment's figure is the length of its busy
+  intervals. A group's figure, whether a workflow, a round, a phase or the whole session, is the
+  length of the union of its members' busy intervals, so work that ran in parallel counts once and
+  no figure is longer than the clock time it spans.
+- **A worker that receives several assignments** over the session is one entry per assignment, each
+  from the message that gave it to the end of the work it did; a continuation of the same work after
+  a restart or a context summary joins the assignment it continues.
+- **The main agent's own work** is its busy time outside the spans it spent waiting on a foreground
   child.
 - An agent still running has no terminal record: count it through invocation and mark it running,
-  never failed. A start or end the records lack is unavailable, never zero. Use fresh and cached
-  token counts and tool calls where the host records them, respecting the host's token definitions,
-  and mark them unavailable otherwise; never estimate them.
+  never failed. A start or end the records lack is left out of the figures, never counted as zero.
 
 ## Gather and attribute
 
@@ -51,40 +49,36 @@ states. Record assigned scope separately from work actually observed.
 Group loops and rounds from their recorded workflow, launch and handoff provenance: a review loop's
 rounds, a gate's repeated passes, a council, a worker's assignments. A repeat can be a later round
 of the same workflow; name its cause and outcome where recorded. When grouping is inferred, label it
-and give the evidence; never make a loop from an inactivity gap. Launch order alone does not number
+from the evidence; never make a loop from an inactivity gap. Launch order alone does not number
 rounds. Show every group in scope, not only the latest.
 
-Compare assigned and observed scopes. Classify overlapping work by its purpose, such as independent
-review, handoff, repeated research or duplicate implementation; shared files, concurrent lifetimes
-or repeated reads alone do not establish duplication. Rank the largest contributors to working time
-and classify each as necessary, rework, detour or avoidable only where evidence supports it,
-otherwise unknown. Overlapping contributors are never added as if they were disjoint.
+Classify overlapping work by its purpose, such as independent review, handoff, repeated research or
+duplicate implementation; shared files, concurrent lifetimes or repeated reads alone do not establish
+duplication. Assess each top-level workflow as necessary, rework, detour or avoidable only where
+evidence supports it, otherwise unknown.
 
 ## Dashboard
 
 Build a `use-dashboard` spec and deliver it through that skill as a dashboard of session work, so a
 later run in the same session updates the same page. `title` is `Where Time Went Dashboard`;
-`topic` names the session's work in a few words; `subtitle` says that only agent working time is
-shown. Its pages, in order:
+`topic` names the session's work in a few words; `subtitle` says what the dashboard shows. Its
+pages, in order:
 
-- **Overview** (`overview`). Metrics: agent working time, the main agent's working time with its own
-  work as the detail, subagent working time with the count of agents, and tokens. A `table` of where
-  working time went, one row per top-level workflow with its working time and classification, and a
-  short `notes` section on how working time is measured and any evidence gap.
+- **Overview** (`overview`). Metrics: the session's working time, the number of agents with the
+  split between workers and reviewers as its detail, and the longest workflow's time with its name
+  as the detail. A `table` of where the time went: one row per top-level workflow, with its time and
+  assessment.
 - **Loops** (`diagram`). One `tree`: each workflow, then its rounds or groups, then the agents or
-  assignments inside them. Each entry's `figure` is its working time and `meta` its outcome, with a
-  `tone` only for a state the reader scans for, such as running or flagged. An agent or assignment
-  opens, through `details`, a table of its longest activities with their tool and minutes.
+  assignments inside them, then each one's longest activities as its children. Every entry's
+  `figure` is its time; its outcome is its `status` pill in the matching tone, such as Done, Running,
+  Approved, Changes or Flag; the model a reviewer ran on is its `tag`.
 - **Timeline** (`calendar`). One `tree` of the session's phases in order, each labeled by the work
-  done in it with its agent working time as `figure`; its children are the agents, assignments and
-  review children active in that phase, in the order they started, each with its working time in
-  the phase and, where recorded, its longest activities in `details`.
-- **Agents** (`people`). A counted `table`, one row per distinct agent: its role, parent, working
-  time, fresh and cached tokens and tool calls, `Unavailable` where the host records none.
+  done in it with its time as `figure`. Its children are the agents, assignments and reviewers that
+  worked in that phase, in the order they started, each with its time in the phase, its `status` and
+  `tag`, and its longest activities in the phase as children.
 
 Name agents by role or task, never by ID. A spec holds no raw transcript, credential or secret.
-After delivery, reply with the page's link or file and one line: agent working time and the largest
-contributor.
+After delivery, reply with one line: the session's working time and the largest workflow.
 
 ## Guardrails
 
