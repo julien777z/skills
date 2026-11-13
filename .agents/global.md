@@ -565,6 +565,11 @@ return records;
 
 ## Product Copy
 
+- **Every line of product text changes what the reader does or understands; anything else is
+  cut.** A label that restates what a control, price or heading already shows, or reassures the
+  reader about a cost they are not paying, such as "Sharing is free" beside a paid plan's share
+  button, adds reading without information and can make the reader doubt what they paid for. Before
+  adding a line, name what it helps the reader do or understand; when there is nothing, leave it out.
 - **Text a person reads sends them to another place with a link, never a route to follow.** "Open
   Library, then Shared albums" makes the reader follow a map; the place's name, linked, takes them
   there in one action. Where the text renders markup, the name is the link. Where it is plain text
@@ -582,11 +587,6 @@ return records;
   item — which they already know. It holds wherever that message is written: the error message of
   an API or tool whose text reaches an end user, a server-side enum or constant that holds the
   text, a test fixture, and wording a brief proposes to a worker.
-- **Every line of product text changes what the reader does or understands; anything else is
-  cut.** A label that restates what a control, price or heading already shows, or reassures the
-  reader about a cost they are not paying, such as "Sharing is free" beside a paid plan's share
-  button, adds reading without information and can make the reader doubt what they paid for. Before
-  adding a line, name the decision it helps the reader make; when there is none, leave it out.
 - **Text an end user reads speaks in what the reader cares about, never in the system's exact
   values.** Where a precise number, state or count changes nothing the reader does, say it in plain
   words: a fuel tank holding a few drops is "empty", a wait of 59 seconds is "a minute". Keep the
