@@ -95,15 +95,17 @@ alwaysApply: true
   ordering to the user in chat.
   `merge-gate` still owns the complete dependency inventory and readiness gate.
 - **Put follow-up source work on the session's in-progress source pull request for that repository.**
-  Before proposing a branch, assigning a worker, or starting edits, resolve the task's source pull
-  request from its recorded receipt and verify that it is open. Keep distinct concerns and worker
-  contributions on that pull request, in separate commits where appropriate. Open a new source pull
-  request only when none is in progress or the user directs a split. Apply the agent-configuration
-  routing below to guidance. Continue a source pull request from another session only when the user,
-  an applicable invoked skill, or a repository rule explicitly directs that continuation. A matching topic, existing branch, open
-  state, or recorded touch does not supply that instruction. Verify the selected pull request's
-  owner, state and scope before updating it; leave other sessions' pull requests and branches
-  untouched, apart from damaged local Git state `update-skills` backs up and repairs.
+  Before proposing a branch, assigning a worker, or starting edits, resolve the session's source
+  pull request from its creation or authorized continuation receipt and verify that it is open.
+  Carry that receipt forward when a follow-up starts a new task in the same session. Keep distinct
+  concerns and worker contributions on that pull request, in separate commits where appropriate.
+  Open a new source pull request only when none is in progress or the user directs a split. Apply
+  the agent-configuration routing below to guidance. Continue a source pull request from another
+  session only when the user, an applicable invoked skill, or a repository rule explicitly directs
+  that continuation. A matching topic, existing branch, open state, or recorded touch does not supply
+  that instruction. Verify the selected pull request's owner, state and scope before updating it;
+  leave other sessions' pull requests and branches untouched, apart from damaged local Git state
+  `update-skills` backs up and repairs.
 - **Each session opens its own agent-configuration pull request in each repository.** Agent
   configuration is the canonical `.agents` tree — skills, each with its own scripts, assets and
   templates; rules; and agent definitions. Nonbehavioral text and guidance-reference corrections in
