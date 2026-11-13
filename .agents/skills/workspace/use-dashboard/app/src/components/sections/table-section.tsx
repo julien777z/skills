@@ -1,6 +1,6 @@
 import { type ReactNode, useRef, useState } from 'react';
 
-import { RichText } from '@/components';
+import { DialogOpener, RichText } from '@/components';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn, withKeys } from '@/lib/utils';
 import type { TableSection as TableSectionSpec } from '@/spec';
@@ -65,13 +65,12 @@ export function TableSection({ section }: { section: TableSectionSpec }): ReactN
                     className={cn('px-4 align-top whitespace-normal tabular-nums', proseColumns[column] && 'min-w-64')}
                   >
                     {details && column === 0 ? (
-                      <button
-                        type="button"
-                        onClick={(event) => handleOpenRow(rowKey, event.currentTarget)}
+                      <DialogOpener
+                        onOpen={(button) => handleOpenRow(rowKey, button)}
                         className="text-left after:absolute after:inset-0 focus-visible:outline-none"
                       >
                         {cell}
-                      </button>
+                      </DialogOpener>
                     ) : (
                       <RichText text={cell} />
                     )}

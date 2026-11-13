@@ -102,13 +102,13 @@ and deliver the same dashboard again on every request so the user keeps one page
   ("<done> of <n>"), Running, Waiting on you and Time left, the summary of what the board shows step
   by step, and `details` holding each row's plan write-up, so a row opens the plan.
 - **`tree` "Plan tree"**, with `open_depth` 2: one entry per plan that is not withdrawn, in
-  approval order, `label` the plan's title, `figure` "<done> of <n> steps" and `meta` "~<n> min left", or "Proposed" for a plan
-  not yet approved; under it one entry per step, in plan order, `label` "<n>. <step title>", `tone`
-  as its progress segment is toned, `meta` its status, then "~<n> min" while it is not done or its
-  measured duration once it is, and `figure` "<done> of <n> parts" for a step with parts, counting
-  parts not skipped; and under such a step one entry per part, `label` its title, `tone` `good`
-  when done, `accent` when active, `critical` when blocked and neutral otherwise, and `meta` its
-  status.
+  approval order, `label` the plan's title, `figure` "<done> of <n> steps" and `meta` "~<n> min left", or
+  `status` "Proposed" for a plan not yet approved; under it one entry per step, in plan order, `label`
+  "<n>. <step title>", `status` its status (Done, Running, Blocked, Next or Skipped) toned as its
+  progress segment is, `meta` "~<n> min" while it is not done or its measured duration once it is,
+  and `figure` "<done> of <n> parts" for a step with parts, counting parts not skipped; and under
+  such a step one entry per part, `label` its title and `status` its status, toned `good` when done,
+  `accent` when active, `critical` when blocked and neutral otherwise.
 - **Plan write-up**: the plan as a reader who missed the conversation needs it, from the ledger's
   `plan` entry: an `outline` with `expanded` and `stacked` set, `title` the plan's title and `description` its
   goal, then "Approved · ~<total> min", or "Proposed · ~<total> min" for a plan not yet approved. Its groups, each only when it has something in it:
@@ -128,7 +128,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 | Column | `tone` | Cards |
 | --- | --- | --- |
 | Waiting on you | `warning` | Each open question: `title` the question, `detail` "Recommended: <recommendation>", `tag` "Question". |
-| In progress | `accent` | Active and blocked steps: `detail` what the step changes, from its ledger entry, `tag` the plan's title when the task has several plans, followed by " · blocked" when blocked, or "Blocked" alone when it has one, `meta` its estimate, adding "· <done> of <n> parts" for a step with parts, counting parts not skipped. Each question whose evidence is still owed: `title` the question, `detail` the evidence being gathered, `tag` "Question". |
+| In progress | `accent` | Active and blocked steps: `detail` what the step changes, from its ledger entry, `tag` the plan's title when the task has several plans, `status` "Blocked" toned `critical` when blocked, `meta` its estimate, adding "· <done> of <n> parts" for a step with parts, counting parts not skipped. Each question whose evidence is still owed: `title` the question, `detail` the evidence being gathered, `tag` "Question". |
 | Up next | — | Steps not started, in plan order, with `meta` as above and `tag` the plan's title when the task has several plans. |
 | Done | `good` | Finished steps, `meta` their measured duration. |
 
@@ -183,8 +183,8 @@ and deliver the same dashboard again on every request so the user keeps one page
   in" outline groups by, in that order, `label` the group's title and `figure` the count of its
   items, followed by "Config" and "Migrations" entries when its config or migration changes hold
   anything; and under each area one entry per change, `label` the item's title, or for config and
-  migrations the `name` with `meta` its `change` (Added, Changed or Removed). The tree is the map;
-  the details are in "Change details".
+  migrations the `name` with `status` its `change`: Added toned `good`, Changed `accent`, Removed
+  `critical`. The tree is the map; the details are in "Change details".
 - **`tabs` "Change details"**:
   the tabs "Code", holding an `outline` "What changed in <pull request name>" per pull request the
   page covers, in the tree's order; "Config", holding the `changes` "Config changes"; and
