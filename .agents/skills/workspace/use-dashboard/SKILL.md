@@ -18,7 +18,8 @@ cannot load. The page is dark unless the host's viewer is explicitly set to ligh
 as markup or script. A dialog opens just below the entry, row or node that opened it, at most 640 px
 tall, or less when the frame or window it opens in is shorter, with its contents scrolling. The
 navbar keeps the title whole and the page links beside it: the page spans up to 1920 px so a wide
-screen shows more links, the links scroll sideways with a visible scrollbar when they still do not fit, and they fold into a menu only below 1024 px.
+screen shows more links, the links scroll sideways with a visible scrollbar when they still do not
+fit, and they fold into a menu only below 1024 px.
 
 ## Dependencies
 - `pages:write-page`
