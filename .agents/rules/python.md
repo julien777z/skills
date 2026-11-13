@@ -9,7 +9,7 @@ paths:
 
 ## Syntax and Typing
 
-- For single-consumer, non-library repositories, require Python 3.12 or newer and prefer the latest stable Python release when the repository's runtime and dependencies are compatible. For public libraries, prefer the widest feasible supported range with a minimum no earlier than Python 3.11.
+- Require Python 3.12 or newer, and run the newest stable Python release as the global rules' **Repository guidance** says. A library published for consumers outside the owner's projects prefers the widest feasible supported range with a minimum no earlier than Python 3.11.
 - Use modern type hints: `str | None` instead of `Optional[str]`.
 - Use built-in generics: `list[T]`, `dict[K, V]` instead of `List[T]`, `Dict[K, V]`.
 - Type a class method that returns a new instance of its own class as `Self` from `typing`; any

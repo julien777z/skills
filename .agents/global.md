@@ -617,6 +617,20 @@ return records;
   shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
   the exact resolved commit for reproducibility and provenance.
 
+- **Every project the owner runs or consumes runs the newest stable language runtime, base image
+  and dependency releases it works with.** A change that touches a project's runtime, manifests or
+  lockfile moves what the project actually runs onto them — its version file, container images, CI
+  and lockfile — with whatever code changes the new releases need, including in an owned package
+  that only widened its range to let a consumer move. Neither of these is that move: a CI leg kept on the
+  old release beside the new one, or a dependency held below its newest release. Hold one back only
+  where an install or test shows the newer release failing on the project's runtime, such as
+  another dependency pinning it, and name that failure in a comment beside the constraint; a
+  migration the newer release needs is part of the move, not a reason to hold. Widening a
+  supported range to admit a newer release is fine, since an owned project's range serves the
+  owner's own projects. Raise its minimum once keeping the lower release no longer makes sense,
+  such as when the formatter or the code would stay on the older release's syntax. A library
+  published for consumers outside the owner's projects keeps the range its language rule sets.
+
 - Every repository stands on its own. Never carry another repository's domain vocabulary into this
   one: its product name, its services, its table and column names, its record types, or the nouns
   its business speaks in. That holds for source, tests, fixtures, examples, and documentation

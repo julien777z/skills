@@ -13,7 +13,6 @@ paths:
 
 ## Project Configuration
 
-- For single-consumer, non-library repositories, require Python 3.12 or newer and prefer the latest stable Python release when the repository's runtime and dependencies are compatible. For public libraries, prefer the widest feasible supported range with a minimum no earlier than Python 3.11.
 - Use Poetry 2.x with PEP 621 `[project]` metadata; do not use legacy `[tool.poetry]` metadata or dependency tables.
 - Declare runtime dependencies in `[project.dependencies]`, Python test and repository-automation dependencies in the repository-root `[dependency-groups].test` group with the root lockfile, other development dependencies in `[project.optional-dependencies].dev`, and console entry points in `[project.scripts]`. Do not create nested requirements manifests for test or automation directories.
 - Under static `[project.dependencies]`, `[tool.poetry.dependencies]` only supplies alternate sources. A package listed there but absent from `[project.dependencies]` is not installed. Declare the package name in `[project.dependencies]` and use `[tool.poetry.dependencies]` only for its path, Git, or URL source.
