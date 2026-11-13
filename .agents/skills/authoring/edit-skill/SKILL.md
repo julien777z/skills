@@ -178,8 +178,9 @@ user's review of the source pull request overlaps it.
 - At a checkpoint and before reporting its state, record the complete pull-request head and file
   list, the target repository's lifecycle, its current state, and its next transition. A draft
   confined to canonical agent configuration records `agent-configuration exception`
-  and `merge-gate` as its next action unless the selected workflow's delivery hold or step 7.7 holds it for the
-  user or for a source pull request; it never records `await user authorization` otherwise.
+  and `merge-gate` as its next action unless the selected workflow's delivery hold, the GitHub
+  rule's hold on guidance for something on trial, or step 7.7 holds it for the user or for a source
+  pull request; it never records `await user authorization` otherwise.
 
 ## Behavior
 
@@ -451,8 +452,8 @@ user's review of the source pull request overlaps it.
 
       **The agent-configuration merge exception decides the conflict with the ordinary merge
       default.** When the GitHub rule classifies every changed path as canonical agent
-      configuration, the required gates pass, a skill's changed scripts' own checks included, and no
-      still-open source pull request holds it, `merge-gate` is the next action in
+      configuration, the required gates pass, a skill's changed scripts' own checks included, and neither a
+      still-open source pull request nor the GitHub rule's trial hold holds it, `merge-gate` is the next action in
       this run. Do not record, report, or ask for a permission hold by citing the ordinary default;
       that is not a documented gate for this pull request.
 
