@@ -50,12 +50,13 @@ accepting a map or a visual pass:
   its parameters change the plan and structure, not only the colors.
 - **Fronts.** List every object with a front, such as a sign, bench, fireplace, notice board,
   statue or stage, and confirm from the captures that each front faces the space players stand
-  in or approach from. A front turned to a wall, or an object whose shape does not read as what it
-  is, is moved, rotated or replaced before the pass is accepted.
+  in or approach from. A front turned to a wall is moved, rotated or replaced before the pass is
+  accepted.
 - **Light and palette.** Capture the arrival area and each region from the gameplay camera under
   the lighting and time of day players see at runtime, with runtime-loaded terrain present, and
-  compare the result with the game's stated art direction. Lighting that buries the palette in
-  dark or desaturated tones fails a bright or colorful direction even when every asset is right.
+  compare the result with the game's stated art direction or the reference the user gave. Lighting
+  that buries the palette in dark or desaturated tones fails a bright or colorful direction even
+  when every asset is right.
 
 ## Functional placement
 
