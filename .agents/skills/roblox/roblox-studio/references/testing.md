@@ -70,7 +70,18 @@ What every helper must get right:
 - **Rerun a multi-client test only when a client did not join**, read from the connected-player
   count; a joined client's failure is the result, not a reason to retry.
 - **List editors with `studio_mcp.wait_for_studios`**, which waits out the empty list a new MCP
-  connection reports at first, before concluding no editor is open.
+  connection reports at first, before concluding no editor is open. To find the windows a launch
+  adds, take the snapshot with `listed_editor_ids` before it and poll `new_editors` on that same
+  connection after it; a snapshot from `studios` on a new connection is empty, so every editor
+  already open reads as new.
+- **Run a check longer than one lease in segments.** `agent-lock` grants at most `MAX_LEASE`
+  (900 s), and every client call refuses to start when the lease left cannot cover it. Each segment
+  acquires the lock with `acquire_runner_lock`, opens what it needs, does a bounded part of the
+  check, closes every editor and test process it started, and releases with `release_runner_lock`;
+  the next segment acquires again and reopens. Before each step of a loop, compare
+  `runner_lease(receipt)["remaining"]` with that step's worst case and end the segment there when
+  it does not fit, rather than letting a call refuse midway. The game's warm editor is the one
+  editor a segment leaves open.
 
 Workers use these helpers and extend them for each new repeatable step; a repeatable step is never
 a throwaway script in a temporary folder or Luau pasted into one run. Each helper returns a
@@ -158,20 +169,34 @@ the next. The runner's Studio MCP is `runner_ssh.sh /Applications/RobloxStudio.a
 spoken over stdio: give an MCP client that command.
 
 Drive the runner's Studio from scripts through the [studio_mcp](../scripts/studio_mcp/client.py) package, which every game uses
-from the installed `roblox-studio` skill's `scripts` folder, put on `sys.path`; no game keeps its own MCP
-client. Each `Studio` holds its own MCP session through `runner_ssh.sh`, and the module has no shell command line.
-Each `Studio` method, `run_in_runner`, `open_place` and `close_place` first confirms through `agent-lock` that the
-caller's receipt owns the lock on the game's VM name with enough of its lease left for every call it can make, each
-counted at its full timeout, so no call outlives the lease; a long operation, such as `open_place` with its
-registration wait, needs a lease acquired or renewed for it. `open_place(project, place, out_dir, lock_receipt)`
-copies a built place into the guest under `studio-places/<project>/`, launches an editor for it and returns a
-`Studio(studio_id, lock_receipt)` once that editor registers; when the launch fails at any point once the copy starts,
-it closes the editor, saving the guest's screen when the editor never registered, and raises. The project and place
-file names use only letters, digits, `.`, `_` and `-`, starting with a letter or digit. `close_place(project, place,
-lock_receipt)` ends the editor that has exactly that copy open and deletes the copy, and raises, keeping the copy,
-when the editor stays open. `run_in_runner(command, lock_receipt, timeout)` runs a shell command in the guest.
-`Studio` executes Luau, captures, reads the console, sends keys, and clicks a button by its instance path through
-the bundled VirtualInput helper; `Studio.tool(name, arguments)` calls any other Studio MCP tool on that editor.
+from the installed `roblox-studio` skill's `scripts` folder, put on `sys.path`, importing only the names its
+`__init__.py` exports (`from studio_mcp import Studio, open_place, ...`); no game keeps its own MCP client or copies
+one of these mechanisms. Each `Studio` holds its own MCP session through `runner_ssh.sh`, and the module has no shell
+command line. Every call that reaches the guest first confirms through `agent-lock` that the caller's receipt owns the
+lock on the game's VM name with enough of its lease left for every call it can make, each counted at its full
+timeout, so no call outlives the lease. Project and place file names use only letters, digits, `.`, `_` and `-`,
+starting with a letter or digit.
+
+| Call                                                                                          | What it does                                                                                                                                                                                                                 |
+| --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `acquire_runner_lock(lock_receipt, owner, activity, lease=MAX_LEASE)`                         | Takes the lock on the game's VM for one segment and returns the acquire report, whose `expired_owner` names a predecessor whose leftovers must be stopped first; raises when the lock stays busy                             |
+| `release_runner_lock(lock_receipt)`                                                           | Releases it once every process the segment started has exited                                                                                                                                                                |
+| `runner_lease(lock_receipt)`                                                                  | The runner's configuration and the time the lease has left, as `{"config", "remaining"}`                                                                                                                                     |
+| `open_place(project, place, out_dir, lock_receipt)`                                           | Copies a built place into the guest under `studio-places/<project>/`, launches an editor for it and returns a `Studio` once the editor registers and its Edit data model runs code, over the connection that saw it register |
+| `open_cloud_place(place_id, universe_id, out_dir, lock_receipt)`                              | Opens a published place in an editor the same way, returning it once its Edit data model reports that place and universe; it is never saved or published from there                                                          |
+| `close_place(project, place, lock_receipt)`                                                   | Ends the editor that has exactly that copy open and deletes the copy; raises, keeping the copy, when the editor stays open                                                                                                   |
+| `close_cloud_place(place_id, lock_receipt)`                                                   | Ends, without saving, the `EditPlace` editors on exactly that place; raises when one stays open                                                                                                                              |
+| `stop_guest_processes(pids, lock_receipt)`                                                    | Sends SIGTERM, waits, sends SIGKILL to what remains, and returns the IDs that survive, such as the test server and clients a multiplayer test left                                                                           |
+| `listed_editor_ids(connection, lock_receipt)`, `new_editors(known, connection, lock_receipt)` | A snapshot of the editors listed before a launch, waiting out a new connection's empty list, and the editors listed since on the same connection, such as a multiplayer test's windows                                       |
+| `guest_screenshot(path, lock_receipt)`                                                        | Saves the guest's whole screen, for a failure the editor cannot capture                                                                                                                                                      |
+| `run_in_runner(command, lock_receipt, timeout)`                                               | Runs a shell command in the guest                                                                                                                                                                                            |
+
+When either open call fails once its launch starts, it closes the editor, saves the guest's screen under `out_dir`,
+and raises. A `Studio` executes Luau, captures, optionally from `camera_position` toward `look_at_position`, reads
+the console, sends keys, holds a key for a duration (`hold_key`), and clicks a button by its instance path through
+the bundled VirtualInput helper, which `run_input` binds as `Input` for other input fixtures;
+`Studio.tool(name, arguments)` calls any other Studio MCP tool on that editor. `luau_string_literal` quotes a value
+for Luau code a helper builds.
 
 **No Studio operation reaches the host by falling back.** A client, helper or MCP server that picks its target
 from a variable or setting and drives the host's Studio when that target is missing is not a runner route, even
@@ -624,7 +649,8 @@ For a cloud-backed editor when isolated save/rejoin tests are required, the docu
 [Studio command-line interface](https://create.roblox.com/docs/studio/command-line-interface)
 accepts `--task EditPlace --placeId <verified-place-id> --universeId <verified-universe-id>`.
 On macOS, `open -n -a /Applications/RobloxStudio.app --args` followed by those arguments
-launches a cloud editor; confirm both `game.PlaceId` and `game.GameId` through MCP. Use `--task EditFile --localPlaceFile <absolute-path>` for a file.
+launches a cloud editor, which `studio_mcp.open_cloud_place` does, confirming both `game.PlaceId` and
+`game.GameId` through MCP before it returns. Use `--task EditFile --localPlaceFile <absolute-path>` for a file.
 Launch extra editors only inside the isolated runner. An ordinary local place file has
 zero place/universe IDs and cannot establish cloud persistence coverage. Synchronizing
 test source into a cloud editor does not publish it; keep fixture keys isolated and
@@ -667,8 +693,9 @@ repeated duplicate launches. Stop any Play session or multiplayer test through M
 `studio_mcp.open_place` made, other than [the game's warm editor](#keep-the-games-editor-warm), is
 then closed with `close_place`: its place is a disposable copy, so
 ending the process is the same as Don't Save. The test server and client windows a multiplayer test
-starts are separate processes `close_place` does not match, so confirm with `pgrep` that they exited
-too. To close any other task-owned editor, quit that process through its own window — Cmd-Q or the File menu sent
+starts are separate processes `close_place` does not match, so list them with `pgrep` before and after
+the test and stop those it added with `studio_mcp.stop_guest_processes`. A cloud editor
+`open_cloud_place` made is closed with `close_cloud_place`. To close any other task-owned editor, quit that process through its own window — Cmd-Q or the File menu sent
 to the verified process — and answer an unsaved-changes prompt with Don't Save when the place is a
 disposable build artifact whose source lives in the repository, or Save when it holds work that
 exists nowhere else. Confirm with `pgrep` that the process exited. A process that ignores a quit
