@@ -16,11 +16,9 @@ diagram is drawn by Mermaid, loaded from jsDelivr, with its connections listed a
 cannot load. The page is dark unless the host's viewer is explicitly set to light
 (`data-theme="light"` on the root element), and renders every value as text, so data never runs
 as markup or script. A dialog opens just below the entry, row or node that opened it, at most 640 px
-tall or the window's height, whichever is smaller, with its contents scrolling, so it stays in sight
-even in a frame as tall as the page. The navbar keeps the title whole and the page links beside it:
-the page spans
-up to 1920 px so a wide screen shows more links, the links scroll sideways with a visible scrollbar
-when they still do not fit, and they fold into a menu only below 1024 px.
+tall, or less when the frame or window it opens in is shorter, with its contents scrolling. The
+navbar keeps the title whole and the page links beside it: the page spans up to 1920 px so a wide
+screen shows more links, the links scroll sideways with a visible scrollbar when they still do not fit, and they fold into a menu only below 1024 px.
 
 ## Dependencies
 - `pages:write-page`
@@ -168,8 +166,7 @@ Dashboards look alike because they are built alike:
   every one, while a pill reading the same on most items has stopped meaning anything.
 - **A figure is a real quantity in a unit the reader knows.** A duration is clock time. A total over
   work that ran in parallel counts overlapping time once, so no total is longer than the clock time
-  it spans: work that ran side by side is never added up into one duration. A figure never carries
-  a label for how it was computed.
+  it spans. A figure never carries a label for how it was computed.
 - **Text says what it means where it stands.** A line never sends the reader elsewhere to make
   sense of it, such as "at step 2" or "see above": it says what happens then, such as "after the
   batch is frozen". A numbered title keeps its number; the text about it never leans on one.
@@ -268,8 +265,8 @@ Use the first route the session offers, and the same one for every update of one
 **Every render is also shown in the conversation** when the harness can show an HTML page inline:
 the first render and every update, a preview included, besides whichever route below carries its
 link, as the [inline display reference](references/inline.md) says for each harness that has one.
-The page sizes nothing by the viewport's height, since an inline frame's height is set by the
-harness rather than by the reader's window.
+The page's layout sizes nothing by the viewport's height, since an inline frame's height is set by
+the harness rather than by the reader's window; a dialog's height cap is the one exception.
 
 1. **A publishing tool**, whenever the harness offers one. In Codex with Pages tools, apply
    `pages:write-page` and follow the [Spaces publishing reference](references/spaces.md). In Claude,
