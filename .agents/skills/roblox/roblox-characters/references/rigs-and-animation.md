@@ -13,7 +13,7 @@ For an override, start with an appropriate Roblox body package/HumanoidDescripti
 
 - Current R15 assets may use AnimationConstraint-based joints rather than only Motor6D. Inspect the actual rig before writing procedural poses. Joint transforms are normally overwritten between PreAnimation and PreSimulation, so layer procedural motion in the animation/simulation phase where the default animator does not overwrite it immediately. See the official [Animator](https://create.roblox.com/docs/reference/engine/classes/Animator) and [AnimationConstraint](https://create.roblox.com/docs/reference/engine/classes/AnimationConstraint) APIs.
 - Procedural idle/action/impact/victory or other game-specific motion is an option when suitable. Do not describe those as uploaded animation clips. If uploaded clips are required, upload them under the correct owner, named and recorded as every asset uploaded for the game is, and verify their IDs/permissions in the live experience.
-- Character action, impact, and defeat presentation should be readable and timed to the authoritative events. Client presentation completion must never decide whether server gameplay can proceed.
+- Character action, impact, and defeat presentation should be readable and timed to the authoritative events.
 
 ## Imported creature rigs
 
