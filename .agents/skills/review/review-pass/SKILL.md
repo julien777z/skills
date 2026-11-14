@@ -41,17 +41,18 @@ skill never readies, merges or deploys.
   and report its findings without fixing, posting or recording anything.
 - **Loop** (the user asks for a review loop or "sol loop"): run **Review Loop** over the target
   with fixes, and push only when the user asked to push or update the pull request.
-- **Watch** (the user asks to watch, monitor or babysit a pull request for review feedback): run
-  **Review Threads** over the pull request, then again on every new or updated thread and comment;
-  on a check that fails, read its log and fix what the change broke as **Checks** says. Push each
-  fix through the GitHub rule's **Pre-Push Gate**. This mode polls every 30–60 seconds while a
-  check is pending or failing or a thread is open; while any is, each push or new finding restarts
-  a 15-minute quiet window, since automated reviewers post late. It stops as soon as every check
-  that runs is terminal and green and every thread is resolved or outdated, without waiting out a
-  window. When it stops, it runs **Local Passes**' simplification over the pull request's diff,
-  and a fix that pass pushes is watched the same way. A draft runs no test jobs, so its watch ends
-  on its own checks and reports `draft: watch ended, tests not run`; this mode never readies or
-  merges it.
+- **Watch** (the user asks to watch, monitor or babysit a pull request for review feedback): this
+  mode polls. Every 30–60 seconds it reads the pull request's checks, threads and comments on the
+  current head: it runs **Review Threads** over the pull request first, then again on each new or
+  updated thread and comment, and on a check that fails it reads the log and fixes what the change
+  broke as **Checks** says, pushing each fix through the GitHub rule's **Pre-Push Gate**. Polling
+  ends when every check that runs on the current head is terminal and either green or recorded as
+  an exclusion under **Checks**, and every thread is resolved, outdated or put to the user. It then
+  runs `code-simplify` once over the pull request's whole diff, in process or by slice as **Local
+  Passes** says; a fix that pass pushes is watched to the same end, and the watch then stops. The
+  report names each exclusion and each thread waiting on the user. A draft runs no test jobs, so
+  its watch reports `draft: watch ended, tests not run`; this mode never readies or merges a pull
+  request.
 
 ## Targets
 
