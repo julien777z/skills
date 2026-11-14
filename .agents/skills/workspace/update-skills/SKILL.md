@@ -98,7 +98,8 @@ and lock ownership throughout.
 2. Record the checkout's current commit, branch, working-tree status, installed source, and each
    `skills-overlay/` worktree with the built head its marker stores. Fetch the remote default branch
    and the branch of every pull request in effect.
-3. **With no pull request in effect and the checkout on the default branch**, fast-forward it in
+3. **With no pull request in effect, the checkout on the default branch, and no caller about to
+   clean the source checkout**, fast-forward it in
    place: create a named `git stash push --include-untracked` when the tree is dirty, fast-forward,
    restore the stash and verify the original paths are present. Its uncommitted edits stay live
    through the links into it. Then delete every overlay's `skills-overlay` marker, so the installer
