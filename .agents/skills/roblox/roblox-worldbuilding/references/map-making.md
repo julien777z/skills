@@ -19,7 +19,7 @@ Apply this guidance to the requested genre and map. Preserve its art direction, 
 - Place wayfinding information where it is visible and readable from the intended walking route before the relevant choice or destination. Validate each expected approach direction using the normal gameplay camera while staying on the route; a close-up from a specially chosen angle is not acceptance. Set orientation, setback, height, and reading distance together, keeping supports and scenery clear of the message. Choose one or multiple readable faces according to the approaches served. If physical signage cannot communicate reliably there, use another presentation suited to the game's visual language rather than requiring players to leave the route or hunt for the readable side.
 - Apply [world-space text inspection](world-space-text.md) to authored signs and runtime messages placed in the map.
 - Give a larger map distinct, connected areas with believable transitions in terrain, materials, buildings, and vegetation. Detail should support each area's role and guide exploration; scattered repeated props do not substitute for composition.
-- Use textured, economical meshes where silhouette and surface detail improve the scene. Enable streaming when appropriate for scale, then test destination loading, disappearance/reappearance, and interior transitions.
+- Enable streaming when the map's scale warrants it.
 - Exclude content spatially when it does not belong in an introductory or restricted area instead of scattering unusable interactions through that area.
 
 ## Scene audit

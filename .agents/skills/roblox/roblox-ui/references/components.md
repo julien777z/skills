@@ -6,17 +6,15 @@ Use maintained [Roblox React Lua](https://github.com/Roblox/react-lua) packages.
 
 Keep shared theme, controls, modal shells, and viewport adapters canonical where the UI uses them. Component props and domain data stay typed. React's `Node` and `ReactElement` types are not interchangeable in all package versions: explicit component return types and typed child dictionaries can resolve inference/variance errors without casting to `any`. Inspect the installed package types when diagnosing this.
 
-Measure a tutorial target's actual `AbsolutePosition`/`AbsoluteSize` relative to its overlay instead of converting through an assumed 1280×720 coordinate system, and check modal input blocking.
+Measure a tutorial target's actual `AbsolutePosition`/`AbsoluteSize` relative to its overlay instead of converting through an assumed 1280×720 coordinate system.
 
 Retain original artwork through narrowly scoped adapters. Mount a viewport scene once for its asset identity, preserve it across selection changes, and destroy its models, render subscriptions, and animations on unmount. A React wrapper around an unchanged imperative screen is not a screen migration.
 
 ## Interaction and presentation
 
 - Use clear hierarchy, a restrained palette, consistent spacing, legible cards/buttons, and clear state feedback. Avoid excessive panels obscuring the environment.
-- Put each feature's content inside the shared modal shell. At the repeated-click checkpoints in the parent skill, verify toggling and switching between every entry point.
 - Keep stable widgets alive across frequent snapshots. Destroying and recreating expensive preview components on every click can cause blank flashes and asset reloads. Update text, health, selection, and enabled state in place; rebuild only when layout/content changes. Keep hover colors consistent with the current selected/disabled base color.
 - Use short purposeful transitions; avoid motion that delays basic actions. Give distinct actions recognizable effects and impact timing. Offer reduced camera shake/motion where effects warrant it.
-- Design for touch separately. Enlarge labels and action targets, scroll wide content where appropriate, and inspect overlap with Roblox's own thumbstick, jump button, top bar, and device safe areas.
 - Hide/disable movement controls during interfaces or gameplay modes that prohibit movement, then restore them reliably. Clear modal instruction overlays before expecting the user or test driver to press underlying controls.
 - Contextual prompts should appear near relevant NPCs/items. Do not add a permanent "E Interact" button when the proximity prompt already explains the action. Touch must still have an actionable prompt.
 - Display authoritative state, valid choices, and confirmed actions. Use player-facing action names rather than internal content IDs. Make invalid selections understandable without allowing them on the server.

@@ -43,7 +43,7 @@ When a game has a persistent objective HUD, prioritize the next useful action ov
 
 Fit panels to their content. Short dialogue or a small set of actions should not leave a large empty box. Use automatic sizing or measured layout content, readable maximum widths, and viewport height limits; introduce scrolling only when content exceeds those limits. Check both short and long copy, and reset scroll position when replacing the content with a new page.
 
-Use anchored containers, list/grid layouts, automatic sizing, constraints, scrolling, and safe insets. Preserve minimum readable text and usable touch targets. Do not shrink a fixed desktop canvas to fit a phone. Check narrow and short landscape viewports, text overflow, scrolling to the last item, and overlap with Roblox's top bar and movement controls.
+Use anchored containers, list/grid layouts, automatic sizing, constraints, scrolling, and safe insets. Preserve minimum readable text and usable touch targets. Do not shrink a fixed desktop canvas to fit a phone. Check narrow and short landscape viewports, text overflow, scrolling to the last item, and overlap with Roblox's top bar and movement controls, such as the thumbstick and jump button.
 
 Account for visible borders, focus/selection strokes, shadows, and rounded corners when placing controls inside clipping or scrolling containers. A control whose rectangle fits can still lose the outer half of its stroke. Reserve inner padding for the largest visual extent and the scrollbar; verify the first and last controls and both side edges.
 
