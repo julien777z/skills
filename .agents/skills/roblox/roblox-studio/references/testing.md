@@ -261,6 +261,8 @@ and before acting checks again that the step is still needed. Each step ends wit
 4. **Prepare the guest.** For a clone of a qualified VM, remove another game's places, captures and
    task folders it carried, and close any editor its last session restored; the runner's persistent
    setup stays. For a clone of the base image, install Studio as step 4 of provisioning says.
+   Either way, [turn off the daemons a headless guest does not use](#turn-off-guest-daemons-a-headless-vm-does-not-use)
+   and check them as that section says.
 5. **Sign in and qualify** as [authentication](#authentication-and-user-handoff) and
    [Qualify input and capture](#qualify-input-and-capture) describe, installing the
    [geometry buffer cap](#cap-studios-geometry-buffers-in-a-tart-guest) and confirming it in the
@@ -297,7 +299,8 @@ ends with its check:
 4. **Install Studio in the guest** from Roblox's official macOS installer image. Mount it there,
    confirm the installer's code-signing team matches the host Studio's, and `open` it in the
    signed-in guest session; the check is `/Applications/RobloxStudio.app` in the guest and Studio's
-   window in a guest capture.
+   window in a guest capture. Then
+   [turn off the daemons a headless guest does not use](#turn-off-guest-daemons-a-headless-vm-does-not-use).
 5. **Sign in, enable MCP, and qualify** as [authentication](#authentication-and-user-handoff),
    [direct guest control](#direct-guest-control) and
    [Qualify input and capture](#qualify-input-and-capture) describe, with the
@@ -359,6 +362,36 @@ in place, a capture of Studio draws the scene correctly, so stretched wedges or 
 are a defect to diagnose, never a guest artifact to set aside. The published player in the guest
 has the same driver limit and no such setting, so treat its 3D visuals as untested.
 
+#### Turn off guest daemons a headless VM does not use
+
+A Tart macOS guest runs system daemons for hardware and services it lacks, and some of them burn
+CPU there, more the longer the guest runs:
+
+- **`airportd`**, the Wi-Fi daemon. The guest has no Wi-Fi port. `bluetoothd`'s Wi-Fi coexistence
+  code finds no Wi-Fi device, retries about every 11 seconds, and opens two new connections to
+  `airportd` each time, which `airportd` never closes. `airportd` sends every network
+  configuration event to each of them, so its CPU grows with uptime, past a full core after two
+  days.
+- **`audioanalyticsd`**, which processes the overload reports `coreaudiod` writes each time a
+  Studio or player audio cycle misses on a loaded guest, tens of them a second.
+
+Disable both in the guest, under the runner lock; launchd keeps the setting across reboots:
+
+```sh
+"$runner_ssh" 'for service in com.apple.airportd com.apple.audioanalyticsd; do
+  sudo launchctl disable "system/$service"; sudo launchctl bootout "system/$service"; done'
+```
+
+Leave `bluetoothd` running: without it, `coreaudiod`'s Bluetooth audio plugin looks up a
+`bluetoothd` service through launchd thousands of times a second. The check:
+`sudo launchctl print-disabled system` lists both services as disabled, `pgrep -x airportd` and
+`pgrep -x audioanalyticsd` find nothing, `en0` keeps its address, and `top -o cpu` shows neither
+daemon and no busy `launchd`. A clone of a configured guest keeps the setting, so confirm it there
+rather than repeat it. Another system daemon among the guest's busiest processes is handled the
+same way: find its cause with `sample` and `log show --predicate 'process == "<name>"'`, disable it
+only when nothing the runner uses depends on it, read launchd's failed lookups afterward, and add
+it here.
+
 ### Linux container runner
 
 A Linux host, such as a cloud agent container, can provide the Windows Studio build under Wine on an
@@ -394,7 +427,8 @@ Follow [authentication and user handoff](#authentication-and-user-handoff) befor
 viewer. A toggle enabled on the host does not enable the guest.
 
 Qualify the existing runner before relying on it, and recheck affected capabilities after Studio or
-VM updates: authenticate, discover the intended Studio, load the current assets, run client/server
+VM updates: confirm the [daemons a headless guest does not use](#turn-off-guest-daemons-a-headless-vm-does-not-use)
+are off, applying that section where they are not, authenticate, discover the intended Studio, load the current assets, run client/server
 Play, operate a real button and movement, and capture the viewport without host windows or focus changes. For multiplayer coverage, also qualify the requested number of independent clients. Studio launching alone is not compatibility proof. Keep
 dated qualification results in workspace evidence; do not recreate a working runner to requalify it.
 
