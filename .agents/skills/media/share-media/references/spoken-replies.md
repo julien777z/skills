@@ -17,7 +17,8 @@
 1. **Write the reply first.** Shape the spoken part for listening: short sentences, with code,
    paths, links and tables left to the written text.
 2. **Make the clip:** run `python3 scripts/speak.py <output folder> <clip name>` from the skill's
-   folder, with the spoken text on standard input. The clip name is a plain file name. The script
+   folder, with the spoken text on standard input and without `-I`, which drops the script's folder
+   from Python's import path. The clip name is a plain file name. The script
    prints the path of a self-contained HTML page holding an audio player with the clip embedded in
    it. The output folder is the one the skill's **Keep the file** bullet names.
 3. **Show the player, then the reply's text under it**, through the route the skill's **Harness
