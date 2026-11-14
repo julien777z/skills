@@ -214,7 +214,7 @@ installation result so the caller can complete and verify the checkout refresh.
 ## Report
 
 ```markdown
-Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only | names of hosted checks and results> — consumers: <none pinned | repointed: <consumer PR> at <short sha> | owned elsewhere: <consumer PR> pins <reference>> — sync: <run result | not agent configuration>; refresh: <installed source and commit | blocked: exact reason | not agent configuration>
+Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only | names of hosted checks and results, baseline failures left out> — consumers: <none pinned | repointed: <consumer PR> at <short sha> | owned elsewhere: <consumer PR> pins <reference>> — sync: <run result | not agent configuration>; refresh: <installed source and commit | blocked: exact reason | not agent configuration>
 ```
 
 Or, when a gate holds: `Not merged: <link> — <gate>: <evidence>`. The evidence includes each
