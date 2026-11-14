@@ -565,6 +565,11 @@ return records;
   only when evidence shows that it reached an unauthorized recipient, a public surface, or a
   compromised destination. Preserve secret-safe handling; do not surface values unnecessarily.
 
+## Product Forms
+
+- Sections that require user input start expanded. If input in a section becomes required during
+  the flow, expand the section when that requirement takes effect.
+
 ## Product Copy
 
 - **Every line of product text changes what the reader does or understands; anything else is
