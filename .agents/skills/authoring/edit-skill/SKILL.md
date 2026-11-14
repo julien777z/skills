@@ -327,7 +327,13 @@ user's review of the source pull request overlaps it.
      rules and skills by its subject, required action and opposite disposition. Read the complete
      changed skill or rule and its supporting files, plus relevant sections in other skills, rules,
      callers and dependencies. Apply the [conflict criteria](references/conflicting-instructions.md). Resolve competing instructions
-     at their owners rather than adding a reminder beside them. Record the searches, sources read
+     at their owners rather than adding a reminder beside them. **An edit writes only what the
+     request and the failure it repairs need.** Where the new instruction conflicts with standing
+     guidance the request did not ask to change, the new instruction is fitted to the standing one.
+     A requirement neither of them needs, such as a step, a routing rule or a hold the request never
+     named, and an exception carved out of standing guidance to make room for one, is a policy
+     change: it is proposed to the user, with the standing text it would change, and written only
+     once their own words approve it. Record the searches, sources read
      and each resolution, or the evidence for a clean result. Repeat this check for later wording
      changes before acceptance and skill tests; an earlier clean result does not cover a new edit.
    - Update existing files in place and report any structural changes. Before delivery, follow the
