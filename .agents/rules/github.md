@@ -96,6 +96,12 @@ alwaysApply: true
   requirement in terms of this repository's own contract; disclose provider PR links and merge
   ordering to the user in chat.
   `merge-gate` still owns the complete dependency inventory and readiness gate.
+- **Text published to the host is staged where only its author writes and read back once
+  published.** Pass it on standard input, or from a file in a directory the task created for
+  itself, never from a fixed name in a shared temporary directory that another session or worker
+  can overwrite between writing and publishing. After the host accepts it, read the stored text back
+  and compare it with what was staged; a mismatch is corrected at once and its stray revision
+  removed from the edit history.
 - **Put follow-up source work on the session's in-progress source pull request for that repository.**
   Before proposing a branch, assigning a worker, or starting edits, resolve the session's source
   pull request from its creation or authorized continuation receipt and verify that it is open.
