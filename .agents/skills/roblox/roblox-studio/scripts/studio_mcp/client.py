@@ -288,6 +288,10 @@ class StudioMcpConnection:
             self.session = None
 
 
+class StudioToolError(RuntimeError):
+    """A Studio MCP tool call that Studio answered with an error."""
+
+
 def call_studio_tool(connection: StudioMcpConnection, name: str, arguments: ToolArguments, lock_receipt: Path,
                      timeout: timedelta = TOOL_CALL_TIMEOUT) -> list[McpContent]:
     """Call a Studio MCP tool."""
@@ -299,7 +303,7 @@ def call_studio_tool(connection: StudioMcpConnection, name: str, arguments: Tool
     response = connection.request("tools/call", {"name": name, "arguments": arguments}, timeout, config)
 
     if "error" in response or "result" not in response or response["result"].get("isError"):
-        raise RuntimeError(json.dumps(response))
+        raise StudioToolError(json.dumps(response))
 
     return response["result"]["content"]
 
@@ -390,10 +394,12 @@ class Studio:
     def edit_place_ids(self) -> PlaceIds | None:
         """Return the place and universe IDs the Edit data model reports, or None while it runs no code yet."""
 
+        # An editor still loading its place answers with an error or not at all; a refused lease or an exited
+        # server raises through.
         try:
             reply = self.execute('return game:GetService("HttpService"):JSONEncode({placeId = game.PlaceId, '
                                  'universeId = game.GameId})', "Edit", EDIT_PROBE_TIMEOUT)
-        except (RuntimeError, TimeoutError):
+        except (StudioToolError, TimeoutError):
             return None
 
         return json.loads(reply)
@@ -600,8 +606,10 @@ def open_bound(registration_wait: timedelta) -> timedelta:
     """Return the longest an editor launch can take, closing the editor after a failure included."""
 
     snapshot = INITIALIZE_TIMEOUT + EDITOR_LIST_WAIT + 2 * TOOL_CALL_TIMEOUT
-    # Registering and answering in the Edit data model share registration_wait; each can overrun it by one call.
-    registration = registration_wait + TOOL_CALL_TIMEOUT + REGISTRATION_POLL + EDIT_PROBE_TIMEOUT
+    # Registering and answering in the Edit data model share registration_wait; each can overrun it by one call, and
+    # a probe that times out closes the session, so the next one opens it again.
+    registration = (registration_wait + TOOL_CALL_TIMEOUT + REGISTRATION_POLL + INITIALIZE_TIMEOUT
+                    + EDIT_PROBE_TIMEOUT)
 
     return (PROCESS_LIST_TIMEOUT + snapshot + COPY_TIMEOUT + LAUNCH_TIMEOUT + registration + CAPTURE_TIMEOUT
             + CLOSE_BOUND)
