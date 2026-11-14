@@ -83,8 +83,10 @@ What every helper must get right:
   anything, and that bound already reserves closing the editor after a failed open, so an open needs
   no check of its own and keeps its registration wait. Before each later step of a loop, compare
   `runner_lease(receipt)["remaining"]` with that step's worst case, plus the segment's cleanup. A
-  `Studio` call's worst case is `tool_call_bound(opens_session, timeout)`, with `opens_session=True`
-  when an earlier timeout may have closed its connection; `listed_editor_ids` takes
+  `Studio` call's worst case is `tool_call_bound(opens_session=False, timeout)` on an open connection,
+  plus `listing_recovery_bound()` when an earlier timeout may have closed it, since the call then
+  waits for the new connection to list the editor; `listed_place_editors` takes
+  `OPERATION_TIMEOUTS[RunnerOperation.PROCESS_LIST] + listing_recovery_bound()`, `listed_editor_ids`
   `editor_wait_bound(EDITOR_LIST_WAIT)` and `wait_for_studios` `editor_wait_bound(wait)`. The cleanup is
   `CLOSE_BOUND` for each place copy it opened, `CLOUD_CLOSE_BOUND` for each cloud editor,
   `OPERATION_TIMEOUTS[RunnerOperation.STOP]` for the test processes it stops and
@@ -200,6 +202,7 @@ starting with a letter or digit.
 | `close_cloud_place(place_id, lock_receipt)`                                                   | Ends, without saving, the `EditPlace` editors on exactly that place; raises when one stays open                                                                                                                              |
 | `stop_guest_processes(pids, lock_receipt)`                                                    | Sends SIGTERM, waits, sends SIGKILL to what remains, and returns the IDs that survive, such as the test server and clients a multiplayer test left                                                                           |
 | `listed_editor_ids(connection, lock_receipt)`, `new_editors(known, connection, lock_receipt)` | A snapshot of the editors listed before a launch, waiting out a new connection's empty list, and the editors listed since on the same connection, such as a multiplayer test's windows                                       |
+| `listed_place_editors(project, place, connection, lock_receipt)`                              | Lists the editors named for a project's place copy once Studio MCP lists one, or none when no editor process has the copy open |
 | `guest_screenshot(path, lock_receipt)`                                                        | Saves the guest's whole screen, for a failure the editor cannot capture                                                                                                                                                      |
 | `run_in_runner(command, lock_receipt, timeout)`                                               | Runs a shell command in the guest                                                                                                                                                                                            |
 
@@ -209,8 +212,16 @@ the editor and raises. A `Studio` executes Luau, captures, optionally from a `Ca
 point it looks at, reads
 the console, sends keys, holds a key for a duration (`hold_key`), and clicks a button by its instance path through
 the bundled VirtualInput helper, which `run_input` binds as `Input` for other input fixtures;
-`Studio.tool(name, arguments)` calls any other Studio MCP tool on that editor. `luau_string_literal` quotes a value
-for Luau code a helper builds.
+`Studio.tool(name, arguments)` calls any other Studio MCP tool on that editor, first waiting for a new connection to
+list it. `luau_string_literal` quotes a value for Luau code a helper builds.
+
+An editor reaches Studio MCP through its built-in Assistant plugin, which connects to the guest's `StudioMCP` helper
+whenever a session has one running. A starved guest can hold that connection for minutes and raise Studio's
+"*plugin* is not responding" alert, and while the alert is open the editor does not answer. Every wait for an editor
+to list, whether registration in either open call, `listed_place_editors`, or a `Studio`'s first call on a new
+connection, answers those alerts with their keep-waiting button once a minute, logging each one it answers, and waits
+out a held connection, up to 260 s for an editor already running. An editor still unlisted then raises an error naming
+the guest's load and whether each Studio process holds a connection to the helper.
 
 **No Studio operation reaches the host by falling back.** A client, helper or MCP server that picks its target
 from a variable or setting and drives the host's Studio when that target is missing is not a runner route, even
@@ -266,9 +277,12 @@ and before acting checks again that the step is still needed. Each step ends wit
 4. **Prepare the guest.** For a clone of a qualified VM, remove another game's places, captures and
    task folders it carried, and close any editor its last session restored; the runner's persistent
    setup stays. For a clone of the base image, install Studio as step 4 of provisioning says.
+   Either way, [turn off the daemons a headless guest does not use](#turn-off-guest-daemons-a-headless-vm-does-not-use)
+   and check them as that section says.
 5. **Sign in and qualify** as [authentication](#authentication-and-user-handoff) and
    [Qualify input and capture](#qualify-input-and-capture) describe, installing the
-   [geometry buffer cap](#cap-studios-geometry-buffers-in-a-tart-guest) and confirming it in the
+   [geometry buffer cap](#cap-studios-geometry-buffers-in-a-tart-guest) and the runner's
+   [fixed graphics quality](#leave-the-shared-runner-as-you-found-it) and confirming both in the
    editor first; a session cloned signed in is confirmed from Studio's start page, not assumed.
    Release the lock before asking the user for a sign-in code, and take it again, with its receipt
    checked and the guest's state read back, before continuing. Then set
@@ -302,12 +316,14 @@ ends with its check:
 4. **Install Studio in the guest** from Roblox's official macOS installer image. Mount it there,
    confirm the installer's code-signing team matches the host Studio's, and `open` it in the
    signed-in guest session; the check is `/Applications/RobloxStudio.app` in the guest and Studio's
-   window in a guest capture.
+   window in a guest capture. Then
+   [turn off the daemons a headless guest does not use](#turn-off-guest-daemons-a-headless-vm-does-not-use).
 5. **Sign in, enable MCP, and qualify** as [authentication](#authentication-and-user-handoff),
    [direct guest control](#direct-guest-control) and
    [Qualify input and capture](#qualify-input-and-capture) describe, with the
-   [geometry buffer cap](#cap-studios-geometry-buffers-in-a-tart-guest) installed and confirmed in
-   the editor; qualification includes a capture of a large place drawing its meshes correctly.
+   [geometry buffer cap](#cap-studios-geometry-buffers-in-a-tart-guest) and the runner's
+   [fixed graphics quality](#leave-the-shared-runner-as-you-found-it) set and confirmed in the
+   editor; qualification includes a capture of a large place drawing its meshes correctly.
    Then set `ROBLOX_STUDIO_QUALIFIED=1` in `games/<game>.env`.
 
 #### Add the published Roblox player
@@ -366,6 +382,36 @@ in place, a capture of Studio draws the scene correctly, so stretched wedges or 
 are a defect to diagnose, never a guest artifact to set aside. The published player in the guest
 has the same driver limit and no such setting, so treat its 3D visuals as untested.
 
+#### Turn off guest daemons a headless VM does not use
+
+A Tart macOS guest runs system daemons for hardware and services it lacks, and some of them burn
+CPU there, more the longer the guest runs:
+
+- **`airportd`**, the Wi-Fi daemon. The guest has no Wi-Fi port. `bluetoothd`'s Wi-Fi coexistence
+  code finds no Wi-Fi device, retries about every 11 seconds, and opens two new connections to
+  `airportd` each time, which `airportd` never closes. `airportd` sends every network
+  configuration event to each of them, so its CPU grows with uptime, past a full core after two
+  days.
+- **`audioanalyticsd`**, which processes the overload reports `coreaudiod` writes each time a
+  Studio or player audio cycle misses on a loaded guest, tens of them a second.
+
+Disable both in the guest, under the runner lock; launchd keeps the setting across reboots:
+
+```sh
+"$runner_ssh" 'for service in com.apple.airportd com.apple.audioanalyticsd; do
+  sudo launchctl disable "system/$service"; sudo launchctl bootout "system/$service"; done'
+```
+
+Leave `bluetoothd` running: without it, `coreaudiod`'s Bluetooth audio plugin looks up a
+`bluetoothd` service through launchd thousands of times a second. The check:
+`sudo launchctl print-disabled system` lists both services as disabled, `pgrep -x airportd` and
+`pgrep -x audioanalyticsd` find nothing, `en0` keeps its address, and `top -o cpu` shows neither
+daemon and no busy `launchd`. A clone of a configured guest keeps the setting, so confirm it there
+rather than repeat it. Another system daemon among the guest's busiest processes is handled the
+same way: find its cause with `sample` and `log show --predicate 'process == "<name>"'`, disable it
+only when nothing the runner uses depends on it, read launchd's failed lookups afterward, and add
+it here.
+
 ### Linux container runner
 
 A Linux host, such as a cloud agent container, can provide the Windows Studio build under Wine on an
@@ -401,7 +447,8 @@ Follow [authentication and user handoff](#authentication-and-user-handoff) befor
 viewer. A toggle enabled on the host does not enable the guest.
 
 Qualify the existing runner before relying on it, and recheck affected capabilities after Studio or
-VM updates: authenticate, discover the intended Studio, load the current assets, run client/server
+VM updates: confirm the [daemons a headless guest does not use](#turn-off-guest-daemons-a-headless-vm-does-not-use)
+are off, applying that section where they are not, authenticate, discover the intended Studio, load the current assets, run client/server
 Play, operate a real button and movement, and capture the viewport without host windows or focus changes. For multiplayer coverage, also qualify the requested number of independent clients. Studio launching alone is not compatibility proof. Keep
 dated qualification results in workspace evidence; do not recreate a working runner to requalify it.
 
@@ -540,8 +587,8 @@ build, a copy and an editor launch.
 - **Open it once.** Build the place, open it with `studio_mcp.open_place` under the project name
   `warm`, and leave it open until the VM shuts down as [End of session for a retained VM](#end-of-session-for-a-retained-vm)
   says: it belongs to the game's VM, not to the task that opened it. A session
-  that finds the game's warm editor registered in `list_roblox_studios` uses it, after confirming
-  its place name.
+  finds it with `studio_mcp.listed_place_editors`, which waits for a running warm editor to list,
+  and uses it after confirming its place name; only an editor no process holds open is opened again.
 - **Sync source live, served inside the guest.** Install the Rojo plugin matching the game's
   pinned Rojo version into the guest's Studio plugins folder (`~/Documents/Roblox/Plugins` in a
   macOS guest), and run `rojo serve` in the guest on its loopback address, against a copy of the
@@ -582,15 +629,20 @@ build, a copy and an editor launch.
 Every session working on one game shares that game's VM, so whatever one leaves behind lands on the next. The
 game's warm session stays, as the section above says; no other task process
 outlives any release of the runner lock, and before the task's last release its own files are gone and
-every setting it changed reads back at the value it found.
+every setting it changed reads back at the runner's configured value.
 
-- **Settings.** A Studio or engine setting changed from a script or a dialog, such as
-  `settings().Rendering`'s quality levels or `UserGameSettings`, persists across editors and applies to
-  every session in the runner. Prefer a route scoped to the test, such as the device simulator's own
-  profile. When a shared setting must change, record its value first, restore it from an Edit-mode
-  editor once the test is done, and read it back from a newly opened editor; a restore issued from a
-  Play client, or one never read back, has not happened. Granting a permission an operation needs is
-  setup, not a setting to restore.
+- **Settings.** A Studio or engine setting, such as `settings().Rendering`'s quality level or
+  `UserGameSettings`, persists across editors and applies to every session in the runner. On the
+  runner VM it is the runner's own configuration, which the agent manages: set it once to the value
+  the tests need, leave it there, and confirm it when the runner is qualified. Graphics quality is a
+  fixed level high enough to draw shadows, never Automatic, which draws less as the guest gets
+  busier, so draw calls, triangles and shadows would move with load. A test that needs another
+  value prefers a route scoped to itself, such as the device simulator's own profile, and otherwise
+  returns the setting to the runner's configured value once it is done. On the host's own Studio
+  the settings are the user's: record each value before changing it and restore it once the test is
+  done. A change or restore is made from an Edit-mode editor and read back from a newly opened
+  editor; one issued from a Play client, or never read back, has not happened. Granting a permission
+  an operation needs is setup, not a setting to restore.
 - **Files.** Everything the task copies or writes in the guest, such as places, captures, scratch
   output, worktrees and lock files, sits under a folder named for the task or its project and is
   removed when the task's runner work ends. `studio_mcp.close_place` deletes the place copy
@@ -695,7 +747,8 @@ resuming normal controls.
 
 An empty inventory does not establish that MCP is disabled. The intended process may be waiting
 on sign-in, a recovery dialog, Assistant initialization, or the proxy connection. Inspect that
-editor's current UI. Resolve blocking dialogs, then inspect the normal MCP setting before changing
+editor's current UI. Resolve blocking dialogs; in the runner, the `studio_mcp` waits answer Studio's
+"*plugin* is not responding" alerts themselves. Then inspect the normal MCP setting before changing
 it under **Assistant → … → Settings → MCP Servers**; in a guest, the bundled script does both. If remote pointer input cannot open Assistant, use its
 native menu or the installed editor's shortcut configuration; inspect the current binding rather
 than assuming a key. Restore any temporary binding afterward. Keep the proxy alive during bounded

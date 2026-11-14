@@ -1,9 +1,16 @@
-// Turn Roblox Studio's MCP server on or off from inside a macOS guest, without a viewer.
+// Turn Roblox Studio's MCP server on or off from inside a macOS guest, without a viewer, and keep
+// Studio's MCP bridge running through a stall.
 //
 // Run in the guest's signed-in session over SSH:
 //
 //   osascript -l JavaScript guest_studio_mcp.js <studio-pid> on|off
 //   osascript -l JavaScript guest_studio_mcp.js read
+//   osascript -l JavaScript guest_studio_mcp.js keep-plugins
+//
+// `keep-plugins` answers every open "<plugin> is not responding" alert in every running Studio
+// with its keep-waiting button, never the one that stops the plugin, and prints one line per
+// alert. Studio raises the alert when the guest is starved, and while it stays open the editor's
+// MCP bridge, which runs in the built-in Assistant plugin, does not answer.
 //
 // JavaScript for Automation is used because `osascript` holds the guest's Accessibility grant on a
 // Cirrus Labs image and reaches Vision and CoreGraphics without extra packages.
@@ -38,6 +45,10 @@ const PROBE_STEP = 8;
 // The Assistant panel's menu button sits within this many points right of the panel title at
 // the panel's default width.
 const PANEL_MENU_REACH = 140;
+
+// Studio asks "Would you like Studio to stop this plugin?" when a plugin stalls.
+const UNRESPONSIVE_PLUGIN = /is not responding/i;
+const KEEP_PLUGIN_BUTTON = /^(No|Wait|Continue|Keep Waiting|Don.t Stop)$/i;
 
 const systemEvents = Application("System Events");
 const source = $.CGEventSourceCreate($.kCGEventSourceStateHIDSystemState);
@@ -388,7 +399,67 @@ function setMcpSwitch(process, frame) {
   closeAssistantSettings(process);
 }
 
+function texts(element) {
+  return element.staticTexts().map((text) => String(text.value() || ""));
+}
+
+// An alert can be its own window or a sheet on the main window. A window System Events cannot
+// read, such as one a stalled Studio is still drawing, is reported and passed over.
+function unresponsivePluginAlerts(process, report) {
+  const alerts = [];
+
+  for (const window of process.windows()) {
+    try {
+      for (const surface of [window, ...window.sheets()]) {
+        const lines = [String(surface.name() || ""), ...texts(surface)];
+
+        if (lines.some((line) => UNRESPONSIVE_PLUGIN.test(line))) {
+          alerts.push({ surface, text: lines.filter(Boolean).join(" | ") });
+        }
+      }
+    } catch (error) {
+      report.push(`${process.unixId()}: a window could not be read: ${error.message}`);
+    }
+  }
+
+  return alerts;
+}
+
+function keepPlugins() {
+  const report = [];
+
+  for (const process of systemEvents.processes.whose({ name: "RobloxStudio" })()) {
+    let alerts = [];
+
+    try {
+      alerts = unresponsivePluginAlerts(process, report);
+    } catch (error) {
+      report.push(`${process.unixId()}: its windows could not be read: ${error.message}`);
+    }
+
+    for (const { surface, text } of alerts) {
+      const buttons = surface.buttons();
+      const keep = buttons.find((button) => KEEP_PLUGIN_BUTTON.test(String(button.title() || "")));
+
+      if (keep) {
+        keep.click();
+        report.push(`${process.unixId()}: answered "${keep.title()}" to ${text}`);
+      } else {
+        const titles = buttons.map((button) => button.title()).join(", ");
+
+        report.push(`${process.unixId()}: left open, no keep-waiting button among [${titles}]: ${text}`);
+      }
+    }
+  }
+
+  return report.join("\n");
+}
+
 function run(argv) {
+  if (argv[0] === "keep-plugins") {
+    return keepPlugins();
+  }
+
   if (argv[0] === "read") {
     return readScreen()
       .map((line) => `${Math.round(line.x)},${Math.round(line.y)} ${line.text}`)
@@ -399,7 +470,9 @@ function run(argv) {
   const mode = argv[1];
 
   if (!Number.isInteger(pid) || !["on", "off"].includes(mode)) {
-    throw new Error("Usage: guest_studio_mcp.js <studio-pid> on|off, or guest_studio_mcp.js read");
+    throw new Error(
+      "Usage: guest_studio_mcp.js <studio-pid> on|off, or guest_studio_mcp.js read|keep-plugins",
+    );
   }
 
   const target = mode === "off" ? "mcp off" : "mcp ready";
