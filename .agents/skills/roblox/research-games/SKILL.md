@@ -1,7 +1,7 @@
 ---
 name: research-games
-description: Explicit user-invoked research of Roblox charts for the requested audience and region. Study 25 games by default, in passive mode (pages and popular gameplay videos) or play mode (also a short real session for games whose onboarding no video shows), asking which when the request names neither; or propose three ranked original game ideas from the latest study, shown as a dashboard and, once one is approved, written as a game brief file for building it. Reuse recent records of games studied before, delegate two games per researcher, collect YAML notes on gameplay, UI and onboarding, and wait for all researchers before keeping the records and routing supported themes into the Roblox skills that own them. Run only when the user asks for it.
-short_description: 'Explicit user-invoked research of Roblox charts for the requested audience and region.'
+description: Research Roblox charts for the requested audience and region. Study 25 games by default, in passive mode (pages and popular gameplay videos) or play mode (also a short real session for games whose onboarding no video shows), asking which when the request names neither; or propose three ranked original game ideas from the latest study, shown as a dashboard and, once one is approved, written as a game brief file for building it. Reuse recent records of games studied before, delegate two games per researcher, collect YAML notes on gameplay, UI and onboarding, and wait for all researchers before keeping the records and routing supported themes into the Roblox skills that own them. Run only when the user asks for it.
+short_description: 'Research Roblox charts for the requested audience and region.'
 ---
 
 # Research Roblox games

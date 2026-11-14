@@ -36,7 +36,7 @@ exception: remove it and establish the revision chain when none exists. A runtim
 require operators to migrate; it must not infer a revision from inspected objects, stamp a baseline,
 or silently accept an unversioned database. Adopting a chain for an existing database requires an
 explicit operational baseline procedure that verifies the known starting schema before recording
-its revision. Keep every stored-data transformation in revisions, retained and disposable alike.
+its revision.
 
 Migrations live under the project's revision directory. Each service has one canonical migration
 chain shared by every configured deployment domain.

@@ -1,6 +1,6 @@
 ---
 name: finish-pr
-description: Review and fix the whole of each task pull request, then merge it at its accepted head. User-invoked only — run when the user asks to finish the task's pull requests, never on the agent's own initiative.
+description: Review and fix the whole of each task pull request, then merge it at its accepted head. Use when the user asks to finish the task's pull requests. Run only when the user asks for it.
 short_description: 'Review and fix the whole pull request, then merge it.'
 ---
 

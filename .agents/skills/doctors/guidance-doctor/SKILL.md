@@ -32,7 +32,7 @@ below refreshes it.
 Every rule file: bytes, lines, bullets, whether it loads unconditionally or by path scope, and the
 globs. Every skill: body lines and approximate tokens, description length and grammatical person,
 frontmatter against the open specification, vendored (a registry entry) or owned, the
-model-invocation flag, declared dependencies, the files that name it, and its bundled files with
+description's user-only gate and any flag that hides the skill from the listing, declared dependencies, the files that name it, and its bundled files with
 sizes and how deep their references chain. Every agent definition, hook (where it is registered,
 whether its command exists), settings file, and registry entry, one line each. A vendored skill is
 inventoried and never edited; a finding on one lands on its registry entry.

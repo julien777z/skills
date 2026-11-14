@@ -4,7 +4,7 @@ description: >-
   Replace a pasted API payload with obviously fake placeholders that keep
   its shape. Thin a repeated list to the items a reader still needs in order to
   read it the same way. Use when the user pastes an API response or payload and
-  asks to sanitize, placeholder, or anonymize it for copy-paste.
+  asks to sanitize, placeholder, or anonymize it for copy-paste. Run only when the user asks for it.
 short_description: 'Turn a pasted API payload into the same shape with obviously fake values.'
 ---
 

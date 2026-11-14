@@ -163,9 +163,9 @@ trigger.
 A frontmatter flag that keeps a skill out of the agent's skill listing, such as
 `disable-model-invocation`, hides every route and tool inside it: an agent cannot load it when the
 user asks for it in words, cannot follow another skill that names it, and never finds a script it
-holds when other work needs one. Keep every skill listed, put the restriction in its description,
-such as "Run only when the user asks for it", and gate a single user-only workflow inside an
-otherwise usable skill in its body.
+holds when other work needs one. Keep every skill listed and end its description with the exact
+sentence "Run only when the user asks for it.", which is how readers and tools recognize the
+restriction. Gate a single user-only workflow inside an otherwise usable skill in its body.
 
 ### Dependencies
 

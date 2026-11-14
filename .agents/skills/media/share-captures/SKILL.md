@@ -1,7 +1,7 @@
 ---
 name: share-captures
 description: "Show the user what they need to see in the part of the agent's reply the harness shows them: screenshots, recordings and rendered previews as they are read, and any table, plan, list or file a report or question relies on. Use whenever work produces captures of a product, a site, a game or a generated image, whenever a reply points the user to material to look at, and before any question whose supporting material is not inside the question itself."
-short_description: 'Show captures and option previews where the user reads.'
+short_description: 'Show captures, option previews and the material a reply relies on where the user reads.'
 ---
 
 # Share Captures
@@ -71,6 +71,6 @@ as page versions do. This is how those previews are sent.
   such as "Reply when you've looked and I'll put the choice to you." That reply opens the question
   tool before anything else and approves nothing on its own. `t3_thread_send_attachments`
   posts a new message into the thread as the user, so it never carries the agent's own captures.
-  Any other file the user should see, such as a plan or a detail file, is a Markdown link to its
-  absolute path, `[name](/absolute/path/to/plan.md)`, kept in the working directory **Keep the
-  file** above names, in the turn's final message; T3 opens it in its files viewer.
+  A file among that material, such as a plan or a detail file, is a Markdown link to its absolute
+  path, `[name](/absolute/path/to/plan.md)`, kept in the working directory **Keep the file** above
+  names; T3 opens it in its files viewer.

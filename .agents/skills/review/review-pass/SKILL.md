@@ -44,10 +44,10 @@ skill never readies, merges or deploys.
 - **Watch** (the user asks to watch, monitor or babysit a pull request for review feedback): run
   **Review Threads** over the pull request, then keep running it on every new or updated thread,
   comment and check result, pushing each fix through the GitHub rule's **Pre-Push Gate**. This mode
-  polls: every 30–60 seconds while checks are pending or failing or a thread is open, and for a
-  15-minute quiet window after each push or new finding, since automated reviewers post late. It
-  stops once every check that runs is terminal and green and every thread is resolved or outdated,
-  with no wait past that point. A draft runs no test jobs, so its watch ends on its own checks and
+  polls every 30–60 seconds while a check is pending or failing or a thread is open; while any is,
+  each push or new finding restarts a 15-minute quiet window, since automated reviewers post late.
+  It stops as soon as every check that runs is terminal and green and every thread is resolved or
+  outdated, without waiting out a window. A draft runs no test jobs, so its watch ends on its own checks and
   reports `draft: watch ended, tests not run`; this mode never readies or merges it.
 
 ## Targets
