@@ -164,7 +164,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`run-site`](.agents/skills/workspace/run-site/SKILL.md) — Start an application stack and perform browser verification where applicable.
 - [`security-audit`](.agents/skills/review/security-audit/SKILL.md) — Security guidance for writing code, reviewing a change, and auditing a codebase.
 - [`session-ledger`](.agents/skills/workspace/session-ledger/SKILL.md) — Keep verified task artifacts in one private task file.
-- [`share-captures`](.agents/skills/media/share-captures/SKILL.md) — Show captures and option previews where the user reads.
+- [`share-media`](.agents/skills/media/share-media/SKILL.md) — Show captures, option previews and spoken replies where the user reads.
 - [`skill-flow`](.agents/skills/workspace/skill-flow/SKILL.md) — Show how the skills run, or interrogate a flow to tune it.
 - [`storyline`](.agents/skills/roblox/storyline/SKILL.md) — Create or improve a coherent game story with playable beats and a satisfying ending.
 - [`subagent-matrix`](.agents/skills/execution/subagent-matrix/SKILL.md) — Select a model capability level for live verification chats or subagent delegation.
