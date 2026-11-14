@@ -232,15 +232,16 @@ alwaysApply: true
   source and commit, or the concrete blocker preventing refresh.
 - Select the refresh route before checking local changes. When the repository supplies the installed
   shared skills, invoke `update-skills`; it keeps pending agent-configuration changes in effect,
-  dirty checkouts and open pull requests alike. Tell it when the caller will clean the source
-  checkout after installation so the installed files stay available independently. For the skill's first merge, read it from the
-  merged commit before invoking it. A session follows the copy it loaded until this refresh completes.
-- When the invoking workflow owns the primary checkout refresh, return the Agent Sync result and
-  any installed shared guidance refresh to that workflow. For other repositories in that case, the
-  invoking workflow performs the checkout refresh and verifies generated guidance there.
-- Otherwise, for a repository without installed shared skills, refresh its primary checkout: if it is clean,
-  check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force
-  this checkout-only refresh; report a skipped refresh and leave them untouched.
+  dirty checkouts and open pull requests alike. Tell it the caller will clean the source checkout
+  after installation, so the installed files stay available independently. For the skill's first
+  merge, read it from the merged commit before invoking it. A session follows the copy it loaded
+  until this refresh completes.
+- **Every merge of agent configuration then refreshes the repository's primary checkout as
+  `finish-pr`'s **Local Checkout** section does**, whichever workflow merged it: a local edit the
+  merged default branch already holds is removed, local-only work is saved in a named stash and
+  kept, and the checkout ends clean on the default branch's fetched tip. When the invoking workflow
+  owns that refresh, return the Agent Sync result and any installed shared guidance refresh to it,
+  and it performs the refresh and verifies generated guidance there.
 
 ## Comments
 
