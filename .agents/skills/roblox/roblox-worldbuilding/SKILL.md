@@ -59,7 +59,7 @@ Low triangle counts alone do not guarantee smooth play. Also inspect draw calls,
 
 ## Build and Play test
 
-Return imports, terrain preservation, source synchronization, background MCP tests, and authorized delivery to the caller. Keep each area of a map in its own file and place a reused kit piece in it as a marker that a runtime script swaps for the asset, never as a copy, as Roblox's [fully managed project layout](https://create.roblox.com/docs/projects/rojo/fully-managed) does. Apply `luau` when opening or modifying builders/scripts.
+Return imports, terrain preservation, source synchronization, background MCP tests, and authorized delivery to the caller. Apply `luau` when opening or modifying builders/scripts.
 
 Trace every affected entrance and activity access route all the way to the established traversal network; a reachable destination or walkable grass does not prove its authored path connects. Apply the route-continuity criteria in the map-making reference. Walk the arrival route, every changed connection, bridges/ramps, doors, and activity boundaries in both directions. Inspect at player height and supported camera zoom/pitch from multiple approaches. Check clipping, floating props, flicker, inaccessible steps, collision snags, misleading paths, bland sightlines, and accidental views of other maps. Fix defects in the canonical builder and saved artwork so rebuilding preserves the repair.
 
