@@ -98,12 +98,9 @@ even when the reply concerns another topic or adds no progress. Reconcile the le
 message before sending; an asynchronous question control or task checklist does not replace this
 visible status list. At meaningful progress updates and handoffs, refresh the same list. Use a
 numbered list: each item starts with a **bold subject**. An evidence-pending item states its pending
-work; a ready item identifies its active question-tool request and the work depending on it.
-**A ready item enters this list only once its question-tool request is out**, sent in the turn
-its supporting material is ready: the list repeats what the tool asked and never stands in for it,
-since the reader may not see chat text at all. An item with neither a request nor pending evidence
-work behind it is asked now, or dropped when guidance already settles it, as `pre-production`'s
-**Encountered Issues** does for a baseline failure.
+work; a ready item identifies the question-tool request already sent for it, in the turn its
+supporting material was ready, and the work depending on it. An item with neither a sent request
+nor pending evidence work is asked now.
 Keep the question and its choices in that request under the global question-tool procedure, with
 any captures, table, plan or other material it needs shown before it as `share-media` says for
 the harness, rather than soliciting an answer in

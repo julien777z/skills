@@ -11,6 +11,7 @@ down, and carry on where it stopped, so the user does nothing but paste the mess
 
 ## Dependencies
 - `session-ledger`
+- `pre-production`
 
 ## Resolving The Targets
 
@@ -69,7 +70,7 @@ After setup, before the first question, return:
 ```markdown
 Continuing
 
-- https://github.com/owner/repository/pull/123 — `<branch>` at `<sha>` · <draft or ready> → `<base>` · Checks: <state> · Mergeable: <yes, or conflict> · Threads: <n> · Queue: <n items>
+- https://github.com/owner/repository/pull/123 — `<branch>` at `<sha>` · <draft or ready> → `<base>` · Checks: <state, baseline failures left out> · Mergeable: <yes, or conflict> · Threads: <n> · Queue: <n items>
 - Skipped: <merged or closed pull requests, or None>
 ```
 

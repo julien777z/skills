@@ -16,6 +16,7 @@ skill ends with.
 - `list-prs`
 - `defer-scope`
 - `session-ledger`
+- `pre-production`
 
 ## Scope
 
@@ -103,7 +104,7 @@ skill ends with.
 ```markdown
 ## Hand-off
 
-Head `<sha>` on `<branch>` → `<base>`. Checks: <green, or red with the failing names> · Mergeable: <yes, or conflict> · Unresolved review threads: <n>
+Head `<sha>` on `<branch>` → `<base>`. Checks: <green, or red with the failing names, baseline failures left out> · Mergeable: <yes, or conflict> · Unresolved review threads: <n>
 
 Task: `<task token>`
 

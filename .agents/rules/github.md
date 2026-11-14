@@ -205,8 +205,8 @@ alwaysApply: true
 - An authorized merge is not held for a failing check the current user explicitly waives or an
   established baseline exclusion under `pre-production`'s **Encountered Issues** classification.
   Record the check and its exclusion evidence in the task's record, then attempt the authorized
-  merge without asking the user; a baseline exclusion is never named to the user, as that
-  classification says. Preserve that classification rather than excluding a required repair merely
+  merge without asking the user; a baseline exclusion is named to the user only where that
+  classification allows. Preserve that classification rather than excluding a required repair merely
   because the same failure also appears on the default branch.
 - Apply established validation exclusions before repairing failures. An interrupted hosted check
   supplies no validation result for the work it did not complete. When the logs establish a

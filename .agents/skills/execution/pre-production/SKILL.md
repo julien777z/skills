@@ -39,10 +39,11 @@ Build the clean target contract instead of preserving transitional behavior.
   and its relevant validation; do not repair, rerun, investigate further, ask a product question, or
   record a deferral for that failure merely because validation encountered it. **Nothing the user
   reads names a baseline failure**: no report, summary, status list, open item or question, apart
-  from the branch-protection rejection below. No
-  report claims the excluded check passed either; it covers the checks the change answers for. This exclusion does not cover a defect
-  the user assigned, a suite past its runtime budget, as the testing rule's **Every suite finishes
-  within five minutes of wall time** bullet says, deprecated usage or a printed warning, as the
+  from a merge that branch protection rejects for it, whose rejection is reported with its
+  provider evidence. No report claims the excluded check passed either; it covers the checks the
+  change answers for. This exclusion does not cover a defect the user assigned, a suite past its
+  runtime budget, as the testing rule's **Every suite finishes within five minutes of wall time**
+  bullet says, deprecated usage or a printed warning, as the
   deprecated-usage bullet below says, a failure of the behavior the task must establish,
   or a confirmed finding independently established by a review or source inspection apart from
   diagnosis of the excluded check. Do not reopen an exclusion by relabeling that same failure as a
@@ -54,8 +55,7 @@ Build the clean target contract instead of preserving transitional behavior.
   A brief that hands a validation failure to a worker carries the classification's result, and
   never asks the worker to fix a baseline failure. A baseline failure's cause, even one only the
   user could remove such as a provider setting or credential, is never put to the user as a gate or
-  a request, apart from the branch-protection rejection the GitHub rules' **Merge Authorization**
-  says to report.
+  a request, apart from that rejection.
 
 Fix and validate every defect that remains in the task, even when it predates the task or sits
 outside the initial file set; cleanup that fixes no defect follows the size budget below.

@@ -78,7 +78,7 @@ or says nothing is needed.
 
 | PR | Acceptance | Check gate | Merged at |
 | --- | --- | --- | --- |
-| [<owner>/<repo>#<number>](<url>) | <reused (head unchanged) | accepted on `<sha>`> | <passed | passed; verified exclusion: `<check>` — <gate evidence>> | `<sha>` |
+| [<owner>/<repo>#<number>](<url>) | <reused (head unchanged) | accepted on `<sha>`> | <passed | passed; verified exclusion: `<check>` — <gate evidence>, baseline failures left out> | `<sha>` |
 
 **Review of what merged**
 - <repo>: <nothing unreviewed | clean, no fix PR | <n> confirmed finding(s), <one-line summary>. Fixed in [<repo>#<number>](<url>), accepted, check gate passed, merged at `<sha>`.>
@@ -87,6 +87,3 @@ or says nothing is needed.
 
 **Next:** <one action, or nothing needed>
 ```
-
-A baseline failure stays out of every cell and line of this report, as `pre-production`'s
-**Encountered Issues** says.
