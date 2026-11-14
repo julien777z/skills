@@ -99,10 +99,11 @@ message before sending; an asynchronous question control or task checklist does 
 visible status list. At meaningful progress updates and handoffs, refresh the same list. Use a
 numbered list: each item starts with a **bold subject**. An evidence-pending item states its pending
 work; a ready item identifies its active question-tool request and the work depending on it.
-**A decision enters this list only once its question-tool request is out**, sent in the turn the
-decision arises: the list repeats what the tool asked and never stands in for it, since the reader
-may not see chat text at all. An item with no request behind it is asked now, or dropped when
-guidance already settles it, as it does for a check failing the same way on the default branch.
+**A ready item enters this list only once its question-tool request is out**, sent in the turn
+its supporting material is ready: the list repeats what the tool asked and never stands in for it,
+since the reader may not see chat text at all. An item with neither a request nor pending evidence
+work behind it is asked now, or dropped when guidance already settles it, as `pre-production`'s
+**Encountered Issues** does for a baseline failure.
 Keep the question and its choices in that request under the global question-tool procedure, with
 any captures, table, plan or other material it needs shown before it as `share-media` says for
 the harness, rather than soliciting an answer in

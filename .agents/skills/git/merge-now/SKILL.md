@@ -27,6 +27,7 @@ any fix `merge-gate` makes, and review afterwards whatever merged without an ear
 - `review-pass`
 - `session-ledger`
 - `execute-task`
+- `pre-production`
 
 ## Targets
 
@@ -87,4 +88,5 @@ or says nothing is needed.
 **Next:** <one action, or nothing needed>
 ```
 
-A check failing the same way on the default branch appears in no cell or line of this report.
+A baseline failure stays out of every cell and line of this report, as `pre-production`'s
+**Encountered Issues** says.
