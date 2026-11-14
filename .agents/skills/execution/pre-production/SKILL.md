@@ -39,10 +39,9 @@ Build the clean target contract instead of preserving transitional behavior.
   and its relevant validation; do not repair, rerun, investigate further, ask a product question, or
   record a deferral for that failure merely because validation encountered it. **Nothing the user
   reads names a baseline failure or says one was left out**: no report, summary, status list, open
-  item or question, apart
-  from a merge that branch protection rejects for it, whose rejection is reported with its
-  provider evidence. No report claims the excluded check passed either; it covers the checks the
-  change answers for. This exclusion does not cover a defect the user assigned, a suite past its
+  item or question, apart from a merge that branch protection rejects for it, whose rejection is
+  reported with its provider evidence. No report claims the excluded check passed either; it
+  covers the checks the change answers for. This exclusion does not cover a defect the user assigned, a suite past its
   runtime budget, as the testing rule's **Every suite finishes within five minutes of wall time**
   bullet says, deprecated usage or a printed warning, as the
   deprecated-usage bullet below says, a failure of the behavior the task must establish,
