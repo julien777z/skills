@@ -46,7 +46,7 @@ Remove hidden/internal faces where they cannot become visible, unnecessary edge 
 **Apply the cheap performance defaults to every mesh, prop and light as it is built, never waiting for a measured slowdown.** Each one costs nothing a player sees, and its saving only shows once many pieces carry or lack it, by which point the whole world needs reworking. They follow [Roblox performance guidance](https://create.roblox.com/docs/performance-optimization/improve):
 
 - One upload per distinct geometry, copied in the editor. Each use takes its own color or tint (`Color`, `SurfaceAppearance.Color`), never a recolored re-upload, and one texture or SurfaceAppearance is shared per kind of prop.
-- Decoration, meaning anything players do not stand on or need to be stopped by, takes `CollisionFidelity` Box, with `CanCollide`, `CanTouch` and `CanQuery` false. Where a piece must block movement or the camera, a simple invisible collider does it.
+- Decoration, meaning anything players do not stand on, need to be stopped by, or interact with, takes `CollisionFidelity` Box, with `CanCollide`, `CanTouch` and `CanQuery` false. A piece a touch trigger, pickup or raycast relies on keeps the flag that serves it, and where a piece must block movement or the camera, a simple invisible collider does it.
 - `CastShadow` false on small decoration and on anything indoors or under a roof, and `Shadows` false on interior lights the scene does not need.
 - `RenderFidelity` Automatic, never Precise.
 - No decorative part with partial transparency. Glass and glow use an opaque or Neon material or one shared transparent surface.
