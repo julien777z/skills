@@ -304,10 +304,9 @@ with an obsolete owned contract or revision.
   started from.
 - Do not weaken a compatibility gate to hide an intentional break. Report the exact failure and the
   contract change it detected so a reviewer can distinguish intended from accidental breakage.
-- For disposable development records, follow the repository's stated policy. A one-time conversion
-  of explicitly identified tester data may run outside shipped code when it is more useful than a
-  reset; verify its result and remove the conversion script. Never assume released user data is
-  disposable or carry a tester conversion as a runtime compatibility path.
+- For disposable development records, follow the repository's stated policy: it decides which
+  values a change may discard, never how the change reaches a deployed database. Never assume
+  released user data is disposable or carry a tester conversion as a runtime compatibility path.
 
 ## Owned And Third-Party Contracts
 
@@ -338,8 +337,8 @@ with an obsolete owned contract or revision.
   a validation error at a read site answered by widening the reader instead of asking what the store
   allows.
 - For a requiredness change, establish the affected data's retention scope under **Product State**
-  before selecting a migration or reset; required columns do not themselves create an obligation to
-  preserve disposable or nonexistent rows.
+  before deciding what its revision keeps or clears; required columns do not themselves create an
+  obligation to preserve disposable or nonexistent rows.
 - For retained values, use the authoritative source where one exists and a type-valid placeholder
   only where none exists. Never overwrite a known retained value, fabricate a placeholder in runtime
   code, or keep a permanent schema default solely to make a migration convenient.

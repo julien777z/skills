@@ -74,7 +74,9 @@ alwaysApply: true
   a draft; it leaves draft once, as the first step of an authorized merge through `merge-gate`, so its
   test jobs run once, on the head about to merge. Never mark one ready to start its tests, to show
   it finished, or to hand it to the user.
-- Keep pull requests focused and give them descriptive titles and descriptions; request appropriate reviewers when the repository workflow requires them.
+- Keep pull requests focused and give them descriptive titles and descriptions: a title stays short,
+  and a body may run long with bullets and validation notes. Request appropriate reviewers when the
+  repository workflow requires them.
 - **A description is written from what is already known, never by re-reading the history.** The
   agent that did or coordinated the work writes it from its own record of the change, the existing
   description, `git log --oneline` subjects and `git diff --stat` against the base. It opens a commit
@@ -261,6 +263,10 @@ alwaysApply: true
   as “as requested” or “per your instructions”; apply the instruction to the result itself.
   Record an exchange only when the user explicitly asks to document that exchange, in a document
   whose purpose is that record.
+- Name what a branch, commit or pull request changes by its category of change, in generic nouns
+  such as page, request or button. A branch takes the repository's required prefix and a slug of
+  that description.
+- Leave branch names and pull-request metadata that automation owns unchanged.
 
 ### README
 

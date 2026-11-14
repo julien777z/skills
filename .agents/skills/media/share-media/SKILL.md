@@ -1,7 +1,7 @@
 ---
 name: share-media
-description: "Show screenshots, recordings, rendered previews and spoken audio to the user in the agent's own reply, as they are read and with the questions that need them. Use whenever work produces captures of a product, a site, a game or a generated image, before asking the user to choose between options that differ in how something looks, and when the user asks to talk by voice, hear the agent, have replies read aloud, or hold a spoken back-and-forth to clarify what they want."
-short_description: 'Show captures, option previews and spoken replies where the user reads.'
+description: "Show the user what they need to see in the part of the agent's reply the harness shows them: screenshots, recordings, rendered previews and spoken audio as they are read, and any table, plan, list or file a report or question relies on. Use whenever work produces captures of a product, a site, a game or a generated image, whenever a reply points the user to material to look at, before any question whose supporting material is not inside the question itself, and when the user asks to talk by voice, hear the agent, have replies read aloud, or hold a spoken back-and-forth to clarify what they want."
+short_description: 'Show captures, option previews, spoken replies and the material a reply relies on where the user reads.'
 ---
 
 # Share Media
@@ -79,8 +79,10 @@ exchange is heard and recorded at once.
 - **T3 Code:** write each capture into the reply as a Markdown image with its absolute path,
   `![caption](/absolute/path/to/capture.png)`; T3 renders local files inline. Only the message that
   ends the turn is shown: text written before a tool call is folded into the turn's work log, and an
-  open question tool hides it too. So captures go in the turn's final message, and a capture made
-  mid-work goes out when the turn ends on a wait for background work. A question never goes into
+  open question tool hides it too. So everything the reader must see goes in the turn's final
+  message: captures, and also a table, a plan, a list of options, a file link and the facts a
+  question relies on. A capture made mid-work goes out when the turn ends on a wait for background
+  work. A question never goes into
   that message: it goes through the question tool, as the global rules say. What starts the turn
   that asks it depends on the agent running in T3: under Claude Code, a background shell command of
   a few seconds started just before the turn ends re-invokes the agent when it completes; under an
@@ -89,11 +91,10 @@ exchange is heard and recorded at once.
   such as "Reply when you've looked and I'll put the choice to you." That reply opens the question
   tool before anything else and approves nothing on its own. `t3_thread_send_attachments`
   posts a new message into the thread as the user, so it never carries the agent's own captures.
-  Any other file the user should see, such as a plan or a detail file, is a Markdown link to its
-  absolute path, `[name](/absolute/path/to/plan.md)`, kept in the working directory **Keep the
-  file** above names, in the turn's final message; T3 opens it in its files viewer. A spoken
-  reply's player page is shown with `html_render`, at a height of 80 pixels: a Markdown link to an
-  audio file does not play when the user's client connects to the agent's machine remotely, and a
-  player that carries its sound in the page does.
+  A file among that material, such as a plan or a detail file, is a Markdown link to its absolute
+  path, `[name](/absolute/path/to/plan.md)`, kept in the working directory **Keep the file** above
+  names; T3 opens it in its files viewer. A spoken reply's player page is shown with `html_render`,
+  at a height of 80 pixels: a Markdown link to an audio file does not play when the user's client
+  connects to the agent's machine remotely, and a player that carries its sound in the page does.
 - **Any other harness:** show a spoken reply's player page the way the harness shows a rendered HTML
   preview; where it has none, send the page as a file the user opens.
