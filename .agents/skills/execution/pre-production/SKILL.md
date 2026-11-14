@@ -39,7 +39,8 @@ Build the clean target contract instead of preserving transitional behavior.
   record a deferral for that failure merely because validation encountered it. Keep the failed
   result visible and never report the whole check as passing. This exclusion does not cover a defect
   the user assigned, a suite past its runtime budget, as the testing rule's **Every suite finishes
-  within five minutes of wall time** bullet says, a failure of the behavior the task must establish,
+  within five minutes of wall time** bullet says, deprecated usage or a printed warning, as the
+  deprecated-usage bullet below says, a failure of the behavior the task must establish,
   or a confirmed finding independently established by a review or source inspection apart from
   diagnosis of the excluded check. Do not reopen an exclusion by relabeling that same failure as a
   review or source finding. Assigned defects and independent findings remain fix responsibilities

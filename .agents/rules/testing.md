@@ -233,9 +233,12 @@ class TreeNode(BaseModel):
 - Do NOT hardcode configuration values in `conftest.py` files.
 - Access these values through the production typed settings object when one exists; otherwise use `os.environ` in test code.
 - **Test runs treat warnings as errors**, through the runner's own setting, such as pytest's
-  `filterwarnings = ["error"]`. A warning raised inside a third-party package with no fixed release
-  gets one narrow ignore matching that package's module and message, with a comment naming the
-  package and the upstream fix it waits for; a warning from the repository's own code is fixed.
+  `filterwarnings = ["error"]`. Every warning is fixed as `pre-production`'s deprecated-usage bullet
+  says. The one ignore allowed is for a defect inside a third-party package that no release fixes,
+  no replacement avoids, and nothing the repository passes or configures resolves: it matches that
+  package's module and message alone, with a comment naming the package and the upstream fix it
+  waits for. A warning about how the repository calls or configures a package, such as an unset
+  setting or a deprecated argument, never qualifies.
 - For every pull request an agent creates, ensure all test-related CI jobs pass before considering delivery complete; investigate and fix any failures within the pull request's scope.
 
 - Before selecting a test invocation, apply the global rules' **Tools and environments** verification
