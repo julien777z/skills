@@ -128,8 +128,7 @@ value, one-symbol fragments, a file for a slice of a concern another module owns
 implemented twice, comments narrating code, confusing or near-duplicate names, dead or speculative
 code, hand-written configuration or styling where an owner exists, a setting left in the form its
 library warns against, a shortcut a comment or report admits, a result its reader would question.
-The list illustrates the question
-and never bounds it. A rubric exemption that would excuse such a shape is named in the flag. A
+The list illustrates the question and never bounds it. A rubric exemption that would excuse such a shape is named in the flag. A
 remedy that sends the author to an existing piece judges that piece the same way first: a wrapper or
 a duplicate is not an owner. An increment fixing an earlier flag is judged on the earlier flags it
 answers and on its own lines, read the same way, never only against that flag; the rest of the
