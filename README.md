@@ -101,7 +101,6 @@ These run only when you ask for them by name, such as `/code-slop-doctor`.
 - [`merge-now`](.agents/skills/git/merge-now/SKILL.md) — Merge finished pull requests now, then review what merged unreviewed.
 - [`new-doctor`](.agents/skills/doctors/new-doctor/SKILL.md) — Create a doctor skill on the shared doctor-protocol for one class of repository hygiene.
 - [`placeholder-data`](.agents/skills/workspace/placeholder-data/SKILL.md) — Turn a pasted API payload into the same shape with obviously fake values.
-- [`publish-to-roblox`](.agents/skills/roblox/publish-to-roblox/SKILL.md) — Explicit user-invoked publish of the session’s game build to its Roblox experience.
 - [`research-games`](.agents/skills/roblox/research-games/SKILL.md) — Explicit user-invoked research of Roblox charts for the requested audience and region.
 - [`schema-doctor`](.agents/skills/doctors/schema-doctor/SKILL.md) — Check models and schemas for unnecessary nulls, complexity, keys, and indexes.
 - [`security-doctor`](.agents/skills/doctors/security-doctor/SKILL.md) — Find and fix the exploitable vulnerabilities in a codebase, each proven by a concrete attack.
@@ -152,14 +151,16 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`process-ledger`](.agents/skills/execution/process-ledger/SKILL.md) — Process verified private-ledger records into durable outcomes.
 - [`progress`](.agents/skills/workspace/progress/SKILL.md) — Show the task’s progress as a dashboard.
 - [`proton-pass`](.agents/skills/workspace/proton-pass/SKILL.md) — Retrieve credentials from Proton Pass with pass-cli.
+- [`publish-to-roblox`](.agents/skills/roblox/publish-to-roblox/SKILL.md) — Publish the session’s game build to its Roblox staging experience at each milestone, or when asked.
 - [`reverse-engineer-anything`](.agents/skills/workspace/reverse-engineer-anything/SKILL.md) — Reverse engineer native, managed, Electron/JavaScript, packaged, firmware, and browser targets with REA, and build agent environments (AgentEnv bundles) of web applications from a live instance or a capture, and of Linux desktop apps with a task from a request.
 - [`review-pass`](.agents/skills/review/review-pass/SKILL.md) — Review and fix what a pull request has not had reviewed yet, then record the reviewed head.
 - [`review-proposal`](.agents/skills/review/review-proposal/SKILL.md) — Challenge a proposal and obtain independent acceptance before presenting it for approval.
 - [`rewrite-git-history`](.agents/skills/git/rewrite-git-history/SKILL.md) — Rework your branch into focused commits while preserving and checking its content.
-- [`roblox-building`](.agents/skills/roblox/roblox-building/SKILL.md) — Build and improve Roblox worlds, terrain, structures, props, and assets.
+- [`roblox-characters`](.agents/skills/roblox/roblox-characters/SKILL.md) — Make Roblox NPCs, creatures, and avatars look, move, and present convincingly.
 - [`roblox-gameplay`](.agents/skills/roblox/roblox-gameplay/SKILL.md) — Apply every time actively modifying a Roblox game, including mechanics, progression, rewards, controls, presentation, UI, and world content.
-- [`roblox-react`](.agents/skills/roblox/roblox-react/SKILL.md) — Design and change React-rendered Roblox interfaces, including HUDs and menus.
 - [`roblox-studio`](.agents/skills/roblox/roblox-studio/SKILL.md) — Create, polish, and playtest Roblox games in Studio.
+- [`roblox-ui`](.agents/skills/roblox/roblox-ui/SKILL.md) — Design and change Roblox interfaces, including HUDs and menus.
+- [`roblox-worldbuilding`](.agents/skills/roblox/roblox-worldbuilding/SKILL.md) — Build and improve Roblox worlds, terrain, structures, props, and assets.
 - [`run-site`](.agents/skills/workspace/run-site/SKILL.md) — Start an application stack and perform browser verification where applicable.
 - [`security-audit`](.agents/skills/review/security-audit/SKILL.md) — Security guidance for writing code, reviewing a change, and auditing a codebase.
 - [`session-ledger`](.agents/skills/workspace/session-ledger/SKILL.md) — Keep verified task artifacts in one private task file.
