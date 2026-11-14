@@ -1,8 +1,7 @@
 ---
 name: merge-now
-description: Merge the task's finished source pull requests now, each once acceptance and its check gate pass, then review what merged unreviewed and merge the fixes. Use only when the user directly invokes it.
+description: Merge the task's finished source pull requests now, each once acceptance and its check gate pass, then review what merged unreviewed and merge the fixes. Run only when the user asks for it.
 short_description: 'Merge finished pull requests now, then review what merged unreviewed.'
-disable-model-invocation: true
 ---
 
 # Merge Now

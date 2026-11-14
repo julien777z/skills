@@ -1,8 +1,7 @@
 ---
 name: execute-defer-scope
-description: Evaluate and resolve recorded deferrals from Linear and the legacy repository ledger, using the current session or an explicit issue, key, path, pull request, or aggregate scope. Use to execute, resolve, reconsider, or act on recorded deferrals.
+description: Evaluate and resolve recorded deferrals from Linear and the legacy repository ledger, using the current session or an explicit issue, key, path, pull request, or aggregate scope. Use to execute, resolve, reconsider, or act on recorded deferrals. Run only when the user asks for it.
 short_description: 'Review and resolve recorded deferred work for a chosen issue, path, or pull request.'
-disable-model-invocation: true
 ---
 
 # Execute Defer Scope
