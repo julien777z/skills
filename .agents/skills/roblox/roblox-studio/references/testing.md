@@ -114,6 +114,35 @@ When the game supports normal camera-orbit input, press the right mouse button, 
 
 When mobile coverage is warranted by the change, use Studio's device simulator to test the touch branch and actual interactions. Confirm that touch input was delivered, that affected scrollable content moves, and that movement controls do not overlap interactive UI. Record the simulated device and safe viewport; do not claim physical-device performance from an emulator.
 
+## Placement and before-and-after verification
+
+A change to the place layout, to how art is placed, or to where anything stands is verified in the
+world's data first and in captures second:
+
+- **A whole-world placement diff decides it.** Read every part's frame, size and look — color,
+  material, transparency, collision flags, and the appearance and text it carries — from the place
+  before the change and the place after it, in Edit with markers placed exactly as the server
+  places them, and match parts across the two. Every difference must be one the change intends; an
+  area or object that differs for any other reason is a defect. Captures alone never establish
+  placement: a pair can look the same while parts moved, and look different while nothing did.
+- **A view that looks different gets a Play dump** of the parts around it, read on the server and on
+  a client, in both places: present, anchored and in place on both sides means the capture, not the
+  world, differs.
+- **Prove the runtime swap in Play in every place**, not only in Edit or in engine specs that run in
+  Edit, because capability errors, such as a property a running game cannot write or a reserved
+  attribute, appear only in Play. When world start fails without printing its reason, open the
+  built place in a scratch editor, patch the server entry to `warn` the startup error, and play.
+- **Before captures come from the commit just before the change**, never an older head, whose
+  unrelated changes would show as differences.
+- **A capture waits for its view to settle.** Wait until the scripted camera draws from the view,
+  preload the parts around it with `ContentProvider:PreloadAsync`, and close any one-time windows
+  that cover it. Throw away the first capture of each session, which can still predate the camera.
+- **Pair fixed-camera views.** A scripted view frames the same way every run; a free-camera walk-up
+  swings with toasts and nearby characters, especially on a phone, so it is evidence of what it
+  shows close up, such as lettering, never of placement.
+- **Read every capture before trusting a difference**, and before calling a pair identical; when
+  the two disagree, read the same object's properties in both places in Play.
+
 ## Report honestly
 
 Keep a concise latest-results report plus enough raw evidence to explain meaningful failures and fixes. Record the tested revision and any task-authorized publication outcome. Separate verified behavior from untested internet latency, physical-device performance, estimates, or remaining external blockers.
